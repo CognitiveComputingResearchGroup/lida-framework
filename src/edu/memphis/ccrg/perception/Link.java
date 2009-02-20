@@ -32,6 +32,10 @@ public class Link {
     public int hashCode(){   	     	 
     	return (int)linkID % 982451653;
     }
+    
+    public Link copy(Link l){
+    	return new Link(l);
+    }
    
     public Node getSource() {
         return source;
