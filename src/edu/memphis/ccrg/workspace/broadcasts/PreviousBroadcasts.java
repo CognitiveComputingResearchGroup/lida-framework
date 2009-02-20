@@ -1,11 +1,10 @@
-package edu.memphis.ccrg.workspace.CSM;
+package edu.memphis.ccrg.workspace.broadcasts;
 
-
-public class CSM implements Runnable, CSMInterface{
+public class PreviousBroadcasts implements Runnable {
 	
 	private boolean keepRunning = true;
 	
-	public CSM(){
+	public PreviousBroadcasts(){
 		
 	}
 	

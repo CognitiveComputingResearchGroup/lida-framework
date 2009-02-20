@@ -10,14 +10,23 @@ import edu.memphis.ccrg.workspace.perceptualBuffer.PBufferContent;
 import edu.memphis.ccrg.workspace.perceptualBuffer.PBufferListener;
 
 
-public class ScratchPad implements ScratchPadInterface, PBufferListener{
+public class ScratchPad implements Runnable, ScratchPadInterface, PBufferListener{
 	
 	private PBufferContent pbContent;
 	private Map<String, SBCodelet> codeletMap; 
+	private boolean keepRunning = true;
 	
 	public ScratchPad(){
 		pbContent = new PBufferContent();
 		codeletMap = new HashMap<String, SBCodelet>();
+	}
+	
+	public void run(){
+		//TODO:
+	}
+	
+	public void stopRunning(){
+		keepRunning = false;
 	}
 	
 	public void addSBCodelet(String codeletName, SBCodelet sbc){

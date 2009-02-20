@@ -8,19 +8,30 @@ import edu.memphis.ccrg.perception.PAMContent;
 import edu.memphis.ccrg.perception.PAMListener;
 import edu.memphis.ccrg.perception.Percept;
 
-public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
+public class PerceptualBuffer implements Runnable, PAMListener, PerceptualBufferInterface{
 	
 	private PAMContent pamContent;	
 	private Queue<Percept> perceptBuffer;
 	private ArrayList<PBufferListener> pbListeners;	
-	private final int PERCEPT_BUFFER_CAPACITY;
+	private final int PERCEPT_BUFFER_CAPACITY;	
+	private boolean keepRunning;
 	
 	public PerceptualBuffer(int capacity){
 		pamContent = new PAMContent();
 		perceptBuffer = new LinkedList<Percept>();
 		pbListeners = new ArrayList<PBufferListener>();
 		PERCEPT_BUFFER_CAPACITY = capacity;
+		keepRunning = true;
 	}//public Workspace()
+	
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void stopRunning(){
+		keepRunning = false;
+	}
 	
 	public synchronized void receivePAMContent(PAMContent pc){
 		pamContent = pc;

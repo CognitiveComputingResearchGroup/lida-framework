@@ -9,6 +9,9 @@ import java.lang.Thread;
 
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.workspace.CSM.CSM;
+import edu.memphis.ccrg.workspace.broadcasts.PreviousBroadcasts;
+import edu.memphis.ccrg.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.wumpus.WorldApplication;
 
@@ -39,9 +42,14 @@ public class Start{
 		Thread pamThread = new Thread(pamDriver, "PAM_THREAD");
 		
 		//WORKSPACE THREAD
-		PerceptualBuffer pb = new PerceptualBuffer(2);
+		final int pBufferSize = 2;
+		PerceptualBuffer pb = new PerceptualBuffer(pBufferSize);
+		EpisodicBuffer eb = new EpisodicBuffer();
+		PreviousBroadcasts pbroads = new PreviousBroadcasts();
+		CSM model = new CSM();
+		
 		pam.addBroadcastListener(pb);
-		WorkspaceDriver wkspDriver = new WorkspaceDriver(pb);
+		WorkspaceDriver wkspDriver = new WorkspaceDriver(pb, eb, pbroads, model);
 		Thread wkspcThread = new Thread(wkspDriver, "WORKSPACE_THREAD");
 		
 		//Start threads
