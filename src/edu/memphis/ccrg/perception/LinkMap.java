@@ -21,19 +21,19 @@ public class LinkMap {
 	public boolean addLink(Link l){
 		boolean result1 = false;
 		boolean result2 = false;
-		Node n = l.getSource();
-		Set<Link> tempLinks = linkMap.get(n);
+		Linkable end = l.getSource();
+		Set<Link> tempLinks = linkMap.get(end);
 		if(tempLinks == null){
 			tempLinks=new HashSet<Link>();
-			linkMap.put(n, tempLinks);
+			linkMap.put(end, tempLinks);
 		}
 		result1 = tempLinks.add(l);
 		
-		n = l.getSink();
-		tempLinks = linkMap.get(n);
+		end = l.getSink();
+		tempLinks = linkMap.get(end);
 		if(tempLinks == null){
 			tempLinks = new HashSet<Link>();
-			linkMap.put(n, tempLinks);
+			linkMap.put(end, tempLinks);
 		}
 		result2 = tempLinks.add(l);
 		return result1 || result2;
@@ -48,27 +48,29 @@ public class LinkMap {
 			sinkLinks.remove(l);		
 	}//public void deleteLink(Link l)
 	
-	public Set<Link> getLinks(Node n){
-		return linkMap.get(n);	
+	public Set<Link> getLinks(Linkable l){
+		return linkMap.get(l);	
 	}//public Set<Link> getLinks(Node n)
 	
-	public Set<Link> getLinks(Node n, LinkType type){
-		Set<Link> result = linkMap.get(n);
-		for(Link l: result){//TODO: ask Javier is this would cause a null pointer.
-			if(l.getType() != type)//remove links that don't match specified type
-				result.remove(l);
-		}			
+	public Set<Link> getLinks(Linkable NorL, LinkType type){
+		Set<Link> result = linkMap.get(NorL);
+		if(result != null){
+			for(Link l: result){
+				if(l.getType() != type)//remove links that don't match specified type
+					result.remove(l);
+			}//for each link
+		}//result != null
 		return result;
 	}//public Set<Link> getLinks(Node n, LinkType type)
  	
-	public void deleteNode(Node n){
+	public void deleteLinkable(Linkable n){
 		Set<Link> tempLinks = linkMap.get(n);
 		Set<Link> otherLinks;
-		Node other;
+		Linkable other;
 		
 		for(Link l: tempLinks){
-			other = l.getSink();
-			if(!other.equals(n)){		
+			other = l.getSink(); 
+			if(!other.equals(n)){ //TODO: Check about this equals method.		
 				otherLinks = linkMap.get(other);
 				if(otherLinks != null)
 					otherLinks.remove(l);
@@ -82,6 +84,6 @@ public class LinkMap {
 			}						
 		}//for all of the links connected to n		
 		linkMap.remove(n);
-	}//public void deleteNode(Node n)
+	}//public void deleteNode(Linkable n)
 	
 }//public class LinkMap
