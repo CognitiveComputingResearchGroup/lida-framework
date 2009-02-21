@@ -470,6 +470,8 @@ public class Node implements NodeInterface, Linkable{
 	}//public void setValue(Map<String, Object> values)
 	
 	public boolean equals(Node n){
+		if(!(n instanceof Node))
+			return false;
 		return nodeID == n.nodeID;
 	}
 	

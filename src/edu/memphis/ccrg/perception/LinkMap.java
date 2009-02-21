@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class LinkMap {
-	//TODO: REDO CLASS METHODS!!
 	private Map<Linkable, Set<Link>> linkMap;
 	
 	public LinkMap(){
@@ -70,12 +69,11 @@ public class LinkMap {
 		
 		for(Link l: tempLinks){
 			other = l.getSink(); 
-			if(!other.equals(n)){ //TODO: Check about this equals method.		
+			if(!other.equals(n)){ 
 				otherLinks = linkMap.get(other);
 				if(otherLinks != null)
 					otherLinks.remove(l);
-			}
-			
+			}			
 			other = l.getSource();
 			if(!other.equals(n)){
 				otherLinks = linkMap.get(other);
@@ -83,7 +81,7 @@ public class LinkMap {
 					otherLinks.remove(l);
 			}						
 		}//for all of the links connected to n		
-		linkMap.remove(n);
+		linkMap.remove(n);//finally remove the linkable and its links		
 	}//public void deleteNode(Linkable n)
 	
 }//public class LinkMap
