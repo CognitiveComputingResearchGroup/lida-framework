@@ -30,10 +30,14 @@ public class Link implements Linkable{
 			return false;    	
 		return linkID == l.linkID;
 	}
-	
-    public int hashCode(){   	     	 
-    	return (int)linkID % 982451653;
+    
+    public int hashCode() { 
+        int hash = 1;
+        hash = hash * 31 + (new Long(linkID)).hashCode();
+        hash = hash * 31 + (type == null ? 0 : type.hashCode());
+        return hash;
     }
+
     
     public Link copy(Link l){
     	return new Link(l);

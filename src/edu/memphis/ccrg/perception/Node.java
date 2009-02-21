@@ -475,8 +475,14 @@ public class Node implements NodeInterface, Linkable{
 		return nodeID == n.nodeID;
 	}
 	
-    public int hashCode(){   	     	 
-    	return (int)nodeID % 982451653;
+	public int hashCode() { 
+        int hash = 1;
+        Integer i = new Integer(type);
+        Long id = new Long(nodeID);
+        
+        hash = hash * 31 + id.hashCode();
+        hash = hash * 31 + (i == null ? 0 : i.hashCode());
+        return hash;
     }     
      
     public int getLayerDepth() {
