@@ -62,7 +62,7 @@ public class TestGW {
 
 		gw.addBroadcastListener(new BroadcastListener(){
 
-			public void broadcast(BroadcastContent bc) {
+			public void receiveBroadcast(BroadcastContent bc) {
 				System.out.println(bc);
 			}});
 		

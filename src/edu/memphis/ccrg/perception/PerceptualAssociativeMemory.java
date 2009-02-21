@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Set;
 
-//import edu.memphis.ccrg.main.BroadcastContent;
-//import edu.memphis.ccrg.main.BroadcastListener;
+import edu.memphis.ccrg.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.util.DecayCurve;
 
 
-public class PerceptualAssociativeMemory implements PAMInterface, SensoryListener, WorkspaceListener/*, /*BroadcastListener*/{
+public class PerceptualAssociativeMemory implements PAMInterface, SensoryListener, WorkspaceListener, BroadcastListener{
 	//Parameters
     /**
      * proportion of activation spread to parents
@@ -55,7 +55,7 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     private SensoryContent sensoryContent;//Shared variable
     private PAMContent pamContent;//Not a shared variable
     private WMtoPAMContent wkspContent; //Shared variable
-  //  private BroadcastContent broadcastContent = null;//TODO:remove null, //Shared variable
+    private BroadcastContent broadcastContent;//Shared variable
       
     public PerceptualAssociativeMemory(){
     	nodes = new HashSet<Node>();
@@ -166,10 +166,10 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     public synchronized void receiveWMContent(WMtoPAMContent wkspContent){
     	this.wkspContent = wkspContent;
     }    
-    
-//	public synchronized void receiveBroadcast(BroadcastContent bc) {
-//		broadcastContent = bc;		
-//	}
+	
+	public synchronized void receiveBroadcast(BroadcastContent bc) {
+		broadcastContent = bc;		
+	}
     
     //public synchronized void receivePreafferentSignal(PreafferentContent pc){
     	//TODO: eventually implement
@@ -301,4 +301,5 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     public double rnd(double d){    //rounds a double to the nearest 100th
     	return Math.round(d*100.0)/100.0;
     }
+    
 }//class PAM.java

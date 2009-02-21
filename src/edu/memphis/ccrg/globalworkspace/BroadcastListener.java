@@ -16,5 +16,5 @@ public interface BroadcastListener {
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param bc the Content of the Broadcast
 	 */
-	public void broadcast(BroadcastContent bc);
+	public void receiveBroadcast(BroadcastContent bc);
 }

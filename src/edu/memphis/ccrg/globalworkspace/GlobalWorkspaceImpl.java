@@ -78,7 +78,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener {
 		if (coal != null) {
 			BroadcastContent content = coal.getContent();
 			for (BroadcastListener bl : broadcastListeners) {
-				bl.broadcast(content);
+				bl.receiveBroadcast(content);
 			}
 		}
 		for(Coalition c:coalitions){
