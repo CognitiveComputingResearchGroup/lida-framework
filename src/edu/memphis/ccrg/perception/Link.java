@@ -4,7 +4,7 @@ package edu.memphis.ccrg.perception;
  *
  * @author Ryan McCall
  */
-public class Link {
+public class Link implements Linkable{
     
     private Node sink;    
     private Node source;    

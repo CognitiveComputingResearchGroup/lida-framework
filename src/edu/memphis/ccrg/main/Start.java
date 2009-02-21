@@ -15,7 +15,6 @@ import edu.memphis.ccrg.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.wumpus.WorldApplication;
 
-
 public class Start{
 
 	public static void main(String[] args) {

@@ -23,7 +23,7 @@ import edu.memphis.ccrg.util.DecayCurve;
 import edu.memphis.ccrg.util.LinearDecayCurve;
 
 
-public class Node implements NodeInterface{
+public class Node implements NodeInterface, Linkable{
     private final String      DEF_LABEL = "node"; //Default name for a node
     private final int        TYPE_UNDEF = -1;  //Undefined type for node
     private final int 		   TYPE_PFD = 0;

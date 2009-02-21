@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class LinkMap {
-	
-	private Map<Node, Set<Link>> linkMap;
+	//TODO: REDO CLASS METHODS!!
+	private Map<Linkable, Set<Link>> linkMap;
 	
 	public LinkMap(){
-		linkMap = new HashMap<Node, Set<Link>>();
+		linkMap = new HashMap<Linkable, Set<Link>>();
 	}//public LinkMap()
 	
 	public void addLinkSet(Set<Link> links){
