@@ -6,7 +6,6 @@
 package edu.memphis.ccrg.main;
 
 import java.lang.Thread;
-
 import edu.memphis.ccrg.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
@@ -42,13 +41,21 @@ public class Start{
 		
 		//p-WORKSPACE THREAD
 		final int pBufferSize = 2;
-		PerceptualBuffer pb = new PerceptualBuffer(pBufferSize);
+		PerceptualBuffer pb = new PerceptualBuffer(pBufferSize);		
+		Thread pBufferThread = new Thread(pb, "PBUFFER");
+	
 		EpisodicBuffer eb = new EpisodicBuffer();
+		Thread eBufferThread = new Thread(eb, "EBUFFER");
+		
 		PreviousBroadcasts pbroads = new PreviousBroadcasts();
+		Thread pbroadsThread = new Thread(pbroads, "PBROADS");
+		
+				  
 		ScratchPad sPad = new ScratchPad();
+		Thread padThread = new Thread(sPad, "SCRATCHPAD");
+		   
 		CSM csm = new CSM();
-		WorkspaceDriver wkspDriver = new WorkspaceDriver(pb, eb, pbroads, sPad, csm);
-		Thread wkspcThread = new Thread(wkspDriver, "WORKSPACE_THREAD");
+		Thread csmThread = new Thread(csm, "CSM");
 		
 		//TEM/DM THREAD
 		
@@ -94,14 +101,22 @@ public class Start{
 		simulationThread.start(); //start receiving thread first
 		smThread.start();
 		pamThread.start();
-		wkspcThread.start();
+		pBufferThread.start();
+		eBufferThread.start();		
+		pbroadsThread.start();
+		padThread.start();
+		csmThread.start();
 		
 		try{ Thread.sleep(600);} //give the threads time to execute
 		catch(Exception e){}
 		
 		//SHUT THREADS DOWN
-		System.out.println("Main thread is initiating shutdown...\n");
-		wkspDriver.stopRunning();
+		System.out.println("Main thread is initiating shutdown...\n");		
+		csm.stopRunning();
+		sPad.stopRunning();	
+		pbroads.stopRunning();
+		eb.stopRunning();
+		pb.stopRunning();		
 		pamDriver.stopRunning(); //tell PAM to stop running	
 		smDriver.stopRunning();
 		simulation.stopRunning(); //tell simulation to stop running			
