@@ -29,7 +29,7 @@ public class WorldApplication implements Runnable{
 	   	trial = new Simulation(wumpusEnvironment, maxSteps, nonDeterministicMode); 		
 	}
 	
-	public void addBroadcastListner(SimulationListener listener){
+	public void addSimulationListener(SimulationListener listener){
 		trial.addSimulationListener(listener);
 	}
 	

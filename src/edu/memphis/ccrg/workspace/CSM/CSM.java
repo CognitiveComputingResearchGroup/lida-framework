@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.workspace.CSM;
 
-
-public class CSM implements Runnable, CSMInterface{
+public class CSM implements Runnable, CSMInterface, ScratchPadListener{
 	
 	private boolean keepRunning = true;
 	
@@ -16,6 +15,11 @@ public class CSM implements Runnable, CSMInterface{
 	
 	public void stopRunning(){
 		keepRunning = false;
+	}
+
+	public void receiveSPadContent(SPadContent c) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

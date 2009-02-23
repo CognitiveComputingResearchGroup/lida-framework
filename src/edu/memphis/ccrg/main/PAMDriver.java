@@ -19,7 +19,7 @@ public class PAMDriver implements Runnable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
-			try{Thread.sleep(24);}catch(Exception e){}
+			try{Thread.sleep(25);}catch(Exception e){}
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	

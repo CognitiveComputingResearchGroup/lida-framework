@@ -16,13 +16,13 @@ public class WorkspaceDriver implements Runnable{
 	private ScratchPad pad;
 	
 	public WorkspaceDriver(PerceptualBuffer pb, EpisodicBuffer eb, 
-						   PreviousBroadcasts broads, CSM csm){
+						   PreviousBroadcasts broads, ScratchPad spad, CSM csm){
 		keepRunning = true;
 		this.pb = pb;	
 		this.eb = eb;
 		pbroads = broads;
 		this.csm = csm;
-		pad = new ScratchPad();
+		pad = spad;
 	}//public WorkspaceDriver
 
 	public void run(){		
@@ -39,7 +39,7 @@ public class WorkspaceDriver implements Runnable{
 		csmThread.start();
 		
 		while(keepRunning){			
-			try{Thread.sleep(25);}catch(Exception e){}
+			try{Thread.sleep(1000);}catch(Exception e){}
 						
 			pb.sendContent();
 			

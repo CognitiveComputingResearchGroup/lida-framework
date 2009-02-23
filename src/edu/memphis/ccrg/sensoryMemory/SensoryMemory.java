@@ -38,10 +38,8 @@ public class SensoryMemory implements SimulationListener{
 		for(int i = 0; i < listeners.size(); i++)
 			(listeners.get(i)).receiveSense(senseContent);
 	}
-	
-	
-	
-	public void addBroadcastListener(SensoryListener sl){
+		
+	public void addSensoryListener(SensoryListener sl){
 		listeners.add(sl);
 	}
 	

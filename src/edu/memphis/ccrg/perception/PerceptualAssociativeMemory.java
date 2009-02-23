@@ -20,9 +20,12 @@ import edu.memphis.ccrg.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.util.DecayCurve;
+import edu.memphis.ccrg.workspace.episodicBuffer.EBufferListener;
+import edu.memphis.ccrg.workspace.episodicBuffer.EBufferContent;
 
 
-public class PerceptualAssociativeMemory implements PAMInterface, SensoryListener, WorkspaceListener, BroadcastListener{
+public class PerceptualAssociativeMemory implements PAMInterface, 
+	SensoryListener, EBufferListener, BroadcastListener{
 	//Parameters
     /**
      * proportion of activation spread to parents
@@ -54,8 +57,8 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     private List<PAMListener> pamListeners;    
     private SensoryContent sensoryContent;//Shared variable
     private PAMContent pamContent;//Not a shared variable
-    private WMtoPAMContent wkspContent; //Shared variable
     private BroadcastContent broadcastContent;//Shared variable
+	private EBufferContent eBufferContent;//Shared variable
       
     public PerceptualAssociativeMemory(){
     	nodes = new HashSet<Node>();
@@ -67,7 +70,7 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContent();
     	pamContent = new PAMContent();
-    	wkspContent = new WMtoPAMContent();
+    	eBufferContent = new EBufferContent();
     	//broadcastContent = new BroadcastContent(); 	
     }
     
@@ -162,11 +165,12 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     public synchronized void receiveSense(SensoryContent sc){//SensoryContent    	
     	sensoryContent = sc;    	
     }
- 
-    public synchronized void receiveWMContent(WMtoPAMContent wkspContent){
-    	this.wkspContent = wkspContent;
-    }    
-	
+    
+
+	public synchronized void receiveEBufferContent(EBufferContent c) {
+		eBufferContent = c;		
+	}
+    	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = bc;		
 	}
@@ -256,7 +260,7 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
 			n.setDecayCurve(c);		
 	}
               
-    public void addBroadcastListener(PAMListener pl){
+    public void addPAMListener(PAMListener pl){
 		pamListeners.add(pl);
 	}
    
@@ -301,5 +305,5 @@ public class PerceptualAssociativeMemory implements PAMInterface, SensoryListene
     public double rnd(double d){    //rounds a double to the nearest 100th
     	return Math.round(d*100.0)/100.0;
     }
-    
+
 }//class PAM.java

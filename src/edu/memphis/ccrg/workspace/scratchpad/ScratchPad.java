@@ -6,11 +6,16 @@ import java.util.Map;
 
 import edu.memphis.ccrg.perception.Node;
 import edu.memphis.ccrg.perception.Percept;
+import edu.memphis.ccrg.workspace.CSM.CSM;
+import edu.memphis.ccrg.workspace.CSM.ScratchPadListener;
+import edu.memphis.ccrg.workspace.broadcasts.PBroadsListener;
+import edu.memphis.ccrg.workspace.episodicBuffer.EBufferListener;
+import edu.memphis.ccrg.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.workspace.perceptualBuffer.PBufferContent;
 import edu.memphis.ccrg.workspace.perceptualBuffer.PBufferListener;
 
-
-public class ScratchPad implements Runnable, ScratchPadInterface, PBufferListener{
+public class ScratchPad implements Runnable, ScratchPadInterface, 
+									PBufferListener, EBufferListener, PBroadsListener{
 	
 	private PBufferContent pbContent;
 	private Map<String, SBCodelet> codeletMap; 
@@ -47,4 +52,14 @@ public class ScratchPad implements Runnable, ScratchPadInterface, PBufferListene
 			temp.getLabel();//TODO: implement
 		}//for	
 	}//activateSBCodelets
+
+	public void receiveEBufferContent(EBufferContent c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addSPadListener(ScratchPadListener l) {
+		// TODO Auto-generated method stub
+		
+	}
 }//class ScratchPad.java 
