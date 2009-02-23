@@ -1,12 +1,12 @@
 package edu.memphis.ccrg.wumpus;
 import java.util.Random;
 
-import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.main.Stoppable;
 import edu.memphis.ccrg.sensoryMemory.SimulationListener;
 
 //import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class WorldApplication implements Runnable{
+public class WorldApplication implements Runnable, Stoppable{
 	
 	private Simulation trial;
 	private final int maxSteps;

@@ -2,7 +2,7 @@ package edu.memphis.ccrg.main;
 
 import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
 
-public class SMDriver implements Runnable{
+public class SMDriver implements Runnable, Stoppable{
 	private SensoryMemory sm;
 	private boolean keepRunning;	
 	

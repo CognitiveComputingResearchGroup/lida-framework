@@ -6,6 +6,8 @@
 package edu.memphis.ccrg.main;
 
 import java.lang.Thread;
+import java.util.ArrayList;
+
 import edu.memphis.ccrg.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
@@ -17,6 +19,9 @@ import edu.memphis.ccrg.workspace.scratchpad.ScratchPad;
 import edu.memphis.ccrg.wumpus.WorldApplication;
 
 public class Start{
+	
+	private ArrayList<Thread> threads = new ArrayList<Thread>();
+	private ArrayList<Stoppable> threadObjects = new ArrayList<Stoppable>();
 
 	public static void main(String[] args) {
 		new Start().setup();
@@ -39,7 +44,7 @@ public class Start{
 		PAMDriver pamDriver = new PAMDriver(pam);
 		Thread pamThread = new Thread(pamDriver, "PAM_THREAD");
 		
-		//p-WORKSPACE THREAD
+		//PBUFFER THREAD
 		final int pBufferSize = 2;
 		PerceptualBuffer pb = new PerceptualBuffer(pBufferSize);		
 		Thread pBufferThread = new Thread(pb, "PBUFFER");
@@ -49,8 +54,7 @@ public class Start{
 		
 		PreviousBroadcasts pbroads = new PreviousBroadcasts();
 		Thread pbroadsThread = new Thread(pbroads, "PBROADS");
-		
-				  
+						  
 		ScratchPad sPad = new ScratchPad();
 		Thread padThread = new Thread(sPad, "SCRATCHPAD");
 		   
@@ -98,7 +102,7 @@ public class Start{
 		gwksp.addBroadcastListener(pbroads);
 		
 		//START THREADS
-		simulationThread.start(); //start receiving thread first
+		simulationThread.start(); //start sending thread first
 		smThread.start();
 		pamThread.start();
 		pBufferThread.start();
@@ -121,5 +125,33 @@ public class Start{
 		smDriver.stopRunning();
 		simulation.stopRunning(); //tell simulation to stop running			
 	}//setup
+	
+	public void initSimThread(){}
+	public void initSMThread(){}
+	public void initPAMThread(){}
+	public void initPBufferThread(){}
+	public void initEBufferThread(){}
+	public void initPBroadsThread(){}
+	public void initSPadThread(){}
+	public void initCSMThread(){}
+	
+	public void startThreads(){
+		int size = threads.size();
+		for(int i = 0; i < size; i++){
+			Thread t = threads.get(i);
+			if(t != null)
+				t.start();			
+		}//for each thread
+	}//public void startThreads()
+	
+	public void stopThreads(){
+		int size = threadObjects.size();
+		for(int i = 0; i < size; i++){
+			Stoppable s = threadObjects.get(i);
+			if(s != null)
+				s.stopRunning();			
+		}//for each thread
+		
+	}	
 	
 }//Parallel

@@ -2,7 +2,7 @@ package edu.memphis.ccrg.main;
 
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
 
-public class PAMDriver implements Runnable{
+public class PAMDriver implements Runnable, Stoppable{
 
 	private PerceptualAssociativeMemory pam;
 	private boolean keepRunning;	
