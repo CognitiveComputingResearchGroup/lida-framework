@@ -7,7 +7,7 @@ public interface DecayCurve {
      * @param currentActivation The activation of the entity before decay.
      * 
      */
-    public void decay(double currentActivation);
+    public double decay(double currentActivation);
         
     /**
      * Calculates the value of x for a given y.

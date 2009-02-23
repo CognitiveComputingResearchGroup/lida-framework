@@ -202,7 +202,7 @@ public class Node implements NodeInterface, Linkable{
    */
     
     public void decay() {
-        decayCurve.decay(currentActivation);
+        currentActivation = decayCurve.decay(currentActivation);
     }
     
 	public void setDecayCurve(DecayCurve c) {
@@ -529,4 +529,16 @@ public class Node implements NodeInterface, Linkable{
     public Set<Node> getOutgoingNodes() {
     	return new TreeSet<Node>(parents);
     }//getOutgoingNodes    
+    
+    public void printActivation(){
+    	System.out.println(label + " curr: " + rnd(currentActivation) +
+    					   " tot: " + rnd(totalActivation));	
+    	
+    }
+    
+    public double rnd(double d){    //rounds a double to the nearest 100th
+    	return Math.round(d*100.0)/100.0;
+    }
+
+    
 }//class Node

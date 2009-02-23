@@ -15,7 +15,8 @@ public class PAMDriver implements Runnable, Stoppable{
 	}//PAMDrive constructor
 		
 	public void run(){
-		
+		//boolean printSentPercept = true;
+		boolean printSentPercept = false;
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
@@ -23,23 +24,26 @@ public class PAMDriver implements Runnable, Stoppable{
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
-			pam.sendPercept(); //Send the percept to p-Workspace
-			pam.decay();  //Decay the activations		
+			
+			pam.sendPercept(printSentPercept); //Send the percept to p-Workspace
+			pam.decay();  //Decay the activations	
+			
+			//pam.printNodeActivations();
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();		
 			
-		System.out.println("P: ave pam cycle time " + (finishTime - startTime)/(double)counter);
-		System.out.println("P: times received: " + counter);			
-		System.out.println("P: PAMDriver ending");
+		System.out.println("\nPAM: Ave. cycle time: " + rnd((finishTime - startTime)/(double)counter));
+		System.out.println("PAM: Num. cycles: " + counter);			
+
 	}//method run
 	
 	public void stopRunning(){
 		keepRunning = false;		
 	}//method stopRunning
 	
-	public void print(int[] a){
-		System.out.println("Sense received: " + a[0] + " " + a[1] + " " + a[2] + " " + a[3] + " " + a[4] + " ");
-	}//print
+	public double rnd(double d){    //rounds a double to the nearest 100th
+    	return Math.round(d*10000.0)/10000.0;
+    }
 
 }//class PAMDriver

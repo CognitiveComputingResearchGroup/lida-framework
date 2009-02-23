@@ -87,23 +87,20 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	int pfdType = 0;
     	int regType = 1;
     	
-    	Node bottom  = new Node(102000000, baseActivation,
-				currentActivation, "bottom", upScale, selectivity, pfdType);
+    	Node breeze  = new Node(1, baseActivation, currentActivation, 
+    						"breeze", upScale, selectivity, pfdType);
     	
-    	Node abstr = new Node(103000000, baseActivation,
-				currentActivation, "abstr", upScale, selectivity, regType);
-    	
-    	Node top = new Node(104000000, baseActivation,
-				currentActivation, "top", upScale, selectivity, regType);
-    	
-    	abstr.addChild(bottom);
-    	top.addChild(abstr);
+    	Node pit = new Node(2, baseActivation, currentActivation, 
+    						"pit", upScale, selectivity, regType);
+    
+    	pit.addChild(breeze);
    
     	boolean isPFD = true;
     	boolean isNotPFD = false;
-    	register(bottom, isPFD);
-    	register(abstr, isNotPFD);
-    	register(top, isNotPFD);
+    	register(breeze, isPFD);
+    	register(pit, isNotPFD);
+    	
+    	//System.out.println(nodes.size() + " 3242394 " + pfdNodes.size());
     }//public void initPAM()
     
     public void addToPAM(Set<Node> nodes, Set<Link> linkSet){
@@ -185,17 +182,19 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     		senseData = (int[])sensoryContent.getContent();
     	}
     	
+    	//System.out.println("PAM2: " + senseData[0] + " " + senseData[1] + " " + senseData[2] + " " + senseData[3] + " " + senseData[4] + " ");
+    	
     	if(senseData[0] == 1){
-    		pfdNodes.get("bump").excite(1.0);
+    		//pfdNodes.get("bump").excite(1.0);
     	}else if(senseData[1] == 1){
-    		pfdNodes.get("glitter").excite(1.0);
-    	}else if(senseData[1] == 2){
+    		//pfdNodes.get("glitter").excite(1.0);
+    	}else if(senseData[2] == 1){
     		pfdNodes.get("breeze").excite(1.0);
-    	}else if(senseData[1] == 3){
-    		pfdNodes.get("stench").excite(1.0);
-    	}else if(senseData[1] == 4){
-    		pfdNodes.get("scream").excite(1.0);
-    	}//else		   	
+    	}else if(senseData[3] == 1){
+    		//pfdNodes.get("stench").excite(1.0);
+    	}else if(senseData[4] == 1){
+    		//pfdNodes.get("scream").excite(1.0);
+    	}//else		      	
     }//public void sense()
     
 //	//if want to show starting activation
@@ -226,6 +225,12 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	}
     }    
     
+    public void printNodeActivations(){
+    	for(Node n: nodes){
+    		n.printActivation();
+    	}
+    }
+    
     /**
      * Synchronizes this PAM by updating the percept and percept history. First
      * the percept is cleared, and then all relevant nodes are put in a new
@@ -245,7 +250,10 @@ public class PerceptualAssociativeMemory implements PAMInterface,
         perceptHistory.add(percept);
     }
     
-    public void sendPercept(){
+    public void sendPercept(boolean print){
+    	if(print)
+    		pamContent.print();
+    	
     	for(int i = 0; i < pamListeners.size(); i++)
 			(pamListeners.get(i)).receivePAMContent(pamContent);
     }

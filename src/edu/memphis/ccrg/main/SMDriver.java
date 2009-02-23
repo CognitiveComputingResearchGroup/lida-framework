@@ -12,28 +12,28 @@ public class SMDriver implements Runnable, Stoppable{
 	}//PAMDrive constructor
 		
 	public void run(){
-		
+		//boolean printSentContent = true;
+		boolean printSentContent = false;
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(24);}catch(Exception e){}
 			sm.processSimContent();
-			sm.sendSensoryContent();					
+			sm.sendSensoryContent(printSentContent);					
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();		
 			
-		System.out.println("SM: ave sm cycle time " + (finishTime - startTime)/(double)counter);
-		System.out.println("SM: times received: " + counter);			
-		System.out.println("SM: SMDriver ending");
+		System.out.println("\nSM: Ave. cycle time: " + rnd((finishTime - startTime)/(double)counter));
+		System.out.println("SM: Num. cycles: " + counter);			
 	}//method run
 	
 	public void stopRunning(){
 		keepRunning = false;		
 	}//method stopRunning
 	
-	public void print(int[] a){
-		System.out.println("Sense received: " + a[0] + " " + a[1] + " " + a[2] + " " + a[3] + " " + a[4] + " ");
-	}//print
+	public double rnd(double d){    //rounds a double to the nearest 10000th
+    	return Math.round(d*10000.0)/10000.0;
+    }
 
 }//class SMDriver

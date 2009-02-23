@@ -8,10 +8,6 @@ package edu.memphis.ccrg.main;
 import java.lang.Thread;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import edu.memphis.ccrg.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
@@ -24,7 +20,8 @@ import edu.memphis.ccrg.wumpus.WorldApplication;
 
 public class Start{
 	
-	private Map<Thread, Stoppable> threadMap = new TreeMap<Thread, Stoppable>();
+	private List<Thread> threads = new ArrayList<Thread>();
+	private List<Stoppable> drivers = new ArrayList<Stoppable>();
 	
 	private WorldApplication simulation;
 	private SensoryMemory sm;
@@ -51,8 +48,7 @@ public class Start{
 		//initCSMThread();
 		//initAttnThread();
 		//initGWThread();
-		
-		//
+
 		simulation.addSimulationListener(sm);
 		
 		sm.addSensoryListener(pam);
@@ -80,58 +76,68 @@ public class Start{
 		//attn.addAttnListener(csm);
 		//gwksp.addBroadcastListener(pbroads);
 		
+		startThreads();
+		
 		//give the threads time to execute
 		int runTime = 600;
 		try{ Thread.sleep(runTime);}catch(Exception e){}
 		
 		//SHUT THREADS DOWN
-		System.out.println("Main thread is initiating shutdown...\n");		
+		System.out.println("\nMain thread is initiating shutdown...\n");		
 		stopThreads();
 	}//setup	
 	
 	public void initSimThread(){
 		simulation = new WorldApplication();				
-		threadMap.put(new Thread(simulation, "SIMULATION_THREAD"), simulation);	
+		threads.add(new Thread(simulation, "SIMULATION_THREAD"));   
+		drivers.add(simulation);	
 	}
 	public void initSMThread(){
 		sm = new SensoryMemory();
 		simulation.addSimulationListener(sm);
 		
 		SMDriver smDriver = new SMDriver(sm);
-		threadMap.put(new Thread(smDriver, "SM_THREAD"), smDriver);				
+		threads.add(new Thread(smDriver, "SM_THREAD"));   
+		drivers.add(smDriver);				
 	}
 	public void initPAMThread(){
 		pam = new PerceptualAssociativeMemory();
 		PAMDriver pamDriver = new PAMDriver(pam);
-		threadMap.put(new Thread(pamDriver, "PAM_THREAD"), pamDriver);
+		threads.add(new Thread(pamDriver, "PAM_THREAD"));   
+		drivers.add(pamDriver);
 	}
 	
 	public void initPBufferThread(){
 		pb = new PerceptualBuffer();	
 		PBufferDriver pbDriver = new PBufferDriver(pb);
-		threadMap.put(new Thread(pbDriver, "PBUFFER"), pbDriver);
+		threads.add(new Thread(pbDriver, "PBUFFER"));   
+		drivers.add(pbDriver);
 	}
 	public void initEBufferThread(){
 		eb = new EpisodicBuffer();
 		EBufferDriver ebDriver = new EBufferDriver(eb);
-		threadMap.put(new Thread(ebDriver, "EBUFFER"), ebDriver);
+		threads.add(new Thread(ebDriver, "EBUFFER"));   
+		drivers.add(ebDriver);
 	}
 	public void initPBroadsThread(){
 		pbroads = new PreviousBroadcasts();
 		PBroadsDriver pbDriver = new PBroadsDriver(pbroads);
-		threadMap.put(new Thread(pbDriver, "PBROADS"), pbDriver);		
+		threads.add(new Thread(pbDriver, "PBROADS"));   
+		drivers.add(pbDriver);		
 	}
 	
 	public void initSPadThread(){
 		sPad = new ScratchPad();
 		ScratchPadDriver spDriver = new ScratchPadDriver(sPad);
-		threadMap.put(new Thread(spDriver, "SCRATCHPAD"), spDriver);
+		threads.add(new Thread(spDriver, "SCRATCHPAD"));   
+		drivers.add(spDriver);
 	}
 	
 	public void initCSMThread(){
 		csm = new CSM();
 		CSMDriver csmDriver = new CSMDriver(csm);
-		threadMap.put(new Thread(csmDriver, "CSM"), csmDriver);
+		threads.add(new Thread(csmDriver, "CSM"));   
+		drivers.add(csmDriver);
 	}
 	
 	public void initAttnThread(){
@@ -141,7 +147,8 @@ public class Start{
 	public void initGWThread(){
 		gwksp = new GlobalWorkspaceImpl();
 		GlobalWkspDriver gwkspDriver = new GlobalWkspDriver(gwksp);
-		threadMap.put(new Thread(gwkspDriver, "GWKSP"), gwkspDriver);
+		threads.add(new Thread(gwkspDriver, "GWKSP"));   
+		drivers.add(gwkspDriver);
 	}
 	
 	public void initProcMemThread(){
@@ -153,8 +160,9 @@ public class Start{
 	}
 		
 	public void startThreads(){ //in normal order
-		Set<Thread> threads = threadMap.keySet();
-		for(Thread t: threads){
+		int size = threads.size();
+		for(int i = 0; i < size; i++){
+			Thread t = threads.get(i);
 			if(t != null)
 				t.start();
 			else
@@ -163,14 +171,13 @@ public class Start{
 	}//public void startThreads()
 	
 	public void stopThreads(){
-		ArrayList<Stoppable> drivers = (ArrayList<Stoppable>)threadMap.values();
 		int size = drivers.size();
-		for(int i = 0; i < size; i++){
+		for(int i = 0; i < size; i++){			
 			Stoppable s = drivers.get(size - 1 - i);
 			if(s != null)
-				s.stopRunning();			
-		}//for each thread
-		
-	}	
+				s.stopRunning();		
+			//try {Thread.sleep(10);} catch(InterruptedException e){}
+		}//for each thread	
+	}//public void stopThreads()	
 	
 }//Parallel

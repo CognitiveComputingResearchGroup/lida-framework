@@ -32,7 +32,9 @@ public class SensoryMemory implements SimulationListener{
 	}//
 	
 	//broadcast to all listeners
-	public void sendSensoryContent(){
+	public void sendSensoryContent(boolean print){
+		if(print)
+			senseContent.print();
 		for(int i = 0; i < listeners.size(); i++)
 			(listeners.get(i)).receiveSense(senseContent);
 	}

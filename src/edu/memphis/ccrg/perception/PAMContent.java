@@ -19,5 +19,10 @@ public class PAMContent implements PAMContentInterface{
 	public Object getContent(){
 		return p;
 	}
+	
+	public void print(){
+		System.out.print("PAM: ");
+		p.print();
+	}
 
 }

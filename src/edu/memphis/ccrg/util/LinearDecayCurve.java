@@ -4,7 +4,7 @@ public class LinearDecayCurve implements DecayCurve{
 
 	    
 	    /** The default slope (m = 1). */
-	    public static final double DEFAULT_M = 1.0d;
+	    public static final double DEFAULT_M = 0.6;
 	    
 	    /** The default intercept (b = 0). */
 	    public static final double DEFAULT_B = 0.0d;
@@ -34,8 +34,8 @@ public class LinearDecayCurve implements DecayCurve{
 	        this.b = b;
 	    }
 	    
-	    public void decay(double activ){
-	    	activ = m*activ + b;
+	    public double decay(double activ){
+	    	return m*activ + b;
 	    }
 	    
 	    /**

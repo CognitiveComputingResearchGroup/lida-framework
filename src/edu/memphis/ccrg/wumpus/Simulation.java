@@ -65,7 +65,7 @@ public class Simulation {
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveSimContent(simContent);
 			
-			System.out.println("Sense sent    : " + currentSense[0] + " " + currentSense[1] + " " + currentSense[2] + " " + currentSense[3] + " " + currentSense[4] + " ");
+			System.out.println("SIM: Sense sent    : " + currentSense[0] + " " + currentSense[1] + " " + currentSense[2] + " " + currentSense[3] + " " + currentSense[4] + " ");
 			timesAdded++;
 							
 			//environment.printEnvironment();								
@@ -91,13 +91,14 @@ public class Simulation {
 			
 		}//while keepRunning and trials
 		long finishTime = System.currentTimeMillis();		
-		System.out.println("S: ave sim cycle time " + (finishTime - startTime)/(double)stepCounter);		
-		System.out.println("S: total times added " + timesAdded);			
+		System.out.println("\nSIM: Ave. cycle time: " + rnd((finishTime - startTime)/(double)stepCounter));		
+		System.out.println("SIM: Times sent: " + timesAdded);			
 		//printEndWorld();		
-		System.out.println("S: Simulation ending");
 	}//method runSim
 	
 	public void stopRunning(){
+		try{Thread.sleep(15);
+		}catch(InterruptedException e){}
 		simulationRunning = false;		
 	}//stopRunning
 	
@@ -337,5 +338,10 @@ public class Simulation {
 	public int getScore() {		
 		return currScore;		
 	}
+	
+	public double rnd(double d){    //rounds a double to the nearest 100th
+    	return Math.round(d*10000.0)/10000.0;
+    }
+
 	
 }//class Simulation
