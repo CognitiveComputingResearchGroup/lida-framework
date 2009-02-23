@@ -5,14 +5,12 @@ import java.util.List;
 
 public class SensoryMemory implements SimulationListener{
 	
-	private int size;
+	private final int size = 5;
 	private SimulationContent simContent;
 	private SensoryContent senseContent;
 	private List<SensoryListener> listeners;
-	
-		
-	public SensoryMemory(int size){
-		this.size = size;
+			
+	public SensoryMemory(){
 		simContent = new SimulationContent(size);
 		senseContent = new SensoryContent(size);	
 		listeners = new ArrayList<SensoryListener>();

@@ -15,7 +15,7 @@ public class WorldApplication implements Runnable, Stoppable{
 		trial.stopRunning();		
 	}
 	
-	public WorldApplication(int times){
+	public WorldApplication(){
 		int worldSize = 4;
 		int numPits = 7;				
 		boolean nonDeterministicMode = false;
@@ -25,7 +25,7 @@ public class WorldApplication implements Runnable, Stoppable{
 	    char[][][] wumpusWorld = generateRandomWumpusWorld(seed, worldSize, randomAgentLoc, numPits);
 	    Environment wumpusEnvironment = new Environment(worldSize, wumpusWorld); //, outputWriter);
 	    
-	    maxSteps = times;
+	    maxSteps = Integer.MAX_VALUE;
 	   	trial = new Simulation(wumpusEnvironment, maxSteps, nonDeterministicMode); 		
 	}
 	

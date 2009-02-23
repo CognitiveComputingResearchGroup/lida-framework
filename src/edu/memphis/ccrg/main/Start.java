@@ -7,6 +7,10 @@ package edu.memphis.ccrg.main;
 
 import java.lang.Thread;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import edu.memphis.ccrg.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
@@ -20,60 +24,35 @@ import edu.memphis.ccrg.wumpus.WorldApplication;
 
 public class Start{
 	
-	private ArrayList<Thread> threads = new ArrayList<Thread>();
-	private ArrayList<Stoppable> threadObjects = new ArrayList<Stoppable>();
+	private Map<Thread, Stoppable> threadMap = new TreeMap<Thread, Stoppable>();
+	
+	private WorldApplication simulation;
+	private SensoryMemory sm;
+	private PerceptualAssociativeMemory pam;
+	private PerceptualBuffer pb;
+	private EpisodicBuffer eb;
+	private PreviousBroadcasts pbroads;
+	private ScratchPad sPad;
+	private CSM csm;
+	private GlobalWorkspaceImpl gwksp;	
 
 	public static void main(String[] args) {
 		new Start().setup();
 	}//main
 	
-	public void setup(){	
-		//SIMULATION THREAD
-		final int timeSteps = 100;
-		WorldApplication simulation = new WorldApplication(timeSteps);
-		Thread simulationThread = new Thread(simulation, "SIMULATION_THREAD");	
+	public void setup(){
+		initSimThread();
+		initSMThread();
+		initPAMThread();
+		initPBufferThread();
+		//initEbufferThread();
+		//initPBroadsThread();
+		//initSPadThread();	
+		//initCSMThread();
+		//initAttnThread();
+		//initGWThread();
 		
-		//SENSORY MEMORY THREAD
-		final int senseSize = 5;
-		SensoryMemory sm = new SensoryMemory(senseSize);
-		SMDriver smDriver = new SMDriver(sm);
-		Thread smThread = new Thread(smDriver, "SM_THREAD");
-	
-		//PAM THREAD
-		PerceptualAssociativeMemory pam = new PerceptualAssociativeMemory();
-		PAMDriver pamDriver = new PAMDriver(pam);
-		Thread pamThread = new Thread(pamDriver, "PAM_THREAD");
-		
-		//PBUFFER THREAD
-		final int pBufferSize = 2;
-		PerceptualBuffer pb = new PerceptualBuffer(pBufferSize);		
-		Thread pBufferThread = new Thread(pb, "PBUFFER");
-	
-		EpisodicBuffer eb = new EpisodicBuffer();
-		Thread eBufferThread = new Thread(eb, "EBUFFER");
-		
-		PreviousBroadcasts pbroads = new PreviousBroadcasts();
-		Thread pbroadsThread = new Thread(pbroads, "PBROADS");
-						  
-		ScratchPad sPad = new ScratchPad();
-		Thread padThread = new Thread(sPad, "SCRATCHPAD");
-		   
-		CSM csm = new CSM();
-		Thread csmThread = new Thread(csm, "CSM");
-		
-		//TEM/DM THREAD
-		
-		//ATTENTION THREAD
-		//Attention attn = new Attention();
-		
-		//GWKSP THREAD
-		GlobalWorkspaceImpl gwksp = new GlobalWorkspaceImpl();
-		
-		//PROC MEMORY THREAD
-		
-		//ACTION SELECTION THREAD
-		
-		//SET UP LISTENERS
+		//
 		simulation.addSimulationListener(sm);
 		
 		sm.addSensoryListener(pam);
@@ -81,73 +60,113 @@ public class Start{
 		
 		pam.addPAMListener(pb);
 		
-		pb.addPBufferListener(sPad);
+		//pb.addPBufferListener(sPad);
 		//pb.addPBufferListener(dm);
 		//pb.addPBufferListener(tem);
 		
-		eb.addEBufferListener(pam);
-		eb.addEBufferListener(sPad);
+		//eb.addEBufferListener(pam);
+		//eb.addEBufferListener(sPad);
 		//eb.addEBufferListener(dm);
 		//eb.addPBufferListener(tem);
 		
-		pbroads.addPBroadsListener(sPad);
+		//pbroads.addPBroadsListener(sPad);
 		
-		sPad.addSPadListener(csm);
+		//sPad.addSPadListener(csm);
 		//bn.addBehaviorListener(csm);
 		
 		//csm.addCSMListener(tem);
 		//csm.addCSMListener(dm);
 		
 		//attn.addAttnListener(csm);
-		gwksp.addBroadcastListener(pbroads);
+		//gwksp.addBroadcastListener(pbroads);
 		
-		//START THREADS
-		simulationThread.start(); //start sending thread first
-		smThread.start();
-		pamThread.start();
-		pBufferThread.start();
-		eBufferThread.start();		
-		pbroadsThread.start();
-		padThread.start();
-		csmThread.start();
-		
-		try{ Thread.sleep(600);} //give the threads time to execute
-		catch(Exception e){}
+		//give the threads time to execute
+		int runTime = 600;
+		try{ Thread.sleep(runTime);}catch(Exception e){}
 		
 		//SHUT THREADS DOWN
 		System.out.println("Main thread is initiating shutdown...\n");		
-		csm.stopRunning();
-		sPad.stopRunning();	
-		pbroads.stopRunning();
-		eb.stopRunning();
-		pb.stopRunning();		
-		pamDriver.stopRunning(); //tell PAM to stop running	
-		smDriver.stopRunning();
-		simulation.stopRunning(); //tell simulation to stop running			
-	}//setup
+		stopThreads();
+	}//setup	
 	
-	public void initSimThread(){}
-	public void initSMThread(){}
-	public void initPAMThread(){}
-	public void initPBufferThread(){}
-	public void initEBufferThread(){}
-	public void initPBroadsThread(){}
-	public void initSPadThread(){}
-	public void initCSMThread(){}
+	public void initSimThread(){
+		simulation = new WorldApplication();				
+		threadMap.put(new Thread(simulation, "SIMULATION_THREAD"), simulation);	
+	}
+	public void initSMThread(){
+		sm = new SensoryMemory();
+		simulation.addSimulationListener(sm);
+		
+		SMDriver smDriver = new SMDriver(sm);
+		threadMap.put(new Thread(smDriver, "SM_THREAD"), smDriver);				
+	}
+	public void initPAMThread(){
+		pam = new PerceptualAssociativeMemory();
+		PAMDriver pamDriver = new PAMDriver(pam);
+		threadMap.put(new Thread(pamDriver, "PAM_THREAD"), pamDriver);
+	}
 	
-	public void startThreads(){
-		int size = threads.size();
-		for(int i = 0; i < size; i++){
-			Thread t = threads.get(i);
+	public void initPBufferThread(){
+		pb = new PerceptualBuffer();	
+		PBufferDriver pbDriver = new PBufferDriver(pb);
+		threadMap.put(new Thread(pbDriver, "PBUFFER"), pbDriver);
+	}
+	public void initEBufferThread(){
+		eb = new EpisodicBuffer();
+		EBufferDriver ebDriver = new EBufferDriver(eb);
+		threadMap.put(new Thread(ebDriver, "EBUFFER"), ebDriver);
+	}
+	public void initPBroadsThread(){
+		pbroads = new PreviousBroadcasts();
+		PBroadsDriver pbDriver = new PBroadsDriver(pbroads);
+		threadMap.put(new Thread(pbDriver, "PBROADS"), pbDriver);		
+	}
+	
+	public void initSPadThread(){
+		sPad = new ScratchPad();
+		ScratchPadDriver spDriver = new ScratchPadDriver(sPad);
+		threadMap.put(new Thread(spDriver, "SCRATCHPAD"), spDriver);
+	}
+	
+	public void initCSMThread(){
+		csm = new CSM();
+		CSMDriver csmDriver = new CSMDriver(csm);
+		threadMap.put(new Thread(csmDriver, "CSM"), csmDriver);
+	}
+	
+	public void initAttnThread(){
+		//Attention attn = new Attention();
+	}
+	
+	public void initGWThread(){
+		gwksp = new GlobalWorkspaceImpl();
+		GlobalWkspDriver gwkspDriver = new GlobalWkspDriver(gwksp);
+		threadMap.put(new Thread(gwkspDriver, "GWKSP"), gwkspDriver);
+	}
+	
+	public void initProcMemThread(){
+		
+	}
+	
+	public void intiActionSelectionThread(){
+		
+	}
+		
+	public void startThreads(){ //in normal order
+		Set<Thread> threads = threadMap.keySet();
+		for(Thread t: threads){
 			if(t != null)
-				t.start();			
+				t.start();
+			else
+				System.out.println("oh crap a null thread object");
 		}//for each thread
 	}//public void startThreads()
 	
 	public void stopThreads(){
-		int size = threadObjects.size();
+		ArrayList<Stoppable> drivers = (ArrayList<Stoppable>)threadMap.values();
+		int size = drivers.size();
 		for(int i = 0; i < size; i++){
-			Stoppable s = threadObjects.get(i);
+			Stoppable s = drivers.get(size - 1 - i);
 			if(s != null)
 				s.stopRunning();			
 		}//for each thread

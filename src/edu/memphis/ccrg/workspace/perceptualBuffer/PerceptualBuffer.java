@@ -13,14 +13,13 @@ public class PerceptualBuffer implements Runnable, PAMListener, PerceptualBuffer
 	private PAMContent pamContent;	
 	private Queue<Percept> perceptBuffer;
 	private ArrayList<PBufferListener> pbListeners;	
-	private final int PERCEPT_BUFFER_CAPACITY;	
+	private final int PERCEPT_BUFFER_CAPACITY = 2;	
 	private boolean keepRunning;
 	
-	public PerceptualBuffer(int capacity){
+	public PerceptualBuffer(){
 		pamContent = new PAMContent();
 		perceptBuffer = new LinkedList<Percept>();
 		pbListeners = new ArrayList<PBufferListener>();
-		PERCEPT_BUFFER_CAPACITY = capacity;
 		keepRunning = true;
 	}//public Workspace()
 	

@@ -1,14 +1,14 @@
 package edu.memphis.ccrg.main;
 
-import edu.memphis.ccrg.workspace.broadcasts.PreviousBroadcasts;
+import edu.memphis.ccrg.globalworkspace.GlobalWorkspaceImpl;
 
-public class PBroadsDriver implements Runnable, Stoppable{
-
-	private boolean keepRunning = true;
-	private PreviousBroadcasts pbroads;
+public class GlobalWkspDriver implements Runnable, Stoppable{
 	
-	public PBroadsDriver(PreviousBroadcasts p){
-		pbroads = p;
+	private boolean keepRunning = true;
+	private GlobalWorkspaceImpl g;
+	
+	public GlobalWkspDriver(GlobalWorkspaceImpl g){
+		this.g = g;
 	}
 
 	public void run(){
@@ -20,4 +20,5 @@ public class PBroadsDriver implements Runnable, Stoppable{
 	public void stopRunning(){
 		keepRunning = false;		
 	}//public void stopRunning()
+
 }
