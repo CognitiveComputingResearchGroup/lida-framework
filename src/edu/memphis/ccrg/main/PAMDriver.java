@@ -15,8 +15,8 @@ public class PAMDriver implements Runnable, Stoppable{
 	}//PAMDrive constructor
 		
 	public void run(){
-		//boolean printSentPercept = true;
-		boolean printSentPercept = false;
+		//boolean printSentPercept = false;
+		boolean printSentPercept = true;
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){

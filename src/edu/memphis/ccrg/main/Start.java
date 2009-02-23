@@ -79,7 +79,7 @@ public class Start{
 		startThreads();
 		
 		//give the threads time to execute
-		int runTime = 600;
+		int runTime = 200;
 		try{ Thread.sleep(runTime);}catch(Exception e){}
 		
 		//SHUT THREADS DOWN

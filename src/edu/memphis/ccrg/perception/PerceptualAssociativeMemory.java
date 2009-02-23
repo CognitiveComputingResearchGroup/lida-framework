@@ -215,7 +215,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	for(Node n: nodes)
     		n.excite(0.0);
     	syncNodeActivation();   
-    	//TODO:this is where the wksp activation would come into play
+    	//TODO:this is where the episodic buffer activation would come into play
     	
     }//public void passActivation
     
@@ -246,8 +246,11 @@ public class PerceptualAssociativeMemory implements PAMInterface,
                 percept.add(new Node(node));
         }//for        
         
-        pamContent.setNodes(percept);        
-        perceptHistory.add(percept);
+        System.out.println("size of percept is " + percept.size());
+        
+        
+        pamContent.setNodes(new Percept(percept));        
+        perceptHistory.add(new Percept(percept));
     }
     
     public void sendPercept(boolean print){

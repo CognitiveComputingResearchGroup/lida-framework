@@ -222,6 +222,8 @@ public class Node implements NodeInterface, Linkable{
       * @see        #selectionThreshold
       */
     public boolean isRelevant() {
+    	//printActivation();
+    	
         return (totalActivation >= selectionThreshold);
     }
     
@@ -531,9 +533,7 @@ public class Node implements NodeInterface, Linkable{
     }//getOutgoingNodes    
     
     public void printActivation(){
-    	System.out.println(label + " curr: " + rnd(currentActivation) +
-    					   " tot: " + rnd(totalActivation));	
-    	
+    	System.out.println(label + " tot: " + rnd(totalActivation) + " sel.: " + selectivity);	    	
     }
     
     public double rnd(double d){    //rounds a double to the nearest 100th
