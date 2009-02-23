@@ -189,7 +189,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	}else if(senseData[1] == 1){
     		//pfdNodes.get("glitter").excite(1.0);
     	}else if(senseData[2] == 1){
-    		pfdNodes.get("breeze").excite(1.0);
+    		pfdNodes.get("breeze").excite(0.79);
     	}else if(senseData[3] == 1){
     		//pfdNodes.get("stench").excite(1.0);
     	}else if(senseData[4] == 1){
@@ -239,6 +239,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      */
     private void syncNodeActivation(){
         Percept percept = new Percept();
+       
+        //this.printNodeActivations();
         
         for(Node node: nodes) {
             node.synchronize();//Needed since excite changes current but not totalActivation
@@ -246,19 +248,21 @@ public class PerceptualAssociativeMemory implements PAMInterface,
                 percept.add(new Node(node));
         }//for        
         
-        System.out.println("size of percept is " + percept.size());
-        
+        //System.out.println("size of percept is " + percept.size());
+        //percept.print();
         
         pamContent.setNodes(new Percept(percept));        
         perceptHistory.add(new Percept(percept));
     }
     
-    public void sendPercept(boolean print){
-    	if(print)
+    public void sendPercept(boolean shouldPrint){
+    	if(shouldPrint)
     		pamContent.print();
     	
-    	for(int i = 0; i < pamListeners.size(); i++)
+    	
+    	for(int i = 0; i < pamListeners.size(); i++){
 			(pamListeners.get(i)).receivePAMContent(pamContent);
+    	}
     }
     
     public void decay() {

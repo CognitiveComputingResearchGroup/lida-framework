@@ -24,7 +24,6 @@ public class PAMDriver implements Runnable, Stoppable{
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
-			
 			pam.sendPercept(printSentPercept); //Send the percept to p-Workspace
 			pam.decay();  //Decay the activations	
 			

@@ -119,8 +119,11 @@ public class Node implements NodeInterface, Linkable{
      * activation. Also updates activation buffers. This method should only
      * be invoked when activation passing for this cycle is complete.
      */
-    public void synchronize() {
-    	totalActivation = currentActivation + baselevelActivation;    	
+    public void synchronize() {    	 	
+    	if((currentActivation + baselevelActivation) > MAX_ACTIVATION)
+    		totalActivation = MAX_ACTIVATION;
+    	else
+    		totalActivation = currentActivation + baselevelActivation;   
     }
     
     /**
@@ -221,11 +224,9 @@ public class Node implements NodeInterface, Linkable{
       * @return     <code>true</code> if this node is relevant
       * @see        #selectionThreshold
       */
-    public boolean isRelevant() {
-    	//printActivation();
-    	
+    public boolean isRelevant(){
         return (totalActivation >= selectionThreshold);
-    }
+    }//
     
     /**Update Methods**/
     
@@ -403,9 +404,9 @@ public class Node implements NodeInterface, Linkable{
      *
      */
     public String toString() {
-    	String s = "node: " + getLabel() + " activation: ";//+ activation.getCurrentActivation();
-    	if(this.equals(null))
-    		s += currentActivation;
+    	String s = "node: " + getLabel() + " tot. activ.: ";//+ activation.getCurrentActivation();
+    	if(!this.equals(null))
+    		s += rnd(totalActivation);
     	else
     		s += " NA";
     	return s;
