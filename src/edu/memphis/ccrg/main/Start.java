@@ -5,24 +5,20 @@
  */
 package edu.memphis.ccrg.main;
 
+import java.util.List;
 import java.lang.Thread;
 import java.util.ArrayList;
-import java.util.List;
+import edu.memphis.ccrg.workspace.CSM.CSM;
+import edu.memphis.ccrg.wumpus.WorldApplication;
+import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.workspace.scratchpad.ScratchPad;
 import edu.memphis.ccrg.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.perception.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
-import edu.memphis.ccrg.workspace.CSM.CSM;
 import edu.memphis.ccrg.workspace.broadcasts.PreviousBroadcasts;
 import edu.memphis.ccrg.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.workspace.perceptualBuffer.PerceptualBuffer;
-import edu.memphis.ccrg.workspace.scratchpad.ScratchPad;
-import edu.memphis.ccrg.wumpus.WorldApplication;
 
 public class Start{
-	
-	private List<Thread> threads = new ArrayList<Thread>();
-	private List<Stoppable> drivers = new ArrayList<Stoppable>();
-	
 	private WorldApplication simulation;
 	private SensoryMemory sm;
 	private PerceptualAssociativeMemory pam;
@@ -31,8 +27,10 @@ public class Start{
 	private PreviousBroadcasts pbroads;
 	private ScratchPad sPad;
 	private CSM csm;
-	private GlobalWorkspaceImpl gwksp;	
-
+	private GlobalWorkspaceImpl gwksp;		
+	private List<Thread> threads = new ArrayList<Thread>();
+	private List<Stoppable> drivers = new ArrayList<Stoppable>();
+	
 	public static void main(String[] args) {
 		new Start().setup();
 	}//main
@@ -80,10 +78,10 @@ public class Start{
 		
 		//give the threads time to execute
 		int runTime = 1000;
-		try{ Thread.sleep(runTime);}catch(Exception e){}
+		try{Thread.sleep(runTime);}catch(Exception e){}
 		
 		//SHUT THREADS DOWN
-		System.out.println("\nMain thread is initiating shutdown...\n");		
+		System.out.println("\nMain thread is initiating shutdown...");		
 		stopThreads();
 	}//setup	
 	
@@ -179,4 +177,4 @@ public class Start{
 		}//for each thread	
 	}//public void stopThreads()	
 	
-}//Parallel
+}//public class Start
