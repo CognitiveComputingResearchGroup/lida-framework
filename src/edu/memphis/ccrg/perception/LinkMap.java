@@ -38,6 +38,11 @@ public class LinkMap {
 		return result1 || result2;
 	}//public boolean addLink(Link l)
 	
+	/**
+	 * You would still need to delete the link object l!
+	 * 
+	 * @param l
+	 */
 	public void deleteLink(Link l){
 		Set<Link> sourceLinks = linkMap.get(l.getSource());
 		Set<Link> sinkLinks = linkMap.get(l.getSink());
