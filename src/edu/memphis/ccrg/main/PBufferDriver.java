@@ -13,6 +13,8 @@ public class PBufferDriver implements Runnable, Stoppable{
 
 	public void run(){
 		while(keepRunning){
+			try{Thread.sleep(25);}catch(Exception e){}
+			pb.sendContent();
 			
 		}//while keepRunning		
 	}//public void run()

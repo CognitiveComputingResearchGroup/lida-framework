@@ -2,35 +2,25 @@ package edu.memphis.ccrg.workspace.perceptualBuffer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import edu.memphis.ccrg.perception.PAMContent;
 import edu.memphis.ccrg.perception.PAMListener;
 import edu.memphis.ccrg.perception.Percept;
 
-public class PerceptualBuffer implements Runnable, PAMListener, PerceptualBufferInterface{
+public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
 	
 	private PAMContent pamContent;	
-	private Queue<Percept> perceptBuffer;
+	private List<Percept> perceptBuffer;
 	private ArrayList<PBufferListener> pbListeners;	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;	
-	private boolean keepRunning;
 	
 	public PerceptualBuffer(){
 		pamContent = new PAMContent();
 		perceptBuffer = new LinkedList<Percept>();
 		pbListeners = new ArrayList<PBufferListener>();
-		keepRunning = true;
 	}//public Workspace()
-	
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void stopRunning(){
-		keepRunning = false;
-	}
 	
 	public synchronized void receivePAMContent(PAMContent pc){
 		pamContent = pc;
@@ -41,8 +31,9 @@ public class PerceptualBuffer implements Runnable, PAMListener, PerceptualBuffer
 		synchronized(this){
     		current = (Percept)pamContent.getContent();
     	}
+				
 		if(!current.equals(null)){
-			perceptBuffer.add(current);			
+			perceptBuffer.add(new Percept(current));			
 		}
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY){
 			perceptBuffer.remove(0);
@@ -56,7 +47,8 @@ public class PerceptualBuffer implements Runnable, PAMListener, PerceptualBuffer
 	public void sendContent(){
 		storePAMContent();
 		for(int i = 0; i < pbListeners.size(); i++){
-			Percept p = new Percept(perceptBuffer.peek());
+			Percept p = new Percept(perceptBuffer.get(0));
+			//p.print();
 			PBufferContent content = new PBufferContent(p);
 			pbListeners.get(i).receivePBufferContent(content);
 			
