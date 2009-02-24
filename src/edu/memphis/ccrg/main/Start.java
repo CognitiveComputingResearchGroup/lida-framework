@@ -44,8 +44,8 @@ public class Start{
 		initPBufferThread();
 		//initEbufferThread();
 		//initPBroadsThread();
-		//initSPadThread();	
-		//initCSMThread();
+		initSPadThread();	
+		initCSMThread();
 		//initAttnThread();
 		//initGWThread();
 
@@ -56,7 +56,7 @@ public class Start{
 		
 		pam.addPAMListener(pb);
 		
-		//pb.addPBufferListener(sPad);
+		pb.addPBufferListener(sPad);
 		//pb.addPBufferListener(dm);
 		//pb.addPBufferListener(tem);
 		
@@ -67,7 +67,7 @@ public class Start{
 		
 		//pbroads.addPBroadsListener(sPad);
 		
-		//sPad.addSPadListener(csm);
+		sPad.addSPadListener(csm);
 		//bn.addBehaviorListener(csm);
 		
 		//csm.addCSMListener(tem);
@@ -79,7 +79,7 @@ public class Start{
 		startThreads();
 		
 		//give the threads time to execute
-		int runTime = 600;
+		int runTime = 1000;
 		try{ Thread.sleep(runTime);}catch(Exception e){}
 		
 		//SHUT THREADS DOWN
@@ -175,8 +175,7 @@ public class Start{
 		for(int i = 0; i < size; i++){			
 			Stoppable s = drivers.get(size - 1 - i);
 			if(s != null)
-				s.stopRunning();		
-			//try {Thread.sleep(10);} catch(InterruptedException e){}
+				s.stopRunning();					
 		}//for each thread	
 	}//public void stopThreads()	
 	

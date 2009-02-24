@@ -1,14 +1,12 @@
 package edu.memphis.ccrg.wumpus;
 
 import java.util.ArrayList;
-
-import edu.memphis.ccrg.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.main.Misc;
 import edu.memphis.ccrg.sensoryMemory.SimulationContent;
 import edu.memphis.ccrg.sensoryMemory.SimulationListener;
 
-
 public class Simulation {
-	
+
 	private final int SENSE_SIZE = 5;
 	private int currScore = 0;
 	private static int actionCost = -1;
@@ -16,14 +14,13 @@ public class Simulation {
 	private static int shootCost = -10;
 	private int stepCounter = 0;
 	private int lastAction = 0;
-	
-	private boolean simulationRunning;
-	
+		
 	private Agent agent;
 	private Environment environment;
 	private TransferPercept transferPercept;
 	private int[] currentSense;
 	private SimulationContent simContent;
+	private boolean keepRunning = true;;
 	//private boolean simHasChanged;
 	
 	private int maxSteps;
@@ -37,7 +34,6 @@ public class Simulation {
 		currentSense = new int[SENSE_SIZE];
 		simContent = new SimulationContent(SENSE_SIZE);
 		listeners = new ArrayList<SimulationListener>();
-		//simHasChanged = true;
 	}//Simulation
 	
 	public void addSimulationListener(SimulationListener listener){
@@ -45,38 +41,34 @@ public class Simulation {
 	}
 	
 	public void runSim(){
-		simulationRunning = true;
-		transferPercept = new TransferPercept(environment);				
-		agent = new Agent(environment, transferPercept, nonDeterministic);
 		
+		transferPercept = new TransferPercept(environment);				
+		agent = new Agent(environment, transferPercept, nonDeterministic);		
 		environment.placeAgent(agent);
 		environment.printEnvironment();
-			
-		int timesAdded = 0;
-		long startTime = System.currentTimeMillis();
-			
-		while (simulationRunning) {								
-			//handleAction(agent.chooseAction());//add in later after action selection is made
+	
+		long startTime = System.currentTimeMillis();			
+		while (keepRunning) {								
+			//handleAction(agent.chooseAction());//TODO: add in later after action selection is made
 			environment.placeAgent(agent);
-			senseEnvironment();
-			
+			senseEnvironment();			
 			simContent.setContent(currentSense);			
 			
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveSimContent(simContent);
 			
-			System.out.println("SIM: Sense sent    : " + currentSense[0] + " " + currentSense[1] + " " + currentSense[2] + " " + currentSense[3] + " " + currentSense[4] + " ");
-			timesAdded++;
+			if(stepCounter % 30 == 0)
+				System.out.println("SIM: Sense: " + currentSense[0] + 
+						" " + currentSense[1] + " " + currentSense[2] + 
+						" " + currentSense[3] + " " + currentSense[4] + " ");
 							
 			//environment.printEnvironment();								
 			//printCurrentPerceptSequence();
 					
-			stepCounter += 1;
-				
-			if (stepCounter == maxSteps || simulationRunning == false) {
+			stepCounter++;				
+			if (stepCounter == maxSteps || keepRunning == false) {
 				//System.out.println("Last action: " + Action.printAction(lastAction));					
-				//System.out.println("Time step: " + stepCounter);
-					
+				//System.out.println("Time step: " + stepCounter);					
 				lastAction = Action.END_TRIAL;
 			}
 				
@@ -86,20 +78,18 @@ public class Simulation {
 			if (agent.getIsDead() == true) 
 				System.out.println("\n" + agent.getName() + " is DEAD!!");
 						
-			try{Thread.sleep(23);}
-			catch(Exception e){}
-			
+			try{Thread.sleep(20);}catch(Exception e){}			
 		}//while keepRunning and trials
-		long finishTime = System.currentTimeMillis();		
-		System.out.println("\nSIM: Ave. cycle time: " + rnd((finishTime - startTime)/(double)stepCounter));		
-		System.out.println("SIM: Times sent: " + timesAdded);			
+		
+		long finishTime = System.currentTimeMillis();			
+		System.out.println("\nSIM: Ave. cycle time: " + Misc.rnd((finishTime - startTime)/(double)stepCounter));		
+		System.out.println("SIM: Num. cycles: " + stepCounter);			
 		//printEndWorld();		
 	}//method runSim
 	
 	public void stopRunning(){
-		try{Thread.sleep(15);
-		}catch(InterruptedException e){}
-		simulationRunning = false;		
+		try{Thread.sleep(20);}catch(InterruptedException e){}
+		keepRunning = false;		
 	}//stopRunning
 	
 	public void senseEnvironment(){
@@ -234,10 +224,8 @@ public class Simulation {
 	
 	public void handleAction(int action) {
 		
-		try {
-		
-			if (action == Action.GO_FORWARD) {
-				
+		try {		
+			if (action == Action.GO_FORWARD) {				
 				if (environment.getBump() == true) environment.setBump(false);
 				
 				agent.goForward();
@@ -246,7 +234,7 @@ public class Simulation {
 				if (environment.checkDeath() == true) {
 					
 					currScore += deathCost;
-					simulationRunning = false;
+					keepRunning = false;
 					
 					agent.setIsDead(true);
 				}
@@ -285,7 +273,7 @@ public class Simulation {
 				if (environment.grabGold() == true) {
 					
 					currScore += 1000;
-					simulationRunning = false;
+					keepRunning = false;
 					
 					agent.setHasGold(true);
 				}
@@ -337,11 +325,5 @@ public class Simulation {
 	
 	public int getScore() {		
 		return currScore;		
-	}
-	
-	public double rnd(double d){    //rounds a double to the nearest 100th
-    	return Math.round(d*10000.0)/10000.0;
-    }
-
-	
+	}	
 }//class Simulation

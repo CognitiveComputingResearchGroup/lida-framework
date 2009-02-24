@@ -20,7 +20,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
-			try{Thread.sleep(25);}catch(Exception e){}
+			try{Thread.sleep(22);}catch(Exception e){}
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
@@ -32,17 +32,15 @@ public class PAMDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();		
 			
-		System.out.println("\nPAM: Ave. cycle time: " + rnd((finishTime - startTime)/(double)counter));
+		System.out.println("\nPAM: Ave. cycle time: " + 
+							Misc.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("PAM: Num. cycles: " + counter);			
 
 	}//method run
 	
 	public void stopRunning(){
+		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method stopRunning
 	
-	public double rnd(double d){    //rounds a double to the nearest 100th
-    	return Math.round(d*10000.0)/10000.0;
-    }
-
 }//class PAMDriver

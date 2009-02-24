@@ -12,9 +12,17 @@ public class CSMDriver implements Runnable, Stoppable{
 	}
 
 	public void run(){
+		int counter = 0;		
+		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
+			try{Thread.sleep(25);}catch(Exception e){}
 			
-		}//while keepRunning		
+			counter++;			
+		}//while keepRunning
+		long finishTime = System.currentTimeMillis();				
+		System.out.println("\nCSM: Ave. cycle time: " + 
+							Misc.rnd((finishTime - startTime)/(double)counter));
+		System.out.println("CSM: Num. cycles: " + counter);		
 	}//public void run()
 
 	public void stopRunning(){

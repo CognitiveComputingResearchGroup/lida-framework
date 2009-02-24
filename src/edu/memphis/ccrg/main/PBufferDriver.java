@@ -12,14 +12,22 @@ public class PBufferDriver implements Runnable, Stoppable{
 	}//
 
 	public void run(){
+		int counter = 0;		
+		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(25);}catch(Exception e){}
+			try{Thread.sleep(23);}catch(Exception e){}
 			pb.sendContent();
-			
-		}//while keepRunning		
+			counter++;			
+		}//while keepRunning
+		long finishTime = System.currentTimeMillis();				
+		System.out.println("\nPBF: Ave. cycle time: " + 
+							Misc.rnd((finishTime - startTime)/(double)counter));
+		System.out.println("PBF: Num. cycles: " + counter);		
 	}//public void run()
 
 	public void stopRunning(){
+		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//public void stopRunning()
+
 }

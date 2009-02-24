@@ -12,12 +12,21 @@ public class ScratchPadDriver implements Runnable, Stoppable{
 	}
 
 	public void run(){
+		int counter = 0;		
+		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
+			try{Thread.sleep(24);}catch(Exception e){}
 			
-		}//while keepRunning		
+			counter++;			
+		}//while keepRunning
+		long finishTime = System.currentTimeMillis();				
+		System.out.println("\nSPAD: Ave. cycle time: " + 
+							Misc.rnd((finishTime - startTime)/(double)counter));
+		System.out.println("SPAD: Num. cycles: " + counter);		
 	}//public void run()
 
 	public void stopRunning(){
+		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//public void stopRunning()
 	
