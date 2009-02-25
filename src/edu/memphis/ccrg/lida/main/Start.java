@@ -140,6 +140,7 @@ public class Start{
 	
 	public void initAttnThread(){
 		//Attention attn = new Attention();
+		//coalition activation: average of all nodes in coalition (0.0 - 1.0) times activation of attention codelet  (0.0 - 1.0)
 	}
 	
 	public void initGWThread(){
