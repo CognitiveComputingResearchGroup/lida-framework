@@ -15,15 +15,22 @@ public class LinkMap {
 	public LinkMap(LinkMap map){
 		this();
 		Set<Linkable> keys = map.linkMap.keySet();
+		Map<Node,Node> tempMap= new HashMap<Node, Node>();
 		for(Linkable l: keys){
-			Set<Link> oldLinks = map.linkMap.get(l);		
-			Set<Link> newLinks = new HashSet<Link>();
-			for(Link l2: oldLinks){
-				newLinks.add(new Link(l2));
+			Linkable newL = null;
+			if(l instanceof Node){
+				newL = new Node((Node)l);						
+			
+				Set<Link> newLinks = new HashSet<Link>();
+				this.linkMap.put(newL,newLinks);
+				tempMap.put((Node)l, (Node)newL);
+			
 			}
-			this.linkMap.put(l, newLinks);
 		}
-	}
+		
+		
+		
+	}//public LInkMap
 	
 	public void addLinkSet(Set<Link> links){
 		for(Link l: links)
