@@ -13,7 +13,7 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
 	
 	private PAMContent pamContent;	
 	private List<Percept> perceptBuffer;
-	private ArrayList<PBufferListener> pbListeners;	
+	private List<PBufferListener> pbListeners;	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;	
 	
 	public PerceptualBuffer(){

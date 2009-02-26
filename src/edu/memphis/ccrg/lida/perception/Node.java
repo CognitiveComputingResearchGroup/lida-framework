@@ -475,7 +475,7 @@ public class Node implements NodeInterface, Linkable{
 	public boolean equals(Node n){
 		if(!(n instanceof Node))
 			return false;
-		return nodeID == n.nodeID;
+		return nodeID == n.nodeID && type == n.type;
 	}
 	
 	public int hashCode() { 

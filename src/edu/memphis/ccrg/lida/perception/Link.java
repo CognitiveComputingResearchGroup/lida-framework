@@ -32,7 +32,7 @@ public class Link implements Linkable{
     public boolean equals(Link l){
     	if(!(l instanceof Link))
 			return false;    	
-		return linkID == l.linkID;
+		return (linkID == l.linkID) && (type == l.type);
 	}
     
     public int hashCode() { 

@@ -12,6 +12,19 @@ public class LinkMap {
 		linkMap = new HashMap<Linkable, Set<Link>>();
 	}//public LinkMap()
 	
+	public LinkMap(LinkMap map){
+		this();
+		Set<Linkable> keys = map.linkMap.keySet();
+		for(Linkable l: keys){
+			Set<Link> oldLinks = map.linkMap.get(l);		
+			Set<Link> newLinks = new HashSet<Link>();
+			for(Link l2: oldLinks){
+				newLinks.add(new Link(l2));
+			}
+			this.linkMap.put(l, newLinks);
+		}
+	}
+	
 	public void addLinkSet(Set<Link> links){
 		for(Link l: links)
 			addLink(l);
