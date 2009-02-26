@@ -1,6 +1,7 @@
-package edu.memphis.ccrg.lida.main;
+package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
+import edu.memphis.ccrg.lida.misc.Misc;
+import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 
 public class PBufferDriver implements Runnable, Stoppable{
 

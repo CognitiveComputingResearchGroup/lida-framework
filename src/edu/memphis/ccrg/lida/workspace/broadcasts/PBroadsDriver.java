@@ -1,6 +1,6 @@
-package edu.memphis.ccrg.lida.main;
+package edu.memphis.ccrg.lida.workspace.broadcasts;
 
-import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcasts;
+import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 
 public class PBroadsDriver implements Runnable, Stoppable{
 

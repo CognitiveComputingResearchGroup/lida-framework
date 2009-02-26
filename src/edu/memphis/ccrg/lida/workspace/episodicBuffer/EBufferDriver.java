@@ -1,6 +1,6 @@
-package edu.memphis.ccrg.lida.main;
+package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
+import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 
 public class EBufferDriver  implements Runnable, Stoppable{
 
