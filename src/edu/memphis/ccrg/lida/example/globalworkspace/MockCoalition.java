@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.example.globalworkspace;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
 
-public class MockCoalition implements Coalition {
+public class MockCoalition implements CoalitionInterface {
 
 	private BroadcastContent content;
 	private double activation;

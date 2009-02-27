@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
 import edu.memphis.ccrg.lida.globalworkspace.Trigger;
 import edu.memphis.ccrg.lida.globalworkspace.TriggerListener;
 
@@ -41,7 +41,7 @@ public class TimeOutTrigger implements Trigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
-	public void command(Set<Coalition> coallitions) {
+	public void command(Set<CoalitionInterface> coallitions) {
 		// TODO Auto-generated method stub
 
 	}

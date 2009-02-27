@@ -19,7 +19,7 @@ import java.util.Set;
  * 
  */
 public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListener {
-	private Set<Coalition> coalitions = new HashSet<Coalition>();
+	private Set<CoalitionInterface> coalitions = new HashSet<CoalitionInterface>();
 	private List<Trigger> triggers = new ArrayList<Trigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
@@ -52,7 +52,7 @@ public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListene
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#putCoalition(edu.memphis.ccrg.globalworkspace
 	 * .Coalition)
 	 */
-	public synchronized boolean putCoalition(Coalition coalition) {
+	public synchronized boolean putCoalition(CoalitionInterface coalition) {
 		boolean result = false;
 		result = coalitions.add(coalition);
 		if (result) {
@@ -68,7 +68,7 @@ public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListene
 	}
 
 	private void sendBroadcast() {
-		Coalition coal;
+		CoalitionInterface coal;
 		synchronized (this) {
 			coal = chooseCoalition();
 			if (coal != null) {
@@ -81,7 +81,7 @@ public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListene
 				bl.receiveBroadcast(content);
 			}
 		}
-		for(Coalition c:coalitions){
+		for(CoalitionInterface c:coalitions){
 			c.decay();
 		}
 		resetTriggers();
@@ -96,9 +96,9 @@ public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListene
 		}
 	}
 
-	private Coalition chooseCoalition() {
-		Coalition chosed = null;
-		for (Coalition c : coalitions) {
+	private CoalitionInterface chooseCoalition() {
+		CoalitionInterface chosed = null;
+		for (CoalitionInterface c : coalitions) {
 			if (chosed == null || c.getActivation() > chosed.getActivation()) {
 				chosed = c;
 			}

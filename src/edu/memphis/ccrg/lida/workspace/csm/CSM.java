@@ -20,4 +20,14 @@ public class CSM implements CSMInterface, ScratchPadListener{
 		
 	}
 
+	public boolean hasContent(ModelContent whatIwant) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public ModelContent getContent(ModelContent whatIwant) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

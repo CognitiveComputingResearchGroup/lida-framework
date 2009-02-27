@@ -29,7 +29,7 @@ public interface Trigger {
 	 * Each time a new Coalition is put in the GW, this method is called for all registered the Triggers.
 	 * @param coalitions All the coalitions in the GW.
 	 */
-	public void command (Set<Coalition> coalitions);
+	public void command (Set<CoalitionInterface> coalitions);
 	/**
 	 * To reset the Trigger. Its called each time a new Broadcast is Triggered.
 	 */

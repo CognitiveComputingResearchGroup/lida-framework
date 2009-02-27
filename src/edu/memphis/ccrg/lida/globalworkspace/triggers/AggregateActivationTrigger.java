@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
 import edu.memphis.ccrg.lida.globalworkspace.Trigger;
 import edu.memphis.ccrg.lida.globalworkspace.TriggerListener;
 
@@ -23,9 +23,9 @@ public class AggregateActivationTrigger implements Trigger {
  * 
  * @param coalitions a Set with all the coallitions in the GW.
  */
-	public void command(Set<Coalition> coallitions) {
+	public void command(Set<CoalitionInterface> coallitions) {
 		double acc=0;
-		for(Coalition c:coallitions){
+		for(CoalitionInterface c:coallitions){
 			acc=acc+c.getActivation();
 		}
 		if(acc>threshold){
