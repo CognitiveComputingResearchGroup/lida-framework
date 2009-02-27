@@ -24,7 +24,6 @@ public class LinkMap {
 				Set<Link> newLinks = new HashSet<Link>();
 				this.linkMap.put(newL,newLinks);
 				tempMap.put((Node)l, (Node)newL);
-			
 			}
 		}
 		
