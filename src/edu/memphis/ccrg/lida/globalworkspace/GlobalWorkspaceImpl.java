@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This class implemets GlobalWorkspace and mantains the collection of
+ * This class implements GlobalWorkspace and maintains the collection of
  * Coalitions. It supports triggers that are in charge to trigger the new
- * broadcast. Triggers should implement Trigger interface. This class mantains a
+ * broadcast. Triggers should implement Trigger interface. This class maintains a
  * list of broadcastListeners. These are the modules (classes) that need to
- * receive broadcast contein.
+ * receive broadcast contain.
  * 
  * @author Javier Snaider
  * 
