@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.perception;
 
 import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.M;
 
 public class PAMDriver implements Runnable, Stoppable{
 
@@ -34,7 +34,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		long finishTime = System.currentTimeMillis();		
 			
 		System.out.println("\nPAM: Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							M.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("PAM: Num. cycles: " + counter);			
 
 	}//method run

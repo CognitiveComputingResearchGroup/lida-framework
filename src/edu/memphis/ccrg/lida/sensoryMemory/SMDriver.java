@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.M;
 
 public class SMDriver implements Runnable, Stoppable{
 	private SensoryMemory sm;
@@ -25,7 +25,7 @@ public class SMDriver implements Runnable, Stoppable{
 		long finishTime = System.currentTimeMillis();		
 			
 		System.out.println("\nSM: Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							M.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("SM: Num. cycles: " + counter);			
 	}//method run
 	
