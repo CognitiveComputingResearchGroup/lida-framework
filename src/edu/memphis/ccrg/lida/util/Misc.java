@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.misc;
+package edu.memphis.ccrg.lida.util;
 
 public class Misc{
 	

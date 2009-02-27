@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-import edu.memphis.ccrg.lida.misc.Misc;
+import edu.memphis.ccrg.lida.util.Misc;
 
 public class SMDriver implements Runnable, Stoppable{
 	private SensoryMemory sm;
