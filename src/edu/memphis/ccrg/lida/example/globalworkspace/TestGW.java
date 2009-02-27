@@ -8,8 +8,8 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInterface;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Trigger;
 import edu.memphis.ccrg.lida.globalworkspace.TriggerListener;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateActivationTrigger;
@@ -29,7 +29,7 @@ public class TestGW {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		GlobalWorkspace gw = new GlobalWorkspaceImpl();
+		GlobalWorkspaceInterface gw = new GlobalWorkspace();
 		Trigger tr;
 		Map<String, Object> parameters;
 		

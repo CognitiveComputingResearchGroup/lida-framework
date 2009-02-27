@@ -16,8 +16,12 @@ public class ScratchPadDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(24);}catch(Exception e){}
-			pad.activateSBCodelets();
+			try{Thread.sleep(24);}catch(Exception e){}			
+			pad.storePBufferContent();	
+			pad.storeEBufferContent();
+			pad.storePBroadContent();
+			pad.activateSBCodelets();		
+			
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				

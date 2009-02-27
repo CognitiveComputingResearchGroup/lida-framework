@@ -1,12 +1,12 @@
 package edu.memphis.ccrg.lida.example.globalworkspace;
 
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInterface;
 
 public class MockWorkspace implements Runnable {
-	private GlobalWorkspace gw;
+	private GlobalWorkspaceInterface gw;
 	private long delay;
 	
-	public MockWorkspace(GlobalWorkspace gw, long delay){
+	public MockWorkspace(GlobalWorkspaceInterface gw, long delay){
 		this.gw=gw;
 		this.delay=delay;
 	}

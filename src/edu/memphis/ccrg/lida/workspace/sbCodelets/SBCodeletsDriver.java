@@ -3,9 +3,11 @@ package edu.memphis.ccrg.lida.workspace.sbCodelets;
 import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 import edu.memphis.ccrg.lida.util.M;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
+import edu.memphis.ccrg.lida.workspace.csm.SPadContent;
+import edu.memphis.ccrg.lida.workspace.csm.ScratchPadListener;
 import edu.memphis.ccrg.lida.workspace.scratchpad.ScratchPad;
 
-public class SBCodeletsDriver implements Runnable, Stoppable {
+public class SBCodeletsDriver implements Runnable, Stoppable, ScratchPadListener {
 
 	private boolean keepRunning = true;
 	private CSM csm = null;
@@ -16,6 +18,10 @@ public class SBCodeletsDriver implements Runnable, Stoppable {
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
 			try{Thread.sleep(24);}catch(Exception e){}
+			
+			
+			
+			
 
 			counter++;			
 		}//while keepRunning
@@ -36,6 +42,11 @@ public class SBCodeletsDriver implements Runnable, Stoppable {
 
 	public void addSPAD(ScratchPad spad) {
 		this.spad = spad;
+	}
+
+	public void receiveSPadContent(SPadContent c) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//public class SBCodeletsDriver 

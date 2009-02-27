@@ -1,21 +1,19 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-public class CSM implements Runnable, CSMInterface, ScratchPadListener{
+import edu.memphis.ccrg.lida.perception.LinkMap;
+
+public class CSM implements CSMInterface, ScratchPadListener{
 	
-	private boolean keepRunning = true;
+	private LinkMap linkmap;
 	
 	public CSM(){
 		
 	}
 	
-	public void run() {
-		// TODO Auto-generated method stub
+	public void receiveSBCodeletContent(SPadContent c){
 		
 	}
 	
-	public void stopRunning(){
-		keepRunning = false;
-	}
 
 	public void receiveSPadContent(SPadContent c) {
 		// TODO Auto-generated method stub

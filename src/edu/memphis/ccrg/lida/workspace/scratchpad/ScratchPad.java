@@ -6,21 +6,22 @@ import java.util.Map;
 import java.util.HashMap;
 import edu.memphis.ccrg.lida.perception.Node;
 import edu.memphis.ccrg.lida.perception.Percept;
-import edu.memphis.ccrg.lida.util.M;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PBroadsListener;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PrevBroadcastContent;
+import edu.memphis.ccrg.lida.workspace.csm.SPadContent;
 import edu.memphis.ccrg.lida.workspace.csm.ScratchPadListener;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferListener;
 
-public class ScratchPad implements ScratchPadInterface, 
-									PBufferListener, EBufferListener, PBroadsListener{
+public class ScratchPad implements ScratchPadInterface, PBufferListener, 
+								   EBufferListener, PBroadsListener{
 	
 	private List<ScratchPadListener> listeners = new ArrayList<ScratchPadListener>();
 	private PBufferContent pbContent = new PBufferContent();
-	private Map<String, SBCodelet> codeletMap = new HashMap<String, SBCodelet>(); 
+	private Map<String, SBCodelet> codeletMap = new HashMap<String, SBCodelet>();
+	private SPadContent content; 
 	
 	public ScratchPad(){
 	}
@@ -42,16 +43,30 @@ public class ScratchPad implements ScratchPadInterface,
 		
 	}
 	
-	public void activateSBCodelets(){
+	public void storePBufferContent(){
 		Percept p = new Percept();
 		synchronized(this){
 			p = (Percept)pbContent.getContent();
 		}
 		for(int i = 0; i < p.size(); i++){
-			Node temp = p.get(i);
+			//Node temp = p.get(i);
 			//M.p(temp.getLabel());//TODO: implement
 		}//for	
-	}//activateSBCodelets
+				
+	}//storePBuffer
+	
+	public void storeEBufferContent(){
+		
+	}
+	
+	public void storePBroadContent(){
+		
+	}
+	
+	public void activateSBCodelets(){
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).receiveSPadContent(content);
+	}
 
 	public void addSPadListener(ScratchPadListener l) {
 		listeners.add(l);		
