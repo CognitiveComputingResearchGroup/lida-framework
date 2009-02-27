@@ -8,10 +8,7 @@
 
 package edu.memphis.ccrg.lida.attention;
 
-import java.util.ArrayList;
-
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
