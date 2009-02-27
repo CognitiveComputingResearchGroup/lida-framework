@@ -1,5 +1,5 @@
 package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
-public class SBCodelets {
+public class Context {
 
 }
