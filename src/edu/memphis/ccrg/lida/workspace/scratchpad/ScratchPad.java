@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.util.M;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PBroadsListener;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PrevBroadcastContent;
-import edu.memphis.ccrg.lida.workspace.csm1.ScratchPadListener;
+import edu.memphis.ccrg.lida.workspace.csm.ScratchPadListener;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
