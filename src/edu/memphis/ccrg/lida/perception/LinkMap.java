@@ -115,10 +115,8 @@ public class LinkMap {
 		linkMap.remove(n);//finally remove the linkable and its links		
 	}//public void deleteNode(Linkable n)
 	
-	//TODO: HERE!!
-	
 	public void addChild(Node child, Node parent){	
-		Link l = new Link(child, parent, LinkType.child, nextLinkID());//TODO: OH SNAP!!!!
+		Link l = new Link(child, parent, LinkType.child, nextLinkID());
 		
 		if(linkMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
@@ -150,31 +148,6 @@ public class LinkMap {
 		//TODO: Work on linkCount!!!!
 		return linkCount;
 	}
-	
-
-	public int calcLayerDepth() {
-		// TODO: OH CARRRRRRAP
-		return 0;
-	}
-	
-    public void setLayerDepth(){
-//      this.layerDepth = 0;
-  //    
-//      if(this.isFringeNode())
-//          this.layerDepth = 0;
-//      else {
-//          int layerDepth[] = new int[children.size()];
-//          int ild = 0;
-//          for(Node node: children) {
-//              layerDepth[ild] = node.setLayerDepth();
-//              ild++;
-//          }
-//          Arrays.sort(layerDepth);
-//          this.layerDepth = layerDepth[layerDepth.length - 1] + 1;
-//      }
-//      return layerDepth;
-      }
-  	    
 	
     protected Map<Integer, List<Node>> getLayerMap(){
         Map<Integer, List<Node>> layerMap = new HashMap<Integer, List<Node>>();
