@@ -1,19 +1,23 @@
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
    
 public class LinkMap {
 	private Map<Linkable, Set<Link>> linkMap;
-	
+	private int linkCount = 0;//How many links have been added to this linkMap
+
 	public LinkMap(){
 		linkMap = new HashMap<Linkable, Set<Link>>();
 	}//public LinkMap()
 	
 	public LinkMap(LinkMap map){
 		this();
+		this.linkCount = map.linkCount;
 		Set<Linkable> keys = map.linkMap.keySet();
 		Map<Node,Node> tempMap= new HashMap<Node, Node>();
 		for(Linkable l: keys){
@@ -25,11 +29,8 @@ public class LinkMap {
 				this.linkMap.put(newL,newLinks);
 				tempMap.put((Node)l, (Node)newL);
 			}
-		}
-		
-		
-		
-	}//public LInkMap
+		}		
+	}//public LinkMap
 	
 	public void addLinkSet(Set<Link> links){
 		for(Link l: links)
@@ -54,7 +55,10 @@ public class LinkMap {
 			linkMap.put(end, tempLinks);
 		}
 		result2 = tempLinks.add(l);
-		return result1 || result2;
+		boolean result = result1 || result2;
+		if(result)
+			linkCount++;
+		return result;
 	}//public boolean addLink(Link l)
 	
 	/**
@@ -65,10 +69,13 @@ public class LinkMap {
 	public void deleteLink(Link l){
 		Set<Link> sourceLinks = linkMap.get(l.getSource());
 		Set<Link> sinkLinks = linkMap.get(l.getSink());
+		
 		if(sourceLinks != null)
 			sourceLinks.remove(l);
+		
 		if(sinkLinks != null)
-			sinkLinks.remove(l);		
+			sinkLinks.remove(l);	
+	
 	}//public void deleteLink(Link l)
 	
 	public Set<Link> getLinks(Linkable l){
@@ -108,4 +115,133 @@ public class LinkMap {
 		linkMap.remove(n);//finally remove the linkable and its links		
 	}//public void deleteNode(Linkable n)
 	
+	//TODO: HERE!!
+	
+	public void addChild(Node child, Node parent){	
+		Link l = new Link(child, parent, LinkType.child, nextLinkID());//TODO: OH SNAP!!!!
+		
+		if(linkMap.get(parent).add(l))//Add new link to parent's links
+			linkCount++;
+			
+		Set<Link> childsLinks = linkMap.get(child);
+		if(childsLinks.equals(null)){//If child is not in the map
+			childsLinks = new HashSet<Link>();
+			linkMap.put(child, childsLinks);
+		}		
+		childsLinks.add(l);
+	}//addChild
+	
+	
+	public void addParent(Node parent, Node child){
+		Link l = new Link(child, parent, LinkType.child, nextLinkID());
+		
+		if(linkMap.get(child).add(l))
+			linkCount++;
+		
+		Set<Link> parentsLinks = linkMap.get(parent);
+		if(parentsLinks.equals(null)){
+			parentsLinks = new HashSet<Link>();
+			linkMap.put(parent, parentsLinks);
+		}
+		parentsLinks.add(l);		
+	}//addParent
+	
+	public long nextLinkID(){
+		//TODO: Work on linkCount!!!!
+		return linkCount;
+	}
+	
+
+	public int calcLayerDepth() {
+		// TODO: OH CARRRRRRAP
+		return 0;
+	}
+	
+    public void setLayerDepth(){
+//      this.layerDepth = 0;
+  //    
+//      if(this.isFringeNode())
+//          this.layerDepth = 0;
+//      else {
+//          int layerDepth[] = new int[children.size()];
+//          int ild = 0;
+//          for(Node node: children) {
+//              layerDepth[ild] = node.setLayerDepth();
+//              ild++;
+//          }
+//          Arrays.sort(layerDepth);
+//          this.layerDepth = layerDepth[layerDepth.length - 1] + 1;
+//      }
+//      return layerDepth;
+      }
+  	    
+	
+    protected Map<Integer, List<Node>> getLayerMap(){
+        Map<Integer, List<Node>> layerMap = new HashMap<Integer, List<Node>>();
+        Set<Node> nodes = getNodes();
+        for(Node node: nodes){
+            Integer layerDepth = new Integer(node.getLayerDepth());
+            List<Node> layerNodes = layerMap.get(layerDepth);
+            
+            if(layerNodes == null) {
+                layerNodes = new ArrayList<Node>();
+                layerMap.put(layerDepth, layerNodes);
+            }
+            layerNodes.add(node);
+        }
+        
+        return layerMap; 
+    }//buildLayerMap
+    
+    public Set<Node> getNodes(){
+    	Set<Linkable> keys = linkMap.keySet();
+    	Set<Node> nodes = new HashSet<Node>();
+    	for(Linkable l: keys)
+    		if(l instanceof Node)
+    			nodes.add((Node)l);
+    	return nodes;
+    }
+    
+    public boolean isBottomNode(Node n) {
+		Set<Link> links = linkMap.get(n);
+		for(Link link: links){
+			Linkable source = link.getSource();
+			if(source instanceof Node && !source.equals(n))//if source is a child of n
+				return false;
+		}//for
+		return true;
+	}
+    
+	public boolean isTopNode(Node n) {
+		Set<Link> links = linkMap.get(n);
+		for(Link link: links){
+			Linkable sink = link.getSink();
+			if(sink instanceof Node && !sink.equals(n))//if source is a child of n
+				return false;
+		}//for
+		return true;
+	}
+
+	public Set<Node> getChildren(Node n) {
+		Set<Link> links = linkMap.get(n);
+		Set<Node> children = new HashSet<Node>();
+		for(Link link: links){
+			Linkable source = link.getSource();
+			if(source instanceof Node && !source.equals(n))
+				children.add((Node)source);			
+		}
+		return children;		
+	}
+	
+	public Set<Node> getParents(Node n) {
+		Set<Link> links = linkMap.get(n);
+		Set<Node> parents = new HashSet<Node>();
+		for(Link link: links){
+			Linkable sink = link.getSink();
+			if(sink instanceof Node && !sink.equals(n))
+				parents.add((Node)sink);			
+		}
+		return parents;
+	}
+
 }//public class LinkMap
