@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.util;
 
-public class LinearDecayCurve implements DecayCurve{
+public class LinearDecayCurve implements DecayBehavior{
 
 	    
 	    /** The default slope (m = 1). */

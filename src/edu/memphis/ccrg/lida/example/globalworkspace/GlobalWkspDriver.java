@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.example.globalworkspace;
 
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
+import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class GlobalWkspDriver implements Runnable, Stoppable{
 	

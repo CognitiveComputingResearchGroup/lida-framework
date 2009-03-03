@@ -6,6 +6,10 @@ public class M{
     	return Math.round(d*10000.0)/10000.0;
     }
 	
+	public static void p(double d){
+		System.out.println(d + "");
+	}
+	
 	public static void p(String s){
 		System.out.println(s);
 	}

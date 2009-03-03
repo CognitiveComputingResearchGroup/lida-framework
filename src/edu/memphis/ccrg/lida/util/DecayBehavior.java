@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.util;
 
-public interface DecayCurve {
+public interface DecayBehavior {
 
     /**
      * Decays the current activation according to some internal decay function.

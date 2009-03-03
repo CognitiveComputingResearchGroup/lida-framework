@@ -13,7 +13,14 @@ public class SimulationContent {
 	}
 	
 	public Object getContent(){
-		return content;
+		int[] copy = new int[content.length];
+		System.arraycopy(content, 0, copy, 0, content.length);		
+		return copy;
+	}	
+
+	public void print(){
+		System.out.println("SM:: " + content[0] + " " + content[1] + " " + content[2] + " " + content[3] + " " + content[4] + " ");
 	}
 
 }
+

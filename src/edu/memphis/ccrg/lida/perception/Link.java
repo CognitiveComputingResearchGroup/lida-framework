@@ -28,8 +28,8 @@ public class Link implements Linkable{
     	type = l.type;
     	linkID = l.linkID;
     }
-    
-    public boolean equals(Link l){
+
+	public boolean equals(Link l){
     	if(!(l instanceof Link))
 			return false;    	
 		return (linkID == l.linkID) && (type == l.type);

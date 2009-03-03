@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.workspace.csm.ModelContent;
 
 public class Coalition implements CoalitionInterface{
 	
-	
+	//coalition activation: average of all nodes in coalition (0.0 - 1.0) times activation of attention codelet  (0.0 - 1.0)
 	public Coalition(ModelContent c){
 		
 	}

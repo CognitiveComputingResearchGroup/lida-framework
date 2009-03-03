@@ -1,5 +1,8 @@
 package edu.memphis.ccrg.lida.perception;
 
-public class ExciteBehavior {
+public interface ExciteBehavior {
+
+	double excite(double currentActivation, double excitation);
 
 }
+

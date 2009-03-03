@@ -25,7 +25,7 @@ public class SensoryMemory implements SimulationListener{
 		int[] dest = new int[size];
 		synchronized(this){
 			src = (int[])simContent.getContent();
-			System.arraycopy(src, 0, dest, 0, size);
+			System.arraycopy(src, 0, dest, 0, size);//TODO: WRY??
 		}
 		//do processing		
 		senseContent.setContent(dest);		

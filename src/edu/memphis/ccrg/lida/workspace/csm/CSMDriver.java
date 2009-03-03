@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class CSMDriver implements Runnable, Stoppable{
 	
@@ -27,6 +27,7 @@ public class CSMDriver implements Runnable, Stoppable{
 	}//public void run()
 
 	public void stopRunning(){
+		try{Thread.sleep(20);}catch(Exception e){}
 		keepRunning = false;		
 	}//public void stopRunning()
 }

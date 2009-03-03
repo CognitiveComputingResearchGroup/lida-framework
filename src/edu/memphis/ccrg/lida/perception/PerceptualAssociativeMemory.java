@@ -7,30 +7,30 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.Set;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.TreeSet;
-import java.util.Set;
-
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
-import edu.memphis.ccrg.lida.util.DecayCurve;
+import edu.memphis.ccrg.lida.util.DecayBehavior;
+import edu.memphis.ccrg.lida.util.M;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
 
 
 public class PerceptualAssociativeMemory implements PAMInterface, 
 	SensoryListener, EBufferListener, BroadcastListener{
-	//Parameters
+	
     /**
      * proportion of activation spread to parents
      */
-    private double upScale = 0.5;     
+    private double upscale = 0.5;     
     /**
      * proportion of activation spread to children
      */
@@ -40,7 +40,6 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      */
     private double selectivity = 0.9; 
     
-    //Main fields
     /**
      * All nodes registered in this PAM
      */
@@ -48,116 +47,78 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
-	private Map<String, Node> pfdNodes;
+	public Set<FeatureDetectorInterface> fDetectorNodes;
 	private LinkMap linkMap;
-	private Map<Integer, ArrayList<Node>> layerMap;
+	
+	private Map<Integer, List<Node>> layerMap;
     private List<Percept> perceptHistory;
     
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
     private SensoryContent sensoryContent;//Shared variable
     private PAMContent pamContent;//Not a shared variable
-    private BroadcastContent broadcastContent;//Shared variable
-	private EBufferContent eBufferContent;//Shared variable
+    private EBufferContent eBufferContent;//Shared variable
+    private BroadcastContent broadcastContent;//Shared variable	
       
     public PerceptualAssociativeMemory(){
     	nodes = new HashSet<Node>();
-    	pfdNodes = new HashMap<String, Node>();
+    	fDetectorNodes = new HashSet<FeatureDetectorInterface>();
     	linkMap = new LinkMap();
-    	layerMap = new HashMap<Integer, ArrayList<Node>>();
+    	layerMap = new HashMap<Integer, List<Node>>();
     	perceptHistory = new ArrayList<Percept>();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContent();
     	pamContent = new PAMContent();
     	eBufferContent = new EBufferContent();
-    	//broadcastContent = new BroadcastContent(); 	
+    	//broadcastContent = new BroadcastContent();//TODO: write this class 	
     }
     
-    /**register, refresh, buildLayerMap: used when adding a new node to this object
-     * 
-     * the network should be ready to run after this method finishes
-     * 
-     */
-    public void initPAM(){
-    	//Read in slipnet from file    	       
-        //  defaults used when creating the nodes below
-    	double baseActivation = 0.0;
-    	double currentActivation = 0.0;	
-    	int pfdType = 0;
-    	int regType = 1;
-    	
-    	Node breeze  = new Node(1, baseActivation, currentActivation, 
-    						"breeze", upScale, selectivity, pfdType);
-    	
-    	Node pit = new Node(2, baseActivation, currentActivation, 
-    						"pit", upScale, selectivity, regType);
+    //SETTING UP PAM    
+    public void setParameters(Map<String, Object> parameters){    	
+		Object o = parameters.get("upscale");
+		if ((o != null)&& (o instanceof Double)) 
+			upscale = (Double)o;
+		
+		o = parameters.get("downscale");
+		if ((o != null)&& (o instanceof Double)) 
+			downScale = (Double)o;
+		
+		o = parameters.get("selectivity");
+		if ((o != null)&& (o instanceof Double)) 
+			selectivity = (Double)o;   	
+    }//public void setParameters(Map<String, Object> parameters)
     
-    	pit.addChild(breeze);
-   
-    	boolean isPFD = true;
-    	boolean isNotPFD = false;
-    	register(breeze, isPFD);
-    	register(pit, isNotPFD);
+    public void addToPAM(Set<Node> nodesToAdd, Set<Link> linkSet){
+    	for(Node n: nodesToAdd){
+    		if(n != null){
+    			nodes.add(n);
+    			if(n instanceof FeatureDetectorInterface)
+    				fDetectorNodes.add((FeatureDetectorInterface)n);
+    			refresh();
+    		}else{
+    			System.out.println("Tried to register a null node!");
+    		}
+    	}///for each node
     	
-    	//System.out.println(nodes.size() + " 3242394 " + pfdNodes.size());
-    }//public void initPAM()
-    
-    public void addToPAM(Set<Node> nodes, Set<Link> linkSet){
-    	for(Node n: nodes){
-    		nodes.add(new Node(n));
-    		if(n.isPFDNode())
-    			this.pfdNodes.put(n.getLabel(), new Node(n));
-    	}
-    	
-    	for(Link l: linkSet){
-    		linkMap.addLink(new Link(l));//TODO: ask Javier about this
-    	}
-    	
-    	//linkMap.add(nodes, links);
+    	linkMap.addLinkSet(linkSet);
     }//public void addToPAM(Set<Node> nodes, Set<Link> links)   
-    
-    /**
-     * 
-     * 
-     */
-    public void register(Node node, boolean isPFD){
-        if(node != null){
-            nodes.add(node);  
-            if(isPFD)
-            	pfdNodes.put(node.getLabel(), node);
-            refresh();// next method below
-        }else
-            System.out.println("Tried to register a null node!");
-    }//register
         
     private void refresh() {
-        for(Node n:nodes)  //It is imperative that the three refresh operations appear in this order.
-            n.updateLayerDepth();
-        
-        buildLayerMap();
+        layerMap = linkMap.getLayerMap();
         
         for(Integer layerDepth:(new TreeSet<Integer>(this.layerMap.keySet()))) 
-            for(Node node:this.layerMap.get(layerDepth)) 
-                node.refreshActivationParameters();
+           for(Node node:this.layerMap.get(layerDepth))
+               refreshActivationParameters(node);
+           
            
     }//refresh
     
-    private void buildLayerMap(){
-        layerMap.clear();
-        
-        for(Node node:nodes){
-            Integer layerDepth = new Integer(node.getLayerDepth());
-            ArrayList<Node> layerNodes = layerMap.get(layerDepth);
-            
-            if(layerNodes == null) {
-                layerNodes = new ArrayList<Node>();
-                layerMap.put(layerDepth, layerNodes);
-            }
-            layerNodes.add(node);//this isn't necessary since it will be overwritten and nothing is done w/ this
-        }
- 
-    }//buildLayerMap
+    //INTERMODULE COMMUNICATION
+    
+    public void addPAMListener(PAMListener pl){
+		pamListeners.add(pl);
+	}
     
     public synchronized void receiveSense(SensoryContent sc){//SensoryContent    	
     	sensoryContent = sc;    	
@@ -175,61 +136,89 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     //public synchronized void receivePreafferentSignal(PreafferentContent pc){
     	//TODO: eventually implement
     //}
-        
+	
+	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){
-    	int[] senseData = new int[5];    	
+    	SensoryContent sc = null;
     	synchronized(this){
-    		senseData = (int[])sensoryContent.getContent();
+    		sc = (SensoryContent)sensoryContent.getThis();
     	}
+  
+    	for(FeatureDetectorInterface n: fDetectorNodes)
+    		if(n instanceof FeatureDetectorInterface)
+    			n.detect(sc);    			
     	
-    	//System.out.println("PAM2: " + senseData[0] + " " + senseData[1] + " " + senseData[2] + " " + senseData[3] + " " + senseData[4] + " ");
-    	
-    	if(senseData[0] == 1){
-    		//pfdNodes.get("bump").excite(1.0);
-    	}else if(senseData[1] == 1){
-    		//pfdNodes.get("glitter").excite(1.0);
-    	}else if(senseData[2] == 1){
-    		pfdNodes.get("breeze").excite(0.79);
-    	}else if(senseData[3] == 1){
-    		//pfdNodes.get("stench").excite(1.0);
-    	}else if(senseData[4] == 1){
-    		//pfdNodes.get("scream").excite(1.0);
-    	}//else		      	
+	      	
     }//public void sense()
-    
-//	//if want to show starting activation
-//	if(PAMDriver.SHOW_STARTING_ACTIVATION){
-//		pln("Node activation after sensing (activations of 0.0 omitted)");
-//		for(Node n: nodes){
-//			double curActiv = n.getCurrentActivation();
-//			if(curActiv > 0.0)
-//				pln("Node: " + n.getLabel() + ", Activ: " + rnd(curActiv));
-//		}//for each node 
-//		pln("");
-//	}//if 	
         
     /**
      * 
      */
     public void passActivation(){
-    	for(Node n: nodes)
-    		n.excite(0.0);
-    	syncNodeActivation();   
-    	//TODO:this is where the episodic buffer activation would come into play
+    	for(Node n: nodes){
+    		n.excite(0.0);    		
+    		if(!linkMap.isTopNode(n)) {
+    			double energy = n.getCurrentActivation()*upscale;
+    			Set<Node> parents = linkMap.getParents(n);
+    	        for(Node parent: parents)
+    	        	parent.excite(energy);
+    		}//if not a root node    		
+    	}//for each node
     	
+    	syncNodeActivation();   
+    	//TODO:this is where the episodic buffer activation may come into play    	
     }//public void passActivation
+    
+    public void refreshActivationParameters(Node n) {
+        updateMinActivation(n);
+        updateMaxActivation(n);
+        updateSelectionThreshold(n);
+    }
+    
+    /**
+     * Updates the minimum activation possible for this node.
+     * <p>
+     * Since this method recursively invokes getMinActivation from its children,
+     * it assumes that the children have already been updated.
+     */
+    private void updateMinActivation(Node n) {
+        if(linkMap.isBottomNode(n))
+        	n.setMinActivation(n.MIN_NODE_ACTIVATION);
+        else{
+        	double sumOfChildMinActiv = 0.0;
+        	Set<Node> children = linkMap.getChildren(n);
+            for(Node child: children)
+            	sumOfChildMinActiv += child.getMinActivation();
+            
+            n.setMinActivation(sumOfChildMinActiv * upscale);            
+        }  
+    }
+	
+	private void updateMaxActivation(Node n){
+	    if(linkMap.isBottomNode(n))
+	        n.setMaxActivation(n.MAX_NODE_ACTIVATION);
+	    else{
+	    	double sumOfChildMaxActiv = 0.0;
+	    	Set<Node> children = linkMap.getChildren(n);
+	    	for(Node child: children)
+	        	sumOfChildMaxActiv += child.getMaxActivation();
+	        
+	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
+	    }    
+	}//updateMaxActivation
+	
+	private void updateSelectionThreshold(Node n){
+		double min = n.getMinActivation();
+		double max = n.getMaxActivation();
+		double threshold = selectivity*(max - min) + min;
+		n.setSelectionThreshold(threshold);
+	}    
     
     public void setExciteBehavior(ExciteBehavior behavior){
     	for(Node n: nodes){
     		n.setExciteBehavior(behavior);
     	}
-    }    
-    
-    public void printNodeActivations(){
-    	for(Node n: nodes){
-    		n.printActivation();
-    	}
-    }
+    }//public void setExciteBehavior   
     
     /**
      * Synchronizes this PAM by updating the percept and percept history. First
@@ -253,13 +242,12 @@ public class PerceptualAssociativeMemory implements PAMInterface,
         
         pamContent.setNodes(new Percept(percept));        
         perceptHistory.add(new Percept(percept));
-    }
+    }//private void syncNodeActivation
     
     public void sendPercept(boolean shouldPrint){
     	if(shouldPrint)
     		pamContent.print();
-    	
-    	
+    	    	
     	for(int i = 0; i < pamListeners.size(); i++){
 			(pamListeners.get(i)).receivePAMContent(pamContent);
     	}
@@ -270,29 +258,13 @@ public class PerceptualAssociativeMemory implements PAMInterface,
         	n.decay();        
     }//decay
 
-	public void setDecayCurve(DecayCurve c) {
+	public void setDecayCurve(DecayBehavior c) {
 		for(Node n: nodes)
-			n.setDecayCurve(c);		
+			n.setDecayBehav(c);		
 	}
               
-    public void addPAMListener(PAMListener pl){
-		pamListeners.add(pl);
-	}
-   
-    public void setParameters(Map<String, Object> parameters){    	
-		Object o = parameters.get("upscale");
-		if ((o != null)&& (o instanceof Double)) 
-			upScale = (Double)o;
-		
-		o = parameters.get("downscale");
-		if ((o != null)&& (o instanceof Double)) 
-			downScale = (Double)o;
-		
-		o = parameters.get("selectivity");
-		if ((o != null)&& (o instanceof Double)) 
-			selectivity = (Double)o;   	
-    }//public void setParameters(Map<String, Object> parameters)
-    
+	//SIMPLE METHODS
+       
     /**
      * returns a linked list of node objects
      * @return Linked list of node objects
@@ -301,24 +273,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
         return nodes;
     }
     
-    public LinkMap getLinks(){
+    public LinkMap getLinkMap(){
     	return linkMap;
-    }
-
-    /**
-     * returns a layer map
-     * @return layer map
-     */
-    public Map<Integer, ArrayList<Node>> getLayerMap() {
-        return layerMap;
-    }
-    
-    public void pln(String s){  //saves typing
-    	System.out.println(s);
-    }
-    
-    public double rnd(double d){    //rounds a double to the nearest 100th
-    	return Math.round(d*100.0)/100.0;
     }
 
 }//class PAM.java

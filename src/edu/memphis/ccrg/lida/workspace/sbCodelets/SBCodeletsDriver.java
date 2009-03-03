@@ -1,25 +1,32 @@
 package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
-import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
-import edu.memphis.ccrg.lida.util.M;
-import edu.memphis.ccrg.lida.workspace.csm.CSM;
-import edu.memphis.ccrg.lida.workspace.csm.SPadContent;
-import edu.memphis.ccrg.lida.workspace.csm.ScratchPadListener;
-import edu.memphis.ccrg.lida.workspace.scratchpad.ScratchPad;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SBCodeletsDriver implements Runnable, Stoppable, ScratchPadListener {
+import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.Stoppable;
+import edu.memphis.ccrg.lida.workspace.csm.CSM;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferListener;
+
+public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 
 	private boolean keepRunning = true;
 	private CSM csm = null;
-	private ScratchPad spad = null;
+	private PBufferContent pBufferContent;
+	
+	private Map<Context, SBCodelet> codeletMap = new HashMap<Context, SBCodelet>();//TODO: equals, hashCode
 	
 	public void run(){
+		SBCodelet testCodelet = new SBCodelet();
+		
+		
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(24);}catch(Exception e){}
+			try{Thread.sleep(24);}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
 			
-			
+			//if BufferContent activates a sbCodelet's context start a new codelet
 			
 			
 
@@ -40,13 +47,8 @@ public class SBCodeletsDriver implements Runnable, Stoppable, ScratchPadListener
 		this.csm = csm;		
 	}
 
-	public void addSPAD(ScratchPad spad) {
-		this.spad = spad;
-	}
-
-	public void receiveSPadContent(SPadContent c) {
-		// TODO Auto-generated method stub
-		
+	public synchronized void receivePBufferContent(PBufferContent pbc) {
+		pBufferContent = pbc;		
 	}
 
 }//public class SBCodeletsDriver 

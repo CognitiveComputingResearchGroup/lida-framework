@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.sensoryMemory;
+package edu.memphis.ccrg.lida.util;
 
 public interface Stoppable {
 	

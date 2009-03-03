@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.attention.AttentionListener;
+
 /**
  * This class implemets GlobalWorkspace and mantains the collection of
  * Coalitions. It supports triggers that are in charge to trigger the new
@@ -18,7 +20,7 @@ import java.util.Set;
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListener {
+public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListener, AttentionListener {
 	private Set<CoalitionInterface> coalitions = new HashSet<CoalitionInterface>();
 	private List<Trigger> triggers = new ArrayList<Trigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();

@@ -21,7 +21,6 @@ public class PAMContent implements PAMContentInterface{
 	}
 	
 	public void print(){
-		System.out.print("PERCEPT: ");
 		p.print();
 	}
 

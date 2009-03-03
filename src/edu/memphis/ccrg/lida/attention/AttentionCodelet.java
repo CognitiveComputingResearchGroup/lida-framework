@@ -8,27 +8,33 @@
 
 package edu.memphis.ccrg.lida.attention;
 
+import java.util.List;
+
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
+import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
 import edu.memphis.ccrg.lida.workspace.csm.ModelContent;
 
 public class AttentionCodelet implements AttentionCodeletInterface, Runnable, Stoppable {
 	
 	private CSM model;
-	private GlobalWorkspace gwksp;
 	private boolean keepRunning = true;
 	private ModelContent whatIwant;
 	private ModelContent whatIgot;
+	private List<AttentionListener> listeners;
     
-    public AttentionCodelet(CSM csm, GlobalWorkspace g){
+    public AttentionCodelet(CSM csm){
     	model = csm;
-    	gwksp = g;
+    }
+    
+    public void addAttentionListener(AttentionListener l){
+    	listeners.add(l);
     }
 
-	public void addCoalToGlobalWorkspace() {
-		gwksp.putCoalition(new Coalition(whatIgot));		
+	public void addCoalToGlobalWorkspace(){
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).putCoalition(new Coalition(whatIgot));		
 	}
 
 	public void run() {

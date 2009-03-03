@@ -1,23 +1,22 @@
 package edu.memphis.ccrg.lida.perception;
 
-import edu.memphis.ccrg.lida.sensoryMemory.Stoppable;
 import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
 	private PerceptualAssociativeMemory pam;
 	private boolean keepRunning;	
+	private boolean printPercept;
 	public static boolean SHOW_STARTING_ACTIVATION = false; //TODO: move to config file/class
 	
-	public PAMDriver(PerceptualAssociativeMemory pam){
+	public PAMDriver(PerceptualAssociativeMemory pam, boolean printPercept){
 		this.pam = pam;
-		pam.initPAM();
 		keepRunning = true;		
+		this.printPercept = printPercept;
 	}//PAMDrive constructor
 		
 	public void run(){
-		boolean printSentPercept = false;
-		//boolean printSentPercept = true;
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
@@ -25,7 +24,7 @@ public class PAMDriver implements Runnable, Stoppable{
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
-			pam.sendPercept(printSentPercept); //Send the percept to p-Workspace
+			pam.sendPercept(printPercept); //Send the percept to p-Workspace
 			pam.decay();  //Decay the activations	
 			
 			//pam.printNodeActivations();
@@ -35,7 +34,7 @@ public class PAMDriver implements Runnable, Stoppable{
 			
 		System.out.println("\nPAM: Ave. cycle time: " + 
 							M.rnd((finishTime - startTime)/(double)counter));
-		System.out.println("PAM: Num. cycles: " + counter);			
+		System.out.println("PAM: Num. cycles: " + counter + "\n");			
 
 	}//method run
 	

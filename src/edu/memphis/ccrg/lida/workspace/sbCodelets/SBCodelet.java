@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
 public class SBCodelet {
 	
-	private double activation = 0.0;
+	private double activation = 1.0;
 	private Context context;
 	private CodeletAction action;
 	

@@ -22,6 +22,10 @@ public class SensoryContent implements SensoryContentInterface{
 		return copy;
 	}
 	
+	public Object getThis(){
+		return this;
+	}	
+	
 	public void print(){
 		System.out.println("SM:: " + senseData[0] + " " + senseData[1] + " " + senseData[2] + " " + senseData[3] + " " + senseData[4] + " ");
 	}
