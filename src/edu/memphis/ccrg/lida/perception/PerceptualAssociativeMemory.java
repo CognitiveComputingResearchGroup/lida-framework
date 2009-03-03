@@ -34,7 +34,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     /**
      * proportion of activation spread to children
      */
-    private double downScale = 0.5;
+    private double downscale = 0.5;
     /**
      * selectivity for thresholding, % of max activation 
      */
@@ -82,7 +82,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 		
 		o = parameters.get("downscale");
 		if ((o != null)&& (o instanceof Double)) 
-			downScale = (Double)o;
+			downscale = (Double)o;
 		
 		o = parameters.get("selectivity");
 		if ((o != null)&& (o instanceof Double)) 
@@ -166,6 +166,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	}//for each node
     	
     	syncNodeActivation();   
+    	downscale = downscale + 1 - 1;
     	//TODO:this is where the episodic buffer activation may come into play    	
     }//public void passActivation
     

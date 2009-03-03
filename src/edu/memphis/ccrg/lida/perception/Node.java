@@ -29,52 +29,35 @@ public class Node implements NodeInterface, Linkable{
      *  Bounded by minActivation and maxActivation
      */
     private double selectionThreshold;
-   // private double upscale;
     /**
      * Specifies the relative importance of a Node. Only relevant for nodes
      * that represent feelings. Lies between 00.d and 1.0d inclusive.
      */
     private double importance;
-    /**
-     * "layerDepth" is an integer representing the node's distance from the fringe.
-     * This is given by the longest path (in terms of number of links) from this node to some
-     * primitive feature detector.
-     */
-    private int layerDepth;   
     private double minActivation;
     private double maxActivation;        
     private double totalActivation;
     private double baselevelActivation;    
     private double currentActivation;      
     
+    private int layerDepth; 
     private long nodeID;
     private String label;  // Human-readable name used to identify node         
     private int type;
     private ExciteBehavior exciteBehavior;
-    private DecayBehavior decayBehav; 
+    private DecayBehavior decayBehav;
     
-    public Node(Node n){
-    	selectionThreshold = n.selectionThreshold;
-    	importance = n.importance;
-    	layerDepth = n.layerDepth;
-    	
-    	minActivation = n.minActivation;
-    	maxActivation = n.maxActivation;                   
-        totalActivation = n.totalActivation;
-        baselevelActivation = n.baselevelActivation;    
-        currentActivation = n.currentActivation;    
-        
-        nodeID = n.nodeID;  
-        label = n.label;      
-        type = n.type; 
-        exciteBehavior = n.exciteBehavior;
-        decayBehav = n.decayBehav;    	
-    }//public Node(Node n)
-
+    /**
+     * 
+     * @param id
+     * @param bla
+     * @param ca
+     * @param label
+     * @param type
+     */
     public Node(long id, double bla, double ca, String label, int type){
     	selectionThreshold = 0.0;
     	importance = 0.0;
-    	layerDepth = 0;
     	
     	minActivation = MIN_NODE_ACTIVATION;
     	maxActivation = MAX_NODE_ACTIVATION;
@@ -82,12 +65,35 @@ public class Node implements NodeInterface, Linkable{
         baselevelActivation = bla;
         currentActivation = ca;
 
+        layerDepth = 0;
         nodeID = id; 
         this.label = label;                
         this.type = type;        
         exciteBehavior = new BasicExciteBehavior();
         decayBehav = new LinearDecayCurve();
     }//public Node(long id,...
+    
+    /**
+     * 
+     * @param n
+     */
+    public Node(Node n){
+    	selectionThreshold = n.selectionThreshold;
+    	importance = n.importance;
+    	
+    	minActivation = n.minActivation;
+    	maxActivation = n.maxActivation;                   
+        totalActivation = n.totalActivation;
+        baselevelActivation = n.baselevelActivation;    
+        currentActivation = n.currentActivation;    
+        
+        layerDepth = n.layerDepth; 
+        nodeID = n.nodeID;  
+        label = n.label;      
+        type = n.type; 
+        exciteBehavior = n.exciteBehavior;
+        decayBehav = n.decayBehav;    	
+    }//public Node(Node n)
     
     /**
      * Adds this node's current, baseLevel, and residual activation to total
@@ -113,13 +119,11 @@ public class Node implements NodeInterface, Linkable{
     }
     
     /**
-     * Increase current activation and propogate newly received energy to
-     * parents. The current activation of this node is increased by the
+     * The current activation of this node is increased by the
      * excitation value.
      * 
      * @param   excitation the value to be added to the current activation of
      *          this node
-     * @see     #activateParents(double)
      */
     public void excite(double excitation){ 	
 //    	M.p("tot activ " + totalActivation);
@@ -129,16 +133,27 @@ public class Node implements NodeInterface, Linkable{
         currentActivation = exciteBehavior.excite(currentActivation, excitation);//+= Math.abs(excitation);
     }
     
+    /**
+     * 
+     * @param
+     */
     public void setExciteBehavior(ExciteBehavior behavior){
     	exciteBehavior = behavior;
     }
     
+    /**
+     * 
+     */    
     public void decay() {
         currentActivation = decayBehav.decay(currentActivation);
     }
     
-	public void setDecayBehav(DecayBehavior c) {
-		decayBehav = c;		
+    /**
+     * 
+     * @param b
+     */
+	public void setDecayBehav(DecayBehavior b) {
+		decayBehav = b;		
 	}
 	
      /**
@@ -152,27 +167,37 @@ public class Node implements NodeInterface, Linkable{
         return (totalActivation >= selectionThreshold);
     }
     
-    /**Update Methods**/
-    
-    public void setLayerDepth(int layerDepth) {
-    	this.layerDepth = layerDepth;
-    }
-    
+    /**
+     * 
+     * @param activ
+     */
     protected void setMinActivation(double activ){
     	minActivation = activ;
     }
     
+    /**
+     * 
+     * @param activ
+     */
     protected void setMaxActivation(double activ){
     	maxActivation = activ; 
     }//private void updateMaxActivation()
     
+    /**
+     * 
+     * @param threshold
+     */
     protected void setSelectionThreshold(double threshold) {
     	selectionThreshold = threshold;
     	if(label.equals("pain") || label.equals("pit")){
     		M.p("before " + label + " " + maxActivation + " " + minActivation);
     	}
     }
-        
+    
+    /**
+     * 
+     * @param values
+     */        
 	public void setValue(Map<String, Object> values) {
 		Object o = values.get("importance");
 		if ((o != null)&& (o instanceof Double)) 
@@ -183,12 +208,18 @@ public class Node implements NodeInterface, Linkable{
 			baselevelActivation = (Double)o;		
 	}//public void setValue(Map<String, Object> values)
 	
+	/**
+	 * @param n
+	 */
 	public boolean equals(Node n){
 		if(!(n instanceof Node))
 			return false;
 		return nodeID == n.nodeID && type == n.type;
-	}
+	}	
 	
+	/**
+	 * 
+	 */
 	public int hashCode(){ 
         int hash = 1;
         Integer i = new Integer(type);
@@ -197,14 +228,30 @@ public class Node implements NodeInterface, Linkable{
         hash = hash * 31 + id.hashCode();
         hash = hash * 31 + (i == null ? 0 : i.hashCode());
         return hash;
-    }     
+    }   
 	
-    /** returns the label
-    * @return label
-    */
-   public String getLabel() {
-       return label;
-   }
+	/**
+	 * 
+	 */   
+    public long getIdentifier() {
+        return nodeID;
+    } 
+	
+    /** 
+     * Returns the label
+     * @return label
+     */
+    public String getLabel() {
+        return label;
+    }
+    
+    public void setLayerDepth(int d){
+    	layerDepth = d;
+    }
+   
+	public int getLayerDepth(){
+		return layerDepth;
+	}
    
    /**
     * Standard getter for importance.
@@ -213,10 +260,6 @@ public class Node implements NodeInterface, Linkable{
    public double getImportance() {
        return importance;
    }
-     
-    public int getLayerDepth() {
-        return layerDepth;
-    }
         
     /**
      * returns selection threshold
@@ -226,10 +269,6 @@ public class Node implements NodeInterface, Linkable{
         return selectionThreshold;
     }
 
-    /**
-     * This is done for Encapsulation purpose of the code
-     *
-     */
     public double getBaselevelActivation() {
         return baselevelActivation;
     }
@@ -251,10 +290,6 @@ public class Node implements NodeInterface, Linkable{
         return maxActivation;
     }
     
-    public long getIdentifier() {
-        return nodeID;
-    } 
-    
     /**
      *
      */
@@ -271,5 +306,5 @@ public class Node implements NodeInterface, Linkable{
         return toString() + "\t" + totalActivation + " --> " + 
         		currentActivation + "," + baselevelActivation;
     }
-    
+
 }//class Node

@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.perception;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -93,6 +94,8 @@ public class LinkMap {
 		return result;
 	}//public Set<Link> getLinks(Node n, LinkType type)
  	
+	//TODO: Happens to the other nodes if we delete a Linkable that connects them?
+	//TODO: What is their layer depth then?22
 	public void deleteLinkable(Linkable n){
 		Set<Link> tempLinks = linkMap.get(n);
 		Set<Link> otherLinks;
@@ -127,6 +130,10 @@ public class LinkMap {
 			linkMap.put(child, childsLinks);
 		}		
 		childsLinks.add(l);
+		
+		//TODO:DOUBLE CHECK
+		updateLayerDepth(child);
+		updateLayerDepth(parent);
 	}//addChild
 	
 	
@@ -141,13 +148,36 @@ public class LinkMap {
 			parentsLinks = new HashSet<Link>();
 			linkMap.put(parent, parentsLinks);
 		}
-		parentsLinks.add(l);		
+		parentsLinks.add(l);	
+		//TODO:DOUBLE CHECK
+		updateLayerDepth(child);
+		updateLayerDepth(parent);		
 	}//addParent
 	
 	public long nextLinkID(){
 		//TODO: Work on linkCount!!!!
 		return linkCount;
 	}
+	
+	//TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
+    public int updateLayerDepth(Node n) {
+        n.setLayerDepth(0);
+        
+        if(isBottomNode(n))
+            n.setLayerDepth(0);
+        else{
+        	Set<Node> children = getChildren(n);
+            int layerDepth[] = new int[children.size()];
+            int ild = 0;
+            for(Node child: children) {
+                layerDepth[ild] = updateLayerDepth(child);
+                ild++;
+            }
+            Arrays.sort(layerDepth);
+            n.setLayerDepth(layerDepth[layerDepth.length - 1] + 1);
+        }
+        return n.getLayerDepth();
+    }	
 	
     protected Map<Integer, List<Node>> getLayerMap(){
         Map<Integer, List<Node>> layerMap = new HashMap<Integer, List<Node>>();

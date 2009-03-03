@@ -20,7 +20,6 @@ public interface NodeInterface{
 	//Activation related methods in the order they are 
 	//going to be called by PAM 	
 
-	//Related to this, we should discuss how PAM.java will determine which nodes should detect from SensoryMemory.
 	public void excite(double amount); //adds to current activation
 	public void setExciteBehavior(ExciteBehavior behavior);
 	
@@ -37,6 +36,7 @@ public interface NodeInterface{
 
 	public String getLabel();
 	public long getIdentifier();
+	public void setLayerDepth(int d);   
 	public int getLayerDepth();	
 	public double getImportance(); 
     public double getSelectionThreshold();  
