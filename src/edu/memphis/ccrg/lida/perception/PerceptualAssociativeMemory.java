@@ -63,7 +63,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     public PerceptualAssociativeMemory(){
     	nodes = new HashSet<Node>();
     	fDetectorNodes = new HashSet<FeatureDetectorInterface>();
-    	linkMap = new LinkMap();
+    	linkMap = new LinkMap(upscale, selectivity);
     	layerMap = new HashMap<Integer, List<Node>>();
     	perceptHistory = new ArrayList<Percept>();
     	
@@ -77,42 +77,32 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     //SETTING UP PAM    
     public void setParameters(Map<String, Object> parameters){    	
 		Object o = parameters.get("upscale");
-		if ((o != null)&& (o instanceof Double)) 
+		if ((o != null)&& (o instanceof Double)) {
 			upscale = (Double)o;
-		
+		}
+		//TODO: Graph has its own parameters?
 		o = parameters.get("downscale");
 		if ((o != null)&& (o instanceof Double)) 
 			downscale = (Double)o;
 		
 		o = parameters.get("selectivity");
-		if ((o != null)&& (o instanceof Double)) 
+		if ((o != null)&& (o instanceof Double)){
 			selectivity = (Double)o;   	
+			linkMap.setSelectivity((Double)o);
+		}
     }//public void setParameters(Map<String, Object> parameters)
     
     public void addToPAM(Set<Node> nodesToAdd, Set<Link> linkSet){
-    	for(Node n: nodesToAdd){
-    		if(n != null){
-    			nodes.add(n);
-    			if(n instanceof FeatureDetectorInterface)
-    				fDetectorNodes.add((FeatureDetectorInterface)n);
-    			refresh();
-    		}else{
-    			System.out.println("Tried to register a null node!");
-    		}
-    	}///for each node
-    	
+    	linkMap.addNodes(nodesToAdd);
     	linkMap.addLinkSet(linkSet);
+    	for(Node n: nodesToAdd){
+    		if(n != null && n instanceof FeatureDetectorInterface){
+    			fDetectorNodes.add(new DetectorNode((DetectorNode)n));
+    		}
+    	}///for each node 
+    	
     }//public void addToPAM(Set<Node> nodes, Set<Link> links)   
-        
-    private void refresh() {
-        layerMap = linkMap.getLayerMap();
-        
-        for(Integer layerDepth:(new TreeSet<Integer>(this.layerMap.keySet()))) 
-           for(Node node:this.layerMap.get(layerDepth))
-               refreshActivationParameters(node);
-           
-           
-    }//refresh
+       
     
     //INTERMODULE COMMUNICATION
     
@@ -124,7 +114,6 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	sensoryContent = sc;    	
     }
     
-
 	public synchronized void receiveEBufferContent(EBufferContent c) {
 		eBufferContent = c;		
 	}
@@ -139,6 +128,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){
+    	//System.out.println("num nodes is " + nodes.size());
+    	
     	SensoryContent sc = null;
     	synchronized(this){
     		sc = (SensoryContent)sensoryContent.getThis();
@@ -169,51 +160,6 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	downscale = downscale + 1 - 1;
     	//TODO:this is where the episodic buffer activation may come into play    	
     }//public void passActivation
-    
-    public void refreshActivationParameters(Node n) {
-        updateMinActivation(n);
-        updateMaxActivation(n);
-        updateSelectionThreshold(n);
-    }
-    
-    /**
-     * Updates the minimum activation possible for this node.
-     * <p>
-     * Since this method recursively invokes getMinActivation from its children,
-     * it assumes that the children have already been updated.
-     */
-    private void updateMinActivation(Node n) {
-        if(linkMap.isBottomNode(n))
-        	n.setMinActivation(n.MIN_NODE_ACTIVATION);
-        else{
-        	double sumOfChildMinActiv = 0.0;
-        	Set<Node> children = linkMap.getChildren(n);
-            for(Node child: children)
-            	sumOfChildMinActiv += child.getMinActivation();
-            
-            n.setMinActivation(sumOfChildMinActiv * upscale);            
-        }  
-    }
-	
-	private void updateMaxActivation(Node n){
-	    if(linkMap.isBottomNode(n))
-	        n.setMaxActivation(n.MAX_NODE_ACTIVATION);
-	    else{
-	    	double sumOfChildMaxActiv = 0.0;
-	    	Set<Node> children = linkMap.getChildren(n);
-	    	for(Node child: children)
-	        	sumOfChildMaxActiv += child.getMaxActivation();
-	        
-	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
-	    }    
-	}//updateMaxActivation
-	
-	private void updateSelectionThreshold(Node n){
-		double min = n.getMinActivation();
-		double max = n.getMaxActivation();
-		double threshold = selectivity*(max - min) + min;
-		n.setSelectionThreshold(threshold);
-	}    
     
     public void setExciteBehavior(ExciteBehavior behavior){
     	for(Node n: nodes){

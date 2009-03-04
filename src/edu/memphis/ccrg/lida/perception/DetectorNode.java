@@ -6,6 +6,11 @@ import edu.memphis.ccrg.lida.util.M;
 public class DetectorNode extends Node implements FeatureDetectorInterface{
 
 	public DetectBehavior detectBehav;
+	
+	public DetectorNode(DetectorNode n){
+		super(n);
+		this.detectBehav = n.detectBehav;
+	}
 
 	public DetectorNode(long id, double bla, double ca, String label, 
 						int type, DetectBehavior detBehav){

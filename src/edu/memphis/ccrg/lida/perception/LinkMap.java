@@ -7,17 +7,28 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+
+import edu.memphis.ccrg.lida.util.M;
    
 public class LinkMap {
 	private Map<Linkable, Set<Link>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
+	private Set<Node> nodes;
+	private Map<Integer, List<Node>> layerMap;
+	private double upscale = 0.5;
+	private double selectivity = 0.9;
 
-	public LinkMap(){
+	public LinkMap(double upscale, double selectivity){
 		linkMap = new HashMap<Linkable, Set<Link>>();
+		nodes = new HashSet<Node>();
+		layerMap = new HashMap<Integer, List<Node>>();
+		this.upscale = upscale;
+		this.selectivity = selectivity;
 	}//public LinkMap()
 	
 	public LinkMap(LinkMap map){
-		this();
+		this(map.upscale, map.selectivity);
 		this.linkCount = map.linkCount;
 		Set<Linkable> keys = map.linkMap.keySet();
 		Map<Node,Node> tempMap= new HashMap<Node, Node>();
@@ -35,7 +46,7 @@ public class LinkMap {
 	
 	public void addLinkSet(Set<Link> links){
 		for(Link l: links)
-			addLink(l);
+			addLink(new Link(l));
 	}//public void addLinkSet(Set<Link> links)
 
 	public boolean addLink(Link l){
@@ -61,6 +72,102 @@ public class LinkMap {
 			linkCount++;
 		return result;
 	}//public boolean addLink(Link l)
+	
+	public void addNodes(Set<Node> nodesToAdd) {
+		for(Node n: nodesToAdd){
+			nodes.add(new Node(n));
+			refresh();
+		}
+	}
+	
+	private void refresh() {        
+        for(Integer layerDepth:(new TreeSet<Integer>(this.layerMap.keySet()))) 
+           for(Node node:this.layerMap.get(layerDepth))
+               refreshActivationParameters(node);           
+    }//refresh
+	
+    public void refreshActivationParameters(Node n) {
+        updateMinActivation(n);
+        updateMaxActivation(n);
+        updateSelectionThreshold(n);
+    }
+    
+    /**
+     * Updates the minimum activation possible for this node.
+     * <p>
+     * Since this method recursively invokes getMinActivation from its children,
+     * it assumes that the children have already been updated.
+     */
+    private void updateMinActivation(Node n) {
+        if(isBottomNode(n))
+        	n.setMinActivation(n.MIN_NODE_ACTIVATION);
+        else{
+        	double sumOfChildMinActiv = 0.0;
+        	Set<Node> children = getChildren(n);
+            for(Node child: children)
+            	sumOfChildMinActiv += child.getMinActivation();
+            
+            n.setMinActivation(sumOfChildMinActiv * upscale);            
+        }  
+    }
+	
+	private void updateMaxActivation(Node n){
+	    if(isBottomNode(n))
+	        n.setMaxActivation(n.MAX_NODE_ACTIVATION);
+	    else{
+	    	double sumOfChildMaxActiv = 0.0;
+	    	Set<Node> children = getChildren(n);
+	    	for(Node child: children)
+	        	sumOfChildMaxActiv += child.getMaxActivation();
+	        
+	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
+	    }    
+	}//updateMaxActivation
+	
+	private void updateSelectionThreshold(Node n){
+		//M.p(n.getLabel() + " is updating selection threshold");
+		
+		double min = n.getMinActivation();
+		double max = n.getMaxActivation();
+		double threshold = selectivity*(max - min) + min;
+		n.setSelectionThreshold(threshold);
+	}    	
+	
+	//TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
+    public int updateLayerDepth(Node n) {
+        n.setLayerDepth(0);
+        
+        if(isBottomNode(n))
+            n.setLayerDepth(0);
+        else{
+        	Set<Node> children = getChildren(n);
+            int layerDepth[] = new int[children.size()];
+            int ild = 0;
+            for(Node child: children) {
+                layerDepth[ild] = updateLayerDepth(child);
+                ild++;
+            }
+            Arrays.sort(layerDepth);
+            n.setLayerDepth(layerDepth[layerDepth.length - 1] + 1);
+        }
+        return n.getLayerDepth();
+    }	
+	
+    protected Map<Integer, List<Node>> getLayerMap(){
+        Map<Integer, List<Node>> layerMap = new HashMap<Integer, List<Node>>();
+        for(Node node: this.nodes){
+            Integer layerDepth = new Integer(node.getLayerDepth());
+            List<Node> layerNodes = layerMap.get(layerDepth);
+            
+            if(layerNodes == null) {
+                layerNodes = new ArrayList<Node>();
+                layerMap.put(layerDepth, layerNodes);
+            }
+            layerNodes.add(node);
+        }
+        M.p(layerMap.size() + " is size of layerMap " + nodes.size() + " nodes" + linkMap.size() + " map size");
+        return layerMap; 
+    }//buildLayerMap
 	
 	/**
 	 * You would still need to delete the link object l!
@@ -158,45 +265,8 @@ public class LinkMap {
 		//TODO: Work on linkCount!!!!
 		return linkCount;
 	}
-	
-	//TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
-    public int updateLayerDepth(Node n) {
-        n.setLayerDepth(0);
-        
-        if(isBottomNode(n))
-            n.setLayerDepth(0);
-        else{
-        	Set<Node> children = getChildren(n);
-            int layerDepth[] = new int[children.size()];
-            int ild = 0;
-            for(Node child: children) {
-                layerDepth[ild] = updateLayerDepth(child);
-                ild++;
-            }
-            Arrays.sort(layerDepth);
-            n.setLayerDepth(layerDepth[layerDepth.length - 1] + 1);
-        }
-        return n.getLayerDepth();
-    }	
-	
-    protected Map<Integer, List<Node>> getLayerMap(){
-        Map<Integer, List<Node>> layerMap = new HashMap<Integer, List<Node>>();
-        Set<Node> nodes = getNodes();
-        for(Node node: nodes){
-            Integer layerDepth = new Integer(node.getLayerDepth());
-            List<Node> layerNodes = layerMap.get(layerDepth);
-            
-            if(layerNodes == null) {
-                layerNodes = new ArrayList<Node>();
-                layerMap.put(layerDepth, layerNodes);
-            }
-            layerNodes.add(node);
-        }
-        
-        return layerMap; 
-    }//buildLayerMap
     
-    public Set<Node> getNodes(){
+    public Set<Node> getNodes(){//TODO: will this be used to check the nodes supplied?
     	Set<Linkable> keys = linkMap.keySet();
     	Set<Node> nodes = new HashSet<Node>();
     	for(Linkable l: keys)
@@ -245,6 +315,10 @@ public class LinkMap {
 				parents.add((Node)sink);			
 		}
 		return parents;
+	}
+
+	public void setSelectivity(Double o) {
+		selectivity = o;		
 	}
 
 }//public class LinkMap

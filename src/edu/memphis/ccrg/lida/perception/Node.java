@@ -28,12 +28,12 @@ public class Node implements NodeInterface, Linkable{
     /** Activation required for node to be part of the percept.
      *  Bounded by minActivation and maxActivation
      */
-    private double selectionThreshold;
+    private double selectionThreshold = 0.9;
     /**
      * Specifies the relative importance of a Node. Only relevant for nodes
      * that represent feelings. Lies between 00.d and 1.0d inclusive.
      */
-    private double importance;
+    private double importance = 0.0;
     private double minActivation;
     private double maxActivation;        
     private double totalActivation;
@@ -55,10 +55,7 @@ public class Node implements NodeInterface, Linkable{
      * @param label
      * @param type
      */
-    public Node(long id, double bla, double ca, String label, int type){
-    	selectionThreshold = 0.0;
-    	importance = 0.0;
-    	
+    public Node(long id, double bla, double ca, String label, int type){    	
     	minActivation = MIN_NODE_ACTIVATION;
     	maxActivation = MAX_NODE_ACTIVATION;
     	totalActivation = bla + ca;  
@@ -163,7 +160,9 @@ public class Node implements NodeInterface, Linkable{
       * @return     <code>true</code> if this node is relevant
       * @see        #selectionThreshold
       */
-    public boolean isRelevant(){    	
+    public boolean isRelevant(){   
+    	//M.p(label + " " + M.rnd(totalActivation) + " " + selectionThreshold);
+    	
         return (totalActivation >= selectionThreshold);
     }
     
@@ -189,9 +188,9 @@ public class Node implements NodeInterface, Linkable{
      */
     protected void setSelectionThreshold(double threshold) {
     	selectionThreshold = threshold;
-    	if(label.equals("pain") || label.equals("pit")){
-    		M.p("before " + label + " " + maxActivation + " " + minActivation);
-    	}
+//    	if(label.equals("pain") || label.equals("pit")){
+//    		M.p("before " + label + " " + maxActivation + " " + minActivation);
+//    	}
     }
     
     /**
