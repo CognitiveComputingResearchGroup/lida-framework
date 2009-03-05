@@ -25,8 +25,11 @@ public class DetectorNode extends Node implements FeatureDetectorInterface{
     	}
     	
     	double amountToExcite = detectBehav.getExcitation(super.getLabel(), sc);
+    	M.p(super.getLabel() + " exciting this much: " + amountToExcite);
+    	
     	super.excite(amountToExcite);
     	super.synchronize();    	
+    	M.p(" result of detecting " + this.getLabel() + " "  + this.getTotalActivation());
     }    
 
 	public void setDetectBehavior(DetectBehavior b){

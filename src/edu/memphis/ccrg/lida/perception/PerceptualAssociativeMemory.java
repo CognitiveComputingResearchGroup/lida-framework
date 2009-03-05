@@ -39,16 +39,12 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      * selectivity for thresholding, % of max activation 
      */
     private double selectivity = 0.9; 
-    
-    /**
-     * All nodes registered in this PAM
-     */
-	private Set<Node> nodes; 	
+    	
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
 	public Set<FeatureDetectorInterface> fDetectorNodes;
-	private LinkMap linkMap;
+	private Graph graph;
 	
 	private Map<Integer, List<Node>> layerMap;
     private List<Percept> perceptHistory;
@@ -61,9 +57,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     private BroadcastContent broadcastContent;//Shared variable	
       
     public PerceptualAssociativeMemory(){
-    	nodes = new HashSet<Node>();
     	fDetectorNodes = new HashSet<FeatureDetectorInterface>();
-    	linkMap = new LinkMap(upscale, selectivity);
+    	graph = new Graph(upscale, selectivity);
     	layerMap = new HashMap<Integer, List<Node>>();
     	perceptHistory = new ArrayList<Percept>();
     	
@@ -88,13 +83,13 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 		o = parameters.get("selectivity");
 		if ((o != null)&& (o instanceof Double)){
 			selectivity = (Double)o;   	
-			linkMap.setSelectivity((Double)o);
+			graph.setSelectivity((Double)o);
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
     public void addToPAM(Set<Node> nodesToAdd, Set<Link> linkSet){
-    	linkMap.addNodes(nodesToAdd);
-    	linkMap.addLinkSet(linkSet);
+    	graph.addNodes(nodesToAdd);
+    	graph.addLinkSet(linkSet);
     	for(Node n: nodesToAdd){
     		if(n != null && n instanceof FeatureDetectorInterface){
     			fDetectorNodes.add(new DetectorNode((DetectorNode)n));
@@ -146,13 +141,23 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      * 
      */
     public void passActivation(){
+    	Set<Node> nodes = graph.getNodes();
+//    	M.p("AREdsfs " + nodes.size());
     	for(Node n: nodes){
-    		n.excite(0.0);    		
-    		if(!linkMap.isTopNode(n)) {
+    		n.excite(0.0);    
+    		boolean isTopNode = graph.isTopNode(n);
+    		M.p(n.getLabel() + " is a top node " + isTopNode);
+    		if(!isTopNode) {
     			double energy = n.getCurrentActivation()*upscale;
-    			Set<Node> parents = linkMap.getParents(n);
-    	        for(Node parent: parents)
-    	        	parent.excite(energy);
+    			M.p("the energy set to my parents is " + energy);
+    			
+    			Set<Node> parents = graph.getParents(n);
+    			
+    			M.p(" I have " + parents.size() + " parents.");
+    			
+    			if(parents != null)
+    				for(Node parent: parents)
+    					parent.excite(energy);
     		}//if not a root node    		
     	}//for each node
     	
@@ -162,6 +167,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     }//public void passActivation
     
     public void setExciteBehavior(ExciteBehavior behavior){
+    	Set<Node> nodes = graph.getNodes();
     	for(Node n: nodes){
     		n.setExciteBehavior(behavior);
     	}
@@ -177,9 +183,10 @@ public class PerceptualAssociativeMemory implements PAMInterface,
         Percept percept = new Percept();
        
         //this.printNodeActivations();
-        
+        Set<Node> nodes = graph.getNodes();
         for(Node node: nodes) {
             node.synchronize();//Needed since excite changes current but not totalActivation
+            M.p( " after synching " + node.getTotalActivation());
             if(node.isRelevant())//Based on totalActivation
                 percept.add(new Node(node));
         }//for        
@@ -201,11 +208,13 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     }
     
     public void decay() {
+    	Set<Node> nodes = graph.getNodes();
         for(Node n: nodes)
         	n.decay();        
     }//decay
 
 	public void setDecayCurve(DecayBehavior c) {
+		Set<Node> nodes = graph.getNodes();
 		for(Node n: nodes)
 			n.setDecayBehav(c);		
 	}
@@ -217,11 +226,11 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      * @return Linked list of node objects
      */    
     public Set<Node> getNodes() {
-        return nodes;
+        return graph.getNodes();
     }
     
-    public LinkMap getLinkMap(){
-    	return linkMap;
+    public Graph getLinkMap(){
+    	return graph;
     }
 
 }//class PAM.java

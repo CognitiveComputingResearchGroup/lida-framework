@@ -11,7 +11,7 @@ import java.util.TreeSet;
 
 import edu.memphis.ccrg.lida.util.M;
    
-public class LinkMap {
+public class Graph {
 	private Map<Linkable, Set<Link>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
 	private Set<Node> nodes;
@@ -19,7 +19,7 @@ public class LinkMap {
 	private double upscale = 0.5;
 	private double selectivity = 0.9;
 
-	public LinkMap(double upscale, double selectivity){
+	public Graph(double upscale, double selectivity){
 		linkMap = new HashMap<Linkable, Set<Link>>();
 		nodes = new HashSet<Node>();
 		layerMap = new HashMap<Integer, List<Node>>();
@@ -27,7 +27,7 @@ public class LinkMap {
 		this.selectivity = selectivity;
 	}//public LinkMap()
 	
-	public LinkMap(LinkMap map){
+	public Graph(Graph map){
 		this(map.upscale, map.selectivity);
 		this.linkCount = map.linkCount;
 		Set<Linkable> keys = map.linkMap.keySet();
@@ -165,7 +165,7 @@ public class LinkMap {
             }
             layerNodes.add(node);
         }
-        M.p(layerMap.size() + " is size of layerMap " + nodes.size() + " nodes" + linkMap.size() + " map size");
+        //M.p(layerMap.size() + " is size of layerMap " + nodes.size() + " nodes" + linkMap.size() + " map size");
         return layerMap; 
     }//buildLayerMap
 	
@@ -266,33 +266,43 @@ public class LinkMap {
 		return linkCount;
 	}
     
-    public Set<Node> getNodes(){//TODO: will this be used to check the nodes supplied?
-    	Set<Linkable> keys = linkMap.keySet();
-    	Set<Node> nodes = new HashSet<Node>();
-    	for(Linkable l: keys)
-    		if(l instanceof Node)
-    			nodes.add((Node)l);
+    public Set<Node> getNodes(){    	
     	return nodes;
+    }
+    
+    public boolean nodesMatchLinkMap(){
+//    	Set<Linkable> keys = linkMap.keySet();
+//    	Set<Node> nodes = new HashSet<Node>();
+//    	for(Linkable l: keys)
+//    		if(l instanceof Node)
+//    			nodes.add((Node)l);
+//    	
+    	
+    	return true;
     }
     
     public boolean isBottomNode(Node n) {
 		Set<Link> links = linkMap.get(n);
-		for(Link link: links){
-			Linkable source = link.getSource();
-			if(source instanceof Node && !source.equals(n))//if source is a child of n
-				return false;
-		}//for
+		if(links != null){
+			for(Link link: links){
+				Linkable source = link.getSource();
+				if(source instanceof Node && !source.equals(n))//if source is a child of n
+					return false;
+			}//for
+		}
 		return true;
 	}
     
 	public boolean isTopNode(Node n) {
 		Set<Link> links = linkMap.get(n);
-		for(Link link: links){
-			Linkable sink = link.getSink();
-			if(sink instanceof Node && !sink.equals(n))//if source is a child of n
-				return false;
-		}//for
-		return true;
+		if(links != null){
+			for(Link link: links){
+				Linkable sink = link.getSink();
+				if(sink instanceof Node && !sink.equals(n))//if source is a child of n
+					return false;
+			}//for
+		}
+		return false;
 	}
 
 	public Set<Node> getChildren(Node n) {
@@ -309,10 +319,12 @@ public class LinkMap {
 	public Set<Node> getParents(Node n) {
 		Set<Link> links = linkMap.get(n);
 		Set<Node> parents = new HashSet<Node>();
-		for(Link link: links){
-			Linkable sink = link.getSink();
-			if(sink instanceof Node && !sink.equals(n))
-				parents.add((Node)sink);			
+		if(links != null){
+			for(Link link: links){
+				Linkable sink = link.getSink();
+				if(sink instanceof Node && !sink.equals(n))
+					parents.add((Node)sink);			
+			}
 		}
 		return parents;
 	}

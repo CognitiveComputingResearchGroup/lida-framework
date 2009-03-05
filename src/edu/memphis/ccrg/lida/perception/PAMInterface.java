@@ -48,5 +48,5 @@ public interface PAMInterface{
 	public void setDecayCurve(DecayBehavior c);
 	
 	public Set<Node> getNodes();	
-	public LinkMap getLinkMap();
+	public Graph getLinkMap();
 }//interface PAMinterface
