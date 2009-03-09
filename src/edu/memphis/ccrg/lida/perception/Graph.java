@@ -8,20 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import edu.memphis.ccrg.lida.shared.LinkType;
+import edu.memphis.ccrg.lida.shared.Linkable;
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.util.M;
    
 public class Graph {
 	private Map<Linkable, Set<LinkImpl>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
 	private Set<PamNodeImpl> nodes;
-	private Map<Integer, Set<Linkable>> layerMap;
+	private Map<Integer, Set<Node>> layerMap;
 	private double upscale = 0.5;
 	private double selectivity = 0.9;
 
 	public Graph(double upscale, double selectivity){
 		linkMap = new HashMap<Linkable, Set<LinkImpl>>();
 		nodes = new HashSet<PamNodeImpl>();
-		layerMap = new HashMap<Integer, Set<Linkable>>();
+		layerMap = new HashMap<Integer, Set<Node>>();
 		this.upscale = upscale;
 		this.selectivity = selectivity;
 	}//public LinkMap()
@@ -101,13 +105,13 @@ public class Graph {
         return n.getLayerDepth();
     }	
 	
-	public Map<Integer, Set<Linkable>> createLayerMap(){
+	public Map<Integer, Set<Node>> createLayerMap(){
         for(PamNodeImpl node: nodes){
             int layerDepth = node.getLayerDepth();
-            Set<Linkable> layerNodes = layerMap.get(layerDepth);
+            Set<Node> layerNodes = layerMap.get(layerDepth);
             
             if(layerNodes == null) {
-                layerNodes = new HashSet<Linkable>();
+                layerNodes = new HashSet<Node>();
                 layerMap.put(layerDepth, layerNodes);
             }
             layerNodes.add(node);
@@ -118,9 +122,13 @@ public class Graph {
 	private void updateActivationThresholds(){		
         for(Integer layerDepth: layerMap.keySet()){
            for(Linkable n: layerMap.get(layerDepth)){
-        	   updateMinActivation(n);
-               updateMaxActivation(n);
-               updateSelectionThreshold(n);        
+        	   PamNode temp = null;
+        	   if(n instanceof PamNode){
+        		   temp = (PamNode)n;
+        		   updateMinActivation(temp);
+        		   updateMaxActivation(temp);
+        		   updateSelectionThreshold(temp);      
+        	   }  
            }
         }	
     }//updateActivationThresholds
@@ -131,7 +139,7 @@ public class Graph {
      * Since this method recursively invokes getMinActivation from its children,
      * it assumes that the children have already been updated.
      */
-    private void updateMinActivation(Linkable n) {
+    private void updateMinActivation(PamNode n) {
     	
         if(isBottomLinkable(n))
         	n.setMinActivation(n.getDefaultMinActivation());
@@ -145,7 +153,7 @@ public class Graph {
         }  
     }
 	
-	private void updateMaxActivation(Linkable n){
+	private void updateMaxActivation(PamNode n){
 	    if(isBottomLinkable(n))
 	        n.setMaxActivation(n.getDefaultMaxActivation());
 	    else{
@@ -158,7 +166,7 @@ public class Graph {
 	    }    
 	}//updateMaxActivation
 	
-	private void updateSelectionThreshold(Linkable n){
+	private void updateSelectionThreshold(PamNode n){
 		//M.p(n.getLabel() + " is updating selection threshold");
 		
 		double min = n.getMinActivation();
@@ -202,37 +210,37 @@ public class Graph {
 		return children;		
 	}
 	
-	public Set<Linkable> getParents(Linkable l) {
-		String s =  l.getLabel();
+	public Set<Node> getParents(Node l) {
+//		String s =  l.getLabel();
+//		
+//		Set<Linkable> keys = linkMap.keySet();
+//		Linkable whatIwant = null;
+//
+//		for(Linkable l2: keys){
+////			if(l2.equals(1))
+////				System.out.println("SDFSDSDFSDFA");
+//			if(l2.getID() == l.getID())
+//				whatIwant = l2;
+//		}
 		
-		Set<Linkable> keys = linkMap.keySet();
-		Linkable whatIwant = null;
-
-		for(Linkable l2: keys){
-//			if(l2.equals(1))
-//				System.out.println("SDFSDSDFSDFA");
-			if(l2.getID() == l.getID())
-				whatIwant = l2;
-		}
-		
-		//Set<Link> links = linkMap.get(l);
-		Set<LinkImpl> links = linkMap.get(whatIwant);
-		Set<Linkable> parents = new HashSet<Linkable>();
-		if(links != null){
-			for(LinkImpl link: links){
-				
-				Linkable sink = link.getSink();
-				Linkable source = link.getSource();
-				
-				//System.out.println("Linkable is " + whatIwant.getLabel() + " link has source " + source.getLabel() + " has parent " + sink.getLabel());
-				
-				if(sink instanceof PamNodeImpl && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
-					//M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
-					parents.add((PamNodeImpl)sink);			
-				}
-			}
-			//M.p("");
-		}
+//		Set<Link> links = linkMap.get(l);
+//		Set<LinkImpl> links = linkMap.get(whatIwant);
+		Set<Node> parents = new HashSet<Node>();
+//		if(links != null){
+//			for(LinkImpl link: links){
+//				
+//				Linkable sink = link.getSink();
+//				Linkable source = link.getSource();
+//				
+//				//System.out.println("Linkable is " + whatIwant.getLabel() + " link has source " + source.getLabel() + " has parent " + sink.getLabel());
+//				
+//				if(sink instanceof PamNodeImpl && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
+//					//M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
+//					parents.add((PamNodeImpl)sink);			
+//				}
+//			}
+//			//M.p("");
+//		}
 		return parents;
 	}
 	
@@ -357,7 +365,7 @@ public class Graph {
 		Set<Linkable> keys = linkMap.keySet();
 		
 		for(Linkable key: keys){
-			System.out.println("Linkable " + key.getLabel() + " has links ");
+		//	System.out.println("Linkable " + key.getLabel() + " has links ");
 			Set<LinkImpl> links = linkMap.get(key);
 			for(LinkImpl l: links)
 				System.out.println("Source: " + l.getSource().toString() + " sink " + l.getSink().toString());

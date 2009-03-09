@@ -14,11 +14,15 @@
 package edu.memphis.ccrg.lida.perception;
 
 import java.util.Map;
-import edu.memphis.ccrg.lida.util.DecayBehavior;
-import edu.memphis.ccrg.lida.util.LinearDecayCurve;
+
+import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.util.M;
 
-public class PamNodeImpl implements NodeInterface, Linkable{	
+public class PamNodeImpl implements PamNode{	
     protected final int        TYPE_UNDEF = -1;      
     protected final int        TYPE_OBJECT = 1;
     protected final int        TYPE_CATEGORY = 2;
@@ -142,6 +146,7 @@ public class PamNodeImpl implements NodeInterface, Linkable{
     public void setExciteBehavior(ExciteBehavior behavior){
     	exciteBehavior = behavior;
     }
+
     
     /**
      * 
@@ -321,6 +326,51 @@ public class PamNodeImpl implements NodeInterface, Linkable{
 
 	public long getID() {
 		return nodeID;
+	}
+
+	public void setDecayBehavior(DecayBehavior b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Node copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public DecayBehavior getDecayBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior getExciteBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Node getReferencedNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setActivation(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setReferencedNode(Node n) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setID(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLabel(String label) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class Node

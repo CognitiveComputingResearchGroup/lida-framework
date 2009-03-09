@@ -1,14 +1,21 @@
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.perception.LinkImpl;
-import edu.memphis.ccrg.lida.perception.LinkType;
-import edu.memphis.ccrg.lida.perception.Linkable;
+import edu.memphis.ccrg.lida.shared.LinkType;
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.Linkable;
+import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+
 
 /**
  *
  * @author Ryan McCall
  */
-public class LinkImpl implements Linkable{
+public class LinkImpl implements Link, Node{
     
     private Linkable sink;    
     private Linkable source;    
@@ -33,9 +40,10 @@ public class LinkImpl implements Linkable{
     }
 
 	public boolean equals(Object obj){
-		LinkImpl other = (LinkImpl)obj;
-    	if(!(other instanceof LinkImpl))
+		if(!(obj instanceof LinkImpl)){
 			return false;    	
+    	}    	
+    	LinkImpl other = (LinkImpl)obj;
 		return (linkID == other.linkID) && (type == other.type);
 	}
     
@@ -116,4 +124,90 @@ public class LinkImpl implements Linkable{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public Link copy(Link l) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Node copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void decay() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public DecayBehavior getDecayBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ExciteBehavior getExciteBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public long getIdentifier() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getImportance() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public Node getReferencedNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isRelevant() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setActivation(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDecayBehavior(DecayBehavior c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setExciteBehavior(ExciteBehavior behavior) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setReferencedNode(Node n) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setValue(Map<String, Object> values) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void synchronize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setID(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLabel(String label) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

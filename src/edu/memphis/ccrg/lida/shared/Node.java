@@ -39,6 +39,10 @@ public interface Node extends Linkable{
     public Node getReferencedNode();
     public void setReferencedNode (Node n);
     public Node copy();
+    public long getID();
+    public void setID(long id);
+    public String getLabel();
+    public void setLabel(String label);
    
 }//interface Node
 

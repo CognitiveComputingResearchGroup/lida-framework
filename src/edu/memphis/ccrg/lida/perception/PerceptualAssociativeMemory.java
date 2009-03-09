@@ -18,7 +18,10 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
-import edu.memphis.ccrg.lida.util.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.Linkable;
+import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.util.M;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
@@ -128,16 +131,18 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      * 
      */
     public void passActivation(){    	
-    	Map<Integer, Set<Linkable>> layerMap = graph.createLayerMap();
+    	Map<Integer, Set<Node>> layerMap = graph.createLayerMap();
     	int layers = layerMap.keySet().size();
       	for(int i = 0; i < layers - 1; i++){
-      		Set<Linkable> layerLinkables = layerMap.get(i);
-      		for(Linkable l: layerLinkables){
-      			double currentActivation = l.getCurrentActivation();
-      			Set<Linkable> parents = graph.getParents(l);
-      			for(Linkable parent: parents){      	
+      		Set<Node> layerLinkables = layerMap.get(i);
+      		for(Node n: layerLinkables){
+      			double currentActivation = n.getCurrentActivation();
+      	
+      			Set<Node> parents = graph.getParents(n);
+      			for(Node parent: parents){      	
       				double energy = currentActivation * upscale;      				
-      				parent.excite(energy);
+      				if(parent instanceof Node)
+      					((Node)parent).excite(energy);
       			}//for each parent
       		}//for each linkable in a given layer
       	}//for each layer

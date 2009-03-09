@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.perception.LinkImp;
+//import edu.memphis.ccrg.lida.perception.LinkImp;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 
 /**
@@ -78,8 +78,8 @@ public class NodeStructureImp implements NodeStructure {
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
 	public void addLinkSet(Set<Link> links) {
-		for (Link l : links)
-			addLink(new LinkImp((LinkImp) l));
+		for (Link l : links){}
+		//	addLink(new LinkImp((LinkImp) l));
 	}// public void addLinkSet(Set<Link> links)
 
 	public boolean addNode(Node n) {

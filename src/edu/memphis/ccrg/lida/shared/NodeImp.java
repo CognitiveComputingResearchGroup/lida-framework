@@ -87,4 +87,24 @@ public class NodeImp implements Node {
 		
 	}
 
+	public long getID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String getLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setID(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLabel(String label) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -85,5 +85,12 @@ public interface PamNode extends Node{
 	public abstract double getMinActivation();
 
 	public abstract double getMaxActivation();
+	
+	public abstract double getDefaultMinActivation();
+	public abstract double getDefaultMaxActivation();
+	public abstract void setMinActivation(double amount);
+	public abstract void setMaxActivation(double amount);
+	void setSelectionThreshold(double threshold);
+	
 
 }

@@ -1,10 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-import edu.memphis.ccrg.lida.perception.Graph;
+
 
 public class CSM implements CSMInterface, ScratchPadListener{
 	
-	private Graph linkmap;
 	
 	public CSM(){
 		
