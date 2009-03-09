@@ -110,4 +110,9 @@ public class Link implements Linkable{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public long getID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

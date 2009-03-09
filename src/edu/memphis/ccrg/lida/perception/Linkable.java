@@ -16,6 +16,7 @@ public interface Linkable {
 	String getLabel();
 	
 	int hashCode();
+	long getID();
 	
 	
 }

@@ -135,10 +135,12 @@ public class PerceptualAssociativeMemory implements PAMInterface,
       		for(Linkable l: layerLinkables){
       			double currentActivation = l.getCurrentActivation();
       			Set<Linkable> parents = graph.getParents(l);
-      			for(Linkable parent: parents){
+      			for(Linkable parent: parents){      				
       				double energy = currentActivation * upscale;
+      				System.out.println(l.getLabel() + " passes " + energy + " to " + parent.getLabel());
       				parent.excite(energy);
       			}//for each parent
+      			System.out.println(" ");
       		}//for each linkable in a given layer
       	}//for each layer
     	

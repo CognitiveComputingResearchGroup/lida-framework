@@ -310,13 +310,15 @@ public class Node implements NodeInterface, Linkable{
     }
 
 	public double getDefaultMaxActivation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return MAX_ACTIVATION;
 	}
 
 	public double getDefaultMinActivation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return MIN_ACTIVATION;
+	}
+
+	public long getID() {
+		return nodeID;
 	}
 
 }//class Node

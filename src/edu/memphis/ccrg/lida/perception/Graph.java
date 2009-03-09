@@ -205,24 +205,34 @@ public class Graph {
 	
 	public Set<Linkable> getParents(Linkable l) {
 		String s =  l.getLabel();
-		//printLinkMap();
 		
 		Set<Linkable> keys = linkMap.keySet();
-		//System.out.println(keys.size()  + " sdflsdkjfdslkfjsdlkfjsdlkjfdlskfjldskj");
-		for(Linkable l2: keys)
-			if(l2.equals(1))
-				System.out.println("SDFSDSDFSDFA");
+		Linkable whatIwant = null;
+
+		for(Linkable l2: keys){
+//			if(l2.equals(1))
+//				System.out.println("SDFSDSDFSDFA");
+			if(l2.getID() == l.getID())
+				whatIwant = l2;
+		}
 		
-		Set<Link> links = linkMap.get(l);
+		//Set<Link> links = linkMap.get(l);
+		Set<Link> links = linkMap.get(whatIwant);
 		Set<Linkable> parents = new HashSet<Linkable>();
 		if(links != null){
 			for(Link link: links){
+				
 				Linkable sink = link.getSink();
-				if(sink instanceof Node && !sink.equals(l)){
-					M.p(sink.getLabel() + " has parent " + sink.getLabel());
+				Linkable source = link.getSource();
+				
+				//System.out.println("Linkable is " + whatIwant.getLabel() + " link has source " + source.getLabel() + " has parent " + sink.getLabel());
+				
+				if(sink instanceof Node && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
+					M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
 					parents.add((Node)sink);			
 				}
 			}
+			//M.p("");
 		}
 		return parents;
 	}
