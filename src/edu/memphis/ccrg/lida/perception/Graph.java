@@ -14,14 +14,14 @@ public class Graph {
 	private Map<Linkable, Set<Link>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
 	private Set<Node> nodes;
-	private Map<Integer, List<Node>> layerMap;
+	private Map<Integer, Set<Linkable>> layerMap;
 	private double upscale = 0.5;
 	private double selectivity = 0.9;
 
 	public Graph(double upscale, double selectivity){
 		linkMap = new HashMap<Linkable, Set<Link>>();
 		nodes = new HashSet<Node>();
-		layerMap = new HashMap<Integer, List<Node>>();
+		layerMap = new HashMap<Integer, Set<Linkable>>();
 		this.upscale = upscale;
 		this.selectivity = selectivity;
 	}//public LinkMap()
@@ -75,68 +75,18 @@ public class Graph {
 	public void addNodes(Set<Node> nodesToAdd) {
 		for(Node n: nodesToAdd){
 			nodes.add(new Node(n));
-			refresh();
+			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
 		}
+		createLayerMap();
+		updateActivationThresholds();
 	}
-	
-	private void refresh() {        
-        for(Integer layerDepth:(new TreeSet<Integer>(this.layerMap.keySet()))) 
-           for(Node node:this.layerMap.get(layerDepth))
-               refreshActivationParameters(node);           
-    }//refresh
-	
-    public void refreshActivationParameters(Node n) {
-        updateMinActivation(n);
-        updateMaxActivation(n);
-        updateSelectionThreshold(n);
-    }
-    
-    /**
-     * Updates the minimum activation possible for this node.
-     * <p>
-     * Since this method recursively invokes getMinActivation from its children,
-     * it assumes that the children have already been updated.
-     */
-    private void updateMinActivation(Node n) {
-        if(isBottomNode(n))
-        	n.setMinActivation(n.MIN_NODE_ACTIVATION);
-        else{
-        	double sumOfChildMinActiv = 0.0;
-        	Set<Node> children = getChildren(n);
-            for(Node child: children)
-            	sumOfChildMinActiv += child.getMinActivation();
-            
-            n.setMinActivation(sumOfChildMinActiv * upscale);            
-        }  
-    }
-	
-	private void updateMaxActivation(Node n){
-	    if(isBottomNode(n))
-	        n.setMaxActivation(n.MAX_NODE_ACTIVATION);
-	    else{
-	    	double sumOfChildMaxActiv = 0.0;
-	    	Set<Node> children = getChildren(n);
-	    	for(Node child: children)
-	        	sumOfChildMaxActiv += child.getMaxActivation();
-	        
-	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
-	    }    
-	}//updateMaxActivation
-	
-	private void updateSelectionThreshold(Node n){
-		//M.p(n.getLabel() + " is updating selection threshold");
-		
-		double min = n.getMinActivation();
-		double max = n.getMaxActivation();
-		double threshold = selectivity*(max - min) + min;
-		n.setSelectionThreshold(threshold);
-	}    	
 	
 	//TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
     public int updateLayerDepth(Node n) {
+    	String s = n.getLabel();
         n.setLayerDepth(0);
         
-        if(isBottomNode(n))
+        if(isBottomLinkable(n))
             n.setLayerDepth(0);
         else{
         	Set<Node> children = getChildren(n);
@@ -152,21 +102,131 @@ public class Graph {
         return n.getLayerDepth();
     }	
 	
-    protected Map<Integer, List<Node>> getLayerMap(){
-        Map<Integer, List<Node>> layerMap = new HashMap<Integer, List<Node>>();
-        for(Node node: this.nodes){
-            Integer layerDepth = new Integer(node.getLayerDepth());
-            List<Node> layerNodes = layerMap.get(layerDepth);
+	public Map<Integer, Set<Linkable>> createLayerMap(){
+        for(Node node: nodes){
+        	String label = node.getLabel();
+            int layerDepth = node.getLayerDepth();
+            Set<Linkable> layerNodes = layerMap.get(layerDepth);
             
             if(layerNodes == null) {
-                layerNodes = new ArrayList<Node>();
+                layerNodes = new HashSet<Linkable>();
                 layerMap.put(layerDepth, layerNodes);
             }
             layerNodes.add(node);
         }
-        //M.p(layerMap.size() + " is size of layerMap " + nodes.size() + " nodes" + linkMap.size() + " map size");
-        return layerMap; 
-    }//buildLayerMap
+        return layerMap;
+    }//createLayerMap
+
+	private void updateActivationThresholds(){		
+        for(Integer layerDepth: layerMap.keySet()){
+           for(Linkable n: layerMap.get(layerDepth)){
+        	   updateMinActivation(n);
+               updateMaxActivation(n);
+               updateSelectionThreshold(n);        
+           }
+        }	
+    }//updateActivationThresholds
+
+    /**
+     * Updates the minimum activation possible for this node.
+     * <p>
+     * Since this method recursively invokes getMinActivation from its children,
+     * it assumes that the children have already been updated.
+     */
+    private void updateMinActivation(Linkable n) {
+        if(isBottomLinkable(n))
+        	n.setMinActivation(n.getDefaultMinActivation());
+        else{
+        	double sumOfChildMinActiv = 0.0;
+        	Set<Node> children = getChildren(n);
+            for(Node child: children)
+            	sumOfChildMinActiv += child.getMinActivation();
+            
+            n.setMinActivation(sumOfChildMinActiv * upscale);            
+        }  
+    }
+	
+	private void updateMaxActivation(Linkable n){
+	    if(isBottomLinkable(n))
+	        n.setMaxActivation(n.getDefaultMaxActivation());
+	    else{
+	    	double sumOfChildMaxActiv = 0.0;
+	    	Set<Node> children = getChildren(n);
+	    	for(Node child: children)
+	        	sumOfChildMaxActiv += child.getMaxActivation();
+	        
+	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
+	    }    
+	}//updateMaxActivation
+	
+	private void updateSelectionThreshold(Linkable n){
+		//M.p(n.getLabel() + " is updating selection threshold");		
+		double min = n.getMinActivation();
+		double max = n.getMaxActivation();
+		double threshold = selectivity*(max - min) + min;
+		n.setSelectionThreshold(threshold);
+	}    
+	
+    public boolean isBottomLinkable(Linkable n) {
+    	String label = n.getLabel();
+		Set<Link> links = linkMap.get(n);
+		if(links != null){
+			for(Link link: links){
+				Linkable source = link.getSource();
+				if(source instanceof Node && !source.equals(n))//if source is a child of n
+					return false;
+			}//for
+		}
+		return true;
+	}
+    
+	public boolean isTopNode(Linkable n) {
+		Set<Link> links = linkMap.get(n);
+		if(links != null){
+			for(Link link: links){
+				Linkable sink = link.getSink();
+				if(sink instanceof Node && !sink.equals(n))//if source is a child of n
+					return false;
+			}//for
+		}
+		return false;
+	}
+
+	public Set<Node> getChildren(Linkable n) {
+		Set<Link> links = linkMap.get(n);
+		Set<Node> children = new HashSet<Node>();
+		for(Link link: links){
+			Linkable source = link.getSource();
+			if(source instanceof Node && !source.equals(n))
+				children.add((Node)source);			
+		}
+		return children;		
+	}
+	
+	public Set<Linkable> getParents(Linkable l) {
+		String s =  l.getLabel();
+		//printLinkMap();
+		
+		Set<Linkable> keys = linkMap.keySet();
+		//System.out.println(keys.size()  + " sdflsdkjfdslkfjsdlkfjsdlkjfdlskfjldskj");
+		for(Linkable l2: keys)
+			if(l2.equals(1))
+				System.out.println("SDFSDSDFSDFA");
+		
+		Set<Link> links = linkMap.get(l);
+		Set<Linkable> parents = new HashSet<Linkable>();
+		if(links != null){
+			for(Link link: links){
+				Linkable sink = link.getSink();
+				if(sink instanceof Node && !sink.equals(l)){
+					M.p(sink.getLabel() + " has parent " + sink.getLabel());
+					parents.add((Node)sink);			
+				}
+			}
+		}
+		return parents;
+	}
+	
 	
 	/**
 	 * You would still need to delete the link object l!
@@ -225,7 +285,7 @@ public class Graph {
 	}//public void deleteNode(Linkable n)
 	
 	public void addChild(Node child, Node parent){	
-		Link l = new Link(child, parent, LinkType.child, nextLinkID());
+		Link l = new Link(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
@@ -242,9 +302,8 @@ public class Graph {
 		updateLayerDepth(parent);
 	}//addChild
 	
-	
 	public void addParent(Node parent, Node child){
-		Link l = new Link(child, parent, LinkType.child, nextLinkID());
+		Link l = new Link(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(child).add(l))
 			linkCount++;
@@ -259,11 +318,6 @@ public class Graph {
 		updateLayerDepth(child);
 		updateLayerDepth(parent);		
 	}//addParent
-	
-	public long nextLinkID(){
-		//TODO: Work on linkCount!!!!
-		return linkCount;
-	}
     
     public Set<Node> getNodes(){    	
     	return nodes;
@@ -280,56 +334,26 @@ public class Graph {
     	return true;
     }
     
-    public boolean isBottomNode(Node n) {
-		Set<Link> links = linkMap.get(n);
-		if(links != null){
-			for(Link link: links){
-				Linkable source = link.getSource();
-				if(source instanceof Node && !source.equals(n))//if source is a child of n
-					return false;
-			}//for
-		}
-		return true;
-	}
-    
-	public boolean isTopNode(Node n) {
-		Set<Link> links = linkMap.get(n);
-		if(links != null){
-			for(Link link: links){
-				Linkable sink = link.getSink();
-				if(sink instanceof Node && !sink.equals(n))//if source is a child of n
-					return false;
-			}//for
-		}
-		return false;
-	}
-
-	public Set<Node> getChildren(Node n) {
-		Set<Link> links = linkMap.get(n);
-		Set<Node> children = new HashSet<Node>();
-		for(Link link: links){
-			Linkable source = link.getSource();
-			if(source instanceof Node && !source.equals(n))
-				children.add((Node)source);			
-		}
-		return children;		
-	}
-	
-	public Set<Node> getParents(Node n) {
-		Set<Link> links = linkMap.get(n);
-		Set<Node> parents = new HashSet<Node>();
-		if(links != null){
-			for(Link link: links){
-				Linkable sink = link.getSink();
-				if(sink instanceof Node && !sink.equals(n))
-					parents.add((Node)sink);			
-			}
-		}
-		return parents;
-	}
 
 	public void setSelectivity(Double o) {
 		selectivity = o;		
 	}
 
+	public void printNodeActivations() {
+		for(Node n: nodes)
+			n.printActivationString();
+	}
+
+	public void printLinkMap() {
+		Set<Linkable> keys = linkMap.keySet();
+		
+		for(Linkable key: keys){
+			System.out.println("Linkable " + key.getLabel() + " has links ");
+			Set<Link> links = linkMap.get(key);
+			for(Link l: links)
+				System.out.println("Source: " + l.getSource().toString() + " sink " + l.getSink().toString());
+			System.out.println();
+		}
+		
+	}
 }//public class LinkMap

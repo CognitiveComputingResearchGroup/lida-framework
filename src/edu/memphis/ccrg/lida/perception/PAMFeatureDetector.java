@@ -8,6 +8,11 @@ public class PAMFeatureDetector implements FeatureDetector{
 	public DetectBehavior detectBehav;
 	private Node pamNode;
 	
+	public PAMFeatureDetector(Node n, DetectBehavior b){
+		detectBehav = b;
+		pamNode = n;
+	}
+	
 	public PAMFeatureDetector(PAMFeatureDetector n){
 		this.detectBehav = n.detectBehav;
 		pamNode = n.pamNode;
@@ -20,15 +25,18 @@ public class PAMFeatureDetector implements FeatureDetector{
     	}
     	
     	double amountToExcite = detectBehav.getExcitation(pamNode.getLabel(), sc);
-    	M.p(pamNode.getLabel() + " exciting this much: " + amountToExcite);
-    	
+//    	M.p(pamNode.getLabel() + " exciting this much: " + amountToExcite);
+//    	
     	pamNode.excite(amountToExcite);
-    	pamNode.synchronize();    	
-    	M.p(" result of detecting " + pamNode.getLabel() + " "  + pamNode.getTotalActivation());
+    	pamNode.synchronize();  
+    	//M.p(pamNode.toActivationString());
+//    	M.p(" result of detecting " + pamNode.getLabel() + " "  + pamNode.getTotalActivation());
     }    
 
 	public void setDetectBehavior(DetectBehavior b){
     	detectBehav = b;
     }
+	
+	public Node getNode(){return pamNode;}
 	
 }

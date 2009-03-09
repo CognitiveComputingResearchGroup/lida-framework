@@ -23,7 +23,7 @@ public interface PAMInterface{
 	 * Each nodes added must be register which requires
 	 * the refresh and buildLayerMap operations (see PAM.java) 
 	 */
-	public void addToPAM(Set<Node> nodes, Set<Link> links);
+	public void addToPAM(Set<Node> nodes, Set<PAMFeatureDetector> featureDetectors, Set<Link> links);
 	
 	/**
 	 * Sense the current SenseContent
@@ -46,7 +46,5 @@ public interface PAMInterface{
 	public void sendPercept(boolean shouldPrintPercept);	
 	public void decay();
 	public void setDecayCurve(DecayBehavior c);
-	
-	public Set<Node> getNodes();	
-	public Graph getLinkMap();
+
 }//interface PAMinterface

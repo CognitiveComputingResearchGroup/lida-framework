@@ -14,6 +14,9 @@ public class Link implements Linkable{
     private Linkable source;    
     private LinkType type; 
     private long linkID;
+	private double activation;
+	private final double MIN_ACTIVATION = 0.0;
+	private final double MAX_ACTIVATION = 1.0;
     
     public Link(Linkable source, Linkable sink, LinkType type, long id){        
         this.source = source;
@@ -58,4 +61,53 @@ public class Link implements Linkable{
     public LinkType getType(){
     	return type;
     }
+
+	public void excite(double amount) {
+		activation += amount;		
+	}
+
+	public double getMaxActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getMinActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setMaxActivation(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setMinActivation(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSelectionThreshold(double threshold) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public double getDefaultMaxActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getDefaultMinActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getCurrentActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String getLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

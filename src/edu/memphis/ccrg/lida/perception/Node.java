@@ -22,8 +22,8 @@ public class Node implements NodeInterface, Linkable{
     protected final int        TYPE_UNDEF = -1;      
     protected final int        TYPE_OBJECT = 1;
     protected final int        TYPE_CATEGORY = 2;
-    protected final double     MIN_NODE_ACTIVATION = 0.0;    
-    protected final double     MAX_NODE_ACTIVATION = 1.0;
+    protected final double     MIN_ACTIVATION = 0.0;    
+    protected final double     MAX_ACTIVATION = 1.0;
     
     /** Activation required for node to be part of the percept.
      *  Bounded by minActivation and maxActivation
@@ -56,8 +56,8 @@ public class Node implements NodeInterface, Linkable{
      * @param type
      */
     public Node(long id, double bla, double ca, String label, int type){    	
-    	minActivation = MIN_NODE_ACTIVATION;
-    	maxActivation = MAX_NODE_ACTIVATION;
+    	minActivation = MIN_ACTIVATION;
+    	maxActivation = MAX_ACTIVATION;
     	totalActivation = bla + ca;  
         baselevelActivation = bla;
         currentActivation = ca;
@@ -112,7 +112,7 @@ public class Node implements NodeInterface, Linkable{
      * @see     Parameters#ACTIVATION_LOWERBOUND
      */
     public boolean hasBeenSynchronized(){
-        return totalActivation != MIN_NODE_ACTIVATION;
+        return totalActivation != MIN_ACTIVATION;
     }
     
     /**
@@ -170,7 +170,7 @@ public class Node implements NodeInterface, Linkable{
      * 
      * @param activ
      */
-    protected void setMinActivation(double activ){
+    public void setMinActivation(double activ){
     	minActivation = activ;
     }
     
@@ -178,7 +178,7 @@ public class Node implements NodeInterface, Linkable{
      * 
      * @param activ
      */
-    protected void setMaxActivation(double activ){
+    public void setMaxActivation(double activ){
     	maxActivation = activ; 
     }//private void updateMaxActivation()
     
@@ -186,7 +186,7 @@ public class Node implements NodeInterface, Linkable{
      * 
      * @param threshold
      */
-    protected void setSelectionThreshold(double threshold) {
+    public void setSelectionThreshold(double threshold) {
     	selectionThreshold = threshold;
 //    	if(label.equals("pain") || label.equals("pit")){
 //    		M.p("before " + label + " " + maxActivation + " " + minActivation);
@@ -211,6 +211,7 @@ public class Node implements NodeInterface, Linkable{
 	 * @param n
 	 */
 	public boolean equals(Node n){
+		M.p("using Equals comparing " + label + " to " + n.getLabel());
 		if(!(n instanceof Node))
 			return false;
 		return nodeID == n.nodeID && type == n.type;
@@ -273,8 +274,8 @@ public class Node implements NodeInterface, Linkable{
     }
     
     public double getCurrentActivation() {
-    	if(label.equals("breeze"))
-    		M.p("cur activ " + currentActivation);
+//    	if(label.equals("breeze"))
+//    		M.p("cur activ " + currentActivation);
         return currentActivation;
     }
     
@@ -295,7 +296,7 @@ public class Node implements NodeInterface, Linkable{
      *
      */
     public String toString() {
-    	String s = "Node_name: " + getLabel() + ", Total_activ: ";
+    	String s = "Node name: " + getLabel() + ", Total_activ: ";
     	if(!this.equals(null))
     		s += M.rnd(totalActivation);
     	else
@@ -303,9 +304,19 @@ public class Node implements NodeInterface, Linkable{
     	return s;
     }
     
-    public String toActivationString() {
-        return toString() + "\t" + totalActivation + " --> " + 
-        		currentActivation + "," + baselevelActivation;
+    public void printActivationString() {
+        System.out.println(toString() + "\t" + totalActivation + " = " + 
+        		currentActivation + " + " + baselevelActivation);
     }
+
+	public double getDefaultMaxActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double getDefaultMinActivation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }//class Node

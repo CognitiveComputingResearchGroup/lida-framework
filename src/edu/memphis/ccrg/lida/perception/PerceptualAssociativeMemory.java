@@ -43,11 +43,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
-	public Set<FeatureDetector> featureDetectors;
+	public Set<PAMFeatureDetector> featureDetectors;
 	private Graph graph;
-	
-	private Map<Integer, List<Node>> layerMap;
-    private List<Percept> perceptHistory;
     
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
@@ -57,10 +54,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     private BroadcastContent broadcastContent;//Shared variable	
       
     public PerceptualAssociativeMemory(){
-    	featureDetectors = new HashSet<FeatureDetector>();
+    	featureDetectors = new HashSet<PAMFeatureDetector>();
     	graph = new Graph(upscale, selectivity);
-    	layerMap = new HashMap<Integer, List<Node>>();
-    	perceptHistory = new ArrayList<Percept>();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContent();
@@ -87,15 +82,12 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
-    public void addToPAM(Set<Node> nodesToAdd, Set<Link> linkSet){
+    public void addToPAM(Set<Node> nodesToAdd, Set<PAMFeatureDetector> featureDetectors, Set<Link> linkSet){
+    	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd);
-    	graph.addLinkSet(linkSet);
-    	for(Node n: nodesToAdd){
-    		if(n != null && n instanceof FeatureDetector){
-    		//	featureDetectors.add(n);
-    		}
-    	}///for each node 
+    	graph.addLinkSet(linkSet);    	
     	
+    	//graph.printLinkMap();
     }//public void addToPAM(Set<Node> nodes, Set<Link> links)   
        
     
@@ -122,55 +114,37 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     //}
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
-    public void sense(){
-    	//System.out.println("num nodes is " + nodes.size());
-    	
+    public void sense(){    	
     	SensoryContent sc = null;
     	synchronized(this){
     		sc = (SensoryContent)sensoryContent.getThis();
     	}
   
-    	//for(FeatureDetectorInterface n: fDetectorNodes)
-    	//	if(n instanceof FeatureDetectorInterface)
-    	//		n.detect(sc);    			
-    	
-	      	
+    	for(PAMFeatureDetector d: featureDetectors)
+    		d.detect(sc);  	     
     }//public void sense()
         
     /**
      * 
      */
-    public void passActivation(){
-    	Set<Node> nodes = graph.getNodes();
-//    	M.p("AREdsfs " + nodes.size());
-    	for(Node n: nodes){
-    		n.excite(0.0);    
-    		boolean isTopNode = graph.isTopNode(n);
-    		M.p(n.getLabel() + " is a top node " + isTopNode);
-    		if(!isTopNode) {
-    			double energy = n.getCurrentActivation() * upscale;
-    			M.p("the energy set to my parents is " + energy + " up " + upscale);
-    			
-    			Set<Node> parents = graph.getParents(n);   			
-//    			M.p(" I have " + parents.size() + " parents.");
-    			
-    			if(parents != null)
-    				for(Node parent: parents)
-    					parent.excite(energy);
-    		}//if not a root node    		
-    	}//for each node
+    public void passActivation(){    	
+    	Map<Integer, Set<Linkable>> layerMap = graph.createLayerMap();
+    	int layers = layerMap.keySet().size();
+      	for(int i = 0; i < layers - 1; i++){
+      		Set<Linkable> layerLinkables = layerMap.get(i);
+      		for(Linkable l: layerLinkables){
+      			double currentActivation = l.getCurrentActivation();
+      			Set<Linkable> parents = graph.getParents(l);
+      			for(Linkable parent: parents){
+      				double energy = currentActivation * upscale;
+      				parent.excite(energy);
+      			}//for each parent
+      		}//for each linkable in a given layer
+      	}//for each layer
     	
     	syncNodeActivation();   
-    	downscale = downscale + 1 - 1;
     	//TODO:this is where the episodic buffer activation may come into play    	
     }//public void passActivation
-    
-    public void setExciteBehavior(ExciteBehavior behavior){
-    	Set<Node> nodes = graph.getNodes();
-    	for(Node n: nodes){
-    		n.setExciteBehavior(behavior);
-    	}
-    }//public void setExciteBehavior   
     
     /**
      * Synchronizes this PAM by updating the percept and percept history. First
@@ -180,30 +154,21 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      */
     private void syncNodeActivation(){
         Percept percept = new Percept();
-       
-        //this.printNodeActivations();
         Set<Node> nodes = graph.getNodes();
-        for(Node node: nodes) {
-            node.synchronize();//Needed since excite changes current but not totalActivation
-//            M.p( " after synching " + node.getTotalActivation());
+        for(Node node: nodes){
+            node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant())//Based on totalActivation
                 percept.add(new Node(node));
-        }//for        
-        
-        //System.out.println("size of percept is " + percept.size());
-        //percept.print();
-        
+        }//for                
         pamContent.setNodes(new Percept(percept));        
-        perceptHistory.add(new Percept(percept));
     }//private void syncNodeActivation
     
     public void sendPercept(boolean shouldPrint){
     	if(shouldPrint)
     		pamContent.print();
     	    	
-    	for(int i = 0; i < pamListeners.size(); i++){
-			(pamListeners.get(i)).receivePAMContent(pamContent);
-    	}
+    	for(int i = 0; i < pamListeners.size(); i++)
+			pamListeners.get(i).receivePAMContent(pamContent);
     }
     
     public void decay() {
@@ -217,19 +182,12 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 		for(Node n: nodes)
 			n.setDecayBehav(c);		
 	}
-              
-	//SIMPLE METHODS
-       
-    /**
-     * returns a linked list of node objects
-     * @return Linked list of node objects
-     */    
-    public Set<Node> getNodes() {
-        return graph.getNodes();
-    }
-    
-    public Graph getLinkMap(){
-    	return graph;
-    }
+	
+    public void setExciteBehavior(ExciteBehavior behavior){
+    	Set<Node> nodes = graph.getNodes();
+    	for(Node n: nodes){
+    		n.setExciteBehavior(behavior);
+    	}
+    }//public void setExciteBehavior   
 
 }//class PAM.java
