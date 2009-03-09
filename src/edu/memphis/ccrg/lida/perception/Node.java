@@ -123,11 +123,16 @@ public class Node implements NodeInterface, Linkable{
      *          this node
      */
     public void excite(double excitation){ 	
+//    	M.p("Node: " + label);
 //    	M.p("tot activ " + totalActivation);
 //    	M.p("cur activ " + currentActivation);
 //    	M.p("excit     " + excitation);
     	
+    	
         currentActivation = exciteBehavior.excite(currentActivation, excitation);//+= Math.abs(excitation);
+//        
+//        
+//        M.p("resulting cur activ.: " + currentActivation + "\n");
     }
     
     /**
@@ -161,7 +166,7 @@ public class Node implements NodeInterface, Linkable{
       * @see        #selectionThreshold
       */
     public boolean isRelevant(){   
-//    	M.p(label + " total " + M.rnd(totalActivation) + " thresh " + selectionThreshold);
+    	M.p(label + " total " + M.rnd(totalActivation) + " thresh " + selectionThreshold);
     	
         return (totalActivation >= selectionThreshold);
     }
@@ -188,9 +193,6 @@ public class Node implements NodeInterface, Linkable{
      */
     public void setSelectionThreshold(double threshold) {
     	selectionThreshold = threshold;
-//    	if(label.equals("pain") || label.equals("pit")){
-//    		M.p("before " + label + " " + maxActivation + " " + minActivation);
-//    	}
     }
     
     /**
@@ -210,11 +212,13 @@ public class Node implements NodeInterface, Linkable{
 	/**
 	 * @param n
 	 */
-	public boolean equals(Node n){
-		M.p("using Equals comparing " + label + " to " + n.getLabel());
-		if(!(n instanceof Node))
+	public boolean equals(Object obj){
+		Node other = (Node)obj;
+		if(other != null)
+			M.p("using Equals comparing " + label + " to " + other.getLabel());
+		if(!(other instanceof Node))
 			return false;
-		return nodeID == n.nodeID && type == n.type;
+		return nodeID == other.nodeID && type == other.type;
 	}	
 	
 	/**
@@ -274,8 +278,6 @@ public class Node implements NodeInterface, Linkable{
     }
     
     public double getCurrentActivation() {
-//    	if(label.equals("breeze"))
-//    		M.p("cur activ " + currentActivation);
         return currentActivation;
     }
     

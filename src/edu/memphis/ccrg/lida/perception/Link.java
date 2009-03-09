@@ -32,10 +32,11 @@ public class Link implements Linkable{
     	linkID = l.linkID;
     }
 
-	public boolean equals(Link l){
-    	if(!(l instanceof Link))
+	public boolean equals(Object obj){
+		Link other = (Link)obj;
+    	if(!(other instanceof Link))
 			return false;    	
-		return (linkID == l.linkID) && (type == l.type);
+		return (linkID == other.linkID) && (type == other.type);
 	}
     
     public int hashCode() { 

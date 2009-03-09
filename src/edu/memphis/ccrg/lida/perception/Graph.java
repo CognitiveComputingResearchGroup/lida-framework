@@ -74,7 +74,7 @@ public class Graph {
 	
 	public void addNodes(Set<Node> nodesToAdd) {
 		for(Node n: nodesToAdd){
-			nodes.add(new Node(n));
+			nodes.add(n);
 			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
 		}
 		createLayerMap();
@@ -83,7 +83,6 @@ public class Graph {
 	
 	//TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
     public int updateLayerDepth(Node n) {
-    	String s = n.getLabel();
         n.setLayerDepth(0);
         
         if(isBottomLinkable(n))
@@ -104,7 +103,6 @@ public class Graph {
 	
 	public Map<Integer, Set<Linkable>> createLayerMap(){
         for(Node node: nodes){
-        	String label = node.getLabel();
             int layerDepth = node.getLayerDepth();
             Set<Linkable> layerNodes = layerMap.get(layerDepth);
             
@@ -168,7 +166,6 @@ public class Graph {
 	}    
 	
     public boolean isBottomLinkable(Linkable n) {
-    	String label = n.getLabel();
 		Set<Link> links = linkMap.get(n);
 		if(links != null){
 			for(Link link: links){
@@ -228,7 +225,7 @@ public class Graph {
 				//System.out.println("Linkable is " + whatIwant.getLabel() + " link has source " + source.getLabel() + " has parent " + sink.getLabel());
 				
 				if(sink instanceof Node && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
-					M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
+					//M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
 					parents.add((Node)sink);			
 				}
 			}

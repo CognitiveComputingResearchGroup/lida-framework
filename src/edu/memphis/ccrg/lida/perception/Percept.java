@@ -22,7 +22,7 @@ public class Percept extends LinkedList<Node>{
     }
     
     public void print(){
-    	System.out.println("PERCEPT:");
+    	System.out.println("PERCEPT: size: " + this.size());
     	int size = this.size();
     	for(int i = 0; i < size; i++){
     		Node temp = this.get(i);

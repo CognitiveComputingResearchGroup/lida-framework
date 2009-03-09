@@ -29,7 +29,7 @@ public interface NodeInterface{
 	public void decay();	
 	public void setDecayBehav(DecayBehavior c);
 	
-	public boolean equals(Node n);
+	public boolean equals(Object obj);
 	public int hashCode();
 
 	public void setValue(Map<String, Object> values);
