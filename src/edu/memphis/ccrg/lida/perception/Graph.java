@@ -210,7 +210,7 @@ public class Graph {
 		return children;		
 	}
 	
-	public Set<Node> getParents(Node l) {
+	public Set<Node> getParents(Node n) {
 //		String s =  l.getLabel();
 //		
 //		Set<Linkable> keys = linkMap.keySet();
@@ -222,25 +222,23 @@ public class Graph {
 //			if(l2.getID() == l.getID())
 //				whatIwant = l2;
 //		}
-		
-//		Set<Link> links = linkMap.get(l);
 //		Set<LinkImpl> links = linkMap.get(whatIwant);
+		
+		Set<LinkImpl> links = linkMap.get(n);
+
 		Set<Node> parents = new HashSet<Node>();
-//		if(links != null){
-//			for(LinkImpl link: links){
-//				
-//				Linkable sink = link.getSink();
-//				Linkable source = link.getSource();
-//				
-//				//System.out.println("Linkable is " + whatIwant.getLabel() + " link has source " + source.getLabel() + " has parent " + sink.getLabel());
-//				
-//				if(sink instanceof PamNodeImpl && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
-//					//M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
-//					parents.add((PamNodeImpl)sink);			
-//				}
-//			}
-//			//M.p("");
-//		}
+		if(links != null){
+			for(LinkImpl link: links){
+				
+				Linkable sink = link.getSink();
+				Linkable source = link.getSource();
+		
+				if(sink instanceof PamNodeImpl && !sink.equals(n)){
+					//M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
+					parents.add((PamNodeImpl)sink);			
+				}
+			}//for each link of n
+		}//if links is not null
 		return parents;
 	}
 	

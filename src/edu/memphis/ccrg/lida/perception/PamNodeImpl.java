@@ -218,11 +218,9 @@ public class PamNodeImpl implements PamNode{
 	 * @param n
 	 */
 	public boolean equals(Object obj){
-		PamNodeImpl other = (PamNodeImpl)obj;
-		if(other != null)
-			M.p("using Equals comparing " + label + " to " + other.getLabel());
-		if(!(other instanceof PamNodeImpl))
+		if(!(obj instanceof PamNodeImpl))
 			return false;
+		PamNodeImpl other = (PamNodeImpl)obj;
 		return nodeID == other.nodeID && type == other.type;
 	}	
 	
