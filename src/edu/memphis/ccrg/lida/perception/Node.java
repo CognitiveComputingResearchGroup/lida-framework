@@ -273,6 +273,8 @@ public class Node implements NodeInterface, Linkable{
     }
     
     public double getCurrentActivation() {
+    	if(label.equals("breeze"))
+    		M.p("cur activ " + currentActivation);
         return currentActivation;
     }
     

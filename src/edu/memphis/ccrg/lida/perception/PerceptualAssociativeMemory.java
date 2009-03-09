@@ -43,7 +43,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
-	public Set<FeatureDetectorInterface> fDetectorNodes;
+	public Set<FeatureDetector> featureDetectors;
 	private Graph graph;
 	
 	private Map<Integer, List<Node>> layerMap;
@@ -57,7 +57,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     private BroadcastContent broadcastContent;//Shared variable	
       
     public PerceptualAssociativeMemory(){
-    	fDetectorNodes = new HashSet<FeatureDetectorInterface>();
+    	featureDetectors = new HashSet<FeatureDetector>();
     	graph = new Graph(upscale, selectivity);
     	layerMap = new HashMap<Integer, List<Node>>();
     	perceptHistory = new ArrayList<Percept>();
@@ -91,8 +91,8 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     	graph.addNodes(nodesToAdd);
     	graph.addLinkSet(linkSet);
     	for(Node n: nodesToAdd){
-    		if(n != null && n instanceof FeatureDetectorInterface){
-    			fDetectorNodes.add(new DetectorNode((DetectorNode)n));
+    		if(n != null && n instanceof FeatureDetector){
+    		//	featureDetectors.add(n);
     		}
     	}///for each node 
     	
@@ -130,9 +130,9 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     		sc = (SensoryContent)sensoryContent.getThis();
     	}
   
-    	for(FeatureDetectorInterface n: fDetectorNodes)
-    		if(n instanceof FeatureDetectorInterface)
-    			n.detect(sc);    			
+    	//for(FeatureDetectorInterface n: fDetectorNodes)
+    	//	if(n instanceof FeatureDetectorInterface)
+    	//		n.detect(sc);    			
     	
 	      	
     }//public void sense()
@@ -148,12 +148,11 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     		boolean isTopNode = graph.isTopNode(n);
     		M.p(n.getLabel() + " is a top node " + isTopNode);
     		if(!isTopNode) {
-    			double energy = n.getCurrentActivation()*upscale;
-    			M.p("the energy set to my parents is " + energy);
+    			double energy = n.getCurrentActivation() * upscale;
+    			M.p("the energy set to my parents is " + energy + " up " + upscale);
     			
-    			Set<Node> parents = graph.getParents(n);
-    			
-    			M.p(" I have " + parents.size() + " parents.");
+    			Set<Node> parents = graph.getParents(n);   			
+//    			M.p(" I have " + parents.size() + " parents.");
     			
     			if(parents != null)
     				for(Node parent: parents)
@@ -186,7 +185,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
         Set<Node> nodes = graph.getNodes();
         for(Node node: nodes) {
             node.synchronize();//Needed since excite changes current but not totalActivation
-            M.p( " after synching " + node.getTotalActivation());
+//            M.p( " after synching " + node.getTotalActivation());
             if(node.isRelevant())//Based on totalActivation
                 percept.add(new Node(node));
         }//for        
