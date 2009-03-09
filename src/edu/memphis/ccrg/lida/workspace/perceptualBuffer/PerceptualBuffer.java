@@ -48,7 +48,7 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
 		storePAMContent();
 		for(int i = 0; i < pbListeners.size(); i++){
 			Percept p = new Percept(perceptBuffer.get(0));
-			//p.print();
+			p.print();
 			PBufferContent content = new PBufferContent(p);
 			pbListeners.get(i).receivePBufferContent(content);
 			
