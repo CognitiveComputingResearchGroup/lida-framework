@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.perception;
 
-import edu.memphis.ccrg.lida.perception.Link;
+import edu.memphis.ccrg.lida.perception.LinkImpl;
 import edu.memphis.ccrg.lida.perception.LinkType;
 import edu.memphis.ccrg.lida.perception.Linkable;
 
@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.perception.Linkable;
  *
  * @author Ryan McCall
  */
-public class Link implements Linkable{
+public class LinkImpl implements Linkable{
     
     private Linkable sink;    
     private Linkable source;    
@@ -18,14 +18,14 @@ public class Link implements Linkable{
 	private final double MIN_ACTIVATION = 0.0;
 	private final double MAX_ACTIVATION = 1.0;
     
-    public Link(Linkable source, Linkable sink, LinkType type, long id){        
+    public LinkImpl(Linkable source, Linkable sink, LinkType type, long id){        
         this.source = source;
         this.sink = sink;   
         this.type = type;
         linkID = id;
     }
     
-    public Link(Link l){
+    public LinkImpl(LinkImpl l){
     	sink = l.sink;
     	source = l.source;
     	type = l.type;
@@ -33,8 +33,8 @@ public class Link implements Linkable{
     }
 
 	public boolean equals(Object obj){
-		Link other = (Link)obj;
-    	if(!(other instanceof Link))
+		LinkImpl other = (LinkImpl)obj;
+    	if(!(other instanceof LinkImpl))
 			return false;    	
 		return (linkID == other.linkID) && (type == other.type);
 	}
@@ -47,8 +47,8 @@ public class Link implements Linkable{
     }
 
     
-    public Link copy(Link l){
-    	return new Link(l);
+    public LinkImpl copy(LinkImpl l){
+    	return new LinkImpl(l);
     }
    
     public Linkable getSource() {

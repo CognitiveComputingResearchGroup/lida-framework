@@ -11,7 +11,7 @@ import java.util.TreeSet;
 import edu.memphis.ccrg.lida.util.M;
    
 public class Graph {
-	private Map<Linkable, Set<Link>> linkMap;
+	private Map<Linkable, Set<LinkImpl>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
 	private Set<PamNodeImpl> nodes;
 	private Map<Integer, Set<Linkable>> layerMap;
@@ -19,7 +19,7 @@ public class Graph {
 	private double selectivity = 0.9;
 
 	public Graph(double upscale, double selectivity){
-		linkMap = new HashMap<Linkable, Set<Link>>();
+		linkMap = new HashMap<Linkable, Set<LinkImpl>>();
 		nodes = new HashSet<PamNodeImpl>();
 		layerMap = new HashMap<Integer, Set<Linkable>>();
 		this.upscale = upscale;
@@ -36,25 +36,25 @@ public class Graph {
 			if(l instanceof PamNodeImpl){
 				newL = new PamNodeImpl((PamNodeImpl)l);						
 			
-				Set<Link> newLinks = new HashSet<Link>();
+				Set<LinkImpl> newLinks = new HashSet<LinkImpl>();
 				this.linkMap.put(newL,newLinks);
 				tempMap.put((PamNodeImpl)l, (PamNodeImpl)newL);
 			}
 		}		
 	}//public LinkMap
 	
-	public void addLinkSet(Set<Link> links){
-		for(Link l: links)
-			addLink(new Link(l));
+	public void addLinkSet(Set<LinkImpl> links){
+		for(LinkImpl l: links)
+			addLink(new LinkImpl(l));
 	}//public void addLinkSet(Set<Link> links)
 
-	public boolean addLink(Link l){
+	public boolean addLink(LinkImpl l){
 		boolean result1 = false;
 		boolean result2 = false;
 		Linkable end = l.getSource();
-		Set<Link> tempLinks = linkMap.get(end);
+		Set<LinkImpl> tempLinks = linkMap.get(end);
 		if(tempLinks == null){
-			tempLinks=new HashSet<Link>();
+			tempLinks=new HashSet<LinkImpl>();
 			linkMap.put(end, tempLinks);
 		}
 		result1 = tempLinks.add(l);
@@ -62,7 +62,7 @@ public class Graph {
 		end = l.getSink();
 		tempLinks = linkMap.get(end);
 		if(tempLinks == null){
-			tempLinks = new HashSet<Link>();
+			tempLinks = new HashSet<LinkImpl>();
 			linkMap.put(end, tempLinks);
 		}
 		result2 = tempLinks.add(l);
@@ -168,9 +168,9 @@ public class Graph {
 	}    
 	
     public boolean isBottomLinkable(Linkable n) {
-		Set<Link> links = linkMap.get(n);
+		Set<LinkImpl> links = linkMap.get(n);
 		if(links != null){
-			for(Link link: links){
+			for(LinkImpl link: links){
 				Linkable source = link.getSource();
 				if(source instanceof PamNodeImpl && !source.equals(n))//if source is a child of n
 					return false;
@@ -180,9 +180,9 @@ public class Graph {
 	}
     
 	public boolean isTopNode(Linkable n) {
-		Set<Link> links = linkMap.get(n);
+		Set<LinkImpl> links = linkMap.get(n);
 		if(links != null){
-			for(Link link: links){
+			for(LinkImpl link: links){
 				Linkable sink = link.getSink();
 				if(sink instanceof PamNodeImpl && !sink.equals(n))//if source is a child of n
 					return false;
@@ -192,9 +192,9 @@ public class Graph {
 	}
 
 	public Set<PamNodeImpl> getChildren(Linkable n) {
-		Set<Link> links = linkMap.get(n);
+		Set<LinkImpl> links = linkMap.get(n);
 		Set<PamNodeImpl> children = new HashSet<PamNodeImpl>();
-		for(Link link: links){
+		for(LinkImpl link: links){
 			Linkable source = link.getSource();
 			if(source instanceof PamNodeImpl && !source.equals(n))
 				children.add((PamNodeImpl)source);			
@@ -216,10 +216,10 @@ public class Graph {
 		}
 		
 		//Set<Link> links = linkMap.get(l);
-		Set<Link> links = linkMap.get(whatIwant);
+		Set<LinkImpl> links = linkMap.get(whatIwant);
 		Set<Linkable> parents = new HashSet<Linkable>();
 		if(links != null){
-			for(Link link: links){
+			for(LinkImpl link: links){
 				
 				Linkable sink = link.getSink();
 				Linkable source = link.getSource();
@@ -242,9 +242,9 @@ public class Graph {
 	 * 
 	 * @param l
 	 */
-	public void deleteLink(Link l){
-		Set<Link> sourceLinks = linkMap.get(l.getSource());
-		Set<Link> sinkLinks = linkMap.get(l.getSink());
+	public void deleteLink(LinkImpl l){
+		Set<LinkImpl> sourceLinks = linkMap.get(l.getSource());
+		Set<LinkImpl> sinkLinks = linkMap.get(l.getSink());
 		
 		if(sourceLinks != null)
 			sourceLinks.remove(l);
@@ -254,14 +254,14 @@ public class Graph {
 	
 	}//public void deleteLink(Link l)
 	
-	public Set<Link> getLinks(Linkable l){
+	public Set<LinkImpl> getLinks(Linkable l){
 		return linkMap.get(l);	
 	}//public Set<Link> getLinks(Node n)
 	
-	public Set<Link> getLinks(Linkable NorL, LinkType type){
-		Set<Link> result = linkMap.get(NorL);
+	public Set<LinkImpl> getLinks(Linkable NorL, LinkType type){
+		Set<LinkImpl> result = linkMap.get(NorL);
 		if(result != null){
-			for(Link l: result){
+			for(LinkImpl l: result){
 				if(l.getType() != type)//remove links that don't match specified type
 					result.remove(l);
 			}//for each link
@@ -272,11 +272,11 @@ public class Graph {
 	//TODO: Happens to the other nodes if we delete a Linkable that connects them?
 	//TODO: What is their layer depth then?22
 	public void deleteLinkable(Linkable n){
-		Set<Link> tempLinks = linkMap.get(n);
-		Set<Link> otherLinks;
+		Set<LinkImpl> tempLinks = linkMap.get(n);
+		Set<LinkImpl> otherLinks;
 		Linkable other;
 		
-		for(Link l: tempLinks){
+		for(LinkImpl l: tempLinks){
 			other = l.getSink(); 
 			if(!other.equals(n)){ 
 				otherLinks = linkMap.get(other);
@@ -294,14 +294,14 @@ public class Graph {
 	}//public void deleteNode(Linkable n)
 	
 	public void addChild(PamNodeImpl child, PamNodeImpl parent){	
-		Link l = new Link(child, parent, LinkType.child, (int)(99999*Math.random()));
+		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
 			
-		Set<Link> childsLinks = linkMap.get(child);
+		Set<LinkImpl> childsLinks = linkMap.get(child);
 		if(childsLinks.equals(null)){//If child is not in the map
-			childsLinks = new HashSet<Link>();
+			childsLinks = new HashSet<LinkImpl>();
 			linkMap.put(child, childsLinks);
 		}		
 		childsLinks.add(l);
@@ -312,14 +312,14 @@ public class Graph {
 	}//addChild
 	
 	public void addParent(PamNodeImpl parent, PamNodeImpl child){
-		Link l = new Link(child, parent, LinkType.child, (int)(99999*Math.random()));
+		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(child).add(l))
 			linkCount++;
 		
-		Set<Link> parentsLinks = linkMap.get(parent);
+		Set<LinkImpl> parentsLinks = linkMap.get(parent);
 		if(parentsLinks.equals(null)){
-			parentsLinks = new HashSet<Link>();
+			parentsLinks = new HashSet<LinkImpl>();
 			linkMap.put(parent, parentsLinks);
 		}
 		parentsLinks.add(l);	
@@ -358,8 +358,8 @@ public class Graph {
 		
 		for(Linkable key: keys){
 			System.out.println("Linkable " + key.getLabel() + " has links ");
-			Set<Link> links = linkMap.get(key);
-			for(Link l: links)
+			Set<LinkImpl> links = linkMap.get(key);
+			for(LinkImpl l: links)
 				System.out.println("Source: " + l.getSource().toString() + " sink " + l.getSink().toString());
 			System.out.println();
 		}

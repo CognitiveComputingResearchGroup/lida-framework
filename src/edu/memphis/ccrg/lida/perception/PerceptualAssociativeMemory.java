@@ -82,7 +82,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
-    public void addToPAM(Set<PamNodeImpl> nodesToAdd, Set<PAMFeatureDetector> featureDetectors, Set<Link> linkSet){
+    public void addToPAM(Set<PamNodeImpl> nodesToAdd, Set<PAMFeatureDetector> featureDetectors, Set<LinkImpl> linkSet){
     	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd);
     	graph.addLinkSet(linkSet);    	

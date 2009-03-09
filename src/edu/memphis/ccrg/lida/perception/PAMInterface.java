@@ -23,7 +23,7 @@ public interface PAMInterface{
 	 * Each nodes added must be register which requires
 	 * the refresh and buildLayerMap operations (see PAM.java) 
 	 */
-	public void addToPAM(Set<PamNodeImpl> nodes, Set<PAMFeatureDetector> featureDetectors, Set<Link> links);
+	public void addToPAM(Set<PamNodeImpl> nodes, Set<PAMFeatureDetector> featureDetectors, Set<LinkImpl> links);
 	
 	/**
 	 * Sense the current SenseContent
