@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import edu.memphis.ccrg.lida.perception.Node;
+import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PBroadsListener;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PrevBroadcastContent;

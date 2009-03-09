@@ -5,7 +5,7 @@ package edu.memphis.ccrg.lida.perception;
 
 import java.util.Set;
 import java.util.Map;
-import edu.memphis.ccrg.lida.perception.Node;
+import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.util.DecayBehavior;
 
 /**
@@ -23,7 +23,7 @@ public interface PAMInterface{
 	 * Each nodes added must be register which requires
 	 * the refresh and buildLayerMap operations (see PAM.java) 
 	 */
-	public void addToPAM(Set<Node> nodes, Set<PAMFeatureDetector> featureDetectors, Set<Link> links);
+	public void addToPAM(Set<PamNodeImpl> nodes, Set<PAMFeatureDetector> featureDetectors, Set<Link> links);
 	
 	/**
 	 * Sense the current SenseContent

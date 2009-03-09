@@ -82,7 +82,7 @@ public class PerceptualAssociativeMemory implements PAMInterface,
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
-    public void addToPAM(Set<Node> nodesToAdd, Set<PAMFeatureDetector> featureDetectors, Set<Link> linkSet){
+    public void addToPAM(Set<PamNodeImpl> nodesToAdd, Set<PAMFeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd);
     	graph.addLinkSet(linkSet);    	
@@ -150,17 +150,17 @@ public class PerceptualAssociativeMemory implements PAMInterface,
      * Synchronizes this PAM by updating the percept and percept history. First
      * the percept is cleared, and then all relevant nodes are put in a new
      * percept. Last, the new percept is added to the percept history.
-     * @see Node#synchronize()
+     * @see PamNodeImpl#synchronize()
      */
     private void syncNodeActivation(){
         Percept percept = new Percept();
-        Set<Node> nodes = graph.getNodes();
+        Set<PamNodeImpl> nodes = graph.getNodes();
         int s = nodes.size();
-        for(Node node: nodes){
+        for(PamNodeImpl node: nodes){
             node.synchronize();//Needed since excite changes current but not totalActivation.
             double total = node.getTotalActivation();
             if(node.isRelevant())//Based on totalActivation
-                percept.add(new Node(node));
+                percept.add(new PamNodeImpl(node));
         }//for      
         //percept.print();
         pamContent.setNodes(new Percept(percept));        
@@ -175,20 +175,20 @@ public class PerceptualAssociativeMemory implements PAMInterface,
     }
     
     public void decay() {
-    	Set<Node> nodes = graph.getNodes();
-        for(Node n: nodes)
+    	Set<PamNodeImpl> nodes = graph.getNodes();
+        for(PamNodeImpl n: nodes)
         	n.decay();        
     }//decay
 
 	public void setDecayCurve(DecayBehavior c) {
-		Set<Node> nodes = graph.getNodes();
-		for(Node n: nodes)
+		Set<PamNodeImpl> nodes = graph.getNodes();
+		for(PamNodeImpl n: nodes)
 			n.setDecayBehav(c);		
 	}
 	
     public void setExciteBehavior(ExciteBehavior behavior){
-    	Set<Node> nodes = graph.getNodes();
-    	for(Node n: nodes){
+    	Set<PamNodeImpl> nodes = graph.getNodes();
+    	for(PamNodeImpl n: nodes){
     		n.setExciteBehavior(behavior);
     	}
     }//public void setExciteBehavior   

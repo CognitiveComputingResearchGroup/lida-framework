@@ -13,14 +13,14 @@ import edu.memphis.ccrg.lida.util.M;
 public class Graph {
 	private Map<Linkable, Set<Link>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
-	private Set<Node> nodes;
+	private Set<PamNodeImpl> nodes;
 	private Map<Integer, Set<Linkable>> layerMap;
 	private double upscale = 0.5;
 	private double selectivity = 0.9;
 
 	public Graph(double upscale, double selectivity){
 		linkMap = new HashMap<Linkable, Set<Link>>();
-		nodes = new HashSet<Node>();
+		nodes = new HashSet<PamNodeImpl>();
 		layerMap = new HashMap<Integer, Set<Linkable>>();
 		this.upscale = upscale;
 		this.selectivity = selectivity;
@@ -30,15 +30,15 @@ public class Graph {
 		this(map.upscale, map.selectivity);
 		this.linkCount = map.linkCount;
 		Set<Linkable> keys = map.linkMap.keySet();
-		Map<Node,Node> tempMap= new HashMap<Node, Node>();
+		Map<PamNodeImpl,PamNodeImpl> tempMap= new HashMap<PamNodeImpl, PamNodeImpl>();
 		for(Linkable l: keys){
 			Linkable newL = null;
-			if(l instanceof Node){
-				newL = new Node((Node)l);						
+			if(l instanceof PamNodeImpl){
+				newL = new PamNodeImpl((PamNodeImpl)l);						
 			
 				Set<Link> newLinks = new HashSet<Link>();
 				this.linkMap.put(newL,newLinks);
-				tempMap.put((Node)l, (Node)newL);
+				tempMap.put((PamNodeImpl)l, (PamNodeImpl)newL);
 			}
 		}		
 	}//public LinkMap
@@ -72,8 +72,8 @@ public class Graph {
 		return result;
 	}//public boolean addLink(Link l)
 	
-	public void addNodes(Set<Node> nodesToAdd) {
-		for(Node n: nodesToAdd){
+	public void addNodes(Set<PamNodeImpl> nodesToAdd) {
+		for(PamNodeImpl n: nodesToAdd){
 			nodes.add(n);
 			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
 		}
@@ -82,16 +82,16 @@ public class Graph {
 	}
 	
 	//TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
-    public int updateLayerDepth(Node n) {
+    public int updateLayerDepth(PamNodeImpl n) {
         n.setLayerDepth(0);
         
         if(isBottomLinkable(n))
             n.setLayerDepth(0);
         else{
-        	Set<Node> children = getChildren(n);
+        	Set<PamNodeImpl> children = getChildren(n);
             int layerDepth[] = new int[children.size()];
             int ild = 0;
-            for(Node child: children) {
+            for(PamNodeImpl child: children) {
                 layerDepth[ild] = updateLayerDepth(child);
                 ild++;
             }
@@ -102,7 +102,7 @@ public class Graph {
     }	
 	
 	public Map<Integer, Set<Linkable>> createLayerMap(){
-        for(Node node: nodes){
+        for(PamNodeImpl node: nodes){
             int layerDepth = node.getLayerDepth();
             Set<Linkable> layerNodes = layerMap.get(layerDepth);
             
@@ -137,8 +137,8 @@ public class Graph {
         	n.setMinActivation(n.getDefaultMinActivation());
         else{
         	double sumOfChildMinActiv = 0.0;
-        	Set<Node> children = getChildren(n);
-            for(Node child: children)
+        	Set<PamNodeImpl> children = getChildren(n);
+            for(PamNodeImpl child: children)
             	sumOfChildMinActiv += child.getMinActivation();
             
             n.setMinActivation(sumOfChildMinActiv * upscale);            
@@ -150,8 +150,8 @@ public class Graph {
 	        n.setMaxActivation(n.getDefaultMaxActivation());
 	    else{
 	    	double sumOfChildMaxActiv = 0.0;
-	    	Set<Node> children = getChildren(n);
-	    	for(Node child: children)
+	    	Set<PamNodeImpl> children = getChildren(n);
+	    	for(PamNodeImpl child: children)
 	        	sumOfChildMaxActiv += child.getMaxActivation();
 	        
 	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
@@ -172,7 +172,7 @@ public class Graph {
 		if(links != null){
 			for(Link link: links){
 				Linkable source = link.getSource();
-				if(source instanceof Node && !source.equals(n))//if source is a child of n
+				if(source instanceof PamNodeImpl && !source.equals(n))//if source is a child of n
 					return false;
 			}//for
 		}
@@ -184,20 +184,20 @@ public class Graph {
 		if(links != null){
 			for(Link link: links){
 				Linkable sink = link.getSink();
-				if(sink instanceof Node && !sink.equals(n))//if source is a child of n
+				if(sink instanceof PamNodeImpl && !sink.equals(n))//if source is a child of n
 					return false;
 			}//for
 		}
 		return false;
 	}
 
-	public Set<Node> getChildren(Linkable n) {
+	public Set<PamNodeImpl> getChildren(Linkable n) {
 		Set<Link> links = linkMap.get(n);
-		Set<Node> children = new HashSet<Node>();
+		Set<PamNodeImpl> children = new HashSet<PamNodeImpl>();
 		for(Link link: links){
 			Linkable source = link.getSource();
-			if(source instanceof Node && !source.equals(n))
-				children.add((Node)source);			
+			if(source instanceof PamNodeImpl && !source.equals(n))
+				children.add((PamNodeImpl)source);			
 		}
 		return children;		
 	}
@@ -226,9 +226,9 @@ public class Graph {
 				
 				//System.out.println("Linkable is " + whatIwant.getLabel() + " link has source " + source.getLabel() + " has parent " + sink.getLabel());
 				
-				if(sink instanceof Node && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
+				if(sink instanceof PamNodeImpl && (whatIwant.getID() != sink.getID())/*sink.equals(l)*/){
 					//M.p(link.getSource().getLabel() + " has parent " + sink.getLabel());
-					parents.add((Node)sink);			
+					parents.add((PamNodeImpl)sink);			
 				}
 			}
 			//M.p("");
@@ -293,7 +293,7 @@ public class Graph {
 		linkMap.remove(n);//finally remove the linkable and its links		
 	}//public void deleteNode(Linkable n)
 	
-	public void addChild(Node child, Node parent){	
+	public void addChild(PamNodeImpl child, PamNodeImpl parent){	
 		Link l = new Link(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(parent).add(l))//Add new link to parent's links
@@ -311,7 +311,7 @@ public class Graph {
 		updateLayerDepth(parent);
 	}//addChild
 	
-	public void addParent(Node parent, Node child){
+	public void addParent(PamNodeImpl parent, PamNodeImpl child){
 		Link l = new Link(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(child).add(l))
@@ -328,7 +328,7 @@ public class Graph {
 		updateLayerDepth(parent);		
 	}//addParent
     
-    public Set<Node> getNodes(){    	
+    public Set<PamNodeImpl> getNodes(){    	
     	return nodes;
     }
     
@@ -349,7 +349,7 @@ public class Graph {
 	}
 
 	public void printNodeActivations() {
-		for(Node n: nodes)
+		for(PamNodeImpl n: nodes)
 			n.printActivationString();
 	}
 

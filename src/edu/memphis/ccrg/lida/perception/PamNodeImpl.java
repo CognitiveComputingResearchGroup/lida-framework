@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.util.DecayBehavior;
 import edu.memphis.ccrg.lida.util.LinearDecayCurve;
 import edu.memphis.ccrg.lida.util.M;
 
-public class Node implements NodeInterface, Linkable{	
+public class PamNodeImpl implements NodeInterface, Linkable{	
     protected final int        TYPE_UNDEF = -1;      
     protected final int        TYPE_OBJECT = 1;
     protected final int        TYPE_CATEGORY = 2;
@@ -55,7 +55,7 @@ public class Node implements NodeInterface, Linkable{
      * @param label
      * @param type
      */
-    public Node(long id, double bla, double ca, String label, int type){    	
+    public PamNodeImpl(long id, double bla, double ca, String label, int type){    	
     	minActivation = MIN_ACTIVATION;
     	maxActivation = MAX_ACTIVATION;
     	totalActivation = bla + ca;  
@@ -74,7 +74,7 @@ public class Node implements NodeInterface, Linkable{
      * 
      * @param n
      */
-    public Node(Node n){
+    public PamNodeImpl(PamNodeImpl n){
     	selectionThreshold = n.selectionThreshold;
     	importance = n.importance;
     	
@@ -213,10 +213,10 @@ public class Node implements NodeInterface, Linkable{
 	 * @param n
 	 */
 	public boolean equals(Object obj){
-		Node other = (Node)obj;
+		PamNodeImpl other = (PamNodeImpl)obj;
 		if(other != null)
 			M.p("using Equals comparing " + label + " to " + other.getLabel());
-		if(!(other instanceof Node))
+		if(!(other instanceof PamNodeImpl))
 			return false;
 		return nodeID == other.nodeID && type == other.type;
 	}	

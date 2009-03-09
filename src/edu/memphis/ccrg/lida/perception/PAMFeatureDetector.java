@@ -6,9 +6,9 @@ import edu.memphis.ccrg.lida.util.M;
 public class PAMFeatureDetector implements FeatureDetector{
 
 	public DetectBehavior detectBehav;
-	private Node pamNode;
+	private PamNodeImpl pamNode;
 	
-	public PAMFeatureDetector(Node n, DetectBehavior b){
+	public PAMFeatureDetector(PamNodeImpl n, DetectBehavior b){
 		detectBehav = b;
 		pamNode = n;
 	}
@@ -37,6 +37,6 @@ public class PAMFeatureDetector implements FeatureDetector{
     	detectBehav = b;
     }
 	
-	public Node getNode(){return pamNode;}
+	public PamNodeImpl getNode(){return pamNode;}
 	
 }
