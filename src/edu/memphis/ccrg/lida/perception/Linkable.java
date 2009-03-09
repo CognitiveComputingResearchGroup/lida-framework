@@ -15,7 +15,7 @@ public interface Linkable {
 	double getCurrentActivation();
 	String getLabel();
 	
-	int hashCode();
+	
 	long getID();
 	
 	

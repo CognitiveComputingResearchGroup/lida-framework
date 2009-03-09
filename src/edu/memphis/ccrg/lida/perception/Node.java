@@ -166,8 +166,8 @@ public class Node implements NodeInterface, Linkable{
       * @see        #selectionThreshold
       */
     public boolean isRelevant(){   
-    	M.p(label + " total " + M.rnd(totalActivation) + " thresh " + selectionThreshold);
-    	
+//    	M.p(label + " total " + M.rnd(totalActivation) + " thresh " + selectionThreshold);
+//    	
         return (totalActivation >= selectionThreshold);
     }
     

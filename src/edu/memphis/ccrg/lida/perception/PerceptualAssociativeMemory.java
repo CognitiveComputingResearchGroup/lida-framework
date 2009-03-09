@@ -139,7 +139,6 @@ public class PerceptualAssociativeMemory implements PAMInterface,
       				double energy = currentActivation * upscale;      				
       				parent.excite(energy);
       			}//for each parent
-      			System.out.println(" ");
       		}//for each linkable in a given layer
       	}//for each layer
     	

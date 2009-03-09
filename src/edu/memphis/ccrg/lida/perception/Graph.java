@@ -132,6 +132,7 @@ public class Graph {
      * it assumes that the children have already been updated.
      */
     private void updateMinActivation(Linkable n) {
+    	
         if(isBottomLinkable(n))
         	n.setMinActivation(n.getDefaultMinActivation());
         else{
@@ -158,7 +159,8 @@ public class Graph {
 	}//updateMaxActivation
 	
 	private void updateSelectionThreshold(Linkable n){
-		//M.p(n.getLabel() + " is updating selection threshold");		
+		//M.p(n.getLabel() + " is updating selection threshold");
+		
 		double min = n.getMinActivation();
 		double max = n.getMaxActivation();
 		double threshold = selectivity*(max - min) + min;
