@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.perception.featureDetector;
 
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 

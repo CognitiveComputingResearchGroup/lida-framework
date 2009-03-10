@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.perception.featureDetector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 public class WumpusDetectBehavior implements DetectBehavior {
 	
 	private double detectThreshold = 0.5;
-	private double excitation = 0.9;
+	private double excitation = 0.8;
 
 	private Map<String, Integer> codeMap = new HashMap<String, Integer>();
 	

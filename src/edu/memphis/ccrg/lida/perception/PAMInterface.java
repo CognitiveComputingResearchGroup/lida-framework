@@ -6,6 +6,7 @@ package edu.memphis.ccrg.lida.perception;
 import java.util.Set;
 import java.util.Map;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.perception.featureDetector.PAMFeatureDetector;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
