@@ -14,9 +14,9 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferListener;
 public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 
 	private boolean keepRunning = true;
-	private CSM csm = null;
-	private PBufferContent pBufferContent;
-	private Percept percept = null;
+	private CSM csm = new CSM();
+	private PBufferContent pBufferContent = new PBufferContent();
+	private Percept percept = new Percept();
 	private FrameworkTimer timer;	
 	private Map<Context, SBCodelet> codeletMap = new HashMap<Context, SBCodelet>();//TODO: equals, hashCode
 	
