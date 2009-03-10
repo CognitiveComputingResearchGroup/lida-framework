@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.Misc;
 
 public class PamNodeImpl implements PamNode{	
     protected final int        TYPE_UNDEF = -1;      
@@ -304,7 +304,7 @@ public class PamNodeImpl implements PamNode{
     public String toString() {
     	String s = "Node name: " + getLabel() + ", Total_activ: ";
     	if(!this.equals(null))
-    		s += M.rnd(totalActivation);
+    		s += Misc.rnd(totalActivation);
     	else
     		s += " NA";
     	return s;

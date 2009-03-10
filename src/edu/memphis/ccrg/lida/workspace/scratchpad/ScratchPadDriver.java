@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.scratchpad;
 
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class ScratchPadDriver implements Runnable, Stoppable{
@@ -26,7 +26,7 @@ public class ScratchPadDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("\nSPAD: Ave. cycle time: " + 
-							M.rnd((finishTime - startTime)/(double)counter));
+							Misc.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("SPAD: Num. cycles: " + counter);		
 	}//public void run()
 

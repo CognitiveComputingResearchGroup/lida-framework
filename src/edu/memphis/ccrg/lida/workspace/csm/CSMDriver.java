@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class CSMDriver implements Runnable, Stoppable{
@@ -22,7 +22,7 @@ public class CSMDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("\nCSM: Ave. cycle time: " + 
-							M.rnd((finishTime - startTime)/(double)counter));
+							Misc.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("CSM: Num. cycles: " + counter);		
 	}//public void run()
 

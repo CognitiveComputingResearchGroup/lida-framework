@@ -7,7 +7,7 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
-import java.util.Set;
+import java.util.Set; 
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,12 +22,11 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.util.M;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
 
 
-public class PAMImpl implements PerceptualAssociativeMemory, 
+public class PamImpl implements PerceptualAssociativeMemory, 
 	SensoryListener, EBufferListener, BroadcastListener{
 	
     /**
@@ -56,7 +55,7 @@ public class PAMImpl implements PerceptualAssociativeMemory,
     private EBufferContent eBufferContent;//Shared variable
     private BroadcastContent broadcastContent;//Shared variable	
       
-    public PAMImpl(){
+    public PamImpl(){
     	featureDetectors = new HashSet<FeatureDetectorImpl>();
     	graph = new Graph(upscale, selectivity);
     	

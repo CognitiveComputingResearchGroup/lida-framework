@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.attention.AttentionListener;
+import edu.memphis.ccrg.lida.util.FrameworkTimer;
 
 /**
- * This class implemets GlobalWorkspace and mantains the collection of
+ * This class implements GlobalWorkspace and maintains the collection of
  * Coalitions. It supports triggers that are in charge to trigger the new
- * broadcast. Triggers should implement Trigger interface. This class mantains a
+ * broadcast. Triggers should implement Trigger interface. This class maintains a
  * list of broadcastListeners. These are the modules (classes) that need to
- * receive broadcast contein.
+ * receive broadcast content.
  * 
  * @author Javier Snaider
  * 
@@ -25,7 +26,7 @@ public class GlobalWorkspace implements GlobalWorkspaceInterface, TriggerListene
 	private List<Trigger> triggers = new ArrayList<Trigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

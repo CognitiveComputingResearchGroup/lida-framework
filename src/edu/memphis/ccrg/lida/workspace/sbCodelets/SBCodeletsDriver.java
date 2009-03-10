@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.perception.Percept;
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
@@ -16,9 +17,13 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	private CSM csm = null;
 	private PBufferContent pBufferContent;
 	private Percept percept = null;
-	
+	private FrameworkTimer timer;	
 	private Map<Context, SBCodelet> codeletMap = new HashMap<Context, SBCodelet>();//TODO: equals, hashCode
 	
+	public SBCodeletsDriver(FrameworkTimer timer) {
+		this.timer = timer;
+	}
+
 	public void run(){
 		SBCodelet testCodelet = new SBCodelet();
 		
@@ -27,7 +32,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
 			try{Thread.sleep(24);}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
-			
+			timer.checkForClick();
 			//if BufferContent activates a sbCodelet's context start a new codelet
 			getPBufferContent();
 			
@@ -36,7 +41,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("\nCODE: Ave. cycle time: " + 
-							M.rnd((finishTime - startTime)/(double)counter));
+							Misc.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("CODE: Num. cycles: " + counter);		
 	}//public void run()
 

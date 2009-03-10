@@ -1,17 +1,20 @@
 package edu.memphis.ccrg.lida.perception;
 
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
-	private PAMImpl pam;
+	private PamImpl pam;
 	private boolean keepRunning;	
 	public static boolean SHOW_STARTING_ACTIVATION = false; //TODO: move to config file/class
+	private FrameworkTimer timer;
 	
-	public PAMDriver(PAMImpl pam){
+	public PAMDriver(PamImpl pam, FrameworkTimer timer){
 		this.pam = pam;
 		keepRunning = true;		
+		this.timer = timer;
 	}//PAMDrive constructor
 		
 	public void run(){
@@ -19,7 +22,8 @@ public class PAMDriver implements Runnable, Stoppable{
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(22);}catch(Exception e){}
-					
+			timer.checkForClick();
+			
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
 			pam.sendPercept(); //Send the percept to p-Workspace
@@ -30,7 +34,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		long finishTime = System.currentTimeMillis();		
 			
 		System.out.println("\nPAM: Ave. cycle time: " + 
-							M.rnd((finishTime - startTime)/(double)counter));
+							Misc.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("PAM: Num. cycles: " + counter + "\n");			
 
 	}//method run

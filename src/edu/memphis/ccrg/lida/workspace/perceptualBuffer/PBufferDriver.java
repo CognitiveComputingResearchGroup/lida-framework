@@ -1,15 +1,18 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PBufferDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
 	private PerceptualBuffer pb;
+	private FrameworkTimer timer;
 	
-	public PBufferDriver(PerceptualBuffer pb){
+	public PBufferDriver(PerceptualBuffer pb, FrameworkTimer timer){
 		this.pb = pb;
+		this.timer = timer;
 	}//
 
 	public void run(){
@@ -17,12 +20,13 @@ public class PBufferDriver implements Runnable, Stoppable{
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
 			try{Thread.sleep(23);}catch(Exception e){}
+			timer.checkForClick();
 			pb.sendContent();
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("\nPBF: Ave. cycle time: " + 
-							M.rnd((finishTime - startTime)/(double)counter));
+							Misc.rnd((finishTime - startTime)/(double)counter));
 		System.out.println("PBF: Num. cycles: " + counter);		
 	}//public void run()
 

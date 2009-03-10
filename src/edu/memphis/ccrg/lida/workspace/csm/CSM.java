@@ -1,12 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-
-
 public class CSM implements CSMInterface, ScratchPadListener{
 	
-	
 	public CSM(){
-		
+
 	}
 	
 	public void receiveSBCodeletContent(SPadContent c){
