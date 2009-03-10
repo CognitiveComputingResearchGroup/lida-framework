@@ -21,7 +21,8 @@ public class PAMDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
-			try{Thread.sleep(22);}catch(Exception e){}
+			try{Thread.sleep(22  + timer.getSleepTime());
+			}catch(Exception e){}
 			timer.checkForClick();
 			
 			pam.sense();	//Sense sensory memory data				

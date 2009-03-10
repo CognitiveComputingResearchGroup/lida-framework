@@ -21,7 +21,8 @@ public class SMDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
-			try{Thread.sleep(21);}catch(Exception e){}
+			try{Thread.sleep(21 + timer.getSleepTime());
+			}catch(Exception e){}
 			timer.checkForClick();
 			
 			sm.processSimContent();

@@ -19,7 +19,8 @@ public class PBufferDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(23);}catch(Exception e){}
+			try{Thread.sleep(23 + timer.getSleepTime());
+			}catch(Exception e){}
 			timer.checkForClick();
 			pb.sendContent();
 			counter++;			

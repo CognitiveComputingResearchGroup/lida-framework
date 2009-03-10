@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.attention.AttentionListener;
-import edu.memphis.ccrg.lida.util.FrameworkTimer;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of

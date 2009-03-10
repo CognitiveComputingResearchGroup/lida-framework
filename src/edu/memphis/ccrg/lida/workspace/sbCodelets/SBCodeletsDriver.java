@@ -2,9 +2,8 @@ package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
@@ -31,7 +30,8 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(24);}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
+			try{Thread.sleep(24 + timer.getSleepTime());
+			}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
 			timer.checkForClick();
 			//if BufferContent activates a sbCodelet's context start a new codelet
 			getPBufferContent();
