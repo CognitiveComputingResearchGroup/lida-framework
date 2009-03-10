@@ -8,7 +8,6 @@ public class PAMDriver implements Runnable, Stoppable{
 
 	private PamImpl pam;
 	private boolean keepRunning;	
-	public static boolean SHOW_STARTING_ACTIVATION = false; //TODO: move to config file/class
 	private FrameworkTimer timer;
 	
 	public PAMDriver(PamImpl pam, FrameworkTimer timer){
