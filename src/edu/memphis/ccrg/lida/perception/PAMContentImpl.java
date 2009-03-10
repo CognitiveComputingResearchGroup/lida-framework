@@ -21,9 +21,5 @@ public class PAMContentImpl implements PAMContent{
 	public Object getContent(){
 		return p;
 	}
-	
-	public void print(){
-		p.print();
-	}
 
 }

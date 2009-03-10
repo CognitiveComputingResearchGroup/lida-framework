@@ -21,14 +21,17 @@ public class Percept extends LinkedList<PamNodeImpl>{
     	super(p);
     }
     
-    public void print(){
-    	System.out.println("PERCEPT: size: " + this.size());
-    	int size = this.size();
-    	for(int i = 0; i < size; i++){
-    		PamNodeImpl temp = this.get(i);
-    		System.out.println(temp.toString());
-    	}
-    	System.out.println();
+    public void print(boolean shouldPrint, String calledFrom){
+    	if(shouldPrint){
+	    	System.out.println("In " + calledFrom + 
+	    						": PERCEPT: size: " + this.size());
+	    	int size = this.size();
+	    	for(int i = 0; i < size; i++){
+	    		PamNodeImpl temp = this.get(i);
+	    		System.out.println(temp.toString());
+	    	}
+	    	System.out.println();
+    	}//
     }
     
 }//class Percept

@@ -49,7 +49,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		synchronized(this){
 			percept = (Percept)pBufferContent.getContent();
 		}
-		percept.print();		
+		percept.print(keepRunning, "SB-CODELETS");		
 	}
 
 	public void stopRunning(){
