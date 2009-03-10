@@ -12,14 +12,13 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.HashMap;
-import java.util.TreeSet;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.perception.featureDetector.PAMFeatureDetector;
+import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
+import edu.memphis.ccrg.lida.perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
-import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
@@ -28,7 +27,7 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
 
 
-public class PamImpl implements PerceptualAssociativeMemory, 
+public class PAMImpl implements PerceptualAssociativeMemory, 
 	SensoryListener, EBufferListener, BroadcastListener{
 	
     /**
@@ -47,23 +46,23 @@ public class PamImpl implements PerceptualAssociativeMemory,
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
-	public Set<PAMFeatureDetector> featureDetectors;
+	public Set<FeatureDetectorImpl> featureDetectors;
 	private Graph graph;
     
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
     private SensoryContent sensoryContent;//Shared variable
-    private PAMContent pamContent;//Not a shared variable
+    private PAMContentImpl pamContent;//Not a shared variable
     private EBufferContent eBufferContent;//Shared variable
     private BroadcastContent broadcastContent;//Shared variable	
       
-    public PamImpl(){
-    	featureDetectors = new HashSet<PAMFeatureDetector>();
+    public PAMImpl(){
+    	featureDetectors = new HashSet<FeatureDetectorImpl>();
     	graph = new Graph(upscale, selectivity);
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContent();
-    	pamContent = new PAMContent();
+    	pamContent = new PAMContentImpl();
     	eBufferContent = new EBufferContent();
     	//broadcastContent = new BroadcastContent();//TODO: write this class 	
     }
@@ -86,7 +85,7 @@ public class PamImpl implements PerceptualAssociativeMemory,
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
-    public void addToPAM(Set<PamNodeImpl> nodesToAdd, Set<PAMFeatureDetector> featureDetectors, Set<LinkImpl> linkSet){
+    public void addToPAM(Set<PamNodeImpl> nodesToAdd, Set<FeatureDetectorImpl> featureDetectors, Set<LinkImpl> linkSet){
     	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd);
     	graph.addLinkSet(linkSet);    	
@@ -124,7 +123,7 @@ public class PamImpl implements PerceptualAssociativeMemory,
     		sc = (SensoryContent)sensoryContent.getThis();
     	}
   
-    	for(PAMFeatureDetector d: featureDetectors)
+    	for(FeatureDetectorImpl d: featureDetectors)
     		d.detect(sc);  	     
     }//public void sense()
         
@@ -161,10 +160,8 @@ public class PamImpl implements PerceptualAssociativeMemory,
     private void syncNodeActivation(){
         Percept percept = new Percept();
         Set<PamNodeImpl> nodes = graph.getNodes();
-        int s = nodes.size();
         for(PamNodeImpl node: nodes){
             node.synchronize();//Needed since excite changes current but not totalActivation.
-            double total = node.getTotalActivation();
             if(node.isRelevant())//Based on totalActivation
                 percept.add(new PamNodeImpl(node));
         }//for      

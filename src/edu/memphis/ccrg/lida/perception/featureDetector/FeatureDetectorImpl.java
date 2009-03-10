@@ -1,20 +1,22 @@
 package edu.memphis.ccrg.lida.perception.featureDetector;
 
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.perception.interfaces.DetectBehavior;
+import edu.memphis.ccrg.lida.perception.interfaces.FeatureDetector;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.util.M;
 
-public class PAMFeatureDetector implements FeatureDetector{
+public class FeatureDetectorImpl implements FeatureDetector{
 
 	public DetectBehavior detectBehav;
 	private PamNodeImpl pamNode;
 	
-	public PAMFeatureDetector(PamNodeImpl n, DetectBehavior b){
+	public FeatureDetectorImpl(PamNodeImpl n, DetectBehavior b){
 		detectBehav = b;
 		pamNode = n;
 	}
 	
-	public PAMFeatureDetector(PAMFeatureDetector n){
+	public FeatureDetectorImpl(FeatureDetectorImpl n){
 		this.detectBehav = n.detectBehav;
 		pamNode = n.pamNode;
 	}

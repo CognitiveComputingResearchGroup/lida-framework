@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.perception.interfaces;
 
 import java.util.Map;
 

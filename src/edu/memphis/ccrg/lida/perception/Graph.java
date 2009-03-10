@@ -1,20 +1,19 @@
 package edu.memphis.ccrg.lida.perception;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
+import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
+import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.util.M;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
    
-public class Graph {
+public class Graph /*implements NodeStructure*/{
 	private Map<Linkable, Set<LinkImpl>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
 	private Set<PamNodeImpl> nodes;
@@ -48,8 +47,10 @@ public class Graph {
 	}//public LinkMap
 	
 	public void addLinkSet(Set<LinkImpl> links){
-		for(LinkImpl l: links)
-			addLink(new LinkImpl(l));
+		for(Link l: links){
+			LinkImpl toAdd = (LinkImpl)l;
+			addLink(new LinkImpl(toAdd));
+		}
 	}//public void addLinkSet(Set<Link> links)
 
 	public boolean addLink(LinkImpl l){
@@ -77,8 +78,9 @@ public class Graph {
 	}//public boolean addLink(Link l)
 	
 	public void addNodes(Set<PamNodeImpl> nodesToAdd) {
-		for(PamNodeImpl n: nodesToAdd){
-			nodes.add(n);
+		for(Node n: nodesToAdd){
+			PamNodeImpl toAdd = (PamNodeImpl)n;
+			nodes.add(toAdd);
 			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
 		}
 		createLayerMap();

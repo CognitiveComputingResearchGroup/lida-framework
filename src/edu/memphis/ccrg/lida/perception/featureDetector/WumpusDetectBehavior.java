@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.perception.featureDetector;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.perception.interfaces.DetectBehavior;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 
 public class WumpusDetectBehavior implements DetectBehavior {

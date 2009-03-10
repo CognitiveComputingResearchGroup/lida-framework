@@ -1,14 +1,16 @@
 package edu.memphis.ccrg.lida.perception;
 
-public class PAMContent implements PAMContentInterface{
+import edu.memphis.ccrg.lida.perception.interfaces.PAMContent;
+
+public class PAMContentImpl implements PAMContent{
 
 	private Percept p;
 
-	public PAMContent(){
+	public PAMContentImpl(){
 		p = new Percept();
 	}
 	
-	public PAMContent(Percept p){
+	public PAMContentImpl(Percept p){
 		this.p = p;
 	}
 	

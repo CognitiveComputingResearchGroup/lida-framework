@@ -5,11 +5,11 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
-	private PamImpl pam;
+	private PAMImpl pam;
 	private boolean keepRunning;	
 	public static boolean SHOW_STARTING_ACTIVATION = false; //TODO: move to config file/class
 	
-	public PAMDriver(PamImpl pam){
+	public PAMDriver(PAMImpl pam){
 		this.pam = pam;
 		keepRunning = true;		
 	}//PAMDrive constructor

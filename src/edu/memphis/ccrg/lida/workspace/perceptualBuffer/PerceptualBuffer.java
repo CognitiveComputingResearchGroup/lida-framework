@@ -5,24 +5,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import edu.memphis.ccrg.lida.perception.PAMContent;
-import edu.memphis.ccrg.lida.perception.PAMListener;
+import edu.memphis.ccrg.lida.perception.PAMContentImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
+import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
 
 public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
 	
-	private PAMContent pamContent;	
+	private PAMContentImpl pamContent;	
 	private List<Percept> perceptBuffer;
 	private List<PBufferListener> pbListeners;	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;	
 	
 	public PerceptualBuffer(){
-		pamContent = new PAMContent();
+		pamContent = new PAMContentImpl();
 		perceptBuffer = new LinkedList<Percept>();
 		pbListeners = new ArrayList<PBufferListener>();
 	}//public Workspace()
 	
-	public synchronized void receivePAMContent(PAMContent pc){
+	public synchronized void receivePAMContent(PAMContentImpl pc){
 		pamContent = pc;
 	}
 	

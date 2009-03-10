@@ -15,6 +15,7 @@ package edu.memphis.ccrg.lida.perception;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
