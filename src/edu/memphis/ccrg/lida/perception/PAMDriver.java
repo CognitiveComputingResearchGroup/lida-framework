@@ -5,15 +5,13 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
-	private PerceptualAssociativeMemory pam;
+	private PamImpl pam;
 	private boolean keepRunning;	
-	private boolean printPercept;
 	public static boolean SHOW_STARTING_ACTIVATION = false; //TODO: move to config file/class
 	
-	public PAMDriver(PerceptualAssociativeMemory pam, boolean printPercept){
+	public PAMDriver(PamImpl pam){
 		this.pam = pam;
 		keepRunning = true;		
-		this.printPercept = printPercept;
 	}//PAMDrive constructor
 		
 	public void run(){
@@ -24,10 +22,9 @@ public class PAMDriver implements Runnable, Stoppable{
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
-			pam.sendPercept(printPercept); //Send the percept to p-Workspace
+			pam.sendPercept(); //Send the percept to p-Workspace
 			pam.decay();  //Decay the activations	
 			
-			//pam.printNodeActivations();
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();		
