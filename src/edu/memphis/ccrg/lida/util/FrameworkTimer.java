@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.util;
 
 public class FrameworkTimer {
 	
-	private boolean shouldWait = false;
+	private boolean shouldWait = true;
 	private int sleepTime = 500;
 	private int sleepConstant = 800;
 
@@ -12,6 +12,7 @@ public class FrameworkTimer {
 				Thread.sleep(sleepTime);
 			}catch(Exception e){}
 		}//while	
+		//shouldWait = true;
 	}//checkForClick
 	
 	public synchronized void toggleRunningThreads(){
