@@ -5,7 +5,8 @@
 	<classpathentry kind="lib" path="lib/castor-0.9.7-xml.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/jgraph.jar"/>
-	<classpathentry kind="lib" path="lib/xerces-J_1.4.0.jar"/>
 	<classpathentry kind="lib" path="lib/swing-layout-1.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/swing-layout-1.0.3 .jar"/>
+	<classpathentry kind="lib" path="lib/xerces-J_1.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
