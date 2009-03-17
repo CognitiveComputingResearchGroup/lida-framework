@@ -8,6 +8,7 @@ public class EBufferDriver  implements Runnable, Stoppable{
 	private boolean keepRunning = true;
 	private EpisodicBuffer eb;
 	private FrameworkTimer timer;
+	private long threadID;
 	
 	public EBufferDriver(EpisodicBuffer eb, FrameworkTimer timer){
 		this.eb = eb;
@@ -16,7 +17,7 @@ public class EBufferDriver  implements Runnable, Stoppable{
 
 	public void run(){
 		while(keepRunning){
-			timer.checkForClick();
+			timer.checkForStartPause();
 			
 		}//while keepRunning		
 	}//public void run()
@@ -24,4 +25,12 @@ public class EBufferDriver  implements Runnable, Stoppable{
 	public void stopRunning(){
 		keepRunning = false;		
 	}//public void stopRunning()
+	
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
+	}
 }

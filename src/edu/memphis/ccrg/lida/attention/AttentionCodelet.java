@@ -23,6 +23,7 @@ public class AttentionCodelet implements AttentionCodeletInterface, Runnable, St
 	private ModelContent whatIwant;
 	private ModelContent whatIgot;
 	private List<AttentionListener> listeners;
+	private long threadID;
     
     public AttentionCodelet(CSM csm){
     	model = csm;
@@ -56,5 +57,13 @@ public class AttentionCodelet implements AttentionCodeletInterface, Runnable, St
 
 	public void stopRunning() {
 		keepRunning = false;		
+	}
+
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
 	}
 }

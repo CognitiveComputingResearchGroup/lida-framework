@@ -18,6 +18,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	private Percept percept = new Percept();
 	private FrameworkTimer timer;	
 	private Map<Context, SBCodelet> codeletMap = new HashMap<Context, SBCodelet>();//TODO: equals, hashCode
+	private long threadID;
 	
 	public SBCodeletsDriver(FrameworkTimer timer) {
 		this.timer = timer;
@@ -32,7 +33,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		while(keepRunning){
 			try{Thread.sleep(24 + timer.getSleepTime());
 			}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
-			timer.checkForClick();
+			timer.checkForStartPause();
 			//if BufferContent activates a sbCodelet's context start a new codelet
 			getPBufferContent();
 			
@@ -56,6 +57,14 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//public void stopRunning()
+	
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
+	}
 
 	public void addCSM(CSM csm) {
 		this.csm = csm;		

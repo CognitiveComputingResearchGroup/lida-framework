@@ -8,6 +8,7 @@ public class SMDriver implements Runnable, Stoppable{
 	private SensoryMemory sm;
 	private boolean keepRunning;	
 	private FrameworkTimer timer;
+	private long threadID;
 	
 	public SMDriver(SensoryMemory sm, FrameworkTimer timer){
 		this.sm = sm;
@@ -23,7 +24,7 @@ public class SMDriver implements Runnable, Stoppable{
 		while(keepRunning){
 			try{Thread.sleep(21 + timer.getSleepTime());
 			}catch(Exception e){}
-			timer.checkForClick();
+			timer.checkForStartPause();
 			
 			sm.processSimContent();
 			sm.sendSensoryContent(printSentContent);					
@@ -41,4 +42,11 @@ public class SMDriver implements Runnable, Stoppable{
 		keepRunning = false;		
 	}//method stopRunning
 
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
+	}
 }//class SMDriver

@@ -7,6 +7,7 @@ public class CSMDriver implements Runnable, Stoppable{
 	
 	private boolean keepRunning = true;
 	private CSM csm;
+	private long threadID;
 	
 	public CSMDriver(CSM csm){
 		this.csm = csm;
@@ -30,4 +31,13 @@ public class CSMDriver implements Runnable, Stoppable{
 		try{Thread.sleep(20);}catch(Exception e){}
 		keepRunning = false;		
 	}//public void stopRunning()
+	
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
+	}
+	
 }

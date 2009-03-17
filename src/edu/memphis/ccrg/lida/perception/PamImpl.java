@@ -9,9 +9,9 @@ package edu.memphis.ccrg.lida.perception;
 
 import java.util.Set; 
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
@@ -69,18 +69,23 @@ public class PamImpl implements PerceptualAssociativeMemory,
     //SETTING UP PAM    
     public void setParameters(Map<String, Object> parameters){    	
 		Object o = parameters.get("upscale");
-		if ((o != null)&& (o instanceof Double)) {
-			upscale = (Double)o;
+		if((o != null)&& (o instanceof Double)) {
+			synchronized(this){
+				upscale = (Double)o;
+			}
 		}
 		//TODO: Graph has its own parameters?
 		o = parameters.get("downscale");
-		if ((o != null)&& (o instanceof Double)) 
-			downscale = (Double)o;
-		
+		if((o != null)&& (o instanceof Double)) 
+			synchronized(this){
+				downscale = (Double)o;
+			}		
 		o = parameters.get("selectivity");
 		if ((o != null)&& (o instanceof Double)){
-			selectivity = (Double)o;   	
-			graph.setSelectivity((Double)o);
+			synchronized(this){
+				selectivity = (Double)o;   	
+				graph.setSelectivity((Double)o);
+			}
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
@@ -190,5 +195,25 @@ public class PamImpl implements PerceptualAssociativeMemory,
     		n.setExciteBehavior(behavior);
     	}
     }//public void setExciteBehavior   
+    
+    public double getUpscale(){
+    	return upscale;
+    }
+    
+    public double getDownscale(){
+    	return downscale;
+    }
+    
+    public double getSelectivity(){
+    	return selectivity;
+    }
+
+	public int getNodeCount() {
+		return graph.getNodes().size();
+	}
+
+	public int getLinkCount() {
+		return graph.getLinkCount();
+	}
 
 }//class PAM.java

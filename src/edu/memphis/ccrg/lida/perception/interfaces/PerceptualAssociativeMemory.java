@@ -50,5 +50,9 @@ public interface PerceptualAssociativeMemory{
 	public void sendPercept();	
 	public void decay();
 	public void setDecayCurve(DecayBehavior c);
+	
+	public double getUpscale();
+	public double getDownscale();	    
+	public double getSelectivity();
 
 }//interface PAMinterface

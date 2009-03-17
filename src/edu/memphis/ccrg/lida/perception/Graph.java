@@ -262,6 +262,10 @@ public class Graph /*implements NodeStructure*/{
 	
 	}//public void deleteLink(Link l)
 	
+	public int getLinkCount(){
+		return linkCount;
+	}
+	
 	public Set<LinkImpl> getLinks(Linkable l){
 		return linkMap.get(l);	
 	}//public Set<Link> getLinks(Node n)
@@ -298,7 +302,8 @@ public class Graph /*implements NodeStructure*/{
 					otherLinks.remove(l);
 			}						
 		}//for all of the links connected to n		
-		linkMap.remove(n);//finally remove the linkable and its links		
+		if(linkMap.remove(n) != null && n instanceof LinkImpl)//finally remove the linkable and its links
+			linkCount--;
 	}//public void deleteNode(Linkable n)
 	
 	public void addChild(PamNodeImpl child, PamNodeImpl parent){	

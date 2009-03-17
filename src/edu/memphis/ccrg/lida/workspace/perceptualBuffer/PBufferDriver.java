@@ -9,6 +9,7 @@ public class PBufferDriver implements Runnable, Stoppable{
 	private boolean keepRunning = true;
 	private PerceptualBuffer pb;
 	private FrameworkTimer timer;
+	private long threadID;
 	
 	public PBufferDriver(PerceptualBuffer pb, FrameworkTimer timer){
 		this.pb = pb;
@@ -21,7 +22,7 @@ public class PBufferDriver implements Runnable, Stoppable{
 		while(keepRunning){
 			try{Thread.sleep(23 + timer.getSleepTime());
 			}catch(Exception e){}
-			timer.checkForClick();
+			timer.checkForStartPause();
 			pb.sendContent();
 			counter++;			
 		}//while keepRunning
@@ -35,5 +36,13 @@ public class PBufferDriver implements Runnable, Stoppable{
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//public void stopRunning()
+	
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
+	}
 
 }

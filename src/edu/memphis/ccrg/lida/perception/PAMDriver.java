@@ -9,39 +9,54 @@ public class PAMDriver implements Runnable, Stoppable{
 	private PamImpl pam;
 	private boolean keepRunning;	
 	private FrameworkTimer timer;
+	private long threadID;
 	
 	public PAMDriver(PamImpl pam, FrameworkTimer timer){
 		this.pam = pam;
 		keepRunning = true;		
 		this.timer = timer;
 	}//PAMDrive constructor
+	
+	public void registerToTimer(){
+		timer.registerThread(threadID);
+	}
 		
 	public void run(){
 		int counter = 0;		
-		long startTime = System.currentTimeMillis();
+		boolean runOneStep = false;
+		
+		long startTime = System.currentTimeMillis();	
 		while(keepRunning){
 			try{Thread.sleep(22  + timer.getSleepTime());
 			}catch(Exception e){}
-			timer.checkForClick();
-			
+						
+			timer.checkForStartPause();//won't return if paused until started again			
+			//runOneStep = timer.checkForNextStep(runOneStep, threadID);		
+					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
 			pam.sendPercept(); //Send the percept to p-Workspace
 			pam.decay();  //Decay the activations	
 			
-			counter++;			
+			counter++;
 		}//while keepRunning
-		long finishTime = System.currentTimeMillis();		
-			
+		long finishTime = System.currentTimeMillis();			
 		System.out.println("\nPAM: Ave. cycle time: " + 
 							Misc.rnd((finishTime - startTime)/(double)counter));
-		System.out.println("PAM: Num. cycles: " + counter + "\n");			
-
+		System.out.println("PAM: Num. cycles: " + counter + "\n");	
 	}//method run
 	
 	public void stopRunning(){
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method stopRunning
+
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
+	}
 	
 }//class PAMDriver

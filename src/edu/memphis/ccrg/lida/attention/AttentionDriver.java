@@ -12,6 +12,7 @@ public class AttentionDriver implements Runnable, Stoppable, BroadcastListener{
 	private boolean keepRunning = true;
 	private BroadcastContent broadcastContent;
 	private CSM csm;
+	private long threadID;
 	
 	public AttentionDriver(FrameworkTimer timer) {
 		this.timer = timer;
@@ -23,7 +24,7 @@ public class AttentionDriver implements Runnable, Stoppable, BroadcastListener{
 
 	public void run() {
 		while(keepRunning){
-			timer.checkForClick();
+			timer.checkForStartPause();
 			
 		}
 		
@@ -37,6 +38,14 @@ public class AttentionDriver implements Runnable, Stoppable, BroadcastListener{
 		synchronized(this){
 			broadcastContent = bc;
 		}
+	}
+	
+	public void setThreadID(long id){
+		threadID = id;
+	}
+	
+	public long getThreadID() {
+		return threadID;
 	}
 
 }
