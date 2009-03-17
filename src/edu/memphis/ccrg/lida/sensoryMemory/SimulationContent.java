@@ -2,25 +2,32 @@ package edu.memphis.ccrg.lida.sensoryMemory;
 
 public class SimulationContent {
 	
-	private int[] content;
+	private int[] simSense;
+	private String environment;
 	
 	public SimulationContent(int size){
-		content = new int[size];
+		simSense = new int[size];
 	}
 	
-	public void setContent(Object o){
-		content = (int[])o;
+	public void setContent(Object o, String environment){
+		simSense = (int[])o;
+		this.environment = environment;
 	}
 	
-	public Object getContent(){
-		int[] copy = new int[content.length];
-		System.arraycopy(content, 0, copy, 0, content.length);		
+	public Object getSenseContent(){
+		int[] copy = new int[simSense.length];
+		System.arraycopy(simSense, 0, copy, 0, simSense.length);		
 		return copy;
 	}	
-
-	public void print(){
-		System.out.println("SM:: " + content[0] + " " + content[1] + " " + content[2] + " " + content[3] + " " + content[4] + " ");
+	
+	public String getEnvironment(){
+		return environment;
 	}
 
-}
+	public void print(){
+		System.out.println("SM:: " + simSense[0] + " " + simSense[1] + 
+							" " + simSense[2] + " " + simSense[3] + " " + simSense[4] + " ");
+	}
+
+}//SimulationContent
 
