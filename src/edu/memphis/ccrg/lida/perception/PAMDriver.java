@@ -31,7 +31,7 @@ public class PAMDriver implements Runnable, Stoppable{
 			}catch(Exception e){}
 						
 			timer.checkForStartPause();//won't return if paused until started again			
-			runOneStep = timer.checkForNextStep(runOneStep, threadID);		
+			//runOneStep = timer.checkForNextStep(runOneStep, threadID);		
 					
 			pam.sense();	//Sense sensory memory data				
 			pam.passActivation();//Pass activation	
