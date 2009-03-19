@@ -1,8 +1,7 @@
 package edu.memphis.ccrg.lida.perception.featureDetector;
 
-import java.util.HashMap;
 import java.util.Map;
-
+import java.util.HashMap;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.interfaces.DetectBehavior;
 import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
@@ -21,13 +20,13 @@ public class WumpusDetectBehavior implements DetectBehavior {
 	}
 
 	public void detectAndExcite(PamNodeImpl node, SensoryContent sc){
+		String nodeLabel = node.getLabel();
+		Integer posToCheck = codeMap.get(nodeLabel);//an integer 0-3		
 		char[][][] senseData = (char[][][])sc.getContent();
 		
-		String nodeLabel = node.getLabel();
-		Integer posToCheck = codeMap.get(nodeLabel);//want this 1-4		
-		System.out.println("Detecting for " + nodeLabel + "\n");
-		
 		if(posToCheck != null){
+			node.clearAllWWLocations();			//clear old references
+			
 			char whatToLookFor = ' ';
 			if(posToCheck == 0)
 				whatToLookFor = 'P';
@@ -39,26 +38,17 @@ public class WumpusDetectBehavior implements DetectBehavior {
 				whatToLookFor = 'A';
 			
 			for(int i = 0; i < senseData.length; i++){
-				for(int j = 0; j < senseData[0].length; j++){
-					
+				for(int j = 0; j < senseData[0].length; j++){					
 					if(whatToLookFor == 'A'){
 						 char whatIsThere = senseData[i][j][posToCheck];
-						 if(whatIsThere == 'A' || whatIsThere == 'V' || whatIsThere == '<' || whatIsThere == '>'){					
+						 if(whatIsThere == 'A' || whatIsThere == 'V' || 
+							whatIsThere == '<' || whatIsThere == '>'){					
 							node.excite(defaultExcitation);
 							node.addNewWWLocation(i, j);
-							//Store the i, j info in node!!!TODO:
-							
-							//node.synchronize(); //TODO: synchronize activation or not??
-							Misc.p(nodeLabel + " " + Misc.rnd(node.getCurrentActivation()));
 						 }
 					}else if(senseData[i][j][posToCheck] == whatToLookFor){
-						//M.p(pamNode.getLabel() + " exciting this much: " + amountToExcite);
 						node.excite(defaultExcitation);
-						//Store the i, j info in node!!!
-						
-						//node.synchronize(); //TODO: synchronize activation or not??
-						Misc.p(nodeLabel + " " + Misc.rnd(node.getCurrentActivation()));
-						//M.p(" result of detecting " + pamNode.getLabel() + " "  + pamNode.getTotalActivation());
+						node.addNewWWLocation(i, j);					
 					}
 				}//for
 			}//for

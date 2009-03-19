@@ -2,8 +2,12 @@ package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
+import edu.memphis.ccrg.lida.perception.SpatialLocation;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
@@ -50,7 +54,16 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 		synchronized(this){
 			percept = (Percept)pBufferContent.getContent();
 		}
-		//percept.print(keepRunning, "SB-CODELETS");		
+		percept.print(keepRunning, "SB-CODELETS");
+		
+		Set<SpatialLocation> locations = null;
+		for(PamNodeImpl n: percept){//TODO: should be in PamNode instead
+			locations = n.getLocations();
+			for(SpatialLocation s: locations){
+				s.print();
+			}
+			System.out.println("\n");
+		}
 	}
 
 	public void stopRunning(){

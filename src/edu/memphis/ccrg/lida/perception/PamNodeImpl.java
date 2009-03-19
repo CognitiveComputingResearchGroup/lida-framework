@@ -98,6 +98,7 @@ public class PamNodeImpl implements PamNode{
         type = n.type; 
         exciteBehavior = n.exciteBehavior;
         decayBehav = n.decayBehav;    	
+        locationsOfThisNode = n.locationsOfThisNode;
     }//public Node(Node n)
     
     /**
@@ -144,57 +145,25 @@ public class PamNodeImpl implements PamNode{
     
     /**
      * Wumpus world may have multiple instances of the same node at differnt
-     * locations so I will store those locations in the node.  These are then
-     * references to the exact location(s) of the this node.
+     * locations so I will store those locations in the node.  Parameters
+     * refer to one location of the this node.
      * 
      * @param i 
      * @param j
      */
 	public boolean addNewWWLocation(int i, int j) {
-		return locationsOfThisNode.add(new SpatialLocation(i, j));		
+		boolean result = locationsOfThisNode.add(new SpatialLocation(i, j));		
+		return result;
+	}
+	
+	public void clearAllWWLocations() {
+		locationsOfThisNode.clear();		
 	}
 	
 	public Set<SpatialLocation> getLocations(){
 		return locationsOfThisNode;
 	}
 	
-	private class SpatialLocation{
-		private int iLocation = 0;
-		private int jLocation = 0;
-
-		public SpatialLocation(int i, int j) {
-			iLocation = i;
-			jLocation = j;
-		}
-		
-		public boolean equals(Object obj){
-			if(!(obj instanceof SpatialLocation))
-				return false;
-			SpatialLocation other = (SpatialLocation)obj;
-			return iLocation == other.iLocation && jLocation == other.jLocation;
-		}	
-		
-		/**
-		 * 
-		 */
-		public int hashCode(){ 
-	        int hash = 1;
-	        Integer i = new Integer(iLocation);
-	        Integer j = new Integer(jLocation);
-	        
-	        hash = hash * 31 + i.hashCode();
-	        hash = hash * 31 + (j == null ? 0 : i.hashCode());
-	        return hash;
-	    }   
-		
-		public int getI(){return iLocation;}
-		public void setI(int i){iLocation = i;}
-		public int getJ(){return jLocation;}
-		public void setJ(int j){jLocation = j;}	
-		
-	}
-
-    
     /**
      * 
      */    

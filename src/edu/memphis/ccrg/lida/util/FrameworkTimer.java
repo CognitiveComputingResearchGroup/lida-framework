@@ -76,4 +76,8 @@ public class FrameworkTimer {
 		shouldWaitForNextStepMap.put(threadID, false);		
 	}
 	
+	public boolean getStartStatus(){
+		return shouldWait;
+	}
+	
 }//class FrameworkTimer
