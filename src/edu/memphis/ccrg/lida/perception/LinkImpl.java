@@ -120,7 +120,7 @@ public class LinkImpl implements Link, Node{
 		return null;
 	}
 
-	public long getID() {
+	public long getId() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

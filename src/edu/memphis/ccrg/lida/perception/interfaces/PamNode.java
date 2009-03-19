@@ -52,7 +52,7 @@ public interface PamNode extends Node{
 	/**
 	 * 
 	 */
-	public abstract long getIdentifier();
+	public abstract long getId();
 
 	/** 
 	 * Returns the label

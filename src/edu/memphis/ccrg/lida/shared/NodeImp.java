@@ -87,7 +87,7 @@ public class NodeImp implements Node {
 		
 	}
 
-	public long getID() {
+	public long getId() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

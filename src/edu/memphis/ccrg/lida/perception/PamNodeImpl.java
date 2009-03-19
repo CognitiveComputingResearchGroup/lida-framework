@@ -13,7 +13,9 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -41,7 +43,7 @@ public class PamNodeImpl implements PamNode{
     private double importance = 0.0;
     private double minActivation;
     private double maxActivation;        
-    private double totalActivation;
+    private double totalActivation; 
     private double baselevelActivation;    
     private double currentActivation;      
     
@@ -51,6 +53,7 @@ public class PamNodeImpl implements PamNode{
     private int type;
     private ExciteBehavior exciteBehavior;
     private DecayBehavior decayBehav;
+	private Set<SpatialLocation> locationsOfThisNode = new HashSet<SpatialLocation>();
     
     /**
      * 
@@ -127,17 +130,8 @@ public class PamNodeImpl implements PamNode{
      * @param   excitation the value to be added to the current activation of
      *          this node
      */
-    public void excite(double excitation){ 	
-//    	M.p("Node: " + label);
-//    	M.p("tot activ " + totalActivation);
-//    	M.p("cur activ " + currentActivation);
-//    	M.p("excit     " + excitation);
-    	
-    	
-        currentActivation = exciteBehavior.excite(currentActivation, excitation);//+= Math.abs(excitation);
-//        
-//        
-//        M.p("resulting cur activ.: " + currentActivation + "\n");
+    public void excite(double excitation){ 	   	
+        currentActivation = exciteBehavior.excite(currentActivation, excitation);
     }
     
     /**
@@ -147,6 +141,58 @@ public class PamNodeImpl implements PamNode{
     public void setExciteBehavior(ExciteBehavior behavior){
     	exciteBehavior = behavior;
     }
+    
+    /**
+     * Wumpus world may have multiple instances of the same node at differnt
+     * locations so I will store those locations in the node.  These are then
+     * references to the exact location(s) of the this node.
+     * 
+     * @param i 
+     * @param j
+     */
+	public boolean addNewWWLocation(int i, int j) {
+		return locationsOfThisNode.add(new SpatialLocation(i, j));		
+	}
+	
+	public Set<SpatialLocation> getLocations(){
+		return locationsOfThisNode;
+	}
+	
+	private class SpatialLocation{
+		private int iLocation = 0;
+		private int jLocation = 0;
+
+		public SpatialLocation(int i, int j) {
+			iLocation = i;
+			jLocation = j;
+		}
+		
+		public boolean equals(Object obj){
+			if(!(obj instanceof SpatialLocation))
+				return false;
+			SpatialLocation other = (SpatialLocation)obj;
+			return iLocation == other.iLocation && jLocation == other.jLocation;
+		}	
+		
+		/**
+		 * 
+		 */
+		public int hashCode(){ 
+	        int hash = 1;
+	        Integer i = new Integer(iLocation);
+	        Integer j = new Integer(jLocation);
+	        
+	        hash = hash * 31 + i.hashCode();
+	        hash = hash * 31 + (j == null ? 0 : i.hashCode());
+	        return hash;
+	    }   
+		
+		public int getI(){return iLocation;}
+		public void setI(int i){iLocation = i;}
+		public int getJ(){return jLocation;}
+		public void setJ(int j){jLocation = j;}	
+		
+	}
 
     
     /**
@@ -171,9 +217,7 @@ public class PamNodeImpl implements PamNode{
       * @return     <code>true</code> if this node is relevant
       * @see        #selectionThreshold
       */
-    public boolean isRelevant(){   
-//    	M.p(label + " total " + M.rnd(totalActivation) + " thresh " + selectionThreshold);
-//    	
+    public boolean isRelevant(){    	
         return (totalActivation >= selectionThreshold);
     }
     
@@ -238,12 +282,6 @@ public class PamNodeImpl implements PamNode{
         return hash;
     }   
 	
-	/**
-	 * 
-	 */   
-    public long getIdentifier() {
-        return nodeID;
-    } 
 	
     /** 
      * Returns the label
@@ -323,13 +361,12 @@ public class PamNodeImpl implements PamNode{
 		return MIN_ACTIVATION;
 	}
 
-	public long getID() {
+	public long getId() {
 		return nodeID;
 	}
 
 	public void setDecayBehavior(DecayBehavior b) {
-		// TODO Auto-generated method stub
-		
+		decayBehav = b;		
 	}
 
 	public Node copy() {
@@ -338,13 +375,11 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public DecayBehavior getDecayBehavior() {
-		// TODO Auto-generated method stub
-		return null;
+		return decayBehav;
 	}
 
-	public edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior getExciteBehavior() {
-		// TODO Auto-generated method stub
-		return null;
+	public ExciteBehavior getExciteBehavior() {
+		return exciteBehavior;
 	}
 
 	public Node getReferencedNode() {
@@ -363,13 +398,11 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public void setID(long id) {
-		// TODO Auto-generated method stub
-		
+		nodeID = id;		
 	}
 
 	public void setLabel(String label) {
-		// TODO Auto-generated method stub
-		
+		this.label = label;		
 	}
 
 }//class Node

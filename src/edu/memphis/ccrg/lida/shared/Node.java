@@ -32,14 +32,13 @@ public interface Node extends Linkable{
 	
 	public void setValue(Map<String, Object> values);
 
-	public long getIdentifier();
 	public double getImportance(); 
     public double getCurrentActivation();
     public void setActivation(double d);
     public Node getReferencedNode();
     public void setReferencedNode (Node n);
     public Node copy();
-    public long getID();
+    public long getId();
     public void setID(long id);
     public String getLabel();
     public void setLabel(String label);

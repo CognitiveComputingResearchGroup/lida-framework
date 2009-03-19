@@ -20,7 +20,7 @@ public class WumpusDetectBehavior implements DetectBehavior {
 		this.codeMap = codeMap;
 	}
 
-	public void detectAndExcite(PamNode node, SensoryContent sc){
+	public void detectAndExcite(PamNodeImpl node, SensoryContent sc){
 		char[][][] senseData = (char[][][])sc.getContent();
 		
 		String nodeLabel = node.getLabel();
@@ -45,6 +45,7 @@ public class WumpusDetectBehavior implements DetectBehavior {
 						 char whatIsThere = senseData[i][j][posToCheck];
 						 if(whatIsThere == 'A' || whatIsThere == 'V' || whatIsThere == '<' || whatIsThere == '>'){					
 							node.excite(defaultExcitation);
+							node.addNewWWLocation(i, j);
 							//Store the i, j info in node!!!TODO:
 							
 							//node.synchronize(); //TODO: synchronize activation or not??
@@ -62,7 +63,6 @@ public class WumpusDetectBehavior implements DetectBehavior {
 				}//for
 			}//for
 		}//if node is in the map	
-
 	}//detectAndExcite
 
 	public void setDetectThreshold(double d) {
