@@ -2,24 +2,18 @@ package edu.memphis.ccrg.lida.sensoryMemory;
 
 public class SensoryContent implements SensoryContentInterface{
 
-	private int[] senseData;
+	private int worldSize = 4; ///TODO: unhard code this
+	private char[][][] senseData = new char[worldSize][worldSize][4];
 	
-	public SensoryContent(){
-		senseData = new int[5];
-	}
-
-	public SensoryContent(int size){
-		senseData = new int[size];
+	public synchronized void setContent(Object o){
+		senseData = (char[][][])o;
 	}
 	
-	public void setContent(Object o){
-		senseData = (int[])o;
-	}
-	
-	public Object getContent(){
-		int[] copy = new int[senseData.length];
-		System.arraycopy(senseData, 0, copy, 0, senseData.length);		
-		return copy;
+	public Object getContent(){	
+		char[][][] copy = new char[worldSize][worldSize][4];
+		if(senseData != null)
+			System.arraycopy(senseData, 0, copy, 0, senseData.length);		
+		return copy;	
 	}
 	
 	public Object getThis(){
@@ -27,7 +21,7 @@ public class SensoryContent implements SensoryContentInterface{
 	}	
 	
 	public void print(){
-		System.out.println("SM:: " + senseData[0] + " " + senseData[1] + " " + senseData[2] + " " + senseData[3] + " " + senseData[4] + " ");
+		
 	}
 
 }

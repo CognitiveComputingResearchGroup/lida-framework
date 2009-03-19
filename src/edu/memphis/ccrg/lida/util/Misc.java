@@ -14,4 +14,17 @@ public class Misc{
 		System.out.println(s);
 	}
 
+	public static void print(char[][][] a) {
+		for(int i = 0; i < a.length; i++){
+			for(int j = 0; j < a[0].length; j++){
+				for(int k = 0; k < a[0][0].length; k++){
+					System.out.print(a[i][j][k] + " ");
+				}
+				System.out.print(" ");
+			}
+			System.out.println("\n");
+		}
+		
+	}
+
 }

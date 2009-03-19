@@ -5,6 +5,7 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.perception.interfaces.DetectBehavior;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.util.Misc;
 
 public class WumpusDetectBehavior implements DetectBehavior {
 	
@@ -18,11 +19,15 @@ public class WumpusDetectBehavior implements DetectBehavior {
 	}
 
 	public double getExcitation(String nodeLabel, SensoryContent sc){
-		int[] senseData = (int[])sc.getContent();
+		char[][][] senseData = (char[][][])sc.getContent();
+		//System.out.println("Detect: ");
+		
+		//Misc.print(senseData);
+		
 		Integer posToCheck = codeMap.get(nodeLabel);
-		if(!posToCheck.equals(null))			
-			if(senseData[posToCheck] >= detectThreshold)
-				return excitation;		
+		//if(!posToCheck.equals(null))			
+			
+				//return excitation;		
 	    return 0.0;
 	}
 

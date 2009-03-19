@@ -5,31 +5,42 @@ import java.util.List;
 
 public class SensoryMemory implements SimulationListener{
 	
-	private final int size = 5;
-	private SimulationContent simContent;
-	private SensoryContent senseContent;
-	private List<SensoryListener> listeners;
-			
-	public SensoryMemory(){
-		simContent = new SimulationContent(size);
-		senseContent = new SensoryContent(size);	
-		listeners = new ArrayList<SensoryListener>();
-	}//SensoryMemory
+	private SimulationContent simContent = null;
+	private SensoryContent senseContent = new SensoryContent();
+	private List<SensoryListener> listeners = new ArrayList<SensoryListener>();
 	
 	public synchronized void receiveSimContent(SimulationContent sc){//SimulationListener
 		simContent = sc;		
 	}	
 	
 	public void processSimContent(){
-		int[] src = new int[size];
-		int[] dest = new int[size];
-		synchronized(this){
-			src = (int[])simContent.getSenseContent();
-			System.arraycopy(src, 0, dest, 0, size);//TODO: WRY??
+		
+		char[][][] src = null;
+		char[][][] dest = null;
+		
+		if(simContent != null){
+			int worldSize = -1;
+			synchronized(this){
+				worldSize = simContent.getSize();
+			}
+			
+			if(worldSize != -1){
+				src = new char[worldSize][worldSize][4];	
+				dest = new char[worldSize][worldSize][4];
+			}
+			
+			synchronized(this){
+				src = (char[][][])simContent.getSenseContent();
+				System.arraycopy(src, 0, dest, 0, worldSize);//TODO: WRY??
+			}
 		}
 		//do processing		
 		senseContent.setContent(dest);		
 	}//
+	
+	public void addSensoryListener(SensoryListener sl){
+		listeners.add(sl);
+	}
 	
 	//broadcast to all listeners
 	public void sendSensoryContent(boolean print){
@@ -37,10 +48,6 @@ public class SensoryMemory implements SimulationListener{
 			senseContent.print();
 		for(int i = 0; i < listeners.size(); i++)
 			(listeners.get(i)).receiveSense(senseContent);
-	}
-		
-	public void addSensoryListener(SensoryListener sl){
-		listeners.add(sl);
 	}
 	
 }//class SensoryMemory
