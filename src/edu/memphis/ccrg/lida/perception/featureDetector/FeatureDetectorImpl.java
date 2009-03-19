@@ -27,13 +27,7 @@ public class FeatureDetectorImpl implements FeatureDetector{
     		return;
     	}
     	
-    	double amountToExcite = detectBehav.getExcitation(pamNode.getLabel(), sc);
-//    	M.p(pamNode.getLabel() + " exciting this much: " + amountToExcite);
-//    	
-    	pamNode.excite(amountToExcite);
-    	pamNode.synchronize();  
-    	//M.p(pamNode.toActivationString());
-//    	M.p(" result of detecting " + pamNode.getLabel() + " "  + pamNode.getTotalActivation());
+    	detectBehav.detectAndExcite(pamNode, sc);
     }    
 
 	public void setDetectBehavior(DetectBehavior b){
