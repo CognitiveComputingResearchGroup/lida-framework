@@ -40,8 +40,7 @@ public class PamImpl implements PerceptualAssociativeMemory,
     /**
      * selectivity for thresholding, % of max activation 
      */
-    private double selectivity = 0.9; 
-    	
+    private double selectivity = 0.9;
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
