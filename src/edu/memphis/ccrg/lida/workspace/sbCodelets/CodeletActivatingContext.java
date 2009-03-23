@@ -4,14 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
 
-public class Context {	
+public class CodeletActivatingContext {	
 	private Set<PamNode> nodeContext = new HashSet<PamNode>();
 	
-	public Context(){
+	public CodeletActivatingContext(){
 		//Not all codelets will have contexts!
 	}
 	
-	public Context(Set<PamNode> nodes){
+	public CodeletActivatingContext(Set<PamNode> nodes){
 		nodeContext = nodes;
 	}
 	

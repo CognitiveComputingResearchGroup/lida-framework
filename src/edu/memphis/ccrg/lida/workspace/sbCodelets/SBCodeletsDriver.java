@@ -35,7 +35,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	private EBufferContent eBufferContent = new EBufferContent();
 	private PrevBroadcastContent prevBroadcastContent = new PrevBroadcastContent();
 	//
-	private Map<Context, SBCodelet> codeletMap = new HashMap<Context, SBCodelet>();//TODO: equals, hashCode
+	private Map<CodeletActivatingContext, SBCodelet> codeletMap = new HashMap<CodeletActivatingContext, SBCodelet>();//TODO: equals, hashCode
 	
 	//For codelets to be able to move contents around.
 	private PerceptualBuffer pBuffer = null;
@@ -58,9 +58,9 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	}
 
 	public void run(){
-		Context context = new Context();
+		CodeletObjective objective = new CodeletObjective();
 		CodeletAction actions = new CodeletAction();		
-		spawnNewCodelet(usesPBuffer, !usesEBuffer, !usesPBroads, defaultCodeletActivation, context, actions);
+		spawnNewCodelet(usesPBuffer, !usesEBuffer, !usesPBroads, defaultCodeletActivation, objective, actions);
 		
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
@@ -81,7 +81,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	}//public void run()
 
 	private void spawnNewCodelet(boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads,
-								 double startingActivation, Context context, CodeletAction actions) {
+								 double startingActivation, CodeletObjective context, CodeletAction actions) {
 		if(usesPBuffer || usesEBuffer || usesPBroads){
 			SBCodelet newCodelet = new SBCodelet(timer, pBuffer, null, null, csm, 
 					  							  defaultCodeletActivation, context, actions);

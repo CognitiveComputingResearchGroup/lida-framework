@@ -13,38 +13,42 @@ public class SBCodelet implements Runnable, Stoppable{
 	private long threadID;
 	private FrameworkTimer timer;
 	//
-	private PerceptualBuffer pBuffer;
-	private EpisodicBuffer eBuffer;
-	private PreviousBroadcasts pBroads;
+	private PerceptualBuffer pBuffer = null;
+	private EpisodicBuffer eBuffer = null;
+	private PreviousBroadcasts pBroads = null;
 	private CSM csm;
 	//
 	private double activation = 1.0;
-	private Context context = null;
+	private CodeletObjective objective = null;
 	private CodeletAction action = new CodeletAction();
 			
 	public SBCodelet(FrameworkTimer t, PerceptualBuffer buffer, EpisodicBuffer eBuffer, 
-					PreviousBroadcasts pBroads, CSM csm, double activation, Context c, CodeletAction a){
+					PreviousBroadcasts pBroads, CSM csm, double activation, CodeletObjective obj, CodeletAction a){
 		timer = t;
 		pBuffer = buffer;
 		this.eBuffer = eBuffer;
 		this.pBroads = pBroads;
 		this.csm = csm;
 		this.activation = activation;
-		context = c;
+		objective = obj;
 		action = a;
 	}
 	
 	public void run() {
 		while(keepRunning){
 			timer.checkForStartPause();
+			if(pBuffer != null){
+				
+			}
+			
 		}		
 	}
 	
 	public void setActivation(double a){
 		activation = a;
 	}
-	public void setContext(Context c){
-		context = c;
+	public void setContext(CodeletObjective obj){
+		objective = obj;
 	}
 	public void setCodeletAction(CodeletAction a){
 		action = a;
@@ -52,8 +56,8 @@ public class SBCodelet implements Runnable, Stoppable{
 	public double getActivation(){
 		return activation;
 	}
-	public Context getContext(){
-		return context;
+	public CodeletObjective getObjective(){
+		return objective;
 	}
 	public CodeletAction getCodeletAction(){
 		return action;
