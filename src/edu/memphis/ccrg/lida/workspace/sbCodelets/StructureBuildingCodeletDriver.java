@@ -2,24 +2,29 @@ package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.SpatialLocation;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
+import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcasts;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsContentImpl;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsImpl;
 import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 
 public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PerceptualBufferListener {
 
@@ -38,7 +43,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	private Map<CodeletActivatingContext, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContext, StructureBuildingCodelet>();//TODO: equals, hashCode
 	
 	//For codelets to be able to move contents around.
-	private PerceptualBuffer pBuffer = null;
+	private PerceptualBufferImpl pBuffer = null;
 	private EpisodicBufferImpl eBuffer = null;
 	private PreviousBroadcastsImpl pBroads = null;
 	private CurrentSituationalModelImpl csm = null;
@@ -47,8 +52,9 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	
 	private List<Thread> codeletThreads = new ArrayList<Thread>();
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
+	private String defaultNodeName = "edu.memphis.ccrg.lida.shared.NodeImp";
 	
-	public StructureBuildingCodeletDriver(FrameworkTimer timer, PerceptualBuffer p, EpisodicBufferImpl e, 
+	public StructureBuildingCodeletDriver(FrameworkTimer timer, PerceptualBufferImpl p, EpisodicBufferImpl e, 
 							PreviousBroadcastsImpl pbroads, CurrentSituationalModelImpl csm){
 		this.timer = timer;
 		pBuffer = p;
@@ -58,9 +64,11 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	}
 
 	public void run(){
-		CodeletObjective objective = new CodeletObjective();
+		Set<Node> nodes = new HashSet<Node>();
+		nodes.add(NodeFactory.getInstance().getNode(defaultNodeName , "pit"));
+		CodeletObjective objective = new CodeletObjective(nodes);
 		CodeletAction actions = new CodeletAction();		
-		spawnNewCodelet(usesPBuffer, !usesEBuffer, !usesPBroads, defaultCodeletActivation, objective, actions);
+		spawnNewCodelet(pBuffer, null, null, defaultCodeletActivation, objective, actions);
 		
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
@@ -80,19 +88,16 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 		System.out.println("CODE: Num. cycles: " + counter);		
 	}//public void run()
 
-	private void spawnNewCodelet(boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads,
+	private void spawnNewCodelet(PerceptualBufferImpl pBuffer, EpisodicBuffer eBuffer, PreviousBroadcasts pBroads,
 								 double startingActivation, CodeletObjective context, CodeletAction actions) {
-		if(usesPBuffer || usesEBuffer || usesPBroads){
-			StructureBuildingCodelet newCodelet = new StructureBuildingCodelet(timer, pBuffer, null, null, csm, 
+		StructureBuildingCodelet newCodelet = new StructureBuildingCodelet(timer, pBuffer, null, null, csm, 
 					  							  defaultCodeletActivation, context, actions);
-
-			long threadNumber = codeletThreads.size() + 1;
-			Thread codeletThread = new Thread(newCodelet, "CODELET: " + threadNumber);
-			newCodelet.setThreadID(codeletThread.getId());
-			codeletThreads.add(codeletThread);   
-			codelets.add(newCodelet);	
-			codeletThread.start();			
-		}//if at least 1 buffer is specified			
+		long threadNumber = codeletThreads.size() + 1;
+		Thread codeletThread = new Thread(newCodelet, "CODELET: " + threadNumber);
+		newCodelet.setThreadID(codeletThread.getId());
+		codeletThreads.add(codeletThread);   
+		codelets.add(newCodelet);	
+		codeletThread.start();	
 	}//spawnNewCodelet
 
 	private void getPBufferContent() {

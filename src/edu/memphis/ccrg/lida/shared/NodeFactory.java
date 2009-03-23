@@ -51,6 +51,11 @@ public class NodeFactory {
 		}
 		return n;
 	}
+	public Node getNode(String nodeType, String nodeLabel){
+		Node n = getNode(nodeType);
+		n.setLabel(nodeLabel);
+		return n;
+	}	
 	public Node getNode(String nodeType,String decayBehavior, String exciteBehavior) {
 		Node n = null;
 		try {

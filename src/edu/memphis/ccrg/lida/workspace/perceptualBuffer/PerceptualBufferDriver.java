@@ -7,11 +7,11 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 public class PerceptualBufferDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
-	private PerceptualBuffer pb;
+	private PerceptualBufferImpl pb;
 	private FrameworkTimer timer;
 	private long threadID;
 	
-	public PerceptualBufferDriver(PerceptualBuffer pb, FrameworkTimer timer){
+	public PerceptualBufferDriver(PerceptualBufferImpl pb, FrameworkTimer timer){
 		this.pb = pb;
 		this.timer = timer;
 	}//

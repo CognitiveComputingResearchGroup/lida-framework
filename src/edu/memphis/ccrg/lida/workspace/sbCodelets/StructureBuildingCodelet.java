@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 
 public class StructureBuildingCodelet implements Runnable, Stoppable{
 	
@@ -19,7 +19,7 @@ public class StructureBuildingCodelet implements Runnable, Stoppable{
 	private FrameworkTimer timer;
 	//
 	private CurrentSituationalModelImpl csm;
-	private PerceptualBuffer pBuffer = null;
+	private PerceptualBufferImpl pBuffer = null;
 	private EpisodicBufferImpl eBuffer = null;
 	private PreviousBroadcastsImpl pBroads = null;
 	//
@@ -29,20 +29,30 @@ public class StructureBuildingCodelet implements Runnable, Stoppable{
 	
 	private List<CodeletAccessible> buffers = new ArrayList<CodeletAccessible>();
 			
-	public StructureBuildingCodelet(FrameworkTimer t, PerceptualBuffer buffer, EpisodicBufferImpl eBuffer, 
+	public StructureBuildingCodelet(FrameworkTimer t, PerceptualBufferImpl buffer, EpisodicBufferImpl eBuffer, 
 					PreviousBroadcastsImpl pBroads, CurrentSituationalModelImpl csm, double activation, CodeletObjective obj, CodeletAction a){
-		timer = t;
-		pBuffer = buffer;
-		this.eBuffer = eBuffer;
-		this.pBroads = pBroads;
-		this.csm = csm;
-		this.activation = activation;
-		objective = obj;
-		action = a;
 		
-		if(this.eBuffer != null){buffers.add(eBuffer);}
-		if(this.pBuffer != null){buffers.add(pBuffer);}
-		if(this.pBroads != null){buffers.add(pBroads);}
+		if(buffer == null && eBuffer == null && pBroads == null){
+			try {
+				throw new Exception();
+			} catch (Exception e) {
+				System.out.println("Codelet needs at least one source buffer");
+				e.printStackTrace();
+			}
+		}else{
+			timer = t;
+			pBuffer = buffer;
+			this.eBuffer = eBuffer;
+			this.pBroads = pBroads;
+			this.csm = csm;
+			this.activation = activation;
+			objective = obj;
+			action = a;
+			
+			if(this.eBuffer != null){buffers.add(eBuffer);}
+			if(this.pBuffer != null){buffers.add(pBuffer);}
+			if(this.pBroads != null){buffers.add(pBroads);}			
+		}
 			
 	}
 	
