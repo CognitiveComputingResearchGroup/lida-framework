@@ -49,22 +49,24 @@ public class StructureBuildingCodelet implements Runnable, Stoppable{
 	public void run(){
 		while(keepRunning){
 			timer.checkForStartPause();
-			if(pBuffer != null){
-				WorkspaceContent perceptualContent = pBuffer.getObjective(objective);
-				if(perceptualContent != null){
-					WorkspaceContent updatedContent = action.getResultOfAction(perceptualContent);
-					csm.addWorkspaceContent(updatedContent);
-				}
-			}//pBuffer
-			if(pBroads != null){
-				
-			}//pBroads
-			if(eBuffer != null){
-				
-			}//eBuffer			
+			
+			for(CodeletAccessible buffer: buffers){
+				checkAndWorkOnBuffer(buffer);
+			}
+			
+		
 		}//while		
 	}//run
 	
+	private void checkAndWorkOnBuffer(CodeletAccessible buffer) {
+		WorkspaceContent bufferContent = buffer.getCodeletsObjective(objective);
+		if(bufferContent != null){
+			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
+			csm.addWorkspaceContent(updatedContent);
+		}
+		
+	}
+
 	public void setActivation(double a){
 		activation = a;
 	}

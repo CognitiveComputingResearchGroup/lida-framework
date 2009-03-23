@@ -8,6 +8,7 @@ import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletObjective;
+import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
 
 public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface, CodeletAccessible{
 	
@@ -57,6 +58,11 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface,
 	}//sendContent
 
 	public PBufferContent getObjective(CodeletObjective objective) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public WorkspaceContent getCodeletsObjective(CodeletObjective objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}
