@@ -14,13 +14,13 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface,
 	
 	private PAMContentImpl pamContent;	
 	private List<Percept> perceptBuffer;
-	private List<PBufferListener> pbListeners;	
+	private List<PerceptualBufferListener> pbListeners;	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;	
 	
 	public PerceptualBuffer(){
 		pamContent = new PAMContentImpl();
 		perceptBuffer = new LinkedList<Percept>();
-		pbListeners = new ArrayList<PBufferListener>();
+		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//public Workspace()
 	
 	public synchronized void receivePAMContent(PAMContentImpl pc){
@@ -41,7 +41,7 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface,
 		}		
 	}//public void storePAMContent()
 	
-	public void addPBufferListener(PBufferListener l){
+	public void addPBufferListener(PerceptualBufferListener l){
 		pbListeners.add(l);
 	}
 	
@@ -50,14 +50,14 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface,
 		for(int i = 0; i < pbListeners.size(); i++){
 			Percept p = new Percept(perceptBuffer.get(0));
 			//p.print();
-			PBufferContent content = new PBufferContent(p);
+			PerceptualBufferContentImpl content = new PerceptualBufferContentImpl(p);
 			pbListeners.get(i).receivePBufferContent(content);
 			
 		}//for
 			
 	}//sendContent
 
-	public PBufferContent getObjective(CodeletObjective objective) {
+	public PerceptualBufferContentImpl getObjective(CodeletObjective objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

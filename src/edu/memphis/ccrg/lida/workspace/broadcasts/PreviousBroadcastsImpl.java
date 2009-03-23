@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletObjective;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
 
-public class PreviousBroadcastsImpl implements Runnable, BroadcastListener, CodeletAccessible{
+public class PreviousBroadcastsImpl implements Runnable, PreviousBroadcasts, BroadcastListener, CodeletAccessible{
 	
 	private boolean keepRunning = true;
 	

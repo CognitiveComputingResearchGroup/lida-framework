@@ -13,19 +13,19 @@ import java.util.List;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.csm.CSM;
-import edu.memphis.ccrg.lida.workspace.csm.CSMContent;
+import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
 
 public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
 	
-	private CSM model;
+	private CurrentSituationalModelImpl model;
 	private boolean keepRunning = true;
-	private CSMContent whatIwant;
-	private CSMContent whatIgot;
+	private CSMContentImpl whatIwant;
+	private CSMContentImpl whatIgot;
 	private List<AttentionListener> listeners;
 	private long threadID;
     
-    public AttentionCodeletImpl(CSM csm){
+    public AttentionCodeletImpl(CurrentSituationalModelImpl csm){
     	model = csm;
     }
     

@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-public interface CSMInterface {
+public interface CurrentSituationalModel {
 	
 	
 

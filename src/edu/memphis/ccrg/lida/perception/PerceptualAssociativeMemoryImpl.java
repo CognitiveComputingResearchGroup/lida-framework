@@ -22,12 +22,12 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
+import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContentImpl;
+import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferListener;
 
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, 
-	SensoryListener, EBufferListener, BroadcastListener{
+	SensoryListener, EpisodicBufferListener, BroadcastListener{
 	
     /**
      * proportion of activation spread to parents
@@ -51,7 +51,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private List<PAMListener> pamListeners;    
     private SensoryContentImpl sensoryContent;//Shared variable
     private PAMContentImpl pamContent;//Not a shared variable
-    private EBufferContent eBufferContent;//Shared variable
+    private EpisodicBufferContentImpl eBufferContent;//Shared variable
     private BroadcastContent broadcastContent;//Shared variable	
       
     public PerceptualAssociativeMemoryImpl(){
@@ -61,7 +61,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
     	pamContent = new PAMContentImpl();
-    	eBufferContent = new EBufferContent();
+    	eBufferContent = new EpisodicBufferContentImpl();
     	//broadcastContent = new BroadcastContent();//TODO: write this class 	
     }
     
@@ -107,7 +107,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	sensoryContent = sc;    	
     }
     
-	public synchronized void receiveEBufferContent(EBufferContent c) {
+	public synchronized void receiveEBufferContent(EpisodicBufferContentImpl c) {
 		eBufferContent = c;		
 	}
     	

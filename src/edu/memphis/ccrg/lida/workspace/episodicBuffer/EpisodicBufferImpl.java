@@ -9,13 +9,13 @@ import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
 
-    private List<EBufferListener> listeners;
+    private List<EpisodicBufferListener> listeners;
 	
 	public EpisodicBufferImpl(){
-		listeners = new ArrayList<EBufferListener>();
+		listeners = new ArrayList<EpisodicBufferListener>();
 	}
 
-	public void addEBufferListener(EBufferListener listener) {
+	public void addEBufferListener(EpisodicBufferListener listener) {
 		listeners.add(listener);		
 	}
 

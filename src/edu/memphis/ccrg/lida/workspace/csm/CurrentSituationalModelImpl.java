@@ -3,9 +3,9 @@ package edu.memphis.ccrg.lida.workspace.csm;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
 
-public class CSM implements CSMInterface{
+public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
-	public CSM(){
+	public CurrentSituationalModelImpl(){
 
 	}
 	
@@ -14,12 +14,12 @@ public class CSM implements CSMInterface{
 		
 	}
 
-	public boolean hasContent(CSMContent whatIwant) {
+	public boolean hasContent(CSMContentImpl whatIwant) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public CSMContent getContent(CSMContent whatIwant) {
+	public CSMContentImpl getContent(CSMContentImpl whatIwant) {
 		// TODO Auto-generated method stub
 		return null;
 	}

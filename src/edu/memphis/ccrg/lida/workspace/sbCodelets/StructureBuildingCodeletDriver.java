@@ -12,16 +12,16 @@ import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.SpatialLocation;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsContent;
+import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsContentImpl;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsImpl;
-import edu.memphis.ccrg.lida.workspace.csm.CSM;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
+import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferListener;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 
-public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PBufferListener {
+public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PerceptualBufferListener {
 
 	//Basics
 	private boolean keepRunning = true;
@@ -29,11 +29,11 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PBuf
 	private long threadID;
 	
 	//For this Driver, contents of the buffers and codeletMap	
-	private PBufferContent pBufferContent = new PBufferContent();
+	private PerceptualBufferContentImpl pBufferContent = new PerceptualBufferContentImpl();
 	private Percept percept = new Percept();
 	//Not yet implemented
-	private EBufferContent eBufferContent = new EBufferContent();
-	private PreviousBroadcastsContent prevBroadcastContent = new PreviousBroadcastsContent();
+	private EpisodicBufferContentImpl eBufferContent = new EpisodicBufferContentImpl();
+	private PreviousBroadcastsContentImpl prevBroadcastContent = new PreviousBroadcastsContentImpl();
 	//
 	private Map<CodeletActivatingContext, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContext, StructureBuildingCodelet>();//TODO: equals, hashCode
 	
@@ -41,7 +41,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PBuf
 	private PerceptualBuffer pBuffer = null;
 	private EpisodicBufferImpl eBuffer = null;
 	private PreviousBroadcastsImpl pBroads = null;
-	private CSM csm = null;
+	private CurrentSituationalModelImpl csm = null;
 	private final double defaultCodeletActivation = 1.0;	
 	private final boolean usesPBuffer = true, usesEBuffer = true, usesPBroads = true;
 	
@@ -49,7 +49,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PBuf
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
 	
 	public StructureBuildingCodeletDriver(FrameworkTimer timer, PerceptualBuffer p, EpisodicBufferImpl e, 
-							PreviousBroadcastsImpl pbroads, CSM csm){
+							PreviousBroadcastsImpl pbroads, CurrentSituationalModelImpl csm){
 		this.timer = timer;
 		pBuffer = p;
 		eBuffer = e;
@@ -124,11 +124,11 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PBuf
 		return threadID;
 	}
 
-	public void addCSM(CSM csm) {
+	public void addCSM(CurrentSituationalModelImpl csm) {
 		this.csm = csm;		
 	}
 
-	public synchronized void receivePBufferContent(PBufferContent pbc) {
+	public synchronized void receivePBufferContent(PerceptualBufferContentImpl pbc) {
 		pBufferContent = pbc;		
 	}
 

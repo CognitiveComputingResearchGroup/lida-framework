@@ -4,14 +4,14 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
-public class PBufferDriver implements Runnable, Stoppable{
+public class PerceptualBufferDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
 	private PerceptualBuffer pb;
 	private FrameworkTimer timer;
 	private long threadID;
 	
-	public PBufferDriver(PerceptualBuffer pb, FrameworkTimer timer){
+	public PerceptualBufferDriver(PerceptualBuffer pb, FrameworkTimer timer){
 		this.pb = pb;
 		this.timer = timer;
 	}//

@@ -6,10 +6,10 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 public class CSMDriver implements Runnable, Stoppable{
 	
 	private boolean keepRunning = true;
-	private CSM csm;
+	private CurrentSituationalModelImpl csm;
 	private long threadID;
 	
-	public CSMDriver(CSM csm){
+	public CSMDriver(CurrentSituationalModelImpl csm){
 		this.csm = csm;
 	}
 

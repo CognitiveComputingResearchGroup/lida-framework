@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
-import edu.memphis.ccrg.lida.workspace.csm.CSMContent;
+import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
 
 public class CodeletAction {
 

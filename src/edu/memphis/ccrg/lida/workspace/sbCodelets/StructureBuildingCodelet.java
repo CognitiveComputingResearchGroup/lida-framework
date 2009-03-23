@@ -6,10 +6,10 @@ import java.util.List;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsImpl;
-import edu.memphis.ccrg.lida.workspace.csm.CSM;
-import edu.memphis.ccrg.lida.workspace.csm.CSMContent;
+import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 
 public class StructureBuildingCodelet implements Runnable, Stoppable{
@@ -18,7 +18,7 @@ public class StructureBuildingCodelet implements Runnable, Stoppable{
 	private long threadID;
 	private FrameworkTimer timer;
 	//
-	private CSM csm;
+	private CurrentSituationalModelImpl csm;
 	private PerceptualBuffer pBuffer = null;
 	private EpisodicBufferImpl eBuffer = null;
 	private PreviousBroadcastsImpl pBroads = null;
@@ -30,7 +30,7 @@ public class StructureBuildingCodelet implements Runnable, Stoppable{
 	private List<CodeletAccessible> buffers = new ArrayList<CodeletAccessible>();
 			
 	public StructureBuildingCodelet(FrameworkTimer t, PerceptualBuffer buffer, EpisodicBufferImpl eBuffer, 
-					PreviousBroadcastsImpl pBroads, CSM csm, double activation, CodeletObjective obj, CodeletAction a){
+					PreviousBroadcastsImpl pBroads, CurrentSituationalModelImpl csm, double activation, CodeletObjective obj, CodeletAction a){
 		timer = t;
 		pBuffer = buffer;
 		this.eBuffer = eBuffer;
