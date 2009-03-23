@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.perception.featureDetector;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.interfaces.DetectBehavior;
 import edu.memphis.ccrg.lida.perception.interfaces.FeatureDetector;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.util.Misc;
 
 public class FeatureDetectorImpl implements FeatureDetector{
@@ -21,7 +21,7 @@ public class FeatureDetectorImpl implements FeatureDetector{
 		pamNode = n.pamNode;
 	}
 
-    public void detect(SensoryContent sc){    	
+    public void detect(SensoryContentImpl sc){    	
     	if(sc.equals(null)){
     		Misc.p("Tried to detect null SensoryContent");
     		return;

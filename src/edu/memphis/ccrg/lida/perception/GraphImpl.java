@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
    
-public class Graph /*implements NodeStructure*/{
+public class GraphImpl{
 	private Map<Linkable, Set<LinkImpl>> linkMap;
 	private int linkCount = 0;//How many links have been added to this linkMap
 	private Set<PamNodeImpl> nodes;
@@ -21,7 +21,7 @@ public class Graph /*implements NodeStructure*/{
 	private double upscale = 0.5;
 	private double selectivity = 0.9;
 
-	public Graph(double upscale, double selectivity){
+	public GraphImpl(double upscale, double selectivity){
 		linkMap = new HashMap<Linkable, Set<LinkImpl>>();
 		nodes = new HashSet<PamNodeImpl>();
 		layerMap = new HashMap<Integer, Set<Node>>();
@@ -29,7 +29,7 @@ public class Graph /*implements NodeStructure*/{
 		this.selectivity = selectivity;
 	}//public LinkMap()
 	
-	public Graph(Graph map){
+	public GraphImpl(GraphImpl map){
 		this(map.upscale, map.selectivity);
 		this.linkCount = map.linkCount;
 		Set<Linkable> keys = map.linkMap.keySet();

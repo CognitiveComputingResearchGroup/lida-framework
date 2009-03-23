@@ -4,13 +4,13 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
-public class SMDriver implements Runnable, Stoppable{
-	private SensoryMemory sm;
+public class SensoryMemoryDriver implements Runnable, Stoppable{
+	private SensoryMemoryImpl sm;
 	private boolean keepRunning;	
 	private FrameworkTimer timer;
 	private long threadID;
 	
-	public SMDriver(SensoryMemory sm, FrameworkTimer timer){
+	public SensoryMemoryDriver(SensoryMemoryImpl sm, FrameworkTimer timer){
 		this.sm = sm;
 		keepRunning = true;		
 		this.timer = timer;

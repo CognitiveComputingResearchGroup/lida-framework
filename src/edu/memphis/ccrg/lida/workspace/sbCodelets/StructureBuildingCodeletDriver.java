@@ -12,16 +12,16 @@ import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.SpatialLocation;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.broadcasts.PrevBroadcastContent;
-import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcasts;
+import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsContent;
+import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsImpl;
 import edu.memphis.ccrg.lida.workspace.csm.CSM;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
+import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferContent;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 
-public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
+public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PBufferListener {
 
 	//Basics
 	private boolean keepRunning = true;
@@ -33,14 +33,14 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	private Percept percept = new Percept();
 	//Not yet implemented
 	private EBufferContent eBufferContent = new EBufferContent();
-	private PrevBroadcastContent prevBroadcastContent = new PrevBroadcastContent();
+	private PreviousBroadcastsContent prevBroadcastContent = new PreviousBroadcastsContent();
 	//
-	private Map<CodeletActivatingContext, SBCodelet> codeletMap = new HashMap<CodeletActivatingContext, SBCodelet>();//TODO: equals, hashCode
+	private Map<CodeletActivatingContext, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContext, StructureBuildingCodelet>();//TODO: equals, hashCode
 	
 	//For codelets to be able to move contents around.
 	private PerceptualBuffer pBuffer = null;
-	private EpisodicBuffer eBuffer = null;
-	private PreviousBroadcasts pBroads = null;
+	private EpisodicBufferImpl eBuffer = null;
+	private PreviousBroadcastsImpl pBroads = null;
 	private CSM csm = null;
 	private final double defaultCodeletActivation = 1.0;	
 	private final boolean usesPBuffer = true, usesEBuffer = true, usesPBroads = true;
@@ -48,8 +48,8 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	private List<Thread> codeletThreads = new ArrayList<Thread>();
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
 	
-	public SBCodeletsDriver(FrameworkTimer timer, PerceptualBuffer p, EpisodicBuffer e, 
-							PreviousBroadcasts pbroads, CSM csm){
+	public StructureBuildingCodeletDriver(FrameworkTimer timer, PerceptualBuffer p, EpisodicBufferImpl e, 
+							PreviousBroadcastsImpl pbroads, CSM csm){
 		this.timer = timer;
 		pBuffer = p;
 		eBuffer = e;
@@ -83,7 +83,7 @@ public class SBCodeletsDriver implements Runnable, Stoppable, PBufferListener {
 	private void spawnNewCodelet(boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads,
 								 double startingActivation, CodeletObjective context, CodeletAction actions) {
 		if(usesPBuffer || usesEBuffer || usesPBroads){
-			SBCodelet newCodelet = new SBCodelet(timer, pBuffer, null, null, csm, 
+			StructureBuildingCodelet newCodelet = new StructureBuildingCodelet(timer, pBuffer, null, null, csm, 
 					  							  defaultCodeletActivation, context, actions);
 
 			long threadNumber = codeletThreads.size() + 1;

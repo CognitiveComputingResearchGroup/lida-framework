@@ -11,5 +11,5 @@ public interface SensoryListener {
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param sc the Content of the Broadcast
 	 */
-	public void receiveSense(SensoryContent sc);
+	public void receiveSense(SensoryContentImpl sc);
 }

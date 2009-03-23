@@ -3,14 +3,14 @@ package edu.memphis.ccrg.lida.workspace.broadcasts;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
-public class PBroadsDriver implements Runnable, Stoppable{
+public class PreviousBroadcastsDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
-	private PreviousBroadcasts pbroads;
+	private PreviousBroadcastsImpl pbroads;
 	private FrameworkTimer timer;
 	private long threadID;
 	
-	public PBroadsDriver(PreviousBroadcasts p, FrameworkTimer timer){
+	public PreviousBroadcastsDriver(PreviousBroadcastsImpl p, FrameworkTimer timer){
 		pbroads = p;
 		this.timer = timer;
 	}

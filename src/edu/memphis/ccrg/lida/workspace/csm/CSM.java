@@ -1,27 +1,25 @@
 package edu.memphis.ccrg.lida.workspace.csm;
 
-public class CSM implements CSMInterface, ScratchPadListener{
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
+import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
+
+public class CSM implements CSMInterface{
 	
 	public CSM(){
 
 	}
 	
-	public void receiveSBCodeletContent(SPadContent c){
-		
-	}
-	
 
-	public void receiveSPadContent(SPadContent c) {
-		// TODO Auto-generated method stub
+	public synchronized void addWorkspaceContent(WorkspaceContent content) {
 		
 	}
 
-	public boolean hasContent(ModelContent whatIwant) {
+	public boolean hasContent(CSMContent whatIwant) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public ModelContent getContent(ModelContent whatIwant) {
+	public CSMContent getContent(CSMContent whatIwant) {
 		// TODO Auto-generated method stub
 		return null;
 	}

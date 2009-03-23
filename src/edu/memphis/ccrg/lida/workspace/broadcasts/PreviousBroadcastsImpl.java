@@ -2,12 +2,13 @@ package edu.memphis.ccrg.lida.workspace.broadcasts;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
 
-public class PreviousBroadcasts implements Runnable, BroadcastListener{
+public class PreviousBroadcastsImpl implements Runnable, BroadcastListener, CodeletAccessible{
 	
 	private boolean keepRunning = true;
 	
-	public PreviousBroadcasts(){
+	public PreviousBroadcastsImpl(){
 		
 	}
 	
@@ -22,7 +23,7 @@ public class PreviousBroadcasts implements Runnable, BroadcastListener{
 		keepRunning = false;
 	}
 
-	public void addPBroadsListener(PBroadsListener l) {
+	public void addPBroadsListener(PreviousBroadcastsListener l) {
 		// TODO Auto-generated method stub
 		
 	}

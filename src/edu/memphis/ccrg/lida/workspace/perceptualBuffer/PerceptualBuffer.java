@@ -3,13 +3,13 @@ package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-
 import edu.memphis.ccrg.lida.perception.PAMContentImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
+import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletObjective;
 
-public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
+public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface, CodeletAccessible{
 	
 	private PAMContentImpl pamContent;	
 	private List<Percept> perceptBuffer;
@@ -55,5 +55,10 @@ public class PerceptualBuffer implements PAMListener, PerceptualBufferInterface{
 		}//for
 			
 	}//sendContent
+
+	public PBufferContent getObjective(CodeletObjective objective) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }//PerceptualBuffer

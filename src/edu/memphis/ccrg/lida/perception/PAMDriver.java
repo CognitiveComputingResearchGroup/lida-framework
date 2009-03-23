@@ -6,12 +6,12 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
-	private PamImpl pam;
+	private PerceptualAssociativeMemoryImpl pam;
 	private boolean keepRunning;	
 	private FrameworkTimer timer;
 	private long threadID;
 	
-	public PAMDriver(PamImpl pam, FrameworkTimer timer){
+	public PAMDriver(PerceptualAssociativeMemoryImpl pam, FrameworkTimer timer){
 		this.pam = pam;
 		keepRunning = true;		
 		this.timer = timer;

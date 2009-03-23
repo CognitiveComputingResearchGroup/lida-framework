@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida.perception.interfaces.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferContent;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EBufferListener;
 
 
-public class PamImpl implements PerceptualAssociativeMemory, 
+public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, 
 	SensoryListener, EBufferListener, BroadcastListener{
 	
     /**
@@ -45,21 +45,21 @@ public class PamImpl implements PerceptualAssociativeMemory,
      * Nodes that receive activation from SM. Key is the node's label.
      */
 	public Set<FeatureDetectorImpl> featureDetectors;
-	private Graph graph;
+	private GraphImpl graph;
     
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
-    private SensoryContent sensoryContent;//Shared variable
+    private SensoryContentImpl sensoryContent;//Shared variable
     private PAMContentImpl pamContent;//Not a shared variable
     private EBufferContent eBufferContent;//Shared variable
     private BroadcastContent broadcastContent;//Shared variable	
       
-    public PamImpl(){
+    public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new HashSet<FeatureDetectorImpl>();
-    	graph = new Graph(upscale, selectivity);
+    	graph = new GraphImpl(upscale, selectivity);
     	
     	pamListeners = new ArrayList<PAMListener>();
-    	sensoryContent = new SensoryContent();
+    	sensoryContent = new SensoryContentImpl();
     	pamContent = new PAMContentImpl();
     	eBufferContent = new EBufferContent();
     	//broadcastContent = new BroadcastContent();//TODO: write this class 	
@@ -103,7 +103,7 @@ public class PamImpl implements PerceptualAssociativeMemory,
 		pamListeners.add(pl);
 	}
     
-    public synchronized void receiveSense(SensoryContent sc){//SensoryContent    	
+    public synchronized void receiveSense(SensoryContentImpl sc){//SensoryContent    	
     	sensoryContent = sc;    	
     }
     
@@ -121,9 +121,9 @@ public class PamImpl implements PerceptualAssociativeMemory,
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){    	
-    	SensoryContent sc = null;
+    	SensoryContentImpl sc = null;
     	synchronized(this){
-    		sc = (SensoryContent)sensoryContent.getThis();
+    		sc = (SensoryContentImpl)sensoryContent.getThis();
     	}
   
     	for(FeatureDetectorImpl d: featureDetectors)

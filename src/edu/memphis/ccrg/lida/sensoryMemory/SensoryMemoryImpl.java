@@ -3,13 +3,13 @@ package edu.memphis.ccrg.lida.sensoryMemory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SensoryMemory implements SimulationListener{
+public class SensoryMemoryImpl implements SimulationListener{
 	
-	private SimulationContent simContent = null;
-	private SensoryContent senseContent = new SensoryContent();
+	private SimulationContentImpl simContent = null;
+	private SensoryContentImpl senseContent = new SensoryContentImpl();
 	private List<SensoryListener> listeners = new ArrayList<SensoryListener>();
 	
-	public synchronized void receiveSimContent(SimulationContent sc){//SimulationListener
+	public synchronized void receiveSimContent(SimulationContentImpl sc){//SimulationListener
 		simContent = sc;		
 	}	
 	

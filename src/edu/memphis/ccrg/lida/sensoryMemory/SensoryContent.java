@@ -1,27 +1,7 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-public class SensoryContent implements SensoryContentInterface{
-
-	private int worldSize = 4; ///TODO: unhard code this
-	private char[][][] senseData = new char[worldSize][worldSize][4];
-	
-	public synchronized void setContent(Object o){
-		senseData = (char[][][])o;
-	}
-	
-	public Object getContent(){	
-		char[][][] copy = new char[worldSize][worldSize][4];
-		if(senseData != null)
-			System.arraycopy(senseData, 0, copy, 0, senseData.length);		
-		return copy;	
-	}
-	
-	public Object getThis(){
-		return this;
-	}	
-	
-	public void print(){
-		
-	}
-
+public interface SensoryContent{	
+	public Object getContent();
+	public Object getThis();
+	public void setContent(Object o);
 }

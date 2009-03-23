@@ -11,5 +11,5 @@ public interface SimulationListener {
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param sc the Content of the Broadcast
 	 */
-	public void receiveSimContent(SimulationContent sc);
+	public void receiveSimContent(SimulationContentImpl sc);
 }

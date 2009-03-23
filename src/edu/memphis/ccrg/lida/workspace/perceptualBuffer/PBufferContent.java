@@ -1,8 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
 import edu.memphis.ccrg.lida.perception.Percept;
+import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
 
-public class PBufferContent implements PBufferContentInter {
+public class PBufferContent implements PBufferContentInter, WorkspaceContent {
 	private Percept p;
 
 	public PBufferContent(){
