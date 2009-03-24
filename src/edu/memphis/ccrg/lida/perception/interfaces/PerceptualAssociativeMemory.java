@@ -9,6 +9,8 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.perception.LinkImpl;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
@@ -27,7 +29,7 @@ public interface PerceptualAssociativeMemory{
 	 * Each nodes added must be register which requires
 	 * the refresh and buildLayerMap operations (see PAM.java) 
 	 */
-	public void addToPAM(Set<PamNodeImpl> nodes, Set<FeatureDetectorImpl> featureDetectors, Set<LinkImpl> links);
+	public void addToPAM(Set<Node> nodesToAdd, Set<FeatureDetector> featureDetectors, Set<Link> linkSet);
 	
 	/**
 	 * Sense the current SenseContent

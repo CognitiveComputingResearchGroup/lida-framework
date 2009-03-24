@@ -107,4 +107,19 @@ public class NodeImp implements Node {
 		
 	}
 
+	public int getLayerDepth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void printActivationString() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void decay(DecayBehavior decayBehavior) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

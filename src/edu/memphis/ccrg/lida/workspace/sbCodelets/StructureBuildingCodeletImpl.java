@@ -58,6 +58,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	
 	public void run(){
 		while(keepRunning){
+			try{Thread.sleep(100);}catch(Exception e){}
 			timer.checkForStartPause();
 			
 			for(CodeletAccessible buffer: buffers){

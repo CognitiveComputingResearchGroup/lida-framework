@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
+import edu.memphis.ccrg.lida.perception.GraphImpl;
 import edu.memphis.ccrg.lida.perception.PAMContentImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletObjective;
 import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
@@ -16,13 +17,13 @@ import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
 public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, CodeletAccessible{
 	
 	private PAMContentImpl pamContent;	
-	private List<Percept> perceptBuffer;
+	private List<NodeStructure> perceptBuffer;
 	private List<PerceptualBufferListener> pbListeners;	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;	
 	
 	public PerceptualBufferImpl(){
 		pamContent = new PAMContentImpl();
-		perceptBuffer = new LinkedList<Percept>();
+		perceptBuffer = new ArrayList<NodeStructure>();
 		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//public Workspace()
 	
@@ -31,9 +32,9 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 	}
 	
 	private synchronized void storePAMContent(){
-		Percept current = (Percept)pamContent.getContent();				
-		if(!current.equals(null)){
-			perceptBuffer.add(new Percept(current));			
+		GraphImpl struct = (GraphImpl)pamContent.getContent();				
+		if(struct != null){
+			perceptBuffer.add(new GraphImpl(struct));			
 		}
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY){
 			perceptBuffer.remove(0);
@@ -46,29 +47,32 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 	
 	public void sendContent(){
 		storePAMContent();
-		for(int i = 0; i < pbListeners.size(); i++){
-			Percept p = new Percept(perceptBuffer.get(0));
-			//p.print();
-			PerceptualBufferContentImpl content = new PerceptualBufferContentImpl(p);
-			pbListeners.get(i).receivePBufferContent(content);
-			
-		}//for
+		
+		if(perceptBuffer.size() > 0){
+			for(int i = 0; i < pbListeners.size(); i++){
+				GraphImpl tempGraph = new GraphImpl((GraphImpl)perceptBuffer.get(0));
+				//p.print();
+				PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
+				content.addContent(tempGraph);
+				pbListeners.get(i).receivePBufferContent(content);
+				
+			}//for
+		}
 			
 	}//sendContent
 
+	////O(BufferSize * PerceptSize * log(objectives.size()))
 	public WorkspaceContent getCodeletsObjective(CodeletObjective objective) {
 		PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
 		
-		Set<Node> objectives = objective.getNodeObjectives();
-		
 		synchronized(this){
-		for(Percept p: perceptBuffer)
-			for(Node n: p)
-				if(objectives.contains(n))
-					content.addNode(n);
+			for(NodeStructure struct: perceptBuffer){
+				Set<Node> nodes = struct.getNodes();
+				for(Node n: nodes){
+					content.addNode(n);					
+				}
+			}
 		}
-	
-		//O(BufferSize * PerceptSize * log(objectives.size()))
 		
 		return content;
 

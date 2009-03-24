@@ -1,19 +1,23 @@
 package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
-import java.util.Set;
+import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.Node;
 
 public class CodeletObjective {
 	
-	Set<Node> nodeObjectives;
+	Map<Long, Node> nodeObjectives;
 	
-	public CodeletObjective(Set<Node> nodes){
-		nodeObjectives = nodes;
+	public CodeletObjective(Map<Long, Node> nodeObjs){
+		nodeObjectives = nodeObjs;
 	}
 
-	public Set<Node> getNodeObjectives() {
+	public Map<Long, Node> getNodeObjectives() {
 		return nodeObjectives;
+	}
+
+	public boolean hasNodeObjective(Node n) {
+		return nodeObjectives.containsKey(n.getId());
 	}
 
 }

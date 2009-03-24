@@ -1,25 +1,26 @@
 package edu.memphis.ccrg.lida.perception;
 
 import edu.memphis.ccrg.lida.perception.interfaces.PAMContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class PAMContentImpl implements PAMContent{
 
-	private Percept p;
+	private NodeStructure graph = null;
 
-	public PAMContentImpl(){
-		p = new Percept();
-	}
-	
-	public PAMContentImpl(Percept p){
-		this.p = p;
-	}
-	
-	public void setNodes(Percept p){
-		this.p = p;
-	}
-	
 	public Object getContent(){
-		return p;
+		return graph;
+	}
+
+	public void setContent(NodeStructure struct) {
+		graph = struct;		
+	}
+	
+	public boolean isEmpty(){
+		if(graph == null){
+			return true;
+		}else{
+			return graph.getNodes().size() > 0;
+		}
 	}
 
 }

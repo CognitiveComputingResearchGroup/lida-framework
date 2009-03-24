@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.perception.GraphImpl;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.SpatialLocation;
@@ -34,7 +36,6 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	
 	//For this Driver, contents of the buffers and codeletMap	
 	private PerceptualBufferContentImpl pBufferContent = new PerceptualBufferContentImpl();
-	private Percept percept = new Percept();
 	//Not yet implemented
 	private EpisodicBufferContentImpl eBufferContent = new EpisodicBufferContentImpl();
 	private PreviousBroadcastsContentImpl prevBroadcastContent = new PreviousBroadcastsContentImpl();
@@ -63,10 +64,10 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	}
 
 	public void run(){
-		Set<Node> nodes = new HashSet<Node>();
+		Map<Long, Node> nodes = new HashMap<Long, Node>();
 		Node n = NodeFactory.getInstance().getNode();
 		n.setLabel("pit");
-		nodes.add(n);
+		nodes.put(n.getId(), n);
 		
 		CodeletObjective objective = new CodeletObjective(nodes);
 		CodeletAction actions = new CodeletAction();		
@@ -103,19 +104,31 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	}//spawnNewCodelet
 
 	private void getPBufferContent() {
+		NodeStructure struct = null;
 		synchronized(this){
-			percept = (Percept)pBufferContent.getContent();
+			struct = (GraphImpl)pBufferContent.getContent();
 		}
-		percept.print(keepRunning, "SB-CODELETS");
 		
-		Set<SpatialLocation> locations = null;
-		for(PamNodeImpl n: percept){//TODO: should be in PamNode instead
-			locations = n.getLocations();
-			for(SpatialLocation s: locations){
-				s.print();
+		//System.out.println("strcut" + struct);
+		
+		if(struct != null){
+			Set<Node> nodes = struct.getNodes();
+			//percept.print(keepRunning, "SB-CODELETS");
+			
+			System.out.println("nodes " + nodes);
+			
+			if(nodes != null){
+				System.out.println(nodes.size());
+				Set<SpatialLocation> locations = null;
+				for(Node n: nodes){//TODO: should be in PamNode instead
+	//				locations = n.getLocations();
+	//				for(SpatialLocation s: locations){
+	//					s.print();
+	//				}
+					System.out.println("\n");
+				}
 			}
-			System.out.println("\n");
-		}
+		}//if struct not null
 	}
 
 	public void stopRunning(){

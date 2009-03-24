@@ -171,6 +171,10 @@ public class PamNodeImpl implements PamNode{
         currentActivation = decayBehav.decay(currentActivation);
     }
     
+    public void decay(DecayBehavior db){
+    	currentActivation = db.decay(currentActivation);   	
+    }
+    
     /**
      * 
      * @param b

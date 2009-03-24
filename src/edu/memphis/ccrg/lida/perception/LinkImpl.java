@@ -210,4 +210,19 @@ public class LinkImpl implements Link, Node{
 		
 	}
 
+	public void decay(DecayBehavior decayBehavior) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getLayerDepth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void printActivationString() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

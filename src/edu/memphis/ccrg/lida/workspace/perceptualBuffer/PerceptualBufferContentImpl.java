@@ -1,32 +1,22 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.perception.Percept;
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.perception.GraphImpl;
 import edu.memphis.ccrg.lida.shared.Node;
 
 public class PerceptualBufferContentImpl implements PerceptualBufferContent{
-	private Percept p;
-	//private Graph g;
 
-	public PerceptualBufferContentImpl(){
-		p = new Percept();
-	}
-	
-	public PerceptualBufferContentImpl(Percept p){
-		this.p = p;
-	}
+	private GraphImpl g = null;
 	
 	public void addNode(Node n){
-		p.add((PamNodeImpl)n);
+		g.addNode(n);
 	}
 	
-	public void addContent(Percept p){
-		this.p = p;
+	public void addContent(GraphImpl newGraph){
+		g = newGraph;
 	}
 	
 	public Object getContent(){
-		return p;
+		return g;
 	}
 	
-
-}
+}//

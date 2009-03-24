@@ -15,13 +15,19 @@ import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.perception.interfaces.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
+import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida.perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
+import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeFactory;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferListener;
 
@@ -44,8 +50,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
-	public Set<FeatureDetectorImpl> featureDetectors;
+	public Set<FeatureDetector> featureDetectors;
 	private GraphImpl graph;
+	
+	private DecayBehavior decayBehavior = new LinearDecayCurve();
     
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
@@ -55,7 +63,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private BroadcastContent broadcastContent;//Shared variable	
       
     public PerceptualAssociativeMemoryImpl(){
-    	featureDetectors = new HashSet<FeatureDetectorImpl>();
+    	featureDetectors = new HashSet<FeatureDetector>();
     	graph = new GraphImpl(upscale, selectivity);
     	
     	pamListeners = new ArrayList<PAMListener>();
@@ -88,7 +96,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
-    public void addToPAM(Set<PamNodeImpl> nodesToAdd, Set<FeatureDetectorImpl> featureDetectors, Set<LinkImpl> linkSet){
+    public void addToPAM(Set<Node> nodesToAdd, Set<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd);
     	graph.addLinkSet(linkSet);    	
@@ -126,7 +134,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     		sc = (SensoryContentImpl)sensoryContent.getThis();
     	}
   
-    	for(FeatureDetectorImpl d: featureDetectors)
+    	for(FeatureDetector d: featureDetectors)
     		d.detect(sc);  	     
     }//public void sense()
         
@@ -161,36 +169,37 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * @see PamNodeImpl#synchronize()
      */
     private void syncNodeActivation(){
-        Percept percept = new Percept();
-        Set<PamNodeImpl> nodes = graph.getNodes();
-        for(PamNodeImpl node: nodes){
+        GraphImpl newGraph = new GraphImpl(upscale, selectivity);
+        Set<Node> nodes = graph.getNodes();
+        for(Node node: nodes){
             node.synchronize();//Needed since excite changes current but not totalActivation.
-            if(node.isRelevant())//Based on totalActivation
-                percept.add(new PamNodeImpl(node));
+            if(node.isRelevant()){//Based on totalActivation
+                newGraph.addNode(NodeFactory.getInstance().getNode(node));
+            }
         }//for      
-        pamContent.setNodes(new Percept(percept));        
+        pamContent.setContent((NodeStructure)newGraph);
     }//private void syncNodeActivation
     
     public void sendPercept(){
-    	for(int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receivePAMContent(pamContent);
+    	if(!pamContent.isEmpty())
+	    	for(int i = 0; i < pamListeners.size(); i++)
+				pamListeners.get(i).receivePAMContent(pamContent);
     }
     
     public void decay() {
-    	Set<PamNodeImpl> nodes = graph.getNodes();
-        for(PamNodeImpl n: nodes)
-        	n.decay();        
+    	Set<Node> nodes = graph.getNodes();
+        for(Node n: nodes){
+        	n.decay(decayBehavior);      
+        }
     }//decay
 
 	public void setDecayCurve(DecayBehavior c) {
-		Set<PamNodeImpl> nodes = graph.getNodes();
-		for(PamNodeImpl n: nodes)
-			n.setDecayBehav(c);		
+		decayBehavior = c;
 	}
 	
     public void setExciteBehavior(ExciteBehavior behavior){
-    	Set<PamNodeImpl> nodes = graph.getNodes();
-    	for(PamNodeImpl n: nodes){
+    	Set<Node> nodes = graph.getNodes();
+    	for(Node n: nodes){
     		n.setExciteBehavior(behavior);
     	}
     }//public void setExciteBehavior   
