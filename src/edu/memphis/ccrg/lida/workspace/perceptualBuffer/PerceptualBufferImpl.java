@@ -61,14 +61,13 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 		
 		Set<Node> objectives = objective.getNodeObjectives();
 		
-		for(Percept p: perceptBuffer){
-			for(Node n: p){
-				if(objectives.contains(n)){
+		synchronized(this){
+		for(Percept p: perceptBuffer)
+			for(Node n: p)
+				if(objectives.contains(n))
 					content.addNode(n);
-				}
-			}
 		}
-		
+	
 		//O(BufferSize * PerceptSize * log(objectives.size()))
 		
 		return content;

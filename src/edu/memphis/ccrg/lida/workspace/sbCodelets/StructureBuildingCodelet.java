@@ -1,111 +1,17 @@
 package edu.memphis.ccrg.lida.workspace.sbCodelets;
 
-import java.util.ArrayList;
-import java.util.List;
+public interface StructureBuildingCodelet {
 
-import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsImpl;
-import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
-import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
+	public abstract void setActivation(double a);
 
-public class StructureBuildingCodelet implements Runnable, Stoppable{
-	
-	private boolean keepRunning = true;
-	private long threadID;
-	private FrameworkTimer timer;
-	//
-	private CurrentSituationalModelImpl csm;
-	private PerceptualBufferImpl pBuffer = null;
-	private EpisodicBufferImpl eBuffer = null;
-	private PreviousBroadcastsImpl pBroads = null;
-	//
-	private double activation = 1.0;
-	private CodeletObjective objective = null;
-	private CodeletAction action = new CodeletAction();
-	
-	private List<CodeletAccessible> buffers = new ArrayList<CodeletAccessible>();
-			
-	public StructureBuildingCodelet(FrameworkTimer t, PerceptualBufferImpl buffer, EpisodicBufferImpl eBuffer, 
-					PreviousBroadcastsImpl pBroads, CurrentSituationalModelImpl csm, double activation, CodeletObjective obj, CodeletAction a){
-		
-		if(buffer == null && eBuffer == null && pBroads == null){
-			try {
-				throw new Exception();
-			} catch (Exception e) {
-				System.out.println("Codelet needs at least one source buffer");
-				e.printStackTrace();
-			}
-		}else{
-			timer = t;
-			pBuffer = buffer;
-			this.eBuffer = eBuffer;
-			this.pBroads = pBroads;
-			this.csm = csm;
-			this.activation = activation;
-			objective = obj;
-			action = a;
-			
-			if(this.eBuffer != null){buffers.add(eBuffer);}
-			if(this.pBuffer != null){buffers.add(pBuffer);}
-			if(this.pBroads != null){buffers.add(pBroads);}			
-		}
-			
-	}
-	
-	public void run(){
-		while(keepRunning){
-			timer.checkForStartPause();
-			
-			for(CodeletAccessible buffer: buffers){
-				checkAndWorkOnBuffer(buffer);
-			}
-			
-		
-		}//while		
-	}//run
-	
-	private void checkAndWorkOnBuffer(CodeletAccessible buffer) {
-		WorkspaceContent bufferContent = buffer.getCodeletsObjective(objective);
-		if(bufferContent != null){
-			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
-			csm.addWorkspaceContent(updatedContent);
-		}
-		
-	}
+	public abstract void setContext(CodeletObjective obj);
 
-	public void setActivation(double a){
-		activation = a;
-	}
-	public void setContext(CodeletObjective obj){
-		objective = obj;
-	}
-	public void setCodeletAction(CodeletAction a){
-		action = a;
-	}
-	public double getActivation(){
-		return activation;
-	}
-	public CodeletObjective getObjective(){
-		return objective;
-	}
-	public CodeletAction getCodeletAction(){
-		return action;
-	}
+	public abstract void setCodeletAction(CodeletAction a);
 
-	public long getThreadID() {
-		return threadID;
-	}
+	public abstract double getActivation();
 
-	public void setThreadID(long id) {
-		threadID = id;		
-	}
+	public abstract CodeletObjective getObjective();
 
-	public void stopRunning() {
-		keepRunning = false;		
-	}
+	public abstract CodeletAction getCodeletAction();
 
-}//class SBCodelet
+}

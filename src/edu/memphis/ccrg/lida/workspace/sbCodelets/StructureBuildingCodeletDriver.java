@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -40,7 +39,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	private EpisodicBufferContentImpl eBufferContent = new EpisodicBufferContentImpl();
 	private PreviousBroadcastsContentImpl prevBroadcastContent = new PreviousBroadcastsContentImpl();
 	//
-	private Map<CodeletActivatingContext, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContext, StructureBuildingCodelet>();//TODO: equals, hashCode
+	private Map<CodeletActivatingContext, StructureBuildingCodeletImpl> codeletMap = new HashMap<CodeletActivatingContext, StructureBuildingCodeletImpl>();//TODO: equals, hashCode
 	
 	//For codelets to be able to move contents around.
 	private PerceptualBufferImpl pBuffer = null;
@@ -65,7 +64,10 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 
 	public void run(){
 		Set<Node> nodes = new HashSet<Node>();
-		nodes.add(NodeFactory.getInstance().getNode(defaultNodeName , "pit"));
+		Node n = NodeFactory.getInstance().getNode();
+		n.setLabel("pit");
+		nodes.add(n);
+		
 		CodeletObjective objective = new CodeletObjective(nodes);
 		CodeletAction actions = new CodeletAction();		
 		spawnNewCodelet(pBuffer, null, null, defaultCodeletActivation, objective, actions);
@@ -90,7 +92,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 
 	private void spawnNewCodelet(PerceptualBufferImpl pBuffer, EpisodicBuffer eBuffer, PreviousBroadcasts pBroads,
 								 double startingActivation, CodeletObjective context, CodeletAction actions) {
-		StructureBuildingCodelet newCodelet = new StructureBuildingCodelet(timer, pBuffer, null, null, csm, 
+		StructureBuildingCodeletImpl newCodelet = new StructureBuildingCodeletImpl(timer, pBuffer, null, null, csm, 
 					  							  defaultCodeletActivation, context, actions);
 		long threadNumber = codeletThreads.size() + 1;
 		Thread codeletThread = new Thread(newCodelet, "CODELET: " + threadNumber);
