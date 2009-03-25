@@ -37,20 +37,27 @@ public class GraphImpl implements NodeStructure{
 		this.selectivity = oldGraph.selectivity;
 		this.linkCount = oldGraph.linkCount;
 		
+		nodes = new HashSet<Node>();
+		linkMap = new HashMap<Linkable, Set<Link>>();
+		layerMap = new HashMap<Integer, Set<Node>>();	
+		
 		Set<Node> oldNodes = oldGraph.getNodes();
 		if(oldNodes != null)
 			for(Node n: oldNodes)
 				this.nodes.add(NodeFactory.getInstance().getNode(n));
 
-		Set<Linkable> oldKeys = oldGraph.linkMap.keySet();
-		if(oldKeys != null){
-			for(Linkable l: oldKeys){
-				if(l instanceof LinkImpl){
-					LinkImpl castLink = (LinkImpl)l;
-					this.linkMap.put(new LinkImpl(castLink), new HashSet<Link>());
-				}else if(l instanceof PamNodeImpl){
-					PamNodeImpl castNode = (PamNodeImpl)l;
-					this.linkMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
+		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkMap();
+		if(oldLinkMap != null){
+			Set<Linkable> oldKeys = oldLinkMap.keySet();
+			if(oldKeys != null){
+				for(Linkable l: oldKeys){
+					if(l instanceof LinkImpl){
+						LinkImpl castLink = (LinkImpl)l;
+						this.linkMap.put(new LinkImpl(castLink), new HashSet<Link>());
+					}else if(l instanceof PamNodeImpl){
+						PamNodeImpl castNode = (PamNodeImpl)l;
+						this.linkMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
+					}
 				}
 			}
 		}
@@ -419,6 +426,10 @@ public class GraphImpl implements NodeStructure{
 	public Set<Link> getLinks(LinkType type) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Map<Linkable, Set<Link>> getLinkMap(){
+		return linkMap;
 	}
 
 	public void setDefaultLink(String linkClassName) {

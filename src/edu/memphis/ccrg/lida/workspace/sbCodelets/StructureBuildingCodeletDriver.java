@@ -65,9 +65,8 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 
 	public void run(){
 		Map<Long, Node> nodes = new HashMap<Long, Node>();
-		Node n = NodeFactory.getInstance().getNode();
-		n.setLabel("pit");
-		nodes.put(n.getId(), n);
+		PamNodeImpl pit = new PamNodeImpl(13, 0.0, 0.0, "pit", 0);
+		nodes.put(13L, pit);
 		
 		CodeletObjective objective = new CodeletObjective(nodes);
 		CodeletAction actions = new CodeletAction();		

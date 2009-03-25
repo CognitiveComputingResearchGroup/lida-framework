@@ -33,9 +33,10 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 	
 	private synchronized void storePAMContent(){
 		GraphImpl struct = (GraphImpl)pamContent.getContent();	
-		System.out.println("graph in Pbuffer has nodes: " + struct.getNodes().size());
+		System.out.print("graph in Pbuffer has nodes: ");
 		
 		if(struct != null){
+			System.out.println(struct.getNodes().size());
 			perceptBuffer.add(new GraphImpl(struct));			
 		}
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY){
@@ -69,8 +70,10 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 		
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){
-				if(struct.getNodes().size() > 0)
-					System.out.println("holy shit we have something");
+				Set<Node> nodes = struct.getNodes();
+				if(nodes != null)
+					if(nodes.size() > 0)
+						System.out.println("holy shit we have something");
 				
 				
 //				Set<Node> nodes = struct.getNodes();
