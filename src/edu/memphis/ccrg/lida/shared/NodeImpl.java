@@ -5,7 +5,7 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
-public class NodeImp implements Node {
+public class NodeImpl implements Node {
 
 	public Node copy() {
 		// TODO Auto-generated method stub

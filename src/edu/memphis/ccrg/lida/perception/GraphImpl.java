@@ -15,36 +15,48 @@ import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
    
 public class GraphImpl implements NodeStructure{
-	private Map<Linkable, Set<Link>> linkMap;
-	private int linkCount = 0;//How many links have been added to this linkMap
-	private Set<Node> nodes;
-	private Map<Integer, Set<Node>> layerMap;
 	private double upscale = 0.5;
-	private double selectivity = 0.9;
-
+	private double selectivity = 0.9;	
+	private int linkCount = 0;//How many links have been added to this linkMap
+	
+	private Set<Node> nodes;
+	private Map<Linkable, Set<Link>> linkMap;
+	private Map<Integer, Set<Node>> layerMap;
+	
 	public GraphImpl(double upscale, double selectivity){
-		linkMap = new HashMap<Linkable, Set<Link>>();
-		nodes = new HashSet<Node>();
-		layerMap = new HashMap<Integer, Set<Node>>();
 		this.upscale = upscale;
-		this.selectivity = selectivity;
+		this.selectivity = selectivity;		
+		
+		nodes = new HashSet<Node>();
+		linkMap = new HashMap<Linkable, Set<Link>>();
+		layerMap = new HashMap<Integer, Set<Node>>();		
 	}//public LinkMap()
 	
 	public GraphImpl(GraphImpl oldGraph){
-		this(oldGraph.upscale, oldGraph.selectivity);
+		this.upscale = oldGraph.upscale;
+		this.selectivity = oldGraph.selectivity;
 		this.linkCount = oldGraph.linkCount;
-		Set<Linkable> keys = oldGraph.linkMap.keySet();
-		Map<PamNodeImpl,PamNodeImpl> tempMap= new HashMap<PamNodeImpl, PamNodeImpl>();
-		for(Linkable l: keys){
-			Linkable newL = null;
-			if(l instanceof PamNodeImpl){
-				newL = new PamNodeImpl((PamNodeImpl)l);						
-			
-				Set<Link> newLinks = new HashSet<Link>();
-				this.linkMap.put(newL,newLinks);
-				tempMap.put((PamNodeImpl)l, (PamNodeImpl)newL);
+		
+		Set<Node> oldNodes = oldGraph.getNodes();
+		if(oldNodes != null)
+			for(Node n: oldNodes)
+				this.nodes.add(NodeFactory.getInstance().getNode(n));
+
+		Set<Linkable> oldKeys = oldGraph.linkMap.keySet();
+		if(oldKeys != null){
+			for(Linkable l: oldKeys){
+				if(l instanceof LinkImpl){
+					LinkImpl castLink = (LinkImpl)l;
+					this.linkMap.put(new LinkImpl(castLink), new HashSet<Link>());
+				}else if(l instanceof PamNodeImpl){
+					PamNodeImpl castNode = (PamNodeImpl)l;
+					this.linkMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
+				}
 			}
-		}		
+		}
+		
+		//TODO: COPY LINKS INTO THE LINKMAP
+		
 	}//public LinkMap
 	
 	public void addLinkSet(Set<Link> links){
@@ -79,8 +91,9 @@ public class GraphImpl implements NodeStructure{
 	}//public boolean addLink(Link l)
 	
 	public boolean addNode(Node n) {
-		if (!nodes.contains(n)){// check this
+		if(!nodes.contains(n)){// check this
 			nodes.add(NodeFactory.getInstance().getNode(n));
+			return true;
 		}
 		
 		return false;

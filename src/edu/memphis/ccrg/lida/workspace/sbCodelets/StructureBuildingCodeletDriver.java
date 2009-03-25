@@ -115,10 +115,10 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 			Set<Node> nodes = struct.getNodes();
 			//percept.print(keepRunning, "SB-CODELETS");
 			
-			System.out.println("nodes " + nodes);
+		//	System.out.println("nodes " + nodes);
 			
 			if(nodes != null){
-				System.out.println(nodes.size());
+				//System.out.println(nodes.size());
 				Set<SpatialLocation> locations = null;
 				for(Node n: nodes){//TODO: should be in PamNode instead
 	//				locations = n.getLocations();

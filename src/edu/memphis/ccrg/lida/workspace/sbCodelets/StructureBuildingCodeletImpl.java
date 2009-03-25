@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.workspace.sbCodelets;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.perception.GraphImpl;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.broadcasts.PreviousBroadcastsImpl;
@@ -71,9 +72,13 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	
 	private void checkAndWorkOnBuffer(CodeletAccessible buffer) {
 		WorkspaceContent bufferContent = buffer.getCodeletsObjective(objective);
+		
 		if(bufferContent != null){
-			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
-			csm.addWorkspaceContent(updatedContent);
+			GraphImpl g = (GraphImpl)bufferContent.getContent();
+			//WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
+			//csm.addWorkspaceContent(updatedContent);
+		}else{
+			System.out.println("codelet is getting null buffer content");
 		}
 		
 	}
