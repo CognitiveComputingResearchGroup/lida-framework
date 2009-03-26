@@ -3,9 +3,9 @@ package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
-import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletObjective;
-import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletObjective;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.WorkspaceContent;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
 

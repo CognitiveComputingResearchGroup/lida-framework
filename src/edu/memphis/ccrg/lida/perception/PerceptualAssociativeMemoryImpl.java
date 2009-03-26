@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.perception.featureDetection.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.perception.interfaces.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida.perception.interfaces.PamNode;

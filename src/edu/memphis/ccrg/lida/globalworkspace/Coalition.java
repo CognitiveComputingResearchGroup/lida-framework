@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
 
 public class Coalition implements CoalitionInterface{
 	

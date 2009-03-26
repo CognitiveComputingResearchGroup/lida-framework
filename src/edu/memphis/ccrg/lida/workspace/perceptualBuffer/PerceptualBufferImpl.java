@@ -10,9 +10,9 @@ import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletAccessible;
-import edu.memphis.ccrg.lida.workspace.sbCodelets.CodeletObjective;
-import edu.memphis.ccrg.lida.workspace.sbCodelets.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletObjective;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.WorkspaceContent;
 
 public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, CodeletAccessible{
 	

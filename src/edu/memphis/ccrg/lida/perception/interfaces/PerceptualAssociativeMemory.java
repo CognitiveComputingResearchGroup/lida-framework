@@ -8,7 +8,7 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.perception.LinkImpl;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.perception.featureDetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.perception.featureDetection.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;

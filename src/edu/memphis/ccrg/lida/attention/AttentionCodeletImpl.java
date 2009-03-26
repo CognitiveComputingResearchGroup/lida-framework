@@ -13,8 +13,8 @@ import java.util.List;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.csm.CurrentSituationalModelImpl;
-import edu.memphis.ccrg.lida.workspace.csm.CSMContentImpl;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
 
 public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
 	
