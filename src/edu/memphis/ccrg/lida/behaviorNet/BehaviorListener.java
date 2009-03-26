@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.behaviorNet1;
+package edu.memphis.ccrg.lida.behaviorNet;
 
 
 public interface BehaviorListener {
