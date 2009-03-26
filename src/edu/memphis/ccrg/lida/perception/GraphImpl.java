@@ -44,7 +44,7 @@ public class GraphImpl implements NodeStructure{
 		Set<Node> oldNodes = oldGraph.getNodes();
 		if(oldNodes != null)
 			for(Node n: oldNodes)
-				this.nodes.add(NodeFactory.getInstance().getNode(n));
+				this.nodes.add(n);//NodeFactory.getInstance().getNode(n)
 
 		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkMap();
 		if(oldLinkMap != null){
@@ -98,12 +98,7 @@ public class GraphImpl implements NodeStructure{
 	}//public boolean addLink(Link l)
 	
 	public boolean addNode(Node n) {
-		if(!nodes.contains(n)){// check this
-			nodes.add(NodeFactory.getInstance().getNode(n));
-			return true;
-		}
-		
-		return false;
+		return nodes.add(n);
 	}
 	
 	public void addNodes(Set<Node> nodesToAdd) {

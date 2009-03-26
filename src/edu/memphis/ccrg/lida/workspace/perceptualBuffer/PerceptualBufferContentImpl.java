@@ -5,7 +5,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 
 public class PerceptualBufferContentImpl implements PerceptualBufferContent{
 
-	private GraphImpl g = null;
+	private GraphImpl g = new GraphImpl(0.0, 0.0);
 	
 	public void addNode(Node n){
 		g.addNode(n);

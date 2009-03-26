@@ -33,10 +33,11 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 	
 	private synchronized void storePAMContent(){
 		GraphImpl struct = (GraphImpl)pamContent.getContent();	
-		System.out.print("graph in Pbuffer has nodes: ");
 		
 		if(struct != null){
-			System.out.println(struct.getNodes().size());
+			Set<Node> nodes = struct.getNodes();
+			//System.out.println("in pbuffer there are " + nodes.size());			
+			
 			perceptBuffer.add(new GraphImpl(struct));			
 		}
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY){
@@ -54,6 +55,8 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 		if(perceptBuffer.size() > 0){
 			for(int i = 0; i < pbListeners.size(); i++){
 				GraphImpl tempGraph = new GraphImpl((GraphImpl)perceptBuffer.get(0));
+				//System.out.println(tempGraph.getNodes().size() + " nodes send from pam content");
+				
 				//p.print();
 				PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
 				content.addContent(tempGraph);
@@ -71,18 +74,17 @@ public class PerceptualBufferImpl implements PAMListener, PerceptualBuffer, Code
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){
 				Set<Node> nodes = struct.getNodes();
-				if(nodes != null)
-					if(nodes.size() > 0)
-						System.out.println("holy shit we have something");
-				
-				
-//				Set<Node> nodes = struct.getNodes();
-//				//2System.out.println(nodes.size());
-//				for(Node n: nodes){
-//					//System.out.println("giveing to codelet " + n.getLabel());
-//					content.addNode(n);					
-//				}
-			}
+				if(nodes != null){
+					
+					for(Node n: nodes){
+						//Node x = n;
+						if(n != null){
+							//System.out.println("giving to codelet " + n.getLabel());
+							content.addNode(n);
+						}
+					}
+				}//if nodes != null
+			}//for each struct
 		}
 		
 		return content;

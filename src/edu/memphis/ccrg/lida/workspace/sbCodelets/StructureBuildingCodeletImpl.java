@@ -53,20 +53,17 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 			if(this.eBuffer != null){buffers.add(eBuffer);}
 			if(this.pBuffer != null){buffers.add(pBuffer);}
 			if(this.pBroads != null){buffers.add(pBroads);}			
-		}
+		}//else
 			
-	}
+	}//constructor
 	
 	public void run(){
 		while(keepRunning){
 			try{Thread.sleep(100);}catch(Exception e){}
 			timer.checkForStartPause();
 			
-			for(CodeletAccessible buffer: buffers){
-				checkAndWorkOnBuffer(buffer);
-			}
-			
-		
+			for(CodeletAccessible buffer: buffers)
+				checkAndWorkOnBuffer(buffer);		
 		}//while		
 	}//run
 	
@@ -74,9 +71,9 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 		WorkspaceContent bufferContent = buffer.getCodeletsObjective(objective);
 		
 		if(bufferContent != null){
-			GraphImpl g = (GraphImpl)bufferContent.getContent();
-			//WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
-			//csm.addWorkspaceContent(updatedContent);
+
+			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
+			csm.addWorkspaceContent(updatedContent);
 		}else{
 			System.out.println("codelet is getting null buffer content");
 		}
