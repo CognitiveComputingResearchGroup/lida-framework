@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.attention;
 
-import edu.memphis.ccrg.lida.globalworkspace.CoalitionInterface;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 public interface AttentionListener {
 
-	boolean putCoalition(CoalitionInterface coalition);
+	boolean putCoalition(Coalition coalition);
 
 }

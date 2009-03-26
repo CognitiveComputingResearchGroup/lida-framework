@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
-public interface CurrentSituationalModelContent {
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.WorkspaceContent;
+
+public interface CurrentSituationalModelContent extends WorkspaceContent {
 
 }

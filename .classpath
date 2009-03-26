@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/swing-layout-1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/swing-layout-1.0.3 .jar"/>
 	<classpathentry kind="lib" path="lib/xerces-J_1.4.0.jar"/>
+	<classpathentry kind="src" path="/Ryan"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

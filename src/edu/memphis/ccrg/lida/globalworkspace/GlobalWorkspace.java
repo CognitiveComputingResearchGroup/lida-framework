@@ -20,7 +20,7 @@ public interface GlobalWorkspace {
 	 * @param coalition
 	 * @return
 	 */
-	public boolean putCoalition(CoalitionInterface coalition);
+	public boolean putCoalition(Coalition coalition);
 	/**
 	 * To register Triggers
 	 * @param t a new Trigger

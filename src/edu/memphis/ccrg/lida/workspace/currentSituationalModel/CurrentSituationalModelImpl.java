@@ -31,6 +31,11 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public CurrentSituationalModelContent  getContent(){
+		CSMContentImpl content = new CSMContentImpl(struct);
+		return content;
+	}
 
 	public CSMContentImpl getContent(CSMContentImpl whatIwant) {
 		// TODO Auto-generated method stub

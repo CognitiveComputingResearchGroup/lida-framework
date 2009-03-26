@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.attention;
 
 import java.util.List;
 
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
@@ -35,7 +35,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 
 	public void addCoalToGlobalWorkspace(){
 		for(int i = 0; i < listeners.size(); i++)
-			listeners.get(i).putCoalition(new Coalition(whatIgot));		
+			listeners.get(i).putCoalition(new CoalitionImpl(whatIgot));		
 	}
 
 	public void run() {
