@@ -3,6 +3,13 @@ package edu.memphis.ccrg.lida.templates;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
+/**
+ * 
+ * A template to copy and paste.
+ * 
+ * @author ryanjmccall
+ *
+ */
 public class ThreadClassTemplate implements Runnable, Stoppable{
 
 	//FIELDS
