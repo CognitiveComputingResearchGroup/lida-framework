@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.behaviornet;
+package edu.memphis.ccrg.lida.behaviorNet1;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
