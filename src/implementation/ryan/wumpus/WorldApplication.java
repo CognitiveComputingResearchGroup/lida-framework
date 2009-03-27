@@ -1,7 +1,8 @@
-package wumpus;
+package implementation.ryan.wumpus;
 
 
-import wumpus.Simulation;
+import implementation.ryan.wumpus.Simulation;
+
 import java.util.Random;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorListener;

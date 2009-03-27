@@ -1,8 +1,9 @@
-package gui;
+package implementation.ryan.gui;
+
+import implementation.ryan.main.Start;
 
 import java.util.HashMap;
 import java.util.Map;
-import main.Start;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 

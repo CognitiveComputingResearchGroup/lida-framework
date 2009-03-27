@@ -1,4 +1,4 @@
-package wumpus;
+package implementation.ryan.wumpus;
 /*
  * Class that defines the agent function.
  * 
@@ -16,9 +16,10 @@ package wumpus;
  * 
  */
 
+import implementation.ryan.wumpus.Action;
+
 import java.util.Random;
 
-import wumpus.Action;
 
 
 

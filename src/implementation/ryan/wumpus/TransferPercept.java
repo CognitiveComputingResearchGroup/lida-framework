@@ -1,4 +1,4 @@
-package wumpus;
+package implementation.ryan.wumpus;
 
 
 class TransferPercept {

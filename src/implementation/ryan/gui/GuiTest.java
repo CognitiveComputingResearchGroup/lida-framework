@@ -1,4 +1,6 @@
-package gui;
+package implementation.ryan.gui;
+
+import implementation.ryan.main.Start;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,7 +8,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import main.Start;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 

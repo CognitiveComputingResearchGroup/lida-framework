@@ -9,7 +9,7 @@
  * Created on Mar 10, 2009, 5:00:03 PM
  */
 
-package gui;
+package implementation.ryan.gui;
 
 import edu.memphis.ccrg.lida.sensoryMemory.SimulationContentImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SimulationListener;

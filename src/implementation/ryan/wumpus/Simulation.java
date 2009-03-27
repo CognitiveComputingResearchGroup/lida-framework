@@ -1,9 +1,10 @@
-package wumpus;
+package implementation.ryan.wumpus;
+
+import implementation.ryan.wumpus.Action;
 
 import java.util.ArrayList;
 
 
-import wumpus.Action;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;

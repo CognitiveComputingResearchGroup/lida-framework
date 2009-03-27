@@ -3,7 +3,11 @@
  * that run the main LIDA components.  Sets up the shared memory 
  * that the threads use to pass data. 
  */
-package main;
+package implementation.ryan.main;
+
+import implementation.ryan.gui.ControlGui;
+import implementation.ryan.gui.SimGui;
+import implementation.ryan.wumpus.WorldApplication;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +16,6 @@ import java.lang.Thread;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ArrayList;
-import wumpus.WorldApplication;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorNetImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -40,8 +43,6 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsDriver;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodeletDriver;
-import gui.ControlGui;
-import gui.SimGui;
 
 public class Start{
 	
