@@ -5,7 +5,6 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.WorkspaceContent;
 
 public class CSMDriver implements Runnable, Stoppable{
 	

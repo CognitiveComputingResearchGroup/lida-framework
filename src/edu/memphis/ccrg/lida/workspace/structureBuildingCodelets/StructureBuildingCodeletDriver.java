@@ -2,17 +2,14 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.perception.GraphImpl;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.perception.Percept;
 import edu.memphis.ccrg.lida.perception.SpatialLocation;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
@@ -48,11 +45,9 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	private PreviousBroadcastsImpl pBroads = null;
 	private CurrentSituationalModelImpl csm = null;
 	private final double defaultCodeletActivation = 1.0;	
-	private final boolean usesPBuffer = true, usesEBuffer = true, usesPBroads = true;
 	
 	private List<Thread> codeletThreads = new ArrayList<Thread>();
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
-	private String defaultNodeName = "edu.memphis.ccrg.lida.shared.NodeImp";
 	
 	public StructureBuildingCodeletDriver(FrameworkTimer timer, PerceptualBufferImpl p, EpisodicBufferImpl e, 
 							PreviousBroadcastsImpl pbroads, CurrentSituationalModelImpl csm){
@@ -80,8 +75,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 			timer.checkForStartPause();
 			//if BufferContent activates a sbCodelet's context start a new codelet
 			getPBufferContent();
-			
-
+		
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
@@ -103,32 +97,18 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	}//spawnNewCodelet
 
 	private void getPBufferContent() {
-		NodeStructure struct = null;
+		GraphImpl struct = null;
 		synchronized(this){
 			struct = (GraphImpl)pBufferContent.getContent();
 		}
-		
-		//System.out.println("strcut" + struct);
-		
-		if(struct != null){
-			Set<Node> nodes = struct.getNodes();
-			//percept.print(keepRunning, "SB-CODELETS");
-			
-		//	System.out.println("nodes " + nodes);
-			
-			if(nodes != null){
-				//System.out.println(nodes.size());
-				Set<SpatialLocation> locations = null;
-				for(Node n: nodes){//TODO: should be in PamNode instead
-	//				locations = n.getLocations();
-	//				for(SpatialLocation s: locations){
-	//					s.print();
-	//				}
-					System.out.println("\n");
-				}
-			}
-		}//if struct not null
-	}
+	
+		//struct.printNodes();
+		Set<Node> nodes = struct.getNodes();
+		for(Node n: nodes){//TODO: should be in PamNode instead
+			//Activate codelets
+		}
+
+	}//method
 
 	public void stopRunning(){
 		try{Thread.sleep(20);}catch(InterruptedException e){}

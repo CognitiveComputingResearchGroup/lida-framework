@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.proceduralMemory;
 import implementation.ryan.wumpus.WorldApplication;
 
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;

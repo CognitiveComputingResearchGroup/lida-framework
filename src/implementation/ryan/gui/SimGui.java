@@ -13,7 +13,6 @@ package implementation.ryan.gui;
 
 import edu.memphis.ccrg.lida.sensoryMemory.SimulationContentImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SimulationListener;
-import edu.memphis.ccrg.lida.util.Misc;
 
 /**
  *
@@ -22,6 +21,11 @@ import edu.memphis.ccrg.lida.util.Misc;
 public class SimGui extends javax.swing.JFrame implements SimulationListener{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** Creates new form SimGui */
     public SimGui() {
         initComponents();

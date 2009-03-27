@@ -11,7 +11,6 @@ import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
    
 public class GraphImpl implements NodeStructure{
@@ -434,6 +433,13 @@ public class GraphImpl implements NodeStructure{
 
 	public void setDefaultNode(String nodeClassName) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void printNodes() {
+		for(Node n: nodes){
+			System.out.println(n.getLabel() + " current activ " + n.getCurrentActivation());
+		}
 		
 	}
 }//public class LinkMap

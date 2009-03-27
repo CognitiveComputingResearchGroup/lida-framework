@@ -11,7 +11,6 @@ package edu.memphis.ccrg.lida.attention;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;

@@ -4,11 +4,6 @@
 package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 

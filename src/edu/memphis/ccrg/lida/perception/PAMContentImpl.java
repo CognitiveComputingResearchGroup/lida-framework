@@ -1,9 +1,6 @@
 package edu.memphis.ccrg.lida.perception;
 
-import java.util.Set;
-
 import edu.memphis.ccrg.lida.perception.interfaces.PAMContent;
-import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class PAMContentImpl implements PAMContent{

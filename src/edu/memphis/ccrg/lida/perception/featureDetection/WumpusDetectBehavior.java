@@ -4,9 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.interfaces.DetectBehavior;
-import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
-import edu.memphis.ccrg.lida.util.Misc;
 
 public class WumpusDetectBehavior implements DetectBehavior {
 	

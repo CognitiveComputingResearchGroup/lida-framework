@@ -2,14 +2,10 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.memphis.ccrg.lida.perception.GraphImpl;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
 
