@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
-
 public class BroadcastContentImpl implements BroadcastContent{
 	
 	private Coalition c;
