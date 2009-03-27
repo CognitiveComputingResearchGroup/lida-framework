@@ -19,4 +19,9 @@ public String toString() {
 	return content.toString();
 }
 
+public Object getContent() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }

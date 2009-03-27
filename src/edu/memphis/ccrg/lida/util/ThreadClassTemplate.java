@@ -1,7 +1,5 @@
-package edu.memphis.ccrg.lida.templates;
+package edu.memphis.ccrg.lida.util;
 
-import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Stoppable;
 
 /**
  * 
