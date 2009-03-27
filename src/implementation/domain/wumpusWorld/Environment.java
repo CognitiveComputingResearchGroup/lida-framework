@@ -1,4 +1,4 @@
-package implementation.ryan.wumpus;
+package implementation.domain.wumpusWorld;
 
 //import java.io.BufferedWriter;
 

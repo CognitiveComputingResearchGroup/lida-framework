@@ -1,7 +1,7 @@
-package implementation.ryan.wumpus;
+package implementation.domain.wumpusWorld;
 
 
-import implementation.ryan.wumpus.Simulation;
+import implementation.domain.wumpusWorld.Simulation;
 
 import java.util.Random;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;

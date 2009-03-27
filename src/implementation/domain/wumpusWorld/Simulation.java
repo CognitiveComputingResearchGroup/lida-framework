@@ -1,6 +1,6 @@
-package implementation.ryan.wumpus;
+package implementation.domain.wumpusWorld;
 
-import implementation.ryan.wumpus.Action;
+import implementation.domain.wumpusWorld.Action;
 
 import java.util.ArrayList;
 
