@@ -1,11 +1,11 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
 import implementation.ryan.wumpus.WorldApplication;
-
 import java.util.Set;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -24,7 +24,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	private boolean keepRunning = true;
 	private long threadID;
 	//
-	private BroadcastContent broadcastContent;
+	private BroadcastContent broadcastContent = new BroadcastContentImpl();
 		
 	public ProceduralMemoryDriver(FrameworkTimer timer,
 			WorldApplication simulation) {
@@ -60,7 +60,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			winner = (Coalition)broadcastContent.getContent();
 		}
 		CurrentSituationalModelContent csmContent = 
-			(CurrentSituationalModelContent)winner.getContent();
+			(CurrentSituationalModelContent)winner.getContent();		
 		NodeStructure struct = (NodeStructure)csmContent.getContent();
 		return struct.getNodes();
 	}

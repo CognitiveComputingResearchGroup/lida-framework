@@ -22,6 +22,12 @@ public class GraphImpl implements NodeStructure{
 	private Map<Linkable, Set<Link>> linkMap;
 	private Map<Integer, Set<Node>> layerMap;
 	
+	public GraphImpl() {
+		nodes = new HashSet<Node>();
+		linkMap = new HashMap<Linkable, Set<Link>>();
+		layerMap = new HashMap<Integer, Set<Node>>();	
+	}
+	
 	public GraphImpl(double upscale, double selectivity){
 		this.upscale = upscale;
 		this.selectivity = selectivity;		
@@ -64,7 +70,7 @@ public class GraphImpl implements NodeStructure{
 		//TODO: COPY LINKS INTO THE LINKMAP
 		
 	}//public LinkMap
-	
+
 	public void addLinkSet(Set<Link> links){
 		for(Link l: links){
 			LinkImpl toAdd = (LinkImpl)l;

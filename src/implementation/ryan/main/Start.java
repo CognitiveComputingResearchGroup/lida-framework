@@ -56,12 +56,12 @@ public class Start{
 	private PreviousBroadcastsImpl pbroads;
 	//
 	private StructureBuildingCodeletDriver sbCodeletDriver;
-	private CurrentSituationalModelImpl csm;
-	private GlobalWorkspaceImpl gwksp;		
+	private CurrentSituationalModelImpl csm = new CurrentSituationalModelImpl();
+	private GlobalWorkspaceImpl gwksp = new GlobalWorkspaceImpl();	
 	private BehaviorNetImpl bnet;
 	
 	//GUIS
-	private SimGui simGui;
+	private SimGui simGui = new SimGui();
 		
 	private List<Thread> threads = new ArrayList<Thread>();
 	private List<Stoppable> drivers = new ArrayList<Stoppable>();
@@ -81,22 +81,26 @@ public class Start{
 //	}
 	
 	private void setup(){
-		//TODO: GET DEPENDCENCIES FIGURED OUT
-		simGui = new SimGui();
-		csm = new CurrentSituationalModelImpl();
-
 		initSimThread();
 		initSMThread();
 		initPAMThread();
+		
+		//Workspace Components
 		initPBufferThread();
 		//initEbufferThread();
 		//initPBroadsThread();
-		initCodeletsThread();		
 		initCSMThread();
-		//initAttnThread();
-		initGlobalWorkspace();
-		initActionSelectionThread();
-		initGuiThread();
+		
+		//These two use & depend on the components
+		initCodeletsThread();
+		//initAttnThread();//Depends on CSM and GWKSPC
+		
+		//Global Workspace already taken care of
+		initProcMemThread();
+		//initActionSelectionThread();
+		
+		//GUI last
+		initGui();
 		
 		//Add all the listeners  
 		defineInter_ThreadCommunication();
@@ -104,11 +108,6 @@ public class Start{
 		//Start everything up, threads are terminated via GUI
 		startThreads();
 	}//setup	
-	
-	private void initGuiThread() {		
-		new ControlGui(timer, this, pam).setVisible(true);	
-		simGui.setVisible(true);
-	}
 
 	private void initSimThread(){
 		simulation = new WorldApplication(timer);				
@@ -288,7 +287,6 @@ public class Start{
 		threads.add(pbroadsThread);   
 		drivers.add(pbDriver);		
 	}
-	
 	private void initCodeletsThread() {
 		sbCodeletDriver = new StructureBuildingCodeletDriver(timer, pb, eb, pbroads, csm);		
 		Thread codeletThread = new Thread(sbCodeletDriver, "CODELETS_THREAD");
@@ -296,11 +294,6 @@ public class Start{
 		threads.add(codeletThread);   
 		drivers.add(sbCodeletDriver);			
 	}
-	
-	private void initGlobalWorkspace(){
-		gwksp = new GlobalWorkspaceImpl();
-	}
-
 	private void initCSMThread(){
 		CSMDriver csmDriver = new CSMDriver(timer, csm, gwksp);
 		Thread csmThread = new Thread(csmDriver, "CSM_THREAD");
@@ -308,7 +301,6 @@ public class Start{
 		threads.add(csmThread);
 		drivers.add(csmDriver);
 	}
-	
 	private void initAttnThread(){
 		AttentionDriver attnDriver = new AttentionDriver(timer);
 		Thread attnThread = new Thread(attnDriver, "ATTN_DRIVER");
@@ -316,20 +308,22 @@ public class Start{
 		threads.add(attnThread);
 		drivers.add(attnDriver);
 	}
-	
 	private void initProcMemThread(){
 		ProceduralMemoryDriver procDriver = new ProceduralMemoryDriver(timer, simulation);
 		Thread procThread = new Thread(procDriver, "PROCEDURAL_DRIVER");
 		procDriver.setThreadID(procThread.getId());
 		threads.add(procThread);
 		drivers.add(procDriver);
-		
 	}
-	
 	private void initActionSelectionThread(){
-		
+		//TODO: impl
+	}
+	private void initGui() {		
+		new ControlGui(timer, this, pam).setVisible(true);	
+		simGui.setVisible(true);
 	}
 	
+	//
 	private void defineInter_ThreadCommunication(){
 		simulation.addSimulationListener(sm);
 		simulation.addSimulationListener(simGui);
@@ -388,6 +382,11 @@ public class Start{
 		}//for each thread	
 	}//private void stopThreads()	
 
+	/**
+	 * For ControlGUI
+	 * 
+	 * @return
+	 */
 	public int getThreadCount() {
 		return threads.size();
 	}

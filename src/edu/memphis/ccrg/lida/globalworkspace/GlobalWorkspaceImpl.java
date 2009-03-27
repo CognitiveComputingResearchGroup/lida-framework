@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.attention.AttentionListener;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of
@@ -78,7 +79,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, At
 			}
 		}
 		if (coal != null) {
-			BroadcastContent content = coal.getContent();
+			BroadcastContent content = new BroadcastContentImpl(coal);//TODO: Note Ryan's change, Javier.
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast(content);
 			}
