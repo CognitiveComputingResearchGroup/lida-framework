@@ -5,7 +5,7 @@ package edu.domain.wumpusWorld;
 import java.util.Random;
 
 import edu.domain.wumpusWorld.Simulation;
-import edu.memphis.ccrg.lida.aSensoryMemory.SimulationListener;
+import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorListener;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;

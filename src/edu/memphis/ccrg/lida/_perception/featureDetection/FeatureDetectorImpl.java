@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida._perception.featureDetection;
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.interfaces.DetectBehavior;
 import edu.memphis.ccrg.lida._perception.interfaces.FeatureDetector;
-import edu.memphis.ccrg.lida.aSensoryMemory.SensoryContentImpl;
+import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.util.Misc;
 
 public class FeatureDetectorImpl implements FeatureDetector{

@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida._perception.interfaces;
 
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.aSensoryMemory.SensoryContentImpl;
+import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 
 public interface DetectBehavior {
 

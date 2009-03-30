@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import edu.domain.wumpusWorld.Action;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
-import edu.memphis.ccrg.lida.aSensoryMemory.SimulationContentImpl;
-import edu.memphis.ccrg.lida.aSensoryMemory.SimulationListener;
+import edu.memphis.ccrg.lida._sensoryMemory.SimulationContentImpl;
+import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
 
 public class Simulation{

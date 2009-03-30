@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.aSensoryMemory;
+package edu.memphis.ccrg.lida._sensoryMemory;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;

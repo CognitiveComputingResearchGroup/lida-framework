@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.aSensoryMemory;
+package edu.memphis.ccrg.lida._sensoryMemory;
 
 public class SimulationContentImpl {
 	
