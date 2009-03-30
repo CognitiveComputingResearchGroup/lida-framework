@@ -3,9 +3,10 @@ package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import edu.memphis.ccrg.lida.perception.GraphImpl;
-import edu.memphis.ccrg.lida.perception.PAMContentImpl;
-import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
+
+import edu.memphis.ccrg.lida._perception.GraphImpl;
+import edu.memphis.ccrg.lida._perception.PAMContentImpl;
+import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;

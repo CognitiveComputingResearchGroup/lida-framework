@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
-import edu.memphis.ccrg.lida.perception.GraphImpl;
+import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class CSMContentImpl implements CurrentSituationalModelContent {

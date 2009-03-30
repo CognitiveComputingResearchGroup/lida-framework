@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.perception.GraphImpl;
+import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida.shared.Node;
 
 public class PerceptualBufferContentImpl implements PerceptualBufferContent{

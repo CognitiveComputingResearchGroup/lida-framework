@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 //import edu.memphis.ccrg.lida.perception.LinkImp;
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
+import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 
 /**
  * @author Javier Snaider

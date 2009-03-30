@@ -1,8 +1,9 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
-import implementation.domain.wumpusWorld.WorldApplication;
 
 import java.util.Set;
+
+import edu.domain.wumpusWorld.WorldApplication;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
 import edu.memphis.ccrg.lida.behaviorNet.BehaviorContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;

@@ -2,7 +2,8 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.HashSet;
 import java.util.Set;
-import edu.memphis.ccrg.lida.perception.interfaces.PamNode;
+
+import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 
 public class CodeletActivatingContext {	
 	private Set<PamNode> nodeContext = new HashSet<PamNode>();

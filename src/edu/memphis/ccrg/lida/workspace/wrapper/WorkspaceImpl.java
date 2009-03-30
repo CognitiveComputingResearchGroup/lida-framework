@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.wrapper;
 
-import edu.memphis.ccrg.lida.perception.PAMContentImpl;
-import edu.memphis.ccrg.lida.perception.interfaces.PAMListener;
+import edu.memphis.ccrg.lida._perception.PAMContentImpl;
+import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 
 public class WorkspaceImpl implements Workspace, PAMListener {
 
