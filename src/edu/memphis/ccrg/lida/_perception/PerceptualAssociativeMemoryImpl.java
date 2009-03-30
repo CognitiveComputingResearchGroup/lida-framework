@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import edu.memphis.ccrg.lida._perception.interfaces.FeatureDetector;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
+import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryListener;
@@ -56,7 +57,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
     private SensoryContentImpl sensoryContent;//Shared variable
-    private PAMContentImpl pamContent;//Not a shared variable
+    private PAMContent pamContent;//Not a shared variable
     private EpisodicBufferContentImpl eBufferContent;//Shared variable
     private BroadcastContent broadcastContent;//Shared variable	
       

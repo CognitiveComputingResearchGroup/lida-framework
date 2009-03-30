@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.previousBroadcasts;
 
-public interface PreviousBroadcasts {
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+
+public interface PreviousBroadcasts extends BroadcastListener{
 
 }

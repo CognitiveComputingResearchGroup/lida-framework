@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida._sensoryMemory.SimulationContentImpl;
 import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
-import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
+import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
 
 public class Simulation{
 	//My Addition

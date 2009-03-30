@@ -6,14 +6,14 @@ import java.util.Random;
 
 import edu.domain.wumpusWorld.Simulation;
 import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
-import edu.memphis.ccrg.lida.behaviorNet.BehaviorContent;
-import edu.memphis.ccrg.lida.behaviorNet.BehaviorListener;
+import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
+import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 //import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class WorldApplication implements Runnable, Stoppable, BehaviorListener{
+public class WorldApplication implements Runnable, Stoppable, ActionSelectionListener{
 	
 	private Simulation trial;
 	private long threadID;

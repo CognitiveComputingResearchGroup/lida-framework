@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.behaviorNet;
+package edu.memphis.ccrg.lida.actionSelection;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -10,7 +10,7 @@ public class BehaviorNetImpl implements BroadcastListener {
 		
 	}
 
-	public void addBehaviorListener(BehaviorListener simulation) {
+	public void addBehaviorListener(ActionSelectionListener simulation) {
 		// TODO Auto-generated method stub
 		
 	}

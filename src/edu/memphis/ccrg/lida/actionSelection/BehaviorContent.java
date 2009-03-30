@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.behaviorNet;
+package edu.memphis.ccrg.lida.actionSelection;
 
 public interface BehaviorContent {
 
