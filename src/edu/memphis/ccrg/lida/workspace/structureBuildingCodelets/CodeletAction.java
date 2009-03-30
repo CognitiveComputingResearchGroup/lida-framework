@@ -5,6 +5,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.wrapper.WorkspaceContent;
 
 public class CodeletAction{
 

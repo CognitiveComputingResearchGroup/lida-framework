@@ -8,6 +8,7 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationa
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
+import edu.memphis.ccrg.lida.workspace.wrapper.WorkspaceContent;
 
 public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
 	

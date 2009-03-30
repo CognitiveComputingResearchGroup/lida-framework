@@ -5,7 +5,7 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletObjective;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.wrapper.WorkspaceContent;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
 

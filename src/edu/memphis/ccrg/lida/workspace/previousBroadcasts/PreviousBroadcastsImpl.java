@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletObjective;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.wrapper.WorkspaceContent;
 
 public class PreviousBroadcastsImpl implements Runnable, PreviousBroadcasts, BroadcastListener, CodeletAccessible{
 	

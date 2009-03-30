@@ -6,17 +6,17 @@
  * All rights reserved.
  */
 
-package edu.memphis.ccrg.lida.episodicMemory;
+package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
 /**
  *
  * @author Rodrigo Silva L.
  */
-public interface MemoryCueListener {
+public interface TransientEpisodicMemoryListener {
 
     /**
      * 
      * @param cue
      */
-    public void receiveCue(MemoryCue cue);
+    public void receiveTEMLocalAssociation(TransientEpisodicMemoryContent association);
 }

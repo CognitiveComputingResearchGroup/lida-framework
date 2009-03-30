@@ -6,7 +6,9 @@
  * All rights reserved.
  */
 
-package edu.memphis.ccrg.lida.episodicMemory;
+package edu.memphis.ccrg.lida.transientEpisodicMemory;
+
+import edu.memphis.ccrg.lida.workspace.wrapper.WorkspaceListener;
 
 /**
  * The interface for LIDA's episodic memory. Episodic memory in LIDA
@@ -16,27 +18,10 @@ package edu.memphis.ccrg.lida.episodicMemory;
  * Specific implementations of episodic memories must implement
  * this interface. Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}, and
- * {@link MemoryCueListener}.
+ * {@link TransientEpisodicMemoryListener}.
  * @author Rodrigo Silva L.
  */
-public interface EpisodicMemory {
+public interface TransientEpisodicMemory extends WorkspaceListener{
     
-    /**
-     * 
-     * @return
-     */
-    public MemoryAssociation getAssociation();
-    
-    /**
-     * 
-     * @param cue
-     */
-    public void cueMemory(MemoryCue cue);
-    
-    /**
-     * 
-     * @param listener
-     */
-    public void addMemoryAssociationListener(MemoryAssociationListener listener);
 
 }
