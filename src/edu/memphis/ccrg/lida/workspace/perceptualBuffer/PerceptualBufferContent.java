@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.workspace.wrapper.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public interface PerceptualBufferContent extends WorkspaceContent {
 

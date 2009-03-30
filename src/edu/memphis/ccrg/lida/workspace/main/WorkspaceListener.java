@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.wrapper;
+package edu.memphis.ccrg.lida.workspace.main;
 
 
 public interface WorkspaceListener {
