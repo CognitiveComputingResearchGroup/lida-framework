@@ -57,14 +57,11 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	}
 
 	private Set<Node> getNodesFromBroadcast() {
-		Coalition winner;
+		NodeStructure consciousContents;
 		synchronized(this){
-			winner = (Coalition)broadcastContent.getContent();
-		}
-		CurrentSituationalModelContent csmContent = 
-			(CurrentSituationalModelContent)winner.getContent();		
-		NodeStructure struct = (NodeStructure)csmContent.getContent();
-		return struct.getNodes();
+			consciousContents = (NodeStructure)broadcastContent.getContent();
+		}	
+		return consciousContents.getNodes();
 	}
 
 	public long getThreadID() {

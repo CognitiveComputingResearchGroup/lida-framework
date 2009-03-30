@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.attention.AttentionListener;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 
 /**
@@ -58,14 +59,16 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, At
 	public synchronized boolean putCoalition(Coalition coalition) {
 		boolean result = false;
 		result = coalitions.add(coalition);
-		if (result) {
+		if(result) {
 			newCoalitionEvent();
 		}
 		return result;
 	}
 
 	private void newCoalitionEvent() {
+		int size = triggers.size();
 		for (Trigger t : triggers) {
+			
 			t.command(coalitions);
 		}
 	}
@@ -79,7 +82,8 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, At
 			}
 		}
 		if (coal != null) {
-			BroadcastContent content = new BroadcastContentImpl(coal);//TODO: Note Ryan's change, Javier.
+			NodeStructure struct = (NodeStructure)coal.getContent();
+			BroadcastContent content = new BroadcastContentImpl(struct);//TODO: Note Ryan's change, Javier.
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast(content);
 			}

@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
@@ -27,9 +28,10 @@ public class CSMDriver implements Runnable, Stoppable{
 			try{Thread.sleep(25);}catch(Exception e){}
 			timer.checkForStartPause();
 		
-			CurrentSituationalModelContent content = csm.getContent();
+			NodeStructure content = csm.getContent();
 			CoalitionImpl coalition = new CoalitionImpl(content);
-			global.putCoalition(coalition);
+			//coalition.
+			boolean success = global.putCoalition(coalition);
 			
 			counter++;			
 		}//while keepRunning

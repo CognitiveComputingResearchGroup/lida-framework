@@ -1,23 +1,26 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida._perception.GraphImpl;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+
 public class BroadcastContentImpl implements BroadcastContent{
 	
-	private Coalition c;
+	private NodeStructure struct;
 	
-	public BroadcastContentImpl(Coalition c){
-		this.c = c;
+	public BroadcastContentImpl(NodeStructure struct){
+		this.struct = struct;
 	}
 	
 	public BroadcastContentImpl() {
-		c = new CoalitionImpl();
+		struct = new GraphImpl();
 	}
 
-	public void setContent(Coalition c){
-		this.c = c;
+	public void setContent(NodeStructure struct){
+		this.struct = struct;
 	}
 
 	public Object getContent() {
-		return c;
+		return struct;
 	}
 
 }

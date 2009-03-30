@@ -23,7 +23,7 @@ public interface Coalition {
 	 * 
 	 * @return The Content of the coalition.
 	 */
-	public CurrentSituationalModelContent getContent();
+	public Object getContent();
 	
 	/**
 	 * this method decay the activation of the coalition. It should be called after

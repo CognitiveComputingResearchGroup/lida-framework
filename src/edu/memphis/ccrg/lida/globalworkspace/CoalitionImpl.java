@@ -1,19 +1,21 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida._perception.GraphImpl;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 
 public class CoalitionImpl implements Coalition{
 	
-	private CurrentSituationalModelContent csmContent;
+	private NodeStructure struct;
 	
 	public CoalitionImpl() {
-		csmContent = new CSMContentImpl();
+		struct = new GraphImpl();
 	}
 	
 	//coalition activation: average of all nodes in coalition (0.0 - 1.0) times activation of attention codelet  (0.0 - 1.0)
-	public CoalitionImpl(CurrentSituationalModelContent content){
-		csmContent = content;
+	public CoalitionImpl(NodeStructure content){
+		struct = content;
 	}
 
 	public void decay() {
@@ -26,8 +28,8 @@ public class CoalitionImpl implements Coalition{
 		return 0;
 	}
 
-	public CurrentSituationalModelContent getContent() {
-		return csmContent;
+	public NodeStructure getContent() {
+		return struct;
 	}
 
 }

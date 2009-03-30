@@ -27,19 +27,13 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 		}
 	}
 
-	public boolean hasContent(CSMContentImpl whatIwant) {
+	public boolean hasContent(NodeStructure whatIwant) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
-	public CurrentSituationalModelContent  getContent(){
-		CSMContentImpl content = new CSMContentImpl(struct);
-		return content;
-	}
-
-	public CSMContentImpl getContent(CSMContentImpl whatIwant) {
-		// TODO Auto-generated method stub
-		return null;
+	public NodeStructure getContent(){
+		return struct;
 	}
 
 }
