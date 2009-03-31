@@ -16,15 +16,12 @@ public class CSMDriver implements Runnable, Stoppable{
 	private CurrentSituationalModelImpl csm;
 	private long threadID;
 	private FrameworkTimer timer;
-	private GlobalWorkspaceImpl global;
-	private ProceduralMemoryDriver actionSelector;//NonStandard
+	private CSMListener guiListener;
 	
-	public CSMDriver(FrameworkTimer t, CurrentSituationalModelImpl csm, 
-			GlobalWorkspaceImpl gwksp, ProceduralMemoryDriver procMem){
+	public CSMDriver(FrameworkTimer t, CurrentSituationalModelImpl csm, CSMListener gui){
 		timer = t;
 		this.csm = csm;
-		global = gwksp;
-		actionSelector = procMem;
+		guiListener = gui;
 	}
 
 	public void run(){
@@ -37,7 +34,6 @@ public class CSMDriver implements Runnable, Stoppable{
 			NodeStructure struct = csm.getContent();
 			//CoalitionImpl coalition = new CoalitionImpl(content);
 			BroadcastContentImpl content = new BroadcastContentImpl(struct);
-			actionSelector.receiveBroadcast(content);
 			
 			counter++;			
 		}//while keepRunning

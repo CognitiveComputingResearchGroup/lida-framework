@@ -47,11 +47,23 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	}
 
 	private BehaviorContent getAppropriateBehavior(Set<Node> nodes) {
-		BehaviorContentImpl action = new BehaviorContentImpl();
+		int GO_FORWARD = 1;
+		int TURN_RIGHT = 2;
+		int TURN_LEFT = 3;
+		int GRAB = 4;
+		int SHOOT = 5;
+		int NO_OP = 6;
+		
+		BehaviorContentImpl action = new BehaviorContentImpl(NO_OP);
 		
 		System.out.print("Nodes in proc mem ");
-		for(Node n: nodes)
+		for(Node n: nodes){
 			System.out.print(n.getLabel() + " ");
+			if(n.getId() == 13){
+				action.setContent(TURN_LEFT);
+				return action;
+			}
+		}
 		System.out.println();
 		
 		//TODO: lookup table

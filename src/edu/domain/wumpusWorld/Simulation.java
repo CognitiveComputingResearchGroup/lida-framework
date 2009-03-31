@@ -321,7 +321,7 @@ public class Simulation{
 				if (environment.grabGold() == true) {
 					
 					currScore += 1000;
-					keepRunning = false;
+					//keepRunning = false;
 					
 					agent.setHasGold(true);
 				}
