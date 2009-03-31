@@ -59,8 +59,10 @@ public class Simulation{
 		listeners.add(listener);
 	}
 	
-	public synchronized void receiveBehaviorContent(BehaviorContent c){
-		currentBehavior = c;		
+	public synchronized void receiveBehaviorContent(BehaviorContent action){
+		System.out.println("receiving behavior ");
+		action.print();
+		currentBehavior = action;		
 		actionHasChanged = true;
 	}	
 	
@@ -268,6 +270,7 @@ public class Simulation{
 	}
 	
 	public void handleAction(int action) {
+		System.out.println("handling action: " + action);
 		
 		try {		
 			if (action == Action.GO_FORWARD) {				

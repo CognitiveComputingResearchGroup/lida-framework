@@ -22,8 +22,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 			}
 			
 			Set<Node> nodes = struct.getNodes();
-			if(nodes != null)
-				System.out.println("in csm there are nodes " + nodes.size());
+//			if(nodes != null)
+//				System.out.println("in csm there are nodes " + nodes.size());
 		}
 	}
 

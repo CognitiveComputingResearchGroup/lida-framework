@@ -4,4 +4,6 @@ public interface BehaviorContent {
 
 	Object getContent();
 
+	void print();
+
 }

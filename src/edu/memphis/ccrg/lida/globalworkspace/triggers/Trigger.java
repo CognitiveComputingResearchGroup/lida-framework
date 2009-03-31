@@ -1,10 +1,12 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.globalworkspace;
+package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Map;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * A Trigger determines when a new Broadcast must be triggered.
@@ -17,6 +19,7 @@ import java.util.Set;
  *
  */
 public interface Trigger {
+	
 	/**
 	 * This method is a generic way to setup the Trigger. It should be called when 
 	 * the trigger is created.

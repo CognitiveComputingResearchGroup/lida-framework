@@ -21,6 +21,10 @@ public class BehaviorContentImpl implements BehaviorContent{
 	public Object getContent() {
 		return action;
 	}
+
+	public void print() {
+		System.out.println("Action is: " + action);
+	}
 	
 
 }

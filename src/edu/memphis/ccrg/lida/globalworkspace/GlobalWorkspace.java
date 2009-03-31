@@ -3,6 +3,8 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
+
 /** 
  *
  * Interface for GlobalWorkspace.

@@ -1,7 +1,10 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
+import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
@@ -14,11 +17,14 @@ public class CSMDriver implements Runnable, Stoppable{
 	private long threadID;
 	private FrameworkTimer timer;
 	private GlobalWorkspaceImpl global;
+	private ProceduralMemoryDriver actionSelector;//NonStandard
 	
-	public CSMDriver(FrameworkTimer t, CurrentSituationalModelImpl csm, GlobalWorkspaceImpl gwksp){
+	public CSMDriver(FrameworkTimer t, CurrentSituationalModelImpl csm, 
+			GlobalWorkspaceImpl gwksp, ProceduralMemoryDriver procMem){
 		timer = t;
 		this.csm = csm;
 		global = gwksp;
+		actionSelector = procMem;
 	}
 
 	public void run(){
@@ -28,10 +34,10 @@ public class CSMDriver implements Runnable, Stoppable{
 			try{Thread.sleep(25);}catch(Exception e){}
 			timer.checkForStartPause();
 		
-			NodeStructure content = csm.getContent();
-			CoalitionImpl coalition = new CoalitionImpl(content);
-			//coalition.
-			boolean success = global.putCoalition(coalition);
+			NodeStructure struct = csm.getContent();
+			//CoalitionImpl coalition = new CoalitionImpl(content);
+			BroadcastContentImpl content = new BroadcastContentImpl(struct);
+			actionSelector.receiveBroadcast(content);
 			
 			counter++;			
 		}//while keepRunning

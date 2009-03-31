@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.attention.AttentionListener;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 

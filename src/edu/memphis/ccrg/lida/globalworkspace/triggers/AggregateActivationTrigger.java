@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.globalworkspace.Trigger;
-import edu.memphis.ccrg.lida.globalworkspace.TriggerListener;
 
 /**
  * Implements a trigger that is activated when the sum of all coalitions in GW 

@@ -9,8 +9,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.globalworkspace.Trigger;
-import edu.memphis.ccrg.lida.globalworkspace.TriggerListener;
 
 
 /**
