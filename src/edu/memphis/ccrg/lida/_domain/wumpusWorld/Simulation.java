@@ -60,8 +60,6 @@ public class Simulation{
 	}
 	
 	public synchronized void receiveBehaviorContent(BehaviorContent action){
-		System.out.println("receiving behavior ");
-		action.print();
 		currentBehavior = action;		
 		actionHasChanged = true;
 	}	
@@ -69,10 +67,8 @@ public class Simulation{
 	public void runSim(){				
 		Integer currentAction = new Integer(-1);
 		boolean runOneStep = false;
-		int stepCounter = 0;
-		
+		int stepCounter = 0;		
 		environment.placeAgent(agent);
-		environment.printEnvironment();
 	
 		long startTime = System.currentTimeMillis();			
 		while(keepRunning){
@@ -82,14 +78,10 @@ public class Simulation{
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);
 			
 			senseEnvironment();		
-			System.out.println("agent dir is: " + agent.getDirection());
 			simContent.setContent(currentDirectionalSense, environment.getEnvironmentString(), directionalSenseToString());			
 			
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveSimContent(simContent);
-//			
-//			System.out.println("\nSIM: Sense: ");
-//			printDirectionalSense();
 
 			if(actionHasChanged){
 				synchronized(this){
@@ -99,14 +91,9 @@ public class Simulation{
 				if(!currentAction.equals(null))
 					handleAction(currentAction);
 			}//if actionHasChanged		
-							
-			//environment.printEnvironment();								
-			//printCurrentPerceptSequence();
-					
+
 			stepCounter++;				
-			if (keepRunning == false) {
-				//System.out.println("Last action: " + Action.printAction(lastAction));					
-				//System.out.println("Time step: " + stepCounter);					
+			if (keepRunning == false) {				
 				lastAction = Action.END_TRIAL;
 			}
 				
@@ -136,16 +123,17 @@ public class Simulation{
 	}
 	
 	private String directionalSenseToString(){
-		String s = "";
+		String s = "\n\n";
 		
 		for(int i = 0; i < currentDirectionalSense.length; i++){
 			for(int j = 0; j < currentDirectionalSense[0].length; j++){
+				s += "(";
 				for(int k = 0; k < currentDirectionalSense[0][0].length; k++){
 					s = s + currentDirectionalSense[i][j][k] + " ";
 				}
-				s = s + " ";
+				s += ")  ";
 			}
-			s = s + "\n\n";
+			s += "\n\n";
 		}
 		
 		
@@ -288,7 +276,6 @@ public class Simulation{
 	}
 	
 	public void handleAction(int action) {
-		System.out.println("handling action: " + action);
 		
 			if (action == Action.GO_FORWARD) {				
 				if (environment.getBump() == true) environment.setBump(false);
@@ -299,7 +286,7 @@ public class Simulation{
 				if (environment.checkDeath() == true) {
 					
 					currScore += deathCost;
-					keepRunning = false;
+					//keepRunning = false;
 					
 					agent.setIsDead(true);
 				}
@@ -338,7 +325,7 @@ public class Simulation{
 				if (environment.grabGold() == true) {
 					
 					currScore += 1000;
-					keepRunning = false;
+					//keepRunning = false;
 					
 					agent.setHasGold(true);
 				}
