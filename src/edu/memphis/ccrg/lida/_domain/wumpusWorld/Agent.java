@@ -1,4 +1,4 @@
-package edu.domain.wumpusWorld;
+package edu.memphis.ccrg.lida._domain.wumpusWorld;
 /*
  * Class that defines the agent.
  * 
@@ -91,19 +91,20 @@ class Agent {
 		
 		if (nonDeterministicMode == false) {
 		
-			if (direction == 'N') {
-				if (location[0]+1 < worldSize) location[0] += 1;
-				else wumpusWorld.setBump(true);
-			}
-			else if (direction == 'E') {
+			if (direction == 'S') {
+				if (location[0]+1 < worldSize) 
+					location[0] += 1;
+				else 
+					wumpusWorld.setBump(true);
+			}else if (direction == 'N') {
+				if (location[0]-1 >= 0) 
+					location[0] -= 1;
+				else 
+					wumpusWorld.setBump(true);
+			}else if (direction == 'E') {
 				if (location[1]+1 < worldSize) location[1] += 1;
 				else wumpusWorld.setBump(true);
-			}
-			else if (direction == 'S') {
-				if (location[0]-1 >= 0) location[0] -= 1;
-				else wumpusWorld.setBump(true);
-			}
-			else if (direction == 'W') {
+			}else if (direction == 'W') {
 				if (location[1]-1 >= 0) location[1] -= 1;
 				else wumpusWorld.setBump(true);
 			}
@@ -172,8 +173,8 @@ class Agent {
 					else wumpusWorld.setBump(true);
 				}
 			}
-		}
-	}
+		}//else non-deterministic mode
+	} //method
 	
 	private char nonDeterministicMove() {
 		

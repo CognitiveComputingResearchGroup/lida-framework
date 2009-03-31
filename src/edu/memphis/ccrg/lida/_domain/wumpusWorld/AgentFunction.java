@@ -1,4 +1,4 @@
-package edu.domain.wumpusWorld;
+package edu.memphis.ccrg.lida._domain.wumpusWorld;
 /*
  * Class that defines the agent function.
  * 
@@ -19,7 +19,7 @@ package edu.domain.wumpusWorld;
 
 import java.util.Random;
 
-import edu.domain.wumpusWorld.Action;
+import edu.memphis.ccrg.lida._domain.wumpusWorld.Action;
 
 
 

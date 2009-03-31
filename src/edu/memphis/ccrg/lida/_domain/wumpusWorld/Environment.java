@@ -1,4 +1,4 @@
-package edu.domain.wumpusWorld;
+package edu.memphis.ccrg.lida._domain.wumpusWorld;
 
 //import java.io.BufferedWriter;
 
@@ -96,10 +96,8 @@ class Environment {
 		return agentPos;		
 	}
 	
-	public void placeAgent(Agent theAgent) {
-		//System.out.println("Place agent");
-		
-		if(prevAgentPosition[0] > 0 && prevAgentPosition[1] > 0)
+	public void placeAgent(Agent theAgent){
+		if(prevAgentPosition[0] != -1 && prevAgentPosition[1] != -1)
 			wumpusWorld[prevAgentPosition[0]][prevAgentPosition[1]][3] = ' ';
 		
 		agent = theAgent;		
@@ -373,6 +371,7 @@ class Environment {
 
 	public String getEnvironmentString() {
 		String s = "";
+		String twoSpace = "  ";
 		
 		s = "\n " + bar2 + "\n";		
 		for (int i = 0; i < worldSize; i++) {
@@ -380,27 +379,28 @@ class Environment {
 				for (int k = 0; k < worldSize; k++) {
 					
 					if(j == 0){
+						
 						if(wumpusWorld[i][k][0] == ' ' && wumpusWorld[i][k][1] == ' '){
-							s += "| " + "  " + "  " + "  " + "  ";
+							s += "| " + twoSpace + twoSpace + twoSpace + twoSpace;
 						}else if(wumpusWorld[i][k][0] == ' '){
-							s += "| " + "  " + "  " + wumpusWorld[i][k][1] + "  ";
+							s += "| " + twoSpace + twoSpace + wumpusWorld[i][k][1] + twoSpace;
 						}else if(wumpusWorld[i][k][1] == ' '){
-							s += "| " + wumpusWorld[i][k][0] + "  " + "  " + "  ";
+							s += "| " + wumpusWorld[i][k][0] + twoSpace + twoSpace + twoSpace;
 						}else{
-							s += "| " + wumpusWorld[i][k][0] + "  " + wumpusWorld[i][k][1] + "  ";		
+							s += "| " + wumpusWorld[i][k][0] + twoSpace + wumpusWorld[i][k][1] + twoSpace;		
 						}
 						
 						
 									
 					}else{
 						if(wumpusWorld[i][k][2] == ' ' && wumpusWorld[i][k][3] == ' '){
-							s += "| " + "  " + "  " + "  " + "  ";
+							s += "| " + twoSpace + twoSpace + twoSpace + twoSpace;
 						}else if(wumpusWorld[i][k][2] == ' '){
-							s += "| " + "  " + "  " + wumpusWorld[i][k][3] + " ";
+							s += "| " + twoSpace + twoSpace + wumpusWorld[i][k][3] + twoSpace;
 						}else if(wumpusWorld[i][k][3] == ' '){
-							s += "| " + wumpusWorld[i][k][2] + "  " + "  " + "  ";
+							s += "| " + wumpusWorld[i][k][2] + twoSpace + twoSpace + twoSpace;
 						}else{
-							s += "| " + wumpusWorld[i][k][2] + "  " + wumpusWorld[i][k][3] + " ";		
+							s += "| " + wumpusWorld[i][k][2] + twoSpace + wumpusWorld[i][k][3] + twoSpace;		
 						}
 						
 						

@@ -1,4 +1,4 @@
-package edu.domain.wumpusWorld;
+package edu.memphis.ccrg.lida._domain.wumpusWorld;
 
 
 class TransferPercept {

@@ -1,13 +1,13 @@
-package edu.domain.wumpusWorld;
+package edu.memphis.ccrg.lida._domain.wumpusWorld;
 
 
 import java.util.ArrayList;
 
 
 
-import edu.domain.wumpusWorld.Action;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida._domain.wumpusWorld.Action;
 import edu.memphis.ccrg.lida._sensoryMemory.SimulationContentImpl;
 import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
 import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
@@ -81,14 +81,15 @@ public class Simulation{
 			timer.checkForStartPause();//won't return if paused until started again			
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);
 			
-			senseEnvironment();			
-			simContent.setContent(currentDirectionalSense, environment.getEnvironmentString());			
+			senseEnvironment();		
+			System.out.println("agent dir is: " + agent.getDirection());
+			simContent.setContent(currentDirectionalSense, environment.getEnvironmentString(), directionalSenseToString());			
 			
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveSimContent(simContent);
-			
-			System.out.println("\nSIM: Sense: ");
-			printDirectionalSense();
+//			
+//			System.out.println("\nSIM: Sense: ");
+//			printDirectionalSense();
 
 			if(actionHasChanged){
 				synchronized(this){
@@ -132,6 +133,23 @@ public class Simulation{
 			System.out.println("\n");
 		}
 		
+	}
+	
+	private String directionalSenseToString(){
+		String s = "";
+		
+		for(int i = 0; i < currentDirectionalSense.length; i++){
+			for(int j = 0; j < currentDirectionalSense[0].length; j++){
+				for(int k = 0; k < currentDirectionalSense[0][0].length; k++){
+					s = s + currentDirectionalSense[i][j][k] + " ";
+				}
+				s = s + " ";
+			}
+			s = s + "\n\n";
+		}
+		
+		
+		return s;
 	}
 
 	public void stopRunning(){
@@ -272,7 +290,6 @@ public class Simulation{
 	public void handleAction(int action) {
 		System.out.println("handling action: " + action);
 		
-		try {		
 			if (action == Action.GO_FORWARD) {				
 				if (environment.getBump() == true) environment.setBump(false);
 				
@@ -321,7 +338,7 @@ public class Simulation{
 				if (environment.grabGold() == true) {
 					
 					currScore += 1000;
-					//keepRunning = false;
+					keepRunning = false;
 					
 					agent.setHasGold(true);
 				}
@@ -365,10 +382,7 @@ public class Simulation{
 				lastAction = Action.NO_OP;
 			}
 			
-		}
-		catch (Exception e) {
-			System.out.println("An exception was thrown: " + e);
-		}
+
 	}
 	
 	public int getScore() {		

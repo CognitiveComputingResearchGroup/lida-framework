@@ -1,10 +1,10 @@
-package edu.domain.wumpusWorld;
+package edu.memphis.ccrg.lida._domain.wumpusWorld;
 
 
 
 import java.util.Random;
 
-import edu.domain.wumpusWorld.Simulation;
+import edu.memphis.ccrg.lida._domain.wumpusWorld.Simulation;
 import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
 import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;

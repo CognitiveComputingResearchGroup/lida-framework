@@ -2,16 +2,18 @@ package edu.memphis.ccrg.lida._sensoryMemory;
 
 public class SimulationContentImpl {
 	
-	private char[][][] simSense;
-	private String environment;
+	private char[][][] simSense;//For LIDA
+	private String environment;//For GUI
+	private String senseMatrix;//For GUI
 	
 	public SimulationContentImpl(int size){
 		simSense = new char[size][size][4];
 	}
 	
-	public void setContent(Object o, String environment){
+	public void setContent(Object o, String environment, String senseMatrix){
 		simSense = (char[][][])o;
 		this.environment = environment;
+		this.senseMatrix = senseMatrix;
 	}
 	
 	public Object getSenseContent(){
@@ -22,6 +24,10 @@ public class SimulationContentImpl {
 	
 	public String getEnvironment(){
 		return environment;
+	}
+	
+	public String getSenseMatrix(){
+		return senseMatrix;
 	}
 
 	public void print(){
