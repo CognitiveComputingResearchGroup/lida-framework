@@ -18,21 +18,17 @@ import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
-import edu.memphis.ccrg.lida._sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContentImpl;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferListener;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 
-public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, 
-	SensoryListener, EpisodicBufferListener, BroadcastListener{
+public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
     /**
      * proportion of activation spread to parents
@@ -58,8 +54,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private List<PAMListener> pamListeners;    
     private SensoryContentImpl sensoryContent;//Shared variable
     private PAMContent pamContent;//Not a shared variable
-    private EpisodicBufferContentImpl eBufferContent;//Shared variable
-    private BroadcastContent broadcastContent;//Shared variable	
+    private BroadcastContent broadcastContent;//Shared variables	
+	private WorkspaceContent workspaceContent;
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new HashSet<FeatureDetector>();
@@ -68,7 +64,6 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
     	pamContent = new PAMContentImpl();
-    	eBufferContent = new EpisodicBufferContentImpl();
     	//broadcastContent = new BroadcastContent();//TODO: write this class 	
     }
     
@@ -113,9 +108,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     public synchronized void receiveSense(SensoryContentImpl sc){//SensoryContent    	
     	sensoryContent = sc;    	
     }
-    
-	public synchronized void receiveEBufferContent(EpisodicBufferContentImpl c) {
-		eBufferContent = c;		
+
+	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
+		workspaceContent = content;		
 	}
     	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {

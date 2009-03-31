@@ -5,15 +5,19 @@ package edu.memphis.ccrg.lida._perception.interfaces;
 
 import java.util.Set;
 import java.util.Map;
+
+import edu.memphis.ccrg.lida._sensoryMemory.SensoryListener;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
 /**
  * @author Ryan McCall
  */
-public interface PerceptualAssociativeMemory{
+public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryListener, BroadcastListener{
 	
 	/**
 	 * Updates PAM's parameters from the supplied map

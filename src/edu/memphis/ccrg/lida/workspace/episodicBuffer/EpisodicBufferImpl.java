@@ -28,7 +28,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
 		return null;
 	}
 
-	public synchronized void receiveTEMLocalAssociation(
+	public synchronized void receiveTEMContent(
 			TransientEpisodicMemoryContent association) {
 		temAssociation = association;		
 	}
