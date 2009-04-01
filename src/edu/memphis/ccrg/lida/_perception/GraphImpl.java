@@ -72,10 +72,8 @@ public class GraphImpl implements NodeStructure{
 	}//public LinkMap
 
 	public void addLinkSet(Set<Link> links){
-		for(Link l: links){
-			LinkImpl toAdd = (LinkImpl)l;
-			addLink(new LinkImpl(toAdd));
-		}
+		for(Link l: links)
+			addLink(l);
 	}//public void addLinkSet(Set<Link> links)
 
 	public boolean addLink(Link l){
@@ -97,6 +95,8 @@ public class GraphImpl implements NodeStructure{
 		}
 		result2 = tempLinks.add(l);
 		boolean result = result1 || result2;
+		linkMap.put(l, new HashSet<Link>());
+		
 		if(result)
 			linkCount++;
 		return result;
@@ -418,14 +418,35 @@ public class GraphImpl implements NodeStructure{
 		
 	}
 
-	//???
+	/**
+	 * Go through the linkables in linkmap
+	 * and return those that are Link
+	 */
 	public Set<Link> getLinks() {
-		return null;
+		Set<Link> links = new HashSet<Link>();
+		Set<Linkable> linkables = linkMap.keySet();
+		for(Linkable l: linkables)
+			if(l instanceof Link)	
+				links.add((Link)l);				
+		return links;
 	}
 
+	/**
+	 * Go through the linkables in linkmap
+	 * and return those that are Link and match
+	 * type
+	 */
 	public Set<Link> getLinks(LinkType type) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Link> links = new HashSet<Link>();
+		Set<Linkable> linkables = linkMap.keySet();
+		for(Linkable l: linkables){
+			if(l instanceof Link){
+				Link temp = (Link)l;
+				if(temp.getType() == type)
+					links.add((Link)l);				
+			}
+		}		
+		return links;
 	}
 	
 	public Map<Linkable, Set<Link>> getLinkMap(){

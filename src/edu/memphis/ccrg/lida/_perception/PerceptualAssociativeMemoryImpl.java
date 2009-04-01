@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -168,13 +169,16 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         for(Node node: nodes){
             node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant()){//Based on totalActivation
-            	//System.out.println("a nodes is relevant adding to graph: " + node.getLabel());
+            	System.out.println("a nodes is relevant adding to graph: " + node.getLabel());
                 /*System.out.println("was able to add it " +*/
             	newGraph.addNode(node);
             	
             	//);
             }
         }//for      
+
+        //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
+        newGraph.addLinkSet(graph.getLinks());        
         pamContent.setContent((NodeStructure)newGraph);
     }//private void syncNodeActivation
     

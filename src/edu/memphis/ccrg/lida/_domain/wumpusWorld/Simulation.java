@@ -72,7 +72,7 @@ public class Simulation{
 	
 		long startTime = System.currentTimeMillis();			
 		while(keepRunning){
-			try{Thread.sleep(100);
+			try{Thread.sleep(50);
 			}catch(Exception e){}			
 			timer.checkForStartPause();//won't return if paused until started again			
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);
@@ -278,8 +278,7 @@ public class Simulation{
 				environment.placeAgent(agent);
 				
 				if (environment.checkDeath() == true) {
-					System.out.println("You died.");
-					System.out.println("You were resurrected.");
+					System.out.println("You die! ...but gnomes resurrect you.");
 					currScore += deathCost;
 					//keepRunning = false;
 					

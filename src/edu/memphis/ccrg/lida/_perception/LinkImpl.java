@@ -115,11 +115,6 @@ public class LinkImpl implements Link, Node{
 		return 0;
 	}
 
-	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public long getId() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -223,6 +218,18 @@ public class LinkImpl implements Link, Node{
 	public void printActivationString() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String toString(){
+		String s = "Source: ";
+		s += source.getLabel();	
+		s += ". Sink: ";
+		s += sink.getLabel();	
+		return s;
+	}
+	
+	public String getLabel(){
+		return "link of type " + type + " id " + linkID;
 	}
 
 }

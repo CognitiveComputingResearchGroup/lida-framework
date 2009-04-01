@@ -1,10 +1,14 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
+import java.util.Set;
+
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
@@ -28,12 +32,25 @@ public class CSMDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(25);}catch(Exception e){}
+			try{Thread.sleep(25 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 		
 			NodeStructure struct = csm.getContent();
+			Set<Node> nodes = struct.getNodes();
+			Set<Link> links = struct.getLinks();
+			
+			System.out.println(nodes.size() + " links " + links.size());
+			
+			for(Node n: nodes)
+				System.out.println(n.getLabel() + " ");
+			
+				
+			for(Link l: links)
+				System.out.println(l.toString() + " ");
+			
+			
 			//CoalitionImpl coalition = new CoalitionImpl(content);
-			BroadcastContentImpl content = new BroadcastContentImpl(struct);
+			//BroadcastContentImpl content = new BroadcastContentImpl(struct);
 			
 			counter++;			
 		}//while keepRunning

@@ -18,7 +18,7 @@ public interface Node extends Linkable{
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public ExciteBehavior getExciteBehavior();
 	
-	public void synchronize();	
+	public void synchronize();  //TODO: Remove and put in PamNode.  But this will require redoing the Graph/NodeStructure...	
 	public boolean isRelevant(); 
 	
 	public void decay();	
@@ -35,7 +35,6 @@ public interface Node extends Linkable{
     public Node copy();
     public long getId();
     public void setID(long id);
-    public String getLabel();
     public void setLabel(String label);
 	public int getLayerDepth();
 	public void printActivationString();

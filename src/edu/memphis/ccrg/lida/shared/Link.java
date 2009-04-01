@@ -10,5 +10,7 @@ public interface Link extends Linkable{
 	public abstract Linkable getSink();
 
 	public abstract LinkType getType();
+	
+	public abstract String toString();
 
 }
