@@ -72,7 +72,7 @@ public class Simulation{
 	
 		long startTime = System.currentTimeMillis();			
 		while(keepRunning){
-			try{Thread.sleep(100 + timer.getSleepTime());
+			try{Thread.sleep(100);
 			}catch(Exception e){}			
 			timer.checkForStartPause();//won't return if paused until started again			
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);
@@ -95,13 +95,7 @@ public class Simulation{
 			stepCounter++;				
 			if (keepRunning == false) {				
 				lastAction = Action.END_TRIAL;
-			}
-				
-			if(agent.getHasGold() == true) 
-				System.out.println("\n" + agent.getName() + " found the GOLD!!");
-				
-			if(agent.getIsDead() == true) 
-				System.out.println("\n" + agent.getName() + " is DEAD!!");		
+			}	
 		}//while keepRunning and trials		
 		long finishTime = System.currentTimeMillis();			
 		System.out.println("\nSIM: Ave. cycle time: " + Misc.rnd((finishTime - startTime)/(double)stepCounter));		
@@ -284,7 +278,8 @@ public class Simulation{
 				environment.placeAgent(agent);
 				
 				if (environment.checkDeath() == true) {
-					
+					System.out.println("You died.");
+					System.out.println("You were resurrected.");
 					currScore += deathCost;
 					//keepRunning = false;
 					
@@ -326,10 +321,13 @@ public class Simulation{
 					
 					currScore += 1000;
 					//keepRunning = false;
-					
+					System.out.println("Got the Gold!");
 					agent.setHasGold(true);
 				}
-				else currScore += actionCost;
+				else{
+					currScore += actionCost;
+					System.out.println("Grab gold fail");
+				}
 				
 				environment.placeAgent(agent);
 				
@@ -342,7 +340,12 @@ public class Simulation{
 				
 				if (agent.shootArrow() == true) {
 					
-					if (environment.shootArrow() == true) environment.setScream(true);
+					if (environment.shootArrow() == true){
+						environment.setScream(true);
+						System.out.println("RAAAAAAWWWWWRRRRRrrrr");
+					}else{
+						System.out.println("Shot arrow fail");
+					}
 				
 					currScore += shootCost;					
 				}

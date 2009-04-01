@@ -167,7 +167,7 @@ class Environment {
 	
 	public boolean shootArrow() {
 		
-		if (agent.getDirection() == 'N') {
+		if (agent.getDirection() == 'S') {
 			
 			for (int i = agent.getLocation()[0]; i < worldSize; i++) {
 				if (wumpusWorld[i][agent.getLocation()[1]][1] == 'W') {
@@ -207,7 +207,7 @@ class Environment {
 				}
 			}
 		}
-		else if (agent.getDirection() == 'S') {
+		else if (agent.getDirection() == 'N') {
 			
 			for (int i = agent.getLocation()[0]; i >= 0; i--) {
 				if (wumpusWorld[i][agent.getLocation()[1]][1] == 'W') {
