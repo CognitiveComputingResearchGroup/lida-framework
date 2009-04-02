@@ -36,9 +36,6 @@ public interface Node extends Linkable{
     public long getId();
     public void setID(long id);
     public void setLabel(String label);
-	public int getLayerDepth();
-	public void printActivationString();
-	public void decay(DecayBehavior decayBehavior);
    
 }//interface Node
 

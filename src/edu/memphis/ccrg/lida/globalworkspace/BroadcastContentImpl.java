@@ -5,9 +5,9 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class BroadcastContentImpl implements BroadcastContent{
 	
-	private NodeStructure struct;
+	private Object struct;
 	
-	public BroadcastContentImpl(NodeStructure struct){
+	public BroadcastContentImpl(Object struct){
 		this.struct = struct;
 	}
 	
@@ -15,7 +15,7 @@ public class BroadcastContentImpl implements BroadcastContent{
 		struct = new GraphImpl();
 	}
 
-	public void setContent(NodeStructure struct){
+	public void setContent(Object struct){
 		this.struct = struct;
 	}
 

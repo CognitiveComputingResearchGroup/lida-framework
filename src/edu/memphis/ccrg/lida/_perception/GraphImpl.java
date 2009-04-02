@@ -138,7 +138,8 @@ public class GraphImpl implements NodeStructure{
 	
 	public Map<Integer, Set<Node>> createLayerMap(){
         for(Node node: nodes){
-            int layerDepth = node.getLayerDepth();
+//            int layerDepth = node.getLayerDepth();
+            int layerDepth = ((PamNode)node).getLayerDepth();
             Set<Node> layerNodes = layerMap.get(layerDepth);
             
             if(layerNodes == null) {
@@ -392,7 +393,7 @@ public class GraphImpl implements NodeStructure{
 
 	public void printNodeActivations() {
 		for(Node n: nodes)
-			n.printActivationString();
+			((PamNodeImpl)n).printActivationString(); //CHECK This!!!!
 	}
 
 	public void printLinkMap() {

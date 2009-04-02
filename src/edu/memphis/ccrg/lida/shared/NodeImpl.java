@@ -4,7 +4,13 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-
+/**
+ * Dummy Node Implementation
+ * 
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class NodeImpl implements Node {
 
 	public Node copy() {
@@ -23,11 +29,6 @@ public class NodeImpl implements Node {
 	}
 
 	public double getCurrentActivation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public long getIdentifier() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -103,21 +104,6 @@ public class NodeImpl implements Node {
 	}
 
 	public void setLabel(String label) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public int getLayerDepth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void printActivationString() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void decay(DecayBehavior decayBehavior) {
 		// TODO Auto-generated method stub
 		
 	}

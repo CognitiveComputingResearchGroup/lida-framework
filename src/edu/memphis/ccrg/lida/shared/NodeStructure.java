@@ -2,7 +2,9 @@ package edu.memphis.ccrg.lida.shared;
 
 import java.util.Set;
 
-public interface NodeStructure {
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+
+public interface NodeStructure extends BroadcastContent {
 
 	public abstract boolean addLink(Link l);
 

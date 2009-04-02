@@ -28,7 +28,7 @@ public class CoalitionImpl implements Coalition{
 		return 0;
 	}
 
-	public NodeStructure getContent() {
+	public BroadcastContent getContent() {
 		return struct;
 	}
 

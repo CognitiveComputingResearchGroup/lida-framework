@@ -84,8 +84,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, At
 			}
 		}
 		if (coal != null) {
-			NodeStructure struct = (NodeStructure)coal.getContent();
-			BroadcastContent content = new BroadcastContentImpl(struct);//TODO: Note Ryan's change, Javier.
+			BroadcastContent content = coal.getContent();
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast(content);
 			}

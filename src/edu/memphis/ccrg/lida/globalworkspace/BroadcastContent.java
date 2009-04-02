@@ -8,6 +8,4 @@ package edu.memphis.ccrg.lida.globalworkspace;
  */
 public interface BroadcastContent {
 	
-	public Object getContent();
-
 }

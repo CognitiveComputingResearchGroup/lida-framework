@@ -26,7 +26,8 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	private boolean keepRunning = true;
 	private long threadID;
 	//
-	private BroadcastContent broadcastContent = new BroadcastContentImpl();
+	//private BroadcastContent broadcastContent = new BroadcastContentImpl();
+	private BroadcastContent broadcastContent = null;
 		
 	public ProceduralMemoryDriver(FrameworkTimer timer,
 			WorldApplication simulation) {
@@ -77,7 +78,8 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	private Set<Node> getNodesFromBroadcast() {
 		NodeStructure consciousContents;
 		synchronized(this){
-			consciousContents = (NodeStructure)broadcastContent.getContent();
+//			consciousContents = (NodeStructure)broadcastContent.getContent();
+			consciousContents = (NodeStructure)broadcastContent;
 		}	
 		return consciousContents.getNodes();
 	}
