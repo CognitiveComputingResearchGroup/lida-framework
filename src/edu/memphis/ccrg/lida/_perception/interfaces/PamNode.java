@@ -27,6 +27,8 @@ public interface PamNode extends Node{
 	 * 
 	 */
 	public abstract void decay();
+	
+	public abstract void decay(DecayBehavior db);
 
 	/**
 	 * 

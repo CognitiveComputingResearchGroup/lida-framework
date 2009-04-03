@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import edu.memphis.ccrg.lida._perception.interfaces.FeatureDetector;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
+import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -191,7 +192,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     public void decay() {
     	Set<Node> nodes = graph.getNodes();
         for(Node n: nodes){
-        	n.decay(decayBehavior);      
+        	if(n instanceof PamNode){
+        		PamNode temp = (PamNode)n;
+        		temp.decay(decayBehavior);   
+        	}
         }
     }//decay
 
