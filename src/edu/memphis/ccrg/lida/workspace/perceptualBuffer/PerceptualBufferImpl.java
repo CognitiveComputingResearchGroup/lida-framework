@@ -7,6 +7,7 @@ import java.util.Set;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida._perception.PAMContentImpl;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
@@ -18,7 +19,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 	private PAMContent pamContent;	
 	private List<NodeStructure> perceptBuffer;
 	private List<PerceptualBufferListener> pbListeners;	
-	private final int PERCEPT_BUFFER_CAPACITY = 2;	
+	private final int PERCEPT_BUFFER_CAPACITY = 2;
+	private FrameworkGui testGui;	
 	
 	public PerceptualBufferImpl(){
 		pamContent = new PAMContentImpl();
@@ -89,5 +91,9 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 		return content;
 
 	}//getCodeletsObjective
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
+	}
 
 }//PerceptualBuffer

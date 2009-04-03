@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -57,6 +58,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private PAMContent pamContent;//Not a shared variable
     private BroadcastContent broadcastContent;//Shared variables	
 	private WorkspaceContent workspaceContent;
+	private FrameworkGui testGui;
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new HashSet<FeatureDetector>();
@@ -166,20 +168,27 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private void syncNodeActivation(){
         GraphImpl newGraph = new GraphImpl(upscale, selectivity);
         Set<Node> nodes = graph.getNodes();
+        Set<Link> links = graph.getLinks();
+        int numNodes = 0;
+        
         for(Node node: nodes){
             node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant()){//Based on totalActivation
-            	System.out.println("a nodes is relevant adding to graph: " + node.getLabel());
-                /*System.out.println("was able to add it " +*/
+            	//System.out.println("a nodes is relevant adding to graph: " + node.getLabel());
             	newGraph.addNode(node);
-            	
-            	//);
-            }
+            	numNodes++;
+            }//if relevant
         }//for      
 
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
         newGraph.addLinkSet(graph.getLinks());        
         pamContent.setContent((NodeStructure)newGraph);
+        
+        //for GUI
+        List<Object> content = new ArrayList<Object>();
+        content.add(numNodes);
+        content.add(links.size());
+        testGui.receiveGuiContent("pam", content);
     }//private void syncNodeActivation
     
     public void sendPercept(){
@@ -227,6 +236,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 
 	public int getLinkCount() {
 		return graph.getLinkCount();
+	}
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
 	}
 
 }//class PAM.java

@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
@@ -48,6 +49,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	
 	private List<Thread> codeletThreads = new ArrayList<Thread>();
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
+	private FrameworkGui testGui;
 	
 	public StructureBuildingCodeletDriver(FrameworkTimer timer, PerceptualBufferImpl p, EpisodicBufferImpl e, 
 							PreviousBroadcastsImpl pbroads, CurrentSituationalModelImpl csm){
@@ -129,6 +131,10 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 
 	public synchronized void receivePBufferContent(PerceptualBufferContentImpl pbc) {
 		pBufferContent = pbc;		
+	}
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
 	}
 
 }//public class SBCodeletsDriver 

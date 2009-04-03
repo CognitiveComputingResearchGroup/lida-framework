@@ -11,6 +11,7 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.attention.AttentionListener;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 
@@ -29,6 +30,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, At
 	private List<Trigger> triggers = new ArrayList<Trigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
+	private FrameworkGui testGui;
 	
 	/*
 	 * (non-Javadoc)
@@ -138,5 +140,9 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, At
 				sendBroadcast();
 			}
 		}
+	}
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
 	}
 }

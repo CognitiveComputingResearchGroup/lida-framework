@@ -10,6 +10,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -28,6 +29,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	//
 	//private BroadcastContent broadcastContent = new BroadcastContentImpl();
 	private BroadcastContent broadcastContent = null;
+	private FrameworkGui testGui;
 		
 	public ProceduralMemoryDriver(FrameworkTimer timer,
 			WorldApplication simulation) {
@@ -98,6 +100,10 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = bc;		
+	}
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
 	}
 
 }

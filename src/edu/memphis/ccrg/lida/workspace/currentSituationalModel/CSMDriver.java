@@ -5,6 +5,7 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
 import edu.memphis.ccrg.lida.shared.Link;
@@ -21,6 +22,7 @@ public class CSMDriver implements Runnable, Stoppable{
 	private long threadID;
 	private FrameworkTimer timer;
 	private CSMListener guiListener;
+	private FrameworkGui testGui;
 	
 	public CSMDriver(FrameworkTimer t, CurrentSituationalModelImpl csm, CSMListener gui){
 		timer = t;
@@ -39,14 +41,14 @@ public class CSMDriver implements Runnable, Stoppable{
 			Set<Node> nodes = struct.getNodes();
 			Set<Link> links = struct.getLinks();
 			
-			System.out.println(nodes.size() + " links " + links.size());
+			//System.out.println(nodes.size() + " links " + links.size());
 			
-			for(Node n: nodes)
-				System.out.println(n.getLabel() + " ");
-			
-				
-			for(Link l: links)
-				System.out.println(l.toString() + " ");
+//			for(Node n: nodes)
+//				System.out.println(n.getLabel() + " ");
+//			
+//				
+//			for(Link l: links)
+//				System.out.println(l.toString() + " ");
 			
 			
 			//CoalitionImpl coalition = new CoalitionImpl(content);
@@ -71,6 +73,10 @@ public class CSMDriver implements Runnable, Stoppable{
 	
 	public long getThreadID() {
 		return threadID;
+	}
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
 	}
 	
 }
