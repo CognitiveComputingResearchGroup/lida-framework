@@ -29,7 +29,6 @@ import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
-
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
     /**
