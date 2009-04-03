@@ -78,6 +78,12 @@ public class PamNodeImpl implements PamNode{
         decayBehav = new LinearDecayCurve();
     }//public Node(long id,...
     
+    public PamNodeImpl(){    	
+    	minActivation = MIN_ACTIVATION;
+    	maxActivation = MAX_ACTIVATION;
+        layerDepth = 0;
+    }//public Node(long id,...
+    
     /**
      * 
      * @param n
@@ -357,11 +363,11 @@ public class PamNodeImpl implements PamNode{
 
 	public Node getReferencedNode() {
 		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 	public void setActivation(double d) {
-		// TODO Auto-generated method stub
+		currentActivation=d;
 		
 	}
 

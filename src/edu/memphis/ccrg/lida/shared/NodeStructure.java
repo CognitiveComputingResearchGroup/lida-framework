@@ -4,6 +4,15 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
+/**
+ * A NodeStructure holds a collection of Nodes an Links. An implementation of this interface
+ * could be used as the "Common Currency" between the Modules of LIDA
+ * 
+ * 
+ * 
+ * @author Javier Snaider
+ *
+ */
 public interface NodeStructure extends BroadcastContent {
 
 	public abstract boolean addLink(Link l);

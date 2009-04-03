@@ -17,8 +17,12 @@ import edu.memphis.ccrg.lida._perception.PamNodeImpl;
  */
 public class NodeStructureImp implements NodeStructure {
 	private Map<Linkable, Set<Link>> linkMap;
-	private int linkCount = 0;// How many links have been added to this linkMap
 	private Set<Node> nodes;
+	private int linkCount = 0;// How many links have been added to this linkMap
+	private String defaultNode;
+	private String defaultLink;
+	private NodeFactory factory = NodeFactory.getInstance();
+	
 	/**
 	 * @param defaultNode the defaultNode to set
 	 */
@@ -33,12 +37,11 @@ public class NodeStructureImp implements NodeStructure {
 		this.defaultLink = defaultLink;
 	}
 
-	private String defaultNode;
-	private String defaultLink;
 
 	public NodeStructureImp() {
 		linkMap = new HashMap<Linkable, Set<Link>>();
 		nodes = new HashSet<Node>();
+		
 	}
 
 	/*
@@ -49,26 +52,39 @@ public class NodeStructureImp implements NodeStructure {
 	 * .shared.Link)
 	 */
 	public boolean addLink(Link l) {
-		boolean result1 = false;
-		boolean result2 = false;
-		Linkable end = l.getSource();
-		Set<Link> tempLinks = linkMap.get(end);
+		
+		boolean result=false;
+		
+		Linkable source = l.getSource();
+		Linkable sink = l.getSink();
+		if((source instanceof Node) && (!nodes.contains((Node)source))){
+			return false;
+		}
+		
+		if((source instanceof Link) && (!linkMap.keySet().contains(source))){
+			return false;
+		}
+		if((sink instanceof Link) && (!linkMap.keySet().contains(sink))){
+			return false;
+		}
+				
+		Set<Link> tempLinks = linkMap.get(source);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
-			linkMap.put(end, tempLinks);
+			linkMap.put(source, tempLinks);
 		}
-		result1 = tempLinks.add(l);
+		
+		Link newLink = factory.
+		tempLinks.add(l);
 
-		end = l.getSink();
-		tempLinks = linkMap.get(end);
+		tempLinks = linkMap.get(sink);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
-			linkMap.put(end, tempLinks);
+			linkMap.put(sink, tempLinks);
 		}
-		result2 = tempLinks.add(l);
-		boolean result = result1 || result2;
-		if (result)
-			linkCount++;
+		
+		linkMap.put()
+		linkCount++;
 		return result;
 	}
 
@@ -84,7 +100,8 @@ public class NodeStructureImp implements NodeStructure {
 
 	public boolean addNode(Node n) {
 		if (!nodes.contains(n)){// check this
-			nodes.add(NodeFactory.getInstance().getNode(n));
+			nodes.add(factory.getNode(n));
+			linkMap.put(n, null);
 		}
 		
 		return false;
@@ -97,7 +114,7 @@ public class NodeStructureImp implements NodeStructure {
 	 */
 	public void addNodes(Set<Node> nodesToAdd) {
 		for (Node n : nodesToAdd) {
-			nodes.add(new PamNodeImpl((PamNodeImpl) n));
+			addNode(n);
 			// refresh();
 		}
 	}
