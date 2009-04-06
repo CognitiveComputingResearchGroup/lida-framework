@@ -35,15 +35,11 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 	private synchronized void storePAMContent(){
 		GraphImpl struct = (GraphImpl)pamContent.getContent();	
 		
-		if(struct != null){
-			Set<Node> nodes = struct.getNodes();
-			//System.out.println("in pbuffer there are " + nodes.size());			
-			
+		if(struct != null)		
 			perceptBuffer.add(new GraphImpl(struct));			
-		}
-		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY){
-			perceptBuffer.remove(0);
-		}		
+		
+		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
+			perceptBuffer.remove(0);	
 	}//public void storePAMContent()
 	
 	public void addPBufferListener(PerceptualBufferListener l){
@@ -54,16 +50,16 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 		storePAMContent();
 		
 		if(perceptBuffer.size() > 0){
+			GraphImpl tempGraph = new GraphImpl((GraphImpl)perceptBuffer.get(0));
 			for(int i = 0; i < pbListeners.size(); i++){
-				GraphImpl tempGraph = new GraphImpl((GraphImpl)perceptBuffer.get(0));
-				//System.out.println(tempGraph.getNodes().size() + " nodes send from pam content");
-				
-				//p.print();
-				PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
-				content.addContent(tempGraph);
-				pbListeners.get(i).receivePBufferContent(content);
-				
+				PerceptualBufferContentImpl content = new PerceptualBufferContentImpl(tempGraph);
+				pbListeners.get(i).receivePBufferContent(content);				
 			}//for
+
+			List<Object> guiContent = new ArrayList<Object>();			
+			guiContent.add(tempGraph.getNodes().size());
+			guiContent.add(tempGraph.getLinks().size());			
+			testGui.receiveGuiContent(FrameworkGui.PERCEPTUAL_BUFFER, guiContent);
 		}
 			
 	}//sendContent

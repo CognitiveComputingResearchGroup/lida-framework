@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
@@ -41,15 +43,11 @@ public class CSMDriver implements Runnable, Stoppable{
 			Set<Node> nodes = struct.getNodes();
 			Set<Link> links = struct.getLinks();
 			
-			//System.out.println(nodes.size() + " links " + links.size());
-			
-//			for(Node n: nodes)
-//				System.out.println(n.getLabel() + " ");
-//			
-//				
-//			for(Link l: links)
-//				System.out.println(l.toString() + " ");
-			
+			List<Object> content = new ArrayList<Object>();
+	        content.add(nodes.size());
+	        content.add(links.size());
+	        testGui.receiveGuiContent(FrameworkGui.CSM, content);
+
 			
 			//CoalitionImpl coalition = new CoalitionImpl(content);
 			//BroadcastContentImpl content = new BroadcastContentImpl(struct);

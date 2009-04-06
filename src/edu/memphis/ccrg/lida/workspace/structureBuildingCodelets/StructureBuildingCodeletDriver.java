@@ -103,13 +103,17 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 		synchronized(this){
 			struct = (GraphImpl)pBufferContent.getContent();
 		}
-	
-		//struct.printNodes();
+
+		
 		Set<Node> nodes = struct.getNodes();
 		for(Node n: nodes){//TODO: should be in PamNode instead
 			//Activate codelets
 		}
-
+		
+		List<Object> guiContent = new ArrayList<Object>();			
+		guiContent.add(struct.getNodes().size());
+		guiContent.add(struct.getLinks().size());			
+		testGui.receiveGuiContent(FrameworkGui.SB_CODELETS, guiContent);
 	}//method
 
 	public void stopRunning(){

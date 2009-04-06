@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
-
 import edu.memphis.ccrg.lida._perception.interfaces.FeatureDetector;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
@@ -22,7 +21,6 @@ import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -188,14 +186,14 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         List<Object> content = new ArrayList<Object>();
         content.add(numNodes);
         content.add(links.size());
-        testGui.receiveGuiContent("pam", content);
+        testGui.receiveGuiContent(FrameworkGui.PERCEPT_IN_PAM, content);
     }//private void syncNodeActivation
     
     public void sendPercept(){
     	if(!pamContent.isEmpty())
 	    	for(int i = 0; i < pamListeners.size(); i++)
-				pamListeners.get(i).receivePAMContent(pamContent);
-    }
+				pamListeners.get(i).receivePAMContent(pamContent);	    	
+    }//method
     
     public void decay() {
     	Set<Node> nodes = graph.getNodes();

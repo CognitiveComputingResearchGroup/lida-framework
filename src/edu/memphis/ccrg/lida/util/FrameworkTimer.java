@@ -9,7 +9,7 @@ public class FrameworkTimer {
 	private boolean shouldWait = true;//true -> Start out paused
 										//false -> Start out running	
 	private int sleepTime = 500;
-	private int sleepConstant = 800;
+	private int sleepConstant = 500;
 	
 	private Map<Long, Boolean> shouldWaitForNextStepMap = new HashMap<Long, Boolean>();
 	

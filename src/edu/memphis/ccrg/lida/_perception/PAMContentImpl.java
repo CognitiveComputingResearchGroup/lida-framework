@@ -14,22 +14,21 @@ public class PAMContentImpl implements PAMContent{
 		return graph;
 	}
 
-	public void setContent(NodeStructure struct) {
+	public synchronized void setContent(NodeStructure struct) {
 		graph = struct;		
 //		if(graph != null){
 //			Set<Node> nodes = graph.getNodes();
 //			if(nodes != null)
 //				System.out.println(nodes.size() + " nodes in PAM content (the percept)");
-//		}
-			
-	}
+//		}		
+	}//method
 	
 	public boolean isEmpty(){
 		if(graph == null){
 			return true;
 		}else{
-			return graph.getNodes().size() > 0;
+			return graph.getNodes().size() == 0;
 		}
-	}
+	}//isEmpty()
 
 }
