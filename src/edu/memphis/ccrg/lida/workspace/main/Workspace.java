@@ -6,10 +6,6 @@ import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryListener;
 
-public interface Workspace extends PAMListener, 
-								   TransientEpisodicMemoryListener, 
-								   DeclarativeMemoryListener,
-								   BroadcastListener, 
-								   ActionSelectionListener{
+public interface Workspace{
 	
 }

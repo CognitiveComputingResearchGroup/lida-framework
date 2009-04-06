@@ -23,7 +23,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	//
 	private double activation = 1.0;
 	private CodeletObjective objective = null;
-	private CodeletAction action = new CodeletAction();
+	private CodeletAction action = new TestCodeletAction();
 	
 	private List<CodeletAccessible> buffers = new ArrayList<CodeletAccessible>();
 			

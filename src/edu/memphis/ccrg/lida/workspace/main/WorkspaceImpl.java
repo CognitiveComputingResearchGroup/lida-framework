@@ -1,13 +1,18 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
+import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
+import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemory;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
+import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
@@ -20,7 +25,11 @@ import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
  * @author ryanjmccall
  *
  */
-public class WorkspaceImpl implements Workspace{
+public class WorkspaceImpl implements Workspace, PAMListener, 
+									  TransientEpisodicMemoryListener, 
+									  DeclarativeMemoryListener,
+									  BroadcastListener, 
+									  ActionSelectionListener{
 	
 	//Workspace contains these components
 	private PerceptualBuffer perceptualBuffer;

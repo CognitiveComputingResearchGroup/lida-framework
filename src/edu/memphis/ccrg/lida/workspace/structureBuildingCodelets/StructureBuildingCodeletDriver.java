@@ -66,7 +66,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 		nodes.put(13L, pit);
 		
 		CodeletObjective objective = new CodeletObjective(nodes);
-		CodeletAction actions = new CodeletAction();		
+		CodeletAction actions = new TestCodeletAction();		
 		spawnNewCodelet(pBuffer, null, null, defaultCodeletActivation, objective, actions);
 		
 		int counter = 0;		
