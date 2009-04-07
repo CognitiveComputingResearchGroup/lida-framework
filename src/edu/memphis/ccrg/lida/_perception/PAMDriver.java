@@ -47,7 +47,6 @@ public class PAMDriver implements Runnable, Stoppable{
 	
 	private void sendContentToGui(){
 		if(testGui != null){
-			System.out.println("sdlfkjsd");
 	        List<Object> content = new ArrayList<Object>();
 	        content.add(pam.getNodeCount());
 	        content.add(pam.getLinkCount());
