@@ -3,9 +3,9 @@ package edu.memphis.ccrg.lida.proceduralMemory;
 
 import java.util.Set;
 
-import edu.memphis.ccrg.lida._domain.wumpusWorld.WorldApplication;
-import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
-import edu.memphis.ccrg.lida.actionSelection.BehaviorContentImpl;
+import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
+import edu.memphis.ccrg.lida.actionSelection.ActionContent;
+import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -43,13 +43,13 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			timer.checkForStartPause();
 			
 			Set<Node> nodes = getNodesFromBroadcast();		
-			BehaviorContent behaviorContent = getAppropriateBehavior(nodes);
+			ActionContent behaviorContent = getAppropriateBehavior(nodes);
 			environment.receiveBehaviorContent(behaviorContent);
 			
 		}//while		
 	}
 
-	private BehaviorContent getAppropriateBehavior(Set<Node> nodes) {
+	private ActionContent getAppropriateBehavior(Set<Node> nodes) {
 		int GO_FORWARD = 1;
 		int TURN_RIGHT = 2;
 		int TURN_LEFT = 3;
@@ -57,7 +57,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		int SHOOT = 5;
 		int NO_OP = 6;
 		
-		BehaviorContentImpl action = new BehaviorContentImpl(NO_OP);
+		ActionContentImpl action = new ActionContentImpl(NO_OP);
 		
 		System.out.print("Nodes in proc mem ");
 		for(Node n: nodes){

@@ -7,13 +7,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import edu.memphis.ccrg.lida.attention.AttentionListener;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of
@@ -25,7 +21,7 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationa
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, AttentionListener {
+public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	private Set<Coalition> coalitions = new HashSet<Coalition>();
 	private List<Trigger> triggers = new ArrayList<Trigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
