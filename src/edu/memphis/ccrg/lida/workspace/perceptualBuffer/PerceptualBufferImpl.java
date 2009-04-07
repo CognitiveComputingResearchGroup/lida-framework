@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida._perception.PAMContentImpl;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
@@ -27,6 +26,14 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 		perceptBuffer = new ArrayList<NodeStructure>();
 		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//public Workspace()
+
+	public void addTestGui(FrameworkGui testGui) {
+		this.testGui = testGui;		
+	}
+	
+	public void addPBufferListener(PerceptualBufferListener l){
+		pbListeners.add(l);
+	}
 	
 	public synchronized void receivePAMContent(PAMContent pc){
 		pamContent = pc;
@@ -42,10 +49,10 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 			perceptBuffer.remove(0);	
 	}//public void storePAMContent()
 	
-	public void addPBufferListener(PerceptualBufferListener l){
-		pbListeners.add(l);
-	}
-	
+	/**
+	 * Main method of the perceptual buffer.  Stores shared content 
+	 * and then sends it to the codelet driver.
+	 */
 	public void sendContent(){
 		storePAMContent();
 		
@@ -64,32 +71,22 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 			
 	}//sendContent
 
-	////O(BufferSize * PerceptSize * log(objectives.size()))
+	/**
+	 * for codelets to get Content from the buffer.  Eventually based on an objective.
+	 * Currently objective not used.
+	 */
 	public WorkspaceContent getCodeletsObjective(CodeletObjective objective) {
 		PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
 		
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){
-				Set<Node> nodes = struct.getNodes();
-				if(nodes != null){
-					
-					for(Node n: nodes){
-						//Node x = n;
-						if(n != null){
-							//System.out.println("giving to codelet " + n.getLabel());
-							content.addNode(n);
-						}
-					}
-				}//if nodes != null
-			}//for each struct
-		}
+				Set<Node> nodes = struct.getNodes();					
+				for(Node n: nodes)
+					content.addNode(n);				
+			}//for each struct in the buffer
+		}//synchronized
 		
 		return content;
-
 	}//getCodeletsObjective
-
-	public void addTestGui(FrameworkGui testGui) {
-		this.testGui = testGui;		
-	}
 
 }//PerceptualBuffer
