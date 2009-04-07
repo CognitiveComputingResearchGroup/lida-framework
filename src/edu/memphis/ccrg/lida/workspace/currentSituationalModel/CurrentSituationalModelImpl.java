@@ -12,7 +12,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	private NodeStructure struct;
 	
 	public CurrentSituationalModelImpl(){
-		struct = new GraphImpl(0.0, 0.0);
+		struct = new GraphImpl();
 	}
 	
 	public void addWorkspaceContent(WorkspaceContent content) {
@@ -22,10 +22,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 			}
 			
 			Set<Node> nodes = struct.getNodes();
-//			if(nodes != null)
-//				System.out.println("in csm there are nodes " + nodes.size());
 		}
-	}
+	}//method
 
 	public boolean hasContent(NodeStructure whatIwant) {
 		// TODO Auto-generated method stub

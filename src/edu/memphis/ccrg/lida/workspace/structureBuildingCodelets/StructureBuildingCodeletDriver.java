@@ -113,7 +113,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 		List<Object> guiContent = new ArrayList<Object>();			
 		guiContent.add(struct.getNodes().size());
 		guiContent.add(struct.getLinks().size());			
-		testGui.receiveGuiContent(FrameworkGui.SB_CODELETS, guiContent);
+		testGui.receiveGuiContent(FrameworkGui.FROM_SB_CODELETS, guiContent);
 	}//method
 
 	public void stopRunning(){

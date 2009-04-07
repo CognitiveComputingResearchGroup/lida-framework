@@ -59,7 +59,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 			List<Object> guiContent = new ArrayList<Object>();			
 			guiContent.add(tempGraph.getNodes().size());
 			guiContent.add(tempGraph.getLinks().size());			
-			testGui.receiveGuiContent(FrameworkGui.PERCEPTUAL_BUFFER, guiContent);
+			testGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
 		}
 			
 	}//sendContent

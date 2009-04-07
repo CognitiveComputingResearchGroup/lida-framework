@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
+import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;
@@ -85,7 +85,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	public void receiveBroadcast(BroadcastContent bc) {
 		prevBroads.receiveBroadcast(bc);		
 	}
-	public void receiveBehaviorContent(BehaviorContent c) {
+	public void receiveBehaviorContent(ActionContent c) {
 		// TODO: Implementing this is a long way off as of (3.30.09)		
 	}
 	
