@@ -19,7 +19,6 @@ import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -56,11 +55,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private PAMContent pamContent;//Not a shared variable
     private BroadcastContent broadcastContent;//Shared variables	
 	private WorkspaceContent workspaceContent;
-	private FrameworkGui testGui;
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new HashSet<FeatureDetector>();
-    	graph = new GraphImpl(upscale, selectivity);
+    	graph = new GraphImpl();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
@@ -86,19 +84,16 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		if ((o != null)&& (o instanceof Double)){
 			synchronized(this){
 				selectivity = (Double)o;   	
-				graph.setSelectivity((Double)o);
 			}
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
     public void addToPAM(Set<Node> nodesToAdd, Set<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
-    	graph.addNodes(nodesToAdd);
+    	graph.addNodes(nodesToAdd, upscale, selectivity);
     	graph.addLinkSet(linkSet);    	
-    	
     	//graph.printLinkMap();
     }//public void addToPAM(Set<Node> nodes, Set<Link> links)   
-       
     
     //INTERMODULE COMMUNICATION
     
@@ -134,7 +129,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//public void sense()
         
     /**
-     * 
+     * Pass activation upwards based on the order found in the layerMap
      */
     public void passActivation(){    	
     	Map<Integer, Set<Node>> layerMap = graph.createLayerMap();
@@ -164,9 +159,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * @see PamNodeImpl#synchronize()
      */
     private void syncNodeActivation(){
-        GraphImpl newGraph = new GraphImpl(upscale, selectivity);
+        GraphImpl newGraph = new GraphImpl();
         Set<Node> nodes = graph.getNodes();
-        Set<Link> links = graph.getLinks();
         int numNodes = 0;
         
         for(Node node: nodes){
@@ -181,12 +175,6 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
         newGraph.addLinkSet(graph.getLinks());        
         pamContent.setContent((NodeStructure)newGraph);
-        
-        //for GUI
-        List<Object> content = new ArrayList<Object>();
-        content.add(numNodes);
-        content.add(links.size());
-        testGui.receiveGuiContent(FrameworkGui.PERCEPT_IN_PAM, content);
     }//private void syncNodeActivation
     
     public void sendPercept(){
@@ -234,10 +222,6 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 
 	public int getLinkCount() {
 		return graph.getLinkCount();
-	}
-
-	public void addTestGui(FrameworkGui testGui) {
-		this.testGui = testGui;		
 	}
 
 }//class PAM.java

@@ -2,15 +2,15 @@ package edu.memphis.ccrg.lida.actionSelection;
 
 
 
-public class BehaviorContentImpl implements BehaviorContent{
+public class ActionContentImpl implements ActionContent{
 	
 	private Integer action = 0;
 
-	public BehaviorContentImpl(){
+	public ActionContentImpl(){
 		
 	}
 		
-	public BehaviorContentImpl(int i){
+	public ActionContentImpl(int i){
 		action = new Integer(i);		
 	}
 	

@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.actionSelection;
 
-public interface BehaviorContent {
+public interface ActionContent {
 
 	Object getContent();
 
