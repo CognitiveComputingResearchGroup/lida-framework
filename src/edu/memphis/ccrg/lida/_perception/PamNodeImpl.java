@@ -384,4 +384,11 @@ public class PamNodeImpl implements PamNode{
 		this.label = label;		
 	}
 
+	public void printSpatialLocations() {
+		for(SpatialLocation sl: locationsOfThisNode){
+			System.out.println(this.label + " at " + sl.getI() + " " + sl.getJ());
+		}
+		
+	}
+
 }//class Node
