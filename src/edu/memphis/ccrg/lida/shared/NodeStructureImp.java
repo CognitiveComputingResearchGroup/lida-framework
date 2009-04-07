@@ -74,8 +74,8 @@ public class NodeStructureImp implements NodeStructure {
 			linkMap.put(source, tempLinks);
 		}
 		
-		Link newLink = factory.
-		tempLinks.add(l);
+	//	Link newLink = factory.
+	//	tempLinks.add(l);
 
 		tempLinks = linkMap.get(sink);
 		if (tempLinks == null) {
@@ -83,7 +83,7 @@ public class NodeStructureImp implements NodeStructure {
 			linkMap.put(sink, tempLinks);
 		}
 		
-		linkMap.put()
+	//	linkMap.put()
 		linkCount++;
 		return result;
 	}
@@ -112,7 +112,7 @@ public class NodeStructureImp implements NodeStructure {
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
-	public void addNodes(Set<Node> nodesToAdd) {
+	public void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity) {
 		for (Node n : nodesToAdd) {
 			addNode(n);
 			// refresh();

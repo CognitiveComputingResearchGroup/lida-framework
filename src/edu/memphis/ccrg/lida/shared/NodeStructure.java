@@ -21,7 +21,7 @@ public interface NodeStructure extends BroadcastContent {
 
 	public abstract boolean addNode(Node n);
 
-	public abstract void addNodes(Set<Node> nodesToAdd);
+	public abstract void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity);
 
 	public NodeStructure copy();
 
