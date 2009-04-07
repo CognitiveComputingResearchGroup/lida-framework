@@ -1,12 +1,12 @@
-package edu.memphis.ccrg.lida._domain.wumpusWorld;
+package edu.memphis.ccrg.lida._environment.wumpusWorld;
 
 
 
 import java.util.Random;
 
-import edu.memphis.ccrg.lida._domain.wumpusWorld.Simulation;
-import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
-import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
+import edu.memphis.ccrg.lida._environment.main.SimulationListener;
+import edu.memphis.ccrg.lida._environment.wumpusWorld.Simulation;
+import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
@@ -39,7 +39,7 @@ public class WorldApplication implements Runnable, Stoppable, ActionSelectionLis
 	}
 	
 
-	public void receiveBehaviorContent(BehaviorContent c) {
+	public void receiveBehaviorContent(ActionContent c) {
 		trial.receiveBehaviorContent(c);		
 	}
 	

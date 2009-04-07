@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida._domain.wumpusWorld;
+package edu.memphis.ccrg.lida._environment.wumpusWorld;
 
 
 import java.util.ArrayList;
@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
-import edu.memphis.ccrg.lida._domain.wumpusWorld.Action;
-import edu.memphis.ccrg.lida._sensoryMemory.SimulationContentImpl;
-import edu.memphis.ccrg.lida._sensoryMemory.SimulationListener;
-import edu.memphis.ccrg.lida.actionSelection.BehaviorContent;
+import edu.memphis.ccrg.lida._environment.main.SimulationContentImpl;
+import edu.memphis.ccrg.lida._environment.main.SimulationListener;
+import edu.memphis.ccrg.lida._environment.wumpusWorld.Action;
+import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 
 public class Simulation{
 	//My Addition
@@ -33,7 +33,7 @@ public class Simulation{
 	private ArrayList<SimulationListener> listeners = new ArrayList<SimulationListener>();
 	//for actions received
 	private boolean actionHasChanged = false;
-	private BehaviorContent currentBehavior = null;
+	private ActionContent currentBehavior = null;
 	private int lastAction = 0;	
 	//for thread control
 	private boolean keepRunning = true;	
@@ -59,7 +59,7 @@ public class Simulation{
 		listeners.add(listener);
 	}
 	
-	public synchronized void receiveBehaviorContent(BehaviorContent action){
+	public synchronized void receiveBehaviorContent(ActionContent action){
 		currentBehavior = action;		
 		actionHasChanged = true;
 	}	
