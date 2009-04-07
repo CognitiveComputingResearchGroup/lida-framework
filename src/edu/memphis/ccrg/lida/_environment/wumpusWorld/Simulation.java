@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida._actionSelection.ActionContent;
 import edu.memphis.ccrg.lida._environment.main.SimulationContentImpl;
 import edu.memphis.ccrg.lida._environment.main.SimulationListener;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.Action;
-import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 
 public class Simulation{
 	//My Addition

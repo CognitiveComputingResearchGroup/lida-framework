@@ -1,10 +1,10 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
+import edu.memphis.ccrg.lida._actionSelection.ActionContent;
+import edu.memphis.ccrg.lida._actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
 import edu.memphis.ccrg.lida._perception.interfaces.PAMListener;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;

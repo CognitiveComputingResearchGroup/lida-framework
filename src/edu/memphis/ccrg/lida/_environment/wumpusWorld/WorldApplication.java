@@ -4,10 +4,10 @@ package edu.memphis.ccrg.lida._environment.wumpusWorld;
 
 import java.util.Random;
 
+import edu.memphis.ccrg.lida._actionSelection.ActionContent;
+import edu.memphis.ccrg.lida._actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida._environment.main.SimulationListener;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.Simulation;
-import edu.memphis.ccrg.lida.actionSelection.ActionContent;
-import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
