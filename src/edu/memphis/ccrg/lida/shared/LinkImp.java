@@ -1,12 +1,8 @@
-package edu.memphis.ccrg.lida._perception;
+package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida._perception.LinkImpl;
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkType;
-import edu.memphis.ccrg.lida.shared.Linkable;
-import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.LinkImp;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
@@ -15,7 +11,7 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  *
  * @author Ryan McCall
  */
-public class LinkImpl implements Link, Node{
+public class LinkImp implements Link, Node{
     
     private Linkable sink;    
     private Linkable source;    
@@ -26,14 +22,14 @@ public class LinkImpl implements Link, Node{
 	private final double MIN_ACTIVATION = 0.0;
 	private final double MAX_ACTIVATION = 1.0;
     
-    public LinkImpl(Linkable source, Linkable sink, LinkType type, long id){        
+    public LinkImp(Linkable source, Linkable sink, LinkType type, long id){        
         this.source = source;
         this.sink = sink;   
         this.type = type;
         linkID = id;
     }
     
-    public LinkImpl(LinkImpl l){
+    public LinkImp(LinkImp l){
     	sink = l.sink;
     	source = l.source;
     	type = l.type;
@@ -41,10 +37,10 @@ public class LinkImpl implements Link, Node{
     }
 
 	public boolean equals(Object obj){
-		if(!(obj instanceof LinkImpl)){
+		if(!(obj instanceof LinkImp)){
 			return false;    	
     	}    	
-    	LinkImpl other = (LinkImpl)obj;
+    	LinkImp other = (LinkImp)obj;
 		return (linkID == other.linkID) && (type == other.type);
 	}
     
@@ -56,8 +52,8 @@ public class LinkImpl implements Link, Node{
     }
 
     
-    public LinkImpl copy(LinkImpl l){
-    	return new LinkImpl(l);
+    public LinkImp copy(LinkImp l){
+    	return new LinkImp(l);
     }
    
     public Linkable getSource() {
