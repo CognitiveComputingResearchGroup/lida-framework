@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkImp;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -71,9 +71,9 @@ public class GraphImpl implements NodeStructure{
 			Set<Linkable> oldKeys = oldLinkMap.keySet();
 			if(oldKeys != null){
 				for(Linkable l: oldKeys){
-					if(l instanceof LinkImp){
-						LinkImp castLink = (LinkImp)l;
-						this.linkMap.put(new LinkImp(castLink), new HashSet<Link>());
+					if(l instanceof LinkImpl){
+						LinkImpl castLink = (LinkImpl)l;
+						this.linkMap.put(new LinkImpl(castLink), new HashSet<Link>());
 					}else if(l instanceof PamNodeImpl){
 						PamNodeImpl castNode = (PamNodeImpl)l;
 						this.linkMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
@@ -154,7 +154,7 @@ public class GraphImpl implements NodeStructure{
 	}//method
 	
 	public void addChild(PamNodeImpl child, PamNodeImpl parent){	
-		LinkImp l = new LinkImp(child, parent, LinkType.child, (int)(99999*Math.random()));
+		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
@@ -172,7 +172,7 @@ public class GraphImpl implements NodeStructure{
 	}//addChild
 	
 	public void addParent(Node parent, Node child){
-		LinkImp l = new LinkImp(child, parent, LinkType.child, (int)(99999*Math.random()));
+		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
 		
 		if(linkMap.get(child).add(l))
 			linkCount++;
@@ -359,7 +359,7 @@ public class GraphImpl implements NodeStructure{
 					otherLinks.remove(l);
 			}						
 		}//for all of the links connected to n		
-		if(linkMap.remove(n) != null && n instanceof LinkImp)//finally remove the linkable and its links
+		if(linkMap.remove(n) != null && n instanceof LinkImpl)//finally remove the linkable and its links
 			linkCount--;
 	}//method
 

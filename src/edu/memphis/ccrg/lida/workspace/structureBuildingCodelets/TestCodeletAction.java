@@ -4,7 +4,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
-import edu.memphis.ccrg.lida.shared.LinkImp;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -22,7 +22,7 @@ public class TestCodeletAction implements CodeletAction{
 				PamNodeImpl temp = (PamNodeImpl)n;
 				Set<SpatialLocation> locs = temp.getLocations();
 				for(SpatialLocation sl: locs){
-					LinkImp newLink = new LinkImp(temp, sl, LinkType.child, linkCount++);
+					LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
 					calcRelationType(newLink, sl);
 					struct.addLink(newLink);
 				}//for
@@ -32,7 +32,7 @@ public class TestCodeletAction implements CodeletAction{
 		return content;
 	}//method
 
-	private void calcRelationType(LinkImp newLink, SpatialLocation sl) {
+	private void calcRelationType(LinkImpl newLink, SpatialLocation sl) {
 		String label = "";
 		int i = sl.getI();
 		int j = sl.getJ();		
