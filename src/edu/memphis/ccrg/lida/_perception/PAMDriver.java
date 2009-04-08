@@ -35,7 +35,8 @@ public class PAMDriver implements Runnable, Stoppable{
 			pam.passActivation();//Pass activation	
 			pam.sendPercept(); //Send the percept to p-Workspace
 			pam.decay();  //Decay the activations	
-	        sendContentToGui();
+			if(testGui != null)
+		        testGui.receiveGuiContent(FrameworkGui.FROM_PAM, pam.getGuiContent());
 
 			counter++;
 		}//while keepRunning
@@ -45,15 +46,6 @@ public class PAMDriver implements Runnable, Stoppable{
 		System.out.println("PAM: Num. cycles: " + counter + "\n");	
 	}//method run
 	
-	private void sendContentToGui(){
-		if(testGui != null){
-	        List<Object> content = new ArrayList<Object>();
-	        content.add(pam.getNodeCount());
-	        content.add(pam.getLinkCount());
-	        testGui.receiveGuiContent(FrameworkGui.FROM_PAM, content);
-		}
-	}//method
-
 	public void stopRunning(){
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		

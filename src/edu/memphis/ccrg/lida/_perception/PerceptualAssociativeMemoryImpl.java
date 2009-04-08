@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -55,6 +56,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private PAMContent pamContent;//Not a shared variable
     private BroadcastContent broadcastContent;//Shared variables	
 	private WorkspaceContent workspaceContent;
+	private int numNodeInPercept = 0;//for GUI
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new HashSet<FeatureDetector>();
@@ -171,7 +173,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
             	numNodes++;
             }//if relevant
         }//for      
-
+        numNodeInPercept = newGraph.getNodes().size();
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
         newGraph.addLinkSet(graph.getLinks());        
         pamContent.setContent((NodeStructure)newGraph);
@@ -222,6 +224,13 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 
 	public int getLinkCount() {
 		return graph.getLinkCount();
+	}
+
+	public List<Object> getGuiContent() {
+		List<Object> content = new ArrayList<Object>();
+		content.add(numNodeInPercept);
+		content.add(getLinkCount());
+		return content;
 	}
 
 }//class PAM.java
