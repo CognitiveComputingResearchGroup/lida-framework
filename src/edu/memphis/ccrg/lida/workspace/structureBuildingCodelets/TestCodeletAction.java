@@ -1,9 +1,10 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.Set;
+
+import edu.memphis.ccrg.lida._perception.LinkImpl;
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
-import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
