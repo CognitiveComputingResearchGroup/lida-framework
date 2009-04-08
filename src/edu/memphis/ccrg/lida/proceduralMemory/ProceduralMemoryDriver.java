@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
@@ -9,6 +10,8 @@ import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -19,7 +22,6 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener, CSMListener{
 
 	//FIELDS
-	
 	private FrameworkTimer timer;
 	private WorldApplication environment;
 	//
@@ -41,28 +43,34 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		while(keepRunning){
 			try{Thread.sleep(23 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
-			
-			Set<Node> nodes = getCSMContent();//getNodesFromBroadcast();		
-			ActionContent behaviorContent = getAppropriateBehavior(nodes);
+			//
+			ActionContent behaviorContent = getAppropriateBehavior();
 			environment.receiveBehaviorContent(behaviorContent);
 		}//while		
-	}//method
-
-	private Set<Node> getCSMContent(){
-		Set<Node> nodes = new HashSet<Node>();
-		NodeStructure struct;
-		synchronized(this){
-			struct = (NodeStructure)wkspContent;
-		}
-		nodes = struct.getNodes();
-		return nodes;
 	}//method
 	
 	public synchronized void receiveCSMContent(WorkspaceContent content) {
 		wkspContent = content;		
 	}//method
 
-	private ActionContent getAppropriateBehavior(Set<Node> nodes) {
+	private ActionContent getAppropriateBehavior() {
+		NodeStructure struct;
+		synchronized(this){
+			struct = (NodeStructure)wkspContent;
+		}
+		GraphImpl g = (GraphImpl)struct;
+		Set<Node> nodes = g.getNodes();
+		Set<Link> links = g.getLinks();
+		
+		for(Node n: nodes)
+			System.out.println(n.getLabel());
+		
+		System.out.println();
+		for(Link l: links){
+			System.out.println(l.toString());
+		}
+		System.out.println();	
+
 		int GO_FORWARD = 1;
 		int TURN_RIGHT = 2;
 		int TURN_LEFT = 3;
@@ -70,25 +78,26 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		int SHOOT = 5;
 		int NO_OP = 6;
 		
+		int GOLD_ID = 12;
+		int PIT_ID = 13;
+		int WUMPUS_ID = 14;
+		int AGENT_ID = 15;
+		
 		ActionContentImpl action = new ActionContentImpl(NO_OP);
-		
-		System.out.print("Nodes in proc mem ");
+
 		for(Node n: nodes){
-			System.out.print(n.getLabel() + " ");
-			if(n.getId() == 13){
-				action.setContent(TURN_LEFT);
-				return action;
+			long nodeID = n.getId();
+
+			if(nodeID == GOLD_ID){ //
+				action.setContent(GRAB);
+			}else if(nodeID == PIT_ID){
+				action.setContent(GO_FORWARD);
+			}else if(nodeID == WUMPUS_ID){
+				action.setContent(TURN_RIGHT);
 			}
-		}
-		System.out.println();
-		
-		//TODO: lookup table
-//		if(nodes.contains()){
-//			action.setContent(1);
-//		}
-		
+		}//for		
 		return action;
-	}
+	}//method
 
 	private Set<Node> getNodesFromBroadcast() {
 		NodeStructure consciousContents;

@@ -48,6 +48,7 @@ public class CSMDriver implements Runnable, Stoppable{
 	        content.add(links.size());
 	        testGui.receiveGuiContent(FrameworkGui.FROM_CSM, content);
 
+	        csm.sendCSMContent();
 			
 			//CoalitionImpl coalition = new CoalitionImpl(content);
 			//BroadcastContentImpl content = new BroadcastContentImpl(struct);

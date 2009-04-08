@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
+import java.util.HashSet;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
@@ -20,18 +20,21 @@ public class TestCodeletAction implements CodeletAction{
 		for(Node n: nodes){
 			if(n instanceof PamNodeImpl){
 				PamNodeImpl temp = (PamNodeImpl)n;
-				Set<SpatialLocation> locs = temp.getLocations();
+				Set<SpatialLocation> originalLocs = temp.getLocations();
+				Set<SpatialLocation> copiedLocs = new HashSet<SpatialLocation>();
 				synchronized(this){
-					for(SpatialLocation sl: locs){
-//TODO:Figure out why there was a Concurrent Modfication exception here.
-						LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
-						calcRelationType(newLink, sl);
-						struct.addLink(newLink);
-					}//for
+					for(SpatialLocation oldSL: originalLocs)
+						copiedLocs.add(new SpatialLocation(oldSL));
 				}
+				
+				for(SpatialLocation sl: copiedLocs){
+					LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
+					calcRelationType(newLink, sl);
+					struct.addLink(newLink);
+				}//for
+				
 			}//if
 		}//for			
-
 		return content;
 	}//method
 

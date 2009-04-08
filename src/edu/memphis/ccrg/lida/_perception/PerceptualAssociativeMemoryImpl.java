@@ -19,7 +19,6 @@ import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida._perception.interfaces.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida._sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;

@@ -23,9 +23,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	}
 	
 	public void sendCSMContent(){
-		for(CSMListener l: csmListeners){
+		for(CSMListener l: csmListeners)
 			l.receiveCSMContent(struct);
-		}
 	}//method
 	
 	public void addWorkspaceContent(WorkspaceContent content) {

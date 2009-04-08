@@ -9,12 +9,19 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 public class SpatialLocation implements Node{
 	private int iLocation = 0;
 	private int jLocation = 0;
+	private String label = "spatial_location";
 
 	public SpatialLocation(int i, int j) {
 		iLocation = i;
 		jLocation = j;
 	}
 	
+	public SpatialLocation(SpatialLocation oldSL) {
+		this.iLocation = oldSL.iLocation;
+		this.jLocation = oldSL.jLocation;
+		label = oldSL.label;
+	}
+
 	public boolean equals(Object obj){
 		if(!(obj instanceof SpatialLocation))
 			return false;
@@ -85,8 +92,7 @@ public class SpatialLocation implements Node{
 	}
 
 	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return label;
 	}
 
 	public Node getReferencedNode() {

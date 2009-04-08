@@ -66,16 +66,13 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	
 	private void checkAndWorkOnBuffer(CodeletAccessible buffer) {
 		WorkspaceContent bufferContent = buffer.getCodeletsObjective(objective);
-		
 		if(bufferContent != null){
-
 			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
 			csm.addWorkspaceContent(updatedContent);
 		}else{
 			System.out.println("codelet is getting null buffer content");
 		}
-		
-	}
+	}//checkAndWorkOnBuffer
 
 	public void setActivation(double a){
 		activation = a;
