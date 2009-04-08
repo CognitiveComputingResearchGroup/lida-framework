@@ -29,7 +29,7 @@ public class TestCodeletAction implements CodeletAction{
 				
 				for(SpatialLocation sl: copiedLocs){
 					LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
-					calcRelationType(newLink, sl);
+					newLink.setLabel(calcRelationType(sl));
 					struct.addLink(newLink);
 				}//for
 				
@@ -38,7 +38,7 @@ public class TestCodeletAction implements CodeletAction{
 		return content;
 	}//method
 
-	private void calcRelationType(LinkImpl newLink, SpatialLocation sl) {
+	private String calcRelationType(SpatialLocation sl) {
 		String label = "";
 		int i = sl.getI();
 		int j = sl.getJ();		
@@ -54,7 +54,7 @@ public class TestCodeletAction implements CodeletAction{
 		else if(j == 2)
 			label += "Below";
 		
-		newLink.setLabel(label);		
+		return label;		
 	}//method
 
 }//class

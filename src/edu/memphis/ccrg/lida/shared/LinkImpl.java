@@ -16,6 +16,7 @@ public class LinkImpl implements Link, Node{
     private Linkable sink;    
     private Linkable source;    
     private long linkID;
+    private String label = "linkImpl";
     
     private LinkType type; 
 	private double activation = 0.0;
@@ -34,6 +35,7 @@ public class LinkImpl implements Link, Node{
     	source = l.source;
     	type = l.type;
     	linkID = l.linkID;
+    	label = l.label;
     }
 
 	public boolean equals(Object obj){
@@ -198,8 +200,7 @@ public class LinkImpl implements Link, Node{
 	}
 
 	public void setLabel(String label) {
-		// TODO Auto-generated method stub
-		
+		this.label = label;
 	}
 
 	public void decay(DecayBehavior decayBehavior) {
@@ -218,7 +219,7 @@ public class LinkImpl implements Link, Node{
 	}
 	
 	public String toString(){
-		String s = "Source: ";
+		String s = label + " Source: ";
 		s += source.getLabel();	
 		s += ". Sink: ";
 		s += sink.getLabel();	
