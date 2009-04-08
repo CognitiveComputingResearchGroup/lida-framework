@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida._perception.interfaces.PamNode;
 import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
