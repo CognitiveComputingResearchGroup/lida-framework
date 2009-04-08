@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
+import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -67,7 +68,8 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		
 		System.out.println();
 		for(Link l: links){
-			System.out.println(l.toString());
+			SpatialLocation temp = (SpatialLocation)l.getSink();
+			System.out.println(l.toString() + " " + temp.getI() + " " + temp.getJ());
 		}
 		System.out.println();	
 
