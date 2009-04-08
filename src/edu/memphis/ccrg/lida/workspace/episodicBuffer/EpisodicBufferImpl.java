@@ -7,7 +7,7 @@ import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletContext;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
 
@@ -23,7 +23,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
 		listeners.add(listener);		
 	}
 
-	public WorkspaceContent getCodeletsObjective(CodeletContext objective) {
+	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

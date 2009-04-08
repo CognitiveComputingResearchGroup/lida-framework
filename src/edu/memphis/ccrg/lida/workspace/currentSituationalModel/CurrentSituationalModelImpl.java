@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida._perception.GraphImpl;
@@ -10,10 +12,21 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
 	private NodeStructure struct;
+	private List<CSMListener> csmListeners = new ArrayList<CSMListener>();
 	
 	public CurrentSituationalModelImpl(){
 		struct = new GraphImpl();
 	}
+	
+	public void addCSMListener(CSMListener l){
+		csmListeners.add(l);
+	}
+	
+	public void sendCSMContent(){
+		for(CSMListener l: csmListeners){
+			l.receiveCSMContent(struct);
+		}
+	}//method
 	
 	public void addWorkspaceContent(WorkspaceContent content) {
 		if(content != null){
@@ -34,4 +47,4 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 		return struct;
 	}
 
-}
+}//class

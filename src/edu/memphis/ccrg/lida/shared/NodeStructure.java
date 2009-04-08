@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.shared;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  * A NodeStructure holds a collection of Nodes an Links. An implementation of this interface
@@ -13,7 +14,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
  * @author Javier Snaider
  *
  */
-public interface NodeStructure extends BroadcastContent {
+public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract boolean addLink(Link l);
 

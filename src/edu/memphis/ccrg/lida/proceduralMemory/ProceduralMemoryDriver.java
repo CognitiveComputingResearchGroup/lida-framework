@@ -1,23 +1,22 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
-
+import java.util.HashSet;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
+import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
-public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener{
+public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener, CSMListener{
 
 	//FIELDS
 	
@@ -29,6 +28,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	//
 	//private BroadcastContent broadcastContent = new BroadcastContentImpl();
 	private BroadcastContent broadcastContent = null;
+	private WorkspaceContent wkspContent = new GraphImpl();
 	private FrameworkGui testGui;
 		
 	public ProceduralMemoryDriver(FrameworkTimer timer,
@@ -42,12 +42,25 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			try{Thread.sleep(23 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 			
-			Set<Node> nodes = getNodesFromBroadcast();		
+			Set<Node> nodes = getCSMContent();//getNodesFromBroadcast();		
 			ActionContent behaviorContent = getAppropriateBehavior(nodes);
 			environment.receiveBehaviorContent(behaviorContent);
-			
 		}//while		
-	}
+	}//method
+
+	private Set<Node> getCSMContent(){
+		Set<Node> nodes = new HashSet<Node>();
+		NodeStructure struct;
+		synchronized(this){
+			struct = (NodeStructure)wkspContent;
+		}
+		nodes = struct.getNodes();
+		return nodes;
+	}//method
+	
+	public synchronized void receiveCSMContent(WorkspaceContent content) {
+		wkspContent = content;		
+	}//method
 
 	private ActionContent getAppropriateBehavior(Set<Node> nodes) {
 		int GO_FORWARD = 1;
@@ -105,5 +118,4 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	public void addTestGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
 	}
-
 }

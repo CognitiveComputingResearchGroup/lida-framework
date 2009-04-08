@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletContext;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class PreviousBroadcastsImpl implements Runnable, Stoppable, 
 									PreviousBroadcasts, CodeletAccessible{
@@ -36,7 +36,7 @@ public class PreviousBroadcastsImpl implements Runnable, Stoppable,
 		
 	}
 
-	public WorkspaceContent getCodeletsObjective(CodeletContext objective) {
+	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

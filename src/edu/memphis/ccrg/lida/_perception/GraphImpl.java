@@ -517,4 +517,9 @@ public class GraphImpl implements NodeStructure{
 		}
 	}//method
 
+	public Object getContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }//class

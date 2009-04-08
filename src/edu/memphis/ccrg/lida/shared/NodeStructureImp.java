@@ -229,5 +229,10 @@ public class NodeStructureImp implements NodeStructure {
 		return nodes;
 	}
 
+	public Object getContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
