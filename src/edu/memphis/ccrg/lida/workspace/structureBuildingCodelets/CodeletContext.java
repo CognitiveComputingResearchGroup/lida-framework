@@ -4,11 +4,11 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.Node;
 
-public class CodeletObjective {
+public class CodeletContext {
 	
 	Map<Long, Node> nodeObjectives;
 	
-	public CodeletObjective(Map<Long, Node> nodeObjs){
+	public CodeletContext(Map<Long, Node> nodeObjs){
 		nodeObjectives = nodeObjs;
 	}
 

@@ -4,6 +4,6 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public interface CodeletAccessible {
 
-	WorkspaceContent getCodeletsObjective(CodeletObjective objective);
+	WorkspaceContent getCodeletsObjective(CodeletContext objective);
 
 }

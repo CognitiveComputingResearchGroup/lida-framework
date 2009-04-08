@@ -21,11 +21,14 @@ public class TestCodeletAction implements CodeletAction{
 			if(n instanceof PamNodeImpl){
 				PamNodeImpl temp = (PamNodeImpl)n;
 				Set<SpatialLocation> locs = temp.getLocations();
-				for(SpatialLocation sl: locs){
-					LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
-					calcRelationType(newLink, sl);
-					struct.addLink(newLink);
-				}//for
+				synchronized(this){
+					for(SpatialLocation sl: locs){
+//TODO:Figure out why there was a Concurrent Modfication exception here.
+						LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
+						calcRelationType(newLink, sl);
+						struct.addLink(newLink);
+					}//for
+				}
 			}//if
 		}//for			
 

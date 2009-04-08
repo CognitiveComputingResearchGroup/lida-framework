@@ -65,7 +65,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 		PamNodeImpl pit = new PamNodeImpl(13, 0.0, 0.0, "pit", 0);
 		nodes.put(13L, pit);
 		
-		CodeletObjective objective = new CodeletObjective(nodes);
+		CodeletContext objective = new CodeletContext(nodes);
 		CodeletAction actions = new TestCodeletAction();		
 		spawnNewCodelet(pBuffer, null, null, defaultCodeletActivation, objective, actions);
 		
@@ -87,7 +87,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 	}//public void run()
 
 	private void spawnNewCodelet(PerceptualBufferImpl pBuffer, EpisodicBuffer eBuffer, PreviousBroadcasts pBroads,
-								 double startingActivation, CodeletObjective context, CodeletAction actions) {
+								 double startingActivation, CodeletContext context, CodeletAction actions) {
 		StructureBuildingCodeletImpl newCodelet = new StructureBuildingCodeletImpl(timer, pBuffer, null, null, csm, 
 					  							  defaultCodeletActivation, context, actions);
 		long threadNumber = codeletThreads.size() + 1;

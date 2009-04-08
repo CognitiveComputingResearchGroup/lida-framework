@@ -22,13 +22,13 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	private PreviousBroadcastsImpl pBroads = null;
 	//
 	private double activation = 1.0;
-	private CodeletObjective objective = null;
+	private CodeletContext objective = null;
 	private CodeletAction action = new TestCodeletAction();
 	
 	private List<CodeletAccessible> buffers = new ArrayList<CodeletAccessible>();
 			
 	public StructureBuildingCodeletImpl(FrameworkTimer t, PerceptualBufferImpl buffer, EpisodicBufferImpl eBuffer, 
-					PreviousBroadcastsImpl pBroads, CurrentSituationalModelImpl csm, double activation, CodeletObjective obj, CodeletAction a){
+					PreviousBroadcastsImpl pBroads, CurrentSituationalModelImpl csm, double activation, CodeletContext obj, CodeletAction a){
 		
 		if(buffer == null && eBuffer == null && pBroads == null){
 			try {
@@ -80,7 +80,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	public void setActivation(double a){
 		activation = a;
 	}
-	public void setContext(CodeletObjective obj){
+	public void setContext(CodeletContext obj){
 		objective = obj;
 	}
 	public void setCodeletAction(CodeletAction a){
@@ -89,7 +89,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	public double getActivation(){
 		return activation;
 	}
-	public CodeletObjective getObjective(){
+	public CodeletContext getObjective(){
 		return objective;
 	}
 	public CodeletAction getCodeletAction(){

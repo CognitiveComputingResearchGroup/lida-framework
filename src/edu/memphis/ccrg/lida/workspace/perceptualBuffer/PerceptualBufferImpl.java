@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletObjective;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletContext;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible{
 	
@@ -75,7 +75,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 	 * for codelets to get Content from the buffer.  Eventually based on an objective.
 	 * Currently objective not used.
 	 */
-	public WorkspaceContent getCodeletsObjective(CodeletObjective objective) {
+	public WorkspaceContent getCodeletsObjective(CodeletContext objective) {
 		PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
 		
 		synchronized(this){
