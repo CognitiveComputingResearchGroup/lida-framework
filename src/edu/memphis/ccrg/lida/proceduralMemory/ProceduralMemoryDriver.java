@@ -3,9 +3,9 @@ package edu.memphis.ccrg.lida.proceduralMemory;
 
 import java.util.Set;
 
-import edu.memphis.ccrg.lida._actionSelection.ActionContent;
-import edu.memphis.ccrg.lida._actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
+import edu.memphis.ccrg.lida.actionSelection.ActionContent;
+import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
