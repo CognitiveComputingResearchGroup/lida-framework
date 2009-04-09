@@ -389,6 +389,14 @@ public class GraphImpl implements NodeStructure{
     public Set<Node> getNodes(){    	    	
     	return nodes;
     }
+    
+    public Map<Long, Node> getNodeMap(){
+    	Map<Long, Node> nodeMap = new HashMap<Long, Node>();
+    	
+    	for(Node n: nodes)  //TODO: put the nodes in a map as soon as they are added to the GRAPH
+    		nodeMap.put(n.getId(), n);    	
+    	return nodeMap;
+    }//method
 
 	/**
 	 * Go through the linkables in linkmap

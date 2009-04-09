@@ -25,7 +25,7 @@ class Agent {
 	
 	private int[] location;
 	private char direction;
-	private char agentIcon;
+	private char agentIcon = 'V';
 	
 	private int numArrows = 1;
 	private int worldSize;

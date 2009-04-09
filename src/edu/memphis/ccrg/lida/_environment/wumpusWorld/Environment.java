@@ -16,6 +16,9 @@ class Environment {
 	private boolean bump;
 	private boolean scream;
 	
+	private final char empty = '0';
+	private final char outOfBounds = 'X';
+	
 	public Environment(int size, char[][][] world) { //, BufferedWriter outWriter) {
 	
 		worldSize = size;
@@ -422,57 +425,12 @@ class Environment {
 
 	
 	public char[][][] getCurrentSense(char[][][] currentSense) {
-		int leftWindowBound = 0;
-		int rightWindowBound = 0;
-		int topWindowBound = 0;
-		int bottomWindowBound = 0;
-		
-		int agentInWindowX = 0;
-		int agentInWindowY = 0;
 		
 		int[] agentLoc = agent.getLocation();
-		int agentx = agentLoc[1];
-		int agenty = agentLoc[0];		
+		int agentX = agentLoc[1];
+		int agentY = agentLoc[0];		
 		char loc = agent.getAgentIcon();
-		if(loc == 'A'){
-			leftWindowBound = agentx - 1;
-			rightWindowBound = agentx + 1;
-			topWindowBound = agenty - 2;
-			bottomWindowBound = agenty;
-			//
-			agentInWindowX = 1;
-			agentInWindowY = 2;			
-		}else if(loc == 'V'){
-			leftWindowBound = agentx - 1;
-			rightWindowBound = agentx + 1;
-			topWindowBound = agenty;
-			bottomWindowBound = agenty + 2;
-			//
-			agentInWindowX = 1;
-			agentInWindowY = 0;
-		}else if(loc == '<'){
-			leftWindowBound = agentx - 2;
-			rightWindowBound = agentx;
-			topWindowBound = agenty - 1;
-			bottomWindowBound = agenty + 1;
-			//
-			agentInWindowX = 2;
-			agentInWindowY = 1;
-		}else if(loc == '>'){
-			leftWindowBound = agentx;
-			rightWindowBound = agentx + 2;
-			topWindowBound = agenty - 1;
-			bottomWindowBound = agenty + 1;
-			//
-			agentInWindowX = 0;
-			agentInWindowY = 1;
-		}
-		
-		char empty = '0';
-		char outOfBounds = 'X';
-		
-		//System.out.println("Agent @ i: " + agentx + " j: " + agenty);
-		
+			
 		//First fill up the currentSense as 'empty'
 		for(int i = 0; i < currentSense.length; i++){
 			for(int j = 0; j < currentSense[0].length; j++){
@@ -481,73 +439,80 @@ class Environment {
 			}
 		}
 		
-		int WINDOW_SIZE = 0;
-		for(int i = 0; i < WINDOW_SIZE; i++){
-			for(int j = 0; j < WINDOW_SIZE; j++){
-				
-			}			
+		//Mark out of bounds regions of the visual field.		
+		if(agentX == 0){ //if agent is at the left boundary
+			if(loc != '>')
+				killColumn(0, currentSense);			
+			if(loc == '<')
+				killColumn(1, currentSense);	
+
+		}else if(agentX == worldSize - 1){ //if agent is at the right boundary
+			if(loc != '<')
+				killColumn(2, currentSense);
+			if(loc == '>')
+				killColumn(1, currentSense);
 		}
 		
-		
-		
-		
-		//figure out where out of bounds is		
-		if(agentx == 0){ //if agent is at the left boundary
-			for(int k = 0; k < currentSense[0][0].length; k++){ //Knock out left column
-				currentSense[0][0][k] = outOfBounds;
-				currentSense[1][0][k] = outOfBounds;
-				currentSense[2][0][k] = outOfBounds;
-			}
-		}else if(agentx == worldSize - 1){ //if agent is at the right boundary
-			for(int k = 0; k < currentSense[0][0].length; k++){ //Knock out right column
-				currentSense[0][2][k] = outOfBounds;
-				currentSense[1][2][k] = outOfBounds;
-				currentSense[2][2][k] = outOfBounds;
-			}			
+		if(agentY == 0){ //if agent is at the top boundary
+			if(loc != 'V')
+				killRow(0, currentSense);
+			if(loc == 'A')
+				killRow(1, currentSense);
 		}
-		
-		if(agenty == 0){ //if agent is at the top boundary
-			for(int k = 0; k < currentSense[0][0].length; k++){ //Knock out top row
-				currentSense[0][0][k] = outOfBounds;
-				currentSense[0][1][k] = outOfBounds;
-				currentSense[0][2][k] = outOfBounds;
-			}
-		}
-		if(agenty == worldSize - 1){
-			for(int k = 0; k < currentSense[0][0].length; k++){ //Knock out bottom row
-				currentSense[2][0][k] = outOfBounds;
-				currentSense[2][1][k] = outOfBounds;
-				currentSense[2][2][k] = outOfBounds;
-			}
+		if(agentY == worldSize - 1){//if agent at bottom boundary
+			if(loc != 'A')
+				killRow(2, currentSense);
+			if(loc == 'V')
+				killRow(1, currentSense);
 		}	
 		
-		for(int i = 0; i < currentSense.length; i++){
-			for(int j = 0; j < currentSense[0].length; j++){
-				
-				if(currentSense[i][j][1] != outOfBounds){ //if the place is not out of bounds
-					//Figure out which cell of wumpus world you want to put in currenSense
-					//this is based on the agent's location
-					int xOffset = 0;
-					int yOffset = 0;					
-					if(i == 0)
-						yOffset = -1;
-					else if(i == 2)
-						yOffset = 1;
-					
-					if(j == 0)
-						xOffset = -1;
-					else if(j == 2)
-						xOffset = 1;
-					
-					for(int k = 0; k < currentSense[i][j].length; k++){						
-						currentSense[i][j][k] = wumpusWorld[agenty + yOffset][agentx + xOffset][k];
-					}					
-				}
-				
-			}
+		int upperCornerX = 0;
+		int upperCornerY = 0;
+		
+		if(loc == 'A'){
+			upperCornerX = agentX - 1; 
+			upperCornerY = agentY - 2;
+		}else if(loc == 'V'){
+			upperCornerX = agentX - 1;
+			upperCornerY = agentY;			
+		}else if(loc == '<'){
+			upperCornerX = agentX - 2;
+			upperCornerY = agentY - 1;
+		}else if(loc == '>'){
+			upperCornerX = agentX;
+			upperCornerY = agentY - 1;
 		}
+					
+		for(int y = 0; y < currentSense.length; y++){
+			for(int x = 0; x < currentSense[0].length; x++){
+				
+				int Xconsider = upperCornerX + x;
+				int Yconsider = upperCornerY + y;
+			
+				if(Xconsider >= 0 && Yconsider >= 0 && Xconsider < worldSize && Yconsider < worldSize){				
+					for(int k = 0; k < currentSense[y][x].length; k++)				
+						currentSense[y][x][k] = wumpusWorld[Yconsider][Xconsider][k];											
+				}//if				
+			}//for
+		}//for
 		
 		return currentSense;
 	}//getCurrentSense
 
-}
+	private void killRow(int row, char[][][] currentSense) {
+		for(int k = 0; k < currentSense[0][0].length; k++){
+			currentSense[row][0][k] = outOfBounds;
+			currentSense[row][1][k] = outOfBounds;
+			currentSense[row][2][k] = outOfBounds;
+		}//for
+	}//method
+
+	private void killColumn(int col, char[][][] currentSense) {
+		for(int k = 0; k < currentSense[0][0].length; k++){
+			currentSense[0][col][k] = outOfBounds;
+			currentSense[1][col][k] = outOfBounds;
+			currentSense[2][col][k] = outOfBounds;
+		}//for
+	}//method
+
+}//class

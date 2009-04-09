@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class FrameworkTimer {
 	
-	private boolean shouldWait = true;//true -> Start out paused
+	private boolean shouldWait = false;//true -> Start out paused
 										//false -> Start out running	
 	private int sleepTime = 500;
 	private int sleepConstant = 500;

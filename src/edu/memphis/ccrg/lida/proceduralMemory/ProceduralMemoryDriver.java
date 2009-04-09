@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
+import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
@@ -12,6 +13,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -55,24 +57,6 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	}//method
 
 	private ActionContent getAppropriateBehavior() {
-		NodeStructure struct;
-		synchronized(this){
-			struct = (NodeStructure)wkspContent;
-		}
-		GraphImpl g = (GraphImpl)struct;
-		Set<Node> nodes = g.getNodes();
-		Set<Link> links = g.getLinks();
-		
-		for(Node n: nodes)
-			System.out.println(n.getLabel());
-		
-		System.out.println();
-		for(Link l: links){
-			SpatialLocation temp = (SpatialLocation)l.getSink();
-			System.out.println(l.toString() + " " + temp.getI() + " " + temp.getJ());
-		}
-		System.out.println();	
-
 		int GO_FORWARD = 1;
 		int TURN_RIGHT = 2;
 		int TURN_LEFT = 3;
@@ -86,18 +70,71 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		int AGENT_ID = 15;
 		
 		ActionContentImpl action = new ActionContentImpl(NO_OP);
-
-		for(Node n: nodes){
-			long nodeID = n.getId();
-
-			if(nodeID == GOLD_ID){ //
-				action.setContent(GRAB);
-			}else if(nodeID == PIT_ID){
-				action.setContent(GO_FORWARD);
-			}else if(nodeID == WUMPUS_ID){
-				action.setContent(TURN_RIGHT);
+		
+		NodeStructure struct;
+		synchronized(this){
+			struct = (NodeStructure)wkspContent;
+		}
+		GraphImpl g = (GraphImpl)struct;
+		Map<Long, Node> nodeMap = g.getNodeMap();
+		Set<Node> nodes = g.getNodes();
+		Set<Link> links = g.getLinks();
+//		
+//		PamNodeImpl gold = (PamNodeImpl)nodeMap.get(GOLD_ID);
+//		if(gold != null)
+//			System.out.println(gold.toString());
+//		//System.out.println()
+//		
+//		for(Node n: nodes)
+//			System.out.println(n.getId() + " " + n.getLabel());
+		int agentx = 0, agenty = 0;
+		int goldx = -1, goldy = -1;
+		for(Link l: links){
+			LinkImpl temp = (LinkImpl)l;
+			Node source = (Node)temp.getSource();
+			Node sink = (Node)temp.getSink();
+			
+			if(source.getId() == AGENT_ID){
+				SpatialLocation sl = (SpatialLocation)sink;
+				agentx = sl.getJ();
+				agenty = sl.getI();
 			}
-		}//for		
+			
+			if(source.getId() == GOLD_ID){
+				SpatialLocation sl = (SpatialLocation)sink;
+				goldx = sl.getJ();
+				goldy = sl.getI();
+			}
+			
+			//System.out.println(temp.toString());
+		}
+		System.out.println(agentx + " " + agenty + " " + goldx + " " + goldy);
+		
+		if(agentx == goldx && agenty == goldy)
+			action.setContent(GRAB);
+		
+//		if(nodeMap.containsKey(GOLD_ID)){
+//			PamNodeImpl gold = (PamNodeImpl)nodeMap.get(GOLD_ID);
+//			Set<SpatialLocation> locations = gold.getLocations();
+//			System.out.println(locations.size());
+//		}
+		
+		//System.out.println("Nodes " + nodes.size() + "Links " + links.size() + 
+		//		"MapNodes " +  nodeMap.values().size() + "MapKeys " + nodeMap.keySet().size());
+		
+//		for(Node n: nodes)
+//			System.out.println(n.getLabel());
+//		
+//		System.out.println();
+//		for(Link l: links){
+//			SpatialLocation temp = (SpatialLocation)l.getSink();
+//			System.out.println(l.toString() + " " + temp.getI() + " " + temp.getJ());
+//		}
+//		System.out.println();	
+
+
+		
+
 		return action;
 	}//method
 
