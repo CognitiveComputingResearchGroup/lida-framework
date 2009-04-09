@@ -422,21 +422,74 @@ class Environment {
 
 	
 	public char[][][] getCurrentSense(char[][][] currentSense) {
+		int leftWindowBound = 0;
+		int rightWindowBound = 0;
+		int topWindowBound = 0;
+		int bottomWindowBound = 0;
+		
+		int agentInWindowX = 0;
+		int agentInWindowY = 0;
+		
 		int[] agentLoc = agent.getLocation();
 		int agentx = agentLoc[1];
-		int agenty = agentLoc[0];
+		int agenty = agentLoc[0];		
+		char loc = agent.getAgentIcon();
+		if(loc == 'A'){
+			leftWindowBound = agentx - 1;
+			rightWindowBound = agentx + 1;
+			topWindowBound = agenty - 2;
+			bottomWindowBound = agenty;
+			//
+			agentInWindowX = 1;
+			agentInWindowY = 2;			
+		}else if(loc == 'V'){
+			leftWindowBound = agentx - 1;
+			rightWindowBound = agentx + 1;
+			topWindowBound = agenty;
+			bottomWindowBound = agenty + 2;
+			//
+			agentInWindowX = 1;
+			agentInWindowY = 0;
+		}else if(loc == '<'){
+			leftWindowBound = agentx - 2;
+			rightWindowBound = agentx;
+			topWindowBound = agenty - 1;
+			bottomWindowBound = agenty + 1;
+			//
+			agentInWindowX = 2;
+			agentInWindowY = 1;
+		}else if(loc == '>'){
+			leftWindowBound = agentx;
+			rightWindowBound = agentx + 2;
+			topWindowBound = agenty - 1;
+			bottomWindowBound = agenty + 1;
+			//
+			agentInWindowX = 0;
+			agentInWindowY = 1;
+		}
 		
 		char empty = '0';
 		char outOfBounds = 'X';
 		
 		//System.out.println("Agent @ i: " + agentx + " j: " + agenty);
 		
+		//First fill up the currentSense as 'empty'
 		for(int i = 0; i < currentSense.length; i++){
 			for(int j = 0; j < currentSense[0].length; j++){
 				for(int k = 0; k < currentSense[0][0].length; k++)
 					currentSense[i][j][k] = empty; 
 			}
 		}
+		
+		int WINDOW_SIZE = 0;
+		for(int i = 0; i < WINDOW_SIZE; i++){
+			for(int j = 0; j < WINDOW_SIZE; j++){
+				
+			}			
+		}
+		
+		
+		
 		
 		//figure out where out of bounds is		
 		if(agentx == 0){ //if agent is at the left boundary
@@ -445,8 +498,7 @@ class Environment {
 				currentSense[1][0][k] = outOfBounds;
 				currentSense[2][0][k] = outOfBounds;
 			}
-		}
-		if(agentx == worldSize - 1){ //if agent is at the right boundary
+		}else if(agentx == worldSize - 1){ //if agent is at the right boundary
 			for(int k = 0; k < currentSense[0][0].length; k++){ //Knock out right column
 				currentSense[0][2][k] = outOfBounds;
 				currentSense[1][2][k] = outOfBounds;
