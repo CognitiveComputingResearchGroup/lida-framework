@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.proceduralMemory;
+package edu.memphis.ccrg.lida.wumpusWorld.l_proceduralMemory;
 
 import java.util.Map;
 import java.util.Set;

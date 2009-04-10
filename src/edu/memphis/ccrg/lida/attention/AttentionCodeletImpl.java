@@ -8,25 +8,22 @@
 
 package edu.memphis.ccrg.lida.attention;
 
-import java.util.List;
-
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
 public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
 	
-	private CurrentSituationalModelImpl model;
+	private CurrentSituationalModel model;
 	private boolean keepRunning = true;
 	private NodeStructure whatIwant;
 	private NodeStructure whatIgot;
 	private GlobalWorkspace global;
 	private long threadID;
     
-    public AttentionCodeletImpl(CurrentSituationalModelImpl csm, GlobalWorkspace g){
+    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g){
     	model = csm;
     	global = g;
     }

@@ -3,13 +3,7 @@ package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContentImpl;
-import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
-import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
-import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -20,13 +14,13 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 public class CSMDriver implements Runnable, Stoppable{
 	
 	private boolean keepRunning = true;
-	private CurrentSituationalModelImpl csm;
+	private CurrentSituationalModel csm;
 	private long threadID;
 	private FrameworkTimer timer;
 	private CSMListener guiListener;
 	private FrameworkGui testGui;
 	
-	public CSMDriver(FrameworkTimer t, CurrentSituationalModelImpl csm, CSMListener gui){
+	public CSMDriver(FrameworkTimer t, CurrentSituationalModel csm, CSMListener gui){
 		timer = t;
 		this.csm = csm;
 		guiListener = gui;

@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.i_csm.CurrentSituationalModelImpl;
 
 public class AttentionDriver implements Runnable, Stoppable, BroadcastListener{
 

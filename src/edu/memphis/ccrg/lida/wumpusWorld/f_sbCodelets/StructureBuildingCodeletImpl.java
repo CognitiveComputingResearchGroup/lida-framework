@@ -5,7 +5,6 @@ import java.util.List;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
@@ -15,6 +14,7 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
 import edu.memphis.ccrg.lida.wumpusWorld.e_perceptualBuffer.PerceptualBufferImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.i_csm.CurrentSituationalModelImpl;
 
 public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
 	

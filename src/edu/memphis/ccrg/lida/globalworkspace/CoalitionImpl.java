@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.i_csm.CSMContentImpl;
 
 public class CoalitionImpl implements Coalition{
 	
