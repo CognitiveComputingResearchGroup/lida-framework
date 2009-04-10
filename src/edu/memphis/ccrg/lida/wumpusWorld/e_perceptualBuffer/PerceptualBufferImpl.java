@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
+package edu.memphis.ccrg.lida.wumpusWorld.e_perceptualBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import edu.memphis.ccrg.lida.perception.PAMContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
+import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
@@ -53,7 +55,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible
 	 * Main method of the perceptual buffer.  Stores shared content 
 	 * and then sends it to the codelet driver.
 	 */
-	public void sendContent(){
+	public void sendContentToCodelets(){
 		storePAMContent();
 		
 		if(perceptBuffer.size() > 0){

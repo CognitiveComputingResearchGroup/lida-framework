@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.List;
 import java.util.Set;
 import java.util.Map;
 
@@ -56,5 +57,7 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryL
 	public double getUpscale();
 	public double getDownscale();	    
 	public double getSelectivity();
+
+	public List<Object> getGuiContent();
 
 }//interface PAMinterface

@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.shared.strategies;
 
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;

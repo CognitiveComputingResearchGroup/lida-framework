@@ -15,9 +15,7 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationa
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContentImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsContentImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
@@ -26,6 +24,8 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl.StructureB
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
+import edu.memphis.ccrg.lida.wumpusWorld.e_perceptualBuffer.PerceptualBufferContentImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.e_perceptualBuffer.PerceptualBufferImpl;
 
 public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PerceptualBufferListener {
 

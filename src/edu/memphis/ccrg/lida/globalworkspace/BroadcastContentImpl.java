@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.shared.NodeStructureImp;
 
 public class BroadcastContentImpl implements BroadcastContent{
 	
@@ -12,7 +11,7 @@ public class BroadcastContentImpl implements BroadcastContent{
 	}
 	
 	public BroadcastContentImpl() {
-		struct = new GraphImpl();
+		struct = new NodeStructureImp();
 	}
 
 	public void setContent(Object struct){

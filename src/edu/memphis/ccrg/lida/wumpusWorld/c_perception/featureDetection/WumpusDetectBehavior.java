@@ -1,9 +1,9 @@
-package edu.memphis.ccrg.lida.wumpusWorld.d_perception.featureDetection;
+package edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection;
 
 import java.util.Map;
 import java.util.HashMap;
 
-import edu.memphis.ccrg.lida.perception.DetectBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
 

@@ -1,7 +1,7 @@
-package edu.memphis.ccrg.lida.wumpusWorld.d_perception.featureDetection;
+package edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection;
 
-import edu.memphis.ccrg.lida.perception.DetectBehavior;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
+import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;

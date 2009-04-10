@@ -1,7 +1,4 @@
-package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
-
-import java.util.ArrayList;
-import java.util.List;
+package edu.memphis.ccrg.lida.perception;
 
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -10,13 +7,13 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
-	private PerceptualAssociativeMemoryImpl pam;
+	private PerceptualAssociativeMemory pam;
 	private FrameworkTimer timer;
 	private boolean keepRunning = true;		
 	private long threadID;
 	private FrameworkGui testGui;
 	
-	public PAMDriver(PerceptualAssociativeMemoryImpl pam, FrameworkTimer timer){
+	public PAMDriver(PerceptualAssociativeMemory pam, FrameworkTimer timer){
 		this.pam = pam;
 		this.timer = timer;
 	}//PAMDrive constructor
