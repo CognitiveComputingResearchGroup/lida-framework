@@ -7,7 +7,7 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	

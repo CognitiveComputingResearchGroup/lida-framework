@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-import edu.memphis.ccrg.lida.wumpusWorld_sensoryMemory.SensoryContentImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
 
 /**
  * @author Ryan McCall

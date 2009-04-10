@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl;
+package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,12 +21,11 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsContentImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletActivatingContext;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.SpatialLocation;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl.SpatialLinkCodeletAction;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl.StructureBuildingCodeletImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PerceptualBufferListener {
 

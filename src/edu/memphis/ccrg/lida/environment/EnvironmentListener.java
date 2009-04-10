@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.environment;
 
-import edu.memphis.ccrg.lida.wumpusWorld.environment.EnvironmentContentImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.a_environment.EnvironmentContentImpl;
 
 /**
  * @author Ryan McCall

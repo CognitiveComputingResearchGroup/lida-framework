@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.globalworkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMContentImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 
 public class CoalitionImpl implements Coalition{
 	

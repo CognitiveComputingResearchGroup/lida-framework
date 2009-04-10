@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 
 public class BroadcastContentImpl implements BroadcastContent{
 	

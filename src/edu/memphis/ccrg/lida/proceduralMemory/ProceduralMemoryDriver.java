@@ -15,9 +15,9 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
-import edu.memphis.ccrg.lida.wumpusWorld._perception.SpatialLocation;
-import edu.memphis.ccrg.lida.wumpusWorld.environment.WorldApplication;
+import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WorldApplication;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener, CSMListener{
 
