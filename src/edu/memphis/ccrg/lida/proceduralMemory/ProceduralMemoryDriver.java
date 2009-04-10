@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.proceduralMemory;
 
 import java.util.Map;
 import java.util.Set;
-import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
@@ -18,6 +17,7 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.wumpusWorld.environment.WorldApplication;
 
 public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener, CSMListener{
 

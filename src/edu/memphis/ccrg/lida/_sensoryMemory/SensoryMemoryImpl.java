@@ -3,16 +3,16 @@ package edu.memphis.ccrg.lida._sensoryMemory;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida._environment.main.SimulationContentImpl;
-import edu.memphis.ccrg.lida._environment.main.SimulationListener;
+import edu.memphis.ccrg.lida.environment.EnvironmentListener;
+import edu.memphis.ccrg.lida.wumpusWorld.environment.EnvironmentContentImpl;
 
-public class SensoryMemoryImpl implements SensoryMemory, SimulationListener{
+public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 	
-	private SimulationContentImpl simContent = null;
+	private EnvironmentContentImpl simContent = null;
 	private SensoryContentImpl senseContent = new SensoryContentImpl();
 	private List<SensoryListener> listeners = new ArrayList<SensoryListener>();
 	
-	public synchronized void receiveSimContent(SimulationContentImpl sc){//SimulationListener
+	public synchronized void receiveSimContent(EnvironmentContentImpl sc){//SimulationListener
 		simContent = sc;		
 	}	
 	

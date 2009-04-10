@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida._environment.wumpusWorld;
+package edu.memphis.ccrg.lida.wumpusWorld.environment;
 /*
  * Class that defines the agent.
  * 

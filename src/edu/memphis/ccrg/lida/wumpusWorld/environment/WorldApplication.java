@@ -1,15 +1,15 @@
-package edu.memphis.ccrg.lida._environment.wumpusWorld;
+package edu.memphis.ccrg.lida.wumpusWorld.environment;
 
 
 
 import java.util.Random;
 
-import edu.memphis.ccrg.lida._environment.main.SimulationListener;
-import edu.memphis.ccrg.lida._environment.wumpusWorld.Simulation;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.environment.EnvironmentListener;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
+import edu.memphis.ccrg.lida.wumpusWorld.environment.Simulation;
 
 //import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -34,7 +34,7 @@ public class WorldApplication implements Runnable, Stoppable, ActionSelectionLis
 	   	trial = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
 	}
 	
-	public void addSimulationListener(SimulationListener listener){
+	public void addSimulationListener(EnvironmentListener listener){
 		trial.addSimulationListener(listener);
 	}
 	

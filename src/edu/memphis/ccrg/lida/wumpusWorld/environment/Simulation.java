@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida._environment.wumpusWorld;
+package edu.memphis.ccrg.lida.wumpusWorld.environment;
 
 
 import java.util.ArrayList;
@@ -7,10 +7,9 @@ import java.util.ArrayList;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
-import edu.memphis.ccrg.lida._environment.main.SimulationContentImpl;
-import edu.memphis.ccrg.lida._environment.main.SimulationListener;
-import edu.memphis.ccrg.lida._environment.wumpusWorld.Action;
+import edu.memphis.ccrg.lida.wumpusWorld.environment.Action;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
+import edu.memphis.ccrg.lida.environment.EnvironmentListener;
 
 public class Simulation{
 	//My Addition
@@ -29,8 +28,8 @@ public class Simulation{
 	private char[][][] currentDirectionalSense;
 		
 	//To stimuli sent out 
-	private SimulationContentImpl simContent = new SimulationContentImpl(VISION_SIZE);
-	private ArrayList<SimulationListener> listeners = new ArrayList<SimulationListener>();
+	private EnvironmentContentImpl simContent = new EnvironmentContentImpl(VISION_SIZE);
+	private ArrayList<EnvironmentListener> listeners = new ArrayList<EnvironmentListener>();
 	//for actions received
 	private boolean actionHasChanged = false;
 	private ActionContent currentBehavior = null;
@@ -55,7 +54,7 @@ public class Simulation{
 		
 	}//Simulation
 	
-	public void addSimulationListener(SimulationListener listener){
+	public void addSimulationListener(EnvironmentListener listener){
 		listeners.add(listener);
 	}
 	
