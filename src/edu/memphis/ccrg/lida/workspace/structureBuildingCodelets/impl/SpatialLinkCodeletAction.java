@@ -1,7 +1,11 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida._environment.wumpusWorld.WumpusIDs;
+import edu.memphis.ccrg.lida._perception.GraphImpl;
 import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
@@ -16,8 +20,18 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	private int linkCount = 100;
 	
 	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
-		NodeStructure struct = (NodeStructure)content.getContent();
-		Set<Node> nodes = struct.getNodes();
+		//If I want to get a particular node in SB codelet then I need a map
+		
+		GraphImpl g = (GraphImpl)content.getContent();
+		Map<Long, Node> nodeMap = g.getNodeMap();
+		PamNodeImpl agent = (PamNodeImpl)nodeMap.get(WumpusIDs.agent);
+		if(agent != null)
+			System.out.println(agent.getLabel());
+		else
+			System.out.println("nullllll");
+		
+		Set<Node> nodes = g.getNodes();
+		
 		for(Node n: nodes){
 			if(n instanceof PamNodeImpl){
 				PamNodeImpl temp = (PamNodeImpl)n;
@@ -26,12 +40,13 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 				synchronized(this){
 					for(SpatialLocation oldSL: originalLocs)
 						copiedLocs.add(new SpatialLocation(oldSL));
-				}
+				}//
 				
 				for(SpatialLocation sl: copiedLocs){
-					LinkImpl newLink = new LinkImpl(temp, sl, LinkType.child, linkCount++);
-					newLink.setLabel(calcRelationType(sl));
-					struct.addLink(newLink);
+					LinkType t = calcRelationType(sl);
+					LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
+		
+					g.addLink(newLink);
 				}//for
 				
 			}//if
@@ -39,23 +54,30 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 		return content;
 	}//method
 
-	private String calcRelationType(SpatialLocation sl) {
-		String label = "";
+	private LinkType calcRelationType(SpatialLocation sl) {
+		
+//		leftof,
+//		rightOf,
+//		above,
+//		below,
+//		inLineWith,
+		
+		LinkType type = LinkType.none;
 		int i = sl.getI();
 		int j = sl.getJ();		
-		
-		if(i == 0)
-			label += "Left";
-		else if(i == 2)
-			label += "Right";
-
-		label += " ";
-		if(j == 0)
-			label += "Above";
-		else if(j == 2)
-			label += "Below";
-		
-		return label;		
+//		
+//		if(i == 0)
+//			type = LinkType.
+//		else if(i == 2)
+//			type = LinkType.
+//
+//	
+//		if(j == 0)
+//			type = LinkType.
+//		else if(j == 2)
+//			type = LinkType.
+//		
+		return type;		
 	}//method
 
 }//class

@@ -27,6 +27,11 @@ public class GraphImpl implements NodeStructure{
 	private Set<Node> nodes;
 	
 	/**
+	 * Map of the nodes by ID
+	 */
+	private Map<Long, Node> nodeMap;
+	
+	/**
 	 * Nodes and Links are keys and the values are their links
 	 */
 	private Map<Linkable, Set<Link>> linkMap;
@@ -46,6 +51,7 @@ public class GraphImpl implements NodeStructure{
 	 */
 	public GraphImpl() {
 		nodes = new HashSet<Node>();
+		nodeMap = new HashMap<Long, Node>();
 		linkMap = new HashMap<Linkable, Set<Link>>();
 		layerMap = new HashMap<Integer, Set<Node>>();	
 	}
@@ -58,13 +64,17 @@ public class GraphImpl implements NodeStructure{
 		this.linkCount = oldGraph.linkCount;
 		
 		nodes = new HashSet<Node>();
+		nodeMap = new HashMap<Long, Node>();
 		linkMap = new HashMap<Linkable, Set<Link>>();
 		layerMap = new HashMap<Integer, Set<Node>>();	
 		
 		Set<Node> oldNodes = oldGraph.getNodes();
-		if(oldNodes != null)
-			for(Node n: oldNodes)
+		if(oldNodes != null){
+			for(Node n: oldNodes){
 				this.nodes.add(n);//NodeFactory.getInstance().getNode(n)
+				nodeMap.put(n.getId(), n);
+			}
+		}
 
 		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkMap();
 		if(oldLinkMap != null){
@@ -135,7 +145,12 @@ public class GraphImpl implements NodeStructure{
 	 * Adds specified node to the set of nodes. Returns true if node not already present.
 	 */
 	public boolean addNode(Node n) {
-		return nodes.add(n);
+		boolean result = nodes.add(n);
+		boolean result2 = false;
+		if(null == nodeMap.put(n.getId(), n))
+			result2 = true;
+		
+		return result && result2;
 	}
 	
 	/**
@@ -147,6 +162,7 @@ public class GraphImpl implements NodeStructure{
 		for(Node n: nodesToAdd){
 			PamNodeImpl toAdd = (PamNodeImpl)n;
 			nodes.add(toAdd);
+			nodeMap.put(n.getId(), n);
 			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
 		}
 		createLayerMap();
@@ -391,10 +407,6 @@ public class GraphImpl implements NodeStructure{
     }
     
     public Map<Long, Node> getNodeMap(){
-    	Map<Long, Node> nodeMap = new HashMap<Long, Node>();
-    	
-    	for(Node n: nodes)  //TODO: put the nodes in a map as soon as they are added to the GRAPH
-    		nodeMap.put(n.getId(), n);    	
     	return nodeMap;
     }//method
 
