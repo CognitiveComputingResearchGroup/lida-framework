@@ -8,9 +8,6 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida._perception.GraphImpl;
-import edu.memphis.ccrg.lida._perception.PamNodeImpl;
-import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
@@ -27,6 +24,9 @@ import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletActivatingContext;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.SpatialLocation;
 
 public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PerceptualBufferListener {
 

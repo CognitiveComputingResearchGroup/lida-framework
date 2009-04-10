@@ -3,15 +3,15 @@ package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import edu.memphis.ccrg.lida._perception.GraphImpl;
-import edu.memphis.ccrg.lida._perception.PAMContentImpl;
-import edu.memphis.ccrg.lida._perception.interfaces.PAMContent;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.perception.PAMContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.PAMContentImpl;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible{
 	

@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida._perception.GraphImpl;
-import edu.memphis.ccrg.lida._perception.PamNodeImpl;
-import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.wumpusWorld._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.wumpusWorld.environment.WumpusIDs;
 
 public class SpatialLinkCodeletAction implements CodeletAction{
