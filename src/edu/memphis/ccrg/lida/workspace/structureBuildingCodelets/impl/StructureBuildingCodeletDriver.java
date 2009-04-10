@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
+package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +24,9 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsContentImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletActivatingContext;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class StructureBuildingCodeletDriver implements Runnable, Stoppable, PerceptualBufferListener {
 
@@ -66,7 +69,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Perc
 		nodes.put(13L, pit);
 		
 		CodeletsDesiredContent objective = new CodeletsDesiredContent(nodes);
-		CodeletAction actions = new TestCodeletAction();		
+		CodeletAction actions = new SpatialLinkCodeletAction();		
 		spawnNewCodelet(pBuffer, null, null, defaultCodeletActivation, objective, actions);
 		
 		int counter = 0;		

@@ -425,50 +425,50 @@ class Environment {
 
 	
 	public char[][][] getCurrentSense(char[][][] currentSense) {
-		
 		int[] agentLoc = agent.getLocation();
 		int agentX = agentLoc[1];
 		int agentY = agentLoc[0];		
 		char loc = agent.getAgentIcon();
 			
-		//First fill up the currentSense as 'empty'
+		//First fill up the currentSense as 'out of bounds'
 		for(int i = 0; i < currentSense.length; i++){
 			for(int j = 0; j < currentSense[0].length; j++){
 				for(int k = 0; k < currentSense[0][0].length; k++)
-					currentSense[i][j][k] = empty; 
+					currentSense[i][j][k] = outOfBounds; 
 			}
 		}
 		
-		//Mark out of bounds regions of the visual field.		
-		if(agentX == 0){ //if agent is at the left boundary
-			if(loc != '>')
-				killColumn(0, currentSense);			
-			if(loc == '<')
-				killColumn(1, currentSense);	
-
-		}else if(agentX == worldSize - 1){ //if agent is at the right boundary
-			if(loc != '<')
-				killColumn(2, currentSense);
-			if(loc == '>')
-				killColumn(1, currentSense);
-		}
+//		//Mark out of bounds regions of the visual field.		
+//		if(agentX == 0){ //if agent is at the left boundary
+//			if(loc != '>')
+//				killColumn(0, currentSense);			
+//			if(loc == '<')
+//				killColumn(1, currentSense);	
+//
+//		}else if(agentX == worldSize - 1){ //if agent is at the right boundary
+//			if(loc != '<')
+//				killColumn(2, currentSense);
+//			if(loc == '>')
+//				killColumn(1, currentSense);
+//		}
+//		
+//		if(agentY == 0){ //if agent is at the top boundary
+//			if(loc != 'V')
+//				killRow(0, currentSense);
+//			if(loc == 'A')
+//				killRow(1, currentSense);
+//		}
+//		if(agentY == worldSize - 1){//if agent at bottom boundary
+//			if(loc != 'A')
+//				killRow(2, currentSense);
+//			if(loc == 'V')
+//				killRow(1, currentSense);
+//		}	
 		
-		if(agentY == 0){ //if agent is at the top boundary
-			if(loc != 'V')
-				killRow(0, currentSense);
-			if(loc == 'A')
-				killRow(1, currentSense);
-		}
-		if(agentY == worldSize - 1){//if agent at bottom boundary
-			if(loc != 'A')
-				killRow(2, currentSense);
-			if(loc == 'V')
-				killRow(1, currentSense);
-		}	
-		
+		//UpperCorner is where the upper left corner of the sense
+		//window is in the environment.  that is calculated here.
 		int upperCornerX = 0;
-		int upperCornerY = 0;
-		
+		int upperCornerY = 0;		
 		if(loc == 'A'){
 			upperCornerX = agentX - 1; 
 			upperCornerY = agentY - 2;
@@ -483,6 +483,8 @@ class Environment {
 			upperCornerY = agentY - 1;
 		}
 					
+		//Now just iterate over the 3x3 matrix and fill up spots if
+		//they are in bounds
 		for(int y = 0; y < currentSense.length; y++){
 			for(int x = 0; x < currentSense[0].length; x++){
 				
@@ -499,20 +501,20 @@ class Environment {
 		return currentSense;
 	}//getCurrentSense
 
-	private void killRow(int row, char[][][] currentSense) {
-		for(int k = 0; k < currentSense[0][0].length; k++){
-			currentSense[row][0][k] = outOfBounds;
-			currentSense[row][1][k] = outOfBounds;
-			currentSense[row][2][k] = outOfBounds;
-		}//for
-	}//method
-
-	private void killColumn(int col, char[][][] currentSense) {
-		for(int k = 0; k < currentSense[0][0].length; k++){
-			currentSense[0][col][k] = outOfBounds;
-			currentSense[1][col][k] = outOfBounds;
-			currentSense[2][col][k] = outOfBounds;
-		}//for
-	}//method
+//	private void killRow(int row, char[][][] currentSense) {
+//		for(int k = 0; k < currentSense[0][0].length; k++){
+//			currentSense[row][0][k] = outOfBounds;
+//			currentSense[row][1][k] = outOfBounds;
+//			currentSense[row][2][k] = outOfBounds;
+//		}//for
+//	}//method
+//
+//	private void killColumn(int col, char[][][] currentSense) {
+//		for(int k = 0; k < currentSense[0][0].length; k++){
+//			currentSense[0][col][k] = outOfBounds;
+//			currentSense[1][col][k] = outOfBounds;
+//			currentSense[2][col][k] = outOfBounds;
+//		}//for
+//	}//method
 
 }//class

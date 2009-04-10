@@ -1,11 +1,9 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida._environment.wumpusWorld.WorldApplication;
 import edu.memphis.ccrg.lida._perception.GraphImpl;
-import edu.memphis.ccrg.lida._perception.PamNodeImpl;
 import edu.memphis.ccrg.lida._perception.SpatialLocation;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
@@ -14,7 +12,6 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
-import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -89,21 +86,23 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 //			System.out.println(n.getId() + " " + n.getLabel());
 		int agentx = 0, agenty = 0;
 		int goldx = -1, goldy = -1;
+		int wumpusx = -2, wumpusy = -2;
 		for(Link l: links){
 			LinkImpl temp = (LinkImpl)l;
 			Node source = (Node)temp.getSource();
 			Node sink = (Node)temp.getSink();
+			long sourceID = source.getId();
+			SpatialLocation sl = (SpatialLocation)sink;
 			
-			if(source.getId() == AGENT_ID){
-				SpatialLocation sl = (SpatialLocation)sink;
+			if(sourceID == AGENT_ID){
 				agentx = sl.getJ();
 				agenty = sl.getI();
-			}
-			
-			if(source.getId() == GOLD_ID){
-				SpatialLocation sl = (SpatialLocation)sink;
+			}else if(sourceID == GOLD_ID){
 				goldx = sl.getJ();
 				goldy = sl.getI();
+			}else if(sourceID == WUMPUS_ID){
+				wumpusx = sl.getJ();
+				wumpusy = sl.getI();
 			}
 			
 			//System.out.println(temp.toString());
@@ -112,6 +111,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		
 		if(agentx == goldx && agenty == goldy)
 			action.setContent(GRAB);
+		//if(agentx)
 		
 //		if(nodeMap.containsKey(GOLD_ID)){
 //			PamNodeImpl gold = (PamNodeImpl)nodeMap.get(GOLD_ID);

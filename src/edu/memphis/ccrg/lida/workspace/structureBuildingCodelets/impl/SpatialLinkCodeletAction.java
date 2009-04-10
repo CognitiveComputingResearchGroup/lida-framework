@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
+package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +9,9 @@ import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 
-public class TestCodeletAction implements CodeletAction{
+public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	private int linkCount = 100;
 	

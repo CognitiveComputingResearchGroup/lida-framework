@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
+package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,10 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsImpl;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
 
 public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
 	
@@ -23,7 +27,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	//
 	private double activation = 1.0;
 	private CodeletsDesiredContent objective = null;
-	private CodeletAction action = new TestCodeletAction();
+	private CodeletAction action = new SpatialLinkCodeletAction();
 	
 	private List<CodeletAccessible> buffers = new ArrayList<CodeletAccessible>();
 			
