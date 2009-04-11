@@ -3,11 +3,11 @@ package edu.memphis.ccrg.lida.workspace.previousBroadcasts;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class PreviousBroadcastsImpl implements Runnable, Stoppable, 
-									PreviousBroadcasts, CodeletAccessible{
+									PreviousBroadcasts, CodeletReadable{
 	
 	private boolean keepRunning = true;
 	

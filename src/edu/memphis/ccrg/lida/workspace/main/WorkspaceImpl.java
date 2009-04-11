@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
+import java.util.List;
+
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemory;
@@ -17,6 +19,7 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationa
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
 /**
  * 
@@ -38,7 +41,8 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	private CurrentSituationalModel csm;
 	
 	//These listeners listen to the Workspace
-	private WorkspaceListener temListener, dmListener, pamListener;
+	private List<WorkspaceListener> listeners;
+	private WorkspaceContent content;
 	
 	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, PreviousBroadcasts pbroads, CurrentSituationalModel csm, 
 						TransientEpisodicMemory tem, DeclarativeMemory dm, PerceptualAssociativeMemory pam){
@@ -46,9 +50,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		episodicBuffer = eb;
 		prevBroads = pbroads;
 		this.csm = csm;	
-		temListener = tem;
-		dmListener = dm;
-		pamListener = pam;
 		
 		//TODO: Either each component has a reference to the workspace and
 		//      calls the workspace to do output _OR_
@@ -62,14 +63,13 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}//constructor
 	
 	//****Output from the Workspace to other modules
-	public void pamReceiveWorkspaceContent(WorkspaceContent content){
-		pamListener.receiveWorkspaceContent(content);
+	public void addWorkspaceListener(WorkspaceListener listener) {
+		listeners.add(listener);		
 	}
-	public void temReceiveWorkspaceContent(WorkspaceContent content){
-		temListener.receiveWorkspaceContent(content);
-	}
-	public void dmReceiveWorkspaceContent(WorkspaceContent content){
-		dmListener.receiveWorkspaceContent(content);
+	
+	public void sendWorkspaceContent(){
+		for(WorkspaceListener l: listeners)
+			l.receiveWorkspaceContent(content);
 	}
 
 	//****Input into the Workspace from other Modules
@@ -88,5 +88,22 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	public void receiveBehaviorContent(ActionContent c) {
 		// TODO: Implementing this is a long way off as of (3.30.09)		
 	}
+
+	public void addContentToCSM(WorkspaceContent updatedContent) {
+		csm.addWorkspaceContent(updatedContent);		
+	}
+
+	public CodeletReadable getModuleReference(int moduleID) {
+		if(moduleID == Workspace.CSM){
+			return null;
+		}else if(moduleID == Workspace.PBUFFER){
+			return perceptualBuffer;
+		}else if(moduleID == Workspace.EBUFFER){
+			return episodicBuffer;
+		}else if(moduleID == Workspace.PBROADS){
+			return prevBroads;
+		}
+		return null;
+	}//method
 	
 }//class

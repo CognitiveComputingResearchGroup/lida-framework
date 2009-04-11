@@ -6,10 +6,10 @@ import java.util.List;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
-public class EpisodicBufferImpl implements EpisodicBuffer, CodeletAccessible{
+public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 
     private List<EpisodicBufferListener> listeners;
 	private TransientEpisodicMemoryContent temAssociation;

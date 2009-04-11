@@ -10,12 +10,12 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PAMContentImpl;
 
-public class PerceptualBufferImpl implements PerceptualBuffer, CodeletAccessible{
+public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
 	private PAMContent pamContent;	
 	private List<NodeStructure> perceptBuffer;
