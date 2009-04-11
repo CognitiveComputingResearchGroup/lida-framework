@@ -23,8 +23,8 @@ public class WorldApplication implements Runnable, Stoppable, ActionSelectionLis
 	}
 	
 	public WorldApplication(FrameworkTimer timer){
-		int worldSize = 4;
-		int numPits = 7;				
+		int worldSize = 5;
+		int numPits = 3;				
 		boolean nonDeterministicMode = false;
 		boolean randomAgentLoc = true;		
 	    Random rand = new Random();

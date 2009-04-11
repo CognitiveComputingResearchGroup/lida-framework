@@ -32,7 +32,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     /**
      * proportion of activation spread to parents
      */
-    private double upscale = 0.5;     
+    private double upscale = 0.9;     
     /**
      * proportion of activation spread to children
      */

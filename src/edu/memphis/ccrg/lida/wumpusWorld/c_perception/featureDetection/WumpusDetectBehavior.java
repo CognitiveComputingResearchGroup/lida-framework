@@ -35,6 +35,8 @@ public class WumpusDetectBehavior implements DetectBehavior {
 				whatToLookFor = 'G';
 			else if(posToCheck == 3)
 				whatToLookFor = 'A';
+			else if(posToCheck == 4)
+				whatToLookFor = 'X';
 			
 			for(int i = 0; i < senseData.length; i++){
 				for(int j = 0; j < senseData[0].length; j++){					
@@ -45,6 +47,13 @@ public class WumpusDetectBehavior implements DetectBehavior {
 							node.excite(defaultExcitation);
 							node.addNewWWLocation(i, j);
 						 }
+					}else if(whatToLookFor == 'X'){
+						if(senseData[i][j][0] == whatToLookFor){
+							node.excite(defaultExcitation);
+							node.addNewWWLocation(i, j);	
+						}
+							
+						
 					}else if(senseData[i][j][posToCheck] == whatToLookFor){
 						node.excite(defaultExcitation);
 						node.addNewWWLocation(i, j);					

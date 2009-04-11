@@ -16,7 +16,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
  * 
  */ 
 
-class Action {
+public class Action {
 	
 	public static int START_TRIAL = 0;
 	public static int GO_FORWARD = 1;

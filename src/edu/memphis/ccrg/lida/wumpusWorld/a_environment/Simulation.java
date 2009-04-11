@@ -269,6 +269,7 @@ public class Simulation{
 	}
 	
 	public void handleAction(int action) {
+		//System.out.println("action " + action + " is starting");
 		
 			if (action == Action.GO_FORWARD) {				
 				if (environment.getBump() == true) environment.setBump(false);
@@ -277,7 +278,7 @@ public class Simulation{
 				environment.placeAgent(agent);
 				
 				if (environment.checkDeath() == true) {
-					System.out.println("You die! ...but gnomes resurrect you.");
+				//	System.out.println("You die! ...but gnomes resurrect you.");
 					currScore += deathCost;
 					//keepRunning = false;
 					
@@ -370,8 +371,8 @@ public class Simulation{
 				lastAction = Action.NO_OP;
 			}
 			
-
-	}
+			//System.out.println("action " + action + " is ending");
+	}//
 	
 	public int getScore() {		
 		return currScore;		

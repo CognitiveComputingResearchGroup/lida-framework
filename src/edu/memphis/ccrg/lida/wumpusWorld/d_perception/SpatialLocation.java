@@ -7,9 +7,13 @@ import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class SpatialLocation implements Node{
-	private int iLocation = 0;
-	private int jLocation = 0;
+	private int iLocation = Integer.MAX_VALUE;
+	private int jLocation = Integer.MAX_VALUE;
 	private String label = "spatial_location";
+	
+	public SpatialLocation(){
+		
+	}
 
 	public SpatialLocation(int i, int j) {
 		iLocation = i;
@@ -28,6 +32,27 @@ public class SpatialLocation implements Node{
 		SpatialLocation other = (SpatialLocation)obj;
 		return iLocation == other.iLocation && jLocation == other.jLocation;
 	}	
+	
+	public char getDirection(){
+		char c = 'x';
+		if(iLocation == 1){
+			if(jLocation == 0){
+				c = '>';
+			}else if(jLocation == 2){
+				c = '<';
+			}
+			
+		}
+		if(jLocation == 1){
+			if(iLocation == 0){
+				c = 'V';
+			}else if(iLocation == 2){
+				c = 'A';
+			}
+		}
+				
+		return c;
+	}
 	
 	/**
 	 * 
@@ -158,6 +183,14 @@ public class SpatialLocation implements Node{
 	public void decay(DecayBehavior decayBehavior) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean isAtTheSameLocationAs(SpatialLocation sl) {
+		return (iLocation == sl.iLocation) && (jLocation == sl.jLocation);
+	}
+
+	public boolean isAtTheSameLocationAs(int i, int j) {
+		return (iLocation == i) && (jLocation == j);
 	}	
 	
 }
