@@ -11,17 +11,9 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferContent;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferContent;
-import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
-import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.SpatialLinkCodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.StructureBuildingCodeletImpl;
 
@@ -56,13 +48,10 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 	}//method
 
 	public void run(){
-		Map<Long, Node> nodes = new HashMap<Long, Node>();
-		PamNodeImpl pit = new PamNodeImpl(13, 0.0, 0.0, "pit", 0);
-		nodes.put(13L, pit);
-		
+
 		boolean usesPBuffer = true, usesEBuffer = false, usesPBroads = false;
-		
-		CodeletsDesiredContent objective = new CodeletsDesiredContent(nodes);
+		//TODO: Abstract this out of this class
+		CodeletsDesiredContent objective = new CodeletsDesiredContent();
 		CodeletAction actions = new SpatialLinkCodeletAction();		
 		spawnNewCodelet(workspace, usesPBuffer, usesEBuffer, usesPBroads, defaultCodeletActivation, objective, actions);
 		
@@ -85,7 +74,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 
 	private void spawnNewCodelet(Workspace w, boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads, 
 								 double startingActivation, CodeletsDesiredContent context, CodeletAction actions){
-		
+		//TODO: Abstract this out of this class
 		StructureBuildingCodelet newCodelet = new StructureBuildingCodeletImpl(timer, workspace, 
 																			   usesPBuffer, usesEBuffer, usesPBroads, 
 																			   defaultCodeletActivation, context, actions);
@@ -113,6 +102,9 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 			guiContent.add(struct.getLinks().size());			
 			testGui.receiveGuiContent(FrameworkGui.FROM_SB_CODELETS, guiContent);
 		}//if not null
+		else{
+			System.out.println("SBCs received a null struct");
+		}
 	}//method
 
 	public void stopRunning(){

@@ -52,7 +52,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
     private SensoryContentImpl sensoryContent;//Shared variable
-    private PAMContent pamContent;//Not a shared variable
+    private PAMContentImpl pamContent;//Not a shared variable
     private BroadcastContent broadcastContent;//Shared variables	
 	private WorkspaceContent workspaceContent;
 	private int numNodeInPercept = 0;//for GUI
@@ -179,9 +179,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//private void syncNodeActivation
     
     public void sendPercept(){
-    	if(!pamContent.isEmpty())
-	    	for(int i = 0; i < pamListeners.size(); i++)
-				pamListeners.get(i).receivePAMContent(pamContent);	    	
+    	for(int i = 0; i < pamListeners.size(); i++)
+			pamListeners.get(i).receivePAMContent(pamContent);	    	
     }//method
     
     public void decay() {

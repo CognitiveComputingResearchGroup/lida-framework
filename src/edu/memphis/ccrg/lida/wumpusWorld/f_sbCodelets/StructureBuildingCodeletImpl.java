@@ -1,15 +1,16 @@
 package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 
 public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
 	
@@ -20,10 +21,10 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	private Workspace workspace;
 	//
 	private double activation = 1.0;
-	private CodeletsDesiredContent objective = null;
+	private CodeletsDesiredContent soughtContent = null;
 	private CodeletAction action = new SpatialLinkCodeletAction();
 	
-	private List<CodeletReadable> buffers = new ArrayList<CodeletReadable>();
+	private Map<Integer, Boolean> buffersIuse = new HashMap<Integer, Boolean>();
 			
 	public StructureBuildingCodeletImpl(FrameworkTimer t, Workspace workspace, 
 										boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads, 
@@ -40,21 +41,15 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 			timer = t;
 			this.workspace = workspace;
 			this.activation = activation;
-			objective = obj;
+			soughtContent = obj;
 			action = a;
 			
 			if(usesPBuffer){
-				CodeletReadable cr = workspace.getModuleReference(Workspace.PBUFFER);
-				if(cr != null)
-					buffers.add(cr);
+				buffersIuse.put(Workspace.PBUFFER, true);
 			}else if(usesEBuffer){
-				CodeletReadable cr = workspace.getModuleReference(Workspace.EBUFFER);
-				if(cr != null)
-					buffers.add(cr);
+				buffersIuse.put(Workspace.EBUFFER, true);
 			}else if(usesPBroads){
-				CodeletReadable cr = workspace.getModuleReference(Workspace.PBROADS);
-				if(cr != null)
-					buffers.add(cr);				
+				buffersIuse.put(Workspace.PBROADS, true);			
 			}			
 		}//else
 			
@@ -64,14 +59,15 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 		while(keepRunning){
 			try{Thread.sleep(100);}catch(Exception e){}
 			timer.checkForStartPause();
-			
-			for(CodeletReadable buffer: buffers)
-				checkAndWorkOnBuffer(buffer);		
+			for(Integer i: buffersIuse.keySet())
+				if(buffersIuse.get(i))
+					checkAndWorkOnBuffer(i);		
 		}//while		
 	}//run
 	
-	private void checkAndWorkOnBuffer(CodeletReadable buffer) {
-		WorkspaceContent bufferContent = buffer.getCodeletsObjective(objective);
+	private void checkAndWorkOnBuffer(int i){		
+		WorkspaceContent bufferContent = workspace.getCodeletDesiredContent(i, soughtContent);
+		
 		if(bufferContent != null){
 			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
 			workspace.addContentToCSM(updatedContent);
@@ -83,8 +79,8 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	public void setActivation(double a){
 		activation = a;
 	}
-	public void setContext(CodeletsDesiredContent obj){
-		objective = obj;
+	public void setContext(CodeletsDesiredContent content){
+		soughtContent = content;
 	}
 	public void setCodeletAction(CodeletAction a){
 		action = a;
@@ -93,7 +89,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 		return activation;
 	}
 	public CodeletsDesiredContent getObjective(){
-		return objective;
+		return soughtContent;
 	}
 	public CodeletAction getCodeletAction(){
 		return action;

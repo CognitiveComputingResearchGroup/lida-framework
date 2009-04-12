@@ -20,7 +20,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
 		//If I want to get a particular node in SB codelet then I need a map
-		GraphImpl g = (GraphImpl)content.getContent();
+		GraphImpl g = (GraphImpl)content;
 		Map<Long, Node> nodeMap = g.getNodeMap();
 		PamNodeImpl agent = (PamNodeImpl)nodeMap.get(WumpusIDs.agent);
 		char agentDirection = ' ';
@@ -50,7 +50,8 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 				}//for
 				
 			}//if
-		}//for			
+		}//for	
+		
 		return content;
 	}//method
 

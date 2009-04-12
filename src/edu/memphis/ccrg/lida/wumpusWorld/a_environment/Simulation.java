@@ -278,7 +278,7 @@ public class Simulation{
 				environment.placeAgent(agent);
 				
 				if (environment.checkDeath() == true) {
-				//	System.out.println("You die! ...but gnomes resurrect you.");
+					System.out.println("You die! ...but gnomes resurrect you.");
 					currScore += deathCost;
 					//keepRunning = false;
 					

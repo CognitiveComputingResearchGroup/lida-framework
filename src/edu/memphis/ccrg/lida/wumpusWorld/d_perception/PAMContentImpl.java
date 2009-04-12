@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
 
-import edu.memphis.ccrg.lida.perception.PAMContent;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
-public class PAMContentImpl implements PAMContent{
+public class PAMContentImpl implements WorkspaceContent{
 
 	private NodeStructure graph = new GraphImpl();
 

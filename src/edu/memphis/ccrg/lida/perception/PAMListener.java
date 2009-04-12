@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.perception;
 
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+
 /**
  * @author Ryan McCall
  * 
@@ -11,5 +13,5 @@ public interface PAMListener {
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param sc the Content of the Broadcast
 	 */
-	public void receivePAMContent(PAMContent pc);
+	public void receivePAMContent(WorkspaceContent pc);
 }

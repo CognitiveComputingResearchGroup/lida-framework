@@ -543,4 +543,8 @@ public class GraphImpl implements NodeStructure{
 		return null;
 	}
 
+	public int getNodeCount() {
+		return nodes.size();
+	}
+
 }//class

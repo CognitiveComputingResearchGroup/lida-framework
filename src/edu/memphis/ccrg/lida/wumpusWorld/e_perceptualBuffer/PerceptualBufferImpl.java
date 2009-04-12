@@ -17,14 +17,14 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PAMContentImpl;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
-	private PAMContent pamContent;	
+	private WorkspaceContent pamContent;	
 	private List<NodeStructure> perceptBuffer;
 	private List<PerceptualBufferListener> pbListeners;	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;
 	private FrameworkGui testGui;	
 	
 	public PerceptualBufferImpl(){
-		pamContent = new PAMContentImpl();
+		pamContent = new GraphImpl();
 		perceptBuffer = new ArrayList<NodeStructure>();
 		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//public Workspace()
@@ -37,7 +37,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pbListeners.add(l);
 	}
 	
-	public synchronized void receivePAMContent(PAMContent pc){
+	public synchronized void receivePAMContent(WorkspaceContent pc){
 		pamContent = pc;
 	}
 	
@@ -60,9 +60,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		
 		if(perceptBuffer.size() > 0){
 			GraphImpl tempGraph = new GraphImpl((GraphImpl)perceptBuffer.get(0));
-			for(int i = 0; i < pbListeners.size(); i++){
-				PerceptualBufferContentImpl content = new PerceptualBufferContentImpl(tempGraph);
-				pbListeners.get(i).receivePBufferContent(content);				
+			for(int i = 0; i < pbListeners.size(); i++){				
+				pbListeners.get(i).receivePBufferContent(tempGraph);				
 			}//for
 
 			List<Object> guiContent = new ArrayList<Object>();			
@@ -78,7 +77,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	 * Currently objective not used.
 	 */
 	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
-		PerceptualBufferContentImpl content = new PerceptualBufferContentImpl();
+		GraphImpl content = new GraphImpl();
 		
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){

@@ -9,11 +9,12 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
-	private NodeStructure struct;
+	private NodeStructure struct = new GraphImpl();
 	private List<CSMListener> csmListeners = new ArrayList<CSMListener>();
 	
 	public CurrentSituationalModelImpl(){
@@ -29,14 +30,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 			l.receiveCSMContent(struct);
 	}//method
 	
-	public void addWorkspaceContent(WorkspaceContent content) {
-		if(content != null){
-			synchronized(this){
-				struct = (GraphImpl)content.getContent();
-			}
-			
-			Set<Node> nodes = struct.getNodes();
-		}
+	public synchronized void addWorkspaceContent(WorkspaceContent content) {
+		struct = (NodeStructure)content;
 	}//method
 
 	public boolean hasContent(NodeStructure whatIwant) {
@@ -46,6 +41,11 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
 	public NodeStructure getContent(){
 		return struct;
+	}
+
+	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }//class
