@@ -70,7 +70,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
-			try{Thread.sleep(90 + timer.getSleepTime());}catch(Exception e){}
+			try{Thread.sleep(26 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 			
 			sendGuiContent();
@@ -134,42 +134,47 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		LinkType goldRelation = LinkType.none;
 		LinkType wumpusRelation = LinkType.none;
 		boolean inLineWithWumpus = false;
-		boolean safeToProceed = true;
-		boolean canMoveForward = true;//TODO: wall node
+		boolean canMoveForward = true;
+		//
+		boolean safeToProceed = false;
+		boolean wumpusInFrontOf = false;
+		boolean pitInFrontOf = false;
 		for(Link l: links){
 			LinkImpl temp = (LinkImpl)l;			
 			Node source = (Node)temp.getSource();			
 			Node sink = (Node)temp.getSink();		
 			//All these links have sink as spatial location so I know source is the node.
 			long sourceID = source.getId();
-			SpatialLocation sl = (SpatialLocation)sink;
+			SpatialLocation spatLoc = (SpatialLocation)sink;
 			LinkType type = temp.getType();
 					
 			
 			if(sourceID == WumpusIDs.pit){
-				if(sl.isAtTheSameLocationAs(1, 1)){
-					safeToProceed = false;
+				if(spatLoc.isAtTheSameLocationAs(1, 1)){
+					pitInFrontOf = true;
 				}
-				pitLocations.add(sl);
+				pitLocations.add(spatLoc);
 			}else if(sourceID == WumpusIDs.wall){
-				if(sl.isAtTheSameLocationAs(1, 1))
+				if(spatLoc.isAtTheSameLocationAs(1, 1))
 					canMoveForward = false;
-				wallLocations.add(sl);
+				wallLocations.add(spatLoc);
 			}else if(sourceID == WumpusIDs.agent){
-				agentLocation = sl;
+				agentLocation = spatLoc;
 				//agentDirection = sl.getDirection();				
 			}else if(sourceID == WumpusIDs.gold){
 				goldRelation = type;
-				goldLocation = sl;
+				goldLocation = spatLoc;
 			}else if(sourceID == WumpusIDs.wumpus){
 				wumpusRelation = type;
 				if(type == LinkType.inLineWith || type == LinkType.inFrontOf)
 					inLineWithWumpus = true;	
-				if(sl.isAtTheSameLocationAs(1, 1))
-					safeToProceed = false;
-				wumpusLocation = sl;
+				if(spatLoc.isAtTheSameLocationAs(1, 1))
+					wumpusInFrontOf = true;
+				wumpusLocation = spatLoc;
 			}
 		}//for
+		if(!wumpusInFrontOf && !pitInFrontOf)
+			safeToProceed = true;
 	
 //		System.out.println("goldRelation " + goldRelation);
 //		System.out.println("inLineWithWumpus " + inLineWithWumpus);
