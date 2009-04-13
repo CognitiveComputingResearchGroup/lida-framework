@@ -158,9 +158,13 @@ public class PamNodeImpl implements PamNode{
      * @param j
      */
 	public boolean addNewWWLocation(int i, int j) {
-		boolean result = locationsOfThisNode.add(new SpatialLocation(i, j));		
-		return result;
-	}
+		SpatialLocation sl = new SpatialLocation(i, j);
+		boolean res = false;
+		synchronized(this){
+			locationsOfThisNode.add(sl);
+		}
+		return res;		
+	}//method
 	
 	public void clearAllWWLocations() {
 		locationsOfThisNode.clear();		

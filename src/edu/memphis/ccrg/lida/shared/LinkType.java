@@ -2,9 +2,9 @@ package edu.memphis.ccrg.lida.shared;
 
 public enum LinkType {
 	none,
-	leftof,
+	leftOf,
 	rightOf,
-	above,
+	inFrontOf,
 	below,
 	inLineWith,
 	//

@@ -102,9 +102,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 			guiContent.add(struct.getLinks().size());			
 			testGui.receiveGuiContent(FrameworkGui.FROM_SB_CODELETS, guiContent);
 		}//if not null
-		else{
-			System.out.println("SBCs received a null struct");
-		}
+
 	}//method
 
 	public void stopRunning(){

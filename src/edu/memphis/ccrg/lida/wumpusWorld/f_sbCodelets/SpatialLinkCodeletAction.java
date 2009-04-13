@@ -6,7 +6,6 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
@@ -17,6 +16,11 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	private int linkCount = 100;
+	
+	private char getAgentDirection(){
+		char direction = ' ';
+		return direction;
+	}
 	
 	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
 		//If I want to get a particular node in SB codelet then I need a map
@@ -61,38 +65,51 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 //		rightOf,
 //		above,
 //		below,
-//		inLineWith,
 		
 		LinkType type = LinkType.none;
 		int i = sl.getI();
 		int j = sl.getJ();		
 		
 		if(agentDirection == 'V'){
-			if(j == 1)
+			if(j == 1){
 				type = LinkType.inLineWith;
+				if(i == 1)
+					type = LinkType.inFrontOf;
+			}else if(j == 0 && i == 0){
+				type = LinkType.rightOf;
+			}else if(j == 2 && i == 0){
+				type = LinkType.leftOf;
+			}
 		}else if(agentDirection == 'A'){
-			if(j == 1)
+			if(j == 1){
 				type = LinkType.inLineWith;
-			
+				if(i == 1)
+					type = LinkType.inFrontOf;
+			}else if(j == 0 && i == 2){
+				type = LinkType.leftOf;
+			}else if(j == 2 && i == 2){
+				type = LinkType.rightOf;
+			}
 		}else if(agentDirection == '<'){
-			if(i == 1)
+			if(i == 1){
 				type = LinkType.inLineWith;
+				if(j == 1)
+					type = LinkType.inFrontOf;
+			}else if(i == 0 && j == 2)
+				type = LinkType.rightOf;
+			else if(i == 2 && j == 2)
+				type = LinkType.leftOf;
 		}else if(agentDirection == '>'){
-			if(i == 1)
+			if(i == 1){
 				type = LinkType.inLineWith;
+				if(j == 1)
+					type = LinkType.inFrontOf;
+			}else if(i == 2 && j == 0)
+				type = LinkType.rightOf;
+			else if(i == 0 && j == 0)
+				type = LinkType.leftOf;
 		}
-//		
-//		if(i == 0)
-//			type = LinkType.
-//		else if(i == 2)
-//			type = LinkType.
-//
-//	
-//		if(j == 0)
-//			type = LinkType.
-//		else if(j == 2)
-//			type = LinkType.
-//		
+
 		return type;		
 	}//method
 

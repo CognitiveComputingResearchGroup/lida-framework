@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Simulation;
 
 //import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class WorldApplication implements Runnable, Stoppable, ActionSelectionListener{
+public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener{
 	
 	private Simulation trial;
 	private long threadID;
@@ -22,9 +22,9 @@ public class WorldApplication implements Runnable, Stoppable, ActionSelectionLis
 		trial.stopRunning();		
 	}
 	
-	public WorldApplication(FrameworkTimer timer){
+	public WumpusWorld(FrameworkTimer timer){
 		int worldSize = 5;
-		int numPits = 3;				
+		int numPits = (int)(worldSize*worldSize*0.30);				
 		boolean nonDeterministicMode = false;
 		boolean randomAgentLoc = true;		
 	    Random rand = new Random();

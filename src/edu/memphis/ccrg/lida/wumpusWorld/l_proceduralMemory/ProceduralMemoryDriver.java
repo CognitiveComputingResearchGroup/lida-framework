@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.List;
 import java.util.HashSet;
 import java.util.ArrayList;
-import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -20,7 +19,7 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
-import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WorldApplication;
+import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusWorld;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
@@ -40,7 +39,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	private FrameworkGui testGui;
 	
 	//Specific to this module
-	private WorldApplication environment;//To send output
+	private WumpusWorld environment;//To send output
 	private BroadcastContent broadcastContent = null;//Received input TODO: not used in this implementation
 	private NodeStructure workspaceStructure = new GraphImpl();//The input for this impl.
 	/**
@@ -48,7 +47,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	 */
 	private boolean shouldDoNoOp = true;
 		
-	public ProceduralMemoryDriver(FrameworkTimer timer, WorldApplication environ) {
+	public ProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
 		environment = environ;		
 	}//constructor
@@ -69,7 +68,9 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			
 			sendGuiContent();
 			if(coolDown == 0){
-				ActionContent behaviorContent = getAppropriateBehavior();
+				ActionContentImpl behaviorContent = getAppropriateBehavior();
+				if(shouldDoNoOp)
+					behaviorContent.setContent(Action.NO_OP);
 				environment.receiveBehaviorContent(behaviorContent);
 				coolDown = 1;
 			}else
@@ -103,10 +104,8 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	 * 
 	 * @return
 	 */
-	private ActionContent getAppropriateBehavior() {		
+	private ActionContentImpl getAppropriateBehavior() {		
 		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);
-		if(shouldDoNoOp)
-			return action;
 		
 		GraphImpl g = (GraphImpl)workspaceStructure;
 		Map<Long, Node> nodeMap = g.getNodeMap();
@@ -118,6 +117,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		SpatialLocation wumpusLocation = new SpatialLocation();
 		Set<SpatialLocation> pitLocations = new HashSet<SpatialLocation>();
 		Set<SpatialLocation> wallLocations = new HashSet<SpatialLocation>();
+		LinkType goldRelation = LinkType.none;
 		boolean inLineWithWumpus = false;
 		boolean safeToProceed = true;
 		boolean canMoveForward = true;//TODO: wall node
@@ -128,14 +128,12 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			//All these links have sink as spatial location so I know source is the node.
 			long sourceID = source.getId();
 			SpatialLocation sl = (SpatialLocation)sink;
-			
-			if(source.getId() == WumpusIDs.wumpus && temp.getType() == LinkType.inLineWith)
-				inLineWithWumpus = true;				
+			LinkType type = temp.getType();
+					
 			
 			if(sourceID == WumpusIDs.pit){
 				if(sl.isAtTheSameLocationAs(1, 1)){
 					safeToProceed = false;
-					System.out.println("pit not safe");
 				}
 				pitLocations.add(sl);
 			}else if(sourceID == WumpusIDs.wall){
@@ -146,31 +144,51 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 				agentLocation = sl;
 				//agentDirection = sl.getDirection();				
 			}else if(sourceID == WumpusIDs.gold){
+				goldRelation = type;
 				goldLocation = sl;
 			}else if(sourceID == WumpusIDs.wumpus){
-				if(sl.isAtTheSameLocationAs(1, 1)){
+				if(type == LinkType.inLineWith || type == LinkType.inFrontOf)
+					inLineWithWumpus = true;	
+				if(sl.isAtTheSameLocationAs(1, 1))
 					safeToProceed = false;
-					System.out.println("wumpus not safe");
-				}
 				wumpusLocation = sl;
 			}
 		}//for
+	
+//		System.out.println("goldRelation " + goldRelation);
+//		System.out.println("inLineWithWumpus " + inLineWithWumpus);
+//		System.out.println("safeToProceed " + safeToProceed);
+//		System.out.println("canMoveForward " + canMoveForward);
+//		System.out.println("\n\n");
 		
 		//Production Rules		
-		if(agentLocation.isAtTheSameLocationAs(goldLocation)){
+		if(agentLocation.isAtTheSameLocationAs(goldLocation)){//Grab gold if on the same square
 			action.setContent(Action.GRAB);
-		}else if(inLineWithWumpus){
+		}else if(inLineWithWumpus){//Shoot wumpus if in line w/ it
 			action.setContent(Action.SHOOT);
 			System.out.println("shooting");
-		}else if(safeToProceed && canMoveForward){
-			action.setContent(Action.GO_FORWARD);	
-		}else{
+		}else if(goldRelation == LinkType.rightOf){//turn right when gold to right
+			action.setContent(Action.TURN_RIGHT);
+		}else if(goldRelation == LinkType.leftOf){//turn left when gold to left
 			action.setContent(Action.TURN_LEFT);
+		}else if(safeToProceed && (goldRelation == LinkType.inLineWith || goldRelation == LinkType.inFrontOf)){
+			action.setContent(Action.GO_FORWARD);
+		}else if(safeToProceed && canMoveForward){//go forward if safe
+			if(Math.random() > 0.1)
+				action.setContent(Action.GO_FORWARD);
+			else
+				action.setContent(Action.TURN_LEFT);
+		}else if(!safeToProceed && goldRelation == LinkType.inFrontOf){//Halt in unwinnable situation
+			action.setContent(Action.NO_OP);
+			System.out.println("I can't win!");
+		}else if(Math.random() > 0.5){ //else turn left or right randomly
+			action.setContent(Action.TURN_LEFT);
+		}else{
+			action.setContent(Action.TURN_RIGHT);
 		}
-
+		
 		return action;
 	}//method
-
 
 	public long getThreadID(){
 		return threadID;

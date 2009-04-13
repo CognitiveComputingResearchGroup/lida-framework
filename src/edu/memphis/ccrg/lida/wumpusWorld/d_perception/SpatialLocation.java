@@ -7,8 +7,8 @@ import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class SpatialLocation implements Node{
-	private int iLocation = Integer.MAX_VALUE;
-	private int jLocation = Integer.MAX_VALUE;
+	private int iLocation = (int)Math.random()*Integer.MAX_VALUE;
+	private int jLocation = (int)Math.random()*Integer.MAX_VALUE;
 	private String label = "spatial_location";
 	
 	public SpatialLocation(){
