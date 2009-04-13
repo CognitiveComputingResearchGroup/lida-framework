@@ -2,6 +2,9 @@ package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
@@ -9,6 +12,10 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
+import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
 	
@@ -73,6 +80,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 			System.out.println("codelet is getting null buffer content");
 		}
 	}//checkAndWorkOnBuffer
+
 
 	public void setActivation(double a){
 		activation = a;

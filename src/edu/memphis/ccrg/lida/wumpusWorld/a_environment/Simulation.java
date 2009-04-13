@@ -54,7 +54,7 @@ public class Simulation{
 		
 	}//Simulation
 	
-	public void addSimulationListener(EnvironmentListener listener){
+	public void addEnvironmentListener(EnvironmentListener listener){
 		listeners.add(listener);
 	}
 	
@@ -97,8 +97,8 @@ public class Simulation{
 			}	
 		}//while keepRunning and trials		
 		long finishTime = System.currentTimeMillis();			
-		System.out.println("\nSIM: Ave. cycle time: " + Misc.rnd((finishTime - startTime)/(double)stepCounter));		
-		System.out.println("SIM: Num. cycles: " + stepCounter);			
+		System.out.println("SIM: Ave. cycle time: " + Misc.rnd((finishTime - startTime)/(double)stepCounter));		
+		//System.out.println("SIM: Num. cycles: " + stepCounter);			
 		//printEndWorld();		
 	}//method runSim
 	
@@ -268,9 +268,7 @@ public class Simulation{
 		
 	}
 	
-	public void handleAction(int action) {
-		//System.out.println("action " + action + " is starting");
-		
+	public void handleAction(int action) {		
 			if (action == Action.GO_FORWARD) {				
 				if (environment.getBump() == true) environment.setBump(false);
 				
@@ -281,8 +279,7 @@ public class Simulation{
 					System.out.println("You die! ...but gnomes resurrect you.");
 					currScore += deathCost;
 					//keepRunning = false;
-					
-					agent.setIsDead(true);
+					//agent.setIsDead(true);
 				}
 				else {
 					currScore += actionCost;
@@ -304,75 +301,58 @@ public class Simulation{
 				lastAction = Action.TURN_RIGHT;
 			}
 			else if (action == Action.TURN_LEFT) {
-				
 				currScore += actionCost;
 				agent.turnLeft();		
 				environment.placeAgent(agent);
-				
 				if (environment.getBump() == true) environment.setBump(false);
 				if (environment.getScream() == true) environment.setScream(false);
-				
 				lastAction = Action.TURN_LEFT;
 			}
 			else if (action == Action.GRAB) {
 				
 				if (environment.grabGold() == true) {
-					
 					currScore += 1000;
 					//keepRunning = false;
-					System.out.println("Got the Gold!");
+					System.out.println("Grabbed for the gold and got it!");
 					agent.setHasGold(true);
 				}
 				else{
 					currScore += actionCost;
-					System.out.println("Grab gold fail");
+					System.out.println("Gold grab fail");
 				}
 				
 				environment.placeAgent(agent);
-				
 				if (environment.getBump() == true) environment.setBump(false);
 				if (environment.getScream() == true) environment.setScream(false);
-				
 				lastAction = Action.GRAB;
 			}
 			else if (action == Action.SHOOT) {
-				
+				System.out.println("Shooting the arrow");
 				if (agent.shootArrow() == true) {
-					
 					if (environment.shootArrow() == true){
 						environment.setScream(true);
-						System.out.println("RAAAAAAWWWWWRRRRRrrrr");
+						System.out.println("The beast howls.. RAAAAAAWWWWWRRRRRrrrr!");
 					}else{
-						System.out.println("Shot arrow fail");
+						System.out.println("Shooting the arrow fail");
 					}
 				
 					currScore += shootCost;					
 				}
 				else {
-					
 					if (environment.getScream() == true) environment.setScream(false);
-					
 					currScore += actionCost;
 				}
-				
 				environment.placeAgent(agent);
-				
 				if (environment.getBump() == true) environment.setBump(false);
-				
 				lastAction = Action.SHOOT;
 			}
 			else if (action == Action.NO_OP) {
-				
 				environment.placeAgent(agent);
-				
 				if (environment.getBump() == true) environment.setBump(false);
 				if (environment.getScream() == true) environment.setScream(false);
-				
 				lastAction = Action.NO_OP;
 			}
-			
-			//System.out.println("action " + action + " is ending");
-	}//
+	}//method
 	
 	public int getScore() {		
 		return currScore;		

@@ -1,15 +1,14 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
 
 public class CoalitionImpl implements Coalition{
 	
 	private NodeStructure struct;
 	
 	public CoalitionImpl() {
-		struct = new GraphImpl();
+		struct = new NodeStructureRyan();
 	}
 	
 	//coalition activation: average of all nodes in coalition (0.0 - 1.0) times activation of attention codelet  (0.0 - 1.0)

@@ -38,9 +38,9 @@ public class PAMDriver implements Runnable, Stoppable{
 			counter++;
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();			
-		System.out.println("\nPAM: Ave. cycle time: " + 
+		System.out.println("PAM: Ave. cycle time: " + 
 							Misc.rnd((finishTime - startTime)/(double)counter));
-		System.out.println("PAM: Num. cycles: " + counter + "\n");	
+		//System.out.println("PAM: Num. cycles: " + counter + "\n");	
 	}//method run
 	
 	public void stopRunning(){

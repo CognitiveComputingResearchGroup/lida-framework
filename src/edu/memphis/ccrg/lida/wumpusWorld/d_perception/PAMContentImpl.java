@@ -5,7 +5,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PAMContentImpl implements WorkspaceContent{
 
-	private NodeStructure graph = new GraphImpl();
+	private NodeStructure graph = new NodeStructureRyan();
 
 	public Object getContent(){
 		return graph;

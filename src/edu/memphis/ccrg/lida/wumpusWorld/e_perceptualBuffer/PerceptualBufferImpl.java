@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
-import edu.memphis.ccrg.lida.perception.PAMContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
@@ -12,7 +11,7 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PAMContentImpl;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
@@ -24,7 +23,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	private FrameworkGui testGui;	
 	
 	public PerceptualBufferImpl(){
-		pamContent = new GraphImpl();
+		pamContent = new NodeStructureRyan();
 		perceptBuffer = new ArrayList<NodeStructure>();
 		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//public Workspace()
@@ -42,10 +41,10 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	}
 	
 	private synchronized void storePAMContent(){
-		GraphImpl struct = (GraphImpl)pamContent.getContent();	
+		NodeStructureRyan struct = (NodeStructureRyan)pamContent.getContent();	
 		
 		if(struct != null)		
-			perceptBuffer.add(new GraphImpl(struct));			
+			perceptBuffer.add(new NodeStructureRyan(struct));			
 		
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);	
@@ -59,7 +58,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		storePAMContent();
 		
 		if(perceptBuffer.size() > 0){
-			GraphImpl tempGraph = new GraphImpl((GraphImpl)perceptBuffer.get(0));
+			NodeStructureRyan tempGraph = new NodeStructureRyan((NodeStructureRyan)perceptBuffer.get(0));
 			for(int i = 0; i < pbListeners.size(); i++){				
 				pbListeners.get(i).receivePBufferContent(tempGraph);				
 			}//for
@@ -77,7 +76,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	 * Currently objective not used.
 	 */
 	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
-		GraphImpl content = new GraphImpl();
+		NodeStructureRyan content = new NodeStructureRyan();
 		
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){

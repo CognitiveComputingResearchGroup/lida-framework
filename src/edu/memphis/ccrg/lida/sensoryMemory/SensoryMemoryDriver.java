@@ -31,9 +31,9 @@ public class SensoryMemoryDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();		
 			
-		System.out.println("\nSM: Ave. cycle time: " + 
+		System.out.println("SM : Ave. cycle time: " + 
 							Misc.rnd((finishTime - startTime)/(double)counter));
-		System.out.println("SM: Num. cycles: " + counter + "\n");			
+		//System.out.println("SM: Num. cycles: " + counter + "\n");			
 	}//method run
 	
 	public void stopRunning(){

@@ -27,9 +27,9 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
-		System.out.println("\nPBF: Ave. cycle time: " + 
+		System.out.println("PBF: Ave. cycle time: " + 
 							Misc.rnd((finishTime - startTime)/(double)counter));
-		System.out.println("PBF: Num. cycles: " + counter);		
+		//System.out.println("PBF: Num. cycles: " + counter);		
 	}//public void run()
 
 	public void stopRunning(){

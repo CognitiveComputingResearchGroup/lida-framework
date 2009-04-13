@@ -15,13 +15,14 @@ import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
+import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusWorld;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 /**
@@ -41,7 +42,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	//Specific to this module
 	private WumpusWorld environment;//To send output
 	private BroadcastContent broadcastContent = null;//Received input TODO: not used in this implementation
-	private NodeStructure workspaceStructure = new GraphImpl();//The input for this impl.
+	private NodeStructure workspaceStructure = new NodeStructureRyan();//The input for this impl.
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
@@ -62,20 +63,33 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	 */
 	public void run() {
 		int coolDown = 0;
+		int counter = 0;		
+		//boolean runOneStep = false;
+		
+		ActionContentImpl behaviorContent = new ActionContentImpl();
+		
+		long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(90 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 			
 			sendGuiContent();
 			if(coolDown == 0){
-				ActionContentImpl behaviorContent = getAppropriateBehavior();
 				if(shouldDoNoOp)
 					behaviorContent.setContent(Action.NO_OP);
+				else
+					behaviorContent = getAppropriateBehavior();
+				
 				environment.receiveBehaviorContent(behaviorContent);
 				coolDown = 1;
 			}else
-				coolDown--;		
-		}//while		
+				coolDown--;	
+			counter++;
+		}//while	
+		long finishTime = System.currentTimeMillis();				
+		System.out.println("Proc: Ave cycle time: " + 
+							Misc.rnd((finishTime - startTime)/(double)counter));
+		
 	}//method
 	
 	/**
@@ -107,7 +121,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	private ActionContentImpl getAppropriateBehavior() {		
 		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);
 		
-		GraphImpl g = (GraphImpl)workspaceStructure;
+		NodeStructureRyan g = (NodeStructureRyan)workspaceStructure;
 		Map<Long, Node> nodeMap = g.getNodeMap();
 		Set<Link> links = g.getLinks();
 		
@@ -118,6 +132,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		Set<SpatialLocation> pitLocations = new HashSet<SpatialLocation>();
 		Set<SpatialLocation> wallLocations = new HashSet<SpatialLocation>();
 		LinkType goldRelation = LinkType.none;
+		LinkType wumpusRelation = LinkType.none;
 		boolean inLineWithWumpus = false;
 		boolean safeToProceed = true;
 		boolean canMoveForward = true;//TODO: wall node
@@ -147,6 +162,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 				goldRelation = type;
 				goldLocation = sl;
 			}else if(sourceID == WumpusIDs.wumpus){
+				wumpusRelation = type;
 				if(type == LinkType.inLineWith || type == LinkType.inFrontOf)
 					inLineWithWumpus = true;	
 				if(sl.isAtTheSameLocationAs(1, 1))
@@ -166,7 +182,6 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			action.setContent(Action.GRAB);
 		}else if(inLineWithWumpus){//Shoot wumpus if in line w/ it
 			action.setContent(Action.SHOOT);
-			System.out.println("shooting");
 		}else if(goldRelation == LinkType.rightOf){//turn right when gold to right
 			action.setContent(Action.TURN_RIGHT);
 		}else if(goldRelation == LinkType.leftOf){//turn left when gold to left
@@ -178,9 +193,10 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 				action.setContent(Action.GO_FORWARD);
 			else
 				action.setContent(Action.TURN_LEFT);
-		}else if(!safeToProceed && goldRelation == LinkType.inFrontOf){//Halt in unwinnable situation
+		}else if(!safeToProceed && goldRelation == LinkType.inFrontOf && wumpusRelation != LinkType.inFrontOf){//Halt in unwinnable situation
 			action.setContent(Action.NO_OP);
-			System.out.println("I can't win!");
+			System.out.println("I can't win so I'm giving up.");
+			keepRunning = false;
 		}else if(Math.random() > 0.5){ //else turn left or right randomly
 			action.setContent(Action.TURN_LEFT);
 		}else{
@@ -204,7 +220,11 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 
 	public synchronized void pauseActionSelection() {
 		shouldDoNoOp = !shouldDoNoOp;		
-		System.out.println("action selection operating " + !shouldDoNoOp);
+		if(shouldDoNoOp){
+			System.out.println("Agent action selection stopped");
+		}else{
+			System.out.println("Agent action selection started");
+		}
 	}
 
 }//class

@@ -34,8 +34,8 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	   	trial = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
 	}
 	
-	public void addSimulationListener(EnvironmentListener listener){
-		trial.addSimulationListener(listener);
+	public void addEnvironmentListener(EnvironmentListener listener){
+		trial.addEnvironmentListener(listener);
 	}
 	
 

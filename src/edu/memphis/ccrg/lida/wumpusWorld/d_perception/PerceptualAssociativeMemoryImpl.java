@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
-import edu.memphis.ccrg.lida.perception.PAMContent;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
@@ -44,8 +43,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     /**
      * Nodes that receive activation from SM. Key is the node's label.
      */
-	public Set<FeatureDetector> featureDetectors;
-	private GraphImpl graph;
+	public List<FeatureDetector> featureDetectors;
+	private NodeStructureRyan graph;
 	
 	private DecayBehavior decayBehavior = new LinearDecayCurve();
     
@@ -58,8 +57,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	private int numNodeInPercept = 0;//for GUI
       
     public PerceptualAssociativeMemoryImpl(){
-    	featureDetectors = new HashSet<FeatureDetector>();
-    	graph = new GraphImpl();
+    	featureDetectors = new ArrayList<FeatureDetector>();
+    	graph = new NodeStructureRyan();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
@@ -89,7 +88,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
-    public void addToPAM(Set<Node> nodesToAdd, Set<FeatureDetector> featureDetectors, Set<Link> linkSet){
+    public void addToPAM(Set<Node> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd, upscale, selectivity);
     	graph.addLinkSet(linkSet);    	
@@ -160,7 +159,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * @see PamNodeImpl#synchronize()
      */
     private void syncNodeActivation(){
-        GraphImpl newGraph = new GraphImpl();
+        NodeStructureRyan newGraph = new NodeStructureRyan();
         Set<Node> nodes = graph.getNodes();
         int numNodes = 0;
         

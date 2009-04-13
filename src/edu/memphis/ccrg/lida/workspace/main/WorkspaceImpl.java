@@ -10,7 +10,6 @@ import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.perception.PAMContent;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -30,7 +29,7 @@ import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsCont
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
 
 /**
  * 
@@ -145,7 +144,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		}else if(moduleID == Workspace.PBROADS){
 			return prevBroads.getCodeletsObjective(soughtContent);
 		}
-		return new GraphImpl();
+		return new NodeStructureRyan();
 	}//method
 	
 }//class

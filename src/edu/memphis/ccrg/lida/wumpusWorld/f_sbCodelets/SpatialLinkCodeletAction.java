@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.GraphImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
@@ -17,44 +17,40 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	private int linkCount = 100;
 	
-	private char getAgentDirection(){
-		char direction = ' ';
-		return direction;
-	}
-	
-	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
-		//If I want to get a particular node in SB codelet then I need a map
-		GraphImpl g = (GraphImpl)content;
-		Map<Long, Node> nodeMap = g.getNodeMap();
-		PamNodeImpl agent = (PamNodeImpl)nodeMap.get(WumpusIDs.agent);
-		char agentDirection = ' ';
+	private char getAgentDirection(NodeStructureRyan g){
+		char dir = ' ';
+		PamNodeImpl agent = (PamNodeImpl)g.getNodeById(WumpusIDs.agent);
 		if(agent != null){
 			Set<SpatialLocation> locs = agent.getLocations();
 			for(SpatialLocation sl: locs)
-				agentDirection = sl.getDirection();		
-			//System.out.println(agentDirection);		
-		}//
-	
-		Set<Node> nodes = g.getNodes();		
-		for(Node n: nodes){
-			if(n instanceof PamNodeImpl){
-				PamNodeImpl temp = (PamNodeImpl)n;
-				Set<SpatialLocation> originalLocs = temp.getLocations();
-				Set<SpatialLocation> copiedLocs = new HashSet<SpatialLocation>();
-				synchronized(this){
-					for(SpatialLocation oldSL: originalLocs)
-						copiedLocs.add(new SpatialLocation(oldSL));
-				}//
-				
-				for(SpatialLocation sl: copiedLocs){
-					LinkType t = calcRelationType(sl, agentDirection);
-					LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
+				dir = sl.getDirection();	
+		}
 		
-					g.addLink(newLink);
-				}//for
+		return dir;
+	}
+
+	
+	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
+		NodeStructureRyan graph = (NodeStructureRyan)content;		
+		char agentDirection = getAgentDirection(graph);
+	
+		Set<Node> nodes = graph.getNodes();		
+		for(Node n: nodes){
+			PamNodeImpl temp = (PamNodeImpl)n;
+			Set<SpatialLocation> originalLocs = temp.getLocations();
+			Set<SpatialLocation> copiedLocs = new HashSet<SpatialLocation>();
+			synchronized(this){
+				for(SpatialLocation oldSL: originalLocs)
+					copiedLocs.add(new SpatialLocation(oldSL));
+			}//
 				
-			}//if
-		}//for	
+			for(SpatialLocation sl: copiedLocs){
+				LinkType t = calcRelationType(sl, agentDirection);
+				LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
+				graph.addLink(newLink);
+			}//for
+				
+		}//for nodes 
 		
 		return content;
 	}//method

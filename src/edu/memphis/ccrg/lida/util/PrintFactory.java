@@ -172,14 +172,14 @@ public class PrintFactory
         }
     }
     
-    public static String format(Collection data)
+    public static String format(Collection<Object> data)
     {
         String str = null;
         
         if(data != null)
         {
             str = "";
-            for(Iterator i = data.iterator(); i.hasNext();)
+            for(Iterator<Object> i = data.iterator(); i.hasNext();)
                 str += i.next().toString();
         }
         return str;

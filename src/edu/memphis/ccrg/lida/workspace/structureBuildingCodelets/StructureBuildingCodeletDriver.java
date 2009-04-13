@@ -67,9 +67,9 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 			counter++;			
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
-		System.out.println("\nCODE: Ave. cycle time: " + 
+		System.out.println("SBC: Ave. cycle time: " + 
 							Misc.rnd((finishTime - startTime)/(double)counter));
-		System.out.println("CODE: Num. cycles: " + counter);		
+		//System.out.println("CODE: Num. cycles: " + counter);		
 	}//method
 
 	private void spawnNewCodelet(Workspace w, boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads, 

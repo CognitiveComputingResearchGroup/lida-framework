@@ -59,7 +59,7 @@ class Environment {
 			bar = bar + "-";
 		}
 		
-		for (int i = 0; i < (worldSize * 5) + worldSize - 3; i++) {
+		for (int i = 0; i < (worldSize * 5) + worldSize - 5; i++) {
 			bar2 = bar2 + "-";
 		}
 		
