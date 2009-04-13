@@ -175,7 +175,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		}//for
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
-	
+		
 //		System.out.println("goldRelation " + goldRelation);
 //		System.out.println("inLineWithWumpus " + inLineWithWumpus);
 //		System.out.println("safeToProceed " + safeToProceed);
@@ -187,9 +187,9 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			action.setContent(Action.GRAB);
 		}else if(inLineWithWumpus){//Shoot wumpus if in line w/ it
 			action.setContent(Action.SHOOT);
-		}else if(goldRelation == LinkType.rightOf){//turn right when gold to right
+		}else if(goldRelation == LinkType.rightOf || wumpusRelation == LinkType.rightOf){//turn right when gold to right
 			action.setContent(Action.TURN_RIGHT);
-		}else if(goldRelation == LinkType.leftOf){//turn left when gold to left
+		}else if(goldRelation == LinkType.leftOf || wumpusRelation == LinkType.leftOf){//turn left when gold to left
 			action.setContent(Action.TURN_LEFT);
 		}else if(safeToProceed && (goldRelation == LinkType.inLineWith || goldRelation == LinkType.inFrontOf)){
 			action.setContent(Action.GO_FORWARD);

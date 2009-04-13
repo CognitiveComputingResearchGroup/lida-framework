@@ -80,4 +80,8 @@ public class FrameworkTimer {
 		return shouldWait;
 	}
 	
+	public boolean threadsArePaused(){
+		return shouldWait;
+	}
+	
 }//class FrameworkTimer

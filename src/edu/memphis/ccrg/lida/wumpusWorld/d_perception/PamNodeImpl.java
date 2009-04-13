@@ -171,7 +171,14 @@ public class PamNodeImpl implements PamNode{
 	}
 	
 	public Set<SpatialLocation> getLocations(){
-		return locationsOfThisNode;
+		Set<SpatialLocation> result = new HashSet<SpatialLocation>();
+		synchronized(this){
+			for(SpatialLocation sl: locationsOfThisNode){
+				result.add(new SpatialLocation(sl));
+			}
+		}
+		
+		return result;
 	}
 	
     /**

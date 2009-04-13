@@ -46,13 +46,29 @@ public class Simulation{
 		//
 		transferPercept = new TransferPercept(environment);
 		agent = new Agent(environment, transferPercept, nonDeterministic);	
+		environment.placeAgent(agent);
+		
 		currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
 		for(int i = 0; i < currentDirectionalSense.length; i++)
 			for(int j = 0; j < currentDirectionalSense.length; j++)
 				for(int k = 0; k < currentDirectionalSense.length; k++)
-					currentDirectionalSense[i][j][k] = 0;
-		
+					currentDirectionalSense[i][j][k] = '0';		
 	}//Simulation
+	
+	public void setNewEnvironment(Environment wumpusEnvironment) {
+		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
+			environment = wumpusEnvironment;
+			transferPercept = new TransferPercept(environment);
+			agent = new Agent(environment, transferPercept, nonDeterministic);	
+			environment.placeAgent(agent);
+			
+			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
+			for(int i = 0; i < currentDirectionalSense.length; i++)
+				for(int j = 0; j < currentDirectionalSense.length; j++)
+					for(int k = 0; k < currentDirectionalSense.length; k++)
+						currentDirectionalSense[i][j][k] = '0';		
+		}		
+	}//method
 	
 	public void addEnvironmentListener(EnvironmentListener listener){
 		listeners.add(listener);
@@ -67,13 +83,11 @@ public class Simulation{
 		Integer currentAction = new Integer(-1);
 		boolean runOneStep = false;
 		int stepCounter = 0;		
-		environment.placeAgent(agent);
 	
 		long startTime = System.currentTimeMillis();			
 		while(keepRunning){
-			try{Thread.sleep(50);
-			}catch(Exception e){}			
-			timer.checkForStartPause();//won't return if paused until started again			
+			try{Thread.sleep(50);}catch(Exception e){}			
+			timer.checkForStartPause();//Doesn't return if 'pause' clicked in the gui until another gui click			
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);
 			
 			senseEnvironment();		
@@ -90,16 +104,14 @@ public class Simulation{
 				if(!currentAction.equals(null))
 					handleAction(currentAction);
 			}//if actionHasChanged		
-
-			stepCounter++;				
-			if (keepRunning == false) {				
-				lastAction = Action.END_TRIAL;
-			}	
+							
+			if(keepRunning == false)			
+				lastAction = Action.END_TRIAL;	
+			stepCounter++;
 		}//while keepRunning and trials		
 		long finishTime = System.currentTimeMillis();			
 		System.out.println("SIM: Ave. cycle time: " + Misc.rnd((finishTime - startTime)/(double)stepCounter));		
-		//System.out.println("SIM: Num. cycles: " + stepCounter);			
-		//printEndWorld();		
+		//System.out.println("SIM: Num. cycles: " + stepCounter);				
 	}//method runSim
 	
 	private void printDirectionalSense() {
@@ -112,12 +124,10 @@ public class Simulation{
 			}
 			System.out.println("\n");
 		}
-		
-	}
+	}//method
 	
 	private String directionalSenseToString(){
 		String s = "\n\n";
-		
 		for(int i = 0; i < currentDirectionalSense.length; i++){
 			for(int j = 0; j < currentDirectionalSense[0].length; j++){
 				s += "(";
@@ -128,8 +138,6 @@ public class Simulation{
 			}
 			s += "\n\n";
 		}
-		
-		
 		return s;
 	}
 
@@ -194,25 +202,12 @@ public class Simulation{
 	}//senseEnvironment	
 	
 	public void printEndWorld() {
-		
-		try {			
-			environment.printEnvironment();
-			
-			System.out.println("Final score: " + currScore);
-			//outputWriter.write("Final score: " + currScore + "\n");
-			
-			System.out.println("Last action: " + Action.printAction(lastAction));
-			//outputWriter.write("Last action: " + Action.printAction(lastAction) + "\n");
-
-		}
-		catch (Exception e) {
-			System.out.println("An exception was thrown: " + e);
-		}
-		
+		environment.printEnvironment();
+		System.out.println("Final score: " + currScore);
+		System.out.println("Last action: " + Action.printAction(lastAction));
 	}
 	
 	public void printCurrentPerceptSequence() {
-		
 		System.out.println("Percept: <bump, glitter, breeze, stench, scream>");
 		
 		try {
@@ -270,7 +265,8 @@ public class Simulation{
 	
 	public void handleAction(int action) {		
 			if (action == Action.GO_FORWARD) {				
-				if (environment.getBump() == true) environment.setBump(false);
+				if (environment.getBump() == true) 
+					environment.setBump(false);
 				
 				agent.goForward();
 				environment.placeAgent(agent);
@@ -364,5 +360,6 @@ public class Simulation{
 
 	public long getThreadID() {
 		return threadID;
-	}	
+	}
+
 }//class Simulation

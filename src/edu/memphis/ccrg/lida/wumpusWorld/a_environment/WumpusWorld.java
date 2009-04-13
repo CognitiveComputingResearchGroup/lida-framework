@@ -16,28 +16,36 @@ import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Simulation;
 public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener{
 	
 	private Simulation trial;
+	private FrameworkTimer timer;
 	private long threadID;
+	private int worldSize = 5;
+	private int numPits = (int)(worldSize*worldSize*0.30);				
+	private boolean nonDeterministicMode = false;
+	private boolean randomAgentLoc = true;	
 	
 	public void stopRunning(){
 		trial.stopRunning();		
 	}
 	
 	public WumpusWorld(FrameworkTimer timer){
-		int worldSize = 5;
-		int numPits = (int)(worldSize*worldSize*0.30);				
-		boolean nonDeterministicMode = false;
-		boolean randomAgentLoc = true;		
-	    Random rand = new Random();
-	    int seed = rand.nextInt();	    
+		this.timer = timer;
+		//
+	    int seed = new Random().nextInt();	    
 	    char[][][] wumpusWorld = generateRandomWumpusWorld(seed, worldSize, randomAgentLoc, numPits);
-	    Environment wumpusEnvironment = new Environment(worldSize, wumpusWorld); //, outputWriter);
+	    Environment wumpusEnvironment = new Environment(worldSize, wumpusWorld);
 	   	trial = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
+	}
+
+	public void getNewEnvironment() {
+		int seed = new Random().nextInt();
+		char[][][] wumpusWorld = generateRandomWumpusWorld(seed, worldSize, randomAgentLoc, numPits);
+	    Environment wumpusEnvironment = new Environment(worldSize, wumpusWorld);
+		trial.setNewEnvironment(wumpusEnvironment);
 	}
 	
 	public void addEnvironmentListener(EnvironmentListener listener){
 		trial.addEnvironmentListener(listener);
 	}
-	
 
 	public void receiveBehaviorContent(ActionContent c) {
 		trial.receiveBehaviorContent(c);		
@@ -241,5 +249,6 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	    
 	    //System.out.println("\nFinished.");			
 	}//run2	
+
 	
 }//class WorldApplication

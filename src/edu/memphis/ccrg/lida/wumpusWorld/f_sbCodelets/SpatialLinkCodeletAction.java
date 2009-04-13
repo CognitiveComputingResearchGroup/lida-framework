@@ -37,14 +37,9 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 		Set<Node> nodes = graph.getNodes();		
 		for(Node n: nodes){
 			PamNodeImpl temp = (PamNodeImpl)n;
-			Set<SpatialLocation> originalLocs = temp.getLocations();
-			Set<SpatialLocation> copiedLocs = new HashSet<SpatialLocation>();
-			synchronized(this){
-				for(SpatialLocation oldSL: originalLocs)
-					copiedLocs.add(new SpatialLocation(oldSL));
-			}//
-				
-			for(SpatialLocation sl: copiedLocs){
+			Set<SpatialLocation> locations = temp.getLocations();
+
+			for(SpatialLocation sl: locations){
 				LinkType t = calcRelationType(sl, agentDirection);
 				LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
 				graph.addLink(newLink);
