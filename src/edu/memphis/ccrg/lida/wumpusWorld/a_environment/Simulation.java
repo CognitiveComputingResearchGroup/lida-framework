@@ -67,6 +67,7 @@ public class Simulation{
 				for(int j = 0; j < currentDirectionalSense.length; j++)
 					for(int k = 0; k < currentDirectionalSense.length; k++)
 						currentDirectionalSense[i][j][k] = '0';		
+			System.out.println("\n Environment Reset \n");
 		}		
 	}//method
 	

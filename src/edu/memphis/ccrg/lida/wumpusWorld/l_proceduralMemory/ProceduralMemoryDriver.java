@@ -201,7 +201,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		}else if(!safeToProceed && goldRelation == LinkType.inFrontOf && wumpusRelation != LinkType.inFrontOf){//Halt in unwinnable situation
 			action.setContent(Action.NO_OP);
 			System.out.println("I can't win so I'm giving up.");
-			keepRunning = false;
+			//keepRunning = false;
 		}else if(Math.random() > 0.5){ //else turn left or right randomly
 			action.setContent(Action.TURN_LEFT);
 		}else{

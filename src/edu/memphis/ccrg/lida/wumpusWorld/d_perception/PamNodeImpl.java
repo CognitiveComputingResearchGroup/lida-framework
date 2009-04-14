@@ -161,12 +161,12 @@ public class PamNodeImpl implements PamNode{
 		SpatialLocation sl = new SpatialLocation(i, j);
 		boolean res = false;
 		synchronized(this){
-			locationsOfThisNode.add(sl);
+			res = locationsOfThisNode.add(sl);
 		}
 		return res;		
 	}//method
 	
-	public void clearAllWWLocations() {
+	public synchronized void clearAllWWLocations() {
 		locationsOfThisNode.clear();		
 	}
 	
@@ -395,11 +395,10 @@ public class PamNodeImpl implements PamNode{
 		this.label = label;		
 	}
 
-	public void printSpatialLocations() {
+	public synchronized void printSpatialLocations() {
 		for(SpatialLocation sl: locationsOfThisNode){
 			System.out.println(this.label + " at " + sl.getI() + " " + sl.getJ());
-		}
-		
-	}
+		}		
+	}//method
 
 }//class Node
