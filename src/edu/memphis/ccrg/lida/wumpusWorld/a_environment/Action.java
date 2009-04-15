@@ -27,14 +27,10 @@ public class Action {
 	public static int NO_OP = 6;
 	public static int END_TRIAL = 7;
 	
-	public Action() {
-		
-		// nothing to construct...
-		
-	}
+	public Action() {}
+
 	
-	public static String printAction(int action) {
-		
+	public static String getActionString(int action) {
 		if (action == 0) return "START_TRIAL";
 		else if (action == 1) return "GO_FORWARD";
 		else if (action == 2) return "TURN_RIGHT";
@@ -43,7 +39,6 @@ public class Action {
 		else if (action == 5) return "SHOOT";
 		else if (action == 6) return "NO_OP";
 		else return "END_TRIAL";
-		
 	}
 	
 }

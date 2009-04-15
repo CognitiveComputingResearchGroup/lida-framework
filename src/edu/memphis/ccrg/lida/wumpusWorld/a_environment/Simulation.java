@@ -2,9 +2,6 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 
 import java.util.ArrayList;
-
-
-
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
@@ -38,6 +35,7 @@ public class Simulation{
 	private boolean keepRunning = true;	
 	private FrameworkTimer timer;
 	private long threadID;
+	private String message = "";
 	
 	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet){ 		
 		this.timer = timer;
@@ -67,7 +65,7 @@ public class Simulation{
 				for(int j = 0; j < currentDirectionalSense.length; j++)
 					for(int k = 0; k < currentDirectionalSense.length; k++)
 						currentDirectionalSense[i][j][k] = '0';		
-			System.out.println("\n Environment Reset \n");
+			System.out.println("\nEnvironment was reset.\n");
 		}		
 	}//method
 	
@@ -92,7 +90,8 @@ public class Simulation{
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);
 			
 			senseEnvironment();		
-			simContent.setContent(currentDirectionalSense, environment.getEnvironmentString(), directionalSenseToString());			
+			simContent.setContent(currentDirectionalSense, environment.getEnvironmentString(), 
+								directionalSenseToString(), message , Action.getActionString(lastAction));			
 			
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveSimContent(simContent);
@@ -205,7 +204,7 @@ public class Simulation{
 	public void printEndWorld() {
 		environment.printEnvironment();
 		System.out.println("Final score: " + currScore);
-		System.out.println("Last action: " + Action.printAction(lastAction));
+		System.out.println("Last action: " + Action.getActionString(lastAction));
 	}
 	
 	public void printCurrentPerceptSequence() {
@@ -274,6 +273,7 @@ public class Simulation{
 				
 				if (environment.checkDeath() == true) {
 					System.out.println("You die! ...but gnomes resurrect you.");
+					message = "Died but resurrected.";
 					currScore += deathCost;
 					//keepRunning = false;
 					//agent.setIsDead(true);
@@ -311,11 +311,13 @@ public class Simulation{
 					currScore += 1000;
 					//keepRunning = false;
 					System.out.println("Grabbed for the gold and got it!");
+					message = "Got the Gold";
 					agent.setHasGold(true);
 				}
 				else{
 					currScore += actionCost;
 					System.out.println("Gold grab fail");
+					message = "Gold grab failed";
 				}
 				
 				environment.placeAgent(agent);
@@ -329,8 +331,10 @@ public class Simulation{
 					if (environment.shootArrow() == true){
 						environment.setScream(true);
 						System.out.println("The beast howls.. RAAAAAAWWWWWRRRRRrrrr!");
+						message = "Wumpus killed";
 					}else{
 						System.out.println("Shooting the arrow fail");
+						message = "Arrow missed";
 					}
 				
 					currScore += shootCost;					

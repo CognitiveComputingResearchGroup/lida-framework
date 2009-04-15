@@ -73,6 +73,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 			synchronized(this){
 				upscale = (Double)o;
 			}
+			System.out.println("new upscale is " + upscale);
 		}
 		//TODO: Graph has its own parameters?
 		o = parameters.get("downscale");
@@ -85,6 +86,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 			synchronized(this){
 				selectivity = (Double)o;   	
 			}
+			System.out.println("new selectivity is " + selectivity);
 		}
     }//public void setParameters(Map<String, Object> parameters)
     
