@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
    
-public class NodeStructureRyan implements NodeStructure{
+public class RyanNodeStructure implements NodeStructure{
 
 	/**
 	 * TODO: the counting functionality needs work
@@ -50,7 +50,7 @@ public class NodeStructureRyan implements NodeStructure{
 	/**
 	 * Default Constructor
 	 */
-	public NodeStructureRyan() {
+	public RyanNodeStructure() {
 		nodes = new HashSet<Node>();
 		nodeMap = new HashMap<Long, Node>();
 		linkMap = new HashMap<Linkable, Set<Link>>();
@@ -61,7 +61,7 @@ public class NodeStructureRyan implements NodeStructure{
 	 * Copy constructor 
 	 * @param oldGraph
 	 */	
-	public NodeStructureRyan(NodeStructureRyan oldGraph){
+	public RyanNodeStructure(RyanNodeStructure oldGraph){
 		this.linkCount = oldGraph.linkCount;
 		
 		nodes = new HashSet<Node>();
@@ -352,7 +352,7 @@ public class NodeStructureRyan implements NodeStructure{
 	}
 	
 	public NodeStructure copy() {
-		return new NodeStructureRyan();
+		return new RyanNodeStructure();
 	}
 	
 	//TODO: Happens to the other nodes if we delete a Linkable that connects them?

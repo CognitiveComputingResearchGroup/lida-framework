@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusWorld;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 /**
@@ -42,7 +42,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	//Specific to this module
 	private WumpusWorld environment;//To send output
 	private BroadcastContent broadcastContent = null;//Received input TODO: not used in this implementation
-	private NodeStructure workspaceStructure = new NodeStructureRyan();//The input for this impl.
+	private NodeStructure workspaceStructure = new RyanNodeStructure();//The input for this impl.
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
@@ -121,7 +121,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	private ActionContentImpl getAppropriateBehavior() {		
 		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);
 		
-		NodeStructureRyan g = (NodeStructureRyan)workspaceStructure;
+		RyanNodeStructure g = (RyanNodeStructure)workspaceStructure;
 		Map<Long, Node> nodeMap = g.getNodeMap();
 		Set<Link> links = g.getLinks();
 		

@@ -7,15 +7,15 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
-	private NodeStructure struct = new NodeStructureRyan();
+	private NodeStructure struct = new RyanNodeStructure();
 	private List<CSMListener> csmListeners = new ArrayList<CSMListener>();
 	
 	public CurrentSituationalModelImpl(){
-		struct = new NodeStructureRyan();
+		struct = new RyanNodeStructure();
 	}
 	
 	public void addCSMListener(CSMListener l){

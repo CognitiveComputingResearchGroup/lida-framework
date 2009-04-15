@@ -43,7 +43,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * Nodes that receive activation from SM. Key is the node's label.
      */
 	public List<FeatureDetector> featureDetectors;
-	private NodeStructureRyan graph;
+	private RyanNodeStructure graph;
 	
 	private DecayBehavior decayBehavior = new LinearDecayCurve();
     
@@ -57,7 +57,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new ArrayList<FeatureDetector>();
-    	graph = new NodeStructureRyan();
+    	graph = new RyanNodeStructure();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
@@ -160,7 +160,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * @see PamNodeImpl#synchronize()
      */
     private void syncNodeActivation(){
-        NodeStructureRyan newGraph = new NodeStructureRyan();
+        RyanNodeStructure newGraph = new RyanNodeStructure();
         Set<Node> nodes = graph.getNodes();
         int numNodes = 0;
         

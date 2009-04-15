@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PAMContentImpl;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
@@ -23,7 +23,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	private FrameworkGui testGui;	
 	
 	public PerceptualBufferImpl(){
-		pamContent = new NodeStructureRyan();
+		pamContent = new RyanNodeStructure();
 		perceptBuffer = new ArrayList<NodeStructure>();
 		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//public Workspace()
@@ -41,10 +41,10 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	}
 	
 	private synchronized void storePAMContent(){
-		NodeStructureRyan struct = (NodeStructureRyan)pamContent.getContent();	
+		RyanNodeStructure struct = (RyanNodeStructure)pamContent.getContent();	
 		
 		if(struct != null)		
-			perceptBuffer.add(new NodeStructureRyan(struct));			
+			perceptBuffer.add(new RyanNodeStructure(struct));			
 		
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);	
@@ -58,7 +58,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		storePAMContent();
 		
 		if(perceptBuffer.size() > 0){
-			NodeStructureRyan tempGraph = new NodeStructureRyan((NodeStructureRyan)perceptBuffer.get(0));
+			RyanNodeStructure tempGraph = new RyanNodeStructure((RyanNodeStructure)perceptBuffer.get(0));
 			for(int i = 0; i < pbListeners.size(); i++){				
 				pbListeners.get(i).receivePBufferContent(tempGraph);				
 			}//for
@@ -76,7 +76,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	 * Currently objective not used.
 	 */
 	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
-		NodeStructureRyan content = new NodeStructureRyan();
+		RyanNodeStructure content = new RyanNodeStructure();
 		
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){

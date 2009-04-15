@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsCont
 import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
 /**
  * 
@@ -144,7 +144,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		}else if(moduleID == Workspace.PBROADS){
 			return prevBroads.getCodeletsObjective(soughtContent);
 		}
-		return new NodeStructureRyan();
+		return new RyanNodeStructure();
 	}//method
 	
 }//class

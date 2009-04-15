@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.NodeStructureRyan;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
@@ -17,7 +17,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	private int linkCount = 100;
 	
-	private char getAgentDirection(NodeStructureRyan g){
+	private char getAgentDirection(RyanNodeStructure g){
 		char dir = ' ';
 		PamNodeImpl agent = (PamNodeImpl)g.getNodeById(WumpusIDs.agent);
 		if(agent != null){
@@ -31,7 +31,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 
 	
 	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
-		NodeStructureRyan graph = (NodeStructureRyan)content;		
+		RyanNodeStructure graph = (RyanNodeStructure)content;		
 		char agentDirection = getAgentDirection(graph);
 	
 		Set<Node> nodes = graph.getNodes();		
