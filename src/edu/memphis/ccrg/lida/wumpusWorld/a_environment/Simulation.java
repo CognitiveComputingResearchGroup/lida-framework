@@ -352,6 +352,12 @@ public class Simulation{
 				if (environment.getBump() == true) environment.setBump(false);
 				if (environment.getScream() == true) environment.setScream(false);
 				lastAction = Action.NO_OP;
+			}else if(action == Action.END_TRIAL){
+				message = "I can't win, giving up.";
+				environment.placeAgent(agent);
+				if (environment.getBump() == true) environment.setBump(false);
+				if (environment.getScream() == true) environment.setScream(false);
+				lastAction = Action.NO_OP;			
 			}
 	}//method
 	

@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
 import java.util.Set; 
 import java.util.Map;
 import java.util.List;
-import java.util.HashSet;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
@@ -73,7 +72,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 			synchronized(this){
 				upscale = (Double)o;
 			}
-			System.out.println("new upscale is " + upscale);
+			//System.out.println("new upscale is " + upscale);
 		}
 		//TODO: Graph has its own parameters?
 		o = parameters.get("downscale");
@@ -86,7 +85,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 			synchronized(this){
 				selectivity = (Double)o;   	
 			}
-			System.out.println("new selectivity is " + selectivity);
+			//System.out.println("new selectivity is " + selectivity);
 		}
     }//public void setParameters(Map<String, Object> parameters)
     

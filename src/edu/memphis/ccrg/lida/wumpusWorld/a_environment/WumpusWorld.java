@@ -17,7 +17,7 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	
 	private Simulation trial;
 	private long threadID;
-	private final int wumpusWorldDimensionSize = 4;
+	private final int wumpusWorldDimensionSize = 5;
 	private int numPits = (int)(wumpusWorldDimensionSize*wumpusWorldDimensionSize*0.35);				
 	private boolean nonDeterministicMode = false;
 	private boolean randomAgentLoc = true;	
