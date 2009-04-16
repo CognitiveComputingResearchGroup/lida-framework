@@ -387,10 +387,6 @@ public class PamNodeImpl implements PamNode{
 		
 	}
 
-	public void setID(long id) {
-		nodeID = id;		
-	}
-
 	public void setLabel(String label) {
 		this.label = label;		
 	}
@@ -400,5 +396,14 @@ public class PamNodeImpl implements PamNode{
 			System.out.println(this.label + " at " + sl.getI() + " " + sl.getJ());
 		}		
 	}//method
+
+	public void setId(long id) {
+		nodeID = id;		
+	}
+
+	public Node copy(Node n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }//class Node

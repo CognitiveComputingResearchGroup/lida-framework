@@ -191,6 +191,16 @@ public class SpatialLocation implements Node{
 
 	public boolean isAtTheSameLocationAs(int i, int j) {
 		return (iLocation == i) && (jLocation == j);
+	}
+
+	public void setId(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Node copy(Node n) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 	
 }

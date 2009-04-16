@@ -2,6 +2,11 @@ package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
@@ -67,7 +72,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 		WorkspaceContent bufferContent = workspace.getCodeletDesiredContent(i, soughtContent);
 		
 		if(bufferContent != null){
-			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);
+			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);			
 			workspace.addContentToCSM(updatedContent);
 		}else{
 			System.out.println("codelet is getting null buffer content");

@@ -2,6 +2,10 @@ package edu.memphis.ccrg.lida.wumpusWorld.i_csm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
@@ -28,7 +32,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	}//method
 	
 	public synchronized void addWorkspaceContent(WorkspaceContent content) {
-		struct = (NodeStructure)content;
+		struct = (NodeStructure)content;		
 	}//method
 
 	public boolean hasContent(NodeStructure whatIwant) {

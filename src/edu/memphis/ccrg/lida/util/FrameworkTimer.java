@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.util;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashMap;
 
 public class FrameworkTimer {
 	
@@ -27,11 +27,11 @@ public class FrameworkTimer {
 	
 	public synchronized void toggleRunningThreads(){
 		shouldWait = !shouldWait;
-	}
+	}//
 
 	public synchronized void resumeRunningThreads() {
 		shouldWait = false;		
-	}
+	}//
 
 	public synchronized void haveThreadRunOnceThenPause(){
 		shouldWait = false;		
@@ -40,7 +40,7 @@ public class FrameworkTimer {
 		for(Long l: keys){
 			shouldWaitForNextStepMap.put(l, true);
 		}
-	}
+	}//
 
 	public boolean checkForNextStep(boolean justRanOneStep, long threadID){
 		Boolean callerShouldRunOnceAndWait = shouldWaitForNextStepMap.get(threadID);
@@ -74,14 +74,18 @@ public class FrameworkTimer {
 
 	public void registerThread(long threadID) {
 		shouldWaitForNextStepMap.put(threadID, false);		
-	}
+	}//
 	
 	public boolean getStartStatus(){
 		return shouldWait;
-	}
+	}//
 	
 	public boolean threadsArePaused(){
 		return shouldWait;
-	}
+	}//
+
+	public synchronized void setSleepTime(int newTime) {
+		sleepConstant = newTime;		
+	}//
 	
 }//class FrameworkTimer

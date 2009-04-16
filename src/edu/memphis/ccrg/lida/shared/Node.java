@@ -24,24 +24,21 @@ public interface Node extends Linkable{
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public ExciteBehavior getExciteBehavior();
 	
-	public void synchronize();  //TODO: Remove and put in PamNode.  But this will require redoing the Graph/NodeStructure...	
-	public boolean isRelevant(); 
-	
 	public void decay();	
 	public void setDecayBehavior(DecayBehavior c);
 	public DecayBehavior getDecayBehavior();
 	
 	public void setValue(Map<String, Object> values);
 
-	public double getImportance(); 
     public double getCurrentActivation();
     public void setActivation(double d);
     public Node getReferencedNode();
     public void setReferencedNode (Node n);
-    public Node copy();
+    public Node copy(Node n);
     public long getId();
-    public void setID(long id);
+    public void setId(long id);
     public void setLabel(String label);
+    public String getLabel();
    
 }//interface Node
 

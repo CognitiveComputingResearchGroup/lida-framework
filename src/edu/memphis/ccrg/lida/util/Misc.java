@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.util;
 public class Misc{
 	
 	public static double rnd(double d){    //rounds a double to the nearest 100th
-    	return Math.round(d*10000.0)/10000.0;
+    	return Math.round(d*10.0)/10.0;
     }
 	
 	public static void p(double d){

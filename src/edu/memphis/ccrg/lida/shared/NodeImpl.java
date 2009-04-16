@@ -4,13 +4,7 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-/**
- * Dummy Node Implementation
- * 
- * 
- * @author Javier Snaider
- *
- */
+
 public class NodeImpl implements Node {
 
 	public Node copy() {
@@ -20,57 +14,17 @@ public class NodeImpl implements Node {
 
 	public void decay() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void excite(double amount) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public double getCurrentActivation() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public double getImportance() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Node getReferencedNode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isRelevant() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setDecayBehavior(DecayBehavior c) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setExciteBehavior(ExciteBehavior behavior) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setValue(Map<String, Object> values) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setReferencedNode(Node n) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void synchronize() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public DecayBehavior getDecayBehavior() {
@@ -83,11 +37,6 @@ public class NodeImpl implements Node {
 		return null;
 	}
 
-	public void setActivation(double d) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public long getId() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -98,7 +47,27 @@ public class NodeImpl implements Node {
 		return null;
 	}
 
-	public void setID(long id) {
+	public Node getReferencedNode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setActivation(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setDecayBehavior(DecayBehavior c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setExciteBehavior(ExciteBehavior behavior) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setId(long id) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -107,5 +76,21 @@ public class NodeImpl implements Node {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setReferencedNode(Node n) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setValue(Map<String, Object> values) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Node copy(Node n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

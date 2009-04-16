@@ -1,11 +1,12 @@
 package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
@@ -27,7 +28,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 		}
 		
 		return dir;
-	}
+	}//method
 
 	
 	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
@@ -41,12 +42,12 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 
 			for(SpatialLocation sl: locations){
 				LinkType t = calcRelationType(sl, agentDirection);
-				LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
+				LinkImpl newLink = new LinkImpl(temp, sl, t, new Long(linkCount));
+				linkCount++;
 				graph.addLink(newLink);
 			}//for
 				
-		}//for nodes 
-		
+		}//for nodes 		
 		return content;
 	}//method
 

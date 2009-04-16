@@ -2,10 +2,8 @@ package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-
 
 /**
  *
@@ -13,16 +11,17 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  */
 public class LinkImpl implements Link, Node{
     
+	private final double MIN_ACTIVATION = 0.0;
+	private final double MAX_ACTIVATION = 1.0;
+	
     private Linkable sink;    
     private Linkable source;    
     private long linkID;
     private String label = "linkImpl";
-    
     private LinkType type; 
 	private double activation = 0.0;
-	private final double MIN_ACTIVATION = 0.0;
-	private final double MAX_ACTIVATION = 1.0;
-    
+	
+	
     public LinkImpl(Linkable source, Linkable sink, LinkType type, long id){        
         this.source = source;
         this.sink = sink;   
@@ -33,9 +32,10 @@ public class LinkImpl implements Link, Node{
     public LinkImpl(LinkImpl l){
     	sink = l.sink;
     	source = l.source;
-    	type = l.type;
     	linkID = l.linkID;
     	label = l.label;
+    	type = l.type;
+    	activation = l.activation;    	
     }
 
 	public boolean equals(Object obj){
@@ -52,90 +52,68 @@ public class LinkImpl implements Link, Node{
         hash = hash * 31 + (type == null ? 0 : type.hashCode());
         return hash;
     }
-
     
-    public LinkImpl copy(LinkImpl l){
-    	return new LinkImpl(l);
+    //LINK METHODS
+
+    public Link copy(Link l){
+    	if(l instanceof LinkImpl)
+    		return new LinkImpl((LinkImpl)l);
+    	else
+    		return null;
     }
-   
-    public Linkable getSource() {
-        return source;
-    }
+
+	public Linkable getSink() {
+		return sink;
+	}
+
+	public Linkable getSource() {
+		return source;
+	}
+
+	public LinkType getType() {
+		return type;
+	}//
+
+	public void setSink(Linkable sink) {
+		this.sink = sink;
+	}//
+
+	public void setSource(Linkable source) {
+		this.source = source;
+	}//
+
+	public void setType(LinkType type) {
+		this.type = type;
+	}//
     
-    public Linkable getSink() {
-        return sink;
-    }
-    
-    public LinkType getType(){
-    	return type;
-    }
-
-	public void excite(double amount) {
-		activation += amount;		
-	}
-
-	public double getMaxActivation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getMinActivation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void setMaxActivation(double amount) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setMinActivation(double amount) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setSelectionThreshold(double threshold) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public double getDefaultMaxActivation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getDefaultMinActivation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getCurrentActivation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public long getId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Link copy(Link l) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Node copy() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toString(){
+		String s = label + " Source: ";
+		s += source.getLabel();	
+		s += ". Sink: ";
+		s += sink.getLabel();	
+		return s;
+	}//
+	
+	//NODE METHODS
+	public String getLabel() {
+		return label;
 	}
 
 	public void decay() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("decay not implemented");	
+	}
+
+	public void excite(double amount) {
+		System.out.println("excite not implemented");
+		//activation = amount;		
+	}
+
+	public double getCurrentActivation() {
+		return activation;
 	}
 
 	public DecayBehavior getDecayBehavior() {
-		// TODO Auto-generated method stub
+		System.out.println("decay not implemented");
 		return null;
 	}
 
@@ -144,14 +122,8 @@ public class LinkImpl implements Link, Node{
 		return null;
 	}
 
-	public long getIdentifier() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double getImportance() {
-		// TODO Auto-generated method stub
-		return 0;
+	public long getId() {
+		return linkID;
 	}
 
 	public Node getReferencedNode() {
@@ -159,14 +131,8 @@ public class LinkImpl implements Link, Node{
 		return null;
 	}
 
-	public boolean isRelevant() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public void setActivation(double d) {
-		// TODO Auto-generated method stub
-		
+		activation = d;
 	}
 
 	public void setDecayBehavior(DecayBehavior c) {
@@ -176,6 +142,15 @@ public class LinkImpl implements Link, Node{
 
 	public void setExciteBehavior(ExciteBehavior behavior) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void setId(long id) {
+		this.linkID = id;		
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 		
 	}
 
@@ -189,60 +164,9 @@ public class LinkImpl implements Link, Node{
 		
 	}
 
-	public void synchronize() {
+	public Node copy(Node n) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	public void setID(long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public void decay(DecayBehavior decayBehavior) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public int getLayerDepth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void printActivationString() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public String toString(){
-		String s = label + " Source: ";
-		s += source.getLabel();	
-		s += ". Sink: ";
-		s += sink.getLabel();	
-		return s;
-	}
-	
-	public String getLabel(){
-		return "link of type " + type + " id " + linkID;
-	}
-
-	public void setSink(Linkable sink) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setSource(Linkable source) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setType(LinkType type) {
-		// TODO Auto-generated method stub
-		
-	}
-
-}
+}//class

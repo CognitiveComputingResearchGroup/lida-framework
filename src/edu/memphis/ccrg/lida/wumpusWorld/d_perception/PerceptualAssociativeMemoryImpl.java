@@ -164,7 +164,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         Set<Node> nodes = graph.getNodes();
         int numNodes = 0;
         
-        for(Node node: nodes){
+        for(Node n: nodes){
+        	PamNodeImpl node = (PamNodeImpl)n;
             node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant()){//Based on totalActivation
             	//System.out.println("a nodes is relevant adding to graph: " + node.getLabel());
