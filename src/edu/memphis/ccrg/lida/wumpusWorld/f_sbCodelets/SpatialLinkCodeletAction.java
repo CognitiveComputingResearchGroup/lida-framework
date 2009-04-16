@@ -20,7 +20,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	private char getAgentDirection(RyanNodeStructure g){
 		char dir = ' ';
-		PamNodeImpl agent = (PamNodeImpl)g.getNodeById(WumpusIDs.agent);
+		PamNodeImpl agent = (PamNodeImpl)g.getNode(WumpusIDs.agent);
 		if(agent != null){
 			Set<SpatialLocation> locs = agent.getLocations();
 			for(SpatialLocation sl: locs)

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
@@ -48,9 +47,9 @@ public class RyanNodeStructure implements NodeStructure{
 	 */
 	private Map<Integer, Set<Node>> layerMap;
 
-	private String defaultLinkName;
+	private String defaultLinkName = "LinkImpl";
 
-	private String defaultNodeName;
+	private String defaultNodeName = "PamNodeImpl";
 	
 	/**
 	 * Default Constructor
@@ -92,7 +91,7 @@ public class RyanNodeStructure implements NodeStructure{
 			}
 		}
 
-		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkMap();
+		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkableMap();
 		if(oldLinkMap != null){
 			Set<Linkable> oldKeys = oldLinkMap.keySet();
 			if(oldKeys != null){
@@ -173,8 +172,6 @@ public class RyanNodeStructure implements NodeStructure{
 		return result && result2;
 	}
 	
-	//TODO: this is wehere you left off at 3am
-	
 	/**
 	 * This method is for adding nodes from perceptual memory.  It requires
 	 * upscale and selectivity values from PAM to calculate the nodes' activation
@@ -193,6 +190,7 @@ public class RyanNodeStructure implements NodeStructure{
 	
 	public void addChild(PamNodeImpl child, PamNodeImpl parent){	
 		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
+		linkMap.put(l.getId(), l);
 		
 		if(linkableMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
@@ -211,6 +209,7 @@ public class RyanNodeStructure implements NodeStructure{
 	
 	public void addParent(Node parent, Node child){
 		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
+		linkMap.put(l.getId(), l);
 		
 		if(linkableMap.get(child).add(l))
 			linkCount++;
@@ -373,7 +372,7 @@ public class RyanNodeStructure implements NodeStructure{
 	}
 	
 	public NodeStructure copy() {
-		return new RyanNodeStructure();
+		return new RyanNodeStructure(this);
 	}
 	
 	//TODO: Happens to the other nodes if we delete a Linkable that connects them?
@@ -388,7 +387,7 @@ public class RyanNodeStructure implements NodeStructure{
 			if(!other.equals(n)){ 
 				otherLinks = linkableMap.get(other);
 				if(otherLinks != null)
-					otherLinks.remove(l);
+					otherLinks.remove(l);				
 			}			
 			other = l.getSource();
 			if(!other.equals(n)){
@@ -397,8 +396,10 @@ public class RyanNodeStructure implements NodeStructure{
 					otherLinks.remove(l);
 			}						
 		}//for all of the links connected to n		
-		if(linkableMap.remove(n) != null && n instanceof LinkImpl)//finally remove the linkable and its links
+		if(linkableMap.remove(n) != null && n instanceof LinkImpl){//finally remove the linkable and its links
 			linkCount--;
+			linkMap.remove(n);
+		}
 	}//method
 
 	public void deleteNode(Node n) {
@@ -420,10 +421,56 @@ public class RyanNodeStructure implements NodeStructure{
 			sinkLinks.remove(l);	
 		
 		linkableMap.remove(l);	
+		linkMap.remove(l);
 	}//public void deleteLink(Link l)
 	
 	//**GETTING
 	
+	/**
+	 * 
+	 */
+	public Map<Linkable, Set<Link>> getLinkableMap(){
+		return linkableMap;
+	}
+	
+	/**
+	 * Get children of this linkable
+	 * @param n
+	 * @return
+	 */
+	public Set<PamNode> getChildren(Linkable n) {
+		Set<Link> links = linkableMap.get(n);
+		Set<PamNode> children = new HashSet<PamNode>();
+		if(links != null){
+			for(Link link: links){
+				Linkable source = link.getSource();
+				if(source instanceof PamNodeImpl && !source.equals(n))
+					children.add((PamNodeImpl)source);			
+			}
+		}
+		return children;		
+	}
+	
+	/**
+	 * Get parents of this linkable
+	 * @param n
+	 * @return
+	 */
+	public Set<Node> getParents(Node n) {		
+		Set<Link> links = linkableMap.get(n);
+		Set<Node> parents = new HashSet<Node>();
+		
+		if(links != null){
+			for(Link link: links){				
+				Linkable sink = link.getSink();
+				if(sink instanceof PamNodeImpl && !sink.equals(n))
+					parents.add((PamNodeImpl)sink);							
+			}//for each link of n
+		}
+		return parents;	
+	}	
+	
+	//GET NODE METHODS	
     public Set<Node> getNodes(){    	    	
     	return nodes;
     }
@@ -432,17 +479,38 @@ public class RyanNodeStructure implements NodeStructure{
     	return nodeMap;
     }//method
 
+	public int getNodeCount() {
+		if(nodes.size() != nodeMap.size()){
+			try{throw new Exception();}
+			catch(Exception e){System.out.println("ur nodes in struct are out of sync dude");}
+		}
+		return nodes.size();
+	}
+
+	public Node getNode(long id) {
+		return nodeMap.get(id);
+	}
+	
+	//LINK GET METHODS
+	public int getLinkCount(){
+		if(linkCount != linkMap.size()){
+			try{throw new Exception();}
+			catch(Exception e){System.out.println("ur links in struct are out of sync dude");}
+		}
+		
+		return linkCount;
+	}//method
+
+	public Link getLink(int id) {
+		return linkMap.get(id);		
+	}
+	
 	/**
 	 * Go through the linkables in linkmap
 	 * and return those that are Link
 	 */
 	public Set<Link> getLinks() {
-		Set<Link> links = new HashSet<Link>();
-		Set<Linkable> linkables = linkableMap.keySet();
-		for(Linkable l: linkables)
-			if(l instanceof Link)	
-				links.add((Link)l);				
-		return links;
+		return new HashSet<Link>(linkMap.values());
 	}
 	
 	/**
@@ -480,55 +548,15 @@ public class RyanNodeStructure implements NodeStructure{
 			}//for each link
 		}//result != null
 		return result;
-	}//public Set<Link> getLinks(Node n, LinkType type)
-	
-	/**
-	 * Get children of this linkable
-	 * @param n
-	 * @return
-	 */
-	public Set<PamNode> getChildren(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
-		Set<PamNode> children = new HashSet<PamNode>();
-		if(links != null){
-			for(Link link: links){
-				Linkable source = link.getSource();
-				if(source instanceof PamNodeImpl && !source.equals(n))
-					children.add((PamNodeImpl)source);			
-			}
-		}
-		return children;		
-	}
-	
-	/**
-	 * Get parents of this linkable
-	 * @param n
-	 * @return
-	 */
-	public Set<Node> getParents(Node n) {		
-		Set<Link> links = linkableMap.get(n);
-		Set<Node> parents = new HashSet<Node>();
-		
-		if(links != null){
-			for(Link link: links){				
-				Linkable sink = link.getSink();
-				if(sink instanceof PamNodeImpl && !sink.equals(n))
-					parents.add((PamNodeImpl)sink);							
-			}//for each link of n
-		}
-		return parents;	
-	}
-	
-	public Map<Linkable, Set<Link>> getLinkMap(){
-		return linkableMap;
-	}
-	
-	public int getLinkCount(){
-		return linkCount;
 	}//method
 
-	//**SETTING
-	
+	//OTHER GET METHOD
+	public Object getContent() {
+		System.out.println("what is getcontent for in node struct");
+		return null;
+	}
+
+	//**SETTING METHODS
 	public void setDefaultLink(String linkClassName) {
 		defaultLinkName = linkClassName;		
 	}
@@ -538,7 +566,6 @@ public class RyanNodeStructure implements NodeStructure{
 	}
 
 	//**PRINTING
-	
 	public void printNodes() {
 		for(Node n: nodes)
 			System.out.println(n.getLabel() + " current activ. " + n.getCurrentActivation());		
@@ -558,25 +585,5 @@ public class RyanNodeStructure implements NodeStructure{
 			System.out.println();
 		}
 	}//method
-
-	public Object getContent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int getNodeCount() {
-		return nodes.size();
-	}
-
-	public Node getNodeById(long id) {
-		if(nodeMap.containsKey(id))
-			return nodeMap.get(id);
-
-		return null;
-	}
-
-	public Link getLink(int id) {
-		return linkMap.get(id);		
-	}
-
+	
 }//class
