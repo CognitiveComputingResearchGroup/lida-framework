@@ -39,10 +39,8 @@ public class AttentionDriver implements Runnable, Stoppable, BroadcastListener{
 		keepRunning = false;		
 	}
 
-	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized(this){
+	public synchronized void receiveBroadcast(BroadcastContent bc) {
 			broadcastContent = bc;
-		}
 	}
 	
 	public void setThreadID(long id){

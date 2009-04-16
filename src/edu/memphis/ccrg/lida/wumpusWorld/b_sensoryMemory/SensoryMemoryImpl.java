@@ -25,19 +25,17 @@ public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 		
 		if(simContent != null){
 			int worldSize = -1;
-			synchronized(this){
-				worldSize = simContent.getSize();
-			}
+			worldSize = simContent.getSize();
+	
 			
 			if(worldSize != -1){
 				src = new char[worldSize][worldSize][4];	
 				dest = new char[worldSize][worldSize][4];
 			}
-			
-			synchronized(this){
-				src = (char[][][])simContent.getSenseContent();
-				System.arraycopy(src, 0, dest, 0, worldSize);//TODO: WRY??
-			}
+	
+			src = (char[][][])simContent.getSenseContent();
+			System.arraycopy(src, 0, dest, 0, worldSize);//TODO: WRY??
+
 		}
 		//do processing		
 		senseContent.setContent(dest);		

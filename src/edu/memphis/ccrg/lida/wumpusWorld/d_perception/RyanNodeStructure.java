@@ -551,8 +551,7 @@ public class RyanNodeStructure implements NodeStructure{
 	}//method
 
 	//OTHER GET METHOD
-	public Object getContent() {
-		System.out.println("what is getcontent for in node struct");
+	public Object getContent() {	
 		return null;
 	}
 

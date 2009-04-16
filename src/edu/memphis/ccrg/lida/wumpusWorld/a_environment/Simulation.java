@@ -97,8 +97,8 @@ public class Simulation{
 				(listeners.get(i)).receiveSimContent(simContent);
 
 			if(actionHasChanged){
+				currentAction = (Integer)currentBehavior.getContent();
 				synchronized(this){
-					currentAction = (Integer)currentBehavior.getContent();
 					actionHasChanged = false;
 				}
 				if(!currentAction.equals(null))

@@ -221,15 +221,16 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		keepRunning = false;		
 	}
 
-	public synchronized void pauseActionSelection() {
-		shouldDoNoOp = !shouldDoNoOp;		
-		if(shouldDoNoOp){
-			System.out.println("Agent action selection stopped");
-		}else{
-			System.out.println("Agent action selection started");
+	public void pauseActionSelection() {
+		synchronized(this){
+			shouldDoNoOp = !shouldDoNoOp;
 		}
+//		if(shouldDoNoOp){
+//			System.out.println("Agent action selection stopped");
+//		}else{
+//			System.out.println("Agent action selection started");
+//		}
 	}
-
 
 	public boolean getStartingMode() {
 		return shouldDoNoOp;

@@ -50,9 +50,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
     private SensoryContentImpl sensoryContent;//Shared variable
-    private PAMContentImpl pamContent;//Not a shared variable
     private BroadcastContent broadcastContent;//Shared variables	
-	private WorkspaceContent workspaceContent;
+    private WorkspaceContent topDownEffects;
+	private WorkspaceContent percept;
 	private int numNodeInPercept = 0;//for GUI
       
     public PerceptualAssociativeMemoryImpl(){
@@ -61,7 +61,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
-    	pamContent = new PAMContentImpl();
+    	topDownEffects = new RyanNodeStructure();
+    	percept = new RyanNodeStructure();
     	//broadcastContent = new BroadcastContent();//TODO: write this class 	
     }
     
@@ -107,7 +108,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }
 
 	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
-		workspaceContent = content;		
+		topDownEffects = content;		
 	}
     	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -120,14 +121,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){    	
-    	SensoryContentImpl sc = null;
-    	synchronized(this){
-    		sc = (SensoryContentImpl)sensoryContent.getThis();
-    	}
-  
+    	SensoryContentImpl sc = (SensoryContentImpl)sensoryContent.getThis();  
     	for(FeatureDetector d: featureDetectors)
     		d.detect(sc);  	     
-    }//public void sense()
+    }//method
         
     /**
      * Pass activation upwards based on the order found in the layerMap
@@ -176,12 +173,12 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         numNodeInPercept = newGraph.getNodes().size();
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
         newGraph.addLinkSet(graph.getLinks());        
-        pamContent.setContent((NodeStructure)newGraph);
+        percept = newGraph;
     }//private void syncNodeActivation
     
     public void sendPercept(){
     	for(int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receivePAMContent(pamContent);	    	
+			pamListeners.get(i).receivePAMContent(percept);	    	
     }//method
     
     public void decay() {

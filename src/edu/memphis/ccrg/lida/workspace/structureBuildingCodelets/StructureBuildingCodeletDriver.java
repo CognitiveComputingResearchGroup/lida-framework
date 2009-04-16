@@ -87,10 +87,8 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 	}//method
 
 	private void getWorkspaceContent() {
-		NodeStructure struct = null;
-		synchronized(this){
-			struct = (NodeStructure)workspaceContent;
-		}
+		NodeStructure struct = (NodeStructure)workspaceContent;
+		
 		if(struct != null){
 			Set<Node> nodes = struct.getNodes();
 			for(Node n: nodes){

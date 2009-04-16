@@ -391,10 +391,10 @@ public class PamNodeImpl implements PamNode{
 		this.label = label;		
 	}
 
-	public synchronized void printSpatialLocations() {
-		for(SpatialLocation sl: locationsOfThisNode){
+	public void printSpatialLocations() {
+		for(SpatialLocation sl: locationsOfThisNode)
 			System.out.println(this.label + " at " + sl.getI() + " " + sl.getJ());
-		}		
+		
 	}//method
 
 	public void setId(long id) {

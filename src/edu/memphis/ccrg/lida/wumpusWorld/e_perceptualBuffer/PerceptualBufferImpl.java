@@ -40,9 +40,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pamContent = pc;
 	}
 	
-	private synchronized void storePAMContent(){
-		RyanNodeStructure struct = (RyanNodeStructure)pamContent.getContent();	
-		
+	private void storePAMContent(){
+		RyanNodeStructure struct = (RyanNodeStructure)pamContent;
 		if(struct != null)		
 			perceptBuffer.add(new RyanNodeStructure(struct));			
 		

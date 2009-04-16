@@ -57,12 +57,12 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	 * .Coalition)
 	 */
 	public synchronized boolean putCoalition(Coalition coalition) {
-		boolean result = false;
-		result = coalitions.add(coalition);
-		if(result) {
+		if(coalitions.add(coalition)){
 			newCoalitionEvent();
+			return true;
+		}else{
+			return false;
 		}
-		return result;
 	}
 
 	private void newCoalitionEvent() {
