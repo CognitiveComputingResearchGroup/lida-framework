@@ -58,7 +58,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(24 + timer.getSleepTime());
+			try{Thread.sleep(timer.getSleepTime());
 			}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
 			timer.checkForStartPause();
 			//if BufferContent activates a sbCodelet's context start a new codelet

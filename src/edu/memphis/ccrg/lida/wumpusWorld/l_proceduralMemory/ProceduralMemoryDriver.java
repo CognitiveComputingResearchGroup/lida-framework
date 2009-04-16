@@ -70,7 +70,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
-			try{Thread.sleep(26 + timer.getSleepTime());}catch(Exception e){}
+			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 			
 			sendGuiContent();
@@ -81,7 +81,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 					behaviorContent = getAppropriateBehavior();
 				
 				environment.receiveBehaviorContent(behaviorContent);
-				coolDown = 1;
+				coolDown = 3;
 			}else
 				coolDown--;	
 			counter++;
@@ -228,6 +228,11 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		}else{
 			System.out.println("Agent action selection started");
 		}
+	}
+
+
+	public boolean getStartingMode() {
+		return shouldDoNoOp;
 	}
 
 }//class

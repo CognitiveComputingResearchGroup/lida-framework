@@ -30,7 +30,7 @@ public class CSMDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(25 + timer.getSleepTime());}catch(Exception e){}
+			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 		
 			NodeStructure struct = csm.getContent();

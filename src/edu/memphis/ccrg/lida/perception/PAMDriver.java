@@ -24,7 +24,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		
 		long startTime = System.currentTimeMillis();	
 		while(keepRunning){
-			try{Thread.sleep(22  + timer.getSleepTime());}catch(Exception e){}						
+			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}						
 			timer.checkForStartPause();//won't return if paused until started again			
 			//runOneStep = timer.checkForNextStep(runOneStep, threadID);		
 					
