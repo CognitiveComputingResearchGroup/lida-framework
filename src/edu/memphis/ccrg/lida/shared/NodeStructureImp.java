@@ -144,7 +144,7 @@ public class NodeStructureImp implements NodeStructure {
 			return true;
 		}
 		return false;
-	}
+	}//
 
 	/**
 	 * This method can be overwritten to customize the Node Creation.
