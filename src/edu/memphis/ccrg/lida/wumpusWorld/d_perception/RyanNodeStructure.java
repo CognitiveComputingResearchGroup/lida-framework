@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
@@ -13,8 +15,9 @@ import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
    
-public class RyanNodeStructure implements NodeStructure{
+public class RyanNodeStructure implements NodeStructure, WorkspaceContent, BroadcastContent{
 
 	/**
 	 * TODO: the counting functionality needs work
@@ -129,7 +132,7 @@ public class RyanNodeStructure implements NodeStructure{
 	 * 
 	 *  @param Link l 
 	 */
-	public boolean addLink(Link l){
+	public Link addLink(Link l){
 		boolean result1 = false;
 		boolean result2 = false;
 		Linkable end = l.getSource();
@@ -156,21 +159,27 @@ public class RyanNodeStructure implements NodeStructure{
 		if(!linkMap.containsKey(temp.getId()))
 			linkMap.put(temp.getId(), temp);
 		
-		if(result)
+		if(result){
 			linkCount++;
-		return result;
+			return l;
+		}else{
+			return null;
+		}
 	}//public boolean addLink(Link l)
 	
 	/**
 	 * Adds specified node to the set of nodes. Returns true if node not already present.
 	 */
-	public boolean addNode(Node n) {
+	public Node addNode(Node n) {
 		boolean result = nodes.add(n);
 		boolean result2 = false;
 		if(null == nodeMap.put(n.getId(), n))
 			result2 = true;
 		
-		return result && result2;
+		if(result && result2)
+			return n;
+		else
+			return null;
 	}
 	
 	/**
@@ -590,5 +599,15 @@ public class RyanNodeStructure implements NodeStructure{
 			System.out.println();
 		}
 	}//method
+
+	public void addLinkSet(Collection<Link> links) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addNodes(Collection<Node> nodesToAdd) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }//class

@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
-	private NodeStructure struct = new RyanNodeStructure();
+	private RyanNodeStructure struct = new RyanNodeStructure();
 	private List<CSMListener> csmListeners = new ArrayList<CSMListener>();
 	
 	public CurrentSituationalModelImpl(){
@@ -32,7 +32,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	}//method
 	
 	public synchronized void addWorkspaceContent(WorkspaceContent content) {
-		struct = (NodeStructure)content;		
+		struct = (RyanNodeStructure)content;		
 	}//method
 
 	public boolean hasContent(NodeStructure whatIwant) {
