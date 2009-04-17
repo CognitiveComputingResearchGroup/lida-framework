@@ -41,7 +41,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 
 			for(SpatialLocation sl: locations){
 				LinkType t = calcRelationType(sl, agentDirection);
-				LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
+				LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++ + "");
 				graph.addLink(newLink);
 			}//for
 				
