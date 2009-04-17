@@ -19,7 +19,7 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract boolean addLink(Link l);
 
-	public abstract void addLinkSet(Set<Link> links);
+	public abstract void addLinkSet(Collection<Link> links);
 
 	public abstract boolean addNode(Node n);
 

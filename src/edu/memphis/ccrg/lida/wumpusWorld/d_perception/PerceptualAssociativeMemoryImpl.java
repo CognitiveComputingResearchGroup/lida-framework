@@ -7,6 +7,7 @@
  */
 package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
 
+import java.util.Collection;
 import java.util.Set; 
 import java.util.Map;
 import java.util.List;
@@ -159,7 +160,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      */
     private void syncNodeActivation(){
         RyanNodeStructure newGraph = new RyanNodeStructure();
-        Set<Node> nodes = graph.getNodes();
+        Collection<Node> nodes = graph.getNodes();
         int numNodes = 0;
         
         for(Node n: nodes){
@@ -183,7 +184,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//method
     
     public void decay() {
-    	Set<Node> nodes = graph.getNodes();
+    	Collection<Node> nodes = graph.getNodes();
         for(Node n: nodes){
         	if(n instanceof PamNode){
         		PamNode temp = (PamNode)n;
@@ -197,7 +198,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	}
 	
     public void setExciteBehavior(ExciteBehavior behavior){
-    	Set<Node> nodes = graph.getNodes();
+    	Collection<Node> nodes = graph.getNodes();
     	for(Node n: nodes){
     		n.setExciteBehavior(behavior);
     	}

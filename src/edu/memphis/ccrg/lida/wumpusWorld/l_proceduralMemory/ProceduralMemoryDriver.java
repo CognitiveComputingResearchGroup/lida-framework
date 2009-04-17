@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.wumpusWorld.l_proceduralMemory;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
@@ -123,7 +124,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		
 		RyanNodeStructure g = (RyanNodeStructure)workspaceStructure;
 		Map<Long, Node> nodeMap = g.getNodeMap();
-		Set<Link> links = g.getLinks();
+		Collection<Link> links = g.getLinks();
 		
 		SpatialLocation agentLocation = new SpatialLocation();
 		//char agentDirection = ' ';

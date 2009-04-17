@@ -91,6 +91,10 @@ public class LinkImpl implements Link {
 	public void setIds(String id) {
 		this.ids = id;
 	}
+	
+	public String getId(){
+		return ids;
+	}
 
 	public void setSink(Linkable sink) {
 		this.sink = sink;
