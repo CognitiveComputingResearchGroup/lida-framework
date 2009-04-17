@@ -171,7 +171,7 @@ public class RyanNodeStructure implements NodeStructure{
 	}//method
 	
 	public void addChild(PamNodeImplW child, PamNodeImplW parent){	
-		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
+		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()) + "");
 		
 		if(linkMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
@@ -189,7 +189,7 @@ public class RyanNodeStructure implements NodeStructure{
 	}//addChild
 	
 	public void addParent(Node parent, Node child){
-		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
+		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()) + "");
 		
 		if(linkMap.get(child).add(l))
 			linkCount++;
