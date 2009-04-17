@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.util.Misc;
 
-public class PamNodeImplW extends PamNodeImpl implements PamNode{	
+public class RyanPamNode extends PamNodeImpl implements PamNode{	
     private int layerDepth; 
     private Set<SpatialLocation> locationsOfThisNode = new HashSet<SpatialLocation>();
     
@@ -34,7 +34,7 @@ public class PamNodeImplW extends PamNodeImpl implements PamNode{
      * @param label
      * @param type
      */
-    public PamNodeImplW(long id, double bla, double ca, String label, int type){    	
+    public RyanPamNode(long id, double bla, double ca, String label, int type){    	
     	minActivation = MIN_ACTIVATION;
     	maxActivation = MAX_ACTIVATION;
     	totalActivation = bla + ca;  
@@ -49,7 +49,7 @@ public class PamNodeImplW extends PamNodeImpl implements PamNode{
         decayBehav = new LinearDecayCurve();
     }//public Node(long id,...
     
-    public PamNodeImplW(){    	
+    public RyanPamNode(){    	
     	minActivation = MIN_ACTIVATION;
     	maxActivation = MAX_ACTIVATION;
         layerDepth = 0;
@@ -59,7 +59,7 @@ public class PamNodeImplW extends PamNodeImpl implements PamNode{
      * 
      * @param n
      */
-    public PamNodeImplW(PamNodeImplW n){
+    public RyanPamNode(RyanPamNode n){
     	selectionThreshold = n.selectionThreshold;
     	importance = n.importance;
     	

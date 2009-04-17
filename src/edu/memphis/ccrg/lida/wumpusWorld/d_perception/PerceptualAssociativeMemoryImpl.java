@@ -156,7 +156,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * Synchronizes this PAM by updating the percept and percept history. First
      * the percept is cleared, and then all relevant nodes are put in a new
      * percept. Last, the new percept is added to the percept history.
-     * @see PamNodeImplW#synchronize()
+     * @see RyanPamNode#synchronize()
      */
     private void syncNodeActivation(){
         RyanNodeStructure newGraph = new RyanNodeStructure();

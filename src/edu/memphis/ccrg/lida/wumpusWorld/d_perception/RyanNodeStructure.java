@@ -100,9 +100,9 @@ public class RyanNodeStructure implements NodeStructure{
 					if(l instanceof LinkImpl){
 						LinkImpl castLink = (LinkImpl)l;
 						this.linkableMap.put(new LinkImpl(castLink), new HashSet<Link>());
-					}else if(l instanceof PamNodeImplW){
-						PamNodeImplW castNode = (PamNodeImplW)l;
-						this.linkableMap.put(new PamNodeImplW(castNode), new HashSet<Link>());
+					}else if(l instanceof RyanPamNode){
+						RyanPamNode castNode = (RyanPamNode)l;
+						this.linkableMap.put(new RyanPamNode(castNode), new HashSet<Link>());
 					}
 				}
 			}
@@ -180,7 +180,7 @@ public class RyanNodeStructure implements NodeStructure{
 	 */	
 	public void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity) {
 		for(Node n: nodesToAdd){
-			PamNodeImplW toAdd = (PamNodeImplW)n;
+			RyanPamNode toAdd = (RyanPamNode)n;
 			nodes.add(toAdd);
 			nodeMap.put(n.getId(), n);
 			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
@@ -189,7 +189,7 @@ public class RyanNodeStructure implements NodeStructure{
 		updateActivationThresholds(upscale, selectivity);
 	}//method
 	
-	public void addChild(PamNodeImplW child, PamNodeImplW parent){	
+	public void addChild(RyanPamNode child, RyanPamNode parent){	
 		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()) + "222222222222222");
 		linkMap.put(l.getId(), l);
 		
@@ -349,7 +349,7 @@ public class RyanNodeStructure implements NodeStructure{
 		if(links != null){
 			for(Link link: links){
 				Linkable source = link.getSource();
-				if(source instanceof PamNodeImplW && !source.equals(n))//if source is a child of n
+				if(source instanceof RyanPamNode && !source.equals(n))//if source is a child of n
 					return false;
 			}//for
 		}
@@ -365,7 +365,7 @@ public class RyanNodeStructure implements NodeStructure{
 		if(links != null){
 			for(Link link: links){
 				Linkable sink = link.getSink();
-				if(sink instanceof PamNodeImplW && !sink.equals(n))//if source is a child of n
+				if(sink instanceof RyanPamNode && !sink.equals(n))//if source is a child of n
 					return false;
 			}//for
 		}
@@ -445,8 +445,8 @@ public class RyanNodeStructure implements NodeStructure{
 		if(links != null){
 			for(Link link: links){
 				Linkable source = link.getSource();
-				if(source instanceof PamNodeImplW && !source.equals(n))
-					children.add((PamNodeImplW)source);			
+				if(source instanceof RyanPamNode && !source.equals(n))
+					children.add((RyanPamNode)source);			
 			}
 		}
 		return children;		
@@ -464,8 +464,8 @@ public class RyanNodeStructure implements NodeStructure{
 		if(links != null){
 			for(Link link: links){				
 				Linkable sink = link.getSink();
-				if(sink instanceof PamNodeImplW && !sink.equals(n))
-					parents.add((PamNodeImplW)sink);							
+				if(sink instanceof RyanPamNode && !sink.equals(n))
+					parents.add((RyanPamNode)sink);							
 			}//for each link of n
 		}
 		return parents;	
@@ -578,7 +578,7 @@ public class RyanNodeStructure implements NodeStructure{
 	
 	public void printPamNodeActivations() {
 		for(Node n: nodes)
-			((PamNodeImplW)n).printActivationString();
+			((RyanPamNode)n).printActivationString();
 	}
 
 	public void printLinkMap() {
