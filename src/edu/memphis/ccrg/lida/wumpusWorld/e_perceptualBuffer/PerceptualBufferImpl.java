@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.wumpusWorld.e_perceptualBuffer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
@@ -40,8 +41,9 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pamContent = pc;
 	}
 	
-	private void storePAMContent(){
-		RyanNodeStructure struct = (RyanNodeStructure)pamContent;
+	private synchronized void storePAMContent(){
+		RyanNodeStructure struct = (RyanNodeStructure)pamContent.getContent();	
+		
 		if(struct != null)		
 			perceptBuffer.add(new RyanNodeStructure(struct));			
 		
@@ -79,7 +81,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		
 		synchronized(this){
 			for(NodeStructure struct: perceptBuffer){
-				Set<Node> nodes = struct.getNodes();					
+				Collection<Node> nodes = struct.getNodes();					
 				for(Node n: nodes)
 					content.addNode(n);				
 			}//for each struct in the buffer

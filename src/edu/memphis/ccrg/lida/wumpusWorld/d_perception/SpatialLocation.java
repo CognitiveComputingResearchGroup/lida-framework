@@ -198,7 +198,7 @@ public class SpatialLocation implements Node{
 		
 	}
 
-	public Node copy(Node n) {
+	public String getIds() {
 		// TODO Auto-generated method stub
 		return null;
 	}	

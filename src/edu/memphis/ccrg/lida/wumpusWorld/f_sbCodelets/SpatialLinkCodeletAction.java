@@ -1,17 +1,16 @@
 package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-
-import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImplW;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 public class SpatialLinkCodeletAction implements CodeletAction{
@@ -20,7 +19,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	
 	private char getAgentDirection(RyanNodeStructure g){
 		char dir = ' ';
-		PamNodeImpl agent = (PamNodeImpl)g.getNode(WumpusIDs.agent);
+		PamNodeImplW agent = (PamNodeImplW)g.getNode(WumpusIDs.agent);
 		if(agent != null){
 			Set<SpatialLocation> locs = agent.getLocations();
 			for(SpatialLocation sl: locs)
@@ -28,7 +27,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 		}
 		
 		return dir;
-	}//method
+	}
 
 	
 	public WorkspaceContent getResultOfAction(WorkspaceContent content) {		
@@ -37,17 +36,17 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	
 		Set<Node> nodes = graph.getNodes();		
 		for(Node n: nodes){
-			PamNodeImpl temp = (PamNodeImpl)n;
+			PamNodeImplW temp = (PamNodeImplW)n;
 			Set<SpatialLocation> locations = temp.getLocations();
 
 			for(SpatialLocation sl: locations){
 				LinkType t = calcRelationType(sl, agentDirection);
-				LinkImpl newLink = new LinkImpl(temp, sl, t, new Long(linkCount));
-				linkCount++;
+				LinkImpl newLink = new LinkImpl(temp, sl, t, linkCount++);
 				graph.addLink(newLink);
 			}//for
 				
-		}//for nodes 		
+		}//for nodes 
+		
 		return content;
 	}//method
 

@@ -1,18 +1,22 @@
 package edu.memphis.ccrg.lida.shared;
 
+
 public interface Link extends Linkable{
-	
-	void setType(LinkType type);
-	LinkType getType();
-	
-	void setSource(Linkable source);
-	void setSink(Linkable sink);
-	
-	Linkable getSource();	
-	Linkable getSink();
 
-	Link copy(Link l);
-	
-	String toString();	
+	public abstract Linkable getSource();
 
-}//interface
+	public abstract Linkable getSink();
+		
+	public abstract void setIds(String id);
+
+	public abstract LinkType getType();
+	
+	public abstract String toString();
+
+	public abstract void setSource(Linkable source);
+
+	public abstract void setSink(Linkable sink);
+
+	public abstract void setType(LinkType type);
+
+}

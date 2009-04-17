@@ -30,11 +30,11 @@ public interface Node extends Linkable{
 	
 	public void setValue(Map<String, Object> values);
 
+	public double getImportance(); 
     public double getCurrentActivation();
     public void setActivation(double d);
     public Node getReferencedNode();
     public void setReferencedNode (Node n);
-    public Node copy(Node n);
     public long getId();
     public void setId(long id);
     public void setLabel(String label);

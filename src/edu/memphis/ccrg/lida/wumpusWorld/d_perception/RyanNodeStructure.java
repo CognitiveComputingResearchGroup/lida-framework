@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
@@ -32,14 +33,9 @@ public class RyanNodeStructure implements NodeStructure{
 	private Map<Long, Node> nodeMap;
 	
 	/**
-	 * 
-	 */
-	private Map<Long, Link> linkMap;
-	
-	/**
 	 * Nodes and Links are keys and the values are their links
 	 */
-	private Map<Linkable, Set<Link>> linkableMap;
+	private Map<Linkable, Set<Link>> linkMap;
 	
 	/**
 	 * For each integer key there is a set of nodes that are
@@ -47,9 +43,9 @@ public class RyanNodeStructure implements NodeStructure{
 	 */
 	private Map<Integer, Set<Node>> layerMap;
 
-	private String defaultLinkName = "LinkImpl";
+	private String defaultLinkName;
 
-	private String defaultNodeName = "PamNodeImpl";
+	private String defaultNodeName;
 	
 	/**
 	 * Default Constructor
@@ -57,8 +53,7 @@ public class RyanNodeStructure implements NodeStructure{
 	public RyanNodeStructure() {
 		nodes = new HashSet<Node>();
 		nodeMap = new HashMap<Long, Node>();
-		linkMap =  new HashMap<Long, Link>();
-		linkableMap = new HashMap<Linkable, Set<Link>>();
+		linkMap = new HashMap<Linkable, Set<Link>>();
 		layerMap = new HashMap<Integer, Set<Node>>();	
 	}
 	
@@ -71,8 +66,7 @@ public class RyanNodeStructure implements NodeStructure{
 		
 		nodes = new HashSet<Node>();
 		nodeMap = new HashMap<Long, Node>();
-		linkMap = new HashMap<Long, Link>();
-		linkableMap = new HashMap<Linkable, Set<Link>>();
+		linkMap = new HashMap<Linkable, Set<Link>>();
 		layerMap = new HashMap<Integer, Set<Node>>();	
 		
 		Set<Node> oldNodes = oldGraph.getNodes();
@@ -82,26 +76,18 @@ public class RyanNodeStructure implements NodeStructure{
 				nodeMap.put(n.getId(), n);
 			}
 		}
-		
-		Set<Link> oldLinks = oldGraph.getLinks();
-		if(oldLinks != null){
-			for(Link l: oldLinks){
-				LinkImpl temp = (LinkImpl)l;
-				linkMap.put(temp.getId(), temp);				
-			}
-		}
 
-		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkableMap();
+		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkMap();
 		if(oldLinkMap != null){
 			Set<Linkable> oldKeys = oldLinkMap.keySet();
 			if(oldKeys != null){
 				for(Linkable l: oldKeys){
 					if(l instanceof LinkImpl){
 						LinkImpl castLink = (LinkImpl)l;
-						this.linkableMap.put(new LinkImpl(castLink), new HashSet<Link>());
-					}else if(l instanceof PamNodeImpl){
-						PamNodeImpl castNode = (PamNodeImpl)l;
-						this.linkableMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
+						this.linkMap.put(new LinkImpl(castLink), new HashSet<Link>());
+					}else if(l instanceof PamNodeImplW){
+						PamNodeImplW castNode = (PamNodeImplW)l;
+						this.linkMap.put(new PamNodeImplW(castNode), new HashSet<Link>());
 					}
 				}
 			}
@@ -132,28 +118,24 @@ public class RyanNodeStructure implements NodeStructure{
 		boolean result1 = false;
 		boolean result2 = false;
 		Linkable end = l.getSource();
-		Set<Link> tempLinks = linkableMap.get(end);
+		Set<Link> tempLinks = linkMap.get(end);
 		if(tempLinks == null){
 			tempLinks=new HashSet<Link>();
-			linkableMap.put(end, tempLinks);
+			linkMap.put(end, tempLinks);
 		}
 		result1 = tempLinks.add(l);
 		
 		end = l.getSink();
-		tempLinks = linkableMap.get(end);
+		tempLinks = linkMap.get(end);
 		if(tempLinks == null){
 			tempLinks = new HashSet<Link>();
-			linkableMap.put(end, tempLinks);
+			linkMap.put(end, tempLinks);
 		}
 		result2 = tempLinks.add(l);
 		boolean result = result1 || result2;
 		
-		if(!linkableMap.containsKey(l))
-			linkableMap.put(l, new HashSet<Link>());
-		
-		LinkImpl temp = (LinkImpl)l;
-		if(!linkMap.containsKey(temp.getId()))
-			linkMap.put(temp.getId(), temp);
+		if(!linkMap.containsKey(l))
+			linkMap.put(l, new HashSet<Link>());
 		
 		if(result)
 			linkCount++;
@@ -179,7 +161,7 @@ public class RyanNodeStructure implements NodeStructure{
 	 */	
 	public void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity) {
 		for(Node n: nodesToAdd){
-			PamNodeImpl toAdd = (PamNodeImpl)n;
+			PamNodeImplW toAdd = (PamNodeImplW)n;
 			nodes.add(toAdd);
 			nodeMap.put(n.getId(), n);
 			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
@@ -188,17 +170,16 @@ public class RyanNodeStructure implements NodeStructure{
 		updateActivationThresholds(upscale, selectivity);
 	}//method
 	
-	public void addChild(PamNodeImpl child, PamNodeImpl parent){	
+	public void addChild(PamNodeImplW child, PamNodeImplW parent){	
 		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
-		linkMap.put(l.getId(), l);
 		
-		if(linkableMap.get(parent).add(l))//Add new link to parent's links
+		if(linkMap.get(parent).add(l))//Add new link to parent's links
 			linkCount++;
 			
-		Set<Link> childsLinks = linkableMap.get(child);
+		Set<Link> childsLinks = linkMap.get(child);
 		if(childsLinks.equals(null)){//If child is not in the map
 			childsLinks = new HashSet<Link>();
-			linkableMap.put(child, childsLinks);
+			linkMap.put(child, childsLinks);
 		}		
 		childsLinks.add(l);
 		
@@ -209,15 +190,14 @@ public class RyanNodeStructure implements NodeStructure{
 	
 	public void addParent(Node parent, Node child){
 		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()));
-		linkMap.put(l.getId(), l);
 		
-		if(linkableMap.get(child).add(l))
+		if(linkMap.get(child).add(l))
 			linkCount++;
 		
-		Set<Link> parentsLinks = linkableMap.get(parent);
+		Set<Link> parentsLinks = linkMap.get(parent);
 		if(parentsLinks.equals(null)){
 			parentsLinks = new HashSet<Link>();
-			linkableMap.put(parent, parentsLinks);
+			linkMap.put(parent, parentsLinks);
 		}
 		parentsLinks.add(l);	
 		//TODO:DOUBLE CHECK
@@ -344,11 +324,11 @@ public class RyanNodeStructure implements NodeStructure{
 	 * @return true if n has no children (it is at the 'bottom' of the network)
 	 */
     public boolean isBottomLinkable(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
+		Set<Link> links = linkMap.get(n);
 		if(links != null){
 			for(Link link: links){
 				Linkable source = link.getSource();
-				if(source instanceof PamNodeImpl && !source.equals(n))//if source is a child of n
+				if(source instanceof PamNodeImplW && !source.equals(n))//if source is a child of n
 					return false;
 			}//for
 		}
@@ -360,11 +340,11 @@ public class RyanNodeStructure implements NodeStructure{
 	 * @return true if n has no parent (it is at the 'top' of the network)
 	 */
 	public boolean isTopLinkable(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
+		Set<Link> links = linkMap.get(n);
 		if(links != null){
 			for(Link link: links){
 				Linkable sink = link.getSink();
-				if(sink instanceof PamNodeImpl && !sink.equals(n))//if source is a child of n
+				if(sink instanceof PamNodeImplW && !sink.equals(n))//if source is a child of n
 					return false;
 			}//for
 		}
@@ -372,34 +352,32 @@ public class RyanNodeStructure implements NodeStructure{
 	}
 	
 	public NodeStructure copy() {
-		return new RyanNodeStructure(this);
+		return new RyanNodeStructure();
 	}
 	
 	//TODO: Happens to the other nodes if we delete a Linkable that connects them?
 	//TODO: What is their layer depth then?
 	public void deleteLinkable(Linkable n){
-		Set<Link> tempLinks = linkableMap.get(n);
+		Set<Link> tempLinks = linkMap.get(n);
 		Set<Link> otherLinks;
 		Linkable other;
 		
 		for(Link l: tempLinks){
 			other = l.getSink(); 
 			if(!other.equals(n)){ 
-				otherLinks = linkableMap.get(other);
+				otherLinks = linkMap.get(other);
 				if(otherLinks != null)
-					otherLinks.remove(l);				
+					otherLinks.remove(l);
 			}			
 			other = l.getSource();
 			if(!other.equals(n)){
-				otherLinks = linkableMap.get(other);
+				otherLinks = linkMap.get(other);
 				if(otherLinks != null)
 					otherLinks.remove(l);
 			}						
 		}//for all of the links connected to n		
-		if(linkableMap.remove(n) != null && n instanceof LinkImpl){//finally remove the linkable and its links
+		if(linkMap.remove(n) != null && n instanceof LinkImpl)//finally remove the linkable and its links
 			linkCount--;
-			linkMap.remove(n);
-		}
 	}//method
 
 	public void deleteNode(Node n) {
@@ -412,65 +390,19 @@ public class RyanNodeStructure implements NodeStructure{
 	 * @param l
 	 */
 	public void deleteLink(Link l){
-		Set<Link> sourceLinks = linkableMap.get(l.getSource());
-		Set<Link> sinkLinks = linkableMap.get(l.getSink());
+		Set<Link> sourceLinks = linkMap.get(l.getSource());
+		Set<Link> sinkLinks = linkMap.get(l.getSink());
 		
 		if(sourceLinks != null)
 			sourceLinks.remove(l);
 		if(sinkLinks != null)
 			sinkLinks.remove(l);	
 		
-		linkableMap.remove(l);	
-		linkMap.remove(l);
+		linkMap.remove(l);	
 	}//public void deleteLink(Link l)
 	
 	//**GETTING
 	
-	/**
-	 * 
-	 */
-	public Map<Linkable, Set<Link>> getLinkableMap(){
-		return linkableMap;
-	}
-	
-	/**
-	 * Get children of this linkable
-	 * @param n
-	 * @return
-	 */
-	public Set<PamNode> getChildren(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
-		Set<PamNode> children = new HashSet<PamNode>();
-		if(links != null){
-			for(Link link: links){
-				Linkable source = link.getSource();
-				if(source instanceof PamNodeImpl && !source.equals(n))
-					children.add((PamNodeImpl)source);			
-			}
-		}
-		return children;		
-	}
-	
-	/**
-	 * Get parents of this linkable
-	 * @param n
-	 * @return
-	 */
-	public Set<Node> getParents(Node n) {		
-		Set<Link> links = linkableMap.get(n);
-		Set<Node> parents = new HashSet<Node>();
-		
-		if(links != null){
-			for(Link link: links){				
-				Linkable sink = link.getSink();
-				if(sink instanceof PamNodeImpl && !sink.equals(n))
-					parents.add((PamNodeImpl)sink);							
-			}//for each link of n
-		}
-		return parents;	
-	}	
-	
-	//GET NODE METHODS	
     public Set<Node> getNodes(){    	    	
     	return nodes;
     }
@@ -479,38 +411,17 @@ public class RyanNodeStructure implements NodeStructure{
     	return nodeMap;
     }//method
 
-	public int getNodeCount() {
-		if(nodes.size() != nodeMap.size()){
-			try{throw new Exception();}
-			catch(Exception e){System.out.println("ur nodes in struct are out of sync dude");}
-		}
-		return nodes.size();
-	}
-
-	public Node getNode(long id) {
-		return nodeMap.get(id);
-	}
-	
-	//LINK GET METHODS
-	public int getLinkCount(){
-		if(linkCount != linkMap.size()){
-			try{throw new Exception();}
-			catch(Exception e){System.out.println("ur links in struct are out of sync dude");}
-		}
-		
-		return linkCount;
-	}//method
-
-	public Link getLink(int id) {
-		return linkMap.get(id);		
-	}
-	
 	/**
 	 * Go through the linkables in linkmap
 	 * and return those that are Link
 	 */
 	public Set<Link> getLinks() {
-		return new HashSet<Link>(linkMap.values());
+		Set<Link> links = new HashSet<Link>();
+		Set<Linkable> linkables = linkMap.keySet();
+		for(Linkable l: linkables)
+			if(l instanceof Link)	
+				links.add((Link)l);				
+		return links;
 	}
 	
 	/**
@@ -518,7 +429,7 @@ public class RyanNodeStructure implements NodeStructure{
 	 * 
 	 */
 	public Set<Link> getLinks(Linkable l){
-		return linkableMap.get(l);	
+		return linkMap.get(l);	
 	}//public Set<Link> getLinks(Node n)
 	
 	/**
@@ -528,7 +439,7 @@ public class RyanNodeStructure implements NodeStructure{
 	 */
 	public Set<Link> getLinks(LinkType type) {
 		Set<Link> links = new HashSet<Link>();
-		Set<Linkable> linkables = linkableMap.keySet();
+		Set<Linkable> linkables = linkMap.keySet();
 		for(Linkable l: linkables){
 			if(l instanceof Link){
 				Link temp = (Link)l;
@@ -540,7 +451,7 @@ public class RyanNodeStructure implements NodeStructure{
 	}//method
 	
 	public Set<Link> getLinks(Linkable NorL, LinkType type){
-		Set<Link> result = linkableMap.get(NorL);
+		Set<Link> result = linkMap.get(NorL);
 		if(result != null){
 			for(Link l: result){
 				if(l.getType() != type)//remove links that don't match specified type
@@ -548,14 +459,55 @@ public class RyanNodeStructure implements NodeStructure{
 			}//for each link
 		}//result != null
 		return result;
+	}//public Set<Link> getLinks(Node n, LinkType type)
+	
+	/**
+	 * Get children of this linkable
+	 * @param n
+	 * @return
+	 */
+	public Set<PamNode> getChildren(Linkable n) {
+		Set<Link> links = linkMap.get(n);
+		Set<PamNode> children = new HashSet<PamNode>();
+		if(links != null){
+			for(Link link: links){
+				Linkable source = link.getSource();
+				if(source instanceof PamNodeImplW && !source.equals(n))
+					children.add((PamNodeImplW)source);			
+			}
+		}
+		return children;		
+	}
+	
+	/**
+	 * Get parents of this linkable
+	 * @param n
+	 * @return
+	 */
+	public Set<Node> getParents(Node n) {		
+		Set<Link> links = linkMap.get(n);
+		Set<Node> parents = new HashSet<Node>();
+		
+		if(links != null){
+			for(Link link: links){				
+				Linkable sink = link.getSink();
+				if(sink instanceof PamNodeImplW && !sink.equals(n))
+					parents.add((PamNodeImplW)sink);							
+			}//for each link of n
+		}
+		return parents;	
+	}
+	
+	public Map<Linkable, Set<Link>> getLinkMap(){
+		return linkMap;
+	}
+	
+	public int getLinkCount(){
+		return linkCount;
 	}//method
 
-	//OTHER GET METHOD
-	public Object getContent() {	
-		return null;
-	}
-
-	//**SETTING METHODS
+	//**SETTING
+	
 	public void setDefaultLink(String linkClassName) {
 		defaultLinkName = linkClassName;		
 	}
@@ -565,6 +517,7 @@ public class RyanNodeStructure implements NodeStructure{
 	}
 
 	//**PRINTING
+	
 	public void printNodes() {
 		for(Node n: nodes)
 			System.out.println(n.getLabel() + " current activ. " + n.getCurrentActivation());		
@@ -572,17 +525,48 @@ public class RyanNodeStructure implements NodeStructure{
 	
 	public void printPamNodeActivations() {
 		for(Node n: nodes)
-			((PamNodeImpl)n).printActivationString();
+			((PamNodeImplW)n).printActivationString();
 	}
 
 	public void printLinkMap() {
-		Set<Linkable> keys = linkableMap.keySet();
+		Set<Linkable> keys = linkMap.keySet();
 		for(Linkable key: keys){
-			Set<Link> links = linkableMap.get(key);
+			Set<Link> links = linkMap.get(key);
 			for(Link l: links)
 				System.out.println("Source: " + l.getSource().toString() + " sink " + l.getSink().toString());
 			System.out.println();
 		}
 	}//method
-	
+
+	public Object getContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getNodeCount() {
+		return nodes.size();
+	}
+
+	public Node getNodeById(long id) {
+		if(nodeMap.containsKey(id))
+			return nodeMap.get(id);
+
+		return null;
+	}
+
+	public void combineNodeStructure(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Link findLink(String ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Node findNode(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }//class

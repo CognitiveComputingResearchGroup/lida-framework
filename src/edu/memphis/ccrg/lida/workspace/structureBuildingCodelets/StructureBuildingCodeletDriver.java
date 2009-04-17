@@ -1,10 +1,12 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -90,7 +92,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 		NodeStructure struct = (NodeStructure)workspaceContent;
 		
 		if(struct != null){
-			Set<Node> nodes = struct.getNodes();
+			Collection<Node> nodes = struct.getNodes();
 			for(Node n: nodes){
 				//Activate codelets
 			}

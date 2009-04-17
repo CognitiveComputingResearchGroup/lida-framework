@@ -1,66 +1,71 @@
 package edu.memphis.ccrg.lida.shared;
 
-import java.util.Map;
-
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-
 /**
- *
+ * 
  * @author Ryan McCall
  */
-public class LinkImpl implements Link, Node{
-    
-	private final double MIN_ACTIVATION = 0.0;
-	private final double MAX_ACTIVATION = 1.0;
-	
-    private Linkable sink;    
-    private Linkable source;    
-    private long linkID;
-    private String label = "linkImpl";
-    private LinkType type; 
-	private double activation = 0.0;
-	
-	
-    public LinkImpl(Linkable source, Linkable sink, LinkType type, long id){        
-        this.source = source;
-        this.sink = sink;   
-        this.type = type;
-        linkID = id;
-    }
-    
-    public LinkImpl(LinkImpl l){
-    	sink = l.sink;
-    	source = l.source;
-    	linkID = l.linkID;
-    	label = l.label;
-    	type = l.type;
-    	activation = l.activation;    	
-    }
+public class LinkImpl implements Link {
 
-	public boolean equals(Object obj){
-		if(!(obj instanceof LinkImpl)){
-			return false;    	
-    	}    	
-    	LinkImpl other = (LinkImpl)obj;
-		return (linkID == other.linkID) && (type == other.type);
+	private Linkable sink;
+	private Linkable source;
+	private String ids;
+	private String label = "linkImpl";
+	private LinkType type;
+
+	public LinkImpl(Linkable source, Linkable sink, LinkType type, String ids) {
+		this.source = source;
+		this.sink = sink;
+		this.type = type;
+		this.ids = ids;
+		updateIds();
 	}
-    
-    public int hashCode() { 
-        int hash = 1;
-        hash = hash * 31 + (new Long(linkID)).hashCode();
-        hash = hash * 31 + (type == null ? 0 : type.hashCode());
-        return hash;
-    }
-    
-    //LINK METHODS
 
-    public Link copy(Link l){
-    	if(l instanceof LinkImpl)
-    		return new LinkImpl((LinkImpl)l);
-    	else
-    		return null;
-    }
+	public LinkImpl(Link l) {
+		sink = l.getSink();
+		source = l.getSource();
+		type = l.getType();
+		ids = l.getIds();
+		label = l.getLabel();
+		updateIds();
+	}
+
+	public LinkImpl() {
+	}
+
+	public LinkImpl copy(LinkImpl l) {
+		return new LinkImpl(l);
+	}
+
+	/**
+	 * This method compares this LinkImp with any kind of Link. Two Links are
+	 * equals if and only if their sources and sinks are equals and are Links of
+	 * the same type.
+	 * 
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Link)) {
+			return false;
+		}
+		Link other = (Link) obj;
+
+		if (other.getType() != type) {
+			return false;
+		}
+
+		if (ids.equals(other)) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getIds() {
+		return ids;
+	}
+
+	public String getLabel() {
+		return "Link: " + ids;
+	}
 
 	public Linkable getSink() {
 		return sink;
@@ -72,101 +77,42 @@ public class LinkImpl implements Link, Node{
 
 	public LinkType getType() {
 		return type;
-	}//
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 31 + ((source == null) ? 0 : source.hashCode())
+				+ ((sink == null) ? 0 : sink.hashCode());
+		hash = hash * 31 + (type == null ? 0 : type.hashCode());
+		return hash;
+	}
+
+	public void setIds(String id) {
+		this.ids = id;
+	}
 
 	public void setSink(Linkable sink) {
 		this.sink = sink;
-	}//
+		updateIds();
+	}
 
 	public void setSource(Linkable source) {
 		this.source = source;
-	}//
+		updateIds();
+	}
 
 	public void setType(LinkType type) {
 		this.type = type;
-	}//
-    
-	public String toString(){
-		String s = label + " Source: ";
-		s += source.getLabel();	
-		s += ". Sink: ";
-		s += sink.getLabel();	
-		return s;
-	}//
-	
-	//NODE METHODS
-	public String getLabel() {
-		return label;
+		updateIds();
 	}
 
-	public void decay() {
-		System.out.println("decay not implemented");	
+	@Override
+	public String toString() {
+		return getLabel();
 	}
 
-	public void excite(double amount) {
-		System.out.println("excite not implemented");
-		//activation = amount;		
+	private void updateIds() {
+		ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + type + ")";
 	}
-
-	public double getCurrentActivation() {
-		return activation;
-	}
-
-	public DecayBehavior getDecayBehavior() {
-		System.out.println("decay not implemented");
-		return null;
-	}
-
-	public ExciteBehavior getExciteBehavior() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public long getId() {
-		return linkID;
-	}
-
-	public Node getReferencedNode() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setActivation(double d) {
-		activation = d;
-	}
-
-	public void setDecayBehavior(DecayBehavior c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setExciteBehavior(ExciteBehavior behavior) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setId(long id) {
-		this.linkID = id;		
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-		
-	}
-
-	public void setReferencedNode(Node n) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setValue(Map<String, Object> values) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Node copy(Node n) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-}//class
+}

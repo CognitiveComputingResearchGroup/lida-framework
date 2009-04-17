@@ -1,8 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -30,12 +31,12 @@ public class CSMDriver implements Runnable, Stoppable{
 		int counter = 0;		
 		long startTime = System.currentTimeMillis();		
 		while(keepRunning){
-			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
+			try{Thread.sleep(25 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 		
 			NodeStructure struct = csm.getContent();
-			Set<Node> nodes = struct.getNodes();
-			Set<Link> links = struct.getLinks();
+			Collection<Node> nodes = struct.getNodes();
+			Collection<Link> links = struct.getLinks();
 			
 			List<Object> content = new ArrayList<Object>();
 	        content.add(nodes.size());
