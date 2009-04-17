@@ -1,8 +1,7 @@
 package edu.memphis.ccrg.lida.shared;
 
-import java.util.Collection;
 import java.util.Set;
-
+import java.util.Collection;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
@@ -53,7 +52,7 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 	//Find is nonstandard
 	public abstract Node getNode(long id);
 
-	public abstract Link getLink (String ids);
+	public abstract Link getLink(String ids);
 	
 	public abstract void combineNodeStructure (NodeStructure ns);
 	
