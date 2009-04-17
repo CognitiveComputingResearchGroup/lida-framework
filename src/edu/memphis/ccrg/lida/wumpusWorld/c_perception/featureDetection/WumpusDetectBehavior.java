@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImplW;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 
 public class WumpusDetectBehavior implements DetectBehavior {
 	
@@ -18,7 +18,7 @@ public class WumpusDetectBehavior implements DetectBehavior {
 		this.codeMap = codeMap;
 	}
 
-	public void detectAndExcite(PamNodeImplW node, SensoryContentImpl sc){
+	public void detectAndExcite(RyanPamNode node, SensoryContentImpl sc){
 		String nodeLabel = node.getLabel();
 		Integer posToCheck = codeMap.get(nodeLabel);//an integer 0-3		
 		char[][][] senseData = (char[][][])sc.getContent();

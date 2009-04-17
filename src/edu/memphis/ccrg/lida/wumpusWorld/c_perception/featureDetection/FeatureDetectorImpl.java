@@ -5,14 +5,14 @@ import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 import edu.memphis.ccrg.lida.util.Misc;
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImplW;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 
 public class FeatureDetectorImpl implements FeatureDetector{
 
 	public DetectBehavior detectBehav;
-	private PamNodeImplW pamNode;
+	private RyanPamNode pamNode;
 	
-	public FeatureDetectorImpl(PamNodeImplW n, DetectBehavior b){
+	public FeatureDetectorImpl(RyanPamNode n, DetectBehavior b){
 		detectBehav = b;
 		pamNode = n;
 	}
