@@ -49,6 +49,9 @@ public class NodeFactory {
 	public void addNodeType(String nodeType, String className) {
 		nodeClass.put(nodeType, className);
 	}
+	public void addLinkType(String linkType, String className) {
+		linkClass.put(linkType, className);
+	}
 	/**
 	 * @param name
 	 * @return
@@ -157,6 +160,28 @@ public class NodeFactory {
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(oNode.getExciteBehavior());
 			n.setDecayBehavior(oNode.getDecayBehavior());
+			n.setId(oNode.getId());
+			n.setLabel(oNode.getLabel());
+			
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+		}
+		return n;
+	}
+	public Node getNode(Node oNode,String nodeType) {
+		Node n = null;
+		try {
+			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
+			n.setActivation(oNode.getCurrentActivation());
+			n.setReferencedNode(oNode.getReferencedNode());
+			n.setExciteBehavior(oNode.getExciteBehavior());
+			n.setDecayBehavior(oNode.getDecayBehavior());
+			n.setId(oNode.getId());
+			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -177,6 +202,8 @@ public class NodeFactory {
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(excites.get(exciteBehavior));
 			n.setDecayBehavior(decays.get(decayBehavior));
+			n.setId(oNode.getId());
+			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -196,6 +223,8 @@ public class NodeFactory {
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(excites.get(exciteBehavior));
 			n.setDecayBehavior(decays.get(decayBehavior));
+			n.setId(oNode.getId());
+			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -226,6 +255,12 @@ public class NodeFactory {
 	public Node getNode(String nodeType, String nodeLabel){
 		Node n = getNode(nodeType);
 		n.setLabel(nodeLabel);
+		return n;
+	}
+
+	public Node getNode(String nodeType, long id){
+		Node n = getNode(nodeType);
+		n.setId(id);
 		return n;
 	}
 

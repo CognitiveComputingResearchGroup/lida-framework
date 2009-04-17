@@ -3,13 +3,14 @@
  */
 package edu.memphis.ccrg.lida.shared;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+//import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImplW;
 
-//import edu.memphis.ccrg.lida.perception.LinkImp;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
 
 /**
  * @author Javier Snaider
@@ -17,31 +18,41 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImpl;
  */
 public class NodeStructureImp implements NodeStructure {
 	private Map<Linkable, Set<Link>> linkMap;
-	private Set<Node> nodes;
+	private Map<Long, Node> nodes;
+	private Map<String, Link> links;
 	private int linkCount = 0;// How many links have been added to this linkMap
 	private String defaultNode;
 	private String defaultLink;
 	private NodeFactory factory = NodeFactory.getInstance();
-	
+
 	/**
-	 * @param defaultNode the defaultNode to set
+	 * @param defaultNode
+	 *            the defaultNode to set
 	 */
 	public void setDefaultNode(String defaultNode) {
 		this.defaultNode = defaultNode;
 	}
 
 	/**
-	 * @param defaultLink the defaultLink to set
+	 * @param defaultLink
+	 *            the defaultLink to set
 	 */
 	public void setDefaultLink(String defaultLink) {
 		this.defaultLink = defaultLink;
 	}
 
-
 	public NodeStructureImp() {
 		linkMap = new HashMap<Linkable, Set<Link>>();
-		nodes = new HashSet<Node>();
-		
+		nodes = new HashMap<Long, Node>();
+		links = new HashMap<String, Link>();
+
+	}
+
+	public NodeStructureImp(String defaultNode, String defaultLink) {
+		this();
+
+		this.defaultNode = defaultNode;
+		this.defaultLink = defaultLink;
 	}
 
 	/*
@@ -52,38 +63,64 @@ public class NodeStructureImp implements NodeStructure {
 	 * .shared.Link)
 	 */
 	public boolean addLink(Link l) {
-		
-		boolean result=false;
-		
+
+		boolean result = false;
+
 		Linkable source = l.getSource();
 		Linkable sink = l.getSink();
-		if((source instanceof Node) && (!nodes.contains((Node)source))){
-			return false;
+
+		Linkable newSource = null;
+		Linkable newSink = null;
+
+		if (source instanceof Node) {
+			Node snode = (Node) source;
+			newSource = nodes.get(snode.getId());
+			if (newSource == null) {
+				return false;
+			}
 		}
-		
-		if((source instanceof Link) && (!linkMap.keySet().contains(source))){
-			return false;
+
+		if (sink instanceof Node) {
+			Node snode = (Node) sink;
+			newSink = nodes.get(snode.getId());
+			if (newSink == null) {
+				return false;
+			}
 		}
-		if((sink instanceof Link) && (!linkMap.keySet().contains(sink))){
-			return false;
+
+		if (source instanceof Link) {
+			newSource = links.get(source.getIds());
+			if (newSource == null) {
+				return false;
+			}
 		}
-				
+
+		if (sink instanceof Link) {
+			newSink = links.get(sink.getIds());
+			if (newSink == null) {
+				return false;
+			}
+		}
+
+		Link newLink = getNewLink(l, newSource, newSink, l.getType());
+		links.put(newLink.getIds(), newLink);
+
 		Set<Link> tempLinks = linkMap.get(source);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
 			linkMap.put(source, tempLinks);
 		}
-		
-	//	Link newLink = factory.
-	//	tempLinks.add(l);
+		tempLinks.add(newLink);
 
 		tempLinks = linkMap.get(sink);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
 			linkMap.put(sink, tempLinks);
+			tempLinks.add(newLink);
 		}
-		
-	//	linkMap.put()
+		tempLinks.add(newLink);
+
+		// linkMap.put()
 		linkCount++;
 		return result;
 	}
@@ -94,17 +131,49 @@ public class NodeStructureImp implements NodeStructure {
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
 	public void addLinkSet(Set<Link> links) {
-		for (Link l : links){}
-		//	addLink(new LinkImp((LinkImp) l));
+		for (Link l : links) {
+			addLink(l);
+		}
 	}// public void addLinkSet(Set<Link> links)
 
 	public boolean addNode(Node n) {
-		if (!nodes.contains(n)){// check this
-			nodes.add(factory.getNode(n));
-			linkMap.put(n, null);
+		if (!nodes.keySet().contains(n.getId())) {
+			Node newNode = getNewNode(n);
+			nodes.put(newNode.getId(), newNode);
+			linkMap.put(newNode, null);
+			return true;
 		}
-		
 		return false;
+	}
+
+	/**
+	 * This method can be overwritten to customize the Node Creation.
+	 * 
+	 * @param n
+	 *            The original Node
+	 * @return The Node to be used in this NodeStructure
+	 */
+	protected Node getNewNode(Node n) {
+		return factory.getNode(n, defaultNode);
+	}
+
+	/**
+	 * This method can be overwritten to customize the Link Creation. some of
+	 * the parameter could be redundant in some cases.
+	 * 
+	 * @param l
+	 *            The original Link
+	 * @param source
+	 *            The new source
+	 * @param sink
+	 *            The new sink
+	 * @param type
+	 *            the type of the link
+	 * @return The link to be used in this NodeStructure
+	 */
+	protected Link getNewLink(Link l, Linkable source, Linkable sink,
+			LinkType type) {
+		return factory.getLink(defaultLink, source, sink, l.getType());
 	}
 
 	/*
@@ -112,7 +181,8 @@ public class NodeStructureImp implements NodeStructure {
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
-	public void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity) {
+	public void addNodes(Set<Node> nodesToAdd, double upscale,
+			double selectivity) {
 		for (Node n : nodesToAdd) {
 			addNode(n);
 			// refresh();
@@ -132,20 +202,10 @@ public class NodeStructureImp implements NodeStructure {
 	 * .lida.shared.Link)
 	 */
 	public void deleteLink(Link l) {
-		Set<Link> sourceLinks = linkMap.get(l.getSource());
-		Set<Link> sinkLinks = linkMap.get(l.getSink());
-
-		if (sourceLinks != null)
-			sourceLinks.remove(l);
-
-		if (sinkLinks != null)
-			sinkLinks.remove(l);
+		deleteLinkable(l);
 
 	}// public void deleteLink(Link l)
 
-	// TODO: Happens to the other nodes if we delete a Linkable that connects
-	// them?
-	// TODO: What is their layer depth then?22
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -158,31 +218,53 @@ public class NodeStructureImp implements NodeStructure {
 		Set<Link> otherLinks;
 		Linkable other;
 
-		for (Link l : tempLinks) {
-			other = l.getSink();
-			if (!other.equals(n)) {
-				otherLinks = linkMap.get(other);
-				if (otherLinks != null)
-					otherLinks.remove(l);
-			}
-			other = l.getSource();
-			if (!other.equals(n)) {
-				otherLinks = linkMap.get(other);
-				if (otherLinks != null)
-					otherLinks.remove(l);
-			}
-		}// for all of the links connected to n
+		if (tempLinks != null) {
+			for (Link l : tempLinks) {
+				other = l.getSink();
+				if (!other.equals(n)) {
+					otherLinks = linkMap.get(other);
+					if (otherLinks != null)
+						otherLinks.remove(l);
+				}
+				other = l.getSource();
+				if (!other.equals(n)) {
+					otherLinks = linkMap.get(other);
+					if (otherLinks != null)
+						otherLinks.remove(l);
+				}
+			}// for all of the links connected to n
+		}
+
 		linkMap.remove(n);// finally remove the linkable and its links
+		if (n instanceof Node) {
+			nodes.remove(((Node) n).getId());
+		} else if (n instanceof Link) {
+			Link aux = links.get(n.getIds());
+			links.remove(aux.getIds());
+			Set<Link> sourceLinks = linkMap.get(aux.getSource());
+			Set<Link> sinkLinks = linkMap.get(aux.getSink());
+
+			if (sourceLinks != null)
+				sourceLinks.remove(aux);
+
+			if (sinkLinks != null)
+				sinkLinks.remove(aux);
+		}
+
 	}// public void deleteNode(Linkable n)
 
 	public void deleteNode(Node n) {
-		// TODO Auto-generated method stub
-		
+		deleteLinkable(n);
+
 	}
 
-	public Set<Link> getLinks() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Link> getLinks() {
+		Collection<Link> aux = links.values();
+		if (aux == null) {
+			return null;
+		} else {
+			return Collections.unmodifiableCollection(aux);
+		}
 	}
 
 	/*
@@ -193,8 +275,16 @@ public class NodeStructureImp implements NodeStructure {
 	 * lida.shared.Linkable)
 	 */
 	public Set<Link> getLinks(Linkable l) {
-		return linkMap.get(l);
-	}// public Set<Link> getLinks(PamNodeImpl n)
+		Set<Link> aux = linkMap.get(l);
+		if (aux == null) {
+			return null;
+		} else {
+			return Collections.unmodifiableSet(aux); // This returns the
+		}// set of Links but
+		// it prevents to be
+		// modified
+
+	}// public Set<Link> getLinks(PamNodeImplW n)
 
 	/*
 	 * (non-Javadoc)
@@ -204,20 +294,27 @@ public class NodeStructureImp implements NodeStructure {
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
 	public Set<Link> getLinks(Linkable NorL, LinkType type) {
-		Set<Link> result = linkMap.get(NorL);
-		if (result != null) {
-			for (Link l : result) {
-				if (l.getType() != type)// remove links that don't match
-					// specified type
-					result.remove(l);
+		Set<Link> temp = linkMap.get(NorL);
+		Set<Link> result = new HashSet<Link>();
+		if (temp != null) {
+			for (Link l : temp) {
+				if (l.getType() == type)// add only decired type
+					result.add(l);
 			}// for each link
 		}// result != null
 		return result;
-	}// public Set<Link> getLinks(PamNodeImpl n, LinkType type)
+	}// public Set<Link> getLinks(PamNodeImplW n, LinkType type)
 
 	public Set<Link> getLinks(LinkType type) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Link> result = new HashSet<Link>();
+		if (links != null) {
+			for (Link l : links.values()) {
+				if (l.getType() == type) {
+					result.add((Link) l);
+				}
+			}
+		}
+		return result;
 	}
 
 	/*
@@ -225,14 +322,30 @@ public class NodeStructureImp implements NodeStructure {
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#getNodes()
 	 */
-	public Set<Node> getNodes() {
-		return nodes;
+	public Collection<Node> getNodes() {
+		Collection<Node> aux = nodes.values();
+		if (aux == null) {
+			return null;
+		} else {
+			return Collections.unmodifiableCollection(aux);
+		}
 	}
 
 	public Object getContent() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
+	public void combineNodeStructure(NodeStructure ns) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public Link findLink(String ids) {
+		return links.get(ids);
+	}
+
+	public Node findNode(long id) {
+		return nodes.get(id);
+	}
 
 }

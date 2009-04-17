@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.shared;
 
+import java.util.Collection;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -24,7 +25,7 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity);
 
-	public NodeStructure copy();
+	public abstract NodeStructure copy();
 
 	public abstract void deleteLink(Link l);
 	
@@ -32,7 +33,7 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract void deleteNode(Node n);
 
-	public abstract Set<Link> getLinks();
+	public abstract Collection<Link> getLinks();
 
 	public abstract Set<Link> getLinks(Linkable l);
 
@@ -40,10 +41,16 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract Set<Link> getLinks(LinkType type);
 
-	public abstract Set<Node> getNodes();
+	public abstract Collection<Node> getNodes();
 
-	public void setDefaultLink(String linkClassName);
+	public abstract void setDefaultLink(String linkClassName);
 
-	public void setDefaultNode(String nodeClassName);
+	public abstract void setDefaultNode(String nodeClassName);
 
+	public abstract Node findNode(long id);
+
+	public abstract Link findLink (String ids);
+	
+	public abstract void combineNodeStructure (NodeStructure ns);
+	
 }

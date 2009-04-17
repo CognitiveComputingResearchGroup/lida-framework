@@ -14,7 +14,7 @@ public class TestNodeFactory {
 		NodeFactory factory = NodeFactory.getInstance();
 		
 		//adding a Node Type to the Factory
-		factory.addNodeType("PamNode", "edu.memphis.ccrg.lida._perception.PamNodeImpl");
+		factory.addNodeType("PamNode", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
 
 		//adding a decaybehavior type to the Factory
 		factory.addDecayBehavior("linear", new LinearDecayCurve());
