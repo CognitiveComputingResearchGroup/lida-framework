@@ -19,10 +19,12 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract boolean addLink(Link l);
 
-	public abstract void addLinkSet(Collection<Link> links);
+	//CHANGED FROM 'addLinkSet(Set<Link> links)'
+	public abstract void addLinks(Collection<Link> links);
 
 	public abstract boolean addNode(Node n);
 
+	//THIS SHOULD NOT HAVE THE DOUBLE PARAMETERS and nodes should be a collection?
 	public abstract void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity);
 
 	public abstract NodeStructure copy();
@@ -35,6 +37,7 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract Collection<Link> getLinks();
 
+	//THIS return COLLECTION?
 	public abstract Set<Link> getLinks(Linkable l);
 
 	public abstract Set<Link> getLinks(Linkable NorL, LinkType type);
@@ -47,9 +50,10 @@ public interface NodeStructure extends BroadcastContent, WorkspaceContent {
 
 	public abstract void setDefaultNode(String nodeClassName);
 
-	public abstract Node findNode(long id);
+	//Find is nonstandard
+	public abstract Node getNode(long id);
 
-	public abstract Link findLink (String ids);
+	public abstract Link getLink (String ids);
 	
 	public abstract void combineNodeStructure (NodeStructure ns);
 	

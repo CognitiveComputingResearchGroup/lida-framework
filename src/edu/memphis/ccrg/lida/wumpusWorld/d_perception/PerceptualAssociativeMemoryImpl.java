@@ -95,7 +95,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     public void addToPAM(Set<Node> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
     	graph.addNodes(nodesToAdd, upscale, selectivity);
-    	graph.addLinkSet(linkSet);    	
+    	graph.addLinks(linkSet);    	
     	//graph.printLinkMap();
     }//public void addToPAM(Set<Node> nodes, Set<Link> links)   
     
@@ -174,7 +174,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         }//for      
         numNodeInPercept = newGraph.getNodes().size();
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
-        newGraph.addLinkSet(graph.getLinks());        
+        newGraph.addLinks(graph.getLinks());        
         percept = newGraph;
     }//private void syncNodeActivation
     

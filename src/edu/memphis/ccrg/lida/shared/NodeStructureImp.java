@@ -130,7 +130,7 @@ public class NodeStructureImp implements NodeStructure {
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
-	public void addLinkSet(Collection<Link> links) {
+	public void addLinks(Collection<Link> links) {
 		for (Link l : links) {
 			addLink(l);
 		}
@@ -340,11 +340,11 @@ public class NodeStructureImp implements NodeStructure {
 
 	}
 
-	public Link findLink(String ids) {
+	public Link getLink(String ids) {
 		return links.get(ids);
 	}
 
-	public Node findNode(long id) {
+	public Node getNode(long id) {
 		return nodes.get(id);
 	}
 

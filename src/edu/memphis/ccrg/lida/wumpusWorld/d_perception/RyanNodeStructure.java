@@ -115,7 +115,7 @@ public class RyanNodeStructure implements NodeStructure{
 	/**
 	 * Add multiple links to this Graph
 	 */
-	public void addLinkSet(Collection<Link> links){
+	public void addLinks(Collection<Link> links){
 		for(Link l: links)
 			addLink(l);
 	}//public void addLinkSet(Set<Link> links)
@@ -488,7 +488,7 @@ public class RyanNodeStructure implements NodeStructure{
 		return nodes.size();
 	}
 
-	public Node findNode(long id) {
+	public Node getNode(long id) {
 		return nodeMap.get(id);
 	}
 	
@@ -502,7 +502,7 @@ public class RyanNodeStructure implements NodeStructure{
 		return linkCount;
 	}//method
 
-	public Link findLink(String id) {
+	public Link getLink(String id) {
 		return linkMap.get(id);		
 	}
 	
