@@ -5,7 +5,6 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImplW;
 
 public class PamNodeImpl implements PamNode{
 
@@ -152,9 +151,9 @@ public class PamNodeImpl implements PamNode{
 	 * @param n
 	 */
 	public boolean equals(Object obj) {
-		if(!(obj instanceof PamNodeImplW))
+		if(!(obj instanceof PamNodeImpl))
 			return false;
-		PamNodeImplW other = (PamNodeImplW)obj;
+		PamNodeImpl other = (PamNodeImpl)obj;
 		return id == other.id && type == other.type;
 	}
 
