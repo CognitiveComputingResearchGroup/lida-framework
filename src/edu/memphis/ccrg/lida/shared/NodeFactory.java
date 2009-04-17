@@ -12,16 +12,22 @@ import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
  * @author Javier Snaider
  * 
  */
-
 public class NodeFactory {
 
 	private static NodeFactory instance;
+
+	/**
+	 * This static method returns the instance of the factory. 
+	 * Implements the Singleton pattern.
+	 * @return
+	 */
 	public static NodeFactory getInstance() {
 		if (instance == null) {
 			instance = new NodeFactory();
 		}
 		return instance;
 	}
+
 	private String NodeDefaultName;
 	private String LinkDefaultName;
 	private DecayBehavior defaultDecay;
@@ -29,29 +35,33 @@ public class NodeFactory {
 	private ExciteBehavior defaultExcite;
 	private Map<String, String> nodeClass = new HashMap<String, String>();
 	private Map<String, String> linkClass = new HashMap<String, String>();
-	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
 
+	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
 
 	private NodeFactory() {
 		NodeDefaultName = "edu.memphis.ccrg.lida.shared.NodeImpl";
-		LinkDefaultName="edu.memphis.ccrg.lida.shared.LinkImpl";
-		defaultDecay=new LinearDecayCurve();
-		defaultExcite= new BasicExciteBehavior();
+		LinkDefaultName = "edu.memphis.ccrg.lida.shared.LinkImpl";
+		defaultDecay = new LinearDecayCurve();
+		defaultExcite = new BasicExciteBehavior();
 	}
 
 	public void addDecayBehavior(String name, DecayBehavior decay) {
 		decays.put(name, decay);
 	}
+
 	public void addExciteBehavior(String name, ExciteBehavior excite) {
 		excites.put(name, excite);
 	}
-	public void addNodeType(String nodeType, String className) {
-		nodeClass.put(nodeType, className);
-	}
+
 	public void addLinkType(String linkType, String className) {
 		linkClass.put(linkType, className);
 	}
+
+	public void addNodeType(String nodeType, String className) {
+		nodeClass.put(nodeType, className);
+	}
+
 	/**
 	 * @param name
 	 * @return
@@ -63,6 +73,7 @@ public class NodeFactory {
 		}
 		return d;
 	}
+
 	public ExciteBehavior getExciteBehavior(String name) {
 		ExciteBehavior d = excites.get(name);
 		if (d == null) {
@@ -70,12 +81,13 @@ public class NodeFactory {
 		}
 		return d;
 	}
+
 	public Link getLink(Link oLink) {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(LinkDefaultName).newInstance();
 			l.setSource(oLink.getSource());
-			l.setSink (oLink.getSink());
+			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -85,13 +97,14 @@ public class NodeFactory {
 			// TODO Auto-generated catch block
 		}
 		return l;
-	}	
-	public Link getLink(Link oLink,String linkT) {
+	}
+
+	public Link getLink(Link oLink, String linkT) {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(linkClass.get(linkT)).newInstance();
 			l.setSource(oLink.getSource());
-			l.setSink (oLink.getSink());
+			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -108,7 +121,7 @@ public class NodeFactory {
 		try {
 			l = (Link) Class.forName(LinkDefaultName).newInstance();
 			l.setSource(source);
-			l.setSink (sink);
+			l.setSink(sink);
 			l.setType(type);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -120,12 +133,13 @@ public class NodeFactory {
 		return l;
 	}
 
-	public Link getLink(String linkT,Linkable source, Linkable sink, LinkType type) {
+	public Link getLink(String linkT, Linkable source, Linkable sink,
+			LinkType type) {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(linkClass.get(linkT)).newInstance();
 			l.setSource(source);
-			l.setSink (sink);
+			l.setSink(sink);
 			l.setType(type);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -136,6 +150,7 @@ public class NodeFactory {
 		}
 		return l;
 	}
+
 	public Node getNode() {
 		Node n = null;
 		try {
@@ -152,6 +167,7 @@ public class NodeFactory {
 		}
 		return n;
 	}
+
 	public Node getNode(Node oNode) {
 		Node n = null;
 		try {
@@ -162,7 +178,7 @@ public class NodeFactory {
 			n.setDecayBehavior(oNode.getDecayBehavior());
 			n.setId(oNode.getId());
 			n.setLabel(oNode.getLabel());
-			
+
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -172,7 +188,8 @@ public class NodeFactory {
 		}
 		return n;
 	}
-	public Node getNode(Node oNode,String nodeType) {
+
+	public Node getNode(Node oNode, String nodeType) {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
@@ -192,9 +209,8 @@ public class NodeFactory {
 		}
 		return n;
 	}
-	
-	
-	public Node getNode(Node oNode,String decayBehavior, String exciteBehavior) {
+
+	public Node getNode(Node oNode, String decayBehavior, String exciteBehavior) {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(NodeDefaultName).newInstance();
@@ -215,7 +231,8 @@ public class NodeFactory {
 		return n;
 	}
 
-	public Node getNode(Node oNode,String nodeType,String decayBehavior, String exciteBehavior) {
+	public Node getNode(Node oNode, String nodeType, String decayBehavior,
+			String exciteBehavior) {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
@@ -252,19 +269,20 @@ public class NodeFactory {
 		return n;
 	}
 
-	public Node getNode(String nodeType, String nodeLabel){
-		Node n = getNode(nodeType);
-		n.setLabel(nodeLabel);
-		return n;
-	}
-
-	public Node getNode(String nodeType, long id){
+	public Node getNode(String nodeType, long id) {
 		Node n = getNode(nodeType);
 		n.setId(id);
 		return n;
 	}
 
-	public Node getNode(String nodeType,String decayBehavior, String exciteBehavior) {
+	public Node getNode(String nodeType, String nodeLabel) {
+		Node n = getNode(nodeType);
+		n.setLabel(nodeLabel);
+		return n;
+	}
+
+	public Node getNode(String nodeType, String decayBehavior,
+			String exciteBehavior) {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();

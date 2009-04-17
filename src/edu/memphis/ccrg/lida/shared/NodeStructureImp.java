@@ -9,18 +9,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-//import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PamNodeImplW;
 
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  * @author Javier Snaider
  * 
  */
-public class NodeStructureImp implements NodeStructure {
+public class NodeStructureImp implements NodeStructure, WorkspaceContent,BroadcastContent {
 	private Map<Linkable, Set<Link>> linkMap;
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
-	private int linkCount = 0;// How many links have been added to this linkMap
 	private String defaultNode;
 	private String defaultLink;
 	private NodeFactory factory = NodeFactory.getInstance();
@@ -62,9 +62,9 @@ public class NodeStructureImp implements NodeStructure {
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#addLink(edu.memphis.ccrg.lida
 	 * .shared.Link)
 	 */
-	public boolean addLink(Link l) {
+	public Link addLink(Link l) {
 
-		boolean result = false;
+		boolean result = true;
 
 		Linkable source = l.getSource();
 		Linkable sink = l.getSink();
@@ -76,7 +76,7 @@ public class NodeStructureImp implements NodeStructure {
 			Node snode = (Node) source;
 			newSource = nodes.get(snode.getId());
 			if (newSource == null) {
-				return false;
+				return null;
 			}
 		}
 
@@ -84,21 +84,21 @@ public class NodeStructureImp implements NodeStructure {
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
 			if (newSink == null) {
-				return false;
+				return null;
 			}
 		}
 
 		if (source instanceof Link) {
 			newSource = links.get(source.getIds());
 			if (newSource == null) {
-				return false;
+				return null;
 			}
 		}
 
 		if (sink instanceof Link) {
 			newSink = links.get(sink.getIds());
 			if (newSink == null) {
-				return false;
+				return null;
 			}
 		}
 
@@ -120,9 +120,7 @@ public class NodeStructureImp implements NodeStructure {
 		}
 		tempLinks.add(newLink);
 
-		// linkMap.put()
-		linkCount++;
-		return result;
+		return newLink;
 	}
 
 	/*
@@ -130,21 +128,21 @@ public class NodeStructureImp implements NodeStructure {
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
-	public void addLinks(Collection<Link> links) {
+	public void addLinkSet(Collection<Link> links) {
 		for (Link l : links) {
 			addLink(l);
 		}
 	}// public void addLinkSet(Set<Link> links)
 
-	public boolean addNode(Node n) {
+	public Node addNode(Node n) {
 		if (!nodes.keySet().contains(n.getId())) {
 			Node newNode = getNewNode(n);
 			nodes.put(newNode.getId(), newNode);
 			linkMap.put(newNode, null);
-			return true;
+			return newNode;
 		}
-		return false;
-	}//
+		return null;
+	}
 
 	/**
 	 * This method can be overwritten to customize the Node Creation.
@@ -181,8 +179,7 @@ public class NodeStructureImp implements NodeStructure {
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
-	public void addNodes(Set<Node> nodesToAdd, double upscale,
-			double selectivity) {
+	public void addNodes(Collection<Node> nodesToAdd) {
 		for (Node n : nodesToAdd) {
 			addNode(n);
 			// refresh();
