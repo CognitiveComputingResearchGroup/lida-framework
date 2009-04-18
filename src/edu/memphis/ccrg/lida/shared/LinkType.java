@@ -10,5 +10,6 @@ public enum LinkType {
 	//
 	child,
 	parent,
-	lateral
+	lateral,
+	spatial
 }

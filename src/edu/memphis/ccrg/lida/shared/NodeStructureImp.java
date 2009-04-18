@@ -128,7 +128,7 @@ public class NodeStructureImp implements NodeStructure, WorkspaceContent,Broadca
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
-	public void addLinkSet(Collection<Link> links) {
+	public void addLinks(Collection<Link> links) {
 		for (Link l : links) {
 			addLink(l);
 		}

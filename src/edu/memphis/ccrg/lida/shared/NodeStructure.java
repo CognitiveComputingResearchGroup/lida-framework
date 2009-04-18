@@ -17,11 +17,11 @@ public interface NodeStructure {
 
 	public abstract Link addLink(Link l);
 
-	public abstract void addLinkSet(Collection<Link> links);
+	public abstract void addLinks(Collection<Link> links);
 
 	public abstract Node addNode(Node n);
 
-	public abstract void addNodes(Collection<Node> nodesToAdd);
+	public abstract void addNodes(Collection<Node> nodes);
 
 	public abstract NodeStructure copy();
 
