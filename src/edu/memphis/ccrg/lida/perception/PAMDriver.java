@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.perception;
 
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
@@ -39,7 +39,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();			
 		System.out.println("PAM: Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("PAM: Num. cycles: " + counter + "\n");	
 	}//method run
 	

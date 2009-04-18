@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
@@ -65,6 +65,7 @@ public class Simulation{
 				for(int j = 0; j < currentDirectionalSense.length; j++)
 					for(int k = 0; k < currentDirectionalSense.length; k++)
 						currentDirectionalSense[i][j][k] = '0';		
+			message = "";
 			System.out.println("\nEnvironment was reset.\n");
 		}		
 	}//method
@@ -110,7 +111,7 @@ public class Simulation{
 			stepCounter++;
 		}//while keepRunning and trials		
 		long finishTime = System.currentTimeMillis();			
-		System.out.println("SIM: Ave. cycle time: " + Misc.rnd((finishTime - startTime)/(double)stepCounter));		
+		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));		
 		//System.out.println("SIM: Num. cycles: " + stepCounter);				
 	}//method runSim
 	

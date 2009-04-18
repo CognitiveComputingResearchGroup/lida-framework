@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryMemoryImpl;
 
@@ -32,7 +32,7 @@ public class SensoryMemoryDriver implements Runnable, Stoppable{
 		long finishTime = System.currentTimeMillis();		
 			
 		System.out.println("SM : Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("SM: Num. cycles: " + counter + "\n");			
 	}//method run
 	

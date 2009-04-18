@@ -195,7 +195,6 @@ public class SpatialLocation implements Node{
 
 	public void setId(long id) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public String getIds() {

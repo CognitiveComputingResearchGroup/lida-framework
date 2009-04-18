@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class CSMDriver implements Runnable, Stoppable{
@@ -52,7 +52,7 @@ public class CSMDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("CSM: Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("CSM: Num. cycles: " + counter);		
 	}//public void run()
 

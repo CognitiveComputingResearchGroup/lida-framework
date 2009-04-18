@@ -1,6 +1,5 @@
 package edu.memphis.ccrg.lida.wumpusWorld.l_proceduralMemory;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
@@ -11,12 +10,11 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
@@ -43,12 +41,12 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	
 	//Specific to this module
 	private WumpusWorld environment;//To send output
-	private BroadcastContent broadcastContent = null;//Received input TODO: not used in this implementation
+	//private BroadcastContent broadcastContent = null;//TODO: not used in this implementation
 	private NodeStructure workspaceStructure = new RyanNodeStructure();//The input for this impl.
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean shouldDoNoOp = true;
+	private boolean shouldDoNoOp = false;
 		
 	public ProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
@@ -90,7 +88,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		}//while	
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("Proc: Ave cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							Printer.rnd((finishTime - startTime)/(double)counter));
 		
 	}//method
 	
@@ -102,7 +100,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	}
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = bc;		
+		//broadcastContent = bc;		
 	}
 	
 	private void sendGuiContent() {
@@ -116,61 +114,66 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	 * If GUI signals noOp then return NoOp.  Otherwise, this method unpacks
 	 * the NodeStructure and stores the detailed information regarding the 
 	 * locations of the entities in the environment.  Finally actions are chosen
-	 * based on this information
-	 * 
+	 * based on this information.
 	 * @return
 	 */
 	private ActionContentImpl getAppropriateBehavior() {		
 		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);		
 		RyanNodeStructure struct = (RyanNodeStructure)workspaceStructure;		
 		Map<Long, Node> nodeMap = struct.getNodeMap();
-		Map<String, Link> linkMap = struct.getLinkMap();
+		//Map<String, Link> linkMap = struct.getLinkMap();
 		//AGENT		
-		SpatialLocation agentLocation = null;
+		SpatialLocation agentLocation = new SpatialLocation();
 		if(nodeMap.containsKey(WumpusIDs.agent)){
 			RyanPamNode agent = (RyanPamNode) nodeMap.get(WumpusIDs.agent);
 			agentLocation = agent.getLocation();
 		}
 		//GOLD
-		SpatialLocation goldLocation = null;
+		SpatialLocation goldLocation = new SpatialLocation(-5, -5);
+		LinkType goldRelation = LinkType.none;
 		if(nodeMap.containsKey(WumpusIDs.gold)){
 			RyanPamNode gold = (RyanPamNode) nodeMap.get(WumpusIDs.gold);
 			goldLocation = gold.getLocation();
+			//
+			Set<Link> goldLinks = struct.getLinks(gold);
+			if(goldLinks != null)
+				for(Link temp: goldLinks)
+					if(temp.getType() != LinkType.spatial)
+						goldRelation = temp.getType();
 		}
 		//WUMPUS
-		SpatialLocation wumpusLocation = null;
+		SpatialLocation wumpusLocation = new SpatialLocation();
+		LinkType wumpusRelation = LinkType.none;
+		boolean inLineWithWumpus = false;
 		if(nodeMap.containsKey(WumpusIDs.wumpus)){
 			RyanPamNode wumpus = (RyanPamNode) nodeMap.get(WumpusIDs.wumpus);
 			wumpusLocation = wumpus.getLocation();
-		}
+			//
+			Set<Link> wumpusLinks = struct.getLinks(wumpus);
+			if(wumpusLinks != null){
+				for(Link temp: wumpusLinks){
+					LinkType tempType = temp.getType();
+					if(tempType != LinkType.spatial){
+						wumpusRelation = temp.getType();
+						if(wumpusRelation == LinkType.inLineWith || wumpusRelation == LinkType.inFrontOf)
+							inLineWithWumpus = true;
+					}
+				}
+			}//
+		}//
 		//PITS
-		Set<SpatialLocation> pitLocations = null;
+		Set<SpatialLocation> pitLocations = new HashSet<SpatialLocation>();
 		if(nodeMap.containsKey(WumpusIDs.pit)){
 			RyanPamNode pit = (RyanPamNode) nodeMap.get(WumpusIDs.pit);
 			pitLocations = pit.getLocations();
 		}
 		//WALLS
-		Set<SpatialLocation> wallLocations = null;
+		Set<SpatialLocation> wallLocations = new HashSet<SpatialLocation>();
 		if(nodeMap.containsKey(WumpusIDs.wall)){
 			RyanPamNode wall = (RyanPamNode) nodeMap.get(WumpusIDs.wall);
 			wallLocations = wall.getLocations();
 		}
-		
-		
-		
-		
-		
-		
-		
-		boolean inLineWithWumpus = false;
-		
-		boolean safeToProceed = false;
-		
-		
-
-		LinkType goldRelation = null;
-		LinkType wumpusRelation = LinkType.none;
-		
+		//CALC PRECONDITIONS
 		boolean pitInFrontOf = false;
 		for(SpatialLocation spatLoc: pitLocations)
 			if(spatLoc.isAtTheSameLocationAs(1, 1))
@@ -182,18 +185,10 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 				wallInFrontOf = true;
 		
 		boolean wumpusInFrontOf = false;
+		if(wumpusLocation != null && wumpusLocation.isAtTheSameLocationAs(1, 1))
+			wumpusInFrontOf = true;
 		
-
-//			}else if(sourceID == WumpusIDs.gold){
-//				goldRelation = type;
-//			}else if(sourceID == WumpusIDs.wumpus){
-//				wumpusRelation = type;
-//				if(type == LinkType.inLineWith || type == LinkType.inFrontOf)
-//					inLineWithWumpus = true;	
-//				if(spatLoc.isAtTheSameLocationAs(1, 1))
-//					wumpusInFrontOf = true;
-//				wumpusLocation = spatLoc;
-//			}
+		boolean safeToProceed = false;
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
 

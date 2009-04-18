@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
 public class PerceptualBufferDriver implements Runnable, Stoppable{
@@ -28,7 +28,7 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("PBF: Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("PBF: Num. cycles: " + counter);		
 	}//public void run()
 

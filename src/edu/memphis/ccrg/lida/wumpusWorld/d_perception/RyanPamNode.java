@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 
 public class RyanPamNode extends PamNodeImpl implements PamNode{	
     private int layerDepth; 
@@ -124,7 +124,7 @@ public class RyanPamNode extends PamNodeImpl implements PamNode{
     public String toString() {
     	String s = "Node name: " + getLabel() + ", Total_activ: ";
     	if(!this.equals(null))
-    		s += Misc.rnd(totalActivation);
+    		s += Printer.rnd(totalActivation);
     	else
     		s += " NA";
     	return s;
@@ -144,7 +144,7 @@ public class RyanPamNode extends PamNodeImpl implements PamNode{
 	public SpatialLocation getLocation() {
 		for(SpatialLocation sl: locationsOfThisNode)
 			return sl;
-		return null;
+		return new SpatialLocation();
 	}
 
 }//class Node

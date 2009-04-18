@@ -52,8 +52,6 @@ public class WumpusDetectBehavior implements DetectBehavior {
 							node.excite(defaultExcitation);
 							node.addNewWWLocation(i, j);	
 						}
-							
-						
 					}else if(senseData[i][j][posToCheck] == whatToLookFor){
 						node.excite(defaultExcitation);
 						node.addNewWWLocation(i, j);					

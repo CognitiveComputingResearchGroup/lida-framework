@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
-import edu.memphis.ccrg.lida.util.Misc;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
@@ -70,7 +70,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 		}//while keepRunning
 		long finishTime = System.currentTimeMillis();				
 		System.out.println("SBC: Ave. cycle time: " + 
-							Misc.rnd((finishTime - startTime)/(double)counter));
+							Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("CODE: Num. cycles: " + counter);		
 	}//method
 
