@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.wumpusWorld.e_perceptualBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -13,7 +12,6 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.PAMContentImpl;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
@@ -44,8 +42,10 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	private synchronized void storePAMContent(){
 		RyanNodeStructure struct = (RyanNodeStructure)pamContent.getContent();	
 		
-		if(struct != null)		
-			perceptBuffer.add(new RyanNodeStructure(struct));			
+		if(struct != null){
+			System.out.println("adding structu to pbuffer");			
+			perceptBuffer.add(new RyanNodeStructure(struct));		
+		}
 		
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);	

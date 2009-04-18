@@ -20,7 +20,6 @@ import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
@@ -227,7 +226,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	public List<Object> getGuiContent() {
 		List<Object> content = new ArrayList<Object>();
 		content.add(numNodeInPercept);
-		content.add(getLinkCount());
+		content.add(((RyanNodeStructure) percept).getLinkCount());
 		return content;
 	}
 
