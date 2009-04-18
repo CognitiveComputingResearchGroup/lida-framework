@@ -82,8 +82,7 @@ public class Simulation{
 	public void runSim(){				
 		Integer currentAction = new Integer(-1);
 		boolean runOneStep = false;
-		int stepCounter = 0;		
-	
+		int stepCounter = 0;
 		long startTime = System.currentTimeMillis();			
 		while(keepRunning){
 			try{Thread.sleep(50);}catch(Exception e){}			
@@ -111,21 +110,8 @@ public class Simulation{
 			stepCounter++;
 		}//while keepRunning and trials		
 		long finishTime = System.currentTimeMillis();			
-		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));		
-		//System.out.println("SIM: Num. cycles: " + stepCounter);				
+		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));						
 	}//method runSim
-	
-	private void printDirectionalSense() {
-		for(int i = 0; i < currentDirectionalSense.length; i++){
-			for(int j = 0; j < currentDirectionalSense[0].length; j++){
-				for(int k = 0; k < currentDirectionalSense[0][0].length; k++){
-					System.out.print(currentDirectionalSense[i][j][k] + " ");
-				}
-				System.out.print(" ");
-			}
-			System.out.println("\n");
-		}
-	}//method
 	
 	private String directionalSenseToString(){
 		String s = "\n\n";
@@ -140,12 +126,12 @@ public class Simulation{
 			s += "\n\n";
 		}
 		return s;
-	}
+	}//method
 
 	public void stopRunning(){
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
-	}//stopRunning
+	}//method
 	
 	public void senseEnvironment(){
 		currentDirectionalSense = environment.getCurrentSense(currentDirectionalSense);
@@ -198,8 +184,6 @@ public class Simulation{
 		//	System.out.print(" none>\n");
 			//outputWriter.write("none>\n");
 		//}
-		
-		//System.out.println("sense list has size " + currentSense.length + " end of sense method");
 	}//senseEnvironment	
 	
 	public void printEndWorld() {
@@ -210,9 +194,6 @@ public class Simulation{
 	
 	public void printCurrentPerceptSequence() {
 		System.out.println("Percept: <bump, glitter, breeze, stench, scream>");
-		
-		try {
-		
 			System.out.print("Percept: <");	
 			//outputWriter.write("Percept: <");
 			
@@ -255,14 +236,8 @@ public class Simulation{
 			else if (transferPercept.getScream() == false) {
 				System.out.print(" none>\n");
 				//outputWriter.write("none>\n");
-			}
-		
-		}
-		catch (Exception e) {
-			System.out.println("An exception was thrown: " + e);
-		}
-		
-	}
+			}		
+	}//method
 	
 	public void handleAction(int action) {		
 			if (action == Action.GO_FORWARD) {				
@@ -271,9 +246,7 @@ public class Simulation{
 				
 				agent.goForward();
 				environment.placeAgent(agent);
-				
 				if (environment.checkDeath() == true) {
-					System.out.println("You die! ...but gnomes resurrect you.");
 					message = "Died but resurrected.";
 					currScore += deathCost;
 					//keepRunning = false;
@@ -311,13 +284,11 @@ public class Simulation{
 				if (environment.grabGold() == true) {
 					currScore += 1000;
 					//keepRunning = false;
-					System.out.println("Grabbed for the gold and got it!");
 					message = "Got the Gold";
 					agent.setHasGold(true);
 				}
 				else{
 					currScore += actionCost;
-					System.out.println("Gold grab fail");
 					message = "Gold grab failed";
 				}
 				
@@ -327,15 +298,12 @@ public class Simulation{
 				lastAction = Action.GRAB;
 			}
 			else if (action == Action.SHOOT) {
-				System.out.println("Shooting the arrow");
 				if (agent.shootArrow() == true) {
 					if (environment.shootArrow() == true){
 						environment.setScream(true);
-						System.out.println("The beast howls.. RAAAAAAWWWWWRRRRRrrrr!");
 						message = "Wumpus killed";
 					}else{
-						System.out.println("Shooting the arrow fail");
-						message = "Arrow missed";
+						message = "Arrow shot missed";
 					}
 				
 					currScore += shootCost;					
