@@ -11,8 +11,6 @@ public interface Link extends Linkable{
 
 	public abstract LinkType getType();
 	
-	public abstract String toString();
-
 	public abstract void setSource(Linkable source);
 
 	public abstract void setSink(Linkable sink);

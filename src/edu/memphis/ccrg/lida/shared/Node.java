@@ -19,7 +19,6 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  */
 public interface Node extends Linkable{
 
-	
 	public void excite(double amount); 
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public ExciteBehavior getExciteBehavior();
@@ -38,7 +37,6 @@ public interface Node extends Linkable{
     public long getId();
     public void setId(long id);
     public void setLabel(String label);
-    public String getLabel();
    
 }//interface Node
 
