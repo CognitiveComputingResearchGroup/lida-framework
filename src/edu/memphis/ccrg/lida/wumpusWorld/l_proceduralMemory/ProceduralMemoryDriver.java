@@ -24,6 +24,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusWorld;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
+import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 /**
@@ -82,7 +83,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 					behaviorContent = getAppropriateBehavior();
 				
 				environment.receiveBehaviorContent(behaviorContent);
-				coolDown = 3;
+				coolDown = 2;
 			}else
 				coolDown--;	
 			counter++;
@@ -120,69 +121,82 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	 * @return
 	 */
 	private ActionContentImpl getAppropriateBehavior() {		
-		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);
+		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);		
+		RyanNodeStructure struct = (RyanNodeStructure)workspaceStructure;		
+		Map<Long, Node> nodeMap = struct.getNodeMap();
+		Map<String, Link> linkMap = struct.getLinkMap();
+		//AGENT		
+		SpatialLocation agentLocation = null;
+		if(nodeMap.containsKey(WumpusIDs.agent)){
+			RyanPamNode agent = (RyanPamNode) nodeMap.get(WumpusIDs.agent);
+			agentLocation = agent.getLocation();
+		}
+		//GOLD
+		SpatialLocation goldLocation = null;
+		if(nodeMap.containsKey(WumpusIDs.gold)){
+			RyanPamNode gold = (RyanPamNode) nodeMap.get(WumpusIDs.gold);
+			goldLocation = gold.getLocation();
+		}
+		//WUMPUS
+		SpatialLocation wumpusLocation = null;
+		if(nodeMap.containsKey(WumpusIDs.wumpus)){
+			RyanPamNode wumpus = (RyanPamNode) nodeMap.get(WumpusIDs.wumpus);
+			wumpusLocation = wumpus.getLocation();
+		}
+		//PITS
+		Set<SpatialLocation> pitLocations = null;
+		if(nodeMap.containsKey(WumpusIDs.pit)){
+			RyanPamNode pit = (RyanPamNode) nodeMap.get(WumpusIDs.pit);
+			pitLocations = pit.getLocations();
+		}
+		//WALLS
+		Set<SpatialLocation> wallLocations = null;
+		if(nodeMap.containsKey(WumpusIDs.wall)){
+			RyanPamNode wall = (RyanPamNode) nodeMap.get(WumpusIDs.wall);
+			wallLocations = wall.getLocations();
+		}
 		
-		RyanNodeStructure g = (RyanNodeStructure)workspaceStructure;
-		Map<Long, Node> nodeMap = g.getNodeMap();
-		Collection<Link> links = g.getLinks();
 		
-		SpatialLocation agentLocation = new SpatialLocation();
-		//char agentDirection = ' ';
-		SpatialLocation goldLocation = new SpatialLocation();
-		SpatialLocation wumpusLocation = new SpatialLocation();
-		Set<SpatialLocation> pitLocations = new HashSet<SpatialLocation>();
-		Set<SpatialLocation> wallLocations = new HashSet<SpatialLocation>();
-		LinkType goldRelation = LinkType.none;
-		LinkType wumpusRelation = LinkType.none;
+		
+		
+		
+		
+		
 		boolean inLineWithWumpus = false;
-		boolean canMoveForward = true;
-		//
+		
 		boolean safeToProceed = false;
-		boolean wumpusInFrontOf = false;
+		
+		
+
+		LinkType goldRelation = null;
+		LinkType wumpusRelation = LinkType.none;
+		
 		boolean pitInFrontOf = false;
-		for(Link l: links){
-			LinkImpl temp = (LinkImpl)l;			
-			Node source = (Node)temp.getSource();			
-			Node sink = (Node)temp.getSink();		
-			//All these links have sink as spatial location so I know source is the node.
-			long sourceID = source.getId();
-			SpatialLocation spatLoc = (SpatialLocation)sink;
-			LinkType type = temp.getType();
-					
-			
-			if(sourceID == WumpusIDs.pit){
-				if(spatLoc.isAtTheSameLocationAs(1, 1)){
-					pitInFrontOf = true;
-				}
-				pitLocations.add(spatLoc);
-			}else if(sourceID == WumpusIDs.wall){
-				if(spatLoc.isAtTheSameLocationAs(1, 1))
-					canMoveForward = false;
-				wallLocations.add(spatLoc);
-			}else if(sourceID == WumpusIDs.agent){
-				agentLocation = spatLoc;
-				//agentDirection = sl.getDirection();				
-			}else if(sourceID == WumpusIDs.gold){
-				goldRelation = type;
-				goldLocation = spatLoc;
-			}else if(sourceID == WumpusIDs.wumpus){
-				wumpusRelation = type;
-				if(type == LinkType.inLineWith || type == LinkType.inFrontOf)
-					inLineWithWumpus = true;	
-				if(spatLoc.isAtTheSameLocationAs(1, 1))
-					wumpusInFrontOf = true;
-				wumpusLocation = spatLoc;
-			}
-		}//for
+		for(SpatialLocation spatLoc: pitLocations)
+			if(spatLoc.isAtTheSameLocationAs(1, 1))
+				pitInFrontOf = true;
+		
+		boolean wallInFrontOf = false;	
+		for(SpatialLocation spatLoc: wallLocations)
+			if(spatLoc.isAtTheSameLocationAs(1, 1))
+				wallInFrontOf = true;
+		
+		boolean wumpusInFrontOf = false;
+		
+
+//			}else if(sourceID == WumpusIDs.gold){
+//				goldRelation = type;
+//			}else if(sourceID == WumpusIDs.wumpus){
+//				wumpusRelation = type;
+//				if(type == LinkType.inLineWith || type == LinkType.inFrontOf)
+//					inLineWithWumpus = true;	
+//				if(spatLoc.isAtTheSameLocationAs(1, 1))
+//					wumpusInFrontOf = true;
+//				wumpusLocation = spatLoc;
+//			}
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
-		
-//		System.out.println("goldRelation " + goldRelation);
-//		System.out.println("inLineWithWumpus " + inLineWithWumpus);
-//		System.out.println("safeToProceed " + safeToProceed);
-//		System.out.println("canMoveForward " + canMoveForward);
-//		System.out.println("\n\n");
-		
+
 		//Production Rules		
 		if(agentLocation.isAtTheSameLocationAs(goldLocation)){//Grab gold if on the same square
 			action.setContent(Action.GRAB);
@@ -194,7 +208,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 			action.setContent(Action.TURN_LEFT);
 		}else if(safeToProceed && (goldRelation == LinkType.inLineWith || goldRelation == LinkType.inFrontOf)){
 			action.setContent(Action.GO_FORWARD);
-		}else if(safeToProceed && canMoveForward){//go forward if safe
+		}else if(safeToProceed && !wallInFrontOf){//go forward if safe
 			if(Math.random() > 0.1)
 				action.setContent(Action.GO_FORWARD);
 			else
@@ -222,19 +236,11 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 		keepRunning = false;		
 	}
 
-	public void pauseActionSelection() {
-		synchronized(this){
-			shouldDoNoOp = !shouldDoNoOp;
-		}
-//		if(shouldDoNoOp){
-//			System.out.println("Agent action selection stopped");
-//		}else{
-//			System.out.println("Agent action selection started");
-//		}
+	public synchronized void pauseActionSelection(){
+		shouldDoNoOp = !shouldDoNoOp;
 	}
 
 	public boolean getStartingMode() {
 		return shouldDoNoOp;
 	}
-
 }//class
