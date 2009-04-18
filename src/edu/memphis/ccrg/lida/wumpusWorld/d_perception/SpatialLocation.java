@@ -199,8 +199,7 @@ public class SpatialLocation implements Node{
 	}
 
 	public String getIds() {
-		// TODO Auto-generated method stub
-		return null;
+		return "loc:(" + iLocation + "," + jLocation + ")";
 	}	
 	
 }

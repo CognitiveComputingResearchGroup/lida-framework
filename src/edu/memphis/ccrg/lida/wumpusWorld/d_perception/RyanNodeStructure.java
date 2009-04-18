@@ -156,8 +156,10 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 			linkableMap.put(l, new HashSet<Link>());
 		
 		LinkImpl temp = (LinkImpl)l;
-		if(!linkMap.containsKey(temp.getId()))
+		if(!linkMap.containsKey(temp.getId())){
 			linkMap.put(temp.getId(), temp);
+		}else
+			System.out.println(l.getIds() + " result was not added");
 		
 		if(result){
 			linkCount++;
@@ -180,6 +182,10 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 			return n;
 		else
 			return null;
+	}
+
+	public void addNodes(Collection<Node> nodesToAdd) {
+		System.out.println("not implemented for this class");		
 	}
 	
 	/**
@@ -502,6 +508,10 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	}
 	
 	//LINK GET METHODS
+	public Map<String, Link> getLinkMap(){
+		return linkMap;
+	}
+	
 	public int getLinkCount(){
 		if(linkCount != linkMap.size()){
 			try{throw new Exception();}
@@ -520,7 +530,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	 * and return those that are Link
 	 */
 	public Collection<Link> getLinks() {
-		return new HashSet<Link>(linkMap.values());
+		return linkMap.values();
 	}
 	
 	/**
@@ -562,7 +572,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 
 	//OTHER GET METHOD
 	public Object getContent() {	
-		return null;
+		return this;
 	}
 
 	//**SETTING METHODS
@@ -600,14 +610,5 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 		}
 	}//method
 
-	public void addLinkSet(Collection<Link> links) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void addNodes(Collection<Node> nodesToAdd) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }//class

@@ -25,7 +25,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pamContent = new RyanNodeStructure();
 		perceptBuffer = new ArrayList<NodeStructure>();
 		pbListeners = new ArrayList<PerceptualBufferListener>();
-	}//public Workspace()
+	}//constructor
 
 	public void addTestGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
@@ -40,12 +40,10 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	}
 	
 	private synchronized void storePAMContent(){
-		RyanNodeStructure struct = (RyanNodeStructure)pamContent.getContent();	
-		
-		if(struct != null){
-			System.out.println("adding structu to pbuffer");			
+		RyanNodeStructure struct = (RyanNodeStructure)pamContent.getContent();		
+		if(struct != null)
 			perceptBuffer.add(new RyanNodeStructure(struct));		
-		}
+		
 		
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);	

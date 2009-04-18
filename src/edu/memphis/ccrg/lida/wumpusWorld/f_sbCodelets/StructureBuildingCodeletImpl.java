@@ -2,11 +2,6 @@ package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
-
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkImpl;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;

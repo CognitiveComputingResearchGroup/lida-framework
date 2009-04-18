@@ -141,4 +141,10 @@ public class RyanPamNode extends PamNodeImpl implements PamNode{
 		}		
 	}//method
 
+	public SpatialLocation getLocation() {
+		for(SpatialLocation sl: locationsOfThisNode)
+			return sl;
+		return null;
+	}
+
 }//class Node
