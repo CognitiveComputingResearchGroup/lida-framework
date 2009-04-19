@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusWorld;
-import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusIDs;
+import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusNodeIDs;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
@@ -127,15 +127,15 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//Map<String, Link> linkMap = struct.getLinkMap();
 		//AGENT		
 		SpatialLocation agentLocation = new SpatialLocation();
-		if(nodeMap.containsKey(WumpusIDs.agent)){
-			RyanPamNode agent = (RyanPamNode) nodeMap.get(WumpusIDs.agent);
+		if(nodeMap.containsKey(WumpusNodeIDs.agent)){
+			RyanPamNode agent = (RyanPamNode) nodeMap.get(WumpusNodeIDs.agent);
 			agentLocation = agent.getLocation();
 		}
 		//GOLD
 		SpatialLocation goldLocation = new SpatialLocation(-5, -5);
 		LinkType goldRelation = LinkType.none;
-		if(nodeMap.containsKey(WumpusIDs.gold)){
-			RyanPamNode gold = (RyanPamNode) nodeMap.get(WumpusIDs.gold);
+		if(nodeMap.containsKey(WumpusNodeIDs.gold)){
+			RyanPamNode gold = (RyanPamNode) nodeMap.get(WumpusNodeIDs.gold);
 			goldLocation = gold.getLocation();
 			//
 			Set<Link> goldLinks = struct.getLinks(gold);
@@ -148,8 +148,8 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		SpatialLocation wumpusLocation = new SpatialLocation();
 		LinkType wumpusRelation = LinkType.none;
 		boolean inLineWithWumpus = false;
-		if(nodeMap.containsKey(WumpusIDs.wumpus)){
-			RyanPamNode wumpus = (RyanPamNode) nodeMap.get(WumpusIDs.wumpus);
+		if(nodeMap.containsKey(WumpusNodeIDs.wumpus)){
+			RyanPamNode wumpus = (RyanPamNode) nodeMap.get(WumpusNodeIDs.wumpus);
 			wumpusLocation = wumpus.getLocation();
 			//
 			Set<Link> wumpusLinks = struct.getLinks(wumpus);
@@ -166,14 +166,14 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		}//
 		//PITS
 		Set<SpatialLocation> pitLocations = new HashSet<SpatialLocation>();
-		if(nodeMap.containsKey(WumpusIDs.pit)){
-			RyanPamNode pit = (RyanPamNode) nodeMap.get(WumpusIDs.pit);
+		if(nodeMap.containsKey(WumpusNodeIDs.pit)){
+			RyanPamNode pit = (RyanPamNode) nodeMap.get(WumpusNodeIDs.pit);
 			pitLocations = pit.getLocations();
 		}
 		//WALLS
 		Set<SpatialLocation> wallLocations = new HashSet<SpatialLocation>();
-		if(nodeMap.containsKey(WumpusIDs.wall)){
-			RyanPamNode wall = (RyanPamNode) nodeMap.get(WumpusIDs.wall);
+		if(nodeMap.containsKey(WumpusNodeIDs.wall)){
+			RyanPamNode wall = (RyanPamNode) nodeMap.get(WumpusNodeIDs.wall);
 			wallLocations = wall.getLocations();
 		}
 		//CALC PRECONDITIONS

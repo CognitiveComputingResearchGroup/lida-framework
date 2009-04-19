@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
    
 public class RyanNodeStructure implements NodeStructure, WorkspaceContent, BroadcastContent{
@@ -110,9 +111,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 				}
 			}
 		}
-		
 		//TODO: COPY LINKS INTO THE LINKMAP
-		
 	}//constructor
 
 	/**
@@ -167,7 +166,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 		}else{
 			return null;
 		}
-	}//public boolean addLink(Link l)
+	}//method
 	
 	/**
 	 * Adds specified node to the set of nodes. Returns true if node not already present.
@@ -532,6 +531,21 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	public Collection<Link> getLinks() {
 		return linkMap.values();
 	}
+	
+	public Map<LinkType, Set<Link>> getLinksByType(){
+		Map<LinkType, Set<Link>> map = new HashMap<LinkType, Set<Link>>();
+		Collection<Link> tempLinks = getLinks();
+		for(Link l: tempLinks){
+			LinkType t = l.getType();
+			Set<Link> linksAlreadyThere = map.get(t);
+			if(linksAlreadyThere == null){
+				linksAlreadyThere = new HashSet<Link>();
+				map.put(t, linksAlreadyThere);
+			}
+			linksAlreadyThere.add(l);
+		}//for
+		return map;
+	}//
 	
 	/**
 	 * Return all the links currently in the linkMap for supplied linkable

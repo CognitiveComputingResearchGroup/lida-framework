@@ -7,9 +7,9 @@ public enum LinkType {
 	inFrontOf,
 	below,
 	inLineWith,
-	//
+	sameLocationAs,
 	child,
 	parent,
 	lateral,
-	spatial
+	spatial, 
 }
