@@ -12,7 +12,7 @@ package edu.memphis.ccrg.lida.proceduralMemory;
  *
  * @author Rodrigo Silva L.
  */
-public interface SchemeListener {
+public interface ProceduralMemoryListener {
 
     /**
      * 

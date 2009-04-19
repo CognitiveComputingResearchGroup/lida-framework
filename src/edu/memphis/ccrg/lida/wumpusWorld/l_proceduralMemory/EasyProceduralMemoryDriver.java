@@ -9,6 +9,8 @@ import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
+import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -31,7 +33,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
  * 
  * @author ryanjmccall
  */
-public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener, WorkspaceListener{
+public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, BroadcastListener, WorkspaceListener{
 
 	//FIELDS
 	private FrameworkTimer timer;
@@ -48,7 +50,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 	 */
 	private boolean shouldDoNoOp = false;
 		
-	public ProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
+	public EasyProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
 		environment = environ;		
 	}//constructor
@@ -237,5 +239,11 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastLis
 
 	public boolean getStartingMode() {
 		return shouldDoNoOp;
+	}
+
+
+	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
+		// TODO Auto-generated method stub
+		
 	}
 }//class
