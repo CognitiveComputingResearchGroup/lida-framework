@@ -173,13 +173,11 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			if(preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.wall) ||
 			   preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.pit)){
 				action.setContent(Action.TURN_LEFT);
-				System.out.println("corner turn left");
 				return action;
 			}
 			if(preconditionIsMet(links.get(LinkType.leftOf), WumpusNodeIDs.wall) ||
 			   preconditionIsMet(links.get(LinkType.leftOf), WumpusNodeIDs.pit)){
 				action.setContent(Action.TURN_RIGHT);
-				System.out.println("corner turn right");
 			    return action;
 			}
 		}
@@ -189,7 +187,6 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 				action.setContent(Action.TURN_LEFT);
 			else
 				action.setContent(Action.TURN_RIGHT);
-			System.out.println("default turn");
 		}
 		
 		return action;
