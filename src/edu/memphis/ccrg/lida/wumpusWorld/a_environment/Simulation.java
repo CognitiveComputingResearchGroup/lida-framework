@@ -66,7 +66,7 @@ public class Simulation{
 					for(int k = 0; k < currentDirectionalSense.length; k++)
 						currentDirectionalSense[i][j][k] = '0';		
 			message = "";
-			System.out.println("\nEnvironment was reset.\n");
+			//System.out.println("\nEnvironment was reset.\n");
 		}		
 	}//method
 	

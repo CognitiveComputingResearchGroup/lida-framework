@@ -49,7 +49,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean shouldDoNoOp = true;
+	private boolean inManualMode = true;
 		
 	public EasyProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
@@ -78,7 +78,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			
 			sendGuiContent();
 			if(coolDown == 0){
-				if(shouldDoNoOp)
+				if(inManualMode)
 					behaviorContent.setContent(Action.NO_OP);
 				else
 					behaviorContent = getAppropriateBehavior();
@@ -241,11 +241,11 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	}
 
 	public synchronized void pauseActionSelection(){
-		shouldDoNoOp = !shouldDoNoOp;
+		inManualMode = !inManualMode;
 	}
 
 	public boolean getStartingMode() {
-		return shouldDoNoOp;
+		return inManualMode;
 	}
 
 
