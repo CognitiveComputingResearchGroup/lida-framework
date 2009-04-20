@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
-public class EnvironmentContentImpl {
+import edu.memphis.ccrg.lida.environment.EnvironmentContent;
+
+public class EnvironmentContentImpl implements EnvironmentContent {
 	
 	private char[][][] simSense;//For LIDA
 	private String environment;//For GUI
@@ -21,7 +23,7 @@ public class EnvironmentContentImpl {
 		this.lastAction = lastAction;
 	}//method
 	
-	public Object getSenseContent(){
+	public Object getContent(){
 		char[][][] copy = new char[simSense.length][simSense[0].length][simSense[0][0].length];
 		System.arraycopy(simSense, 0, copy, 0, simSense.length);		
 		return copy;
@@ -49,6 +51,11 @@ public class EnvironmentContentImpl {
 
 	public String getLastAction() {
 		return lastAction;
+	}
+
+	public void setContent(Object o) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class

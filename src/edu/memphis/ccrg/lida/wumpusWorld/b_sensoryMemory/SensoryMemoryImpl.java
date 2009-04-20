@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.environment.EnvironmentContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
@@ -14,8 +15,8 @@ public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 	private SensoryContentImpl senseContent = new SensoryContentImpl();
 	private List<SensoryListener> listeners = new ArrayList<SensoryListener>();
 	
-	public synchronized void receiveSimContent(EnvironmentContentImpl sc){//SimulationListener
-		simContent = sc;		
+	public synchronized void receiveSimContent(EnvironmentContent sc){//SimulationListener
+		simContent = (EnvironmentContentImpl) sc;		
 	}	
 	
 	public void processSimContent(){
@@ -33,7 +34,7 @@ public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 				dest = new char[worldSize][worldSize][4];
 			}
 	
-			src = (char[][][])simContent.getSenseContent();
+			src = (char[][][])simContent.getContent();
 			System.arraycopy(src, 0, dest, 0, worldSize);//TODO: WRY??
 
 		}

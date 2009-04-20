@@ -4,6 +4,4 @@ public interface ActionContent {
 
 	Object getContent();
 
-	void print();
-
 }
