@@ -98,8 +98,8 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	/**
 	 * Observer pattern receive method
 	 */
-	public void receiveWorkspaceContent(WorkspaceContent content) {
-		workspaceStructure = (NodeStructure)content;		
+	public void receivePAMContent(WorkspaceContent pc) {
+		workspaceStructure = (NodeStructure) pc;		
 	}
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -124,46 +124,25 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		ActionContentImpl action = new ActionContentImpl(Action.NO_OP);		
 		RyanNodeStructure struct = (RyanNodeStructure)workspaceStructure;		
 		Map<Long, Node> nodeMap = struct.getNodeMap();
-		//Map<String, Link> linkMap = struct.getLinkMap();
+
 		//AGENT		
 		SpatialLocation agentLocation = new SpatialLocation();
 		if(nodeMap.containsKey(WumpusNodeIDs.agent)){
 			RyanPamNode agent = (RyanPamNode) nodeMap.get(WumpusNodeIDs.agent);
 			agentLocation = agent.getLocation();
-		}
+		}		
 		//GOLD
 		SpatialLocation goldLocation = new SpatialLocation(-5, -5);
-		LinkType goldRelation = LinkType.none;
 		if(nodeMap.containsKey(WumpusNodeIDs.gold)){
 			RyanPamNode gold = (RyanPamNode) nodeMap.get(WumpusNodeIDs.gold);
 			goldLocation = gold.getLocation();
-			//
-			Set<Link> goldLinks = struct.getLinks(gold);
-			if(goldLinks != null)
-				for(Link temp: goldLinks)
-					if(temp.getType() != LinkType.spatial)
-						goldRelation = temp.getType();
 		}
 		//WUMPUS
-		SpatialLocation wumpusLocation = new SpatialLocation();
-		LinkType wumpusRelation = LinkType.none;
-		boolean inLineWithWumpus = false;
+		SpatialLocation wumpusLocation = new SpatialLocation(-6, -6);
 		if(nodeMap.containsKey(WumpusNodeIDs.wumpus)){
 			RyanPamNode wumpus = (RyanPamNode) nodeMap.get(WumpusNodeIDs.wumpus);
 			wumpusLocation = wumpus.getLocation();
-			//
-			Set<Link> wumpusLinks = struct.getLinks(wumpus);
-			if(wumpusLinks != null){
-				for(Link temp: wumpusLinks){
-					LinkType tempType = temp.getType();
-					if(tempType != LinkType.spatial){
-						wumpusRelation = temp.getType();
-						if(wumpusRelation == LinkType.inLineWith || wumpusRelation == LinkType.inFrontOf)
-							inLineWithWumpus = true;
-					}
-				}
-			}//
-		}//
+		}
 		//PITS
 		Set<SpatialLocation> pitLocations = new HashSet<SpatialLocation>();
 		if(nodeMap.containsKey(WumpusNodeIDs.pit)){
@@ -179,46 +158,115 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//CALC PRECONDITIONS
 		boolean pitInFrontOf = false;
 		for(SpatialLocation spatLoc: pitLocations)
-			if(spatLoc.isAtTheSameLocationAs(1, 1))
+			if(spatLoc.isSameAs(1, 1))
 				pitInFrontOf = true;
 		
 		boolean wallInFrontOf = false;	
 		for(SpatialLocation spatLoc: wallLocations)
-			if(spatLoc.isAtTheSameLocationAs(1, 1))
+			if(spatLoc.isSameAs(1, 1))
 				wallInFrontOf = true;
-		
+
 		boolean wumpusInFrontOf = false;
-		if(wumpusLocation != null && wumpusLocation.isAtTheSameLocationAs(1, 1))
+		if(wumpusLocation != null && wumpusLocation.isSameAs(1, 1))
 			wumpusInFrontOf = true;
+		
+		boolean inLineWithWumpus = false;
+		int jDiff = wumpusLocation.getJ() - agentLocation.getJ();
+		int iDiff = wumpusLocation.getI() - agentLocation.getI();
+		if((jDiff == 0 && (iDiff == 2 || iDiff == -2)) || (iDiff == 0 && (jDiff == 2 || jDiff == -2)))
+			inLineWithWumpus = true;
 		
 		boolean safeToProceed = false;
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
-
+		
+		boolean inLineWithGold = false;
+		jDiff = goldLocation.getJ() - agentLocation.getJ();
+		iDiff = goldLocation.getI() - agentLocation.getI();
+		if((jDiff == 0 && (iDiff == 2 || iDiff == -2)) || (iDiff == 0 && (jDiff == 2 || jDiff == -2)))
+			inLineWithGold = true;
+		
+		SpatialLocation upperLeft = new SpatialLocation(0,0);
+		SpatialLocation upperRight = new SpatialLocation(0,2);
+		SpatialLocation bottomLeft = new SpatialLocation(2,0);
+		SpatialLocation bottomRight = new SpatialLocation(2,0);
+		//
+		SpatialLocation top = new SpatialLocation(0, 1);
+		SpatialLocation bottom = new SpatialLocation(2, 1);
+		SpatialLocation left = new SpatialLocation(1, 0);
+		SpatialLocation right = new SpatialLocation(1, 2);
+			
 		//Production Rules		
-		if(agentLocation.isAtTheSameLocationAs(goldLocation)){//Grab gold if on the same square
+		if(agentLocation.isSameAs(goldLocation)){//Grab gold if on the same square
 			action.setContent(Action.GRAB);
-		}else if(inLineWithWumpus){//Shoot wumpus if in line w/ it
+			return action;
+		}
+		if(wumpusInFrontOf || inLineWithWumpus){//Shoot wumpus if in line w/ it
 			action.setContent(Action.SHOOT);
-		}else if(goldRelation == LinkType.rightOf || wumpusRelation == LinkType.rightOf){//turn right when gold to right
-			action.setContent(Action.TURN_RIGHT);
-		}else if(goldRelation == LinkType.leftOf || wumpusRelation == LinkType.leftOf){//turn left when gold to left
-			action.setContent(Action.TURN_LEFT);
-		}else if(safeToProceed && (goldRelation == LinkType.inLineWith || goldRelation == LinkType.inFrontOf)){
+			return action;
+		}
+		//ORIENT TOWARD WUMPUS AND GOLD
+		if(agentLocation.isSameAs(left)){ 
+			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
+				action.setContent(Action.TURN_LEFT);
+				return action;
+			}
+			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
+				action.setContent(Action.TURN_RIGHT);
+				return action;
+			}
+		}
+		if(agentLocation.isSameAs(right)){ 
+			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
+				action.setContent(Action.TURN_LEFT);
+				return action;
+			}
+			if(wumpusLocation.isSameAs(upperRight) || goldLocation.isSameAs(upperRight)){
+				action.setContent(Action.TURN_RIGHT);
+				return action;
+			}
+		}
+		if(agentLocation.isSameAs(top)){ 
+			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
+				action.setContent(Action.TURN_RIGHT);
+				return action;
+			}
+			if(wumpusLocation.isSameAs(upperRight) || goldLocation.isSameAs(upperRight)){
+				action.setContent(Action.TURN_LEFT);
+				return action;
+			}
+		}
+		if(agentLocation.isSameAs(bottom)){ 
+			if(wumpusLocation.isSameAs(bottomLeft) || goldLocation.isSameAs(bottomLeft)){
+				action.setContent(Action.TURN_LEFT);
+				return action;
+			}
+			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
+				action.setContent(Action.TURN_RIGHT);
+				return action;
+			}
+		}
+		//End ORIENT TOWARD WUMPUS AND GOLD
+		if(safeToProceed && (inLineWithGold || goldLocation.isSameAs(1, 1))){
 			action.setContent(Action.GO_FORWARD);
-		}else if(safeToProceed && !wallInFrontOf){//go forward if safe
+			return action;
+		}
+		if(safeToProceed && !wallInFrontOf){//go forward if safe
 			if(Math.random() > 0.1)
 				action.setContent(Action.GO_FORWARD);
 			else
 				action.setContent(Action.TURN_LEFT);
-		}else if(!safeToProceed && goldRelation == LinkType.inFrontOf && wumpusRelation != LinkType.inFrontOf){//Halt in unwinnable situation
+			return action;
+		}
+		if(!safeToProceed && goldLocation.isSameAs(1, 1) && !wumpusLocation.isSameAs(1, 1)){//Halt in unwinnable situation
 			action.setContent(Action.END_TRIAL);
-		}else if(Math.random() > 0.5){ //else turn left or right randomly
+			return action;
+		}
+		if(Math.random() > 0.5){ //else turn left or right randomly
 			action.setContent(Action.TURN_LEFT);
 		}else{
 			action.setContent(Action.TURN_RIGHT);
 		}
-		
 		return action;
 	}//method
 
@@ -248,9 +296,4 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		
 	}
 
-
-	public void receivePAMContent(WorkspaceContent pc) {
-		// TODO Auto-generated method stub
-		
-	}
 }//class

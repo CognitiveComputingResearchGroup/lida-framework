@@ -188,7 +188,6 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			else
 				action.setContent(Action.TURN_RIGHT);
 		}
-		
 		return action;
 	}//method
 

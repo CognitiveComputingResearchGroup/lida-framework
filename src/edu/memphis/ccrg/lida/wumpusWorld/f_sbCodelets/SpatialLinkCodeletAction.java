@@ -30,26 +30,16 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 		RyanNodeStructure graph = (RyanNodeStructure)content;	
 		RyanPamNode agent = (RyanPamNode)graph.getNode(WumpusNodeIDs.agent);
 		char agentDirection = getAgentDirection(agent);
-	
 		Collection<Node> nodes = graph.getNodes();				
 		for(Node n: nodes){
 			RyanPamNode objectInWW = (RyanPamNode)n;
 			Set<SpatialLocation> locations = objectInWW.getLocations();		
-			
-//			if(objectInWW.getId() == WumpusIDs.pit){
-//				System.out.println("pit has links:");
-//			}
-
 			int i = 1;
 			int numLocations = locations.size();
 			for(SpatialLocation sl: locations){
-				//Spatial relations between agent and objects
-				if(objectInWW.getId() != WumpusNodeIDs.agent){		
+				if(objectInWW.getId() != WumpusNodeIDs.agent){
+					//For links between agent and objects
 					LinkType spatialRelationType = calcRelationType(sl, agentDirection);
-
-//					if(objectInWW.getId() == WumpusIDs.pit)
-//						System.out.println(sl.toString() + " judged to be " + spatialRelationType);
-					//Link between agent and each object sensed in WW.
 					if(numLocations > 1){ //For objects that appear multiple times
 						RyanPamNode copy = new RyanPamNode(objectInWW);
 						copy.setId(copy.getId() + i);						
@@ -57,7 +47,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 					}else
 						graph.addLink(new LinkImpl(agent, objectInWW, spatialRelationType, linkCount++ + ""));
 				}//if not the agent
-				//Link between each object in WW and one of its exact spatial locations
+				//For links between each object in WW and one of its exact locations
 				graph.addLink(new LinkImpl(objectInWW, sl, LinkType.spatial, linkCount++ + ""));
 				i++;
 			}//for all spatial locations of n	

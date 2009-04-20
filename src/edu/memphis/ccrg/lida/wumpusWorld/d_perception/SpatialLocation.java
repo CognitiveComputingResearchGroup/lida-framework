@@ -185,11 +185,11 @@ public class SpatialLocation implements Node{
 		
 	}
 
-	public boolean isAtTheSameLocationAs(SpatialLocation sl) {
+	public boolean isSameAs(SpatialLocation sl) {
 		return (iLocation == sl.iLocation) && (jLocation == sl.jLocation);
 	}
 
-	public boolean isAtTheSameLocationAs(int i, int j) {
+	public boolean isSameAs(int i, int j) {
 		return (iLocation == i) && (jLocation == j);
 	}
 
