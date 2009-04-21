@@ -16,10 +16,11 @@ import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
+import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Starter;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.SpatialLinkCodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.StructureBuildingCodeletImpl;
 
-public class StructureBuildingCodeletDriver implements Runnable, Stoppable, WorkspaceListener {
+public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Starter, WorkspaceListener {
 
 	//Basics
 	private boolean keepRunning = true;
@@ -117,5 +118,19 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Work
 	public long getThreadID() {
 		return threadID;
 	}//
+
+	public int getThreadCount() {
+		return codeletThreads.size();
+	}
+
+	public void stopThreads() {
+		System.out.println("\n Stopping Structure-building codelets");
+		int size = codelets.size();
+		for(int i = 0; i < size; i++){			
+			Stoppable s = codelets.get(i);
+			if(s != null)
+				s.stopRunning();					
+		}//for	
+	}//method
 
 }//public class SBCodeletsDriver 

@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Collection;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -30,7 +31,8 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 		RyanNodeStructure graph = (RyanNodeStructure)content;	
 		RyanPamNode agent = (RyanPamNode)graph.getNode(WumpusNodeIDs.agent);
 		char agentDirection = getAgentDirection(agent);
-		Collection<Node> nodes = graph.getNodes();				
+		Collection<Node> nodes = graph.getNodes();
+		Set<Node> newNodesToBeAdded = new HashSet<Node>();
 		for(Node n: nodes){
 			RyanPamNode objectInWW = (RyanPamNode)n;
 			Set<SpatialLocation> locations = objectInWW.getLocations();		
@@ -42,7 +44,9 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 					LinkType spatialRelationType = calcRelationType(sl, agentDirection);
 					if(numLocations > 1){ //For objects that appear multiple times
 						RyanPamNode copy = new RyanPamNode(objectInWW);
-						copy.setId(copy.getId() + i);						
+						copy.setId(copy.getId() + i);
+						copy.setLabel(copy.getLabel() + i);
+						newNodesToBeAdded.add(copy);
 						graph.addLink(new LinkImpl(agent, copy, spatialRelationType, linkCount++ + ""));
 					}else
 						graph.addLink(new LinkImpl(agent, objectInWW, spatialRelationType, linkCount++ + ""));
@@ -51,7 +55,11 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 				graph.addLink(new LinkImpl(objectInWW, sl, LinkType.spatial, linkCount++ + ""));
 				i++;
 			}//for all spatial locations of n	
-		}//for nodes 		
+		}//for nodes 	
+		
+		for(Node n: newNodesToBeAdded)
+			graph.addNode(n);
+		
 		return content;
 	}//method
 

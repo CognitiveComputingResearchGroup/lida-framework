@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -486,9 +487,12 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	}	
 	
 	//GET NODE METHODS	
-    public Collection<Node> getNodes(){    	    	
-    	return nodes;
-    }
+    public Collection<Node> getNodes(){   
+		if(nodes == null)
+			return null;
+		else 
+			return Collections.unmodifiableCollection(nodes);
+    }//method
     
     public Map<Long, Node> getNodeMap(){
     	return nodeMap;
