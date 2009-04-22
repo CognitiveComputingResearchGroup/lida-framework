@@ -198,7 +198,7 @@ public class SpatialLocation implements Node{
 	}
 
 	public String getIds() {
-		return "loc:(" + iLocation + "," + jLocation + ")";
+		return "loc(" + iLocation + "," + jLocation + ")";
 	}	
 	
 }
