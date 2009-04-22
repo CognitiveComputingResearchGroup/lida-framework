@@ -70,7 +70,6 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//boolean runOneStep = false;
 		
 		ActionContentImpl behaviorContent = new ActionContentImpl();
-		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
@@ -156,21 +155,20 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			wallLocations = wall.getLocations();
 		}
 		//CALC PRECONDITIONS
-		boolean wallRightOf = false;
-		boolean wallLeftOf = false;
-		boolean pitRightOf = false;		
-		boolean pitLeftOf = false;	
 		
 		SpatialLocation upperLeft = new SpatialLocation(0,0);
 		SpatialLocation upperRight = new SpatialLocation(0,2);
 		SpatialLocation bottomLeft = new SpatialLocation(2,0);
-		SpatialLocation bottomRight = new SpatialLocation(2,0);
+		SpatialLocation bottomRight = new SpatialLocation(2,2);
 		//
 		SpatialLocation top = new SpatialLocation(0, 1);
 		SpatialLocation bottom = new SpatialLocation(2, 1);
 		SpatialLocation left = new SpatialLocation(1, 0);
 		SpatialLocation right = new SpatialLocation(1, 2);
 		
+		//PIT LOCATIONS
+		boolean pitRightOf = false;		
+		boolean pitLeftOf = false;	
 		boolean pitInFrontOf = false;
 		for(SpatialLocation spatLoc: pitLocations){
 			if(spatLoc.isSameAs(1, 1))
@@ -202,7 +200,9 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 					pitRightOf = true;
 			}			
 		}
-		
+		//WALL RELATIONS
+		boolean wallRightOf = false;
+		boolean wallLeftOf = false;
 		boolean wallInFrontOf = false;	
 		for(SpatialLocation spatLoc: wallLocations){
 			if(spatLoc.isSameAs(1, 1))
@@ -215,10 +215,14 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 					wallLeftOf = true;
 			}
 			if(agentLocation.isSameAs(bottom)){ 
+				System.out.println("agent at bottom");
 				if(spatLoc.isSameAs(bottomLeft))
 					wallLeftOf = true;
-				if(spatLoc.isSameAs(bottomRight))
+				if(spatLoc.isSameAs(bottomRight)){
+					System.out.println(wallLocations.size());
+					System.out.println("wall right of ");
 					wallRightOf = true;
+				}
 			}
 			
 			if(agentLocation.isSameAs(left)){ 
@@ -234,7 +238,7 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 					wallRightOf = true;
 			}
 		}
-
+		//WUMPUS RELATIONS
 		boolean wumpusInFrontOf = false;
 		if(wumpusLocation != null && wumpusLocation.isSameAs(1, 1))
 			wumpusInFrontOf = true;
@@ -249,18 +253,21 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
 		
+		//GOLD RELATION
 		boolean inLineWithGold = false;
 		jDiff = goldLocation.getJ() - agentLocation.getJ();
 		iDiff = goldLocation.getI() - agentLocation.getI();
 		if((jDiff == 0 && (iDiff == 2 || iDiff == -2)) || (iDiff == 0 && (jDiff == 2 || jDiff == -2)))
 			inLineWithGold = true;
 			
-		//Production Rules		
-		if(agentLocation.isSameAs(goldLocation)){//Grab gold if on the same square
+		//PRODUCTION RULES
+		//Grab gold if it is right there.
+		if(agentLocation.isSameAs(goldLocation)){
 			action.setContent(Action.GRAB);
 			return action;
 		}
-		if(wumpusInFrontOf || inLineWithWumpus){//Shoot wumpus if in line w/ it
+		//Shoot the wumpus if it is in range.
+		if(wumpusInFrontOf || inLineWithWumpus){
 			action.setContent(Action.SHOOT);
 			return action;
 		}
@@ -304,17 +311,20 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 				action.setContent(Action.TURN_RIGHT);
 				return action;
 			}
-		}
-		//End ORIENT TOWARD WUMPUS AND GOLD
+		}//End ORIENT TOWARD WUMPUS AND GOLD
+		//Head forward toward gold when it's there
 		if(safeToProceed && (inLineWithGold || goldLocation.isSameAs(1, 1))){
 			action.setContent(Action.GO_FORWARD);
 			return action;
 		}
+		//No wall and safe, then go forward 90% of the time
 		if(safeToProceed && !wallInFrontOf){//go forward if safe
 			if(Math.random() > 0.1)
 				action.setContent(Action.GO_FORWARD);
-			else
+			else{
+				System.out.println("being random");
 				action.setContent(Action.TURN_LEFT);
+			}
 			return action;
 		}
 		//Halt in unwinnable situation
@@ -322,19 +332,23 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			action.setContent(Action.END_TRIAL);
 			return action;
 		}
+		//If obstacle in front of
 		if(wallInFrontOf || pitInFrontOf){
-			
-			if(wallRightOf || pitRightOf){
-				action.setContent(Action.TURN_LEFT);
-				return action;
-			}			
-			
+			//If in a wall/pit 'corner'
 			if(wallLeftOf || pitLeftOf){
+				System.out.println("turn right out of corner");
 				action.setContent(Action.TURN_RIGHT);
 			    return action;
 			}
-		}//
-		if(Math.random() > 0.5){ //else turn left or right randomly
+			if(wallRightOf || pitRightOf){
+				
+				System.out.println("turn left out of corner");
+				action.setContent(Action.TURN_LEFT);
+				return action;
+			}			
+		}
+		//Turn randomly if faced w/ just a pit or wall in front of 
+		if(Math.random() > 0.5){
 			action.setContent(Action.TURN_LEFT);
 		}else{
 			action.setContent(Action.TURN_RIGHT);
