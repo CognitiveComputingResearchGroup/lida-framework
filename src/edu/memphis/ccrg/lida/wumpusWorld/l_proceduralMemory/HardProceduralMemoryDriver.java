@@ -156,15 +156,84 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			wallLocations = wall.getLocations();
 		}
 		//CALC PRECONDITIONS
+		boolean wallRightOf = false;
+		boolean wallLeftOf = false;
+		boolean pitRightOf = false;		
+		boolean pitLeftOf = false;	
+		
+		SpatialLocation upperLeft = new SpatialLocation(0,0);
+		SpatialLocation upperRight = new SpatialLocation(0,2);
+		SpatialLocation bottomLeft = new SpatialLocation(2,0);
+		SpatialLocation bottomRight = new SpatialLocation(2,0);
+		//
+		SpatialLocation top = new SpatialLocation(0, 1);
+		SpatialLocation bottom = new SpatialLocation(2, 1);
+		SpatialLocation left = new SpatialLocation(1, 0);
+		SpatialLocation right = new SpatialLocation(1, 2);
+		
 		boolean pitInFrontOf = false;
-		for(SpatialLocation spatLoc: pitLocations)
+		for(SpatialLocation spatLoc: pitLocations){
 			if(spatLoc.isSameAs(1, 1))
 				pitInFrontOf = true;
+			//For corners
+			if(agentLocation.isSameAs(top)){ 
+				if(spatLoc.isSameAs(upperLeft))
+					pitRightOf = true;
+				if(spatLoc.isSameAs(upperRight))
+					pitLeftOf = true;
+			}
+			if(agentLocation.isSameAs(bottom)){ 
+				if(spatLoc.isSameAs(bottomLeft))
+					pitLeftOf = true;
+				if(spatLoc.isSameAs(bottomRight))
+					pitRightOf = true;
+			}
+			
+			if(agentLocation.isSameAs(left)){ 
+				if(spatLoc.isSameAs(bottomLeft))
+					pitRightOf = true;
+				if(spatLoc.isSameAs(upperLeft))
+					pitLeftOf = true;
+			}
+			if(agentLocation.isSameAs(right)){ 
+				if(spatLoc.isSameAs(bottomRight))
+					pitLeftOf = true;
+				if(spatLoc.isSameAs(upperRight))
+					pitRightOf = true;
+			}			
+		}
 		
 		boolean wallInFrontOf = false;	
-		for(SpatialLocation spatLoc: wallLocations)
+		for(SpatialLocation spatLoc: wallLocations){
 			if(spatLoc.isSameAs(1, 1))
 				wallInFrontOf = true;
+			
+			if(agentLocation.isSameAs(top)){ 
+				if(spatLoc.isSameAs(upperLeft))
+					wallRightOf = true;
+				if(spatLoc.isSameAs(upperRight))
+					wallLeftOf = true;
+			}
+			if(agentLocation.isSameAs(bottom)){ 
+				if(spatLoc.isSameAs(bottomLeft))
+					wallLeftOf = true;
+				if(spatLoc.isSameAs(bottomRight))
+					wallRightOf = true;
+			}
+			
+			if(agentLocation.isSameAs(left)){ 
+				if(spatLoc.isSameAs(bottomLeft))
+					wallRightOf = true;
+				if(spatLoc.isSameAs(upperLeft))
+					wallLeftOf = true;
+			}
+			if(agentLocation.isSameAs(right)){ 
+				if(spatLoc.isSameAs(bottomRight))
+					wallLeftOf = true;
+				if(spatLoc.isSameAs(upperRight))
+					wallRightOf = true;
+			}
+		}
 
 		boolean wumpusInFrontOf = false;
 		if(wumpusLocation != null && wumpusLocation.isSameAs(1, 1))
@@ -185,16 +254,6 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		iDiff = goldLocation.getI() - agentLocation.getI();
 		if((jDiff == 0 && (iDiff == 2 || iDiff == -2)) || (iDiff == 0 && (jDiff == 2 || jDiff == -2)))
 			inLineWithGold = true;
-		
-		SpatialLocation upperLeft = new SpatialLocation(0,0);
-		SpatialLocation upperRight = new SpatialLocation(0,2);
-		SpatialLocation bottomLeft = new SpatialLocation(2,0);
-		SpatialLocation bottomRight = new SpatialLocation(2,0);
-		//
-		SpatialLocation top = new SpatialLocation(0, 1);
-		SpatialLocation bottom = new SpatialLocation(2, 1);
-		SpatialLocation left = new SpatialLocation(1, 0);
-		SpatialLocation right = new SpatialLocation(1, 2);
 			
 		//Production Rules		
 		if(agentLocation.isSameAs(goldLocation)){//Grab gold if on the same square
@@ -258,10 +317,23 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 				action.setContent(Action.TURN_LEFT);
 			return action;
 		}
-		if(!safeToProceed && goldLocation.isSameAs(1, 1) && !wumpusLocation.isSameAs(1, 1)){//Halt in unwinnable situation
+		//Halt in unwinnable situation
+		if(!safeToProceed && goldLocation.isSameAs(1, 1) && !wumpusLocation.isSameAs(1, 1)){
 			action.setContent(Action.END_TRIAL);
 			return action;
 		}
+		if(wallInFrontOf || pitInFrontOf){
+			
+			if(wallRightOf || pitRightOf){
+				action.setContent(Action.TURN_LEFT);
+				return action;
+			}			
+			
+			if(wallLeftOf || pitLeftOf){
+				action.setContent(Action.TURN_RIGHT);
+			    return action;
+			}
+		}//
 		if(Math.random() > 0.5){ //else turn left or right randomly
 			action.setContent(Action.TURN_LEFT);
 		}else{

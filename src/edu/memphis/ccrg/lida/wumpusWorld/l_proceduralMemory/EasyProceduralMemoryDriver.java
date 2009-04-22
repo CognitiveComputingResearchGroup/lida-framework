@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.wumpusWorld.l_proceduralMemory;
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
-import java.util.HashSet;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.actionSelection.ActionContentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -13,7 +12,6 @@ import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkType;
-import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
@@ -25,8 +23,6 @@ import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusWorld;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusNodeIDs;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
 
 /**
  * Receives WorkspaceContent, calculates the next action to taken, 
@@ -41,7 +37,6 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	private boolean keepRunning = true;
 	private long threadID;
 	private FrameworkGui testGui;
-	
 	//Specific to this module
 	private WumpusWorld environment;//To send output
 	//private BroadcastContent broadcastContent = null;//TODO: not used in this implementation
@@ -50,6 +45,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
 	private boolean inManualMode = true;
+	private final int numCoolDownCycles = 2;
 		
 	public EasyProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
@@ -70,7 +66,6 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//boolean runOneStep = false;
 		
 		ActionContentImpl behaviorContent = new ActionContentImpl();
-		
 		long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
@@ -84,7 +79,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 					behaviorContent = getAppropriateBehavior();
 				
 				environment.receiveBehaviorContent(behaviorContent);
-				coolDown = 2;
+				coolDown = numCoolDownCycles;
 			}else
 				coolDown--;	
 			counter++;
@@ -114,7 +109,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	}//method
 	
 	/**
-	 * If GUI signals noOp then return NoOp.  Otherwise, this method unpacks
+	 * If GUI signals noOp then return NoOp.  Otherwise, this method gets the links from
 	 * the NodeStructure and stores the detailed information regarding the 
 	 * locations of the entities in the environment.  Finally actions are chosen
 	 * based on this information.
@@ -125,15 +120,18 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		RyanNodeStructure struct = (RyanNodeStructure)workspaceStructure;		
 		Map<LinkType, Set<Link>> links = struct.getLinksByType();
 		
+		//Grab gold if it is right there.
 		if(preconditionIsMet(links.get(LinkType.sameLocationAs), WumpusNodeIDs.gold)){
 			action.setContent(Action.GRAB);
 			return action;
 		}
+		//Shoot the wumpus if it is in range.
 		if(preconditionIsMet(links.get(LinkType.inLineWith), WumpusNodeIDs.wumpus) ||
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wumpus)){
 			action.setContent(Action.SHOOT);
 			return action;
 		}
+		//Orient left or right towards gold or wumpus 
 		if(preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.gold) ||
 		   preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.wumpus)){
 			action.setContent(Action.TURN_RIGHT);
@@ -144,17 +142,20 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			action.setContent(Action.TURN_LEFT);
 			return action;
 		}
+		//Safe to proceed if no pits or wumpus in front of you
 		boolean safeToProceed = true;
 		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wumpus) || 
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit)){
 			safeToProceed = false;
 		}
+		//Head forward toward gold when it's there
 		if(safeToProceed && 
 		  (preconditionIsMet(links.get(LinkType.inLineWith), WumpusNodeIDs.gold) || 
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.gold))){
 			action.setContent(Action.GO_FORWARD);
 			return action;
 		}
+		//No wall and safe, then go forward 90% of the time
 		if(safeToProceed && 
 		   !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
 			if(Math.random() > 0.1){
@@ -162,14 +163,17 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 				return action;
 			}	
 		}	
+		//Gold-on-pit scenario
 		if(!safeToProceed && 
 		    preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.gold) &&
 		   !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wumpus)){//Halt in unwinnable situation
 			action.setContent(Action.END_TRIAL);
 			return action;
 		}
+		//If obstacle in front of
 		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall) || 
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit)){
+			//If in a wall/pit 'corner'
 			if(preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.wall) ||
 			   preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.pit)){
 				action.setContent(Action.TURN_LEFT);
@@ -181,6 +185,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			    return action;
 			}
 		}
+		//Turn randomly if faced w/ just a pit or wall in front of 
 		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit) ||
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
 			if(Math.random() > 0.5)
