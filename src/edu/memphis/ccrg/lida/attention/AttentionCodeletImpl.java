@@ -8,6 +8,7 @@
 
 package edu.memphis.ccrg.lida.attention;
 
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -29,7 +30,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
     }
 
 	public void addCoalToGlobalWorkspace(){
-		global.putCoalition(new CoalitionImpl(whatIgot));		
+		global.putCoalition(new CoalitionImpl((BroadcastContent)whatIgot));		
 	}
 
 	public void run() {
@@ -45,7 +46,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 		}//while
 	}//public void run
 	
-	public boolean lookAtModel(){
+	private boolean lookAtModel(){
 		return model.hasContent(whatIwant);
 	}
 
