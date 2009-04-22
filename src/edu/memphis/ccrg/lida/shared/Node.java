@@ -18,25 +18,27 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  * 
  */
 public interface Node extends Linkable{
-
+	
+	//Activatible
+    public double getCurrentActivation();
+    public void setActivation(double amount);
+	//
 	public void excite(double amount); 
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public ExciteBehavior getExciteBehavior();
-	
+	//
 	public void decay();	
 	public void setDecayBehavior(DecayBehavior c);
 	public DecayBehavior getDecayBehavior();
-	
+	//Standard for node
 	public void setValue(Map<String, Object> values);
-
 	public double getImportance(); 
-    public double getCurrentActivation();
-    public void setActivation(double d);
     public Node getReferencedNode();
     public void setReferencedNode (Node n);
     public long getId();
     public void setId(long id);
     public void setLabel(String label);
+
    
 }//interface Node
 
