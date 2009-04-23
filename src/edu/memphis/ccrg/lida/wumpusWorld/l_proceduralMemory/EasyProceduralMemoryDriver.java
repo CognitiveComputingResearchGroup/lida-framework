@@ -153,14 +153,12 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		  (preconditionIsMet(links.get(LinkType.inLineWith), WumpusNodeIDs.gold) || 
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.gold))){
 			action.setContent(Action.GO_FORWARD);
-			System.out.println("go forward for gold");
 			return action;
 		}
 		//No wall and safe, then go forward 90% of the time
 		if(safeToProceed && 
 		   !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
 			if(Math.random() > 0.1){
-				System.out.println("90% go forward");
 				action.setContent(Action.GO_FORWARD);
 				return action;
 			}	

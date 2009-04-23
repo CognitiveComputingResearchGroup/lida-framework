@@ -43,6 +43,7 @@ public class Simulation{
 	private FrameworkTimer timer;
 	private long threadID;
 	private String message = "";
+	private boolean trialIsOver = false;
 	
 	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet){ 		
 		this.timer = timer;
@@ -67,6 +68,7 @@ public class Simulation{
 			agent = new Agent(environment, transferPercept, nonDeterministic);	
 			environment.placeAgent(agent);
 			currScore = 0;
+			trialIsOver = false;
 			
 			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
 			for(int i = 0; i < currentDirectionalSense.length; i++)
@@ -109,7 +111,7 @@ public class Simulation{
 				synchronized(this){
 					actionHasChanged = false;
 				}
-				if(!currentAction.equals(null))
+				if(!currentAction.equals(null) && !trialIsOver)
 					handleAction(currentAction);
 			}//if actionHasChanged		
 							
@@ -182,6 +184,7 @@ public class Simulation{
 				//
 				System.out.println("final Score " + currScore);
 				finalScores.add(currScore);
+				trialIsOver = true;
 				currScore = 0;
 				
 				//keepRunning = false;
@@ -229,6 +232,7 @@ public class Simulation{
 			currScore += detectImpossibilityPoints;
 			System.out.println("Final Score " + currScore);
 			finalScores.add(currScore);
+			trialIsOver = true;
 			currScore = 0;
 			//
 			environment.placeAgent(agent);
