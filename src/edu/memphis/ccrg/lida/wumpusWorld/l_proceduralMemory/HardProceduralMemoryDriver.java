@@ -368,8 +368,12 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		keepRunning = false;		
 	}
 
-	public synchronized void pauseActionSelection(){
+	public synchronized void toggleActionSelection(){
 		inManualMode = !inManualMode;
+	}
+	
+	public synchronized void stopActionSelection() {
+		inManualMode = true;
 	}
 
 	public boolean getStartingMode() {

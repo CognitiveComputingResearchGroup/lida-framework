@@ -2,6 +2,8 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 
 import java.util.ArrayList;
+import java.util.List;
+
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
@@ -13,9 +15,14 @@ public class Simulation{
 	private final int VISION_SIZE = 3;
 	private final int MAX_ENTITIES_PER_CELL = 4;//Pit, Wumpus, Gold, Agent	
 	//Previous fields
-	private static final int actionCost = -1;
-	private static final int deathCost = -1000;
-	private static final int shootCost = -10;
+	private static final int basicActionPoints = -1;
+	private static final int deathPoints = -1500;
+	private static final int shootArrowPoints = -10;
+	private static final int getGoldPoints = 1000;
+	private static final int detectImpossibilityPoints = 1000;
+	private static final int killWumpusPoints = 500;
+	private static final List<Integer> finalScores = new ArrayList<Integer>();
+	
 	private boolean nonDeterministic;
 	private int currScore = 0;
 	//Main fields
@@ -59,6 +66,7 @@ public class Simulation{
 			transferPercept = new TransferPercept(environment);
 			agent = new Agent(environment, transferPercept, nonDeterministic);	
 			environment.placeAgent(agent);
+			currScore = 0;
 			
 			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
 			for(int i = 0; i < currentDirectionalSense.length; i++)
@@ -110,8 +118,125 @@ public class Simulation{
 			stepCounter++;
 		}//while keepRunning and trials		
 		long finishTime = System.currentTimeMillis();			
-		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));						
+		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));
+		
+		try{Thread.sleep(100);}catch(Exception e){}
+		printScores();
 	}//method runSim
+	
+	private void printScores() {
+		int j = 1;
+		int sum = 0;
+		for(Integer i: finalScores){
+			sum += i;
+			System.out.println("Trial " + j + ": " + i);
+			j++;
+		}
+		double average = (sum) / (finalScores.size() * 1.0);
+		System.out.println("Average score across trials " + average);
+	}
+
+	public void handleAction(int action) {		
+		if (action == Action.GO_FORWARD) {				
+			if (environment.getBump() == true) 
+				environment.setBump(false);
+			
+			agent.goForward();
+			environment.placeAgent(agent);
+			if (environment.checkDeath() == true) {
+				message = "Died but resurrected.";
+				currScore += deathPoints;
+				//keepRunning = false;
+				//agent.setIsDead(true);
+			}
+			else
+				currScore += basicActionPoints;
+			
+			if (environment.getScream() == true) 
+				environment.setScream(false);
+		
+			lastAction = Action.GO_FORWARD;
+		}
+		else if (action == Action.TURN_RIGHT) {
+			currScore += basicActionPoints;
+			agent.turnRight();		
+			environment.placeAgent(agent);
+			
+			if (environment.getBump() == true) environment.setBump(false);
+			if (environment.getScream() == true) environment.setScream(false);
+			lastAction = Action.TURN_RIGHT;
+		}
+		else if (action == Action.TURN_LEFT) {
+			currScore += basicActionPoints;
+			agent.turnLeft();		
+			environment.placeAgent(agent);
+			
+			if (environment.getBump() == true) environment.setBump(false);
+			if (environment.getScream() == true) environment.setScream(false);
+			lastAction = Action.TURN_LEFT;
+		}
+		else if (action == Action.GRAB) {
+			
+			if (environment.grabGold() == true) {
+				currScore += getGoldPoints;
+				//
+				System.out.println("final Score " + currScore);
+				finalScores.add(currScore);
+				currScore = 0;
+				
+				//keepRunning = false;
+				message = "Got the Gold";
+				agent.setHasGold(true);
+			}
+			else{
+				currScore += basicActionPoints;
+				message = "Gold grab failed";
+			}
+			
+			environment.placeAgent(agent);
+			if (environment.getBump() == true) environment.setBump(false);
+			if (environment.getScream() == true) environment.setScream(false);
+			lastAction = Action.GRAB;
+		}
+		else if (action == Action.SHOOT) {
+			if (agent.hasArrows()){
+				if (environment.shootArrow()){
+					environment.setScream(true);
+					message = "Wumpus killed";
+					currScore += killWumpusPoints;
+				}else{
+					message = "Arrow shot missed";
+					currScore += shootArrowPoints;
+				}			
+			}
+			else { //Tried to shoot w/ no arrows
+				if (environment.getScream() == true) 
+					environment.setScream(false);
+				currScore += basicActionPoints;
+			}
+			environment.placeAgent(agent);
+			if (environment.getBump() == true) environment.setBump(false);
+			lastAction = Action.SHOOT;
+		}
+		else if (action == Action.NO_OP) {
+			environment.placeAgent(agent);
+			if (environment.getBump() == true) environment.setBump(false);
+			if (environment.getScream() == true) environment.setScream(false);
+			lastAction = Action.NO_OP;
+		}else if(action == Action.END_TRIAL){
+			message = "I can't win, giving up.";
+			//
+			currScore += detectImpossibilityPoints;
+			System.out.println("Final Score " + currScore);
+			finalScores.add(currScore);
+			currScore = 0;
+			//
+			environment.placeAgent(agent);
+			if (environment.getBump() == true) environment.setBump(false);
+			if (environment.getScream() == true) environment.setScream(false);
+			lastAction = Action.NO_OP;			
+		}
+	}//method
 	
 	private String directionalSenseToString(){
 		String s = "\n\n";
@@ -237,97 +362,6 @@ public class Simulation{
 				System.out.print(" none>\n");
 				//outputWriter.write("none>\n");
 			}		
-	}//method
-	
-	public void handleAction(int action) {		
-			if (action == Action.GO_FORWARD) {				
-				if (environment.getBump() == true) 
-					environment.setBump(false);
-				
-				agent.goForward();
-				environment.placeAgent(agent);
-				if (environment.checkDeath() == true) {
-					message = "Died but resurrected.";
-					currScore += deathCost;
-					//keepRunning = false;
-					//agent.setIsDead(true);
-				}
-				else {
-					currScore += actionCost;
-				}
-				
-				if (environment.getScream() == true) environment.setScream(false);
-				
-				lastAction = Action.GO_FORWARD;
-			}
-			else if (action == Action.TURN_RIGHT) {
-				
-				currScore += actionCost;
-				agent.turnRight();		
-				environment.placeAgent(agent);
-				
-				if (environment.getBump() == true) environment.setBump(false);
-				if (environment.getScream() == true) environment.setScream(false);
-				
-				lastAction = Action.TURN_RIGHT;
-			}
-			else if (action == Action.TURN_LEFT) {
-				currScore += actionCost;
-				agent.turnLeft();		
-				environment.placeAgent(agent);
-				if (environment.getBump() == true) environment.setBump(false);
-				if (environment.getScream() == true) environment.setScream(false);
-				lastAction = Action.TURN_LEFT;
-			}
-			else if (action == Action.GRAB) {
-				
-				if (environment.grabGold() == true) {
-					currScore += 1000;
-					//keepRunning = false;
-					message = "Got the Gold";
-					agent.setHasGold(true);
-				}
-				else{
-					currScore += actionCost;
-					message = "Gold grab failed";
-				}
-				
-				environment.placeAgent(agent);
-				if (environment.getBump() == true) environment.setBump(false);
-				if (environment.getScream() == true) environment.setScream(false);
-				lastAction = Action.GRAB;
-			}
-			else if (action == Action.SHOOT) {
-				if (agent.shootArrow() == true) {
-					if (environment.shootArrow() == true){
-						environment.setScream(true);
-						message = "Wumpus killed";
-					}else{
-						message = "Arrow shot missed";
-					}
-				
-					currScore += shootCost;					
-				}
-				else {
-					if (environment.getScream() == true) environment.setScream(false);
-					currScore += actionCost;
-				}
-				environment.placeAgent(agent);
-				if (environment.getBump() == true) environment.setBump(false);
-				lastAction = Action.SHOOT;
-			}
-			else if (action == Action.NO_OP) {
-				environment.placeAgent(agent);
-				if (environment.getBump() == true) environment.setBump(false);
-				if (environment.getScream() == true) environment.setScream(false);
-				lastAction = Action.NO_OP;
-			}else if(action == Action.END_TRIAL){
-				message = "I can't win, giving up.";
-				environment.placeAgent(agent);
-				if (environment.getBump() == true) environment.setBump(false);
-				if (environment.getScream() == true) environment.setScream(false);
-				lastAction = Action.NO_OP;			
-			}
 	}//method
 	
 	public int getScore() {		

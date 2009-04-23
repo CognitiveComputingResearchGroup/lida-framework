@@ -245,17 +245,21 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		keepRunning = false;		
 	}
 
-	public synchronized void pauseActionSelection(){
+	public synchronized void toggleActionSelection(){
 		inManualMode = !inManualMode;
+	}
+
+	public synchronized void stopActionSelection() {
+		inManualMode = true;
 	}
 
 	public boolean getStartingMode() {
 		return inManualMode;
 	}
 
-
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		// TODO Auto-generated method stub
 		
 	}
+
 }//class

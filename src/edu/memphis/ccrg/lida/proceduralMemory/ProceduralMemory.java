@@ -18,5 +18,7 @@ public interface ProceduralMemory {
 
 	public boolean getStartingMode();
 
-	public void pauseActionSelection();
+	public void toggleActionSelection();
+
+	public void stopActionSelection();
 }

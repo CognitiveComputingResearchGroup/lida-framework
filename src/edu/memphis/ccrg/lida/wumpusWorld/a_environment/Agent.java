@@ -198,17 +198,13 @@ class Agent {
 		return moveDir;		
 	}
 	
-	public boolean shootArrow() {
-		
-		if (numArrows == 1) {
-			numArrows -= 1;
+	public boolean hasArrows(){
+		if (numArrows > 0) {
+			numArrows--;
 			return true;
 		}
-		else {
-			return false;
-		}
-		
-	}
+		return false;
+	}//method
 	
 	public void turnRight() {
 		
