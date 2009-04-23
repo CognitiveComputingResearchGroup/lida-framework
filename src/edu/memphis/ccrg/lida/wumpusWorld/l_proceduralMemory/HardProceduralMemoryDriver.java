@@ -215,12 +215,12 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 					wallLeftOf = true;
 			}
 			if(agentLocation.isSameAs(bottom)){ 
-				System.out.println("agent at bottom");
+				//System.out.println("agent at bottom");
 				if(spatLoc.isSameAs(bottomLeft))
 					wallLeftOf = true;
 				if(spatLoc.isSameAs(bottomRight)){
-					System.out.println(wallLocations.size());
-					System.out.println("wall right of ");
+					//System.out.println(wallLocations.size());
+					//System.out.println("wall right of ");
 					wallRightOf = true;
 				}
 			}

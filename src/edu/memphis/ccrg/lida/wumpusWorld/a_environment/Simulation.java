@@ -15,21 +15,23 @@ public class Simulation{
 	private final int VISION_SIZE = 3;
 	private final int MAX_ENTITIES_PER_CELL = 4;//Pit, Wumpus, Gold, Agent	
 	//Previous fields
-	private static final int basicActionPoints = -1;
-	private static final int deathPoints = -1500;
+	private static final int basicActionPoints = -5;
+	private static final int deathPoints = -150;
 	private static final int shootArrowPoints = -10;
-	private static final int getGoldPoints = 1000;
-	private static final int detectImpossibilityPoints = 1000;
-	private static final int killWumpusPoints = 500;
+	private static final int getGoldPoints = 100;
+	private static final int detectImpossibilityPoints = 100;
+	private static final int killWumpusPoints = 50;
 	private static final List<Integer> finalScores = new ArrayList<Integer>();
 	
 	private boolean nonDeterministic;
 	private int currScore = 0;
 	//Main fields
 	private Agent agent;
-	private Environment environment;
 	private TransferPercept transferPercept;//This is pretty useless
 	private char[][][] currentDirectionalSense;
+	
+	private Environment environment;
+	private List<Environment> worlds = new ArrayList<Environment>();
 		
 	//To stimuli sent out 
 	private EnvironmentContentImpl simContent = new EnvironmentContentImpl(VISION_SIZE);
@@ -44,6 +46,7 @@ public class Simulation{
 	private long threadID;
 	private String message = "";
 	private boolean trialIsOver = false;
+	
 	
 	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet){ 		
 		this.timer = timer;
@@ -61,6 +64,13 @@ public class Simulation{
 					currentDirectionalSense[i][j][k] = '0';		
 	}//Simulation
 	
+	public Simulation(FrameworkTimer timer, List<Environment> worlds, boolean nonDet) {
+		this.timer = timer;
+		this.worlds = worlds;
+		System.out.println(worlds.size());
+		nonDeterministic = nonDet;
+	}
+
 	public void setNewEnvironment(Environment wumpusEnvironment) {
 		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
 			environment = wumpusEnvironment;
@@ -182,7 +192,7 @@ public class Simulation{
 			if (environment.grabGold() == true) {
 				currScore += getGoldPoints;
 				//
-				System.out.println("final Score " + currScore);
+				System.out.println(currScore);
 				finalScores.add(currScore);
 				trialIsOver = true;
 				currScore = 0;
@@ -230,7 +240,7 @@ public class Simulation{
 			message = "I can't win, giving up.";
 			//
 			currScore += detectImpossibilityPoints;
-			System.out.println("Final Score " + currScore);
+			System.out.println(currScore);
 			finalScores.add(currScore);
 			trialIsOver = true;
 			currScore = 0;

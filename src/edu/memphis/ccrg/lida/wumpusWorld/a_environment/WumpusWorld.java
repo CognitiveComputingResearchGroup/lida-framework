@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 
 
+import java.util.List;
 import java.util.Random;
 
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
@@ -26,12 +27,26 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 		trial.stopRunning();		
 	}
 	
+	public WumpusWorld(){
+		
+	}
+	
 	public WumpusWorld(FrameworkTimer timer){
 		//
 	    int seed = new Random().nextInt();	    
 	    char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
 	    Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
 	   	trial = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
+	}
+	
+	public WumpusWorld(FrameworkTimer timer, List<Environment> worlds) {
+	   	trial = new Simulation(timer, worlds, nonDeterministicMode);
+	}
+ 
+	public Environment getWorld(int seed){
+		 char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
+		 Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
+		 return wumpusEnvironment;
 	}
 
 	public void getNewEnvironment() {

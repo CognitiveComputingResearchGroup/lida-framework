@@ -215,12 +215,12 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 					wallLeftOf = true;
 			}
 			if(agentLocation.isSameAs(bottom)){ 
-				System.out.println("agent at bottom");
+				//System.out.println("agent at bottom");
 				if(spatLoc.isSameAs(bottomLeft))
 					wallLeftOf = true;
 				if(spatLoc.isSameAs(bottomRight)){
-					System.out.println(wallLocations.size());
-					System.out.println("wall right of ");
+					//System.out.println(wallLocations.size());
+					//System.out.println("wall right of ");
 					wallRightOf = true;
 				}
 			}
@@ -266,11 +266,11 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			action.setContent(Action.GRAB);
 			return action;
 		}
-//		//Shoot the wumpus if it is in range.
-//		if(wumpusInFrontOf || inLineWithWumpus){
-//			action.setContent(Action.SHOOT);
-//			return action;
-//		}
+		//Shoot the wumpus if it is in range.
+		if(wumpusLocation.isSameAs(1, 1)){
+			action.setContent(Action.SHOOT);
+			return action;
+		}
 		//ORIENT TOWARD WUMPUS AND GOLD
 		if(agentLocation.isSameAs(left)){ 
 			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
@@ -322,7 +322,7 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			if(Math.random() > 0.1)
 				action.setContent(Action.GO_FORWARD);
 			else{
-				System.out.println("being random");
+				//System.out.println("being random");
 				action.setContent(Action.TURN_LEFT);
 			}
 			return action;

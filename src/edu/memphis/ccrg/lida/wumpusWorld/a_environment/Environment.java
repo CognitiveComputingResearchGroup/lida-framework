@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 //import java.io.BufferedWriter;
 
-class Environment {
+public class Environment {
 	
 	private char[][][] wumpusWorld;
 	private char[][][] percepts;	
