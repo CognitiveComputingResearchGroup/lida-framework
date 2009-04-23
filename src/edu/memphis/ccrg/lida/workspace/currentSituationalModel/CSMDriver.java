@@ -28,8 +28,8 @@ public class CSMDriver implements Runnable, Stoppable{
 	}
 
 	public void run(){
-		int counter = 0;		
-		long startTime = System.currentTimeMillis();		
+		//int counter = 0;		
+		//long startTime = System.currentTimeMillis();		
 		while(keepRunning){
 			try{Thread.sleep(25 + timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
@@ -48,11 +48,11 @@ public class CSMDriver implements Runnable, Stoppable{
 			//CoalitionImpl coalition = new CoalitionImpl(content);
 			//BroadcastContentImpl content = new BroadcastContentImpl(struct);
 			
-			counter++;			
+			//counter++;			
 		}//while keepRunning
-		long finishTime = System.currentTimeMillis();				
-		System.out.println("CSM: Ave. cycle time: " + 
-							Printer.rnd((finishTime - startTime)/(double)counter));
+		//long finishTime = System.currentTimeMillis();				
+		//System.out.println("CSM: Ave. cycle time: " + 
+		//					Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("CSM: Num. cycles: " + counter);		
 	}//public void run()
 

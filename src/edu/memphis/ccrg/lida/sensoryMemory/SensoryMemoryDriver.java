@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.sensoryMemory;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryMemoryImpl;
 
 public class SensoryMemoryDriver implements Runnable, Stoppable{
 	private SensoryMemory sm;
@@ -18,8 +17,8 @@ public class SensoryMemoryDriver implements Runnable, Stoppable{
 	}//PAMDrive constructor
 		
 	public void run(){
-		int counter = 0;		
-		long startTime = System.currentTimeMillis();
+		//int counter = 0;		
+		//long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());
 			}catch(Exception e){}
@@ -27,12 +26,12 @@ public class SensoryMemoryDriver implements Runnable, Stoppable{
 			
 			sm.processSimContent();
 			sm.sendSensoryContent();					
-			counter++;			
+			//counter++;			
 		}//while keepRunning
-		long finishTime = System.currentTimeMillis();		
+		//long finishTime = System.currentTimeMillis();		
 			
-		System.out.println("SM : Ave. cycle time: " + 
-							Printer.rnd((finishTime - startTime)/(double)counter));
+		//System.out.println("SM : Ave. cycle time: " + 
+		//					Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("SM: Num. cycles: " + counter + "\n");			
 	}//method run
 	

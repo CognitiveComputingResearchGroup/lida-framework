@@ -65,69 +65,24 @@ public class Simulation{
 					currentDirectionalSense[i][j][k] = '0';		
 	}//Simulation
 
-	public void setNewEnvironment(Environment wumpusEnvironment) {
-		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
-			environment = wumpusEnvironment;
-			transferPercept = new TransferPercept(environment);
-			agent = new Agent(environment, transferPercept, nonDeterministic);	
-			environment.placeAgent(agent);
-			currScore = 0;
-			trialIsOver = false;
-			
-			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
-			for(int i = 0; i < currentDirectionalSense.length; i++)
-				for(int j = 0; j < currentDirectionalSense.length; j++)
-					for(int k = 0; k < currentDirectionalSense.length; k++)
-						currentDirectionalSense[i][j][k] = '0';		
-			message = "";
-			//System.out.println("\nEnvironment was reset.\n");
-		}		
-	}//method
-	
-	//FOR TESTING!!!!!
-	public Simulation(FrameworkTimer timer, List<Environment> worlds, boolean nonDet) {
-		this.timer = timer;
-		this.worlds = worlds;
-		environment = getNextEnviron();
-		worldCounter++;
-		nonDeterministic = nonDet;
-		transferPercept = new TransferPercept(environment);
-		agent = new Agent(environment, transferPercept, nonDeterministic);	
-		environment.placeAgent(agent);
-		
-		currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
-		for(int i = 0; i < currentDirectionalSense.length; i++)
-			for(int j = 0; j < currentDirectionalSense.length; j++)
-				for(int k = 0; k < currentDirectionalSense.length; k++)
-					currentDirectionalSense[i][j][k] = '0';	
-		
-	}
-	
-	public void setNextEnvironment() {
-		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
-			environment = getNextEnviron();
-
-			transferPercept = new TransferPercept(environment);
-			agent = new Agent(environment, transferPercept, nonDeterministic);	
-			environment.placeAgent(agent);
-			currScore = 0;
-			trialIsOver = false;
-			
-			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
-			for(int i = 0; i < currentDirectionalSense.length; i++)
-				for(int j = 0; j < currentDirectionalSense.length; j++)
-					for(int k = 0; k < currentDirectionalSense.length; k++)
-						currentDirectionalSense[i][j][k] = '0';		
-			message = "";
-		}		
-	}//method
-	
-	private Environment getNextEnviron() {
-		System.out.println("counter " + worldCounter);
-		Environment temp = worlds.get(worldCounter);
-		worldCounter++;
-		return temp;
-	}
+//	public void setNewEnvironment(Environment wumpusEnvironment) {
+//		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
+//			environment = wumpusEnvironment;
+//			transferPercept = new TransferPercept(environment);
+//			agent = new Agent(environment, transferPercept, nonDeterministic);	
+//			environment.placeAgent(agent);
+//			currScore = 0;
+//			trialIsOver = false;
+//			
+//			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
+//			for(int i = 0; i < currentDirectionalSense.length; i++)
+//				for(int j = 0; j < currentDirectionalSense.length; j++)
+//					for(int k = 0; k < currentDirectionalSense.length; k++)
+//						currentDirectionalSense[i][j][k] = '0';		
+//			message = "";
+//			//System.out.println("\nEnvironment was reset.\n");
+//		}		
+//	}//method
 
 	public void addEnvironmentListener(EnvironmentListener listener){
 		listeners.add(listener);
@@ -141,8 +96,8 @@ public class Simulation{
 	public void runSim(){				
 		Integer currentAction = new Integer(-1);
 		boolean runOneStep = false;
-		int stepCounter = 0;
-		long startTime = System.currentTimeMillis();			
+		//int stepCounter = 0;
+		//long startTime = System.currentTimeMillis();			
 		while(keepRunning){
 			try{Thread.sleep(50);}catch(Exception e){}			
 			timer.checkForStartPause();//Doesn't return if 'pause' clicked in the gui until another gui click			
@@ -166,10 +121,10 @@ public class Simulation{
 							
 			if(keepRunning == false)			
 				lastAction = Action.END_TRIAL;	
-			stepCounter++;
+			//stepCounter++;
 		}//while keepRunning and trials		
-		long finishTime = System.currentTimeMillis();			
-		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));
+		//long finishTime = System.currentTimeMillis();			
+		//System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));
 		
 		//try{Thread.sleep(100);}catch(Exception e){}
 		//printScores();

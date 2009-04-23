@@ -58,8 +58,8 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 		CodeletAction actions = new SpatialLinkCodeletAction();		
 		spawnNewCodelet(workspace, usesPBuffer, usesEBuffer, usesPBroads, defaultCodeletActivation, objective, actions);
 		
-		int counter = 0;		
-		long startTime = System.currentTimeMillis();		
+		//int counter = 0;		
+		//long startTime = System.currentTimeMillis();		
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());
 			}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
@@ -67,11 +67,11 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 			//if BufferContent activates a sbCodelet's context start a new codelet
 			getWorkspaceContent();
 		
-			counter++;			
+			//counter++;			
 		}//while keepRunning
-		long finishTime = System.currentTimeMillis();				
-		System.out.println("SBC: Ave. cycle time: " + 
-							Printer.rnd((finishTime - startTime)/(double)counter));
+		//long finishTime = System.currentTimeMillis();				
+		//System.out.println("SBC: Ave. cycle time: " + 
+		//					Printer.rnd((finishTime - startTime)/(double)counter));
 		//System.out.println("CODE: Num. cycles: " + counter);		
 	}//method
 

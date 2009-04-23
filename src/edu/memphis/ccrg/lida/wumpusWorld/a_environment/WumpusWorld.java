@@ -12,54 +12,33 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Simulation;
 
-//import java.util.concurrent.ConcurrentLinkedQueue;
-
 public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener{
 	
 	private Simulation simulation;
-	private long threadID;
-	private final int wumpusWorldDimensionSize = 5;
-	private int numPits = (int)(wumpusWorldDimensionSize*wumpusWorldDimensionSize*0.25);				
+	//WW parameters
+	private final int wumpusWorldSize = 5;
+	private final double pitPercentage = 0.25;
+	private boolean randomAgentLoc = true;
 	private boolean nonDeterministicMode = false;
-	private boolean randomAgentLoc = true;	
+	//
+	private int numPits = (int)(wumpusWorldSize*wumpusWorldSize*pitPercentage);				
+	//
+	private long threadID;
 	
-	public void stopRunning(){
-		simulation.stopRunning();		
-	}
-	
-	public WumpusWorld(){
-		
-	}
-	
+	//Standard Constructor
 	public WumpusWorld(FrameworkTimer timer){
-		//
 	    int seed = new Random().nextInt();	    
-	    char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
-	    Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
+	    char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldSize, randomAgentLoc, numPits);
+	    Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
 	   	simulation = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
 	}
-	
-	public WumpusWorld(FrameworkTimer timer, List<Environment> worlds) {
-	   	simulation = new Simulation(timer, worlds, nonDeterministicMode);
-	}
- 
-	public Environment getWorld(int seed){
-		 char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
-		 Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
-		 return wumpusEnvironment;
-	}
-
-	public void getNewEnvironment() {
-		int seed = new Random().nextInt();
-		char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
-	    Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
-		simulation.setNewEnvironment(wumpusEnvironment);
-	}
-	
-
-	public void getNextEnvironment() {
-		simulation.setNextEnvironment();		
-	}
+//	//For environment reset functionality through the GUI
+//	public void getNewEnvironment() {
+//		int seed = new Random().nextInt();
+//		char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldSize, randomAgentLoc, numPits);
+//	    Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
+//		simulation.setNewEnvironment(wumpusEnvironment);
+//	}
 	
 	public void addEnvironmentListener(EnvironmentListener listener){
 		simulation.addEnvironmentListener(listener);
@@ -74,6 +53,10 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
     	System.runFinalization();
 	}//method run
 	
+	public void stopRunning(){
+		simulation.stopRunning();		
+	}
+	
 	public void setThreadID(long id){
 		simulation.setThreadID(id);
 	}
@@ -82,14 +65,26 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 		return simulation.getThreadID();
 	}
 	
+	//*************************For testing******************
+	public WumpusWorld(){
+		
+	}
+	public WumpusWorld(FrameworkTimer timer, Environment e) {
+	   	simulation = new Simulation(timer, e, nonDeterministicMode);
+	}
+	
+	//For called from Test
+	public Environment getWorld(int seed){
+		 char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldSize, randomAgentLoc, numPits);
+		 Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
+		 return wumpusEnvironment;
+	}
+	
 	public static char[][][] generateRandomWumpusWorld(int seed, int size, boolean randomlyPlaceAgent, int pits){		
 		char[][][] newWorld = new char[size][size][4];
-		boolean[][] occupied = new boolean[size][size];
-		
-		int x, y;
-		
+		boolean[][] occupied = new boolean[size][size];		
+		int x, y;		
 		Random randGen = new Random(seed);
-
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				for (int k = 0; k < 4; k++) {
@@ -108,17 +103,14 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 		// and orientation
 		int agentXLoc = 0;
 		int agentYLoc = 0;
-		char agentIcon = '>';
-		
+		char agentIcon = '>';		
 		// randomly generate agent
 		// location and orientation
-		if (randomlyPlaceAgent == true) {
-			
+		if (randomlyPlaceAgent == true) {			
 			agentXLoc = randGen.nextInt(size);
 			agentYLoc = randGen.nextInt(size);
 			
-			switch (randGen.nextInt(4)) {
-				
+			switch (randGen.nextInt(4)) {				
 				case 0: agentIcon = 'A'; break;
 				case 1: agentIcon = '>'; break;
 				case 2: agentIcon = 'V'; break;
@@ -130,20 +122,15 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 		newWorld[agentXLoc][agentYLoc][3] = agentIcon;
 	     
 		// Pit generation
-		for (int i = 0; i < pits; i++) {
-	     
+		for (int i = 0; i < pits; i++) {	     
 			x = randGen.nextInt(size);
-			y = randGen.nextInt(size);
-		     
+			y = randGen.nextInt(size);		     
 			while ((x == agentXLoc && y == agentYLoc) | occupied[x][y] == true) {
 				x = randGen.nextInt(size);
 				y = randGen.nextInt(size);    	   
-			}
-		     
+			}		     
 			occupied[x][y] = true;
-
-			newWorld[x][y][0] = 'P';
-		     
+			newWorld[x][y][0] = 'P';		     
 		}
 
 		// Wumpus Generation
@@ -154,9 +141,7 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 			x = randGen.nextInt(size);
 			y = randGen.nextInt(size);   
 		}
-	     
 		occupied[x][y] = true;
-	     
 		newWorld[x][y][1] = 'W';
 		
 		// Gold Generation
@@ -168,104 +153,10 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 		//	y = randGen.nextInt(size);    	   
 		//}
 	     
-		occupied[x][y] = true;
-	     
+		occupied[x][y] = true;	     
 		newWorld[x][y][2] = 'G';
 		
 		return newWorld;
 	}//GEN WW
-	
-	public void run2(){
-//		int worldSize = 4;
-//		int numTrials = 1;
-//		int numPits = 2;		
-//		
-//		int maxSteps = 1;
-//		
-//		boolean nonDeterministicMode = false;
-//		boolean randomAgentLoc = false;
-//		//boolean userDefinedSeed = false;
-//		
-//		//String outFilename = "wumpus_out.txt";
-//		
-//	    Random rand = new Random();
-//	   // int seed = rand.nextInt();
-	    	    
-	    try{
-	    	
-		    //BufferedWriter outputWriter = new BufferedWriter(new FileWriter(outFilename));
-			/*
-			System.out.println("Dimensions: " + worldSize + "x" + worldSize);
-		    //outputWriter.write("Dimensions: " + worldSize + "x" + worldSize + "\n");
-			
-		    System.out.println("Maximum number of steps: " + maxSteps);
-		    //outputWriter.write("Maximum number of steps: " + maxSteps + "\n");
-		    
-		    System.out.println("Number of trials: " + numTrials);
-		    //outputWriter.write("Number of trials: " + numTrials + "\n");
-		    
-		    System.out.println("Random Agent Location: " + randomAgentLoc);
-		    //outputWriter.write("Random Agent Location: " + randomAgentLoc + "\n");
-		    
-			System.out.println("Random number seed: " + seed);
-			//outputWriter.write("Random number seed: " + seed + "\n");		    	
-		    
-		    //System.out.println("Output filename: " + outFilename);
-		    //outputWriter.write("Output filename: " + outFilename + "\n");
-		    
-		    System.out.println("Non-Deterministic Behavior: " + nonDeterministicMode + "\n");
-		    //outputWriter.write("Non-Deterministic Behavior: " + nonDeterministicMode + "\n\n");
-		    */
-		    
-		   // char[][][] wumpusWorld = generateRandomWumpusWorld(seed, worldSize, randomAgentLoc, numPits);
-		    //Environment wumpusEnvironment = new Environment(worldSize, wumpusWorld); //, outputWriter);
-		    
-		    //int trialScores[] = new int[numTrials];
-		   // int totalScore = 0;
-	    
-		    //for (int currTrial = 0; currTrial < numTrials; currTrial++) {
-		    		    	
-		    	//Simulation trial = new Simulation(wumpusEnvironment, maxSteps, nonDeterministicMode); //, outputWriter, nonDeterministicMode);
-		    	//trialScores[currTrial] = trial.getScore();
-		    	//totalScore = trial.getScore();
-		    	
-		    	//System.out.println("\n\n___________________________________________\n");
-		    	//outputWriter.write("\n\n___________________________________________\n\n");
-		    	
-			  //  if (userDefinedSeed == true) {
-			  //  	wumpusWorld = generateRandomWumpusWorld(++seed, worldSize, randomAgentLoc);	
-			   // }
-			   // else {
-			 //   	wumpusWorld = generateRandomWumpusWorld(rand.nextInt(), worldSize, randomAgentLoc);
-			//    }
-
-			//    wumpusEnvironment = new Environment(worldSize, wumpusWorld); //, outputWriter);
-
-		    	System.runFinalization();
-		   // }
-
-		    /*for (int i = 0; i < numTrials; i++) {
-		    	
-		    	System.out.println("Trial " + (i+1) + " score: " + trialScores[i]);
-		    	//outputWriter.write("Trial " + (i+1) + " score: " + trialScores[i] + "\n");
-		    	totalScore += trialScores[i];
-		    	
-		    }*/
-		    
-		    //System.out.println("\nTotal Score: " + totalScore);
-		    //outputWriter.write("\nTotal Score: " + totalScore + "\n");
-		    
-		    //System.out.println("Average Score: " + ((double)totalScore/(double)numTrials));
-		    //outputWriter.write("Average Score: " + ((double)totalScore/(double)numTrials) + "\n");
-		    
-		    //outputWriter.close();
-		    
-	    }
-	    catch (Exception e) {
-	    	System.out.println("An exception was thrown: " + e);
-	    }
-	    
-	    //System.out.println("\nFinished.");			
-	}//run2
 	
 }//class WorldApplication

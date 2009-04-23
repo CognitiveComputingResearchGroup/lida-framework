@@ -62,11 +62,11 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	 */
 	public void run() {
 		int coolDown = 0;
-		int counter = 0;		
+		//int counter = 0;		
 		//boolean runOneStep = false;
 		
 		ActionContentImpl behaviorContent = new ActionContentImpl();
-		long startTime = System.currentTimeMillis();
+		//long startTime = System.currentTimeMillis();
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
@@ -82,11 +82,11 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 				coolDown = numCoolDownCycles;
 			}else
 				coolDown--;	
-			counter++;
+			//counter++;
 		}//while	
-		long finishTime = System.currentTimeMillis();				
-		System.out.println("Proc: Ave cycle time: " + 
-							Printer.rnd((finishTime - startTime)/(double)counter));
+		//long finishTime = System.currentTimeMillis();				
+		////System.out.println("Proc: Ave cycle time: " + 
+		//					Printer.rnd((finishTime - startTime)/(double)counter));
 		
 	}//method
 	
