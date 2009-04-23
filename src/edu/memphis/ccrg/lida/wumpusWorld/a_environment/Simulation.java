@@ -122,8 +122,8 @@ public class Simulation{
 		long finishTime = System.currentTimeMillis();			
 		System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));
 		
-		try{Thread.sleep(100);}catch(Exception e){}
-		printScores();
+		//try{Thread.sleep(100);}catch(Exception e){}
+		//printScores();
 	}//method runSim
 	
 	private void printScores() {
