@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Simulation;
 
 public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener{
 	
-	private Simulation trial;
+	private Simulation simulation;
 	private long threadID;
 	private final int wumpusWorldDimensionSize = 5;
 	private int numPits = (int)(wumpusWorldDimensionSize*wumpusWorldDimensionSize*0.25);				
@@ -24,7 +24,7 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	private boolean randomAgentLoc = true;	
 	
 	public void stopRunning(){
-		trial.stopRunning();		
+		simulation.stopRunning();		
 	}
 	
 	public WumpusWorld(){
@@ -36,11 +36,11 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	    int seed = new Random().nextInt();	    
 	    char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
 	    Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
-	   	trial = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
+	   	simulation = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
 	}
 	
 	public WumpusWorld(FrameworkTimer timer, List<Environment> worlds) {
-	   	trial = new Simulation(timer, worlds, nonDeterministicMode);
+	   	simulation = new Simulation(timer, worlds, nonDeterministicMode);
 	}
  
 	public Environment getWorld(int seed){
@@ -53,28 +53,33 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 		int seed = new Random().nextInt();
 		char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldDimensionSize, randomAgentLoc, numPits);
 	    Environment wumpusEnvironment = new Environment(wumpusWorldDimensionSize, wumpusWorld);
-		trial.setNewEnvironment(wumpusEnvironment);
+		simulation.setNewEnvironment(wumpusEnvironment);
+	}
+	
+
+	public void getNextEnvironment() {
+		simulation.setNextEnvironment();		
 	}
 	
 	public void addEnvironmentListener(EnvironmentListener listener){
-		trial.addEnvironmentListener(listener);
+		simulation.addEnvironmentListener(listener);
 	}
 
 	public void receiveBehaviorContent(ActionContent c) {
-		trial.receiveBehaviorContent(c);		
+		simulation.receiveBehaviorContent(c);		
 	}
 	
 	public void run(){		
-	   	trial.runSim();	   	
+	   	simulation.runSim();	   	
     	System.runFinalization();
 	}//method run
 	
 	public void setThreadID(long id){
-		trial.setThreadID(id);
+		simulation.setThreadID(id);
 	}
 	
 	public long getThreadID() {
-		return trial.getThreadID();
+		return simulation.getThreadID();
 	}
 	
 	public static char[][][] generateRandomWumpusWorld(int seed, int size, boolean randomlyPlaceAgent, int pits){		
@@ -261,7 +266,6 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	    }
 	    
 	    //System.out.println("\nFinished.");			
-	}//run2	
-
+	}//run2
 	
 }//class WorldApplication

@@ -103,7 +103,7 @@ public class Simulation{
 		
 	}
 	
-	public void setNewEnvironment() {
+	public void setNextEnvironment() {
 		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
 			environment = getNextEnviron();
 
@@ -123,6 +123,7 @@ public class Simulation{
 	}//method
 	
 	private Environment getNextEnviron() {
+		System.out.println("counter " + worldCounter);
 		Environment temp = worlds.get(worldCounter);
 		worldCounter++;
 		return temp;
