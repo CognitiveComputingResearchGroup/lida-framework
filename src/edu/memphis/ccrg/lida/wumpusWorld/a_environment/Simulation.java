@@ -32,6 +32,7 @@ public class Simulation{
 	
 	private Environment environment;
 	private List<Environment> worlds = new ArrayList<Environment>();
+	private int worldCounter = 0;
 		
 	//To stimuli sent out 
 	private EnvironmentContentImpl simContent = new EnvironmentContentImpl(VISION_SIZE);
@@ -63,13 +64,6 @@ public class Simulation{
 				for(int k = 0; k < currentDirectionalSense.length; k++)
 					currentDirectionalSense[i][j][k] = '0';		
 	}//Simulation
-	
-	public Simulation(FrameworkTimer timer, List<Environment> worlds, boolean nonDet) {
-		this.timer = timer;
-		this.worlds = worlds;
-		System.out.println(worlds.size());
-		nonDeterministic = nonDet;
-	}
 
 	public void setNewEnvironment(Environment wumpusEnvironment) {
 		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
@@ -90,6 +84,50 @@ public class Simulation{
 		}		
 	}//method
 	
+	//FOR TESTING!!!!!
+	public Simulation(FrameworkTimer timer, List<Environment> worlds, boolean nonDet) {
+		this.timer = timer;
+		this.worlds = worlds;
+		environment = getNextEnviron();
+		worldCounter++;
+		nonDeterministic = nonDet;
+		transferPercept = new TransferPercept(environment);
+		agent = new Agent(environment, transferPercept, nonDeterministic);	
+		environment.placeAgent(agent);
+		
+		currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
+		for(int i = 0; i < currentDirectionalSense.length; i++)
+			for(int j = 0; j < currentDirectionalSense.length; j++)
+				for(int k = 0; k < currentDirectionalSense.length; k++)
+					currentDirectionalSense[i][j][k] = '0';	
+		
+	}
+	
+	public void setNewEnvironment() {
+		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
+			environment = getNextEnviron();
+
+			transferPercept = new TransferPercept(environment);
+			agent = new Agent(environment, transferPercept, nonDeterministic);	
+			environment.placeAgent(agent);
+			currScore = 0;
+			trialIsOver = false;
+			
+			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
+			for(int i = 0; i < currentDirectionalSense.length; i++)
+				for(int j = 0; j < currentDirectionalSense.length; j++)
+					for(int k = 0; k < currentDirectionalSense.length; k++)
+						currentDirectionalSense[i][j][k] = '0';		
+			message = "";
+		}		
+	}//method
+	
+	private Environment getNextEnviron() {
+		Environment temp = worlds.get(worldCounter);
+		worldCounter++;
+		return temp;
+	}
+
 	public void addEnvironmentListener(EnvironmentListener listener){
 		listeners.add(listener);
 	}
