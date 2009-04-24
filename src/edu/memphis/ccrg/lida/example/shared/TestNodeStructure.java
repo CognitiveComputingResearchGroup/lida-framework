@@ -5,7 +5,7 @@ import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImp;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
 public class TestNodeStructure {
 
@@ -14,7 +14,7 @@ public class TestNodeStructure {
 	 */
 	public static void main(String[] args) {
 		
-		NodeStructure ns = new NodeStructureImp();
+		NodeStructure ns = new NodeStructureImpl();
 		ns.setDefaultNode("NodeImpl");
 		ns.setDefaultLink("LinkImpl");
 		NodeFactory.getInstance().addNodeType("NodeImpl", "edu.memphis.ccrg.lida.shared.NodeImpl");

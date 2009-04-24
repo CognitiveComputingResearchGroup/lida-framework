@@ -6,24 +6,24 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
-import edu.memphis.ccrg.lida.wumpusWorld.i_csm.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
 public class AttentionDriver implements Runnable, Stoppable, BroadcastListener{
 
 	private FrameworkTimer timer;
 	private boolean keepRunning = true;
 	private BroadcastContent broadcastContent;
-	private CurrentSituationalModelImpl csm;
+	private CurrentSituationalModel csm;
 	private long threadID;
 	private GlobalWorkspace global;
 	
-	public AttentionDriver(FrameworkTimer timer, CurrentSituationalModelImpl csm, GlobalWorkspaceImpl gwksp) {
+	public AttentionDriver(FrameworkTimer timer, CurrentSituationalModel csm, GlobalWorkspaceImpl gwksp) {
 		this.timer = timer;
 		this.csm = csm;
 		global = gwksp;
 	}
 
-	public void addCSM(CurrentSituationalModelImpl csm) {
+	public void addCSM(CurrentSituationalModel csm) {
 		this.csm = csm;		
 	}
 

@@ -1,8 +1,6 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
 public class CoalitionImpl implements Coalition{
 	
