@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +48,15 @@ public class Simulation{
 	private long threadID;
 	private String message = "";
 	private boolean trialIsOver = false;
+	private BufferedWriter out = null;
+	private Starter motherThread = null;
 	
-	
-	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet){ 		
+	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet, BufferedWriter out, Starter s){ 		
 		this.timer = timer;
 		environment = environ;
 		nonDeterministic = nonDet;
+		this.out = out;
+		motherThread = s;
 		//
 		transferPercept = new TransferPercept(environment);
 		agent = new Agent(environment, transferPercept, nonDeterministic);	
@@ -83,6 +87,23 @@ public class Simulation{
 //			//System.out.println("\nEnvironment was reset.\n");
 //		}		
 //	}//method
+
+	public Simulation(FrameworkTimer timer, Environment wumpusEnvironment,
+			boolean nonDeterministicMode) {
+		this.timer = timer;
+		environment = wumpusEnvironment;
+		nonDeterministic = nonDeterministicMode;
+		//
+		transferPercept = new TransferPercept(environment);
+		agent = new Agent(environment, transferPercept, nonDeterministic);	
+		environment.placeAgent(agent);
+		
+		currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
+		for(int i = 0; i < currentDirectionalSense.length; i++)
+			for(int j = 0; j < currentDirectionalSense.length; j++)
+				for(int k = 0; k < currentDirectionalSense.length; k++)
+					currentDirectionalSense[i][j][k] = '0';	
+	}
 
 	public void addEnvironmentListener(EnvironmentListener listener){
 		listeners.add(listener);
@@ -186,8 +207,13 @@ public class Simulation{
 			if (environment.grabGold() == true) {
 				currScore += getGoldPoints;
 				//
-				System.out.println(currScore);
+				try{
+					out.write(currScore + "\n");
+				}catch(Exception e){}
+				
 				finalScores.add(currScore);
+				timer.resumeRunningThreads(); 
+				motherThread.stopThreads();
 				trialIsOver = true;
 				currScore = 0;
 				
@@ -234,8 +260,12 @@ public class Simulation{
 			message = "I can't win, giving up.";
 			//
 			currScore += detectImpossibilityPoints;
-			System.out.println(currScore);
+			try{
+				out.write(currScore + "\n");
+			}catch(Exception e){}
 			finalScores.add(currScore);
+			timer.resumeRunningThreads(); 
+			motherThread.stopThreads();
 			trialIsOver = true;
 			currScore = 0;
 			//

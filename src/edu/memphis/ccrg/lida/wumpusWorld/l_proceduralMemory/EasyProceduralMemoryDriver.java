@@ -15,7 +15,6 @@ import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
@@ -44,8 +43,9 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean inManualMode = true;
+	private boolean inManualMode = false;
 	private final int numCoolDownCycles = 2;
+	private int leftRightCounter = 0;
 		
 	public EasyProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
@@ -63,8 +63,8 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	public void run() {
 		int coolDown = 0;
 		//int counter = 0;		
-		//boolean runOneStep = false;
-		
+		//boolean runOneStep = false;		
+		try{Thread.sleep(800);}catch(Exception e){}		
 		ActionContentImpl behaviorContent = new ActionContentImpl();
 		//long startTime = System.currentTimeMillis();
 		while(keepRunning){
@@ -155,19 +155,11 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			action.setContent(Action.GO_FORWARD);
 			return action;
 		}
-		//No wall and safe, then go forward 90% of the time
-		if(safeToProceed && 
-		   !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
-			if(Math.random() > 0.1){
-				action.setContent(Action.GO_FORWARD);
-				return action;
-			}	
-			else{
-				if(Math.random() > 0.5)
-					action.setContent(Action.TURN_LEFT);
-				else
-					action.setContent(Action.TURN_RIGHT);
-			}
+		//No wall and safe, then go forward.
+		if(safeToProceed && !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
+			action.setContent(Action.GO_FORWARD);
+			return action;
+
 		}	
 		//Gold-on-pit scenario
 		if(!safeToProceed && 
@@ -194,10 +186,11 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//Turn randomly if faced w/ just a pit or wall in front of 
 		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit) ||
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
-			if(Math.random() > 0.5)
+			if(leftRightCounter % 3 == 0)
 				action.setContent(Action.TURN_LEFT);
 			else
 				action.setContent(Action.TURN_RIGHT);
+			leftRightCounter++;
 		}
 		return action;
 	}//method

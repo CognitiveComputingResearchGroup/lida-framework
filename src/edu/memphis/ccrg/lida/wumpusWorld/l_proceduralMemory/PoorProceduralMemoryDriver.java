@@ -49,7 +49,8 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean inManualMode = true;
+	private boolean inManualMode = false;
+	private int leftRightCounter = 0;
 		
 	public PoorProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
@@ -68,7 +69,7 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		int coolDown = 0;
 		//int counter = 0;		
 		//boolean runOneStep = false;
-		
+		try{Thread.sleep(800);}catch(Exception e){}
 		ActionContentImpl behaviorContent = new ActionContentImpl();
 		//long startTime = System.currentTimeMillis();
 		while(keepRunning){
@@ -317,14 +318,11 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			action.setContent(Action.GO_FORWARD);
 			return action;
 		}
-		//No wall and safe, then go forward 90% of the time
+		//No wall and safe, then go forward.
+		
+		//System.out.println("safe " + safeToProceed + " wall in front of " + wallInFrontOf);
 		if(safeToProceed && !wallInFrontOf){//go forward if safe
-			if(Math.random() > 0.1)
-				action.setContent(Action.GO_FORWARD);
-			else{
-				//System.out.println("being random");
-				action.setContent(Action.TURN_LEFT);
-			}
+			action.setContent(Action.GO_FORWARD);
 			return action;
 		}
 		//Halt in unwinnable situation
@@ -348,11 +346,11 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 //			}			
 //		}
 		//Turn randomly if faced w/ just a pit or wall in front of 
-		if(Math.random() > 0.5){
+		if(leftRightCounter % 3 == 0)
 			action.setContent(Action.TURN_LEFT);
-		}else{
+		else
 			action.setContent(Action.TURN_RIGHT);
-		}
+		leftRightCounter ++;
 		return action;
 	}//method
 

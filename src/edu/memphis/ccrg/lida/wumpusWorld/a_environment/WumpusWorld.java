@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
 
 
+import java.io.BufferedWriter;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +33,12 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	    Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
 	   	simulation = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
 	}
+
+	//*************************For testing******************
+	public WumpusWorld(FrameworkTimer timer, Environment e, BufferedWriter out, Starter s) {
+	   	simulation = new Simulation(timer, e, nonDeterministicMode, out, s);
+	}//************
+	
 //	//For environment reset functionality through the GUI
 //	public void getNewEnvironment() {
 //		int seed = new Random().nextInt();
@@ -63,21 +70,6 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	
 	public long getThreadID() {
 		return simulation.getThreadID();
-	}
-	
-	//*************************For testing******************
-	public WumpusWorld(){
-		
-	}
-	public WumpusWorld(FrameworkTimer timer, Environment e) {
-	   	simulation = new Simulation(timer, e, nonDeterministicMode);
-	}
-	
-	//For called from Test
-	public Environment getWorld(int seed){
-		 char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldSize, randomAgentLoc, numPits);
-		 Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
-		 return wumpusEnvironment;
 	}
 	
 	public static char[][][] generateRandomWumpusWorld(int seed, int size, boolean randomlyPlaceAgent, int pits){		

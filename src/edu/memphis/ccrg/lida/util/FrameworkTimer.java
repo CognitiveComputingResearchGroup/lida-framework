@@ -8,19 +8,19 @@ public class FrameworkTimer {
 	
 	private boolean shouldWait = false;//true -> Start out paused
 										//false -> Start out running	
-	private int sleepTime = 170;
-	private int sleepConstant = 500;
+	private int sleepTillUnpauseTime = 500;
+	private int threadSleepTime = 160;
 	
 	private Map<Long, Boolean> shouldWaitForNextStepMap = new HashMap<Long, Boolean>();
 	
 	public int getSleepTime(){
-		return sleepConstant;
+		return threadSleepTime;
 	}
 	
 	public void checkForStartPause(){		
 		while(shouldWait){
 			try{
-				Thread.sleep(sleepTime);
+				Thread.sleep(sleepTillUnpauseTime);
 			}catch(Exception e){}
 		}//while	
 	}//checkForClick
@@ -63,7 +63,7 @@ public class FrameworkTimer {
 			}else{
 				while(shouldWaitForNextStepMap.get(threadID) == false){ // wait until next step is clicked
 					try{
-						Thread.sleep(sleepTime);
+						Thread.sleep(sleepTillUnpauseTime);
 					}catch(Exception e){}
 				}//while
 				return true;
@@ -85,7 +85,7 @@ public class FrameworkTimer {
 	}//
 
 	public synchronized void setSleepTime(int newTime) {
-		sleepConstant = newTime;		
+		threadSleepTime = newTime;		
 	}//
 	
 }//class FrameworkTimer
