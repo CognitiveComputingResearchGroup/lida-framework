@@ -17,19 +17,8 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  * @author Javier Snaider
  * 
  */
-public interface Node extends Linkable{
+public interface Node extends Linkable, Activatible{
 	
-	//Activatible
-    public double getCurrentActivation();
-    public void setActivation(double amount);
-	//
-	public void excite(double amount); 
-	public void setExciteBehavior(ExciteBehavior behavior);
-	public ExciteBehavior getExciteBehavior();
-	//
-	public void decay();	
-	public void setDecayBehavior(DecayBehavior c);
-	public DecayBehavior getDecayBehavior();
 	//Standard for node
 	public void setValue(Map<String, Object> values);
 	public double getImportance(); 

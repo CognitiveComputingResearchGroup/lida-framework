@@ -198,7 +198,7 @@ public class PamNodeImpl implements PamNode{
 	    return baselevelActivation;
 	}
 
-	public double getCurrentActivation() {
+	public double getActivation() {
 	    return currentActivation;
 	}
 

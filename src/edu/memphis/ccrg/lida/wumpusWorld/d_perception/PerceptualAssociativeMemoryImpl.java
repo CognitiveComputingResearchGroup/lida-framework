@@ -136,7 +136,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
       	for(int i = 0; i < layers - 1; i++){
       		Set<Node> layerLinkables = layerMap.get(i);
       		for(Node n: layerLinkables){
-      			double currentActivation = n.getCurrentActivation();
+      			double currentActivation = n.getActivation();
       	
       			Set<Node> parents = graph.getParents(n);
       			for(Node parent: parents){      	

@@ -91,7 +91,7 @@ public class SpatialLocation implements Node{
 		
 	}
 
-	public double getCurrentActivation() {
+	public double getActivation() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

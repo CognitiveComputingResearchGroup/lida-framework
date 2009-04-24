@@ -36,11 +36,11 @@ public class TestNodeFactory {
 		System.out.println(n);
 		System.out.println("NodeType: "+n.getClass().getName());
 		
-		System.out.println("Activation: "+n.getCurrentActivation());
+		System.out.println("Activation: "+n.getActivation());
 		System.out.println("Decaying...");
 
 		n.decay();
-		System.out.println("Activation: "+n.getCurrentActivation());
+		System.out.println("Activation: "+n.getActivation());
 		
 
 	}

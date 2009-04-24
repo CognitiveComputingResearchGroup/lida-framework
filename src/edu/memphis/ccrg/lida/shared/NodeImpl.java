@@ -31,7 +31,7 @@ public class NodeImpl implements Node {
 		}
 	}
 
-	public double getCurrentActivation() {
+	public double getActivation() {
 		return activation;
 	}
 

@@ -172,7 +172,7 @@ public class NodeFactory {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(NodeDefaultName).newInstance();
-			n.setActivation(oNode.getCurrentActivation());
+			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(oNode.getExciteBehavior());
 			n.setDecayBehavior(oNode.getDecayBehavior());
@@ -193,7 +193,7 @@ public class NodeFactory {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
-			n.setActivation(oNode.getCurrentActivation());
+			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(oNode.getExciteBehavior());
 			n.setDecayBehavior(oNode.getDecayBehavior());
@@ -214,7 +214,7 @@ public class NodeFactory {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(NodeDefaultName).newInstance();
-			n.setActivation(oNode.getCurrentActivation());
+			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(excites.get(exciteBehavior));
 			n.setDecayBehavior(decays.get(decayBehavior));
@@ -236,7 +236,7 @@ public class NodeFactory {
 		Node n = null;
 		try {
 			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
-			n.setActivation(oNode.getCurrentActivation());
+			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(excites.get(exciteBehavior));
 			n.setDecayBehavior(decays.get(decayBehavior));

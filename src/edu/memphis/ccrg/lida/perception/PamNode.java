@@ -80,7 +80,7 @@ public interface PamNode extends Node{
 
 	public abstract double getBaselevelActivation();
 
-	public abstract double getCurrentActivation();
+	public abstract double getActivation();
 
 	public abstract double getTotalActivation();
 

@@ -610,7 +610,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	//**PRINTING
 	public void printNodes() {
 		for(Node n: nodes)
-			System.out.println(n.getLabel() + " current activ. " + n.getCurrentActivation());		
+			System.out.println(n.getLabel() + " current activ. " + n.getActivation());		
 	}//method
 	
 	public void printPamNodeActivations() {
