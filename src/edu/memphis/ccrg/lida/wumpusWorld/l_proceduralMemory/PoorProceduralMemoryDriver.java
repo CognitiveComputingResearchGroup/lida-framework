@@ -180,7 +180,7 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 			wumpusInFrontOf = true;
 		
 		
-		System.out.println("w " + wumpusInFrontOf + " pit " + pitInFrontOf);
+		//System.out.println("w " + wumpusInFrontOf + " pit " + pitInFrontOf);
 		boolean safeToProceed = false;
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
@@ -189,67 +189,80 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//Grab gold if it is right there.
 		if(agentLocation.isSameAs(goldLocation)){
 			action.setContent(Action.GRAB);
+			//System.out.println("Action 1 grab");
 			return action;
 		}
 		//Shoot the wumpus if it is in range.
 		if(wumpusLocation.isSameAs(middle)){
 			action.setContent(Action.SHOOT);
+			//System.out.println("Action 2 shoot");
 			return action;
 		}
 		//ORIENT TOWARD WUMPUS AND GOLD
 		if(agentLocation.isSameAs(left)){ 
 			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 3");
 				return action;
 			}
-			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
+			if(wumpusLocation.isSameAs(bottomLeft) || goldLocation.isSameAs(bottomLeft)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 4");
 				return action;
 			}
 		}
 		if(agentLocation.isSameAs(right)){ 
 			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 5");
 				return action;
 			}
 			if(wumpusLocation.isSameAs(upperRight) || goldLocation.isSameAs(upperRight)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 6");
 				return action;
 			}
 		}
 		if(agentLocation.isSameAs(top)){ 
 			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 7");
 				return action;
 			}
 			if(wumpusLocation.isSameAs(upperRight) || goldLocation.isSameAs(upperRight)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 8");
 				return action;
 			}
 		}
 		if(agentLocation.isSameAs(bottom)){ 
 			if(wumpusLocation.isSameAs(bottomLeft) || goldLocation.isSameAs(bottomLeft)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 9");
 				return action;
 			}
 			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 10");
 				return action;
 			}
 		}//END ORIENT TOWARD WUMPUS AND GOLD
 		//Head forward toward gold when it's there
 		if(safeToProceed && goldLocation.isSameAs(middle)){
 			action.setContent(Action.GO_FORWARD);
+			//System.out.println("Action 11");
 			return action;
 		}
 		//No wall and safe, then go forward.
 		if(safeToProceed && !wallInFrontOf){//go forward if safe
 			action.setContent(Action.GO_FORWARD);
+			//System.out.println("Action 12");
 			return action;
 		}
 		//Halt in unwinnable situation
 		if(!safeToProceed && goldLocation.isSameAs(middle) && !wumpusLocation.isSameAs(middle)){
 			action.setContent(Action.END_TRIAL);
+			//System.out.println("Action 13");
 			return action;
 		}
 		//System.out.println("left right counter" + leftRightCounter);
@@ -257,10 +270,10 @@ public class PoorProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		if(leftRightCounter % 3 == 0 || leftRightCounter % 5 == 0 || leftRightCounter % 8 == 0 ||
 			leftRightCounter % 16 == 0){
 			action.setContent(Action.TURN_LEFT);
-			System.out.println(" go left");
+			//System.out.println("Action 14 go left");
 		}else{
 			action.setContent(Action.TURN_RIGHT);
-			System.out.println(" go right ");
+			//System.out.println("Action 15 go right ");
 		}
 		leftRightCounter ++;
 		return action;
