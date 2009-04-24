@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
  * 
  * @author ryanjmccall
  */
-public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, BroadcastListener, WorkspaceListener{
+public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, BroadcastListener, WorkspaceListener{
 
 	//FIELDS
 	private FrameworkTimer timer;
@@ -47,7 +47,7 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	private final int numCoolDownCycles = 2;
 	private int leftRightCounter = 0;
 		
-	public EasyProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
+	public GoodProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
 		environment = environ;		
 	}//constructor
@@ -186,7 +186,8 @@ public class EasyProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		//Turn randomly if faced w/ just a pit or wall in front of 
 		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit) ||
 		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
-			if(leftRightCounter % 3 == 0)
+			if(leftRightCounter % 3 == 0 || leftRightCounter % 5 == 0 || leftRightCounter % 8 == 0 ||
+				leftRightCounter % 16 == 0)
 				action.setContent(Action.TURN_LEFT);
 			else
 				action.setContent(Action.TURN_RIGHT);

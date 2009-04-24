@@ -4,9 +4,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
@@ -16,12 +14,12 @@ public class Simulation{
 	private final int VISION_SIZE = 3;
 	private final int MAX_ENTITIES_PER_CELL = 4;//Pit, Wumpus, Gold, Agent	
 	//Previous fields
-	private static final int basicActionPoints = -5;
-	private static final int deathPoints = -150;
+	private static final int basicActionPoints = -1;
+	private static final int deathPoints = -100;
 	private static final int shootArrowPoints = -10;
 	private static final int getGoldPoints = 100;
 	private static final int detectImpossibilityPoints = 100;
-	private static final int killWumpusPoints = 50;
+	private static final int killWumpusPoints = 0;
 	private static final List<Integer> finalScores = new ArrayList<Integer>();
 	
 	private boolean nonDeterministic;
@@ -206,17 +204,7 @@ public class Simulation{
 			
 			if (environment.grabGold() == true) {
 				currScore += getGoldPoints;
-				//
-				try{
-					out.write(currScore + "\n");
-				}catch(Exception e){}
-				
-				finalScores.add(currScore);
-				timer.resumeRunningThreads(); 
-				motherThread.stopThreads();
-				trialIsOver = true;
-				currScore = 0;
-				
+				endTrial();				
 				//keepRunning = false;
 				message = "Got the Gold";
 				agent.setHasGold(true);
@@ -258,16 +246,8 @@ public class Simulation{
 			lastAction = Action.NO_OP;
 		}else if(action == Action.END_TRIAL){
 			message = "I can't win, giving up.";
-			//
 			currScore += detectImpossibilityPoints;
-			try{
-				out.write(currScore + "\n");
-			}catch(Exception e){}
-			finalScores.add(currScore);
-			timer.resumeRunningThreads(); 
-			motherThread.stopThreads();
-			trialIsOver = true;
-			currScore = 0;
+			endTrial();
 			//
 			environment.placeAgent(agent);
 			if (environment.getBump() == true) environment.setBump(false);
@@ -275,6 +255,19 @@ public class Simulation{
 			lastAction = Action.NO_OP;			
 		}
 	}//method
+	
+	private void endTrial(){
+		try{
+			out.write(currScore + "\n");
+		}catch(Exception e){}
+		System.out.println(currScore);
+		finalScores.add(currScore);
+		currScore = 0;
+		trialIsOver = true;
+		//
+		timer.resumeRunningThreads(); 
+		motherThread.stopThreads();
+	}
 	
 	private String directionalSenseToString(){
 		String s = "\n\n";

@@ -1,11 +1,7 @@
 package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 
-
-
 import java.io.BufferedWriter;
-import java.util.List;
 import java.util.Random;
-
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;

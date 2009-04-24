@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.SpatialLocation;
  * 
  * @author ryanjmccall
  */
-public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, PAMListener{
+public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, PAMListener{
 
 	//FIELDS
 	private FrameworkTimer timer;
@@ -51,7 +51,7 @@ public class HardProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	 */
 	private boolean inManualMode = true;
 		
-	public HardProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
+	public UnusedProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
 		environment = environ;		
 	}//constructor
