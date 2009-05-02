@@ -52,7 +52,7 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 						graph.addLink(new LinkImpl(agent, objectInWW, spatialRelationType, linkCount++ + ""));
 				}//if not the agent
 				//For links between each object in WW and one of its exact locations
-				graph.addLink(new LinkImpl(objectInWW, sl, LinkType.spatial, linkCount++ + ""));
+				graph.addLink(new LinkImpl(objectInWW, sl, LinkType.GROUNDING, linkCount++ + ""));
 				i++;
 			}//for all spatial locations of n	
 		}//for nodes 	
@@ -64,59 +64,59 @@ public class SpatialLinkCodeletAction implements CodeletAction{
 	}//method
 
 	private LinkType calcRelationType(SpatialLocation sl, char agentDirection) {
-		LinkType type = LinkType.none;
+		LinkType type = LinkType.NONE;
 		int i = sl.getI();
 		int j = sl.getJ();		
 		if(agentDirection == 'V'){
 			if(j == 1){
 				if(i == 0)
-					type = LinkType.sameLocationAs;
+					type = LinkType.SAME_LOCATION;
 				else if(i == 1)
-					type = LinkType.inFrontOf;
+					type = LinkType.IN_FRONT_OF;
 				else				
-					type = LinkType.inLineWith;				
+					type = LinkType.IN_LINE_WITH;				
 			}else if(j == 0 && i == 0){
-				type = LinkType.rightOf;
+				type = LinkType.RIGHT_OF;
 			}else if(j == 2 && i == 0){
-				type = LinkType.leftOf;
+				type = LinkType.LEFT_OF;
 			}
 		}else if(agentDirection == 'A'){
 			if(j == 1){
 				if(i == 0)
-					type = LinkType.inLineWith;
+					type = LinkType.IN_LINE_WITH;
 				else if(i == 1)
-					type = LinkType.inFrontOf;
+					type = LinkType.IN_FRONT_OF;
 				else 
-					type = LinkType.sameLocationAs;				      
+					type = LinkType.SAME_LOCATION;				      
 			}else if(j == 0 && i == 2){
-				type = LinkType.leftOf;
+				type = LinkType.LEFT_OF;
 			}else if(j == 2 && i == 2){
-				type = LinkType.rightOf;
+				type = LinkType.RIGHT_OF;
 			}
 		}else if(agentDirection == '<'){
 			if(i == 1){
 				if(j == 0)
-					type = LinkType.inLineWith;
+					type = LinkType.IN_LINE_WITH;
 				else if(j == 1)
-					type = LinkType.inFrontOf;
+					type = LinkType.IN_FRONT_OF;
 				else if(j == 2)
-					type = LinkType.sameLocationAs;
+					type = LinkType.SAME_LOCATION;
 			}else if(i == 0 && j == 2)
-				type = LinkType.rightOf;
+				type = LinkType.RIGHT_OF;
 			else if(i == 2 && j == 2)
-				type = LinkType.leftOf;
+				type = LinkType.LEFT_OF;
 		}else if(agentDirection == '>'){
 			if(i == 1){
 				if(j == 0)
-					type = LinkType.sameLocationAs;
+					type = LinkType.SAME_LOCATION;
 				else if(j == 1)
-					type = LinkType.inFrontOf;
+					type = LinkType.IN_FRONT_OF;
 				else
-					type = LinkType.inLineWith;
+					type = LinkType.IN_LINE_WITH;
 			}else if(i == 2 && j == 0)
-				type = LinkType.rightOf;
+				type = LinkType.RIGHT_OF;
 			else if(i == 0 && j == 0)
-				type = LinkType.leftOf;
+				type = LinkType.LEFT_OF;
 		}
 		return type;		
 	}//method
