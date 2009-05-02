@@ -43,7 +43,7 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean inManualMode = false;
+	private boolean inManualMode = true;
 	private final int numCoolDownCycles = 2;
 	private int leftRightCounter = 0;
 		
@@ -121,71 +121,71 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		Map<LinkType, Set<Link>> links = struct.getLinksByType();
 		
 		//Grab gold if it is right there.
-		if(preconditionIsMet(links.get(LinkType.sameLocationAs), WumpusNodeIDs.gold)){
+		if(preconditionIsMet(links.get(LinkType.SAME_LOCATION), WumpusNodeIDs.gold)){
 			action.setContent(Action.GRAB);
 			return action;
 		}
 		//Shoot the wumpus if it is in range.
-		if(preconditionIsMet(links.get(LinkType.inLineWith), WumpusNodeIDs.wumpus) ||
-		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wumpus)){
+		if(preconditionIsMet(links.get(LinkType.IN_LINE_WITH), WumpusNodeIDs.wumpus) ||
+		   preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.wumpus)){
 			action.setContent(Action.SHOOT);
 			return action;
 		}
 		//Orient left or right towards gold or wumpus 
-		if(preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.gold) ||
-		   preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.wumpus)){
+		if(preconditionIsMet(links.get(LinkType.RIGHT_OF), WumpusNodeIDs.gold) ||
+		   preconditionIsMet(links.get(LinkType.RIGHT_OF), WumpusNodeIDs.wumpus)){
 			action.setContent(Action.TURN_RIGHT);
 			return action;
 		}
-		if(preconditionIsMet(links.get(LinkType.leftOf), WumpusNodeIDs.gold) ||
-		   preconditionIsMet(links.get(LinkType.leftOf), WumpusNodeIDs.wumpus)){
+		if(preconditionIsMet(links.get(LinkType.LEFT_OF), WumpusNodeIDs.gold) ||
+		   preconditionIsMet(links.get(LinkType.LEFT_OF), WumpusNodeIDs.wumpus)){
 			action.setContent(Action.TURN_LEFT);
 			return action;
 		}
 		//Safe to proceed if no pits or wumpus in front of you
 		boolean safeToProceed = true;
-		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wumpus) || 
-		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit)){
+		if(preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.wumpus) || 
+		   preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.pit)){
 			safeToProceed = false;
 		}
 		//Head forward toward gold when it's there
 		if(safeToProceed && 
-		  (preconditionIsMet(links.get(LinkType.inLineWith), WumpusNodeIDs.gold) || 
-		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.gold))){
+		  (preconditionIsMet(links.get(LinkType.IN_LINE_WITH), WumpusNodeIDs.gold) || 
+		   preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.gold))){
 			action.setContent(Action.GO_FORWARD);
 			return action;
 		}
 		//No wall and safe, then go forward.
-		if(safeToProceed && !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
+		if(safeToProceed && !preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.wall)){
 			action.setContent(Action.GO_FORWARD);
 			return action;
 
 		}	
 		//Gold-on-pit scenario
 		if(!safeToProceed && 
-		    preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.gold) &&
-		   !preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wumpus)){//Halt in unwinnable situation
+		    preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.gold) &&
+		   !preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.wumpus)){//Halt in unwinnable situation
 			action.setContent(Action.END_TRIAL);
 			return action;
 		}
 		//If obstacle in front of
-		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall) || 
-		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit)){
+		if(preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.wall) || 
+		   preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.pit)){
 			//If in a wall/pit 'corner'
-			if(preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.wall) ||
-			   preconditionIsMet(links.get(LinkType.rightOf), WumpusNodeIDs.pit)){
+			if(preconditionIsMet(links.get(LinkType.RIGHT_OF), WumpusNodeIDs.wall) ||
+			   preconditionIsMet(links.get(LinkType.RIGHT_OF), WumpusNodeIDs.pit)){
 				action.setContent(Action.TURN_LEFT);
 				return action;
 			}
-			if(preconditionIsMet(links.get(LinkType.leftOf), WumpusNodeIDs.wall) ||
-			   preconditionIsMet(links.get(LinkType.leftOf), WumpusNodeIDs.pit)){
+			if(preconditionIsMet(links.get(LinkType.LEFT_OF), WumpusNodeIDs.wall) ||
+			   preconditionIsMet(links.get(LinkType.LEFT_OF), WumpusNodeIDs.pit)){
 				action.setContent(Action.TURN_RIGHT);
 			    return action;
 			}
 		}
 		//Turn randomly if faced w/ just a pit or wall in front of 
-		if(preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.pit) ||
-		   preconditionIsMet(links.get(LinkType.inFrontOf), WumpusNodeIDs.wall)){
+		if(preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.pit) ||
+		   preconditionIsMet(links.get(LinkType.IN_FRONT_OF), WumpusNodeIDs.wall)){
 			if(leftRightCounter % 3 == 0 || leftRightCounter % 5 == 0 || leftRightCounter % 8 == 0 ||
 				leftRightCounter % 16 == 0)
 				action.setContent(Action.TURN_LEFT);

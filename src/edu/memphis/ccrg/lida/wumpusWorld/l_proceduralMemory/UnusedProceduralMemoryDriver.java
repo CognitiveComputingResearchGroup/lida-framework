@@ -49,7 +49,8 @@ public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable,
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean inManualMode = true;
+	private boolean inManualMode = false;
+	private int leftRightCounter = 0;
 		
 	public UnusedProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;
@@ -66,11 +67,10 @@ public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable,
 	 */
 	public void run() {
 		int coolDown = 0;
-		int counter = 0;		
 		//boolean runOneStep = false;
-		
+		try{Thread.sleep(800);}catch(Exception e){}
 		ActionContentImpl behaviorContent = new ActionContentImpl();
-		long startTime = System.currentTimeMillis();
+
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
@@ -86,12 +86,8 @@ public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable,
 				coolDown = 2;
 			}else
 				coolDown--;	
-			counter++;
+			//counter++;
 		}//while	
-		long finishTime = System.currentTimeMillis();				
-		System.out.println("Proc: Ave cycle time: " + 
-							Printer.rnd((finishTime - startTime)/(double)counter));
-		
 	}//method
 	
 	/**
@@ -125,7 +121,7 @@ public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable,
 		Map<Long, Node> nodeMap = struct.getNodeMap();
 
 		//AGENT		
-		SpatialLocation agentLocation = new SpatialLocation();
+		SpatialLocation agentLocation = new SpatialLocation(-7, -7);
 		if(nodeMap.containsKey(WumpusNodeIDs.agent)){
 			RyanPamNode agent = (RyanPamNode) nodeMap.get(WumpusNodeIDs.agent);
 			agentLocation = agent.getLocation();
@@ -160,199 +156,126 @@ public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable,
 		SpatialLocation upperRight = new SpatialLocation(0,2);
 		SpatialLocation bottomLeft = new SpatialLocation(2,0);
 		SpatialLocation bottomRight = new SpatialLocation(2,2);
-		//
+		SpatialLocation middle = new SpatialLocation(1, 1);
 		SpatialLocation top = new SpatialLocation(0, 1);
 		SpatialLocation bottom = new SpatialLocation(2, 1);
 		SpatialLocation left = new SpatialLocation(1, 0);
 		SpatialLocation right = new SpatialLocation(1, 2);
 		
 		//PIT LOCATIONS
-		boolean pitRightOf = false;		
-		boolean pitLeftOf = false;	
 		boolean pitInFrontOf = false;
 		for(SpatialLocation spatLoc: pitLocations){
-			if(spatLoc.isSameAs(1, 1))
-				pitInFrontOf = true;
-			//For corners
-			if(agentLocation.isSameAs(top)){ 
-				if(spatLoc.isSameAs(upperLeft))
-					pitRightOf = true;
-				if(spatLoc.isSameAs(upperRight))
-					pitLeftOf = true;
-			}
-			if(agentLocation.isSameAs(bottom)){ 
-				if(spatLoc.isSameAs(bottomLeft))
-					pitLeftOf = true;
-				if(spatLoc.isSameAs(bottomRight))
-					pitRightOf = true;
-			}
-			
-			if(agentLocation.isSameAs(left)){ 
-				if(spatLoc.isSameAs(bottomLeft))
-					pitRightOf = true;
-				if(spatLoc.isSameAs(upperLeft))
-					pitLeftOf = true;
-			}
-			if(agentLocation.isSameAs(right)){ 
-				if(spatLoc.isSameAs(bottomRight))
-					pitLeftOf = true;
-				if(spatLoc.isSameAs(upperRight))
-					pitRightOf = true;
-			}			
+			if(spatLoc.isSameAs(middle))
+				pitInFrontOf = true;		
 		}
 		//WALL RELATIONS
-		boolean wallRightOf = false;
-		boolean wallLeftOf = false;
 		boolean wallInFrontOf = false;	
 		for(SpatialLocation spatLoc: wallLocations){
-			if(spatLoc.isSameAs(1, 1))
+			if(spatLoc.isSameAs(middle))
 				wallInFrontOf = true;
-			
-			if(agentLocation.isSameAs(top)){ 
-				if(spatLoc.isSameAs(upperLeft))
-					wallRightOf = true;
-				if(spatLoc.isSameAs(upperRight))
-					wallLeftOf = true;
-			}
-			if(agentLocation.isSameAs(bottom)){ 
-				//System.out.println("agent at bottom");
-				if(spatLoc.isSameAs(bottomLeft))
-					wallLeftOf = true;
-				if(spatLoc.isSameAs(bottomRight)){
-					//System.out.println(wallLocations.size());
-					//System.out.println("wall right of ");
-					wallRightOf = true;
-				}
-			}
-			
-			if(agentLocation.isSameAs(left)){ 
-				if(spatLoc.isSameAs(bottomLeft))
-					wallRightOf = true;
-				if(spatLoc.isSameAs(upperLeft))
-					wallLeftOf = true;
-			}
-			if(agentLocation.isSameAs(right)){ 
-				if(spatLoc.isSameAs(bottomRight))
-					wallLeftOf = true;
-				if(spatLoc.isSameAs(upperRight))
-					wallRightOf = true;
-			}
 		}
 		//WUMPUS RELATIONS
 		boolean wumpusInFrontOf = false;
-		if(wumpusLocation != null && wumpusLocation.isSameAs(1, 1))
+		if(wumpusLocation != null && wumpusLocation.isSameAs(middle))
 			wumpusInFrontOf = true;
 		
-		boolean inLineWithWumpus = false;
-		int jDiff = wumpusLocation.getJ() - agentLocation.getJ();
-		int iDiff = wumpusLocation.getI() - agentLocation.getI();
-		if((jDiff == 0 && (iDiff == 2 || iDiff == -2)) || (iDiff == 0 && (jDiff == 2 || jDiff == -2)))
-			inLineWithWumpus = true;
 		
+		//System.out.println("w " + wumpusInFrontOf + " pit " + pitInFrontOf);
 		boolean safeToProceed = false;
 		if(!wumpusInFrontOf && !pitInFrontOf)
 			safeToProceed = true;
-		
-		//GOLD RELATION
-		boolean inLineWithGold = false;
-		jDiff = goldLocation.getJ() - agentLocation.getJ();
-		iDiff = goldLocation.getI() - agentLocation.getI();
-		if((jDiff == 0 && (iDiff == 2 || iDiff == -2)) || (iDiff == 0 && (jDiff == 2 || jDiff == -2)))
-			inLineWithGold = true;
 			
-		//PRODUCTION RULES
+		//**************PRODUCTION RULES******************
 		//Grab gold if it is right there.
 		if(agentLocation.isSameAs(goldLocation)){
 			action.setContent(Action.GRAB);
+			//System.out.println("Action 1 grab");
 			return action;
 		}
 		//Shoot the wumpus if it is in range.
-		if(wumpusInFrontOf || inLineWithWumpus){
+		if(wumpusLocation.isSameAs(middle)){
 			action.setContent(Action.SHOOT);
+			//System.out.println("Action 2 shoot");
 			return action;
 		}
 		//ORIENT TOWARD WUMPUS AND GOLD
 		if(agentLocation.isSameAs(left)){ 
 			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 3");
 				return action;
 			}
-			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
+			if(wumpusLocation.isSameAs(bottomLeft) || goldLocation.isSameAs(bottomLeft)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 4");
 				return action;
 			}
 		}
 		if(agentLocation.isSameAs(right)){ 
 			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 5");
 				return action;
 			}
 			if(wumpusLocation.isSameAs(upperRight) || goldLocation.isSameAs(upperRight)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 6");
 				return action;
 			}
 		}
 		if(agentLocation.isSameAs(top)){ 
 			if(wumpusLocation.isSameAs(upperLeft) || goldLocation.isSameAs(upperLeft)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 7");
 				return action;
 			}
 			if(wumpusLocation.isSameAs(upperRight) || goldLocation.isSameAs(upperRight)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 8");
 				return action;
 			}
 		}
 		if(agentLocation.isSameAs(bottom)){ 
 			if(wumpusLocation.isSameAs(bottomLeft) || goldLocation.isSameAs(bottomLeft)){
 				action.setContent(Action.TURN_LEFT);
+				//System.out.println("Action 9");
 				return action;
 			}
 			if(wumpusLocation.isSameAs(bottomRight) || goldLocation.isSameAs(bottomRight)){
 				action.setContent(Action.TURN_RIGHT);
+				//System.out.println("Action 10");
 				return action;
 			}
-		}//End ORIENT TOWARD WUMPUS AND GOLD
+		}//END ORIENT TOWARD WUMPUS AND GOLD
 		//Head forward toward gold when it's there
-		if(safeToProceed && (inLineWithGold || goldLocation.isSameAs(1, 1))){
+		if(safeToProceed && goldLocation.isSameAs(middle)){
 			action.setContent(Action.GO_FORWARD);
+			//System.out.println("Action 11");
 			return action;
 		}
-		//No wall and safe, then go forward 90% of the time
+		//No wall and safe, then go forward.
 		if(safeToProceed && !wallInFrontOf){//go forward if safe
-			if(Math.random() > 0.1)
-				action.setContent(Action.GO_FORWARD);
-			else{
-				System.out.println("being random");
-				action.setContent(Action.TURN_LEFT);
-			}
+			action.setContent(Action.GO_FORWARD);
+			//System.out.println("Action 12");
 			return action;
 		}
 		//Halt in unwinnable situation
-		if(!safeToProceed && goldLocation.isSameAs(1, 1) && !wumpusLocation.isSameAs(1, 1)){
+		if(!safeToProceed && goldLocation.isSameAs(middle) && !wumpusLocation.isSameAs(middle)){
 			action.setContent(Action.END_TRIAL);
+			//System.out.println("Action 13");
 			return action;
 		}
-		//If obstacle in front of
-		if(wallInFrontOf || pitInFrontOf){
-			//If in a wall/pit 'corner'
-			if(wallLeftOf || pitLeftOf){
-				System.out.println("turn right out of corner");
-				action.setContent(Action.TURN_RIGHT);
-			    return action;
-			}
-			if(wallRightOf || pitRightOf){
-				
-				System.out.println("turn left out of corner");
-				action.setContent(Action.TURN_LEFT);
-				return action;
-			}			
-		}
-		//Turn randomly if faced w/ just a pit or wall in front of 
-		if(Math.random() > 0.5){
+		//System.out.println("left right counter" + leftRightCounter);
+		//Turn with periodicity if faced w/ just a pit or wall in front of 
+		if(leftRightCounter % 3 == 0 || leftRightCounter % 5 == 0 || leftRightCounter % 8 == 0 ||
+			leftRightCounter % 16 == 0){
 			action.setContent(Action.TURN_LEFT);
+			//System.out.println("Action 14 go left");
 		}else{
 			action.setContent(Action.TURN_RIGHT);
+			//System.out.println("Action 15 go right ");
 		}
+		leftRightCounter ++;
 		return action;
 	}//method
 
@@ -379,7 +302,6 @@ public class UnusedProceduralMemoryDriver implements ProceduralMemory, Runnable,
 	public boolean getStartingMode() {
 		return inManualMode;
 	}
-
 
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		// TODO Auto-generated method stub
