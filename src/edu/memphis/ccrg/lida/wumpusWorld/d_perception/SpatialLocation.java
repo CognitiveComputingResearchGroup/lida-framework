@@ -91,7 +91,7 @@ public class SpatialLocation implements Node{
 		
 	}
 
-	public double getActivation() {
+	public double getCurrentActivation() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -199,6 +199,11 @@ public class SpatialLocation implements Node{
 
 	public String getIds() {
 		return "loc(" + iLocation + "," + jLocation + ")";
+	}
+
+	public double getActivation() {
+		// TODO Auto-generated method stub
+		return 0;
 	}	
 	
 }

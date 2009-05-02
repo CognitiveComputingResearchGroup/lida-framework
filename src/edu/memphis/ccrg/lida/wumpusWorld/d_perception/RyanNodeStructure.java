@@ -205,7 +205,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	}//method
 	
 	public void addChild(RyanPamNode child, RyanPamNode parent){	
-		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()) + "222222222222222");
+		LinkImpl l = new LinkImpl(child, parent, LinkType.CHILD, (int)(99999*Math.random()) + "222222222222222");
 		linkMap.put(l.getId(), l);
 		
 		if(linkableMap.get(parent).add(l))//Add new link to parent's links
@@ -224,7 +224,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 	}//addChild
 	
 	public void addParent(Node parent, Node child){
-		LinkImpl l = new LinkImpl(child, parent, LinkType.child, (int)(99999*Math.random()) + "");
+		LinkImpl l = new LinkImpl(child, parent, LinkType.CHILD, (int)(99999*Math.random()) + "");
 		linkMap.put(l.getId(), l);
 		
 		if(linkableMap.get(child).add(l))
@@ -609,8 +609,10 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 
 	//**PRINTING
 	public void printNodes() {
-		for(Node n: nodes)
-			System.out.println(n.getLabel() + " current activ. " + n.getActivation());		
+		for(Node n: nodes){
+			RyanPamNode temp = (RyanPamNode)n;
+			System.out.println(n.getLabel() + " current activ. " + temp.getCurrentActivation());
+		}
 	}//method
 	
 	public void printPamNodeActivations() {
