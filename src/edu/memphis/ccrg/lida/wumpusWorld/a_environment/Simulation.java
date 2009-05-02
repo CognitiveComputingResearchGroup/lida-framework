@@ -15,10 +15,10 @@ public class Simulation{
 	private final int MAX_ENTITIES_PER_CELL = 4;//Pit, Wumpus, Gold, Agent	
 	//Previous fields
 	private static final int basicActionPoints = -1;
-	private static final int deathPoints = -100;
+	private static final int deathPoints = -1000;
 	private static final int shootArrowPoints = -10;
-	private static final int getGoldPoints = 100;
-	private static final int detectImpossibilityPoints = 100;
+	private static final int getGoldPoints = 1000;
+	private static final int detectImpossibilityPoints = 1000;
 	private static final int killWumpusPoints = 0;
 	private static final List<Integer> finalScores = new ArrayList<Integer>();
 	
@@ -169,10 +169,10 @@ public class Simulation{
 			agent.goForward();
 			environment.placeAgent(agent);
 			if (environment.checkDeath() == true) {
-				message = "Died but resurrected.";
+				message = "Died but resurrected";
 				currScore += deathPoints;
-				//keepRunning = false;
-				//agent.setIsDead(true);
+//				endTrial();
+//				agent.setIsDead(true);
 			}
 			else
 				currScore += basicActionPoints;
@@ -204,6 +204,7 @@ public class Simulation{
 			
 			if (environment.grabGold() == true) {
 				currScore += getGoldPoints;
+				//
 				endTrial();				
 				//keepRunning = false;
 				message = "Got the Gold";
@@ -246,6 +247,7 @@ public class Simulation{
 			lastAction = Action.NO_OP;
 		}else if(action == Action.END_TRIAL){
 			message = "I can't win, giving up.";
+			//
 			currScore += detectImpossibilityPoints;
 			endTrial();
 			//
@@ -257,16 +259,15 @@ public class Simulation{
 	}//method
 	
 	private void endTrial(){
+		System.out.println(currScore);
 		try{
 			out.write(currScore + "\n");
 		}catch(Exception e){}
-		System.out.println(currScore);
 		finalScores.add(currScore);
 		currScore = 0;
-		trialIsOver = true;
-		//
+		trialIsOver = true;		
 		timer.resumeRunningThreads(); 
-		motherThread.stopThreads();
+		motherThread.stopThreads();		
 	}
 	
 	private String directionalSenseToString(){
