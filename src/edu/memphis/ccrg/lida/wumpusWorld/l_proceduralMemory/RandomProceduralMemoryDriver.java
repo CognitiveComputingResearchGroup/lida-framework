@@ -43,7 +43,7 @@ public class RandomProceduralMemoryDriver implements ProceduralMemory, Runnable,
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean inManualMode = true;
+	private boolean inManualMode = false;
 		
 	public RandomProceduralMemoryDriver(FrameworkTimer timer, WumpusWorld environ) {
 		this.timer = timer;

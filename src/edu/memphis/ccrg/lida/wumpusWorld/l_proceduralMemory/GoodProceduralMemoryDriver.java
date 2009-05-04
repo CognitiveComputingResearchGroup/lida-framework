@@ -43,7 +43,7 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	/**
 	 * Used to paused the action selection.  Its value is changed from GUI click.
 	 */
-	private boolean inManualMode = true;
+	private boolean inManualMode = false;
 	private final int numCoolDownCycles = 2;
 	private int leftRightCounter = 0;
 		
