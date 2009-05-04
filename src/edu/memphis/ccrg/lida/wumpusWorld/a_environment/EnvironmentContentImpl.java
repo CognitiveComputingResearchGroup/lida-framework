@@ -9,18 +9,20 @@ public class EnvironmentContentImpl implements EnvironmentContent {
 	private String senseMatrix;//For GUI
 	private String message = "";
 	private String lastAction = "";
+	private String score = "";
 	
 	public EnvironmentContentImpl(int size){
 		simSense = new char[size][size][4];
 	}
 	
 	public void setContent(Object o, String environment, String senseMatrix, 
-						   String message, String lastAction){
+						   String message, String lastAction, String score){
 		simSense = (char[][][])o;
 		this.environment = environment;
 		this.senseMatrix = senseMatrix;
 		this.message = message;
 		this.lastAction = lastAction;
+		this.score = score;
 	}//method
 	
 	public Object getContent(){
@@ -56,6 +58,10 @@ public class EnvironmentContentImpl implements EnvironmentContent {
 	public void setContent(Object o) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public String getScore() {
+		return score ;
 	}
 
 }//class

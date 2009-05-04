@@ -124,7 +124,7 @@ public class Simulation{
 			
 			senseEnvironment();		
 			simContent.setContent(currentDirectionalSense, environment.getEnvironmentString(), 
-								directionalSenseToString(), message , Action.getActionString(lastAction));			
+								directionalSenseToString(), message , Action.getActionString(lastAction), currScore + "");			
 			
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveSimContent(simContent);
