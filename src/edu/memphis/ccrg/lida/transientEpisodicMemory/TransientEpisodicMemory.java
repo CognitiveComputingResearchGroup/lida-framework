@@ -21,5 +21,10 @@ package edu.memphis.ccrg.lida.transientEpisodicMemory;
  */
 public interface TransientEpisodicMemory extends CueListener{
     
-
+    /**
+     * 
+     * @param cue
+     * @return
+     */
+    public LocalAssociation cue(MemoryCue cue);
 }
