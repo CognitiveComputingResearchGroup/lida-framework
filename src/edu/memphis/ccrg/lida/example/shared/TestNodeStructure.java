@@ -27,13 +27,13 @@ public class TestNodeStructure {
 		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",20L));
 		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",30L));
 		
-		Link l = NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(10L), ns.getNode(20L), LinkType.parent);
+		Link l = NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(10L), ns.getNode(20L), LinkType.PARENT);
 		ns.addLink(l);
 		
-		l=NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(20L), ns.getNode(30L), LinkType.lateral);
+		l=NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(20L), ns.getNode(30L), LinkType.NONE);
 		ns.addLink(l);
 
-		Link l2=NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(20L), ns.getLink("L(20:30:lateral)"), LinkType.lateral);
+		Link l2=NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(20L), ns.getLink("L(20:30:lateral)"), LinkType.NONE);
 		ns.addLink(l2);
 		
 
