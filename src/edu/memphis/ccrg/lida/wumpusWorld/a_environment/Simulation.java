@@ -21,9 +21,11 @@ public class Simulation{
 	private static final int detectImpossibilityPoints = 1000;
 	private static final int killWumpusPoints = 0;
 	private static final List<Integer> finalScores = new ArrayList<Integer>();
+	private static final int MAX_ACTIONS = 100;
 	
 	private boolean nonDeterministic;
 	private int currScore = 0;
+	private int actionCount = 0;
 	//Main fields
 	private Agent agent;
 	private TransferPercept transferPercept;//This is pretty useless
@@ -49,11 +51,10 @@ public class Simulation{
 	private BufferedWriter out = null;
 	private Starter motherThread = null;
 	
-	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet, BufferedWriter out, Starter s){ 		
+	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet, Starter s){ 		
 		this.timer = timer;
 		environment = environ;
 		nonDeterministic = nonDet;
-		this.out = out;
 		motherThread = s;
 		//
 		transferPercept = new TransferPercept(environment);
@@ -67,24 +68,24 @@ public class Simulation{
 					currentDirectionalSense[i][j][k] = '0';		
 	}//Simulation
 
-//	public void setNewEnvironment(Environment wumpusEnvironment) {
-//		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
-//			environment = wumpusEnvironment;
-//			transferPercept = new TransferPercept(environment);
-//			agent = new Agent(environment, transferPercept, nonDeterministic);	
-//			environment.placeAgent(agent);
-//			currScore = 0;
-//			trialIsOver = false;
-//			
-//			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
-//			for(int i = 0; i < currentDirectionalSense.length; i++)
-//				for(int j = 0; j < currentDirectionalSense.length; j++)
-//					for(int k = 0; k < currentDirectionalSense.length; k++)
-//						currentDirectionalSense[i][j][k] = '0';		
-//			message = "";
-//			//System.out.println("\nEnvironment was reset.\n");
-//		}		
-//	}//method
+	public void setNewEnvironment(Environment wumpusEnvironment) {
+		if(timer.threadsArePaused()){//extra precaution to make sure this thread is not active during update
+			environment = wumpusEnvironment;
+			transferPercept = new TransferPercept(environment);
+			agent = new Agent(environment, transferPercept, nonDeterministic);	
+			environment.placeAgent(agent);
+			currScore = 0;
+			trialIsOver = false;
+			
+			currentDirectionalSense = new char[VISION_SIZE][VISION_SIZE][MAX_ENTITIES_PER_CELL];
+			for(int i = 0; i < currentDirectionalSense.length; i++)
+				for(int j = 0; j < currentDirectionalSense.length; j++)
+					for(int k = 0; k < currentDirectionalSense.length; k++)
+						currentDirectionalSense[i][j][k] = '0';		
+			message = "";
+			//System.out.println("\nEnvironment was reset.\n");
+		}		
+	}//method
 
 	public Simulation(FrameworkTimer timer, Environment wumpusEnvironment,
 			boolean nonDeterministicMode) {
@@ -115,8 +116,6 @@ public class Simulation{
 	public void runSim(){				
 		Integer currentAction = new Integer(-1);
 		boolean runOneStep = false;
-		//int stepCounter = 0;
-		//long startTime = System.currentTimeMillis();			
 		while(keepRunning){
 			try{Thread.sleep(50);}catch(Exception e){}			
 			timer.checkForStartPause();//Doesn't return if 'pause' clicked in the gui until another gui click			
@@ -140,13 +139,8 @@ public class Simulation{
 							
 			if(keepRunning == false)			
 				lastAction = Action.END_TRIAL;	
-			//stepCounter++;
-		}//while keepRunning and trials		
-		//long finishTime = System.currentTimeMillis();			
-		//System.out.println("SIM: Ave. cycle time: " + Printer.rnd((finishTime - startTime)/(double)stepCounter));
-		
-		//try{Thread.sleep(100);}catch(Exception e){}
-		//printScores();
+		}//while 	
+
 	}//method runSim
 	
 	private void printScores() {
@@ -161,7 +155,8 @@ public class Simulation{
 		System.out.println("Average score across trials " + average);
 	}
 
-	public void handleAction(int action) {		
+	public void handleAction(int action) {	
+		actionCount++;
 		if (action == Action.GO_FORWARD) {				
 			if (environment.getBump() == true) 
 				environment.setBump(false);
@@ -205,7 +200,7 @@ public class Simulation{
 			if (environment.grabGold() == true) {
 				currScore += getGoldPoints;
 				//
-				endTrial();				
+				//endTrial();				
 				//keepRunning = false;
 				message = "Got the Gold";
 				agent.setHasGold(true);
@@ -248,27 +243,31 @@ public class Simulation{
 		}else if(action == Action.END_TRIAL){
 			message = "I can't win, giving up.";
 			//
-			currScore += detectImpossibilityPoints;
-			endTrial();
+			if(lastAction != Action.NO_OP)
+				currScore += detectImpossibilityPoints;
+			//endTrial();
 			//
 			environment.placeAgent(agent);
 			if (environment.getBump() == true) environment.setBump(false);
 			if (environment.getScream() == true) environment.setScream(false);
 			lastAction = Action.NO_OP;			
 		}
+		
+//		if(actionCount > MAX_ACTIONS)
+//			endTrial();
 	}//method
 	
-	private void endTrial(){
-		System.out.println(currScore);
-		try{
-			out.write(currScore + "\n");
-		}catch(Exception e){}
-		finalScores.add(currScore);
-		currScore = 0;
-		trialIsOver = true;		
-		timer.resumeRunningThreads(); 
-		motherThread.stopThreads();		
-	}
+//	private void endTrial(){
+//		System.out.println(currScore);
+//		try{
+//			out.write(currScore + "\n");
+//		}catch(Exception e){}
+//		finalScores.add(currScore);
+//		currScore = 0;
+//		trialIsOver = true;		
+//		timer.resumeRunningThreads(); 
+//		motherThread.stopThreads();		
+//	}
 	
 	private String directionalSenseToString(){
 		String s = "\n\n";

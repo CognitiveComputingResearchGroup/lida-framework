@@ -30,18 +30,18 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	   	simulation = new Simulation(timer, wumpusEnvironment, nonDeterministicMode); 		
 	}
 
-	//*************************For testing******************
-	public WumpusWorld(FrameworkTimer timer, Environment e, BufferedWriter out, Starter s) {
-	   	simulation = new Simulation(timer, e, nonDeterministicMode, out, s);
-	}//************
+//	//*************************For testing******************
+//	public WumpusWorld(FrameworkTimer timer, Environment e, Starter s) {
+//	   	simulation = new Simulation(timer, e, nonDeterministicMode, s);
+//	}//************
 	
-//	//For environment reset functionality through the GUI
-//	public void getNewEnvironment() {
-//		int seed = new Random().nextInt();
-//		char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldSize, randomAgentLoc, numPits);
-//	    Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
-//		simulation.setNewEnvironment(wumpusEnvironment);
-//	}
+	//For environment reset functionality through the GUI
+	public void getNewEnvironment() {
+		int seed = new Random().nextInt();
+		char[][][] wumpusWorld = generateRandomWumpusWorld(seed, wumpusWorldSize, randomAgentLoc, numPits);
+	    Environment wumpusEnvironment = new Environment(wumpusWorldSize, wumpusWorld);
+		simulation.setNewEnvironment(wumpusEnvironment);
+	}
 	
 	public void addEnvironmentListener(EnvironmentListener listener){
 		simulation.addEnvironmentListener(listener);
