@@ -607,14 +607,7 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 		//TODO: what is the function?
 	}
 
-	//**PRINTING
-	public void printNodes() {
-		for(Node n: nodes){
-			RyanPamNode temp = (RyanPamNode)n;
-			System.out.println(n.getLabel() + " current activ. " + temp.getCurrentActivation());
-		}
-	}//method
-	
+	//**PRINTING	
 	public void printPamNodeActivations() {
 		for(Node n: nodes)
 			((RyanPamNode)n).printActivationString();
