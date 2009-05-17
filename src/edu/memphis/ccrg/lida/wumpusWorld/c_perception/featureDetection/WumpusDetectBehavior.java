@@ -2,9 +2,9 @@ package edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection;
 
 import java.util.Map;
 import java.util.HashMap;
-
+import edu.memphis.ccrg.lida.perception.PamNode;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
-import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 
 public class WumpusDetectBehavior implements DetectBehavior {
@@ -18,10 +18,11 @@ public class WumpusDetectBehavior implements DetectBehavior {
 		this.codeMap = codeMap;
 	}
 
-	public void detectAndExcite(RyanPamNode node, SensoryContentImpl sc){
-		String nodeLabel = node.getLabel();
+	public void detectAndExcite(PamNode pNode, SensoryContent sc){
+		String nodeLabel = pNode.getLabel();
 		Integer posToCheck = codeMap.get(nodeLabel);//an integer 0-3		
 		char[][][] senseData = (char[][][])sc.getContent();
+		RyanPamNode node = (RyanPamNode)pNode;
 		
 		if(posToCheck != null){
 			node.clearAllWWLocations();			//clear old references

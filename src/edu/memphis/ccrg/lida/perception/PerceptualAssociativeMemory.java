@@ -14,6 +14,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
+import edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection.FeatureDetectorImpl;
 
 /**
  * @author Ryan McCall

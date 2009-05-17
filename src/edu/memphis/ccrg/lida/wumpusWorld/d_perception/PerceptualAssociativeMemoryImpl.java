@@ -20,11 +20,14 @@ import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
+import edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection.FeatureDetectorImpl;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
@@ -62,8 +65,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
-    	topDownEffects = new RyanNodeStructure();
-    	percept = new RyanNodeStructure();
+    	topDownEffects = new NodeStructureImpl();
+    	percept = new NodeStructureImpl();
     	//broadcastContent = new BroadcastContent();//TODO: write this class 	
     }
     
@@ -96,10 +99,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	graph.addNodes(nodesToAdd, upscale, selectivity);
     	graph.addLinks(linkSet);    	
     	//graph.printLinkMap();
-    }//public void addToPAM(Set<Node> nodes, Set<Link> links)   
+    }//method
     
     //INTERMODULE COMMUNICATION
-    
     public void addPAMListener(PAMListener pl){
 		pamListeners.add(pl);
 	}
@@ -123,8 +125,15 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){    	
     	SensoryContentImpl sc = (SensoryContentImpl)sensoryContent.getThis();  
-    	for(FeatureDetector d: featureDetectors)
-    		d.detect(sc);  	     
+    	for(FeatureDetector d: featureDetectors){
+    		if(d instanceof FeatureDetectorImpl){
+    			FeatureDetectorImpl temp = (FeatureDetectorImpl)d;
+    			temp.detect(sc);
+    		}else{
+    			System.out.println("In PAMImpl, in sense, didn't get expected type FeatureDetectorImpl");
+    		}
+    	}
+    	//graph.printPamNodeActivations();
     }//method
         
     /**
@@ -160,16 +169,12 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private void syncNodeActivation(){
         RyanNodeStructure newGraph = new RyanNodeStructure();
         Collection<Node> nodes = graph.getNodes();
-        int numNodes = 0;
-        
+
         for(Node n: nodes){
         	PamNodeImpl node = (PamNodeImpl)n;
             node.synchronize();//Needed since excite changes current but not totalActivation.
-            if(node.isRelevant()){//Based on totalActivation
-            	//System.out.println("a nodes is relevant adding to graph: " + node.getLabel());
+            if(node.isRelevant())//Based on totalActivation
             	newGraph.addNode(node);
-            	numNodes++;
-            }//if relevant
         }//for      
         numNodeInPercept = newGraph.getNodes().size();
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 

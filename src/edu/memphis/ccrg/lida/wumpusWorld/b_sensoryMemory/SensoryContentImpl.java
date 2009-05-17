@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 
 public class SensoryContentImpl implements SensoryContent{
 
-	private int worldSize = 4; ///TODO: unhard code this
+	private int worldSize = 4; ///TODO: unhardcode this
 	private char[][][] senseData = new char[worldSize][worldSize][4];
 	
 	public synchronized void setContent(Object o){

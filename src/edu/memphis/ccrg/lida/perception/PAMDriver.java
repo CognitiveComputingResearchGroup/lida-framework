@@ -18,10 +18,7 @@ public class PAMDriver implements Runnable, Stoppable{
 	}//PAMDrive constructor
 		
 	public void run(){
-		//int counter = 0;		
 		//boolean runOneStep = false;
-		
-		//long startTime = System.currentTimeMillis();	
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}						
 			timer.checkForStartPause();//won't return if paused until started again			
@@ -35,11 +32,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		        testGui.receiveGuiContent(FrameworkGui.FROM_PAM, pam.getGuiContent());
 
 			//counter++;
-		}//while keepRunning
-		long finishTime = System.currentTimeMillis();			
-		//System.out.println("PAM: Ave. cycle time: " + 
-		//					Printer.rnd((finishTime - startTime)/(double)counter));
-		//System.out.println("PAM: Num. cycles: " + counter + "\n");	
+		}//while keepRunning	
 	}//method run
 	
 	public void stopRunning(){

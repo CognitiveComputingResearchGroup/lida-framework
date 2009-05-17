@@ -23,12 +23,7 @@ public class FeatureDetectorImpl implements FeatureDetector{
 		pamNode = n.pamNode;
 	}
 
-    public void detect(SensoryContentImpl sc){    	
-    	if(sc.equals(null)){
-    		Printer.p("Tried to detect null SensoryContent");
-    		return;
-    	}
-    	
+    public void detect(SensoryContent sc){ 
     	detectBehav.detectAndExcite(pamNode, sc);
     }    
 
@@ -38,9 +33,5 @@ public class FeatureDetectorImpl implements FeatureDetector{
 	
 	public PamNodeImpl getNode(){return pamNode;}
 
-	public void detect(SensoryContent sm) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

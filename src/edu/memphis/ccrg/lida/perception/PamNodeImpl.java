@@ -32,9 +32,14 @@ public class PamNodeImpl implements PamNode{
 	protected int type;
 	protected ExciteBehavior exciteBehavior;
 	protected DecayBehavior decayBehav;
+	private int layerDepth = 0;
 
 	public PamNodeImpl() {
 		super();
+	}
+
+	public PamNodeImpl(PamNodeImpl pamNodeImpl) {
+		//super(pamNodeImpl);
 	}
 
 	/**
@@ -67,7 +72,7 @@ public class PamNodeImpl implements PamNode{
 	 * @param   excitation the value to be added to the current activation of
 	 *          this node
 	 */
-	public void excite(double excitation) { 	   	
+	public void excite(double excitation){
 	    currentActivation = exciteBehavior.excite(currentActivation, excitation);
 	}
 
@@ -232,8 +237,7 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public Node copy() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PamNodeImpl(this);
 	}
 
 	public DecayBehavior getDecayBehavior() {
@@ -272,13 +276,11 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public int getLayerDepth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return layerDepth ;
 	}
 
 	public void setLayerDepth(int d) {
-		// TODO Auto-generated method stub
-		
+		layerDepth = d;
 	}
 
 }

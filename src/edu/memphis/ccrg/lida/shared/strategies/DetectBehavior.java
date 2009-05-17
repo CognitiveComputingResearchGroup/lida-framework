@@ -1,12 +1,11 @@
 package edu.memphis.ccrg.lida.shared.strategies;
 
-import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
+import edu.memphis.ccrg.lida.perception.PamNode;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 
 public interface DetectBehavior {
 
-	void detectAndExcite(RyanPamNode node, SensoryContentImpl sc);
-	
+	void detectAndExcite(PamNode node, SensoryContent sc);	
 	void setDetectThreshold(double d);
 	void setExcitationAmount(double d);
 

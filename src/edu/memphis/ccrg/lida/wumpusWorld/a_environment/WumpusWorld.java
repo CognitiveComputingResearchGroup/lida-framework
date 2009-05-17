@@ -13,8 +13,8 @@ public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener
 	
 	private Simulation simulation;
 	//WW parameters
-	private final int wumpusWorldSize = 4;
-	private final double pitPercentage = 0.25;
+	private final int wumpusWorldSize = 5;
+	private final double pitPercentage = 0.45;
 	private boolean randomAgentLoc = true;
 	private boolean nonDeterministicMode = false;
 	//
