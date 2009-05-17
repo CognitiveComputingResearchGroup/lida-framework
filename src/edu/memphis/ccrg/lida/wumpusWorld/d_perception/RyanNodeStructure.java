@@ -536,19 +536,21 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 		return linkMap.values();
 	}
 	
-	public Map<LinkType, Set<Link>> getLinksByType(){
-		Map<LinkType, Set<Link>> map = new HashMap<LinkType, Set<Link>>();
-		Collection<Link> tempLinks = getLinks();
-		for(Link l: tempLinks){
-			LinkType t = l.getType();
-			Set<Link> linksAlreadyThere = map.get(t);
-			if(linksAlreadyThere == null){
-				linksAlreadyThere = new HashSet<Link>();
-				map.put(t, linksAlreadyThere);
-			}
-			linksAlreadyThere.add(l);
-		}//for
-		return map;
+	//TODO:
+	/**
+	 * Just a little change, can the method return 
+	 * a Set<Link> and you pass to the method the LinkType 
+	 * that you want? I think this is more standard and the 
+	 * search is done by the class and not outside it. You can 
+	 * return an unmodifiable Set in this case.
+	 */
+	public Set<Link> getLinksByType(LinkType type){
+		Set<Link> result = new HashSet<Link>();
+		Collection<Link> allLinks = getLinks();
+		for(Link l: allLinks)
+			if(l.getType() == type)
+				result.add(l);
+		return Collections.unmodifiableSet(result);
 	}//
 	
 	/**
