@@ -8,10 +8,18 @@
 
 package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+
 /**
  *
- * @author Rodrigo Silva L.
+ * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public interface MemoryCue {
+
+    /**
+     *
+     * @return
+     */
+    public NodeStructure getNodeStructure();
 
 }

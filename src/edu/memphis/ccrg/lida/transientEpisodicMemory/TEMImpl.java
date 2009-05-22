@@ -8,7 +8,7 @@
 
 package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 /**
  *
@@ -18,18 +18,19 @@ public class TEMImpl implements TransientEpisodicMemory{
 
     /**
      * 
-     * @param cue
+     * @param bc
      */
-	public void receiveCue(WorkspaceContent cue) {
-		// TODO Auto-generated method stub
+    public void receiveBroadcast(BroadcastContent bc) {
+        //TODO: logic for episodic learning goes here...
     }
-    
+
     /**
      * 
      * @param cue
      * @return
      */
     public LocalAssociation cue(MemoryCue cue){
+        //TODO: logic for cueing SDM goes here...
         return new LocalAssociationImpl();
     }
 

@@ -8,10 +8,47 @@
 
 package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
+import edu.memphis.ccrg.lida.shared.NodeImpl;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+
 /**
  *
  * @author Rodrigo Silva L.
  */
 public class LocalAssociationImpl implements LocalAssociation {
 
+    private NodeStructureImpl nodeStructure;
+
+    /**
+     *
+     */
+    public LocalAssociationImpl() {
+        nodeStructure = new NodeStructureImpl();
+    }
+
+    /**
+     *
+     * @param node
+     */
+    void addNode(NodeImpl node) {
+        nodeStructure.addNode(node);
+    }
+
+    /**
+     * 
+     * @param link
+     */
+    void addLink(LinkImpl link) {
+        nodeStructure.addLink(link);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public NodeStructure getNodeStructure() {
+        return nodeStructure;
+    }
 }
