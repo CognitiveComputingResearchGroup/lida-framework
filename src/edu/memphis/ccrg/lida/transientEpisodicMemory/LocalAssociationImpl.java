@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
 /**
  *
- * @author Rodrigo Silva <Expression email is undefined on line 12, column 23 in Templates/Classes/Class.java.>
+ * @author Rodrigo Silva L.
  */
 public class LocalAssociationImpl implements LocalAssociation {
 

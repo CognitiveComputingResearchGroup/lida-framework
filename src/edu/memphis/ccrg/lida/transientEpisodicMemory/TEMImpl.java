@@ -10,6 +10,10 @@ package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
+/**
+ *
+ * @author Rodrigo Silva L.
+ */
 public class TEMImpl implements TransientEpisodicMemory{
 
     /**
