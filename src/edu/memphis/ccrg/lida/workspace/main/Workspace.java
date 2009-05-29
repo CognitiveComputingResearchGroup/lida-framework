@@ -4,6 +4,7 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesired
 
 public interface Workspace{
 	
+	//REMOVE THESE
 	public static final int PBUFFER = 0;
 	public static final int EBUFFER = 1;
 	public static final int PBROADS = 2;
