@@ -74,19 +74,21 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		for(WorkspaceListener l: listeners)
 			l.receiveWorkspaceContent(content);
 	}
-	//Workspace submodules broadcast to workspace which relays the broadcast
+	//Workspace submodules send their output to the Workspace 
+	//which relays the content to appropriate places
+	
+	//The Three buffers send their content to codelets for context-sensitive
+	//codelet activation. 
 	public void receivePBufferContent(WorkspaceContent w){
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);		
 	}
-
 	public void receivePrevBroadcastContent(WorkspaceContent w) {
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);			
 	}
-
 	public void receiveEBufferContent(WorkspaceContent w) {
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);			
 	}
-
+	//For local association type output
 	public void receiveCSMContent(WorkspaceContent content) {
 		sendWorkspaceContent(content);		
 	}
