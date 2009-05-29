@@ -120,6 +120,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	/**
 	 * for codelets to access the buffers
 	 */
+	//TODO: CODELETS ASK FOR REFERENCES TO THE BUFFERS
 	public WorkspaceContent getCodeletDesiredContent(int moduleID, CodeletsDesiredContent soughtContent) {
 		if(moduleID == Workspace.CSM){
 			return csm.getCodeletsObjective(soughtContent);

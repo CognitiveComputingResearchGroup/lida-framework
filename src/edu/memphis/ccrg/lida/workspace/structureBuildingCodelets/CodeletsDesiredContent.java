@@ -8,6 +8,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 public class CodeletsDesiredContent {
 	
 	Map<Long, Node> nodeObjectives;
+	//TODO: Use NodeStructure
 	
 	public CodeletsDesiredContent(){
 		nodeObjectives = new HashMap<Long, Node>();

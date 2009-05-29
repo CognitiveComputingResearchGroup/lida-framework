@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 public interface StructureBuildingCodelet {
+	
+	//TODO: extend Activatible
 
 	public abstract void setActivation(double a);
 
