@@ -52,7 +52,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//These listeners listen to the Workspace
 	private List<WorkspaceListener> listeners = new ArrayList<WorkspaceListener>();
 	private WorkspaceListener sbCodeletWorkspaceListener;
-	//private WorkspaceContent content;
 	
 	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, PreviousBroadcasts pbroads, CurrentSituationalModel csm, 
 						TransientEpisodicMemory tem, DeclarativeMemory dm, PerceptualAssociativeMemory pam){
@@ -60,17 +59,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		episodicBuffer = eb;
 		prevBroads = pbroads;
 		this.csm = csm;	
-		
-		//TODO: Either each component has a reference to the workspace and
-		//      calls the workspace to do output _OR_
-		// Each component sends the output itself (e.g. episodic buffer sends to PAM; CSM sends to TEM and DM)
-		// 
-		 
-//		pb.addWorkspaceObjectReference(this);
-//		eb.addWorkspaceObjectReference(this);
-//		pbroads.addWorkspaceObjectReference(this);
-//		csm.addWorkspaceObjectReference(this);		
-	}//constructor
+	}
 	
 	//****Output from the Workspace to other modules
 	public void addWorkspaceListener(WorkspaceListener listener) {
@@ -85,7 +74,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		for(WorkspaceListener l: listeners)
 			l.receiveWorkspaceContent(content);
 	}
-	
+	//Workspace submodules broadcast to workspace which relays the broadcast
 	public void receivePBufferContent(WorkspaceContent w){
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);		
 	}
