@@ -4,16 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.perception.PamNode;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class CodeletActivatingContext {	
-	private Set<PamNode> nodeContext = new HashSet<PamNode>();
+public class CodeletActivatingContextImpl {	
+	private NodeStructure nodeContext = new NodeStructureImpl();
 	
-	public CodeletActivatingContext(){
+	public CodeletActivatingContextImpl(){
 		//Not all codelets will have contexts!
 	}
 	
-	public CodeletActivatingContext(Set<PamNode> nodes){
-		nodeContext = nodes;
+	public CodeletActivatingContextImpl(NodeStructure ns){
+		nodeContext = ns;
 	}
 	
 	/**
@@ -24,13 +26,11 @@ public class CodeletActivatingContext {
 	 * @return the proportion of the context
 	 * that appears in whatIsPresent
 	 */
-	public double matchContext(Set<PamNode> whatIsPresent){
+	public double matchContext(NodeStructure whatIsPresent){
 		int numMatches = 0;		
-		for(PamNode n: nodeContext)
-			if(whatIsPresent.contains(n))
-				numMatches++;		
+		//TODO: Implement	
 		
-		return numMatches / nodeContext.size();
+		return 0.0;
 	}//matchContext	
 	
 }//class Context

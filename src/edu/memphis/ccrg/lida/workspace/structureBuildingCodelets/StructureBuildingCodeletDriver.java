@@ -31,7 +31,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 	private Workspace workspace;
 	private WorkspaceContent workspaceContent;
 	
-	private Map<CodeletActivatingContext, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContext, StructureBuildingCodelet>();//TODO: equals, hashCode
+	private Map<CodeletActivatingContextImpl, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContextImpl, StructureBuildingCodelet>();//TODO: equals, hashCode
 
 	private final double defaultCodeletActivation = 1.0;		
 	private List<Thread> codeletThreads = new ArrayList<Thread>();

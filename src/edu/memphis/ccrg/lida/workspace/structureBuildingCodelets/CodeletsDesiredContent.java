@@ -1,29 +1,32 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
+/**
+ * This class defines what a codelet seeks as a being a NodeStructure
+ * 
+ */
 public class CodeletsDesiredContent {
 	
-	Map<Long, Node> nodeObjectives;
-	//TODO: Use NodeStructure
+	private NodeStructure nodeObjectives;
 	
 	public CodeletsDesiredContent(){
-		nodeObjectives = new HashMap<Long, Node>();
+		nodeObjectives = new NodeStructureImpl();
 	}
 	
-	public CodeletsDesiredContent(Map<Long, Node> nodeObjs){
+	public CodeletsDesiredContent(NodeStructure nodeObjs){
 		nodeObjectives = nodeObjs;
 	}
 
-	public Map<Long, Node> getNodeObjectives() {
+	public NodeStructure getNodeObjectives() {
 		return nodeObjectives;
 	}
 
 	public boolean hasNodeObjective(Node n) {
-		return nodeObjectives.containsKey(n.getId());
+		System.out.println("test hasNodeObjective method !!");
+		return nodeObjectives.getNode(n.getId()) == null;
 	}
 
 }

@@ -2,6 +2,9 @@ package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
 import java.util.Map;
 import java.util.HashMap;
+
+import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
@@ -104,6 +107,36 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 
 	public void stopRunning() {
 		keepRunning = false;		
+	}
+
+	public void decay() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void excite(double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public DecayBehavior getDecayBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ExciteBehavior getExciteBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setDecayBehavior(DecayBehavior c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setExciteBehavior(ExciteBehavior behavior) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class SBCodelet
