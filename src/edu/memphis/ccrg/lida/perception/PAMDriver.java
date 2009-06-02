@@ -52,9 +52,4 @@ public class PAMDriver implements Runnable, Stoppable{
 		this.testGui = testGui;		
 	}
 
-	public void waitForFinish() {
-		while(keepRunning)
-			try{Thread.sleep(100);}catch(Exception e){}		
-	}
-	
 }//class PAMDriver
