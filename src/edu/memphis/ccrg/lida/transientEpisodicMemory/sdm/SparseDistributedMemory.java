@@ -49,6 +49,7 @@ public class SparseDistributedMemory {
 
         //Memory's state and operation
         address = new byte[a[0].length];
+        addressSize = address.length;
         similarityVector = new int[memorySize];
         activationVector = new byte[memorySize];
         wordSize = u;
@@ -134,13 +135,15 @@ public class SparseDistributedMemory {
      * @return
      */
     private int[][] getNewContents(int[][] contents, int[][] oldCounters) {
-        //FIXME: add counter ranges
         int r = contents.length;
         int c = contents[0].length;
         int[][] newCounters = new int[r][c];
         for (int i = 0; i != r; i++) {
             for (int j = 0; j != c; j++) {
-                newCounters[i][j] = contents[i][j] + oldCounters[i][j];
+                if (contents[i][j] > counterRange[0]
+                    && contents[i][j] < counterRange[1]) {
+                    newCounters[i][j] = contents[i][j] + oldCounters[i][j];
+                }
             }
         }
         return newCounters;
