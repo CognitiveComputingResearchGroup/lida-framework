@@ -17,7 +17,7 @@ public class FrameworkTimer {
 	 */
 	private int msUntilICheckForUnpause = 100;
 	/**
-	 * Threads calling the member function 'getSleepTime' will sleep for this many ms.
+	 * Threads calling the member function getSleepTime() will sleep for this many ms.
 	 */
 	private int threadSleepTime = 150; 
 	/**
