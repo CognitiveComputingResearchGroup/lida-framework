@@ -9,12 +9,13 @@
 package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  *
  * @author Rodrigo Silva L.
  */
-public class TEMImpl implements TransientEpisodicMemory{
+public class TEMImpl implements TransientEpisodicMemory, CueListener{
 
     /**
      * 
@@ -33,5 +34,10 @@ public class TEMImpl implements TransientEpisodicMemory{
         //TODO: logic for cueing SDM goes here...
         return new LocalAssociationImpl();
     }
+
+	public void receiveCue(WorkspaceContent cue) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

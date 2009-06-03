@@ -1,8 +1,8 @@
-package edu.memphis.ccrg.lida.workspace.previousBroadcasts;
+package edu.memphis.ccrg.lida.workspace.BroadcastBuffer;
 
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
-public interface PreviousBroadcastsListener {
+public interface BroadcastBufferListener {
 	
 	public void receivePrevBroadcastContent(WorkspaceContent c);
 

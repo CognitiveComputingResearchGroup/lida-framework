@@ -5,16 +5,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.gui.FrameworkGui;
-import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Starter;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.SpatialLinkCodeletAction;
@@ -25,19 +23,17 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 	//Basics
 	private boolean keepRunning = true;
 	private FrameworkTimer timer;	
-	private long threadID;
 	private FrameworkGui testGui;
 	
-	private Workspace workspace;
+	private WorkspaceImpl workspace;
 	private WorkspaceContent workspaceContent;
-	
 	private Map<CodeletActivatingContextImpl, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContextImpl, StructureBuildingCodelet>();//TODO: equals, hashCode
 
 	private final double defaultCodeletActivation = 1.0;		
 	private List<Thread> codeletThreads = new ArrayList<Thread>();
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
 	
-	public StructureBuildingCodeletDriver(FrameworkTimer timer, Workspace w){
+	public StructureBuildingCodeletDriver(FrameworkTimer timer, WorkspaceImpl w){
 		this.timer = timer;
 		workspace = w;	
 	}//method
@@ -51,39 +47,37 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 	}//method
 
 	public void run(){
-
 		boolean usesPBuffer = true, usesEBuffer = false, usesPBroads = false;
 		//TODO: Abstract this out of this class
 		CodeletsDesiredContent objective = new CodeletsDesiredContent();
 		CodeletAction actions = new SpatialLinkCodeletAction();		
 		spawnNewCodelet(workspace, usesPBuffer, usesEBuffer, usesPBroads, defaultCodeletActivation, objective, actions);
 		
-		//int counter = 0;		
-		//long startTime = System.currentTimeMillis();		
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());
 			}catch(Exception e){}//TODO: if PBUFFER Content is changed wake up
 			timer.checkForStartPause();
 			//if BufferContent activates a sbCodelet's context start a new codelet
-			getWorkspaceContent();
-		
-			//counter++;			
-		}//while keepRunning
-		//long finishTime = System.currentTimeMillis();				
-		//System.out.println("SBC: Ave. cycle time: " + 
-		//					Printer.rnd((finishTime - startTime)/(double)counter));
-		//System.out.println("CODE: Num. cycles: " + counter);		
+			getWorkspaceContent();		
+		}//while	
 	}//method
 
 	private void spawnNewCodelet(Workspace w, boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads, 
 								 double startingActivation, CodeletsDesiredContent context, CodeletAction actions){
 		//TODO: Abstract this out of this class
-		StructureBuildingCodelet newCodelet = new StructureBuildingCodeletImpl(timer, workspace, 
-																			   usesPBuffer, usesEBuffer, usesPBroads, 
-																			   defaultCodeletActivation, context, actions);
+		List<CodeletReadable> buffers = new ArrayList<CodeletReadable>();
+		buffers.add(workspace.getCSM());
+		if(usesPBuffer)
+			buffers.add(workspace.getPerceptualBuffer());
+		if(usesEBuffer)
+			buffers.add(workspace.getEpisodicBuffer());
+		if(usesPBroads)
+			buffers.add(workspace.getBroadcastBuffer());
+		
+		StructureBuildingCodelet newCodelet = new StructureBuildingCodeletImpl(timer, buffers, 
+												    defaultCodeletActivation, context, actions);
 		long threadNumber = codeletThreads.size() + 1;
 		Thread codeletThread = new Thread((Runnable)newCodelet, "CODELET: " + threadNumber);
-		((Stoppable) newCodelet).setThreadID(codeletThread.getId());
 		codeletThreads.add(codeletThread);   
 		codelets.add((Stoppable) newCodelet);	
 		codeletThread.start();	
@@ -91,7 +85,6 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 
 	private void getWorkspaceContent() {
 		NodeStructure struct = (NodeStructure)workspaceContent;
-		
 		if(struct != null){
 			Collection<Node> nodes = struct.getNodes();
 			for(Node n: nodes){
@@ -103,21 +96,12 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 			guiContent.add(struct.getLinks().size());			
 			testGui.receiveGuiContent(FrameworkGui.FROM_SB_CODELETS, guiContent);
 		}//if not null
-
 	}//method
 
 	public void stopRunning(){
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method
-	
-	public void setThreadID(long id){
-		threadID = id;
-	}//
-	
-	public long getThreadID() {
-		return threadID;
-	}//
 
 	public int getThreadCount() {
 		return codeletThreads.size();
@@ -133,4 +117,4 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 		}//for	
 	}//method
 
-}//public class SBCodeletsDriver 
+}//class

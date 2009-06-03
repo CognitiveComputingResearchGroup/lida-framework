@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.previousBroadcasts;
+package edu.memphis.ccrg.lida.workspace.BroadcastBuffer;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.util.Stoppable;
@@ -6,12 +6,12 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
-public class PreviousBroadcastsImpl implements Runnable, Stoppable, 
-									PreviousBroadcasts, CodeletReadable{
+public class BroadcastBufferImpl implements Runnable, Stoppable, 
+									BroadcastBuffer, CodeletReadable{
 	
 	private boolean keepRunning = true;
 	
-	public PreviousBroadcastsImpl(){
+	public BroadcastBufferImpl(){
 		
 	}
 	
@@ -26,7 +26,7 @@ public class PreviousBroadcastsImpl implements Runnable, Stoppable,
 		keepRunning = false;
 	}
 
-	public void addPBroadsListener(PreviousBroadcastsListener l) {
+	public void addPBroadsListener(BroadcastBufferListener l) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -36,7 +36,7 @@ public class PreviousBroadcastsImpl implements Runnable, Stoppable,
 		
 	}
 
-	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
+	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

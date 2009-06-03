@@ -1,28 +1,27 @@
-package edu.memphis.ccrg.lida.workspace.episodicBuffer;
+package edu.memphis.ccrg.lida.workspace.BroadcastBuffer;
 
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
-public class EpisodicBufferDriver implements Runnable, Stoppable{
+public class BroadcastBufferDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
-	private EpisodicBufferImpl eb;
+	private BroadcastBufferImpl pbroads;
 	private FrameworkTimer timer;
 	
-	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer){
-		this.eb = eb;
+	public BroadcastBufferDriver(BroadcastBufferImpl p, FrameworkTimer timer){
+		pbroads = p;
 		this.timer = timer;
-	}
+	}//
 
 	public void run(){
 		while(keepRunning){
 			timer.checkForStartPause();
-			
 		}//while keepRunning		
-	}//public void run()
+	}//method
 
 	public void stopRunning(){
 		keepRunning = false;		
 	}//method
 	
-}
+}//class

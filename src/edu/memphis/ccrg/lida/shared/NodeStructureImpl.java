@@ -55,6 +55,10 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 		this.defaultLink = defaultLink;
 	}
 
+	public NodeStructureImpl(NodeStructure struct) {
+		// TODO Auto-generated constructor stub
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

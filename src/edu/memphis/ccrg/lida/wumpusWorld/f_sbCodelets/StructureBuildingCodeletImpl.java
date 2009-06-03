@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -10,6 +12,7 @@ import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
 
@@ -25,49 +28,27 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	private CodeletsDesiredContent soughtContent = null;
 	private CodeletAction action = new SpatialLinkCodeletAction();
 	
-	private Map<Integer, Boolean> buffersIuse = new HashMap<Integer, Boolean>();
+	private List<CodeletReadable> buffersIuse = new ArrayList<CodeletReadable>();
 			
-	public StructureBuildingCodeletImpl(FrameworkTimer t, Workspace workspace, 
-										boolean usesPBuffer, boolean usesEBuffer, boolean usesPBroads, 
+	public StructureBuildingCodeletImpl(FrameworkTimer t, List<CodeletReadable> buffers, 
 										double activation, CodeletsDesiredContent obj, CodeletAction a){
-		
-		if(!usesPBuffer && !usesEBuffer && !usesPBroads){
-			try{
-				throw new Exception();
-			}catch (Exception e){
-				System.out.println("Codelet needs at least one source buffer");
-				e.printStackTrace();
-			}
-		}else{
-			timer = t;
-			this.workspace = workspace;
-			this.activation = activation;
-			soughtContent = obj;
-			action = a;
-			
-			if(usesPBuffer){
-				buffersIuse.put(Workspace.PBUFFER, true);
-			}else if(usesEBuffer){
-				buffersIuse.put(Workspace.EBUFFER, true);
-			}else if(usesPBroads){
-				buffersIuse.put(Workspace.PBROADS, true);			
-			}			
-		}//else
-			
+		timer = t;
+		this.activation = activation;
+		soughtContent = obj;
+		action = a;
 	}//constructor
 	
 	public void run(){
 		while(keepRunning){
 			try{Thread.sleep(100);}catch(Exception e){}
 			timer.checkForStartPause();
-			for(Integer i: buffersIuse.keySet())
-				if(buffersIuse.get(i))
-					checkAndWorkOnBuffer(i);		
+			for(CodeletReadable buffer: buffersIuse)
+				checkAndWorkOnBuffer(buffer);		
 		}//while		
 	}//run
 	
-	private void checkAndWorkOnBuffer(int i){		
-		WorkspaceContent bufferContent = workspace.getCodeletDesiredContent(i, soughtContent);
+	private void checkAndWorkOnBuffer(CodeletReadable buffer){		
+		WorkspaceContent bufferContent = buffer.getCodeletsDesiredContent(soughtContent);
 		
 		if(bufferContent != null){
 			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);			

@@ -23,7 +23,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 		listeners.add(listener);		
 	}
 
-	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
+	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -14,6 +14,7 @@ import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
@@ -29,7 +30,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
  * 
  * @author ryanjmccall
  */
-public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, BroadcastListener, WorkspaceListener{
+public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, BroadcastListener, CueListener{
 
 	//FIELDS
 	private FrameworkTimer timer;
@@ -62,11 +63,10 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	 */
 	public void run() {
 		int coolDown = 0;
-		//int counter = 0;		
-		//boolean runOneStep = false;		
+	
 		try{Thread.sleep(800);}catch(Exception e){}		
 		ActionContentImpl behaviorContent = new ActionContentImpl();
-		//long startTime = System.currentTimeMillis();
+
 		while(keepRunning){
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
@@ -82,19 +82,15 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 				coolDown = numCoolDownCycles;
 			}else
 				coolDown--;	
-			//counter++;
+
 		}//while	
-		//long finishTime = System.currentTimeMillis();				
-		////System.out.println("Proc: Ave cycle time: " + 
-		//					Printer.rnd((finishTime - startTime)/(double)counter));
-		
 	}//method
 	
 	/**
 	 * Observer pattern receive method
 	 */
-	public void receiveWorkspaceContent(WorkspaceContent content) {
-		workspaceStructure = (NodeStructure)content;		
+	public void receiveCue(WorkspaceContent cue) {
+		workspaceStructure = (NodeStructure)cue;
 	}
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -238,14 +234,6 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 		}
 	}//method
 
-	public long getThreadID(){
-		return threadID;
-	}
-
-	public void setThreadID(long id) {
-		threadID = id;		
-	}
-
 	public void stopRunning() {
 		keepRunning = false;		
 	}
@@ -261,6 +249,7 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	public boolean getStartingMode() {
 		return inManualMode;
 	}
+
 
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		// TODO Auto-generated method stub

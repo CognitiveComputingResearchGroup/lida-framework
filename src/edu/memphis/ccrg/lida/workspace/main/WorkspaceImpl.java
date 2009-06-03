@@ -2,35 +2,34 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemory;
+import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryListener;
+import edu.memphis.ccrg.lida.workspace.BroadcastBuffer.BroadcastBuffer;
+import edu.memphis.ccrg.lida.workspace.BroadcastBuffer.BroadcastBufferListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
-import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcasts;
-import edu.memphis.ccrg.lida.workspace.previousBroadcasts.PreviousBroadcastsListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodeletDriver;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
 /**
  * 
  * TODO: Not yet tested.
  * 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class WorkspaceImpl implements Workspace, PAMListener, 
@@ -39,61 +38,74 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 									  BroadcastListener, 
 									  ActionSelectionListener, 
 									  PerceptualBufferListener,
-									  PreviousBroadcastsListener,
+									  BroadcastBufferListener,
 									  EpisodicBufferListener, 
 									  CSMListener{
 	
 	//Workspace contains these components
 	private PerceptualBuffer perceptualBuffer;
 	private EpisodicBuffer episodicBuffer;
-	private PreviousBroadcasts prevBroads;
+	private BroadcastBuffer broadcastBuffer;
 	private CurrentSituationalModel csm;
 	
 	//These listeners listen to the Workspace
-	private List<WorkspaceListener> listeners = new ArrayList<WorkspaceListener>();
+	private List<CueListener> cueListeners = new ArrayList<CueListener>();
+	private WorkspaceListener pamWorkspaceListener;
 	private WorkspaceListener sbCodeletWorkspaceListener;
 	
-	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, PreviousBroadcasts pbroads, CurrentSituationalModel csm, 
-						TransientEpisodicMemory tem, DeclarativeMemory dm, PerceptualAssociativeMemory pam){
+	
+	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastBuffer pbroads, CurrentSituationalModel csm, 
+						PerceptualAssociativeMemory pam, StructureBuildingCodeletDriver sbCodeletDriver){
 		perceptualBuffer = pb;
 		episodicBuffer = eb;
-		prevBroads = pbroads;
+		broadcastBuffer = pbroads;
 		this.csm = csm;	
-	}
+		
+		pamWorkspaceListener = pam;
+		sbCodeletWorkspaceListener = sbCodeletDriver;
+	}//
 	
 	//****Output from the Workspace to other modules
-	public void addWorkspaceListener(WorkspaceListener listener) {
-		listeners.add(listener);		
+	public void addCueListener(CueListener l){
+		cueListeners.add(l);
 	}
 	
-	public void addCodeletWorkspaceListener(WorkspaceListener listener){
-		sbCodeletWorkspaceListener = listener;
+	public void cue(WorkspaceContent content){
+		for(CueListener c: cueListeners)
+			c.receiveCue(content);
 	}
 	
-	public void sendWorkspaceContent(WorkspaceContent content){
-		for(WorkspaceListener l: listeners)
-			l.receiveWorkspaceContent(content);
+	public void sendContentToPAM(WorkspaceContent content){
+		pamWorkspaceListener.receiveWorkspaceContent(content);
 	}
-	//Workspace submodules send their output to the Workspace 
-	//which relays the content to appropriate places
 	
-	//The Three buffers send their content to codelets for context-sensitive
-	//codelet activation. 
-	public void receivePBufferContent(WorkspaceContent w){
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);		
+	//WorkspaceImpl listens to its submodules and forwards the content 
+	// that they send to WorkspaceImpl to the appropriate modules outside the workspace.
+	//
+	//1. Contents from the 3 buffers is sent to the sb codelet driver for context-sensitive
+	//    codelet activation. 
+	//2. Contents from perceptual & episodic buffers as well as the csm cues the episodic memories
+	//3. Episodic memories are sent to PAM for top-down PAM activation
+	//TODO May want to also activate PAM based on new representations created by codelets
+	//that get produced and put in the CSM
+	public void receivePBufferContent(WorkspaceContent content){
+		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);	
+		cue(content);
 	}
-	public void receivePrevBroadcastContent(WorkspaceContent w) {
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);			
+	public void receivePrevBroadcastContent(WorkspaceContent content) {
+		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);			
 	}
-	public void receiveEBufferContent(WorkspaceContent w) {
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(w);			
+	public void receiveEBufferContent(WorkspaceContent content) {
+		pamWorkspaceListener.receiveWorkspaceContent(content);
+		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);		
+		cue(content);
 	}
-	//For local association type output
 	public void receiveCSMContent(WorkspaceContent content) {
-		sendWorkspaceContent(content);		
+		cue(content);		
 	}
 
-	//****Input into the Workspace from other Modules
+	//****Input into the Workspace from other Modules is sent to the appropriate
+	//submodules
 	public void receivePAMContent(WorkspaceContent pc) {
 		perceptualBuffer.receivePAMContent(pc);		
 	}
@@ -104,7 +116,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		episodicBuffer.receivenDMContent(association);		
 	}
 	public void receiveBroadcast(BroadcastContent bc) {
-		prevBroads.receiveBroadcast(bc);		
+		broadcastBuffer.receiveBroadcast(bc);		
 	}
 	public void receiveBehaviorContent(ActionContent c) {
 		// TODO: Implementing this is a long way off as of (3.30.09)		
@@ -120,18 +132,17 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	/**
 	 * for codelets to access the buffers
 	 */
-	//TODO: CODELETS ASK FOR REFERENCES TO THE BUFFERS
-	public WorkspaceContent getCodeletDesiredContent(int moduleID, CodeletsDesiredContent soughtContent) {
-		if(moduleID == Workspace.CSM){
-			return csm.getCodeletsObjective(soughtContent);
-		}else if(moduleID == Workspace.PBUFFER){
-			return perceptualBuffer.getCodeletsObjective(soughtContent);
-		}else if(moduleID == Workspace.EBUFFER){
-			return episodicBuffer.getCodeletsObjective(soughtContent);
-		}else if(moduleID == Workspace.PBROADS){
-			return prevBroads.getCodeletsObjective(soughtContent);
-		}
-		return new RyanNodeStructure();
-	}//method
+	public CurrentSituationalModel getCSM() {
+		return csm;
+	}
+	public PerceptualBuffer getPerceptualBuffer(){
+		return perceptualBuffer;
+	}
+	public EpisodicBuffer getEpisodicBuffer(){
+		return episodicBuffer;
+	}
+	public BroadcastBuffer getBroadcastBuffer(){
+		return broadcastBuffer;
+	}
 	
 }//class

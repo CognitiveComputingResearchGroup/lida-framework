@@ -1,21 +1,20 @@
-package edu.memphis.ccrg.lida.wumpusWorld.i_csm;
+package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
-public class CurrentSituationalModelImpl implements CurrentSituationalModel{
+public class CurrentSituationalModelImpl implements CurrentSituationalModel, CodeletReadable{
 	
-	private RyanNodeStructure struct = new RyanNodeStructure();
+	private NodeStructureImpl struct = new NodeStructureImpl();
 	private List<CSMListener> csmListeners = new ArrayList<CSMListener>();
 	
 	public CurrentSituationalModelImpl(){
-		struct = new RyanNodeStructure();
+		struct = new NodeStructureImpl();
 	}
 	
 	public void addCSMListener(CSMListener l){
@@ -28,7 +27,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	}//method
 	
 	public synchronized void addWorkspaceContent(WorkspaceContent content) {
-		struct = (RyanNodeStructure)content;		
+		struct = (NodeStructureImpl)content;	
+		//TODO Don't just overwrite the previous contents?
 	}//method
 
 	public boolean hasContent(NodeStructure whatIwant) {
@@ -40,7 +40,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 		return struct;
 	}
 
-	public WorkspaceContent getCodeletsObjective(CodeletsDesiredContent objective) {
+	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

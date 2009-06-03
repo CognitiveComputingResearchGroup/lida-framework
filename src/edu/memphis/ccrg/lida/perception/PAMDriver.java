@@ -9,7 +9,6 @@ public class PAMDriver implements Runnable, Stoppable{
 	private PerceptualAssociativeMemory pam;
 	private FrameworkTimer timer;
 	private boolean keepRunning = true;		
-	private long threadID;
 	private FrameworkGui testGui;
 	
 	public PAMDriver(PerceptualAssociativeMemory pam, FrameworkTimer timer){
@@ -39,14 +38,6 @@ public class PAMDriver implements Runnable, Stoppable{
 		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method stopRunning
-
-	public void setThreadID(long id){
-		threadID = id;
-	}
-	
-	public long getThreadID() {
-		return threadID;
-	}
 
 	public void addTestGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
