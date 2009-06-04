@@ -3,9 +3,9 @@ package edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 import edu.memphis.ccrg.lida.util.Printer;
-import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 
 public class FeatureDetectorImpl implements FeatureDetector{

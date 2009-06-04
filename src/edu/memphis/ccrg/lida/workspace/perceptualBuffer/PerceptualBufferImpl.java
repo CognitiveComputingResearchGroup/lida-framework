@@ -25,7 +25,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pbListeners = new ArrayList<PerceptualBufferListener>();
 	}//constructor
 
-	public void addTestGui(FrameworkGui testGui) {
+	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
 	}
 	

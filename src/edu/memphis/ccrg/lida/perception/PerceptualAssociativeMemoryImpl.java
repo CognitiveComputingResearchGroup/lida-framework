@@ -5,7 +5,7 @@
  * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
  * All rights reserved.
  */
-package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
+package edu.memphis.ccrg.lida.perception;
 
 import java.util.Collection;
 import java.util.Set; 
@@ -13,21 +13,15 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.perception.FeatureDetector;
-import edu.memphis.ccrg.lida.perception.PAMListener;
-import edu.memphis.ccrg.lida.perception.PamNode;
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
-import edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection.FeatureDetectorImpl;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
@@ -47,13 +41,13 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * Nodes that receive activation from SM. Key is the node's label.
      */
 	public List<FeatureDetector> featureDetectors;
-	private RyanNodeStructure graph;
+	private NodeStructureImpl graph;
 	
 	private DecayBehavior decayBehavior = new LinearDecayCurve();
     
     //For Intermodule communication
     private List<PAMListener> pamListeners;    
-    private SensoryContentImpl sensoryContent;//Shared variable
+    private SensoryContent sensoryContent;//Shared variable
     private BroadcastContent broadcastContent;//Shared variables	
     private WorkspaceContent topDownEffects;
 	private WorkspaceContent percept;
@@ -61,13 +55,13 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new ArrayList<FeatureDetector>();
-    	graph = new RyanNodeStructure();
+    	graph = new NodeStructureImpl();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
     	topDownEffects = new NodeStructureImpl();
     	percept = new NodeStructureImpl();
-    	//broadcastContent = new BroadcastContent();//TODO: write this class 	
+    	broadcastContent = new NodeStructureImpl();	
     }
     
     //SETTING UP PAM    
@@ -96,9 +90,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     
     public void addToPAM(Set<Node> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
-    	graph.addNodes(nodesToAdd, upscale, selectivity);
+    	graph.addNodes(nodesToAdd);
+    	//TODO: why did I pass the 2 slipnet params to the node structure?
     	graph.addLinks(linkSet);    	
-    	//graph.printLinkMap();
+    	
     }//method
     
     //INTERMODULE COMMUNICATION
@@ -106,7 +101,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		pamListeners.add(pl);
 	}
     
-    public synchronized void receiveSense(SensoryContentImpl sc){//SensoryContent    	
+    public synchronized void receiveSense(SensoryContent sc){//SensoryContent    	
     	sensoryContent = sc;    	
     }
 
@@ -124,16 +119,10 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){    	
-    	SensoryContentImpl sc = (SensoryContentImpl)sensoryContent.getThis();  
+    	SensoryContent sc = (SensoryContent)sensoryContent.getThis();  
     	for(FeatureDetector d: featureDetectors){
-    		if(d instanceof FeatureDetectorImpl){
-    			FeatureDetectorImpl temp = (FeatureDetectorImpl)d;
-    			temp.detect(sc);
-    		}else{
-    			System.out.println("In PAMImpl, in sense, didn't get expected type FeatureDetectorImpl");
-    		}
+    		d.detect(sc);    	
     	}
-    	//graph.printPamNodeActivations();
     }//method
         
     /**
@@ -167,7 +156,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * @see RyanPamNode#synchronize()
      */
     private void syncNodeActivation(){
-        RyanNodeStructure newGraph = new RyanNodeStructure();
+        NodeStructureImpl newGraph = new NodeStructureImpl();
         Collection<Node> nodes = graph.getNodes();
 
         for(Node n: nodes){
@@ -231,7 +220,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	public List<Object> getGuiContent() {
 		List<Object> content = new ArrayList<Object>();
 		content.add(numNodeInPercept);
-		content.add(((RyanNodeStructure) percept).getLinkCount());
+		content.add(((NodeStructureImpl) percept).getLinkCount());
 		return content;
 	}
 

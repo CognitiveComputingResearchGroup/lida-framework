@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
@@ -347,6 +348,20 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 
 	public Node getNode(long id) {
 		return nodes.get(id);
+	}
+
+	public int getLinkCount() {
+		return links.size();
+	}
+
+	public Map<Integer, Set<Node>> createLayerMap() {
+		Printer.p("not impl!");
+		return null;
+	}
+
+	public Set<Node> getParents(Node n) {
+		Printer.p("getParents not impl!");
+		return null;
 	}
 
 }

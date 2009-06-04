@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.BroadcastBuffer;
 
+import edu.memphis.ccrg.lida.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.util.FrameworkTimer;
 import edu.memphis.ccrg.lida.util.Stoppable;
 
@@ -23,5 +24,10 @@ public class BroadcastBufferDriver implements Runnable, Stoppable{
 	public void stopRunning(){
 		keepRunning = false;		
 	}//method
+
+	public void addFlowGui(FrameworkGui gui) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }//class

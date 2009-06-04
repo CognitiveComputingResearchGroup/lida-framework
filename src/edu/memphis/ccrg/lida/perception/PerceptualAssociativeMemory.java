@@ -6,7 +6,6 @@ package edu.memphis.ccrg.lida.perception;
 import java.util.List;
 import java.util.Set;
 import java.util.Map;
-
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryListener;
 import edu.memphis.ccrg.lida.shared.Link;
@@ -14,7 +13,6 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
-import edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection.FeatureDetectorImpl;
 
 /**
  * @author Ryan McCall

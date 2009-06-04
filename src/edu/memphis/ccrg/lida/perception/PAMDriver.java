@@ -39,7 +39,7 @@ public class PAMDriver implements Runnable, Stoppable{
 		keepRunning = false;		
 	}//method stopRunning
 
-	public void addTestGui(FrameworkGui testGui) {
+	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
 	}
 

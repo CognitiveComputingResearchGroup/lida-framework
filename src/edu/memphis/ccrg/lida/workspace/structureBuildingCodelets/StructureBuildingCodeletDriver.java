@@ -38,7 +38,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Star
 		workspace = w;	
 	}//method
 	
-	public void addTestGui(FrameworkGui testGui) {
+	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
 	}//method
 

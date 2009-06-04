@@ -54,7 +54,7 @@ public class GoodProceduralMemoryDriver implements ProceduralMemory, Runnable, S
 	}//constructor
 	
 
-	public void addTestGui(FrameworkGui testGui) {
+	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
 	}
 	

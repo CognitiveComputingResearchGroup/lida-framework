@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-import edu.memphis.ccrg.lida.wumpusWorld.b_sensoryMemory.SensoryContentImpl;
-
 /**
  * @author Ryan McCall
  * 
@@ -13,5 +11,5 @@ public interface SensoryListener {
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param sc the Content of the Broadcast
 	 */
-	public void receiveSense(SensoryContentImpl sc);
+	public void receiveSense(SensoryContent sc);
 }
