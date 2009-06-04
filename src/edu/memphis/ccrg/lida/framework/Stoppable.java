@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.util;
+package edu.memphis.ccrg.lida.framework;
 
 public interface Stoppable {
 	

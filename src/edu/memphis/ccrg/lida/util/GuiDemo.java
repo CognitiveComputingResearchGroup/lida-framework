@@ -7,7 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Starter;
+import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 
  
 /**
@@ -22,10 +23,10 @@ public class GuiDemo extends JFrame implements ActionListener{
 	JLabel emptyLabel;
 	JLabel world, sim, sm, pam, pbuffer, csm;
 	FrameworkTimer timer;
-	Starter motherThread;
+	ThreadSpawner motherThread;
 	boolean isPaused = true;
     
-    public GuiDemo(FrameworkTimer t, Starter main){
+    public GuiDemo(FrameworkTimer t, ThreadSpawner main){
     	timer = t;
     	motherThread = main;
     	this.setTitle("The Mind of LIDA");

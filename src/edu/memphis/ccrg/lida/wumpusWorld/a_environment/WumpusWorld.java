@@ -5,8 +5,8 @@ import java.util.Random;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
-import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Stoppable;
+import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Simulation;
 
 public class WumpusWorld implements Runnable, Stoppable, ActionSelectionListener{

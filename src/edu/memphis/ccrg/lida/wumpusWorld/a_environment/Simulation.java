@@ -4,10 +4,12 @@ package edu.memphis.ccrg.lida.wumpusWorld.a_environment;
 import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.List;
-import edu.memphis.ccrg.lida.util.FrameworkTimer;
+
 import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Action;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
+import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 
 public class Simulation{
 	//My Addition
@@ -49,9 +51,9 @@ public class Simulation{
 	private String message = "";
 	private boolean trialIsOver = false;
 	private BufferedWriter out = null;
-	private Starter motherThread = null;
+	private ThreadSpawner motherThread = null;
 	
-	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet, Starter s){ 		
+	public Simulation(FrameworkTimer timer, Environment environ, boolean nonDet, ThreadSpawner s){ 		
 		this.timer = timer;
 		environment = environ;
 		nonDeterministic = nonDet;

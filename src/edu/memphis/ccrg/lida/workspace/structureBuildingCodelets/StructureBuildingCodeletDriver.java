@@ -5,20 +5,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import edu.memphis.ccrg.lida.gui.FrameworkGui;
+
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.Stoppable;
+import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.util.FrameworkTimer;
-import edu.memphis.ccrg.lida.util.Stoppable;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
-import edu.memphis.ccrg.lida.wumpusWorld.a_environment.Starter;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.SpatialLinkCodeletAction;
 import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.StructureBuildingCodeletImpl;
 
-public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Starter, WorkspaceListener {
+public class StructureBuildingCodeletDriver implements Runnable, Stoppable, ThreadSpawner, WorkspaceListener {
 
 	//Basics
 	private boolean keepRunning = true;

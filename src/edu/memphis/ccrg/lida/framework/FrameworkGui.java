@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.gui;
+package edu.memphis.ccrg.lida.framework;
 
 import java.util.List;
 

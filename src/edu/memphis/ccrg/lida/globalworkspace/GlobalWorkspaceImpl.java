@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
-import edu.memphis.ccrg.lida.gui.FrameworkGui;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of

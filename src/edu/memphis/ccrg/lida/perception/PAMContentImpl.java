@@ -1,11 +1,12 @@
-package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
+package edu.memphis.ccrg.lida.perception;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PAMContentImpl implements WorkspaceContent{
 
-	private NodeStructure graph = new RyanNodeStructure();
+	private NodeStructure graph = new NodeStructureImpl();
 
 	public Object getContent(){
 		return graph;
