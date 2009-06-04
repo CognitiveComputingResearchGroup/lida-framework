@@ -239,6 +239,27 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
 //		updateLayerDepth(parent);		
 	}//addParent
 	
+    /**
+     * Based on the layer depth stored in the PamNodes of this 
+     * graph, create a Map where the keys are the layer depth
+     * and the values are the nodes at that layer depth
+     * 
+     * @return the layer map 
+     */
+	public Map<Integer, Set<Node>> createLayerMap(){
+        for(Node node: nodes){
+            int layerDepth = ((PamNode)node).getLayerDepth();
+            Set<Node> layerNodes = layerMap.get(layerDepth);
+            
+            if(layerNodes == null) {
+                layerNodes = new HashSet<Node>();
+                layerMap.put(layerDepth, layerNodes);
+            }
+            layerNodes.add(node);
+        }
+        return layerMap;
+    }//createLayerMap
+	
 	/**
 	 * This method is suppose to magically take care of updating the layer depth
 	 * of the supplied node.
@@ -265,27 +286,6 @@ public class RyanNodeStructure implements NodeStructure, WorkspaceContent, Broad
         }
         return n.getLayerDepth();
     }	
-	
-    /**
-     * Based on the layer depth stored in the PamNodes of this 
-     * graph, create a Map where the keys are the layer depth
-     * and the values are the nodes at that layer depth
-     * 
-     * @return the layer map 
-     */
-	public Map<Integer, Set<Node>> createLayerMap(){
-        for(Node node: nodes){
-            int layerDepth = ((PamNode)node).getLayerDepth();
-            Set<Node> layerNodes = layerMap.get(layerDepth);
-            
-            if(layerNodes == null) {
-                layerNodes = new HashSet<Node>();
-                layerMap.put(layerDepth, layerNodes);
-            }
-            layerNodes.add(node);
-        }
-        return layerMap;
-    }//createLayerMap
 
 	/**
 	 * Update the min and max activations and selection threshold
