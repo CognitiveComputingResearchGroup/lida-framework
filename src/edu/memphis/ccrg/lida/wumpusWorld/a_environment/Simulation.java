@@ -128,7 +128,7 @@ public class Simulation{
 								directionalSenseToString(), message , Action.getActionString(lastAction), currScore + "");			
 			
 			for(int i = 0; i < listeners.size(); i++)
-				(listeners.get(i)).receiveSimContent(simContent);
+				(listeners.get(i)).receiveEnvironmentContent(simContent);
 
 			if(actionHasChanged){
 				currentAction = (Integer)currentBehavior.getContent();
