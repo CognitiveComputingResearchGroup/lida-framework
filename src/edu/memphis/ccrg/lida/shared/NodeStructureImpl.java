@@ -3,7 +3,6 @@
  */
 package edu.memphis.ccrg.lida.shared;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,23 +12,67 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.perception.PamNode;
-import edu.memphis.ccrg.lida.util.Printer;
+import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanPamNode;
 
 /**
  * @author Javier Snaider
  * 
  */
-public class NodeStructureImpl implements NodeStructure, WorkspaceContent,BroadcastContent {
-	private Map<Linkable, Set<Link>> linkMap;
+public class NodeStructureImpl implements NodeStructure, WorkspaceContent, BroadcastContent {
+	
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
+	private Map<Linkable, Set<Link>> linkableMap;
+	private NodeFactory factory = NodeFactory.getInstance();
 	private String defaultNode;
 	private String defaultLink;
-	private NodeFactory factory = NodeFactory.getInstance();
-	private Map<Linkable, Set<Link>> linkableMap;
 
+	public NodeStructureImpl() {
+		linkableMap = new HashMap<Linkable, Set<Link>>();
+		nodes = new HashMap<Long, Node>();
+		links = new HashMap<String, Link>();
+
+	}
+
+	public NodeStructureImpl(String defaultNode, String defaultLink) {
+		this();
+		this.defaultNode = defaultNode;
+		this.defaultLink = defaultLink;
+	}
+
+	public NodeStructureImpl(NodeStructure oldGraph) {		
+		nodes = new HashMap<Long, Node>();
+		links = new HashMap<String, Link>();
+		linkableMap = new HashMap<Linkable, Set<Link>>();	
+		
+		Collection<Node> oldNodes = oldGraph.getNodes();
+		if(oldNodes != null)
+			for(Node n: oldNodes)
+				nodes.put(n.getId(), factory.getNode(n));
+		
+		Collection<Link> oldLinks = oldGraph.getLinks();
+		if(oldLinks != null)
+			for(Link l: oldLinks)
+				links.put(l.getIds(), l);				
+			
+		Map<Linkable, Set<Link>> oldlinkableMap = oldGraph.getLinkableMap();
+		if(oldlinkableMap != null){
+			Set<Linkable> oldKeys = oldlinkableMap.keySet();
+			if(oldKeys != null){
+				for(Linkable l: oldKeys){
+					if(l instanceof LinkImpl){
+						LinkImpl castLink = (LinkImpl)l;
+						this.linkableMap.put(new LinkImpl(castLink), new HashSet<Link>());
+					}else if(l instanceof PamNodeImpl){
+						PamNodeImpl castNode = (PamNodeImpl)l;
+						this.linkableMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * @param defaultNode
 	 *            the defaultNode to set
@@ -46,62 +89,6 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 		this.defaultLink = defaultLink;
 	}
 
-	public NodeStructureImpl() {
-		linkMap = new HashMap<Linkable, Set<Link>>();
-		nodes = new HashMap<Long, Node>();
-		links = new HashMap<String, Link>();
-
-	}
-
-	public NodeStructureImpl(String defaultNode, String defaultLink) {
-		this();
-
-		this.defaultNode = defaultNode;
-		this.defaultLink = defaultLink;
-	}
-
-	public NodeStructureImpl(NodeStructure struct) {
-//		this.linkCount = oldGraph.linkCount;
-//		
-//		nodes = new HashSet<Node>();
-//		nodeMap = new HashMap<Long, Node>();
-//		linkMap = new HashMap<String, Link>();
-//		linkableMap = new HashMap<Linkable, Set<Link>>();
-//		layerMap = new HashMap<Integer, Set<Node>>();	
-//		
-//		Collection<Node> oldNodes = oldGraph.getNodes();
-//		if(oldNodes != null){
-//			for(Node n: oldNodes){
-//				this.nodes.add(n);//NodeFactory.getInstance().getNode(n)
-//				nodeMap.put(n.getId(), n);
-//			}
-//		}
-//		
-//		Collection<Link> oldLinks = oldGraph.getLinks();
-//		if(oldLinks != null){
-//			for(Link l: oldLinks){
-//				LinkImpl temp = (LinkImpl)l;
-//				linkMap.put(temp.getId(), temp);				
-//			}
-//		}
-//
-//		Map<Linkable, Set<Link>> oldLinkMap = oldGraph.getLinkableMap();
-//		if(oldLinkMap != null){
-//			Set<Linkable> oldKeys = oldLinkMap.keySet();
-//			if(oldKeys != null){
-//				for(Linkable l: oldKeys){
-//					if(l instanceof LinkImpl){
-//						LinkImpl castLink = (LinkImpl)l;
-//						this.linkableMap.put(new LinkImpl(castLink), new HashSet<Link>());
-//					}else if(l instanceof RyanPamNode){
-//						RyanPamNode castNode = (RyanPamNode)l;
-//						this.linkableMap.put(new RyanPamNode(castNode), new HashSet<Link>());
-//					}
-//				}
-//			}
-//		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -110,9 +97,6 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 * .shared.Link)
 	 */
 	public Link addLink(Link l) {
-
-		boolean result = true;
-
 		Linkable source = l.getSource();
 		Linkable sink = l.getSink();
 
@@ -152,17 +136,17 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 		Link newLink = getNewLink(l, newSource, newSink, l.getType());
 		links.put(newLink.getIds(), newLink);
 
-		Set<Link> tempLinks = linkMap.get(source);
+		Set<Link> tempLinks = linkableMap.get(source);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
-			linkMap.put(source, tempLinks);
+			linkableMap.put(source, tempLinks);
 		}
 		tempLinks.add(newLink);
 
-		tempLinks = linkMap.get(sink);
+		tempLinks = linkableMap.get(sink);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
-			linkMap.put(sink, tempLinks);
+			linkableMap.put(sink, tempLinks);
 			tempLinks.add(newLink);
 		}
 		tempLinks.add(newLink);
@@ -176,36 +160,29 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
 	public void addLinks(Collection<Link> links) {
-		for (Link l : links) {
+		for (Link l : links)
 			addLink(l);
-		}
-	}// public void addLinkSet(Set<Link> links)
+	}
 
 	public Node addNode(Node n) {
 		if (!nodes.keySet().contains(n.getId())) {
 			Node newNode = getNewNode(n);
 			nodes.put(newNode.getId(), newNode);
-			linkMap.put(newNode, null);
+			linkableMap.put(newNode, null);
 			return newNode;
 		}
 		return null;
 	}
 	
-	/**
-	 * This method is for adding nodes from perceptual memory.  It requires
-	 * upscale and selectivity values from PAM to calculate the nodes' activation
-	 * thresholds. 
-	 */	
-	public void addNodes(Set<Node> nodesToAdd, double upscale, double selectivity) {
-//		for(Node n: nodesToAdd){
-//			RyanPamNode toAdd = (RyanPamNode)n;
-//			nodes.add(toAdd);
-//			nodeMap.put(n.getId(), n);
-//			//updateLayerDepth(n);//TODO:  Currently layer depth is set manually.
-//		}
-//		createLayerMap();
-//		updateActivationThresholds(upscale, selectivity);
-	}//method
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
+	 */
+	public void addNodes(Collection<Node> nodesToAdd) {
+		for(Node n : nodesToAdd)
+			addNode(n);	
+	}
 
 	/**
 	 * This method can be overwritten to customize the Node Creation.
@@ -237,21 +214,8 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 		return factory.getLink(defaultLink, source, sink, l.getType());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
-	 */
-	public void addNodes(Collection<Node> nodesToAdd) {
-		for (Node n : nodesToAdd) {
-			addNode(n);
-			// refresh();
-		}
-	}
-
 	public NodeStructure copy() {
-		// TODO Auto-generated method stub
-		return null;
+		return new NodeStructureImpl(this);
 	}
 
 	/*
@@ -263,8 +227,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 */
 	public void deleteLink(Link l) {
 		deleteLinkable(l);
-
-	}// public void deleteLink(Link l)
+	}//method
 
 	/*
 	 * (non-Javadoc)
@@ -274,7 +237,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 * .ccrg.lida.shared.Linkable)
 	 */
 	public void deleteLinkable(Linkable n) {
-		Set<Link> tempLinks = linkMap.get(n);
+		Set<Link> tempLinks = linkableMap.get(n);
 		Set<Link> otherLinks;
 		Linkable other;
 
@@ -282,27 +245,27 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 			for (Link l : tempLinks) {
 				other = l.getSink();
 				if (!other.equals(n)) {
-					otherLinks = linkMap.get(other);
+					otherLinks = linkableMap.get(other);
 					if (otherLinks != null)
 						otherLinks.remove(l);
 				}
 				other = l.getSource();
 				if (!other.equals(n)) {
-					otherLinks = linkMap.get(other);
+					otherLinks = linkableMap.get(other);
 					if (otherLinks != null)
 						otherLinks.remove(l);
 				}
 			}// for all of the links connected to n
 		}
 
-		linkMap.remove(n);// finally remove the linkable and its links
+		linkableMap.remove(n);// finally remove the linkable and its links
 		if (n instanceof Node) {
 			nodes.remove(((Node) n).getId());
 		} else if (n instanceof Link) {
 			Link aux = links.get(n.getIds());
 			links.remove(aux.getIds());
-			Set<Link> sourceLinks = linkMap.get(aux.getSource());
-			Set<Link> sinkLinks = linkMap.get(aux.getSink());
+			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
+			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
 
 			if (sourceLinks != null)
 				sourceLinks.remove(aux);
@@ -311,33 +274,17 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 				sinkLinks.remove(aux);
 		}
 
-	}// public void deleteNode(Linkable n)
+	}//method
 
 	public void deleteNode(Node n) {
 		deleteLinkable(n);
+	}
 
+
+	public Link getLink(String ids) {
+		return links.get(ids);
 	}
 	
-	/**
-	 * Get children of this linkable
-	 * @param n
-	 * @return
-	 */
-	public Set<PamNode> getChildren(Linkable n) {
-//		Set<Link> links = linkableMap.get(n);
-//		Set<PamNode> children = new HashSet<PamNode>();
-//		if(links != null){
-//			for(Link link: links){
-//				Linkable source = link.getSource();
-//				if(source instanceof RyanPamNode && !source.equals(n))
-//					children.add((RyanPamNode)source);			
-//			}
-//		}
-//		return children;
-		return null;
-		//TODO
-	}
-
 	public Collection<Link> getLinks() {
 		Collection<Link> aux = links.values();
 		if (aux == null) {
@@ -355,16 +302,13 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 * lida.shared.Linkable)
 	 */
 	public Set<Link> getLinks(Linkable l) {
-		Set<Link> aux = linkMap.get(l);
-		if (aux == null) {
+		Set<Link> aux = linkableMap.get(l);
+		if(aux == null) 
 			return null;
-		} else {
+	    else 
 			return Collections.unmodifiableSet(aux); // This returns the
-		}// set of Links but
-		// it prevents to be
-		// modified
-
-	}// public Set<Link> getLinks(PamNodeImplW n)
+		// set of Links but it prevents to be modified
+	}//method
 
 	/*
 	 * (non-Javadoc)
@@ -374,7 +318,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
 	public Set<Link> getLinks(Linkable NorL, LinkType type) {
-		Set<Link> temp = linkMap.get(NorL);
+		Set<Link> temp = linkableMap.get(NorL);
 		Set<Link> result = new HashSet<Link>();
 		if (temp != null) {
 			for (Link l : temp) {
@@ -383,7 +327,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 			}// for each link
 		}// result != null
 		return result;
-	}// public Set<Link> getLinks(PamNodeImplW n, LinkType type)
+	}//method
 
 	public Set<Link> getLinks(LinkType type) {
 		Set<Link> result = new HashSet<Link>();
@@ -404,12 +348,12 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 	 */
 	public Collection<Node> getNodes() {
 		Collection<Node> aux = nodes.values();
-		if (aux == null) {
+		if(aux == null)
 			return null;
-		} else {
+		else
 			return Collections.unmodifiableCollection(aux);
-		}
-	}
+		
+	}//method
 
 	public Object getContent() {
 		return this;
@@ -422,15 +366,6 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 		return linkableMap;
 	}
 	
-	public void combineNodeStructure(NodeStructure ns) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Link getLink(String ids) {
-		return links.get(ids);
-	}
-
 	public Node getNode(long id) {
 		return nodes.get(id);
 	}
@@ -439,161 +374,9 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent,Broadc
 		return links.size();
 	}
 	
-	public Map<Linkable, Set<Link>> getLinkMap(){
-		return linkMap;
-	}
+	public void combineNodeStructure(NodeStructure ns) {
+		// TODO Auto-generated method stub
 
-	public Map<Integer, Set<Node>> createLayerMap() {
-//		for(Node node: nodes){
-//            int layerDepth = ((PamNode)node).getLayerDepth();
-//            Set<Node> layerNodes = layerMap.get(layerDepth);
-//            
-//            if(layerNodes == null) {
-//                layerNodes = new HashSet<Node>();
-//                layerMap.put(layerDepth, layerNodes);
-//            }
-//            layerNodes.add(node);
-//        }
-//        return layerMap;
-		//TODO
-		return null;
-	}
-	
-	/**
-	 * This method is suppose to magically take care of updating the layer depth
-	 * of the supplied node.
-	 * TODO: This method is unfinished/non-working.
-	 * TODO: How will this be called in deleteLinkable(), addParent(), addChild()?
-	 * @param n
-	 * @return
-	 */
-    public int updateLayerDepth(PamNode n) {
-        n.setLayerDepth(0);
-        
-        if(isBottomLinkable(n))
-            n.setLayerDepth(0);
-        else{
-        	Set<PamNode> children = getChildren(n);
-            int layerDepth[] = new int[children.size()];
-            int ild = 0;
-            for(PamNode child: children) {
-                layerDepth[ild] = updateLayerDepth(child);
-                ild++;
-            }
-            Arrays.sort(layerDepth);
-            n.setLayerDepth(layerDepth[layerDepth.length - 1] + 1);
-        }
-        return n.getLayerDepth();
-    }	
-
-	/**
-	 * Update the min and max activations and selection threshold
-	 * of the Linkables in the layermap* 
-	 * 
-	 * @param upscale
-	 * @param selectivity
-	 */
-	private void updateActivationThresholds(double upscale, double selectivity){		
-//        for(Integer layerDepth: layerMap.keySet()){
-//           for(Linkable n: layerMap.get(layerDepth)){
-//        	   PamNode temp = null;
-//        	   if(n instanceof PamNode){
-//        		   temp = (PamNode)n;
-//        		   updateMinActivation(temp, upscale);
-//        		   updateMaxActivation(temp, upscale);
-//        		   updateSelectionThreshold(temp, selectivity);      
-//        	   }  
-//           }
-//        }	
-    }//updateActivationThresholds
-
-    /**
-     * Calc min activation based on the number of children and upscale
-     */
-    private void updateMinActivation(PamNode n, double upscale) {
-    	
-        if(isBottomLinkable(n))
-        	n.setMinActivation(n.getDefaultMinActivation());
-        else{
-        	double sumOfChildMinActiv = 0.0;
-        	Set<PamNode> children = getChildren(n);
-            for(PamNode child: children)
-            	sumOfChildMinActiv += child.getMinActivation();
-            
-            n.setMinActivation(sumOfChildMinActiv * upscale);            
-        }  
-    }
-	
-    /**
-     * Calc max activation based on the number of children and upscale
-     */
-	private void updateMaxActivation(PamNode n, double upscale){
-	    if(isBottomLinkable(n))
-	        n.setMaxActivation(n.getDefaultMaxActivation());
-	    else{
-	    	double sumOfChildMaxActiv = 0.0;
-	    	Set<PamNode> children = getChildren(n);
-	    	for(PamNode child: children)
-	        	sumOfChildMaxActiv += child.getMaxActivation();
-	        
-	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
-	    }    
-	}//updateMaxActivation
-	
-	/**
-     * Calc selection threshold based on the selectivity and min and max activ.
-     */
-	private void updateSelectionThreshold(PamNode n, double selectivity){
-		//M.p(n.getLabel() + " is updating selection threshold");
-		
-		double min = n.getMinActivation();
-		double max = n.getMaxActivation();
-		double threshold = selectivity*(max - min) + min;
-		n.setSelectionThreshold(threshold);
-	}   
-	
-	/** 
-	 * @param n
-	 * @return true if n has no children (it is at the 'bottom' of the network)
-	 */
-    public boolean isBottomLinkable(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
-		if(links != null){
-			for(Link link: links){
-				Linkable source = link.getSource();
-				if(source instanceof RyanPamNode && !source.equals(n))//if source is a child of n
-					return false;
-			}//for
-		}
-		return true;
-	}
-    
-	/** 
-	 * @param n
-	 * @return true if n has no parent (it is at the 'top' of the network)
-	 */
-	public boolean isTopLinkable(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
-		if(links != null){
-			for(Link link: links){
-				Linkable sink = link.getSink();
-				if(sink instanceof RyanPamNode && !sink.equals(n))//if source is a child of n
-					return false;
-			}//for
-		}
-		return false;
-	}
-
-	public Set<Node> getParents(Node n) {
-		Printer.p("getParents not impl!");
-		return null;
-	}
-
-
-	//**PRINTING	
-	public void printPamNodeActivations() {
-//		for(Node n: nodes)
-//			((RyanPamNode)n).printActivationString();
 	}
 
 	public void printLinkMap() {

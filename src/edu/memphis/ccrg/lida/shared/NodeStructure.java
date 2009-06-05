@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.shared;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -50,5 +51,7 @@ public interface NodeStructure {
 	public abstract Link getLink (String ids);
 	
 	public abstract void combineNodeStructure (NodeStructure ns);
+
+	public abstract Map<Linkable, Set<Link>> getLinkableMap();
 	
 }

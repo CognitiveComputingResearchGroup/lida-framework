@@ -283,4 +283,9 @@ public class PamNodeImpl implements PamNode{
 		layerDepth = d;
 	}
 
+	public void printActivationString() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

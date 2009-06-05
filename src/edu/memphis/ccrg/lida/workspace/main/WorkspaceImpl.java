@@ -4,15 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
-import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
-import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryListener;
 import edu.memphis.ccrg.lida.workspace.BroadcastBuffer.BroadcastBuffer;
 import edu.memphis.ccrg.lida.workspace.BroadcastBuffer.BroadcastBufferListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
@@ -21,9 +16,6 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodeletDriver;
-import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
 
 /**
  * 
@@ -33,8 +25,7 @@ import edu.memphis.ccrg.lida.wumpusWorld.d_perception.RyanNodeStructure;
  *
  */
 public class WorkspaceImpl implements Workspace, PAMListener, 
-									  TransientEpisodicMemoryListener, 
-									  DeclarativeMemoryListener,
+									  LocalAssociationListener,
 									  BroadcastListener, 
 									  ActionSelectionListener, 
 									  PerceptualBufferListener,
@@ -53,16 +44,15 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	private WorkspaceListener pamWorkspaceListener;
 	private WorkspaceListener sbCodeletWorkspaceListener;
 	
-	
 	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastBuffer pbroads, CurrentSituationalModel csm, 
-						PerceptualAssociativeMemory pam, StructureBuildingCodeletDriver sbCodeletDriver){
+						WorkspaceListener pamListener, WorkspaceListener sbCodeletListener){
 		perceptualBuffer = pb;
 		episodicBuffer = eb;
 		broadcastBuffer = pbroads;
 		this.csm = csm;	
 		
-		pamWorkspaceListener = pam;
-		sbCodeletWorkspaceListener = sbCodeletDriver;
+		pamWorkspaceListener = pamListener;
+		sbCodeletWorkspaceListener = sbCodeletListener;
 	}//
 	
 	//****Output from the Workspace to other modules
@@ -109,12 +99,10 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	public void receivePAMContent(WorkspaceContent pc) {
 		perceptualBuffer.receivePAMContent(pc);		
 	}
-	public void receiveTEMContent(TransientEpisodicMemoryContent association) {
-		episodicBuffer.receiveTEMContent(association);		
+	public void receiveLocalAssociation(WorkspaceContent association) {
+		episodicBuffer.receiveLocalAssociation(association);		
 	}	
-	public void receivenDMContent(DeclarativeMemoryContent association) {
-		episodicBuffer.receivenDMContent(association);		
-	}
+
 	public void receiveBroadcast(BroadcastContent bc) {
 		broadcastBuffer.receiveBroadcast(bc);		
 	}

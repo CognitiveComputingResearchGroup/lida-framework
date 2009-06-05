@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
@@ -12,11 +13,11 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesired
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 
     private List<EpisodicBufferListener> listeners;
-	private TransientEpisodicMemoryContent temAssociation;
-	private DeclarativeMemoryContent dmAssociation;
+	private WorkspaceContent association;
     
 	public EpisodicBufferImpl(){
 		listeners = new ArrayList<EpisodicBufferListener>();
+		association = new NodeStructureImpl();
 	}
 
 	public void addEBufferListener(EpisodicBufferListener listener) {
@@ -28,12 +29,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 		return null;
 	}
 
-	public synchronized void receiveTEMContent(TransientEpisodicMemoryContent association) {
-		temAssociation = association;		
+	public synchronized void receiveLocalAssociation(WorkspaceContent association){
+		this.association = association;
 	}
-
-	public synchronized void receivenDMContent(DeclarativeMemoryContent association) {
-		dmAssociation = association;		
-	}
-
 }

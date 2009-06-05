@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.shared.PamNodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
@@ -41,7 +42,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * Nodes that receive activation from SM. Key is the node's label.
      */
 	public List<FeatureDetector> featureDetectors;
-	private NodeStructureImpl graph;
+	private PamNodeStructure graph;
 	
 	private DecayBehavior decayBehavior = new LinearDecayCurve();
     
@@ -55,7 +56,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
       
     public PerceptualAssociativeMemoryImpl(){
     	featureDetectors = new ArrayList<FeatureDetector>();
-    	graph = new NodeStructureImpl();
+    	graph = new PamNodeStructure();
     	
     	pamListeners = new ArrayList<PAMListener>();
     	sensoryContent = new SensoryContentImpl();
