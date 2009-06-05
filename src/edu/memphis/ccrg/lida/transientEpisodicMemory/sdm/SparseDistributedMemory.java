@@ -64,7 +64,7 @@ public class SparseDistributedMemory {
      * @param w
      * @param x
      */
-    void store(byte[] w, byte[] x) {
+    public void store(byte[] w, byte[] x) {
         inputWord = w;
         address = x;
         similarityVector = getSimilarities();
@@ -78,7 +78,7 @@ public class SparseDistributedMemory {
      * @param x
      * @return
      */
-    byte[] retrieve(byte[] x) {
+    public byte[] retrieve(byte[] x) {
         address = x;
         similarityVector = getSimilarities();
         activationVector = getActivations(similarityVector);

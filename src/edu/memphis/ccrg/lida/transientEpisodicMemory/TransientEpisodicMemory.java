@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public interface TransientEpisodicMemory extends BroadcastListener, CueListener{
+public interface TransientEpisodicMemory extends BroadcastListener{
     
     /**
      * 
