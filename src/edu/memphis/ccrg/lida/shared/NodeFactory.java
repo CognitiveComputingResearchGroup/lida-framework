@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.shared;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -278,6 +277,13 @@ public class NodeFactory {
 	public Node getNode(String nodeType, String nodeLabel) {
 		Node n = getNode(nodeType);
 		n.setLabel(nodeLabel);
+		return n;
+	}
+	
+	public Node getNode(String nodeType, long id, String nodeLabel) {
+		Node n = getNode(nodeType);
+		n.setId(id);
+		n.setLabel(nodeLabel);		
 		return n;
 	}
 

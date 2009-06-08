@@ -4,8 +4,8 @@
 package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+
+import edu.memphis.ccrg.lida.perception.PamNode;
 
 /**
  * Node represents a Concept in LIDA. It could be implemented in different ways 
@@ -22,8 +22,8 @@ public interface Node extends Linkable, Activatible{
 	//Standard for node
 	public void setValue(Map<String, Object> values);
 	public double getImportance(); 
-    public Node getReferencedNode();
-    public void setReferencedNode (Node n);
+    public PamNode getReferencedNode();
+    public void setReferencedNode (PamNode n);
     public long getId();
     public void setId(long id);
     public void setLabel(String label);

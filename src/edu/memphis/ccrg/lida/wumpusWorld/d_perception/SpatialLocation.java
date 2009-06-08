@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.wumpusWorld.d_perception;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -120,7 +121,7 @@ public class SpatialLocation implements Node{
 		return label;
 	}
 
-	public Node getReferencedNode() {
+	public PamNode getReferencedNode() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -154,12 +155,7 @@ public class SpatialLocation implements Node{
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void setReferencedNode(Node n) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	public void setValue(Map<String, Object> values) {
 		// TODO Auto-generated method stub
 		
@@ -204,6 +200,11 @@ public class SpatialLocation implements Node{
 	public double getActivation() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void setReferencedNode(PamNode n) {
+		// TODO Auto-generated method stub
+		
 	}	
 	
 }

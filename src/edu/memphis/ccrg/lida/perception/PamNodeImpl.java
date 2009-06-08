@@ -22,16 +22,18 @@ public class PamNodeImpl implements PamNode{
 	 * that represent feelings. Lies between 00.d and 1.0d inclusive.
 	 */
 	protected double importance = 0.0;
-	protected double minActivation;
-	protected double maxActivation;
-	protected double totalActivation;
-	protected double baselevelActivation;
-	protected double currentActivation;
+	protected double minActivation = 0.0;
+	protected double maxActivation = 1.0;
+	protected double totalActivation = 0.0;
+	protected double baselevelActivation = 0.0;
+	protected double currentActivation = 0.0;
 	protected long id;
 	protected String label;
-	protected int type;
+	protected int type = 0;
 	protected ExciteBehavior exciteBehavior;
 	protected DecayBehavior decayBehav;
+	
+	private PamNode groundingPamNode;
 	private int layerDepth = 0;
 
 	public PamNodeImpl() {
@@ -248,8 +250,7 @@ public class PamNodeImpl implements PamNode{
 		return exciteBehavior;
 	}
 
-	public Node getReferencedNode() {
-		// TODO Auto-generated method stub
+	public PamNode getReferencedNode() {
 		return this;
 	}
 
@@ -258,9 +259,9 @@ public class PamNodeImpl implements PamNode{
 		
 	}
 
-	public void setReferencedNode(Node n) {
-		// TODO Auto-generated method stub
-		
+	public void setReferencedNode(PamNode n) {
+		//groundingPamNode = n;
+		//TODO the referenced node should be a PamNode only, not node
 	}
 
 	public void setId(long id) {

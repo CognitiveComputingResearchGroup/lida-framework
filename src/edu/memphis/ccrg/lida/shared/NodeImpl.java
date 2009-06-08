@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
@@ -17,7 +18,7 @@ public class NodeImpl implements Node {
 	private double activation;
 	private ExciteBehavior eb;
 	private DecayBehavior db;
-	private Node refNode;
+	private PamNode refNode;
 
 	public void decay() {
 		if (db != null) {
@@ -40,7 +41,7 @@ public class NodeImpl implements Node {
 		return 0;
 	}
 
-	public Node getReferencedNode() {
+	public PamNode getReferencedNode() {
 		return refNode;
 	}
 
@@ -60,7 +61,7 @@ public class NodeImpl implements Node {
 		// TODO Auto-generated method stub
 	}
 
-	public void setReferencedNode(Node n) {
+	public void setReferencedNode(PamNode n) {
 		refNode=n;
 	}
 
