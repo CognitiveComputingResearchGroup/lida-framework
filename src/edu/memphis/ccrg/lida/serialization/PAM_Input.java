@@ -13,8 +13,7 @@ import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
-import edu.memphis.ccrg.lida.wumpusWorld.a_environment.WumpusNodeIDs;
-import edu.memphis.ccrg.lida.wumpusWorld.c_perception.featureDetection.WumpusDetectBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.BasicDetectBehavior;
 
 public class PAM_Input {
 
@@ -35,12 +34,13 @@ public class PAM_Input {
 		Set<Node> nodes = new HashSet<Node>();
 
     	NodeFactory factory = NodeFactory.getInstance();
+    	factory.addNodeType("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
     	//Ideally we loop over a text file reading in the ID and label for each node.
-    	PamNodeImpl gold = (PamNodeImpl)factory.getNode("PamNodeImpl", WumpusNodeIDs.gold, "gold");
-    	PamNodeImpl pit = (PamNodeImpl)factory.getNode("PamNodeImpl", WumpusNodeIDs.pit, "pit");
-    	PamNodeImpl wumpus = (PamNodeImpl)factory.getNode("PamNodeImpl", WumpusNodeIDs.wumpus, "wumpus");
-    	PamNodeImpl agent = (PamNodeImpl)factory.getNode("PamNodeImpl", WumpusNodeIDs.agent, "agent");
-    	PamNodeImpl wall = (PamNodeImpl)factory.getNode("PamNodeImpl", WumpusNodeIDs.wall, "wall");
+    	PamNodeImpl gold = (PamNodeImpl)factory.getNode("PamNodeImpl", 1, "gold");
+    	PamNodeImpl pit = (PamNodeImpl)factory.getNode("PamNodeImpl", 2, "pit");
+    	PamNodeImpl wumpus = (PamNodeImpl)factory.getNode("PamNodeImpl", 3, "wumpus");
+    	PamNodeImpl agent = (PamNodeImpl)factory.getNode("PamNodeImpl", 4, "agent");
+    	PamNodeImpl wall = (PamNodeImpl)factory.getNode("PamNodeImpl", 5, "wall");
     	
     	int layerDepthA = 0;
     	gold.setLayerDepth(layerDepthA);
@@ -57,15 +57,15 @@ public class PAM_Input {
     	nodes.add(wall);
 
     	//Feature detectors
-    	Map<String, Integer> codeMap = new HashMap<String, Integer>();
-    	//TODO: Again this can be loopified.
-    	codeMap.put("pit", 0);
-    	codeMap.put("wumpus", 1);
-    	codeMap.put("gold", 2);
-    	codeMap.put("agent", 3);	
-    	codeMap.put("wall", 4);
+//    	Map<String, Integer> codeMap = new HashMap<String, Integer>();
+//    	//TODO: Again this can be loopified.
+//    	codeMap.put("pit", 0);
+//    	codeMap.put("wumpus", 1);
+//    	codeMap.put("gold", 2);
+//    	codeMap.put("agent", 3);	
+//    	codeMap.put("wall", 4);
     	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
-    	WumpusDetectBehavior featureDetectorBehavior = new WumpusDetectBehavior(codeMap); 
+    	BasicDetectBehavior featureDetectorBehavior = new BasicDetectBehavior(); 
 		featureDetectors.add(new FeatureDetectorImpl(gold, featureDetectorBehavior));
 		featureDetectors.add(new FeatureDetectorImpl(pit, featureDetectorBehavior));
 		featureDetectors.add(new FeatureDetectorImpl(wumpus, featureDetectorBehavior));

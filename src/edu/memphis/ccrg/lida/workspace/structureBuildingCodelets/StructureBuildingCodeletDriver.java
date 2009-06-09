@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
@@ -16,8 +15,6 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
-import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.SpatialLinkCodeletAction;
-import edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets.StructureBuildingCodeletImpl;
 
 public class StructureBuildingCodeletDriver implements Runnable, Stoppable, ThreadSpawner, WorkspaceListener {
 
@@ -34,10 +31,13 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Thre
 	private List<Thread> codeletThreads = new ArrayList<Thread>();
 	private List<Stoppable> codelets = new ArrayList<Stoppable>();
 	
-	public StructureBuildingCodeletDriver(FrameworkTimer timer, WorkspaceImpl w){
+	public StructureBuildingCodeletDriver(FrameworkTimer timer){
 		this.timer = timer;
-		workspace = w;	
 	}//method
+	
+	public void addWorkspace(WorkspaceImpl w){
+		workspace = w;
+	}
 	
 	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
@@ -51,7 +51,7 @@ public class StructureBuildingCodeletDriver implements Runnable, Stoppable, Thre
 		boolean usesPBuffer = true, usesEBuffer = false, usesPBroads = false;
 		//TODO: Abstract this out of this class
 		CodeletsDesiredContent objective = new CodeletsDesiredContent();
-		CodeletAction actions = new SpatialLinkCodeletAction();		
+		CodeletAction actions = new BasicCodeletAction();		
 		spawnNewCodelet(workspace, usesPBuffer, usesEBuffer, usesPBroads, defaultCodeletActivation, objective, actions);
 		
 		while(keepRunning){

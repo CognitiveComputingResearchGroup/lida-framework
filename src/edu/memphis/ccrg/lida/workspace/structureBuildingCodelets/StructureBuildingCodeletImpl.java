@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.wumpusWorld.f_sbCodelets;
+package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,6 @@ import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
 
 public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
 	
@@ -24,7 +20,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	//
 	private double activation = 1.0;
 	private CodeletsDesiredContent soughtContent = null;
-	private CodeletAction action = new SpatialLinkCodeletAction();
+	private CodeletAction action = new BasicCodeletAction();
 	
 	private List<CodeletReadable> buffersIuse = new ArrayList<CodeletReadable>();
 			

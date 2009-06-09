@@ -389,4 +389,14 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 		}
 	}//method
 
-}
+	public Set<Link> getLinksByType(LinkType type) {
+		Set<Link> result = new HashSet<Link>();
+		for(Link l: links.values()){
+			if(l.getType() == type)
+				result.add(l);
+		}//for
+		
+		return result;
+	}//method
+
+}//class

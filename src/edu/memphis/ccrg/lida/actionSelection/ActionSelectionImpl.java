@@ -22,4 +22,14 @@ public class ActionSelectionImpl implements ActionSelection, BroadcastListener, 
 		
 	}
 
+	public boolean getStartingMode() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void stopActionSelection() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

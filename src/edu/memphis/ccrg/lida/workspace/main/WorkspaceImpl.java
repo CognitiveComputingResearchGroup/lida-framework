@@ -44,20 +44,25 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	private WorkspaceListener pamWorkspaceListener;
 	private WorkspaceListener sbCodeletWorkspaceListener;
 	
-	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastBuffer pbroads, CurrentSituationalModel csm, 
-						WorkspaceListener pamListener, WorkspaceListener sbCodeletListener){
+	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, 
+						 BroadcastBuffer pbroads, CurrentSituationalModel csm){
 		perceptualBuffer = pb;
 		episodicBuffer = eb;
 		broadcastBuffer = pbroads;
 		this.csm = csm;	
-		
-		pamWorkspaceListener = pamListener;
-		sbCodeletWorkspaceListener = sbCodeletListener;
 	}//
 	
 	//****Output from the Workspace to other modules
 	public void addCueListener(CueListener l){
 		cueListeners.add(l);
+	}
+	
+	public void addPamListener(WorkspaceListener listener){
+		pamWorkspaceListener = listener;
+	}
+	
+	public void addCodeletListener(WorkspaceListener listener){
+		sbCodeletWorkspaceListener = listener;
 	}
 	
 	public void cue(WorkspaceContent content){

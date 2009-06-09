@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.shared;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,12 +16,24 @@ public class PamNodeStructure extends NodeStructureImpl{
 	private Map<Long, Node> nodes = new HashMap<Long, Node>();
 	private Map<String, Link> links = new HashMap<String, Link>();
 	private Map<Linkable, Set<Link>> linkableMap = new HashMap<Linkable, Set<Link>>();
+	
+	private NodeFactory factory = NodeFactory.getInstance();
+	private String defaultNode = "edu.memphis.ccrg.lida.perception.PamNodeImpl";
+	
 	/**
 	 * For each integer key there is a set of nodes that are
 	 * at 
 	 */
-	private Map<Integer, Set<Node>> layerMap;
+	private Map<Integer, Set<Node>> layerMap = new HashMap<Integer, Set<Node>>();
 	
+	public Node addNode(Node n) {
+		if (!nodes.keySet().contains(n.getId())) {
+			nodes.put(n.getId(), n);
+			linkableMap.put(n, null);
+			return n;
+		}
+		return null;
+	}
 	
 	/**
 	 * This method is for adding nodes from perceptual memory.  It requires
@@ -36,6 +49,16 @@ public class PamNodeStructure extends NodeStructureImpl{
 		createLayerMap();
 		updateActivationThresholds(upscale, selectivity);
 	}//method
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
+	 */
+	public void addNodes(Collection<Node> nodesToAdd) {
+		for(Node n : nodesToAdd)
+			addNode(n);	
+	}
 	
 	public Map<Integer, Set<Node>> createLayerMap() {
 		for(Node node: nodes.values()){

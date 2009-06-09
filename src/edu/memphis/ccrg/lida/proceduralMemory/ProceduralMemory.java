@@ -15,10 +15,4 @@ public interface ProceduralMemory {
      * @param listener
      */
     public void addProceduralMemoryListener(ProceduralMemoryListener listener);
-
-	public boolean getStartingMode();
-
-	public void toggleActionSelection();
-
-	public void stopActionSelection();
 }
