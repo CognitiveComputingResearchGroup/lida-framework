@@ -13,6 +13,25 @@ public class Serializer{
 	
 	XStream xstream = new XStream();//XStream XML serializer
 	
+	public static void main(String[] args){
+		//List of two objects to be serialized
+		DummyClass d1 = new DummyClass(77);
+		DummyClass d2 = new DummyClass(33);
+		List<Object> objs = new ArrayList<Object>();
+		objs.add(d1);
+		objs.add(d2);
+		
+		//Serialize, then deserialize
+		Serializer test = new Serializer();
+		String outputFileName = "./inputFiles/Dummy.txt";
+		test.serialize(objs, "dummy_", DummyClass.class, outputFileName);
+		List<Object> res = test.deserialize(outputFileName);
+		
+		//Print results
+		for(Object o: res)
+			System.out.println(o.toString());
+	}//method
+	
 	/**
 	 * @param objectList - Objects to be serialized to xml
 	 * @param objectNamePrefix - Prefix for objects' xml tag e.g. "node"
@@ -68,25 +87,6 @@ public class Serializer{
 			e.printStackTrace();
 		}
 		return result;
-	}//method
-	
-	public void runTest(){
-		//List of two objects to be serialized
-		DummyClass d1 = new DummyClass(19);
-		DummyClass d2 = new DummyClass(69);
-		List<Object> objs = new ArrayList<Object>();
-		objs.add(d1);
-		objs.add(d2);
-		
-		//Serialize, then deserialize
-		Serializer test = new Serializer();
-		String outputFileName = "Dummy.txt";
-		test.serialize(objs, "Dummy", DummyClass.class, outputFileName);
-		List<Object> res = test.deserialize(outputFileName);
-		
-		//Print results
-		for(Object o: res)
-			System.out.println(o.toString());
 	}//method
 
 }//class
