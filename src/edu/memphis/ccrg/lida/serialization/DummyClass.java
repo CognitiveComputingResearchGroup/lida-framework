@@ -1,10 +1,10 @@
 package edu.memphis.ccrg.lida.serialization;
 
-public class Dummy {
+public class DummyClass {
 	
 	private int howDumb = 0;
 	
-	public Dummy(int a){
+	public DummyClass(int a){
 		howDumb = a;
 	}
 

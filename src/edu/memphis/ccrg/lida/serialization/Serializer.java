@@ -9,29 +9,9 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import com.thoughtworks.xstream.XStream;
 
-public class SerializationTest{
+public class Serializer{
 	
-	//XStream XML serializer
-	XStream xstream = new XStream();
-
-	public static void main(String[] args){
-		//List of two objects to be serialized
-		Dummy d1 = new Dummy(19);
-		Dummy d2 = new Dummy(69);
-		List<Object> objs = new ArrayList<Object>();
-		objs.add(d1);
-		objs.add(d2);
-		
-		//Serialize, then deserialize
-		SerializationTest test = new SerializationTest();
-		String outputFileName = "Dummy.txt";
-		test.serialize(objs, "Dummy", Dummy.class, outputFileName);
-		List<Object> res = test.deserialize(outputFileName);
-		
-		//Print results
-		for(Object o: res)
-			System.out.println(o.toString());
-	}//main
+	XStream xstream = new XStream();//XStream XML serializer
 	
 	/**
 	 * @param objectList - Objects to be serialized to xml
@@ -88,6 +68,25 @@ public class SerializationTest{
 			e.printStackTrace();
 		}
 		return result;
+	}//method
+	
+	public void runTest(){
+		//List of two objects to be serialized
+		DummyClass d1 = new DummyClass(19);
+		DummyClass d2 = new DummyClass(69);
+		List<Object> objs = new ArrayList<Object>();
+		objs.add(d1);
+		objs.add(d2);
+		
+		//Serialize, then deserialize
+		Serializer test = new Serializer();
+		String outputFileName = "Dummy.txt";
+		test.serialize(objs, "Dummy", DummyClass.class, outputFileName);
+		List<Object> res = test.deserialize(outputFileName);
+		
+		//Print results
+		for(Object o: res)
+			System.out.println(o.toString());
 	}//method
 
 }//class
