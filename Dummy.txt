@@ -1,0 +1,8 @@
+<Dummy0>
+  <howDumb>19</howDumb>
+</Dummy0>
+*
+<Dummy1>
+  <howDumb>69</howDumb>
+</Dummy1>
+*
