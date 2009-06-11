@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.thoughtworks.xstream.XStream;
+
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
@@ -20,6 +23,7 @@ public class PAM_Input {
 	//TODO return a boolean for success/fail?
 	public void read(PerceptualAssociativeMemory pam, String inputPath) {
 
+		XStream xstream = new XStream();
 		Map<String, Object> params = new HashMap<String, Object>();
 		//TODO: Loopify
 		double upscale = 0.7, 

@@ -30,6 +30,7 @@ public class ProceduralMemoryDriver implements ProceduralMemory, Runnable, Stopp
 		
 	public ProceduralMemoryDriver(FrameworkTimer timer) {
 		this.timer = timer;
+		listeners = new ArrayList<ProceduralMemoryListener>();
 	}//constructor
 
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {

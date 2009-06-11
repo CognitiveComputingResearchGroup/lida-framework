@@ -17,7 +17,6 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	private FrameworkTimer timer;
 	//
 	private Workspace workspace;
-	//
 	private double activation = 1.0;
 	private CodeletsDesiredContent soughtContent = null;
 	private CodeletAction action = new BasicCodeletAction();
