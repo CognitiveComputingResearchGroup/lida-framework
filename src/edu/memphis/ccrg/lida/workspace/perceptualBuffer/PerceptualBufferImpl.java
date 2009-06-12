@@ -46,7 +46,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);	
-	}//public void storePAMContent()
+	}//method
 	
 	/**
 	 * Main method of the perceptual buffer.  Stores shared content 
