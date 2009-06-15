@@ -2,21 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/jdk1.3/xalan-2.7.0.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/jdk1.3/xercesImpl-2.8.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/jdk1.3/xml-apis-1.3.04.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/cglib-nodep-2.2.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/jdom-1.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/jettison-1.0.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/joda-time-1.6.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/stax-1.2.0.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/wstx-asl-3.2.7.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/xml-writer-0.2.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/xom-1.1.jar"/>
 	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/xstream-1.3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ryanjmccall/Documents/workspace/framework/lib/xstream-benchmark-1.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
