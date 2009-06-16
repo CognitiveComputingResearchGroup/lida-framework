@@ -40,8 +40,7 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 			timer.checkForStartPause();
 			
 			runSimOneStep();
-			
-			environContent.setContent(-1);
+	
 			for(int i = 0; i < listeners.size(); i++)
 				(listeners.get(i)).receiveEnvironmentContent(environContent);
 			
@@ -67,23 +66,41 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 		// TODO Auto-generated method stub
 		//reset environ
 	}//method
+	
+	//**********************************
 
 	private final int IMAGE_HEIGHT = 6;
 	private final int IMAGE_WIDTH = 6;
-	private double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 	private final double MIN_VALUE = 0.0;
 	private final double MAX_VALUE = 1.0;
 	
 	public void runSimOneStep(){
+		getNextMoveRight();
 		
 	}
+
+	private int iloc = 2;
+	private int jloc = 2;
 	
-	public void go(){		
-		blockMovesUp(2);
-		blockMovesDown(2);
-		blockMovesLeft(2);
-		blockMovesRight(2);
-	}//run
+	public void getNextMoveRight(){
+		if(jloc == IMAGE_WIDTH + 2)
+			jloc = -2;
+	
+		environContent.setContent(createFrame(iloc, jloc));
+		jloc++;
+	}//method
+	
+	public void blockMovesRight(int i){
+		for(int j = -2; j < IMAGE_WIDTH + 2; j++){
+			createFrame(i, j);
+		}		
+	}
+	
+	public void blockMovesLeft(int i){
+		for(int j = -2; j < IMAGE_WIDTH + 2; j++){
+			createFrame(i, IMAGE_WIDTH - 1 - j);
+		}		
+	}
 	
 	public void blockMovesUp(int j){
 		for(int i = -2; i < IMAGE_HEIGHT + 2; i++){
@@ -97,51 +114,38 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 		}		
 	}
 	
-	public void blockMovesLeft(int i){
-		for(int j = -2; j < IMAGE_WIDTH + 2; j++){
-			createFrame(i, IMAGE_WIDTH - 1 - j);
-		}		
+	public double[][] createFrame(int i, int j){
+		double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
+		fillImageBlank(image);
+		addBlock(i, j, image);	
+		return image;
 	}
 	
-	public void blockMovesRight(int i){
-		for(int j = -2; j < IMAGE_WIDTH + 2; j++){
-			createFrame(i, j);
-		}		
-	}
-	
-	public void createFrame(int i, int j){
-		fillImageBlank();
-		addBlock(i, j);
-		//Send to buffer?
-		printImage();		
-	}
-	
-	public void fillImageBlank(){
+	public void fillImageBlank(double[][] image){
 		 for(int i = 0; i < IMAGE_HEIGHT; i++)
 			 for(int j = 0; j < IMAGE_WIDTH; j++)
 				 image[i][j] = MAX_VALUE;		
 	}//fillImageBlank
 
 	
-	public void addBlock(int row, int col){
+	public void addBlock(int row, int col, double[][] image){
 		if(row > IMAGE_HEIGHT || row < -1 || col > IMAGE_WIDTH || col < -1)
 			return;
 		
 		int i = row - 1;
 		if(i >= 0 && i < IMAGE_HEIGHT)
-			addHoriz(i, col);
+			addHoriz(i, col, image);
 		
 		i = row;		
 		if(i >= 0 && i < IMAGE_HEIGHT)
-			addHoriz(i, col);	
+			addHoriz(i, col, image);	
 		
 		i = row + 1;		
 		if(i >= 0 && i < IMAGE_HEIGHT)
-			addHoriz(i, col);			
-		
+			addHoriz(i, col, image);			
 	}//addBlock
 	
-	public void addHoriz(int i, int col){  //assumes that 0 <= i < IMAGE_HEIGHT
+	public void addHoriz(int i, int col, double[][] image){  //assumes that 0 <= i < IMAGE_HEIGHT
 		int j = col - 1;//left
 		if(j >= 0 && j < IMAGE_WIDTH)
 			image[i][j] = MIN_VALUE;
@@ -155,8 +159,7 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 			image[i][j] = MIN_VALUE;			
 	}//addHoriz
 
-	
-	public void printImage(){
+	public void printImage(double[][] image){
 		for(int i = 0; i < IMAGE_HEIGHT; i++){
 			 for(int j = 0; j < IMAGE_WIDTH; j++){
 				 System.out.print((int)image[i][j] + " ");
