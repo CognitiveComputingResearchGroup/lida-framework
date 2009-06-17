@@ -6,7 +6,6 @@ import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
-import edu.memphis.ccrg.lida.environment.TestEnvironmentContent;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 
@@ -17,7 +16,7 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 	private boolean keepRunning = true;	
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
-	private TestEnvironmentContent environContent = new TestEnvironmentContent();
+	private VisionEnvironmentContent environContent = new VisionEnvironmentContent();
 	private final int IMAGE_HEIGHT;
 	private final int IMAGE_WIDTH;
 	
@@ -81,36 +80,37 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 	public void getNextMoveRight(){
 		if(jloc == IMAGE_WIDTH + 2)
 			jloc = -2;
-		environContent.setContent(createFrame(iloc, jloc));
+		createFrame(iloc, jloc);
 		jloc++;
 	}//method
 	
 	public void getNextMoveLeft(){
 		if(jloc == IMAGE_WIDTH + 2)
 			jloc = -2;
-		environContent.setContent(createFrame(iloc, IMAGE_WIDTH - 1 - jloc));
+		createFrame(iloc, IMAGE_WIDTH - 1 - jloc);
 		jloc++;
 	}//method
 	
 	public void getNextMoveUp(){
 		if(iloc == IMAGE_WIDTH + 2)
 			iloc = -2;
-		environContent.setContent(createFrame(IMAGE_HEIGHT - 1 - iloc, jloc));
+		createFrame(IMAGE_HEIGHT - 1 - iloc, jloc);
 		iloc++;
 	}//method
 	
 	public void getNextMoveDown(){
 		if(iloc == IMAGE_WIDTH + 2)
 			iloc = -2;
-		environContent.setContent(createFrame(iloc, jloc));
+		createFrame(iloc, jloc);
 		iloc++;
 	}//method
 	
-	public String createFrame(int i, int j){
+	public void createFrame(int i, int j){
 		double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 		fillImageBlank(image);
 		addBlock(i, j, image);	
-		return convertToString(image);		
+		environContent.setContent(image);
+		environContent.setGuiContent(convertToString(image));		
 	}
 	
 	public void fillImageBlank(double[][] image){

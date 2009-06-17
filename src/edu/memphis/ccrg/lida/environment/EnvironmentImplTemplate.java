@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.example.vision.VisionEnvironmentContent;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class TestEnvironment implements Environment, Runnable, Stoppable, ActionSelectionListener {
+public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable, ActionSelectionListener {
 
 	private FrameworkTimer timer;
 	private long threadID;
@@ -15,9 +16,9 @@ public class TestEnvironment implements Environment, Runnable, Stoppable, Action
 	private boolean keepRunning = true;	
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
-	private TestEnvironmentContent environContent = new TestEnvironmentContent();
+	private VisionEnvironmentContent environContent = new VisionEnvironmentContent();
 	
-	public TestEnvironment(FrameworkTimer timer) {
+	public EnvironmentImplTemplate(FrameworkTimer timer) {
 		this.timer = timer;
 		listeners = new ArrayList<EnvironmentListener>();
 	}

@@ -20,6 +20,16 @@ public class Printer{
 	public static void p(String s){
 		System.out.println(s);
 	}
+	
+	public static void print(double[][] a){
+		for(int i = 0; i < a.length; i++){
+			for(int j = 0; j < a[0].length; j++){
+				System.out.print(a[i][j] + " ");
+			}
+			System.out.println("");
+		}
+		System.out.println();
+	}//method
 
 	public static void print(char[][][] a) {
 		for(int i = 0; i < a.length; i++){
