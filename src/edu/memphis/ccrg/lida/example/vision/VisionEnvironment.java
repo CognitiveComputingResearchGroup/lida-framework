@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.environment;
+package edu.memphis.ccrg.lida.example.vision;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
+import edu.memphis.ccrg.lida.environment.TestEnvironmentContent;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 

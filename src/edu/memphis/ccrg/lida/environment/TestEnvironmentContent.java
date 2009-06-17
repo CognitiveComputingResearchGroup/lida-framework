@@ -1,6 +1,5 @@
-package edu.memphis.ccrg.lida.example.environment;
+package edu.memphis.ccrg.lida.environment;
 
-import edu.memphis.ccrg.lida.environment.EnvironmentContent;
 
 public class TestEnvironmentContent implements EnvironmentContent{
 	
