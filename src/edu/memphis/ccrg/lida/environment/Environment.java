@@ -6,4 +6,6 @@ public interface Environment {
 
 	void receiveBehaviorContent(ActionContent content);
 
+	void resetEnvironment();
+
 }
