@@ -25,7 +25,6 @@ public class VisionSensoryMemory implements SensoryMemory, EnvironmentListener{
 	
 	public void processSimContent(){
 		double[][] mat = (double[][])environmentContent.getContent();
-		//Printer.print(mat);
 		sensoryContent.setContent(mat);
 	}
 

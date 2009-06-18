@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.shared.PamNodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
+import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
@@ -89,10 +90,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     //}
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
-    public void sense(){    	
-    	SensoryContent sc = (SensoryContent)sensoryContent.getThis();  
+    public void sense(){    
     	for(FeatureDetector d: featureDetectors)
-    		d.detect(sc);    	
+    		d.detect(sensoryContent);    	
     }//method
         
     /**
