@@ -1,8 +1,6 @@
 package edu.memphis.ccrg.lida.util;
 
 import java.util.Collection;
-import java.util.Set;
-
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;

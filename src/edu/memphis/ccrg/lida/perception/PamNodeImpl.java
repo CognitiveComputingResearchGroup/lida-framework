@@ -8,6 +8,7 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeImpl implements PamNode{
 
+	public static final int DEFAULT_DEPTH = -10;
 	protected final int TYPE_UNDEF = -1;
 	protected final int TYPE_OBJECT = 1;
 	protected final int TYPE_CATEGORY = 2;
@@ -34,7 +35,7 @@ public class PamNodeImpl implements PamNode{
 	protected DecayBehavior decayBehav;
 	
 	private PamNode groundingPamNode;
-	private int layerDepth = 0;
+	private int layerDepth = DEFAULT_DEPTH;
 
 	public PamNodeImpl() {
 		super();

@@ -25,76 +25,46 @@ import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
-	
-    /**
-     * proportion of activation spread to parents
-     */
-    private double upscale = 0.9;     
-    /**
-     * proportion of activation spread to children
-     */
-    private double downscale = 0.5;
-    /**
-     * selectivity for thresholding, % of max activation 
-     */
-    private double selectivity = 0.9;
-    /**
-     * Nodes that receive activation from SM. Key is the node's label.
-     */
-	public List<FeatureDetector> featureDetectors;
-	private PamNodeStructure graph;
-	
+
+	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
+	private PamNodeStructure graph = new PamNodeStructure();
 	private DecayBehavior decayBehavior = new LinearDecayCurve();
-    
-    //For Intermodule communication
-    private List<PAMListener> pamListeners;    
-    private SensoryContent sensoryContent;//Shared variable
-    private BroadcastContent broadcastContent;//Shared variables	
-    private WorkspaceContent topDownEffects;
-	private WorkspaceContent percept;
+    //For percept
+    private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
+    private WorkspaceContent percept = new NodeStructureImpl();
 	private int numNodeInPercept = 0;//for GUI
-      
-    public PerceptualAssociativeMemoryImpl(){
-    	featureDetectors = new ArrayList<FeatureDetector>();
-    	graph = new PamNodeStructure();
-    	
-    	pamListeners = new ArrayList<PAMListener>();
-    	sensoryContent = new SensoryContentImpl();
-    	topDownEffects = new NodeStructureImpl();
-    	percept = new NodeStructureImpl();
-    	broadcastContent = new NodeStructureImpl();	
-    }
-    
-    //SETTING UP PAM    
+	//Shared variables
+    private SensoryContent sensoryContent = new SensoryContentImpl();
+    private BroadcastContent broadcastContent = new NodeStructureImpl();		
+    private WorkspaceContent topDownEffects = new NodeStructureImpl();
+
+    /**
+     * 
+     */
     public void setParameters(Map<String, Object> parameters){    	
 		Object o = parameters.get("upscale");
 		if((o != null)&& (o instanceof Double)) {
 			synchronized(this){
-				upscale = (Double)o;
+				graph.setUpscale((Double)o);				
 			}
-			//System.out.println("new upscale is " + upscale);
 		}
-		//TODO: Graph has its own parameters?
 		o = parameters.get("downscale");
 		if((o != null)&& (o instanceof Double)) 
 			synchronized(this){
-				downscale = (Double)o;
+				graph.setDownscale((Double)o);
 			}		
 		o = parameters.get("selectivity");
 		if ((o != null)&& (o instanceof Double)){
 			synchronized(this){
-				selectivity = (Double)o;   	
+				graph.setSelectivity((Double)o);   	
 			}
-			//System.out.println("new selectivity is " + selectivity);
 		}
-    }//public void setParameters(Map<String, Object> parameters)
+    }//method
     
     public void addToPAM(Set<Node> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
-    	graph.addNodes(nodesToAdd);
-    	//TODO: why did I pass the 2 slipnet params to the node structure?
+		graph.addPamNodes(nodesToAdd);
     	graph.addLinks(linkSet);    	
-    	
     }//method
     
     //INTERMODULE COMMUNICATION
@@ -121,31 +91,15 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){    	
     	SensoryContent sc = (SensoryContent)sensoryContent.getThis();  
-    	for(FeatureDetector d: featureDetectors){
+    	for(FeatureDetector d: featureDetectors)
     		d.detect(sc);    	
-    	}
     }//method
         
     /**
      * Pass activation upwards based on the order found in the layerMap
      */
     public void passActivation(){    	
-    	Map<Integer, Set<Node>> layerMap = graph.createLayerMap();
-    	int layers = layerMap.keySet().size();
-      	for(int i = 0; i < layers - 1; i++){
-      		Set<Node> layerLinkables = layerMap.get(i);
-      		for(Node n: layerLinkables){
-      			double currentActivation = n.getActivation();
-      	
-      			Set<Node> parents = graph.getParents(n);
-      			for(Node parent: parents){      	
-      				double energy = currentActivation * upscale;      				
-      				if(parent instanceof Node)
-      					((Node)parent).excite(energy);
-      			}//for each parent
-      		}//for each linkable in a given layer
-      	}//for each layer
-    	
+    	graph.passActivation();    	
     	syncNodeActivation();   
     	//TODO:this is where the episodic buffer activation may come into play    	
     }//public void passActivation
@@ -170,7 +124,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
         newGraph.addLinks(graph.getLinks());        
         percept = newGraph;
-    }//private void syncNodeActivation
+    }//method
     
     public void sendPercept(){
     	for(int i = 0; i < pamListeners.size(); i++)
@@ -187,28 +141,13 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         }
     }//decay
 
-	public void setDecayCurve(DecayBehavior c) {
+	public void setDecayBehavior(DecayBehavior c) {
 		decayBehavior = c;
 	}
 	
     public void setExciteBehavior(ExciteBehavior behavior){
-    	Collection<Node> nodes = graph.getNodes();
-    	for(Node n: nodes){
-    		n.setExciteBehavior(behavior);
-    	}
-    }//public void setExciteBehavior   
-    
-    public double getUpscale(){
-    	return upscale;
-    }
-    
-    public double getDownscale(){
-    	return downscale;
-    }
-    
-    public double getSelectivity(){
-    	return selectivity;
-    }
+    	graph.setExciteBehavior(behavior);
+    }//method   
 
 	public int getNodeCount() {
 		return graph.getNodes().size();

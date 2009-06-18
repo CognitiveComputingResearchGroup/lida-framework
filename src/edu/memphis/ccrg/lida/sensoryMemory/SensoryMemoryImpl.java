@@ -6,6 +6,10 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 
 public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 	
+	public void addSensoryListener(SensoryListener sml) {
+		
+	}
+	
 	public synchronized void receiveEnvironmentContent(EnvironmentContent ec){
 		
 	}	
@@ -15,10 +19,6 @@ public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 	}
 
 	public void sendSensoryContent(){
-		
-	}
-
-	public void addSensoryListener(SensoryListener sml) {
 		
 	}
 	

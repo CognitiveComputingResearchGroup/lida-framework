@@ -51,12 +51,7 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryL
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public void sendPercept();	
 	public void decay();
-	public void setDecayCurve(DecayBehavior c);
-	
-	public double getUpscale();
-	public double getDownscale();	    
-	public double getSelectivity();
-
+	public void setDecayBehavior(DecayBehavior c);
 	public List<Object> getGuiContent();
 
 }//interface PAMinterface
