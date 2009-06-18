@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 public class VisionSensoryMemory implements SensoryMemory, EnvironmentListener{
 	
 	private VisionEnvironmentContent environmentContent = new VisionEnvironmentContent(); 
-	private SensoryContent sensoryContent = new SensoryContentImpl();
+	private SensoryContent sensoryContent = new VisionSensoryContent();
 	private List<SensoryListener> listeners = new ArrayList<SensoryListener>();
 	
 	public void addSensoryListener(SensoryListener listener) {

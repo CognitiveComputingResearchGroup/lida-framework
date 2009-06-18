@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.sensoryMemory;
  */
 public class SensoryContentImpl implements SensoryContent{
 
-	private Object content = 0;
+	private Object content = null;
 	
 	public synchronized void setContent(Object o){
 		content = o;
