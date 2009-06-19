@@ -34,7 +34,7 @@ public class PamNodeImpl implements PamNode{
 	protected ExciteBehavior exciteBehavior;
 	protected DecayBehavior decayBehav;
 	
-	private PamNode groundingPamNode;
+	private PamNode groundingPamNode = this;
 	private int layerDepth = DEFAULT_DEPTH;
 
 	public PamNodeImpl() {
@@ -263,7 +263,7 @@ public class PamNodeImpl implements PamNode{
 	 * TODO: Is this applicable for pam nodes?
 	 */
 	public void setReferencedNode(PamNode n) {
-		groundingPamNode = n;
+		//do nothing
 	}
 
 	public void setId(long id) {
