@@ -62,10 +62,6 @@ public interface PamNode extends Node{
 	 */
 	public abstract String getLabel();
 
-	public abstract void setLayerDepth(int d);
-
-	public abstract int getLayerDepth();
-
 	/**
 	 * Standard getter for importance.
 	 * @return a double value for importance between 0 and 1.

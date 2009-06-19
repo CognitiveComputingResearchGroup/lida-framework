@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.example.vision.gui.CSMGui;
 import edu.memphis.ccrg.lida.example.vision.gui.ControlPanelGui;
 import edu.memphis.ccrg.lida.example.vision.gui.NodeLinkFlowGui;
 import edu.memphis.ccrg.lida.example.vision.gui.VisualFieldGui;
-import edu.memphis.ccrg.lida.example.vision.pam.PAM_Input;
+import edu.memphis.ccrg.lida.example.vision.pam.PamInput;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
@@ -42,7 +42,7 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodeletDriver;
 
-public class LIDA_Vision implements ThreadSpawner, Runnable{
+public class LidaVision implements ThreadSpawner, Runnable{
 
 	//Perception
 	private VisionEnvironment environment;
@@ -84,7 +84,7 @@ public class LIDA_Vision implements ThreadSpawner, Runnable{
 	private FrameworkTimer timer = new FrameworkTimer(startRunning, threadSleepTime);
 	
 	public static void main(String[] args){
-		new LIDA_Vision().run();
+		new LidaVision().run();
 	}//method
 
 	public void run(){
@@ -136,7 +136,7 @@ public class LIDA_Vision implements ThreadSpawner, Runnable{
 	private void initPAMThread(){
 		pam = new PerceptualAssociativeMemoryImpl(new VisionSensoryContent());
 		String pamInputPath = "";
-		PAM_Input reader = new PAM_Input();
+		PamInput reader = new PamInput();
 		reader.read(pam, pamInputPath);
 		//PAM THREAD		
 		pamDriver = new PAMDriver(pam, timer);

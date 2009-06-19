@@ -32,7 +32,6 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 		linkableMap = new HashMap<Linkable, Set<Link>>();
 		nodes = new HashMap<Long, Node>();
 		links = new HashMap<String, Link>();
-
 	}
 
 	public NodeStructureImpl(String defaultNode, String defaultLink) {

@@ -7,7 +7,6 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
-import java.util.Collection;
 import java.util.Set; 
 import java.util.Map;
 import java.util.List;
@@ -21,24 +20,26 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
-import edu.memphis.ccrg.lida.util.Printer;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
-
+	
+	private final String defaultLink = "edu.memphis.ccrg.lida.shared.LinkImpl";
+	private final String defaultNode = "edu.memphis.ccrg.lida.shared.NodeImpl";
+	private final String defaultPamNode = "edu.memphis.ccrg.lida.perception.PamNodeImpl";
+	//
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
-	private PamNodeStructure graph = new PamNodeStructure();
+	private PamNodeStructure graph = new PamNodeStructure(defaultPamNode, defaultLink);
     //For percept
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
-    private PamNodeStructure percept = new PamNodeStructure();
+    private PamNodeStructure percept = new PamNodeStructure(defaultPamNode, defaultLink);
 	private int numNodeInPercept = 0;//for GUI
 	//Shared variables
     private SensoryContent sensoryContent = new SensoryContentImpl();
-    private BroadcastContent broadcastContent = new NodeStructureImpl();		
-    private WorkspaceContent topDownEffects = new NodeStructureImpl();
-    private NodeStructure preafferantSignal = new NodeStructureImpl();
-    
+    private BroadcastContent broadcastContent = new NodeStructureImpl(defaultNode, defaultLink);		
+    private WorkspaceContent topDownEffects = new NodeStructureImpl(defaultNode, defaultLink);
+    private NodeStructure preafferantSignal = new NodeStructureImpl(defaultNode, defaultLink);
+  
     /**
      * Need to specify a SensoryContent type.
      * 
@@ -71,7 +72,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		}
     }//method
     
-    public void addToPAM(Set<Node> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
+    public void addToPAM(Set<PamNode> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
     	this.featureDetectors = featureDetectors;
 		graph.addPamNodes(nodesToAdd);
     	graph.addLinks(linkSet);    	
@@ -126,7 +127,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         	PamNodeImpl node = (PamNodeImpl)n;
             node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant())//Based on totalActivation
-            	percept.addNode(n);
+            	percept.addPamNode(node);
         }//for      
         numNodeInPercept = percept.getNodes().size();     
     }//method

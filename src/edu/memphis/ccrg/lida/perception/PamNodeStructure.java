@@ -14,10 +14,13 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeStructure extends NodeStructureImpl{
 	
-	private Map<Integer, Set<PamNode>> layerDepthMap = new HashMap<Integer, Set<PamNode>>();
 	private Double upscaleFactor = 0.7;
 	private Double downscaleFactor = 0.5;
 	private Double selectivityThreshold = 0.8;
+
+	public PamNodeStructure(String defaultPamNode, String defaultLink) {
+		super(defaultPamNode, defaultLink);
+	}
 
 	public void setUpscale(Double d) {
 		upscaleFactor  = d;		
@@ -31,7 +34,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 		selectivityThreshold = d;		
 	}
 	
-	private Node addPamNode(PamNode n) {
+	public Node addPamNode(PamNode n) {
 		if (!nodes.keySet().contains(n.getId())){
 			nodes.put(n.getId(), n);
 			linkableMap.put(n, null);
@@ -43,78 +46,27 @@ public class PamNodeStructure extends NodeStructureImpl{
 	/**
 	 * 
 	 */	
-	public void addPamNodes(Collection<Node> nodes){
+	public void addPamNodes(Collection<PamNode> nodes){
 		for(Node n: nodes){
 			PamNodeImpl temp = (PamNodeImpl)n;
-			if(temp.getLayerDepth() == PamNodeImpl.DEFAULT_DEPTH){
-				try {
-					throw new Exception();
-				}catch(Exception e){
-					System.out.println("Cant add pam node w/o first setting its layer depth");
-					e.printStackTrace();
-				}
-			}else
-				addPamNode(temp);
+			addPamNode(temp);
 		}//for
-		
-		refreshLayerMap();
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
 	}//method	
-	
-//	/**
-//   * Will need this eventually if we learn new nodes while the system runs
-//	 */
-//    public int updateLayerDepth(PamNode n) {
-//        n.setLayerDepth(0);
-//        
-//        if(isAtBottom(n))
-//            n.setLayerDepth(0);
-//        else{
-//        	Set<PamNode> children = getChildren(n);
-//            int layerDepth[] = new int[children.size()];
-//            int ild = 0;
-//            for(PamNode child: children) {
-//                layerDepth[ild] = updateLayerDepth(child);
-//                ild++;
-//            }
-//            Arrays.sort(layerDepth);
-//            n.setLayerDepth(layerDepth[layerDepth.length - 1] + 1);
-//        }
-//        return n.getLayerDepth();
-//    }	
-    
-	/**
-	 * 
-	 */
-	public void refreshLayerMap() {
-		layerDepthMap.values().clear();
-		for(Node node: nodes.values()){
-            int layerDepth = ((PamNode)node).getLayerDepth();
-            Set<PamNode> layerNodes = layerDepthMap.get(layerDepth);
-            if(layerNodes == null) {
-                layerNodes = new HashSet<PamNode>();
-                layerDepthMap.put(layerDepth, layerNodes);
-            }
-            layerNodes.add((PamNode) node);
-        }//for
-	}//method
 
 	/**
 	 * Update the min and max activations and selection threshold
-	 * of the Linkables in the layermap* 
+	 * of the Linkables in the layermap
 	 * 
 	 * @param upscale
 	 * @param selectivity
 	 */
 	private void updateActivationThresholds(double upscale, double selectivity){	
-		int layers = layerDepthMap.keySet().size();
-        for(int i = 0; i < layers; i++){
-           for(Linkable n: layerDepthMap.get(i)){
-        	   PamNode pNode = (PamNode)n;
-        	   updateMinActivation(pNode, upscale);
-        	   updateMaxActivation(pNode, upscale);
-        	   updateSelectionThreshold(pNode, selectivity);
-           }//for
+        for(Node n: nodes.values()){
+        	PamNode pNode = (PamNode)n;
+        	updateMinActivation(pNode, upscale);
+        	updateMaxActivation(pNode, upscale);
+        	updateSelectionThreshold(pNode, selectivity);
         }//for	
     }//method
 
@@ -173,7 +125,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 				if(source instanceof PamNode && !source.equals(n))
 					return false;
 			}//for
-		}
+		}//
 		return true;
 	}//method
     
@@ -199,25 +151,27 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public void setNodesExciteBehavior(ExciteBehavior behavior) {
     	for(Node n: nodes.values())
     		n.setExciteBehavior(behavior);
-	}
+	}//
 	
 	public void setNodesDecayBehavior(DecayBehavior behavior) {
     	for(Node n: nodes.values())
     		n.setDecayBehavior(behavior);
-	}
+	}//
 	
 	public void passActivation() {
-		int layers = layerDepthMap.keySet().size();
-        for(int i = 0; i < layers; i++){
-        	Set<PamNode> layerNodes = layerDepthMap.get(i);
-            for(PamNode n: layerNodes){
-      			double currentActivation = n.getActivation();
-      			Set<PamNode> parents = getParents(n);
-      			for(PamNode parent: parents){ 
-      				parent.excite(currentActivation * upscaleFactor);
-      			}//for each parent
-      		}//for each node
-      	}//for each layer
+		//TODO: Do w/o layerDepthMap
+		
+//		int layers = layerDepthMap.keySet().size();
+//        for(int i = 0; i < layers; i++){
+//        	Set<PamNode> layerNodes = layerDepthMap.get(i);
+//            for(PamNode n: layerNodes){
+//      			double currentActivation = n.getActivation();
+//      			Set<PamNode> parents = getParents(n);
+//      			for(PamNode parent: parents){ 
+//      				parent.excite(currentActivation * upscaleFactor);
+//      			}//for each parent
+//      		}//for each node
+//      	}//for each layer
 	}//method
 
 	/**

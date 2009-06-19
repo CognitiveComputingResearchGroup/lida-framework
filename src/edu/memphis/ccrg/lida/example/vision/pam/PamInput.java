@@ -9,6 +9,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.shared.Link;
@@ -16,7 +17,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.strategies.BasicDetectBehavior;
 
-public class PAM_Input {
+public class PamInput {
 
 	//TODO return a boolean for success/fail?
 	public void read(PerceptualAssociativeMemory pam, String inputPath) {
@@ -31,12 +32,10 @@ public class PAM_Input {
 		pam.setParameters(params);
 		
 		//ADD NODES, FeatureDetectors, and LINKS
-		Set<Node> nodes = new HashSet<Node>();
+		Set<PamNode> nodes = new HashSet<PamNode>();
     	NodeFactory factory = NodeFactory.getInstance();
     	factory.addNodeType("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
     	PamNodeImpl gold = (PamNodeImpl)factory.getNode("PamNodeImpl", 1, "gold");
-    	int layerDepthA = 0;
-    	gold.setLayerDepth(layerDepthA);
     	nodes.add(gold);
     	
     	//Feature detectors

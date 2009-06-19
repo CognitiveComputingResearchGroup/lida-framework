@@ -18,7 +18,7 @@ public class VisionFeatureDetector implements FeatureDetector {
 
 	public void detect(SensoryContent sc) {
 		behavior.detectAndExcite(node, sc);
-    	Printer.print((double[][])sc.getContent());
+    	//Printer.print((double[][])sc.getContent());
 	}
 
 	public void setDetectBehavior(DetectBehavior b) {

@@ -29,7 +29,7 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryL
 	 * Each nodes added must be register which requires
 	 * the refresh and buildLayerMap operations (see PAM.java) 
 	 */
-	public void addToPAM(Set<Node> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet);
+	public void addToPAM(Set<PamNode> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet);
 	
 	/**
 	 * Sense the current SenseContent
