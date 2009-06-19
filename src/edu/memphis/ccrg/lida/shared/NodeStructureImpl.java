@@ -21,9 +21,9 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  */
 public class NodeStructureImpl implements NodeStructure, WorkspaceContent, BroadcastContent {
 	
-	private Map<Long, Node> nodes;
+	protected Map<Long, Node> nodes;
 	private Map<String, Link> links;
-	private Map<Linkable, Set<Link>> linkableMap;
+	protected Map<Linkable, Set<Link>> linkableMap;
 	private NodeFactory factory = NodeFactory.getInstance();
 	private String defaultNode;
 	private String defaultLink;
