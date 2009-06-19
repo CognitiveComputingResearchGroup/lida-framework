@@ -6,19 +6,19 @@ import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 
 public class VisionDetectBehavior implements DetectBehavior{
 
+	private double threshold = 0.0;
+	private double excitationAmount = 1.0;
+
 	public void detectAndExcite(PamNode node, SensoryContent sc) {
-		// TODO Auto-generated method stub
-		
-	}
+		node.excite(excitationAmount);
+	}//method
 
 	public void setDetectThreshold(double d) {
-		// TODO Auto-generated method stub
-		
-	}
+		threshold = d;		
+	}//method
 
 	public void setExcitationAmount(double d) {
-		// TODO Auto-generated method stub
-		
-	}
+		excitationAmount  = d;
+	}//method
 
-}
+}//class

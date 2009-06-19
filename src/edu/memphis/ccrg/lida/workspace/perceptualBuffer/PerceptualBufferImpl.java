@@ -14,17 +14,11 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesired
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
-	private WorkspaceContent pamContent;	
-	private List<NodeStructure> perceptBuffer;
-	private List<PerceptualBufferListener> pbListeners;	
+	private WorkspaceContent pamContent = new NodeStructureImpl();	
+	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
+	private List<PerceptualBufferListener> pbListeners = new ArrayList<PerceptualBufferListener>();	
 	private final int PERCEPT_BUFFER_CAPACITY = 2;
 	private FrameworkGui testGui;	
-	
-	public PerceptualBufferImpl(){
-		pamContent = new NodeStructureImpl();
-		perceptBuffer = new ArrayList<NodeStructure>();
-		pbListeners = new ArrayList<PerceptualBufferListener>();
-	}//constructor
 
 	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
@@ -34,8 +28,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pbListeners.add(l);
 	}
 	
-	public synchronized void receivePAMContent(WorkspaceContent pc){
-		pamContent = pc;
+	public synchronized void receivePAMContent(NodeStructure pc){
+		pamContent = (WorkspaceContent)pc;
 	}
 	
 	private synchronized void storePAMContent(){

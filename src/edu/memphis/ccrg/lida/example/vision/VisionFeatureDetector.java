@@ -8,18 +8,21 @@ import edu.memphis.ccrg.lida.util.Printer;
 
 public class VisionFeatureDetector implements FeatureDetector {
 
+	private DetectBehavior behavior;
+	private PamNodeImpl node;
+
 	public VisionFeatureDetector(PamNodeImpl pNode, VisionDetectBehavior b) {
-		// TODO Auto-generated constructor stub
+		node = pNode;
+		behavior = b;
 	}
 
-	public void detect(SensoryContent sm) {
-		// TODO Auto-generated method stub
-    	Printer.print((double[][])sm.getContent());
+	public void detect(SensoryContent sc) {
+		behavior.detectAndExcite(node, sc);
+    	Printer.print((double[][])sc.getContent());
 	}
 
 	public void setDetectBehavior(DetectBehavior b) {
-		// TODO Auto-generated method stub
-
+		behavior = b;
 	}
 
 }

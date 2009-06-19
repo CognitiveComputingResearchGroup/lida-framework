@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.PamNodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -29,15 +30,24 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	private PamNodeStructure graph = new PamNodeStructure();
-	private DecayBehavior decayBehavior = new LinearDecayCurve();
     //For percept
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
-    private WorkspaceContent percept = new NodeStructureImpl();
+    private PamNodeStructure percept = new PamNodeStructure();
 	private int numNodeInPercept = 0;//for GUI
 	//Shared variables
     private SensoryContent sensoryContent = new SensoryContentImpl();
     private BroadcastContent broadcastContent = new NodeStructureImpl();		
     private WorkspaceContent topDownEffects = new NodeStructureImpl();
+    private NodeStructure preafferantSignal = new NodeStructureImpl();
+    
+    /**
+     * Need to specify a SensoryContent type.
+     * 
+     * @param whatKindOfSC
+     */
+    public PerceptualAssociativeMemoryImpl(SensoryContent whatKindOfSC){
+    	sensoryContent = whatKindOfSC;
+    }
 
     /**
      * 
@@ -85,9 +95,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		broadcastContent = bc;		
 	}
     
-    //public synchronized void receivePreafferentSignal(PreafferentContent pc){
-    	//TODO: eventually implement
-    //}
+    public synchronized void receivePreafferentSignal(NodeStructure ns){
+    	//TODO: impl
+    }
 	
 	//FUNDAMENTAL PAM FUNCTIONS        
     public void sense(){    
@@ -101,29 +111,25 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     public void passActivation(){    	
     	graph.passActivation();    	
     	syncNodeActivation();   
-    	//TODO:this is where the episodic buffer activation may come into play    	
-    }//public void passActivation
+    	//TODO:this is where the episodic buffer activation comes into play    	
+    }//method
     
     /**
-     * Synchronizes this PAM by updating the percept and percept history. First
-     * the percept is cleared, and then all relevant nodes are put in a new
-     * percept. Last, the new percept is added to the percept history.
-     * @see RyanPamNode#synchronize()
+     * Clear the percept's nodes. Go through graph's nodes
+     * and add those above threshold to the percept.
+     * 
+     * TODO: If links aren't Node then this method needs to be 
+     * expanded to include links.
      */
     private void syncNodeActivation(){
-        NodeStructureImpl newGraph = new NodeStructureImpl();
-        Collection<Node> nodes = graph.getNodes();
-
-        for(Node n: nodes){
+        percept.clearNodes();
+        for(Node n: graph.getNodes()){
         	PamNodeImpl node = (PamNodeImpl)n;
             node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant())//Based on totalActivation
-            	newGraph.addNode(node);
+            	percept.addNode(n);
         }//for      
-        numNodeInPercept = newGraph.getNodes().size();
-        //TODO: this isn't a complete graph copy. want to get the links passed on for now. 
-        newGraph.addLinks(graph.getLinks());        
-        percept = newGraph;
+        numNodeInPercept = percept.getNodes().size();     
     }//method
     
     public void sendPercept(){
@@ -132,30 +138,16 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//method
     
     public void decay() {
-    	Collection<Node> nodes = graph.getNodes();
-        for(Node n: nodes){
-        	if(n instanceof PamNode){
-        		PamNode temp = (PamNode)n;
-        		temp.decay(decayBehavior);   
-        	}
-        }
-    }//decay
+    	graph.decayNodes();       	
+    }//method
 
-	public void setDecayBehavior(DecayBehavior c) {
-		decayBehavior = c;
+	public void setDecayBehavior(DecayBehavior b) {
+		graph.setDecayBehavior(b);
 	}
 	
     public void setExciteBehavior(ExciteBehavior behavior){
     	graph.setExciteBehavior(behavior);
     }//method   
-
-	public int getNodeCount() {
-		return graph.getNodes().size();
-	}
-
-	public int getLinkCount() {
-		return graph.getLinkCount();
-	}
 
 	public List<Object> getGuiContent() {
 		List<Object> content = new ArrayList<Object>();

@@ -7,6 +7,7 @@ import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.BroadcastBuffer.BroadcastBuffer;
 import edu.memphis.ccrg.lida.workspace.BroadcastBuffer.BroadcastBufferListener;
@@ -101,8 +102,8 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 
 	//****Input into the Workspace from other Modules is sent to the appropriate
 	//submodules
-	public void receivePAMContent(WorkspaceContent pc) {
-		perceptualBuffer.receivePAMContent(pc);		
+	public void receivePAMContent(NodeStructure ns) {
+		perceptualBuffer.receivePAMContent(ns);		
 	}
 	public void receiveLocalAssociation(WorkspaceContent association) {
 		episodicBuffer.receiveLocalAssociation(association);		

@@ -256,13 +256,14 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public void setActivation(double d) {
-		currentActivation=d;
-		
+		currentActivation = d;
 	}
 
+	/**
+	 * TODO: Is this applicable for pam nodes?
+	 */
 	public void setReferencedNode(PamNode n) {
-		//groundingPamNode = n;
-		//TODO the referenced node should be a PamNode only, not node
+		groundingPamNode = n;
 	}
 
 	public void setId(long id) {
@@ -286,8 +287,7 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public void printActivationString() {
-		// TODO Auto-generated method stub
-		
-	}
+		System.out.println(id + " total activation: " + totalActivation);	
+	}//method
 
-}
+}//class

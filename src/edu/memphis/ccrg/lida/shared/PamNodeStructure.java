@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeStructure extends NodeStructureImpl{
@@ -200,8 +201,13 @@ public class PamNodeStructure extends NodeStructureImpl{
 	//************END OF ADDING NODE RELATED METHODS*************	
 
 	public void setExciteBehavior(ExciteBehavior behavior) {
-    	for(Node n: nodes.values())
+    	for(PamNode n: nodes.values())
     		n.setExciteBehavior(behavior);
+	}
+	
+	public void setDecayBehavior(DecayBehavior behavior) {
+    	for(PamNode n: nodes.values())
+    		n.setDecayBehavior(behavior);
 	}
 	
 	public void passActivation() {
@@ -211,9 +217,8 @@ public class PamNodeStructure extends NodeStructureImpl{
             for(PamNode n: layerNodes){
       			double currentActivation = n.getActivation();
       			Set<PamNode> parents = getParents(n);
-      			for(Node parent: parents){      	    				
-      				if(parent instanceof Node)
-      					((Node)parent).excite(currentActivation * upscaleFactor);
+      			for(PamNode parent: parents){ 
+      				parent.excite(currentActivation * upscaleFactor);
       			}//for each parent
       		}//for each node
       	}//for each layer
@@ -258,6 +263,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 		}
 		return children;
 	}//method
+	
+	public void clearNodes(){
+		nodes.clear();
+	}
 
 	/**
 	 * Simple utility method
@@ -266,5 +275,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 		for(Node n: nodes.values())
 			((PamNodeImpl)n).printActivationString();
 	}//method
+
+	public void decayNodes() {
+		for(PamNode n: nodes.values())
+			n.decay();
+	}
 
 }//class
