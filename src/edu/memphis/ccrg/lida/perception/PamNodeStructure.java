@@ -5,22 +5,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeStructure extends NodeStructureImpl{
-	
-	private Map<Long, PamNode> nodes = new HashMap<Long, PamNode>();
-	private Map<String, Link> links = new HashMap<String, Link>();
-	private Map<Linkable, Set<Link>> linkableMap = new HashMap<Linkable, Set<Link>>();
-	private NodeFactory factory = NodeFactory.getInstance();
-	private String defaultNode = "edu.memphis.ccrg.lida.perception.PamNodeImpl";
 	
 	private Map<Integer, Set<PamNode>> layerDepthMap = new HashMap<Integer, Set<PamNode>>();
 	private Double upscaleFactor = 0.7;
@@ -204,13 +196,13 @@ public class PamNodeStructure extends NodeStructureImpl{
 	
 	//************END OF ADDING NODE RELATED METHODS*************	
 
-	public void setExciteBehavior(ExciteBehavior behavior) {
-    	for(PamNode n: nodes.values())
+	public void setNodesExciteBehavior(ExciteBehavior behavior) {
+    	for(Node n: nodes.values())
     		n.setExciteBehavior(behavior);
 	}
 	
-	public void setDecayBehavior(DecayBehavior behavior) {
-    	for(PamNode n: nodes.values())
+	public void setNodesDecayBehavior(DecayBehavior behavior) {
+    	for(Node n: nodes.values())
     		n.setDecayBehavior(behavior);
 	}
 	
@@ -272,17 +264,17 @@ public class PamNodeStructure extends NodeStructureImpl{
 		nodes.clear();
 	}
 
+	public void decayNodes(){
+		for(Node n: nodes.values())
+			n.decay();
+	}//method
+	
 	/**
 	 * Simple utility method
 	 */
 	public void printPamNodeActivations() {
 		for(Node n: nodes.values())
 			((PamNodeImpl)n).printActivationString();
-	}//method
-
-	public void decayNodes() {
-		for(PamNode n: nodes.values())
-			n.decay();
 	}//method
 
 }//class

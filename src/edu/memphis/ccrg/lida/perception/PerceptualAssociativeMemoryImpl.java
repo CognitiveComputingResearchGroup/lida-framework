@@ -141,11 +141,11 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//method
 
 	public void setDecayBehavior(DecayBehavior b) {
-		graph.setDecayBehavior(b);
+		graph.setNodesDecayBehavior(b);
 	}
 	
     public void setExciteBehavior(ExciteBehavior behavior){
-    	graph.setExciteBehavior(behavior);
+    	graph.setNodesExciteBehavior(behavior);
     }//method   
 
 	public List<Object> getGuiContent() {
