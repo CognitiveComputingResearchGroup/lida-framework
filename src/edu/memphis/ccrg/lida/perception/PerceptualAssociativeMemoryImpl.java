@@ -7,6 +7,7 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.HashSet;
 import java.util.Set; 
 import java.util.Map;
 import java.util.List;
@@ -108,8 +109,12 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     /**
      * Pass activation upwards based on the order found in the layerMap
      */
-    public void passActivation(){    	
-    	graph.passActivation();    	
+    public void passActivation(){    
+    	Set<PamNode> bottomNodes = new HashSet<PamNode>();
+		for(FeatureDetector fd: featureDetectors)
+			bottomNodes.add(fd.getPamNode());
+    	
+    	graph.passActivation(bottomNodes);    	
     	syncNodeActivation();   
     	//TODO:this is where the episodic buffer activation comes into play    	
     }//method
@@ -127,7 +132,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         	PamNodeImpl node = (PamNodeImpl)n;
             node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant())//Based on totalActivation
-            	percept.addPamNode(node);
+            	percept.addNode(node);
         }//for      
         numNodeInPercept = percept.getNodes().size();     
     }//method

@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.perception;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida.shared.Link;
@@ -34,23 +35,13 @@ public class PamNodeStructure extends NodeStructureImpl{
 		selectivityThreshold = d;		
 	}
 	
-	public Node addPamNode(PamNode n) {
-		if (!nodes.keySet().contains(n.getId())){
-			nodes.put(n.getId(), n);
-			linkableMap.put(n, null);
-			return n;
-		}
-		return null;
-	}//method
-	
 	/**
 	 * 
 	 */	
 	public void addPamNodes(Collection<PamNode> nodes){
-		for(Node n: nodes){
-			PamNodeImpl temp = (PamNodeImpl)n;
-			addPamNode(temp);
-		}//for
+		for(Node n: nodes)
+			addNode(n);
+
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
 	}//method	
 
@@ -61,8 +52,9 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * @param upscale
 	 * @param selectivity
 	 */
-	private void updateActivationThresholds(double upscale, double selectivity){	
-        for(Node n: nodes.values()){
+	private void updateActivationThresholds(double upscale, double selectivity){
+		Collection<Node> nodes = getNodes();
+        for(Node n: nodes){
         	PamNode pNode = (PamNode)n;
         	updateMinActivation(pNode, upscale);
         	updateMaxActivation(pNode, upscale);
@@ -117,7 +109,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * @return true if n has no children (it is at the 'bottom' of the network)
 	 */
     public boolean isAtBottom(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
+		Set<Link> links = getLinkableMap().get(n);
 		if(links != null){
 			for(Link link: links){
 				Linkable source = link.getSource();
@@ -134,7 +126,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * @return true if n has no parent (it is at the 'top' of the network)
 	 */
 	public boolean isAtTop(Linkable n) {
-		Set<Link> links = linkableMap.get(n);
+		Set<Link> links = getLinkableMap().get(n);
 		if(links != null){
 			for(Link l: links){
 				Linkable sink = l.getSink();
@@ -149,17 +141,23 @@ public class PamNodeStructure extends NodeStructureImpl{
 	//************END OF ADDING NODE RELATED METHODS*************	
 
 	public void setNodesExciteBehavior(ExciteBehavior behavior) {
-    	for(Node n: nodes.values())
+    	for(Node n: getNodes())
     		n.setExciteBehavior(behavior);
 	}//
 	
 	public void setNodesDecayBehavior(DecayBehavior behavior) {
-    	for(Node n: nodes.values())
+    	for(Node n: getNodes())
     		n.setDecayBehavior(behavior);
 	}//
 	
-	public void passActivation() {
+	public void passActivation(Set<PamNode> nodesToPassFrom) {
 		//TODO: Do w/o layerDepthMap
+		
+		while(nodesToPassFrom.size() != 0){
+//			for()
+//			Set<PamNode> parents = 
+			
+		}
 		
 //		int layers = layerDepthMap.keySet().size();
 //        for(int i = 0; i < layers; i++){
@@ -183,7 +181,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 */
 	public Set<PamNode> getParents(Node n) {
 		Set<PamNode> parents = new HashSet<PamNode>();
-		Set<Link> links = linkableMap.get(n);
+		Set<Link> links = getLinkableMap().get(n);
 		if(links != null){
 			for(Link l: links){
 				Linkable sink = l.getSink();//Sinks are 'above' this node. 
@@ -203,7 +201,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 */
 	public Set<PamNode> getChildren(Linkable n) {
 		Set<PamNode> children = new HashSet<PamNode>();
-		Set<Link> links = linkableMap.get(n);
+		Set<Link> links = getLinkableMap().get(n);
 		if(links != null){
 			for(Link l: links){
 				Linkable source = l.getSource();//Sources are 'below' this node.
@@ -213,13 +211,9 @@ public class PamNodeStructure extends NodeStructureImpl{
 		}
 		return children;
 	}//method
-	
-	public void clearNodes(){
-		nodes.clear();
-	}
 
 	public void decayNodes(){
-		for(Node n: nodes.values())
+		for(Node n: getNodes())
 			n.decay();
 	}//method
 	
@@ -227,7 +221,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * Simple utility method
 	 */
 	public void printPamNodeActivations() {
-		for(Node n: nodes.values())
+		for(Node n: getNodes())
 			((PamNodeImpl)n).printActivationString();
 	}//method
 

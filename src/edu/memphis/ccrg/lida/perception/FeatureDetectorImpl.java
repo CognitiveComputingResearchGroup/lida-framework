@@ -26,7 +26,7 @@ public class FeatureDetectorImpl implements FeatureDetector{
     	detectBehav = b;
     }
 	
-	public PamNodeImpl getNode(){
+	public PamNode getPamNode(){
 		return pamNode;
 	}
 

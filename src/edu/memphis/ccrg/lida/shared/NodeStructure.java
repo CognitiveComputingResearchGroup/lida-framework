@@ -31,6 +31,8 @@ public interface NodeStructure {
 	public abstract void deleteLinkable(Linkable l);
 
 	public abstract void deleteNode(Node n);
+	
+	public abstract void clearNodes();
 
 	public abstract Collection<Link> getLinks();
 

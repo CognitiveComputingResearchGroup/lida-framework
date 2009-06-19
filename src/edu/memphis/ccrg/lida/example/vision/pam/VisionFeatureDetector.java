@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.example.vision.pam;
 
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
+import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
@@ -23,6 +24,10 @@ public class VisionFeatureDetector implements FeatureDetector {
 
 	public void setDetectBehavior(DetectBehavior b) {
 		behavior = b;
+	}
+
+	public PamNode getPamNode() {
+		return node;
 	}
 
 }

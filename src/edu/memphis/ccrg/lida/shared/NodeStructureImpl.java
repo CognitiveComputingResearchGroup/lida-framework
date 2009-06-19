@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
@@ -21,9 +20,9 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  */
 public class NodeStructureImpl implements NodeStructure, WorkspaceContent, BroadcastContent {
 	
-	protected Map<Long, Node> nodes;
+	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
-	protected Map<Linkable, Set<Link>> linkableMap;
+	private Map<Linkable, Set<Link>> linkableMap;
 	private NodeFactory factory = NodeFactory.getInstance();
 	private String defaultNode;
 	private String defaultLink;
@@ -397,5 +396,9 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 		
 		return result;
 	}//method
+
+	public void clearNodes() {
+		nodes = new HashMap<Long, Node>();		
+	}
 
 }//class

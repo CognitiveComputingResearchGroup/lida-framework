@@ -4,6 +4,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 
 public interface FeatureDetector {
-	public void detect(SensoryContent sm); 
-	public void setDetectBehavior(DetectBehavior b);
+	public abstract void detect(SensoryContent sm); 
+	public abstract void setDetectBehavior(DetectBehavior b);
+	public abstract PamNode getPamNode();
 }
