@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.vision;
+package edu.memphis.ccrg.lida.example.vision.environ_SM;
 
 import edu.memphis.ccrg.lida.environment.EnvironmentContent;
 

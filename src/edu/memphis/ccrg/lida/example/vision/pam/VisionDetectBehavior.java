@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.vision;
+package edu.memphis.ccrg.lida.example.vision.pam;
 
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.example.vision.VisionEnvironmentContent;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 
@@ -16,7 +15,7 @@ public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable
 	private boolean keepRunning = true;	
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
-	private VisionEnvironmentContent environContent = new VisionEnvironmentContent();
+	private EnvironmentContent environContent = null;
 	
 	public EnvironmentImplTemplate(FrameworkTimer timer) {
 		this.timer = timer;
