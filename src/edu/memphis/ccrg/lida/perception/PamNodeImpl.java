@@ -31,7 +31,7 @@ public class PamNodeImpl implements PamNode{
 	protected String label;
 	protected int type = 0;
 	protected ExciteBehavior exciteBehavior;
-	protected DecayBehavior decayBehav;
+	protected DecayBehavior decayBehavior;
 	
 	private PamNode groundingPamNode = this;
 
@@ -39,8 +39,19 @@ public class PamNodeImpl implements PamNode{
 		super();
 	}
 
-	public PamNodeImpl(PamNodeImpl pamNodeImpl) {
-		//super(pamNodeImpl);
+	public PamNodeImpl(PamNodeImpl p) {
+		selectionThreshold = p.selectionThreshold;
+		importance = p.importance;
+		minActivation = p.minActivation;
+		maxActivation = p.maxActivation;
+		totalActivation = p.totalActivation;
+		baselevelActivation = p.baselevelActivation;
+		currentActivation = p.currentActivation;
+		id = p.id;
+		label = p.label;
+		type = p.type;
+		exciteBehavior = p.exciteBehavior;
+		decayBehavior = p.decayBehavior;
 	}
 
 	/**
@@ -89,7 +100,7 @@ public class PamNodeImpl implements PamNode{
 	 * 
 	 */
 	public void decay() {
-	    currentActivation = decayBehav.decay(currentActivation);
+	    currentActivation = decayBehavior.decay(currentActivation);
 	}
 
 	public void decay(DecayBehavior db) {
@@ -101,7 +112,7 @@ public class PamNodeImpl implements PamNode{
 	 * @param b
 	 */
 	public void setDecayBehav(DecayBehavior b) {
-		decayBehav = b;		
+		decayBehavior = b;		
 	}
 
 	/**
@@ -129,7 +140,7 @@ public class PamNodeImpl implements PamNode{
 	 */
 	public void setMaxActivation(double activ) {
 		maxActivation = activ; 
-	}//private void updateMaxActivation()
+	}//method
 
 	/**
 	 * 
@@ -234,7 +245,7 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public void setDecayBehavior(DecayBehavior b) {
-		decayBehav = b;		
+		decayBehavior = b;		
 	}
 
 	public Node copy() {
@@ -242,7 +253,7 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public DecayBehavior getDecayBehavior() {
-		return decayBehav;
+		return decayBehavior;
 	}
 
 	public ExciteBehavior getExciteBehavior() {
