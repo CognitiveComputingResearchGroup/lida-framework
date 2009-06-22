@@ -315,5 +315,17 @@ public class NodeFactory {
 	public void setDefaultNode(String NodeDefaultName) {
 		this.NodeDefaultName = NodeDefaultName;
 	}
+	
+	public void setDefaultLink(String LinkDefaultName) {
+		this.LinkDefaultName = LinkDefaultName;
+	}
+
+	public String getDefaultNode() {
+		return NodeDefaultName;
+	}
+
+	public String getDefaultLink() {
+		return LinkDefaultName;
+	}
 
 }
