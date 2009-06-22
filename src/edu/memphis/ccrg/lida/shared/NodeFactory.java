@@ -43,6 +43,9 @@ public class NodeFactory {
 		LinkDefaultName = "edu.memphis.ccrg.lida.shared.LinkImpl";
 		defaultDecay = new LinearDecayCurve();
 		defaultExcite = new BasicExciteBehavior();
+		nodeClass.put("NodeImpl", NodeDefaultName);
+		nodeClass.put("LinkImpl", LinkDefaultName);
+		nodeClass.put("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
 	}
 
 	public void addDecayBehavior(String name, DecayBehavior decay) {

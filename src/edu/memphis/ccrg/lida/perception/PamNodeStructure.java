@@ -18,6 +18,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 	private Double upscaleFactor = 0.7;
 	private Double downscaleFactor = 0.5;
 	private Double selectivityThreshold = 0.8;
+	
+	public PamNodeStructure(){
+		super("PamNodeImpl", "LinkImpl");
+	}
 
 	public PamNodeStructure(String defaultPamNode, String defaultLink) {
 		super(defaultPamNode, defaultLink);

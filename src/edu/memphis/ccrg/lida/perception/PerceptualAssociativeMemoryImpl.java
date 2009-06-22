@@ -25,15 +25,11 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
-	private final String defaultLink = "edu.memphis.ccrg.lida.shared.LinkImpl";
-	private final String defaultNode = "edu.memphis.ccrg.lida.shared.NodeImpl";
-	private final String defaultPamNode = "edu.memphis.ccrg.lida.perception.PamNodeImpl";
-	//
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
-	private PamNodeStructure graph = new PamNodeStructure(defaultPamNode, defaultLink);
+	private PamNodeStructure graph = new PamNodeStructure();
     //For percept
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
-    private PamNodeStructure percept = new PamNodeStructure(defaultPamNode, defaultLink);
+    private NodeStructureImpl percept = new NodeStructureImpl();
 	private int numNodeInPercept = 0;//for GUI
 	//Shared variables
     private SensoryContent sensoryContent = new SensoryContentImpl();
