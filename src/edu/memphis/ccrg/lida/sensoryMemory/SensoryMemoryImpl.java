@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 
 public class SensoryMemoryImpl implements SensoryMemory, EnvironmentListener{
 	
-	public void addSensoryListener(SensoryListener sml) {
+	public void addSensoryListener(SensoryMemoryListener sml) {
 		
 	}
 	

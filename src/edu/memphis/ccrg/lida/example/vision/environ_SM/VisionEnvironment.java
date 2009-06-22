@@ -45,8 +45,7 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 			getNextMoveDown();
 			getNextMoveRight();
 	
-			for(int i = 0; i < listeners.size(); i++)
-				(listeners.get(i)).receiveEnvironmentContent(environContent);
+			sendContent();
 			
 			if(actionHasChanged){
 				latestAction = (Integer)actionContent.getContent();
@@ -61,21 +60,31 @@ public class VisionEnvironment implements Environment, Runnable, Stoppable, Acti
 		}//while
 		
 	}//method
+	
+	public void sendContent(){
+		for(int i = 0; i < listeners.size(); i++)
+			(listeners.get(i)).receiveEnvironmentContent(environContent);
+	}
 
 	public void stopRunning() {
 		keepRunning = false;
 	}
 
 	public void resetEnvironment() {
-		// TODO Auto-generated method stub
-		//reset environ
+		iloc = -1;
+		jloc = -1;
+//		double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
+//		fillImageBlank(image);	
+//		environContent.setContent(image);
+//		environContent.setGuiContent(convertToString(image));
+//		sendContent();
 	}//method
 	
 	//************Specific methods**************
 	private final double MIN_VALUE = 0.0;
 	private final double MAX_VALUE = 1.0;
-	private int iloc = 2;
-	private int jloc = 2;
+	private int iloc = -1;
+	private int jloc = -1;
 	
 	public void getNextMoveRight(){
 		if(jloc == IMAGE_WIDTH + 2)

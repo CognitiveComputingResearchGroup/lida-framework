@@ -221,18 +221,16 @@ public class ControlPanelGui extends javax.swing.JFrame {
     private void resetEnvironmentButtonClicked(java.awt.event.ActionEvent evt) {  
     	actionSelection.stopActionSelection();
     	refreshGuiValues();
-        //timer.haveThreadRunOnceThenPause();
+
     	isPaused = !isPaused;
 		if(isPaused)
 			statusLabel.setText("PAUSED");
 		else
 			statusLabel.setText("RUNNING");
     	timer.toggleRunningThreads();
+    	
     	environment.resetEnvironment();
-    	
-    	
     	try{Thread.sleep(200);}catch(Exception e){}
-    	//WumpusEnvironmentGui.messageTextField.setText("");
     	
     	isPaused = !isPaused;
 		if(isPaused)

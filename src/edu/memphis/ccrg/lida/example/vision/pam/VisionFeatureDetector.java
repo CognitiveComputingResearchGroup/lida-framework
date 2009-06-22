@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.example.vision.pam;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 import edu.memphis.ccrg.lida.util.Printer;
 
@@ -17,7 +17,7 @@ public class VisionFeatureDetector implements FeatureDetector {
 		behavior = b;
 	}
 
-	public void detect(SensoryContent sc) {
+	public void detect(SensoryMemoryContent sc) {
 		behavior.detectAndExcite(node, sc);
     	//Printer.print((double[][])sc.getContent());
 	}
@@ -30,4 +30,8 @@ public class VisionFeatureDetector implements FeatureDetector {
 		return node;
 	}
 
-}
+	public void setNode(PamNode node) {
+		this.node = (PamNodeImpl) node;
+	}
+
+}//class

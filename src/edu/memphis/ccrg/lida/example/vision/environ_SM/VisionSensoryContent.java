@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.example.vision.environ_SM;
 
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 
-public class VisionSensoryContent implements SensoryContent {
+public class VisionSensoryContent implements SensoryMemoryContent {
 
 	private double[][] image = new double[1][1];
 	

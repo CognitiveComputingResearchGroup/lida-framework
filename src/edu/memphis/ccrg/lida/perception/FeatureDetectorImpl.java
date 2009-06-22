@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.perception;
 
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
 
 public class FeatureDetectorImpl implements FeatureDetector{
@@ -18,7 +18,7 @@ public class FeatureDetectorImpl implements FeatureDetector{
 		pamNode = n.pamNode;
 	}
 
-    public void detect(SensoryContent sc){ 
+    public void detect(SensoryMemoryContent sc){ 
     	detectBehav.detectAndExcite(pamNode, sc);
     }    
 
@@ -28,6 +28,10 @@ public class FeatureDetectorImpl implements FeatureDetector{
 	
 	public PamNode getPamNode(){
 		return pamNode;
+	}
+
+	public void setNode(PamNode node) {
+		pamNode = (PamNodeImpl) node;
 	}
 
 }//class

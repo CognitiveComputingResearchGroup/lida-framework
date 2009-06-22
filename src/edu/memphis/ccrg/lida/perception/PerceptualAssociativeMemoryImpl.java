@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContent;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryContentImpl;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -25,25 +25,26 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
-	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	private PamNodeStructure graph = new PamNodeStructure();
-    //For percept
+	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
+	private NodeStructureImpl percept = new NodeStructureImpl();
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
-    private NodeStructureImpl percept = new NodeStructureImpl();
-	private int numNodeInPercept = 0;//for GUI
 	//Shared variables
-    private SensoryContent sensoryContent = new SensoryContentImpl();
-    private BroadcastContent broadcastContent = new NodeStructureImpl();		
-    private WorkspaceContent topDownEffects = new NodeStructureImpl();
+    private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
+    private WorkspaceContent topDownContent = new NodeStructureImpl();
+    private BroadcastContent broadcastContent = new NodeStructureImpl();	
     private NodeStructure preafferantSignal = new NodeStructureImpl();
+    //for GUI
+	private int numNodesInPercept = 0;
+	private int numLinksInPercept = 0;
   
     /**
      * Need to specify a SensoryContent type.
      * 
-     * @param whatKindOfSC
+     * @param kindOfSensoryContent
      */
-    public PerceptualAssociativeMemoryImpl(SensoryContent whatKindOfSC){
-    	sensoryContent = whatKindOfSC;
+    public PerceptualAssociativeMemoryImpl(SensoryMemoryContent kindOfSensoryContent){
+    	sensoryMemoryContent = kindOfSensoryContent;
     }
 
     /**
@@ -69,23 +70,29 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		}
     }//method
     
-    public void addToPAM(Set<PamNode> nodesToAdd, List<FeatureDetector> featureDetectors, Set<Link> linkSet){
-    	this.featureDetectors = featureDetectors;
-		graph.addPamNodes(nodesToAdd);
-    	graph.addLinks(linkSet);    	
+    public void addToPAM(Set<PamNode> nodes, List<FeatureDetector> ftDetectors, Set<Link> links){
+    	featureDetectors = ftDetectors;
+		graph.addPamNodes(nodes);
+    	graph.addLinks(links);  
+    	
+    	for(FeatureDetector fd: featureDetectors){
+    		long id = fd.getPamNode().getId();
+    		fd.setNode((PamNode) graph.getNode(id));
+    	}
+    	
     }//method
     
-    //INTERMODULE COMMUNICATION
+    //******INTERMODULE COMMUNICATION******
     public void addPAMListener(PAMListener pl){
 		pamListeners.add(pl);
 	}
     
-    public synchronized void receiveSense(SensoryContent sc){//SensoryContent    	
-    	sensoryContent = sc;    	
+    public synchronized void receiveSense(SensoryMemoryContent sc){//SensoryContent    	
+    	sensoryMemoryContent = sc;    	
     }
 
 	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
-		topDownEffects = content;		
+		topDownContent = content;		
 	}
     	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -93,26 +100,26 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	}
     
     public synchronized void receivePreafferentSignal(NodeStructure ns){
-    	//TODO: impl
+    	//TODO: conceptual understanding needed before implementation
     }
 	
-	//FUNDAMENTAL PAM FUNCTIONS        
-    public void sense(){    
+	//******FUNDAMENTAL PAM FUNCTIONS******        
+    public void detectSensoryMemoryContent(){    
     	for(FeatureDetector d: featureDetectors)
-    		d.detect(sensoryContent);    	
+    		d.detect(sensoryMemoryContent);    	
     }//method
         
     /**
      * Pass activation upwards based on the order found in the layerMap
      */
-    public void passActivation(){    
+    public void propogateActivation(){    
     	Set<PamNode> bottomNodes = new HashSet<PamNode>();
 		for(FeatureDetector fd: featureDetectors)
 			bottomNodes.add(fd.getPamNode());
-    	
-    	graph.passActivation(bottomNodes);    	
-    	syncNodeActivation();   
-    	//TODO:this is where the episodic buffer activation comes into play    	
+		
+    	graph.passActivationUpward(bottomNodes);    	
+    	formPercept();   
+    	//TODO:impl episodic buffer activation into activation passing  	
     }//method
     
     /**
@@ -122,23 +129,25 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * TODO: If links aren't Node then this method needs to be 
      * expanded to include links.
      */
-    private void syncNodeActivation(){
+    private void formPercept(){
         percept.clearNodes();
         for(Node n: graph.getNodes()){
         	PamNodeImpl node = (PamNodeImpl)n;
-            node.synchronize();//Needed since excite changes current but not totalActivation.
             if(node.isRelevant())//Based on totalActivation
             	percept.addNode(node);
-        }//for      
-        numNodeInPercept = percept.getNodes().size();     
+        }//for     
+        synchronized(this){
+        	numNodesInPercept = percept.getNodeCount();
+        	numLinksInPercept = percept.getLinkCount();
+        }
     }//method
     
-    public void sendPercept(){
+    public void sendOutPercept(){
     	for(int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receivePAMContent(percept);	    	
     }//method
     
-    public void decay() {
+    public void decayPAM() {
     	graph.decayNodes();       	
     }//method
 
@@ -152,9 +161,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 
 	public List<Object> getGuiContent() {
 		List<Object> content = new ArrayList<Object>();
-		content.add(numNodeInPercept);
-		content.add(((NodeStructureImpl) percept).getLinkCount());
+		content.add(numNodesInPercept);
+		content.add(numLinksInPercept);
 		return content;
-	}
+	}//
 
 }//class PAM.java

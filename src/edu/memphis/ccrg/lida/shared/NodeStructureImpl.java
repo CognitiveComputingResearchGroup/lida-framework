@@ -24,21 +24,21 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 	private Map<String, Link> links;
 	private Map<Linkable, Set<Link>> linkableMap;
 	private NodeFactory factory = NodeFactory.getInstance();
-	private String defaultNode;
-	private String defaultLink;
+	private String defaultNodeType;
+	private String defaultLinkType;
 
 	public NodeStructureImpl() {
 		linkableMap = new HashMap<Linkable, Set<Link>>();
 		nodes = new HashMap<Long, Node>();
 		links = new HashMap<String, Link>();
-		defaultNode = factory.getDefaultNode();
-		defaultLink = factory.getDefaultLink();
+		defaultNodeType = factory.getDefaultNodeType();
+		defaultLinkType = factory.getDefaultLinkType();
 	}
 
 	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
-		this.defaultNode = defaultNode;
-		this.defaultLink = defaultLink;
+		this.defaultNodeType = defaultNode;
+		this.defaultLinkType = defaultLink;
 	}
 
 	public NodeStructureImpl(NodeStructure oldGraph) {		
@@ -78,7 +78,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 	 *            the defaultNode to set
 	 */
 	public void setDefaultNode(String defaultNode) {
-		this.defaultNode = defaultNode;
+		this.defaultNodeType = defaultNode;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 	 *            the defaultLink to set
 	 */
 	public void setDefaultLink(String defaultLink) {
-		this.defaultLink = defaultLink;
+		this.defaultLinkType = defaultLink;
 	}
 
 	/*
@@ -192,7 +192,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 	 * @return The Node to be used in this NodeStructure
 	 */
 	protected Node getNewNode(Node n) {
-		return factory.getNode(n, defaultNode);
+		return factory.getNode(n, defaultNodeType);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 	 */
 	protected Link getNewLink(Link l, Linkable source, Linkable sink,
 			LinkType type) {
-		return factory.getLink(defaultLink, source, sink, l.getType());
+		return factory.getLink(defaultLinkType, source, sink, l.getType());
 	}
 
 	public NodeStructure copy() {
@@ -372,6 +372,10 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 
 	public int getLinkCount() {
 		return links.size();
+	}
+	
+	public int getNodeCount(){
+		return nodes.size();
 	}
 	
 	public void combineNodeStructure(NodeStructure ns) {

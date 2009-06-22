@@ -90,4 +90,6 @@ public interface PamNode extends Node{
 	public abstract void setMaxActivation(double amount);
 	void setSelectionThreshold(double threshold);
 
+	public abstract void synchronize();
+
 }//interface

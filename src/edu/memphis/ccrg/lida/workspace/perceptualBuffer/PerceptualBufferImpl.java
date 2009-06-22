@@ -14,11 +14,16 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesired
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
-	private WorkspaceContent pamContent = new NodeStructureImpl();	
+	private NodeStructureImpl pamContent = new NodeStructureImpl();	
 	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
 	private List<PerceptualBufferListener> pbListeners = new ArrayList<PerceptualBufferListener>();	
-	private final int PERCEPT_BUFFER_CAPACITY = 2;
+	private final int PERCEPT_BUFFER_CAPACITY;
 	private FrameworkGui testGui;	
+	
+	public PerceptualBufferImpl(int capacity){
+		PERCEPT_BUFFER_CAPACITY = capacity;
+		perceptBuffer.add(pamContent);
+	}
 
 	public void addFlowGui(FrameworkGui testGui) {
 		this.testGui = testGui;		
@@ -29,28 +34,24 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	}
 	
 	public synchronized void receivePAMContent(NodeStructure pc){
-		pamContent = (WorkspaceContent)pc;
+		pamContent = (NodeStructureImpl) pc;
 	}
 	
 	private synchronized void storePAMContent(){
-		NodeStructure struct = (NodeStructure)pamContent.getContent();		
-		if(struct != null)
-			perceptBuffer.add(new NodeStructureImpl(struct));		
-		
+		perceptBuffer.add(new NodeStructureImpl(pamContent));		
 		
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
-			perceptBuffer.remove(0);	
+			perceptBuffer.remove(0);//remove oldest	
 	}//method
 	
 	/**
 	 * Main method of the perceptual buffer.  Stores shared content 
 	 * and then sends it to the codelet driver.
 	 */
-	public void sendContentToCodelets(){
+	public void activateCodelets(){
 		storePAMContent();
-		
-		if(perceptBuffer.size() > 0){
-			NodeStructureImpl tempGraph = new NodeStructureImpl((NodeStructure)perceptBuffer.get(0));
+
+		NodeStructureImpl tempGraph = new NodeStructureImpl((NodeStructure)perceptBuffer.get(0));
 			for(int i = 0; i < pbListeners.size(); i++){				
 				pbListeners.get(i).receivePBufferContent(tempGraph);				
 			}//for
@@ -59,7 +60,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 			guiContent.add(tempGraph.getNodes().size());
 			guiContent.add(tempGraph.getLinks().size());			
 			testGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
-		}
+
 			
 	}//sendContent
 

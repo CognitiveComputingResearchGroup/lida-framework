@@ -20,7 +20,7 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 			try{Thread.sleep(timer.getSleepTime());
 			}catch(Exception e){}
 			timer.checkForStartPause();
-			pb.sendContentToCodelets();
+			pb.activateCodelets();
 			
 		}//while	
 	}//method

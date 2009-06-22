@@ -147,33 +147,35 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public void setNodesExciteBehavior(ExciteBehavior behavior) {
     	for(Node n: getNodes())
     		n.setExciteBehavior(behavior);
-	}//
+	}//method
 	
 	public void setNodesDecayBehavior(DecayBehavior behavior) {
     	for(Node n: getNodes())
     		n.setDecayBehavior(behavior);
-	}//
+	}//method
 	
-	public void passActivation(Set<PamNode> nodesToPassFrom) {
-		//TODO: Do w/o layerDepthMap
-		
-		while(nodesToPassFrom.size() != 0){
-//			for()
-//			Set<PamNode> parents = 
-			
-		}
-		
-//		int layers = layerDepthMap.keySet().size();
-//        for(int i = 0; i < layers; i++){
-//        	Set<PamNode> layerNodes = layerDepthMap.get(i);
-//            for(PamNode n: layerNodes){
-//      			double currentActivation = n.getActivation();
-//      			Set<PamNode> parents = getParents(n);
-//      			for(PamNode parent: parents){ 
-//      				parent.excite(currentActivation * upscaleFactor);
-//      			}//for each parent
-//      		}//for each node
-//      	}//for each layer
+	/**
+	 * Pass activation upward starting from the set of nodes
+	 * provided in the argument.
+	 * 
+	 * TODO: Vunerable to cyclic node connections. Ensure elsewhere this won't happen?  
+	 * 
+	 * @param layerOfNodes
+	 */
+	public void passActivationUpward(Set<PamNode> layerOfNodes) {
+		Set<PamNode> parents = new HashSet<PamNode>();
+		while(layerOfNodes.size() != 0){	
+			for(PamNode n: layerOfNodes){
+				n.synchronize();
+		  		double currentActivation = n.getActivation();
+		  		parents = getParents(n);
+		  		for(PamNode parent: parents){ 
+		  			parent.excite(currentActivation * upscaleFactor);
+		  			parents.add(parent);
+		  		}//for each parent
+		  		layerOfNodes = parents;
+			}//for 
+		}//while
 	}//method
 
 	/**

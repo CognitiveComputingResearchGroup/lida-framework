@@ -59,7 +59,8 @@ public class PamNodeImpl implements PamNode{
 	 * activation. Also updates activation buffers. This method should only
 	 * be invoked when activation passing for this cycle is complete.
 	 */
-	public void synchronize() {    	 	
+	public void synchronize() { 
+	//System.out.println(currentActivation + " base " + baselevelActivation + " max " + maxActivation + " tot " + totalActivation);		
 		if((currentActivation + baselevelActivation) > maxActivation)
 			totalActivation = maxActivation;
 		else
@@ -122,7 +123,8 @@ public class PamNodeImpl implements PamNode{
 	  * @return     <code>true</code> if this node is relevant
 	  * @see        #selectionThreshold
 	  */
-	public boolean isRelevant() {    	
+	public boolean isRelevant() {    
+		//System.out.println(totalActivation + " " + selectionThreshold);
 	    return (totalActivation >= selectionThreshold);
 	}
 

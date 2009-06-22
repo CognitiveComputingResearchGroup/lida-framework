@@ -8,7 +8,7 @@ package edu.memphis.ccrg.lida.sensoryMemory;
  * @author ryanjmccall
  *
  */
-public class SensoryContentImpl implements SensoryContent{
+public class SensoryMemoryContentImpl implements SensoryMemoryContent{
 
 	private Object content = null;
 	

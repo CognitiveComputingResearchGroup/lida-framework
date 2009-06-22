@@ -51,7 +51,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	//Episodic memory
 	private TEMImpl tem;
 	private DeclarativeMemoryImpl declarativeMemory;
-	//Workspace
+	// Workspace
 	private WorkspaceImpl workspace;
 	private PerceptualBufferImpl perceptBuffer;
 	private EpisodicBufferImpl episodicBuffer;
@@ -74,7 +74,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	//GUIs
 	private VisualFieldGui visualFieldGui = new VisualFieldGui();
 	private CSMGui csmGui = new CSMGui();
-	private NodeLinkFlowGui nodeLinkFlowGui;
+	private NodeLinkFlowGui nodeLinkFlowGui = new NodeLinkFlowGui();;
 	//Threads & thread control
 	private List<Thread> threads = new ArrayList<Thread>();
 	private List<Stoppable> drivers = new ArrayList<Stoppable>();
@@ -122,7 +122,9 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	}//method
 
 	private void initEnvironmentThread(){
-		environment = new VisionEnvironment(timer, 10, 10);				
+		int height = 10;
+		int width = 10;
+		environment = new VisionEnvironment(timer, height, width);				
 		threads.add(new Thread(environment, "SIMULATION_THREAD"));   
 		drivers.add(environment);	
 	}
@@ -139,14 +141,15 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		PamInput reader = new PamInput();
 		reader.read(pam, pamInputPath);
 		//PAM THREAD		
-		pamDriver = new PAMDriver(pam, timer);
+		pamDriver = new PAMDriver(pam, timer, nodeLinkFlowGui);
 		Thread pamThread = new Thread(pamDriver, "PAM_THREAD");
 		threads.add(pamThread);   
 		drivers.add(pamDriver);
 	}//method
 	
 	private void initPerceptualBufferThread(){
-		perceptBuffer = new PerceptualBufferImpl();	
+		int capacity = 2;
+		perceptBuffer = new PerceptualBufferImpl(capacity);	
 	    perceptBufferDriver = new PerceptualBufferDriver(perceptBuffer, timer);
 		Thread pBufferThread = new Thread(perceptBufferDriver, "PBUFFER");
 		threads.add(pBufferThread);   
@@ -228,14 +231,14 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		
 		//***GUI Showing counts of active nodes and links in the modules ***
 		nodeLinkFlowGui = new NodeLinkFlowGui();
-		pamDriver.addFlowGui(nodeLinkFlowGui);
+		//pamDriver.addFlowGui(nodeLinkFlowGui);
 		perceptBuffer.addFlowGui(nodeLinkFlowGui);
 		episodicBufferDriver.addFlowGui(nodeLinkFlowGui);
 		broadcastBufferDriver.addFlowGui(nodeLinkFlowGui);
 		sbCodeletDriver.addFlowGui(nodeLinkFlowGui);
 		csmDriver.addFlowGui(nodeLinkFlowGui);
 		proceduralMemDriver.addFlowGui(nodeLinkFlowGui);
-		//nodeLinkFlowGui.setVisible(true);
+		nodeLinkFlowGui.setVisible(true);
 		
 		//***GUI to see the contents of the CSM***
 	//	csm.addCSMListener(csmGui);
