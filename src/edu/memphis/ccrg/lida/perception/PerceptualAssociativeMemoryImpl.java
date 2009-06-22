@@ -37,9 +37,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	private int numNodeInPercept = 0;//for GUI
 	//Shared variables
     private SensoryContent sensoryContent = new SensoryContentImpl();
-    private BroadcastContent broadcastContent = new NodeStructureImpl(defaultNode, defaultLink);		
-    private WorkspaceContent topDownEffects = new NodeStructureImpl(defaultNode, defaultLink);
-    private NodeStructure preafferantSignal = new NodeStructureImpl(defaultNode, defaultLink);
+    private BroadcastContent broadcastContent = new NodeStructureImpl();		
+    private WorkspaceContent topDownEffects = new NodeStructureImpl();
+    private NodeStructure preafferantSignal = new NodeStructureImpl();
   
     /**
      * Need to specify a SensoryContent type.
