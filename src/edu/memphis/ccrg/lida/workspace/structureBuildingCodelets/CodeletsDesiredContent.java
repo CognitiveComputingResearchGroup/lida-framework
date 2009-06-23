@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
  * This class defines what a codelet seeks as a being a NodeStructure
  * 
  */
-public class CodeletsDesiredContent {
+public class CodeletsDesiredContent extends NodeStructureImpl {
 	
 	private NodeStructure nodeObjectives;
 	

@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.example.vision.codelets;
 
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodelet;
 
 public class SimpleSBCodelet implements StructBuildCodelet {
@@ -13,7 +13,7 @@ public class SimpleSBCodelet implements StructBuildCodelet {
 		return null;
 	}
 
-	public CodeletsDesiredContent getObjective() {
+	public NodeStructure getObjective() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -23,7 +23,7 @@ public class SimpleSBCodelet implements StructBuildCodelet {
 		
 	}
 
-	public void setContext(CodeletsDesiredContent obj) {
+	public void setContext(NodeStructure obj) {
 		// TODO Auto-generated method stub
 		
 	}

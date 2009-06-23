@@ -6,7 +6,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel, CodeletReadable{
 	
@@ -40,7 +39,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Cod
 		return struct;
 	}
 
-	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
+	public WorkspaceContent lookForContent(NodeStructure objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

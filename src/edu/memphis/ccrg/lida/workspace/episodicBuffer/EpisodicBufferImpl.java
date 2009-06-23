@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 
@@ -24,7 +24,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 		listeners.add(listener);		
 	}
 
-	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
+	public WorkspaceContent lookForContent(NodeStructure objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

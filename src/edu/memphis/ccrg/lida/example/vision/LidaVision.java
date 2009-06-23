@@ -41,7 +41,6 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodeletDriver;
 
 public class LidaVision implements ThreadSpawner, Runnable{
 
@@ -79,7 +78,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	//Threads & thread control
 	private List<Thread> threads = new ArrayList<Thread>();
 	private List<Stoppable> drivers = new ArrayList<Stoppable>();
-	//TODO: Move these to a config. file
+	//TODO: Move these to a config. file?
 	private boolean startRunning = false;
 	private int threadSleepTime = 150;
 	private FrameworkTimer timer = new FrameworkTimer(startRunning, threadSleepTime);
@@ -170,12 +169,6 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		threads.add(pbroadsThread);   
 		drivers.add(broadcastBufferDriver);		
 	}
-	private void initSBCodeletsThread() {
-		sbCodeletDriver = new VisionSBCodeDriver(workspace, timer, nodeLinkFlowGui);		
-		Thread codeletThread = new Thread(sbCodeletDriver, "CODELETS_THREAD");
-		threads.add(codeletThread);   
-		drivers.add(sbCodeletDriver);			
-	}
 	private void initCSMThread(){
 		csmDriver = new CSMDriver(timer, csm, csmGui);
 		Thread csmThread = new Thread(csmDriver, "CSM_THREAD");
@@ -194,7 +187,12 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		workspace = new WorkspaceImpl(perceptBuffer, episodicBuffer, 
 									  broadcastBuffer, csm);		
 	}//method
-	
+	private void initSBCodeletsThread() {
+		sbCodeletDriver = new VisionSBCodeDriver(workspace, timer, nodeLinkFlowGui);		
+		Thread codeletThread = new Thread(sbCodeletDriver, "CODELETS_THREAD");
+		threads.add(codeletThread);   
+		drivers.add(sbCodeletDriver);			
+	}
 	private void initAttentionThread(){
 		attnDriver = new AttentionDriver(timer, csm, globalWksp);
 		Thread attnThread = new Thread(attnDriver, "ATTN_DRIVER");

@@ -2,9 +2,9 @@ package edu.memphis.ccrg.lida.workspace.BroadcastBuffer;
 
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class BroadcastBufferImpl implements Runnable, Stoppable, 
 									BroadcastBuffer, CodeletReadable{
@@ -36,7 +36,7 @@ public class BroadcastBufferImpl implements Runnable, Stoppable,
 		
 	}
 
-	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
+	public WorkspaceContent lookForContent(NodeStructure objective) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -10,7 +10,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletsDesiredContent;
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
@@ -65,7 +64,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	 * for codelets to get Content from the buffer.  Eventually based on an objective.
 	 * Currently objective not used.
 	 */
-	public WorkspaceContent getCodeletsDesiredContent(CodeletsDesiredContent objective) {
+	public WorkspaceContent lookForContent(NodeStructure objective) {
 		NodeStructureImpl content = new NodeStructureImpl();
 		
 		synchronized(this){

@@ -5,6 +5,8 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
@@ -18,13 +20,13 @@ public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildC
 	//
 	private Workspace workspace;
 	private double activation = 1.0;
-	private CodeletsDesiredContent soughtContent = null;
+	private NodeStructure soughtContent = new NodeStructureImpl();
 	private CodeletAction action = new BasicCodeletAction();
 	
 	private List<CodeletReadable> buffersIuse = new ArrayList<CodeletReadable>();
 			
 	public StructBuildCodeletImpl(FrameworkTimer t, List<CodeletReadable> buffers, 
-										double activation, CodeletsDesiredContent obj, CodeletAction a){
+										double activation, NodeStructure obj, CodeletAction a){
 		timer = t;
 		this.activation = activation;
 		soughtContent = obj;
@@ -41,7 +43,7 @@ public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildC
 	}//run
 	
 	private void checkAndWorkOnBuffer(CodeletReadable buffer){		
-		WorkspaceContent bufferContent = buffer.getCodeletsDesiredContent(soughtContent);
+		WorkspaceContent bufferContent = buffer.lookForContent(soughtContent);
 		
 		if(bufferContent != null){
 			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);			
@@ -55,7 +57,7 @@ public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildC
 	public void setActivation(double a){
 		activation = a;
 	}
-	public void setContext(CodeletsDesiredContent content){
+	public void setContext(NodeStructure content){
 		soughtContent = content;
 	}
 	public void setCodeletAction(CodeletAction a){
@@ -64,7 +66,7 @@ public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildC
 	public double getActivation(){
 		return activation;
 	}
-	public CodeletsDesiredContent getObjective(){
+	public NodeStructure getObjective(){
 		return soughtContent;
 	}
 	public CodeletAction getCodeletAction(){
