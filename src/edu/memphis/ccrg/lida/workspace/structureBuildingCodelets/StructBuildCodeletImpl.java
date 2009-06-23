@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
-public class StructureBuildingCodeletImpl implements Runnable, Stoppable, StructureBuildingCodelet{
+public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildCodelet{
 	
 	private boolean keepRunning = true;
 	private long threadID;
@@ -23,7 +23,7 @@ public class StructureBuildingCodeletImpl implements Runnable, Stoppable, Struct
 	
 	private List<CodeletReadable> buffersIuse = new ArrayList<CodeletReadable>();
 			
-	public StructureBuildingCodeletImpl(FrameworkTimer t, List<CodeletReadable> buffers, 
+	public StructBuildCodeletImpl(FrameworkTimer t, List<CodeletReadable> buffers, 
 										double activation, CodeletsDesiredContent obj, CodeletAction a){
 		timer = t;
 		this.activation = activation;

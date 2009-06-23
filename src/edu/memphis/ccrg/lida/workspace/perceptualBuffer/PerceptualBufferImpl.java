@@ -37,13 +37,6 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		pamContent = (NodeStructureImpl) pc;
 	}
 	
-	private synchronized void storePAMContent(){
-		perceptBuffer.add(new NodeStructureImpl(pamContent));		
-		
-		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
-			perceptBuffer.remove(0);//remove oldest	
-	}//method
-	
 	/**
 	 * Main method of the perceptual buffer.  Stores shared content 
 	 * and then sends it to the codelet driver.
@@ -51,18 +44,22 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	public void activateCodelets(){
 		storePAMContent();
 
-		NodeStructureImpl tempGraph = new NodeStructureImpl((NodeStructure)perceptBuffer.get(0));
-			for(int i = 0; i < pbListeners.size(); i++){				
-				pbListeners.get(i).receivePBufferContent(tempGraph);				
-			}//for
-
-			List<Object> guiContent = new ArrayList<Object>();			
-			guiContent.add(tempGraph.getNodes().size());
-			guiContent.add(tempGraph.getLinks().size());			
-			testGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
-
-			
+		NodeStructureImpl copiedStruct = new NodeStructureImpl(perceptBuffer.get(0));
+		for(int i = 0; i < pbListeners.size(); i++)		
+			pbListeners.get(i).receivePBufferContent(copiedStruct);				
+		
+		List<Object> guiContent = new ArrayList<Object>();			
+		guiContent.add(copiedStruct.getNodeCount());
+		guiContent.add(copiedStruct.getLinkCount());			
+		testGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
 	}//sendContent
+	
+	private synchronized void storePAMContent(){
+		perceptBuffer.add(new NodeStructureImpl(pamContent));		
+		
+		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
+			perceptBuffer.remove(0);//remove oldest	
+	}//method
 
 	/**
 	 * for codelets to get Content from the buffer.  Eventually based on an objective.

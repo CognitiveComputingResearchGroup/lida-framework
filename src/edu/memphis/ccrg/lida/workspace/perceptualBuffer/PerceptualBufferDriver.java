@@ -8,12 +8,11 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 	private boolean keepRunning = true;
 	private PerceptualBuffer pb;
 	private FrameworkTimer timer;
-	private long threadID;
 	
 	public PerceptualBufferDriver(PerceptualBuffer pb, FrameworkTimer timer){
 		this.pb = pb;
 		this.timer = timer;
-	}//
+	}//constructor
 
 	public void run(){	
 		while(keepRunning){

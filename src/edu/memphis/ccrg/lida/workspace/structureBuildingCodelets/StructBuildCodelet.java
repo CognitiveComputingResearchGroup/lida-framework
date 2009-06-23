@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import edu.memphis.ccrg.lida.shared.Activatible;
 
-public interface StructureBuildingCodelet extends Activatible {
+public interface StructBuildCodelet extends Activatible {
 	
 	public abstract void setContext(CodeletsDesiredContent obj);
 

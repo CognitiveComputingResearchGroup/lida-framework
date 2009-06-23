@@ -18,8 +18,8 @@ public class ControlPanelGui extends javax.swing.JFrame {
 	private ThreadSpawner motherThread;
 	private Environment environment;
 	boolean isPaused = true;
-	private int sliderMin = 0;
-	private int sliderMax = 500;
+	private int sliderMin = 15;
+	private int sliderMax = 350;
 	private int sliderStartValue = 100;
 	private ThreadSpawner codeletThread;
 	private ActionSelection actionSelection;
