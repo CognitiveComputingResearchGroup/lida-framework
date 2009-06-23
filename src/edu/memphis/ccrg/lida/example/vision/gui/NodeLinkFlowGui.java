@@ -154,9 +154,6 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(173, 173, 173)
-                .add(jLabel12))
-            .add(layout.createSequentialGroup()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jLabel2)
                     .add(layout.createSequentialGroup()
@@ -173,14 +170,13 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
                             .add(jLabel4)
                             .add(pBufferNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(layout.createSequentialGroup()
-                        .add(2, 2, 2)
                         .add(perceptLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(16, 16, 16)
+                        .add(18, 18, 18)
                         .add(pBufferLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(codeletsLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jLabel5)
+                            .add(codeletsLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(codeletsNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -215,12 +211,23 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
                     .add(globalLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel11)
-                    .add(actionNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(actionLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel14)
-                    .add(bBufferNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(bBufferLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(bBufferLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(jLabel14)
+                                .add(bBufferNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel11)
+                            .add(actionNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(actionLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
+            .add(layout.createSequentialGroup()
+                .add(173, 173, 173)
+                .add(jLabel12)
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -240,9 +247,7 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
                             .add(temNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(temLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(layout.createSequentialGroup()
-                            .add(jLabel15)
-                            .add(72, 72, 72))
+                        .add(jLabel15)
                         .add(layout.createSequentialGroup()
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                                 .add(jLabel4)
@@ -272,29 +277,6 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
                             .add(eBufferLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                        .add(layout.createSequentialGroup()
-                            .add(2, 2, 2)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                .add(layout.createSequentialGroup()
-                                    .add(jLabel6)
-                                    .add(72, 72, 72))
-                                .add(layout.createSequentialGroup()
-                                    .add(csmNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                    .add(csmLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                            .add(jLabel5)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(codeletsNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(codeletsLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(layout.createSequentialGroup()
-                        .add(jLabel9)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(globalNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(globalLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .add(jLabel11)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -302,23 +284,45 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(actionLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
+                        .add(jLabel9)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(globalNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(globalLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(layout.createSequentialGroup()
                         .add(jLabel10)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
                                 .add(34, 34, 34)
                                 .add(proceduralLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(proceduralNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                            .add(proceduralNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jLabel5)
+                            .add(jLabel6))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(csmNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(csmLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(layout.createSequentialGroup()
+                                .add(codeletsNodes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(codeletsLinks, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                .add(10, 10, 10))
         );
-        setLocation(100, 430);
+    
         pack();
     }// </editor-fold>
 	
     public void receiveGuiContent(int lidaComponent, List<Object> content) {
 		if(content != null && content.size() > 1){
 			if(FROM_PAM == lidaComponent){
-				perceptNodes.setText(content.get(0) + " k");
-				perceptLinks.setText(content.get(1) + " j");				
+				perceptNodes.setText(content.get(0) + " ");
+				perceptLinks.setText(content.get(1) + " ");				
 			}else if(FROM_PERCEPTUAL_BUFFER == lidaComponent){
 				pBufferNodes.setText(content.get(0) + " ");
 				pBufferLinks.setText(content.get(1) + " ");	
@@ -339,43 +343,43 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
 		}//if 
 	}//method
     
-	//Variables declaration - do not modify
-	private javax.swing.JTextField actionLinks;
-	private javax.swing.JTextField actionNodes;
-	private javax.swing.JTextField bBufferLinks;
-	private javax.swing.JTextField bBufferNodes;
-	private javax.swing.JTextField codeletsLinks;
-	private javax.swing.JTextField codeletsNodes;
-	private javax.swing.JTextField csmLinks;
-	private javax.swing.JTextField csmNodes;
-	private javax.swing.JTextField dmLinks;
-	private javax.swing.JTextField dmNodes;
-	private javax.swing.JTextField eBufferLinks;
-	private javax.swing.JTextField eBufferNodes;
-	private javax.swing.JTextField globalLinks;
-	private javax.swing.JTextField globalNodes;
-	private javax.swing.JLabel jLabel1;
-	private javax.swing.JLabel jLabel10;
-	private javax.swing.JLabel jLabel11;
-	private javax.swing.JLabel jLabel12;
-	private javax.swing.JLabel jLabel13;
-	private javax.swing.JLabel jLabel14;
-	private javax.swing.JLabel jLabel15;
-	private javax.swing.JLabel jLabel16;
-	private javax.swing.JLabel jLabel2;
-	private javax.swing.JLabel jLabel3;
-	private javax.swing.JLabel jLabel4;
-	private javax.swing.JLabel jLabel5;
-	private javax.swing.JLabel jLabel6;
-	private javax.swing.JLabel jLabel9;
-	private javax.swing.JTextField pBufferLinks;
-	private javax.swing.JTextField pBufferNodes;
-	private javax.swing.JTextField perceptLinks;
-	private javax.swing.JTextField perceptNodes;
-	private javax.swing.JTextField proceduralLinks;
-	private javax.swing.JTextField proceduralNodes;
-	private javax.swing.JTextField temLinks;
-	private javax.swing.JTextField temNodes;
-	// End of variables declaration
+ // Variables declaration - do not modify
+    private javax.swing.JTextField actionLinks;
+    private javax.swing.JTextField actionNodes;
+    private javax.swing.JTextField bBufferLinks;
+    private javax.swing.JTextField bBufferNodes;
+    private javax.swing.JTextField codeletsLinks;
+    private javax.swing.JTextField codeletsNodes;
+    private javax.swing.JTextField csmLinks;
+    private javax.swing.JTextField csmNodes;
+    private javax.swing.JTextField dmLinks;
+    private javax.swing.JTextField dmNodes;
+    private javax.swing.JTextField eBufferLinks;
+    private javax.swing.JTextField eBufferNodes;
+    private javax.swing.JTextField globalLinks;
+    private javax.swing.JTextField globalNodes;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField pBufferLinks;
+    private javax.swing.JTextField pBufferNodes;
+    private javax.swing.JTextField perceptLinks;
+    private javax.swing.JTextField perceptNodes;
+    private javax.swing.JTextField proceduralLinks;
+    private javax.swing.JTextField proceduralNodes;
+    private javax.swing.JTextField temLinks;
+    private javax.swing.JTextField temNodes;
+    // End of variables declaration
 
 }//TestGui

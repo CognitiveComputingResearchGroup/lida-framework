@@ -72,7 +72,7 @@ public class VisualFieldGui extends javax.swing.JFrame implements EnvironmentLis
         );
 
         pack();
-        setLocation(530, 0);
+        setLocation(590, 0);
     }// </editor-fold>
 
     // Variables declaration - do not modify
