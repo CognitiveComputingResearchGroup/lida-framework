@@ -13,8 +13,8 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable
 
 public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	
-	private NodeStructureImpl pamContent = new NodeStructureImpl();	
-	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
+	private WorkspaceContent pamContent = new NodeStructureImpl();	
+	private List<WorkspaceContent> perceptBuffer = new ArrayList<WorkspaceContent>();
 	private List<PerceptualBufferListener> pbListeners = new ArrayList<PerceptualBufferListener>();	
 	private final int PERCEPT_BUFFER_CAPACITY;
 	private FrameworkGui testGui;	
@@ -43,7 +43,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	public void activateCodelets(){
 		storePAMContent();
 
-		NodeStructureImpl copiedStruct = new NodeStructureImpl(perceptBuffer.get(0));
+		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) perceptBuffer.get(0));
 		for(int i = 0; i < pbListeners.size(); i++)		
 			pbListeners.get(i).receivePBufferContent(copiedStruct);				
 		
@@ -54,8 +54,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	}//sendContent
 	
 	private synchronized void storePAMContent(){
-		perceptBuffer.add(new NodeStructureImpl(pamContent));		
-		
+		perceptBuffer.add(new NodeStructureImpl((NodeStructure) pamContent));		
+		//Keep the buffer at a fixed size
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);//remove oldest	
 	}//method
@@ -65,17 +65,15 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	 * Currently objective not used.
 	 */
 	public WorkspaceContent lookForContent(NodeStructure objective) {
-		NodeStructureImpl content = new NodeStructureImpl();
-		
+		NodeStructureImpl result = new NodeStructureImpl();
 		synchronized(this){
-			for(NodeStructure struct: perceptBuffer){
-				Collection<Node> nodes = struct.getNodes();					
+			for(WorkspaceContent content: perceptBuffer){
+				Collection<Node> nodes = ((NodeStructure) content).getNodes();					
 				for(Node n: nodes)
-					content.addNode(n);				
+					result.addNode(n);				
 			}//for each struct in the buffer
 		}//synchronized
-		
-		return content;
-	}//getCodeletsObjective
+		return result;
+	}//method
 
 }//PerceptualBuffer

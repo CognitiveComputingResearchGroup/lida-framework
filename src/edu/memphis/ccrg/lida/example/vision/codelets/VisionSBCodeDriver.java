@@ -48,16 +48,9 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 		frameworkTimer = timer;
 		this.flowGui = flowGui;
 		//
-		perceptualCodeletReadables.add(workspace.getCSM());
 		perceptualCodeletReadables.add(workspace.getPerceptualBuffer());
-		//
-		episodicCodeletReadables.add(workspace.getCSM());
 		episodicCodeletReadables.add(workspace.getEpisodicBuffer());
-		//
-		broadcastCodeletReadables.add(workspace.getCSM());
 		broadcastCodeletReadables.add(workspace.getBroadcastBuffer());
-		//
-		allCodeletReadables.add(workspace.getCSM());
 		allCodeletReadables.add(workspace.getPerceptualBuffer());
 		allCodeletReadables.add(workspace.getEpisodicBuffer());
 		allCodeletReadables.add(workspace.getBroadcastBuffer());		
@@ -70,9 +63,9 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 	public void run(){
 		
 		spawnPerceptualCodelet(defaultActiv, defaultObjective, defaultActions);
-		spawnEpisodicCodelet(defaultActiv, defaultObjective, defaultActions);
-		spawnBroadcastCodelet(defaultActiv, defaultObjective, defaultActions);
-		spawnGeneralCodelet(defaultActiv, defaultObjective, defaultActions);
+//		spawnEpisodicCodelet(defaultActiv, defaultObjective, defaultActions);
+//		spawnBroadcastCodelet(defaultActiv, defaultObjective, defaultActions);
+//		spawnGeneralCodelet(defaultActiv, defaultObjective, defaultActions);
 		
 		while(keepRunning){
 			try{Thread.sleep(frameworkTimer.getSleepTime());
@@ -114,8 +107,8 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 	private void spawnNewCodelet(List<CodeletReadable> buffers, double startingActivation, 
 									NodeStructure context, CodeletAction actions){
 		
-		StructBuildCodeletImpl sbc = new StructBuildCodeletImpl(frameworkTimer, buffers, 
-											defaultActiv, context, actions);
+		StructBuildCodeletImpl sbc = new StructBuildCodeletImpl(frameworkTimer, workspace, buffers, 
+																defaultActiv, context, actions);
 		codeletStoppables.add(sbc);	
         execSvc.execute(sbc);//put codelet in the work queue for the thread pool
 	}//method

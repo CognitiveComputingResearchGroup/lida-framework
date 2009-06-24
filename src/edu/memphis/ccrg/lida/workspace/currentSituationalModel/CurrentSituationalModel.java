@@ -1,19 +1,15 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
+import java.util.List;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public interface CurrentSituationalModel extends CodeletReadable{
+public interface CurrentSituationalModel{
 
-	NodeStructure getContent();
-
-	void sendCSMContent();
-
-	boolean hasContent(NodeStructure whatIwant);
-
-	void addWorkspaceContent(WorkspaceContent updatedContent);
+	public abstract void addWorkspaceContent(WorkspaceContent updatedContent);
+	public abstract void sendCSMContent();
+	public abstract boolean hasContent(NodeStructure whatIwant);
+	public abstract NodeStructure getCSMContent();
+	public abstract List<Object> getGuiContent();
 	
-	
-
-}
+}//interface

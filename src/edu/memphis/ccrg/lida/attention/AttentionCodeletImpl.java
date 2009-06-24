@@ -38,7 +38,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 			if(lookAtModel()){
 				synchronized(this){
 					if(lookAtModel()){
-						whatIgot = model.getContent();						
+						whatIgot = model.getCSMContent();						
 						addCoalToGlobalWorkspace();
 					}
 				}

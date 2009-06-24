@@ -170,7 +170,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		drivers.add(broadcastBufferDriver);		
 	}
 	private void initCSMThread(){
-		csmDriver = new CSMDriver(timer, csm, csmGui);
+		csmDriver = new CSMDriver(csm, timer, nodeLinkFlowGui);
 		Thread csmThread = new Thread(csmDriver, "CSM_THREAD");
 		threads.add(csmThread);
 		drivers.add(csmDriver);
@@ -233,7 +233,6 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		perceptBuffer.addFlowGui(nodeLinkFlowGui);
 		episodicBufferDriver.addFlowGui(nodeLinkFlowGui);
 		broadcastBufferDriver.addFlowGui(nodeLinkFlowGui);
-		csmDriver.addFlowGui(nodeLinkFlowGui);
 		proceduralMemDriver.addFlowGui(nodeLinkFlowGui);
 		nodeLinkFlowGui.setVisible(true);
 		

@@ -1,10 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
@@ -12,52 +9,52 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
-public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildCodelet{
+public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	
 	private boolean keepRunning = true;
-	private long threadID;
-	private FrameworkTimer timer;
-	//
+	private int codeletSleepTime = 50;
+	//Initialized by constructor
+	private FrameworkTimer frameworkTimer;
 	private Workspace workspace;
-	private double activation = 1.0;
+	private List<CodeletReadable> buffersIuse;
+	//
+	private double activation;
 	private NodeStructure soughtContent = new NodeStructureImpl();
 	private CodeletAction action = new BasicCodeletAction();
-	
-	private List<CodeletReadable> buffersIuse = new ArrayList<CodeletReadable>();
-			
-	public StructBuildCodeletImpl(FrameworkTimer t, List<CodeletReadable> buffers, 
-										double activation, NodeStructure obj, CodeletAction a){
-		timer = t;
+	//
+	private ExciteBehavior exciteBehavior;
+	private DecayBehavior decayBehavior;
+	//TODO: How will these be used?
+		
+	public StructBuildCodeletImpl(FrameworkTimer t, Workspace w, List<CodeletReadable> buffers, 
+								 double activation, NodeStructure content, CodeletAction action){
+		frameworkTimer = t;
+		workspace = w;
+		buffersIuse = buffers;
 		this.activation = activation;
-		soughtContent = obj;
-		action = a;
+		soughtContent = content;
+		this.action = action;
 	}//constructor
 	
 	public void run(){
 		while(keepRunning){
-			try{Thread.sleep(100);}catch(Exception e){}
-			timer.checkForStartPause();
+			try{Thread.sleep(codeletSleepTime);}catch(Exception e){}
+			frameworkTimer.checkForStartPause();
 			for(CodeletReadable buffer: buffersIuse)
-				checkAndWorkOnBuffer(buffer);		
+				checkBufferAndPerformAction(buffer);		
 		}//while		
 	}//run
 	
-	private void checkAndWorkOnBuffer(CodeletReadable buffer){		
+	private void checkBufferAndPerformAction(CodeletReadable buffer){		
 		WorkspaceContent bufferContent = buffer.lookForContent(soughtContent);
-		
-		if(bufferContent != null){
-			WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);			
-			workspace.addContentToCSM(updatedContent);
-		}else{
-			System.out.println("codelet is getting null buffer content");
-		}
+		WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);			
+		workspace.addContentToCSM(updatedContent);
 	}//checkAndWorkOnBuffer
-
 
 	public void setActivation(double a){
 		activation = a;
 	}
-	public void setContext(NodeStructure content){
+	public void setSoughtContent(NodeStructure content){
 		soughtContent = content;
 	}
 	public void setCodeletAction(CodeletAction a){
@@ -66,19 +63,11 @@ public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildC
 	public double getActivation(){
 		return activation;
 	}
-	public NodeStructure getObjective(){
+	public NodeStructure getSoughtContent(){
 		return soughtContent;
 	}
 	public CodeletAction getCodeletAction(){
 		return action;
-	}
-
-	public long getThreadID() {
-		return threadID;
-	}
-
-	public void setThreadID(long id) {
-		threadID = id;		
 	}
 
 	public void stopRunning() {
@@ -86,7 +75,7 @@ public class StructBuildCodeletImpl implements Runnable, Stoppable, StructBuildC
 	}
 
 	public void decay() {
-		// TODO Auto-generated method stub
+		decayBehavior.decay(activation);
 		
 	}
 

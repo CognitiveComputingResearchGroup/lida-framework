@@ -52,8 +52,16 @@ public interface NodeStructure {
 
 	public abstract Link getLink (String ids);
 	
-	public abstract void combineNodeStructure (NodeStructure ns);
+	public abstract void mergeNodeStructure (NodeStructure ns);
 
 	public abstract Map<Linkable, Set<Link>> getLinkableMap();
+
+	public abstract boolean hasNode(Node n);
+
+	public abstract boolean hasLink(Link l);
+
+	public abstract int getNodeCount();
+
+	public abstract int getLinkCount();
 	
 }

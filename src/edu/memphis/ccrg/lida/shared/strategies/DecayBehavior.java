@@ -7,7 +7,7 @@ public interface DecayBehavior {
      * @param currentActivation The activation of the entity before decay.
      * 
      */
-    public double decay(double currentActivation);
+    public double decay(double activation);
         
     /**
      * Calculates the value of x for a given y.

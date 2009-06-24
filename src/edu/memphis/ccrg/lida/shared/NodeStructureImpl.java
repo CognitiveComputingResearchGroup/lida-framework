@@ -378,9 +378,9 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 		return nodes.size();
 	}
 	
-	public void combineNodeStructure(NodeStructure ns) {
-		// TODO Auto-generated method stub
-
+	public void mergeNodeStructure(NodeStructure ns) {
+		addNodes(ns.getNodes());
+		addLinks(ns.getLinks());
 	}
 
 	public void printLinkMap() {
@@ -405,6 +405,14 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 
 	public void clearNodes() {
 		nodes = new HashMap<Long, Node>();		
+	}
+
+	public boolean hasLink(Link l) {
+		return links.containsKey(l.getIds());
+	}
+
+	public boolean hasNode(Node n) {
+		return nodes.containsKey(n.getId());
 	}
 
 }//class
