@@ -338,8 +338,10 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
 			}else if(FROM_PROCEDURAL_MEMORY == lidaComponent){
 				proceduralNodes.setText(content.get(0) + " ");
 				proceduralLinks.setText(content.get(1) + " ");	
+			}else if(FROM_BROADCAST_BUFFER == lidaComponent){
+				bBufferNodes.setText(content.get(0) + " ");
+				bBufferLinks.setText(content.get(1) + " ");
 			}
-		
 		}//if 
 	}//method
     
