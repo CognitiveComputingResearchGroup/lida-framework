@@ -24,7 +24,8 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 	private GlobalWorkspace global;
 	private long threadID;
     
-    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g){
+    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, double activation, 
+    							NodeStructure soughContent){
     	model = csm;
     	global = g;
     }

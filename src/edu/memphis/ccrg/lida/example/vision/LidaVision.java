@@ -27,7 +27,9 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.perception.PAMDriver;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
+import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryDriver;
 import edu.memphis.ccrg.lida.serialization.GlobalWorkspace_Input;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
@@ -60,6 +62,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	//Attention
 	private GlobalWorkspace globalWksp;
 	//Action Selection
+	private ProceduralMemory procMem;
 	private ActionSelectionImpl actionSelection;
 	//Drivers
 	private SensoryMemoryDriver sensoryMemoryDriver;
@@ -158,7 +161,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	private void initEpisodicBufferThread(){
 		int capacity = 10;
 		episodicBuffer = new EpisodicBufferImpl(capacity);
-		episodicBufferDriver = new EpisodicBufferDriver(episodicBuffer, timer);
+		episodicBufferDriver = new EpisodicBufferDriver(episodicBuffer, timer, nodeLinkFlowGui);
 		Thread ebThread = new Thread(episodicBufferDriver, "EBUFFER");	
 		threads.add(ebThread);   
 		drivers.add(episodicBufferDriver);
@@ -209,7 +212,8 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	}//method
 	
 	private void initProceduralMemoryThread(){
-		proceduralMemDriver = new ProceduralMemoryDriver(timer);
+		procMem = new ProceduralMemoryImpl();
+		proceduralMemDriver = new ProceduralMemoryDriver(procMem, timer, nodeLinkFlowGui);
 		Thread procThread = new Thread(proceduralMemDriver, "PROCEDURAL_DRIVER");
 		threads.add(procThread);
 		drivers.add(proceduralMemDriver);
@@ -231,8 +235,6 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		//acg.setVisible(true);
 		
 		//***GUI Showing counts of active nodes and links in the modules ***
-		episodicBufferDriver.addFlowGui(nodeLinkFlowGui);
-		proceduralMemDriver.addFlowGui(nodeLinkFlowGui);
 		nodeLinkFlowGui.setVisible(true);
 		
 		//***GUI to see the contents of the CSM***
@@ -281,16 +283,18 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	/**
 	 * Stop in reverse order of starting
 	 */	
-	public void stopThreads(){		
+	public void stopSpawnedThreads(){		
 		int size = drivers.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = drivers.get(size - 1 - i);
 			if(s != null)
 				s.stopRunning();					
 		}//for	
-		try{Thread.sleep(200);
+		
+		//TODO: Run serialization!
+		try{Thread.sleep(500);
 		}catch(Exception e){}
-		System.exit(0);//Kills gui windows
+		System.exit(0);//Kills gui windows & anything still running
 	}//method	
 
 	/**
@@ -298,7 +302,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	 * 
 	 * @return number of threads started by this class
 	 */
-	public int getThreadCount() {
+	public int getSpawnedThreadCount() {
 		return threads.size();
 	}//method
 

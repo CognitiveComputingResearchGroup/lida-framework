@@ -71,9 +71,9 @@ public class ControlPanelGui extends javax.swing.JFrame {
 
         String threadCount = "";
         if(codeletThread != null)
-        	threadCount = (motherThread.getThreadCount() + codeletThread.getThreadCount())+"";
+        	threadCount = (motherThread.getSpawnedThreadCount() + codeletThread.getSpawnedThreadCount())+"";
         else
-        	threadCount = motherThread.getThreadCount() + "";
+        	threadCount = motherThread.getSpawnedThreadCount() + "";
         
         threadCountTextField.setText(threadCount);
 
@@ -202,9 +202,9 @@ public class ControlPanelGui extends javax.swing.JFrame {
     public void refreshGuiValues(){
     	String threadCount = "";
         if(codeletThread != null)
-        	threadCount = (motherThread.getThreadCount() + codeletThread.getThreadCount())+"";
+        	threadCount = (motherThread.getSpawnedThreadCount() + codeletThread.getSpawnedThreadCount())+"";
         else
-        	threadCount = motherThread.getThreadCount() + "";
+        	threadCount = motherThread.getSpawnedThreadCount() + "";
         threadCountTextField.setText(threadCount);
     }
 
@@ -251,7 +251,7 @@ public class ControlPanelGui extends javax.swing.JFrame {
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	statusLabel.setText("QUITTING");
 		timer.resumeRunningThreads(); 
-		motherThread.stopThreads();
+		motherThread.stopSpawnedThreads();
     }
     
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {

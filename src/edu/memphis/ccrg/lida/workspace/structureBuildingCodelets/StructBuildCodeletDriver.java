@@ -110,15 +110,15 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 	}//method
 
 	public void stopRunning(){
-		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
+		stopSpawnedThreads();
 	}//method
 
-	public int getThreadCount() {
+	public int getSpawnedThreadCount() {
 		return codeletStoppables.size();
 	}//method
 
-	public void stopThreads() {
+	public void stopSpawnedThreads() {
 		System.out.println("\n Stopping Structure-building codelets");
 		int size = codeletStoppables.size();
 		for(int i = 0; i < size; i++){			

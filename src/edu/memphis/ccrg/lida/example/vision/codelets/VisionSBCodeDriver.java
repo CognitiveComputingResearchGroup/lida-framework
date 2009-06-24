@@ -118,16 +118,16 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 	}//method
 
 	public void stopRunning(){
-		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
+		stopSpawnedThreads();
 	}//method
 
-	public int getThreadCount() {
+	public int getSpawnedThreadCount() {
 		return codeletStoppables.size();
 	}//method
 
-	public void stopThreads() {
-		System.out.println("\n Stopping Structure-building codelets");
+	public void stopSpawnedThreads() {
+		System.out.println("Stopping Structure-building codelets");
 		int size = codeletStoppables.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = codeletStoppables.get(i);

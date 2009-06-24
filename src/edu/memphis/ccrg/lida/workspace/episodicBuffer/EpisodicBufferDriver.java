@@ -9,10 +9,12 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 	private boolean keepRunning = true;
 	private EpisodicBufferImpl eb;
 	private FrameworkTimer timer;
+	private FrameworkGui flowGui;
 	
-	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer){
+	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer, FrameworkGui gui){
 		this.eb = eb;
 		this.timer = timer;
+		flowGui = gui;
 	}
 
 	public void run(){
@@ -26,9 +28,4 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 		keepRunning = false;		
 	}//method
 
-	public void addFlowGui(FrameworkGui gui) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

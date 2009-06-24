@@ -28,7 +28,6 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 	}//method
 
 	public void stopRunning(){
-		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method
 

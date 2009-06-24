@@ -15,26 +15,23 @@ public class PAMDriver implements Runnable, Stoppable{
 		this.pam = pam;
 		this.timer = timer;
 		flowGui = gui;
-	}//PAMDrive constructor
+	}//constructor
 		
 	public void run(){
-
-			while(keepRunning){
-				try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}						
-				timer.checkForStartPause();//won't return if paused until started again					
+		while(keepRunning){
+			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}						
+			timer.checkForStartPause();//won't return if paused until started again					
 						
-				pam.detectSensoryMemoryContent();				
-				pam.propogateActivation();//Pass activation	
-				pam.sendOutPercept(); //Send the percept to p-Workspace
-				pam.decayPAM();  //Decay the activations	
-				flowGui.receiveGuiContent(FrameworkGui.FROM_PAM, pam.getGuiContent());
-			}//while	
-
+			pam.detectSensoryMemoryContent();				
+			pam.propogateActivation();//Pass activation	
+			pam.sendOutPercept(); //Send the percept to p-Workspace
+			pam.decayPAM();  //Decay the activations	
+			flowGui.receiveGuiContent(FrameworkGui.FROM_PAM, pam.getGuiContent());
+		}//while	
 	}//method run
 	
 	public void stopRunning(){
-		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
-	}//method stopRunning
+	}//method
 	
 }//class PAMDriver

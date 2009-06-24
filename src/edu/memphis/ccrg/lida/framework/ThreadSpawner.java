@@ -8,7 +8,7 @@ package edu.memphis.ccrg.lida.framework;
  */
 public interface ThreadSpawner {
 
-	public abstract int getThreadCount();
-	public abstract void stopThreads();
+	public abstract int getSpawnedThreadCount();
+	public abstract void stopSpawnedThreads();
 
 }

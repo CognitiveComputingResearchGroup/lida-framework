@@ -8,6 +8,8 @@
 
 package edu.memphis.ccrg.lida.proceduralMemory;
 
+import java.util.List;
+
 public interface ProceduralMemory {
 
     /**
@@ -15,4 +17,6 @@ public interface ProceduralMemory {
      * @param listener
      */
     public void addProceduralMemoryListener(ProceduralMemoryListener listener);
+
+	public List<Object> getGuiContent();
 }

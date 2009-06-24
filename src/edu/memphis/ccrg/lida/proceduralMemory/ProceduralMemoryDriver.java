@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
@@ -9,36 +7,31 @@ import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
 /**
- * Receives WorkspaceContent, calculates the next action to taken, 
- * and sends that action to the Environment module
  * 
  * @author ryanjmccall
  */
-public class ProceduralMemoryDriver implements ProceduralMemory, Runnable, Stoppable, BroadcastListener{
+public class ProceduralMemoryDriver implements Runnable, Stoppable, BroadcastListener{
 
-	//FIELDS
-	private FrameworkTimer timer;
 	private boolean keepRunning = true;
-	private long threadID;
-	private FrameworkGui testGui;
-	private NodeStructureImpl broadcast = new NodeStructureImpl();
-	private List<ProceduralMemoryListener> listeners;
-	private Set<Scheme> schemes = new HashSet<Scheme>();
+	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
+	private NodeStructure broadcast = new NodeStructureImpl();
+	//
+	private ProceduralMemory procMem;
+	private FrameworkTimer timer;
+	private FrameworkGui flowGui;
 		
-	public ProceduralMemoryDriver(FrameworkTimer timer) {
+	public ProceduralMemoryDriver(ProceduralMemory pm, FrameworkTimer timer, FrameworkGui gui) {
+		procMem = pm;
 		this.timer = timer;
-		listeners = new ArrayList<ProceduralMemoryListener>();
+		flowGui = gui;		
 	}//constructor
 
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		listeners.add(listener);		
-	}
-		
-	public void addFlowGui(FrameworkGui testGui) {
-		this.testGui = testGui;		
 	}
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -54,7 +47,6 @@ public class ProceduralMemoryDriver implements ProceduralMemory, Runnable, Stopp
 			timer.checkForStartPause();
 			
 			sendGuiContent();
-			
 		}//while	
 	}//method
 	
@@ -62,7 +54,7 @@ public class ProceduralMemoryDriver implements ProceduralMemory, Runnable, Stopp
 		List<Object> content = new ArrayList<Object>();
 		content.add(broadcast.getNodes().size());
 		content.add(broadcast.getLinks().size());
-		testGui.receiveGuiContent(FrameworkGui.FROM_PROCEDURAL_MEMORY, content);
+		flowGui.receiveGuiContent(FrameworkGui.FROM_PROCEDURAL_MEMORY, procMem.getGuiContent());
 	}//method
 
 	public void stopRunning() {
