@@ -9,7 +9,6 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
@@ -59,5 +58,7 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryM
 	 * Decay activations of PAM nodes and/or links
 	 */
 	public void decayPAM();
+
+	public List<Object> getGuiContent();
 
 }//interface PAMinterface

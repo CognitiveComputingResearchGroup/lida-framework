@@ -11,8 +11,10 @@
 
 package edu.memphis.ccrg.lida.example.vision.gui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 
 /**
@@ -23,10 +25,66 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private Map<Integer, List<javax.swing.JTextField>> map = new HashMap<Integer, List<javax.swing.JTextField>>();
+	
 	public NodeLinkFlowGui(){
-	     initComponents();
-	}
+	    initComponents();
+	    
+	    List<javax.swing.JTextField> fields = new ArrayList<javax.swing.JTextField>();
+    	fields.add(perceptNodes);
+    	fields.add(perceptLinks);
+    	map.put(FROM_PAM, fields);
+    	//
+    	List<javax.swing.JTextField> fields1 = new ArrayList<javax.swing.JTextField>();
+    	fields1.add(dmNodes);
+    	fields1.add(dmLinks);
+    	map.put(FROM_DM, fields1);
+    	//
+    	List<javax.swing.JTextField> fields2 = new ArrayList<javax.swing.JTextField>();
+    	fields2.add(temNodes);
+    	fields2.add(temLinks);
+    	map.put(FROM_TEM, fields2);
+    	//
+    	List<javax.swing.JTextField> fields3 = new ArrayList<javax.swing.JTextField>();
+    	fields3.add(pBufferNodes);
+    	fields3.add(pBufferLinks);
+    	map.put(FROM_PERCEPTUAL_BUFFER, fields3);
+    	//
+    	List<javax.swing.JTextField> fields4 = new ArrayList<javax.swing.JTextField>();
+    	fields4.add(eBufferNodes);
+    	fields4.add(eBufferLinks);
+    	map.put(FROM_EPISODIC_BUFFER, fields4);
+    	//
+    	List<javax.swing.JTextField> fields5 = new ArrayList<javax.swing.JTextField>();
+    	fields5.add(bBufferNodes);
+    	fields5.add(bBufferLinks);
+    	map.put(FROM_BROADCAST_BUFFER, fields5);
+    	//
+    	List<javax.swing.JTextField> fields6 = new ArrayList<javax.swing.JTextField>();
+    	fields6.add(csmNodes);
+    	fields6.add(csmLinks);
+    	map.put(FROM_CSM, fields6);
+    	//
+    	List<javax.swing.JTextField> fields7 = new ArrayList<javax.swing.JTextField>();
+    	fields7.add(codeletsNodes);
+    	fields7.add(codeletsLinks);
+    	map.put(FROM_SBCODELETS, fields7);
+    	//
+    	List<javax.swing.JTextField> fields8 = new ArrayList<javax.swing.JTextField>();
+    	fields8.add(globalNodes);
+    	fields8.add(globalLinks);
+    	map.put(FROM_GLOBAL_WORKSPACE, fields8);
+    	//
+    	List<javax.swing.JTextField> fields9 = new ArrayList<javax.swing.JTextField>();
+    	fields9.add(proceduralNodes);
+    	fields9.add(proceduralLinks);
+    	map.put(FROM_PROCEDURAL_MEMORY, fields9);
+    	//
+    	List<javax.swing.JTextField> fields10 = new ArrayList<javax.swing.JTextField>();
+    	fields10.add(actionNodes);
+    	fields10.add(actionLinks);
+    	map.put(FROM_ACTION_SELECTION, fields10);
+	}//
 
 	/** This method is called from within the constructor to
      * initialize the form.
@@ -318,30 +376,20 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
         pack();
     }// </editor-fold>
 	
+    /**
+     * Check to make sure 'content' has at least 2 values.
+     * Get the textfields for the specified 'lidaComponent'
+     * If fields are found, then set them both with the values of 'content' 
+     */
     public void receiveGuiContent(int lidaComponent, List<Object> content) {
 		if(content != null && content.size() > 1){
-			if(FROM_PAM == lidaComponent){
-				perceptNodes.setText(content.get(0) + " ");
-				perceptLinks.setText(content.get(1) + " ");				
-			}else if(FROM_PERCEPTUAL_BUFFER == lidaComponent){
-				pBufferNodes.setText(content.get(0) + " ");
-				pBufferLinks.setText(content.get(1) + " ");	
-			}else if(FROM_SB_CODELETS == lidaComponent){
-				codeletsNodes.setText(content.get(0) + " ");
-				codeletsLinks.setText(content.get(1) + " ");	
-			}else if(FROM_CSM == lidaComponent){
-				csmNodes.setText(content.get(0) + " ");
-				csmLinks.setText(content.get(1) + " ");	
-			}else if(FROM_GLOBAL_WORKSPACE == lidaComponent){
-				globalNodes.setText(content.get(0) + " ");
-				globalLinks.setText(content.get(1) + " ");	
-			}else if(FROM_PROCEDURAL_MEMORY == lidaComponent){
-				proceduralNodes.setText(content.get(0) + " ");
-				proceduralLinks.setText(content.get(1) + " ");	
-			}else if(FROM_BROADCAST_BUFFER == lidaComponent){
-				bBufferNodes.setText(content.get(0) + " ");
-				bBufferLinks.setText(content.get(1) + " ");
-			}
+			List<javax.swing.JTextField> fields = map.get(lidaComponent);
+			
+			if(fields != null){
+
+				fields.get(0).setText(content.get(0) + "");
+				fields.get(1).setText(content.get(1) + "");
+			}//
 		}//if 
 	}//method
     

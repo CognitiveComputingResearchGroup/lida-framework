@@ -37,12 +37,13 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	public void activateCodelets(){
 		storePAMContent();
 
-		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) perceptBuffer.get(0));
+		NodeStructureImpl nStruct = new NodeStructureImpl((NodeStructure) perceptBuffer.get(0));
 		for(int i = 0; i < pbListeners.size(); i++)		
-			pbListeners.get(i).receivePBufferContent(copiedStruct);				
-		
-		guiContent.add(copiedStruct.getNodeCount());
-		guiContent.add(copiedStruct.getLinkCount());					
+			pbListeners.get(i).receivePBufferContent(nStruct);				
+
+		guiContent.clear();
+		guiContent.add(nStruct.getNodeCount());
+		guiContent.add(nStruct.getLinkCount());					
 	}//sendContent
 	
 	private synchronized void storePAMContent(){

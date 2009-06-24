@@ -167,7 +167,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		int capacity = 10;
 		broadcastBuffer = new BroadcastBufferImpl(capacity);
 		broadcastBufferDriver = new BroadcastBufferDriver(broadcastBuffer, timer, nodeLinkFlowGui);
-		Thread pbroadsThread = new Thread(perceptBufferDriver, "PBROADS");	
+		Thread pbroadsThread = new Thread(broadcastBufferDriver, "PBROADS");	
 		threads.add(pbroadsThread);   
 		drivers.add(broadcastBufferDriver);		
 	}

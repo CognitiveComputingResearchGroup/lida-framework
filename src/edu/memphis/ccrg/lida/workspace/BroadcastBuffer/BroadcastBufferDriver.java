@@ -22,7 +22,7 @@ public class BroadcastBufferDriver implements Runnable, Stoppable{
 			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
 			bBuffer.activateCodelets();
-
+		
 			flowGui.receiveGuiContent(FrameworkGui.FROM_BROADCAST_BUFFER, bBuffer.getGuiContent());
 		}//while keepRunning		
 	}//method

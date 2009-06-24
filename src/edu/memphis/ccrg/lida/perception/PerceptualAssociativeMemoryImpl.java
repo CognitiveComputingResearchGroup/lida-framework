@@ -35,8 +35,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private BroadcastContent broadcastContent = new NodeStructureImpl();	
     private NodeStructure preafferantSignal = new NodeStructureImpl();
     //for GUI
-	private int numNodesInPercept = 0;
-	private int numLinksInPercept = 0;
+	private List<Object> guiContent = new ArrayList<Object>();
   
     /**
      * Need to specify a SensoryContent type.
@@ -135,11 +134,11 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
         	PamNodeImpl node = (PamNodeImpl)n;
             if(node.isRelevant())//Based on totalActivation
             	percept.addNode(node);
-        }//for     
-        synchronized(this){
-        	numNodesInPercept = percept.getNodeCount();
-        	numLinksInPercept = percept.getLinkCount();
-        }
+        }//for  
+        //This is a good place to update guiContent
+        guiContent.clear();
+        guiContent.add(percept.getNodeCount());
+        guiContent.add(percept.getLinkCount());
     }//method
     
     public void sendOutPercept(){
@@ -160,10 +159,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//method   
 
 	public List<Object> getGuiContent() {
-		List<Object> content = new ArrayList<Object>();
-		content.add(numNodesInPercept);
-		content.add(numLinksInPercept);
-		return content;
+		return guiContent;
 	}//
 
 }//class PAM.java

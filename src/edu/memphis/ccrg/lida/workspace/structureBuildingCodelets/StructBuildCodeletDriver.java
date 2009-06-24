@@ -81,7 +81,7 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 		List<Object> guiContent = new ArrayList<Object>();			
 		guiContent.add(workspaceContent.getNodeCount());
 		guiContent.add(workspaceContent.getLinkCount());			
-		flowGui.receiveGuiContent(FrameworkGui.FROM_SB_CODELETS, guiContent);
+		flowGui.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
 	}//method
 	
 	private void spawnPerceptualCodelet(double startActiv, NodeStructure objective, CodeletAction actions){

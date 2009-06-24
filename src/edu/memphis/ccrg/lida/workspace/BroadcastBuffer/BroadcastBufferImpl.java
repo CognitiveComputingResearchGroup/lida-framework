@@ -39,9 +39,10 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
 		storeBroadcastContent();
 
 		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) broadcastBuffer.get(0));
-		for(int i = 0; i < bBufferListeners.size(); i++)		
+		for(int i = 0; i < bBufferListeners.size(); i++)
 			bBufferListeners.get(i).receiveBroadcastBufferContent(copiedStruct);				
 		
+		guiContent.clear();
 		guiContent.add(copiedStruct.getNodeCount());
 		guiContent.add(copiedStruct.getLinkCount());					
 	}//sendContent

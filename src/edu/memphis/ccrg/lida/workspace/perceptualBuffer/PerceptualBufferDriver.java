@@ -19,9 +19,9 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 
 	public void run(){	
 		while(keepRunning){
-			try{Thread.sleep(timer.getSleepTime());
-			}catch(Exception e){}
+			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
+			//
 			pb.activateCodelets();
 			flowGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, pb.getGuiContent());
 		}//while	

@@ -56,6 +56,10 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 		allCodeletReadables.add(workspace.getBroadcastBuffer());		
 	}//method
 
+	/**
+	 * Note that the Workspace receives this content from multiple buffers. So it may
+	 * have originated from either the perceptual, episodic, or broadcast buffer.
+	 */
 	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
 		workspaceContent = (NodeStructureImpl) content;		
 	}//method
@@ -84,8 +88,8 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 		
 		List<Object> guiContent = new ArrayList<Object>();			
 		guiContent.add(workspaceContent.getNodeCount());
-		guiContent.add(workspaceContent.getLinkCount());			
-		flowGui.receiveGuiContent(FrameworkGui.FROM_SB_CODELETS, guiContent);
+		guiContent.add(workspaceContent.getLinkCount());
+		flowGui.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
 	}//method
 	
 	private void spawnPerceptualCodelet(double startActiv, NodeStructure objective, CodeletAction actions){

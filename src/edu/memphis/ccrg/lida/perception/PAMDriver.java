@@ -6,19 +6,19 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
 
 public class PAMDriver implements Runnable, Stoppable{
 
-	private PerceptualAssociativeMemoryImpl pam;
+	private PerceptualAssociativeMemory pam;
 	private FrameworkTimer timer;
 	private boolean keepRunning = true;		
 	private FrameworkGui flowGui;
 	
-	public PAMDriver(PerceptualAssociativeMemoryImpl pam, FrameworkTimer timer, FrameworkGui gui){
+	public PAMDriver(PerceptualAssociativeMemory pam, FrameworkTimer timer, FrameworkGui gui){
 		this.pam = pam;
 		this.timer = timer;
 		flowGui = gui;
 	}//PAMDrive constructor
 		
 	public void run(){
-		if(flowGui != null){
+
 			while(keepRunning){
 				try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}						
 				timer.checkForStartPause();//won't return if paused until started again					
@@ -29,7 +29,7 @@ public class PAMDriver implements Runnable, Stoppable{
 				pam.decayPAM();  //Decay the activations	
 				flowGui.receiveGuiContent(FrameworkGui.FROM_PAM, pam.getGuiContent());
 			}//while	
-		}
+
 	}//method run
 	
 	public void stopRunning(){
