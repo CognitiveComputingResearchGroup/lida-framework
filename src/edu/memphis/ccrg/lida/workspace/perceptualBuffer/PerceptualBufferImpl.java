@@ -3,8 +3,6 @@ package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
@@ -17,15 +15,11 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	private List<WorkspaceContent> perceptBuffer = new ArrayList<WorkspaceContent>();
 	private List<PerceptualBufferListener> pbListeners = new ArrayList<PerceptualBufferListener>();	
 	private final int PERCEPT_BUFFER_CAPACITY;
-	private FrameworkGui testGui;	
+	private List<Object> guiContent = new ArrayList<Object>();	
 	
 	public PerceptualBufferImpl(int capacity){
 		PERCEPT_BUFFER_CAPACITY = capacity;
 		perceptBuffer.add(pamContent);
-	}
-
-	public void addFlowGui(FrameworkGui testGui) {
-		this.testGui = testGui;		
 	}
 	
 	public void addPBufferListener(PerceptualBufferListener l){
@@ -47,10 +41,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		for(int i = 0; i < pbListeners.size(); i++)		
 			pbListeners.get(i).receivePBufferContent(copiedStruct);				
 		
-		List<Object> guiContent = new ArrayList<Object>();			
 		guiContent.add(copiedStruct.getNodeCount());
-		guiContent.add(copiedStruct.getLinkCount());			
-		testGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
+		guiContent.add(copiedStruct.getLinkCount());					
 	}//sendContent
 	
 	private synchronized void storePAMContent(){
@@ -75,5 +67,9 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		}//synchronized
 		return result;
 	}//method
+
+	public List<Object> getGuiContent() {
+		return guiContent;
+	}
 
 }//PerceptualBuffer

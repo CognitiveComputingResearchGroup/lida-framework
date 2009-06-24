@@ -7,27 +7,29 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
 public class BroadcastBufferDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
-	private BroadcastBufferImpl pbroads;
+	private BroadcastBuffer bBuffer;
 	private FrameworkTimer timer;
+	private FrameworkGui flowGui;
 	
-	public BroadcastBufferDriver(BroadcastBufferImpl p, FrameworkTimer timer){
-		pbroads = p;
+	public BroadcastBufferDriver(BroadcastBuffer bb, FrameworkTimer timer, FrameworkGui gui){
+		bBuffer = bb;
 		this.timer = timer;
-	}//
+		flowGui = gui;
+	}//method
 
 	public void run(){
 		while(keepRunning){
+			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
 			timer.checkForStartPause();
+			bBuffer.activateCodelets();
+
+			flowGui.receiveGuiContent(FrameworkGui.FROM_BROADCAST_BUFFER, bBuffer.getGuiContent());
 		}//while keepRunning		
 	}//method
 
 	public void stopRunning(){
+		try{Thread.sleep(20);}catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method
-
-	public void addFlowGui(FrameworkGui gui) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }//class

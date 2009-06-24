@@ -141,7 +141,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		PamInput reader = new PamInput();
 		reader.read(pam, pamInputPath);
 		//PAM THREAD		
-		pamDriver = new PAMDriver(pam, timer);
+		pamDriver = new PAMDriver(pam, timer, nodeLinkFlowGui);
 		Thread pamThread = new Thread(pamDriver, "PAM_THREAD");
 		threads.add(pamThread);   
 		drivers.add(pamDriver);
@@ -150,21 +150,23 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	private void initPerceptualBufferThread(){
 		int capacity = 2;
 		perceptBuffer = new PerceptualBufferImpl(capacity);	
-	    perceptBufferDriver = new PerceptualBufferDriver(perceptBuffer, timer);
+	    perceptBufferDriver = new PerceptualBufferDriver(perceptBuffer, timer, nodeLinkFlowGui);
 		Thread pBufferThread = new Thread(perceptBufferDriver, "PBUFFER");
 		threads.add(pBufferThread);   
 		drivers.add(perceptBufferDriver);
 	}
 	private void initEpisodicBufferThread(){
-		episodicBuffer = new EpisodicBufferImpl();
+		int capacity = 10;
+		episodicBuffer = new EpisodicBufferImpl(capacity);
 		episodicBufferDriver = new EpisodicBufferDriver(episodicBuffer, timer);
 		Thread ebThread = new Thread(episodicBufferDriver, "EBUFFER");	
 		threads.add(ebThread);   
 		drivers.add(episodicBufferDriver);
 	}
 	private void initBroadcastBufferThread(){
-		broadcastBuffer = new BroadcastBufferImpl();
-		broadcastBufferDriver = new BroadcastBufferDriver(broadcastBuffer, timer);
+		int capacity = 10;
+		broadcastBuffer = new BroadcastBufferImpl(capacity);
+		broadcastBufferDriver = new BroadcastBufferDriver(broadcastBuffer, timer, nodeLinkFlowGui);
 		Thread pbroadsThread = new Thread(perceptBufferDriver, "PBROADS");	
 		threads.add(pbroadsThread);   
 		drivers.add(broadcastBufferDriver);		
@@ -229,10 +231,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		//acg.setVisible(true);
 		
 		//***GUI Showing counts of active nodes and links in the modules ***
-		pamDriver.addFlowGui(nodeLinkFlowGui);
-		perceptBuffer.addFlowGui(nodeLinkFlowGui);
 		episodicBufferDriver.addFlowGui(nodeLinkFlowGui);
-		broadcastBufferDriver.addFlowGui(nodeLinkFlowGui);
 		proceduralMemDriver.addFlowGui(nodeLinkFlowGui);
 		nodeLinkFlowGui.setVisible(true);
 		
@@ -250,7 +249,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		
 		perceptBuffer.addPBufferListener(workspace);
 		episodicBuffer.addEBufferListener(workspace);
-		broadcastBuffer.addPBroadsListener(workspace);
+		broadcastBuffer.addBroadcastBufferListener(workspace);
 		csm.addCSMListener(workspace);
 		
 		workspace.addCueListener(declarativeMemory);

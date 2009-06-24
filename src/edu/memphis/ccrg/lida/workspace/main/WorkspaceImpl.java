@@ -88,7 +88,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);	
 		cue(content);
 	}
-	public void receivePrevBroadcastContent(WorkspaceContent content) {
+	public void receiveBroadcastBufferContent(WorkspaceContent content) {
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);			
 	}
 	public void receiveEBufferContent(WorkspaceContent content) {

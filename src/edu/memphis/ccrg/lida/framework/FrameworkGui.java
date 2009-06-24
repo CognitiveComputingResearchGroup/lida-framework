@@ -13,6 +13,7 @@ public interface FrameworkGui {
 	public static final int FROM_SB_CODELETS = 3;
 	public static final int FROM_GLOBAL_WORKSPACE = 4;
 	public static final int FROM_PROCEDURAL_MEMORY = 5;
+	public static final int FROM_BROADCAST_BUFFER = 6;
 	
 	/**
 	 * A Framework GUI must receive content when it is sent.

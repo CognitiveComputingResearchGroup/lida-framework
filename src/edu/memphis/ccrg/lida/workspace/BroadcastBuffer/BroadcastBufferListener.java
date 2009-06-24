@@ -4,6 +4,6 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public interface BroadcastBufferListener {
 	
-	public void receivePrevBroadcastContent(WorkspaceContent c);
+	public void receiveBroadcastBufferContent(WorkspaceContent c);
 
 }

@@ -15,7 +15,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
     private List<EpisodicBufferListener> listeners;
 	private WorkspaceContent association;
     
-	public EpisodicBufferImpl(){
+	public EpisodicBufferImpl(int capacity){
 		listeners = new ArrayList<EpisodicBufferListener>();
 		association = new NodeStructureImpl();
 	}
@@ -25,8 +25,8 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 	}
 
 	public WorkspaceContent lookForContent(NodeStructure objective) {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO:
+		return (WorkspaceContent) objective;
 	}
 
 	public synchronized void receiveLocalAssociation(WorkspaceContent association){
