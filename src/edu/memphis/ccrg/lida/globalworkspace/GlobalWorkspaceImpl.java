@@ -60,7 +60,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	 */
 	public synchronized boolean addCoalition(Coalition coalition) {
 		if(coalitions.size() > MAX_COALITIONS)
-			coalitions.clear();
+			coalitions.clear();//TODO: remove this by adding triggers!
 		
 		if(coalitions.add(coalition)){
 			newCoalitionEvent();
