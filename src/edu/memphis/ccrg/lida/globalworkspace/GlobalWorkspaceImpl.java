@@ -59,15 +59,16 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	 * .Coalition)
 	 */
 	public synchronized boolean addCoalition(Coalition coalition) {
+		if(coalitions.size() > MAX_COALITIONS)
+			coalitions.clear();
+		
 		if(coalitions.add(coalition)){
-			if(coalitions.size() > MAX_COALITIONS)
-				coalitions.clear();
 			newCoalitionEvent();
 			return true;
 		}else{
 			return false;
 		}
-	}
+	}//method
 
 	private void newCoalitionEvent() {
 		for (Trigger t : triggers) 
