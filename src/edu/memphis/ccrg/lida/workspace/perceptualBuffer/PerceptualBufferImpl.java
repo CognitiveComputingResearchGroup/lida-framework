@@ -27,7 +27,10 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	}
 	
 	public synchronized void receivePAMContent(NodeStructure pc){
-		pamContent = (NodeStructureImpl) pc;
+		perceptBuffer.add(new NodeStructureImpl((NodeStructure) pc));		
+		//Keep the buffer at a fixed size
+		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
+			perceptBuffer.remove(0);//remove oldest	
 	}
 	
 	/**
@@ -35,8 +38,6 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 	 * and then sends it to the codelet driver.
 	 */
 	public void activateCodelets(){
-		storePAMContent();
-
 		NodeStructureImpl nStruct = new NodeStructureImpl((NodeStructure) perceptBuffer.get(0));
 		for(int i = 0; i < pbListeners.size(); i++)		
 			pbListeners.get(i).receivePBufferContent(nStruct);				
@@ -46,13 +47,6 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
 		guiContent.add(nStruct.getLinkCount());					
 	}//sendContent
 	
-	private synchronized void storePAMContent(){
-		perceptBuffer.add(new NodeStructureImpl((NodeStructure) pamContent));		
-		//Keep the buffer at a fixed size
-		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
-			perceptBuffer.remove(0);//remove oldest	
-	}//method
-
 	/**
 	 * for codelets to get Content from the buffer.  Eventually based on an objective.
 	 * Currently objective not used.

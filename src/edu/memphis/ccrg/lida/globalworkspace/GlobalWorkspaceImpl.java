@@ -24,6 +24,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  */
 public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	private Set<Coalition> coalitions = new HashSet<Coalition>();
+	private final int MAX_COALITIONS = 100;
 	private List<Trigger> triggers = new ArrayList<Trigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
@@ -59,6 +60,8 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	 */
 	public synchronized boolean addCoalition(Coalition coalition) {
 		if(coalitions.add(coalition)){
+			if(coalitions.size() > MAX_COALITIONS)
+				coalitions.clear();
 			newCoalitionEvent();
 			return true;
 		}else{
@@ -67,12 +70,9 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	}
 
 	private void newCoalitionEvent() {
-		int size = triggers.size();
-		for (Trigger t : triggers) {
-			
+		for (Trigger t : triggers) 
 			t.command(coalitions);
-		}
-	}
+	}//method
 
 	private void sendBroadcast() {
 		Coalition coal;

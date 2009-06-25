@@ -27,8 +27,11 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
 		bBufferListeners.add(l);		
 	}
 
-	public void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = (WorkspaceContent) bc;		
+	public synchronized void receiveBroadcast(BroadcastContent bc) {
+		broadcastBuffer.add(new NodeStructureImpl((NodeStructure) bc));		
+		//Keep the buffer at a fixed size
+		if(broadcastBuffer.size() > BROADCAST_BUFFER_CAPACITY)
+			broadcastBuffer.remove(0);//remove oldest	
 	}
 
 	/**
@@ -36,8 +39,6 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
 	 * and then sends it to the codelet driver.
 	 */
 	public void activateCodelets(){
-		storeBroadcastContent();
-
 		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) broadcastBuffer.get(0));
 		for(int i = 0; i < bBufferListeners.size(); i++)
 			bBufferListeners.get(i).receiveBroadcastBufferContent(copiedStruct);				
@@ -46,13 +47,6 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
 		guiContent.add(copiedStruct.getNodeCount());
 		guiContent.add(copiedStruct.getLinkCount());					
 	}//sendContent
-	
-	private synchronized void storeBroadcastContent(){
-		broadcastBuffer.add(new NodeStructureImpl((NodeStructure) broadcastContent));		
-		//Keep the buffer at a fixed size
-		if(broadcastBuffer.size() > BROADCAST_BUFFER_CAPACITY)
-			broadcastBuffer.remove(0);//remove oldest	
-	}//method
 
 	/**
 	 * for codelets to get Content from the buffer.  Eventually based on an objective.

@@ -10,7 +10,9 @@ package edu.memphis.ccrg.lida.proceduralMemory;
 
 import java.util.List;
 
-public interface ProceduralMemory {
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+
+public interface ProceduralMemory extends BroadcastListener {
 
     /**
      * 

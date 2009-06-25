@@ -263,7 +263,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		globalWksp.addBroadcastListener(workspace);
 		globalWksp.addBroadcastListener(tem);
 		globalWksp.addBroadcastListener(attnDriver);
-		globalWksp.addBroadcastListener(proceduralMemDriver);
+		globalWksp.addBroadcastListener(procMem);
 		proceduralMemDriver.addProceduralMemoryListener(actionSelection);
 		actionSelection.addBehaviorListener(environment);
 	}//method
