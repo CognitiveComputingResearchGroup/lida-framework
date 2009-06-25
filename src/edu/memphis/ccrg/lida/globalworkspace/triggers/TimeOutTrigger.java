@@ -61,7 +61,7 @@ public class TimeOutTrigger implements Trigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
-	public void setUp(Map<String, Object> parameters,TriggerListener gw) {
+	public void setUp(Map<String, Object> parameters, TriggerListener gw) {
 		this.gw=gw;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Long)) {
