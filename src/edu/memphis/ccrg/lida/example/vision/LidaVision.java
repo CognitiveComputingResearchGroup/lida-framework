@@ -109,8 +109,8 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		initSBCodeletsThread();
 		
 		//attention
-		initAttentionThread();
 		initGlobalWorkspace();
+		initAttentionThread();	
 		
 		//action selection
 		initProceduralMemoryThread();
@@ -198,19 +198,18 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		threads.add(codeletThread);   
 		drivers.add(sbCodeletDriver);			
 	}
-	private void initAttentionThread(){
-		attnDriver = new AttentionDriver(timer, csm, globalWksp);
-		Thread attnThread = new Thread(attnDriver, "ATTN_DRIVER");
-		threads.add(attnThread);
-		drivers.add(attnDriver);
-	}
 	private void initGlobalWorkspace() {
 		globalWksp = new GlobalWorkspaceImpl();
 		String globalWorkspaceInputPath = "";
 		GlobalWorkspace_Input reader = new GlobalWorkspace_Input();
 		reader.read(globalWksp, globalWorkspaceInputPath);
 	}//method
-	
+	private void initAttentionThread(){
+		attnDriver = new AttentionDriver(timer, csm, globalWksp);
+		Thread attnThread = new Thread(attnDriver, "ATTN_DRIVER");
+		threads.add(attnThread);
+		drivers.add(attnDriver);
+	}	
 	private void initProceduralMemoryThread(){
 		procMem = new ProceduralMemoryImpl();
 		proceduralMemDriver = new ProceduralMemoryDriver(procMem, timer, nodeLinkFlowGui);

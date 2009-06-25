@@ -9,7 +9,5 @@
 package edu.memphis.ccrg.lida.attention;
 
 public interface AttentionCodelet {
-    
-   public void addCoalToGlobalWorkspace();
-    
+
 }

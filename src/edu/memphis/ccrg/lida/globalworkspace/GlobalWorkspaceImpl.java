@@ -57,7 +57,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#putCoalition(edu.memphis.ccrg.globalworkspace
 	 * .Coalition)
 	 */
-	public synchronized boolean putCoalition(Coalition coalition) {
+	public synchronized boolean addCoalition(Coalition coalition) {
 		if(coalitions.add(coalition)){
 			newCoalitionEvent();
 			return true;

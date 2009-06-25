@@ -13,9 +13,6 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodeletImpl;
 
 public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, BroadcastListener{
 

@@ -17,7 +17,7 @@ public class MockWorkspace implements Runnable {
 		while (true){
 			num=(int)(Math.random()*100);
 			act=Math.random();
-			gw.putCoalition(new MockCoalition(num,act));
+			gw.addCoalition(new MockCoalition(num,act));
 			System.out.println("WS:"+num +":"+act);
 			try {
 				Thread.sleep((long) (Math.random()*delay));

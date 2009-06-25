@@ -13,53 +13,47 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
 public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
 	
-	private CurrentSituationalModel model;
 	private boolean keepRunning = true;
-	private NodeStructure whatIwant;
-	private NodeStructure whatIgot;
+	private NodeStructure csmContent = new NodeStructureImpl();
+	
+	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
-	private long threadID;
+	private double activation;
+	private NodeStructure soughtContent;	
     
-    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, double activation, 
-    							NodeStructure soughContent){
-    	model = csm;
+    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, 
+    							double activation, NodeStructure content){
+    	this.csm = csm;
     	global = g;
+    	this.activation = activation;
+    	soughtContent = content;    	
     }
 
-	public void addCoalToGlobalWorkspace(){
-		global.putCoalition(new CoalitionImpl((BroadcastContent)whatIgot));		
-	}
-
 	public void run() {
+		boolean shouldAddCoalition = false;
 		while(keepRunning){
-			if(lookAtModel()){
-				synchronized(this){
-					if(lookAtModel()){
-						whatIgot = model.getCSMContent();						
-						addCoalToGlobalWorkspace();
+			if(csm.hasContent(soughtContent)){
+				synchronized(this){				
+					if(csm.hasContent(soughtContent)){
+						shouldAddCoalition = true; //Use this to free up CSM quickly
+						csmContent = csm.getCSMContent();	//TODO: more sophisticated	
 					}
-				}
-			}
+				}//synchronized
+				if(shouldAddCoalition){ //Based on boolean, add a new coalition
+					global.addCoalition(new CoalitionImpl((BroadcastContent) csmContent));
+					shouldAddCoalition = false;
+				}//if
+			}//if
 		}//while
-	}//public void run
-	
-	private boolean lookAtModel(){
-		return model.hasContent(whatIwant);
-	}
+	}//method	
 
 	public void stopRunning() {
 		keepRunning = false;		
 	}
-
-	public void setThreadID(long id){
-		threadID = id;
-	}
 	
-	public long getThreadID() {
-		return threadID;
-	}
-}
+}//class
