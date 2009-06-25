@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.broadcastBuffer2;
+package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 
 import java.util.List;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;

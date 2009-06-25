@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.broadcastBuffer2;
+package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
