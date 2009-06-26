@@ -8,6 +8,7 @@
 
 package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
+import java.util.concurrent.Future;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
@@ -20,12 +21,13 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public interface TransientEpisodicMemory extends BroadcastListener{
+public interface TransientEpisodicMemory extends BroadcastListener {
     
     /**
      * 
      * @param cue
      * @return
      */
-    public LocalAssociation cue(MemoryCue cue);
+    //public LocalAssociation cue(MemoryCue cue);
+    public Future cue(MemoryCue cue);
 }

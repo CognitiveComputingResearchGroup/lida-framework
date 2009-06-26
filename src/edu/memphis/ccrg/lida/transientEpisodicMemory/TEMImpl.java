@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.sdm.SparseDistributedMemory;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.concurrent.FutureTask;
 
 /**
  *
@@ -56,9 +57,10 @@ public class TEMImpl implements TransientEpisodicMemory {
      * @param cue a set of nodes used to cue this episodic memory
      * @return the local association related to the cue
      */
-    public LocalAssociation cue(MemoryCue cue) {
+    public FutureTask<LocalAssociationImpl> cue(MemoryCue cue) {
         Collection<Node> nodes = cue.getNodeStructure().getNodes();
         LocalAssociationImpl association = new LocalAssociationImpl();
+        FutureTask<LocalAssociationImpl> future = null;
         for (Node n : nodes) {
             byte[] address = new byte[nodeMap.size()];
             address[indexMap.get(n.getId())] = 1;
@@ -70,6 +72,6 @@ public class TEMImpl implements TransientEpisodicMemory {
                 }
             }
         }
-        return association;
+        return future;
     }
 }

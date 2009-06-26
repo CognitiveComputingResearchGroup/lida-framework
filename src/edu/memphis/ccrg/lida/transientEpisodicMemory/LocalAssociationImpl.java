@@ -29,6 +29,14 @@ public class LocalAssociationImpl implements LocalAssociation {
     }
 
     /**
+     * 
+     * @param structure
+     */
+    public LocalAssociationImpl(NodeStructureImpl structure) {
+        nodeStructure = structure;
+    }
+    
+    /**
      *
      * @param node
      */
