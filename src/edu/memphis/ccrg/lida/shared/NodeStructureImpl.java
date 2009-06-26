@@ -11,12 +11,13 @@ import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  * @author Javier Snaider
  * 
  */
-public class NodeStructureImpl implements NodeStructure, BroadcastContent {
+public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent {
 	
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
