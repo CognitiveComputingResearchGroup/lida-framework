@@ -3,12 +3,10 @@ package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
@@ -21,10 +19,10 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
 	public void sendCSMContent(){
 		for(CSMListener l: csmListeners)
-			l.receiveCSMContent((WorkspaceContent) model);
+			l.receiveCSMContent((NodeStructure) model);
 	}//method
 	
-	public synchronized void addWorkspaceContent(WorkspaceContent content) {
+	public synchronized void addWorkspaceContent(NodeStructure content) {
 		model.mergeNodeStructure((NodeStructure) content);	
 	}//method
 

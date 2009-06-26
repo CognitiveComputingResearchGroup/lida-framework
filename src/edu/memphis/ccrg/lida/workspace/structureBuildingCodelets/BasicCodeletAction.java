@@ -1,10 +1,10 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class BasicCodeletAction implements CodeletAction {
 
-	public WorkspaceContent getResultOfAction(WorkspaceContent content) {
+	public NodeStructure getResultOfAction(NodeStructure content) {
 		return content;
 	}
 

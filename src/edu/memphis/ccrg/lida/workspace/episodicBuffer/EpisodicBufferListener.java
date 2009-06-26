@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public interface EpisodicBufferListener {
 	
-	public void receiveEBufferContent(WorkspaceContent c);
+	public void receiveEBufferContent(NodeStructure c);
 
 }

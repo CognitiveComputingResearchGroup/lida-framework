@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public interface CSMListener {
 
-	void receiveCSMContent(WorkspaceContent content);
+	void receiveCSMContent(NodeStructure content);
 }

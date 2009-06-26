@@ -45,7 +45,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 					}
 				}//synchronized
 				if(shouldAddCoalition){ //Based on boolean, add a new coalition
-					global.addCoalition(new CoalitionImpl((BroadcastContent) csmContent));
+					global.addCoalition(new CoalitionImpl(csmContent, activation));
 					shouldAddCoalition = false;
 				}//if
 			}//if

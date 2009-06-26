@@ -21,7 +21,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
 	
@@ -31,7 +30,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
 	//Shared variables
     private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
-    private WorkspaceContent topDownContent = new NodeStructureImpl();
+    private NodeStructure topDownContent = new NodeStructureImpl();
     private BroadcastContent broadcastContent = new NodeStructureImpl();	
     private NodeStructure preafferantSignal = new NodeStructureImpl();
     //for GUI
@@ -90,7 +89,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	sensoryMemoryContent = sc;    	
     }
 
-	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
+	public synchronized void receiveWorkspaceContent(NodeStructure content) {
 		topDownContent = content;		
 	}
     	
@@ -142,6 +141,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//method
     
     public void sendOutPercept(){
+    	//COPY!!
     	for(int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receivePAMContent(percept);	    	
     }//method

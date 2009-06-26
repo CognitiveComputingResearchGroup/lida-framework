@@ -7,7 +7,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	
@@ -46,8 +45,8 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	}//run
 	
 	private void checkBufferAndPerformAction(CodeletReadable buffer){		
-		WorkspaceContent bufferContent = buffer.lookForContent(soughtContent);
-		WorkspaceContent updatedContent = action.getResultOfAction(bufferContent);			
+		NodeStructure bufferContent = buffer.lookForContent(soughtContent);
+		NodeStructure updatedContent = action.getResultOfAction(bufferContent);			
 		workspace.addContentToCSM(updatedContent);
 	}//checkAndWorkOnBuffer
 

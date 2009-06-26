@@ -59,7 +59,6 @@ public class TestGW {
 		tr.setUp(parameters, (TriggerListener) gw);
 		gw.addTrigger(tr);
 
-
 		gw.addBroadcastListener(new BroadcastListener(){
 
 			public void receiveBroadcast(BroadcastContent bc) {

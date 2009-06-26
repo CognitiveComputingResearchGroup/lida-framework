@@ -13,13 +13,15 @@ public class SensoryMemoryDriver implements Runnable, Stoppable{
 		this.sm = sm;
 		keepRunning = true;		
 		this.timer = timer;
-	}//PAMDrive constructor
+	}//constructor
 		
 	public void run(){
-
 		while(keepRunning){
-			try{Thread.sleep(timer.getSleepTime());
-			}catch(Exception e){}
+			try{
+				Thread.sleep(timer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}				
 			timer.checkForStartPause();
 			
 			sm.processSimContent();
@@ -28,7 +30,6 @@ public class SensoryMemoryDriver implements Runnable, Stoppable{
 	}//method run
 	
 	public void stopRunning(){
-		try{Thread.sleep(20);} catch(InterruptedException e){}
 		keepRunning = false;		
 	}//method stopRunning
 

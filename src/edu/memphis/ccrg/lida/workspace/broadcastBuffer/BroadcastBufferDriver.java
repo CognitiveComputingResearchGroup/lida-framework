@@ -19,7 +19,11 @@ public class BroadcastBufferDriver implements Runnable, Stoppable{
 
 	public void run(){
 		while(keepRunning){
-			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
+			try{
+				Thread.sleep(timer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}				
 			timer.checkForStartPause();
 			bBuffer.activateCodelets();
 		

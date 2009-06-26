@@ -195,7 +195,7 @@ public class ControlPanelGui extends javax.swing.JFrame {
                     .add(resetEnvironmentButton)
                     .add(quitButton)))
         );
-        setLocation(90, 270);
+        setLocation(110, 270);
         pack();
     }// </editor-fold>
     

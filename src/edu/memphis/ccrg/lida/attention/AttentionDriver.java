@@ -42,7 +42,11 @@ public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, Broa
 		spawnAttentionCodelet(defaultActiv, defaultObjective);
 		
 		while(keepRunning){
-			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
+			try{
+				Thread.sleep(timer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}	
 			timer.checkForStartPause();
 			
 		}//while

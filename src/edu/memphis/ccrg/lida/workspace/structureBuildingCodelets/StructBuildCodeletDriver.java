@@ -11,7 +11,6 @@ import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
@@ -52,7 +51,7 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 		allCodeletReadables.add(workspace.getBroadcastBuffer());		
 	}//method
 
-	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
+	public synchronized void receiveWorkspaceContent(NodeStructure content) {
 		workspaceContent = (NodeStructureImpl) content;		
 	}//method
 

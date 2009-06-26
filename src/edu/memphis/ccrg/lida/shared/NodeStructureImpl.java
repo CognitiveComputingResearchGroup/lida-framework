@@ -9,16 +9,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  * @author Javier Snaider
  * 
  */
-public class NodeStructureImpl implements NodeStructure, WorkspaceContent, BroadcastContent {
+public class NodeStructureImpl implements NodeStructure, BroadcastContent {
 	
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
@@ -380,7 +378,8 @@ public class NodeStructureImpl implements NodeStructure, WorkspaceContent, Broad
 	
 	public void mergeNodeStructure(NodeStructure ns) {
 		addNodes(ns.getNodes());
-		addLinks(ns.getLinks());
+		//addLinks(ns.getLinks());
+		//TODO: Must add links differently than above statement.
 	}
 
 	public void printLinkMap() {

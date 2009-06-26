@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.example.globalworkspace;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelContent;
 
 public class MockCoalition implements Coalition {
 

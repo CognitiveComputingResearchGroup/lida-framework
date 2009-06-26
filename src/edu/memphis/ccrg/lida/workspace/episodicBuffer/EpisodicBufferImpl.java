@@ -2,18 +2,14 @@ package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryContent;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemoryContent;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 
     private List<EpisodicBufferListener> listeners;
-	private WorkspaceContent association;
+	private NodeStructure association;
     
 	public EpisodicBufferImpl(int capacity){
 		listeners = new ArrayList<EpisodicBufferListener>();
@@ -24,12 +20,12 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable{
 		listeners.add(listener);		
 	}
 
-	public WorkspaceContent lookForContent(NodeStructure objective) {
+	public NodeStructure lookForContent(NodeStructure objective) {
 		//TODO:
-		return (WorkspaceContent) objective;
+		return objective;
 	}
 
-	public synchronized void receiveLocalAssociation(WorkspaceContent association){
+	public synchronized void receiveLocalAssociation(NodeStructure association){
 		this.association = association;
 	}
 }

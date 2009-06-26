@@ -7,13 +7,12 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
 public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
 	
-	private WorkspaceContent broadcastContent = new NodeStructureImpl();	
-	private List<WorkspaceContent> broadcastBuffer = new ArrayList<WorkspaceContent>();
+	private NodeStructure broadcastContent = new NodeStructureImpl();	
+	private List<NodeStructure> broadcastBuffer = new ArrayList<NodeStructure>();
 	private List<BroadcastBufferListener> bBufferListeners = new ArrayList<BroadcastBufferListener>();	
 	private final int BROADCAST_BUFFER_CAPACITY;
 	private List<Object> guiContent = new ArrayList<Object>();	
@@ -52,11 +51,11 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
 	 * for codelets to get Content from the buffer.  Eventually based on an objective.
 	 * Currently objective not used.
 	 */
-	public WorkspaceContent lookForContent(NodeStructure objective) {
+	public NodeStructure lookForContent(NodeStructure objective) {
 		NodeStructureImpl result = new NodeStructureImpl();
 		synchronized(this){
-			for(WorkspaceContent content: broadcastBuffer){
-				Collection<Node> nodes = ((NodeStructure) content).getNodes();					
+			for(NodeStructure content: broadcastBuffer){
+				Collection<Node> nodes = content.getNodes();					
 				for(Node n: nodes)
 					result.addNode(n);				
 			}//for each struct in the buffer

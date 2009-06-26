@@ -11,19 +11,16 @@
 
 package edu.memphis.ccrg.lida.example.vision.gui;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class CSMGui extends javax.swing.JFrame implements CSMListener{
 
@@ -185,7 +182,7 @@ public class CSMGui extends javax.swing.JFrame implements CSMListener{
      * When a new struct comes from the CSM, clear the node and link lists
      * and fill them with the new stuff
      */
-	public void receiveCSMContent(WorkspaceContent content) {
+	public void receiveCSMContent(NodeStructure content) {
 		synchronized(this){
 			struct = (NodeStructureImpl)content;
 		}		

@@ -66,12 +66,12 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		sbCodeletWorkspaceListener = listener;
 	}
 	
-	public void cue(WorkspaceContent content){
+	public void cue(NodeStructure content){
 		for(CueListener c: cueListeners)
 			c.receiveCue(content);
 	}
 	
-	public void sendContentToPAM(WorkspaceContent content){
+	public void sendContentToPAM(NodeStructure content){
 		pamWorkspaceListener.receiveWorkspaceContent(content);
 	}
 	
@@ -84,19 +84,19 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//3. Episodic memories are sent to PAM for top-down PAM activation
 	//TODO May want to also activate PAM based on new representations created by codelets
 	//that get produced and put in the CSM
-	public void receivePBufferContent(WorkspaceContent content){
+	public void receivePBufferContent(NodeStructure content){
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);	
 		cue(content);
 	}
-	public void receiveBroadcastBufferContent(WorkspaceContent content) {
+	public void receiveBroadcastBufferContent(NodeStructure content) {
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);			
 	}
-	public void receiveEBufferContent(WorkspaceContent content) {
+	public void receiveEBufferContent(NodeStructure content) {
 		pamWorkspaceListener.receiveWorkspaceContent(content);
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);		
 		cue(content);
 	}
-	public void receiveCSMContent(WorkspaceContent content) {
+	public void receiveCSMContent(NodeStructure content) {
 		cue(content);		
 	}
 
@@ -105,7 +105,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	public void receivePAMContent(NodeStructure ns) {
 		perceptualBuffer.receivePAMContent(ns);		
 	}
-	public void receiveLocalAssociation(WorkspaceContent association) {
+	public void receiveLocalAssociation(NodeStructure association) {
 		episodicBuffer.receiveLocalAssociation(association);		
 	}	
 
@@ -119,7 +119,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	/**
 	 * Codelets use this
 	 */
-	public void addContentToCSM(WorkspaceContent updatedContent) {
+	public void addContentToCSM(NodeStructure updatedContent) {
 		csm.addWorkspaceContent(updatedContent);		
 	}
 

@@ -19,10 +19,15 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 
 	public void run(){
 		while(keepRunning){
+			try{
+				Thread.sleep(timer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}				
 			timer.checkForStartPause();
 			
-		}//while keepRunning		
-	}//public void run()
+		}//while		
+	}//method
 
 	public void stopRunning(){
 		keepRunning = false;		

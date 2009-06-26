@@ -20,7 +20,11 @@ public class CSMDriver implements Runnable, Stoppable{
 
 	public void run(){
 		while(keepRunning){
-			try{Thread.sleep(timer.getSleepTime());}catch(Exception e){}
+			try{
+				Thread.sleep(timer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}	
 			timer.checkForStartPause();
 			csm.sendCSMContent();
 			flowGui.receiveGuiContent(FrameworkGui.FROM_CSM, csm.getGuiContent());	        

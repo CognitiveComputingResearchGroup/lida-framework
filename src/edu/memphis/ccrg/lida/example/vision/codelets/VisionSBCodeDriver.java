@@ -11,7 +11,6 @@ import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.BasicCodeletAction;
@@ -60,7 +59,7 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 	 * Note that the Workspace receives this content from multiple buffers. So it may
 	 * have originated from either the perceptual, episodic, or broadcast buffer.
 	 */
-	public synchronized void receiveWorkspaceContent(WorkspaceContent content) {
+	public synchronized void receiveWorkspaceContent(NodeStructure content) {
 		workspaceContent = (NodeStructureImpl) content;		
 	}//method
 
@@ -72,8 +71,11 @@ public class VisionSBCodeDriver implements Runnable, Stoppable, ThreadSpawner, W
 //		spawnGeneralCodelet(defaultActiv, defaultObjective, defaultActions);
 		
 		while(keepRunning){
-			try{Thread.sleep(frameworkTimer.getSleepTime());
-			}catch(Exception e){}
+			try{
+				Thread.sleep(frameworkTimer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}	
 			frameworkTimer.checkForStartPause();
 			//
 			activateCodelets();		
