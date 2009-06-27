@@ -29,6 +29,20 @@ public class NodeFactory {
 
 	private String DefaultNodeClassName;
 	private String DefaultLinkClassName;
+	/**
+	 * @param defaultNodeType the defaultNodeType to set
+	 */
+	public void setDefaultNodeType(String defaultNodeType) {
+		DefaultNodeType = defaultNodeType;
+	}
+
+	/**
+	 * @param defaultLinkType the defaultLinkType to set
+	 */
+	public void setDefaultLinkType(String defaultLinkType) {
+		DefaultLinkType = defaultLinkType;
+	}
+
 	private String DefaultNodeType;
 	private String DefaultLinkType;
 	//
