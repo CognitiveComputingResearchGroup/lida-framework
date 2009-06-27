@@ -104,7 +104,6 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	}//method
 
 	private void sendBroadcast() {
-		//System.out.println("send called");
 		Coalition coal;
 		synchronized (this) {
 			coal = chooseCoalition();
@@ -118,8 +117,10 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 				bl.receiveBroadcast(content);
 			}
 		}
-		for(Coalition c:coalitions){
-			c.decay();
+		synchronized(this){
+			for(Coalition c:coalitions){
+				c.decay();
+			}
 		}
 		resetTriggers();
 		synchronized (broadcastStarted) {
