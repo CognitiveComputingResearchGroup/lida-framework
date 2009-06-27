@@ -10,6 +10,7 @@ public class IndividualActivationTrigger extends AggregateActivationTrigger {
 	public void checkForTrigger(Set<Coalition> coallitions) {
 		for(Coalition c:coallitions){
 			if(c.getActivation()>threshold){
+				//System.out.println("Individual activation");
 				gw.triggerBroadcast();
 				break;
 			}

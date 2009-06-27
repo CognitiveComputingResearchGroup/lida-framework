@@ -19,7 +19,7 @@ public class GlobalWorkspace_Input {
 		tr = new TimeOutTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOut");
-		parameters.put("delay", 30L);
+		parameters.put("delay", 5L); //Individual activation trigger will still dominate.
 		tr.setUp(parameters, (TriggerListener) globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 	

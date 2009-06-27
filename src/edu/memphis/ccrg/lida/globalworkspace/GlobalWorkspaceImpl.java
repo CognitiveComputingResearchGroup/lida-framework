@@ -27,6 +27,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
 	private FrameworkGui flowGui;
+	List<Object> guiContent = new ArrayList<Object>();
 	
 	public GlobalWorkspaceImpl(){}
 	
@@ -116,6 +117,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast(content);
 			}
+			sendGuiContent();
 		}
 		synchronized(this){
 			for(Coalition c:coalitions){
@@ -127,7 +129,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 			broadcastStarted = false;
 		}
 	}
-	
+
 	private Coalition chooseCoalition() {
 		Coalition chosenCoal = null;
 		for (Coalition c : coalitions) {
@@ -137,6 +139,14 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 		}//for
 		return chosenCoal;
 	}//method
+	
+	private void sendGuiContent() {
+		guiContent.clear();
+		guiContent.add(coalitions.size());
+		guiContent.add(-1);
+		flowGui.receiveGuiContent(FrameworkGui.FROM_GLOBAL_WORKSPACE, guiContent);
+		
+	}
 
 	private void resetTriggers() {
 		for (BroadcastTrigger t : broadcastTriggers) {

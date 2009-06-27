@@ -30,6 +30,7 @@ public class TimeOutTrigger implements BroadcastTrigger {
 
 		@Override
 		public void run() {
+			//System.out.println("time trigger");
 			gw.triggerBroadcast();			
 		}		
 	}
@@ -39,7 +40,7 @@ public class TimeOutTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
-	public void checkForTrigger(Set<Coalition> coallitions) {
+	public void checkForTrigger(Set<Coalition> coalitions) {
 		// TODO Auto-generated method stub
 
 	}

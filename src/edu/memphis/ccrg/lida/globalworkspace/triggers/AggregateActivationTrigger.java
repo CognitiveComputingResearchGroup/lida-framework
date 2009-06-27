@@ -27,6 +27,7 @@ public class AggregateActivationTrigger implements BroadcastTrigger {
 			acc=acc+c.getActivation();
 		}
 		if(acc>threshold){
+			//System.out.println("aggregate ");
 			gw.triggerBroadcast();
 		}
 	}//method
