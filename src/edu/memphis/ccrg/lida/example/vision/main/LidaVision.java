@@ -3,7 +3,7 @@
  * that run the main LIDA components.  Sets up the shared memory 
  * that the threads use to pass data. 
  */
-package edu.memphis.ccrg.lida.example.vision;
+package edu.memphis.ccrg.lida.example.vision.main;
 
 import java.util.List;
 import java.lang.Thread; 
@@ -31,6 +31,8 @@ import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryDriver;
+import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatism;
+import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatismImpl;
 import edu.memphis.ccrg.lida.serialization.GlobalWorkspace_Input;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TEMImpl;
@@ -46,8 +48,9 @@ import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 
 public class LidaVision implements ThreadSpawner, Runnable{
 
-	//Perception
+	//Perception 
 	private VisionEnvironment environment;
+	private SensoryMotorAutomatism sma;
 	private VisionSensoryMemory sensoryMemory;
 	private PerceptualAssociativeMemoryImpl pam;
 	//Episodic memory
@@ -93,6 +96,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	public void run(){
 		initEnvironmentThread();
 		//perception
+		initSensoryMotorAutomatism();
 		initSensoryMemoryThread();
 		initPAMThread();
 		
@@ -131,6 +135,9 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		threads.add(new Thread(environment, "SIMULATION_THREAD"));   
 		drivers.add(environment);	
 	}
+	private void initSensoryMotorAutomatism(){
+		sma = new SensoryMotorAutomatismImpl();
+	}	
 	private void initSensoryMemoryThread(){
 		sensoryMemory = new VisionSensoryMemory();		
 		sensoryMemoryDriver = new SensoryMemoryDriver(sensoryMemory, timer);
@@ -219,7 +226,6 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	}
 	private void initActionSelectionThread() {
 		actionSelection = new ActionSelectionImpl();
-		
 	}
 	private void initGui() {	
 		//***For basic control of the system***
@@ -237,14 +243,14 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		nodeLinkFlowGui.setVisible(true);
 		
 		//***GUI to see the contents of the CSM***
-	//	csm.addCSMListener(csmGui);
+	    //csm.addCSMListener(csmGui);
 		//csmGui.setVisible(true);
 	}//method
 	
 	private void addObservers(){
 		environment.addEnvironmentListener(sensoryMemory);
-		//sensoryMemory.addSensoryListener(sma);
-		//sma.addSensoryMotorListener(sensoryMemory);
+		sensoryMemory.addSensoryListener(sma);
+		sma.addSensoryMotorListener(sensoryMemory);
 		sensoryMemory.addSensoryListener(pam);
 		pam.addPAMListener(workspace);
 		
@@ -265,7 +271,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		globalWksp.addBroadcastListener(attnDriver);
 		globalWksp.addBroadcastListener(procMem);
 		globalWksp.start();
-		proceduralMemDriver.addProceduralMemoryListener(actionSelection);
+		procMem.addProceduralMemoryListener(actionSelection);
 		actionSelection.addBehaviorListener(environment);
 	}//method
 	

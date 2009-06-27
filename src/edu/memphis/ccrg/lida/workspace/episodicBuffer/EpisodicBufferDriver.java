@@ -25,7 +25,8 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 				stopRunning();
 			}				
 			timer.checkForStartPause();
-			
+					
+			flowGui.receiveGuiContent(FrameworkGui.FROM_EPISODIC_BUFFER, eb.getGuiContent());
 		}//while		
 	}//method
 
@@ -33,4 +34,4 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 		keepRunning = false;		
 	}//method
 
-}
+}//class

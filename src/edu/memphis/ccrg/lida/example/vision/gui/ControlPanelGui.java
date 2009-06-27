@@ -219,7 +219,6 @@ public class ControlPanelGui extends javax.swing.JFrame {
     }
     
     private void resetEnvironmentButtonClicked(java.awt.event.ActionEvent evt) {  
-    	actionSelection.stopActionSelection();
     	refreshGuiValues();
 
     	isPaused = !isPaused;

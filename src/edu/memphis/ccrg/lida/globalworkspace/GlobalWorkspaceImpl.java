@@ -119,6 +119,17 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 			}
 			sendGuiContent();
 		}
+		
+//		TODO: No attention codelet is going 
+//		to be able to add a new coalition while the decaying 
+//		process is working. The decaying process can be slow. 
+//		So, a better solution maybe to create an aux collection 
+//		before to decay and iterate over this aux collection. 
+//		The add of the references to this aux collection does be 
+//		synchronized but the decay iteration doesn't. On the other 
+//		hand, we need to delete coalitions from the set when their 
+//		activation is 0. So, for now, I suggest to use your solution, 
+//		but copy this comment in the code and add a note please.
 		synchronized(this){
 			for(Coalition c:coalitions){
 				c.decay();
@@ -145,7 +156,6 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 		guiContent.add(coalitions.size());
 		guiContent.add(-1);
 		flowGui.receiveGuiContent(FrameworkGui.FROM_GLOBAL_WORKSPACE, guiContent);
-		
 	}
 
 	private void resetTriggers() {

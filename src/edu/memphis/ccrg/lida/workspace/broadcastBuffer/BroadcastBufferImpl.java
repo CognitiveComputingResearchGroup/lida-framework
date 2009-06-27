@@ -3,13 +3,15 @@ package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable{
+public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable, GuiContentProvider{
 	
 	private NodeStructure broadcastContent = new NodeStructureImpl();	
 	private List<NodeStructure> broadcastBuffer = new ArrayList<NodeStructure>();

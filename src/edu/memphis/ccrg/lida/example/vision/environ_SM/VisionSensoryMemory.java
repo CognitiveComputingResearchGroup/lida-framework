@@ -8,8 +8,9 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorListener;
 
-public class VisionSensoryMemory implements SensoryMemory, EnvironmentListener{
+public class VisionSensoryMemory implements SensoryMemory, EnvironmentListener, SensoryMotorListener{
 	
 	private VisionEnvironmentContent environmentContent = new VisionEnvironmentContent(); 
 	private SensoryMemoryContent sensoryContent = new VisionSensoryContent();
@@ -30,7 +31,7 @@ public class VisionSensoryMemory implements SensoryMemory, EnvironmentListener{
 
 	public void sendSensoryContent(){
 		for(SensoryMemoryListener l: listeners)
-			l.receiveSense(sensoryContent);
+			l.receiveSensoryMemoryContent(sensoryContent);
 	}
 	
 }//class

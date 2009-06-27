@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-public interface SensoryMemory {
+public interface SensoryMemory{
 
 	void processSimContent();
 

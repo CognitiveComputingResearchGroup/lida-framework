@@ -1,35 +1,19 @@
 package edu.memphis.ccrg.lida.actionSelection;
 
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import java.util.List;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralMemory.Scheme;
 
-public class ActionSelectionImpl implements ActionSelection, BroadcastListener, ProceduralMemoryListener {
-
-	public void receiveBroadcast(BroadcastContent bc) {
-		// TODO Auto-generated method stub
-		
-	}
+public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryListener {
 
 	public void addBehaviorListener(ActionSelectionListener simulation) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void receiveScheme(Scheme scheme) {
+	public void receiveSchemes(List<Scheme> schemes) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public boolean getStartingMode() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void stopActionSelection() {
-		// TODO Auto-generated method stub
-		
-	}
-
-}
+}//class

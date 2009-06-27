@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
@@ -22,7 +24,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 
-public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory{
+public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, GuiContentProvider{
 	
 	private PamNodeStructure graph = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
@@ -85,7 +87,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		pamListeners.add(pl);
 	}
     
-    public synchronized void receiveSense(SensoryMemoryContent sc){//SensoryContent    	
+    public synchronized void receiveSensoryMemoryContent(SensoryMemoryContent sc){//SensoryContent    	
     	sensoryMemoryContent = sc;    	
     }
 

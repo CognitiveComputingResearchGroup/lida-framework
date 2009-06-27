@@ -8,6 +8,8 @@
 
 package edu.memphis.ccrg.lida.proceduralMemory;
 
+import java.util.List;
+
 /**
  *
  * @author Rodrigo Silva L.
@@ -18,5 +20,5 @@ public interface ProceduralMemoryListener {
      * 
      * @param scheme
      */
-    public void receiveScheme(Scheme scheme);
+    public void receiveSchemes(List<Scheme> schemes);
 }

@@ -3,12 +3,14 @@ package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable{
+public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, GuiContentProvider{
 	
 	private NodeStructure pamContent = new NodeStructureImpl();	
 	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
