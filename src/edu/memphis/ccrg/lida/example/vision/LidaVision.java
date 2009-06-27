@@ -199,7 +199,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		drivers.add(sbCodeletDriver);			
 	}
 	private void initGlobalWorkspace() {
-		globalWksp = new GlobalWorkspaceImpl();
+		globalWksp = new GlobalWorkspaceImpl(nodeLinkFlowGui);
 		String globalWorkspaceInputPath = "";
 		GlobalWorkspace_Input reader = new GlobalWorkspace_Input();
 		reader.read(globalWksp, globalWorkspaceInputPath);

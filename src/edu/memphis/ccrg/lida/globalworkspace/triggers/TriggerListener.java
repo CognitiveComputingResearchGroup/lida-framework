@@ -7,6 +7,6 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
  * 
  */
 public interface TriggerListener {
-	public void trigger();
+	public void triggerBroadcast();
 
 }

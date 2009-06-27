@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
 /**
@@ -24,10 +23,16 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  */
 public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	private Set<Coalition> coalitions = new HashSet<Coalition>();
-	private List<Trigger> triggers = new ArrayList<Trigger>();
+	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
-	private FrameworkGui testGui;
+	private FrameworkGui flowGui;
+	
+	public GlobalWorkspaceImpl(){}
+	
+	public GlobalWorkspaceImpl(FrameworkGui gui){
+		flowGui = gui;
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -46,9 +51,16 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#addTrigger(edu.memphis.ccrg.globalworkspace.
 	 * Trigger)
 	 */
-	public void addTrigger(Trigger t) {
-		triggers.add(t);
+	public void addBroadcastTrigger(BroadcastTrigger t) {
+		broadcastTriggers.add(t);
 	}
+	
+	public void start() {
+		for (BroadcastTrigger t : broadcastTriggers) {
+			t.start();
+		}
+
+	}//method
 
 	/*
 	 * (non-Javadoc)
@@ -67,8 +79,28 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 	}//method
 
 	private void newCoalitionEvent() {
-		for (Trigger t : triggers) 
-			t.command(coalitions);
+		for (BroadcastTrigger trigger : broadcastTriggers) 
+			trigger.checkForTrigger(coalitions);
+	}//method
+	
+
+	/**
+	 * This method realizes the broadcast. First it chooses the winner
+	 * coalition. Then, all registered BroadcastListeners receive a reference
+	 * SEEEEE to the coalition content.
+	 * 
+	 * this method is supposed to be called from Triggers. All triggers are
+	 * reseted, reset() method is invoked on each of them. The coalition pool is
+	 * cleared.
+	 * 
+	 */
+	public void triggerBroadcast() {
+		synchronized (broadcastStarted) {
+			if (!broadcastStarted) {
+				broadcastStarted = true;
+				sendBroadcast();
+			}
+		}//synch
 	}//method
 
 	private void sendBroadcast() {
@@ -94,50 +126,21 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 			broadcastStarted = false;
 		}
 	}
+	
+	private Coalition chooseCoalition() {
+		Coalition chosenCoal = null;
+		for (Coalition c : coalitions) {
+			if (chosenCoal == null || c.getActivation() > chosenCoal.getActivation()) {
+				chosenCoal = c;
+			}
+		}//for
+		return chosenCoal;
+	}//method
 
 	private void resetTriggers() {
-		for (Trigger t : triggers) {
+		for (BroadcastTrigger t : broadcastTriggers) {
 			t.reset();
 		}
 	}
 
-	private Coalition chooseCoalition() {
-		Coalition chosed = null;
-		for (Coalition c : coalitions) {
-			if (chosed == null || c.getActivation() > chosed.getActivation()) {
-				chosed = c;
-			}
-		}
-		return chosed;
-	}
-
-	public void start() {
-		for (Trigger t : triggers) {
-			t.start();
-		}
-
-	}
-
-	/**
-	 * This method realizes the broadcast. First it chooses the winner
-	 * coalition. Then, all registered BroadcastListeners receive a reference
-	 * SEEEEE to the coalition content.
-	 * 
-	 * this method is supposed to be called from Triggers. All triggers are
-	 * reseted, reset() method is invoked on each of them. The coalition pool is
-	 * cleared.
-	 * 
-	 */
-	public void trigger() {
-		synchronized (broadcastStarted) {
-			if (!broadcastStarted) {
-				broadcastStarted = true;
-				sendBroadcast();
-			}
-		}
-	}
-
-	public void addTestGui(FrameworkGui testGui) {
-		this.testGui = testGui;		
-	}
-}
+}//class

@@ -7,13 +7,13 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 public class IndividualActivationTrigger extends AggregateActivationTrigger {
 	
-	public void command(Set<Coalition> coallitions) {
+	public void checkForTrigger(Set<Coalition> coallitions) {
 		for(Coalition c:coallitions){
 			if(c.getActivation()>threshold){
-				gw.trigger();
+				gw.triggerBroadcast();
 				break;
 			}
 		}
-	}
+	}//method
 
 }

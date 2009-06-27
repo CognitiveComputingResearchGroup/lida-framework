@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateActivationTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualActivationTrigger;
@@ -30,7 +30,7 @@ public class TestGW {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		GlobalWorkspace gw = new GlobalWorkspaceImpl();
-		Trigger tr;
+		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
 		tr = new TimeOutTrigger();
@@ -38,26 +38,26 @@ public class TestGW {
 		parameters.put("name", "TimeOut");
 		parameters.put("delay", 100L);
 		tr.setUp(parameters, (TriggerListener) gw);
-		gw.addTrigger(tr);
+		gw.addBroadcastTrigger(tr);
 
 		tr = new AggregateActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("threshold", 0.8);
 		tr.setUp(parameters, (TriggerListener) gw);
-		gw.addTrigger(tr);
+		gw.addBroadcastTrigger(tr);
 
 		tr = new TimeOutLapTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOutLap");
 		parameters.put("delay", 50L);
 		tr.setUp(parameters, (TriggerListener) gw);
-		gw.addTrigger(tr);
+		gw.addBroadcastTrigger(tr);
 
 		tr = new IndividualActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("threshold", 0.5);
 		tr.setUp(parameters, (TriggerListener) gw);
-		gw.addTrigger(tr);
+		gw.addBroadcastTrigger(tr);
 
 		gw.addBroadcastListener(new BroadcastListener(){
 

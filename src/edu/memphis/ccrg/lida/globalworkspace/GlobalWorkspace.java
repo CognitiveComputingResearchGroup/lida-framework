@@ -3,7 +3,7 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.globalworkspace.triggers.Trigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /** 
  *
@@ -27,7 +27,7 @@ public interface GlobalWorkspace {
 	 * To register Triggers
 	 * @param t a new Trigger
 	 */
-	public void addTrigger(Trigger t);
+	public void addBroadcastTrigger(BroadcastTrigger t);
 	/**
 	 * To register a BroadcastListener. Each registered BroadcastListener receives Broadcast
 	 * Implements Observer Pattern

@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  *
  */
-public class AggregateActivationTrigger implements Trigger {
+public class AggregateActivationTrigger implements BroadcastTrigger {
 
 	protected TriggerListener gw;
 	protected double threshold;
@@ -21,15 +21,15 @@ public class AggregateActivationTrigger implements Trigger {
  * 
  * @param coalitions a Set with all the coallitions in the GW.
  */
-	public void command(Set<Coalition> coallitions) {
+	public void checkForTrigger(Set<Coalition> coalitions) {
 		double acc=0;
-		for(Coalition c:coallitions){
+		for(Coalition c:coalitions){
 			acc=acc+c.getActivation();
 		}
 		if(acc>threshold){
-			gw.trigger();
+			gw.triggerBroadcast();
 		}
-	}
+	}//method
 
 	public void reset() {
 		// TODO Auto-generated method stub

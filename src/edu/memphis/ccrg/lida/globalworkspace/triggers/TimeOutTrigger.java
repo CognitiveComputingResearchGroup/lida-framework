@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  * 
  */
-public class TimeOutTrigger implements Trigger {
+public class TimeOutTrigger implements BroadcastTrigger {
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public class TimeOutTrigger implements Trigger {
 
 		@Override
 		public void run() {
-			gw.trigger();			
+			gw.triggerBroadcast();			
 		}		
 	}
 	
@@ -39,7 +39,7 @@ public class TimeOutTrigger implements Trigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
-	public void command(Set<Coalition> coallitions) {
+	public void checkForTrigger(Set<Coalition> coallitions) {
 		// TODO Auto-generated method stub
 
 	}

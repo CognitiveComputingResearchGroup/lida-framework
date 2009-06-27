@@ -14,10 +14,6 @@ public class CoalitionImpl implements Coalition{
 		attentionCodeletActivation = attnCodeActiv;
 	}
 
-	public void decay() {
-		// TODO Auto-generated method stub
-	}
-
 	public double getActivation() {
 		double sum = 0.0;
 		for(Node n: struct.getNodes())
@@ -27,6 +23,11 @@ public class CoalitionImpl implements Coalition{
 
 	public BroadcastContent getContent() {
 		return struct;
+	}
+	
+	public void decay() {
+		for(Node n: struct.getNodes())
+			n.decay();
 	}
 
 }//class
