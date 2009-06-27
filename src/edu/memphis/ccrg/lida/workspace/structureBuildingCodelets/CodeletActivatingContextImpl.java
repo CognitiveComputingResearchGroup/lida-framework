@@ -1,9 +1,5 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 

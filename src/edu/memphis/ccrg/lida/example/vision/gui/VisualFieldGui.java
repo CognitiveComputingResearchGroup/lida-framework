@@ -21,7 +21,12 @@ import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionEnvironmentContent;
  */
 public class VisualFieldGui extends javax.swing.JFrame implements EnvironmentListener {
 
-    /** Creates new form VisualFieldGui */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/** Creates new form VisualFieldGui */
     public VisualFieldGui() {
         initComponents();
     }
