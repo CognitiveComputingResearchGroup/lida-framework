@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.serialization;
+package edu.memphis.ccrg.lida.example.vision.io;
 
 import java.util.HashMap;
 import java.util.Map;

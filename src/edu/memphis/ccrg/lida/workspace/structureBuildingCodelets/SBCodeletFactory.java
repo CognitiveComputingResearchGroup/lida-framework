@@ -12,12 +12,12 @@ import java.util.Map;
  *
  * Pattern: Factory, Singleton
  */
-public class CodeletFactory {
+public class SBCodeletFactory {
 
 	/**
 	 * Holds singleton instance
 	 */
-	private static CodeletFactory instance;
+	private static SBCodeletFactory instance;
 	
 	/**
 	 * Map of created codelets.
@@ -43,9 +43,9 @@ public class CodeletFactory {
 	 * 
 	 * @return the singleton instance
 	 */
-	static public CodeletFactory getInstance() {
+	static public SBCodeletFactory getInstance() {
 		if(instance == null)
-			instance = new CodeletFactory();
+			instance = new SBCodeletFactory();
 		return instance;
 	}//constructor
 	
@@ -54,7 +54,7 @@ public class CodeletFactory {
 	 * TODO: Are we goign to use this?
 	 * @post pool.size() == 0
 	 */
-	public CodeletFactory() {
+	public SBCodeletFactory() {
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 		codelets = new HashMap<Long, StructureBuildingCodelet>();
 		knownTypes = new ArrayList<Integer>(); 

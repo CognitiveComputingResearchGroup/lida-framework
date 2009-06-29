@@ -270,9 +270,6 @@ public class PamNodeImpl implements PamNode{
 		currentActivation = d;
 	}
 
-	/**
-	 * TODO: Is this applicable for pam nodes?
-	 */
 	public void setReferencedNode(PamNode n) {
 		//do nothing
 	}

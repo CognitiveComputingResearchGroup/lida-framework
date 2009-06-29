@@ -34,8 +34,12 @@ public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable
 	public void run() {
 		Integer latestAction = 0;
 		while(keepRunning){
-			try{Thread.sleep(50);}catch(Exception e){}			
-			timer.checkForStartPause();
+			try{
+				Thread.sleep(timer.getSleepTime());
+			}catch(InterruptedException e){
+				stopRunning();
+			}				
+			timer.checkForStartPause();//won't return if paused until started again					
 			
 			environContent.setContent(-1);
 			for(int i = 0; i < listeners.size(); i++)

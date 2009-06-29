@@ -9,7 +9,6 @@
 package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.framework.Stoppable;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;

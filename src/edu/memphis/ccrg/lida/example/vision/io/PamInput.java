@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.vision.pam;
+package edu.memphis.ccrg.lida.example.vision.io;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.example.vision.pam.VisionDetectBehavior;
+import edu.memphis.ccrg.lida.example.vision.pam.VisionFeatureDetector;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.perception.PamNode;

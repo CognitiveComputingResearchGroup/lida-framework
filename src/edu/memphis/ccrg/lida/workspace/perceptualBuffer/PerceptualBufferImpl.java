@@ -27,8 +27,8 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, 
 		pbListeners.add(l);
 	}
 	
-	public synchronized void receivePAMContent(NodeStructure pc){
-		perceptBuffer.add(new NodeStructureImpl((NodeStructure) pc));		
+	public synchronized void receivePAMContent(NodeStructure ns){
+		perceptBuffer.add(ns);		
 		//Keep the buffer at a fixed size
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);//remove oldest	

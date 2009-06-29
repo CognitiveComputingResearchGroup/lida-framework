@@ -24,7 +24,7 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 	private FrameworkTimer frameworkTimer;	
 	private FrameworkGui flowGui;
 	private WorkspaceImpl workspace;
-	private CodeletFactory sbCodeletFactory = CodeletFactory.getInstance();
+	private SBCodeletFactory sbCodeletFactory = SBCodeletFactory.getInstance();
 	//
 	private List<CodeletReadable> perceptualCodeletReadables = new ArrayList<CodeletReadable>();
 	private List<CodeletReadable> episodicCodeletReadables = new ArrayList<CodeletReadable>();

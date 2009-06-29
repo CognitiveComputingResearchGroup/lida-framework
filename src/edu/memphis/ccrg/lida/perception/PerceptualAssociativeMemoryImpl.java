@@ -143,9 +143,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     }//method
     
     public void sendOutPercept(){
-    	//COPY!!
+    	NodeStructure copy = new NodeStructureImpl(percept);
     	for(int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receivePAMContent(percept);	    	
+			pamListeners.get(i).receivePAMContent(copy);	    	
     }//method
     
     public void decayPAM() {
