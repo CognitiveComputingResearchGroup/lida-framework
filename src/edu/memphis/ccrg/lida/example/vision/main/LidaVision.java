@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
-import edu.memphis.ccrg.lida.example.vision.codelets.VisionSBCodeDriver;
 import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionSensoryContent;
 import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionSensoryMemory;
@@ -45,9 +44,10 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodeletDriver;
 
 public class LidaVision implements ThreadSpawner, Runnable{
-
+	
 	//Perception 
 	private VisionEnvironment environment;
 	private SensoryMotorAutomatism sma;
@@ -61,7 +61,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	private PerceptualBufferImpl perceptBuffer;
 	private EpisodicBufferImpl episodicBuffer;
 	private BroadcastBufferImpl broadcastBuffer;
-	private CurrentSituationalModelImpl csm = new CurrentSituationalModelImpl();
+	private CurrentSituationalModelImpl csm;
 	//Attention
 	private GlobalWorkspace globalWksp;
 	//Action Selection
@@ -73,7 +73,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	private PerceptualBufferDriver perceptBufferDriver;
 	private EpisodicBufferDriver episodicBufferDriver;
 	private BroadcastBufferDriver broadcastBufferDriver;
-	private VisionSBCodeDriver sbCodeletDriver;
+	private StructBuildCodeletDriver sbCodeletDriver;
 	private CSMDriver csmDriver;
 	private AttentionDriver attnDriver;
 	private ProceduralMemoryDriver proceduralMemDriver;		
@@ -182,6 +182,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 		drivers.add(broadcastBufferDriver);		
 	}
 	private void initCSMThread(){
+		csm = new CurrentSituationalModelImpl();
 		csmDriver = new CSMDriver(csm, timer, nodeLinkFlowGui);
 		Thread csmThread = new Thread(csmDriver, "CSM_THREAD");
 		threads.add(csmThread);
@@ -200,7 +201,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 									  broadcastBuffer, csm);		
 	}//method
 	private void initSBCodeletsThread() {
-		sbCodeletDriver = new VisionSBCodeDriver(workspace, timer, nodeLinkFlowGui);		
+		sbCodeletDriver = new StructBuildCodeletDriver(workspace, timer, nodeLinkFlowGui);		
 		Thread codeletThread = new Thread(sbCodeletDriver, "CODELETS_THREAD");
 		threads.add(codeletThread);   
 		drivers.add(sbCodeletDriver);			

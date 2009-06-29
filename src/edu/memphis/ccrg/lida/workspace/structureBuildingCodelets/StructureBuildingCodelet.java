@@ -14,4 +14,12 @@ public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppab
 
 	public abstract CodeletAction getCodeletAction();
 
+	public abstract Long getId();
+
+	public abstract void initialize(String[] args);
+
+	public abstract void setType(String type);
+
+	public abstract void clearForReuse();
+
 }

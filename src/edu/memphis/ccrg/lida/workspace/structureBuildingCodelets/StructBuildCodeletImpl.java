@@ -24,6 +24,8 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	private ExciteBehavior exciteBehavior;
 	private DecayBehavior decayBehavior;
 	//TODO: How will these be used?
+	private Long id = 0L;
+	private String type = "";
 		
 	public StructBuildCodeletImpl(FrameworkTimer t, Workspace w, List<CodeletReadable> buffers, 
 								 double activation, NodeStructure content, CodeletAction action){
@@ -48,7 +50,7 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 		NodeStructure bufferContent = buffer.lookForContent(soughtContent);
 		NodeStructure updatedContent = action.getResultOfAction(bufferContent);			
 		workspace.addContentToCSM(updatedContent);
-	}//checkAndWorkOnBuffer
+	}//method
 
 	public void setActivation(double a){
 		activation = a;
@@ -75,32 +77,48 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 
 	public void decay() {
 		decayBehavior.decay(activation);
-		
 	}
 
 	public void excite(double amount) {
-		// TODO Auto-generated method stub
-		
+		exciteBehavior.excite(activation, amount);
 	}
 
 	public DecayBehavior getDecayBehavior() {
-		// TODO Auto-generated method stub
-		return null;
+		return decayBehavior;
 	}
 
 	public ExciteBehavior getExciteBehavior() {
-		// TODO Auto-generated method stub
-		return null;
+		return exciteBehavior;
 	}
 
-	public void setDecayBehavior(DecayBehavior c) {
+	public void setDecayBehavior(DecayBehavior db) {
+		decayBehavior = db;
+	}
+
+	public void setExciteBehavior(ExciteBehavior eb) {
+		exciteBehavior = eb;		
+	}
+	
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void clearForReuse() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void setExciteBehavior(ExciteBehavior behavior) {
+	public void initialize(String[] args) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setType(String type) {
+		this.type  = type;
 	}
 
 }//class SBCodelet
