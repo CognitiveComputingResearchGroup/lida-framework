@@ -1,13 +1,10 @@
 package edu.memphis.ccrg.lida.shared;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LinkFactory {
 	
 	private static LinkFactory instance;
 	private String LinkDefaultName;
-	private Map<String, String> linkClass = new HashMap<String, String>();
+	//private Map<String, String> linkClass = new HashMap<String, String>();
 
 	public static LinkFactory getInstance() {
 		if (instance == null) {

@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.example.vision.gui;
 import javax.swing.JSlider;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelection;
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.environment.EnvironmentImplTemplate;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 

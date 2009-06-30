@@ -10,6 +10,8 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of
@@ -113,9 +115,9 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 			}
 		}
 		if (coal != null) {
-			BroadcastContent content = coal.getContent();
+			NodeStructure copy = new NodeStructureImpl((NodeStructure) coal.getContent());
 			for (BroadcastListener bl : broadcastListeners) {
-				bl.receiveBroadcast(content);
+				bl.receiveBroadcast((BroadcastContent) copy);
 			}
 			sendGuiContent();
 		}

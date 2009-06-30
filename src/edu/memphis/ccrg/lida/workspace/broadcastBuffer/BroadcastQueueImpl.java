@@ -11,28 +11,28 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable, GuiContentProvider{
+public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, GuiContentProvider{
 	
 	private NodeStructure broadcastContent = new NodeStructureImpl();	
-	private List<NodeStructure> broadcastBuffer = new ArrayList<NodeStructure>();
-	private List<BroadcastBufferListener> bBufferListeners = new ArrayList<BroadcastBufferListener>();	
-	private final int BROADCAST_BUFFER_CAPACITY;
+	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
+	private List<BroadcastQueueListener> listeners = new ArrayList<BroadcastQueueListener>();	
+	private final int broadcastQueueCapacity;
 	private List<Object> guiContent = new ArrayList<Object>();	
 
-	public BroadcastBufferImpl(int capacity){
-		BROADCAST_BUFFER_CAPACITY = capacity;
-		broadcastBuffer.add(broadcastContent);
+	public BroadcastQueueImpl(int capacity){
+		broadcastQueueCapacity = capacity;
+		broadcastQueue.add(broadcastContent);
 	}
 
-	public void addBroadcastBufferListener(BroadcastBufferListener l) {
-		bBufferListeners.add(l);		
+	public void addBroadcastBufferListener(BroadcastQueueListener l) {
+		listeners.add(l);		
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastBuffer.add(new NodeStructureImpl((NodeStructure) bc));		
+		broadcastQueue.add((NodeStructure) bc);		
 		//Keep the buffer at a fixed size
-		if(broadcastBuffer.size() > BROADCAST_BUFFER_CAPACITY)
-			broadcastBuffer.remove(0);//remove oldest	
+		if(broadcastQueue.size() > broadcastQueueCapacity)
+			broadcastQueue.remove(0);//remove oldest	
 	}
 
 	/**
@@ -40,9 +40,9 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable, Gu
 	 * and then sends it to the codelet driver.
 	 */
 	public void activateCodelets(){
-		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) broadcastBuffer.get(0));
-		for(int i = 0; i < bBufferListeners.size(); i++)
-			bBufferListeners.get(i).receiveBroadcastBufferContent(copiedStruct);				
+		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) broadcastQueue.get(0));
+		for(int i = 0; i < listeners.size(); i++)
+			listeners.get(i).receiveBroadcastQueueContent(copiedStruct);				
 		
 		guiContent.clear();
 		guiContent.add(copiedStruct.getNodeCount());
@@ -56,11 +56,11 @@ public class BroadcastBufferImpl implements BroadcastBuffer, CodeletReadable, Gu
 	public NodeStructure lookForContent(NodeStructure objective) {
 		NodeStructureImpl result = new NodeStructureImpl();
 		synchronized(this){
-			for(NodeStructure content: broadcastBuffer){
+			for(NodeStructure content: broadcastQueue){
 				Collection<Node> nodes = content.getNodes();					
 				for(Node n: nodes)
 					result.addNode(n);				
-			}//for each struct in the buffer
+			}//for each struct in queue
 		}//synchronized
 		return result;
 	}//method

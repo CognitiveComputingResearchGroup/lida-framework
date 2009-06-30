@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionSensoryContent;
 import edu.memphis.ccrg.lida.example.vision.environ_SM.VisionSensoryMemory;
-import edu.memphis.ccrg.lida.example.vision.gui.CSMGui;
+//import edu.memphis.ccrg.lida.example.vision.gui.CSMGui;
 import edu.memphis.ccrg.lida.example.vision.gui.ControlPanelGui;
 import edu.memphis.ccrg.lida.example.vision.gui.NodeLinkFlowGui;
 import edu.memphis.ccrg.lida.example.vision.gui.VisualFieldGui;
@@ -35,8 +35,8 @@ import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatism;
 import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatismImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TEMImpl;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastBufferDriver;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastBufferImpl;
+import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueDriver;
+import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMDriver;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferDriver;
@@ -60,7 +60,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	private WorkspaceImpl workspace;
 	private PerceptualBufferImpl perceptBuffer;
 	private EpisodicBufferImpl episodicBuffer;
-	private BroadcastBufferImpl broadcastBuffer;
+	private BroadcastQueueImpl broadcastBuffer;
 	private CurrentSituationalModelImpl csm;
 	//Attention
 	private GlobalWorkspace globalWksp;
@@ -72,14 +72,14 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	private PAMDriver pamDriver;
 	private PerceptualBufferDriver perceptBufferDriver;
 	private EpisodicBufferDriver episodicBufferDriver;
-	private BroadcastBufferDriver broadcastBufferDriver;
+	private BroadcastQueueDriver broadcastBufferDriver;
 	private StructBuildCodeletDriver sbCodeletDriver;
 	private CSMDriver csmDriver;
 	private AttentionDriver attnDriver;
 	private ProceduralMemoryDriver proceduralMemDriver;		
 	//GUIs
 	private VisualFieldGui visualFieldGui = new VisualFieldGui();
-	private CSMGui csmGui = new CSMGui();
+	//private CSMGui csmGui = new CSMGui();
 	private NodeLinkFlowGui nodeLinkFlowGui = new NodeLinkFlowGui();
 	//Threads & thread control
 	private List<Thread> threads = new ArrayList<Thread>();
@@ -175,8 +175,8 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	}
 	private void initBroadcastBufferThread(){
 		int capacity = 10;
-		broadcastBuffer = new BroadcastBufferImpl(capacity);
-		broadcastBufferDriver = new BroadcastBufferDriver(broadcastBuffer, timer, nodeLinkFlowGui);
+		broadcastBuffer = new BroadcastQueueImpl(capacity);
+		broadcastBufferDriver = new BroadcastQueueDriver(broadcastBuffer, timer, nodeLinkFlowGui);
 		Thread pbroadsThread = new Thread(broadcastBufferDriver, "PBROADS");	
 		threads.add(pbroadsThread);   
 		drivers.add(broadcastBufferDriver);		

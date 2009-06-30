@@ -1,16 +1,19 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.BroadcastLearner;
 import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvider {
+public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvider, BroadcastLearner{
 	
-	private NodeStructure broadcast = new NodeStructureImpl();
+	private NodeStructure broadcastContent = new NodeStructureImpl();
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
 	private List<Object> guiContent = new ArrayList<Object>();
 
@@ -19,7 +22,7 @@ public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvide
 	}
 
 	public void receiveBroadcast(BroadcastContent bc) {
-		broadcast = (NodeStructure) bc;
+		broadcastContent = (NodeStructure) bc;
 	}//method
 
 	public void activateSchemes() {
@@ -30,6 +33,14 @@ public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvide
 	public void sendSchemes() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void learn() {
+		Collection<Node> nodes = broadcastContent.getNodes();
+		for(Node n: nodes){
+			//TODO:
+			n.getId();
+		}
 	}
 	
 	public List<Object> getGuiContent() {

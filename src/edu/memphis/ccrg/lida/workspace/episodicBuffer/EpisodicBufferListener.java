@@ -4,6 +4,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public interface EpisodicBufferListener {
 	
-	public void receiveEBufferContent(NodeStructure c);
+	public void receiveEpisodicBufferContent(NodeStructure c);
 
 }

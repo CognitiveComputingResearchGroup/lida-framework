@@ -1,23 +1,27 @@
 package edu.memphis.ccrg.lida.attention;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import edu.memphis.ccrg.lida.framework.BroadcastLearner;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
-public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, BroadcastListener{
+public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, BroadcastListener, BroadcastLearner{
 
 	private boolean keepRunning = true;
-	private BroadcastContent broadcastContent = new NodeStructureImpl();
+	private NodeStructure broadcastContent = new NodeStructureImpl();
 	//
 	private FrameworkTimer timer;
 	private CurrentSituationalModel csm;
@@ -35,7 +39,7 @@ public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, Broa
 	}
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = bc;
+		broadcastContent = (NodeStructure) bc;
 	}
 
 	public void run() {
@@ -57,6 +61,14 @@ public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, Broa
 		codeletStoppables.add(ac);	
 		execSvc.execute(ac);//put codelet in the work queue for the thread pool
 	}//method
+	
+	public void learn(){
+		Collection<Node> nodes = broadcastContent.getNodes();
+		for(Node n: nodes){
+			//TODO:
+			n.getId();
+		}
+	}
 
 	public void stopRunning() {
 		keepRunning = false;	

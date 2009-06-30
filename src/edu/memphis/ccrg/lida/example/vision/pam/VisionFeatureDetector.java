@@ -5,7 +5,6 @@ import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
-import edu.memphis.ccrg.lida.util.Printer;
 
 public class VisionFeatureDetector implements FeatureDetector {
 

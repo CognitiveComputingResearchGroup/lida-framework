@@ -116,6 +116,7 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 		
 		StructBuildCodeletImpl sbc = new StructBuildCodeletImpl(frameworkTimer, workspace, buffers, 
 																defaultActiv, context, actions);
+		//StructBuildCodeletImpl sbc2 = sbCodeletFactory.getCodelet(type, activation, args);
 		codeletStoppables.add(sbc);	
         execSvc.execute(sbc);//put codelet in the work queue for the thread pool
 	}//method

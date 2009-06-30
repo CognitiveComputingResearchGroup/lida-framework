@@ -9,8 +9,8 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastBuffer;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastBufferListener;
+import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueue;
+import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
@@ -30,14 +30,14 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 									  BroadcastListener, 
 									  ActionSelectionListener, 
 									  PerceptualBufferListener,
-									  BroadcastBufferListener,
+									  BroadcastQueueListener,
 									  EpisodicBufferListener, 
 									  CSMListener{
 	
 	//Workspace contains these components
 	private PerceptualBuffer perceptualBuffer;
 	private EpisodicBuffer episodicBuffer;
-	private BroadcastBuffer broadcastBuffer;
+	private BroadcastQueue broadcastBuffer;
 	private CurrentSituationalModel csm;
 	
 	//These listeners listen to the Workspace
@@ -46,7 +46,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	private WorkspaceListener sbCodeletWorkspaceListener;
 	
 	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, 
-						 BroadcastBuffer pbroads, CurrentSituationalModel csm){
+						 BroadcastQueue pbroads, CurrentSituationalModel csm){
 		perceptualBuffer = pb;
 		episodicBuffer = eb;
 		broadcastBuffer = pbroads;
@@ -88,10 +88,10 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);	
 		cue(content);
 	}
-	public void receiveBroadcastBufferContent(NodeStructure content) {
+	public void receiveBroadcastQueueContent(NodeStructure content) {
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);			
 	}
-	public void receiveEBufferContent(NodeStructure content) {
+	public void receiveEpisodicBufferContent(NodeStructure content) {
 		pamWorkspaceListener.receiveWorkspaceContent(content);
 		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);		
 		cue(content);
@@ -135,7 +135,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	public EpisodicBuffer getEpisodicBuffer(){
 		return episodicBuffer;
 	}
-	public BroadcastBuffer getBroadcastBuffer(){
+	public BroadcastQueue getBroadcastBuffer(){
 		return broadcastBuffer;
 	}
 	

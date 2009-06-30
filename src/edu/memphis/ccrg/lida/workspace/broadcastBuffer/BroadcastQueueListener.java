@@ -2,8 +2,8 @@ package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
-public interface BroadcastBufferListener {
+public interface BroadcastQueueListener {
 	
-	public void receiveBroadcastBufferContent(NodeStructure c);
+	public void receiveBroadcastQueueContent(NodeStructure c);
 
 }

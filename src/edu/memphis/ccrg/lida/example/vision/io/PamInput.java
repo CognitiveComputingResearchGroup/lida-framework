@@ -10,14 +10,11 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.example.vision.pam.VisionDetectBehavior;
 import edu.memphis.ccrg.lida.example.vision.pam.VisionFeatureDetector;
 import edu.memphis.ccrg.lida.perception.FeatureDetector;
-import edu.memphis.ccrg.lida.perception.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
-import edu.memphis.ccrg.lida.shared.strategies.BasicDetectBehavior;
 
 public class PamInput {
 

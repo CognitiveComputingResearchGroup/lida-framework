@@ -174,6 +174,22 @@ public class PamNodeStructure extends NodeStructureImpl{
 			}//for 
 		}//while
 	}//method
+	
+	public void passActivationDownward(Set<PamNode> layerOfNodes) {
+		Set<PamNode> children = new HashSet<PamNode>();
+		while(layerOfNodes.size() != 0){	
+			for(PamNode n: layerOfNodes){
+				n.synchronize();
+		  		double currentActivation = n.getActivation();
+		  		children = getChildren(n);
+		  		for(PamNode child: children){ 
+		  			child.excite(currentActivation * downscaleFactor);
+		  			children.add(child);
+		  		}//for each parent
+		  		layerOfNodes = children;
+			}//for 
+		}//while
+	}//method
 
 	/**
 	 * Get parents of this linkable. 

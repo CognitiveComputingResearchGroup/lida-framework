@@ -58,7 +58,7 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
     	List<javax.swing.JTextField> fields5 = new ArrayList<javax.swing.JTextField>();
     	fields5.add(bBufferNodes);
     	fields5.add(bBufferLinks);
-    	map.put(FROM_BROADCAST_BUFFER, fields5);
+    	map.put(FROM_BROADCAST_QUEUE, fields5);
     	//
     	List<javax.swing.JTextField> fields6 = new ArrayList<javax.swing.JTextField>();
     	fields6.add(csmNodes);

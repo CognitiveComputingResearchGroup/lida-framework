@@ -7,12 +7,14 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set; 
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 
+import edu.memphis.ccrg.lida.framework.BroadcastLearner;
 import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
@@ -24,7 +26,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 
-public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, GuiContentProvider{
+public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, GuiContentProvider, BroadcastLearner{
 	
 	private PamNodeStructure graph = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
@@ -33,7 +35,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	//Shared variables
     private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
     private NodeStructure topDownContent = new NodeStructureImpl();
-    private BroadcastContent broadcastContent = new NodeStructureImpl();	
+    private NodeStructure broadcastContent = new NodeStructureImpl();	
     private NodeStructure preafferantSignal = new NodeStructureImpl();
     //for GUI
 	private List<Object> guiContent = new ArrayList<Object>();
@@ -96,11 +98,11 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	}
     	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = bc;		
+		broadcastContent = (NodeStructure) bc;		
 	}
     
     public synchronized void receivePreafferentSignal(NodeStructure ns){
-    	//TODO: conceptual understanding needed before implementation
+    	preafferantSignal = ns;
     }
 	
 	//******FUNDAMENTAL PAM FUNCTIONS******        
@@ -119,7 +121,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		
     	graph.passActivationUpward(bottomNodes);    	
     	formPercept();   
-    	//TODO:impl episodic buffer activation into activation passing  	
+    	//TODO:impl episodic buffer activation into activation passing  
+    	//TODO:use preafferent signal
     }//method
     
     /**
@@ -147,6 +150,15 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	for(int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receivePAMContent(copy);	    	
     }//method
+    
+
+	public void learn() {
+		Collection<Node> nodes = broadcastContent.getNodes();
+		for(Node n: nodes){
+			//TODO:
+			n.getId();
+		}
+	}
     
     public void decayPAM() {
     	graph.decayNodes();       	

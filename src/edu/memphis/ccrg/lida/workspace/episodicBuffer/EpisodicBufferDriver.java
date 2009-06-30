@@ -7,12 +7,12 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
 public class EpisodicBufferDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
-	private EpisodicBufferImpl eb;
+	private EpisodicBufferImpl eBuffer;
 	private FrameworkTimer timer;
 	private FrameworkGui flowGui;
 	
 	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer, FrameworkGui gui){
-		this.eb = eb;
+		this.eBuffer = eb;
 		this.timer = timer;
 		flowGui = gui;
 	}
@@ -25,8 +25,9 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 				stopRunning();
 			}				
 			timer.checkForStartPause();
-					
-			flowGui.receiveGuiContent(FrameworkGui.FROM_EPISODIC_BUFFER, eb.getGuiContent());
+			eBuffer.activateCodelets();	
+			
+			flowGui.receiveGuiContent(FrameworkGui.FROM_EPISODIC_BUFFER, eBuffer.getGuiContent());
 		}//while		
 	}//method
 

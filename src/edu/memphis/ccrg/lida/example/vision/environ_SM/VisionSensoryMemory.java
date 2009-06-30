@@ -5,7 +5,6 @@ import java.util.List;
 import edu.memphis.ccrg.lida.environment.EnvironmentContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorListener;

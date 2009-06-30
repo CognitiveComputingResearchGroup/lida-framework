@@ -32,7 +32,6 @@ public class PamNodeImpl implements PamNode{
 	protected int type = 0;
 	protected ExciteBehavior exciteBehavior;
 	protected DecayBehavior decayBehavior;
-	
 	private PamNode groundingPamNode = this;
 
 	public PamNodeImpl() {
@@ -263,7 +262,7 @@ public class PamNodeImpl implements PamNode{
 	}
 
 	public PamNode getReferencedNode() {
-		return this;
+		return groundingPamNode;
 	}
 
 	public void setActivation(double d) {

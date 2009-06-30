@@ -12,7 +12,7 @@ public interface FrameworkGui {
 	public static final int FROM_DM = 0;
 	public static final int FROM_PERCEPTUAL_BUFFER = 1;
 	public static final int FROM_EPISODIC_BUFFER = 2;
-	public static final int FROM_BROADCAST_BUFFER = 3;
+	public static final int FROM_BROADCAST_QUEUE = 3;
 	public static final int FROM_CSM = 4;
 	public static final int FROM_SBCODELETS = 5;
 	public static final int FROM_GLOBAL_WORKSPACE = 6;

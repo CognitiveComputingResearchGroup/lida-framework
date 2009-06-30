@@ -9,7 +9,6 @@ public class LinkImpl implements Link {
 	private Linkable sink;
 	private Linkable source;
 	private String ids;
-	private String label = "linkImpl";
 	private LinkType type;
 
 	public LinkImpl(Linkable source, Linkable sink, LinkType type, String ids) {
@@ -25,7 +24,6 @@ public class LinkImpl implements Link {
 		source = l.getSource();
 		type = l.getType();
 		ids = l.getIds();
-		label = l.getLabel();
 		updateIds();
 	}
 

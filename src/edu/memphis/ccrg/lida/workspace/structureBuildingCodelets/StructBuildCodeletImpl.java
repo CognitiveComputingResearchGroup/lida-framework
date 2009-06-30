@@ -14,7 +14,7 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	private int codeletSleepTime = 50;
 	//Initialized by constructor
 	private FrameworkTimer frameworkTimer;
-	private Workspace workspace;
+	private Workspace workspace;//to access CSM
 	private List<CodeletReadable> buffersIuse;
 	//
 	private double activation;

@@ -20,10 +20,7 @@ public class TestNodeStructure {
 		NodeFactory.getInstance().addNodeType("NodeImpl", "edu.memphis.ccrg.lida.shared.NodeImpl");
 		NodeFactory.getInstance().addLinkType("LinkImpl", "edu.memphis.ccrg.lida.shared.LinkImpl");
 		
-		
-		Node n2;
-		
-		ns.addNode(n2=NodeFactory.getInstance().getNode("NodeImpl",10L));
+		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",10L));
 		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",20L));
 		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",30L));
 		

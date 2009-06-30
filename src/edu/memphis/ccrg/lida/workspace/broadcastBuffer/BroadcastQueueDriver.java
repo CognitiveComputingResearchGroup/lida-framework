@@ -4,14 +4,14 @@ import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class BroadcastBufferDriver implements Runnable, Stoppable{
+public class BroadcastQueueDriver implements Runnable, Stoppable{
 
 	private boolean keepRunning = true;
-	private BroadcastBuffer bBuffer;
+	private BroadcastQueue bBuffer;
 	private FrameworkTimer timer;
 	private FrameworkGui flowGui;
 	
-	public BroadcastBufferDriver(BroadcastBuffer bb, FrameworkTimer timer, FrameworkGui gui){
+	public BroadcastQueueDriver(BroadcastQueue bb, FrameworkTimer timer, FrameworkGui gui){
 		bBuffer = bb;
 		this.timer = timer;
 		flowGui = gui;
@@ -27,7 +27,7 @@ public class BroadcastBufferDriver implements Runnable, Stoppable{
 			timer.checkForStartPause();
 			bBuffer.activateCodelets();
 		
-			flowGui.receiveGuiContent(FrameworkGui.FROM_BROADCAST_BUFFER, bBuffer.getGuiContent());
+			flowGui.receiveGuiContent(FrameworkGui.FROM_BROADCAST_QUEUE, bBuffer.getGuiContent());
 		}//while keepRunning		
 	}//method
 

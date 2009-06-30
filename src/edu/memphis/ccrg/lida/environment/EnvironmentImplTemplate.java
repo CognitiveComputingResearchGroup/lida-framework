@@ -10,7 +10,6 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
 public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable, ActionSelectionListener {
 
 	private FrameworkTimer timer;
-	private long threadID;
 	private List<EnvironmentListener> listeners;
 	private boolean keepRunning = true;	
 	private boolean actionHasChanged = false;
