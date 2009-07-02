@@ -1,16 +1,23 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * @(#)SDMTest.java  1.0  February 12, 2009
+ *
+ * Copyright 2006-2009 Cognitive Computing Research Group.
+ * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
+ * All rights reserved.
  */
 
 package edu.memphis.ccrg.lida.transientEpisodicMemory.sdm;
 
 /**
- *
+ * This is a test of the episodic memory using an SDM implementation.
  * @author rsilva
  */
 public class SDMTest {
 
+    /**
+     * The main method of the class.
+     * @param args command line arguments, not used
+     */
     public static void main(String[] args) {
         byte[][] addressMatrix = new byte [2][2];
         double activationProbability = 0.7;

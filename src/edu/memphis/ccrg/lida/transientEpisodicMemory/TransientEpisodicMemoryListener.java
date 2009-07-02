@@ -16,7 +16,7 @@ public interface TransientEpisodicMemoryListener {
 
     /**
      * 
-     * @param cue
+     * @param association 
      */
     public void receiveTEMContent(TransientEpisodicMemoryContent association);
 }

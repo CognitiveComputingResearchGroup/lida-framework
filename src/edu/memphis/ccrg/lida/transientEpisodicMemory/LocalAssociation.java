@@ -11,14 +11,16 @@ package edu.memphis.ccrg.lida.transientEpisodicMemory;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 /**
- *
+ * This interface represents the local association for LIDA's transient episodic
+ * memory.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public interface LocalAssociation {
 
     /**
-     *
-     * @return
+     * Gets the node structure representing this association.
+     * @return a node structure with the nodes and links associated with this
+     * association.
      */
     public NodeStructure getNodeStructure();
 }

@@ -13,7 +13,8 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
 import java.util.concurrent.Future;
 
 /**
- *
+ * This is the driver for the transient episodic memory. The driver takes care
+ * of running the thread and allowing access to the local associaiton.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public class TEMDriver implements Runnable, Stoppable {
@@ -25,19 +26,20 @@ public class TEMDriver implements Runnable, Stoppable {
     private Future association;
 
     /**
-     * 
-     * @param tem
-     * @param timer
-     * @param cue
+     * Constructor of the class.
+     * @param tem a transient episodic memory for this driver
+     * @param timer the timer used to handle the start/pause of the thread
+     * @param cue the cue used to write on this memory
      */
-    public TEMDriver(TransientEpisodicMemory tem, FrameworkTimer timer, MemoryCue cue) {
+    public TEMDriver(TransientEpisodicMemory tem, FrameworkTimer timer,
+            MemoryCue cue) {
         this.tem = tem;
         this.timer = timer;
         this.cue = cue;
     }
 
     /**
-     *
+     * Runs the thread for the transient episodic memory.
      */
     public void run() {
         while (keepRunning) {
@@ -51,15 +53,15 @@ public class TEMDriver implements Runnable, Stoppable {
     }
 
     /**
-     * 
-     * @return
+     * Gets the reference to the local association.
+     * @return a future object with a reference to the local association
      */
     public Future getAssociation() {
         return association;
     }
 
     /**
-     *
+     * Stops the thread for the TEM.
      */
     public void stopRunning() {
         keepRunning = false;

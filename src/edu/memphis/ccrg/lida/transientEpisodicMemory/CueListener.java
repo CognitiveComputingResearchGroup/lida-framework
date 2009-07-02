@@ -8,6 +8,10 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
  */
 public interface CueListener {
 	
-	void receiveCue(NodeStructure cue);
+    /**
+     *
+     * @param cue
+     */
+    void receiveCue(NodeStructure cue);
 
 }

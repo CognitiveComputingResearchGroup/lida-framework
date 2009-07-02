@@ -19,15 +19,17 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * Specific implementations of episodic memories must implement
  * this interface. Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
+ * @also MemoryCue
+ * @also LocalAssociation
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public interface TransientEpisodicMemory extends BroadcastListener {
     
     /**
-     * 
-     * @param cue
-     * @return
+     * Cues this episodic memory. Typically the cue would be a set of nodes, and
+     * in the future links.
+     * @param cue the cue used to read this TEM
+     * @return a Future object with the local association
      */
-    //public LocalAssociation cue(MemoryCue cue);
     public Future cue(MemoryCue cue);
 }

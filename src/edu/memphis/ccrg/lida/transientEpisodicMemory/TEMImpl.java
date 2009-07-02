@@ -13,12 +13,14 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.sdm.SparseDistributedMemory;
+import edu.memphis.ccrg.lida.transientEpisodicMemory.sdm.Translator;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.FutureTask;
 
 /**
- *
+ * This is the cannonical implementation of TEM. It uses a sparse distributed
+ * memory to store the information.
  * @author Rodrigo Silva L.
  */
 public class TEMImpl implements TransientEpisodicMemory {
@@ -26,15 +28,17 @@ public class TEMImpl implements TransientEpisodicMemory {
     private SparseDistributedMemory sdm;
     private HashMap<Long, Integer> indexMap;
     private HashMap<Integer, Long> nodeMap;
+    private Translator translator;
 
     /**
      * The constructor of the class.
-     * @param pam a node structure containing the nodes of the PAM
+     * @param structure the structure with the nodes used for this TEM
      */
-    public TEMImpl(NodeStructure pamNodes) {
-        Collection<Node> nodes = pamNodes.getNodes();
+    public TEMImpl(NodeStructure structure) {
+        translator = new Translator(structure);
         indexMap = new HashMap<Long, Integer>();
         nodeMap = new HashMap<Integer, Long>();
+        Collection<Node> nodes = structure.getNodes();
         int index = 0;
         for (Node n : nodes) {
             long nodeID = n.getId();
@@ -45,7 +49,7 @@ public class TEMImpl implements TransientEpisodicMemory {
     }
 
     /**
-     * 
+     * Receives the conscious broadcast and store its information in this TEM.
      * @param bc the content of the conscious broadcast
      */
     public void receiveBroadcast(BroadcastContent bc) {
@@ -55,7 +59,7 @@ public class TEMImpl implements TransientEpisodicMemory {
     /**
      * Cues this episodic memory.
      * @param cue a set of nodes used to cue this episodic memory
-     * @return the local association related to the cue
+     * @return a future task with the local association related to the cue
      */
     public FutureTask<LocalAssociationImpl> cue(MemoryCue cue) {
         Collection<Node> nodes = cue.getNodeStructure().getNodes();

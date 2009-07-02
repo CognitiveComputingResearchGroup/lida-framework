@@ -33,7 +33,7 @@ public class SparseDistributedMemory {
     /**
      *
      * @param a
-     * @param sums
+     * @param p
      * @param h
      * @param c
      * @param u
