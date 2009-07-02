@@ -2,21 +2,23 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.List;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.Stoppable;
+import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
-public class StructBuildCodeletImpl implements StructureBuildingCodelet{
+public class StructBuildCodeletImpl implements StructureBuildingCodelet, Runnable, Stoppable{
 	
 	private boolean keepRunning = true;
-	private int codeletSleepTime = 50;
 	//Initialized by constructor
 	private FrameworkTimer frameworkTimer;
 	private Workspace workspace;//to access CSM
-	private List<CodeletReadable> buffersIuse;
-	//
+	
+	private List<CodeletReadable> accessibleBuffers;
+	private int codeletSleepTime = 50;
 	private double activation;
 	private NodeStructure soughtContent = new NodeStructureImpl();
 	private CodeletAction action = new BasicCodeletAction();
@@ -24,14 +26,14 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	private ExciteBehavior exciteBehavior;
 	private DecayBehavior decayBehavior;
 	//TODO: How will these be used?
-	private Long id = 0L;
-	private String type = "";
+	private Long id;
+	private int type;
 		
 	public StructBuildCodeletImpl(FrameworkTimer t, Workspace w, List<CodeletReadable> buffers, 
 								 double activation, NodeStructure content, CodeletAction action){
 		frameworkTimer = t;
 		workspace = w;
-		buffersIuse = buffers;
+		accessibleBuffers = buffers;
 		this.activation = activation;
 		soughtContent = content;
 		this.action = action;
@@ -41,7 +43,7 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 		while(keepRunning){
 			try{Thread.sleep(codeletSleepTime);}catch(Exception e){}
 			frameworkTimer.checkForStartPause();
-			for(CodeletReadable buffer: buffersIuse)
+			for(CodeletReadable buffer: accessibleBuffers)
 				checkBufferAndPerformAction(buffer);		
 		}//while	
 	}//run
@@ -52,73 +54,86 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 		workspace.addContentToCSM(updatedContent);
 	}//method
 
-	public void setActivation(double a){
-		activation = a;
-	}
-	public void setSoughtContent(NodeStructure content){
-		soughtContent = content;
-	}
-	public void setCodeletAction(CodeletAction a){
-		action = a;
-	}
-	public double getActivation(){
-		return activation;
-	}
-	public NodeStructure getSoughtContent(){
-		return soughtContent;
-	}
-	public CodeletAction getCodeletAction(){
-		return action;
-	}
-
 	public void stopRunning() {
 		keepRunning = false;		
 	}
 
+	//**** Activatible methods *****
+	public void setActivation(double a){
+		activation = a;
+	}
+	public double getActivation(){
+		return activation;
+	}
+	//
 	public void decay() {
 		decayBehavior.decay(activation);
 	}
-
 	public void excite(double amount) {
 		exciteBehavior.excite(activation, amount);
 	}
-
+	//
+	public void setDecayBehavior(DecayBehavior db) {
+		decayBehavior = db;
+	}
 	public DecayBehavior getDecayBehavior() {
 		return decayBehavior;
 	}
-
+	//
+	public void setExciteBehavior(ExciteBehavior eb) {
+		exciteBehavior = eb;		
+	}
 	public ExciteBehavior getExciteBehavior() {
 		return exciteBehavior;
 	}
 
-	public void setDecayBehavior(DecayBehavior db) {
-		decayBehavior = db;
+	//**** StructureBuildingCodelet methods ****
+	public void setSoughtContent(NodeStructure content){
+		soughtContent = content;
 	}
-
-	public void setExciteBehavior(ExciteBehavior eb) {
-		exciteBehavior = eb;		
+	public NodeStructure getSoughtContent(){
+		return soughtContent;
 	}
-	
+	//
+	public void setCodeletAction(CodeletAction a){
+		action = a;
+	}	
+	public CodeletAction getCodeletAction(){
+		return action;
+	}
+	//
 	public void setId(Long id){
 		this.id = id;
 	}
-
 	public Long getId() {
 		return id;
 	}
-
+	//
+	public void setAccessibleBuffers(List<CodeletReadable> buffers) {
+		accessibleBuffers = buffers;		
+	}
+	public List<CodeletReadable> getAccessibleBuffers() {
+		return accessibleBuffers;
+	}
+	//
+	public void setSleepTime(int ms) {
+		codeletSleepTime = ms;
+	}
+	public int getSleepTime() {
+		return codeletSleepTime;
+	}
+	//
 	public void clearForReuse() {
-		// TODO Auto-generated method stub
-		
+		accessibleBuffers.clear();
+		codeletSleepTime = 50;
+		activation = 0.0;
+		soughtContent = new NodeStructureImpl();
+		action = new BasicCodeletAction();
+		id = 0L;
+		type = 0;		
 	}
-
-	public void initialize(String[] args) {
-		// TODO Auto-generated method stub
-		
+	public int getType() {
+		return type;
 	}
-
-	public void setType(String type) {
-		this.type  = type;
-	}
-
+	
 }//class SBCodelet

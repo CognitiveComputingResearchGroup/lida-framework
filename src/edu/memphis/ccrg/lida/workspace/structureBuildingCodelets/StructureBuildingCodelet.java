@@ -1,25 +1,33 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
-import edu.memphis.ccrg.lida.framework.Stoppable;
+import java.util.List;
+
 import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
-public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppable {
+public interface StructureBuildingCodelet extends Activatible{
+
+	 public void setSoughtContent(NodeStructure content);
+	 public NodeStructure getSoughtContent();
 	
-	public abstract void setSoughtContent(NodeStructure content);
+	 public void setCodeletAction(CodeletAction a);
+	 public CodeletAction getCodeletAction();
 
-	public abstract void setCodeletAction(CodeletAction a);
+	 public void setId(Long id);
+	 public Long getId();
+	
+	 public void setAccessibleBuffers(List<CodeletReadable> buffers);
+	 public List<CodeletReadable> getAccessibleBuffers();
+	
+	 public void setSleepTime(int ms);
+	 public int getSleepTime();
 
-	public abstract NodeStructure getSoughtContent();
+	 /**
+	  * Type is determined by what buffers are accessible to this codelet
+	  * @return
+	  */
+	 public int getType();
 
-	public abstract CodeletAction getCodeletAction();
+	 public void clearForReuse();
 
-	public abstract Long getId();
-
-	public abstract void initialize(String[] args);
-
-	public abstract void setType(String type);
-
-	public abstract void clearForReuse();
-
-}
+}//interface

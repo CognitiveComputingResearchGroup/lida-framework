@@ -107,9 +107,9 @@ public class SBCodeletFactory {
 
 	public StructureBuildingCodelet getCodelet(String type, double activation, String... args) {
 		StructureBuildingCodelet code = getBlankCodelet(type);
-		code.setType(type);
+		//code.setType(type);
 		code.setActivation(activation);
-		code.initialize(args);
+		//code.initialize(args);
 		return code;
 	}
 		
