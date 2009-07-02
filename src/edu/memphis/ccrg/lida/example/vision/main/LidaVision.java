@@ -290,7 +290,7 @@ public class LidaVision implements ThreadSpawner, Runnable{
 	/**
 	 * Stop in reverse order of starting
 	 */	
-	public void stopSpawnedThreads(){		
+	public void stopRunningCodelets(){		
 		int size = drivers.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = drivers.get(size - 1 - i);

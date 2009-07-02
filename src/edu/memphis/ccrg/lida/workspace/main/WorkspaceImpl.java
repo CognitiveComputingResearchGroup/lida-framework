@@ -45,8 +45,8 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	private WorkspaceListener pamWorkspaceListener;
 	private WorkspaceListener sbCodeletWorkspaceListener;
 	
-	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, 
-						 BroadcastQueue pbroads, CurrentSituationalModel csm){
+	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue pbroads, 
+							CurrentSituationalModel csm){
 		perceptualBuffer = pb;
 		episodicBuffer = eb;
 		broadcastBuffer = pbroads;
@@ -71,29 +71,26 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 			c.receiveCue(content);
 	}
 	
-	public void sendContentToPAM(NodeStructure content){
-		pamWorkspaceListener.receiveWorkspaceContent(content);
-	}
+	/**
+	 * WorkspaceImpl listens to its submodules and forwards the content
+	 * that they send to the appropriate modules outside the workspace.
 	
-	//WorkspaceImpl listens to its submodules and forwards the content 
-	// that they send to WorkspaceImpl to the appropriate modules outside the workspace.
-	//
-	//1. Contents from the 3 buffers is sent to the sb codelet driver for context-sensitive
-	//    codelet activation. 
-	//2. Contents from perceptual & episodic buffers as well as the csm cues the episodic memories
-	//3. Episodic memories are sent to PAM for top-down PAM activation
-	//TODO May want to also activate PAM based on new representations created by codelets
-	//that get produced and put in the CSM
+	1. Content sent to the sbCodeletDriver for context-sensitive codelet activation. 
+	2. Contents from perceptual & episodic buffers as well as the csm cues the episodic memories
+	3. Episodic memories are sent to PAM for top-down PAM activation
+		TODO May want to also activate PAM based on new representations created by codelets
+		that get produced and put in the CSM
+	 */ 	 
 	public void receivePBufferContent(NodeStructure content){
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);	
+		sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_PBUFFER);	
 		cue(content);
 	}
 	public void receiveBroadcastQueueContent(NodeStructure content) {
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);			
+		sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_BQUEUE);			
 	}
 	public void receiveEpisodicBufferContent(NodeStructure content) {
-		pamWorkspaceListener.receiveWorkspaceContent(content);
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(content);		
+		pamWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);
+		sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);		
 		cue(content);
 	}
 	public void receiveCSMContent(NodeStructure content) {

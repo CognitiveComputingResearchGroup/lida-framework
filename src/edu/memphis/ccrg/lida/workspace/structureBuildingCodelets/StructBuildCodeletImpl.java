@@ -43,7 +43,7 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 			frameworkTimer.checkForStartPause();
 			for(CodeletReadable buffer: buffersIuse)
 				checkBufferAndPerformAction(buffer);		
-		}//while		
+		}//while	
 	}//run
 	
 	private void checkBufferAndPerformAction(CodeletReadable buffer){		

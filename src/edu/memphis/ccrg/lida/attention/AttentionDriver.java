@@ -68,21 +68,21 @@ public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, Broa
 			//TODO:
 			n.getId();
 		}
-	}
+	}//method
 
 	public void stopRunning() {
 		keepRunning = false;	
-		stopSpawnedThreads();
+		stopRunningCodelets();
 	}
 
-	public void stopSpawnedThreads() {
-		System.out.println("Stopping Attention codelets");
+	public void stopRunningCodelets() {
 		int size = codeletStoppables.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = codeletStoppables.get(i);
 			if(s != null)
 				s.stopRunning();					
 		}//for
+		System.out.println("all attention codelets told to stop");
 	}//method
 
 	public int getSpawnedThreadCount() {

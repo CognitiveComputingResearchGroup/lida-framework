@@ -93,7 +93,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	sensoryMemoryContent = sc;    	
     }
 
-	public synchronized void receiveWorkspaceContent(NodeStructure content) {
+	public synchronized void receiveWorkspaceContent(NodeStructure content, int originatingBuffer) {
 		topDownContent = content;		
 	}
     	
