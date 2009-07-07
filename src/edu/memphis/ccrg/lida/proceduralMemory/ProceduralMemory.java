@@ -14,9 +14,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 public interface ProceduralMemory extends BroadcastListener {
 
-    public abstract void addProceduralMemoryListener(ProceduralMemoryListener listener);
-
-	public abstract List<Object> getGuiContent();
+    public abstract void addProceduralMemoryListener(ProceduralMemoryListener listener); 
 	
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 

@@ -1,20 +1,18 @@
 package edu.memphis.ccrg.lida.perception;
 
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class PAMDriver implements Runnable, Stoppable{
+public class PAMDriver implements FrameworkModuleDriver{
 
-	private PerceptualAssociativeMemory pam;
+	private PerceptualAssociativeMemoryImpl pam;
 	private FrameworkTimer timer;
 	private boolean keepRunning = true;		
-	private FrameworkGui flowGui;
 	
-	public PAMDriver(PerceptualAssociativeMemory pam, FrameworkTimer timer, FrameworkGui gui){
+	public PAMDriver(PerceptualAssociativeMemoryImpl pam, FrameworkTimer timer){
 		this.pam = pam;
 		this.timer = timer;
-		flowGui = gui;
 	}//constructor
 		
 	public void run(){
@@ -29,8 +27,8 @@ public class PAMDriver implements Runnable, Stoppable{
 			pam.detectSensoryMemoryContent();				
 			pam.propogateActivation();//Pass activation	
 			pam.sendOutPercept(); //Send the percept to p-Workspace
+			pam.sendGuiContent();
 			pam.decayPAM();  //Decay the activations	
-			flowGui.receiveGuiContent(FrameworkGui.FROM_PAM, pam.getGuiContent());
 		}//while	
 	}//method run
 	

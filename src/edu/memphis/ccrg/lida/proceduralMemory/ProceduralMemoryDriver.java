@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
@@ -8,17 +9,15 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
  * 
  * @author ryanjmccall
  */
-public class ProceduralMemoryDriver implements Runnable, Stoppable{
+public class ProceduralMemoryDriver implements FrameworkModuleDriver{
 
 	private boolean keepRunning = true;
-	private ProceduralMemory procMem;
+	private ProceduralMemoryImpl procMem;
 	private FrameworkTimer timer;
-	private FrameworkGui flowGui;
 		
-	public ProceduralMemoryDriver(ProceduralMemory pm, FrameworkTimer timer, FrameworkGui gui) {
+	public ProceduralMemoryDriver(ProceduralMemoryImpl pm, FrameworkTimer timer){
 		procMem = pm;
-		this.timer = timer;
-		flowGui = gui;		
+		this.timer = timer;	
 	}//constructor
 
 	/**
@@ -33,7 +32,7 @@ public class ProceduralMemoryDriver implements Runnable, Stoppable{
 			}	
 			timer.checkForStartPause();
 			
-			flowGui.receiveGuiContent(FrameworkGui.FROM_PROCEDURAL_MEMORY, procMem.getGuiContent());
+			procMem.sendGuiContent();
 		}//while	
 	}//method
 

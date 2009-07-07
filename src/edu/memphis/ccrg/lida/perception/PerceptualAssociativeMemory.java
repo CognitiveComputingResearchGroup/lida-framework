@@ -59,6 +59,4 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryM
 	 */
 	public void decayPAM();
 
-	public List<Object> getGuiContent();
-
 }//interface PAMinterface

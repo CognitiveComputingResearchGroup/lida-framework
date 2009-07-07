@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.BroadcastLearner;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
@@ -18,7 +19,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
-public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, BroadcastListener, BroadcastLearner{
+public class AttentionDriver implements FrameworkModuleDriver, ThreadSpawner, BroadcastListener, BroadcastLearner{
 
 	private boolean keepRunning = true;
 	private NodeStructure broadcastContent = new NodeStructureImpl();
@@ -72,10 +73,11 @@ public class AttentionDriver implements Runnable, Stoppable, ThreadSpawner, Broa
 
 	public void stopRunning() {
 		keepRunning = false;	
-		stopRunningCodelets();
+		stopRunningSpawnedThreads();
 	}
 
-	public void stopRunningCodelets() {
+	public void stopRunningSpawnedThreads() {
+		execSvc.shutdown();
 		int size = codeletStoppables.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = codeletStoppables.get(i);

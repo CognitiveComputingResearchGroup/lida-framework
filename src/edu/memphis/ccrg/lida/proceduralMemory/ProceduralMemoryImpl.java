@@ -5,13 +5,14 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.BroadcastLearner;
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvider, BroadcastLearner{
+public class ProceduralMemoryImpl implements ProceduralMemory, FrameworkGuiProvider, BroadcastLearner{
 	
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
@@ -19,6 +20,11 @@ public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvide
 
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		listeners.add(listener);		
+	}
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void receiveBroadcast(BroadcastContent bc) {
@@ -43,8 +49,9 @@ public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvide
 		}
 	}
 	
-	public List<Object> getGuiContent() {
-		return guiContent ;
+	public void sendGuiContent() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class

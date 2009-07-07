@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import edu.memphis.ccrg.lida.framework.BroadcastLearner;
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
@@ -26,7 +27,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 
-public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, GuiContentProvider, BroadcastLearner{
+public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, FrameworkGuiProvider, BroadcastLearner{
 	
 	private PamNodeStructure graph = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
@@ -38,6 +39,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private NodeStructure broadcastContent = new NodeStructureImpl();	
     private NodeStructure preafferantSignal = new NodeStructureImpl();
     //for GUI
+    private List<FrameworkGui> guiList = new ArrayList<FrameworkGui>();
 	private List<Object> guiContent = new ArrayList<Object>();
   
     /**
@@ -87,8 +89,12 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     //******INTERMODULE COMMUNICATION******
     public void addPAMListener(PAMListener pl){
 		pamListeners.add(pl);
+	}   
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		guiList.add(listener);		
 	}
-    
+  
     public synchronized void receiveSensoryMemoryContent(SensoryMemoryContent sc){//SensoryContent    	
     	sensoryMemoryContent = sc;    	
     }
@@ -150,7 +156,11 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	for(int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receivePAMContent(copy);	    	
     }//method
-    
+
+	public void sendGuiContent() {
+		for(FrameworkGui fg: guiList)
+			fg.receiveGuiContent(FrameworkGui.FROM_PAM, guiContent);
+	}
 
 	public void learn() {
 		Collection<Node> nodes = broadcastContent.getNodes();
@@ -171,9 +181,5 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     public void setExciteBehavior(ExciteBehavior behavior){
     	graph.setNodesExciteBehavior(behavior);
     }//method   
-
-	public List<Object> getGuiContent() {
-		return guiContent;
-	}//
 
 }//class PAM.java

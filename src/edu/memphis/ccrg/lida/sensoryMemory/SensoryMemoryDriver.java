@@ -1,9 +1,10 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class SensoryMemoryDriver implements Runnable, Stoppable{
+public class SensoryMemoryDriver implements FrameworkModuleDriver{
 	private SensoryMemory sm;
 	private boolean keepRunning;	
 	private FrameworkTimer timer;
