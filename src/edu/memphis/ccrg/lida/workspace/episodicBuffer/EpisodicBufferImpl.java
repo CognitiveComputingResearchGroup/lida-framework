@@ -3,13 +3,15 @@ package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, GuiContentProvider{
+public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, FrameworkGuiProvider{
 
     private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
     private List<EpisodicBufferListener> listeners = new ArrayList<EpisodicBufferListener>();
@@ -54,8 +56,14 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, GuiC
 		return result;
 	}
 
-	public List<Object> getGuiContent() {
-		return guiContent;
+	public void addFrameworkGui(FrameworkGui listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendGuiContent() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }//class

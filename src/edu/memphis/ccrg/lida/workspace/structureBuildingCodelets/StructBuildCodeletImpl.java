@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 import java.util.List;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
-import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
@@ -50,7 +49,7 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet, Runnabl
 	
 	private void checkBufferAndPerformAction(CodeletReadable buffer){		
 		NodeStructure bufferContent = buffer.lookForContent(soughtContent);
-		NodeStructure updatedContent = action.getResultOfAction(bufferContent);			
+		NodeStructure updatedContent = action.performAction(bufferContent);			
 		workspace.addContentToCSM(updatedContent);
 	}//method
 

@@ -4,6 +4,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public interface CodeletAction {
 
-	public NodeStructure getResultOfAction(NodeStructure content);
+	public NodeStructure performAction(NodeStructure content);
 	
 }

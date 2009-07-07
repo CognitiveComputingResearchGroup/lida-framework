@@ -1,20 +1,17 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class PerceptualBufferDriver implements Runnable, Stoppable{
+public class PerceptualBufferDriver implements FrameworkModuleDriver{
 
 	private boolean keepRunning = true;
-	private PerceptualBuffer pb;
+	private PerceptualBufferImpl pb;
 	private FrameworkTimer timer;
-	private FrameworkGui flowGui;
 	
-	public PerceptualBufferDriver(PerceptualBuffer pb, FrameworkTimer timer, FrameworkGui gui){
+	public PerceptualBufferDriver(PerceptualBufferImpl pb, FrameworkTimer timer){
 		this.pb = pb;
 		this.timer = timer;
-		flowGui = gui;
 	}//constructor
 
 	public void run(){	
@@ -27,7 +24,7 @@ public class PerceptualBufferDriver implements Runnable, Stoppable{
 			timer.checkForStartPause();
 			//
 			pb.activateCodelets();
-			flowGui.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, pb.getGuiContent());
+			pb.sendGuiContent();
 		}//while	
 	}//method
 

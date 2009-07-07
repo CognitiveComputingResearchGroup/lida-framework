@@ -1,20 +1,17 @@
 package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class EpisodicBufferDriver implements Runnable, Stoppable{
+public class EpisodicBufferDriver implements FrameworkModuleDriver{
 
 	private boolean keepRunning = true;
 	private EpisodicBufferImpl eBuffer;
 	private FrameworkTimer timer;
-	private FrameworkGui flowGui;
 	
-	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer, FrameworkGui gui){
+	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer){
 		this.eBuffer = eb;
 		this.timer = timer;
-		flowGui = gui;
 	}
 
 	public void run(){
@@ -26,8 +23,7 @@ public class EpisodicBufferDriver implements Runnable, Stoppable{
 			}				
 			timer.checkForStartPause();
 			eBuffer.activateCodelets();	
-			
-			flowGui.receiveGuiContent(FrameworkGui.FROM_EPISODIC_BUFFER, eBuffer.getGuiContent());
+			eBuffer.sendGuiContent();
 		}//while		
 	}//method
 

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
 
 /**
  * The CodeletFactory is responsible for loading codelets dynamically. There are
@@ -18,13 +22,6 @@ public class SBCodeletFactory {
 	 * Holds singleton instance
 	 */
 	private static SBCodeletFactory instance;
-	
-	/**
-	 * Map of created codelets.
-	 * Key = codelet id
-	 * Value = codelet
-	 */
-	private Map<Long, StructureBuildingCodelet> codelets;
 
 	/**
 	 * Pool keeping all recycled codelets.
@@ -32,12 +29,16 @@ public class SBCodeletFactory {
 	 * Value = unused codelets of that type
 	 */
 	private Map<String, List<StructureBuildingCodelet>> pool;
-	
-	/**
-	 * List of all known codelet types
-	 */
-	private List<Integer> knownTypes;
 
+	private String DefaultSBCodeletClassName;
+	private String DefaultSBCodeletType;
+	private Map<String, String> sbCodeletClasses = new HashMap<String, String>();
+
+	private DecayBehavior defaultDecay;
+	private ExciteBehavior defaultExcite;
+	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
+	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
+	
 	/**
 	 * Returns the singleton instance.
 	 * 
@@ -55,33 +56,49 @@ public class SBCodeletFactory {
 	 * @post pool.size() == 0
 	 */
 	public SBCodeletFactory() {
-		pool = new HashMap<String, List<StructureBuildingCodelet>>();
-		codelets = new HashMap<Long, StructureBuildingCodelet>();
-		knownTypes = new ArrayList<Integer>(); 
-	}
+		DefaultSBCodeletType = "StructBuildCodeletImpl";
+		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
+		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
+		defaultDecay = new LinearDecayCurve();
+		defaultExcite = new BasicExciteBehavior();
 		
+		pool = new HashMap<String, List<StructureBuildingCodelet>>();
+	}
+	
 	/**
-	 * Registers the given codelet. Makes codelets that were created outside
-	 * of this factory easier to find.
-	 * 
-	 * @param codelet The codelet to register
+	 * Decay Behavior
+	 * @param name
+	 * @param decay
 	 */
-	public void register(StructureBuildingCodelet codelet){
-		codelets.put(codelet.getId(),codelet);
+	public void addDecayBehavior(String name, DecayBehavior decay) {
+		decays.put(name, decay);
+	}
+	public void addExciteBehavior(String name, ExciteBehavior excite) {
+		excites.put(name, excite);
+	}
+	
+	/**
+	 * @param name
+	 * @return
+	 */
+	public DecayBehavior getDecayBehavior(String name) {
+		DecayBehavior d = decays.get(name);
+		if (d == null) {
+			d = defaultDecay;
+		}
+		return d;
 	}
 
-	/**
-	 * Returns the codelet with the given key, if it was created by this
-	 * factory, returns null otherwise. Does not create codelets, only sees if a
-	 * reference to an existent codelet can be found.
-	 * 
-	 * @param key
-	 *            The key or id of the wanted codelet
-	 * @return The codelet with the given key, if it was created by this
-	 *         factory, null otherwise.
-	 */
-	public StructureBuildingCodelet findCodelet(Long key) {
-		return codelets.get(key);
+	public ExciteBehavior getExciteBehavior(String name) {
+		ExciteBehavior d = excites.get(name);
+		if (d == null) {
+			d = defaultExcite;
+		}
+		return d;
+	}	
+	//************************
+	public void addSBCodeletType(String type, String className) {
+		sbCodeletClasses.put(type, className);
 	}
 
 	/**
@@ -104,6 +121,23 @@ public class SBCodeletFactory {
 
 		return codelet;
 	}//method
+	
+//	public StructureBuildingCodelet getCodelet() {
+//		Node n = null;
+//		try {
+////			n = (Node) Class.forName(DefaultClassName).newInstance();
+////			n.setExciteBehavior(defaultExcite);
+////			n.setDecayBehavior(defaultDecay);
+//
+//		} catch (InstantiationException e) {
+//			// TODO Auto-generated catch block
+//		} catch (IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//		}
+//		return n;
+//	}
 
 	public StructureBuildingCodelet getCodelet(String type, double activation, String... args) {
 		StructureBuildingCodelet code = getBlankCodelet(type);
@@ -132,8 +166,7 @@ public class SBCodeletFactory {
 	 * @param knownTypes The knownTypes to set.
 	 */
 	public void addCodeletType(List<Integer> newTypes) {
-		for(Integer i: newTypes)
-			knownTypes.add(i);
+
 	}
 		
 }//class

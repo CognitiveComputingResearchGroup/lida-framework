@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, GuiContentProvider{
+public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, FrameworkGuiProvider{
 	
 	private NodeStructure broadcastContent = new NodeStructureImpl();	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
@@ -65,8 +66,14 @@ public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, GuiC
 		return result;
 	}//method
 
-	public List<Object> getGuiContent() {
-		return guiContent;
-	}//method
+	public void addFrameworkGui(FrameworkGui listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendGuiContent() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }//class

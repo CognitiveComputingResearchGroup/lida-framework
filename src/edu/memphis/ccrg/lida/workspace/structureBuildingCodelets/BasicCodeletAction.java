@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public class BasicCodeletAction implements CodeletAction {
 
-	public NodeStructure getResultOfAction(NodeStructure content) {
+	public NodeStructure performAction(NodeStructure content) {
 		return content;
 	}
 

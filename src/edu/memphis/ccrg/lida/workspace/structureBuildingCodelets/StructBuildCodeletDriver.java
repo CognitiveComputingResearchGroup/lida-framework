@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
@@ -18,11 +21,10 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodeletImpl;
 
-public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpawner, WorkspaceListener {
+public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSpawner, WorkspaceListener, FrameworkGuiProvider{
 
 	private boolean keepRunning = true;
 	private FrameworkTimer frameworkTimer;	
-	private FrameworkGui flowGui;
 	private WorkspaceImpl workspace;
 	private SBCodeletFactory sbCodeletFactory = SBCodeletFactory.getInstance();
 	//
@@ -43,10 +45,9 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
     private ExecutorService executorService = Executors.newCachedThreadPool();
 	private List<Stoppable> runningCodelets = new ArrayList<Stoppable>();
 	
-	public StructBuildCodeletDriver(Workspace w, FrameworkTimer timer, FrameworkGui flowGui){
+	public StructBuildCodeletDriver(Workspace w, FrameworkTimer timer){
 		workspace = (WorkspaceImpl) w;
 		frameworkTimer = timer;
-		this.flowGui = flowGui;
 		//
 		perceptualBuffer.add(workspace.getPerceptualBuffer());
 		episodicBuffer.add(workspace.getEpisodicBuffer());
@@ -79,12 +80,13 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 			}	
 			frameworkTimer.checkForStartPause();
 			//
-			activateCodelets();		
+			activateCodelets();	
+			sendGuiContent();
 		}//while	
 	}//method
 
 	/**
-	 * TODO:if BufferContent activates a sbCodelet's context, start a new codelet
+	 * TODO: if BufferContent activates a sbCodelet's context, start a new codelet
 	 */
 	private void activateCodelets() {
 		//CODE to determine when/what codelets to activate	
@@ -92,7 +94,6 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 		List<Object> guiContent = new ArrayList<Object>();			
 		guiContent.add(workspaceContent.getNodeCount());
 		guiContent.add(workspaceContent.getLinkCount());
-		flowGui.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
 	}//method
 	
 	private void spawnPerceptualCodelet(double startActiv, NodeStructure objective, CodeletAction actions){
@@ -123,21 +124,32 @@ public class StructBuildCodeletDriver implements Runnable, Stoppable, ThreadSpaw
 
 	public void stopRunning(){
 		keepRunning = false;		
-		stopRunningCodelets();
+		stopRunningSpawnedThreads();
 	}//method
 
-	public void stopRunningCodelets() {
+	public void stopRunningSpawnedThreads() {
+		executorService.shutdown();
 		int size = runningCodelets.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = runningCodelets.get(i);
 			if(s != null)
 				s.stopRunning();					
 		}//for	
-		System.out.println("all structure-building codelets to stop");
+		System.out.println("all structure-building codelets told to stop");
 	}//method
 	
 	public int getSpawnedThreadCount() {
 		return runningCodelets.size();
 	}//method
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendGuiContent() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }//class

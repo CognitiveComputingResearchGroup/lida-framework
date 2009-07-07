@@ -66,11 +66,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		sbCodeletWorkspaceListener = listener;
 	}
 	
-	public void cue(NodeStructure content){
-		for(CueListener c: cueListeners)
-			c.receiveCue(content);
-	}
-	
 	/**
 	 * WorkspaceImpl listens to its submodules and forwards the content
 	 * that they send to the appropriate modules outside the workspace.
@@ -95,6 +90,10 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 	public void receiveCSMContent(NodeStructure content) {
 		cue(content);		
+	}
+	public void cue(NodeStructure content){
+		for(CueListener c: cueListeners)
+			c.receiveCue(content);
 	}
 
 	//****Input into the Workspace from other Modules is sent to the appropriate

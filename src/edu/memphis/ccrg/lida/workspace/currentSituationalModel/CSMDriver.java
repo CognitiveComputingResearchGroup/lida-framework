@@ -1,21 +1,17 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class CSMDriver implements Runnable, Stoppable{
+public class CSMDriver implements FrameworkModuleDriver{
 	
 	private boolean keepRunning = true;
-	
 	private FrameworkTimer timer;
-	private CurrentSituationalModel csm;
-	private FrameworkGui flowGui;
+	private CurrentSituationalModelImpl csm;
 	
-	public CSMDriver(CurrentSituationalModel csm, FrameworkTimer t, FrameworkGui gui){
+	public CSMDriver(CurrentSituationalModelImpl csm, FrameworkTimer t){
 		timer = t;
 		this.csm = csm;
-		flowGui = gui;
 	}
 
 	public void run(){
@@ -27,12 +23,11 @@ public class CSMDriver implements Runnable, Stoppable{
 			}	
 			timer.checkForStartPause();
 			csm.sendCSMContent();
-			flowGui.receiveGuiContent(FrameworkGui.FROM_CSM, csm.getGuiContent());	        
+			csm.sendGuiContent();	        
 		}//while
-	}//public void run()
+	}//method
 
 	public void stopRunning(){
-		try{Thread.sleep(20);}catch(Exception e){}
 		keepRunning = false;		
 	}//method
 	

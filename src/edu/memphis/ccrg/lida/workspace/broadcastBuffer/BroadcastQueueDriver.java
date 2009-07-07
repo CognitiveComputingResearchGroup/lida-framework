@@ -1,20 +1,18 @@
 package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 
+import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
-public class BroadcastQueueDriver implements Runnable, Stoppable{
+public class BroadcastQueueDriver implements FrameworkModuleDriver{
 
 	private boolean keepRunning = true;
-	private BroadcastQueue bBuffer;
+	private BroadcastQueueImpl bBuffer;
 	private FrameworkTimer timer;
-	private FrameworkGui flowGui;
 	
-	public BroadcastQueueDriver(BroadcastQueue bb, FrameworkTimer timer, FrameworkGui gui){
+	public BroadcastQueueDriver(BroadcastQueueImpl bb, FrameworkTimer timer){
 		bBuffer = bb;
 		this.timer = timer;
-		flowGui = gui;
 	}//method
 
 	public void run(){
@@ -26,8 +24,7 @@ public class BroadcastQueueDriver implements Runnable, Stoppable{
 			}				
 			timer.checkForStartPause();
 			bBuffer.activateCodelets();
-		
-			flowGui.receiveGuiContent(FrameworkGui.FROM_BROADCAST_QUEUE, bBuffer.getGuiContent());
+			bBuffer.sendGuiContent();
 		}//while keepRunning		
 	}//method
 
