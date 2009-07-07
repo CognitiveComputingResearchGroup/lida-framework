@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
-import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 
 public class CSMDriver implements FrameworkModuleDriver{

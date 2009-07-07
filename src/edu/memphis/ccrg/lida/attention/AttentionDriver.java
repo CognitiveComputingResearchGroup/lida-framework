@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.BroadcastLearner;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;

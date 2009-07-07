@@ -1,9 +1,7 @@
 package edu.memphis.ccrg.lida.proceduralMemory;
 
-import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
 /**
  * 

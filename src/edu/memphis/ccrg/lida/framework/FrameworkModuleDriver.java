@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.genericLIDA.main;
+package edu.memphis.ccrg.lida.framework;
 
 /**
  * A FrameworkModuleDriver is a class that runs a major module of the 

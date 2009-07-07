@@ -6,9 +6,8 @@ import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentListener;
-import edu.memphis.ccrg.lida.example.genericLIDA.main.FrameworkModuleDriver;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 
 public class VisionEnvironment implements Environment, FrameworkModuleDriver, ActionSelectionListener {
 
