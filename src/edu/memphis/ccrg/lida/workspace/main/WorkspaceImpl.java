@@ -120,7 +120,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 
 	/**
-	 * for codelets to access the buffers
+	 * For Codelets to access the buffers
 	 */
 	public CurrentSituationalModel getCSM() {
 		return csm;

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -23,20 +24,13 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
+public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener, FrameworkGuiProvider{
 	private Set<Coalition> coalitions = new HashSet<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private Boolean broadcastStarted = false;
-	private FrameworkGui flowGui;
 	List<Object> guiContent = new ArrayList<Object>();
-	
-	public GlobalWorkspaceImpl(){}
-	
-	public GlobalWorkspaceImpl(FrameworkGui gui){
-		flowGui = gui;
-	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -153,11 +147,11 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 		return chosenCoal;
 	}//method
 	
-	private void sendGuiContent() {
+	public void sendGuiContent() {
 		guiContent.clear();
 		guiContent.add(coalitions.size());
 		guiContent.add(-1);
-		flowGui.receiveGuiContent(FrameworkGui.FROM_GLOBAL_WORKSPACE, guiContent);
+		//flowGui.receiveGuiContent(FrameworkGui.FROM_GLOBAL_WORKSPACE, guiContent);
 	}
 
 	private void resetTriggers() {
@@ -165,5 +159,12 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener{
 			t.reset();
 		}
 	}
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }//class

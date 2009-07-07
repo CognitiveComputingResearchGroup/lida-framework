@@ -29,31 +29,17 @@ public class NodeFactory {
 
 	private String DefaultNodeClassName;
 	private String DefaultLinkClassName;
-	/**
-	 * @param defaultNodeType the defaultNodeType to set
-	 */
-	public void setDefaultNodeType(String defaultNodeType) {
-		DefaultNodeType = defaultNodeType;
-	}
-
-	/**
-	 * @param defaultLinkType the defaultLinkType to set
-	 */
-	public void setDefaultLinkType(String defaultLinkType) {
-		DefaultLinkType = defaultLinkType;
-	}
-
 	private String DefaultNodeType;
 	private String DefaultLinkType;
 	//
 	private DecayBehavior defaultDecay;
 	private ExciteBehavior defaultExcite;
 	//
-	private Map<String, String> nodeClass = new HashMap<String, String>();
-	private Map<String, String> linkClass = new HashMap<String, String>();
+	private Map<String, String> nodeClasses = new HashMap<String, String>();
+	private Map<String, String> linkClasses = new HashMap<String, String>();
 
-	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
-	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
+	private Map<String, DecayBehavior> decayBehaviors = new HashMap<String, DecayBehavior>();
+	private Map<String, ExciteBehavior> exciteBehaviors = new HashMap<String, ExciteBehavior>();
 
 	private NodeFactory() {
 		DefaultNodeClassName = "edu.memphis.ccrg.lida.shared.NodeImpl";
@@ -62,25 +48,25 @@ public class NodeFactory {
 		DefaultLinkType = "LinkImpl";
 		defaultDecay = new LinearDecayCurve();
 		defaultExcite = new BasicExciteBehavior();
-		nodeClass.put(DefaultNodeType, DefaultNodeClassName);
-		nodeClass.put(DefaultLinkType, DefaultLinkClassName);
-		nodeClass.put("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
+		nodeClasses.put(DefaultNodeType, DefaultNodeClassName);
+		nodeClasses.put(DefaultLinkType, DefaultLinkClassName);
+		nodeClasses.put("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
 	}
 
 	public void addDecayBehavior(String name, DecayBehavior decay) {
-		decays.put(name, decay);
+		decayBehaviors.put(name, decay);
 	}
 
 	public void addExciteBehavior(String name, ExciteBehavior excite) {
-		excites.put(name, excite);
+		exciteBehaviors.put(name, excite);
 	}
 
 	public void addLinkType(String linkType, String className) {
-		linkClass.put(linkType, className);
+		linkClasses.put(linkType, className);
 	}
 
 	public void addNodeType(String nodeType, String className) {
-		nodeClass.put(nodeType, className);
+		nodeClasses.put(nodeType, className);
 	}
 
 	/**
@@ -88,7 +74,7 @@ public class NodeFactory {
 	 * @return
 	 */
 	public DecayBehavior getDecayBehavior(String name) {
-		DecayBehavior d = decays.get(name);
+		DecayBehavior d = decayBehaviors.get(name);
 		if (d == null) {
 			d = defaultDecay;
 		}
@@ -96,7 +82,7 @@ public class NodeFactory {
 	}
 
 	public ExciteBehavior getExciteBehavior(String name) {
-		ExciteBehavior d = excites.get(name);
+		ExciteBehavior d = exciteBehaviors.get(name);
 		if (d == null) {
 			d = defaultExcite;
 		}
@@ -123,7 +109,7 @@ public class NodeFactory {
 	public Link getLink(Link oLink, String linkT) {
 		Link l = null;
 		try {
-			l = (Link) Class.forName(linkClass.get(linkT)).newInstance();
+			l = (Link) Class.forName(linkClasses.get(linkT)).newInstance();
 			l.setSource(oLink.getSource());
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
@@ -158,7 +144,7 @@ public class NodeFactory {
 			LinkType type) {
 		Link l = null;
 		try {
-			l = (Link) Class.forName(linkClass.get(linkT)).newInstance();
+			l = (Link) Class.forName(linkClasses.get(linkT)).newInstance();
 			l.setSource(source);
 			l.setSink(sink);
 			l.setType(type);
@@ -213,7 +199,7 @@ public class NodeFactory {
 	public Node getNode(Node oNode, String nodeType) {
 		Node n = null;
 		try {
-			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
+			n = (Node) Class.forName(nodeClasses.get(nodeType)).newInstance();
 			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
 			n.setExciteBehavior(oNode.getExciteBehavior());
@@ -237,8 +223,8 @@ public class NodeFactory {
 			n = (Node) Class.forName(DefaultNodeClassName).newInstance();
 			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
-			n.setExciteBehavior(excites.get(exciteBehavior));
-			n.setDecayBehavior(decays.get(decayBehavior));
+			n.setExciteBehavior(exciteBehaviors.get(exciteBehavior));
+			n.setDecayBehavior(decayBehaviors.get(decayBehavior));
 			n.setId(oNode.getId());
 			n.setLabel(oNode.getLabel());
 
@@ -256,11 +242,11 @@ public class NodeFactory {
 			String exciteBehavior) {
 		Node n = null;
 		try {
-			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
+			n = (Node) Class.forName(nodeClasses.get(nodeType)).newInstance();
 			n.setActivation(oNode.getActivation());
 			n.setReferencedNode(oNode.getReferencedNode());
-			n.setExciteBehavior(excites.get(exciteBehavior));
-			n.setDecayBehavior(decays.get(decayBehavior));
+			n.setExciteBehavior(exciteBehaviors.get(exciteBehavior));
+			n.setDecayBehavior(decayBehaviors.get(decayBehavior));
 			n.setId(oNode.getId());
 			n.setLabel(oNode.getLabel());
 
@@ -277,7 +263,7 @@ public class NodeFactory {
 	public Node getNode(String nodeType) {
 		Node n = null;
 		try {
-			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
+			n = (Node) Class.forName(nodeClasses.get(nodeType)).newInstance();
 			n.setExciteBehavior(defaultExcite);
 			n.setDecayBehavior(defaultDecay);
 		} catch (InstantiationException e) {
@@ -313,9 +299,9 @@ public class NodeFactory {
 			String exciteBehavior) {
 		Node n = null;
 		try {
-			n = (Node) Class.forName(nodeClass.get(nodeType)).newInstance();
-			n.setExciteBehavior(excites.get(exciteBehavior));
-			n.setDecayBehavior(decays.get(decayBehavior));
+			n = (Node) Class.forName(nodeClasses.get(nodeType)).newInstance();
+			n.setExciteBehavior(exciteBehaviors.get(exciteBehavior));
+			n.setDecayBehavior(decayBehaviors.get(decayBehavior));
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -334,18 +320,30 @@ public class NodeFactory {
 		this.defaultExcite = defaultExcite;
 	}
 
-	public void setDefaultNode(String NodeDefaultName) {
+	//DEFAULT Node and Link Class Name
+	public void setDefaultNodeClassName(String NodeDefaultName) {
 		this.DefaultNodeClassName = NodeDefaultName;
 	}
-	
-	public void setDefaultLink(String LinkDefaultName) {
+	public void setDefaultLinkClassName(String LinkDefaultName) {
 		this.DefaultLinkClassName = LinkDefaultName;
 	}
-
+	
+	//DEFAULT NODE & LINK TYPE	
+	/**
+	 * @param defaultNodeType the defaultNodeType to set
+	 */
+	public void setDefaultNodeType(String defaultNodeType) {
+		DefaultNodeType = defaultNodeType;
+	}
+	/**
+	 * @param defaultLinkType the defaultLinkType to set
+	 */
+	public void setDefaultLinkType(String defaultLinkType) {
+		DefaultLinkType = defaultLinkType;
+	}
 	public String getDefaultNodeType() {
 		return DefaultNodeType;
 	}
-
 	public String getDefaultLinkType() {
 		return DefaultLinkType;
 	}

@@ -126,7 +126,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 			bottomNodes.add(fd.getPamNode());
 		
     	graph.passActivationUpward(bottomNodes);    	
-    	formPercept();   
+    	updatePercept();   
     	//TODO:impl episodic buffer activation into activation passing  
     	//TODO:use preafferent signal
     }//method
@@ -138,7 +138,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * TODO: If links aren't Node then this method needs to be 
      * expanded to include links.
      */
-    private void formPercept(){
+    private void updatePercept(){
         percept.clearNodes();
         for(Node n: graph.getNodes()){
         	PamNodeImpl node = (PamNodeImpl)n;
