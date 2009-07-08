@@ -40,7 +40,11 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet, Runnabl
 	
 	public void run(){
 		while(keepRunning){
-			try{Thread.sleep(codeletSleepTime);}catch(Exception e){}
+			try{
+				Thread.sleep(codeletSleepTime);
+			}catch(InterruptedException e){
+				stopRunning();
+			}
 			frameworkTimer.checkForStartPause();
 			for(CodeletReadable buffer: accessibleBuffers)
 				checkBufferAndPerformAction(buffer);		
