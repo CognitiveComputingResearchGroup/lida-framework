@@ -28,8 +28,7 @@ public class ProceduralMemoryDriver implements FrameworkModuleDriver{
 			}catch(InterruptedException e){
 				stopRunning();
 			}	
-			timer.checkForStartPause();
-			
+			timer.checkForStartPause();			
 			procMem.sendGuiContent();
 		}//while	
 	}//method
