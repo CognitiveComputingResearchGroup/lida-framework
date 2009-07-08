@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
@@ -70,26 +69,26 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		TODO May want to also activate PAM based on new representations created by codelets
 		that get produced and put in the CSM
 	 */ 	 
-	public void receivePBufferContent(NodeStructure content){
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_PBUFFER);	
-		cue(content);
-	}
-	public void receiveBroadcastQueueContent(NodeStructure content) {
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_BQUEUE);			
-	}
-	public void receiveEpisodicBufferContent(NodeStructure content) {
-		pamWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);
-		sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);		
-		cue(content);
-	}
-	public void receiveCSMContent(NodeStructure content) {
-		cue(content);		
-	}
+	public void receiveBufferContent(int buffer, NodeStructure content) {
+		if(buffer == WorkspaceBufferListener.PBUFFER){
+			sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_PBUFFER);	
+			cue(content);
+		}else if(buffer == WorkspaceBufferListener.EBUFFER){
+			pamWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);
+			sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);		
+			cue(content);
+		}else if(buffer == WorkspaceBufferListener.CSM){
+			cue(content);
+		}else if(buffer == WorkspaceBufferListener.BQUEUE){
+			sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_BQUEUE);
+		}
+	}//method
+
 	public void cue(NodeStructure content){
 		for(CueListener c: cueListeners)
 			c.receiveCue(content);
 	}
-
+	
 	//****Input into the Workspace from other Modules is sent to the appropriate
 	//submodules
 	public void receivePAMContent(NodeStructure ns) {
@@ -127,11 +126,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 	public BroadcastQueue getBroadcastBuffer(){
 		return broadcastBuffer;
-	}
-
-	public void receiveBufferContent(int buffer, NodeStructure ns) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }//class
