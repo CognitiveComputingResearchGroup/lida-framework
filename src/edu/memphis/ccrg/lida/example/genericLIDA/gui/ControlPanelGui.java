@@ -249,7 +249,7 @@ public class ControlPanelGui extends javax.swing.JFrame {
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	statusLabel.setText("QUITTING");
 		frameworkTimer.resumeRunningThreads(); 
-		mainThread.stopRunningSpawnedThreads();
+		mainThread.stopSpawnedThreads();
     }
     
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {

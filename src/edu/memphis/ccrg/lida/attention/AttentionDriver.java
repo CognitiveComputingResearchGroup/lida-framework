@@ -73,10 +73,10 @@ public class AttentionDriver implements FrameworkModuleDriver, ThreadSpawner, Br
 
 	public void stopRunning() {
 		keepRunning = false;	
-		stopRunningSpawnedThreads();
+		stopSpawnedThreads();
 	}
 
-	public void stopRunningSpawnedThreads() {
+	public void stopSpawnedThreads() {
 		execSvc.shutdown();
 		int size = codeletStoppables.size();
 		for(int i = 0; i < size; i++){			

@@ -19,6 +19,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 	
 	private boolean keepRunning = true;
 	private NodeStructure csmContent = new NodeStructureImpl();
+	private int codeletSleepTime = 50;
 	
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
@@ -36,6 +37,11 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 	public void run() {
 		boolean shouldAddCoalition = false;
 		while(keepRunning){
+			try{
+				Thread.sleep(codeletSleepTime);
+			}catch(InterruptedException e){
+				stopRunning();
+			}
 			if(csm.hasContent(soughtContent)){
 				synchronized(this){				
 					if(csm.hasContent(soughtContent)){

@@ -1,6 +1,7 @@
 /* 
- * RunLida.java - Initializes, starts, and ends the main LIDA components.  
- * Sets up the GUIs and the  
+ * RunLida.java - Initializes, starts, and ends the 
+ *  main LIDA components. Sets up the intermodule communication 
+ *  as well the GUIs.   
  */
 package edu.memphis.ccrg.lida.example.genericLIDA.main;
 
@@ -65,6 +66,7 @@ public class GenericLida implements ThreadSpawner{
 	//Action Selection
 	private ProceduralMemoryImpl procMem;
 	private ActionSelectionImpl actionSelection;
+	
 	//Drivers
 	private SensoryMemoryDriver sensoryMemoryDriver;
 	private PAMDriver pamDriver;
@@ -75,31 +77,39 @@ public class GenericLida implements ThreadSpawner{
 	private CSMDriver csmDriver;
 	private AttentionDriver attnDriver;
 	private ProceduralMemoryDriver proceduralMemDriver;		
-	
-	//GUIs
+
 	/**
-	 * To view the environment
+	 * GUI to show the environment
 	 */
 	private VisualFieldGui visualFieldGui = new VisualFieldGui();
 	
 	/**
-	 * GUI Showing counts of active nodes and links in the modules
+	 * GUI to show counts of active nodes and links in the modules
 	 */
 	private NodeLinkFlowGui nodeLinkFlowGui = new NodeLinkFlowGui();
 	
 	/**
-	 * For basic control of the system
+	 * GUI for basic control of the system
 	 */
 	private ControlPanelGui controlPanelGui;
-	
-	//Threads & thread control
+
+	/**
+	 * List of drivers which run the major components of LIDA
+	 */
 	private List<FrameworkModuleDriver> drivers = new ArrayList<FrameworkModuleDriver>();
+	
+	/**
+	 * A class that helps pause and control the drivers. 
+	 */
 	private FrameworkTimer timer;
 
 	public static void main(String[] args){
 		new GenericLida().run();
 	}//method
 
+	/**
+	 * Start up LIDA
+	 */
 	public void run(){
 		initThreadControl();
 		
@@ -121,12 +131,12 @@ public class GenericLida implements ThreadSpawner{
 		initSensoryMotorAutomatism();
 		//gui
 		initGUI();
-		defineListeners();//Define Observer pattern listeners
+		defineListeners();//Define the listeners
 		
-		//Start everything up, threads are terminated via GUI
+		//Start all drivers up. The user can stop everything from the Control GUI.
 		startLidaSystem();
 	}//method
-	
+
 	private void initThreadControl(){
 		boolean frameworkStartsRunning = false;
 		int threadSleepTime = 150;
@@ -230,8 +240,7 @@ public class GenericLida implements ThreadSpawner{
 	}//method
 	
 	private void defineListeners(){
-		//TODO: NODELINKFLOWGUI!!
-		environment.addEnvironmentListener(sensoryMemory);
+		environment.addEnvironmentListener(sensoryMemory);//TODO: remove
 		environment.addEnvironmentListener(visualFieldGui);
 		
 		sensoryMemory.addSensoryListener(sma);
@@ -255,11 +264,10 @@ public class GenericLida implements ThreadSpawner{
 		
 		workspace.addCueListener(declarativeMemory);
 		//workspace.addCueListener(tem);
-		workspace.addCodeletListener(sbCodeletDriver);
-		workspace.addPamListener(pam);
+		workspace.add_SBCodelet_WorkspaceListener(sbCodeletDriver);
+		workspace.add_PAM_WorkspaceListener(pam);
 		sbCodeletDriver.addFrameworkGui(nodeLinkFlowGui);
-			
-		actionSelection.addBehaviorListener(workspace);		
+		//
 		globalWksp.addBroadcastListener(pam);
 		globalWksp.addBroadcastListener(workspace);
 		globalWksp.addBroadcastListener(tem);
@@ -267,9 +275,12 @@ public class GenericLida implements ThreadSpawner{
 		globalWksp.addBroadcastListener(procMem);
 		globalWksp.addFrameworkGui(nodeLinkFlowGui);
 		globalWksp.start();
+		//
 		procMem.addProceduralMemoryListener(actionSelection);
 		procMem.addFrameworkGui(nodeLinkFlowGui);
+		//
 		actionSelection.addBehaviorListener(environment);
+		actionSelection.addBehaviorListener(workspace);		
 		actionSelection.addFrameworkGui(nodeLinkFlowGui);
 	}//method
 	
@@ -285,14 +296,19 @@ public class GenericLida implements ThreadSpawner{
 	/**
 	 * Stop in reverse order of starting
 	 */	
-	public void stopRunningSpawnedThreads(){		
+	public void stopSpawnedThreads(){		
 		int size = drivers.size();
 		for(int i = 0; i < size; i++)			
 			(drivers.get(size - 1 - i)).stopRunning();
 		
 		//TODO: Run serialization!
-		try{Thread.sleep(500);}catch(Exception e){}
-		System.exit(0);//Kills gui windows & anything still running
+		try{
+			Thread.sleep(500);
+		}catch(Exception e){
+			//
+		}
+		//Kill GUI windows & anything else still running
+		System.exit(0);
 	}//method	
 
 	/**
