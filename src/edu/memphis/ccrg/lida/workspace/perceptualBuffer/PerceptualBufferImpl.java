@@ -5,27 +5,33 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, FrameworkGuiProvider{
+public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, GuiContentProvider{
 	
 	private NodeStructure pamContent = new NodeStructureImpl();	
 	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
-	private List<PerceptualBufferListener> pbListeners = new ArrayList<PerceptualBufferListener>();	
+	private List<WorkspaceBufferListener> pbListeners = new ArrayList<WorkspaceBufferListener>();
 	private final int PERCEPT_BUFFER_CAPACITY;
-	private List<Object> guiContent = new ArrayList<Object>();	
+	private List<Object> guiContent = new ArrayList<Object>();
+	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
 	
 	public PerceptualBufferImpl(int capacity){
 		PERCEPT_BUFFER_CAPACITY = capacity;
 		perceptBuffer.add(pamContent);
 	}
 	
-	public void addPBufferListener(PerceptualBufferListener l){
+	public void addBufferListener(WorkspaceBufferListener l){
 		pbListeners.add(l);
+	}
+	
+	public void addFrameworkGui(FrameworkGui listener) {
+		guis.add(listener);
 	}
 	
 	public synchronized void receivePAMContent(NodeStructure ns){
@@ -42,7 +48,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, 
 	public void activateCodelets(){
 		NodeStructureImpl nStruct = new NodeStructureImpl((NodeStructure) perceptBuffer.get(0));
 		for(int i = 0; i < pbListeners.size(); i++)		
-			pbListeners.get(i).receivePBufferContent(nStruct);				
+			pbListeners.get(i).receiveBufferContent(WorkspaceBufferListener.PBUFFER, nStruct);				
 
 		guiContent.clear();
 		guiContent.add(nStruct.getNodeCount());
@@ -65,14 +71,9 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, 
 		return result;
 	}//method
 
-	public void addFrameworkGui(FrameworkGui listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void sendGuiContent() {
-		// TODO Auto-generated method stub
-		
+		for(FrameworkGui fg: guis)
+			fg.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
 	}
 
 }//PerceptualBuffer

@@ -58,7 +58,7 @@ public class GenericLida implements ThreadSpawner{
 	private WorkspaceImpl workspace;
 	private PerceptualBufferImpl perceptBuffer;
 	private EpisodicBufferImpl episodicBuffer;
-	private BroadcastQueueImpl broadcastBuffer;
+	private BroadcastQueueImpl broadcastQueue;
 	private CurrentSituationalModelImpl csm;
 	//Attention
 	private GlobalWorkspaceImpl globalWksp;
@@ -179,8 +179,8 @@ public class GenericLida implements ThreadSpawner{
 	}
 	private void initBroadcastBufferThread(){
 		int capacity = 10;
-		broadcastBuffer = new BroadcastQueueImpl(capacity);
-		broadcastBufferDriver = new BroadcastQueueDriver(broadcastBuffer, timer);
+		broadcastQueue = new BroadcastQueueImpl(capacity);
+		broadcastBufferDriver = new BroadcastQueueDriver(broadcastQueue, timer);
 		drivers.add(broadcastBufferDriver);		
 	}
 	private void initCSMThread(){
@@ -198,7 +198,7 @@ public class GenericLida implements ThreadSpawner{
 	}
 	private void initWorkspaceFacade() {
 		workspace = new WorkspaceImpl(perceptBuffer, episodicBuffer, 
-									  broadcastBuffer, csm);		
+									  broadcastQueue, csm);		
 	}//method
 	private void initSBCodeletsThread() {
 		sbCodeletDriver = new StructBuildCodeletDriver(workspace, timer);		 
@@ -237,17 +237,27 @@ public class GenericLida implements ThreadSpawner{
 		sensoryMemory.addSensoryListener(sma);
 		sma.addSensoryMotorListener(sensoryMemory);
 		sensoryMemory.addSensoryListener(pam);
+		//
 		pam.addPAMListener(workspace);
+		pam.addFrameworkGui(nodeLinkFlowGui);
 		
-		perceptBuffer.addPBufferListener(workspace);
-		episodicBuffer.addEBufferListener(workspace);
-		broadcastBuffer.addBroadcastBufferListener(workspace);
-		csm.addCSMListener(workspace);
+		perceptBuffer.addBufferListener(workspace);
+		perceptBuffer.addFrameworkGui(nodeLinkFlowGui);
+		//
+		episodicBuffer.addBufferListener(workspace);
+		episodicBuffer.addFrameworkGui(nodeLinkFlowGui);
+		//
+		broadcastQueue.addBufferListener(workspace);
+		broadcastQueue.addFrameworkGui(nodeLinkFlowGui);
+		//
+		csm.addBufferListener(workspace);
+		csm.addFrameworkGui(nodeLinkFlowGui);
 		
 		workspace.addCueListener(declarativeMemory);
 		//workspace.addCueListener(tem);
 		workspace.addCodeletListener(sbCodeletDriver);
 		workspace.addPamListener(pam);
+		sbCodeletDriver.addFrameworkGui(nodeLinkFlowGui);
 			
 		actionSelection.addBehaviorListener(workspace);		
 		globalWksp.addBroadcastListener(pam);
@@ -255,9 +265,12 @@ public class GenericLida implements ThreadSpawner{
 		globalWksp.addBroadcastListener(tem);
 		globalWksp.addBroadcastListener(attnDriver);
 		globalWksp.addBroadcastListener(procMem);
+		globalWksp.addFrameworkGui(nodeLinkFlowGui);
 		globalWksp.start();
 		procMem.addProceduralMemoryListener(actionSelection);
+		procMem.addFrameworkGui(nodeLinkFlowGui);
 		actionSelection.addBehaviorListener(environment);
+		actionSelection.addFrameworkGui(nodeLinkFlowGui);
 	}//method
 	
 	private void startLidaSystem(){

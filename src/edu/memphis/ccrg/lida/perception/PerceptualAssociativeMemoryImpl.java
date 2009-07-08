@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import edu.memphis.ccrg.lida.framework.BroadcastLearner;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 
-public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, FrameworkGuiProvider, BroadcastLearner{
+public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, GuiContentProvider, BroadcastLearner{
 	
 	private PamNodeStructure graph = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();

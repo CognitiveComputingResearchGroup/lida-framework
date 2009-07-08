@@ -26,6 +26,6 @@ public interface FrameworkGui {
 	 * @param lidaComponent - tells which module is sending the content
 	 * @param content
 	 */
-	public abstract void receiveGuiContent(int lidaComponent, List<Object> content);
+	public abstract void receiveGuiContent(int lidaComponent, List<Object> guiContent);
 
 }

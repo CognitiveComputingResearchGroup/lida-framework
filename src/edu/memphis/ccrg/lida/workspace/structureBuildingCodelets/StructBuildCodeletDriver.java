@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodeletImpl;
 
-public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSpawner, WorkspaceListener, FrameworkGuiProvider{
+public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSpawner, WorkspaceListener, GuiContentProvider{
 
 	private boolean keepRunning = true;
 	private FrameworkTimer frameworkTimer;	
@@ -33,7 +33,9 @@ public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSp
 	private List<CodeletReadable> broadcastQueue = new ArrayList<CodeletReadable>();
 	private List<CodeletReadable> allBuffers = new ArrayList<CodeletReadable>();
 	private NodeStructureImpl workspaceContent = new NodeStructureImpl();
-	//private Map<CodeletActivatingContextImpl, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContextImpl, StructureBuildingCodelet>();//TODO: equals, hashCode	
+	//private Map<CodeletActivatingContextImpl, StructureBuildingCodelet> codeletMap = new HashMap<CodeletActivatingContextImpl, StructureBuildingCodelet>();//TODO: equals, hashCode
+	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
+	private List<Object> guiContent = new ArrayList<Object>();
 	
 	private double defaultActiv = 1.0;	
 	private NodeStructure defaultObjective = new NodeStructureImpl();
@@ -56,6 +58,10 @@ public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSp
 		allBuffers.add(workspace.getEpisodicBuffer());
 		allBuffers.add(workspace.getBroadcastBuffer());		
 	}//method
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		guis.add(listener);
+	}
 
 	/**
 	 * Note that the Workspace receives this content from multiple buffers. So it may
@@ -142,14 +148,9 @@ public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSp
 		return runningCodelets.size();
 	}//method
 
-	public void addFrameworkGui(FrameworkGui listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void sendGuiContent() {
-		// TODO Auto-generated method stub
-		
+		for(FrameworkGui fg: guis)
+			fg.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
 	}
 
 }//class

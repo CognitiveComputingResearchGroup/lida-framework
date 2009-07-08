@@ -5,18 +5,20 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, FrameworkGuiProvider{
+public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, GuiContentProvider{
 	
 	private NodeStructure broadcastContent = new NodeStructureImpl();	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
-	private List<BroadcastQueueListener> listeners = new ArrayList<BroadcastQueueListener>();	
+	private List<WorkspaceBufferListener> listeners = new ArrayList<WorkspaceBufferListener>();	
+	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
 	private final int broadcastQueueCapacity;
 	private List<Object> guiContent = new ArrayList<Object>();	
 
@@ -25,8 +27,12 @@ public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, Fram
 		broadcastQueue.add(broadcastContent);
 	}
 
-	public void addBroadcastBufferListener(BroadcastQueueListener l) {
+	public void addBufferListener(WorkspaceBufferListener l) {
 		listeners.add(l);		
+	}
+	
+	public void addFrameworkGui(FrameworkGui listener) {
+		guis.add(listener);
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -43,7 +49,7 @@ public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, Fram
 	public void activateCodelets(){
 		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) broadcastQueue.get(0));
 		for(int i = 0; i < listeners.size(); i++)
-			listeners.get(i).receiveBroadcastQueueContent(copiedStruct);				
+			listeners.get(i).receiveBufferContent(WorkspaceBufferListener.BQUEUE, copiedStruct);				
 		
 		guiContent.clear();
 		guiContent.add(copiedStruct.getNodeCount());
@@ -66,14 +72,9 @@ public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, Fram
 		return result;
 	}//method
 
-	public void addFrameworkGui(FrameworkGui listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void sendGuiContent() {
-		// TODO Auto-generated method stub
-		
+		for(FrameworkGui g: guis)
+			g.receiveGuiContent(FrameworkGui.FROM_BROADCAST_QUEUE, guiContent);
 	}
 
 }//class

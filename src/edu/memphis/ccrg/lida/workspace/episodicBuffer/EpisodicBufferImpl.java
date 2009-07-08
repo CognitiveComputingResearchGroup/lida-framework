@@ -5,26 +5,32 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, FrameworkGuiProvider{
+public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, GuiContentProvider{
 
     private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
-    private List<EpisodicBufferListener> listeners = new ArrayList<EpisodicBufferListener>();
+    private List<WorkspaceBufferListener> listeners = new ArrayList<WorkspaceBufferListener>();
 	private final int episodicBufferCapacity;
 	private List<Object> guiContent = new ArrayList<Object>();	
+	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
     
 	public EpisodicBufferImpl(int capacity){
 		episodicBufferCapacity = capacity;
 		episodicBuffer.add(new NodeStructureImpl());
 	}
 
-	public void addEBufferListener(EpisodicBufferListener listener) {
+	public void addBufferListener(WorkspaceBufferListener listener) {
 		listeners.add(listener);		
+	}
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		guis.add(listener);
 	}
 	
 	public synchronized void receiveLocalAssociation(NodeStructure association){
@@ -37,7 +43,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, Fram
 	public void activateCodelets() {
 		NodeStructureImpl copiedStruct = new NodeStructureImpl((NodeStructure) episodicBuffer.get(0));
 		for(int i = 0; i < listeners.size(); i++)
-			listeners.get(i).receiveEpisodicBufferContent(copiedStruct);				
+			listeners.get(i).receiveBufferContent(WorkspaceBufferListener.EBUFFER, copiedStruct);				
 		
 		guiContent.clear();
 		guiContent.add(copiedStruct.getNodeCount());
@@ -56,14 +62,9 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, Fram
 		return result;
 	}
 
-	public void addFrameworkGui(FrameworkGui listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void sendGuiContent() {
-		// TODO Auto-generated method stub
-		
+		for(FrameworkGui fg: guis)
+			fg.receiveGuiContent(FrameworkGui.FROM_EPISODIC_BUFFER, guiContent);
 	}
 	
 }//class

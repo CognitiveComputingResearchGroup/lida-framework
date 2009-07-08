@@ -3,26 +3,36 @@ package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class CurrentSituationalModelImpl implements CurrentSituationalModel, FrameworkGuiProvider{
+public class CurrentSituationalModelImpl implements CurrentSituationalModel, GuiContentProvider{
 	
 	private NodeStructure model = new NodeStructureImpl();
-	private List<CSMListener> csmListeners = new ArrayList<CSMListener>();
+	private List<WorkspaceBufferListener> csmListeners = new ArrayList<WorkspaceBufferListener>();
+	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
+	private List<Object> guiContent = new ArrayList<Object>();
 
-	public void addCSMListener(CSMListener l){
+	public void addBufferListener(WorkspaceBufferListener l){
 		csmListeners.add(l);
+	}
+
+	public void addFrameworkGui(FrameworkGui listener) {
+		guis.add(listener);
 	}
 	
 	public void sendCSMContent(){
-		for(CSMListener l: csmListeners)
-			l.receiveCSMContent((NodeStructure) model);
+		guiContent.clear();
+		guiContent.add(model.getNodeCount());
+		guiContent.add(model.getLinkCount());	
+		
+		for(WorkspaceBufferListener l: csmListeners)
+			l.receiveBufferContent(WorkspaceBufferListener.CSM, model);
 	}//method
 	
 	public synchronized void addWorkspaceContent(NodeStructure content) {
@@ -51,14 +61,9 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Fra
 		return new NodeStructureImpl(model);
 	}
 
-	public void addFrameworkGui(FrameworkGui listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void sendGuiContent() {
-		// TODO Auto-generated method stub
-		
+		for(FrameworkGui g: guis)
+			g.receiveGuiContent(FrameworkGui.FROM_CSM, guiContent);
 	}
 
 }//class

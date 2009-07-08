@@ -19,10 +19,10 @@ import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class CSMGui_ForReference extends javax.swing.JFrame implements CSMListener{
+public class CSMGui_ForReference extends javax.swing.JFrame implements WorkspaceBufferListener{
 
 	private static final long serialVersionUID = 1L;
     public CSMGui_ForReference() {
@@ -182,7 +182,7 @@ public class CSMGui_ForReference extends javax.swing.JFrame implements CSMListen
      * When a new struct comes from the CSM, clear the node and link lists
      * and fill them with the new stuff
      */
-	public void receiveCSMContent(NodeStructure content) {
+	public void receiveBufferContent(int n2, NodeStructure content) {
 		synchronized(this){
 			struct = (NodeStructureImpl)content;
 		}		

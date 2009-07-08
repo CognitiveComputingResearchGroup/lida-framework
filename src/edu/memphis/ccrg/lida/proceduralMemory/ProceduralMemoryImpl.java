@@ -6,16 +6,17 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.BroadcastLearner;
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.FrameworkGuiProvider;
+import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class ProceduralMemoryImpl implements ProceduralMemory, FrameworkGuiProvider, BroadcastLearner{
+public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvider, BroadcastLearner{
 	
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
+	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
 	private List<Object> guiContent = new ArrayList<Object>();
 
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
@@ -23,8 +24,7 @@ public class ProceduralMemoryImpl implements ProceduralMemory, FrameworkGuiProvi
 	}
 
 	public void addFrameworkGui(FrameworkGui listener) {
-		// TODO Auto-generated method stub
-		
+		guis.add(listener);
 	}
 
 	public void receiveBroadcast(BroadcastContent bc) {
@@ -37,8 +37,8 @@ public class ProceduralMemoryImpl implements ProceduralMemory, FrameworkGuiProvi
 	}
 
 	public void sendSchemes() {
-		// TODO Auto-generated method stub
-		
+		for(ProceduralMemoryListener pml: listeners){}
+			//pml.receiveSchemes(new ArrayList<Scheme>());
 	}
 	
 	public void learn() {
@@ -50,8 +50,8 @@ public class ProceduralMemoryImpl implements ProceduralMemory, FrameworkGuiProvi
 	}
 	
 	public void sendGuiContent() {
-		// TODO Auto-generated method stub
-		
+		for(FrameworkGui fg: guis)
+			fg.receiveGuiContent(FrameworkGui.FROM_PROCEDURAL_MEMORY, guiContent);
 	}
 
 }//class

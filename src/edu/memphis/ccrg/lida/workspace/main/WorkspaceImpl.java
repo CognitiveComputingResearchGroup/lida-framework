@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueue;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueListener;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMListener;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferListener;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferListener;
 
 /**
  * 
@@ -29,10 +26,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 									  LocalAssociationListener,
 									  BroadcastListener, 
 									  ActionSelectionListener, 
-									  PerceptualBufferListener,
-									  BroadcastQueueListener,
-									  EpisodicBufferListener, 
-									  CSMListener{
+									  WorkspaceBufferListener{
 	
 	//Workspace contains these components
 	private PerceptualBuffer perceptualBuffer;
@@ -133,6 +127,11 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 	public BroadcastQueue getBroadcastBuffer(){
 		return broadcastBuffer;
+	}
+
+	public void receiveBufferContent(int buffer, NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }//class
