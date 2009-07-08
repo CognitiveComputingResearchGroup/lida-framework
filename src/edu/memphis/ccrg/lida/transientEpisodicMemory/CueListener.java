@@ -1,17 +1,13 @@
 package edu.memphis.ccrg.lida.transientEpisodicMemory;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
+import java.util.concurrent.FutureTask;
 
-/**
- * 
- * @author rsilva
- */
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.transientEpisodicMemory.LocalAssociation;
+
 public interface CueListener {
 	
-    /**
-     *
-     * @param cue
-     */
-    void receiveCue(NodeStructure cue);
+	public FutureTask<LocalAssociation> receiveCue(NodeStructure cue);
 
 }
+
