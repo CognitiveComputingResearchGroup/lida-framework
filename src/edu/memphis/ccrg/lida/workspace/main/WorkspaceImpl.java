@@ -51,11 +51,11 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		cueListeners.add(l);
 	}
 	
-	public void addPamListener(WorkspaceListener listener){
+	public void add_PAM_WorkspaceListener(WorkspaceListener listener){
 		pamWorkspaceListener = listener;
 	}
 	
-	public void addCodeletListener(WorkspaceListener listener){
+	public void add_SBCodelet_WorkspaceListener(WorkspaceListener listener){
 		sbCodeletWorkspaceListener = listener;
 	}
 	

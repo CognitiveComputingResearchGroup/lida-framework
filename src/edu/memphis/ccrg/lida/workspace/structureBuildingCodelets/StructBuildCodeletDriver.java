@@ -130,10 +130,10 @@ public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSp
 
 	public void stopRunning(){
 		keepRunning = false;		
-		stopRunningSpawnedThreads();
+		stopSpawnedThreads();
 	}//method
 
-	public void stopRunningSpawnedThreads() {
+	public void stopSpawnedThreads() {
 		executorService.shutdown();
 		int size = runningCodelets.size();
 		for(int i = 0; i < size; i++){			
