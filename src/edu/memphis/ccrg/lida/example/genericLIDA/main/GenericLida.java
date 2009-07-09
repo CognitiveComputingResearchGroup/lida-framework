@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
+import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionSensoryContent;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionSensoryMemory;
@@ -153,7 +154,7 @@ public class GenericLida implements ThreadSpawner{
 		sma = new SensoryMotorAutomatismImpl();
 	}	
 	private void initSensoryMemoryThread(){
-		sensoryMemory = new VisionSensoryMemory();		
+		sensoryMemory = new VisionSensoryMemory(environment);		
 		sensoryMemoryDriver = new SensoryMemoryDriver(sensoryMemory, timer);
 		drivers.add(sensoryMemoryDriver);				
 	}
@@ -240,8 +241,9 @@ public class GenericLida implements ThreadSpawner{
 	}//method
 	
 	private void defineListeners(){
-		environment.addEnvironmentListener(sensoryMemory);//TODO: remove
-		environment.addEnvironmentListener(visualFieldGui);
+		//TODO: NODELINKFLOWGUI!!
+		//environment.addEnvironmentListener(sensoryMemory);
+		environment.addFrameworkGui(visualFieldGui);
 		
 		sensoryMemory.addSensoryListener(sma);
 		sma.addSensoryMotorListener(sensoryMemory);
