@@ -6,7 +6,5 @@ import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
 public interface DetectBehavior {
 
 	void detectAndExcite(PamNode node, SensoryMemoryContent sc);	
-	void setDetectThreshold(double d);
-	void setExcitationAmount(double d);
 
 }

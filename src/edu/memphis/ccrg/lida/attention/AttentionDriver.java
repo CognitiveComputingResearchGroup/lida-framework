@@ -39,6 +39,11 @@ public class AttentionDriver implements FrameworkModuleDriver, ThreadSpawner, Br
 		global = gwksp;
 	}
 	
+	public void setInitialRunnables(List<Runnable> initialRunnables) {
+		for(Runnable r: initialRunnables)
+			execSvc.execute(r);
+	}
+	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
 	}
@@ -58,7 +63,7 @@ public class AttentionDriver implements FrameworkModuleDriver, ThreadSpawner, Br
 	}//method
 	
 	private void spawnAttentionCodelet(double activ, NodeStructure soughtContent){
-		AttentionCodeletImpl ac = new AttentionCodeletImpl(csm, global, activ, soughtContent);
+		AttentionCodeletImpl ac = new AttentionCodeletImpl(csm, global, activ);
 		codeletStoppables.add(ac);	
 		execSvc.execute(ac);//put codelet in the work queue for the thread pool
 	}//method

@@ -61,10 +61,10 @@ public class TEMImpl implements TransientEpisodicMemory {
      * @param cue a set of nodes used to cue this episodic memory
      * @return a future task with the local association related to the cue
      */
-    public FutureTask<LocalAssociationImpl> cue(MemoryCue cue) {
+    public FutureTask<LocalAssociation> cue(MemoryCue cue) {
         Collection<Node> nodes = cue.getNodeStructure().getNodes();
         LocalAssociationImpl association = new LocalAssociationImpl();
-        FutureTask<LocalAssociationImpl> future = null;
+        FutureTask<LocalAssociation> future = null;
         for (Node n : nodes) {
             byte[] address = new byte[nodeMap.size()];
             address[indexMap.get(n.getId())] = 1;

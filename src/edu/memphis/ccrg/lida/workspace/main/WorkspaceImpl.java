@@ -71,16 +71,16 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	 */ 	 
 	public void receiveBufferContent(int buffer, NodeStructure content) {
 		if(buffer == WorkspaceBufferListener.PBUFFER){
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_PBUFFER);	
+			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_PBUFFER, content);	
 			cue(content);
 		}else if(buffer == WorkspaceBufferListener.EBUFFER){
-			pamWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_EBUFFER);		
+			pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
+			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);		
 			cue(content);
 		}else if(buffer == WorkspaceBufferListener.CSM){
 			cue(content);
 		}else if(buffer == WorkspaceBufferListener.BQUEUE){
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(content, WorkspaceListener.FROM_BQUEUE);
+			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_BQUEUE, content);
 		}
 	}//method
 

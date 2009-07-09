@@ -6,7 +6,6 @@ public interface CurrentSituationalModel{
 
 	public abstract void addWorkspaceContent(NodeStructure updatedContent);
 	public abstract void sendCSMContent();
-	public abstract boolean hasContent(NodeStructure whatIwant);
 	public abstract NodeStructure getCSMContent();
 	
 }//interface

@@ -1,9 +1,11 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
+import java.util.List;
+
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public interface CodeletReadable {
 
-	NodeStructure lookForContent(NodeStructure soughtContent);
+	public abstract List<NodeStructure> getBuffer();
 
 }

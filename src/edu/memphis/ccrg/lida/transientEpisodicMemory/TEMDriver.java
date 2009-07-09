@@ -23,7 +23,7 @@ public class TEMDriver implements Runnable, Stoppable {
     private FrameworkTimer timer;
     private MemoryCue cue;
     private boolean keepRunning = true;
-    private Future association;
+    private Future<LocalAssociation> association;
 
     /**
      * Constructor of the class.
@@ -56,7 +56,7 @@ public class TEMDriver implements Runnable, Stoppable {
      * Gets the reference to the local association.
      * @return a future object with a reference to the local association
      */
-    public Future getAssociation() {
+    public Future<LocalAssociation> getAssociation() {
         return association;
     }
 

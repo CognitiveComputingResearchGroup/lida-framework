@@ -31,5 +31,5 @@ public interface TransientEpisodicMemory extends BroadcastListener {
      * @param cue the cue used to read this TEM
      * @return a Future object with the local association
      */
-    public Future cue(MemoryCue cue);
+    public Future<LocalAssociation> cue(MemoryCue cue);
 }

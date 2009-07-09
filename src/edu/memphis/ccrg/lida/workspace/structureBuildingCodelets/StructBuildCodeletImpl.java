@@ -2,14 +2,13 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.List;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
-public class StructBuildCodeletImpl implements StructureBuildingCodelet, Runnable, Stoppable{
+public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	
 	private boolean keepRunning = true;
 	//Initialized by constructor
@@ -47,15 +46,9 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet, Runnabl
 			}
 			frameworkTimer.checkForStartPause();
 			for(CodeletReadable buffer: accessibleBuffers)
-				checkBufferAndPerformAction(buffer);		
+				action.performAction(buffer, workspace);	
 		}//while	
 	}//run
-	
-	private void checkBufferAndPerformAction(CodeletReadable buffer){		
-		NodeStructure bufferContent = buffer.lookForContent(soughtContent);
-		NodeStructure updatedContent = action.performAction(bufferContent);			
-		workspace.addContentToCSM(updatedContent);
-	}//method
 
 	public void stopRunning() {
 		keepRunning = false;		

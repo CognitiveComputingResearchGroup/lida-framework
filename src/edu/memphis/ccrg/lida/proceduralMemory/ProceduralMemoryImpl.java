@@ -37,8 +37,8 @@ public class ProceduralMemoryImpl implements ProceduralMemory, GuiContentProvide
 	}
 
 	public void sendSchemes() {
-		for(ProceduralMemoryListener pml: listeners){}
-			//pml.receiveSchemes(new ArrayList<Scheme>());
+		for(ProceduralMemoryListener p: listeners)
+			p.receiveSchemes(new ArrayList<Scheme>());
 	}
 	
 	public void learn() {

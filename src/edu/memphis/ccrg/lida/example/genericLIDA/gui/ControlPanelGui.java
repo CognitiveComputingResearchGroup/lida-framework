@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.example.genericLIDA.gui;
 
 import javax.swing.JSlider;
-import edu.memphis.ccrg.lida.actionSelection.ActionSelection;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
@@ -21,19 +20,19 @@ public class ControlPanelGui extends javax.swing.JFrame {
 	private int sliderMax = 350;
 	private int sliderStartValue = 100;
 	private ThreadSpawner codeletThread;
-	private ActionSelection actionSelection;
+	//private ActionSelection actionSelection;
 	
     /** Creates new form ContactEditorUI 
      * @param start 
      * @param timer 
      * @param pam */
-    public ControlPanelGui(FrameworkTimer timer, ThreadSpawner start, ThreadSpawner codeletDriver, Environment e, ActionSelection as) {
+    public ControlPanelGui(FrameworkTimer timer, ThreadSpawner start, ThreadSpawner codeletDriver, Environment e) {
     	this.frameworkTimer = timer;
     	isPaused = timer.getStartStatus();
     	mainThread = start;
     	codeletThread = codeletDriver;
     	environment = e;
-    	actionSelection = as;
+    	//actionSelection = as;
         initComponents();
     }
 

@@ -2,10 +2,11 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
-public interface StructureBuildingCodelet extends Activatible{
+public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppable{
 
 	 public void setSoughtContent(NodeStructure content);
 	 public NodeStructure getSoughtContent();

@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
+import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
 /**
  * The CodeletFactory is responsible for loading codelets dynamically. There are
@@ -17,6 +22,12 @@ import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
  * Pattern: Factory, Singleton
  */
 public class SBCodeletFactory {
+	
+	private static final int PERCEPTUAL_TYPE = 0;
+	private static final int EPISODIC_TYPE = 1;
+	private static final int BROADCAST_TYPE = 2;
+	private static final int CSM_TYPE = 3;
+	private static final int ALL_TYPE = 4;	
 
 	/**
 	 * Holds singleton instance
@@ -38,15 +49,26 @@ public class SBCodeletFactory {
 	private ExciteBehavior defaultExcite;
 	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
+	//
+	//
+	private List<CodeletReadable> perceptualBuffer = new ArrayList<CodeletReadable>();
+	private List<CodeletReadable> episodicBuffer = new ArrayList<CodeletReadable>();
+	private List<CodeletReadable> broadcastQueue = new ArrayList<CodeletReadable>();
+	private List<CodeletReadable> allBuffers = new ArrayList<CodeletReadable>();
+	//
+	private double defaultActiv = 1.0;	
+	private NodeStructure defaultObjective = new NodeStructureImpl();
+	private CodeletAction defaultActions = new BasicCodeletAction();
+	private FrameworkTimer timer;
 	
 	/**
 	 * Returns the singleton instance.
 	 * 
 	 * @return the singleton instance
 	 */
-	static public SBCodeletFactory getInstance() {
+	static public SBCodeletFactory getInstance(Workspace w, FrameworkTimer timer) {
 		if(instance == null)
-			instance = new SBCodeletFactory();
+			instance = new SBCodeletFactory(w, timer);
 		return instance;
 	}//constructor
 	
@@ -55,14 +77,22 @@ public class SBCodeletFactory {
 	 * TODO: Are we goign to use this?
 	 * @post pool.size() == 0
 	 */
-	public SBCodeletFactory() {
+	public SBCodeletFactory(Workspace workspace, FrameworkTimer timer) {
 		DefaultSBCodeletType = "StructBuildCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
+		//
 		defaultDecay = new LinearDecayCurve();
 		defaultExcite = new BasicExciteBehavior();
-		
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
+		//
+		perceptualBuffer.add(workspace.getPerceptualBuffer());
+		episodicBuffer.add(workspace.getEpisodicBuffer());
+		broadcastQueue.add(workspace.getBroadcastBuffer());
+		allBuffers.add(workspace.getPerceptualBuffer());
+		allBuffers.add(workspace.getEpisodicBuffer());
+		allBuffers.add(workspace.getBroadcastBuffer());	
+		this.timer = timer;		
 	}
 	
 	/**
@@ -167,6 +197,12 @@ public class SBCodeletFactory {
 	 */
 	public void addCodeletType(List<Integer> newTypes) {
 
+	}
+
+	public StructureBuildingCodelet getCodelet(int type, double activation,
+												NodeStructure context, CodeletAction actions) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 }//class

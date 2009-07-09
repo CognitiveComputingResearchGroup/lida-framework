@@ -1,13 +1,12 @@
 package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
@@ -56,25 +55,13 @@ public class BroadcastQueueImpl implements BroadcastQueue, CodeletReadable, GuiC
 		guiContent.add(copiedStruct.getLinkCount());					
 	}//sendContent
 
-	/**
-	 * for codelets to get Content from the buffer.  Eventually based on an objective.
-	 * Currently objective not used.
-	 */
-	public NodeStructure lookForContent(NodeStructure objective) {
-		NodeStructureImpl result = new NodeStructureImpl();
-		synchronized(this){
-			for(NodeStructure content: broadcastQueue){
-				Collection<Node> nodes = content.getNodes();					
-				for(Node n: nodes)
-					result.addNode(n);				
-			}//for each struct in queue
-		}//synchronized
-		return result;
-	}//method
-
 	public void sendGuiContent() {
 		for(FrameworkGui g: guis)
 			g.receiveGuiContent(FrameworkGui.FROM_BROADCAST_QUEUE, guiContent);
+	}
+
+	public List<NodeStructure> getBuffer() {
+		return Collections.unmodifiableList(broadcastQueue);
 	}
 
 }//class

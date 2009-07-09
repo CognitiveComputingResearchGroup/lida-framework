@@ -1,12 +1,11 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.GuiContentProvider;
-import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
@@ -55,21 +54,26 @@ public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, 
 		guiContent.add(nStruct.getLinkCount());					
 	}//sendContent
 	
-	/**
-	 * for codelets to get Content from the buffer.  Eventually based on an objective.
-	 * Currently objective not used.
-	 */
-	public NodeStructure lookForContent(NodeStructure objective) {
-		NodeStructureImpl result = new NodeStructureImpl();
-		synchronized(this){
-			for(NodeStructure content: perceptBuffer){
-				Collection<Node> nodes = content.getNodes();					
-				for(Node n: nodes)
-					result.addNode(n);				
-			}//for each struct in the buffer
-		}//synchronized
-		return result;
-	}//method
+//	/**
+//	 * for codelets to get Content from the buffer.  Eventually based on an objective.
+//	 * Currently objective not used.
+//	 */
+//	public NodeStructure lookForContent(NodeStructure objective){
+//		NodeStructureImpl result = new NodeStructureImpl();
+//		synchronized(this){
+//			for(NodeStructure content: perceptBuffer){
+//				Collection<Node> nodes = content.getNodes();					
+//				for(Node n: nodes)
+//					result.addNode(n);				
+//			}//for each struct in the buffer
+//		}//synchronized
+//		return result;
+//	}//method
+
+	public List<NodeStructure> getBuffer() {
+		return Collections.unmodifiableList(perceptBuffer);
+	}
+
 
 	public void sendGuiContent() {
 		for(FrameworkGui fg: guis)

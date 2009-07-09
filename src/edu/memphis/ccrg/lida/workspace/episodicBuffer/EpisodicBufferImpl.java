@@ -1,12 +1,11 @@
 package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.GuiContentProvider;
-import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
@@ -50,16 +49,8 @@ public class EpisodicBufferImpl implements EpisodicBuffer, CodeletReadable, GuiC
 		guiContent.add(copiedStruct.getLinkCount());
 	}
 
-	public NodeStructure lookForContent(NodeStructure objective) {
-		NodeStructureImpl result = new NodeStructureImpl();
-		synchronized(this){
-			for(NodeStructure content: episodicBuffer){
-				Collection<Node> nodes = content.getNodes();					
-				for(Node n: nodes)
-					result.addNode(n);				
-			}//for each struct in queue
-		}//synchronized
-		return result;
+	public List<NodeStructure> getBuffer() {
+		return Collections.unmodifiableList(episodicBuffer);
 	}
 
 	public void sendGuiContent() {

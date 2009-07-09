@@ -35,9 +35,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
 	//Shared variables
     private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
-    private NodeStructure topDownContent = new NodeStructureImpl();
+    //private NodeStructure topDownContent = new NodeStructureImpl();
     private NodeStructure broadcastContent = new NodeStructureImpl();	
-    private NodeStructure preafferantSignal = new NodeStructureImpl();
+    //private NodeStructure preafferantSignal = new NodeStructureImpl();
     //for GUI
     private List<FrameworkGui> guiList = new ArrayList<FrameworkGui>();
 	private List<Object> guiContent = new ArrayList<Object>();
@@ -99,8 +99,8 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	sensoryMemoryContent = sc;    	
     }
 
-	public synchronized void receiveWorkspaceContent(NodeStructure content, int originatingBuffer) {
-		topDownContent = content;		
+	public synchronized void receiveWorkspaceContent(int originatingBuffer, NodeStructure content) {
+		//topDownContent = content;		
 	}
     	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -108,7 +108,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	}
     
     public synchronized void receivePreafferentSignal(NodeStructure ns){
-    	preafferantSignal = ns;
+    	//preafferantSignal = ns;
     }
 	
 	//******FUNDAMENTAL PAM FUNCTIONS******        

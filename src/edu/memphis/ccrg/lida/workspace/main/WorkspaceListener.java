@@ -8,6 +8,6 @@ public interface WorkspaceListener {
 	public static final int FROM_EBUFFER = 2;
 	public static final int FROM_BQUEUE = 3;
 	
-	public abstract void receiveWorkspaceContent(NodeStructure content, int originatingBuffer);
+	public abstract void receiveWorkspaceContent(int originatingBuffer, NodeStructure content);
 
 }

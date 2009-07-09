@@ -233,7 +233,7 @@ public class GenericLida implements ThreadSpawner{
 		actionSelection = new ActionSelectionImpl();
 	}
 	private void initGUI() {	
-		controlPanelGui = new ControlPanelGui(timer, this, sbCodeletDriver, environment, actionSelection);
+		controlPanelGui = new ControlPanelGui(timer, this, sbCodeletDriver, environment);
 		controlPanelGui.setVisible(true);
 		visualFieldGui.setVisible(true);
 		nodeLinkFlowGui.setVisible(true);
@@ -319,5 +319,9 @@ public class GenericLida implements ThreadSpawner{
 	public int getSpawnedThreadCount() {
 		return drivers.size();
 	}//method
+
+	public void setInitialRunnables(List<Runnable> initialRunnables) {
+		//for now do nothing
+	}
 
 }//class
