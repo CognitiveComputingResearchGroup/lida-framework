@@ -43,7 +43,7 @@ import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructBuildCodeletDriver;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.SBCodeletDriver;
 
 public class GenericLida implements ThreadSpawner{
 	
@@ -73,7 +73,7 @@ public class GenericLida implements ThreadSpawner{
 	private PerceptualBufferDriver perceptBufferDriver;
 	private EpisodicBufferDriver episodicBufferDriver;
 	private BroadcastQueueDriver broadcastBufferDriver;
-	private StructBuildCodeletDriver sbCodeletDriver;
+	private SBCodeletDriver sbCodeletDriver;
 	private CSMDriver csmDriver;
 	private AttentionDriver attnDriver;
 	private ProceduralMemoryDriver proceduralMemDriver;		
@@ -211,7 +211,7 @@ public class GenericLida implements ThreadSpawner{
 									  broadcastQueue, csm);		
 	}//method
 	private void initSBCodeletsThread() {
-		sbCodeletDriver = new StructBuildCodeletDriver(workspace, timer);		 
+		sbCodeletDriver = new SBCodeletDriver(workspace, timer);		 
 		drivers.add(sbCodeletDriver);			
 	}
 	private void initGlobalWorkspace() {

@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletAction;
 
-public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSpawner, WorkspaceListener, GuiContentProvider{
+public class SBCodeletDriver implements FrameworkModuleDriver, ThreadSpawner, WorkspaceListener, GuiContentProvider{
 
 	private boolean keepRunning = true;
 	private FrameworkTimer frameworkTimer;	
@@ -30,7 +30,7 @@ public class StructBuildCodeletDriver implements FrameworkModuleDriver, ThreadSp
 	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
 	private List<Object> guiContent = new ArrayList<Object>();
 	
-	public StructBuildCodeletDriver(Workspace w, FrameworkTimer timer){
+	public SBCodeletDriver(Workspace w, FrameworkTimer timer){
 		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
 		frameworkTimer = timer;	
 	}//method
