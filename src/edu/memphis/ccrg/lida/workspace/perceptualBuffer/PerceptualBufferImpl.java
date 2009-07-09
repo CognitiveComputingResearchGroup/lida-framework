@@ -9,9 +9,8 @@ import edu.memphis.ccrg.lida.framework.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 
-public class PerceptualBufferImpl implements PerceptualBuffer, CodeletReadable, GuiContentProvider{
+public class PerceptualBufferImpl implements PerceptualBuffer, GuiContentProvider{
 	
 	private NodeStructure pamContent = new NodeStructureImpl();	
 	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();

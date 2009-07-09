@@ -5,7 +5,7 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
 
 /**
  * @author Javier Snaider
@@ -46,7 +46,7 @@ public class NodeFactory {
 		DefaultLinkClassName = "edu.memphis.ccrg.lida.shared.LinkImpl";
 		DefaultNodeType = "NodeImpl";
 		DefaultLinkType = "LinkImpl";
-		defaultDecay = new LinearDecayCurve();
+		defaultDecay = new LinearDecayBehavior();
 		defaultExcite = new BasicExciteBehavior();
 		nodeClasses.put(DefaultNodeType, DefaultNodeClassName);
 		nodeClasses.put(DefaultLinkType, DefaultLinkClassName);

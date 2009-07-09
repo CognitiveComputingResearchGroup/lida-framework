@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -17,7 +18,7 @@ public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppab
 	 public void setId(Long id);
 	 public Long getId();
 	
-	 public void setAccessibleBuffers(List<CodeletReadable> buffers);
+	 public void setAccessibleModules(List<CodeletReadable> readableBuffers, List<CodeletWritable> writableBuffers);
 	 public List<CodeletReadable> getAccessibleBuffers();
 	
 	 public void setSleepTime(int ms);
@@ -30,5 +31,6 @@ public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppab
 	 public int getType();
 
 	 public void clearForReuse();
+	public void addFrameworkTimer(FrameworkTimer timer);
 
 }//interface

@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
 /**
@@ -55,8 +55,10 @@ public class SBCodeletFactory {
 	private List<CodeletReadable> episodicBuffer = new ArrayList<CodeletReadable>();
 	private List<CodeletReadable> broadcastQueue = new ArrayList<CodeletReadable>();
 	private List<CodeletReadable> allBuffers = new ArrayList<CodeletReadable>();
+	private List<CodeletReadable> csmRead = new ArrayList<CodeletReadable>();	
+	private List<CodeletWritable> csm = new ArrayList<CodeletWritable>();
 	//
-	private double defaultActiv = 1.0;	
+	private double defaultActivation = 1.0;	
 	private NodeStructure defaultObjective = new NodeStructureImpl();
 	private CodeletAction defaultActions = new BasicCodeletAction();
 	private FrameworkTimer timer;
@@ -82,16 +84,18 @@ public class SBCodeletFactory {
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
 		//
-		defaultDecay = new LinearDecayCurve();
+		defaultDecay = new LinearDecayBehavior();
 		defaultExcite = new BasicExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 		//
 		perceptualBuffer.add(workspace.getPerceptualBuffer());
 		episodicBuffer.add(workspace.getEpisodicBuffer());
 		broadcastQueue.add(workspace.getBroadcastBuffer());
+		csmRead.add(workspace.getCSM());
 		allBuffers.add(workspace.getPerceptualBuffer());
 		allBuffers.add(workspace.getEpisodicBuffer());
 		allBuffers.add(workspace.getBroadcastBuffer());	
+		csm.add(workspace.getCSM());
 		this.timer = timer;		
 	}
 	
@@ -138,7 +142,7 @@ public class SBCodeletFactory {
 	 * @param type the class name of the desired codelet type
 	 * @return A new empty codelet of the specified type
 	 */
-	protected StructureBuildingCodelet getBlankCodelet(String type) {
+	private StructureBuildingCodelet getBlankCodelet(int type) {
 		StructureBuildingCodelet codelet = null;
 		if(pool.containsKey(type)){
 			List<StructureBuildingCodelet> codelets = pool.get(type);
@@ -146,35 +150,50 @@ public class SBCodeletFactory {
 				codelet = codelets.remove(0);
 		}
 		if(codelet == null){
-			//create a new codelet
+			try {
+				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
+				codelet.addFrameworkTimer(timer);	
+				
+				codelet.setExciteBehavior(defaultExcite);
+				codelet.setDecayBehavior(defaultDecay);
+				codelet.setActivation(defaultActivation);
+				codelet.setSoughtContent(defaultObjective);
+				codelet.setCodeletAction(defaultActions);			
+				
+				if(type == SBCodeletFactory.PERCEPTUAL_TYPE)
+					codelet.setAccessibleModules(perceptualBuffer, csm);
+				else if(type == SBCodeletFactory.EPISODIC_TYPE)
+					codelet.setAccessibleModules(episodicBuffer, csm);
+				else if(type == SBCodeletFactory.BROADCAST_TYPE)
+					codelet.setAccessibleModules(broadcastQueue, csm);
+				else if(type == SBCodeletFactory.CSM_TYPE)
+					codelet.setAccessibleModules(csmRead, csm);
+				else if(type == SBCodeletFactory.ALL_TYPE)
+					codelet.setAccessibleModules(allBuffers, csm);
+
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+			}			
 		}
 
 		return codelet;
 	}//method
 	
-//	public StructureBuildingCodelet getCodelet() {
-//		Node n = null;
-//		try {
-////			n = (Node) Class.forName(DefaultClassName).newInstance();
-////			n.setExciteBehavior(defaultExcite);
-////			n.setDecayBehavior(defaultDecay);
-//
-//		} catch (InstantiationException e) {
-//			// TODO Auto-generated catch block
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//		}
-//		return n;
-//	}
+	public StructureBuildingCodelet getCodelet(int type){
+		return getBlankCodelet(type);
+	}
 
-	public StructureBuildingCodelet getCodelet(String type, double activation, String... args) {
-		StructureBuildingCodelet code = getBlankCodelet(type);
-		//code.setType(type);
-		code.setActivation(activation);
-		//code.initialize(args);
-		return code;
+	public StructureBuildingCodelet getCodelet(int type, double activation,
+			NodeStructure context, CodeletAction actions) {
+		StructureBuildingCodelet sbc = getBlankCodelet(type);
+		sbc.setActivation(activation);
+		sbc.setSoughtContent(context);
+		sbc.setCodeletAction(actions);
+		return sbc;
 	}
 		
 	/**
@@ -191,18 +210,5 @@ public class SBCodeletFactory {
 			pool.put(type, new ArrayList<StructureBuildingCodelet>());
 		pool.get(type).add(sbCode);
 	}
-		
-	/**
-	 * @param knownTypes The knownTypes to set.
-	 */
-	public void addCodeletType(List<Integer> newTypes) {
-
-	}
-
-	public StructureBuildingCodelet getCodelet(int type, double activation,
-												NodeStructure context, CodeletAction actions) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
+	
 }//class

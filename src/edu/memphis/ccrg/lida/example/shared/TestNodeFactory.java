@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.example.shared;
 
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
-import edu.memphis.ccrg.lida.shared.strategies.LinearDecayCurve;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
 
 public class TestNodeFactory {
 
@@ -17,7 +17,7 @@ public class TestNodeFactory {
 		factory.addNodeType("PamNode", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
 
 		//adding a decaybehavior type to the Factory
-		factory.addDecayBehavior("linear", new LinearDecayCurve());
+		factory.addDecayBehavior("linear", new LinearDecayBehavior());
 		
 		//Creating a default Node
 		Node n=factory.getNode();

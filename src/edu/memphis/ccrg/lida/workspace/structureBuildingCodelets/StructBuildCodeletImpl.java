@@ -6,36 +6,30 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
 public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 	
 	private boolean keepRunning = true;
 	//Initialized by constructor
 	private FrameworkTimer frameworkTimer;
-	private Workspace workspace;//to access CSM
 	
 	private List<CodeletReadable> accessibleBuffers;
-	private int codeletSleepTime = 50;
+	private CodeletWritable csm;//to access CSM	
+	
+	private int codeletSleepTime;
 	private double activation;
-	private NodeStructure soughtContent = new NodeStructureImpl();
-	private CodeletAction action = new BasicCodeletAction();
+	private NodeStructure soughtContent;
+	private CodeletAction action;
 	//
 	private ExciteBehavior exciteBehavior;
 	private DecayBehavior decayBehavior;
 	//TODO: How will these be used?
 	private Long id;
 	private int type;
-		
-	public StructBuildCodeletImpl(FrameworkTimer t, Workspace w, List<CodeletReadable> buffers, 
-								 double activation, NodeStructure content, CodeletAction action){
-		frameworkTimer = t;
-		workspace = w;
-		accessibleBuffers = buffers;
-		this.activation = activation;
-		soughtContent = content;
-		this.action = action;
-	}//constructor
+	
+	public void addFrameworkTimer(FrameworkTimer timer) {
+		frameworkTimer = timer;
+	}
 	
 	public void run(){
 		while(keepRunning){
@@ -46,7 +40,7 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 			}
 			frameworkTimer.checkForStartPause();
 			for(CodeletReadable buffer: accessibleBuffers)
-				action.performAction(buffer, workspace);	
+				action.performAction(buffer, csm);	
 		}//while	
 	}//run
 
@@ -105,8 +99,9 @@ public class StructBuildCodeletImpl implements StructureBuildingCodelet{
 		return id;
 	}
 	//
-	public void setAccessibleBuffers(List<CodeletReadable> buffers) {
+	public void setAccessibleModules(List<CodeletReadable> buffers, List<CodeletWritable> writableBuffers) {
 		accessibleBuffers = buffers;		
+		csm = writableBuffers.get(0);
 	}
 	public List<CodeletReadable> getAccessibleBuffers() {
 		return accessibleBuffers;

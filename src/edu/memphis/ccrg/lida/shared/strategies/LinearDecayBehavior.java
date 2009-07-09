@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.shared.strategies;
 
 
-public class LinearDecayCurve implements DecayBehavior{
+public class LinearDecayBehavior implements DecayBehavior{
 
 	    
 	    /** The default slope (m = 1). */
@@ -19,7 +19,7 @@ public class LinearDecayCurve implements DecayBehavior{
 	    /** Creates a new instance of LinearCurve. Values for slope and intercept
 	     * are set to the default ones.
 	     */
-	    public LinearDecayCurve() {
+	    public LinearDecayBehavior() {
 	        m = DEFAULT_M;
 	        b = DEFAULT_B;
 	    }
@@ -30,7 +30,7 @@ public class LinearDecayCurve implements DecayBehavior{
 	     * @param m     The value of the slope.
 	     * @param b     The value of the intercept.
 	     */
-	    public LinearDecayCurve(double m, double b) {
+	    public LinearDecayBehavior(double m, double b) {
 	        this.m = m;
 	        this.b = b;
 	    }

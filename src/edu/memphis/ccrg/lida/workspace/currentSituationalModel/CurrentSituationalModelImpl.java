@@ -39,6 +39,11 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		model.mergeNodeStructure((NodeStructure) content);	
 	}//method
 	
+	public void addCodeletContent(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public NodeStructure getCSMContent(){
 		//TODO: this needs to be more sophisticated
 		return new NodeStructureImpl(model);
@@ -50,6 +55,12 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		guiContent.add(model.getLinkCount());
 		for(FrameworkGui g: guis)
 			g.receiveGuiContent(FrameworkGui.FROM_CSM, guiContent);
+	}
+
+	public List<NodeStructure> getBuffer() {
+		List<NodeStructure> list = new ArrayList<NodeStructure>();
+		list.add(model);
+		return list;
 	}
 
 }//class
