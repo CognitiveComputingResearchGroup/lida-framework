@@ -142,7 +142,7 @@ public class SBCodeletFactory {
 	 * @param type the class name of the desired codelet type
 	 * @return A new empty codelet of the specified type
 	 */
-	private StructureBuildingCodelet getBlankCodelet(int type) {
+	private StructureBuildingCodelet getGenericCodelet(int type) {
 		StructureBuildingCodelet codelet = null;
 		if(pool.containsKey(type)){
 			List<StructureBuildingCodelet> codelets = pool.get(type);
@@ -153,7 +153,6 @@ public class SBCodeletFactory {
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
 				codelet.addFrameworkTimer(timer);	
-				
 				codelet.setExciteBehavior(defaultExcite);
 				codelet.setDecayBehavior(defaultDecay);
 				codelet.setActivation(defaultActivation);
@@ -170,7 +169,6 @@ public class SBCodeletFactory {
 					codelet.setAccessibleModules(csmRead, csm);
 				else if(type == SBCodeletFactory.ALL_TYPE)
 					codelet.setAccessibleModules(allBuffers, csm);
-
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 			} catch (IllegalAccessException e) {
@@ -178,18 +176,17 @@ public class SBCodeletFactory {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 			}			
-		}
-
+		}//if
 		return codelet;
 	}//method
 	
 	public StructureBuildingCodelet getCodelet(int type){
-		return getBlankCodelet(type);
+		return getGenericCodelet(type);
 	}
 
 	public StructureBuildingCodelet getCodelet(int type, double activation,
 			NodeStructure context, CodeletAction actions) {
-		StructureBuildingCodelet sbc = getBlankCodelet(type);
+		StructureBuildingCodelet sbc = getGenericCodelet(type);
 		sbc.setActivation(activation);
 		sbc.setSoughtContent(context);
 		sbc.setCodeletAction(actions);
@@ -197,7 +194,7 @@ public class SBCodeletFactory {
 	}
 		
 	/**
-	 * Recycles the given codelet to be re-used lateron, for quickly providing
+	 * Recycles the given codelet to be re-used later on, for quickly providing
 	 * new empty codelets.
 	 * 
 	 * @param p

@@ -78,6 +78,10 @@ public class SBCodeletDriver implements FrameworkModuleDriver, ThreadSpawner, Wo
 	}//method
 	
 	@SuppressWarnings("unused")
+	/**
+	 * @param type - See SBCodeletFactory for which integer values correspond to which type
+	 * 
+	 */
 	private void spawnNewCodelet(int type, double activation, 
 								 NodeStructure context, CodeletAction actions){
 		StructureBuildingCodelet sbc = sbCodeletFactory.getCodelet(type, activation, 
