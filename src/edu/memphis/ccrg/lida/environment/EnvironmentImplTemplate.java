@@ -10,20 +10,19 @@ import edu.memphis.ccrg.lida.framework.Stoppable;
 public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable, ActionSelectionListener {
 
 	private FrameworkTimer timer;
-	private List<EnvironmentListener> listeners;
+//	private List<EnvironmentListener> listeners;
 	private boolean keepRunning = true;	
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
-	private EnvironmentContent environContent = null;
+	private Object environContent = null;
 	
 	public EnvironmentImplTemplate(FrameworkTimer timer) {
 		this.timer = timer;
-		listeners = new ArrayList<EnvironmentListener>();
 	}
 	
-	public void addEnvironmentListener(EnvironmentListener listener) {
-		listeners.add(listener);		
-	}
+//	public void addEnvironmentListener(EnvironmentListener listener) {
+//		listeners.add(listener);		
+//	}
 	
 	public synchronized void receiveBehaviorContent(ActionContent action){
 		actionContent = action;		
@@ -40,10 +39,10 @@ public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable
 			}				
 			timer.checkForStartPause();//won't return if paused until started again					
 			
-			environContent.setContent(-1);
-			for(int i = 0; i < listeners.size(); i++)
-				(listeners.get(i)).receiveEnvironmentContent(environContent);
-			
+			//environContent.setContent(-1);
+//			for(int i = 0; i < listeners.size(); i++)
+//				(listeners.get(i)).receiveEnvironmentContent(environContent);
+//			
 			if(actionHasChanged){
 				latestAction = (Integer)actionContent.getContent();
 				synchronized(this){
@@ -57,6 +56,20 @@ public class EnvironmentImplTemplate implements Environment, Runnable, Stoppable
 		}//while
 		
 	}//method
+
+	/**
+	 * @return the environContent
+	 */
+	public Object getEnvironContent() {
+		return environContent;
+	}
+
+	/**
+	 * @param environContent the environContent to set
+	 */
+	public void setEnvironContent(Object environContent) {
+		this.environContent = environContent;
+	}
 
 	public void stopRunning() {
 		keepRunning = false;

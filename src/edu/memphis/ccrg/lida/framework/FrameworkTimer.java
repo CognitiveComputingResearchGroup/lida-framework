@@ -12,6 +12,18 @@ public class FrameworkTimer {
 	 */
 	private boolean threadsArePaused = false;
 	/**
+	 * The ticksMode permits to run the framework in a step by step fashion. Modules have 
+	 * cycles rates between them. For example, sensory memory could work ten times faster than PAM
+	 * so one tick means one cycle for PAM and ten for Sensory Memory.
+	 * In order to have the framework running accurately the relative speed of each part of the
+	 * framework must be set. 
+	 * 
+	 * true -> The framework runs using ticks as time unit.
+	 * false -> The framework runs with full speed threads.
+	 * 
+	 */
+	private boolean ticksMode = false;
+	/**
 	 * When paused, this is how long this thread will sleep before checking 
 	 * to see if pause was clicked again to start things back up.
 	 */

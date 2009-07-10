@@ -11,15 +11,15 @@
 
 package edu.memphis.ccrg.lida.example.genericLIDA.gui;
 
-import edu.memphis.ccrg.lida.environment.EnvironmentContent;
-import edu.memphis.ccrg.lida.environment.EnvironmentListener;
-import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionEnvironmentContent;
+import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 
 /**
  *
  * @author ryanjmccall
  */
-public class VisualFieldGui extends javax.swing.JFrame implements EnvironmentListener {
+public class VisualFieldGui extends javax.swing.JFrame implements FrameworkGui {
 
     /**
 	 * 
@@ -86,9 +86,27 @@ public class VisualFieldGui extends javax.swing.JFrame implements EnvironmentLis
     private javax.swing.JTextArea imageArea;
     // End of variables declaration
     
-	public void receiveEnvironmentContent(EnvironmentContent sc) {
-		String s = ((VisionEnvironmentContent) sc).getGuiContent();
+	public void receiveGuiContent(int from, List<Object> sc) {
+		double [][] smc=(double[][])sc.get(0);
+		String s=convertToString(smc);
 		imageArea.setText(s);
 	}
+	
+	public String convertToString(double[][] a) {
+		String res = "";
+
+		if ((a != null) && (a[0] != null)) {
+			for (int i = 0; i < a.length; i++) {
+				for (int j = 0; j < a[0].length; j++) {
+					if (a[i][j] == 0.0)
+						res += "_._ ";
+					else
+						res += a[i][j] + " ";
+				}
+				res += "\n";
+			}
+		}
+		return res;
+	}// method
 
 }//class

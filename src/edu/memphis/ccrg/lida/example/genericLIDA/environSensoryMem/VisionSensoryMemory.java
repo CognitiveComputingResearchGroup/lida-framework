@@ -1,36 +1,27 @@
 package edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem;
 
-import java.util.ArrayList;
-import java.util.List;
-import edu.memphis.ccrg.lida.environment.EnvironmentContent;
-import edu.memphis.ccrg.lida.environment.EnvironmentListener;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryListener;
+import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorListener;
 
-public class VisionSensoryMemory implements SensoryMemory, EnvironmentListener, SensoryMotorListener{
-	
-	private VisionEnvironmentContent environmentContent = new VisionEnvironmentContent(); 
-	private SensoryMemoryContent sensoryContent = new VisionSensoryContent();
-	private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
-	
-	public void addSensoryListener(SensoryMemoryListener listener) {
-		listeners.add(listener);
-	}
-	
-	public synchronized void receiveEnvironmentContent(EnvironmentContent ec){
-		environmentContent = (VisionEnvironmentContent) ec;
-	}	
-	
-	public void processSimContent(){
-		double[][] mat = (double[][])environmentContent.getContent();
-		sensoryContent.setContent(mat);
+public class VisionSensoryMemory implements SensoryMemory, SensoryMotorListener {
+
+	private double[][] sensoryContent;
+	private Environment environment;
+
+	public VisionSensoryMemory(Environment environment) {
+		this.environment = environment;
 	}
 
-	public void sendSensoryContent(){
-		for(SensoryMemoryListener l: listeners)
-			l.receiveSensoryMemoryContent(sensoryContent);
+	public void processSensors() {
+		sensoryContent = ((VisionEnvironment) environment).getEnvironContent();
 	}
-	
-}//class
+
+	public Object getContent(String type, Object... parameters) {
+		
+		if ("vision".equalsIgnoreCase(type)){
+			return sensoryContent;
+		}
+		return null;
+	}
+}// class
