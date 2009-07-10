@@ -12,7 +12,13 @@ public interface Activatible {
 	
 	public double getActivation();
     public void setActivation(double amount);
-    
+	/**
+	 * The current activation of this node is increased by the
+	 * excitation value.
+	 * 
+	 * @param   excitation the value to be added to the current activation of
+	 *          this node
+	 */
     public void excite(double amount); 
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public ExciteBehavior getExciteBehavior();

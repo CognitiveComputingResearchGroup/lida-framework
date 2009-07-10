@@ -1,34 +1,21 @@
 package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
-public class BroadcastQueueDriver implements FrameworkModuleDriver{
+public class BroadcastQueueDriver extends GenericModuleDriver {
 
-	private boolean keepRunning = true;
 	private BroadcastQueueImpl bBuffer;
-	private FrameworkTimer timer;
-	
-	public BroadcastQueueDriver(BroadcastQueueImpl bb, FrameworkTimer timer){
+
+	public BroadcastQueueDriver(BroadcastQueueImpl bb, FrameworkTimer timer) {
+		super(timer);
 		bBuffer = bb;
-		this.timer = timer;
-	}//method
+	}// method
 
-	public void run(){
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}				
-			timer.checkForStartPause();
-			bBuffer.activateCodelets();
-			bBuffer.sendGuiContent();
-		}//while keepRunning		
-	}//method
+	@Override
+	public void cycleStep() {
+		bBuffer.activateCodelets();
+		bBuffer.sendGuiContent();
+	}
 
-	public void stopRunning(){
-		keepRunning = false;		
-	}//method
-	
-}//class
+}// class

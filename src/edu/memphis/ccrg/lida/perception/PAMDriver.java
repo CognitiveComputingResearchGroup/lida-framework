@@ -1,38 +1,24 @@
 package edu.memphis.ccrg.lida.perception;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
-public class PAMDriver implements FrameworkModuleDriver{
+public class PAMDriver extends GenericModuleDriver{
 
 	private PerceptualAssociativeMemoryImpl pam;
-	private FrameworkTimer timer;
-	private boolean keepRunning = true;		
 	
 	public PAMDriver(PerceptualAssociativeMemoryImpl pam, FrameworkTimer timer){
+		super(timer);
 		this.pam = pam;
-		this.timer = timer;
 	}//constructor
 		
-	public void run(){
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}				
-			timer.checkForStartPause();//won't return if paused until started again					
-						
-			pam.detectSensoryMemoryContent();				
-			pam.propogateActivation();//Pass activation	
-			pam.sendOutPercept(); //Send the percept to p-Workspace
-			pam.sendGuiContent();
-			pam.decayPAM();  //Decay the activations	
-		}//while	
-	}//method run
-	
-	public void stopRunning(){
-		keepRunning = false;		
-	}//method
+	@Override
+	public void cycleStep() {
+		pam.detectSensoryMemoryContent();				
+		pam.propogateActivation();//Pass activation	
+		pam.sendOutPercept(); //Send the percept to p-Workspace
+		pam.sendGuiContent();
+		pam.decayPAM();  //Decay the activations			
+	}
 	
 }//class PAMDriver

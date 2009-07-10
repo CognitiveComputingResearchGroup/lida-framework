@@ -3,8 +3,8 @@ package edu.memphis.ccrg.lida.actionSelection;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralMemory.Scheme;
 

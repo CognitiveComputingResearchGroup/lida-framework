@@ -5,24 +5,22 @@
  */
 package edu.memphis.ccrg.lida.example.genericLIDA.main;
 
-import java.util.List;
-import java.lang.Thread; 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
-import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionEnvironment;
-import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionSensoryContent;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.example.genericLIDA.gui.ControlPanelGui;
 import edu.memphis.ccrg.lida.example.genericLIDA.gui.NodeLinkFlowGui;
 import edu.memphis.ccrg.lida.example.genericLIDA.gui.VisualFieldGui;
 import edu.memphis.ccrg.lida.example.genericLIDA.io.GlobalWorkspace_Input;
 import edu.memphis.ccrg.lida.example.genericLIDA.io.PamInput;
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -97,7 +95,7 @@ public class GenericLida implements ThreadSpawner{
 	/**
 	 * List of drivers which run the major components of LIDA
 	 */
-	private List<FrameworkModuleDriver> drivers = new ArrayList<FrameworkModuleDriver>();
+	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 	
 	/**
 	 * A class that helps pause and control the drivers. 
@@ -159,10 +157,10 @@ public class GenericLida implements ThreadSpawner{
 		drivers.add(sensoryMemoryDriver);				
 	}
 	private void initPAMThread(){
-		pam = new PerceptualAssociativeMemoryImpl(new VisionSensoryContent());
+		pam = new PerceptualAssociativeMemoryImpl();
 		String pamInputPath = "";
 		PamInput reader = new PamInput();
-		reader.read(pam, pamInputPath);
+		reader.read(pam,sensoryMemory, pamInputPath);
 		//PAM THREAD		
 		pamDriver = new PAMDriver(pam, timer);  
 		drivers.add(pamDriver);
@@ -245,9 +243,9 @@ public class GenericLida implements ThreadSpawner{
 		//environment.addEnvironmentListener(sensoryMemory);
 		environment.addFrameworkGui(visualFieldGui);
 		
-		sensoryMemory.addSensoryListener(sma);
+		//sensoryMemory.addSensoryListener(sma);
 		sma.addSensoryMotorListener(sensoryMemory);
-		sensoryMemory.addSensoryListener(pam);
+		//sensoryMemory.addSensoryListener(pam);
 		//
 		pam.addPAMListener(workspace);
 		pam.addFrameworkGui(nodeLinkFlowGui);

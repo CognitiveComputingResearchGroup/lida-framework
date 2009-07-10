@@ -2,8 +2,8 @@ package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;

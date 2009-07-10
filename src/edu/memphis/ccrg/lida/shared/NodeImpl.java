@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 /**
  * Default Node Implementation
- *  
+ * 
  * @author Javier Snaider
  * 
  */
@@ -18,14 +18,33 @@ public class NodeImpl implements Node {
 	private double activation;
 	private ExciteBehavior eb;
 	private DecayBehavior db;
-	private PamNode refNode;
+	protected PamNode refNode;
+	private String label;
+
+	public NodeImpl() {
+	}
+
+	public NodeImpl(NodeImpl n) {
+		this.id = n.id;
+		this.activation = n.activation;
+		this.eb = n.eb;
+		this.db = n.db;
+		this.refNode = n.refNode;
+	}
 
 	public void decay() {
 		if (db != null) {
 			activation = db.decay(activation);
 		}
 	}
-
+	
+	/**
+	 * The current activation of this node is increased by the
+	 * excitation value.
+	 * 
+	 * @param   excitation the value to be added to the current activation of
+	 *          this node
+	 */
 	public void excite(double excitation) {
 		if (eb != null) {
 			activation = eb.excite(activation, excitation);
@@ -62,7 +81,7 @@ public class NodeImpl implements Node {
 	}
 
 	public void setReferencedNode(PamNode n) {
-		refNode=n;
+		refNode = n;
 	}
 
 	public void synchronize() {
@@ -94,23 +113,25 @@ public class NodeImpl implements Node {
 	}
 
 	public void setLabel(String label) {
+	this.label=label;
 	}
 
 	public String getIds() {
 		return "" + id;
 	}
-/**
- * This method compares this object with any kind of Node.
- * returns true if the id of both are the same.
- */
-	public boolean equals (Object o){
-		if (! (o instanceof Node)){
+
+	/**
+	 * This method compares this object with any kind of Node. returns true if
+	 * the id of both are the same.
+	 */
+	public boolean equals(Object o) {
+		if (!(o instanceof Node)) {
 			return false;
 		}
-		return ((Node)o).getId()== id;		
+		return ((Node) o).getId() == id;
 	}
-	
-	public int hashCode(){
-		return ((int)id % 31);
+
+	public int hashCode() {
+		return ((int) id % 31);
 	}
 }

@@ -1,36 +1,28 @@
 package edu.memphis.ccrg.lida.example.genericLIDA.pam;
 
-import edu.memphis.ccrg.lida.perception.FeatureDetector;
-import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
-import edu.memphis.ccrg.lida.shared.strategies.DetectBehavior;
+import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
+/**
+ * This is an example of FeatureDetector.
+ * The method detect() is domain specific and can call domain specific methods in SensoryMemory to get 
+ * specific content from there. 
+ * The generic method getContent(String type,Object... parameters) of SensoryMemory can be used too.  
+ * 
+ * @author Ryan McCall - Javier Snaider
+ *
+ */
+public class VisionFeatureDetector extends FeatureDetectorImpl {
 
-public class VisionFeatureDetector implements FeatureDetector {
-
-	private DetectBehavior behavior;
-	private PamNodeImpl node;
-
-	public VisionFeatureDetector(PamNodeImpl pNode, VisionDetectBehavior b) {
-		node = pNode;
-		behavior = b;
+	public VisionFeatureDetector(PamNodeImpl pNode, SensoryMemory sm, PerceptualAssociativeMemory pam) {
+		super(pNode,sm,pam);
 	}
 
-	public void detect(SensoryMemoryContent sc) {
-		behavior.detectAndExcite(node, sc);
+	public double detect(SensoryMemory sm) {
+		return 1.0;
     	//Printer.print((double[][])sc.getContent());
 	}
 
-	public void setDetectBehavior(DetectBehavior b) {
-		behavior = b;
-	}
-
-	public PamNode getPamNode() {
-		return node;
-	}
-
-	public void setNode(PamNode node) {
-		this.node = (PamNodeImpl) node;
-	}
 
 }//class

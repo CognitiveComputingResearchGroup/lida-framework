@@ -3,10 +3,11 @@ package edu.memphis.ccrg.lida.perception;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.shared.NodeImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
-public class PamNodeImpl implements PamNode{
+public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	protected final int TYPE_UNDEF = -1;
 	protected final int TYPE_OBJECT = 1;
@@ -27,18 +28,14 @@ public class PamNodeImpl implements PamNode{
 	protected double totalActivation = 0.0;
 	protected double baselevelActivation = 0.0;
 	protected double currentActivation = 0.0;
-	protected long id;
-	protected String label;
 	protected int type = 0;
-	protected ExciteBehavior exciteBehavior;
-	protected DecayBehavior decayBehavior;
-	private PamNode groundingPamNode = this;
-
 	public PamNodeImpl() {
 		super();
+		refNode=this;
 	}
 
 	public PamNodeImpl(PamNodeImpl p) {
+		super(p);
 		selectionThreshold = p.selectionThreshold;
 		importance = p.importance;
 		minActivation = p.minActivation;
@@ -46,11 +43,7 @@ public class PamNodeImpl implements PamNode{
 		totalActivation = p.totalActivation;
 		baselevelActivation = p.baselevelActivation;
 		currentActivation = p.currentActivation;
-		id = p.id;
-		label = p.label;
 		type = p.type;
-		exciteBehavior = p.exciteBehavior;
-		decayBehavior = p.decayBehavior;
 	}
 
 	/**
@@ -77,43 +70,6 @@ public class PamNodeImpl implements PamNode{
 	    return totalActivation != MIN_ACTIVATION;
 	}
 
-	/**
-	 * The current activation of this node is increased by the
-	 * excitation value.
-	 * 
-	 * @param   excitation the value to be added to the current activation of
-	 *          this node
-	 */
-	public void excite(double excitation){
-	    currentActivation = exciteBehavior.excite(currentActivation, excitation);
-	}
-
-	/**
-	 * 
-	 * @param
-	 */
-	public void setExciteBehavior(ExciteBehavior behavior) {
-		exciteBehavior = behavior;
-	}
-
-	/**
-	 * 
-	 */
-	public void decay() {
-	    currentActivation = decayBehavior.decay(currentActivation);
-	}
-
-	public void decay(DecayBehavior db) {
-		currentActivation = db.decay(currentActivation);   	
-	}
-
-	/**
-	 * 
-	 * @param b
-	 */
-	public void setDecayBehav(DecayBehavior b) {
-		decayBehavior = b;		
-	}
 
 	/**
 	  * Determines if this node is relevant. A node is relevant if its total
@@ -172,7 +128,7 @@ public class PamNodeImpl implements PamNode{
 		if(!(obj instanceof PamNodeImpl))
 			return false;
 		PamNodeImpl other = (PamNodeImpl)obj;
-		return id == other.id && type == other.type;
+		return getId() == other.getId() && type == other.type;
 	}
 
 	/**
@@ -181,20 +137,13 @@ public class PamNodeImpl implements PamNode{
 	public int hashCode() { 
 	    int hash = 1;
 	    Integer i = new Integer(type);
-	    Long id = new Long(this.id);
+	    Long id =  getId();
 	    
 	    hash = hash * 31 + id.hashCode();
 	    hash = hash * 31 + (i == null ? 0 : i.hashCode());
 	    return hash;
 	}
 
-	/** 
-	 * Returns the label
-	 * @return label
-	 */
-	public String getLabel() {
-	    return label;
-	}
 
 	/**
 	    * Standard getter for importance.
@@ -214,10 +163,6 @@ public class PamNodeImpl implements PamNode{
 
 	public double getBaselevelActivation() {
 	    return baselevelActivation;
-	}
-
-	public double getActivation() {
-	    return currentActivation;
 	}
 
 	public double getTotalActivation() {
@@ -241,52 +186,13 @@ public class PamNodeImpl implements PamNode{
 		return MIN_ACTIVATION;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setDecayBehavior(DecayBehavior b) {
-		decayBehavior = b;		
-	}
 
 	public Node copy() {
 		return new PamNodeImpl(this);
 	}
 
-	public DecayBehavior getDecayBehavior() {
-		return decayBehavior;
-	}
-
-	public ExciteBehavior getExciteBehavior() {
-		return exciteBehavior;
-	}
-
-	public PamNode getReferencedNode() {
-		return groundingPamNode;
-	}
-
-	public void setActivation(double d) {
-		currentActivation = d;
-	}
-
-	public void setReferencedNode(PamNode n) {
-		//do nothing
-	}
-
-	public void setId(long id) {
-		this.id = id;		
-	}
-
-	public void setLabel(String label) {
-		this.label = label;		
-	}
-
-	public String getIds() {
-		return ""+id;
-	}
-
 	public void printActivationString() {
-		System.out.println(id + " total activation: " + totalActivation);	
+		System.out.println(getId() + " total activation: " + totalActivation);	
 	}//method
 
 }//class

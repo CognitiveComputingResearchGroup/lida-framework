@@ -8,51 +8,33 @@
 
 package edu.memphis.ccrg.lida.example.genericLIDA.main;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TransientEpisodicMemory;
 
 /**
- *
+ * 
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public class TEMDriver2 implements FrameworkModuleDriver {
+public class TEMDriver2 extends GenericModuleDriver {
 
-    private TransientEpisodicMemory tem;
-    private FrameworkTimer timer;
-    private boolean keepRunning = true;
+	private TransientEpisodicMemory tem;
 
-    /**
-     * 
-     * @param tem
-     * @param timer
-     */
-    public TEMDriver2(TransientEpisodicMemory tem, FrameworkTimer timer) {
-        this.tem = tem;
-        this.timer = timer;
-    }
+	/**
+	 * 
+	 * @param tem
+	 * @param timer
+	 */
+	public TEMDriver2(TransientEpisodicMemory tem, FrameworkTimer timer) {
+		super(timer);
+		this.tem = tem;
+	}
 
-    /**
-     *
-     */
-    public void run() {
-        while (keepRunning) {
-        	try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}				
-			timer.checkForStartPause();//won't return if paused until started again					
-			
-			//CODE to run TEM
-        }
-    }//method
 
-    /**
-     *
-     */
-    public void stopRunning() {
-        keepRunning = false;
-    }
+	@Override
+	public void cycleStep() {
+		// TODO Auto-generated method stub
+		// CODE to run TEM		
+	}
 
-}//class
+}// class

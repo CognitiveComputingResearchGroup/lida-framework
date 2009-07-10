@@ -1,34 +1,22 @@
 package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
-public class EpisodicBufferDriver implements FrameworkModuleDriver{
+public class EpisodicBufferDriver extends GenericModuleDriver {
 
-	private boolean keepRunning = true;
 	private EpisodicBufferImpl eBuffer;
-	private FrameworkTimer timer;
-	
-	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer){
+
+	public EpisodicBufferDriver(EpisodicBufferImpl eb, FrameworkTimer timer) {
+		super(timer);
 		this.eBuffer = eb;
-		this.timer = timer;
 	}
 
-	public void run(){
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}				
-			timer.checkForStartPause();
-			eBuffer.activateCodelets();	
-			eBuffer.sendGuiContent();
-		}//while		
-	}//method
+	@Override
+	public void cycleStep() {
+		eBuffer.activateCodelets();
+		eBuffer.sendGuiContent();
 
-	public void stopRunning(){
-		keepRunning = false;		
-	}//method
+	}
 
-}//class
+}// class

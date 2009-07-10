@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
+
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 
 /**
  * @author ryanjmccall

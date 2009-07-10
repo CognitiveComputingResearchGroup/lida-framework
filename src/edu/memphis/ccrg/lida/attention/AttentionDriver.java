@@ -6,20 +6,20 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import edu.memphis.ccrg.lida.framework.BroadcastLearner;
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.shared.BroadcastLearner;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
-public class AttentionDriver implements FrameworkModuleDriver, ThreadSpawner, BroadcastListener, BroadcastLearner{
+public class AttentionDriver implements ModuleDriver, ThreadSpawner, BroadcastListener, BroadcastLearner{
 
 	private boolean keepRunning = true;
 	private NodeStructure broadcastContent = new NodeStructureImpl();
@@ -94,6 +94,16 @@ public class AttentionDriver implements FrameworkModuleDriver, ThreadSpawner, Br
 
 	public int getSpawnedThreadCount() {
 		return codeletStoppables.size();
+	}
+
+	public long getThreadID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setThreadID(long id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }//class

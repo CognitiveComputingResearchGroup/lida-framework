@@ -1,8 +1,7 @@
 package edu.memphis.ccrg.lida.sensoryMotorAutomatism;
 
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryListener;
-
-public interface SensoryMotorAutomatism extends SensoryMemoryListener {
+//TODO: check sensory memory or feature detectors
+public interface SensoryMotorAutomatism  {
 
 	public abstract void addSensoryMotorListener(SensoryMotorListener l);
 }

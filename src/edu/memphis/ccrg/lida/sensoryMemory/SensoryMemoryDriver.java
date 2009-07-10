@@ -1,43 +1,16 @@
 package edu.memphis.ccrg.lida.sensoryMemory;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
-public class SensoryMemoryDriver implements FrameworkModuleDriver{
+public class SensoryMemoryDriver extends GenericModuleDriver {
 	private SensoryMemory sm;
-	private boolean keepRunning;	
-	private FrameworkTimer timer;
-	private long threadID;
-	
 	public SensoryMemoryDriver(SensoryMemory sm, FrameworkTimer timer){
+		super( timer);
 		this.sm = sm;
-		keepRunning = true;		
-		this.timer = timer;
 	}//constructor
 		
-	public void run(){
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}				
-			timer.checkForStartPause();
-			
-			sm.processSimContent();
-			sm.sendSensoryContent();								
-		}//while	
-	}//method run
-	
-	public void stopRunning(){
-		keepRunning = false;		
-	}//method stopRunning
-
-	public void setThreadID(long id){
-		threadID = id;
-	}
-	
-	public long getThreadID() {
-		return threadID;
+	public void cycleStep(){
+		sm.processSensors();		
 	}
 }//class SMDriver

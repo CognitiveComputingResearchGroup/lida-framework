@@ -4,10 +4,11 @@
 package edu.memphis.ccrg.lida.perception;
 
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
+
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryListener;
+import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -16,7 +17,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 /**
  * @author Ryan McCall
  */
-public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryMemoryListener, BroadcastListener{
+public interface PerceptualAssociativeMemory extends WorkspaceListener,  BroadcastListener{
 	
 	/**
 	 * Updates PAM's parameters from the supplied map
@@ -58,5 +59,8 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener, SensoryM
 	 * Decay activations of PAM nodes and/or links
 	 */
 	public void decayPAM();
+	
+	public void receiveBurst(PamNode pNode,double activation);
+	public PamNode getPamNode(long id);
 
 }//interface PAMinterface

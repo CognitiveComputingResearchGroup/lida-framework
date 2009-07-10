@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.example.genericLIDA.pam.VisionDetectBehavior;
 import edu.memphis.ccrg.lida.example.genericLIDA.pam.VisionFeatureDetector;
-import edu.memphis.ccrg.lida.perception.FeatureDetector;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 
 public class PamInput {
 
 	//TODO return a boolean for success/fail?
-	public void read(PerceptualAssociativeMemory pam, String inputPath) {
+	public void read(PerceptualAssociativeMemory pam, SensoryMemory sm, String inputPath) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		double upscale = 0.7, 
@@ -39,8 +39,8 @@ public class PamInput {
     	
     	//Feature detectors
     	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
-    	VisionDetectBehavior featureDetectorBehavior = new VisionDetectBehavior(); 
-		featureDetectors.add(new VisionFeatureDetector(gold, featureDetectorBehavior));
+    	//VisionDetectBehavior featureDetectorBehavior = new VisionDetectBehavior(); 
+		featureDetectors.add(new VisionFeatureDetector(gold,sm,pam));
 		
 		Set<Link> links = new HashSet<Link>();    	
 		pam.addToPAM(nodes, featureDetectors, links);

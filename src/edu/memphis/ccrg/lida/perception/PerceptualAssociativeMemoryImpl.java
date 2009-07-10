@@ -7,25 +7,24 @@
  */
 package edu.memphis.ccrg.lida.perception;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set; 
-import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.BroadcastLearner;
-import edu.memphis.ccrg.lida.framework.FrameworkGui;
-import edu.memphis.ccrg.lida.framework.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContent;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryContentImpl;
+import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.shared.BroadcastLearner;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMemory, GuiContentProvider, BroadcastLearner{
 	
@@ -34,7 +33,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	private NodeStructureImpl percept = new NodeStructureImpl();
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
 	//Shared variables
-    private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
+//    private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
     //private NodeStructure topDownContent = new NodeStructureImpl();
     private NodeStructure broadcastContent = new NodeStructureImpl();	
     //private NodeStructure preafferantSignal = new NodeStructureImpl();
@@ -47,9 +46,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      * 
      * @param kindOfSensoryContent
      */
-    public PerceptualAssociativeMemoryImpl(SensoryMemoryContent kindOfSensoryContent){
-    	sensoryMemoryContent = kindOfSensoryContent;
-    }
+//    public PerceptualAssociativeMemoryImpl(SensoryMemoryContent kindOfSensoryContent){
+//    	sensoryMemoryContent = kindOfSensoryContent;
+//    }
 
     /**
      * 
@@ -95,9 +94,9 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 		guiList.add(listener);		
 	}
   
-    public synchronized void receiveSensoryMemoryContent(SensoryMemoryContent sc){//SensoryContent    	
-    	sensoryMemoryContent = sc;    	
-    }
+//    public synchronized void receiveSensoryMemoryContent(SensoryMemoryContent sc){//SensoryContent    	
+//    	sensoryMemoryContent = sc;    	
+//    }
 
 	public synchronized void receiveWorkspaceContent(int originatingBuffer, NodeStructure content) {
 		//topDownContent = content;		
@@ -114,7 +113,7 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	//******FUNDAMENTAL PAM FUNCTIONS******        
     public void detectSensoryMemoryContent(){    
     	for(FeatureDetector d: featureDetectors)
-    		d.detect(sensoryMemoryContent);    	
+    		d.executeDetection();    	
     }//method
         
     /**
@@ -181,5 +180,24 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     public void setExciteBehavior(ExciteBehavior behavior){
     	graph.setNodesExciteBehavior(behavior);
     }//method   
+
+    /**
+     * returns a PamNode from the PAM
+     */
+	public PamNode getPamNode(long id) {
+		return (PamNode) graph.getNode(id);
+	}
+
+	/**
+	 * receives activation from feature detectors or other codelets to excite
+	 * a PamNode
+	 * 
+	 * This method can be changed to store the burst and then excite all the nodes
+	 * together.
+	 */
+	public void receiveBurst(PamNode node, double activation) {
+		node.excite(activation);
+		
+	}
 
 }//class PAM.java

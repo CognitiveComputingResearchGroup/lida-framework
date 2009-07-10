@@ -1,34 +1,22 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
-public class CSMDriver implements FrameworkModuleDriver{
-	
-	private boolean keepRunning = true;
-	private FrameworkTimer timer;
+public class CSMDriver extends GenericModuleDriver {
+
 	private CurrentSituationalModelImpl csm;
-	
-	public CSMDriver(CurrentSituationalModelImpl csm, FrameworkTimer t){
-		timer = t;
+
+	public CSMDriver(CurrentSituationalModelImpl csm, FrameworkTimer timer) {
+		super(timer);
 		this.csm = csm;
 	}
 
-	public void run(){
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}	
-			timer.checkForStartPause();
-			csm.sendCSMContent();
-			csm.sendGuiContent();	        
-		}//while
-	}//method
+	@Override
+	public void cycleStep() {
+		csm.sendCSMContent();
+		csm.sendGuiContent();
 
-	public void stopRunning(){
-		keepRunning = false;		
-	}//method
-	
-}//class
+	}
+
+}// class

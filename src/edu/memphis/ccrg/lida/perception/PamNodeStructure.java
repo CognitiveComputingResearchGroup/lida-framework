@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-
+//TODO: Check this class
 public class PamNodeStructure extends NodeStructureImpl{
 	
 	private Double upscaleFactor = 0.7;

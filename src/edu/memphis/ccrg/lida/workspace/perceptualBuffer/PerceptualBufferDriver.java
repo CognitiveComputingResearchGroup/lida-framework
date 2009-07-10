@@ -1,35 +1,22 @@
 package edu.memphis.ccrg.lida.workspace.perceptualBuffer;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
-public class PerceptualBufferDriver implements FrameworkModuleDriver{
+public class PerceptualBufferDriver extends GenericModuleDriver {
 
-	private boolean keepRunning = true;
 	private PerceptualBufferImpl pb;
-	private FrameworkTimer timer;
-	
-	public PerceptualBufferDriver(PerceptualBufferImpl pb, FrameworkTimer timer){
+
+	public PerceptualBufferDriver(PerceptualBufferImpl pb, FrameworkTimer timer) {
+		super(timer);
 		this.pb = pb;
-		this.timer = timer;
-	}//constructor
+	}// constructor
 
-	public void run(){	
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e) {
-				stopRunning();
-			}
-			timer.checkForStartPause();
-			//
-			pb.activateCodelets();
-			pb.sendGuiContent();
-		}//while	
-	}//method
+	@Override
+	public void cycleStep() {
+		pb.activateCodelets();
+		pb.sendGuiContent();
 
-	public void stopRunning(){
-		keepRunning = false;		
-	}//method
+	}
 
-}//class
+}// class
