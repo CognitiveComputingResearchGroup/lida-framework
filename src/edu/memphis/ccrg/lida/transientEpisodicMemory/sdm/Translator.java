@@ -52,13 +52,13 @@ public class Translator {
      * @return the node structure associated with the address
      */
     public NodeStructure translate(byte[] data) {
-        nodeStructure = new NodeStructureImpl();
+        NodeStructureImpl ns = new NodeStructureImpl();
         for (int i = 0; i != vector.length; i++) {
             if (data[i] != 0) {
-                nodeStructure.addNode(nodeStructure.getNode(nodeMap.get(i).getId()));
+                ns.addNode(nodeStructure.getNode(nodeMap.get(i).getId()));
             }
         }
-        return nodeStructure;
+        return ns;
     }
 
     /**
@@ -67,11 +67,10 @@ public class Translator {
      * @return a byte vector with the boolean address associated with the structure
      */
     public byte[] translate(NodeStructure structure) {
-        //nodes = structure.getNodes();
-        vector = new byte[vector.length];
+        byte[] v = new byte[vector.length];
         for (Node n : structure.getNodes()) {
-            vector[indexMap.get(n.getId())] = 1;
+            v[indexMap.get(n)] = 1;
         }
-        return vector;
+        return v;
     }
 }
