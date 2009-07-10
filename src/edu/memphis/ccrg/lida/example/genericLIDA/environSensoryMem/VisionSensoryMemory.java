@@ -18,10 +18,10 @@ public class VisionSensoryMemory implements SensoryMemory, SensoryMotorListener 
 	}
 
 	public Object getContent(String type, Object... parameters) {
-		
-		if ("vision".equalsIgnoreCase(type)){
+		if ("vision".equalsIgnoreCase(type))
 			return sensoryContent;
-		}
+		
 		return null;
 	}
+	
 }// class

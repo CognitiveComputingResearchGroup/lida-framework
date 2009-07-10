@@ -2,7 +2,8 @@ package edu.memphis.ccrg.lida.framework.gui;
 
 import java.util.List;
 
-public interface FrameworkGui {
+public interface FrameworkGui{
+	
 	/**
 	 * A Framework GUI may receive content from the following modules
 	 * 
@@ -19,7 +20,6 @@ public interface FrameworkGui {
 	public static final int FROM_PROCEDURAL_MEMORY = 7;
 	public static final int FROM_ACTION_SELECTION = 8;
 	public static final int FROM_ENVIRONMENT = 9;
-	
 	
 	/**
 	 * A Framework GUI must receive content when it is sent.

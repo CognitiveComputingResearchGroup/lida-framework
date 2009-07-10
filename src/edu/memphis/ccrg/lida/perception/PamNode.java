@@ -1,10 +1,6 @@
 package edu.memphis.ccrg.lida.perception;
 
-import java.util.Map;
-
 import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public interface PamNode extends Node {
 

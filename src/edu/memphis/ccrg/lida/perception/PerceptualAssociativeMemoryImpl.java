@@ -33,22 +33,12 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	private NodeStructureImpl percept = new NodeStructureImpl();
     private List<PAMListener> pamListeners = new ArrayList<PAMListener>();  
 	//Shared variables
-//    private SensoryMemoryContent sensoryMemoryContent = new SensoryMemoryContentImpl();	
     //private NodeStructure topDownContent = new NodeStructureImpl();
     private NodeStructure broadcastContent = new NodeStructureImpl();	
     //private NodeStructure preafferantSignal = new NodeStructureImpl();
     //for GUI
     private List<FrameworkGui> guiList = new ArrayList<FrameworkGui>();
 	private List<Object> guiContent = new ArrayList<Object>();
-  
-    /**
-     * Need to specify a SensoryContent type.
-     * 
-     * @param kindOfSensoryContent
-     */
-//    public PerceptualAssociativeMemoryImpl(SensoryMemoryContent kindOfSensoryContent){
-//    	sensoryMemoryContent = kindOfSensoryContent;
-//    }
 
     /**
      * 
@@ -93,10 +83,6 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
 	public void addFrameworkGui(FrameworkGui listener) {
 		guiList.add(listener);		
 	}
-  
-//    public synchronized void receiveSensoryMemoryContent(SensoryMemoryContent sc){//SensoryContent    	
-//    	sensoryMemoryContent = sc;    	
-//    }
 
 	public synchronized void receiveWorkspaceContent(int originatingBuffer, NodeStructure content) {
 		//topDownContent = content;		
@@ -115,6 +101,17 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
     	for(FeatureDetector d: featureDetectors)
     		d.executeDetection();    	
     }//method
+    
+	/**
+	 * receives activation from feature detectors or other codelets to excite
+	 * a PamNode
+	 * 
+	 * This method can be changed to store the burst and then excite all the nodes
+	 * together.
+	 */
+	public void receiveActivationBurst(PamNode node, double activation) {
+		node.excite(activation);
+	}
         
     /**
      * Pass activation upwards based on the order found in the layerMap
@@ -186,18 +183,6 @@ public class PerceptualAssociativeMemoryImpl implements PerceptualAssociativeMem
      */
 	public PamNode getPamNode(long id) {
 		return (PamNode) graph.getNode(id);
-	}
-
-	/**
-	 * receives activation from feature detectors or other codelets to excite
-	 * a PamNode
-	 * 
-	 * This method can be changed to store the burst and then excite all the nodes
-	 * together.
-	 */
-	public void receiveBurst(PamNode node, double activation) {
-		node.excite(activation);
-		
 	}
 
 }//class PAM.java

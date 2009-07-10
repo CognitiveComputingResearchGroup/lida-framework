@@ -22,7 +22,6 @@ import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
 public class FeatureDetectorImpl extends ActivatibleImpl implements
 		FeatureDetector {
 
-
 	private PamNode pamNode;
 	private PerceptualAssociativeMemory pam;
 	private SensoryMemory sm;
@@ -57,14 +56,14 @@ public class FeatureDetectorImpl extends ActivatibleImpl implements
 
 	public void burstPam(double detectionActivation, PamNode pNode,
 			PerceptualAssociativeMemory pam) {
-		pam.receiveBurst(pNode, detectionActivation);
-
+		pam.receiveActivationBurst(pNode, detectionActivation);
 	}
 
 	public void executeDetection() {
 		double detectionActivation = detect();
 		burstPam(detectionActivation, pamNode, pam);
 	}
+	
 	/**
 	 * @return the SensoryMemory
 	 */
@@ -72,8 +71,8 @@ public class FeatureDetectorImpl extends ActivatibleImpl implements
 		return sm;
 	}
 
-
 	public void init(Map<String, Object> parameters) {
 		// TODO Auto-generated method stub
 	}
+	
 }// class

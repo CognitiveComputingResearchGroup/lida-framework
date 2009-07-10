@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  */
 
 public class ActivatibleImpl implements Activatible {
+	
 	private double activation;
 	private ExciteBehavior eb;
 	private DecayBehavior db;
@@ -51,4 +52,4 @@ public class ActivatibleImpl implements Activatible {
 		this.eb = eb;
 	}
 
-}
+}//

@@ -25,12 +25,11 @@ public class VisionEnvironment extends GenericModuleDriver implements
 		super(timer);
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;
-		// listeners = new ArrayList<EnvironmentListener>();
 	}
 
-	// public void addEnvironmentListener(EnvironmentListener listener) {
-	// listeners.add(listener);
-	// }
+	public void addFrameworkGui(FrameworkGui listener) {
+		frameworkGuis.add(listener);
+	}
 
 	public synchronized void receiveBehaviorContent(ActionContent action) {
 		actionContent = action;
@@ -40,9 +39,9 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	@Override
 	public void cycleStep() {
 		Integer latestAction = null;
+		
 		getNextMoveDown();
 		getNextMoveRight();
-
 		sendGuiContent();
 
 		if (actionHasChanged) {
@@ -55,11 +54,29 @@ public class VisionEnvironment extends GenericModuleDriver implements
 			}
 		}// if actionHasChanged
 	}
+	
+	public void sendGuiContent() {
+		List<Object> guiCont = new ArrayList<Object>();
+		guiCont.add(environContent);
+		for (FrameworkGui fg : frameworkGuis) {
+			fg.receiveGuiContent(FrameworkGui.FROM_ENVIRONMENT, guiCont);
+		}
+	}
+	
+	/**
+	 * @return the environContent
+	 */
+	public double[][] getEnvironContent() {
+		return environContent;
+	}
 
-	// public void sendContent(){
-	// for(int i = 0; i < listeners.size(); i++)
-	// (listeners.get(i)).receiveEnvironmentContent(environContent);
-	// }
+	/**
+	 * @param environContent
+	 *            the environContent to set
+	 */
+	public void setEnvironContent(double[][] environContent) {
+		this.environContent = environContent;
+	}
 
 	public void resetEnvironment() {
 		iloc = -1;
@@ -111,21 +128,6 @@ public class VisionEnvironment extends GenericModuleDriver implements
 		addBlock(i, j, image);
 		environContent = image;
 		// environContent.setGuiContent(convertToString(image));
-	}
-
-	/**
-	 * @return the environContent
-	 */
-	public double[][] getEnvironContent() {
-		return environContent;
-	}
-
-	/**
-	 * @param environContent
-	 *            the environContent to set
-	 */
-	public void setEnvironContent(double[][] environContent) {
-		this.environContent = environContent;
 	}
 
 	public void fillImageBlank(double[][] image) {
@@ -181,19 +183,6 @@ public class VisionEnvironment extends GenericModuleDriver implements
 		}
 		return res;
 	}// method
-
-	public void addFrameworkGui(FrameworkGui listener) {
-		frameworkGuis.add(listener);
-
-	}
-
-	public void sendGuiContent() {
-		List<Object> guiCont = new ArrayList<Object>();
-		guiCont.add(environContent);
-		for (FrameworkGui fg : frameworkGuis) {
-			fg.receiveGuiContent(FrameworkGui.FROM_ENVIRONMENT, guiCont);
-		}
-	}
 
 	// public void printImage(double[][] image){
 	// for(int i = 0; i < IMAGE_HEIGHT; i++){

@@ -4,8 +4,6 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeImpl;
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	

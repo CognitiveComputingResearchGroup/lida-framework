@@ -73,7 +73,6 @@ public class PerceptualBufferImpl implements PerceptualBuffer, GuiContentProvide
 		return Collections.unmodifiableList(perceptBuffer);
 	}
 
-
 	public void sendGuiContent() {
 		for(FrameworkGui fg: guis)
 			fg.receiveGuiContent(FrameworkGui.FROM_PERCEPTUAL_BUFFER, guiContent);
