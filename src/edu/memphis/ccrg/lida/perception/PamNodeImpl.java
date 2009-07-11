@@ -4,6 +4,7 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeImpl;
+import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
@@ -23,7 +24,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	protected double importance = 0.0;
 	protected double minActivation = 0.0;
 	protected double maxActivation = 1.0;
-	protected double totalActivation = 0.0;
 	protected double baselevelActivation = 0.0;
 	protected double currentActivation = 0.0;
 	protected int type = 0;
@@ -38,10 +38,15 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		importance = p.importance;
 		minActivation = p.minActivation;
 		maxActivation = p.maxActivation;
-		totalActivation = p.totalActivation;
 		baselevelActivation = p.baselevelActivation;
 		currentActivation = p.currentActivation;
 		type = p.type;
+	}
+	
+	public void excite(double excitation) {
+		ExciteBehavior eb = getExciteBehavior();
+		if (eb != null)
+			currentActivation = eb.excite(currentActivation, excitation);
 	}
 
 	/**
@@ -49,26 +54,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 * activation. Also updates activation buffers. This method should only
 	 * be invoked when activation passing for this cycle is complete.
 	 */
-	public void synchronize() { 
-	//System.out.println(currentActivation + " base " + baselevelActivation + " max " + maxActivation + " tot " + totalActivation);		
+	public void synchronize() {		
 		if((currentActivation + baselevelActivation) > maxActivation)
-			totalActivation = maxActivation;
+			setActivation(maxActivation);
 		else
-			totalActivation = currentActivation + baselevelActivation;   
+			setActivation(currentActivation + baselevelActivation);   
 	}
-
-	/**
-	 * Determines if this node has been synchronized. This is done by comparing
-	 * the total activation of this node, to the activation lowe bound.
-	 * 
-	 * @return  <code>true</code> if this node has been synchronized.
-	 * @see     Parameters#ACTIVATION_LOWERBOUND
-	 */
-	public boolean hasBeenSynchronized() {
-	    return totalActivation != MIN_ACTIVATION;
-	}
-
-
+	
 	/**
 	  * Determines if this node is relevant. A node is relevant if its total
 	  * activation is greater or equal to the selection threshold.
@@ -76,9 +68,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	  * @return     <code>true</code> if this node is relevant
 	  * @see        #selectionThreshold
 	  */
-	public boolean isRelevant() {    
-		//System.out.println(totalActivation + " " + selectionThreshold);
-	    return (totalActivation >= selectionThreshold);
+	public boolean isRelevant() {
+	    return getActivation() >= selectionThreshold;
 	}
 
 	/**
@@ -164,7 +155,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 
 	public double getTotalActivation() {
-	    return totalActivation;
+	    return getActivation();
 	}
 
 	public double getMinActivation() {
@@ -190,7 +181,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 
 	public void printActivationString() {
-		System.out.println(getId() + " total activation: " + totalActivation);	
+		System.out.println(getId() + " total activation: " + getActivation());	
 	}//method
 
 }//class

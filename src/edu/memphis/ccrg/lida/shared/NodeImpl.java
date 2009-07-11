@@ -46,13 +46,12 @@ public class NodeImpl implements Node {
 	 *          this node
 	 */
 	public void excite(double excitation) {
+		//System.out.println(excitation);
 		if (eb != null) {
+			//System.out.println("before" + activation);
 			activation = eb.excite(activation, excitation);
+			//System.out.println("after" + activation);
 		}
-	}
-
-	public double getActivation() {
-		return activation;
 	}
 
 	public double getImportance() {
@@ -84,10 +83,6 @@ public class NodeImpl implements Node {
 		refNode = n;
 	}
 
-	public void synchronize() {
-		// TODO Auto-generated method stub
-	}
-
 	public DecayBehavior getDecayBehavior() {
 		return db;
 	}
@@ -97,7 +92,13 @@ public class NodeImpl implements Node {
 	}
 
 	public void setActivation(double d) {
+		//System.out.println("setting " + activation);
 		this.activation = d;
+	}
+
+	public double getActivation() {
+		//System.out.println("getting " + activation);
+		return this.activation;
 	}
 
 	public long getId() {

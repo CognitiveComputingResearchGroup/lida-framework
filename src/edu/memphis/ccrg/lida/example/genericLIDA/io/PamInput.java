@@ -40,7 +40,7 @@ public class PamInput {
     	//Feature detectors
     	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
     	//VisionDetectBehavior featureDetectorBehavior = new VisionDetectBehavior(); 
-		featureDetectors.add(new VisionFeatureDetector(gold,sm,pam));
+		featureDetectors.add(new VisionFeatureDetector(gold, sm, pam));
 		
 		Set<Link> links = new HashSet<Link>();    	
 		pam.addToPAM(nodes, featureDetectors, links);

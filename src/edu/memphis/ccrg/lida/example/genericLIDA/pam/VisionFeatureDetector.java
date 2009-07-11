@@ -20,6 +20,10 @@ public class VisionFeatureDetector extends FeatureDetectorImpl {
 	public VisionFeatureDetector(PamNodeImpl pNode, SensoryMemory sm, PerceptualAssociativeMemory pam) {
 		super(pNode, sm, pam);
 	}
+	
+	public void executeDetection() {
+		excitePam(this.detect(sm));
+	}
 
 	public double detect(SensoryMemory sm) {
 		return 1.0;

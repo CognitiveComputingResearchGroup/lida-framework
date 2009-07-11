@@ -160,7 +160,7 @@ public class GenericLida implements ThreadSpawner{
 		pam = new PerceptualAssociativeMemoryImpl();
 		String pamInputPath = "";
 		PamInput reader = new PamInput();
-		reader.read(pam,sensoryMemory, pamInputPath);
+		reader.read(pam, sensoryMemory, pamInputPath);
 		//PAM THREAD		
 		pamDriver = new PAMDriver(pam, timer);  
 		drivers.add(pamDriver);

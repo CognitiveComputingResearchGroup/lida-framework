@@ -24,7 +24,7 @@ public class FeatureDetectorImpl extends ActivatibleImpl implements
 
 	private PamNode pamNode;
 	private PerceptualAssociativeMemory pam;
-	private SensoryMemory sm;
+	protected SensoryMemory sm;
 
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
@@ -39,29 +39,23 @@ public class FeatureDetectorImpl extends ActivatibleImpl implements
 		pamNode = n.pamNode;
 	}
 
-	public FeatureDetectorImpl() {
+	public void setNode(PamNode node) {
+		pamNode = (PamNodeImpl) node;
 	}
-
-	public double detect() {
-		return 0.0;
-	}
-
 	public PamNode getPamNode() {
 		return pamNode;
 	}
 
-	public void setNode(PamNode node) {
-		pamNode = (PamNodeImpl) node;
-	}
-
-	public void burstPam(double detectionActivation, PamNode pNode,
-			PerceptualAssociativeMemory pam) {
-		pam.receiveActivationBurst(pNode, detectionActivation);
-	}
-
 	public void executeDetection() {
-		double detectionActivation = detect();
-		burstPam(detectionActivation, pamNode, pam);
+		excitePam(detect());
+	}
+	
+	public double detect() {
+		return 0.0;
+	}
+	
+	public void excitePam(double amount){
+		pam.receiveActivationBurst(pamNode, amount);
 	}
 	
 	/**
