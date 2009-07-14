@@ -1,10 +1,16 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import edu.memphis.ccrg.lida.framework.FrameworkExecutorService;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.Stoppable;
@@ -20,13 +26,13 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 		ThreadSpawner, WorkspaceListener, GuiContentProvider {
 
 	private SBCodeletFactory sbCodeletFactory;
-	//
+
 	private NodeStructureImpl workspaceContent = new NodeStructureImpl();
 	// private Map<CodeletActivatingContextImpl, StructureBuildingCodelet>
 	// codeletMap = new HashMap<CodeletActivatingContextImpl,
 	// StructureBuildingCodelet>();//TODO: equals, hashCode
-	private ExecutorService executorService = Executors.newCachedThreadPool();
-	private List<Stoppable> runningCodelets = new ArrayList<Stoppable>();
+	private ThreadPoolExecutor executorService;
+	private Map<Integer, Stoppable> runningCodelets = new HashMap<Integer, Stoppable>();
 
 	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
 	private List<Object> guiContent = new ArrayList<Object>();
@@ -34,6 +40,13 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 	public SBCodeletDriver(Workspace w, FrameworkTimer timer) {
 		super(timer);
 		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
+	
+		int corePoolSize = 5;
+		int maxPoolSize = 10;
+	    long keepAliveTime = 10;
+	    ArrayBlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<Runnable>(5);
+	    executorService = new FrameworkExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
+	    											   TimeUnit.SECONDS, taskQueue);
 	}// method
 
 	public void addFrameworkGui(FrameworkGui listener) {
@@ -54,6 +67,12 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 			NodeStructure content) {
 		workspaceContent = (NodeStructureImpl) content;
 	}// method
+	
+	@Override
+	public void cycleStep() {
+		activateCodelets();
+		sendGuiContent();
+	}
 
 	/**
 	 * if BufferContent activates a sbCodelet's context, start a new codelet
@@ -61,10 +80,15 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 	private void activateCodelets() {
 		// TODO: CODE to determine when/what codelets to activate
 
-		List<Object> guiContent = new ArrayList<Object>();
+		guiContent.clear();
 		guiContent.add(workspaceContent.getNodeCount());
 		guiContent.add(workspaceContent.getLinkCount());
 	}// method
+	
+	public void sendGuiContent() {
+		for (FrameworkGui fg : guis)
+			fg.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
+	}
 
 	@SuppressWarnings("unused")
 	/*
@@ -75,10 +99,19 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 			NodeStructure context, CodeletAction actions) {
 		StructureBuildingCodelet sbc = sbCodeletFactory.getCodelet(type,
 				activation, context, actions);
-		runningCodelets.add(sbc);
+		synchronized(this){
+			runningCodelets.put(sbc.hashCode(), sbc);
+		}
 		// put codelet in the work queue for the thread pool
 		executorService.execute(sbc);
 	}// method
+	
+	public void receiveFinishedTask(Runnable r, Throwable t) {
+		StructureBuildingCodelet sbc = (StructureBuildingCodelet) r;
+		synchronized(this){
+			runningCodelets.remove(sbc.hashCode());
+		}
+	}
 
 	public void stopRunning() {
 		keepRunning = false;
@@ -86,29 +119,18 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 	}// method
 
 	public void stopSpawnedThreads() {
-		executorService.shutdown();
 		int size = runningCodelets.size();
 		for (int i = 0; i < size; i++) {
 			Stoppable s = runningCodelets.get(i);
 			if (s != null)
 				s.stopRunning();
 		}// for
+		executorService.shutdownNow();
 		System.out.println("all structure-building codelets told to stop");
 	}// method
 
 	public int getSpawnedThreadCount() {
 		return runningCodelets.size();
 	}// method
-
-	public void sendGuiContent() {
-		for (FrameworkGui fg : guis)
-			fg.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
-	}
-
-	@Override
-	public void cycleStep() {
-		activateCodelets();
-		sendGuiContent();
-	}
 
 }// class

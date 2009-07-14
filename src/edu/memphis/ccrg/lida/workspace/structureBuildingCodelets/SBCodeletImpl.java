@@ -24,7 +24,7 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	private ExciteBehavior exciteBehavior;
 	private DecayBehavior decayBehavior;
 	//TODO: How will these be used?
-	private Long id;
+	private long id;
 	private int type;
 	
 	public void addFrameworkTimer(FrameworkTimer timer) {
@@ -92,10 +92,10 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 		return action;
 	}
 	//
-	public void setId(Long id){
+	public void setId(long id){
 		this.id = id;
 	}
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	//
@@ -120,11 +120,32 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 		activation = 0.0;
 		soughtContent = new NodeStructureImpl();
 		action = new BasicCodeletAction();
-		id = 0L;
+		id = 0;
 		type = 0;		
 	}
 	public int getType() {
 		return type;
+	}
+	
+	/**
+	 * This method compares this object with any kind of Node. returns true if
+	 * the id of both are the same.
+	 */
+	public boolean equals(Object o) {
+		if (!(o instanceof StructureBuildingCodelet)) {
+			return false;
+		}
+		StructureBuildingCodelet temp = (StructureBuildingCodelet) o;
+		return temp.getId() == id && temp.getType() == type;
+	}
+
+	public int hashCode() {
+		int hash = 1;
+	    Integer v1 = new Integer(type);
+	    Long v2 = new Long(id);
+	    hash = hash * 31 + v2.hashCode();
+	    hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
+	    return hash;
 	}
 	
 }//class SBCodelet

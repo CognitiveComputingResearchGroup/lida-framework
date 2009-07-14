@@ -15,8 +15,8 @@ public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppab
 	 public void setCodeletAction(CodeletAction a);
 	 public CodeletAction getCodeletAction();
 
-	 public void setId(Long id);
-	 public Long getId();
+	 public void setId(long id);
+	 public long getId();
 	
 	 public void setAccessibleModules(List<CodeletReadable> readableBuffers, List<CodeletWritable> writableBuffers);
 	 public List<CodeletReadable> getAccessibleBuffers();

@@ -24,6 +24,15 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		guis.add(listener);
 	}
 	
+	public synchronized void addCodeletContent(NodeStructure ns) {
+		model.mergeNodeStructure(ns);
+	}
+	
+	public NodeStructure getCSMContent(){
+		//TODO: this needs to be more sophisticated
+		return new NodeStructureImpl(model);
+	}
+	
 	/**
 	 * Send content to listeners, e.g. TEM, DM
 	 */
@@ -31,23 +40,6 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		for(WorkspaceBufferListener l: csmListeners)
 			l.receiveBufferContent(WorkspaceBufferListener.CSM, model);
 	}//method
-	
-	/**
-	 * Called by Workspace.  Codelets are typically adding the content.
-	 */
-	public synchronized void addWorkspaceContent(NodeStructure content) {
-		model.mergeNodeStructure((NodeStructure) content);	
-	}//method
-	
-	public void addCodeletContent(NodeStructure ns) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public NodeStructure getCSMContent(){
-		//TODO: this needs to be more sophisticated
-		return new NodeStructureImpl(model);
-	}
 
 	public void sendGuiContent() {
 		guiContent.clear();

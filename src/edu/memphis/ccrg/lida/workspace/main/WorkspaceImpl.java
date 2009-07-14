@@ -106,13 +106,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 
 	/**
-	 * Codelets use this
-	 */
-	public void addContentToCSM(NodeStructure updatedContent) {
-		csm.addWorkspaceContent(updatedContent);		
-	}
-
-	/**
 	 * For Codelets to access the buffers
 	 */
 	public CurrentSituationalModel getCSM() {

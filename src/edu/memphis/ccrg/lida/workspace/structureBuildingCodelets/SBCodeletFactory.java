@@ -23,11 +23,13 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
  */
 public class SBCodeletFactory {
 	
-	private static final int PERCEPTUAL_TYPE = 0;
-	private static final int EPISODIC_TYPE = 1;
-	private static final int BROADCAST_TYPE = 2;
-	private static final int CSM_TYPE = 3;
-	private static final int ALL_TYPE = 4;	
+	public static final int PERCEPTUAL_TYPE = 0;
+	public static final int EPISODIC_TYPE = 1;
+	public static final int BROADCAST_TYPE = 2;
+	public static final int CSM_TYPE = 3;
+	public static final int ALL_TYPE = 4;	
+	
+	private static long codeletIdCount = 0;
 
 	/**
 	 * Holds singleton instance
@@ -80,7 +82,7 @@ public class SBCodeletFactory {
 	 * @post pool.size() == 0
 	 */
 	public SBCodeletFactory(Workspace workspace, FrameworkTimer timer) {
-		DefaultSBCodeletType = "StructBuildCodeletImpl";
+		DefaultSBCodeletType = "SBCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
 		//
@@ -149,10 +151,12 @@ public class SBCodeletFactory {
 			if(codelets != null)
 				codelet = codelets.remove(0);
 		}
+		
 		if(codelet == null){
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
 				codelet.addFrameworkTimer(timer);	
+				codelet.setId(codeletIdCount++);
 				codelet.setExciteBehavior(defaultExcite);
 				codelet.setDecayBehavior(defaultDecay);
 				codelet.setActivation(defaultActivation);
