@@ -383,9 +383,11 @@ public class NodeLinkFlowGui extends javax.swing.JFrame implements FrameworkGui{
      * If fields are found, then set them both with the values of 'content' 
      */
     public void receiveGuiContent(int lidaComponent, List<Object> content) {
+//    	if(lidaComponent == FROM_GLOBAL_WORKSPACE)
+//    		System.out.println(content.get(0) + " " + content.get(1));
+//    	
 		if(content != null && content.size() > 1){
 			List<javax.swing.JTextField> fields = map.get(lidaComponent);
-			
 			if(fields != null){
 				fields.get(0).setText(content.get(0) + "");
 				fields.get(1).setText(content.get(1) + "");
