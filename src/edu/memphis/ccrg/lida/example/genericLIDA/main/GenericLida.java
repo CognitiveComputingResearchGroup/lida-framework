@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
@@ -43,6 +42,8 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.SBCodeletDriver;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.SBCodeletFactory;
+import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.StructureBuildingCodelet;
 
 public class GenericLida implements ThreadSpawner{
 	
@@ -65,7 +66,6 @@ public class GenericLida implements ThreadSpawner{
 	//Action Selection
 	private ProceduralMemoryImpl procMem;
 	private ActionSelectionImpl actionSelection;
-	
 	//Drivers
 	private SensoryMemoryDriver sensoryMemoryDriver;
 	private PAMDriver pamDriver;
@@ -210,7 +210,12 @@ public class GenericLida implements ThreadSpawner{
 									  broadcastQueue, csm);		
 	}//method
 	private void initSBCodeletsThread() {
-		sbCodeletDriver = new SBCodeletDriver(workspace, timer);		 
+		sbCodeletDriver = new SBCodeletDriver(workspace, timer);
+		SBCodeletFactory fact = SBCodeletFactory.getInstance(workspace, timer); 
+		StructureBuildingCodelet uno = fact.getCodelet(SBCodeletFactory.PERCEPTUAL_TYPE);
+		List<Runnable> list = new ArrayList<Runnable>();
+		list.add(uno);
+		sbCodeletDriver.setInitialRunnables(list);
 		drivers.add(sbCodeletDriver);			
 	}
 	private void initGlobalWorkspace() {
@@ -239,13 +244,8 @@ public class GenericLida implements ThreadSpawner{
 	}//method
 	
 	private void defineListeners(){
-		//TODO: NODELINKFLOWGUI!!
-		//environment.addEnvironmentListener(sensoryMemory);
 		environment.addFrameworkGui(visualFieldGui);
-		
-		//sensoryMemory.addSensoryListener(sma);
 		sma.addSensoryMotorListener(sensoryMemory);
-		//sensoryMemory.addSensoryListener(pam);
 		//
 		pam.addPAMListener(workspace);
 		pam.addFrameworkGui(nodeLinkFlowGui);
@@ -289,7 +289,6 @@ public class GenericLida implements ThreadSpawner{
 		int size = drivers.size();
 		for(int i = 0; i < size; i++)
 			executorService.execute(drivers.get(i));
-		
 		executorService.shutdown();
 	}//method
 	
@@ -322,6 +321,11 @@ public class GenericLida implements ThreadSpawner{
 
 	public void setInitialRunnables(List<Runnable> initialRunnables) {
 		//for now do nothing
+	}
+
+	public void receiveFinishedTask(Runnable r, Throwable t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class
