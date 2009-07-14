@@ -82,13 +82,13 @@ public class AttentionDriver implements ModuleDriver, ThreadSpawner, BroadcastLi
 	}
 
 	public void stopSpawnedThreads() {
-		execSvc.shutdown();
 		int size = codeletStoppables.size();
 		for(int i = 0; i < size; i++){			
 			Stoppable s = codeletStoppables.get(i);
 			if(s != null)
 				s.stopRunning();					
 		}//for
+		execSvc.shutdownNow();
 		System.out.println("all attention codelets told to stop");
 	}//method
 
@@ -102,6 +102,11 @@ public class AttentionDriver implements ModuleDriver, ThreadSpawner, BroadcastLi
 	}
 
 	public void setThreadID(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void receiveFinishedTask(Runnable r, Throwable t) {
 		// TODO Auto-generated method stub
 		
 	}

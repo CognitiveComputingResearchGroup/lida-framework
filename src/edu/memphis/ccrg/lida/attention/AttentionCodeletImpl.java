@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationa
 public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
 	
 	private boolean keepRunning = true;
-	private int codeletSleepTime = 6;
+	private int codeletSleepTime = 4;
 	private ContentDetectBehavior checkBehavior = new DefaultContentDetectBehavior();
 	//
 	private CurrentSituationalModel csm;
