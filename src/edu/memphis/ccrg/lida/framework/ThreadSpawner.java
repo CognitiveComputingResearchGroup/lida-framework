@@ -11,11 +11,20 @@ import java.util.List;
 public interface ThreadSpawner {
 
 	public abstract int getSpawnedThreadCount();
+	
 	public abstract void stopSpawnedThreads();
 	
 	/**
 	 * The supplied runnables will be start by the spawner right away.
 	 */
 	public abstract void setInitialRunnables(List<Runnable> initialRunnables);
+
+	/**
+	 * TODO:
+	 * 
+	 * @param r
+	 * @param t
+	 */
+	public abstract void receiveFinishedTask(Runnable r, Throwable t);
 
 }
