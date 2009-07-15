@@ -53,12 +53,11 @@ public class SBCodeletFactory {
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
 	//
 	//
-	private List<CodeletReadable> perceptualBuffer = new ArrayList<CodeletReadable>();
-	private List<CodeletReadable> episodicBuffer = new ArrayList<CodeletReadable>();
-	private List<CodeletReadable> broadcastQueue = new ArrayList<CodeletReadable>();
-	private List<CodeletReadable> allBuffers = new ArrayList<CodeletReadable>();
-	private List<CodeletReadable> csmRead = new ArrayList<CodeletReadable>();	
-	private List<CodeletWritable> csm = new ArrayList<CodeletWritable>();
+	private List<NodeStructure> perceptualBuffer = new ArrayList<NodeStructure>();
+	private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
+	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
+	private List<NodeStructure> csmReadable = new ArrayList<NodeStructure>();	
+	private CodeletWritable csm;
 	//
 	private double defaultActivation = 1.0;	
 	private NodeStructure defaultObjective = new NodeStructureImpl();
@@ -90,14 +89,11 @@ public class SBCodeletFactory {
 		defaultExcite = new BasicExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 		//
-		perceptualBuffer.add(workspace.getPerceptualBuffer());
-		episodicBuffer.add(workspace.getEpisodicBuffer());
-		broadcastQueue.add(workspace.getBroadcastBuffer());
-		csmRead.add(workspace.getCSM());
-		allBuffers.add(workspace.getPerceptualBuffer());
-		allBuffers.add(workspace.getEpisodicBuffer());
-		allBuffers.add(workspace.getBroadcastBuffer());	
-		csm.add(workspace.getCSM());
+		perceptualBuffer = workspace.getPerceptualBuffer();
+		episodicBuffer = workspace.getEpisodicBuffer();
+		broadcastQueue = workspace.getBroadcastQueue();
+		csmReadable.add(workspace.getCSM().getModel());
+		csm = workspace.getCSM();
 		this.timer = timer;		
 	}
 	
@@ -163,16 +159,25 @@ public class SBCodeletFactory {
 				codelet.setSoughtContent(defaultObjective);
 				codelet.setCodeletAction(defaultActions);			
 				
-				if(type == SBCodeletFactory.PERCEPTUAL_TYPE)
-					codelet.setAccessibleModules(perceptualBuffer, csm);
-				else if(type == SBCodeletFactory.EPISODIC_TYPE)
-					codelet.setAccessibleModules(episodicBuffer, csm);
-				else if(type == SBCodeletFactory.BROADCAST_TYPE)
-					codelet.setAccessibleModules(broadcastQueue, csm);
-				else if(type == SBCodeletFactory.CSM_TYPE)
-					codelet.setAccessibleModules(csmRead, csm);
-				else if(type == SBCodeletFactory.ALL_TYPE)
-					codelet.setAccessibleModules(allBuffers, csm);
+				if(type == SBCodeletFactory.PERCEPTUAL_TYPE){
+					codelet.addReadableBuffer(perceptualBuffer);
+					codelet.addWritableModule(csm);
+				}else if(type == SBCodeletFactory.EPISODIC_TYPE){
+					codelet.addReadableBuffer(episodicBuffer);
+					codelet.addWritableModule(csm);
+				}else if(type == SBCodeletFactory.BROADCAST_TYPE){
+					codelet.addReadableBuffer(broadcastQueue);
+					codelet.addWritableModule(csm);
+				}else if(type == SBCodeletFactory.CSM_TYPE){
+					codelet.addReadableBuffer(csmReadable);
+					codelet.addWritableModule(csm);
+				}else if(type == SBCodeletFactory.ALL_TYPE){
+					codelet.addReadableBuffer(perceptualBuffer);
+					codelet.addReadableBuffer(episodicBuffer);
+					codelet.addReadableBuffer(broadcastQueue);
+					codelet.addReadableBuffer(csmReadable);
+					codelet.addWritableModule(csm);
+				}
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 			} catch (IllegalAccessException e) {

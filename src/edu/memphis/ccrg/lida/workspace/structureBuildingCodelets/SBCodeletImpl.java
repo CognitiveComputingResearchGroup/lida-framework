@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
+import java.util.ArrayList;
 import java.util.List;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -13,8 +14,8 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	//Initialized by constructor
 	private FrameworkTimer frameworkTimer;
 	
-	private List<CodeletReadable> accessibleBuffers;
-	private CodeletWritable csm;//to access CSM	
+	private List<List<NodeStructure>> accessibleBuffers = new ArrayList<List<NodeStructure>>();
+	private List<CodeletWritable> writables = new ArrayList<CodeletWritable>();
 	
 	private int codeletSleepTime;
 	private double activation;
@@ -26,23 +27,26 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	//TODO: How will these be used?
 	private long id;
 	private int type;
+	private CodeletResult results = new BasicCodeletResult();
 	
 	public void addFrameworkTimer(FrameworkTimer timer) {
 		frameworkTimer = timer;
 	}
 	
-	public void run(){
+	public Object call(){
 		while(keepRunning){
 			try{
 				Thread.sleep(codeletSleepTime);
 			}catch(InterruptedException e){
-				stopRunning();
+				return results;
 			}
 			frameworkTimer.checkForStartPause();
-			for(CodeletReadable buffer: accessibleBuffers)
-				action.performAction(buffer, csm);	
-		//	keepRunning = false;
-		}//while	
+			for(List<NodeStructure> buffer: accessibleBuffers)
+				for(CodeletWritable writable: writables)
+					action.performAction(buffer, writable);	
+		}//while
+		results.reportFinished();
+		return results;
 	}//run
 
 	public void stopRunning() {
@@ -95,17 +99,24 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	//
 	public void setId(long id){
 		this.id = id;
+		results.setId(id);
 	}
 	public long getId() {
-		return id;
+		return results.getId();
 	}
 	//
-	public void setAccessibleModules(List<CodeletReadable> buffers, List<CodeletWritable> writableBuffers) {
-		accessibleBuffers = buffers;		
-		csm = writableBuffers.get(0);
+
+	public void addReadableBuffer(List<NodeStructure> buffer) {
+		accessibleBuffers.add(buffer);		
 	}
-	public List<CodeletReadable> getAccessibleBuffers() {
+	public void addWritableModule(CodeletWritable module) {
+		writables.add(module);
+	}
+	public List<List<NodeStructure>> getReadableBuffers() {
 		return accessibleBuffers;
+	}
+	public List<CodeletWritable> getWriteableBuffers() {
+		return writables;
 	}
 	//
 	public void setSleepTime(int ms) {
@@ -117,6 +128,7 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	//
 	public void clearForReuse() {
 		accessibleBuffers.clear();
+		writables.clear();
 		codeletSleepTime = 50;
 		activation = 0.0;
 		soughtContent = new NodeStructureImpl();

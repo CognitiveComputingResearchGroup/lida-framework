@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -18,8 +19,13 @@ public interface ThreadSpawner {
 	/**
 	 * The supplied runnables will be start by the spawner right away.
 	 */
-	public abstract void setInitialRunnables(List<Runnable> initialRunnables);
-
+	public abstract void startInitialRunnables(List<Runnable> initialRunnables);
+	
+	/**
+	 * The supplied runnables will be start by the spawner right away.
+	 */
+	public abstract void startInitialCallables(List<Callable<Object>> initialCallables);
+	
 	/**
 	 * TODO:
 	 * 

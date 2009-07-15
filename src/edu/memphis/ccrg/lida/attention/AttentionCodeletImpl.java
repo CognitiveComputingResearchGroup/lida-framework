@@ -1,12 +1,11 @@
 package edu.memphis.ccrg.lida.attention;
 
-import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
-public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
+public class AttentionCodeletImpl implements AttentionCodelet{
 	
 	private boolean keepRunning = true;
 	private int codeletSleepMillis = 3;
@@ -43,6 +42,11 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 
 	public void stopRunning() {
 		keepRunning = false;		
+	}
+
+	public long getId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }//class

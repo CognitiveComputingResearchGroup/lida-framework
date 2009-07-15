@@ -28,7 +28,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		model.mergeNodeStructure(ns);
 	}
 	
-	public NodeStructure getCSMContent(){
+	public NodeStructure getModel(){
 		//TODO: this needs to be more sophisticated
 		return new NodeStructureImpl(model);
 	}

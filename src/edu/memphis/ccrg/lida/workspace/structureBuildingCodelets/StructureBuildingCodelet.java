@@ -1,13 +1,14 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
-public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppable{
+public interface StructureBuildingCodelet extends Activatible, Callable<Object>, Stoppable{
 
 	 public void setSoughtContent(NodeStructure content);
 	 public NodeStructure getSoughtContent();
@@ -18,8 +19,10 @@ public interface StructureBuildingCodelet extends Activatible, Runnable, Stoppab
 	 public void setId(long id);
 	 public long getId();
 	
-	 public void setAccessibleModules(List<CodeletReadable> readableBuffers, List<CodeletWritable> writableBuffers);
-	 public List<CodeletReadable> getAccessibleBuffers();
+	 public void addReadableBuffer(List<NodeStructure> buffer);
+	 public List<List<NodeStructure>> getReadableBuffers();
+	 public void addWritableModule(CodeletWritable module);
+	 public List<CodeletWritable> getWriteableBuffers();
 	
 	 public void setSleepTime(int ms);
 	 public int getSleepTime();

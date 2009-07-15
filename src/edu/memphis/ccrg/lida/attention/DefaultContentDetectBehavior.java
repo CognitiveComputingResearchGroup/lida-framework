@@ -13,7 +13,7 @@ public class DefaultContentDetectBehavior implements ContentDetectBehavior{
 	private NodeStructure soughtContent = new NodeStructureImpl();
 
 	public boolean hasSoughtContent(CurrentSituationalModel csm) {
-		NodeStructure model = csm.getCSMContent();
+		NodeStructure model = csm.getModel();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
 		for(Node n: nodes)
@@ -29,7 +29,7 @@ public class DefaultContentDetectBehavior implements ContentDetectBehavior{
 
 	public NodeStructure getSoughtContent(CurrentSituationalModel csm) {
 		if(hasSoughtContent(csm))
-			return csm.getCSMContent();
+			return csm.getModel();
 		else 
 			return null;
 	}

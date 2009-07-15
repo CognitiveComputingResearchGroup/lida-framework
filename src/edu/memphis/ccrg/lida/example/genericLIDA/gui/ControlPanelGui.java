@@ -2,8 +2,8 @@ package edu.memphis.ccrg.lida.example.genericLIDA.gui;
 
 import javax.swing.JSlider;
 import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.example.genericLIDA.main.GenericLida;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
-import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 
 /**
  *
@@ -13,26 +13,22 @@ public class ControlPanelGui extends javax.swing.JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private FrameworkTimer frameworkTimer;
-	private ThreadSpawner mainThread;
+	private GenericLida mainThread;
 	private Environment environment;
 	boolean isPaused = true;
 	private int sliderMin = 15;
 	private int sliderMax = 350;
 	private int sliderStartValue = 100;
-	private ThreadSpawner codeletThread;
-	//private ActionSelection actionSelection;
 	
     /** Creates new form ContactEditorUI 
      * @param start 
      * @param timer 
      * @param pam */
-    public ControlPanelGui(FrameworkTimer timer, ThreadSpawner start, ThreadSpawner codeletDriver, Environment e) {
+    public ControlPanelGui(FrameworkTimer timer, GenericLida mainThread, Environment e) {
     	this.frameworkTimer = timer;
     	isPaused = timer.getStartStatus();
-    	mainThread = start;
-    	codeletThread = codeletDriver;
+    	this.mainThread = mainThread;
     	environment = e;
-    	//actionSelection = as;
         initComponents();
     }
 
@@ -65,15 +61,8 @@ public class ControlPanelGui extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         jLabel1.setText("LIDA Control Panel");
 
-        jLabel4.setText("Thread Count");
-
-        String threadCount = "";
-        if(codeletThread != null)
-        	threadCount = (mainThread.getSpawnedThreadCount() + codeletThread.getSpawnedThreadCount())+"";
-        else
-        	threadCount = mainThread.getSpawnedThreadCount() + "";
-        
-        threadCountTextField.setText(threadCount);
+        jLabel4.setText("Thread Count");        
+        threadCountTextField.setText(mainThread.getRunningThreadCount() + "");
 
         statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         if(isPaused)
@@ -198,12 +187,7 @@ public class ControlPanelGui extends javax.swing.JFrame {
     }// </editor-fold>
     
     public void refreshGuiValues(){
-    	String threadCount = "";
-        if(codeletThread != null)
-        	threadCount = (mainThread.getSpawnedThreadCount() + codeletThread.getSpawnedThreadCount())+"";
-        else
-        	threadCount = mainThread.getSpawnedThreadCount() + "";
-        threadCountTextField.setText(threadCount);
+        threadCountTextField.setText(mainThread.getRunningThreadCount() + "");
     }
 
     private void startPauseButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,7 +232,7 @@ public class ControlPanelGui extends javax.swing.JFrame {
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	statusLabel.setText("QUITTING");
 		frameworkTimer.resumeRunningThreads(); 
-		mainThread.stopSpawnedThreads();
+		mainThread.stopRunning();
     }
     
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {

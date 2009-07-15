@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -47,10 +48,19 @@ public class SBCodeletDriver extends GenericModuleDriver implements	ThreadSpawne
 	    											   TimeUnit.SECONDS, taskQueue);
 	}// method
 
-	public void setInitialRunnables(List<Runnable> initialRunnables) {
+	public void startInitialRunnables(List<Runnable> initialRunnables) {
 		for (Runnable r : initialRunnables){
 			if(r instanceof StructureBuildingCodelet)
 				executeCodelet((StructureBuildingCodelet) r);
+			else
+				System.out.println("In SBCodeletDriver, a noncodelet object was submitted for execution");
+		}
+	}
+	
+	public void startInitialCallables(List<Callable<Object>> initialCallables) {
+		for (Callable<Object> c : initialCallables){
+			if(c instanceof StructureBuildingCodelet)
+				executeCodelet((StructureBuildingCodelet) c);
 			else
 				System.out.println("In SBCodeletDriver, a noncodelet object was submitted for execution");
 		}
@@ -82,7 +92,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements	ThreadSpawne
 	
 	private void executeCodelet(StructureBuildingCodelet sbc){
 		long id = sbc.getId();
-		executorService.submit(sbc, id);
+		executorService.submit(sbc);
 		synchronized(this){
 			runningCodelets.put(id, sbc);
 		}
@@ -104,8 +114,8 @@ public class SBCodeletDriver extends GenericModuleDriver implements	ThreadSpawne
 		}
 
 		if(o != null){
-			if(o instanceof Long)
-				removeFinishedCodelet((Long)o);
+			CodeletResult cr = (CodeletResult) o;
+			removeFinishedCodelet(cr.getId());
 			//Plan for other kinds of objects being returned depending on the codelet
 		}
 	}//method

@@ -9,10 +9,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBuffer;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBuffer;
 
 /**
  * 
@@ -28,22 +25,28 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 									  WorkspaceBufferListener{
 	
 	//Workspace contains these components
-	private PerceptualBuffer perceptualBuffer;
-	private EpisodicBuffer episodicBuffer;
-	private BroadcastQueue broadcastBuffer;
+//	private PerceptualBuffer perceptualBuffer;
+//	private EpisodicBuffer episodicBuffer;
+//	private BroadcastQueue broadcastBuffer;
+	private WorkspaceBuffersImpl workspaceBuffers;
 	private CurrentSituationalModel csm;
 	
 	//These listeners listen to the Workspace
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private WorkspaceListener pamWorkspaceListener;
 	
-	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue pbroads, 
-							CurrentSituationalModel csm){
-		perceptualBuffer = pb;
-		episodicBuffer = eb;
-		broadcastBuffer = pbroads;
-		this.csm = csm;	
-	}//
+//	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue pbroads, 
+//							CurrentSituationalModel csm){
+//		perceptualBuffer = pb;
+//		episodicBuffer = eb;
+//		broadcastBuffer = pbroads;
+//		this.csm = csm;	
+//	}//
+	
+	public WorkspaceImpl(WorkspaceBuffersImpl buffers, CurrentSituationalModel csm){
+		workspaceBuffers = buffers;
+		this.csm = csm;
+	}
 	
 	//****Output from the Workspace to other modules
 	public void addCueListener(CueListener l){
@@ -65,12 +68,10 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		that get produced and put in the CSM
 	 */ 	 
 	public void receiveBufferContent(int buffer, NodeStructure content) {
-			
-		if(buffer != WorkspaceBufferListener.BQUEUE){
-			cue(content);
-			if(buffer == WorkspaceBufferListener.EBUFFER)
-				pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
-		}
+		cue(content);
+		if(buffer == WorkspaceBufferListener.EBUFFER)
+			pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
+	
 	}//method
 
 	public void cue(NodeStructure content){
@@ -81,33 +82,33 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//****Input into the Workspace from other Modules is sent to the appropriate
 	//submodules
 	public void receivePAMContent(NodeStructure ns) {
-		perceptualBuffer.receivePAMContent(ns);		
+		workspaceBuffers.receivePAMContent(ns);		
 	}
 	public void receiveLocalAssociation(NodeStructure association) {
-		episodicBuffer.receiveLocalAssociation(association);		
+		workspaceBuffers.receiveLocalAssociation(association);		
 	}	
 
 	public void receiveBroadcast(BroadcastContent bc) {
-		broadcastBuffer.receiveBroadcast(bc);		
+		workspaceBuffers.receiveBroadcast(bc);		
 	}
 	public void receiveBehaviorContent(ActionContent c) {
 		// TODO: Implementing this is a long way off as of (3.30.09)		
 	}
 
-	/**
-	 * For Codelets to access the buffers
-	 */
+	public List<NodeStructure> getBroadcastQueue() {
+		return workspaceBuffers.getBroadcastQueue();
+	}
+
 	public CurrentSituationalModel getCSM() {
-		return csm;
+		return  csm;
 	}
-	public PerceptualBuffer getPerceptualBuffer(){
-		return perceptualBuffer;
+
+	public List<NodeStructure> getEpisodicBuffer() {
+		return workspaceBuffers.getEpisodicBuffer();
 	}
-	public EpisodicBuffer getEpisodicBuffer(){
-		return episodicBuffer;
-	}
-	public BroadcastQueue getBroadcastBuffer(){
-		return broadcastBuffer;
+
+	public List<NodeStructure> getPerceptualBuffer() {
+		return workspaceBuffers.getPerceptualBuffer();
 	}
 	
 }//class

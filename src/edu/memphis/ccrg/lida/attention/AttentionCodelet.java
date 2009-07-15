@@ -8,6 +8,10 @@
 
 package edu.memphis.ccrg.lida.attention;
 
-public interface AttentionCodelet {
+import edu.memphis.ccrg.lida.framework.Stoppable;
+
+public interface AttentionCodelet extends Runnable, Stoppable  {
+
+	long getId();
 
 }

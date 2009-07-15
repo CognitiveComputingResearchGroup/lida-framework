@@ -1,12 +1,11 @@
 package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletReadable;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.CodeletWritable;
 
-public interface CurrentSituationalModel extends CodeletReadable, CodeletWritable{
+public interface CurrentSituationalModel extends CodeletWritable{
 
 	public abstract void sendCSMContent();
-	public abstract NodeStructure getCSMContent();
+	public abstract NodeStructure getModel();
 	
 }//interface
