@@ -6,14 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.example.genericLIDA.pam.VisionFeatureDetector;
-import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.LinkImpl;
+import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 
 public class PamInput {
@@ -30,26 +30,19 @@ public class PamInput {
 		params.put("selectivity", selectivity);		
 		pam.setParameters(params);
 		
-		//ADD NODES, FeatureDetectors, and LINKS
-		Set<PamNode> nodes = new HashSet<PamNode>();
+		//Nodes
     	NodeFactory factory = NodeFactory.getInstance();
-    	factory.addNodeType("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
-    	PamNodeImpl gold = (PamNodeImpl)factory.getNode("PamNodeImpl", 1, "gold");
-    	nodes.add(gold);
-    	
+    	PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl", "gold");
+    	PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "metal");
+    	PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl", "solid");
+    	//Links
+    	factory.storeLink(gold, metal, LinkType.GROUNDING);
+    	factory.storeLink(metal, solid, LinkType.GROUNDING);    	
     	//Feature detectors
-    	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
-    	//VisionDetectBehavior featureDetectorBehavior = new VisionDetectBehavior(); 
+    	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>(); 
 		featureDetectors.add(new VisionFeatureDetector(gold, sm, pam));
-		
-		Set<Link> links = new HashSet<Link>();    	
-		pam.addToPAM(nodes, featureDetectors, links);
-		
-		try{
-			//FileReader fr = new FileReader(inputPath);
-		}catch(Exception e){
-			System.out.println(e);
-		}
-		
+
+		pam.addToPAM(factory.getStoredNodes(), featureDetectors, factory.getStoredLinks());
 	}//method
+	
 }//class

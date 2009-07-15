@@ -19,7 +19,7 @@ public class NodeImpl implements Node {
 	private ExciteBehavior eb;
 	private DecayBehavior db;
 	protected PamNode refNode;
-	private String label;
+	private String label = "";
 
 	public NodeImpl() {
 	}
@@ -106,7 +106,7 @@ public class NodeImpl implements Node {
 	}
 
 	public String getLabel() {
-		return "Node: " + id;
+		return label;
 	}
 
 	public void setId(long id) {
@@ -114,7 +114,7 @@ public class NodeImpl implements Node {
 	}
 
 	public void setLabel(String label) {
-	this.label=label;
+		this.label=label;
 	}
 
 	public String getIds() {

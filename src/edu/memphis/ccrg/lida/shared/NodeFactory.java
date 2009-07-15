@@ -1,7 +1,12 @@
 package edu.memphis.ccrg.lida.shared;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import edu.memphis.ccrg.lida.perception.PamNode;
+import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -27,6 +32,13 @@ public class NodeFactory {
 		return instance;
 	}
 
+	private static long nodeIdCount = 0;
+	/**
+	 * Useful for generating many nodes 
+	 */
+	private Set<PamNode> storedNodes = new HashSet<PamNode>();
+	private Set<Link> storedLinks = new HashSet<Link>();
+	//
 	private String DefaultNodeClassName;
 	private String DefaultLinkClassName;
 	private String DefaultNodeType;
@@ -37,10 +49,10 @@ public class NodeFactory {
 	//
 	private Map<String, String> nodeClasses = new HashMap<String, String>();
 	private Map<String, String> linkClasses = new HashMap<String, String>();
-
+	//
 	private Map<String, DecayBehavior> decayBehaviors = new HashMap<String, DecayBehavior>();
-	private Map<String, ExciteBehavior> exciteBehaviors = new HashMap<String, ExciteBehavior>();
-
+	private Map<String, ExciteBehavior> exciteBehaviors = new HashMap<String, ExciteBehavior>();	
+	
 	private NodeFactory() {
 		DefaultNodeClassName = "edu.memphis.ccrg.lida.shared.NodeImpl";
 		DefaultLinkClassName = "edu.memphis.ccrg.lida.shared.LinkImpl";
@@ -49,7 +61,7 @@ public class NodeFactory {
 		defaultDecay = new LinearDecayBehavior();
 		defaultExcite = new BasicExciteBehavior();
 		nodeClasses.put(DefaultNodeType, DefaultNodeClassName);
-		nodeClasses.put(DefaultLinkType, DefaultLinkClassName);
+		linkClasses.put(DefaultLinkType, DefaultLinkClassName);
 		nodeClasses.put("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
 	}
 
@@ -93,6 +105,7 @@ public class NodeFactory {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(DefaultLinkClassName).newInstance();
+			l.setIds(oLink.getIds());
 			l.setSource(oLink.getSource());
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
@@ -110,6 +123,7 @@ public class NodeFactory {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(linkClasses.get(linkT)).newInstance();
+			l.setIds(oLink.getIds());
 			l.setSource(oLink.getSource());
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
@@ -130,6 +144,7 @@ public class NodeFactory {
 			l.setSource(source);
 			l.setSink(sink);
 			l.setType(type);
+			l.updateIds();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -148,6 +163,7 @@ public class NodeFactory {
 			l.setSource(source);
 			l.setSink(sink);
 			l.setType(type);
+			l.updateIds();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -164,7 +180,7 @@ public class NodeFactory {
 			n = (Node) Class.forName(DefaultNodeClassName).newInstance();
 			n.setExciteBehavior(defaultExcite);
 			n.setDecayBehavior(defaultDecay);
-
+			n.setId(nodeIdCount++);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -266,6 +282,7 @@ public class NodeFactory {
 			n = (Node) Class.forName(nodeClasses.get(nodeType)).newInstance();
 			n.setExciteBehavior(defaultExcite);
 			n.setDecayBehavior(defaultDecay);
+			n.setId(nodeIdCount++);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -276,22 +293,9 @@ public class NodeFactory {
 		return n;
 	}
 
-	public Node getNode(String nodeType, long id) {
-		Node n = getNode(nodeType);
-		n.setId(id);
-		return n;
-	}
-
 	public Node getNode(String nodeType, String nodeLabel) {
 		Node n = getNode(nodeType);
 		n.setLabel(nodeLabel);
-		return n;
-	}
-	
-	public Node getNode(String nodeType, long id, String nodeLabel) {
-		Node n = getNode(nodeType);
-		n.setId(id);
-		n.setLabel(nodeLabel);		
 		return n;
 	}
 
@@ -302,6 +306,7 @@ public class NodeFactory {
 			n = (Node) Class.forName(nodeClasses.get(nodeType)).newInstance();
 			n.setExciteBehavior(exciteBehaviors.get(exciteBehavior));
 			n.setDecayBehavior(decayBehaviors.get(decayBehavior));
+			n.setId(nodeIdCount++);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -310,6 +315,33 @@ public class NodeFactory {
 			// TODO Auto-generated catch block
 		}
 		return n;
+	}
+	
+	public Node storeNode(String nodeType, String nodeLabel){
+		Node n = getNode(nodeType, nodeLabel);
+		if(n instanceof PamNode)
+			storedNodes.add((PamNode) n);
+		else
+			System.out.println("Error, you tried to store a Node.  Currently you can only store PamNodes");
+		return n;
+	}
+	public Set<PamNode> getStoredNodes(){
+		return storedNodes;
+	}
+	public void clearStoredNodes(){
+		storedNodes.clear();
+	}
+
+	public Link storeLink(Linkable source, Linkable sink, LinkType type) {
+		Link l = getLink(source, sink, type);
+		storedLinks.add(l);
+		return l;
+	}
+	public Set<Link> getStoredLinks(){
+		return storedLinks;
+	}
+	public void clearStoredLinks(){
+		storedLinks.clear();
 	}
 
 	public void setDefaultDecay(DecayBehavior defaultDecay) {

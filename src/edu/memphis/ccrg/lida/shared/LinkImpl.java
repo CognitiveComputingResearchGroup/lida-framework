@@ -114,7 +114,7 @@ public class LinkImpl implements Link {
 		return getLabel();
 	}
 
-	private void updateIds() {
+	public void updateIds() {
 		ids = "L( " + ((source!=null)?source.getIds():"") + " : " + ((sink!=null)?sink.getIds():"") + " : " + type + " )";
 	}
 }

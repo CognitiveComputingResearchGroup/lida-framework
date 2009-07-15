@@ -20,9 +20,11 @@ public class TestNodeStructure {
 		NodeFactory.getInstance().addNodeType("NodeImpl", "edu.memphis.ccrg.lida.shared.NodeImpl");
 		NodeFactory.getInstance().addLinkType("LinkImpl", "edu.memphis.ccrg.lida.shared.LinkImpl");
 		
-		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",10L));
-		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",20L));
-		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",30L));
+		//TODO: I have removed the getNode() method used below
+		//Now Ids are generated internally by the factory
+//		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",10L));
+//		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",20L));
+//		ns.addNode(NodeFactory.getInstance().getNode("NodeImpl",30L));
 		
 		Link l = NodeFactory.getInstance().getLink("LinkImpl", ns.getNode(10L), ns.getNode(20L), LinkType.PARENT);
 		ns.addLink(l);
