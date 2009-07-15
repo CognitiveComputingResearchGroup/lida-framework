@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework.gui;
 
+import java.util.List;
+
 
 /**
  * A GuiContentProvider is a class that provides content
@@ -11,7 +13,6 @@ package edu.memphis.ccrg.lida.framework.gui;
  */
 public interface GuiContentProvider {
 
-	public abstract void sendGuiContent();
-	public abstract void addFrameworkGui(FrameworkGui listener);
+	//public abstract List<Object> getGuiContent();
 
 }

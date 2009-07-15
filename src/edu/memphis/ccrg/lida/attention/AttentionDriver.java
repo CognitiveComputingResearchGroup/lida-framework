@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
@@ -106,7 +107,7 @@ public class AttentionDriver implements ModuleDriver, ThreadSpawner, BroadcastLi
 		
 	}
 
-	public void receiveFinishedTask(Runnable r, Throwable t) {
+	public void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t) {
 		// TODO Auto-generated method stub
 		
 	}

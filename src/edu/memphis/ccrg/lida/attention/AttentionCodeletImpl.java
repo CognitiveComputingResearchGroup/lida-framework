@@ -9,7 +9,8 @@ import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationa
 public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppable {
 	
 	private boolean keepRunning = true;
-	private int codeletSleepTime = 4;
+	private int codeletSleepMillis = 3;
+	private int codeletSleepNanos = 100000; //1 million nanoseconds = 1 millisecond
 	private ContentDetectBehavior checkBehavior = new DefaultContentDetectBehavior();
 	//
 	private CurrentSituationalModel csm;
@@ -26,7 +27,7 @@ public class AttentionCodeletImpl implements AttentionCodelet, Runnable, Stoppab
 	public void run() {
 		while(keepRunning){
 			try{
-				Thread.sleep(codeletSleepTime);
+				Thread.sleep(codeletSleepMillis, codeletSleepNanos);
 			}catch(InterruptedException e){
 				stopRunning();
 			}

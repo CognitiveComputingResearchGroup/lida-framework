@@ -49,7 +49,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 			g.receiveGuiContent(FrameworkGui.FROM_CSM, guiContent);
 	}
 
-	public List<NodeStructure> getBuffer() {
+	public List<NodeStructure> getBuffer(int i) {
 		List<NodeStructure> list = new ArrayList<NodeStructure>();
 		list.add(model);
 		return list;

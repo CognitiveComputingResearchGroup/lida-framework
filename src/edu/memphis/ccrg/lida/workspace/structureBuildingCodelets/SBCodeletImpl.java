@@ -41,6 +41,7 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 			frameworkTimer.checkForStartPause();
 			for(CodeletReadable buffer: accessibleBuffers)
 				action.performAction(buffer, csm);	
+		//	keepRunning = false;
 		}//while	
 	}//run
 

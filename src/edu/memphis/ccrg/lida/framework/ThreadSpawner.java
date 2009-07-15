@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
 /**
  * ThreadSpawners are classes that create, manage, and end new threads.  
@@ -25,6 +26,6 @@ public interface ThreadSpawner {
 	 * @param r
 	 * @param t
 	 */
-	public abstract void receiveFinishedTask(Runnable r, Throwable t);
+	public abstract void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t);
 
 }

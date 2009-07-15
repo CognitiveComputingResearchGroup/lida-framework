@@ -36,7 +36,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//These listeners listen to the Workspace
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private WorkspaceListener pamWorkspaceListener;
-	private WorkspaceListener sbCodeletWorkspaceListener;
 	
 	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue pbroads, 
 							CurrentSituationalModel csm){
@@ -55,10 +54,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		pamWorkspaceListener = listener;
 	}
 	
-	public void add_SBCodelet_WorkspaceListener(WorkspaceListener listener){
-		sbCodeletWorkspaceListener = listener;
-	}
-	
 	/**
 	 * WorkspaceImpl listens to its submodules and forwards the content
 	 * that they send to the appropriate modules outside the workspace.
@@ -70,17 +65,11 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		that get produced and put in the CSM
 	 */ 	 
 	public void receiveBufferContent(int buffer, NodeStructure content) {
-		if(buffer == WorkspaceBufferListener.PBUFFER){
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_PBUFFER, content);	
+			
+		if(buffer != WorkspaceBufferListener.BQUEUE){
 			cue(content);
-		}else if(buffer == WorkspaceBufferListener.EBUFFER){
-			pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);		
-			cue(content);
-		}else if(buffer == WorkspaceBufferListener.CSM){
-			cue(content);
-		}else if(buffer == WorkspaceBufferListener.BQUEUE){
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_BQUEUE, content);
+			if(buffer == WorkspaceBufferListener.EBUFFER)
+				pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
 		}
 	}//method
 

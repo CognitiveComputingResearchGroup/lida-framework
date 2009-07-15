@@ -1,41 +1,39 @@
 package edu.memphis.ccrg.lida.workspace.structureBuildingCodelets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import edu.memphis.ccrg.lida.framework.FrameworkExecutorService;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
-public class SBCodeletDriver extends GenericModuleDriver implements
-		ThreadSpawner, WorkspaceListener, GuiContentProvider {
+public class SBCodeletDriver extends GenericModuleDriver implements	ThreadSpawner, GuiContentProvider{
 
 	private SBCodeletFactory sbCodeletFactory;
+	
+	/**
+	 * Used to execute the StructureBuildingCodelets
+	 */
+	private ThreadPoolExecutor executorService;
+	
+	/**
+	 * A map of the running codelets where the key is the codelet's id
+	 */
+	private Map<Long, Stoppable> runningCodelets = new HashMap<Long, Stoppable>();
 
-	private NodeStructureImpl workspaceContent = new NodeStructureImpl();
 	// private Map<CodeletActivatingContextImpl, StructureBuildingCodelet>
 	// codeletMap = new HashMap<CodeletActivatingContextImpl,
-	// StructureBuildingCodelet>();//TODO: equals, hashCode
-	private ThreadPoolExecutor executorService;
-	private Map<Integer, Stoppable> runningCodelets = new HashMap<Integer, Stoppable>();
-
-	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
-	private List<Object> guiContent = new ArrayList<Object>();
+	// StructureBuildingCodelet>();
 
 	public SBCodeletDriver(Workspace w, FrameworkTimer timer) {
 		super(timer);
@@ -49,29 +47,18 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 	    											   TimeUnit.SECONDS, taskQueue);
 	}// method
 
-	public void addFrameworkGui(FrameworkGui listener) {
-		guis.add(listener);
-	}
-
 	public void setInitialRunnables(List<Runnable> initialRunnables) {
-		for (Runnable r : initialRunnables)
-			executorService.execute(r);
+		for (Runnable r : initialRunnables){
+			if(r instanceof StructureBuildingCodelet)
+				executeCodelet((StructureBuildingCodelet) r);
+			else
+				System.out.println("In SBCodeletDriver, a noncodelet object was submitted for execution");
+		}
 	}
-
-	/**
-	 * Note that the Workspace receives this content from multiple buffers. So
-	 * it may have originated from either the perceptual, episodic, or broadcast
-	 * buffer.
-	 */
-	public synchronized void receiveWorkspaceContent(int originatingBuffer,
-			NodeStructure content) {
-		workspaceContent = (NodeStructureImpl) content;
-	}// method
 	
 	@Override
 	public void cycleStep() {
 		activateCodelets();
-		sendGuiContent();
 	}
 
 	/**
@@ -79,16 +66,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 	 */
 	private void activateCodelets() {
 		// TODO: CODE to determine when/what codelets to activate
-
-		guiContent.clear();
-		guiContent.add(workspaceContent.getNodeCount());
-		guiContent.add(workspaceContent.getLinkCount());
 	}// method
-	
-	public void sendGuiContent() {
-		for (FrameworkGui fg : guis)
-			fg.receiveGuiContent(FrameworkGui.FROM_SBCODELETS, guiContent);
-	}
 
 	@SuppressWarnings("unused")
 	/*
@@ -99,18 +77,46 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 			NodeStructure context, CodeletAction actions) {
 		StructureBuildingCodelet sbc = sbCodeletFactory.getCodelet(type,
 				activation, context, actions);
-		synchronized(this){
-			runningCodelets.put(sbc.hashCode(), sbc);
-		}
-		// put codelet in the work queue for the thread pool
-		executorService.execute(sbc);
+		executeCodelet(sbc);
 	}// method
 	
-	public void receiveFinishedTask(Runnable r, Throwable t) {
-		StructureBuildingCodelet sbc = (StructureBuildingCodelet) r;
+	private void executeCodelet(StructureBuildingCodelet sbc){
+		long id = sbc.getId();
+		executorService.submit(sbc, id);
 		synchronized(this){
-			runningCodelets.remove(sbc.hashCode());
+			runningCodelets.put(id, sbc);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Finished tasks from the FrameworkExecutorService are sent to this method.
+	 * Since 
+	 */
+	public void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t) {
+		Object o = null;
+		try {
+			o = finishedTask.get();
+		}catch (InterruptedException e1){
+			e1.printStackTrace();
+		}catch (ExecutionException e1){
+			e1.printStackTrace();
+		}
+
+		if(o != null){
+			if(o instanceof Long)
+				removeFinishedCodelet((Long)o);
+			//Plan for other kinds of objects being returned depending on the codelet
+		}
+	}//method
+	
+	public boolean removeFinishedCodelet(Long codeletId){
+		Stoppable removedCodelet = null;
+		synchronized(this){
+			removedCodelet = runningCodelets.remove(codeletId);
+		}
+		//System.out.println(runningCodelets.size());
+		return removedCodelet != null;
 	}
 
 	public void stopRunning() {
@@ -125,7 +131,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements
 			if (s != null)
 				s.stopRunning();
 		}// for
-		executorService.shutdownNow();
+		executorService.shutdownNow();//TODO: move this?
 		System.out.println("all structure-building codelets told to stop");
 	}// method
 

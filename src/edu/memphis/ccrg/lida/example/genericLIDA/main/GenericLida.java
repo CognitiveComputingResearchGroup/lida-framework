@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
@@ -32,14 +33,11 @@ import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatism;
 import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatismImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientEpisodicMemory.TEMImpl;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueDriver;
 import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMDriver;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferDriver;
 import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.SBCodeletDriver;
 import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.SBCodeletFactory;
@@ -69,9 +67,6 @@ public class GenericLida implements ThreadSpawner{
 	//Drivers
 	private SensoryMemoryDriver sensoryMemoryDriver;
 	private PAMDriver pamDriver;
-	private PerceptualBufferDriver perceptBufferDriver;
-	private EpisodicBufferDriver episodicBufferDriver;
-	private BroadcastQueueDriver broadcastBufferDriver;
 	private SBCodeletDriver sbCodeletDriver;
 	private CSMDriver csmDriver;
 	private AttentionDriver attnDriver;
@@ -177,20 +172,14 @@ public class GenericLida implements ThreadSpawner{
 	private void initPerceptualBufferThread(){
 		int capacity = 2;
 		perceptBuffer = new PerceptualBufferImpl(capacity);	
-	    perceptBufferDriver = new PerceptualBufferDriver(perceptBuffer, timer); 
-		drivers.add(perceptBufferDriver);
 	}
 	private void initEpisodicBufferThread(){
 		int capacity = 10;
 		episodicBuffer = new EpisodicBufferImpl(capacity);
-		episodicBufferDriver = new EpisodicBufferDriver(episodicBuffer, timer); 
-		drivers.add(episodicBufferDriver);
 	}
 	private void initBroadcastBufferThread(){
 		int capacity = 10;
-		broadcastQueue = new BroadcastQueueImpl(capacity);
-		broadcastBufferDriver = new BroadcastQueueDriver(broadcastQueue, timer);
-		drivers.add(broadcastBufferDriver);		
+		broadcastQueue = new BroadcastQueueImpl(capacity);	
 	}
 	private void initCSMThread(){
 		csm = new CurrentSituationalModelImpl();
@@ -251,22 +240,15 @@ public class GenericLida implements ThreadSpawner{
 		pam.addFrameworkGui(nodeLinkFlowGui);
 		
 		perceptBuffer.addBufferListener(workspace);
-		perceptBuffer.addFrameworkGui(nodeLinkFlowGui);
 		//
 		episodicBuffer.addBufferListener(workspace);
-		episodicBuffer.addFrameworkGui(nodeLinkFlowGui);
-		//
-		broadcastQueue.addBufferListener(workspace);
-		broadcastQueue.addFrameworkGui(nodeLinkFlowGui);
 		//
 		csm.addBufferListener(workspace);
 		csm.addFrameworkGui(nodeLinkFlowGui);
 		
 		workspace.addCueListener(declarativeMemory);
 		//workspace.addCueListener(tem);
-		workspace.add_SBCodelet_WorkspaceListener(sbCodeletDriver);
 		workspace.add_PAM_WorkspaceListener(pam);
-		sbCodeletDriver.addFrameworkGui(nodeLinkFlowGui);
 		//
 		globalWksp.addBroadcastListener(pam);
 		globalWksp.addBroadcastListener(workspace);
@@ -323,7 +305,7 @@ public class GenericLida implements ThreadSpawner{
 		//for now do nothing
 	}
 
-	public void receiveFinishedTask(Runnable r, Throwable t) {
+	public void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t) {
 		// TODO Auto-generated method stub
 		
 	}

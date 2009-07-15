@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +30,10 @@ public class FrameworkExecutorService extends ThreadPoolExecutor {
 		this.spawner = spawner;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void afterExecute(Runnable r, Throwable t){
-		spawner.receiveFinishedTask(r, t);
+		super.afterExecute(r, t);
+		spawner.receiveFinishedTask((FutureTask<Object>) r, t);
 	}
 
 }
