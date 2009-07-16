@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
 
 public class WorkspaceBuffersImpl implements PAMListener, LocalAssociationListener, 
-											 BroadcastListener{
+											 BroadcastListener, WorkspaceBuffers{
 
 	private final int perceptBufferCapacity;
 	private final int episodicBufferCapacity;
