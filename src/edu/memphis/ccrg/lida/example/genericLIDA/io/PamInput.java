@@ -2,10 +2,9 @@ package edu.memphis.ccrg.lida.example.genericLIDA.io;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 import edu.memphis.ccrg.lida.example.genericLIDA.pam.VisionFeatureDetector;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;

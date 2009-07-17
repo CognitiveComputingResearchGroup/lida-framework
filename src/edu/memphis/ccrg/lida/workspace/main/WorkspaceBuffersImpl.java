@@ -9,7 +9,6 @@ import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-
 public class WorkspaceBuffersImpl implements PAMListener, LocalAssociationListener, 
 											 BroadcastListener, WorkspaceBuffers{
 

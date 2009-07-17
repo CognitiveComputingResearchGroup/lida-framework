@@ -17,6 +17,4 @@ public interface Link extends Linkable{
 
 	public abstract void setType(LinkType type);
 
-	public abstract void updateIds();
-
 }

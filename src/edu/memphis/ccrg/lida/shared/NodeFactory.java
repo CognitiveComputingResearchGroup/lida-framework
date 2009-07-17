@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.perception.PamNode;
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -105,7 +104,6 @@ public class NodeFactory {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(DefaultLinkClassName).newInstance();
-			l.setIds(oLink.getIds());
 			l.setSource(oLink.getSource());
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
@@ -123,7 +121,6 @@ public class NodeFactory {
 		Link l = null;
 		try {
 			l = (Link) Class.forName(linkClasses.get(linkT)).newInstance();
-			l.setIds(oLink.getIds());
 			l.setSource(oLink.getSource());
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
@@ -144,7 +141,6 @@ public class NodeFactory {
 			l.setSource(source);
 			l.setSink(sink);
 			l.setType(type);
-			l.updateIds();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
@@ -163,7 +159,6 @@ public class NodeFactory {
 			l.setSource(source);
 			l.setSink(sink);
 			l.setType(type);
-			l.updateIds();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {

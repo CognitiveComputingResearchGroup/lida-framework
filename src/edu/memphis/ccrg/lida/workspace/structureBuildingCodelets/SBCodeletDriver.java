@@ -33,8 +33,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements	ThreadSpawne
 	private Map<Long, Stoppable> runningCodelets = new HashMap<Long, Stoppable>();
 
 	// private Map<CodeletActivatingContextImpl, StructureBuildingCodelet>
-	// codeletMap = new HashMap<CodeletActivatingContextImpl,
-	// StructureBuildingCodelet>();
+	// codeletMap = new HashMap<CodeletActivatingContextImpl, StructureBuildingCodelet>();
 
 	public SBCodeletDriver(Workspace w, FrameworkTimer timer) {
 		super(timer);
@@ -125,7 +124,6 @@ public class SBCodeletDriver extends GenericModuleDriver implements	ThreadSpawne
 		synchronized(this){
 			removedCodelet = runningCodelets.remove(codeletId);
 		}
-		//System.out.println(runningCodelets.size());
 		return removedCodelet != null;
 	}
 
