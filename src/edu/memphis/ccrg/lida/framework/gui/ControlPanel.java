@@ -130,8 +130,8 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+			                        .addComponent(jLabel4)
+			                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(threadCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -205,25 +205,26 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     private void resetEnvironmentButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetEnvironmentButtonClicked
      	//environment.resetEnvironment();
     	controller.resetEnvironment();
- }//GEN-LAST:event_resetEnvironmentButtonClicked
+    }//GEN-LAST:event_resetEnvironmentButtonClicked
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
     	statusLabel.setText("QUITTING");
     	controller.quitAll();
 		//frameworkTimer.resumeRunningThreads(); 
 		//mainThread.stopSpawnedThreads();
-}//GEN-LAST:event_quitButtonActionPerformed
+    }//GEN-LAST:event_quitButtonActionPerformed
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
-   	 JSlider source = (JSlider)evt.getSource();
-	 if(!source.getValueIsAdjusting()){
-	     int sleepTime = (int)source.getValue();
-	     sleepTimeTextField.setText(sleepTime + "");
-	     //frameworkTimer.setSleepTime(sleepTime);
-	     controller.setSleepTime(sleepTime);
-	     refresh();
-	 }    
-}//GEN-LAST:event_speedSliderStateChanged
+   	 	JSlider source = (JSlider)evt.getSource();
+   	 	if(!source.getValueIsAdjusting()){
+   	 		int sleepTime = (int)source.getValue();
+   	 		sleepTimeTextField.setText(sleepTime + "");
+   	 		//frameworkTimer.setSleepTime(sleepTime);
+   	 		controller.setSleepTime(sleepTime);
+   	 		refresh();
+   	 	}    
+    }//GEN-LAST:event_speedSliderStateChanged
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

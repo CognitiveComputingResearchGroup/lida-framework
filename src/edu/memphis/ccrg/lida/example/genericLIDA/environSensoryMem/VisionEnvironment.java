@@ -20,29 +20,49 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
 	private double[][] environContent = new double[1][1];
-	private final int IMAGE_HEIGHT;
-	private final int IMAGE_WIDTH;
+	private int IMAGE_HEIGHT = 5;
+	private int IMAGE_WIDTH = 5;
 	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
 	public VisionEnvironment(FrameworkTimer timer, int height, int width) {
 		super(timer);
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;
+		iloc = IMAGE_HEIGHT / 2;
+		jloc = IMAGE_WIDTH / 2;
 	}
 
 	public synchronized void receiveBehaviorContent(ActionContent action) {
 		actionContent = action;
 		actionHasChanged = true;
 	}
+	
+	private int arrow = 0;
+	private int counter = 0;
 
 	@Override
 	public void cycleStep() {
 		Integer latestAction = null;
 
-		getNextMoveDown();
-		getNextMoveRight();
+		if(arrow == 0)
+			getNextMoveDown();
+		else if(arrow == 1)
+			getNextMoveUp();
+		else if(arrow == 2)
+			getNextMoveRight();
+		else if(arrow == 3)
+			getNextMoveLeft();
+			
+		counter++;
+		if(counter == 3){
+			counter = 0;
+			if(Math.random() > 0.8)
+				arrow = -1;
+			else 
+				arrow = (int) Math.floor(Math.random() * 4);
+		}
+		
 		sendEvent();
-
 		if (actionHasChanged) {
 			latestAction = (Integer) actionContent.getContent();
 			synchronized (this) {
@@ -83,33 +103,34 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	// ************Specific methods**************
 	private final double MIN_VALUE = 0.0;
 	private final double MAX_VALUE = 1.0;
-	private int iloc = -1;
-	private int jloc = -1;
+	private int iloc;
+	private int jloc;
+	private final int resetLocation = 0;
 
 	public void getNextMoveRight() {
 		if (jloc == IMAGE_WIDTH + 2)
-			jloc = -2;
+			jloc = resetLocation;
 		createFrame(iloc, jloc);
 		jloc++;
 	}// method
 
 	public void getNextMoveLeft() {
 		if (jloc == IMAGE_WIDTH + 2)
-			jloc = -2;
+			jloc = resetLocation;
 		createFrame(iloc, IMAGE_WIDTH - 1 - jloc);
 		jloc++;
 	}// method
 
 	public void getNextMoveUp() {
 		if (iloc == IMAGE_WIDTH + 2)
-			iloc = -2;
+			iloc = resetLocation;
 		createFrame(IMAGE_HEIGHT - 1 - iloc, jloc);
 		iloc++;
 	}// method
 
 	public void getNextMoveDown() {
 		if (iloc == IMAGE_WIDTH + 2)
-			iloc = -2;
+			iloc = resetLocation;
 		createFrame(iloc, jloc);
 		iloc++;
 	}// method
