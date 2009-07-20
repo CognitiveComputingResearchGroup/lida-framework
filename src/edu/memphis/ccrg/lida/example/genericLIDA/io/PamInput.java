@@ -10,8 +10,6 @@ import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 
