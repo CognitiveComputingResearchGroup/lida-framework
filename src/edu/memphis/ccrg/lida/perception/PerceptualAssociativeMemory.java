@@ -62,5 +62,6 @@ public interface PerceptualAssociativeMemory extends WorkspaceListener,  Broadca
 	
 	public void receiveActivationBurst(PamNode pNode,double activation);
 	public PamNode getPamNode(long id);
+	public void addPAMListener(PAMListener pl);
 
 }//interface PAMinterface

@@ -2,33 +2,32 @@ package edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 
 public class VisionEnvironment extends GenericModuleDriver implements
 		Environment, ActionSelectionListener, GuiContentProvider {
 
+	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
 	private double[][] environContent = new double[1][1];
 	private final int IMAGE_HEIGHT;
 	private final int IMAGE_WIDTH;
-	List<FrameworkGui> frameworkGuis = new ArrayList<FrameworkGui>();
+	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
 	public VisionEnvironment(FrameworkTimer timer, int height, int width) {
 		super(timer);
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;
-	}
-
-	public void addFrameworkGui(FrameworkGui listener) {
-		frameworkGuis.add(listener);
 	}
 
 	public synchronized void receiveBehaviorContent(ActionContent action) {
@@ -39,10 +38,10 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	@Override
 	public void cycleStep() {
 		Integer latestAction = null;
-		
+
 		getNextMoveDown();
 		getNextMoveRight();
-		sendGuiContent();
+		sendEvent();
 
 		if (actionHasChanged) {
 			latestAction = (Integer) actionContent.getContent();
@@ -54,15 +53,8 @@ public class VisionEnvironment extends GenericModuleDriver implements
 			}
 		}// if actionHasChanged
 	}
-	
-	public void sendGuiContent() {
-		List<Object> guiCont = new ArrayList<Object>();
-		guiCont.add(environContent);
-		for (FrameworkGui fg : frameworkGuis) {
-			fg.receiveGuiContent(FrameworkGui.FROM_ENVIRONMENT, guiCont);
-		}
-	}
-	
+
+
 	/**
 	 * @return the environContent
 	 */
@@ -81,11 +73,11 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	public void resetEnvironment() {
 		iloc = -1;
 		jloc = -1;
-		// double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
+		 double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 		// fillImageBlank(image);
-		// environContent.setContent(image);
-		// environContent.setGuiContent(convertToString(image));
-		// sendContent();
+		 environContent=image;
+		 sendEvent();
+		 logger.info("Environment Reseted");
 	}// method
 
 	// ************Specific methods**************
@@ -154,8 +146,8 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	}// addBlock
 
 	public void addHoriz(int i, int col, double[][] image) { // assumes that 0
-																// <= i <
-																// IMAGE_HEIGHT
+		// <= i <
+		// IMAGE_HEIGHT
 		int j = col - 1;// left
 		if (j >= 0 && j < IMAGE_WIDTH)
 			image[i][j] = MAX_VALUE;
@@ -183,6 +175,17 @@ public class VisionEnvironment extends GenericModuleDriver implements
 		}
 		return res;
 	}// method
+
+	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
+		frameworkGuis.add(listener);
+	}
+
+	public void sendEvent() {
+		for (FrameworkGuiEventListener fg : frameworkGuis) {
+			fg.receiveGuiEvent(new FrameworkGuiEvent(FrameworkGuiEvent.ENVIRONMENT,"data",environContent));
+		}
+
+	}
 
 	// public void printImage(double[][] image){
 	// for(int i = 0; i < IMAGE_HEIGHT; i++){

@@ -7,6 +7,7 @@ package edu.memphis.ccrg.lida.framework.gui;
  * 
  */
 public class FrameworkGuiEvent {
+	public static final int FRAMEWORK=0;
 	public static final int PAM = 10;
 	public static final int TEM = 20;
 	public static final int DM = 30;
@@ -19,7 +20,7 @@ public class FrameworkGuiEvent {
 	public static final int GLOBAL_WORKSPACE = 50;
 	public static final int PROCEDURAL_MEMORY = 60;
 	public static final int ACTION_SELECTION = 70;
-	public static final int ENVIRONMENT = 0;
+	public static final int ENVIRONMENT = 1;
 
 	private int moduleId;
 	private String message;

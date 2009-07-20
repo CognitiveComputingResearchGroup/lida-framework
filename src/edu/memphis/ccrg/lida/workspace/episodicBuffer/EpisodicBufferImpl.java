@@ -3,6 +3,9 @@ package edu.memphis.ccrg.lida.workspace.episodicBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
@@ -13,6 +16,8 @@ public class EpisodicBufferImpl implements EpisodicBuffer, GuiContentProvider{
     private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
     private List<WorkspaceBufferListener> listeners = new ArrayList<WorkspaceBufferListener>();
 	private final int episodicBufferCapacity;
+	private List<Object> guiContent = new ArrayList<Object>();	
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
     
 	public EpisodicBufferImpl(int capacity){
 		episodicBufferCapacity = capacity;
@@ -30,8 +35,22 @@ public class EpisodicBufferImpl implements EpisodicBuffer, GuiContentProvider{
 			episodicBuffer.remove(0);//remove oldest	
 	}
 
-	public List<NodeStructure> getBuffer(int i) {
+	public List<NodeStructure> getBuffer() {
 		return Collections.unmodifiableList(episodicBuffer);
+	}
+
+	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
+		guis.add(listener);
+	}
+
+	public void sendEvent() {
+		if (!guis.isEmpty()) {
+			FrameworkGuiEvent event = new FrameworkGuiEvent(
+					FrameworkGuiEvent.CSM, "data", guiContent);
+			for (FrameworkGuiEventListener gui : guis) {
+				gui.receiveGuiEvent(event);
+			}
+		}		
 	}
 	
 }//class

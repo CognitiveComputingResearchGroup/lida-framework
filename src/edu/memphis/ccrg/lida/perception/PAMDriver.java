@@ -5,9 +5,9 @@ import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
 public class PAMDriver extends GenericModuleDriver{
 
-	private PerceptualAssociativeMemoryImpl pam;
+	private PerceptualAssociativeMemory pam;
 	
-	public PAMDriver(PerceptualAssociativeMemoryImpl pam, FrameworkTimer timer){
+	public PAMDriver(PerceptualAssociativeMemory pam, FrameworkTimer timer){
 		super(timer);
 		this.pam = pam;
 	}//constructor
@@ -17,7 +17,9 @@ public class PAMDriver extends GenericModuleDriver{
 		pam.detectSensoryMemoryContent();				
 		pam.propogateActivation();//Pass activation	
 		pam.sendOutPercept(); //Send the percept to p-Workspace
-		pam.sendGuiContent();
+		if (pam instanceof PerceptualAssociativeMemoryImpl){
+			((PerceptualAssociativeMemoryImpl)pam).sendEvent();
+		}
 		pam.decayPAM();  //Decay the activations			
 	}
 	

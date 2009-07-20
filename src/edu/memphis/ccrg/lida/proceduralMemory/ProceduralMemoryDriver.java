@@ -9,9 +9,9 @@ import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
  */
 public class ProceduralMemoryDriver extends GenericModuleDriver {
 
-	private ProceduralMemoryImpl procMem;
+	private ProceduralMemory procMem;
 
-	public ProceduralMemoryDriver(ProceduralMemoryImpl pm, FrameworkTimer timer) {
+	public ProceduralMemoryDriver(ProceduralMemory pm, FrameworkTimer timer) {
 		super(timer);
 		procMem = pm;
 	}// constructor
@@ -20,7 +20,7 @@ public class ProceduralMemoryDriver extends GenericModuleDriver {
 	 * This loop drives the procedural memory
 	 */
 	public void cycleStep() {
-		procMem.sendGuiContent();
+		//procMem.sendEvent();   // Change for Logger 
 	}// method
 
 }// class

@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
 
 /**
  * ThreadSpawners are classes that create, manage, and end new threads.  
@@ -15,23 +15,25 @@ public interface ThreadSpawner {
 	public abstract int getSpawnedThreadCount();
 	
 	public abstract void stopSpawnedThreads();
+	public abstract void addTask(Runnable r);
+	public abstract Collection<Runnable> getAllTasks();
 	
 	/**
 	 * The supplied runnables will be start by the spawner right away.
 	 */
-	public abstract void startInitialRunnables(List<Runnable> initialRunnables);
+	public abstract void setInitialTasks(List<? extends Runnable> initialRunnables);
 	
 	/**
-	 * The supplied runnables will be start by the spawner right away.
+	 * The supplied Callable will be start by the spawner right away.
 	 */
-	public abstract void startInitialCallables(List<Callable<Object>> initialCallables);
+	public abstract void setInitialCallableTasks(List<? extends Callable<Object>> initialCallables);
 	
 	/**
-	 * TODO:
+	 * This method receives the tasks that have finished.
 	 * 
-	 * @param r
+	 * @param finishedTask
 	 * @param t
 	 */
-	public abstract void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t);
+	public abstract void receiveFinishedTask(Runnable finishedTask, Throwable t);
 
 }

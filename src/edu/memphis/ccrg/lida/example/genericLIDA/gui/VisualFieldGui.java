@@ -13,13 +13,11 @@ package edu.memphis.ccrg.lida.example.genericLIDA.gui;
 
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
-
 /**
  *
  * @author ryanjmccall
  */
-public class VisualFieldGui extends javax.swing.JFrame implements FrameworkGui {
+public class VisualFieldGui extends javax.swing.JFrame {
 
     /**
 	 * 

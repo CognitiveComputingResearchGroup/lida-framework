@@ -2,7 +2,9 @@ package edu.memphis.ccrg.lida.workspace.currentSituationalModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
+
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
@@ -13,15 +15,11 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 	private NodeStructure model = new NodeStructureImpl();
 	private List<WorkspaceBufferListener> csmListeners = new ArrayList<WorkspaceBufferListener>();
 	//
-	private List<FrameworkGui> guis = new ArrayList<FrameworkGui>();
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<Object> guiContent = new ArrayList<Object>();
 
 	public void addBufferListener(WorkspaceBufferListener l){
 		csmListeners.add(l);
-	}
-
-	public void addFrameworkGui(FrameworkGui listener) {
-		guis.add(listener);
 	}
 	
 	public synchronized void addCodeletContent(NodeStructure ns) {
@@ -40,19 +38,45 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		for(WorkspaceBufferListener l: csmListeners)
 			l.receiveBufferContent(WorkspaceBufferListener.CSM, model);
 	}//method
-
-	public void sendGuiContent() {
-		guiContent.clear();
-		guiContent.add(model.getNodeCount());
-		guiContent.add(model.getLinkCount());
-		for(FrameworkGui g: guis)
-			g.receiveGuiContent(FrameworkGui.FROM_CSM, guiContent);
+	
+	/**
+	 * Called by Workspace.  Codelets are typically adding the content.
+	 */
+	public synchronized void addWorkspaceContent(NodeStructure content) {
+		model.mergeNodeStructure((NodeStructure) content);	
+	}//method
+	
+	public void addCodeletContent(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public NodeStructure getCSMContent(){
+		//TODO: this needs to be more sophisticated
+		return new NodeStructureImpl(model);
 	}
 
-	public List<NodeStructure> getBuffer(int i) {
+	public List<NodeStructure> getBuffer() {
 		List<NodeStructure> list = new ArrayList<NodeStructure>();
 		list.add(model);
 		return list;
+	}
+
+	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
+		guis.add(listener);
+	}
+
+	public void sendEvent() {
+		guiContent.clear();
+		guiContent.add(model.getNodeCount());
+		guiContent.add(model.getLinkCount());
+		if (!guis.isEmpty()) {
+			FrameworkGuiEvent event = new FrameworkGuiEvent(
+					FrameworkGuiEvent.CSM, "data", guiContent);
+			for (FrameworkGuiEventListener gui : guis) {
+				gui.receiveGuiEvent(event);
+			}
+		}		
 	}
 
 }//class

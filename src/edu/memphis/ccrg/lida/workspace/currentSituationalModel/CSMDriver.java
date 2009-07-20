@@ -15,7 +15,8 @@ public class CSMDriver extends GenericModuleDriver {
 	@Override
 	public void cycleStep() {
 		csm.sendCSMContent();
-		csm.sendGuiContent();
+		csm.sendEvent();
+
 	}
 
 }// class

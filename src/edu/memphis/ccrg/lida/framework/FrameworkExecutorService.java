@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -25,15 +24,14 @@ public class FrameworkExecutorService extends ThreadPoolExecutor {
     * tasks submitted by the <tt>execute</tt> method.
     */
 	public FrameworkExecutorService(ThreadSpawner spawner, int corePoolSize, int maximumPoolSize,
-			long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+			long keepAliveTime, TimeUnit unit) {
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>());
 		this.spawner = spawner;
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
-		spawner.receiveFinishedTask((FutureTask<Object>) r, t);
+		spawner.receiveFinishedTask(r, t);
 	}
 
 }

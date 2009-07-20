@@ -7,7 +7,7 @@ package edu.memphis.ccrg.lida.framework;
  * @author ryanjmccall
  *
  */
-public interface ModuleDriver extends Runnable{
+public interface ModuleDriver extends Stoppable{
 	
 	/**
 	 * Halt the operation of the Driver
@@ -15,5 +15,4 @@ public interface ModuleDriver extends Runnable{
 	public abstract void stopRunning();
 	public void setThreadID(long id);
 	public long getThreadID();
-
 }

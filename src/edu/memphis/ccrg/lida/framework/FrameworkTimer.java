@@ -1,10 +1,10 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
 
-public class FrameworkTimer {
+public class FrameworkTimer extends ThreadSpawnerImpl {
 	
 	/**
 	 * true -> Start out paused
@@ -65,11 +65,11 @@ public class FrameworkTimer {
 		}//while	
 	}//checkForClick
 	
-	public synchronized void toggleRunningThreads(){
-		threadsArePaused = !threadsArePaused;
+	public synchronized void pauseSpawnedThreads(){
+		threadsArePaused = true;
 	}//
 
-	public synchronized void resumeRunningThreads() {
+	public synchronized void resumeSpawnedThreads() {
 		threadsArePaused = false;		
 	}//
 
@@ -129,10 +129,6 @@ public class FrameworkTimer {
 	 */
 	public void registerThread(long threadID) {
 		shouldWaitForNextStepMap.put(threadID, false);		
-	}//
-	
-	public boolean getStartStatus(){
-		return threadsArePaused;
 	}//
 	
 	public boolean threadsArePaused(){

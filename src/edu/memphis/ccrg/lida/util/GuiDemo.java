@@ -69,13 +69,13 @@ public class GuiDemo extends JFrame implements ActionListener{
 				emptyLabel.setText("PAUSED");
 			else
 				emptyLabel.setText("RUNNING");
-			timer.toggleRunningThreads();
+			//timer.toggleSpawnedThreads();
 			if(isPaused)
 				System.out.println("\n***PAUSED***\n");
 		}
 
 		if(e.getActionCommand().equals("quit")){
-			timer.resumeRunningThreads();
+			timer.resumeSpawnedThreads();
 			motherThread.stopSpawnedThreads();
 			try{Thread.sleep(1000);}catch(Exception e2){}
 			System.exit(0);
