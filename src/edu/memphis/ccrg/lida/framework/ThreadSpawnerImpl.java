@@ -9,9 +9,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class ThreadSpawnerImpl implements ThreadSpawner {
-
+	private Logger logger=Logger.getLogger("lida.framework.ThreadSpawnerImpl");
 	/**
 	 * Used to execute the tasks
 	 */
@@ -47,7 +48,7 @@ public class ThreadSpawnerImpl implements ThreadSpawner {
 				((Stoppable)s).stopRunning();
 		}// for
 		executorService.shutdownNow();//TODO: move this?
-		System.out.println("all structure-building codelets told to stop");
+		logger.info("all structure-building codelets told to stop");
 	}// method
 
 	public int getSpawnedThreadCount() {

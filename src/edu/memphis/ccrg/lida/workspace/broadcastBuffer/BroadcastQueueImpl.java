@@ -3,6 +3,8 @@ package edu.memphis.ccrg.lida.workspace.broadcastBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -27,6 +29,16 @@ public class BroadcastQueueImpl implements BroadcastQueue, GuiContentProvider{
 
 	public List<NodeStructure> getBuffer(int i) {
 		return Collections.unmodifiableList(broadcastQueue);
+	}
+
+	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendEvent() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class

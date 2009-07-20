@@ -1,18 +1,19 @@
 package edu.memphis.ccrg.lida.attention;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
 import edu.memphis.ccrg.lida.framework.FrameworkExecutorService;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -21,19 +22,17 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.BroadcastLearner;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
 
 public class AttentionDriver extends GenericModuleDriver implements ThreadSpawner, BroadcastListener, BroadcastLearner{
 
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
-	private NodeStructure broadcastContent = new NodeStructureImpl();
-	private Map<Long, Stoppable> runningCodelets = new HashMap<Long, Stoppable>();
-	private ExecutorService executorService;
 	//
 	private double defaultActiv = 1.0;//TODO: move these to factory?
-	private NodeStructure defaultObjective = new NodeStructureImpl();	
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+	private List<Runnable> runningCodelets = new ArrayList<Runnable>();
+	private NodeStructure broadcastContent;
 	
 	public AttentionDriver(FrameworkTimer timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
 		super(timer);
@@ -45,26 +44,9 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 	    long keepAliveTime = 10;
 	    ArrayBlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<Runnable>(5);
 	    executorService = new FrameworkExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
-	    											   TimeUnit.SECONDS, taskQueue);
-	}
-	
-	public void startInitialRunnables(List<Runnable> initialRunnables) {
-		for(Runnable r: initialRunnables){
-			if(r instanceof AttentionCodelet)
-				executeCodelet((AttentionCodelet) r);
-			else
-				System.out.println("In AttentionCodeletDriver, a noncodelet object was submitted for execution");
-		}		
+	    											   TimeUnit.SECONDS);
 	}
 
-	public void startInitialCallables(List<Callable<Object>> initialCallables) {
-		for (Callable<Object> c : initialCallables){
-			if(c instanceof AttentionCodelet)
-				executeCodelet((AttentionCodelet) c);
-			else
-				System.out.println("In AttentionCodeletDriver, a noncodelet object was submitted for execution");
-		}
-	}
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
@@ -74,24 +56,24 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 	public void cycleStep() {
 		activateCodelets();		
 	}
-	
+		
 	public void activateCodelets(){
 		//TODO: 
-	}
+			}	
+			
+//	private void spawnAttentionCodelet(double activ, NodeStructure soughtContent){
+//		AttentionCodeletImpl ac = new AttentionCodeletImpl(csm, global, activ);
+//		runningCodelets.add(ac);	
+//		executorService.execute(ac);//put codelet in the work queue for the thread pool
+//	}//method
 	
-	@SuppressWarnings("unused")
-	private void spawnAttentionCodelet(double activ, NodeStructure soughtContent){
-		AttentionCodeletImpl ac = new AttentionCodeletImpl(csm, global, activ);
-		executeCodelet(ac);
-	}//method
-	
-	private void executeCodelet(AttentionCodelet ac){
-		long id = ac.getId();
-		executorService.submit(ac, id);
-		synchronized(this){
-			runningCodelets.put(id, ac);
-		}
-	}
+//	private void executeCodelet(AttentionCodelet ac){
+//		long id = ac.getId();
+//		executorService.submit(ac, id);
+//		synchronized(this){
+//			runningCodelets.put(id, ac);
+//		}
+//	}
 
 	public void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t) {
 		// TODO Auto-generated method stub
@@ -112,18 +94,54 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 	}
 
 	public void stopSpawnedThreads() {
+		executorService.shutdown();
 		int size = runningCodelets.size();
 		for(int i = 0; i < size; i++){			
-			Stoppable s = runningCodelets.get(i);
-			if(s != null)
-				s.stopRunning();					
+			Runnable s = runningCodelets.get(i);
+			if ((s != null)&&(s instanceof Stoppable)){
+				((Stoppable)s).stopRunning();				
+			}
 		}//for
-		executorService.shutdownNow();
 		System.out.println("all attention codelets told to stop");
 	}//method
 
 	public int getSpawnedThreadCount() {
 		return runningCodelets.size();
+	}
+
+	public void addRunnable(Runnable r) {
+		runningCodelets.add(r);
+		executorService.execute(r);
+	}
+
+	public List<Runnable> getAllRunnables() {
+		return Collections.unmodifiableList(runningCodelets);
+	}
+
+	public void addTask(Runnable r) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Collection<Runnable> getAllTasks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void receiveFinishedTask(Runnable finishedTask, Throwable t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setInitialCallableTasks(
+			List<? extends Callable<Object>> initialCallables) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setInitialTasks(List<? extends Runnable> initialRunnables) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }//class

@@ -14,7 +14,7 @@ public class BroadcastQueueDriver extends GenericModuleDriver {
 
 	@Override
 	public void cycleStep() {
-		bBuffer.activateCodelets();
+		//bBuffer.activateCodelets();
 		bBuffer.sendEvent();
 	}
 

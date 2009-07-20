@@ -14,7 +14,7 @@ public class PerceptualBufferDriver extends GenericModuleDriver {
 
 	@Override
 	public void cycleStep() {
-		pb.activateCodelets();
+		//pb.activateCodelets();
 		pb.sendEvent();
 
 	}

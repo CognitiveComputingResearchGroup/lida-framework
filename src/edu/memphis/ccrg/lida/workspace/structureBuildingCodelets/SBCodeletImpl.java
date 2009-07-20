@@ -160,5 +160,9 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	    hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
 	    return hash;
 	}
+
+	public void run() {
+		// TODO FIX THIS !!!!!!!!!!!!!		
+	}
 	
 }//class SBCodelet
