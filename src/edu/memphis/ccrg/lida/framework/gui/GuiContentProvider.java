@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.framework.gui;
 
-import edu.memphis.ccrg.lida.framework.gui.commands.Command;
-
 
 /**
  * A GuiContentProvider is a class that provides content
