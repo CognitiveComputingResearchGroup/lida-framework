@@ -2,8 +2,6 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import edu.memphis.ccrg.lida.actionSelection.ActionContent;
 import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -15,7 +13,6 @@ import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBuffer;
-import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
 
 /**
  * 
