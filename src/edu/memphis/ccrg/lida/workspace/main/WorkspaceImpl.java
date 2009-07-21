@@ -2,13 +2,14 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.memphis.ccrg.lida.actionSelection.ActionContent;
-import edu.memphis.ccrg.lida.actionSelection.ActionSelectionListener;
+
+import edu.memphis.ccrg.lida.actionselection.ActionContent;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
+import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBuffer;

@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.attention;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public class AttentionCodeletImpl implements AttentionCodelet{
 	

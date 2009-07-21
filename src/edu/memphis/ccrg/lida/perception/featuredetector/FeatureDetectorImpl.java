@@ -5,7 +5,7 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.perception.PamNode;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
 /**
  * This class implements the FeatureDetector interface and provides 

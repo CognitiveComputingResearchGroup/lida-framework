@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public interface ContentDetectBehavior {
 	

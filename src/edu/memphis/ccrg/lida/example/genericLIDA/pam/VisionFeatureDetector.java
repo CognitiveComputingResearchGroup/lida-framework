@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.example.genericLIDA.pam;
 import edu.memphis.ccrg.lida.perception.PamNodeImpl;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetectorImpl;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
  * This is an example of FeatureDetector.

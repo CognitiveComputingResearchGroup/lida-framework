@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.CueListener;
+import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBuffer;

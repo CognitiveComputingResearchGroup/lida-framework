@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public class DefaultContentDetectBehavior implements ContentDetectBehavior{
 	

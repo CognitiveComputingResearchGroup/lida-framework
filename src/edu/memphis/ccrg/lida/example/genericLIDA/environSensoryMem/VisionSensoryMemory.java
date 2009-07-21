@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem;
 
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemory;
-import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorListener;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
+import edu.memphis.ccrg.lida.sensorymotorautomatism.SensoryMotorListener;
 
 public class VisionSensoryMemory implements SensoryMemory, SensoryMotorListener {
 

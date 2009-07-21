@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import edu.memphis.ccrg.lida.actionSelection.ActionSelectionImpl;
+
+
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
-import edu.memphis.ccrg.lida.declarativeMemory.DeclarativeMemoryImpl;
+import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericLIDA.environSensoryMem.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.example.genericLIDA.gui.ControlPanelGui;
@@ -27,23 +29,23 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.perception.PAMDriver;
 import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemoryImpl;
-import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryDriver;
-import edu.memphis.ccrg.lida.proceduralMemory.ProceduralMemoryImpl;
-import edu.memphis.ccrg.lida.sensoryMemory.SensoryMemoryDriver;
-import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatism;
-import edu.memphis.ccrg.lida.sensoryMotorAutomatism.SensoryMotorAutomatismImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryDriver;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
+import edu.memphis.ccrg.lida.sensorymotorautomatism.SensoryMotorAutomatism;
+import edu.memphis.ccrg.lida.sensorymotorautomatism.SensoryMotorAutomatismImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.transientEpisodicMemory.TEMImpl;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueDriver;
-import edu.memphis.ccrg.lida.workspace.broadcastBuffer.BroadcastQueueImpl;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CSMDriver;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModelImpl;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferDriver;
-import edu.memphis.ccrg.lida.workspace.episodicBuffer.EpisodicBufferImpl;
+import edu.memphis.ccrg.lida.transientepisodicmemory.TEMImpl;
+import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueDriver;
+import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CSMDriver;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModelImpl;
+import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferDriver;
+import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferDriver;
-import edu.memphis.ccrg.lida.workspace.perceptualBuffer.PerceptualBufferImpl;
-import edu.memphis.ccrg.lida.workspace.structureBuildingCodelets.SBCodeletDriver;
+import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferDriver;
+import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SBCodeletDriver;
 
 public abstract class OldGenericLida implements ThreadSpawner{
 //	

@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.BroadcastLearner;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.currentSituationalModel.CurrentSituationalModel;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public class AttentionDriver extends GenericModuleDriver implements ThreadSpawner, BroadcastListener, BroadcastLearner{
 
