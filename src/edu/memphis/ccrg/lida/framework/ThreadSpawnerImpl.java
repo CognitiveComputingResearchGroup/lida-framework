@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class ThreadSpawnerImpl implements ThreadSpawner {
+	
 	private Logger logger=Logger.getLogger("lida.framework.ThreadSpawnerImpl");
 	/**
 	 * Used to execute the tasks
@@ -36,15 +37,14 @@ public class ThreadSpawnerImpl implements ThreadSpawner {
 	 */
 	public void receiveFinishedTask(Runnable finishedTask, Throwable t) {
 		tasks.remove(finishedTask);
-}//method
+	}//method
 	
 	public void stopSpawnedThreads() {
 		Collection<Runnable> ctasks=tasks;
 		for (Runnable s:ctasks){
 			if (s instanceof ThreadSpawner){
 				((ThreadSpawner)s).stopSpawnedThreads();
-			}
-			if ((s != null)&&(s instanceof Stoppable))
+			}else if ((s != null)&&(s instanceof Stoppable))
 				((Stoppable)s).stopRunning();
 		}// for
 		executorService.shutdownNow();//TODO: move this?

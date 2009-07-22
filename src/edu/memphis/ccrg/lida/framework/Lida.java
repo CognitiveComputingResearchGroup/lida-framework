@@ -84,6 +84,7 @@ public class Lida {
 	}
 
 	private void initComponents(FrameworkTimer timer, Environment e, SensoryMemory sm) {
+		this.timer = timer;
 		environment = e;
 		sensoryMemory = sm;
 		pam = new PerceptualAssociativeMemoryImpl();

@@ -19,7 +19,7 @@ public class GenericLida {
 		java.awt.EventQueue.invokeLater(new Runnable(){
 			
 	        public void run() {	
-	        	boolean startPaused = true;
+	        	boolean startPaused = false;
 	    		int threadSleepTime = 150;
 	    		FrameworkTimer timer = new FrameworkTimer(startPaused, threadSleepTime);
 	    		//
