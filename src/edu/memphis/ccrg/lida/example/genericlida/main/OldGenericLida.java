@@ -28,8 +28,8 @@ import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryDriver;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
-import edu.memphis.ccrg.lida.sensorymotorautomatism.SensoryMotorAutomatism;
-import edu.memphis.ccrg.lida.sensorymotorautomatism.SensoryMotorAutomatismImpl;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TEMImpl;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueDriver;
@@ -47,7 +47,7 @@ public class OldGenericLida{
 	
 	//Perception 
 	private VisionEnvironment environment;
-	private SensoryMotorAutomatism sma;
+	private SensoryMotorMemory sma;
 	private VisionSensoryMemory sensoryMemory;
 	private PerceptualAssociativeMemoryImpl pam;
 	//Episodic memory
@@ -148,7 +148,7 @@ public class OldGenericLida{
 		drivers.add(environment);			
 	}
 	private void initSensoryMotorAutomatism(){
-		sma = new SensoryMotorAutomatismImpl();
+		sma = new SensoryMotorMemoryImpl();
 	}	
 	private void initSensoryMemoryThread(){
 		sensoryMemory = new VisionSensoryMemory(environment);		

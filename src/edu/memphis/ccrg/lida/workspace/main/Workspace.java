@@ -15,5 +15,6 @@ public interface Workspace{
 	public abstract EpisodicBuffer getEpisodicBuffer();
 	public abstract BroadcastQueue getBroadcastBuffer();
 	public abstract void addCueListener(CueListener l);
+	public abstract void add_PAM_WorkspaceListener(WorkspaceListener pam);
 	
 }

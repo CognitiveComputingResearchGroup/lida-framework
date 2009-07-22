@@ -28,7 +28,6 @@ public class PerceptualBufferImpl implements PerceptualBuffer, GuiContentProvide
 	public void addBufferListener(WorkspaceBufferListener l){
 		pbListeners.add(l);
 	}
-
 	
 	public synchronized void receivePAMContent(NodeStructure ns){
 		perceptBuffer.add(ns);		
@@ -36,8 +35,6 @@ public class PerceptualBufferImpl implements PerceptualBuffer, GuiContentProvide
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);//remove oldest	
 	}
-	
-
 
 	public List<NodeStructure> getBuffer() {
 		return Collections.unmodifiableList(perceptBuffer);
@@ -56,5 +53,4 @@ public class PerceptualBufferImpl implements PerceptualBuffer, GuiContentProvide
 			}
 		}		
 	}
-
 }//PerceptualBuffer

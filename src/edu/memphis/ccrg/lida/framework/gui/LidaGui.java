@@ -23,25 +23,25 @@ public class LidaGui extends javax.swing.JFrame {
 	private static final long serialVersionUID = 100L;
 	
 //	private List<LidaPanel> panels = new ArrayList<LidaPanel>();
-    private Lida lida;
-    private LidaGuiController controller;
+//    private Lida lida;
+//    private LidaGuiController controller;
     private Logger logger= Logger.getLogger("lida.framework.gui.LidaGui"); 
 
-    public LidaGui() {
-        initComponents();
-        lida= new Lida();
-        controller=new LidaGuiControllerImpl(lida);
-        
-        //TODO: make this generic
-        controlPanel1.registrerLidaGuiController(controller);
-        controlPanel1.registrerLida(lida);
-        visualFieldPanel1.registrerLidaGuiController(controller);
-        visualFieldPanel1.registrerLida(lida);
-             
-        logger.info("Lida started");
-//        controlPanel1.init(start, lida.getTimer(), lida.getEnvironment());
-    }
-    
+//    public LidaGui() {
+//        initComponents();
+//        lida= new Lida();
+//        controller=new LidaGuiControllerImpl(lida);
+//        
+//        //TODO: make this generic
+//        controlPanel1.registrerLidaGuiController(controller);
+//        controlPanel1.registrerLida(lida);
+//        visualFieldPanel1.registrerLidaGuiController(controller);
+//        visualFieldPanel1.registrerLida(lida);
+//             
+//        logger.info("Lida started");
+////        controlPanel1.init(start, lida.getTimer(), lida.getEnvironment());
+//    }
+//    
     public LidaGui(Lida lida, LidaGuiController controller){
     	initComponents();
 
