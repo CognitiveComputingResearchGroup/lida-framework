@@ -8,11 +8,7 @@ package edu.memphis.ccrg.lida.framework;
  *
  */
 public interface ModuleDriver extends Stoppable{
-	
-	/**
-	 * Halt the operation of the Driver
-	 */
-	public abstract void stopRunning();
+
 	public void setThreadID(long id);
 	public long getThreadID();
 }

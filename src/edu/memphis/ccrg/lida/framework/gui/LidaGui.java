@@ -11,13 +11,8 @@
 
 package edu.memphis.ccrg.lida.framework.gui;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
-
-import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.ThreadSpawner;
 
 /**
  *
@@ -25,11 +20,13 @@ import edu.memphis.ccrg.lida.framework.ThreadSpawner;
  */
 public class LidaGui extends javax.swing.JFrame {
 
-    private List<LidaPanel> panels = new ArrayList<LidaPanel>();
+	private static final long serialVersionUID = 100L;
+	
+//	private List<LidaPanel> panels = new ArrayList<LidaPanel>();
     private Lida lida;
     private LidaGuiController controller;
     private Logger logger= Logger.getLogger("lida.framework.gui.LidaGui"); 
-    /** Creates new form LidaGui */
+
     public LidaGui() {
         initComponents();
         lida= new Lida();
@@ -42,8 +39,18 @@ public class LidaGui extends javax.swing.JFrame {
         visualFieldPanel1.registrerLida(lida);
              
         logger.info("Lida started");
-        
 //        controlPanel1.init(start, lida.getTimer(), lida.getEnvironment());
+    }
+    
+    public LidaGui(Lida lida, LidaGuiController controller){
+    	initComponents();
+
+        controlPanel1.registrerLidaGuiController(controller);
+        controlPanel1.registrerLida(lida);
+        visualFieldPanel1.registrerLidaGuiController(controller);
+        visualFieldPanel1.registrerLida(lida);
+             
+        logger.info("Lida started");
     }
 
     /** This method is called from within the constructor to
@@ -161,16 +168,6 @@ public class LidaGui extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LidaGui().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;

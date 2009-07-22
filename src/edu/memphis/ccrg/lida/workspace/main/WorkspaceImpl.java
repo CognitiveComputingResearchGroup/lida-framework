@@ -37,7 +37,6 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//These listeners listen to the Workspace
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private WorkspaceListener pamWorkspaceListener;
-	private WorkspaceListener sbCodeletWorkspaceListener;
 	
 	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue pbroads, 
 							CurrentSituationalModel csm){
@@ -70,18 +69,10 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		that get produced and put in the CSM
 	 */ 	 
 	public void receiveBufferContent(int buffer, NodeStructure content) {
-		if(buffer == WorkspaceBufferListener.PBUFFER){
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_PBUFFER, content);	
-			cue(content);
-		}else if(buffer == WorkspaceBufferListener.EBUFFER){
+		
+		if(buffer == WorkspaceBufferListener.EBUFFER)
 			pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);		
-			cue(content);
-		}else if(buffer == WorkspaceBufferListener.CSM){
-			cue(content);
-		}else if(buffer == WorkspaceBufferListener.BQUEUE){
-			sbCodeletWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_BQUEUE, content);
-		}
+		cue(content);
 	}//method
 
 	public void cue(NodeStructure content){
