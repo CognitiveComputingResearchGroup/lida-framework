@@ -10,9 +10,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkExecutorService;
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.framework.ThreadSpawner;
@@ -26,6 +27,8 @@ import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationa
 
 public class AttentionDriver extends GenericModuleDriver implements ThreadSpawner, BroadcastListener, BroadcastLearner{
 
+	private Logger logger=Logger.getLogger("lida.attention.AttentionDriver");
+	//
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
 	//
@@ -34,7 +37,7 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 	private List<Runnable> runningCodelets = new ArrayList<Runnable>();
 	private NodeStructure broadcastContent;
 	
-	public AttentionDriver(FrameworkTimer timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
+	public AttentionDriver(FrameworkThreadManager timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
 		super(timer);
 		this.csm = csm;
 		global = gwksp;
@@ -88,11 +91,6 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 		}
 	}//method
 
-	public void stopRunning() {
-		keepRunning = false;	
-		stopSpawnedThreads();
-	}
-
 	public void stopSpawnedThreads() {
 		executorService.shutdown();
 		int size = runningCodelets.size();
@@ -102,7 +100,7 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 				((Stoppable)s).stopRunning();				
 			}
 		}//for
-		System.out.println("all attention codelets told to stop");
+		logger.info("all attention have been told to stop");
 	}//method
 
 	public int getSpawnedThreadCount() {
@@ -139,7 +137,7 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 		
 	}
 
-	public void setInitialTasks(List<? extends Runnable> initialRunnables) {
+	public void setInitialRunnableTasks(List<? extends Runnable> initialRunnables) {
 		// TODO Auto-generated method stub
 		
 	}

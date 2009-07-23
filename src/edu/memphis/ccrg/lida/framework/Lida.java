@@ -66,7 +66,7 @@ public class Lida {
 	private ProceduralMemory procMem;
 	private ActionSelection actionSelection;
 	// A class that helps pause and control the drivers.
-	private FrameworkTimer timer;
+	private FrameworkThreadManager timer;
 	private SBCodeletDriver sbCodeletDriver;
 	private AttentionDriver attnDriver;
 
@@ -75,7 +75,7 @@ public class Lida {
 	 */
 	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 
-	public Lida(FrameworkTimer ft, Environment e, SensoryMemory sm) {
+	public Lida(FrameworkThreadManager ft, Environment e, SensoryMemory sm) {
 		logger.info("Starting Lida");
 		initComponents(ft, e, sm);
 		initDrivers();
@@ -83,7 +83,7 @@ public class Lida {
 		start();
 	}
 
-	private void initComponents(FrameworkTimer timer, Environment e, SensoryMemory sm) {
+	private void initComponents(FrameworkThreadManager timer, Environment e, SensoryMemory sm) {
 		this.timer = timer;
 		environment = e;
 		sensoryMemory = sm;
@@ -151,7 +151,7 @@ public class Lida {
 	}
 	public void start(){
 		drivers.add((VisionEnvironment)environment);
-		timer.setInitialTasks(drivers);
+		timer.setInitialRunnableTasks(drivers);
 		globalWksp.start(); // change to the ThreadSpawner
 		logger.info("Lida submodules Started");		
 	}
@@ -229,7 +229,7 @@ public class Lida {
 	/**
 	 * @return the timer
 	 */
-	public FrameworkTimer getTimer() {
+	public FrameworkThreadManager getTimer() {
 		return timer;
 	}
 
@@ -238,5 +238,9 @@ public class Lida {
 	 */
 	public SBCodeletDriver getSbCodeletDriver() {
 		return sbCodeletDriver;
+	}
+
+	public AttentionDriver getAttentionDriver() {
+		return attnDriver;
 	}
 }

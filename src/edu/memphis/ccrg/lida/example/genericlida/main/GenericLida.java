@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionSensoryMemory;
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
@@ -21,7 +21,7 @@ public class GenericLida {
 	        public void run() {	
 	        	boolean startPaused = false;
 	    		int threadSleepTime = 150;
-	    		FrameworkTimer timer = new FrameworkTimer(startPaused, threadSleepTime);
+	    		FrameworkThreadManager timer = new FrameworkThreadManager(startPaused, threadSleepTime);
 	    		//
 	    		int height = 10, width = 10;
 	    		Environment environ = new VisionEnvironment(timer, height, width);

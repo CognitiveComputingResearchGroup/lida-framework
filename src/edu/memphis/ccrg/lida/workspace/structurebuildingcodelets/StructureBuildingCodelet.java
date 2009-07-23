@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -34,6 +34,6 @@ public interface StructureBuildingCodelet extends Activatible, Callable<Object>,
 	 public int getType();
 
 	 public void clearForReuse();
-	public void addFrameworkTimer(FrameworkTimer timer);
+	 public void addFrameworkTimer(FrameworkThreadManager timer);
 
 }//interface

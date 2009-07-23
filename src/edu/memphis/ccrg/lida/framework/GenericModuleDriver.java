@@ -4,11 +4,11 @@ package edu.memphis.ccrg.lida.framework;
 public abstract class GenericModuleDriver implements ModuleDriver{
 
 	protected boolean keepRunning = true;
-	protected FrameworkTimer timer;
+	protected FrameworkThreadManager timer;
 	private static long threadIdCount = 0;
 	private long threadID;
 
-	public GenericModuleDriver(FrameworkTimer timer) {
+	public GenericModuleDriver(FrameworkThreadManager timer) {
 		super();
 		this.timer=timer;
 		threadID=threadIdCount++;

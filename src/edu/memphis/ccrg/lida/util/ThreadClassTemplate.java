@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.util;
 
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 
 
@@ -17,9 +17,9 @@ public class ThreadClassTemplate implements Runnable, Stoppable{
 	//
 	private boolean keepRunning = true;
 	private long threadID;
-	private FrameworkTimer timer;
+	private FrameworkThreadManager timer;
 		
-	public ThreadClassTemplate(FrameworkTimer t){
+	public ThreadClassTemplate(FrameworkThreadManager t){
 		timer = t;
 	}
 	

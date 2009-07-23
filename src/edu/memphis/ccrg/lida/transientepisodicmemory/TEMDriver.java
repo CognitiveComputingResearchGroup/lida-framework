@@ -8,7 +8,7 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 import edu.memphis.ccrg.lida.framework.Stoppable;
 import java.util.concurrent.Future;
 
@@ -20,7 +20,7 @@ import java.util.concurrent.Future;
 public class TEMDriver implements Runnable, Stoppable {
 
     private TransientEpisodicMemory tem;
-    private FrameworkTimer timer;
+    private FrameworkThreadManager timer;
     private MemoryCue cue;
     private boolean keepRunning = true;
     private Future<LocalAssociation> association;
@@ -31,7 +31,7 @@ public class TEMDriver implements Runnable, Stoppable {
      * @param timer the timer used to handle the start/pause of the thread
      * @param cue the cue used to write on this memory
      */
-    public TEMDriver(TransientEpisodicMemory tem, FrameworkTimer timer,
+    public TEMDriver(TransientEpisodicMemory tem, FrameworkThreadManager timer,
             MemoryCue cue) {
         this.tem = tem;
         this.timer = timer;

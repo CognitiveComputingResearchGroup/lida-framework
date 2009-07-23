@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.example.genericlida.gui.NodeLinkFlowGui;
 import edu.memphis.ccrg.lida.example.genericlida.gui.VisualFieldGui;
 import edu.memphis.ccrg.lida.example.genericlida.io.GlobalWorkspace_Input;
 import edu.memphis.ccrg.lida.example.genericlida.io.PamInput;
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.perception.PAMDriver;
@@ -99,7 +99,7 @@ public class OldGenericLida{
 	/**
 	 * A class that helps pause and control the drivers. 
 	 */
-	private FrameworkTimer timer;
+	private FrameworkThreadManager timer;
 
 	public static void main(String[] args){
 		new OldGenericLida().run();
@@ -138,7 +138,7 @@ public class OldGenericLida{
 	private void initThreadControl(){
 		boolean frameworkStartsRunning = false;
 		int threadSleepTime = 150;
-		timer = new FrameworkTimer(frameworkStartsRunning, threadSleepTime);	
+		timer = new FrameworkThreadManager(frameworkStartsRunning, threadSleepTime);	
 	}
 
 	private void initEnvironmentThread(){

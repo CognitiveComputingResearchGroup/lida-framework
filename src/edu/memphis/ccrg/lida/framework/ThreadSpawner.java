@@ -21,7 +21,7 @@ public interface ThreadSpawner {
 	/**
 	 * The supplied runnables will be start by the spawner right away.
 	 */
-	public abstract void setInitialTasks(List<? extends Runnable> initialRunnables);
+	public abstract void setInitialRunnableTasks(List<? extends Runnable> initialRunnables);
 	
 	/**
 	 * The supplied Callable will be start by the spawner right away.

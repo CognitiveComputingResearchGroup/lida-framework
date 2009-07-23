@@ -219,7 +219,6 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
    	 	if(!source.getValueIsAdjusting()){
    	 		int sleepTime = (int)source.getValue();
    	 		sleepTimeTextField.setText(sleepTime + "");
-   	 		//frameworkTimer.setSleepTime(sleepTime);
    	 		controller.setSleepTime(sleepTime);
    	 		refresh();
    	 	}    
@@ -252,8 +251,10 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     public void refresh() {
     	isPaused = lida.getTimer().threadsArePaused();  	
     	String threadCount = "";
-        	threadCount = (lida.getTimer().getSpawnedThreadCount() + lida.getSbCodeletDriver().getSpawnedThreadCount())+"";
-          threadCountTextField.setText(threadCount);
+        threadCount = (lida.getTimer().getSpawnedThreadCount() + 
+        			   lida.getSbCodeletDriver().getSpawnedThreadCount() + 
+        			   lida.getAttentionDriver().getSpawnedThreadCount()) + "";
+        threadCountTextField.setText(threadCount);
     }
 
     public JPanel getPanel() {
@@ -271,4 +272,4 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
 		this.lida=lida;		
 	}
     
-}
+}//class

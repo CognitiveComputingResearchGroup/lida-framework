@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.example.genericlida.gui;
 import javax.swing.JSlider;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.example.genericlida.main.OldGenericLida;
-import edu.memphis.ccrg.lida.framework.FrameworkTimer;
+import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
 
 /**
  *
