@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
@@ -24,7 +24,7 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	private int IMAGE_WIDTH = 5;
 	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
-	public VisionEnvironment(FrameworkThreadManager timer, int height, int width) {
+	public VisionEnvironment(FrameworkTaskManager timer, int height, int width) {
 		super(timer);
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;

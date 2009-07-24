@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
@@ -62,14 +62,14 @@ public class SBCodeletFactory {
 	private double defaultActivation = 1.0;	
 	private NodeStructure defaultObjective = new NodeStructureImpl();
 	private CodeletAction defaultActions = new BasicCodeletAction();
-	private FrameworkThreadManager timer;
+	private FrameworkTaskManager timer;
 	
 	/**
 	 * Returns the singleton instance.
 	 * 
 	 * @return the singleton instance
 	 */
-	static public SBCodeletFactory getInstance(Workspace w, FrameworkThreadManager timer) {
+	static public SBCodeletFactory getInstance(Workspace w, FrameworkTaskManager timer) {
 		if(instance == null)
 			instance = new SBCodeletFactory(w, timer);
 		return instance;
@@ -80,7 +80,7 @@ public class SBCodeletFactory {
 	 * TODO: Are we going to use this?
 	 * @post pool.size() == 0
 	 */
-	public SBCodeletFactory(Workspace workspace, FrameworkThreadManager timer) {
+	public SBCodeletFactory(Workspace workspace, FrameworkTaskManager timer) {
 		DefaultSBCodeletType = "SBCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);

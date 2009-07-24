@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
  * @author ryanjmccall
  *
  */
-public interface ThreadSpawner {
+public interface TaskSpawner {
 
 	public abstract int getSpawnedThreadCount();
 	

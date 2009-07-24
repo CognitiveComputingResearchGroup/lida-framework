@@ -3,12 +3,12 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
-import edu.memphis.ccrg.lida.framework.Stoppable;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.shared.Activatible;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
-public interface StructureBuildingCodelet extends Activatible, Callable<Object>, Stoppable{
+public interface StructureBuildingCodelet extends Activatible, Callable<Object>, LidaTask{
 
 	 public void setSoughtContent(NodeStructure content);
 	 public NodeStructure getSoughtContent();
@@ -34,6 +34,6 @@ public interface StructureBuildingCodelet extends Activatible, Callable<Object>,
 	 public int getType();
 
 	 public void clearForReuse();
-	 public void addFrameworkTimer(FrameworkThreadManager timer);
+	 public void addFrameworkTimer(FrameworkTaskManager timer);
 
 }//interface

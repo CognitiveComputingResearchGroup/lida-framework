@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
@@ -12,7 +12,7 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	
 	private boolean keepRunning = true;
 	//Initialized by constructor
-	private FrameworkThreadManager frameworkTimer;
+	private FrameworkTaskManager frameworkTimer;
 	
 	private List<List<NodeStructure>> accessibleBuffers = new ArrayList<List<NodeStructure>>();
 	private List<CodeletWritable> writables = new ArrayList<CodeletWritable>();
@@ -29,7 +29,7 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	private int type;
 	private CodeletResult results = new BasicCodeletResult();
 	
-	public void addFrameworkTimer(FrameworkThreadManager timer) {
+	public void addFrameworkTimer(FrameworkTaskManager timer) {
 		frameworkTimer = timer;
 	}
 	

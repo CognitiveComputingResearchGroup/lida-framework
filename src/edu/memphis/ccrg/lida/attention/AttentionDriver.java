@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkExecutorService;
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
-import edu.memphis.ccrg.lida.framework.Stoppable;
-import edu.memphis.ccrg.lida.framework.ThreadSpawner;
+import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
-public class AttentionDriver extends GenericModuleDriver implements ThreadSpawner, BroadcastListener, BroadcastLearner{
+public class AttentionDriver extends GenericModuleDriver implements TaskSpawner, BroadcastListener, BroadcastLearner{
 
 	private Logger logger=Logger.getLogger("lida.attention.AttentionDriver");
 	//
@@ -37,7 +37,7 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 	private List<Runnable> runningCodelets = new ArrayList<Runnable>();
 	private NodeStructure broadcastContent;
 	
-	public AttentionDriver(FrameworkThreadManager timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
+	public AttentionDriver(FrameworkTaskManager timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
 		super(timer);
 		this.csm = csm;
 		global = gwksp;
@@ -96,8 +96,8 @@ public class AttentionDriver extends GenericModuleDriver implements ThreadSpawne
 		int size = runningCodelets.size();
 		for(int i = 0; i < size; i++){			
 			Runnable s = runningCodelets.get(i);
-			if ((s != null)&&(s instanceof Stoppable)){
-				((Stoppable)s).stopRunning();				
+			if ((s != null)&&(s instanceof LidaTask)){
+				((LidaTask)s).stopRunning();				
 			}
 		}//for
 		logger.info("all attention have been told to stop");

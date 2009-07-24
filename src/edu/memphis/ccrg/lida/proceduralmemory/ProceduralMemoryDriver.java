@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
 /**
@@ -11,7 +11,7 @@ public class ProceduralMemoryDriver extends GenericModuleDriver {
 
 	private ProceduralMemory procMem;
 
-	public ProceduralMemoryDriver(ProceduralMemory pm, FrameworkThreadManager timer) {
+	public ProceduralMemoryDriver(ProceduralMemory pm, FrameworkTaskManager timer) {
 		super(timer);
 		procMem = pm;
 	}// constructor

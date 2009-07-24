@@ -66,7 +66,7 @@ public class Lida {
 	private ProceduralMemory procMem;
 	private ActionSelection actionSelection;
 	// A class that helps pause and control the drivers.
-	private FrameworkThreadManager timer;
+	private FrameworkTaskManager timer;
 	private SBCodeletDriver sbCodeletDriver;
 	private AttentionDriver attnDriver;
 
@@ -75,7 +75,7 @@ public class Lida {
 	 */
 	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 
-	public Lida(FrameworkThreadManager ft, Environment e, SensoryMemory sm) {
+	public Lida(FrameworkTaskManager ft, Environment e, SensoryMemory sm) {
 		logger.info("Starting Lida");
 		initComponents(ft, e, sm);
 		initDrivers();
@@ -83,7 +83,7 @@ public class Lida {
 		start();
 	}
 
-	private void initComponents(FrameworkThreadManager timer, Environment e, SensoryMemory sm) {
+	private void initComponents(FrameworkTaskManager timer, Environment e, SensoryMemory sm) {
 		this.timer = timer;
 		environment = e;
 		sensoryMemory = sm;
@@ -229,7 +229,7 @@ public class Lida {
 	/**
 	 * @return the timer
 	 */
-	public FrameworkThreadManager getTimer() {
+	public FrameworkTaskManager getTimer() {
 		return timer;
 	}
 

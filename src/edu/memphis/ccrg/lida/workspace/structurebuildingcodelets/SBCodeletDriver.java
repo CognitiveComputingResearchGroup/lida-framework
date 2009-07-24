@@ -10,17 +10,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
-import edu.memphis.ccrg.lida.framework.Stoppable;
-import edu.memphis.ccrg.lida.framework.ThreadSpawner;
+import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
-public class SBCodeletDriver extends GenericModuleDriver implements ThreadSpawner, GuiContentProvider {
+public class SBCodeletDriver extends GenericModuleDriver implements TaskSpawner, GuiContentProvider {
 
 	private Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	private SBCodeletFactory sbCodeletFactory;
@@ -33,7 +33,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements ThreadSpawne
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<Object> guiContent = new ArrayList<Object>();
 
-	public SBCodeletDriver(Workspace w, FrameworkThreadManager timer) {
+	public SBCodeletDriver(Workspace w, FrameworkTaskManager timer) {
 		super(timer);
 		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
 	}// method
@@ -106,8 +106,8 @@ public class SBCodeletDriver extends GenericModuleDriver implements ThreadSpawne
 		int size = runningCodelets.size();
 		for (int i = 0; i < size; i++) {
 			Runnable s = runningCodelets.get(i);
-			if ((s != null)&&(s instanceof Stoppable))
-				((Stoppable)s).stopRunning();				
+			if ((s != null)&&(s instanceof LidaTask))
+				((LidaTask)s).stopRunning();				
 			
 		}// for
 		logger.info("all structure-building codelets told to stop");

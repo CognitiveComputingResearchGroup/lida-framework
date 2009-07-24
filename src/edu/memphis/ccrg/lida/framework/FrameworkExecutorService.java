@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FrameworkExecutorService extends ThreadPoolExecutor {
 	
-	private ThreadSpawner spawner;
+	private TaskSpawner spawner;
 
    /**
 	* (From ThreadPoolExecutor javadoc) 
@@ -23,7 +23,7 @@ public class FrameworkExecutorService extends ThreadPoolExecutor {
     * are executed. This queue will hold only the <tt>Runnable</tt>
     * tasks submitted by the <tt>execute</tt> method.
     */
-	public FrameworkExecutorService(ThreadSpawner spawner, int corePoolSize, int maximumPoolSize,
+	public FrameworkExecutorService(TaskSpawner spawner, int corePoolSize, int maximumPoolSize,
 			long keepAliveTime, TimeUnit unit) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>());
 		this.spawner = spawner;

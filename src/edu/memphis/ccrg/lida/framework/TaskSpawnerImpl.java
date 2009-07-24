@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class ThreadSpawnerImpl implements ThreadSpawner {
+public class TaskSpawnerImpl implements TaskSpawner {
 	
 	private Logger logger=Logger.getLogger("lida.framework.ThreadSpawnerImpl");
 	/**
@@ -39,7 +39,7 @@ public class ThreadSpawnerImpl implements ThreadSpawner {
 	private Map<Long, Boolean> ticksModeMap = new HashMap<Long, Boolean>();
 	//private int threadIdCounter = 0;
 
-	public ThreadSpawnerImpl(){	
+	public TaskSpawnerImpl(){	
 		int corePoolSize = 5;
 		int maxPoolSize = 10;
 	    long keepAliveTime = 10;
@@ -79,12 +79,12 @@ public class ThreadSpawnerImpl implements ThreadSpawner {
 		Collection<Runnable> ctasks = runningTasks;
 		//System.out.println(runningTasks.size());
 		for (Runnable s: ctasks){
-			if (s instanceof ThreadSpawner){
+			if (s instanceof TaskSpawner){
 				//System.out.println("\nspawner telling to stop " + s.toString());
-				((ThreadSpawner)s).stopSpawnedThreads();				
-			}else if (s instanceof Stoppable){
+				((TaskSpawner)s).stopSpawnedThreads();				
+			}else if (s instanceof LidaTask){
 				//System.out.println("\nstoppable telling to stop " + s.toString());
-				((Stoppable)s).stopRunning();
+				((LidaTask)s).stopRunning();
 			}
 		}// for
 		executorService.shutdownNow();

@@ -8,8 +8,8 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
-import edu.memphis.ccrg.lida.framework.Stoppable;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import java.util.concurrent.Future;
 
 /**
@@ -17,10 +17,10 @@ import java.util.concurrent.Future;
  * of running the thread and allowing access to the local associaiton.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public class TEMDriver implements Runnable, Stoppable {
+public class TEMDriver implements Runnable, LidaTask {
 
     private TransientEpisodicMemory tem;
-    private FrameworkThreadManager timer;
+    private FrameworkTaskManager timer;
     private MemoryCue cue;
     private boolean keepRunning = true;
     private Future<LocalAssociation> association;
@@ -31,7 +31,7 @@ public class TEMDriver implements Runnable, Stoppable {
      * @param timer the timer used to handle the start/pause of the thread
      * @param cue the cue used to write on this memory
      */
-    public TEMDriver(TransientEpisodicMemory tem, FrameworkThreadManager timer,
+    public TEMDriver(TransientEpisodicMemory tem, FrameworkTaskManager timer,
             MemoryCue cue) {
         this.tem = tem;
         this.timer = timer;

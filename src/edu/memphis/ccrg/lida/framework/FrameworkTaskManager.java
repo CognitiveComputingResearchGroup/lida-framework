@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
-public class FrameworkThreadManager extends ThreadSpawnerImpl {
+public class FrameworkTaskManager extends TaskSpawnerImpl {
 	
 	/**
 	 * true -> Start out paused
@@ -17,7 +17,7 @@ public class FrameworkThreadManager extends ThreadSpawnerImpl {
 	 */
 	private int threadSleepTime = 150; 
 	
-	public FrameworkThreadManager(boolean startPaused, int threadSleepTime){
+	public FrameworkTaskManager(boolean startPaused, int threadSleepTime){
 		threadsArePaused = startPaused;
 		this.threadSleepTime = threadSleepTime; 
 	}

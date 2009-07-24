@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-import edu.memphis.ccrg.lida.framework.FrameworkThreadManager;
-import edu.memphis.ccrg.lida.framework.ThreadSpawner;
+import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.TaskSpawner;
 
  
 /**
@@ -22,11 +22,11 @@ public class GuiDemo extends JFrame implements ActionListener{
 
 	JLabel emptyLabel;
 	JLabel world, sim, sm, pam, pbuffer, csm;
-	FrameworkThreadManager timer;
-	ThreadSpawner motherThread;
+	FrameworkTaskManager timer;
+	TaskSpawner motherThread;
 	boolean isPaused = true;
     
-    public GuiDemo(FrameworkThreadManager t, ThreadSpawner main){
+    public GuiDemo(FrameworkTaskManager t, TaskSpawner main){
     	timer = t;
     	motherThread = main;
     	this.setTitle("The Mind of LIDA");
