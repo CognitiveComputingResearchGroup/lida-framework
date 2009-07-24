@@ -12,6 +12,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import edu.memphis.ccrg.lida.framework.LidaExecutorService;
 
 public class TaskSpawnerImpl implements TaskSpawner {
 	
@@ -43,7 +44,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		int corePoolSize = 5;
 		int maxPoolSize = 10;
 	    long keepAliveTime = 10;
-	    executorService = new FrameworkExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
+	    executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
 	    											   TimeUnit.SECONDS);
 	}// method
 	

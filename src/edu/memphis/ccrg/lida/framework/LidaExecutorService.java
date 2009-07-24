@@ -4,9 +4,31 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class FrameworkExecutorService extends ThreadPoolExecutor {
+public class LidaExecutorService extends ThreadPoolExecutor {
 	
 	private TaskSpawner spawner;
+	private static long threadIdCounter = 0;
+
+	//TODO: override whatever executing method we use.  In the override
+	// set id for the LidaTask to be run.  This way we can ensure that
+	// all running threads in Lida have unique id as long as only this class
+	// is used to execute threads.
+	
+	private static LidaExecutorService instance;
+
+	/**
+	 * This static method returns the instance of the service. 
+	 * Implements the Singleton pattern.
+	 * @return
+	 */
+	public static LidaExecutorService getInstance(TaskSpawner spawner, int corePoolSize, int maximumPoolSize,
+			   									  long keepAliveTime, TimeUnit unit) {
+		if (instance == null) {
+			instance = new LidaExecutorService(spawner, corePoolSize, maximumPoolSize, keepAliveTime, unit);
+		}
+		return instance;
+	}
+	
 
    /**
 	* (From ThreadPoolExecutor javadoc) 
@@ -23,8 +45,8 @@ public class FrameworkExecutorService extends ThreadPoolExecutor {
     * are executed. This queue will hold only the <tt>Runnable</tt>
     * tasks submitted by the <tt>execute</tt> method.
     */
-	public FrameworkExecutorService(TaskSpawner spawner, int corePoolSize, int maximumPoolSize,
-			long keepAliveTime, TimeUnit unit) {
+	public LidaExecutorService(TaskSpawner spawner, int corePoolSize, int maximumPoolSize,
+							   long keepAliveTime, TimeUnit unit) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>());
 		this.spawner = spawner;
 	}
@@ -33,5 +55,9 @@ public class FrameworkExecutorService extends ThreadPoolExecutor {
 		super.afterExecute(r, t);
 		spawner.receiveFinishedTask(r, t);
 	}
+	
+	 //Future<?> 	submit(Runnable task)
+     
+     //<T> Future<T> submit(Runnable task, T result) 
 
 }

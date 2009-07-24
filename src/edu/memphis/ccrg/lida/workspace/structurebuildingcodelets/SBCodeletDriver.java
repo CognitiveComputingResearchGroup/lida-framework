@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
@@ -33,7 +33,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements TaskSpawner,
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<Object> guiContent = new ArrayList<Object>();
 
-	public SBCodeletDriver(Workspace w, FrameworkTaskManager timer) {
+	public SBCodeletDriver(Workspace w, LidaTaskManager timer) {
 		super(timer);
 		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
 	}// method

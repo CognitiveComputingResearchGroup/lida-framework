@@ -1,13 +1,13 @@
 package edu.memphis.ccrg.lida.perception;
 
-import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 
 public class PAMDriver extends GenericModuleDriver{
 
 	private PerceptualAssociativeMemory pam;
 	
-	public PAMDriver(PerceptualAssociativeMemory pam, FrameworkTaskManager timer){
+	public PAMDriver(PerceptualAssociativeMemory pam, LidaTaskManager timer){
 		super(timer);
 		this.pam = pam;
 	}//constructor

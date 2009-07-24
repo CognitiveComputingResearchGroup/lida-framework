@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.util;
 
-import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 
 
@@ -17,9 +17,9 @@ public class ThreadClassTemplate implements Runnable, LidaTask{
 	//
 	private boolean keepRunning = true;
 	private long threadID;
-	private FrameworkTaskManager timer;
+	private LidaTaskManager timer;
 		
-	public ThreadClassTemplate(FrameworkTaskManager t){
+	public ThreadClassTemplate(LidaTaskManager t){
 		timer = t;
 	}
 	

@@ -15,6 +15,7 @@ public class AttentionCodeletImpl implements AttentionCodelet{
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
 	private double activation;
+	private long id;
 	    
     public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, 
     							double activation){
@@ -44,9 +45,12 @@ public class AttentionCodeletImpl implements AttentionCodelet{
 		keepRunning = false;		
 	}
 
-	public long getId() {
-		// TODO Auto-generated method stub
-		return 0;
+	public long getThreadID() {
+		return id;
+	}
+
+	public void setThreadID(long id) {
+		this.id = id;
 	}
 	
 }//class

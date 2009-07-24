@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
@@ -12,7 +12,7 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	
 	private boolean keepRunning = true;
 	//Initialized by constructor
-	private FrameworkTaskManager frameworkTimer;
+	private LidaTaskManager frameworkTimer;
 	
 	private List<List<NodeStructure>> accessibleBuffers = new ArrayList<List<NodeStructure>>();
 	private List<CodeletWritable> writables = new ArrayList<CodeletWritable>();
@@ -29,16 +29,22 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	private int type;
 	private CodeletResult results = new BasicCodeletResult();
 	
-	public void addFrameworkTimer(FrameworkTaskManager timer) {
+	public void addFrameworkTimer(LidaTaskManager timer) {
 		frameworkTimer = timer;
 	}
 	
 	public Object call(){
+		
+		return results;
+	}//run
+	
+
+	public void run() {
 		while(keepRunning){
 			try{
 				Thread.sleep(codeletSleepTime);
 			}catch(InterruptedException e){
-				return results;
+				keepRunning = false;
 			}
 			frameworkTimer.checkForStartPause();
 			//TODO: Should this use the GenericModuleDriver?
@@ -47,9 +53,8 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 				for(CodeletWritable writable: writables)
 					action.performAction(buffer, writable);	
 		}//while
-		results.reportFinished();
-		return results;
-	}//run
+		results.reportFinished();	
+	}
 
 	public void stopRunning() {
 		keepRunning = false;		
@@ -163,8 +168,12 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	    return hash;
 	}
 
-	public void run() {
-		// TODO FIX THIS !!!!!!!!!!!!!		
+	public long getThreadID() {
+		return id;
+	}
+
+	public void setThreadID(long id) {
+		this.id = id;
 	}
 	
 }//class SBCodelet

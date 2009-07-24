@@ -12,8 +12,8 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.FrameworkExecutorService;
-import edu.memphis.ccrg.lida.framework.FrameworkTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaExecutorService;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
@@ -37,7 +37,7 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 	private List<Runnable> runningCodelets = new ArrayList<Runnable>();
 	private NodeStructure broadcastContent;
 	
-	public AttentionDriver(FrameworkTaskManager timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
+	public AttentionDriver(LidaTaskManager timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
 		super(timer);
 		this.csm = csm;
 		global = gwksp;
@@ -46,7 +46,7 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 		int maxPoolSize = 10;
 	    long keepAliveTime = 10;
 	    ArrayBlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<Runnable>(5);
-	    executorService = new FrameworkExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
+	    executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
 	    											   TimeUnit.SECONDS);
 	}
 

@@ -4,14 +4,12 @@ package edu.memphis.ccrg.lida.framework;
 public abstract class GenericModuleDriver implements ModuleDriver{
 
 	protected boolean keepRunning = true;
-	protected FrameworkTaskManager timer;
-	private static long threadIdCount = 0;
+	protected LidaTaskManager timer;
 	private long threadID;
 
-	public GenericModuleDriver(FrameworkTaskManager timer) {
+	public GenericModuleDriver(LidaTaskManager timer) {
 		super();
 		this.timer=timer;
-		threadID=threadIdCount++;
 	}
 
 	public void run() {
@@ -41,4 +39,4 @@ public abstract class GenericModuleDriver implements ModuleDriver{
 		return threadID;
 	}
 
-}
+}//class

@@ -10,8 +10,7 @@ package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 
-public interface AttentionCodelet extends Runnable, LidaTask  {
+public interface AttentionCodelet extends LidaTask{
 
-	long getId();
 
 }
