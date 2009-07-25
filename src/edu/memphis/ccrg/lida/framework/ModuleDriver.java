@@ -7,8 +7,6 @@ package edu.memphis.ccrg.lida.framework;
  * @author Ryan J. McCall
  *
  */
-public interface ModuleDriver extends LidaTask{
-
-	public void setThreadID(long id);
-	public long getThreadID();
+public interface ModuleDriver extends TaskSpawner{
+	public abstract void cycleStep();		
 }

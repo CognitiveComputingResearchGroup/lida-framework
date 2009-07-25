@@ -23,7 +23,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	}
 
 	public void quitAll() {
-		lida.getTimer().stopSpawnedThreads();
+		lida.getTimer().stopRunning();
 	}
 
 	public void resetEnvironment() {

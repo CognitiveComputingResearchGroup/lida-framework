@@ -1,42 +1,44 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.logging.Logger;
 
-public abstract class GenericModuleDriver implements ModuleDriver{
+public abstract class GenericModuleDriver extends TaskSpawnerImpl implements
+		ModuleDriver {
+
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	protected boolean keepRunning = true;
 	protected LidaTaskManager timer;
-	private long threadID;
 
 	public GenericModuleDriver(LidaTaskManager timer) {
 		super();
-		this.timer=timer;
+		this.timer = timer;
 	}
 
 	public void run() {
-		while(keepRunning){
-			try{
-				Thread.sleep(timer.getSleepTime());
-			}catch(InterruptedException e){
-				stopRunning();
-			}				
+		while (keepRunning) {
 			timer.checkForStartPause();
-			
+			if (LidaTaskManager.isTicksMode()) {
+				if(hasEnoughTicks()){
+					consumeTicksForACycle();
+				}else{
+					continue;
+				}
+			} else {
+				try {
+					Thread.sleep(timer.getSleepTime());
+				} catch (InterruptedException e) {
+					stopRunning();
+				}
+			}
 			cycleStep();
-		}//while	
-	}//method run
-
-	public abstract void cycleStep();		
+		}// while
+	}// method run
 
 	public void stopRunning() {
-		keepRunning = false;		
-	}//method 
+		keepRunning = false;
+		super.stopRunning();
+		logger.info("Driver stopped");
+	}// method
 
-	public void setThreadID(long id) {
-		threadID = id;
-	}
-
-	public long getThreadID() {
-		return threadID;
-	}
-
-}//class
+}// class

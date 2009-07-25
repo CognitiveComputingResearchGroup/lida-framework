@@ -42,7 +42,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements TaskSpawner,
 		guis.add(listener);
 	}
 	
-	@Override
+
 	public void cycleStep() {
 		activateCodelets();
 		sendEvent();
@@ -83,22 +83,22 @@ public class SBCodeletDriver extends GenericModuleDriver implements TaskSpawner,
 			addTask(ft);
 		}
 	}
-	public void setInitialRunnableTasks(List<? extends Runnable> initialRunnables) {
+	public void setInitialTasks(List<? extends LidaTask> initialRunnables) {
 		for (Runnable r : initialRunnables)
 			addTask(r);
 	}
-	public void addTask(Runnable r) {
+	public void addTask(LidaTask r) {
 		runningCodelets.add(r);
 		executorService.execute(r);
 	}
-	public Collection<Runnable> getAllTasks() {
+	public Collection<LidaTask> getAllTasks() {
 		return Collections.unmodifiableList(runningCodelets);
 	}
-	public void receiveFinishedTask(Runnable finishedTask, Throwable t) {
+	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
 		runningCodelets.remove(finishedTask);
 	}
 	
-	public int getSpawnedThreadCount() {
+	public int getSpawnedTaskCount() {
 		return runningCodelets.size();
 	}// method
 	public void stopSpawnedThreads() {

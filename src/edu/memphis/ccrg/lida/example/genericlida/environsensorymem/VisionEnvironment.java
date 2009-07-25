@@ -40,7 +40,7 @@ public class VisionEnvironment extends GenericModuleDriver implements
 	private int arrow = 0;
 	private int counter = 0;
 
-	@Override
+
 	public void cycleStep() {
 		Integer latestAction = null;
 

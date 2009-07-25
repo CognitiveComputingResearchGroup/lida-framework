@@ -168,11 +168,11 @@ public class SBCodeletImpl implements StructureBuildingCodelet{
 	    return hash;
 	}
 
-	public long getThreadID() {
+	public long getTaskID() {
 		return id;
 	}
 
-	public void setThreadID(long id) {
+	public void setTaskID(long id) {
 		this.id = id;
 	}
 	

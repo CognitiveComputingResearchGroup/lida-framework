@@ -151,7 +151,7 @@ public class Lida {
 	}
 	public void start(){
 		drivers.add((VisionEnvironment)environment);
-		timer.setInitialRunnableTasks(drivers);
+		timer.setInitialTasks(drivers);
 		globalWksp.start(); // change to the ThreadSpawner
 		logger.info("Lida submodules Started");		
 	}

@@ -10,30 +10,35 @@ import java.util.concurrent.Callable;
  * @author ryanjmccall
  *
  */
-public interface TaskSpawner {
+public interface TaskSpawner extends LidaTask{
 
-	public abstract int getSpawnedThreadCount();
-	
-	public abstract void stopSpawnedThreads();
-	public abstract void addTask(Runnable r);
-	public abstract Collection<Runnable> getAllTasks();
+	/**
+	 * Gets the number of Tasks in this Spawner
+	 * @return
+	 */
+	public abstract int getSpawnedTaskCount();
+	/**
+	 * Adds a new LidaTask to this Spawner
+	 * @param r
+	 */
+	public abstract void addTask(LidaTask r);
+	/**
+	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
+	 * @return
+	 */
+	public abstract Collection<LidaTask> getAllTasks();
 	
 	/**
-	 * The supplied runnables will be start by the spawner right away.
+	 * The supplied LidaTask will be start by the spawner right away.
 	 */
-	public abstract void setInitialRunnableTasks(List<? extends Runnable> initialRunnables);
-	
-	/**
-	 * The supplied Callable will be start by the spawner right away.
-	 */
-	public abstract void setInitialCallableTasks(List<? extends Callable<Object>> initialCallables);
-	
+	public abstract void setInitialTasks(List<? extends LidaTask> initialRunnables);
+		
 	/**
 	 * This method receives the tasks that have finished.
 	 * 
 	 * @param finishedTask
 	 * @param t
 	 */
-	public abstract void receiveFinishedTask(Runnable finishedTask, Throwable t);
+	public abstract void receiveFinishedTask(LidaTask finishedTask, Throwable t);
 
 }

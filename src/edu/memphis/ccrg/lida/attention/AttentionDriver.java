@@ -55,7 +55,7 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	@Override
+
 	public void cycleStep() {
 		activateCodelets();		
 	}
@@ -103,7 +103,7 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 		logger.info("all attention have been told to stop");
 	}//method
 
-	public int getSpawnedThreadCount() {
+	public int getSpawnedTaskCount() {
 		return runningCodelets.size();
 	}
 
@@ -116,17 +116,17 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 		return Collections.unmodifiableList(runningCodelets);
 	}
 
-	public void addTask(Runnable r) {
+	public void addTask(LidaTask r) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public Collection<Runnable> getAllTasks() {
+	public Collection<LidaTask> getAllTasks() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void receiveFinishedTask(Runnable finishedTask, Throwable t) {
+	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -137,7 +137,7 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 		
 	}
 
-	public void setInitialRunnableTasks(List<? extends Runnable> initialRunnables) {
+	public void setInitialTasks(List<? extends LidaTask> initialRunnables) {
 		// TODO Auto-generated method stub
 		
 	}

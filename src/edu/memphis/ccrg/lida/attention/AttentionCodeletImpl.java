@@ -1,11 +1,13 @@
 package edu.memphis.ccrg.lida.attention;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskBase;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
-public class AttentionCodeletImpl implements AttentionCodelet{
+public class AttentionCodeletImpl extends LidaTaskBase implements AttentionCodelet{
 	
 	private boolean keepRunning = true;
 	private int codeletSleepMillis = 3;
@@ -15,7 +17,6 @@ public class AttentionCodeletImpl implements AttentionCodelet{
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
 	private double activation;
-	private long id;
 	    
     public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, 
     							double activation){
@@ -26,10 +27,21 @@ public class AttentionCodeletImpl implements AttentionCodelet{
 
 	public void run() {
 		while(keepRunning){
-			try{
-				Thread.sleep(codeletSleepMillis, codeletSleepNanos);
-			}catch(InterruptedException e){
-				stopRunning();
+
+//TODO: Fix this!!!!!			
+//			timer.checkForStartPause();
+			if (LidaTaskManager.isTicksMode()) {
+				if(hasEnoughTicks()){
+					consumeTicksForACycle();
+				}else{
+					continue;
+				}
+			} else {
+				try {
+					Thread.sleep(codeletSleepMillis, codeletSleepNanos);
+				} catch (InterruptedException e) {
+					stopRunning();
+				}
 			}
 			//
 			if(checkBehavior.hasSoughtContent(csm)){
@@ -45,12 +57,4 @@ public class AttentionCodeletImpl implements AttentionCodelet{
 		keepRunning = false;		
 	}
 
-	public long getThreadID() {
-		return id;
-	}
-
-	public void setThreadID(long id) {
-		this.id = id;
-	}
-	
 }//class

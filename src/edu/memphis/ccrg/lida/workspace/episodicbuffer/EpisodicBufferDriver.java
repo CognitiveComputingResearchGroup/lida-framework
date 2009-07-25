@@ -12,7 +12,6 @@ public class EpisodicBufferDriver extends GenericModuleDriver {
 		this.eBuffer = eb;
 	}
 
-	@Override
 	public void cycleStep() {
 		//eBuffer.activateCodelets();
 		eBuffer.sendEvent();

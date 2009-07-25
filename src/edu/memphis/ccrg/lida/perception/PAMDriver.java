@@ -12,7 +12,7 @@ public class PAMDriver extends GenericModuleDriver{
 		this.pam = pam;
 	}//constructor
 		
-	@Override
+
 	public void cycleStep() {
 		pam.detectSensoryMemoryContent();				
 		pam.propogateActivation();//Pass activation	

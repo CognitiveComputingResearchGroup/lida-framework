@@ -29,11 +29,11 @@ public class ThreadClassTemplate implements Runnable, LidaTask{
 		}		
 	}
 
-	public long getThreadID() {
+	public long getTaskID() {
 		return threadID;
 	}
 
-	public void setThreadID(long id) {
+	public void setTaskID(long id) {
 		threadID = id;		
 	}
 

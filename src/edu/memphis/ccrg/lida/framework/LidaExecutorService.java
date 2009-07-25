@@ -53,7 +53,7 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
-		spawner.receiveFinishedTask(r, t);
+		spawner.receiveFinishedTask((LidaTask)r, t);
 	}
 	
 	 //Future<?> 	submit(Runnable task)

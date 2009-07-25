@@ -251,9 +251,9 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     public void refresh() {
     	isPaused = lida.getTimer().threadsArePaused();  	
     	String threadCount = "";
-        threadCount = (lida.getTimer().getSpawnedThreadCount() + 
-        			   lida.getSbCodeletDriver().getSpawnedThreadCount() + 
-        			   lida.getAttentionDriver().getSpawnedThreadCount()) + "";
+        threadCount = (lida.getTimer().getSpawnedTaskCount() + 
+        			   lida.getSbCodeletDriver().getSpawnedTaskCount() + 
+        			   lida.getAttentionDriver().getSpawnedTaskCount()) + "";
         threadCountTextField.setText(threadCount);
     }
 
