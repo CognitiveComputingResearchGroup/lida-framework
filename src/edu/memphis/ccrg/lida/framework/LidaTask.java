@@ -1,13 +1,23 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.concurrent.Callable;
+
+import edu.memphis.ccrg.lida.shared.Activatible;
+
 
 /**
  * 
  * @author Ryan J. McCall, Javier Snaider
  *
  */
-public interface LidaTask extends Runnable{
-	
+public interface LidaTask extends Runnable,Activatible{
+	public static final int WAITING=0;
+	public static final int RUNNING=1;
+	public static final int FINISHED=2;
+	public static final int STOPPED=4;
+	public static final int TO_RESET=8;
+	public static final int CANCELLED=16;
+
 	public abstract void stopRunning();
 	
 	public abstract void setTaskID(long id);
@@ -29,4 +39,8 @@ public interface LidaTask extends Runnable{
 	public abstract void addTicks(int ticks);
 	public abstract boolean hasEnoughTicks();
 	public abstract boolean consumeTicksForACycle();
+	public abstract int getStatus();
+	public abstract void setStatus(int status);
+	public abstract void reset();
+	
 }

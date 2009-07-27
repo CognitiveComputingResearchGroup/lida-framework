@@ -9,8 +9,13 @@
 package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public interface AttentionCodelet extends LidaTask{
 
+	public abstract boolean hasSoughtContent(CurrentSituationalModel csm);
+
+	public abstract NodeStructure getSoughtContent(CurrentSituationalModel csm);
 
 }

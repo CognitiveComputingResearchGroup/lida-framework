@@ -16,27 +16,25 @@ public abstract class GenericModuleDriver extends TaskSpawnerImpl implements
 	}
 
 	public void run() {
-		while (keepRunning) {
-			timer.checkForStartPause();
+		timer.checkForStartPause();
+		if (!LidaTaskManager.isTicksMode() || (hasEnoughTicks())) {
 			if (LidaTaskManager.isTicksMode()) {
-				if(hasEnoughTicks()){
-					consumeTicksForACycle();
-				}else{
-					continue;
-				}
-			} else {
-				try {
-					Thread.sleep(timer.getSleepTime());
-				} catch (InterruptedException e) {
-					stopRunning();
-				}
+				consumeTicksForACycle();
 			}
 			cycleStep();
-		}// while
-	}// method run
+			try {
+				// Sleeps a lap proportional for each task
+				Thread.sleep(timer.getSleepTime() * getTicksForCycle());
+			} catch (InterruptedException e) {
+				stopRunning();
+			}
+		}
+		setStatus(LidaTask.RUNNING);
+		return;
+	}// method call
 
 	public void stopRunning() {
-		keepRunning = false;
+		setStatus(LidaTask.CANCELLED);
 		super.stopRunning();
 		logger.info("Driver stopped");
 	}// method

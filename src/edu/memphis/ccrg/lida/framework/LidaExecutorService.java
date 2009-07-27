@@ -3,31 +3,16 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class LidaExecutorService extends ThreadPoolExecutor {
-	
+	private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
 	private TaskSpawner spawner;
-	private static long threadIdCounter = 0;
 
 	//TODO: override whatever executing method we use.  In the override
 	// set id for the LidaTask to be run.  This way we can ensure that
 	// all running threads in Lida have unique id as long as only this class
 	// is used to execute threads.
-	
-	private static LidaExecutorService instance;
-
-	/**
-	 * This static method returns the instance of the service. 
-	 * Implements the Singleton pattern.
-	 * @return
-	 */
-	public static LidaExecutorService getInstance(TaskSpawner spawner, int corePoolSize, int maximumPoolSize,
-			   									  long keepAliveTime, TimeUnit unit) {
-		if (instance == null) {
-			instance = new LidaExecutorService(spawner, corePoolSize, maximumPoolSize, keepAliveTime, unit);
-		}
-		return instance;
-	}
 	
 
    /**
@@ -53,6 +38,7 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
+		logger.finest(r.getClass().getName());
 		spawner.receiveFinishedTask((LidaTask)r, t);
 	}
 	

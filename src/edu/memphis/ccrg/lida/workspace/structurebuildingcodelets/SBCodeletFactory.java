@@ -152,7 +152,7 @@ public class SBCodeletFactory {
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
 				codelet.addFrameworkTimer(timer);	
-				codelet.setId(codeletIdCount++);
+//				codelet.setId(codeletIdCount++);
 				codelet.setExciteBehavior(defaultExcite);
 				codelet.setDecayBehavior(defaultDecay);
 				codelet.setActivation(defaultActivation);
@@ -210,7 +210,7 @@ public class SBCodeletFactory {
 	 *            The codelet to be recycled
 	 */
 	public void recycle(StructureBuildingCodelet sbCode) {
-		sbCode.clearForReuse();
+		sbCode.reset();
 		String type = sbCode.getClass().getName();
 		if (!pool.containsKey(type))
 			pool.put(type, new ArrayList<StructureBuildingCodelet>());

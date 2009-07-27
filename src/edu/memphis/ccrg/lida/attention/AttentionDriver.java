@@ -33,31 +33,21 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 	private GlobalWorkspace global;
 	//
 	private double defaultActiv = 1.0;//TODO: move these to factory?
-    private ExecutorService executorService = Executors.newCachedThreadPool();
-	private List<Runnable> runningCodelets = new ArrayList<Runnable>();
 	private NodeStructure broadcastContent;
 	
 	public AttentionDriver(LidaTaskManager timer, CurrentSituationalModel csm, GlobalWorkspace gwksp){
 		super(timer);
 		this.csm = csm;
 		global = gwksp;
-		//
-		int corePoolSize = 5;
-		int maxPoolSize = 10;
-	    long keepAliveTime = 10;
-	    ArrayBlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<Runnable>(5);
-	    executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, keepAliveTime, 
-	    											   TimeUnit.SECONDS);
 	}
-
 	
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
 	}
 
-
 	public void cycleStep() {
-		activateCodelets();		
+		activateCodelets();
+		//learn();
 	}
 		
 	public void activateCodelets(){
@@ -78,9 +68,9 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 //		}
 //	}
 
-	public void receiveFinishedTask(FutureTask<Object> finishedTask, Throwable t) {
-		// TODO Auto-generated method stub
-		
+	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
+		super.receiveFinishedTask(finishedTask, t);
+		// TODO Auto-generated method stub		
 	}
 	
 	public void learn(){
@@ -91,55 +81,5 @@ public class AttentionDriver extends GenericModuleDriver implements TaskSpawner,
 		}
 	}//method
 
-	public void stopSpawnedThreads() {
-		executorService.shutdown();
-		int size = runningCodelets.size();
-		for(int i = 0; i < size; i++){			
-			Runnable s = runningCodelets.get(i);
-			if ((s != null)&&(s instanceof LidaTask)){
-				((LidaTask)s).stopRunning();				
-			}
-		}//for
-		logger.info("all attention have been told to stop");
-	}//method
 
-	public int getSpawnedTaskCount() {
-		return runningCodelets.size();
-	}
-
-	public void addRunnable(Runnable r) {
-		runningCodelets.add(r);
-		executorService.execute(r);
-	}
-
-	public List<Runnable> getAllRunnables() {
-		return Collections.unmodifiableList(runningCodelets);
-	}
-
-	public void addTask(LidaTask r) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Collection<LidaTask> getAllTasks() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setInitialCallableTasks(
-			List<? extends Callable<Object>> initialCallables) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setInitialTasks(List<? extends LidaTask> initialRunnables) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }//class
