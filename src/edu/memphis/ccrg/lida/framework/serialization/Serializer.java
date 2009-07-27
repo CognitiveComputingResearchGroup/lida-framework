@@ -9,7 +9,6 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import com.thoughtworks.xstream.XStream;
 
-
 public class Serializer{
 	
 	XStream xstream = new XStream();//XStream XML serializer
