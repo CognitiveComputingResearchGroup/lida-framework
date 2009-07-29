@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
-public class SBCodeletDriver extends GenericModuleDriver implements GuiContentProvider {
+public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvider {
 
 	private Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	private SBCodeletFactory sbCodeletFactory;
@@ -56,6 +56,7 @@ public class SBCodeletDriver extends GenericModuleDriver implements GuiContentPr
 	 * @param type - See SBCodeletFactory for which integer values correspond to
 	 * which type
 	 */
+	@SuppressWarnings("unused")
 	private void spawnNewCodelet(int type, double activation, NodeStructure context, 
 								 							  CodeletAction actions){
 		StructureBuildingCodelet sbc = sbCodeletFactory.getCodelet(type, activation, 

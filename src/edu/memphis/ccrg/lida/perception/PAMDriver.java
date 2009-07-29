@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.perception;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class PAMDriver extends GenericModuleDriver{
+public class PAMDriver extends ModuleDriverImpl{
 
 	private PerceptualAssociativeMemory pam;
 	

@@ -13,7 +13,6 @@ import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionEnvironment;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -150,7 +149,7 @@ public class Lida {
 		logger.info("Lida listeners added");	
 	}
 	public void start(){
-		drivers.add((VisionEnvironment)environment);
+		drivers.add((ModuleDriver) environment);
 		timer.setInitialTasks(drivers);
 		globalWksp.start(); // change to the ThreadSpawner
 		logger.info("Lida submodules Started");		

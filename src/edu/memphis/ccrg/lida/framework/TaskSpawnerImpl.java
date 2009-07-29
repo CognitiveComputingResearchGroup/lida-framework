@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class TaskSpawnerImpl extends LidaTaskBase implements
-		TaskSpawner {
+public abstract class TaskSpawnerImpl extends LidaTaskImpl 
+									  implements TaskSpawner {
 
 	private Logger logger = Logger.getLogger("lida.framework.TaskSpawnerImpl");
 	/**
@@ -79,8 +79,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskBase implements
 
 	public void stopRunning() {
 		for (LidaTask s : runningTasks) {
-			logger.log(Level.INFO, "LidaTask telling to stop {0}", s
-					.toString());
+			logger.log(Level.INFO, "LidaTask telling to stop {0}", s.toString());
 			s.stopRunning();
 		}
 		executorService.shutdownNow();
@@ -100,13 +99,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskBase implements
 				s.setStatus(LidaTask.RUNNING);
 				executorService.execute(s);
 			}
-		}
-	}
+		}//for
+	}//method
 
 	protected boolean shouldRun(LidaTask r) {
 		boolean result = false;
-		if (!(LidaTaskManager.isTicksMode())
-				|| ((r.getStatus() != LidaTask.RUNNING) && (r.hasEnoughTicks()))) {
+		if (!LidaTaskManager.inTicksMode() || ((r.getStatus() != LidaTask.RUNNING) && (r.hasEnoughTicks()))) {
 			result = true;
 		}
 		return result;

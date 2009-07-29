@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.currentsituationalmodel;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class CSMDriver extends GenericModuleDriver {
+public class CSMDriver extends ModuleDriverImpl {
 
 	private CurrentSituationalModelImpl csm;
 

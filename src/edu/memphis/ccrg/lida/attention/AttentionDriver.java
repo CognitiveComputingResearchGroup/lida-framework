@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaExecutorService;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
-public class AttentionDriver extends GenericModuleDriver implements TaskSpawner, BroadcastListener, BroadcastLearner{
+public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner, BroadcastListener, BroadcastLearner{
 
 	private Logger logger=Logger.getLogger("lida.attention.AttentionDriver");
 	//

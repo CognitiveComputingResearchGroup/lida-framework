@@ -9,34 +9,33 @@ import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
  * @author Javier Snaider
  *
  */
-public abstract class LidaTaskBase extends ActivatibleImpl implements LidaTask {
+public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	private long taskID;
-	private int ticksForCycle=1;
+	private int ticksPerCycle = 1;
 	private int accumulatedTicks;
-	protected int status=LidaTask.WAITING;
+	protected int status = LidaTask.WAITING;
 	
-	/**
-	 * @return the status
-	 */
-	public int getStatus() {
-		return status;
+	public LidaTaskImpl(){
+		this (1);
 	}
-
+	
+	public LidaTaskImpl(int ticksForCycle){
+		setTaskID(LidaTaskManager.getNextTaskID());
+		setTicksForCycle(ticksForCycle);
+	}
+	
 	/**
 	 * @param status the status to set
 	 */
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
-	public LidaTaskBase(){
-		this (1);
-	}
-	
-	public LidaTaskBase(int ticksForCycle){
-		setTaskID(LidaTaskManager.getNextTaskID());
-		setTicksForCycle(ticksForCycle);
+	/**
+	 * @return the status
+	 */
+	public int getStatus() {
+		return status;
 	}
 
 	public long getTaskID() {
@@ -47,13 +46,12 @@ public abstract class LidaTaskBase extends ActivatibleImpl implements LidaTask {
 		taskID=id;		
 	}
 	public int getTicksForCycle() {
-		return ticksForCycle;
+		return ticksPerCycle;
 	}
 
 	public void setTicksForCycle(int ticks) {
-		if(ticks > 0){
-		ticksForCycle=ticks;
-		}
+		if(ticks > 0)
+			ticksPerCycle=ticks;		
 	}
 
 	public void addTicks(int ticks) {
@@ -65,18 +63,19 @@ public abstract class LidaTaskBase extends ActivatibleImpl implements LidaTask {
 	}
 
 	public boolean consumeTicksForACycle() {
-		if (accumulatedTicks>=ticksForCycle){
-			accumulatedTicks = accumulatedTicks-ticksForCycle;
+		if (accumulatedTicks >= ticksPerCycle){
+			accumulatedTicks = accumulatedTicks - ticksPerCycle;
 			return true;
 		}
 		return false;
 	}
 
 	public boolean hasEnoughTicks() {
-		return (accumulatedTicks>=ticksForCycle);
+		return accumulatedTicks >= ticksPerCycle;
 	}
 	
 	public void reset(){
 		
 	}
-}
+	
+}//class

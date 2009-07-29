@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.broadcastbuffer;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class BroadcastQueueDriver extends GenericModuleDriver {
+public class BroadcastQueueDriver extends ModuleDriverImpl {
 
 	private BroadcastQueueImpl bBuffer;
 

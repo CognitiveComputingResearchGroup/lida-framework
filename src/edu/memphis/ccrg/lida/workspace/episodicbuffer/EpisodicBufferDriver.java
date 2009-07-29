@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.episodicbuffer;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class EpisodicBufferDriver extends GenericModuleDriver {
+public class EpisodicBufferDriver extends ModuleDriverImpl {
 
 	private EpisodicBufferImpl eBuffer;
 

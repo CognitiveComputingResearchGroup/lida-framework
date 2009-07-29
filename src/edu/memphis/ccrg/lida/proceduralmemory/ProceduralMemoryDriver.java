@@ -1,13 +1,13 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 /**
  * 
  * @author ryanjmccall
  */
-public class ProceduralMemoryDriver extends GenericModuleDriver {
+public class ProceduralMemoryDriver extends ModuleDriverImpl {
 
 	private ProceduralMemory procMem;
 

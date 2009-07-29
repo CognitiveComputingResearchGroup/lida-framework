@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.sensorymemory;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class SensoryMemoryDriver extends GenericModuleDriver {
+public class SensoryMemoryDriver extends ModuleDriverImpl {
 	
 	private SensoryMemory sm;
 	

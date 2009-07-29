@@ -8,12 +8,12 @@ import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 
-public class VisionEnvironment extends GenericModuleDriver implements
+public class VisionEnvironment extends ModuleDriverImpl implements
 		Environment, ActionSelectionListener, GuiContentProvider {
 
 	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");

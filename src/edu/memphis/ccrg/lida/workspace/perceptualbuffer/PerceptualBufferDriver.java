@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.workspace.perceptualbuffer;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class PerceptualBufferDriver extends GenericModuleDriver {
+public class PerceptualBufferDriver extends ModuleDriverImpl {
 
 	private PerceptualBufferImpl pb;
 

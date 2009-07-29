@@ -8,7 +8,7 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.framework.GenericModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import java.util.concurrent.Future;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
  * of running the thread and allowing access to the local associaiton.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public class TEMDriver extends GenericModuleDriver {
+public class TEMDriver extends ModuleDriverImpl {
 
     private TransientEpisodicMemory tem;
     private MemoryCue cue;
