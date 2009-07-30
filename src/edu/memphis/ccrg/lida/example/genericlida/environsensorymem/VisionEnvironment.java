@@ -3,18 +3,14 @@ package edu.memphis.ccrg.lida.example.genericlida.environsensorymem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 
-public class VisionEnvironment extends ModuleDriverImpl implements
-		Environment, ActionSelectionListener, GuiContentProvider {
+public class VisionEnvironment extends EnvironmentImpl implements GuiContentProvider {
 
 	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");
 	private boolean actionHasChanged = false;
@@ -39,7 +35,6 @@ public class VisionEnvironment extends ModuleDriverImpl implements
 	
 	private int arrow = 0;
 	private int counter = 0;
-
 
 	public void cycleStep() {
 		Integer latestAction = null;

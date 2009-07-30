@@ -258,7 +258,7 @@ public class OldGenericLida{
 		
 		workspace.addCueListener(declarativeMemory);
 		//workspace.addCueListener(tem);
-		workspace.add_PAM_WorkspaceListener(pam);
+		workspace.addPamWorkspaceListener(pam);
 		//
 		globalWksp.addBroadcastListener(pam);
 		globalWksp.addBroadcastListener(workspace);

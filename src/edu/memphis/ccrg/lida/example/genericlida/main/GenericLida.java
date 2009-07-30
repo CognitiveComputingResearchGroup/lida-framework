@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
-import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
@@ -24,7 +24,7 @@ public class GenericLida {
 	    		LidaTaskManager timer = new LidaTaskManager(startPaused, threadSleepTime);
 	    		//
 	    		int height = 10, width = 10;
-	    		Environment environ = new VisionEnvironment(timer, height, width);
+	    		EnvironmentImpl environ = new VisionEnvironment(timer, height, width);
 	    		SensoryMemory sm = new VisionSensoryMemory(environ);
 	    		//
 	        	Lida lida = new Lida(timer, environ, sm);

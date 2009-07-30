@@ -10,8 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class TaskSpawnerImpl extends LidaTaskImpl 
-									  implements TaskSpawner {
+public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawner {
 
 	private Logger logger = Logger.getLogger("lida.framework.TaskSpawnerImpl");
 	/**
@@ -19,17 +18,18 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl
 	 */
 	private ThreadPoolExecutor executorService;
 	/**
-	 * A map of the running tasks
+	 * The running tasks
 	 */
 	private Set<LidaTask> runningTasks = new HashSet<LidaTask>();
 
 	public TaskSpawnerImpl(int ticksForCycle) {
 		super(ticksForCycle);
+		//
 		int corePoolSize = 5;
 		int maxPoolSize = 100;
 		long keepAliveTime = 10;
-		executorService = new LidaExecutorService(this, corePoolSize,
-				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
+		executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, 
+												  keepAliveTime, TimeUnit.SECONDS);
 	}// method
 
 	public TaskSpawnerImpl() {
@@ -52,7 +52,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl
 
 	/**
 	 * Finished tasks from the FrameworkExecutorService are sent to this method.
-	 * If it is override this super method should be called too.
+	 * If it is overridden then is should still be called first using super.
 	 */
 	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
 		switch (finishedTask.getStatus()) {

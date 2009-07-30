@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -29,7 +27,6 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TEMImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TransientEpisodicMemory;
@@ -37,7 +34,6 @@ import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SBCodeletDriver;
@@ -50,7 +46,7 @@ public class Lida {
 	
 	private Logger logger = Logger.getLogger("lida.framework.Lida");
 	// Perception
-	private Environment environment;
+	private EnvironmentImpl environment;
 	private SensoryMotorMemory sensoryMotorMemory;
 	private SensoryMemory sensoryMemory;
 	private PerceptualAssociativeMemory pam;
@@ -59,22 +55,22 @@ public class Lida {
 	private DeclarativeMemory declarativeMemory;
 	// Workspace
 	private Workspace workspace;
+	private SBCodeletDriver sbCodeletDriver;
 	// Attention
+	private AttentionDriver attnDriver;
 	private GlobalWorkspace globalWksp;
 	// Action Selection
 	private ProceduralMemory procMem;
 	private ActionSelection actionSelection;
 	// A class that helps pause and control the drivers.
-	private LidaTaskManager timer;
-	private SBCodeletDriver sbCodeletDriver;
-	private AttentionDriver attnDriver;
+	private LidaTaskManager taskManager;
 
 	/**
 	 * List of drivers which run the major components of LIDA
 	 */
 	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 
-	public Lida(LidaTaskManager ft, Environment e, SensoryMemory sm) {
+	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm) {
 		logger.info("Starting Lida");
 		initComponents(ft, e, sm);
 		initDrivers();
@@ -82,19 +78,20 @@ public class Lida {
 		start();
 	}
 
-	private void initComponents(LidaTaskManager timer, Environment e, SensoryMemory sm) {
-		this.timer = timer;
+	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm) {
+		taskManager = tm;
 		environment = e;
 		sensoryMemory = sm;
 		pam = new PerceptualAssociativeMemoryImpl();
-		tem = new TEMImpl(new NodeStructureImpl()); // SEE!!!!!!
+		tem = new TEMImpl(); 
 		declarativeMemory = new DeclarativeMemoryImpl();
 		//
 		int bufferCapacity = 2;
 		int queueCapacity = 10;
 		workspace = new WorkspaceImpl(new PerceptualBufferImpl(bufferCapacity),
-				new EpisodicBufferImpl(bufferCapacity), new BroadcastQueueImpl(queueCapacity),
-				new CurrentSituationalModelImpl());
+									  new EpisodicBufferImpl(bufferCapacity), 
+									  new BroadcastQueueImpl(queueCapacity),
+									  new CurrentSituationalModelImpl());
 		//
 		globalWksp = new GlobalWorkspaceImpl();
 		procMem = new ProceduralMemoryImpl();
@@ -104,38 +101,43 @@ public class Lida {
 	}
 
 	private void initDrivers() {
-		ModuleDriver module;
-		drivers.add((ModuleDriver) environment);
-		module = new SensoryMemoryDriver(sensoryMemory, timer);
-		drivers.add(module);
-		module = new PAMDriver(pam, timer);
-		drivers.add(module);
-		module = new ProceduralMemoryDriver(procMem, timer);
-		drivers.add(module);
-		attnDriver = new AttentionDriver(timer, workspace.getCSM(), globalWksp);
+		//finish initializing drivers 
+		attnDriver = new AttentionDriver(taskManager, workspace.getCSM(), globalWksp);
+		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager);
+		//Add drivers to a list for execution
+		drivers.add(environment);
+		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager));
+		drivers.add(new PAMDriver(pam, taskManager));
 		drivers.add(attnDriver);
-		sbCodeletDriver = new SBCodeletDriver(workspace, timer);
 		drivers.add(sbCodeletDriver);
+		drivers.add(new ProceduralMemoryDriver(procMem, taskManager));
+		//done creating drivers
 		logger.info("Lida drivers Created");		
 	}
 
 	private void initListeners() {
 		if (sensoryMemory instanceof SensoryMotorListener)
 			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
+		else
+			logger.info("*ERROR* adding listener");
 		//sensoryMemory.addSensoryListener(sensoryMotorMemory);
 		//sensoryMemory.addSensoryListener(pam);
 		if (workspace instanceof PAMListener)
 			pam.addPAMListener((PAMListener) workspace);
-
-		workspace.getPerceptualBuffer().addBufferListener((WorkspaceBufferListener) workspace);
-		workspace.getEpisodicBuffer().addBufferListener((WorkspaceBufferListener) workspace);
-		workspace.getCSM().addBufferListener((WorkspaceBufferListener) workspace);
+		else
+			logger.info("*ERROR* adding listener");
 
 		if (declarativeMemory instanceof CueListener)
 			workspace.addCueListener((CueListener)declarativeMemory);
+		else
+			logger.info("*ERROR* adding listener");
+		
 		if (tem instanceof CueListener)		
 			workspace.addCueListener((CueListener)tem);
-		workspace.add_PAM_WorkspaceListener(pam);
+		else
+			logger.info("*ERROR* adding listener");
+		
+		workspace.addPamWorkspaceListener(pam);
 		//check
 		globalWksp.addBroadcastListener(pam);
 		globalWksp.addBroadcastListener((BroadcastListener)workspace);
@@ -144,14 +146,13 @@ public class Lida {
 		globalWksp.addBroadcastListener(procMem);
 
 		procMem.addProceduralMemoryListener((ProceduralMemoryListener)actionSelection);
-		//actionSelection.addActionSelectionListener(environment);
+		actionSelection.addActionSelectionListener(environment);
 		actionSelection.addActionSelectionListener((ActionSelectionListener)workspace);
 		logger.info("Lida listeners added");	
 	}
 	public void start(){
-		drivers.add((ModuleDriver) environment);
-		timer.setInitialTasks(drivers);
-		globalWksp.start(); // change to the ThreadSpawner
+		globalWksp.start(); //TODO: change to the ThreadSpawner
+		taskManager.setInitialTasks(drivers);		
 		logger.info("Lida submodules Started");		
 	}
 
@@ -163,9 +164,9 @@ public class Lida {
 	}
 
 	/**
-	 * @return the sma
+	 * @return the sensoryMotorMemory
 	 */
-	public SensoryMotorMemory getSma() {
+	public SensoryMotorMemory getSensoryMotorMemory() {
 		return sensoryMotorMemory;
 	}
 
@@ -228,8 +229,8 @@ public class Lida {
 	/**
 	 * @return the timer
 	 */
-	public LidaTaskManager getTimer() {
-		return timer;
+	public LidaTaskManager getTaskManager() {
+		return taskManager;
 	}
 
 	/**

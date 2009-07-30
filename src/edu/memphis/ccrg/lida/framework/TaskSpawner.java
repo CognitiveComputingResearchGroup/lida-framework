@@ -2,10 +2,9 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
- * ThreadSpawners are classes that create, manage, and end new threads.  
+ * ThreadSpawners create, manage, and end new threads.  
  * 
  * @author ryanjmccall
  *

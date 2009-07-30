@@ -49,7 +49,11 @@ public class TEMImpl implements TransientEpisodicMemory {
         }
     }
 
-    /**
+    public TEMImpl() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
      * Receives the conscious broadcast and store its information in this TEM.
      * @param bc the content of the conscious broadcast
      */

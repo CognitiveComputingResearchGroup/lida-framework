@@ -45,6 +45,9 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		broadcastBuffer = pbroads;
 		this.csm = csm;	
 		
+		perceptualBuffer.addBufferListener(this);
+		episodicBuffer.addBufferListener(this);
+		this.csm.addBufferListener(this);
 	}//
 
 	
@@ -54,7 +57,7 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 	
 	//check
-	public void add_PAM_WorkspaceListener(WorkspaceListener listener){
+	public void addPamWorkspaceListener(WorkspaceListener listener){
 		pamWorkspaceListener = listener;
 	}
 	
