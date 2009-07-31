@@ -8,23 +8,19 @@ public class EnvironmentImpl extends ModuleDriverImpl implements Environment{
 
 	public EnvironmentImpl(LidaTaskManager timer) {
 		super(timer);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void runDriverOneProcessingStep() {
-		// TODO Auto-generated method stub
-		
+		// TODO override this in specific environment
 	}
 
 	//Environ
 	public void receiveBehaviorContent(ActionContent content) {
-		// TODO Auto-generated method stub
-		
+		// TODO override this in specific environment
 	}
 
 	public void resetEnvironment() {
-		// TODO Auto-generated method stub
-		
+		// TODO override this in specific environment
 	}
 
 }//class

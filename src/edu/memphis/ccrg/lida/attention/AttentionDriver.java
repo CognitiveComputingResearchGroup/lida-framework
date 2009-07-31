@@ -9,12 +9,11 @@ import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.shared.BroadcastLearner;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
-public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner, BroadcastListener, BroadcastLearner{
+public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner, BroadcastListener{
 
 	private Logger logger=Logger.getLogger("lida.attention.AttentionDriver");
 	//

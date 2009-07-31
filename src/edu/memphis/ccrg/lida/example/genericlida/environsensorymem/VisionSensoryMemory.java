@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.example.genericlida.environsensorymem;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 
 public class VisionSensoryMemory implements SensoryMemory, SensoryMotorListener {
@@ -22,6 +23,11 @@ public class VisionSensoryMemory implements SensoryMemory, SensoryMotorListener 
 			return sensoryContent;
 		
 		return null;
+	}
+
+	public void addSensoryMemoryListener(SensoryMemoryListener l) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }// class
