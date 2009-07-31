@@ -13,7 +13,7 @@ public class PerceptualBufferDriver extends ModuleDriverImpl {
 	}// constructor
 
 
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		//pb.activateCodelets();
 		pb.sendEvent();
 

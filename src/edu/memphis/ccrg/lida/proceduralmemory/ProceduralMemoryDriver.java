@@ -19,7 +19,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	/**
 	 * This loop drives the procedural memory
 	 */
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		//procMem.sendEvent();   // Change for Logger 
 	}// method
 

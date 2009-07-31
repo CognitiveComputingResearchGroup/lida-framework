@@ -11,7 +11,7 @@ public class EnvironmentImpl extends ModuleDriverImpl implements Environment{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		// TODO Auto-generated method stub
 		
 	}

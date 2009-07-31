@@ -13,7 +13,7 @@ public class PAMDriver extends ModuleDriverImpl{
 	}//constructor
 		
 
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		pam.detectSensoryMemoryContent();				
 		pam.propogateActivation();//Pass activation	
 		pam.sendOutPercept(); //Send the percept to p-Workspace

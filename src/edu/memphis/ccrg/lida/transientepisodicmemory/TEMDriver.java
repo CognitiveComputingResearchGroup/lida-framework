@@ -39,7 +39,7 @@ public class TEMDriver extends ModuleDriverImpl {
 
 
 
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		association = tem.cue(cue);
 	}//method
     

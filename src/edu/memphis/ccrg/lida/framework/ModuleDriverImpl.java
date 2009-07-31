@@ -14,29 +14,34 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl
 		this.timer = timer;
 	}
 
-	public void run() {
+	public void run() {		
 		timer.checkForStartPause();
-		if (!LidaTaskManager.isTicksMode() || hasEnoughTicks()) {
-			
-			if(LidaTaskManager.isTicksMode())
-				consumeTicksForACycle();
-			
-			cycleStep();
-			try {
-				// Sleeps a lap proportional for each task
-				Thread.sleep(timer.getSleepTime() * getTicksForCycle());
-			}catch (InterruptedException e){
-				stopRunning();
-			}
+		
+		if (!LidaTaskManager.isTicksMode())
+			runOneStep();
+		else if(hasEnoughTicks()){
+			consumeTicksForACycle();
+			runOneStep();
 		}
+	
 		setStatus(LidaTask.RUNNING);
 		return;
 	}// method
+	
+	private void runOneStep(){
+		runDriverOneProcessingStep();
+		try {
+			// Sleeps a lap proportional for each task
+			Thread.sleep(timer.getSleepTime() * getNumberOfTicksPerCycle());
+		}catch (InterruptedException e){
+			stopRunning();
+		}
+	}
 
 	public void stopRunning() {
 		setStatus(LidaTask.CANCELLED);
 		super.stopRunning();
-		logger.info("Driver stopped");
+		logger.info("Driver stopped\n");
 	}// method
 
 }// class

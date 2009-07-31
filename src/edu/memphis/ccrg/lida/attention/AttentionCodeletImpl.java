@@ -40,7 +40,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 			}
 			try {
 				// Sleeps a lap proportional for each task
-				Thread.sleep(timer.getSleepTime() * getTicksForCycle());
+				Thread.sleep(timer.getSleepTime() * getNumberOfTicksPerCycle());
 			} catch (InterruptedException e) {
 				stopRunning();
 				return;

@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	private long taskID;
-	private int ticksPerCycle = 1;
+	private int numberOfTicksPerCycle = 1;
 	private int accumulatedTicks;
 	protected int status = LidaTask.WAITING;
 	
@@ -45,13 +45,13 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void setTaskID(long id) {
 		taskID=id;		
 	}
-	public int getTicksForCycle() {
-		return ticksPerCycle;
+	public int getNumberOfTicksPerCycle() {
+		return numberOfTicksPerCycle;
 	}
 
 	public void setTicksForCycle(int ticks) {
 		if(ticks > 0)
-			ticksPerCycle=ticks;		
+			numberOfTicksPerCycle=ticks;		
 	}
 
 	public void addTicks(int ticks) {
@@ -63,15 +63,15 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	public boolean consumeTicksForACycle() {
-		if (accumulatedTicks >= ticksPerCycle){
-			accumulatedTicks = accumulatedTicks - ticksPerCycle;
+		if (accumulatedTicks >= numberOfTicksPerCycle){
+			accumulatedTicks = accumulatedTicks - numberOfTicksPerCycle;
 			return true;
 		}
 		return false;
 	}
 
 	public boolean hasEnoughTicks() {
-		return accumulatedTicks >= ticksPerCycle;
+		return accumulatedTicks >= numberOfTicksPerCycle;
 	}
 	
 	public void reset(){

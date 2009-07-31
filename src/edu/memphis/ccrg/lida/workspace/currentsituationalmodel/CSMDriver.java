@@ -13,7 +13,7 @@ public class CSMDriver extends ModuleDriverImpl {
 	}
 
 
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		csm.sendCSMContent();
 		csm.sendEvent();
 

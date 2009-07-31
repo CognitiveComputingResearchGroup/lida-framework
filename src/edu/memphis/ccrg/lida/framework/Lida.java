@@ -107,11 +107,11 @@ public class Lida {
 		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager);
 		//Add drivers to a list for execution
 		drivers.add(environment);
-		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager));
-		drivers.add(new PAMDriver(pam, taskManager));
-		drivers.add(attnDriver);
-		drivers.add(sbCodeletDriver);
-		drivers.add(new ProceduralMemoryDriver(procMem, taskManager));
+		//drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager));
+		//drivers.add(new PAMDriver(pam, taskManager));
+		//drivers.add(attnDriver);
+		//drivers.add(sbCodeletDriver);
+		//drivers.add(new ProceduralMemoryDriver(procMem, taskManager));
 		//done creating drivers
 		logger.info("Lida drivers Created");		
 	}

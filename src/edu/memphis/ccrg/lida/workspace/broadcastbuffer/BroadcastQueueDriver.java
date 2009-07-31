@@ -13,7 +13,7 @@ public class BroadcastQueueDriver extends ModuleDriverImpl {
 	}// method
 
 
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		//bBuffer.activateCodelets();
 		bBuffer.sendEvent();
 	}

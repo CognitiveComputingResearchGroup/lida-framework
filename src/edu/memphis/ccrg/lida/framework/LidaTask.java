@@ -59,7 +59,7 @@ public interface LidaTask extends Runnable, Activatible{
 	 * Gets the number of ticks needed to complete a cycle or 'one run' of this task
 	 * @return ticks 
 	 */
-	public abstract int getTicksForCycle();
+	public abstract int getNumberOfTicksPerCycle();
 	
 	public abstract int getAccumulatedTicks();
 	public abstract void addTicks(int ticks);

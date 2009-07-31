@@ -30,7 +30,7 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 		guis.add(listener);
 	}
 	
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		activateCodelets();
 		sendEvent();
 	}

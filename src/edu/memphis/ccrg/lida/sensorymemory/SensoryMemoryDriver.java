@@ -12,7 +12,7 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 		this.sm = sm;
 	}//constructor
 		
-	public void cycleStep(){
+	public void runDriverOneProcessingStep(){
 		sm.processSensors();		
 	}
 	

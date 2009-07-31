@@ -36,7 +36,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 	private int arrow = 0;
 	private int counter = 0;
 
-	public void cycleStep() {
+	public void runDriverOneProcessingStep() {
 		Integer latestAction = null;
 
 		if(arrow == 0)
