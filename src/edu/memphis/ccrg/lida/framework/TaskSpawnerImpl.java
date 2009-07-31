@@ -22,6 +22,15 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	private Set<LidaTask> runningTasks = new HashSet<LidaTask>();
 
+	private boolean tasksArePaused = false;
+
+	/**
+	 * @return the tasksArePaused
+	 */
+	public boolean inTasksArePaused() {
+		return tasksArePaused;
+	}
+
 	public TaskSpawnerImpl(int ticksForCycle) {
 		super(ticksForCycle);
 		//
@@ -56,7 +65,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
 		switch (finishedTask.getStatus()) {
-		case LidaTask.FINISHED: //TODO: get and process result 
+		case LidaTask.FINISHED: // TODO: get and process result
 		case LidaTask.CANCELLED:
 			runningTasks.remove(finishedTask);
 			break;
@@ -64,10 +73,13 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			finishedTask.reset();
 		case LidaTask.STOPPED:
 		case LidaTask.RUNNING:
-			if (shouldRun(finishedTask)) {
-				logger.log(Level.FINEST,"restarting task {0}",finishedTask);
-				finishedTask.setStatus(LidaTask.RUNNING);
-				executorService.execute(finishedTask);
+			if (!tasksArePaused) {
+				if (shouldRun(finishedTask)) {
+					logger.log(Level.FINEST, "restarting task {0}",
+							finishedTask);
+					finishedTask.setStatus(LidaTask.RUNNING);
+					executorService.execute(finishedTask);
+				}
 			}
 			break;
 		}
@@ -109,5 +121,20 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		}
 		return result;
 	}
-	
+
+	public void pauseSpawnedTasks() {
+		tasksArePaused = true;
+	}
+
+	public void resumeSpawnedTasks() {
+		tasksArePaused = false;
+		for (LidaTask s : runningTasks) {
+			int status = s.getStatus();
+			if ((status & (LidaTask.RUNNING | LidaTask.STOPPED | LidaTask.TO_RESET)) != 0) {
+				s.setStatus(LidaTask.RUNNING);
+				executorService.execute(s);
+			}
+		}
+	}
+
 }// class

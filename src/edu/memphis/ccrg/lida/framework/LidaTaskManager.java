@@ -4,21 +4,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 
 	private static long nextTaskID = 0L;
 	private static boolean ticksMode = false;
-	/**
-	 * true -> Start out paused false -> Start out running
-	 */
-	private boolean threadsArePaused = false;
-	/**
-	 * Threads calling the member function getSleepTime() will sleep for this
-	 * many ms.
-	 */
-	private int threadSleepTime = 150;
 
-	public LidaTaskManager(boolean startPaused, int threadSleepTime) {
-		threadsArePaused = startPaused;
-		this.threadSleepTime = threadSleepTime;
-	}
-	
 	/**
 	 * Convenience method to obtain the next ID for LidaTasks
 	 * 
@@ -39,20 +25,35 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		ticksMode = mode;
 	}
 
-	public static boolean inTicksMode() {
+	public static boolean isTicksMode() {
 		return ticksMode;
 	}
 
-	public boolean threadsArePaused() {
-		return threadsArePaused;
+	/**
+	 * true -> Start out paused false -> Start out running
+	 */
+	/**
+	 * When paused, this is how long this thread will sleep before checking to
+	 * see if pause was clicked again to start things back up.
+	 */
+	private int msUntilICheckForUnpause = 10;
+	/**
+	 * Threads calling the member function getSleepTime() will sleep for this
+	 * many ms.
+	 */
+	private int threadSleepTime = 150;
+
+	public LidaTaskManager(boolean startPaused, int threadSleepTime) {
+		if (startPaused){
+			pauseSpawnedTasks();
+		}else{
+			resumeSpawnedTasks();
+		}
+		this.threadSleepTime = threadSleepTime;
 	}
 
-	public synchronized void pauseSpawnedThreads() {
-		threadsArePaused = true;
-	}
-
-	public synchronized void resumeSpawnedThreads() {
-		threadsArePaused = false;
+	public synchronized void resumeSpawnedTasks() {
+		super.resumeSpawnedTasks();
 		this.notifyAll();
 	}
 
@@ -61,7 +62,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * system is pausable.
 	 */
 	public synchronized void checkForStartPause() {
-		if (threadsArePaused) {
+		if (isTasksArePaused()) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {

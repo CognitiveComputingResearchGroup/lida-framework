@@ -75,7 +75,7 @@ public class GuiDemo extends JFrame implements ActionListener{
 		}
 
 		if(e.getActionCommand().equals("quit")){
-			timer.resumeSpawnedThreads();
+			timer.resumeSpawnedTasks();
 			motherThread.stopRunning();
 			try{Thread.sleep(1000);}catch(Exception e2){}
 			System.exit(0);

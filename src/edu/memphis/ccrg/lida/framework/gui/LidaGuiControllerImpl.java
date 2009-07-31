@@ -19,7 +19,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	}
 
 	public void pauseRunningThreads() {
-		lida.getTaskManager().pauseSpawnedThreads();
+		lida.getTaskManager().pauseSpawnedTasks();
 	}
 
 	public void quitAll() {
@@ -32,7 +32,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	}
 
 	public void resumeRunningThreads() {
-		lida.getTaskManager().resumeSpawnedThreads();
+		lida.getTaskManager().resumeSpawnedTasks();
 	}
 
 	public void setSleepTime(int sleepTime) {
