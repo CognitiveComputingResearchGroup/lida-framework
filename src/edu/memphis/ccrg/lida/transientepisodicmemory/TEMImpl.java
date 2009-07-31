@@ -9,6 +9,7 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeImpl;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -24,7 +25,7 @@ import java.util.concurrent.FutureTask;
  * memory to store the information.
  * @author Rodrigo Silva L.
  */
-public class TEMImpl implements TransientEpisodicMemory {
+public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
     private SparseDistributedMemory sdm;
     private HashMap<Long, Integer> indexMap;
@@ -85,6 +86,11 @@ public class TEMImpl implements TransientEpisodicMemory {
     }
 
 	public void receiveCue(NodeStructure cue) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void learn() {
 		// TODO Auto-generated method stub
 		
 	}
