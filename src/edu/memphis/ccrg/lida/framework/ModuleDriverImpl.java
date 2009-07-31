@@ -16,9 +16,9 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl
 
 	public void run() {
 		timer.checkForStartPause();
-		if (!LidaTaskManager.inTicksMode() || hasEnoughTicks()) {
+		if (!LidaTaskManager.isTicksMode() || hasEnoughTicks()) {
 			
-			if(LidaTaskManager.inTicksMode())
+			if(LidaTaskManager.isTicksMode())
 				consumeTicksForACycle();
 			
 			cycleStep();

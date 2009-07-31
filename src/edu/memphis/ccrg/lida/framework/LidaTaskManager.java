@@ -27,7 +27,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 
 	public static boolean isTicksMode() {
 		return ticksMode;
-	}
+	} 
 
 	/**
 	 * true -> Start out paused false -> Start out running

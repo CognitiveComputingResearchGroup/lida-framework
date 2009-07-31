@@ -27,7 +27,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	/**
 	 * @return the tasksArePaused
 	 */
-	public boolean inTasksArePaused() {
+	public boolean isTasksArePaused() {
 		return tasksArePaused;
 	}
 
@@ -116,7 +116,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 
 	protected boolean shouldRun(LidaTask r) {
 		boolean result = false;
-		if (!LidaTaskManager.inTicksMode() || ((r.getStatus() != LidaTask.RUNNING) && (r.hasEnoughTicks()))) {
+		if (!LidaTaskManager.isTicksMode() || ((r.getStatus() != LidaTask.RUNNING) && (r.hasEnoughTicks()))) {
 			result = true;
 		}
 		return result;
