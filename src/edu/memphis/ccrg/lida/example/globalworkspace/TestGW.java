@@ -63,6 +63,11 @@ public class TestGW {
 
 			public void receiveBroadcast(BroadcastContent bc) {
 				System.out.println(bc);
+			}
+
+			public void learn() {
+				// TODO Auto-generated method stub
+				
 			}});
 		
 		Thread threadW=new Thread(new MockWorkspace(gw,55));

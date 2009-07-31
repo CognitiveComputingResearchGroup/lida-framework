@@ -6,7 +6,6 @@ package edu.memphis.ccrg.lida.perception;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.shared.Link;
@@ -17,7 +16,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 /**
  * @author Ryan McCall
  */
-public interface PerceptualAssociativeMemory extends WorkspaceListener,  BroadcastListener{
+public interface PerceptualAssociativeMemory{
 	
 	/**
 	 * Updates PAM's parameters from the supplied map

@@ -14,5 +14,10 @@ public class SensoryMemoryImpl implements SensoryMemory{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void addSensoryMemoryListener(SensoryMemoryListener l) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }//class

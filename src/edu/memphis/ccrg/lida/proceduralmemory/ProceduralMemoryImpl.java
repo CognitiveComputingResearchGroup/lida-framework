@@ -3,18 +3,18 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.shared.BroadcastLearner;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class ProceduralMemoryImpl implements ProceduralMemory,
-		GuiContentProvider, BroadcastLearner {
+public class ProceduralMemoryImpl implements ProceduralMemory, 
+											 BroadcastListener,
+											 GuiContentProvider{
 
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
@@ -59,6 +59,6 @@ public class ProceduralMemoryImpl implements ProceduralMemory,
 				gui.receiveGuiEvent(event);
 			}
 		}
-	}
+	}//method
 
 }// class

@@ -4,6 +4,8 @@ public interface SensoryMemory{
 
 	void processSensors();
 	
-	Object getContent(String type,Object... parameters);
+	Object getContent(String type, Object... parameters);
+	
+	void addSensoryMemoryListener(SensoryMemoryListener l);
 
 }

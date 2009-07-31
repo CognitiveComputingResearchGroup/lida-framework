@@ -24,6 +24,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
@@ -41,7 +42,6 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SBCodeletDriver
 
 /**
  * @author Javier Snaider
- * 
  */
 public class Lida {
 	
@@ -58,10 +58,10 @@ public class Lida {
 	private Workspace workspace;
 	private SBCodeletDriver sbCodeletDriver;
 	// Attention
-	private AttentionDriver attnDriver;
+	private AttentionDriver attentionDriver;
 	private GlobalWorkspace globalWksp;
 	// Action Selection
-	private ProceduralMemory procMem;
+	private ProceduralMemory proceduralMemory;
 	private ActionSelection actionSelection;
 	// A class that helps pause and control the drivers.
 	private LidaTaskManager taskManager;
@@ -95,7 +95,7 @@ public class Lida {
 									  new CurrentSituationalModelImpl());
 		//
 		globalWksp = new GlobalWorkspaceImpl();
-		procMem = new ProceduralMemoryImpl();
+		proceduralMemory = new ProceduralMemoryImpl();
 		actionSelection = new ActionSelectionImpl();
 		sensoryMotorMemory = new SensoryMotorMemoryImpl();
 		logger.info("Lida submodules Created");		
@@ -103,15 +103,15 @@ public class Lida {
 
 	private void initDrivers() {
 		//finish initializing drivers 
-		attnDriver = new AttentionDriver(taskManager, workspace.getCSM(), globalWksp);
+		attentionDriver = new AttentionDriver(taskManager, workspace.getCSM(), globalWksp);
 		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager);
 		//Add drivers to a list for execution
 		drivers.add(environment);
-		//drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager));
-		//drivers.add(new PAMDriver(pam, taskManager));
-		//drivers.add(attnDriver);
-		//drivers.add(sbCodeletDriver);
-		//drivers.add(new ProceduralMemoryDriver(procMem, taskManager));
+		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager));
+		drivers.add(new PAMDriver(pam, taskManager));
+		drivers.add(attentionDriver);
+		drivers.add(sbCodeletDriver);
+		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager));
 		//done creating drivers
 		logger.info("Lida drivers Created");		
 	}
@@ -121,8 +121,10 @@ public class Lida {
 			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
 		else
 			logger.warning("Cannot add SM as a listener");
-		//sensoryMemory.addSensoryListener(sensoryMotorMemory);
-		//sensoryMemory.addSensoryListener(pam);
+		
+		if(sensoryMotorMemory instanceof SensoryMemoryListener)
+			sensoryMemory.addSensoryMemoryListener((SensoryMemoryListener) sensoryMotorMemory);
+		
 		if (workspace instanceof PAMListener)
 			pam.addPAMListener((PAMListener) workspace);
 		else
@@ -139,19 +141,28 @@ public class Lida {
 			logger.warning("Cannot add TEM as a listener");
 		
 		if(pam instanceof WorkspaceListener)
-			workspace.addPamWorkspaceListener(pam);
+			workspace.addPamWorkspaceListener((WorkspaceListener) pam);
 		else 
 			logger.warning("Cannot add PAM as a listener");
-		//check
-		globalWksp.addBroadcastListener(pam);
-		globalWksp.addBroadcastListener((BroadcastListener)workspace);
-		globalWksp.addBroadcastListener(tem);
-		globalWksp.addBroadcastListener((BroadcastListener)attnDriver);
-		globalWksp.addBroadcastListener(procMem);
+		
+		if(pam instanceof BroadcastListener)
+			globalWksp.addBroadcastListener((BroadcastListener) pam);			
+		if(workspace instanceof BroadcastListener)	
+			globalWksp.addBroadcastListener((BroadcastListener) workspace);
+		if(tem instanceof BroadcastListener)
+			globalWksp.addBroadcastListener((BroadcastListener) tem);
+		if(attentionDriver instanceof BroadcastListener)
+			globalWksp.addBroadcastListener((BroadcastListener) attentionDriver);
+		if(proceduralMemory instanceof BroadcastListener)
+			globalWksp.addBroadcastListener((BroadcastListener) proceduralMemory);
 
-		procMem.addProceduralMemoryListener((ProceduralMemoryListener)actionSelection);
+		if(actionSelection instanceof ProceduralMemoryListener)
+			proceduralMemory.addProceduralMemoryListener((ProceduralMemoryListener)actionSelection);
+		
+		if(workspace instanceof ActionSelectionListener)
+			actionSelection.addActionSelectionListener((ActionSelectionListener)workspace);
 		actionSelection.addActionSelectionListener(environment);
-		actionSelection.addActionSelectionListener((ActionSelectionListener)workspace);
+		
 		logger.info("Lida listeners added");	
 	}
 	public void start(){
@@ -220,7 +231,7 @@ public class Lida {
 	 * @return the procMem
 	 */
 	public ProceduralMemory getProcMem() {
-		return procMem;
+		return proceduralMemory;
 	}
 
 	/**
@@ -245,6 +256,6 @@ public class Lida {
 	}
 
 	public AttentionDriver getAttentionDriver() {
-		return attnDriver;
+		return attentionDriver;
 	}
 }

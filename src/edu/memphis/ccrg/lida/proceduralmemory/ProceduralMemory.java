@@ -8,9 +8,7 @@
 
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-
-public interface ProceduralMemory extends BroadcastListener {
+public interface ProceduralMemory{
 
     public abstract void addProceduralMemoryListener(ProceduralMemoryListener listener); 
 	
