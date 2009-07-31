@@ -58,7 +58,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * system is pausable.
 	 */
 	public synchronized void checkForStartPause() {
-		if (isTasksArePaused()) {
+		if (tasksArePaused()) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
