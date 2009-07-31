@@ -85,14 +85,14 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//****Input into the Workspace from other Modules is sent to the appropriate
 	//submodules
 	public void receivePAMContent(NodeStructure ns) {
-		perceptualBuffer.receivePAMContent(ns);		
+		((PAMListener) perceptualBuffer).receivePAMContent(ns);		
 	}
 	public void receiveLocalAssociation(NodeStructure association) {
-		episodicBuffer.receiveLocalAssociation(association);		
+		((LocalAssociationListener) episodicBuffer).receiveLocalAssociation(association);		
 	}	
 
 	public void receiveBroadcast(BroadcastContent bc) {
-		broadcastBuffer.receiveBroadcast(bc);		
+		((BroadcastListener) broadcastBuffer).receiveBroadcast(bc);		
 	}
 	public void receiveBehaviorContent(ActionContent c) {
 		// TODO: Implementing this is a long way off as of (3.30.09)		
@@ -119,6 +119,11 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	}
 	public BroadcastQueue getBroadcastBuffer(){
 		return broadcastBuffer;
+	}
+
+	public void learn() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }//class

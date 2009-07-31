@@ -1,9 +1,8 @@
 package edu.memphis.ccrg.lida.workspace.episodicbuffer;
 
-import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public interface EpisodicBuffer extends LocalAssociationListener{
+public interface EpisodicBuffer {
 
 	void addBufferListener(WorkspaceBufferListener workspace);
 

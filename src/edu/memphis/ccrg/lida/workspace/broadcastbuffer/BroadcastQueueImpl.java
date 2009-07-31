@@ -7,10 +7,13 @@ import java.util.List;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class BroadcastQueueImpl implements BroadcastQueue, GuiContentProvider{
+public class BroadcastQueueImpl implements BroadcastQueue, 
+										   BroadcastListener, 
+										   GuiContentProvider{
 	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
 	private final int broadcastQueueCapacity;
@@ -37,6 +40,11 @@ public class BroadcastQueueImpl implements BroadcastQueue, GuiContentProvider{
 	}
 
 	public void sendEvent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void learn() {
 		// TODO Auto-generated method stub
 		
 	}

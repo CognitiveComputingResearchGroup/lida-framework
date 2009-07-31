@@ -9,9 +9,12 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class EpisodicBufferImpl implements EpisodicBuffer, GuiContentProvider{
+public class EpisodicBufferImpl implements EpisodicBuffer, 
+										   LocalAssociationListener, 
+										   GuiContentProvider{
 
     private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
     private List<WorkspaceBufferListener> listeners = new ArrayList<WorkspaceBufferListener>();
