@@ -4,7 +4,16 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 
 	private static long nextTaskID = 0L;
 	private static boolean ticksMode = false;
-
+	/**
+	 * When paused, this is how long this thread will sleep before checking to
+	 * see if pause was clicked again to start things back up.
+	 */
+	private int msUntilICheckForUnpause = 10;
+	/**
+	 * Threads calling the member function getSleepTime() will sleep for this
+	 * many ms.
+	 */
+	private int timeScale = 150;
 	/**
 	 * Convenience method to obtain the next ID for LidaTasks
 	 * 
@@ -29,19 +38,6 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		return ticksMode;
 	} 
 
-	/**
-	 * true -> Start out paused false -> Start out running
-	 */
-	/**
-	 * When paused, this is how long this thread will sleep before checking to
-	 * see if pause was clicked again to start things back up.
-	 */
-	private int msUntilICheckForUnpause = 10;
-	/**
-	 * Threads calling the member function getSleepTime() will sleep for this
-	 * many ms.
-	 */
-	private int threadSleepTime = 150;
 
 	public LidaTaskManager(boolean startPaused, int threadSleepTime) {
 		if (startPaused){
@@ -49,7 +45,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		}else{
 			resumeSpawnedTasks();
 		}
-		this.threadSleepTime = threadSleepTime;
+		this.timeScale = threadSleepTime;
 	}
 
 	public synchronized void resumeSpawnedTasks() {
@@ -61,8 +57,8 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * Threads should call this in every iteration of their cycle so that the
 	 * system is pausable.
 	 */
-	public synchronized void checkForStartOrPause() {
-		if (tasksArePaused()) {
+	public synchronized void checkForStartPause() {
+		if (isTasksArePaused()) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -77,12 +73,12 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * 
 	 * @return how long to sleep
 	 */
-	public int getSleepTime() {
-		return threadSleepTime;
+	public int getTimeScale() {
+		return timeScale;
 	}
 
-	public synchronized void setSleepTime(int newTime) {
-		threadSleepTime = newTime;
+	public synchronized void setTimeScale(int newTimeScale) {
+		timeScale = newTimeScale;
 	}//
 
 	/**

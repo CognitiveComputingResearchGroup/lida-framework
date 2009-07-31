@@ -51,8 +51,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	}
 
 	public void addTask(LidaTask r) {
-		executorService.execute(r);
+		r.setStatus(LidaTask.RUNNING);
 		runningTasks.add(r);
+		receiveFinishedTask(r,null);
 	}
 
 	/**
@@ -61,7 +62,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
 		switch (finishedTask.getStatus()) {
-		case LidaTask.FINISHED: // TODO: get and process result
+		case LidaTask.FINISHED: // TODO: get and process result			
 		case LidaTask.CANCELLED:
 			runningTasks.remove(finishedTask);
 			break;
@@ -71,9 +72,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		case LidaTask.RUNNING:
 			if (!tasksArePaused) {
 				if (shouldRun(finishedTask)) {
-					logger.log(Level.FINEST, "restarting task {0}",
-							finishedTask);
-					finishedTask.setTaskStatus(LidaTask.RUNNING);
+					logger.log(Level.FINEST, "restarting task {0}",finishedTask);
+					finishedTask.setStatus(LidaTask.RUNNING);
 					executorService.execute(finishedTask);
 				}
 			}
@@ -95,8 +95,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			s.stopRunning();
 		}
 		executorService.shutdownNow();
-		
-		logger.info("In " + this.toString() + ", all spawned threads have been told to stop");
+		logger.info("All spawned tasks have been told to stop");
 	}// method
 
 	/**
@@ -109,7 +108,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		for (LidaTask s : runningTasks) {
 			s.addTicks(ticks);
 			if (shouldRun(s)) {
-				s.setTaskStatus(LidaTask.RUNNING);
+				s.setStatus(LidaTask.RUNNING);
 				executorService.execute(s);
 			}
 		}//for
@@ -135,7 +134,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		for (LidaTask s : runningTasks) {
 			int status = s.getStatus();
 			if ((status & (LidaTask.RUNNING | LidaTask.STOPPED | LidaTask.TO_RESET)) != 0) {
-				s.setTaskStatus(LidaTask.RUNNING);
+				s.setStatus(LidaTask.RUNNING);
 				executorService.execute(s);
 			}
 		}

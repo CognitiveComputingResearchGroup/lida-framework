@@ -27,7 +27,6 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		setTaskStatus(LidaTask.RUNNING);
 		//System.out.println("module driver impl, run, setting task status to run " + LidaTask.RUNNING);
 		
-		return;
 	}// method
 	
 	private void runOneStep(){
