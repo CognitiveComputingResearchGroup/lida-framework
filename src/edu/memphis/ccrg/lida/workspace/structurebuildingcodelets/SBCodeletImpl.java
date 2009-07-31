@@ -31,7 +31,7 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
 	
 	public void run() {
-		timer.checkForStartPause();
+		timer.checkForStartOrPause();
 		 
 		
 		for(List<NodeStructure> buffer: accessibleBuffers)

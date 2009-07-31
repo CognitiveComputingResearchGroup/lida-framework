@@ -55,10 +55,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		runningTasks.add(r);
 	}
 
-	public Collection<LidaTask> getAllTasks() {
-		return Collections.unmodifiableCollection(runningTasks);
-	}
-
 	/**
 	 * Finished tasks from the FrameworkExecutorService are sent to this method.
 	 * If it is overridden then is should still be called first using super.
@@ -77,13 +73,17 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 				if (shouldRun(finishedTask)) {
 					logger.log(Level.FINEST, "restarting task {0}",
 							finishedTask);
-					finishedTask.setStatus(LidaTask.RUNNING);
+					finishedTask.setTaskStatus(LidaTask.RUNNING);
 					executorService.execute(finishedTask);
 				}
 			}
 			break;
 		}
 	}// method
+
+	public Collection<LidaTask> getAllTasks() {
+		return Collections.unmodifiableCollection(runningTasks);
+	}
 
 	public int getSpawnedTaskCount() {
 		return runningTasks.size();
@@ -109,7 +109,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		for (LidaTask s : runningTasks) {
 			s.addTicks(ticks);
 			if (shouldRun(s)) {
-				s.setStatus(LidaTask.RUNNING);
+				s.setTaskStatus(LidaTask.RUNNING);
 				executorService.execute(s);
 			}
 		}//for
@@ -135,10 +135,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		for (LidaTask s : runningTasks) {
 			int status = s.getStatus();
 			if ((status & (LidaTask.RUNNING | LidaTask.STOPPED | LidaTask.TO_RESET)) != 0) {
-				s.setStatus(LidaTask.RUNNING);
+				s.setTaskStatus(LidaTask.RUNNING);
 				executorService.execute(s);
 			}
 		}
-	}
+	}//method
 
 }// class

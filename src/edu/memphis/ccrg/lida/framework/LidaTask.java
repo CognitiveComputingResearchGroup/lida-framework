@@ -36,7 +36,7 @@ public interface LidaTask extends Runnable, Activatible{
 	public static final int CANCELLED=16;
 	
 	public abstract int getStatus();
-	public abstract void setStatus(int status);
+	public abstract void setTaskStatus(int status);
 
 	public abstract void stopRunning();
 	
@@ -64,7 +64,7 @@ public interface LidaTask extends Runnable, Activatible{
 	public abstract int getAccumulatedTicks();
 	public abstract void addTicks(int ticks);
 	public abstract boolean hasEnoughTicks();
-	public abstract boolean consumeTicksForACycle();
+	public abstract boolean useOneCycleOfTicks();
 
 	public abstract void reset();	
 }

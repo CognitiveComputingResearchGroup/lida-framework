@@ -33,10 +33,10 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
     }
 
 	public void run() {
-		timer.checkForStartPause();
+		timer.checkForStartOrPause();
 		if (!LidaTaskManager.isTicksMode() || (hasEnoughTicks())) {
 			if (LidaTaskManager.isTicksMode()) {
-				consumeTicksForACycle();
+				useOneCycleOfTicks();
 			}
 			try {
 				// Sleeps a lap proportional for each task

@@ -61,7 +61,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * Threads should call this in every iteration of their cycle so that the
 	 * system is pausable.
 	 */
-	public synchronized void checkForStartPause() {
+	public synchronized void checkForStartOrPause() {
 		if (tasksArePaused()) {
 			try {
 				this.wait();

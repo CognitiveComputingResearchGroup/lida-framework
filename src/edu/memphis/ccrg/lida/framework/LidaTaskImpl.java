@@ -28,8 +28,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(int status) {
-		this.status = status;
+	public void setTaskStatus(int status) {
+		if(this.status != CANCELLED)
+			this.status = status;
 	}
 	/**
 	 * @return the status
@@ -62,7 +63,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		return accumulatedTicks;
 	}
 
-	public boolean consumeTicksForACycle() {
+	public boolean useOneCycleOfTicks() {
 		if (accumulatedTicks >= numberOfTicksPerCycle){
 			accumulatedTicks = accumulatedTicks - numberOfTicksPerCycle;
 			return true;
