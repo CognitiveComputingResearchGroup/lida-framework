@@ -50,7 +50,7 @@ public class LidaGui extends javax.swing.JFrame {
         visualFieldPanel1.registrerLidaGuiController(controller);
         visualFieldPanel1.registrerLida(lida);
              
-        logger.info("Lida started");
+        logger.info("Lida started\n");
     }
 
     /** This method is called from within the constructor to

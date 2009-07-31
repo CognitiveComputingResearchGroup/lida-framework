@@ -27,8 +27,9 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
-public class PerceptualAssociativeMemoryImpl implements
-		PerceptualAssociativeMemory, GuiContentProvider, BroadcastLearner {
+public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMemory, 
+														GuiContentProvider, 
+														BroadcastLearner {
 
 	private PamNodeStructure graph = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();

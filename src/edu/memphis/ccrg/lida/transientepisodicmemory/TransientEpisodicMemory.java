@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * @also LocalAssociation
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public interface TransientEpisodicMemory extends BroadcastListener {
+public interface TransientEpisodicMemory extends BroadcastListener, CueListener {
     
     /**
      * Cues this episodic memory. Typically the cue would be a set of nodes, and

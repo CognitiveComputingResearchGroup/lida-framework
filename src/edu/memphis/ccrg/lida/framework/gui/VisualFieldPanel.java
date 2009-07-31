@@ -21,7 +21,8 @@ import edu.memphis.ccrg.lida.framework.Lida;
  */
 public class VisualFieldPanel extends javax.swing.JPanel implements LidaPanel, FrameworkGuiEventListener{
 
-    private LidaGuiController controller;
+	private static final long serialVersionUID = 13L;
+	private LidaGuiController controller;
     private Lida lida;
     
     /** Creates new form VisualFieldPanel */

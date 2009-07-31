@@ -83,4 +83,9 @@ public class TEMImpl implements TransientEpisodicMemory {
         }
         return future;
     }
+
+	public void receiveCue(NodeStructure cue) {
+		// TODO Auto-generated method stub
+		
+	}
 }

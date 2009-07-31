@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * ThreadSpawners create, manage, and end new threads.  

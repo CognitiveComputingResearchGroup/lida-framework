@@ -11,19 +11,17 @@
 
 package edu.memphis.ccrg.lida.example.genericlida.gui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.Map;
 
 /**
  * @author ryanjmccall
  */
 public class NodeLinkFlowGui extends javax.swing.JFrame{
-//	/**
-//	 * 
-//	 */
-//	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 1L;
 //	private Map<Integer, List<javax.swing.JTextField>> map = new HashMap<Integer, List<javax.swing.JTextField>>();
 //	
 //	public NodeLinkFlowGui(){

@@ -35,6 +35,7 @@ import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationa
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SBCodeletDriver;
 
@@ -119,25 +120,28 @@ public class Lida {
 		if (sensoryMemory instanceof SensoryMotorListener)
 			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
 		else
-			logger.info("*ERROR* adding listener");
+			logger.warning("Cannot add SM as a listener");
 		//sensoryMemory.addSensoryListener(sensoryMotorMemory);
 		//sensoryMemory.addSensoryListener(pam);
 		if (workspace instanceof PAMListener)
 			pam.addPAMListener((PAMListener) workspace);
 		else
-			logger.info("*ERROR* adding listener");
+			logger.warning("Cannot add WORKSPACE as a listener");
 
 		if (declarativeMemory instanceof CueListener)
 			workspace.addCueListener((CueListener)declarativeMemory);
 		else
-			logger.info("*ERROR* adding listener");
+			logger.warning("Cannot add DM as a listener");
 		
 		if (tem instanceof CueListener)		
 			workspace.addCueListener((CueListener)tem);
 		else
-			logger.info("*ERROR* adding listener");
+			logger.warning("Cannot add TEM as a listener");
 		
-		workspace.addPamWorkspaceListener(pam);
+		if(pam instanceof WorkspaceListener)
+			workspace.addPamWorkspaceListener(pam);
+		else 
+			logger.warning("Cannot add PAM as a listener");
 		//check
 		globalWksp.addBroadcastListener(pam);
 		globalWksp.addBroadcastListener((BroadcastListener)workspace);
@@ -153,7 +157,7 @@ public class Lida {
 	public void start(){
 		globalWksp.start(); //TODO: change to the ThreadSpawner
 		taskManager.setInitialTasks(drivers);		
-		logger.info("Lida submodules Started");		
+		logger.info("Lida submodules Started\n");		
 	}
 
 	/**
