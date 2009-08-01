@@ -20,7 +20,7 @@ public interface TaskSpawner extends LidaTask{
 	 * Adds a new LidaTask to this Spawner
 	 * @param r
 	 */
-	public abstract void addTask(LidaTask r);
+	public abstract void addTask(LidaTask task);
 	/**
 	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
 	 * @return
@@ -30,15 +30,15 @@ public interface TaskSpawner extends LidaTask{
 	/**
 	 * The supplied LidaTask will be start by the spawner right away.
 	 */
-	public abstract void setInitialTasks(List<? extends LidaTask> initialRunnables);
+	public abstract void setInitialTasks(List<? extends LidaTask> initialTasks);
 		
 	/**
 	 * This method receives the tasks that have finished.
 	 * 
-	 * @param finishedTask
+	 * @param task
 	 * @param t
 	 */
-	public abstract void receiveFinishedTask(LidaTask finishedTask, Throwable t);
+	public abstract void receiveFinishedTask(LidaTask task, Throwable t);
 
 	public abstract void pauseSpawnedTasks();
 

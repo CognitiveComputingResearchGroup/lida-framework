@@ -22,20 +22,23 @@ public interface LidaTask extends Runnable, Activatible{
 	public static final int RUNNING=1;
 	
 	/**
-	 * Task is finished
+	 * Task is finished and has a result
 	 */
 	public static final int FINISHED=2;
 	
 	/**
 	 * Task is not running and not finished.
 	 */
-	public static final int STOPPED=4;
+	public static final int WAITING_TO_RUN=4;
 	
 	public static final int TO_RESET=8;
-	
+
+	/**
+	 * Task is finished
+	 */
 	public static final int CANCELLED=16;
 	
-	public abstract int getStatus();
+	public abstract int getTaskStatus();
 	public abstract void setTaskStatus(int status);
 
 	public abstract void stopRunning();
@@ -53,18 +56,18 @@ public interface LidaTask extends Runnable, Activatible{
 	 * Sets how many ticks are needed to complete a cycle or 'one run' of this task
 	 * @param ticks
 	 */
-	public abstract void setTicksForCycle(int ticks);
+	public abstract void setNumberOfTicksPerStep(int ticks);
 
 	/**
 	 * Gets the number of ticks needed to complete a cycle or 'one run' of this task
 	 * @return ticks 
 	 */
-	public abstract int getNumberOfTicksPerCycle();
+	public abstract int getNumberOfTicksPerStep();
 	
 	public abstract int getAccumulatedTicks();
 	public abstract void addTicks(int ticks);
 	public abstract boolean hasEnoughTicks();
-	public abstract boolean useOneCycleOfTicks();
+	public abstract boolean useOneStepOfTicks();
 
 	public abstract void reset();	
 }

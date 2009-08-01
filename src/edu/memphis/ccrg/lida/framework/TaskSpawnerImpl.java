@@ -10,9 +10,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawner {
+public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
+		TaskSpawner {
 
-	private Logger logger = Logger.getLogger("lida.framework.TaskSpawnerImpl");
+	private static Logger logger = Logger
+			.getLogger("lida.framework.TaskSpawnerImpl");
 	/**
 	 * Used to execute the tasks
 	 */
@@ -37,8 +39,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		int corePoolSize = 5;
 		int maxPoolSize = 100;
 		long keepAliveTime = 10;
-		executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, 
-												  keepAliveTime, TimeUnit.SECONDS);
+		executorService = new LidaExecutorService(this, corePoolSize,
+				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
 	}// method
 
 	public TaskSpawnerImpl() {
@@ -50,36 +52,44 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			addTask(r);
 	}
 
-	public void addTask(LidaTask r) {
-		r.setTaskStatus(LidaTask.RUNNING);
-		runningTasks.add(r);
-		receiveFinishedTask(r,null);
+	public void addTask(LidaTask task) {
+		task.setTaskStatus(LidaTask.WAITING_TO_RUN);
+		runningTasks.add(task);
+		runTask(task);
 	}
 
 	/**
 	 * Finished tasks from the FrameworkExecutorService are sent to this method.
 	 * If it is overridden then is should still be called first using super.
 	 */
-	public void receiveFinishedTask(LidaTask finishedTask, Throwable t) {
-		switch (finishedTask.getStatus()) {
-		case LidaTask.FINISHED: // TODO: get and process result			
+	public void receiveFinishedTask(LidaTask task, Throwable t) {
+		switch (task.getTaskStatus()) {
+		case LidaTask.FINISHED: // TODO: get and process result
 		case LidaTask.CANCELLED:
-			runningTasks.remove(finishedTask);
+			logger.log(Level.FINEST, "cancelling task {0}", task);
+			runningTasks.remove(task);
 			break;
 		case LidaTask.TO_RESET:
-			finishedTask.reset();
-		case LidaTask.STOPPED:
+			logger.log(Level.FINEST, "reseting task {0}", task);
+			task.reset();
+
+		case LidaTask.WAITING_TO_RUN:
 		case LidaTask.RUNNING:
-			if (!tasksArePaused) {
-				if (shouldRun(finishedTask)) {
-					logger.log(Level.FINEST, "restarting task {0}",finishedTask);
-					finishedTask.setTaskStatus(LidaTask.RUNNING);
-					executorService.execute(finishedTask);
-				}
-			}
+			task.setTaskStatus(LidaTask.WAITING_TO_RUN);
+			logger.log(Level.FINEST, "Running task {0}", task);
+			runTask(task);
 			break;
 		}
 	}// method
+
+	protected void runTask(LidaTask task) {
+		if (!tasksArePaused) {
+			if (shouldRun(task)) {
+				task.setTaskStatus(LidaTask.RUNNING);
+				executorService.execute(task);
+			}
+		}
+	}
 
 	public Collection<LidaTask> getAllTasks() {
 		return Collections.unmodifiableCollection(runningTasks);
@@ -91,7 +101,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 
 	public void stopRunning() {
 		for (LidaTask s : runningTasks) {
-			logger.log(Level.INFO, "Stopping task: {0}", s.toString());
+			logger.log(Level.INFO, "Stopping task: {0}", s);
 			s.stopRunning();
 		}
 		executorService.shutdownNow();
@@ -107,37 +117,37 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		super.addTicks(ticks);
 		for (LidaTask s : runningTasks) {
 			s.addTicks(ticks);
-			if (shouldRun(s)) {
-				s.setTaskStatus(LidaTask.RUNNING);
-				executorService.execute(s);
-			}
-		}//for
-	}//method
+			runTask(s);
+		}// for
+	}// method
 
 	protected boolean shouldRun(LidaTask r) {
-		//if not in ticks mode then should run task
-		if (!LidaTaskManager.isTicksMode())
+		// if not in ticks mode then should run task
+		if (!LidaTaskManager.isTicksModeEnabled())
 			return true;
-		//if task not already running and if task has enough ticks then should run task
-		if(r.getStatus() != LidaTask.RUNNING && r.hasEnoughTicks())
+		// if task not already running and if task has enough ticks then should
+		// run task
+		if (r.getTaskStatus() != LidaTask.RUNNING && r.hasEnoughTicks())
 			return true;
-		
+
 		return false;
 	}
 
 	public void pauseSpawnedTasks() {
+		logger.log(Level.FINE, "All Tasks paused.");
 		tasksArePaused = true;
 	}
 
 	public void resumeSpawnedTasks() {
 		tasksArePaused = false;
-		for (LidaTask s : runningTasks) {
-			int status = s.getStatus();
-			if ((status & (LidaTask.RUNNING | LidaTask.STOPPED | LidaTask.TO_RESET)) != 0) {
-				s.setTaskStatus(LidaTask.RUNNING);
-				executorService.execute(s);
+		for (LidaTask task : runningTasks) {
+			int status = task.getTaskStatus();
+			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {
+				task.setTaskStatus(LidaTask.WAITING_TO_RUN);
+				logger.log(Level.FINEST, "Resuming task {0}", task);
+				runTask(task);
 			}
 		}
-	}//method
+	}// method
 
 }// class

@@ -14,7 +14,6 @@ import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationa
 
 public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodelet{
 	
-	private boolean keepRunning = true;
 	private ContentDetectBehavior checkBehavior = new DefaultContentDetectBehavior();
 	//
 	private CurrentSituationalModel csm;
@@ -33,14 +32,13 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
     }
 
 	public void run() {
-		timer.checkForStartPause();
-		if (!LidaTaskManager.isTicksMode() || (hasEnoughTicks())) {
-			if (LidaTaskManager.isTicksMode()) {
-				useOneCycleOfTicks();
+		if (!LidaTaskManager.isTicksModeEnabled() || (hasEnoughTicks())) {
+			if (LidaTaskManager.isTicksModeEnabled()) {
+				useOneStepOfTicks();
 			}
 			try {
 				// Sleeps a lap proportional for each task
-				Thread.sleep(timer.getTimeScale() * getNumberOfTicksPerCycle());
+				Thread.sleep(timer.getTimeScale() * getNumberOfTicksPerStep());
 			} catch (InterruptedException e) {
 				stopRunning();
 				return;
@@ -54,9 +52,6 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 		return;
 	}//method	
 
-	public void stopRunning() {
-		keepRunning = false;		
-	}
 	
 	public boolean hasSoughtContent(CurrentSituationalModel csm) {
 		NodeStructure model = csm.getModel();

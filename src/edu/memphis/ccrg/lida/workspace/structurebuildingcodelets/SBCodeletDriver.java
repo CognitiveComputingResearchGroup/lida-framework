@@ -22,7 +22,7 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 
 	public SBCodeletDriver(Workspace w, LidaTaskManager timer) {
 		super(timer);
-		setTicksForCycle(10);//TODO: check
+		setNumberOfTicksPerStep(10);//TODO: check
 		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
 	}// method
 	

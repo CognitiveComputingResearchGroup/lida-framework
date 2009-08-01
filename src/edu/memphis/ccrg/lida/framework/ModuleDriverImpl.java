@@ -16,15 +16,15 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	public void run() {		
 		taskManager.checkForStartPause();
 		//If not is ticks Mode then business as usual.
-		if (!LidaTaskManager.isTicksMode()){
+		if (!LidaTaskManager.isTicksModeEnabled()){
 			//System.out.println("not in ticks mode");
 			runOneStep();
 		}else if(hasEnoughTicks()){
 			//System.out.println("use ticks");
-			useOneCycleOfTicks();
+			useOneStepOfTicks();
 			runOneStep();
 		}
-		setTaskStatus(LidaTask.RUNNING);
+		//setTaskStatus(LidaTask.RUNNING);
 		//System.out.println("module driver impl, run, setting task status to run " + LidaTask.RUNNING);
 		
 	}// method
@@ -33,17 +33,10 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		runDriverOneProcessingStep();
 		try {
 			// Sleeps a lap proportional for each task
-			Thread.sleep(taskManager.getTimeScale() * getNumberOfTicksPerCycle());
+			Thread.sleep(taskManager.getTimeScale() * getNumberOfTicksPerStep());
 		}catch (InterruptedException e){
 			stopRunning();
 		}
 	}
-
-	public void stopRunning() {
-		setTaskStatus(LidaTask.CANCELLED);
-		//System.out.println("module driver impl setting task status to cancelled " + LidaTask.CANCELLED);
-		super.stopRunning();
-		logger.info("Driver stopped\n");
-	}// method
 
 }// class

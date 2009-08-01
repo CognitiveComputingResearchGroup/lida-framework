@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	private long taskID;
-	private int numberOfTicksPerCycle = 1;
+	private int numberOfTicksPerStep = 1;
 	private int accumulatedTicks;
 	protected int status = LidaTask.WAITING;
 	
@@ -22,7 +22,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	public LidaTaskImpl(int ticksForCycle){
 		setTaskID(LidaTaskManager.getNextTaskID());
-		setTicksForCycle(ticksForCycle);
+		setNumberOfTicksPerStep(ticksForCycle);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @return the status
 	 */
-	public int getStatus() {
+	public int getTaskStatus() {
 		return status;
 	}
 
@@ -46,13 +46,13 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void setTaskID(long id) {
 		taskID=id;		
 	}
-	public int getNumberOfTicksPerCycle() {
-		return numberOfTicksPerCycle;
+	public int getNumberOfTicksPerStep() {
+		return numberOfTicksPerStep;
 	}
 
-	public void setTicksForCycle(int ticks) {
+	public void setNumberOfTicksPerStep(int ticks) {
 		if(ticks > 0)
-			numberOfTicksPerCycle=ticks;		
+			numberOfTicksPerStep=ticks;		
 	}
 
 	public void addTicks(int ticks) {
@@ -63,20 +63,25 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		return accumulatedTicks;
 	}
 
-	public boolean useOneCycleOfTicks() {
-		if (accumulatedTicks >= numberOfTicksPerCycle){
-			accumulatedTicks = accumulatedTicks - numberOfTicksPerCycle;
+	public boolean useOneStepOfTicks() {
+		if (accumulatedTicks >= numberOfTicksPerStep){
+			accumulatedTicks = accumulatedTicks - numberOfTicksPerStep;
 			return true;
 		}
 		return false;
 	}
 
 	public boolean hasEnoughTicks() {
-		return accumulatedTicks >= numberOfTicksPerCycle;
+		return accumulatedTicks >= numberOfTicksPerStep;
 	}
 	
 	public void reset(){
 		
 	}
 	
+	public void stopRunning(){
+		setTaskStatus(LidaTask.CANCELLED);
+		//System.out.println("module driver impl setting task status to cancelled " + LidaTask.CANCELLED);
+
+	}
 }//class

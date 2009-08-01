@@ -5,11 +5,6 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	private static long nextTaskID = 0L;
 	private static boolean ticksMode = false;
 	/**
-	 * When paused, this is how long this thread will sleep before checking to
-	 * see if pause was clicked again to start things back up.
-	 */
-	private int msUntilICheckForUnpause = 10;
-	/**
 	 * Threads calling the member function getSleepTime() will sleep for this
 	 * many ms.
 	 */
@@ -30,22 +25,22 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * ten for Sensory Memory. In order to have the framework running accurately
 	 * the relative speed of each part of the framework must be set.
 	 */
-	public static void setTicksMode(boolean mode) {
+	public static void setTicksModeEnabled(boolean mode) {
 		ticksMode = mode;
 	}
 
-	public static boolean isTicksMode() {
+	public static boolean isTicksModeEnabled() {
 		return ticksMode;
 	} 
 
 
-	public LidaTaskManager(boolean startPaused, int threadSleepTime) {
+	public LidaTaskManager(boolean startPaused, int timeScale) {
 		if (startPaused){
 			pauseSpawnedTasks();
 		}else{
 			resumeSpawnedTasks();
 		}
-		this.timeScale = threadSleepTime;
+		this.timeScale = timeScale;
 	}
 
 	public synchronized void resumeSpawnedTasks() {

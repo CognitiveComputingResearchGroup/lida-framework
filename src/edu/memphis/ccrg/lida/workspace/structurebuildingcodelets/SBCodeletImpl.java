@@ -71,7 +71,7 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	public void reset() {
 		accessibleBuffers.clear();
 		writables.clear();
-		setTicksForCycle(50);
+		setNumberOfTicksPerStep(50);
 		setActivation(0.0);
 		soughtContent = new NodeStructureImpl();
 		action = new BasicCodeletAction();
@@ -79,11 +79,6 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
 	public int getType() {
 		return type;
-	}
-
-	public void stopRunning() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	/**
