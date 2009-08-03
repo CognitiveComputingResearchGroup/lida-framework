@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionEnvironment;
-import edu.memphis.ccrg.lida.example.genericlida.environsensorymem.VisionSensoryMemory;
+import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionEnvironment;
+import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.LidaGui;

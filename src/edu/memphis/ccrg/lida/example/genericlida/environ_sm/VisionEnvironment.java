@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.genericlida.environsensorymem;
+package edu.memphis.ccrg.lida.example.genericlida.environ_sm;
 
 import java.util.ArrayList;
 import java.util.List;

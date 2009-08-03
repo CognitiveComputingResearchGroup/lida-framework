@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.genericlida.environsensorymem;
+package edu.memphis.ccrg.lida.example.genericlida.environ_sm;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
