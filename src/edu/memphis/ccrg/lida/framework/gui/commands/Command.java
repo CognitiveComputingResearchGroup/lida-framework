@@ -7,7 +7,7 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 /**
  *
- * @author Javier
+ * @author Javier Snaider
  */
 public interface Command {
     public void setParameter(String name, Object value);

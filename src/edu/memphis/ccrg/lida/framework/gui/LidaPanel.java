@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
- * Panel four Lida Gui
+ *  Lida Gui Panel
  * @author Javier Snaider
  *
  */

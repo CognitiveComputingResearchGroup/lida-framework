@@ -14,7 +14,6 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	}
 
 	public void run() {		
-		taskManager.checkForStartPause();
 		//If not is ticks Mode then business as usual.
 		if (!LidaTaskManager.isTicksModeEnabled()){
 			//System.out.println("not in ticks mode");
@@ -38,5 +37,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 			stopRunning();
 		}
 	}
-
+	public LidaTaskManager getTaskManager(){
+		return taskManager;
+	}
 }// class

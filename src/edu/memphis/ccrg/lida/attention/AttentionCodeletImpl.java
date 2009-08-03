@@ -19,40 +19,50 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
 	private LidaTaskManager timer;
-	private NodeStructure soughtContent = new NodeStructureImpl();
+	private NodeStructure soughtContent;
 	    
-    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, 
-    							double activation,LidaTaskManager timer){
-    	super(3);
+    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, int ticksPerStep,
+    							double activation,LidaTaskManager timer, NodeStructure soughtContent){
+    	super(ticksPerStep);
     	setActivation(activation);
     	this.csm = csm;
     	global = g;
+    	this.soughtContent=soughtContent;
     	
     	this.timer=timer;
     }
 
 	public void run() {
-		if (!LidaTaskManager.isTicksModeEnabled() || (hasEnoughTicks())) {
-			if (LidaTaskManager.isTicksModeEnabled()) {
-				useOneStepOfTicks();
-			}
-			try {
-				// Sleeps a lap proportional for each task
-				Thread.sleep(timer.getTimeScale() * getNumberOfTicksPerStep());
-			} catch (InterruptedException e) {
-				stopRunning();
-				return;
-			}
+		//If not is ticks Mode then business as usual.
+		if (!LidaTaskManager.isTicksModeEnabled()){
+			//System.out.println("not in ticks mode");
+			runOneStep();
+		}else if(hasEnoughTicks()){
+			//System.out.println("use ticks");
+			useOneStepOfTicks();
+			runOneStep();
 		}
-			if(checkBehavior.hasSoughtContent(csm)){
-				NodeStructure csmContent = checkBehavior.getSoughtContent(csm); 
-				if(csmContent != null)
-					global.addCoalition(new CoalitionImpl(csmContent, getActivation()));				
-			}//if
-		return;
+		//setTaskStatus(LidaTask.RUNNING);
+		//System.out.println("module driver impl, run, setting task status to run " + LidaTask.RUNNING);
 	}//method	
+	private void runOneStep(){
+		runOneProcessingStep();
+		try {
+			// Sleeps a lap proportional for each task
+			Thread.sleep(timer.getTimeScale() * getNumberOfTicksPerStep());
+		}catch (InterruptedException e){
+			stopRunning();
+		}
+	}
 
-	
+	protected void runOneProcessingStep(){
+		if(checkBehavior.hasSoughtContent(csm)){
+			NodeStructure csmContent = checkBehavior.getSoughtContent(csm); 
+			if(csmContent != null)
+				global.addCoalition(new CoalitionImpl(csmContent, getActivation()));				
+		}//if	
+	}
+
 	public boolean hasSoughtContent(CurrentSituationalModel csm) {
 		NodeStructure model = csm.getModel();
 		Collection<Node> nodes = soughtContent.getNodes();
