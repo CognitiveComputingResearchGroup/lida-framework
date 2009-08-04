@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
@@ -11,6 +12,7 @@ import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
+import edu.memphis.ccrg.lida.example.genericlida.io.PamInput;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -71,19 +73,27 @@ public class Lida {
 	 */
 	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 
-	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm) {
+	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
 		logger.info("Starting Lida");
-		initComponents(ft, e, sm);
+		initComponents(ft, e, sm, configFilesMap);
 		initDrivers();
 		initListeners();
 		start();
 	}
 
-	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm) {
+	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
 		taskManager = tm;
 		environment = e;
 		sensoryMemory = sm;
+		
 		pam = new PerceptualAssociativeMemoryImpl();
+		String path = configFilesMap.get(Module.perceptualAssociativeMemory);
+		if(path != null){
+			PamInput pamInput = new PamInput(pam, sm);
+			pamInput.loadInputFromFile(path);
+		}
+		
+		//TODO: config files for other modules
 		tem = new TEMImpl(); 
 		declarativeMemory = new DeclarativeMemoryImpl();
 		//

@@ -13,7 +13,6 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	// set id for the LidaTask to be run.  This way we can ensure that
 	// all running threads in Lida have unique id as long as only this class
 	// is used to execute threads.
-	
 
    /**
 	* (From ThreadPoolExecutor javadoc) 
@@ -46,4 +45,4 @@ public class LidaExecutorService extends ThreadPoolExecutor {
      
      //<T> Future<T> submit(Runnable task, T result) 
 
-}
+}//class
