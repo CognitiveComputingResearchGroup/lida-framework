@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.workspace.currentsituationalmodel;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -36,7 +37,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 	 */
 	public void sendCSMContent(){
 		for(WorkspaceBufferListener l: csmListeners)
-			l.receiveBufferContent(WorkspaceBufferListener.CSM, model);
+			l.receiveBufferContent(Module.currentSituationalModel, model);
 	}//method
 	
 	/**
@@ -73,7 +74,6 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 				gui.receiveGuiEvent(event);
 			}
 		}		
-	}
-
+	}//method
 
 }//class
