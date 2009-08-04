@@ -13,8 +13,8 @@ public class IndividualActivationTrigger extends AggregateActivationTrigger {
 				//System.out.println("Individual activation");
 				gw.triggerBroadcast();
 				break;
-			}
-		}
+			}//if
+		}//for
 	}//method
 
-}
+}//class

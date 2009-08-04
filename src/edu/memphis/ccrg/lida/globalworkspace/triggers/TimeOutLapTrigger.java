@@ -14,9 +14,9 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  *
  */
 public class TimeOutLapTrigger extends TimeOutTrigger {
+	
 	public void checkForTrigger(Set<Coalition> coalitions, double maxActivation) {
 		reset();
 	}
-
 
 }
