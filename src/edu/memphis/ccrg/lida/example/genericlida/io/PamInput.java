@@ -13,10 +13,18 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 
-public class PamInput {
+public class PamInput implements InputProvider {
+	
+	private PerceptualAssociativeMemory pam;
+	private SensoryMemory sm;
+	
+	public PamInput(PerceptualAssociativeMemory pam, SensoryMemory sm){
+		this.pam = pam;
+		this.sm = sm;
+	}
 
 	//TODO return a boolean for success/fail?
-	public void read(PerceptualAssociativeMemory pam, SensoryMemory sm, String inputPath) {
+	public void loadInputFromFile(String inputFilePath) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		double upscale = 0.7, 
@@ -39,6 +47,7 @@ public class PamInput {
     	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>(); 
 		featureDetectors.add(new VisionFeatureDetector(gold, sm, pam));
 
+		System.out.println(featureDetectors.size());
 		pam.addToPAM(factory.getStoredNodes(), featureDetectors, factory.getStoredLinks());
 	}//method
 	

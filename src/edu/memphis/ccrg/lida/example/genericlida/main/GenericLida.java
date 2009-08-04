@@ -1,10 +1,14 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiControllerImpl;
@@ -27,8 +31,16 @@ public class GenericLida {
 	    		EnvironmentImpl environ = new VisionEnvironment(timer, height, width);
 	    		SensoryMemory sm = new VisionSensoryMemory(environ);
 	    		//
-	        	Lida lida = new Lida(timer, environ, sm);
-	        	LidaGuiController lgc = new LidaGuiControllerImpl(lida);
+	        	Map<Module, String> configFilesMap = new HashMap<Module, String>();
+	        	configFilesMap.put(Module.perceptualAssociativeMemory, "pam.txt");
+	        	configFilesMap.put(Module.transientEpisodicMemory, "tem.txt"); 
+	        	configFilesMap.put(Module.declarativeMemory , "dm.txt");
+	        	configFilesMap.put(Module.globalWorkspace , "global.txt");
+	        	configFilesMap.put(Module.proceduralMemory , "procMem.txt");
+	            configFilesMap.put(Module.actionSelection , "as.txt");
+	        	//
+	        	Lida lida = new Lida(timer, environ, sm, configFilesMap);
+	        	LidaGuiController lgc = new LidaGuiControllerImpl(lida);	        	
 	            new LidaGui(lida, lgc).setVisible(true);
 	        }//run
 	        

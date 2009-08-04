@@ -14,6 +14,8 @@ package edu.memphis.ccrg.lida.example.genericlida.gui;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.LinkImpl;
 import edu.memphis.ccrg.lida.shared.Linkable;
@@ -182,7 +184,7 @@ public class CSMGui_ForReference extends javax.swing.JFrame implements Workspace
      * When a new struct comes from the CSM, clear the node and link lists
      * and fill them with the new stuff
      */
-	public void receiveBufferContent(int n2, NodeStructure content) {
+	public void receiveBufferContent(Module buffer, NodeStructure content) {
 		synchronized(this){
 			struct = (NodeStructureImpl)content;
 		}		
