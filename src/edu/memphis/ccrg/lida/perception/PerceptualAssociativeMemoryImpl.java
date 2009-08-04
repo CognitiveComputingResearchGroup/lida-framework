@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -68,8 +70,11 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}// method
 
 	public void addToPAM(Set<PamNode> nodes, List<FeatureDetector> ftDetectors,
-			Set<Link> links) {
+						 Set<Link> links) {
 		featureDetectors = ftDetectors;
+		
+
+		System.out.println(featureDetectors.size());
 		graph.addPamNodes(nodes);
 		graph.addLinks(links);
 
@@ -85,8 +90,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		pamListeners.add(pl);
 	}
 
-	public synchronized void receiveWorkspaceContent(int originatingBuffer,
-			NodeStructure content) {
+	public synchronized void receiveWorkspaceContent(Module originatingBuffer,
+													 NodeStructure content) {
 		// topDownContent = content;
 	}
 
@@ -120,6 +125,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 */
 	public void propogateActivation() {
 		Set<PamNode> bottomNodes = new HashSet<PamNode>();
+		
 		for (FeatureDetector fd : featureDetectors)
 			bottomNodes.add(fd.getPamNode());
 
@@ -143,6 +149,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 			if (node.isRelevant())// Based on totalActivation
 				percept.addNode(node);
 		}// for
+		
 		// This is a good place to update guiContent
 		guiContent.clear();
 		guiContent.add(percept.getNodeCount());
