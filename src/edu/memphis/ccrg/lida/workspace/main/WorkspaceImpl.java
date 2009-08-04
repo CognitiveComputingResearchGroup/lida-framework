@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.perception.PAMListener;
@@ -71,9 +72,9 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 		TODO May want to also activate PAM based on new representations created by codelets
 		that get produced and put in the CSM
 	 */ 	 
-	public void receiveBufferContent(int buffer, NodeStructure content) {
-		if(buffer == WorkspaceBufferListener.EBUFFER)
-			pamWorkspaceListener.receiveWorkspaceContent(WorkspaceListener.FROM_EBUFFER, content);
+	public void receiveBufferContent(Module originatingBuffer, NodeStructure content) {
+		if(originatingBuffer == Module.episodicBuffer)
+			pamWorkspaceListener.receiveWorkspaceContent(Module.episodicBuffer, content);
 		cue(content);
 	}//method
 
