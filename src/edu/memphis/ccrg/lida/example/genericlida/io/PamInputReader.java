@@ -13,12 +13,12 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 
-public class PamInput implements InputProvider {
+public class PamInputReader implements InputProvider {
 	
 	private PerceptualAssociativeMemory pam;
 	private SensoryMemory sm;
 	
-	public PamInput(PerceptualAssociativeMemory pam, SensoryMemory sm){
+	public PamInputReader(PerceptualAssociativeMemory pam, SensoryMemory sm){
 		this.pam = pam;
 		this.sm = sm;
 	}

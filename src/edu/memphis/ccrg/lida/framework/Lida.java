@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.example.genericlida.io.PamInput;
+import edu.memphis.ccrg.lida.example.genericlida.io.PamInputReader;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -89,7 +89,7 @@ public class Lida {
 		pam = new PerceptualAssociativeMemoryImpl();
 		String path = configFilesMap.get(Module.perceptualAssociativeMemory);
 		if(path != null){
-			PamInput pamInput = new PamInput(pam, sm);
+			PamInputReader pamInput = new PamInputReader(pam, sm);
 			pamInput.loadInputFromFile(path);
 		}
 		
