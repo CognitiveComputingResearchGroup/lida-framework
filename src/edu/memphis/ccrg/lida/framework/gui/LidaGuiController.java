@@ -23,4 +23,6 @@ public interface LidaGuiController {
 	
 	void registrerLida(Lida lida);
 	
+	boolean isSystemPaused();
+	
 }

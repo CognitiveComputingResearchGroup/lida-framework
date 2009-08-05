@@ -33,9 +33,13 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		return ticksMode;
 	} 
 
-
-	public LidaTaskManager(boolean startPaused, int timeScale) {
-		if (startPaused){
+	/**
+	 * 
+	 * @param tasksStartOutRunning
+	 * @param timeScale
+	 */
+	public LidaTaskManager(boolean tasksStartOutRunning, int timeScale) {
+		if (tasksStartOutRunning){
 			pauseSpawnedTasks();
 		}else{
 			resumeSpawnedTasks();
@@ -43,6 +47,9 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		this.timeScale = timeScale;
 	}
 
+	/**
+	 * 
+	 */
 	public synchronized void resumeSpawnedTasks() {
 		super.resumeSpawnedTasks();
 		this.notifyAll();
@@ -53,7 +60,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * system is pausable.
 	 */
 	public synchronized void checkForStartPause() {
-		if (tasksArePaused()) {
+		if (isTasksPaused()) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -71,7 +78,6 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	public int getTimeScale() {
 		return timeScale;
 	}
-
 	public synchronized void setTimeScale(int newTimeScale) {
 		timeScale = newTimeScale;
 	}//

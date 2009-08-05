@@ -29,6 +29,8 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @param status the status to set
 	 */
 	public void setTaskStatus(int status) {
+		//If a task is cancelled it cannot be restarted.
+		//So only set the status if the current status is not currently cancelled.
 		if(this.status != CANCELLED)
 			this.status = status;
 	}

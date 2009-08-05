@@ -40,9 +40,12 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 
 	}
 
+	public boolean isSystemPaused(){
+		return lida.getTaskManager().isTasksPaused();
+	}
+	
 	public void registrerLida(Lida lida) {
 		this.lida = lida;
-
 	}
 
 }

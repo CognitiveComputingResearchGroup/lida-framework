@@ -12,7 +12,7 @@ public interface LidaTask extends Runnable, Activatible{
 	
 	//TODO: Explain these
 	/**
-	 * Task been scheduled to run, but is not running yet.
+	 * Task is scheduled to be run, but is not running yet.
 	 */
 	public static final int WAITING=0;
 	
@@ -20,6 +20,11 @@ public interface LidaTask extends Runnable, Activatible{
 	 * Task is running
 	 */
 	public static final int RUNNING=1;
+	
+	/**
+	 * Task is finished
+	 */
+	public static final int CANCELLED=16;
 	
 	/**
 	 * Task is finished and has a result
@@ -32,11 +37,6 @@ public interface LidaTask extends Runnable, Activatible{
 	public static final int WAITING_TO_RUN=4;
 	
 	public static final int TO_RESET=8;
-
-	/**
-	 * Task is finished
-	 */
-	public static final int CANCELLED=16;
 	
 	public abstract int getTaskStatus();
 	public abstract void setTaskStatus(int status);

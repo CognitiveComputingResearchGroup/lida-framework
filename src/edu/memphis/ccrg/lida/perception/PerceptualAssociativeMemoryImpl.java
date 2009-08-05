@@ -140,7 +140,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 */
 	private void updatePercept() {
 		percept.clearNodes();
-		System.out.println(percept.getNodeCount());
+		//System.out.println(graph.getNodeCount());
 		for (Node n : graph.getNodes()) {
 			PamNodeImpl node = (PamNodeImpl) n;
 			if (node.isRelevant())// Based on totalActivation

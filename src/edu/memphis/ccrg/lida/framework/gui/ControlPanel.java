@@ -98,8 +98,11 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
         jLabel7.setText("System Status");
 
         statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14));
-        statusLabel.setText("Paused");
-
+        statusLabel.setText("--");
+//        if(controller.isSystemPaused())
+//        	statusLabel.setText("PAUSED");
+//        else 
+//        	statusLabel.setText("RUNNING");
         jLabel2.setText("Module Sleep Time");
 
         sleepTimeTextField.setText("--");
@@ -250,7 +253,7 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     }
 
     public void refresh() {
-    	isPaused = lida.getTaskManager().tasksArePaused();  	
+    	isPaused = lida.getTaskManager().isTasksPaused();  	
     	String threadCount = "";
         threadCount = (lida.getTaskManager().getSpawnedTaskCount() + 
         			   lida.getSbCodeletDriver().getSpawnedTaskCount() + 

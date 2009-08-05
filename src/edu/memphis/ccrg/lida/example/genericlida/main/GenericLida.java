@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionSensoryMemory;
@@ -23,12 +22,12 @@ public class GenericLida {
 		java.awt.EventQueue.invokeLater(new Runnable(){
 			
 	        public void run() {	
-	        	boolean startPaused = false;
-	    		int threadSleepTime = 150;
-	    		LidaTaskManager timer = new LidaTaskManager(startPaused, threadSleepTime);
+	        	boolean tasksStartOutRunning = false;
+	    		int timeScale = 150;//TODO: Figure out what this rep's.
+	    		LidaTaskManager taskManager = new LidaTaskManager(tasksStartOutRunning, timeScale);
 	    		//
 	    		int height = 10, width = 10;
-	    		EnvironmentImpl environ = new VisionEnvironment(timer, height, width);
+	    		EnvironmentImpl environ = new VisionEnvironment(taskManager, height, width);
 	    		SensoryMemory sm = new VisionSensoryMemory(environ);
 	    		//
 	        	Map<Module, String> configFilesMap = new HashMap<Module, String>();
@@ -39,7 +38,7 @@ public class GenericLida {
 	        	configFilesMap.put(Module.proceduralMemory , "procMem.txt");
 	            configFilesMap.put(Module.actionSelection , "as.txt");
 	        	//
-	        	Lida lida = new Lida(timer, environ, sm, configFilesMap);
+	        	Lida lida = new Lida(taskManager, environ, sm, configFilesMap);
 	        	LidaGuiController lgc = new LidaGuiControllerImpl(lida);	        	
 	            new LidaGui(lida, lgc).setVisible(true);
 	        }//run
