@@ -72,9 +72,6 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void addToPAM(Set<PamNode> nodes, List<FeatureDetector> ftDetectors,
 						 Set<Link> links) {
 		featureDetectors = ftDetectors;
-		
-
-		System.out.println(featureDetectors.size());
 		graph.addPamNodes(nodes);
 		graph.addLinks(links);
 
@@ -82,7 +79,6 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 			long id = fd.getPamNode().getId();
 			fd.setNode((PamNode) graph.getNode(id));
 		}
-
 	}// method
 
 	// ******INTERMODULE COMMUNICATION******
@@ -144,6 +140,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 */
 	private void updatePercept() {
 		percept.clearNodes();
+		System.out.println(percept.getNodeCount());
 		for (Node n : graph.getNodes()) {
 			PamNodeImpl node = (PamNodeImpl) n;
 			if (node.isRelevant())// Based on totalActivation
