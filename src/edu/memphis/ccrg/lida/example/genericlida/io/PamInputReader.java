@@ -47,7 +47,6 @@ public class PamInputReader implements InputProvider {
     	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>(); 
 		featureDetectors.add(new VisionFeatureDetector(gold, sm, pam));
 
-		System.out.println(featureDetectors.size());
 		pam.addToPAM(factory.getStoredNodes(), featureDetectors, factory.getStoredLinks());
 	}//method
 	
