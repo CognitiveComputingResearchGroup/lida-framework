@@ -63,7 +63,7 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
         jLabel2 = new javax.swing.JLabel();
         sleepTimeTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        speedSlider = new javax.swing.JSlider();
+        speedSlider = new javax.swing.JSlider(sliderMin, sliderMax, sliderStartValue);
         minSleepTimeLabel = new javax.swing.JLabel();
         maxSleepTimeLabel = new javax.swing.JLabel();
 
@@ -99,10 +99,7 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
 
         statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         statusLabel.setText("--");
-//        if(controller.isSystemPaused())
-//        	statusLabel.setText("PAUSED");
-//        else 
-//        	statusLabel.setText("RUNNING");
+
         jLabel2.setText("Module Sleep Time");
 
         sleepTimeTextField.setText("--");
@@ -214,8 +211,6 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
     	statusLabel.setText("QUITTING");
     	controller.quitAll();
-		//frameworkTimer.resumeRunningThreads(); 
-		//mainThread.stopSpawnedThreads();
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
@@ -253,7 +248,12 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     }
 
     public void refresh() {
-    	isPaused = lida.getTaskManager().isTasksPaused();  	
+    	isPaused = lida.getTaskManager().isTasksPaused();
+    	if(isPaused)
+    		statusLabel.setText("PAUSED");
+    	else
+    		statusLabel.setText("RUNNING");    	
+    	//
     	String threadCount = "";
         threadCount = (lida.getTaskManager().getSpawnedTaskCount() + 
         			   lida.getSbCodeletDriver().getSpawnedTaskCount() + 

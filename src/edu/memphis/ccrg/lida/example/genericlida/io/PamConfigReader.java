@@ -13,12 +13,12 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 
-public class PamInputReader implements InputProvider {
+public class PamConfigReader implements ConfigReader {
 	
 	private PerceptualAssociativeMemory pam;
 	private SensoryMemory sm;
 	
-	public PamInputReader(PerceptualAssociativeMemory pam, SensoryMemory sm){
+	public PamConfigReader(PerceptualAssociativeMemory pam, SensoryMemory sm){
 		this.pam = pam;
 		this.sm = sm;
 	}
@@ -27,7 +27,7 @@ public class PamInputReader implements InputProvider {
 	public void loadInputFromFile(String inputFilePath) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		double upscale = 0.7, 
+		double upscale = 0.4, 
 			   downscale = 0.5, 
 			   selectivity = 0.9;		
 		params.put("upscale", upscale);

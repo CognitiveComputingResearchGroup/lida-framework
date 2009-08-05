@@ -9,7 +9,6 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import java.util.concurrent.Future;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
  * The interface for LIDA's episodic memory. Episodic memory in LIDA

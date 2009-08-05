@@ -52,7 +52,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 
 	public void addTask(LidaTask task) {
 		task.setTaskStatus(LidaTask.WAITING_TO_RUN);
-		runningTasks.add(task);
+		synchronized(this){
+			runningTasks.add(task);
+		}
 		runTask(task);
 	}
 
@@ -68,7 +70,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			//System.out.println("FINISHED");
 		case LidaTask.CANCELLED:
 			logger.log(Level.FINEST, "cancelling task {0}", task);
-			runningTasks.remove(task);
+			synchronized(this){
+				runningTasks.remove(task);
+			}
 			//System.out.println("CANCELLED");
 			break;
 		case LidaTask.TO_RESET:
@@ -110,14 +114,18 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	}
 
 	public Collection<LidaTask> getAllTasks() {
+		System.out.println("getting all tasks");
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 
 	public int getSpawnedTaskCount() {
+		System.out.println("get spawned count");
 		return runningTasks.size();
+		
 	}// method
 
 	public void stopRunning() {
+		System.out.println("stop running called in task spawner");
 		for (LidaTask s : runningTasks) {
 			logger.log(Level.INFO, "Stopping task: {0}", s);
 			s.stopRunning();
@@ -135,6 +143,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	@Override
 	public void addTicks(int ticks) {
+		System.out.println("Add ticks called");
 		super.addTicks(ticks);
 		for (LidaTask s : runningTasks) {
 			s.addTicks(ticks);
@@ -149,6 +158,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 
 	public void resumeSpawnedTasks() {
 		tasksPaused = false;
+		System.out.println("resume spawned tasks called");
 		for (LidaTask task : runningTasks) {
 			int status = task.getTaskStatus();
 			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {

@@ -16,10 +16,8 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	public void run() {		
 		//If not is ticks Mode then business as usual.
 		if (!LidaTaskManager.isTicksModeEnabled()){
-			//System.out.println("not in ticks mode");
 			runOneStep();
 		}else if(hasEnoughTicks()){
-			//System.out.println("use ticks");
 			useOneStepOfTicks();
 			runOneStep();
 		}
@@ -27,7 +25,6 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		//System.out.println("module driver impl, run, setting task status to run " + LidaTask.RUNNING);
 		
 	}// method
-	
 	private void runOneStep(){
 		runDriverOneProcessingStep();
 		try {

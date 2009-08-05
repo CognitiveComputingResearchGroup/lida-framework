@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TimeOutTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
-public class GlobalWorkspace_Input {
+public class GlobalWkspcConfigReader {
 
 	public void read(GlobalWorkspace globalWksp, String inputPath) {
 		BroadcastTrigger tr;

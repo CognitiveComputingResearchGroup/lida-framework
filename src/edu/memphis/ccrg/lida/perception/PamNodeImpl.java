@@ -69,6 +69,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	  * @see        #selectionThreshold
 	  */
 	public boolean isRelevant() {
+		//System.out.println(getLabel() + " " + getActivation() + " " + selectionThreshold);
 	    return getActivation() >= selectionThreshold;
 	}
 
