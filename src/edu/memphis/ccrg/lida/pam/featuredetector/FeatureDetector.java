@@ -1,7 +1,8 @@
-package edu.memphis.ccrg.lida.perception.featuredetector;
+package edu.memphis.ccrg.lida.pam.featuredetector;
 
 import java.util.Map;
-import edu.memphis.ccrg.lida.perception.PamNode;
+
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.shared.Activatible;
 
 public interface FeatureDetector extends Activatible {

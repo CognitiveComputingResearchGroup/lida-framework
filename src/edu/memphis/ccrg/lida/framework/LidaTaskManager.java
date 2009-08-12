@@ -5,7 +5,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	/**
 	 * The length of time that 1 tick equals in milliseconds.
 	 */
-	private int tickDuration = 150;
+	private static int tickDuration = 1;
 	
 	/**
 	 * All tasks in the Lida system are created, executed, and managed by this class.  
@@ -30,7 +30,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		else
 			resumeSpawnedTasks();
 	
-		this.tickDuration = tickDuration;
+		LidaTaskManager.tickDuration = tickDuration;
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * 
 	 * @return how long to sleep
 	 */
-	public int getTickDuration() {
+	public static int getTickDuration() {
 		return tickDuration;
 	}
 	public synchronized void setTimeScale(int newTimeScale) {

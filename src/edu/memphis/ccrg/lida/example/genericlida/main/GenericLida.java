@@ -38,8 +38,9 @@ public class GenericLida {
 	        	configFilesMap.put(Module.globalWorkspace , "global.txt");
 	        	configFilesMap.put(Module.proceduralMemory , "procMem.txt");
 	            configFilesMap.put(Module.actionSelection , "as.txt");
+	            String configFilePath = "lidaConfig.txt";
 	        	//
-	        	Lida lida = new Lida(taskManager, environ, sm, configFilesMap);
+	        	Lida lida = new Lida(taskManager, environ, sm, configFilePath);
 	        	LidaGuiController lgc = new LidaGuiControllerImpl(lida);	        	
 	            new LidaGui(lida, lgc).setVisible(true);
 	        }//run

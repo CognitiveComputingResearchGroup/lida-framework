@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.example.genericlida.pam.VisionFeatureDetector;
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.shared.LinkType;
 import edu.memphis.ccrg.lida.shared.NodeFactory;

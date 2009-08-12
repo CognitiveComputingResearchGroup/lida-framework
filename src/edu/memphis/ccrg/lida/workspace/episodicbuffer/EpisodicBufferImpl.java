@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.episodicbuffer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,8 +13,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class EpisodicBufferImpl implements EpisodicBuffer, 
-										   LocalAssociationListener, 
+public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListener, 
 										   GuiContentProvider{
 
     private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
@@ -38,8 +38,8 @@ public class EpisodicBufferImpl implements EpisodicBuffer,
 			episodicBuffer.remove(0);//remove oldest	
 	}
 
-	public List<NodeStructure> getBuffer() {
-		return Collections.unmodifiableList(episodicBuffer);
+	public Collection<NodeStructure> getBufferContent() {
+		return Collections.unmodifiableCollection(episodicBuffer);
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

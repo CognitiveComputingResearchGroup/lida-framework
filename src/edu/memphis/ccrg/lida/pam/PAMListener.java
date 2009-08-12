@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 
@@ -13,5 +13,5 @@ public interface PAMListener {
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param sc the Content of the Broadcast
 	 */
-	public void receivePAMContent(NodeStructure pc);
+	public void receivePamContent(NodeStructure pc);
 }

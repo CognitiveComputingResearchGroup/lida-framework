@@ -16,10 +16,10 @@ import edu.memphis.ccrg.lida.example.genericlida.io.PamConfigReader;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
-import edu.memphis.ccrg.lida.perception.PAMDriver;
-import edu.memphis.ccrg.lida.perception.PAMListener;
-import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.pam.PAMDriver;
+import edu.memphis.ccrg.lida.pam.PAMListener;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryDriver;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
@@ -73,25 +73,23 @@ public class Lida {
 	 */
 	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 
-	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
+	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm, String configFilePath) {
 		logger.info("Starting Lida");
-		initComponents(ft, e, sm, configFilesMap);
+		initComponents(ft, e, sm, configFilePath);
 		initDrivers();
 		initListeners();
 		start();
 	}
 
-	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
+	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm, String configFilePath) {
 		taskManager = tm;
 		environment = e;
 		sensoryMemory = sm;
 		
 		pam = new PerceptualAssociativeMemoryImpl();
-		String path = configFilesMap.get(Module.perceptualAssociativeMemory);
-		if(path != null){
-			PamConfigReader pamInput = new PamConfigReader(pam, sm);
-			pamInput.loadInputFromFile(path);
-		}
+
+		PamConfigReader pamInput = new PamConfigReader(pam, sm);
+		pamInput.loadInputFromFile(configFilePath);
 		
 		//TODO: config files for other modules
 		tem = new TEMImpl(); 
@@ -126,8 +124,8 @@ public class Lida {
 		drivers.add(environment);
 		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
 		drivers.add(new PAMDriver(pam, taskManager, pamTicksPerStep));
-		//drivers.add(attentionDriver);
-		//drivers.add(sbCodeletDriver);
+		drivers.add(attentionDriver);
+		drivers.add(sbCodeletDriver);
 		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
 		
 		//done creating drivers

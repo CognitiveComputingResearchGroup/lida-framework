@@ -1,18 +1,20 @@
 package edu.memphis.ccrg.lida.workspace.perceptualbuffer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
-import edu.memphis.ccrg.lida.perception.PAMListener;
+import edu.memphis.ccrg.lida.pam.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class PerceptualBufferImpl implements PerceptualBuffer, PAMListener, GuiContentProvider{
+public class PerceptualBufferImpl implements PerceptualBuffer, PAMListener, 
+											 GuiContentProvider{
 	
 	private NodeStructure pamContent = new NodeStructureImpl();	
 	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
@@ -30,15 +32,15 @@ public class PerceptualBufferImpl implements PerceptualBuffer, PAMListener, GuiC
 		pbListeners.add(l);
 	}
 	
-	public synchronized void receivePAMContent(NodeStructure ns){
+	public synchronized void receivePamContent(NodeStructure ns){
 		perceptBuffer.add(ns);		
 		//Keep the buffer at a fixed size
 		if(perceptBuffer.size() > PERCEPT_BUFFER_CAPACITY)
 			perceptBuffer.remove(0);//remove oldest	
 	}
 
-	public List<NodeStructure> getBuffer() {
-		return Collections.unmodifiableList(perceptBuffer);
+	public Collection<NodeStructure> getBufferContent() {
+		return Collections.unmodifiableCollection(perceptBuffer);
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
@@ -20,7 +20,7 @@ public class PAMDriver extends ModuleDriverImpl{
 		if (pam instanceof PerceptualAssociativeMemoryImpl){
 			((PerceptualAssociativeMemoryImpl)pam).sendEvent();
 		}
-		pam.decayPAM();  //Decay the activations			
+		pam.decayPam();  //Decay the activations			
 	}
 	
 }//class PAMDriver

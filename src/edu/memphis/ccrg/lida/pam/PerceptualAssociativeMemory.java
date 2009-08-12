@@ -1,12 +1,13 @@
 /**
  * PAMinterface.java
  */
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.pam;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
+
+import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -55,7 +56,7 @@ public interface PerceptualAssociativeMemory{
 	/**
 	 * Decay activations of PAM nodes and/or links
 	 */
-	public void decayPAM();
+	public void decayPam();
 	
 	public void receiveActivationBurst(PamNode pNode,double activation);
 	public PamNode getPamNode(long id);

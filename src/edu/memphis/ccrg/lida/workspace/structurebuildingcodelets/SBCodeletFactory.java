@@ -29,8 +29,6 @@ public class SBCodeletFactory {
 	public static final int CSM_TYPE = 3;
 	public static final int ALL_TYPE = 4;	
 	
-	private static long codeletIdCount = 0;
-
 	/**
 	 * Holds singleton instance
 	 */
@@ -53,10 +51,10 @@ public class SBCodeletFactory {
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
 	//
 	//
-	private List<NodeStructure> perceptualBuffer = new ArrayList<NodeStructure>();
-	private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
-	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
-	private List<NodeStructure> csmReadable = new ArrayList<NodeStructure>();	
+	private CodeletAccessible perceptualBuffer;
+	private CodeletAccessible episodicBuffer;
+	private CodeletAccessible broadcastQueue;
+	private CodeletAccessible csmReadable;	
 	private CodeletWritable csm;
 	//
 	private double defaultActivation = 1.0;	
@@ -89,10 +87,10 @@ public class SBCodeletFactory {
 		defaultExcite = new BasicExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 		//TODO: TO FIX THIS!!!!!!!!!!!!
-//		perceptualBuffer = workspace.getPerceptualBuffer();
-//		episodicBuffer = workspace.getEpisodicBuffer();
-//		broadcastQueue = workspace.getBroadcastQueue();
-		csmReadable.add(workspace.getCSM().getModel());
+		perceptualBuffer = workspace.getPerceptualBuffer();
+		episodicBuffer = workspace.getEpisodicBuffer();
+		broadcastQueue = workspace.getBroadcastQueue();
+		csmReadable = workspace.getCSM();
 		csm = workspace.getCSM();
 		this.timer = timer;		
 	}
@@ -152,7 +150,7 @@ public class SBCodeletFactory {
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
 				codelet.addFrameworkTimer(timer);	
-//				codelet.setId(codeletIdCount++);
+				codelet.setTaskID(LidaTaskManager.getNextTaskID());
 				codelet.setExciteBehavior(defaultExcite);
 				codelet.setDecayBehavior(defaultDecay);
 				codelet.setActivation(defaultActivation);
@@ -160,22 +158,22 @@ public class SBCodeletFactory {
 				codelet.setCodeletAction(defaultActions);			
 				
 				if(type == SBCodeletFactory.PERCEPTUAL_TYPE){
-					codelet.addReadableBuffer(perceptualBuffer);
+					codelet.addReadableBuffer(perceptualBuffer.getBufferContent());
 					codelet.addWritableModule(csm);
 				}else if(type == SBCodeletFactory.EPISODIC_TYPE){
-					codelet.addReadableBuffer(episodicBuffer);
+					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
 					codelet.addWritableModule(csm);
 				}else if(type == SBCodeletFactory.BROADCAST_TYPE){
-					codelet.addReadableBuffer(broadcastQueue);
+					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
 					codelet.addWritableModule(csm);
 				}else if(type == SBCodeletFactory.CSM_TYPE){
-					codelet.addReadableBuffer(csmReadable);
+					codelet.addReadableBuffer(csmReadable.getBufferContent());
 					codelet.addWritableModule(csm);
 				}else if(type == SBCodeletFactory.ALL_TYPE){
-					codelet.addReadableBuffer(perceptualBuffer);
-					codelet.addReadableBuffer(episodicBuffer);
-					codelet.addReadableBuffer(broadcastQueue);
-					codelet.addReadableBuffer(csmReadable);
+					codelet.addReadableBuffer(perceptualBuffer.getBufferContent());
+					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
+					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
+					codelet.addReadableBuffer(csmReadable.getBufferContent());
 					codelet.addWritableModule(csm);
 				}
 			} catch (InstantiationException e) {

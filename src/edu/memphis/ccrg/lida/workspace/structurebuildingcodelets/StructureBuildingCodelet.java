@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
@@ -14,8 +15,8 @@ public interface StructureBuildingCodelet extends LidaTask{
 	 public void setCodeletAction(CodeletAction a);
 	 public CodeletAction getCodeletAction();
 
-	 public void addReadableBuffer(List<NodeStructure> buffer);
-	 public List<List<NodeStructure>> getReadableBuffers();
+	 public void addReadableBuffer(Collection<NodeStructure> buffer);
+	 public List<Collection<NodeStructure>> getReadableBuffers();
 	 public void addWritableModule(CodeletWritable module);
 	 public List<CodeletWritable> getWriteableBuffers();
 	

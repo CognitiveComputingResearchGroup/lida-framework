@@ -9,11 +9,11 @@ import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
  */
 public class ProceduralMemoryDriver extends ModuleDriverImpl {
 
-	private ProceduralMemory procMem;
+	//private ProceduralMemory procMem;
 
 	public ProceduralMemoryDriver(ProceduralMemory pm, LidaTaskManager timer, int ticksPerCycle) {
 		super(timer, ticksPerCycle);
-		procMem = pm;
+	//	procMem = pm;
 	}// constructor
 
 	/**

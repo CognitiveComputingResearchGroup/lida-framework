@@ -5,7 +5,7 @@ package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.perception.PamNode;
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * Node represents a Concept in LIDA. It could be implemented in different ways 

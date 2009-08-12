@@ -13,7 +13,7 @@ public interface Workspace{
 	public abstract CurrentSituationalModel getCSM();	
 	public abstract PerceptualBuffer getPerceptualBuffer();	
 	public abstract EpisodicBuffer getEpisodicBuffer();
-	public abstract BroadcastQueue getBroadcastBuffer();
+	public abstract BroadcastQueue getBroadcastQueue();
 	public abstract void addCueListener(CueListener l);
 	public abstract void addPamWorkspaceListener(WorkspaceListener pam);
 	

@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.perception.PAMListener;
+import edu.memphis.ccrg.lida.pam.PAMListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
@@ -32,18 +32,18 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	//Workspace contains these components
 	private PerceptualBuffer perceptualBuffer;
 	private EpisodicBuffer episodicBuffer;
-	private BroadcastQueue broadcastBuffer;
+	private BroadcastQueue broadcastQueue;
 	private CurrentSituationalModel csm;
 	
 	//These listeners listen to the Workspace
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private WorkspaceListener pamWorkspaceListener;
 	
-	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue pbroads, 
-							CurrentSituationalModel csm){
+	public WorkspaceImpl(PerceptualBuffer pb, EpisodicBuffer eb, BroadcastQueue bq, 
+					     CurrentSituationalModel csm){
 		perceptualBuffer = pb;
 		episodicBuffer = eb;
-		broadcastBuffer = pbroads;
+		broadcastQueue = bq;
 		this.csm = csm;	
 		
 		perceptualBuffer.addBufferListener(this);
@@ -85,15 +85,15 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	
 	//****Input into the Workspace from other Modules is sent to the appropriate
 	//submodules
-	public void receivePAMContent(NodeStructure ns) {
-		((PAMListener) perceptualBuffer).receivePAMContent(ns);		
+	public void receivePamContent(NodeStructure ns) {
+		((PAMListener) perceptualBuffer).receivePamContent(ns);		
 	}
 	public void receiveLocalAssociation(NodeStructure association) {
 		((LocalAssociationListener) episodicBuffer).receiveLocalAssociation(association);		
 	}	
 
 	public void receiveBroadcast(BroadcastContent bc) {
-		((BroadcastListener) broadcastBuffer).receiveBroadcast(bc);		
+		((BroadcastListener) broadcastQueue).receiveBroadcast(bc);		
 	}
 	public void receiveBehaviorContent(ActionContent c) {
 		// TODO: Implementing this is a long way off as of (3.30.09)		
@@ -118,8 +118,8 @@ public class WorkspaceImpl implements Workspace, PAMListener,
 	public EpisodicBuffer getEpisodicBuffer(){
 		return episodicBuffer;
 	}
-	public BroadcastQueue getBroadcastBuffer(){
-		return broadcastBuffer;
+	public BroadcastQueue getBroadcastQueue(){
+		return broadcastQueue;
 	}
 
 	public void learn() {

@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.example.genericlida.pam;
 
-import edu.memphis.ccrg.lida.perception.PamNodeImpl;
-import edu.memphis.ccrg.lida.perception.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**

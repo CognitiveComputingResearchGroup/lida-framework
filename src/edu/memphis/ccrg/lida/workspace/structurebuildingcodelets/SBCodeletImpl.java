@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
@@ -12,8 +13,7 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 
 	//Initialized by constructor
 	private LidaTaskManager timer;
-	
-	private List<List<NodeStructure>> accessibleBuffers = new ArrayList<List<NodeStructure>>();
+	private List<Collection<NodeStructure>> accessibleBuffers = new ArrayList<Collection<NodeStructure>>();
 	private List<CodeletWritable> writables = new ArrayList<CodeletWritable>();
 	
 	private NodeStructure soughtContent;
@@ -31,12 +31,26 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
 	
 	public void run() {
+		if (!LidaTaskManager.isInTicksMode()){
+			runOneStep();
+		}else if(hasEnoughTicks()){
+			useOneStepOfTicks();
+			runOneStep();
+		}
+
+	}
+	private void runOneStep(){
+		try {
+			// Sleeps a lap proportional for each task
+			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
+		}catch (InterruptedException e){
+			stopRunning();
+		}
+	
 		timer.checkForStartPause();
-		 	
-		for(List<NodeStructure> buffer: accessibleBuffers)
+		for(Collection<NodeStructure> buffer: accessibleBuffers)
 			for(CodeletWritable writable: writables)
 				action.performAction(buffer, writable);	
-
 		results.reportFinished();
 	}
 	
@@ -55,13 +69,13 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 		return action;
 	}
 
-	public void addReadableBuffer(List<NodeStructure> buffer) {
+	public void addReadableBuffer(Collection<NodeStructure> buffer) {
 		accessibleBuffers.add(buffer);		
 	}
 	public void addWritableModule(CodeletWritable module) {
 		writables.add(module);
 	}
-	public List<List<NodeStructure>> getReadableBuffers() {
+	public List<Collection<NodeStructure>> getReadableBuffers() {
 		return accessibleBuffers;
 	}
 	public List<CodeletWritable> getWriteableBuffers() {
@@ -80,27 +94,5 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	public int getType() {
 		return type;
 	}
-	
-	/**
-	 * This method compares this object with any kind of Node. returns true if
-	 * the id of both are the same.
-	 */
-//	public boolean equals(Object o) {
-//		if (!(o instanceof StructureBuildingCodelet)) {
-//			return false;
-//		}
-//		StructureBuildingCodelet temp = (StructureBuildingCodelet) o;
-//		return temp.getId() == id && temp.getType() == type;
-//	}
-//
-//	public int hashCode() {
-//		int hash = 1;
-//	    Integer v1 = new Integer(type);
-//	    Long v2 = new Long(id);
-//	    hash = hash * 31 + v2.hashCode();
-//	    hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
-//	    return hash;
-//	}
-
 	
 }//class SBCodelet

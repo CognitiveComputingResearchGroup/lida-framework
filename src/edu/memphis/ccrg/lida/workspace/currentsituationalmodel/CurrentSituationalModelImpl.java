@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.workspace.currentsituationalmodel;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.Module;
@@ -53,10 +55,10 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		return new NodeStructureImpl(model);
 	}
 
-	public List<NodeStructure> getBuffer() {
+	public Collection<NodeStructure> getBufferContent() {
 		List<NodeStructure> list = new ArrayList<NodeStructure>();
 		list.add(model);
-		return list;
+		return Collections.unmodifiableCollection(list);
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

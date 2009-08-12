@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.perception.PamNode;
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
@@ -61,7 +61,7 @@ public class NodeFactory {
 		defaultExcite = new BasicExciteBehavior();
 		nodeClasses.put(DefaultNodeType, DefaultNodeClassName);
 		linkClasses.put(DefaultLinkType, DefaultLinkClassName);
-		nodeClasses.put("PamNodeImpl", "edu.memphis.ccrg.lida.perception.PamNodeImpl");
+		nodeClasses.put("PamNodeImpl", "edu.memphis.ccrg.lida.pam.PamNodeImpl");
 	}
 
 	public void addDecayBehavior(String name, DecayBehavior decay) {

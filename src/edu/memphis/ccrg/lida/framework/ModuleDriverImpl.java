@@ -25,7 +25,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	private void runOneStep(){
 		try {
 			// Sleeps a lap proportional for each task
-			Thread.sleep(taskManager.getTickDuration() / getTicksPerStep());
+			Thread.sleep(taskManager.getTickDuration() * getTicksPerStep());
 		}catch (InterruptedException e){
 			stopRunning();
 		}

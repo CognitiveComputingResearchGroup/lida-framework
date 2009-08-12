@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.broadcastbuffer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,8 +12,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 
-public class BroadcastQueueImpl implements BroadcastQueue, 
-										   BroadcastListener, 
+public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener, 
 										   GuiContentProvider{
 	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
@@ -30,8 +30,8 @@ public class BroadcastQueueImpl implements BroadcastQueue,
 			broadcastQueue.remove(0);//remove oldest	
 	}
 
-	public List<NodeStructure> getBuffer(int i) {
-		return Collections.unmodifiableList(broadcastQueue);
+	public Collection<NodeStructure> getBufferContent() {
+		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

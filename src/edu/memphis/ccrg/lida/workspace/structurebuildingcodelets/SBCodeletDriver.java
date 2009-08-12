@@ -65,13 +65,5 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 		addTask(sbc);
 		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
 	}// method
-	
-	public void stopRunning() {
-//		for(LidaTask task : getRunningTasks()) {
-//			logger.log(Level.INFO, "Stopping task: {0}", task);
-//			task.stopRunning();
-//		}//for
-		this.setTaskStatus(LidaTask.CANCELLED);
-	}// method
 
 }// class

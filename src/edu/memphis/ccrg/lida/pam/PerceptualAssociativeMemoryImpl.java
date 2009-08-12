@@ -5,7 +5,7 @@
  * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
  * All rights reserved.
  */
-package edu.memphis.ccrg.lida.perception;
+package edu.memphis.ccrg.lida.pam;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.perception.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
@@ -156,7 +156,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void sendOutPercept() {
 		NodeStructure copy = new NodeStructureImpl(percept);
 		for (int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receivePAMContent(copy);
+			pamListeners.get(i).receivePamContent(copy);
 	}// method
 
 	public void learn() {
@@ -167,7 +167,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		}
 	}
 
-	public void decayPAM() {
+	public void decayPam() {
 		graph.decayNodes();
 	}// method
 
