@@ -7,8 +7,8 @@ public class PAMDriver extends ModuleDriverImpl{
 
 	private PerceptualAssociativeMemory pam;
 	
-	public PAMDriver(PerceptualAssociativeMemory pam, LidaTaskManager timer){
-		super(timer);
+	public PAMDriver(PerceptualAssociativeMemory pam, LidaTaskManager taskManager, int ticksPerCycle){
+		super(taskManager, ticksPerCycle);
 		this.pam = pam;
 	}//constructor
 		

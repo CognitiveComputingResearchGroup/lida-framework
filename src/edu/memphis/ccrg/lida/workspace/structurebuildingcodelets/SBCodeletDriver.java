@@ -20,8 +20,8 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	//Gui
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
-	public SBCodeletDriver(Workspace w, LidaTaskManager timer) {
-		super(timer);
+	public SBCodeletDriver(Workspace w, LidaTaskManager timer, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		setNumberOfTicksPerStep(10);//TODO: check
 		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
 	}// method

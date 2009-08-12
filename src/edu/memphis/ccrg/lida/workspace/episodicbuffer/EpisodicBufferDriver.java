@@ -7,8 +7,8 @@ public class EpisodicBufferDriver extends ModuleDriverImpl {
 
 	private EpisodicBufferImpl eBuffer;
 
-	public EpisodicBufferDriver(EpisodicBufferImpl eb, LidaTaskManager timer) {
-		super(timer);
+	public EpisodicBufferDriver(EpisodicBufferImpl eb, LidaTaskManager timer, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		this.eBuffer = eb;
 	}
 

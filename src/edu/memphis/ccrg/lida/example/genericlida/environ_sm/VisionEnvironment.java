@@ -20,8 +20,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 	private int IMAGE_WIDTH = 5;
 	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
-	public VisionEnvironment(LidaTaskManager timer, int height, int width) {
-		super(timer);
+	public VisionEnvironment(LidaTaskManager timer, int ticksPerStep, int height, int width) {
+		super(timer, ticksPerStep);
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;
 		iloc = IMAGE_HEIGHT / 2;

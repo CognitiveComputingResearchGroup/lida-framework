@@ -7,8 +7,8 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 	
 	private SensoryMemory sm;
 	
-	public SensoryMemoryDriver(SensoryMemory sm, LidaTaskManager timer){
-		super( timer);
+	public SensoryMemoryDriver(SensoryMemory sm, LidaTaskManager timer, int ticksPerCycle){
+		super(timer, ticksPerCycle);
 		this.sm = sm;
 	}//constructor
 		

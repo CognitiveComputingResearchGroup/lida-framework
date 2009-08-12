@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	private long taskID;
-	private int numberOfTicksPerStep = 1;
+	private int ticksPerStep = 1;
 	private int accumulatedTicks;
 	protected int status = LidaTask.WAITING;
 	
@@ -30,7 +30,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 */
 	public void setTaskStatus(int status) {
 		//If a task is cancelled it cannot be restarted.
-		//So only set the status if the current status is not currently cancelled.
+		//So only set the status if the status is not CANCELLED.
 		if(this.status != CANCELLED)
 			this.status = status;
 	}
@@ -48,13 +48,13 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void setTaskID(long id) {
 		taskID=id;		
 	}
-	public int getNumberOfTicksPerStep() {
-		return numberOfTicksPerStep;
+	public int getTicksPerStep() {
+		return ticksPerStep;
 	}
 
 	public void setNumberOfTicksPerStep(int ticks) {
 		if(ticks > 0)
-			numberOfTicksPerStep=ticks;		
+			ticksPerStep = ticks;		
 	}
 
 	public void addTicks(int ticks) {
@@ -66,15 +66,15 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	public boolean useOneStepOfTicks() {
-		if (accumulatedTicks >= numberOfTicksPerStep){
-			accumulatedTicks = accumulatedTicks - numberOfTicksPerStep;
+		if (accumulatedTicks >= ticksPerStep){
+			accumulatedTicks = accumulatedTicks - ticksPerStep;
 			return true;
 		}
 		return false;
 	}
 
 	public boolean hasEnoughTicks() {
-		return accumulatedTicks >= numberOfTicksPerStep;
+		return accumulatedTicks >= ticksPerStep;
 	}
 	
 	public void reset(){
@@ -83,7 +83,5 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	public void stopRunning(){
 		setTaskStatus(LidaTask.CANCELLED);
-		//System.out.println("module driver impl setting task status to cancelled " + LidaTask.CANCELLED);
-
 	}
 }//class

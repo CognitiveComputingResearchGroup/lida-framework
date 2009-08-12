@@ -112,16 +112,23 @@ public class Lida {
 	}
 
 	private void initDrivers() {
+		int pamTicksPerStep = 10;
+		int attnTicksPerStep = 10;
+		int sbCodeletTicksPerStep = 10;
+		int smTicksPerStep = 10;
+		int procMemTicksPerStep = 10;
+		
 		//finish initializing drivers 
-		attentionDriver = new AttentionDriver(taskManager, workspace.getCSM(), globalWksp);
-		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager);
+		attentionDriver = new AttentionDriver(taskManager, workspace.getCSM(), 
+											  globalWksp, attnTicksPerStep);
+		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager, sbCodeletTicksPerStep);
 		//Add drivers to a list for execution
 		drivers.add(environment);
-		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager));
-		drivers.add(new PAMDriver(pam, taskManager));
+		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
+		drivers.add(new PAMDriver(pam, taskManager, pamTicksPerStep));
 		drivers.add(attentionDriver);
 		drivers.add(sbCodeletDriver);
-		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager));
+		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
 		
 		//done creating drivers
 		logger.info("Lida drivers Created");		

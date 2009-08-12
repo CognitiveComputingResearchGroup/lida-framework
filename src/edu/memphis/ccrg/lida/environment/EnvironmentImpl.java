@@ -6,8 +6,8 @@ import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 public class EnvironmentImpl extends ModuleDriverImpl implements Environment{
 
-	public EnvironmentImpl(LidaTaskManager timer) {
-		super(timer);
+	public EnvironmentImpl(LidaTaskManager timer, int ticksPerStep) {
+		super(timer, ticksPerStep);
 	}
 	
 	public void runDriverOneProcessingStep() {

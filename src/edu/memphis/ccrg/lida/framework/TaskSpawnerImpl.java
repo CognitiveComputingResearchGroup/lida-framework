@@ -23,27 +23,18 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	private Set<LidaTask> runningTasks = new HashSet<LidaTask>();
 
 	private boolean tasksPaused = false;
-
-	/**
-	 * @return the tasksArePaused
-	 */
-	public boolean isTasksPaused() {
-		return tasksPaused;
-	}
-
+	
 	public TaskSpawnerImpl(int ticksForCycle) {
 		super(ticksForCycle);
-		//
+		//thread pool executor
 		int corePoolSize = 5;
 		int maxPoolSize = 100;
 		long keepAliveTime = 10;
-		executorService = new LidaExecutorService(this, corePoolSize,
-				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
+		executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, 
+												  keepAliveTime, TimeUnit.SECONDS);
 	}// method
 
-	public TaskSpawnerImpl() {
-		this(1);
-	}
+	
 
 	public void setInitialTasks(List<? extends LidaTask> initialTasks) {
 		for (LidaTask r : initialTasks)
@@ -57,13 +48,29 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		}
 		runTask(task);
 	}
+	protected void runTask(LidaTask task) {
+		if (!tasksPaused) {
+			if (shouldRun(task)) {
+				task.setTaskStatus(LidaTask.RUNNING);
+				executorService.execute(task);
+			}
+		}
+	}
+	protected boolean shouldRun(LidaTask task) {
+		// if not in ticks mode then should run task
+		if (!LidaTaskManager.isInTicksMode())
+			return true;
+		// else in ticks mode, check for enough ticks
+		else if (task.hasEnoughTicks())
+			return true;
+		return false;
+	}//method
 
 	/**
 	 * Finished tasks from the FrameworkExecutorService are sent to this method.
 	 * If it is overridden then is should still be called first using super.
 	 */
 	public void receiveFinishedTask(LidaTask task, Throwable t) {
-		
 		switch (task.getTaskStatus()) {
 		case LidaTask.FINISHED: 
 			// TODO: get and process result
@@ -89,52 +96,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			break;
 		}
 	}// method
-	protected void runTask(LidaTask task) {
-		if (!tasksPaused) {
-			if (shouldRun(task)) {
-				task.setTaskStatus(LidaTask.RUNNING);
-				executorService.execute(task);
-			}
-		}
-	}
-	protected boolean shouldRun(LidaTask r) {
-		// if not in ticks mode then should run task
-		if (!LidaTaskManager.isTicksModeEnabled())
-			return true;
-		// if task not already running and if task has enough ticks 
-		// then should run task
-		else if (r.getTaskStatus() != LidaTask.RUNNING && r.hasEnoughTicks())
-			return true;
-		return false;
-		
-//		if (!(LidaTaskManager.isTicksModeEnabled())
-//				|| ((r.getTaskStatus() != LidaTask.RUNNING) && (r.hasEnoughTicks()))) {
-//			return true;
-//		}
-	}
 
 	public Collection<LidaTask> getAllTasks() {
-		System.out.println("getting all tasks");
 		return Collections.unmodifiableCollection(runningTasks);
 	}
-
 	public int getSpawnedTaskCount() {
-		System.out.println("get spawned count");
 		return runningTasks.size();
-		
-	}// method
-
-	public void stopRunning() {
-		System.out.println("stop running called in task spawner");
-		for (LidaTask s : runningTasks) {
-			logger.log(Level.INFO, "Stopping task: {0}", s);
-			s.stopRunning();
-			//Don't remove this! we need it!!!!!!
-			s.setTaskStatus(LidaTask.CANCELLED);
-			//Don't remove this.
-		}
-		executorService.shutdownNow();
-		logger.info("All spawned tasks have been told to stop");
 	}// method
 
 	/**
@@ -143,22 +110,19 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	@Override
 	public void addTicks(int ticks) {
-		System.out.println("Add ticks called");
 		super.addTicks(ticks);
 		for (LidaTask s : runningTasks) {
 			s.addTicks(ticks);
 			runTask(s);
 		}// for
 	}// method
-
+	
 	public void pauseSpawnedTasks() {
 		logger.log(Level.FINE, "All Tasks paused.");
 		tasksPaused = true;
 	}
-
 	public void resumeSpawnedTasks() {
 		tasksPaused = false;
-		System.out.println("resume spawned tasks called");
 		for (LidaTask task : runningTasks) {
 			int status = task.getTaskStatus();
 			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {
@@ -167,6 +131,23 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 				runTask(task);
 			}
 		}
+	}// method
+	/**
+	 * @return the tasksPaused
+	 */
+	public boolean isTasksPaused() {
+		return tasksPaused;
+	}
+
+	public void stopRunning() {
+		System.out.println("stop running called in task spawner");
+		for (LidaTask s : runningTasks) {
+			logger.log(Level.INFO, "Stopping task: {0}", s);
+			s.stopRunning();
+		}
+		this.setTaskStatus(LidaTask.CANCELLED);
+		executorService.shutdownNow();
+		logger.info("All spawned tasks have been told to stop");
 	}// method
 
 }// class

@@ -27,7 +27,8 @@ public class GenericLida {
 	    		LidaTaskManager taskManager = new LidaTaskManager(tasksStartOutRunning, timeScale);
 	    		//
 	    		int height = 10, width = 10;
-	    		EnvironmentImpl environ = new VisionEnvironment(taskManager, height, width);
+	    		int ticksPerStep = 10;
+	    		EnvironmentImpl environ = new VisionEnvironment(taskManager, ticksPerStep, height, width);
 	    		SensoryMemory sm = new VisionSensoryMemory(environ);
 	    		//
 	        	Map<Module, String> configFilesMap = new HashMap<Module, String>();

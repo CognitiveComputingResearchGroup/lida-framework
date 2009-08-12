@@ -7,8 +7,8 @@ public class BroadcastQueueDriver extends ModuleDriverImpl {
 
 	private BroadcastQueueImpl bBuffer;
 
-	public BroadcastQueueDriver(BroadcastQueueImpl bb, LidaTaskManager timer) {
-		super(timer);
+	public BroadcastQueueDriver(BroadcastQueueImpl bb, LidaTaskManager timer, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		bBuffer = bb;
 	}// method
 

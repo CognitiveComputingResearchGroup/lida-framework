@@ -33,7 +33,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 
 	public void run() {
 		//If not is ticks Mode then business as usual.
-		if (!LidaTaskManager.isTicksModeEnabled()){
+		if (!LidaTaskManager.isInTicksMode()){
 			//System.out.println("not in ticks mode");
 			runOneStep();
 		}else if(hasEnoughTicks()){
@@ -48,7 +48,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 		runOneProcessingStep();
 		try {
 			// Sleeps a lap proportional for each task
-			Thread.sleep(timer.getTimeScale() * getNumberOfTicksPerStep());
+			Thread.sleep(timer.getTickDuration() * getTicksPerStep());
 		}catch (InterruptedException e){
 			stopRunning();
 		}

@@ -11,8 +11,8 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 
 	private ProceduralMemory procMem;
 
-	public ProceduralMemoryDriver(ProceduralMemory pm, LidaTaskManager timer) {
-		super(timer);
+	public ProceduralMemoryDriver(ProceduralMemory pm, LidaTaskManager timer, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		procMem = pm;
 	}// constructor
 

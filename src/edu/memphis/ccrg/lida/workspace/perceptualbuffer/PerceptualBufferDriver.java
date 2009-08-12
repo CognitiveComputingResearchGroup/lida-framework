@@ -7,8 +7,8 @@ public class PerceptualBufferDriver extends ModuleDriverImpl {
 
 	private PerceptualBufferImpl pb;
 
-	public PerceptualBufferDriver(PerceptualBufferImpl pb, LidaTaskManager timer) {
-		super(timer);
+	public PerceptualBufferDriver(PerceptualBufferImpl pb, LidaTaskManager timer, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		this.pb = pb;
 	}// constructor
 

@@ -1,14 +1,38 @@
 package edu.memphis.ccrg.lida.framework;
 
 public class LidaTaskManager extends TaskSpawnerImpl {
-
-	private static long nextTaskID = 0L;
-	private static boolean ticksMode = false;
+	
 	/**
-	 * Threads calling the member function getSleepTime() will sleep for this
-	 * many ms.
+	 * The length of time that 1 tick equals in milliseconds.
 	 */
-	private int timeScale = 150;
+	private int tickDuration = 150;
+	
+	/**
+	 * All tasks in the Lida system are created, executed, and managed by this class.  
+	 * This variable is to be used to get unique ids for each task.
+	 */
+	private static long nextTaskID = 0L;
+	
+	/**
+	 * A boolean to track whether or not the system is in ticks mode.
+	 */
+	private static boolean inTicksMode = false;
+	
+	/**
+	 * 
+	 * @param tasksStartOutRunning
+	 * @param tickDuration
+	 */
+	public LidaTaskManager(boolean tasksStartOutRunning, int tickDuration) {
+		super(0);//Task manager should not be run
+		if (tasksStartOutRunning)
+			pauseSpawnedTasks();
+		else
+			resumeSpawnedTasks();
+	
+		this.tickDuration = tickDuration;
+	}
+	
 	/**
 	 * Convenience method to obtain the next ID for LidaTasks
 	 * 
@@ -25,27 +49,12 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * ten for Sensory Memory. In order to have the framework running accurately
 	 * the relative speed of each part of the framework must be set.
 	 */
-	public static void setTicksModeEnabled(boolean mode) {
-		ticksMode = mode;
+	public static void setInTicksMode(boolean mode) {
+		inTicksMode = mode;
 	}
-
-	public static boolean isTicksModeEnabled() {
-		return ticksMode;
+	public static boolean isInTicksMode() {
+		return inTicksMode;
 	} 
-
-	/**
-	 * 
-	 * @param tasksStartOutRunning
-	 * @param timeScale
-	 */
-	public LidaTaskManager(boolean tasksStartOutRunning, int timeScale) {
-		if (tasksStartOutRunning){
-			pauseSpawnedTasks();
-		}else{
-			resumeSpawnedTasks();
-		}
-		this.timeScale = timeScale;
-	}
 
 	/**
 	 * 
@@ -60,13 +69,13 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * system is pausable.
 	 */
 	public synchronized void checkForStartPause() {
-		if (isTasksPaused()) {
-			try {
+		if(isTasksPaused()){
+			try{
 				this.wait();
-			} catch (InterruptedException e) {
+			}catch(InterruptedException e){
 				stopRunning();
 			}
-		}
+		}//if
 	}// method
 
 	/**
@@ -75,18 +84,16 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * 
 	 * @return how long to sleep
 	 */
-	public int getTimeScale() {
-		return timeScale;
+	public int getTickDuration() {
+		return tickDuration;
 	}
 	public synchronized void setTimeScale(int newTimeScale) {
-		timeScale = newTimeScale;
-	}//
+		tickDuration = newTimeScale;
+	}
 
 	/**
-	 * Not used.
+	 * Since it is a LidaTask, this class implements runnable but run is not used for the task manager.
 	 */
-	public void run() {
-		// Not used
-	}
+	public void run(){}
 
 }// class FrameworkTimer

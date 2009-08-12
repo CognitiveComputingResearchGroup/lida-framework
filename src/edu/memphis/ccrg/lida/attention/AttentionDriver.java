@@ -26,8 +26,8 @@ public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 	private int defaultTicksPerStep = 3;
 
 	public AttentionDriver(LidaTaskManager timer, CurrentSituationalModel csm,
-			GlobalWorkspace gwksp) {
-		super(timer);
+						   GlobalWorkspace gwksp, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		this.csm = csm;
 		global = gwksp;
 	}

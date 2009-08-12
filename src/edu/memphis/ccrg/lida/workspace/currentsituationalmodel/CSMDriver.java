@@ -7,8 +7,8 @@ public class CSMDriver extends ModuleDriverImpl {
 
 	private CurrentSituationalModelImpl csm;
 
-	public CSMDriver(CurrentSituationalModelImpl csm, LidaTaskManager timer) {
-		super(timer);
+	public CSMDriver(CurrentSituationalModelImpl csm, LidaTaskManager timer, int ticksPerCycle) {
+		super(timer, ticksPerCycle);
 		this.csm = csm;
 	}
 
