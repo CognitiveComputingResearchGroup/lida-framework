@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
  * @author Ryan McCall
  * 
  */
-public interface PAMListener {
+public interface PamListener {
 	/**
 	 * This method should return as possible in order to 
 	 * no delay the rest of the broadcasting.

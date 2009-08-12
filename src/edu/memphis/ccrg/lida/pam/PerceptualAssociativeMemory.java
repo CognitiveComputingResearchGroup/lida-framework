@@ -60,6 +60,6 @@ public interface PerceptualAssociativeMemory{
 	
 	public void receiveActivationBurst(PamNode pNode,double activation);
 	public PamNode getPamNode(long id);
-	public void addPAMListener(PAMListener pl);
+	public void addPAMListener(PamListener pl);
 
 }//interface PAMinterface

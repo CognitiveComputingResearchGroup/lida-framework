@@ -15,8 +15,8 @@ import edu.memphis.ccrg.lida.example.genericlida.io.PamConfigReader;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
-import edu.memphis.ccrg.lida.pam.PAMDriver;
-import edu.memphis.ccrg.lida.pam.PAMListener;
+import edu.memphis.ccrg.lida.pam.PamDriver;
+import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
@@ -122,7 +122,7 @@ public class Lida {
 		//Add drivers to a list for execution
 		drivers.add(environment);
 		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
-		drivers.add(new PAMDriver(pam, taskManager, pamTicksPerStep));
+		drivers.add(new PamDriver(pam, taskManager, pamTicksPerStep));
 		drivers.add(attentionDriver);
 		drivers.add(sbCodeletDriver);
 		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
@@ -140,8 +140,8 @@ public class Lida {
 		if(sensoryMotorMemory instanceof SensoryMemoryListener)
 			sensoryMemory.addSensoryMemoryListener((SensoryMemoryListener) sensoryMotorMemory);
 		
-		if (workspace instanceof PAMListener)
-			pam.addPAMListener((PAMListener) workspace);
+		if (workspace instanceof PamListener)
+			pam.addPAMListener((PamListener) workspace);
 		else
 			logger.warning("Cannot add WORKSPACE as a listener");
 

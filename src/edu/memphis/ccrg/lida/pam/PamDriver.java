@@ -3,11 +3,11 @@ package edu.memphis.ccrg.lida.pam;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
-public class PAMDriver extends ModuleDriverImpl{
+public class PamDriver extends ModuleDriverImpl{
 
 	private PerceptualAssociativeMemory pam;
 	
-	public PAMDriver(PerceptualAssociativeMemory pam, LidaTaskManager taskManager, int ticksPerCycle){
+	public PamDriver(PerceptualAssociativeMemory pam, LidaTaskManager taskManager, int ticksPerCycle){
 		super(taskManager, ticksPerCycle);
 		this.pam = pam;
 	}//constructor
@@ -23,4 +23,4 @@ public class PAMDriver extends ModuleDriverImpl{
 		pam.decayPam();  //Decay the activations			
 	}
 	
-}//class PAMDriver
+}//class 

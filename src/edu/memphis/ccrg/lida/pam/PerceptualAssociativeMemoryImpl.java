@@ -37,7 +37,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private PamNodeStructure graph = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	private NodeStructureImpl percept = new NodeStructureImpl();
-	private List<PAMListener> pamListeners = new ArrayList<PAMListener>();
+	private List<PamListener> pamListeners = new ArrayList<PamListener>();
 	// Shared variables
 	// private NodeStructure topDownContent = new NodeStructureImpl();
 	private NodeStructure broadcastContent = new NodeStructureImpl();
@@ -82,7 +82,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}// method
 
 	// ******INTERMODULE COMMUNICATION******
-	public void addPAMListener(PAMListener pl) {
+	public void addPAMListener(PamListener pl) {
 		pamListeners.add(pl);
 	}
 
