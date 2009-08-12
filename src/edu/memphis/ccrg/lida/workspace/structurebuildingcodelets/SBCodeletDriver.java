@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
@@ -32,7 +33,7 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	
 	public void runDriverOneProcessingStep() {
 		activateCodelets();
-		sendEvent();
+		//sendEvent();
 	}
 
 	/**
@@ -45,7 +46,7 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
 			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.CSM, "data", getAllTasks());
+					FrameworkGuiEvent.CSM, "data", getRunningTasks());
 			for (FrameworkGuiEventListener gui : guis) {
 				gui.receiveGuiEvent(event);
 			}
@@ -63,6 +64,14 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 																   context, actions);
 		addTask(sbc);
 		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
+	}// method
+	
+	public void stopRunning() {
+//		for(LidaTask task : getRunningTasks()) {
+//			logger.log(Level.INFO, "Stopping task: {0}", task);
+//			task.stopRunning();
+//		}//for
+		this.setTaskStatus(LidaTask.CANCELLED);
 	}// method
 
 }// class

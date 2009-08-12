@@ -126,8 +126,8 @@ public class Lida {
 		drivers.add(environment);
 		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
 		drivers.add(new PAMDriver(pam, taskManager, pamTicksPerStep));
-		drivers.add(attentionDriver);
-		drivers.add(sbCodeletDriver);
+		//drivers.add(attentionDriver);
+		//drivers.add(sbCodeletDriver);
 		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
 		
 		//done creating drivers

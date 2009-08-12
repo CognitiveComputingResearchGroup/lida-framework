@@ -97,7 +97,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		}
 	}// method
 
-	public Collection<LidaTask> getAllTasks() {
+	public Collection<LidaTask> getRunningTasks() {
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 	public int getSpawnedTaskCount() {
@@ -140,13 +140,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	}
 
 	public void stopRunning() {
-		System.out.println("stop running called in task spawner");
-		for (LidaTask s : runningTasks) {
+		for(LidaTask s : runningTasks) {
 			logger.log(Level.INFO, "Stopping task: {0}", s);
 			s.stopRunning();
-		}
+		}//for
 		this.setTaskStatus(LidaTask.CANCELLED);
-		executorService.shutdownNow();
+
 		logger.info("All spawned tasks have been told to stop");
 	}// method
 

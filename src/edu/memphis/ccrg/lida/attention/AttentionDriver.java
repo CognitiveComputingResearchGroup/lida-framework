@@ -2,6 +2,8 @@ package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
@@ -42,10 +44,10 @@ public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 	}
 
 	public void activateCodelets() {
-		//For testing only!!!!!!
-		if (getSpawnedTaskCount() < 10) {
-			addTask(new AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv,getTaskManager() ,new NodeStructureImpl()));
-		}
+//		//For testing only!!!!!!
+//		if (getSpawnedTaskCount() < 10) {
+//			addTask(new AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv,getTaskManager() ,new NodeStructureImpl()));
+//		}
 	}
 
 	public void learn() {
@@ -54,6 +56,14 @@ public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 			// TODO:
 			n.getId();
 		}
+	}// method
+	
+	public void stopRunning() {
+//		for(LidaTask task : getRunningTasks()) {
+//			logger.log(Level.INFO, "Stopping task: {0}", task);
+//			task.stopRunning();
+//		}//for
+		this.setTaskStatus(LidaTask.CANCELLED);
 	}// method
 
 }// class
