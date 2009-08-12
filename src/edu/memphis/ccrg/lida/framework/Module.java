@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.framework;
 
 public enum Module {
 	
+	environment, 
 	sensoryMemory,
 	perceptualAssociativeMemory,
 	
@@ -19,6 +20,8 @@ public enum Module {
 	
 	proceduralMemory,
 	actionSelection,
-	sensoryMotorMemory
-
+	sensoryMotorMemory,
+	
+	allModules,
+	noModule
 }

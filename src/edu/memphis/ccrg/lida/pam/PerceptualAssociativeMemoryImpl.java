@@ -193,7 +193,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
 			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.PAM, "data", guiContent);
+					Module.perceptualAssociativeMemory, "data", guiContent);
 			for (FrameworkGuiEventListener gui : guis) {
 				gui.receiveGuiEvent(event);
 			}

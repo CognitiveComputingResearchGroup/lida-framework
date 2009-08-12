@@ -19,6 +19,7 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Module;
 
 /**
  *
@@ -128,8 +129,8 @@ public class LogPanel extends javax.swing.JPanel implements LidaPanel {
         return this;
     }
 
-    public int moduleSuported() {
-        return 0;
+    public Module moduleSuported() {
+        return Module.noModule;
     }
     public class GuiLogHandler extends Handler {
         String logMessages = new String("");

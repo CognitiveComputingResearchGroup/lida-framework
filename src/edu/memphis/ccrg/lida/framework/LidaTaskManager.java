@@ -87,13 +87,24 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	public static int getTickDuration() {
 		return tickDuration;
 	}
-	public synchronized void setTimeScale(int newTimeScale) {
-		tickDuration = newTimeScale;
+	public synchronized void setTickDuration(int newTickDuration) {
+		tickDuration = newTickDuration;
 	}
 
 	/**
 	 * Since it is a LidaTask, this class implements runnable but run is not used for the task manager.
 	 */
 	public void run(){}
+	
+	public void stopRunning(){
+		super.stopRunning();
+		try {
+			Thread.sleep(400);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.exit(0);
+	}
 
 }// class FrameworkTimer

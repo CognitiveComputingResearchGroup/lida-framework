@@ -36,8 +36,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	}
 
 	public void setSleepTime(int sleepTime) {
-		lida.getTaskManager().setTimeScale(sleepTime);
-
+		lida.getTaskManager().setTickDuration(sleepTime);
 	}
 
 	public boolean isSystemPaused(){

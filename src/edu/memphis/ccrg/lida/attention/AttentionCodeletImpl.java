@@ -17,7 +17,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 	//
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;
-	private LidaTaskManager timer;
+	//private LidaTaskManager timer;
 	private NodeStructure soughtContent;
 	    
     public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, int ticksPerStep,
@@ -28,7 +28,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
     	global = g;
     	this.soughtContent=soughtContent;
     	
-    	this.timer=timer;
+    	//this.timer=timer;
     }
 
 	public void run() {
@@ -48,7 +48,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 		runOneProcessingStep();
 		try {
 			// Sleeps a lap proportional for each task
-			Thread.sleep(timer.getTickDuration() * getTicksPerStep());
+			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
 		}catch (InterruptedException e){
 			stopRunning();
 		}

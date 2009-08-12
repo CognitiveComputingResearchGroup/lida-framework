@@ -3,6 +3,8 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -54,7 +56,7 @@ public class ProceduralMemoryImpl implements ProceduralMemory,
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
 			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.PROCEDURAL_MEMORY, "data", guiContent);
+					Module.proceduralMemory, "data", guiContent);
 			for (FrameworkGuiEventListener gui : guis) {
 				gui.receiveGuiEvent(event);
 			}

@@ -70,8 +70,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		guiContent.add(model.getNodeCount());
 		guiContent.add(model.getLinkCount());
 		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.CSM, "data", guiContent);
+			FrameworkGuiEvent event = new FrameworkGuiEvent(Module.currentSituationalModel, "data", guiContent);
 			for (FrameworkGuiEventListener gui : guis) {
 				gui.receiveGuiEvent(event);
 			}

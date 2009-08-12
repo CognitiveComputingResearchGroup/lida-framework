@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -172,7 +173,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 			guiContent.add(coalitions.size());
 			guiContent.add(-1);
 			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.GLOBAL_WORKSPACE, "coalitions",
+					Module.globalWorkspace, "coalitions",
 					guiContent);
 			for (FrameworkGuiEventListener fg : guis)
 				fg.receiveGuiEvent(event);

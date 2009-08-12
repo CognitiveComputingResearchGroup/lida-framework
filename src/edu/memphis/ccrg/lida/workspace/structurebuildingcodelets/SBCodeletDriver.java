@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
@@ -46,7 +45,7 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
 			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.CSM, "data", getRunningTasks());
+					Module.structureBuildingCodelets, "data", getRunningTasks());
 			for (FrameworkGuiEventListener gui : guis) {
 				gui.receiveGuiEvent(event);
 			}

@@ -38,7 +38,7 @@ public class Translator {
         nodes = nodeStructure.getNodes();
         int index = 0;
         for (Node n : nodes) {
-            long nodeID = n.getId();
+            //long nodeID = n.getId();
             indexMap.put(n, index);
             nodeMap.put(index, n);
             index++;

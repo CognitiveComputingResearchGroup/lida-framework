@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationa
 public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 		BroadcastListener {
 
-	private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
+	//private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
 	//
 	private CurrentSituationalModel csm;
 	private GlobalWorkspace global;

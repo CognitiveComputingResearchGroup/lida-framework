@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Module;
 
 /**
  *
@@ -75,8 +76,8 @@ public class VisualFieldPanel extends javax.swing.JPanel implements LidaPanel, F
         return this;
     }
 
-    public int moduleSuported() {
-        return FrameworkGuiEvent.ENVIRONMENT;
+    public Module moduleSuported() {
+        return Module.environment;
     }
 
 	public void registrerLida(Lida lida) {

@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.Module;
 
 /**
  *
@@ -26,9 +28,9 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     private Lida lida;
     
 	boolean isPaused = true;
-	private int sliderMin = 15;
-	private int sliderMax = 350;
-	private int sliderStartValue = 100;
+	private int sliderMin = 0;
+	private int sliderMax = 50;
+	private int sliderStartValue = LidaTaskManager.getTickDuration();
 
     /** Creates new form ControlPanel */
     public ControlPanel() {
@@ -265,8 +267,8 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
         return this;
     }
 
-    public int moduleSuported() {
-        return FrameworkGuiEvent.FRAMEWORK;
+    public Module moduleSuported() {
+        return Module.allModules;
     }
 
     public void receiveGuiEvent(FrameworkGuiEvent event) {

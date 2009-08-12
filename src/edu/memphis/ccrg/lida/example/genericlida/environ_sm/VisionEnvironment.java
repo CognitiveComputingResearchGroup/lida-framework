@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -198,9 +199,9 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 
 	public void sendEvent() {
 		for (FrameworkGuiEventListener fg : frameworkGuis) {
-			fg.receiveGuiEvent(new FrameworkGuiEvent(FrameworkGuiEvent.ENVIRONMENT,"data",environContent));
+			FrameworkGuiEvent evt = new FrameworkGuiEvent(Module.environment,"data",environContent);
+			fg.receiveGuiEvent(evt);
 		}
-
 	}
 
 	// public void printImage(double[][] image){

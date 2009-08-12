@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -49,7 +50,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListe
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
 			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					FrameworkGuiEvent.CSM, "data", guiContent);
+					Module.episodicBuffer, "data", guiContent);
 			for (FrameworkGuiEventListener gui : guis) {
 				gui.receiveGuiEvent(event);
 			}
