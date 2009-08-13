@@ -106,7 +106,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		}
 	}// method
 
-	public Collection<LidaTask> getAllTasks() {
+	public Collection<LidaTask> getRunningTasks() {
 		logger.log(Level.FINEST,"getting all tasks");
 		return Collections.unmodifiableCollection(runningTasks);
 	}
@@ -115,18 +115,18 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		return runningTasks.size();
 	}// method
 
-	public void stopRunning() {
-		logger.log(Level.FINE,"stop running called in task spawner");
-		for (LidaTask s : runningTasks) {
-			logger.log(Level.INFO, "Stopping task: {0}", s);
-			s.stopRunning();
-			//Don't remove this! we need it!!!!!!
-			s.setTaskStatus(LidaTask.CANCELLED);
-			//Don't remove this.
-		}
-		executorService.shutdownNow();
-		logger.info("All spawned tasks have been told to stop");
-	}// method
+//	public void stopRunning() {
+//		logger.log(Level.FINE,"stop running called in task spawner");
+//		for (LidaTask s : runningTasks) {
+//			logger.log(Level.INFO, "Stopping task: {0}", s);
+//			s.stopRunning();
+//			//Don't remove this! we need it!!!!!!
+//			s.setTaskStatus(LidaTask.CANCELLED);
+//			//Don't remove this.
+//		}
+//		executorService.shutdownNow();
+//		logger.info("All spawned tasks have been told to stop");
+//	}// method
 
 	/**
 	 * This method is override in this class in order to spawn the ticks to the

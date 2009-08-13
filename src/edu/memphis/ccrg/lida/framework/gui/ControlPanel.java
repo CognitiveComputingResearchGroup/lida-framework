@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 
@@ -317,8 +318,8 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
         return this;
     }
 
-    public int moduleSuported() {
-        return FrameworkGuiEvent.FRAMEWORK;
+    public Module moduleSuported() {
+        return null; //TODO: FIX THIS!!!!!
     }
 
     public void receiveGuiEvent(FrameworkGuiEvent event) {

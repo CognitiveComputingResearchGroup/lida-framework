@@ -8,7 +8,7 @@ public class SetTimeScaleCommand extends GenericCommandImpl {
 	public void execute(Lida lida) {
 		Integer timeScale = (Integer) getParameter("timeScale");
 		if (timeScale != null) {
-			lida.getTaskManager().setTimeScale(timeScale);
+			lida.getTaskManager().setTickDuration(timeScale);
 		}
 	}
 
