@@ -34,6 +34,7 @@ public class GenericLida {
 	    		
 	    		//Config path
 	            String configFilePath = "lidaConfig.txt";
+	            //TODO: Use Properties to read this file in lida
 	            
 	        	//Create the model and the controller
 	        	Lida lida = new Lida(taskManager, environ, sm, configFilePath);
