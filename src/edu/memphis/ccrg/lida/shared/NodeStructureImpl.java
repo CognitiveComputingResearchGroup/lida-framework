@@ -379,7 +379,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	
 	public void mergeNodeStructure(NodeStructure ns) {
 		addNodes(ns.getNodes());
-		//addLinks(ns.getLinks());
+		ns.getLinks();
 		//TODO: Must add links differently than above statement.
 	}
 

@@ -41,6 +41,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 												  keepAliveTime, TimeUnit.SECONDS);
 	}// method
 
+	public TaskSpawnerImpl() {
+		this(1);
+	}
+
 	public void setInitialTasks(List<? extends LidaTask> initialTasks) {
 		for (LidaTask r : initialTasks)
 			addTask(r);
@@ -102,11 +106,26 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		}
 	}// method
 
-	public Collection<LidaTask> getRunningTasks() {
+	public Collection<LidaTask> getAllTasks() {
+		logger.log(Level.FINEST,"getting all tasks");
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 	public int getSpawnedTaskCount() {
+		logger.log(Level.FINEST,"get spawned count");
 		return runningTasks.size();
+	}// method
+
+	public void stopRunning() {
+		logger.log(Level.FINE,"stop running called in task spawner");
+		for (LidaTask s : runningTasks) {
+			logger.log(Level.INFO, "Stopping task: {0}", s);
+			s.stopRunning();
+			//Don't remove this! we need it!!!!!!
+			s.setTaskStatus(LidaTask.CANCELLED);
+			//Don't remove this.
+		}
+		executorService.shutdownNow();
+		logger.info("All spawned tasks have been told to stop");
 	}// method
 
 	/**
@@ -115,6 +134,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	@Override
 	public void addTicks(int ticks) {
+		logger.log(Level.FINE,"Add ticks called");
 		super.addTicks(ticks);
 		for (LidaTask s : runningTasks) {
 			s.addTicks(ticks);
@@ -128,13 +148,16 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			tasksPaused = true;
 		}
 	}
+
 	public void resumeSpawnedTasks() {
+		logger.log(Level.FINE,"resume spawned tasks called");
 		if(shuttingDown)
 			return;
 		
 		synchronized(this){
 			tasksPaused = false;
 		}
+		logger.log(Level.FINE,"resume spawned tasks called");
 		for (LidaTask task : runningTasks) {
 			int status = task.getTaskStatus();
 			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {
