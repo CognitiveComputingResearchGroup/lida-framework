@@ -12,7 +12,6 @@ public class PamDriver extends ModuleDriverImpl{
 		this.pam = pam;
 	}//constructor
 		
-
 	public void runDriverOneProcessingStep() {
 		pam.detectSensoryMemoryContent();				
 		pam.propogateActivation();//Pass activation	
