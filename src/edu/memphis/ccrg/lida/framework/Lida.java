@@ -89,8 +89,8 @@ public class Lida {
 
 		PamConfigReader pamInput = new PamConfigReader(pam, sm);
 		pamInput.loadInputFromFile(configFilePath);
+		//TODO: use Properties
 		
-		//TODO: config files for other modules
 		tem = new TEMImpl(); 
 		declarativeMemory = new DeclarativeMemoryImpl();
 		//
@@ -192,70 +192,69 @@ public class Lida {
 	public Environment getEnvironment() {
 		return environment;
 	}
-
 	/**
 	 * @return the sensoryMotorMemory
 	 */
 	public SensoryMotorMemory getSensoryMotorMemory() {
 		return sensoryMotorMemory;
 	}
-
 	/**
 	 * @return the sensoryMemory
 	 */
 	public SensoryMemory getSensoryMemory() {
 		return sensoryMemory;
 	}
-
 	/**
 	 * @return the pam
 	 */
 	public PerceptualAssociativeMemory getPam() {
 		return pam;
 	}
-
 	/**
 	 * @return the tem
 	 */
 	public TransientEpisodicMemory getTem() {
 		return tem;
 	}
-
 	/**
 	 * @return the declarativeMemory
 	 */
 	public DeclarativeMemory getDeclarativeMemory() {
 		return declarativeMemory;
 	}
-
 	/**
 	 * @return the workspace
 	 */
 	public Workspace getWorkspace() {
 		return workspace;
 	}
-
+	/**
+	 * @return the sbCodeletDriver
+	 */
+	public SBCodeletDriver getSbCodeletDriver() {
+		return sbCodeletDriver;
+	}
+	public AttentionDriver getAttentionDriver() {
+		return attentionDriver;
+	}
 	/**
 	 * @return the globalWksp
 	 */
 	public GlobalWorkspace getGlobalWksp() {
 		return globalWksp;
 	}
-
 	/**
 	 * @return the procMem
 	 */
 	public ProceduralMemory getProcMem() {
 		return proceduralMemory;
 	}
-
 	/**
 	 * @return the actionSelection
 	 */
 	public ActionSelection getActionSelection() {
 		return actionSelection;
 	}
-
 	/**
 	 * @return the timer
 	 */
@@ -263,14 +262,4 @@ public class Lida {
 		return taskManager;
 	}
 
-	/**
-	 * @return the sbCodeletDriver
-	 */
-	public SBCodeletDriver getSbCodeletDriver() {
-		return sbCodeletDriver;
-	}
-
-	public AttentionDriver getAttentionDriver() {
-		return attentionDriver;
-	}
-}
+}//class
