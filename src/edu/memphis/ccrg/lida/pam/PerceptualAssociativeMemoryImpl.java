@@ -34,7 +34,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 														BroadcastListener, 
 														WorkspaceListener{
 
-	private PamNodeStructure graph = new PamNodeStructure();
+	private PamNodeStructure pamNodeStructure = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	private NodeStructureImpl percept = new NodeStructureImpl();
 	private List<PamListener> pamListeners = new ArrayList<PamListener>();
@@ -53,36 +53,39 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		Object o = parameters.get("upscale");
 		if ((o != null) && (o instanceof Double)) {
 			synchronized (this) {
-				graph.setUpscale((Double) o);
+				pamNodeStructure.setUpscale((Double) o);
 			}
 		}
 		o = parameters.get("downscale");
 		if ((o != null) && (o instanceof Double))
 			synchronized (this) {
-				graph.setDownscale((Double) o);
+				pamNodeStructure.setDownscale((Double) o);
 			}
 		o = parameters.get("selectivity");
 		if ((o != null) && (o instanceof Double)) {
 			synchronized (this) {
-				graph.setSelectivity((Double) o);
+				pamNodeStructure.setSelectivity((Double) o);
 			}
 		}
 	}// method
 
-	public void addToPAM(Set<PamNode> nodes, List<FeatureDetector> ftDetectors,
+	public void addToPam(Set<PamNode> nodes, List<FeatureDetector> ftDetectors,
 						 Set<Link> links) {
 		featureDetectors = ftDetectors;
-		graph.addPamNodes(nodes);
-		graph.addLinks(links);
+		pamNodeStructure.addPamNodes(nodes);
+		pamNodeStructure.addLinks(links);
 
-		for (FeatureDetector fd : featureDetectors) {
-			long id = fd.getPamNode().getId();
-			fd.setNode((PamNode) graph.getNode(id));
-		}
+		//Since when nodes are added to a NodeStructure they are copied, the
+		//node object that the featureDetectors excite must be updated with the 
+		//copied node that is in the pamNodeStructure
+		for (FeatureDetector detector : featureDetectors) {
+			long id = detector.getPamNode().getId();
+			detector.setNode((PamNode) pamNodeStructure.getNode(id));
+		}//for
 	}// method
 
 	// ******INTERMODULE COMMUNICATION******
-	public void addPAMListener(PamListener pl) {
+	public void addPamListener(PamListener pl) {
 		pamListeners.add(pl);
 	}
 
@@ -100,11 +103,6 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	// ******FUNDAMENTAL PAM FUNCTIONS******
-	public void detectSensoryMemoryContent() {
-		for (FeatureDetector d : featureDetectors)
-			d.executeDetection();
-	}// method
-
 	/**
 	 * receives activation from feature detectors or other codelets to excite a
 	 * PamNode
@@ -113,6 +111,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double activation) {
+		//System.out.println(node.getLabel() + " " + activation);
 		node.excite(activation);
 	}
 
@@ -122,10 +121,10 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void propogateActivation() {
 		Set<PamNode> bottomNodes = new HashSet<PamNode>();
 		
-		for (FeatureDetector fd : featureDetectors)
+		for(FeatureDetector fd: featureDetectors)
 			bottomNodes.add(fd.getPamNode());
 
-		graph.passActivationUpward(bottomNodes);
+		pamNodeStructure.passActivationUpward(bottomNodes);
 		updatePercept();
 		// TODO:impl episodic buffer activation into activation passing
 		// TODO:use preafferent signal
@@ -141,7 +140,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private void updatePercept() {
 		percept.clearNodes();
 		//System.out.println(graph.getNodeCount());
-		for (Node n : graph.getNodes()) {
+		for (Node n : pamNodeStructure.getNodes()) {
 			PamNodeImpl node = (PamNodeImpl) n;
 			if (node.isRelevant())// Based on totalActivation
 				percept.addNode(node);
@@ -165,31 +164,34 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 			// TODO:
 			n.getId();
 		}
-	}
+	}//method
 
 	public void decayPam() {
-		graph.decayNodes();
+		pamNodeStructure.decayNodes();
 	}// method
 
 	public void setDecayBehavior(DecayBehavior b) {
-		graph.setNodesDecayBehavior(b);
+		pamNodeStructure.setNodesDecayBehavior(b);
 	}
 
 	public void setExciteBehavior(ExciteBehavior behavior) {
-		graph.setNodesExciteBehavior(behavior);
+		pamNodeStructure.setNodesExciteBehavior(behavior);
 	}// method
 
 	/**
 	 * returns a PamNode from the PAM
 	 */
 	public PamNode getPamNode(long id) {
-		return (PamNode) graph.getNode(id);
+		return (PamNode) pamNodeStructure.getNode(id);
 	}
-
+	public Collection<FeatureDetector> getFeatureDetectors(){
+		return featureDetectors;
+	}
+	
+	//**************GUI***************
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
-
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
 			FrameworkGuiEvent event = new FrameworkGuiEvent(

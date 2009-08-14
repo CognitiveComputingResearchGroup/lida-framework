@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +44,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		this(1);
 	}
 
-	public void setInitialTasks(List<? extends LidaTask> initialTasks) {
+	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
 		for (LidaTask r : initialTasks)
 			addTask(r);
 	}

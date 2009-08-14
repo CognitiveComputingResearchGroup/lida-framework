@@ -47,7 +47,7 @@ public class PamConfigReader implements ConfigReader {
     	List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>(); 
 		featureDetectors.add(new VisionFeatureDetector(gold, sm, pam));
 
-		pam.addToPAM(factory.getStoredNodes(), featureDetectors, factory.getStoredLinks());
+		pam.addToPam(factory.getStoredNodes(), featureDetectors, factory.getStoredLinks());
 	}//method
 	
 }//class

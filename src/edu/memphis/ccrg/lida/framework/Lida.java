@@ -52,6 +52,7 @@ public class Lida {
 	private SensoryMotorMemory sensoryMotorMemory;
 	private SensoryMemory sensoryMemory;
 	private PerceptualAssociativeMemory pam;
+	private PamDriver pamDriver;
 	// Episodic memory
 	private TransientEpisodicMemory tem;
 	private DeclarativeMemory declarativeMemory;
@@ -86,9 +87,8 @@ public class Lida {
 		sensoryMemory = sm;
 		
 		pam = new PerceptualAssociativeMemoryImpl();
-
-		PamConfigReader pamInput = new PamConfigReader(pam, sm);
-		pamInput.loadInputFromFile(configFilePath);
+		PamConfigReader reader = new PamConfigReader(pam, sm);
+		reader.loadInputFromFile(configFilePath);
 		//TODO: use Properties
 		
 		tem = new TEMImpl(); 
@@ -122,7 +122,10 @@ public class Lida {
 		//Add drivers to a list for execution
 		drivers.add(environment);
 		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
-		drivers.add(new PamDriver(pam, taskManager, pamTicksPerStep));
+		
+		pamDriver = new PamDriver(pam, taskManager, pamTicksPerStep);
+		pamDriver.setInitialTasks(pam.getFeatureDetectors());
+		drivers.add(pamDriver);
 		drivers.add(attentionDriver);
 		drivers.add(sbCodeletDriver);
 		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
@@ -141,7 +144,7 @@ public class Lida {
 			sensoryMemory.addSensoryMemoryListener((SensoryMemoryListener) sensoryMotorMemory);
 		
 		if (workspace instanceof PamListener)
-			pam.addPAMListener((PamListener) workspace);
+			pam.addPamListener((PamListener) workspace);
 		else
 			logger.warning("Cannot add WORKSPACE as a listener");
 
@@ -210,6 +213,11 @@ public class Lida {
 	public PerceptualAssociativeMemory getPam() {
 		return pam;
 	}
+	
+	public PamDriver getPamDriver(){
+		return pamDriver;
+	}
+	
 	/**
 	 * @return the tem
 	 */

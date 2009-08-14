@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,12 +36,7 @@ public interface PerceptualAssociativeMemory{
 	 * Each nodes added must be register which requires
 	 * the refresh and buildLayerMap operations (see PAM.java) 
 	 */
-	public void addToPAM(Set<PamNode> nodes, List<FeatureDetector> ftDetectors, Set<Link> links);
-	
-	/**
-	 * Sense the current SenseContent
-	 */ 
-	public void detectSensoryMemoryContent();
+	public void addToPam(Set<PamNode> nodes, List<FeatureDetector> ftDetectors, Set<Link> links);
 	
 	/**
 	 * Passes activation in a feed-forward direction. 
@@ -60,6 +56,8 @@ public interface PerceptualAssociativeMemory{
 	
 	public void receiveActivationBurst(PamNode pNode,double activation);
 	public PamNode getPamNode(long id);
-	public void addPAMListener(PamListener pl);
+	public Collection<FeatureDetector> getFeatureDetectors();
+	
+	public void addPamListener(PamListener pl);
 
 }//interface PAMinterface

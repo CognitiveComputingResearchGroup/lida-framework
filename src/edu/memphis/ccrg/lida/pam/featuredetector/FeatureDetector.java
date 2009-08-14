@@ -1,11 +1,10 @@
 package edu.memphis.ccrg.lida.pam.featuredetector;
 
 import java.util.Map;
-
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.shared.Activatible;
 
-public interface FeatureDetector extends Activatible {
+public interface FeatureDetector extends LidaTask {
 	
 	public abstract double detect(); 
 	public abstract PamNode getPamNode();

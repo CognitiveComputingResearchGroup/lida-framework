@@ -57,8 +57,8 @@ public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	 * which type
 	 */
 	@SuppressWarnings("unused")
-	private void spawnNewCodelet(int type, double activation, NodeStructure context, 
-								 							  CodeletAction actions){
+	private void spawnNewCodelet(int type, double activation, 
+								 NodeStructure context, CodeletAction actions){
 		StructureBuildingCodelet sbc = sbCodeletFactory.getCodelet(type, activation, 
 																   context, actions);
 		addTask(sbc);

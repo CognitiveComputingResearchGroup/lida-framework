@@ -30,7 +30,7 @@ public interface TaskSpawner extends LidaTask{
 	/**
 	 * The supplied LidaTask will be start by the spawner right away.
 	 */
-	public abstract void setInitialTasks(List<? extends LidaTask> initialTasks);
+	public abstract void setInitialTasks(Collection<? extends LidaTask> initialTasks);
 		
 	/**
 	 * This method receives the tasks that have finished.

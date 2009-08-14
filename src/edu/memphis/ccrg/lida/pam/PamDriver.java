@@ -12,8 +12,7 @@ public class PamDriver extends ModuleDriverImpl{
 		this.pam = pam;
 	}//constructor
 		
-	public void runDriverOneProcessingStep() {
-		pam.detectSensoryMemoryContent();				
+	public void runDriverOneProcessingStep() {				
 		pam.propogateActivation();//Pass activation	
 		pam.sendOutPercept(); //Send the percept to p-Workspace
 		if (pam instanceof PerceptualAssociativeMemoryImpl){

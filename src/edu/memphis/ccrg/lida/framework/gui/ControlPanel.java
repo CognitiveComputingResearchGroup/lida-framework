@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
@@ -27,11 +28,11 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
 	private static final long serialVersionUID = 1L;
 	private LidaGuiController controller;
     private Lida lida;
-    
+    	
 	boolean isPaused = true;
-	private int sliderMin = 15;
-	private int sliderMax = 350;
-	private int sliderStartValue = 100;
+	private int sliderMin = 0;
+	private int sliderMax = 50;
+	private int sliderStartValue = LidaTaskManager.getTickDuration();
 
     /** Creates new form ControlPanel */
     public ControlPanel() {
@@ -64,7 +65,9 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
         statusLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         sleepTimeTextField = new javax.swing.JTextField();
-        speedSlider = new javax.swing.JSlider();
+        
+        speedSlider = new javax.swing.JSlider(sliderMin, sliderMax, sliderStartValue);
+        
         minSleepTimeLabel = new javax.swing.JLabel();
         maxSleepTimeLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -301,17 +304,18 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
     }
 
     public void refresh() {
-//    	isPaused = lida.getTaskManager().isTasksPaused();
-//    	if(isPaused)
-//    		statusLabel.setText("PAUSED");
-//    	else
-//    		statusLabel.setText("RUNNING");
-//    	//
-//    	String threadCount = "";
-//        threadCount = (lida.getTaskManager().getSpawnedTaskCount() +
-//        			   lida.getSbCodeletDriver().getSpawnedTaskCount() +
-//        			   lida.getAttentionDriver().getSpawnedTaskCount()) + "";
-//        threadCountTextField.setText(threadCount);
+    	isPaused = lida.getTaskManager().isTasksPaused();
+    	if(isPaused)
+    		statusLabel.setText("PAUSED");
+    	else
+    		statusLabel.setText("RUNNING");
+    	//
+    	String threadCount = "";
+        threadCount = (lida.getTaskManager().getSpawnedTaskCount() +
+        			   lida.getPamDriver().getSpawnedTaskCount() + 
+        			   lida.getSbCodeletDriver().getSpawnedTaskCount() +
+        			   lida.getAttentionDriver().getSpawnedTaskCount()) + "";
+        threadCountTextField.setText(threadCount);
     }
 
     public JPanel getPanel() {

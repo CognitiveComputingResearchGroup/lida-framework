@@ -37,7 +37,6 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 			useOneStepOfTicks();
 			runOneStep();
 		}
-
 	}
 	private void runOneStep(){
 		try {
