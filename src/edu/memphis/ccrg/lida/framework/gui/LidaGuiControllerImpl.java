@@ -42,14 +42,14 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		}
 	}
 	public LidaGuiControllerImpl(Lida lida) {
-		this(lida,null);
+		this(lida,"inputFiles/guiCommands.properties");
 	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.gui.LidaGuiController#executeCommand(java.lang.String, java.util.Map)
 	 */
 	public Object executeCommand (String commandName,Map<String,Object> parameters){
-		String commandClass=commands.getProperty(commandName);
+		String commandClass = commands.getProperty(commandName);
 		Command command=null;
 		if(commandClass != null){
 			try {
@@ -65,10 +65,10 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 				logger.warning(e.getMessage());
 			}
 		}
-		if (command==null){
+		if (command == null){
 			return null;
 		}
-		if (parameters != null){
+		if(parameters != null){
 			command.setParameters(parameters);
 		}
 		command.execute(lida);

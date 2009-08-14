@@ -39,14 +39,11 @@ public class ControlPanel extends javax.swing.JPanel implements LidaPanel,Framew
 
     /** Creates new form ControlPanel */
     public ControlPanel() {
-
     	initComponents();
 
         minSleepTimeLabel.setText(sliderMin+" ms");
         maxSleepTimeLabel.setText(sliderMax+" ms");
         sleepTimeTextField.setText(this.sliderStartValue + "");
-
-    	//actionSelection = as;
     }
 
     /** This method is called from within the constructor to

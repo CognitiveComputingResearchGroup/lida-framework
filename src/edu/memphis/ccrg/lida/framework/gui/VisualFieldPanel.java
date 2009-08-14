@@ -92,7 +92,6 @@ public class VisualFieldPanel extends javax.swing.JPanel implements LidaPanel, F
 		double [][] smc=(double[][])event.getData();
 		String s=convertToString(smc);
 		jTextArea1.setText(s);
-		
 	}
 	public String convertToString(double[][] a) {
 		String res = "";
