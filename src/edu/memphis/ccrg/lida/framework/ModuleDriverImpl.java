@@ -12,6 +12,13 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		super(ticksPerCycle);
 		taskManager = tm;
 	}
+	//Only use this constructor if a LidaTaskManager is added later before running
+	public ModuleDriverImpl(int ticksPerCycle){
+		super(ticksPerCycle);
+	}
+	public ModuleDriverImpl(){
+		super();
+	}
 
 	public void run() {		
 		//If not is ticks Mode then business as usual.
@@ -32,6 +39,9 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		runDriverOneProcessingStep();
 	}
 	
+	public void setTaskManager(LidaTaskManager tm){
+		taskManager = tm;
+	}
 	public LidaTaskManager getTaskManager(){
 		return taskManager;
 	}

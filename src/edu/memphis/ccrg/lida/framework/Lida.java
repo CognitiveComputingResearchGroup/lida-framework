@@ -1,7 +1,13 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
@@ -11,7 +17,7 @@ import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.example.genericlida.io.PamConfigReader;
+import edu.memphis.ccrg.lida.example.genericlida.io.PamInitializer;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -25,6 +31,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
@@ -47,6 +54,17 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SBCodeletDriver
 public class Lida {
 	
 	private Logger logger = Logger.getLogger("lida.framework.Lida");
+	
+	/**
+	 * List of drivers which run the major components of LIDA
+	 */
+	private List<ModuleDriver> moduleDrivers = new ArrayList<ModuleDriver>();
+	
+	/**
+	 * To read a parameter file
+	 */
+	private Properties lidaProperties;
+	
 	// Perception
 	private EnvironmentImpl environment;
 	private SensoryMotorMemory sensoryMotorMemory;
@@ -68,47 +86,77 @@ public class Lida {
 	// A class that helps pause and control the drivers.
 	private LidaTaskManager taskManager;
 
-	/**
-	 * List of drivers which run the major components of LIDA
-	 */
-	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
+	
 
-	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm, String configFilePath) {
+	public Lida(EnvironmentImpl e, SensoryMemoryImpl sm, String configFilePath) {
 		logger.info("Starting Lida");
-		initComponents(ft, e, sm, configFilePath);
+		initComponents(e, sm, configFilePath);
 		initDrivers();
 		initListeners();
 		start();
 	}
 
-	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm, String configFilePath) {
-		taskManager = tm;
-		environment = e;
+	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm, String configFilePath) {
+		//Properties for Module Parameters
+		lidaProperties = new Properties();
+		try {
+			lidaProperties.load(new BufferedReader(new FileReader(configFilePath)));
+		} catch (FileNotFoundException e2) {
+			throw new IllegalArgumentException();
+		} catch (IOException e2) {
+			logger.log(Level.SEVERE, "Error reading config file {0}", e2.getMessage());
+		}
+		
+		//Task manager
+		//TODO: Use Properties
+    	boolean tasksStartOutRunning = false;
+		int tickDuration = 10;
+		taskManager = new LidaTaskManager(tasksStartOutRunning, tickDuration);
+
+		//Environment
+		environment = environ;
+		environment.setTaskManager(taskManager);
+		
+		//Sensory Memory
 		sensoryMemory = sm;
+		sm.setEnvironment(environment);
 		
+		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
-		PamConfigReader reader = new PamConfigReader(pam, sm);
-		reader.loadInputFromFile(configFilePath);
-		//TODO: use Properties
+		PamInitializer initializer = new PamInitializer(pam, sm);
+		initializer.initModule(lidaProperties);
 		
+		//Transient Episodic Memory
 		tem = new TEMImpl(); 
+		
+		//Declarative Memory
 		declarativeMemory = new DeclarativeMemoryImpl();
-		//
-		int bufferCapacity = 2;
-		int queueCapacity = 10;
+		
+		//Workspace
+		int bufferCapacity = 2;//TODO: this will be unnecessary soon
+		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
 		workspace = new WorkspaceImpl(new PerceptualBufferImpl(bufferCapacity),
 									  new EpisodicBufferImpl(bufferCapacity), 
 									  new BroadcastQueueImpl(queueCapacity),
 									  new CurrentSituationalModelImpl());
-		//
+		
+		//Global Workspace
 		globalWksp = new GlobalWorkspaceImpl();
+		
+		//Procedural Memory
 		proceduralMemory = new ProceduralMemoryImpl();
+		
+		//Action Selection
 		actionSelection = new ActionSelectionImpl();
+		
+		//Sensory-motor Memory
 		sensoryMotorMemory = new SensoryMotorMemoryImpl();
+		
 		logger.info("Lida submodules Created");		
 	}
 
 	private void initDrivers() {
+		//TODO: Use Properties
 		int pamTicksPerStep = 10;
 		int attnTicksPerStep = 10;
 		int sbCodeletTicksPerStep = 10;
@@ -120,15 +168,15 @@ public class Lida {
 											  globalWksp, attnTicksPerStep);
 		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager, sbCodeletTicksPerStep);
 		//Add drivers to a list for execution
-		drivers.add(environment);
-		drivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
+		moduleDrivers.add(environment);
+		moduleDrivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
 		
 		pamDriver = new PamDriver(pam, taskManager, pamTicksPerStep);
 		pamDriver.setInitialTasks(pam.getFeatureDetectors());
-		drivers.add(pamDriver);
-		drivers.add(attentionDriver);
-		drivers.add(sbCodeletDriver);
-		drivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
+		moduleDrivers.add(pamDriver);
+		moduleDrivers.add(attentionDriver);
+		moduleDrivers.add(sbCodeletDriver);
+		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
 		
 		//done creating drivers
 		logger.info("Lida drivers Created");		
@@ -184,8 +232,8 @@ public class Lida {
 		logger.info("Lida listeners added");	
 	}
 	public void start(){
-		globalWksp.start(); //TODO: change to the ThreadSpawner
-		taskManager.setInitialTasks(drivers);		
+		globalWksp.start(); //TODO: change to the ThreadSpawner  <--What does this comment mean? - (Ryan)
+		taskManager.setInitialTasks(moduleDrivers);		
 		logger.info("Lida submodules Started\n");		
 	}
 
