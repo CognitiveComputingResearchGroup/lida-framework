@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
@@ -16,13 +15,13 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");
 	private boolean actionHasChanged = false;
 	private ActionContent actionContent = null;
-	private double[][] environContent = new double[1][1];
 	private int IMAGE_HEIGHT = 5;
 	private int IMAGE_WIDTH = 5;
+	private double[][] environContent = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
+	
 	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
-	public VisionEnvironment(LidaTaskManager timer, int ticksPerStep, int height, int width) {
-		super(timer, ticksPerStep);
+	public VisionEnvironment(int height, int width) {
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;
 		iloc = IMAGE_HEIGHT / 2;
@@ -68,7 +67,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 				// handleAction(currentAction);
 			}
 		}// if actionHasChanged
-	}
+	}//run one step
 
 
 	/**
