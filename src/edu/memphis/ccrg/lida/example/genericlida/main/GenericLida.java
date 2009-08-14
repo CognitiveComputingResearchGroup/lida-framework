@@ -38,7 +38,7 @@ public class GenericLida {
 	            
 	        	//Create the model and the controller
 	        	Lida lida = new Lida(taskManager, environ, sm, configFilePath);
-	        	LidaGuiController lgc = new LidaGuiControllerImpl(lida);	        	
+	        	LidaGuiController lgc = new LidaGuiControllerImpl(lida,"configs/guiCommands.properties");	        	
 	            new LidaGui(lida, lgc).setVisible(true);
 	        }//run
 	        

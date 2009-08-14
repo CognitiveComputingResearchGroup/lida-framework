@@ -29,6 +29,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		super();
 		this.lida = lida;
 		commands = new Properties();
+		if(commandsFile!=null){
 		try {
 			commands.load(new BufferedReader(new FileReader(commandsFile)));
 		} catch (FileNotFoundException e) {
@@ -36,9 +37,12 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Error reading Commands List {0}", e.getMessage());
 		}
+		}else{
+			logger.log(Level.WARNING, "Commands File no especified");			
+		}
 	}
 	public LidaGuiControllerImpl(Lida lida) {
-		this(lida,"guiCommands.properties");
+		this(lida,null);
 	}
 
 	/* (non-Javadoc)
