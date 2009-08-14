@@ -1,23 +1,28 @@
 package edu.memphis.ccrg.lida.sensorymemory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 
-public class SensoryMemoryImpl implements SensoryMemory{
+public abstract class SensoryMemoryImpl implements SensoryMemory, SensoryMotorListener{
 	
-		
-	public Object getContent(String type, Object... parameters) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void processSensors() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
+	@SuppressWarnings("unused")
+	protected EnvironmentImpl environment;
+	
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {
-		// TODO Auto-generated method stub
-		
+		listeners.add(l);		
 	}
+	
+	public void setEnvironment(EnvironmentImpl environ){
+		environment = environ;
+	}
+	
+	public abstract Object getContent(String type, Object... parameters);
+
+	public abstract void processSensors();	
 	
 }//class
