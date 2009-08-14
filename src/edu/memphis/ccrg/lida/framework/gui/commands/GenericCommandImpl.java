@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 public abstract class GenericCommandImpl implements Command {
 	
 	private Map<String,Object> parameters=new HashMap<String,Object>();
-	private Object result;
+	protected Object result;
 
 	public abstract void execute(Lida lida);
 
