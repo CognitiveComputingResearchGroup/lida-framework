@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
  * @author ryanjmccall
  *
  */
-public class LidaStarter {
+public class LidaFactory {
 	
 	public static void start(final EnvironmentImpl environment, 
 							 final SensoryMemoryImpl sensoryMemory, 

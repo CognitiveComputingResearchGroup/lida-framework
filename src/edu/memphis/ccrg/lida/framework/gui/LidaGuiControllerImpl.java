@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.gui.commands.Command;
  */
 public class LidaGuiControllerImpl implements LidaGuiController {
 
-	private Logger logger = Logger.getLogger("lida.framework.gui.Controller");
+	private static Logger logger = Logger.getLogger("lida.framework.gui.Controller");
 	private Lida lida;
 	Properties commands;
 
@@ -28,7 +28,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	public LidaGuiControllerImpl(Lida lida, String commandsFile) {
 		super();
 		this.lida = lida;
-		commands = new Properties();
+ 		commands = new Properties();
 		if(commandsFile!=null){
 		try {
 			commands.load(new BufferedReader(new FileReader(commandsFile)));

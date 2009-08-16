@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionEnvironment;
 import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionSensoryMemory;
-import edu.memphis.ccrg.lida.framework.LidaStarter;
+import edu.memphis.ccrg.lida.framework.LidaFactory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 public class GenericLida{
@@ -26,8 +26,8 @@ public class GenericLida{
 		//Specify a configuration file path
         String configFilePath = "configs/lidaConfig.properties";
 		
-        //Use the LidaStarter to start the agent
-       LidaStarter.start(environment, sensoryMemory, configFilePath);
+        //Use the LidaFactory to start the agent
+       LidaFactory.start(environment, sensoryMemory, configFilePath);
 	}//method
 	
 }//class
