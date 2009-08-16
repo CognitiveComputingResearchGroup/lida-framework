@@ -1,13 +1,8 @@
 package edu.memphis.ccrg.lida.framework;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
@@ -88,24 +83,17 @@ public class Lida {
 
 	
 
-	public Lida(EnvironmentImpl e, SensoryMemoryImpl sm, String configFilePath) {
+	public Lida(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
 		logger.info("Starting Lida");
-		initComponents(e, sm, configFilePath);
+		initComponents(environ, sm, properties);
 		initDrivers();
 		initListeners();
 		start();
 	}
 
-	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm, String configFilePath) {
+	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
 		//Properties for Module Parameters
-		lidaProperties = new Properties();
-		try {
-			lidaProperties.load(new BufferedReader(new FileReader(configFilePath)));
-		} catch (FileNotFoundException e2) {
-			throw new IllegalArgumentException();
-		} catch (IOException e2) {
-			logger.log(Level.SEVERE, "Error reading config file {0}", e2.getMessage());
-		}
+		this.lidaProperties = properties;
 		
 		//Task manager
 		//TODO: Use Properties

@@ -31,6 +31,10 @@ import edu.memphis.ccrg.lida.framework.Module;
  */
 public class PropertiesPanel extends javax.swing.JPanel implements LidaPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3135377683820863184L;
 	private static Logger logger = Logger
 			.getLogger("lida.framework.gui.PropertiesPanel");
 	Properties properties;
@@ -201,7 +205,7 @@ public class PropertiesPanel extends javax.swing.JPanel implements LidaPanel {
 
 		private String getKey(int a_index) {
 			String retval = "";
-			Enumeration e = properties.keys();
+			Enumeration<Object> e = properties.keys();
 			for (int i = 0; i < a_index + 1; i++) {
 				retval = (String) e.nextElement();
 			} // for

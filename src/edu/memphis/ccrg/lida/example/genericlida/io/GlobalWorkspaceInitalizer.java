@@ -20,7 +20,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		globalWksp = g;		
 	}//method
 
-	//TODO: Use properties for trigger paramters
+	//TODO: Use properties for trigger parameters
 	public void initModule(Properties p) {
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
