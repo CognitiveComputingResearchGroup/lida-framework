@@ -20,5 +20,7 @@ public interface LidaPanel {
 	public void refresh();
 	public JPanel getPanel();
     public Module moduleSuported();
+    public void setName(String name);
+    public String getName();
 }
 

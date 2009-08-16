@@ -42,7 +42,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		}
 	}
 	public LidaGuiControllerImpl(Lida lida) {
-		this(lida,"inputFiles/guiCommands.properties");
+		this(lida,null);
 	}
 
 	/* (non-Javadoc)
@@ -54,14 +54,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		if(commandClass != null){
 			try {
 				command=(Command)(Class.forName(commandClass)).newInstance();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				logger.warning(e.getMessage());
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				logger.warning(e.getMessage());
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				logger.warning(e.getMessage());
 			}
 		}
