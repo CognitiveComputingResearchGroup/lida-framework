@@ -24,7 +24,7 @@ public class GenericLida{
 		SensoryMemoryImpl sensoryMemory = new VisionSensoryMemory();
 		
 		//Specify a configuration file path
-        String configFilePath = "inputFiles/lidaConfig.properties";
+        String configFilePath = "configs/lidaConfig.properties";
 		
         //Use the LidaStarter to start the agent
        LidaStarter.start(environment, sensoryMemory, configFilePath);

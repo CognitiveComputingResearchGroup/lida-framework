@@ -25,8 +25,8 @@ public class LidaStarter {
 	        public void run(){	
 	        	//Create the model and the controller
 	        	Lida lida = new Lida(environment, sensoryMemory, configFilePath);
-	        	LidaGuiController controller = new LidaGuiControllerImpl(lida);	        	
-	            new LidaGui(lida, controller).setVisible(true);
+	        	LidaGuiController controller = new LidaGuiControllerImpl(lida,"configs/guiCommands.properties");	        	
+	            new LidaGui(lida, controller,"configs/guiPanels.properties").setVisible(true);
 	        }//run
 	        
 	    });//invokeLater
