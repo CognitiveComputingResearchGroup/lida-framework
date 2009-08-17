@@ -4,13 +4,13 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 
-public class ActivationTask extends LidaTaskImpl {
+public class ExcitationTask extends LidaTaskImpl {
 	
 	private PamNode startingNode;
 	private double excitationAmount;
 	private PamNodeStructure nodeStruct;
 
-	public ActivationTask(PamNode node, double activation,
+	public ExcitationTask(PamNode node, double activation,
 			              PamNodeStructure pamNodeStructure) {
 		startingNode = node;
 		excitationAmount = activation;

@@ -233,7 +233,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double activation) {
-		ActivationTask task = new ActivationTask(node, activation, pamNodeStructure);
+		ExcitationTask task = new ExcitationTask(node, activation, pamNodeStructure);
 		taskSpawner.addTask(task);		
 	}
 
