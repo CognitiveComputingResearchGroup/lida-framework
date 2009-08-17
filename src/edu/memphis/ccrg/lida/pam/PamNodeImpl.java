@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeImpl;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
@@ -27,6 +26,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	protected double baselevelActivation = 0.0;
 	protected double currentActivation = 0.0;
 	protected int type = 0;
+	
 	public PamNodeImpl() {
 		super();
 		refNode=this;
@@ -41,12 +41,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		baselevelActivation = p.baselevelActivation;
 		currentActivation = p.currentActivation;
 		type = p.type;
-	}
-	
-	public void excite(double excitation) {
-		ExciteBehavior eb = getExciteBehavior();
-		if (eb != null)
-			currentActivation = eb.excite(currentActivation, excitation);
 	}
 
 	/**
@@ -68,7 +62,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	  * @return     <code>true</code> if this node is relevant
 	  * @see        #selectionThreshold
 	  */
-	public boolean isRelevant() {
+	public boolean isOverThreshold() {
 		//System.out.println(getLabel() + " " + getActivation() + " " + selectionThreshold);
 	    return getActivation() >= selectionThreshold;
 	}

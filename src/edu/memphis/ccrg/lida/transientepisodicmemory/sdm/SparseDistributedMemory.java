@@ -25,7 +25,8 @@ public class SparseDistributedMemory {
     private int addressSize;
     private int wordSize;
     private int memorySize;
-    private double activationProbability;
+    @SuppressWarnings("unused")
+	private double activationProbability;
     private int activationRadius;
     private int activationThreshold;
     private int []counterRange;

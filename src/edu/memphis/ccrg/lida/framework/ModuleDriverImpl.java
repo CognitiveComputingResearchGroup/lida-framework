@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements ModuleDriver {
 
+	@SuppressWarnings("unused")
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	protected boolean keepRunning = true;
 	protected LidaTaskManager taskManager;
@@ -36,7 +37,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		}catch (InterruptedException e){
 			stopRunning();
 		}
-		runDriverOneProcessingStep();
+		runSingleProcessingStep();
 	}
 	
 	public void setTaskManager(LidaTaskManager tm){

@@ -38,10 +38,10 @@ public class GenericLida{
         Properties lidaProperties = new Properties();
         try {
 			lidaProperties.load(new BufferedReader(new FileReader(configFilePath)));
-		} catch (FileNotFoundException e2) {
+		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException();
-		} catch (IOException e2) {
-			logger.log(Level.SEVERE, "Error reading lida properties file {0}", e2.getMessage());
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "Error reading lida properties file {0}", e.getMessage());
 		}
 		
         //Use the LidaFactory to start the agent

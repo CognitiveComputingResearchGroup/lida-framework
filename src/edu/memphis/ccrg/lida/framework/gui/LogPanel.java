@@ -28,7 +28,9 @@ import edu.memphis.ccrg.lida.framework.Module;
 public class LogPanel extends javax.swing.JPanel implements LidaPanel {
 
 	private static final long serialVersionUID = 12L;
+	@SuppressWarnings("unused")
 	private LidaGuiController controller;
+	@SuppressWarnings("unused")
 	private Lida lida;
 
     private String logName = "lida"; 

@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.Node;
@@ -44,8 +45,12 @@ public class PamNodeStructure extends NodeStructureImpl{
 			addNode(n);
 
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
-	}//method	
-
+	}//method
+	public void addPamNode(PamNode node){
+		addNode(node);
+		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+	}
+	
 	/**
 	 * Update the min and max activations and selection threshold
 	 * of the Linkables in the layermap
@@ -56,10 +61,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 	private void updateActivationThresholds(double upscale, double selectivity){
 		Collection<Node> nodes = getNodes();
         for(Node n: nodes){
-        	PamNode pNode = (PamNode)n;
-        	updateMinActivation(pNode, upscale);
-        	updateMaxActivation(pNode, upscale);
-        	updateSelectionThreshold(pNode, selectivity);
+        	PamNode pamNode = (PamNode)n;
+        	updateMinActivation(pamNode, upscale);
+        	updateMaxActivation(pamNode, upscale);
+        	updateSelectionThreshold(pamNode, selectivity);
         }//for	
     }//method
 
@@ -139,7 +144,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 		return true;
 	}//method
 	
-	//************END OF ADDING NODE RELATED METHODS*************	
+	//************END OF METHODS RELATED TO NODE ADDING*************	
 
 	public void setNodesExciteBehavior(ExciteBehavior behavior) {
     	for(Node n: getNodes())
@@ -173,7 +178,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 		  		layerOfNodes = parents;
 			}//for 
 		}//while
-	}//method
+	}//method	
 	
 	public void passActivationDownward(Set<PamNode> layerOfNodes) {
 		Set<PamNode> children = new HashSet<PamNode>();

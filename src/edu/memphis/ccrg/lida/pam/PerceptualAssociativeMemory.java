@@ -4,10 +4,10 @@
 package edu.memphis.ccrg.lida.pam;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
@@ -31,18 +31,13 @@ public interface PerceptualAssociativeMemory{
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public void setDecayBehavior(DecayBehavior c);
 	
-	/**
-	 * Adds the specified nodes and/or links to the PAM
-	 * Each nodes added must be register which requires
-	 * the refresh and buildLayerMap operations (see PAM.java) 
-	 */
-	public void addToPam(Set<PamNode> nodes, List<FeatureDetector> ftDetectors, Set<Link> links);
+	public void addNodes(Set<PamNode> nodes);
 	
-	/**
-	 * Passes activation in a feed-forward direction. 
-	 * After activation is passed nodes must synchronize() their total activation. 
-	 */
-	public void propogateActivation();
+	public boolean addFeatureDetector(FeatureDetector fd);
+	
+	public void addLinks(Set<Link> links);
+	
+	public void setTaskSpawner(TaskSpawner spawner);
 	
 	/**
 	 * Send Percept to PAM Listeners
@@ -59,5 +54,5 @@ public interface PerceptualAssociativeMemory{
 	public Collection<FeatureDetector> getFeatureDetectors();
 	
 	public void addPamListener(PamListener pl);
-
+		
 }//interface PAMinterface

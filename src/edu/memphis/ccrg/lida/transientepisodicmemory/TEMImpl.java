@@ -30,7 +30,8 @@ public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueL
     private SparseDistributedMemory sdm;
     private HashMap<Long, Integer> indexMap;
     private HashMap<Integer, Long> nodeMap;
-    private Translator translator;
+    @SuppressWarnings("unused")
+	private Translator translator;
 
     /**
      * The constructor of the class.

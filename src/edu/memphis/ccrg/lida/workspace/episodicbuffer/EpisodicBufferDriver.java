@@ -12,7 +12,7 @@ public class EpisodicBufferDriver extends ModuleDriverImpl {
 		this.eBuffer = eb;
 	}
 
-	public void runDriverOneProcessingStep() {
+	public void runSingleProcessingStep() {
 		//eBuffer.activateCodelets();
 		eBuffer.sendEvent();
 

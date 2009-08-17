@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.shared.Node;
 
-public interface PamNode extends Node {
+public interface PamNode extends Node{
 
 	/**
 	 * Determines if this node is relevant. A node is relevant if its total
@@ -11,7 +11,7 @@ public interface PamNode extends Node {
 	 * @return <code>true</code> if this node is relevant
 	 * @see #selectionThreshold
 	 */
-	public abstract boolean isRelevant();
+	public abstract boolean isOverThreshold();
 
 	/**
 	 * Standard getter for importance.

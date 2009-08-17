@@ -63,7 +63,7 @@ public class NodeImpl implements Node {
 		return refNode;
 	}
 
-	public boolean isRelevant() {
+	public boolean isOverThreshold() {
 		return false;
 	}
 

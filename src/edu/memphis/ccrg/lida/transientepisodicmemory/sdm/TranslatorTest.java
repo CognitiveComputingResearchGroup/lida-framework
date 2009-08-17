@@ -39,5 +39,6 @@ public class TranslatorTest {
         Translator translator = new Translator(structure);
         resultStructure = translator.translate(vector);
         resultVector = translator.translate(structure);
+        System.out.println(resultStructure.getNodeCount() + resultVector.length);
     }
 }

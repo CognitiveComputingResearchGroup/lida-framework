@@ -37,7 +37,7 @@ public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	public void runDriverOneProcessingStep() {
+	public void runSingleProcessingStep() {
 		activateCodelets();
 		// learn();
 	}

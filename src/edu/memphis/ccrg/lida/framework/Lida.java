@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.example.genericlida.io.PamInitializer;
+import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
@@ -161,6 +161,8 @@ public class Lida {
 		
 		pamDriver = new PamDriver(pam, taskManager, pamTicksPerStep);
 		pamDriver.setInitialTasks(pam.getFeatureDetectors());
+		pam.setTaskSpawner(pamDriver);
+		
 		moduleDrivers.add(pamDriver);
 		moduleDrivers.add(attentionDriver);
 		moduleDrivers.add(sbCodeletDriver);
