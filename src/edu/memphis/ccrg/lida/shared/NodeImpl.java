@@ -34,7 +34,10 @@ public class NodeImpl implements Node {
 
 	public void decay() {
 		if (db != null) {
-			activation = db.decay(activation);
+			double newActivation = db.decay(activation); 
+			synchronized(this){
+				activation = newActivation;
+			}
 		}
 	}
 	
@@ -49,7 +52,10 @@ public class NodeImpl implements Node {
 		//System.out.println(excitation);
 		if (eb != null) {
 			//System.out.println("before" + activation);
-			activation = eb.excite(activation, excitation);
+			double newActivation = eb.excite(activation, excitation);
+			synchronized(this){
+				activation = newActivation;
+			}			
 			//System.out.println("after" + activation);
 		}
 	}
@@ -91,7 +97,7 @@ public class NodeImpl implements Node {
 		return eb;
 	}
 
-	public void setActivation(double d) {
+	public synchronized void setActivation(double d) {
 		//System.out.println("setting " + activation);
 		this.activation = d;
 	}
