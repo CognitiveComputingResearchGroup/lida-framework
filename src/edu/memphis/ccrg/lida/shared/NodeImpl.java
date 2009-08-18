@@ -21,7 +21,7 @@ public class NodeImpl implements Node {
 	protected PamNode refNode;
 	private String label = "";
 
-	public NodeImpl() {
+	public NodeImpl(){
 	}
 
 	public NodeImpl(NodeImpl n) {
@@ -34,9 +34,8 @@ public class NodeImpl implements Node {
 
 	public void decay() {
 		if (db != null) {
-			double newActivation = db.decay(activation); 
 			synchronized(this){
-				activation = newActivation;
+				activation = db.decay(activation);
 			}
 		}
 	}
@@ -49,14 +48,10 @@ public class NodeImpl implements Node {
 	 *          this node
 	 */
 	public void excite(double excitation) {
-		//System.out.println(excitation);
 		if (eb != null) {
-			//System.out.println("before" + activation);
-			double newActivation = eb.excite(activation, excitation);
 			synchronized(this){
-				activation = newActivation;
+				activation = eb.excite(activation, excitation);
 			}			
-			//System.out.println("after" + activation);
 		}
 	}
 
