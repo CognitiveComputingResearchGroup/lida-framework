@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.framework.Module;
  * 
  * @author Javier
  */
-public class PropertiesPanel extends javax.swing.JPanel implements LidaPanel {
+public class PropertiesPanel extends LidaPanelImpl {
 
 	/**
 	 * 
@@ -38,8 +38,6 @@ public class PropertiesPanel extends javax.swing.JPanel implements LidaPanel {
 	private static Logger logger = Logger
 			.getLogger("lida.framework.gui.PropertiesPanel");
 	Properties properties;
-	Lida lida;
-	private LidaGuiController controller;
 
 	/** Creates new form PropertiesPanel */
 	public PropertiesPanel() {
@@ -231,26 +229,4 @@ public class PropertiesPanel extends javax.swing.JPanel implements LidaPanel {
 
 	}
 
-	public JPanel getPanel() {
-		return this;
-	}
-
-	public Module moduleSuported() {
-		return null;
-	}
-
-	public void refresh() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void registrerLida(Lida lida) {
-		this.lida = lida;
-
-	}
-
-	public void registrerLidaGuiController(LidaGuiController lgc) {
-		controller = lgc;
-
-	}
 }

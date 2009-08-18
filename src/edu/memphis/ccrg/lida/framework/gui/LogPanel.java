@@ -25,13 +25,9 @@ import edu.memphis.ccrg.lida.framework.Module;
  *
  * @author Javier Snaider
  */
-public class LogPanel extends javax.swing.JPanel implements LidaPanel {
+public class LogPanel extends LidaPanelImpl {
 
 	private static final long serialVersionUID = 12L;
-	@SuppressWarnings("unused")
-	private LidaGuiController controller;
-	@SuppressWarnings("unused")
-	private Lida lida;
 
     private String logName = "lida"; 
     private Logger logger = Logger.getLogger(logName); 
@@ -39,6 +35,7 @@ public class LogPanel extends javax.swing.JPanel implements LidaPanel {
     /** Creates new form LogPanel */
     public LogPanel() {
         initComponents();
+        setSupportedModule(Module.noModule);
         logger.addHandler(new GuiLogHandler()); 
     }
 
@@ -113,9 +110,6 @@ public class LogPanel extends javax.swing.JPanel implements LidaPanel {
     private javax.swing.JTextArea loggingText;
     // End of variables declaration//GEN-END:variables
     
-    public void registrerLidaGuiController(LidaGuiController lgc) {
-        controller = lgc;
-    }
 
     public void display(Object o) {
         if (o instanceof String) {
@@ -124,16 +118,6 @@ public class LogPanel extends javax.swing.JPanel implements LidaPanel {
         }
     }
 
-    public void refresh() {
-    }
-
-    public JPanel getPanel() {
-        return this;
-    }
-
-    public Module moduleSuported() {
-        return Module.noModule;
-    }
     public class GuiLogHandler extends Handler {
         String logMessages = new String("");
         java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
@@ -164,9 +148,5 @@ public class LogPanel extends javax.swing.JPanel implements LidaPanel {
             logMessages = null;
         }
     }
-	public void registrerLida(Lida lida) {
-		this.lida=lida;
-		
-	}
 
 }

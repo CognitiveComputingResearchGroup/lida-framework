@@ -20,17 +20,14 @@ import edu.memphis.ccrg.lida.framework.Module;
  *
  * @author Javier Snaider
  */
-public class VisualFieldPanel extends javax.swing.JPanel implements LidaPanel, FrameworkGuiEventListener{
+public class VisualFieldPanel extends  LidaPanelImpl implements FrameworkGuiEventListener{
 
 	private static final long serialVersionUID = 13L;
-	@SuppressWarnings("unused")
-	private LidaGuiController controller;
-    @SuppressWarnings("unused")
-	private Lida lida;
     
     /** Creates new form VisualFieldPanel */
     public VisualFieldPanel() {
         initComponents();
+        setSupportedModule(Module.environment);
     }
 
     /** This method is called from within the constructor to
@@ -64,26 +61,9 @@ public class VisualFieldPanel extends javax.swing.JPanel implements LidaPanel, F
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
-    public void registrerLidaGuiController(LidaGuiController lgc) {
-        controller = lgc;
-    }
-
-    public void display(Object o) {
-    }
-
-    public void refresh() {
-    }
-
-    public JPanel getPanel() {
-        return this;
-    }
-
-    public Module moduleSuported() {
-        return Module.environment;
-    }
 
 	public void registrerLida(Lida lida) {
-		this.lida=lida;
+		super.registrerLida(lida);
 		Environment e=lida.getEnvironment();
 		if (e instanceof GuiContentProvider){
 			((GuiContentProvider)e).addFrameworkGuiEventListener(this);
