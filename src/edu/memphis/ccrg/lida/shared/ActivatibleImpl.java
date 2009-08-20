@@ -1,7 +1,9 @@
 package edu.memphis.ccrg.lida.shared;
 
+import edu.memphis.ccrg.lida.shared.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
 /**
  * generic Activatible Implementation. Useful to inherit from it 
  * Activatible classes like nodes or codelets.
@@ -13,18 +15,34 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 public class ActivatibleImpl implements Activatible {
 	
 	private double activation;
-	private ExciteBehavior eb;
-	private DecayBehavior db;
+	private ExciteBehavior exciteBehavior;
+	private DecayBehavior decayBehavior;
+
+	public ActivatibleImpl() {
+		activation = 0.0;
+		exciteBehavior = new DefaultExciteBehavior();
+		decayBehavior = new LinearDecayBehavior();
+	}
 	
+	public ActivatibleImpl(double activation, ExciteBehavior eb, DecayBehavior db) {
+		this.activation = activation;
+		this.exciteBehavior = eb;
+		this.decayBehavior = db;
+	}
+
 	public void decay() {
-		if (db != null) {
-			activation = db.decay(activation);
+		if (decayBehavior != null) {
+			synchronized(this){
+				activation = decayBehavior.decay(activation);
+			}
 		}
 	}
 
 	public void excite(double excitation) {
-		if (eb != null) {
-			activation = eb.excite(activation, excitation);
+		if (exciteBehavior != null) {
+			synchronized(this){
+				activation = exciteBehavior.excite(activation, excitation);
+			}
 		}
 	}
 
@@ -33,23 +51,23 @@ public class ActivatibleImpl implements Activatible {
 	}
 
 	public DecayBehavior getDecayBehavior() {
-		return db;
+		return decayBehavior;
 	}
 
 	public ExciteBehavior getExciteBehavior() {
-		return eb;
+		return exciteBehavior;
 	}
 
-	public void setActivation(double d) {
+	public synchronized void setActivation(double d) {
 		this.activation = d;
 	}
 
-	public void setDecayBehavior(DecayBehavior db) {
-		this.db = db;
+	public synchronized void setDecayBehavior(DecayBehavior db) {
+		this.decayBehavior = db;
 	}
 
-	public void setExciteBehavior(ExciteBehavior eb) {
-		this.eb = eb;
+	public synchronized void setExciteBehavior(ExciteBehavior eb) {
+		this.exciteBehavior = eb;
 	}
 
 }//

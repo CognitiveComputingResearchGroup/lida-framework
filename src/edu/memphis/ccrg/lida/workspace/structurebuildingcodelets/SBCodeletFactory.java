@@ -8,7 +8,7 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.shared.strategies.BasicExciteBehavior;
+import edu.memphis.ccrg.lida.shared.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
@@ -84,7 +84,7 @@ public class SBCodeletFactory {
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
 		//
 		defaultDecay = new LinearDecayBehavior();
-		defaultExcite = new BasicExciteBehavior();
+		defaultExcite = new DefaultExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 		//TODO: TO FIX THIS!!!!!!!!!!!!
 		perceptualBuffer = workspace.getPerceptualBuffer();

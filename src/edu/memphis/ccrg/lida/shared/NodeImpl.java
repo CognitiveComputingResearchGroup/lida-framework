@@ -1,10 +1,7 @@
 package edu.memphis.ccrg.lida.shared;
 
 import java.util.Map;
-
 import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 /**
  * Default Node Implementation
@@ -12,110 +9,53 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  * @author Javier Snaider
  * 
  */
-public class NodeImpl implements Node {
+public class NodeImpl extends ActivatibleImpl implements Node {
 
 	private long id;
-	private double activation;
-	private ExciteBehavior eb;
-	private DecayBehavior db;
-	protected PamNode refNode;
 	private String label = "";
-
+	private double importance;
+	protected PamNode refNode;
+	
 	public NodeImpl(){
+		super();
 	}
 
 	public NodeImpl(NodeImpl n) {
+		super(n.getActivation(), n.getExciteBehavior(), n.getDecayBehavior());
 		this.id = n.id;
-		this.activation = n.activation;
-		this.eb = n.eb;
-		this.db = n.db;
 		this.refNode = n.refNode;
 	}
-
-	public void decay() {
-		if (db != null) {
-			synchronized(this){
-				activation = db.decay(activation);
-			}
-		}
-	}
 	
-	/**
-	 * The current activation of this node is increased by the
-	 * excitation value.
-	 * 
-	 * @param   excitation the value to be added to the current activation of
-	 *          this node
-	 */
-	public void excite(double excitation) {
-		if (eb != null) {
-			synchronized(this){
-				activation = eb.excite(activation, excitation);
-			}			
-		}
-	}
-
-	public double getImportance() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public PamNode getReferencedNode() {
-		return refNode;
-	}
-
-	public boolean isOverThreshold() {
-		return false;
-	}
-
-	public void setDecayBehavior(DecayBehavior db) {
-		this.db = db;
-	}
-
-	public void setExciteBehavior(ExciteBehavior eb) {
-		this.eb = eb;
-	}
-
 	public void setValue(Map<String, Object> values) {
 		// TODO Auto-generated method stub
 	}
-
-	public void setReferencedNode(PamNode n) {
-		refNode = n;
-	}
-
-	public DecayBehavior getDecayBehavior() {
-		return db;
-	}
-
-	public ExciteBehavior getExciteBehavior() {
-		return eb;
-	}
-
-	public synchronized void setActivation(double d) {
-		//System.out.println("setting " + activation);
-		this.activation = d;
-	}
-
-	public double getActivation() {
-		//System.out.println("getting " + activation);
-		return this.activation;
-	}
-
+	
 	public long getId() {
 		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getLabel() {
 		return label;
 	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public void setLabel(String label) {
 		this.label=label;
+	}
+
+	public double getImportance() {
+		return importance;
+	}
+	public void setImportance(double importance) {
+		this.importance = importance;
+	}
+
+	public PamNode getReferencedNode() {
+		return refNode;
+	}
+	public void setReferencedNode(PamNode n) {
+		refNode = n;
 	}
 
 	public String getIds() {
@@ -132,8 +72,8 @@ public class NodeImpl implements Node {
 		}
 		return ((Node) o).getId() == id;
 	}
-
 	public int hashCode() {
 		return ((int) id % 31);
 	}
-}
+	
+}//class

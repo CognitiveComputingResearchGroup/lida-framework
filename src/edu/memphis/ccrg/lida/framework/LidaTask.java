@@ -38,7 +38,7 @@ public interface LidaTask extends Runnable, Activatible{
 	
 	public static final int TO_RESET=8;
 	
-	public abstract int getTaskStatus();
+	public abstract int getStatus();
 	public abstract void setTaskStatus(int status);
 
 	public abstract void stopRunning();
@@ -50,7 +50,7 @@ public interface LidaTask extends Runnable, Activatible{
 	 */
 	public abstract void setTaskID(long id);
 	
-	public abstract long getTaskID();
+	public abstract long getTaskId();
 	
 	/**
 	 * Sets how many ticks are needed to complete a cycle or 'one run' of this task

@@ -128,15 +128,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	    return hash;
 	}
 
-
-	/**
-	    * Standard getter for importance.
-	    * @return a double value for importance between 0 and 1.
-	    */
-	public double getImportance() {
-	       return importance;
-	   }
-
 	/**
 	 * returns selection threshold
 	 * @return Selection threshold
@@ -169,7 +160,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public double getDefaultMinActivation() {
 		return MIN_ACTIVATION;
 	}
-
 
 	public Node copy() {
 		return new PamNodeImpl(this);

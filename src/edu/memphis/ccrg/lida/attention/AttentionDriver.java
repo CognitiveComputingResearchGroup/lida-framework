@@ -44,9 +44,9 @@ public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 
 	public void activateCodelets() {
 //		//For testing only!!!!!!
-		if (getSpawnedTaskCount() < 10) {
-			addTask(new AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv,getTaskManager() ,new NodeStructureImpl()));
-		}
+//		if (getSpawnedTaskCount() < 10) {
+//			addTask(new AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv,getTaskManager() ,new NodeStructureImpl()));
+//		}
 	}
 
 	public void learn() {

@@ -14,13 +14,6 @@ public interface PamNode extends Node{
 	public abstract boolean isOverThreshold();
 
 	/**
-	 * Standard getter for importance.
-	 * 
-	 * @return a double value for importance between 0 and 1.
-	 */
-	public abstract double getImportance();
-
-	/**
 	 * returns selection threshold
 	 * 
 	 * @return Selection threshold
@@ -43,7 +36,7 @@ public interface PamNode extends Node{
 
 	public abstract void setMaxActivation(double amount);
 
-	void setSelectionThreshold(double threshold);
+	public abstract void setSelectionThreshold(double threshold);
 
 	public abstract void synchronize();
 

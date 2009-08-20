@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import edu.memphis.ccrg.lida.example.genericlida.pam.VisionFeatureDetector;
+import edu.memphis.ccrg.lida.example.genericlida.main.VisionFeatureDetector;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;

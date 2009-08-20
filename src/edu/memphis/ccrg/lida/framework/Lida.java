@@ -162,8 +162,8 @@ public class Lida {
 		pamDriver = new PamDriver(pam, taskManager, pamTicksPerStep);
 		pamDriver.setInitialTasks(pam.getFeatureDetectors());
 		pam.setTaskSpawner(pamDriver);
-		
 		moduleDrivers.add(pamDriver);
+		
 		moduleDrivers.add(attentionDriver);
 		moduleDrivers.add(sbCodeletDriver);
 		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));

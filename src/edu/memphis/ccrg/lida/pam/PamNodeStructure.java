@@ -28,6 +28,9 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public void setUpscale(Double d) {
 		upscaleFactor  = d;		
 	}
+	public double getUpscale(){
+		return upscaleFactor;
+	}
 
 	public void setDownscale(Double d) {
 		downscaleFactor  = d;		

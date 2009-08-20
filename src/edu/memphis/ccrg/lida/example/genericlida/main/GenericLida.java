@@ -9,8 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionEnvironment;
-import edu.memphis.ccrg.lida.example.genericlida.environ_sm.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.LidaFactory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 

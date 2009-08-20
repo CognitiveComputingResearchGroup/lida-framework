@@ -48,7 +48,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	// for GUI
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<Object> guiContent = new ArrayList<Object>();
-	private TaskSpawner taskSpawner;
+	private PamDriver taskSpawner;
 
 	/**
      * 
@@ -101,23 +101,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}//method
 
 	public void setTaskSpawner(TaskSpawner spawner) {
-		taskSpawner = spawner;
+		taskSpawner = (PamDriver) spawner;
 	}
-
-//	public void addToPam(Set<PamNode> nodes, List<FeatureDetector> ftDetectors,
-//						 Set<Link> links) {
-//		featureDetectors = ftDetectors;
-//		pamNodeStructure.addPamNodes(nodes);
-//		pamNodeStructure.addLinks(links);
-//
-//		//Since when nodes are added to a NodeStructure they are copied, the
-//		//node object that the featureDetectors excite must be updated with the 
-//		//copied node that is in the pamNodeStructure
-//		for (FeatureDetector detector : featureDetectors) {
-//			long id = detector.getPamNode().getId();
-//			detector.setNode((PamNode) pamNodeStructure.getNode(id));
-//		}//for
-//	}// method
 
 	// ******INTERMODULE COMMUNICATION******
 	public void addPamListener(PamListener pl) {
@@ -137,43 +122,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		// preafferantSignal = ns;
 	}
 
-	// ******FUNDAMENTAL PAM FUNCTIONS*****
-//	/**
-//	 * Pass activation upwards based on the order found in the layerMap
-//	 */
-//	public void propogateActivation() {
-//		Set<PamNode> bottomNodes = new HashSet<PamNode>();
-//		
-//		for(FeatureDetector fd: featureDetectors)
-//			bottomNodes.add(fd.getPamNode());
-//
-//		pamNodeStructure.passActivationUpward(bottomNodes);
-//		updatePercept();
-//		// TODO:impl episodic buffer activation into activation passing
-//		// TODO:use preafferent signal
-//	}// method
-
-//	/**
-//	 * Clear the percept's nodes. Go through graph's nodes and add those above
-//	 * threshold to the percept.
-//	 * 
-//	 * TODO: If links aren't Node then this method needs to be expanded to
-//	 * include links.
-//	 */
-//	private void updatePercept() {
-//		percept.clearNodes();
-//		//System.out.println(graph.getNodeCount());
-//		for (Node n : pamNodeStructure.getNodes()) {
-//			PamNodeImpl node = (PamNodeImpl) n;
-//			if (node.isOverThreshold())// Based on totalActivation
-//				percept.addNode(node);
-//		}// for
-//		
-//		// This is a good place to update guiContent
-//		guiContent.clear();
-//		guiContent.add(percept.getNodeCount());
-//		guiContent.add(percept.getLinkCount());
-//	}// method
+	// TODO:impl episodic buffer activation into activation passing
+	// TODO:use preafferent signal
 
 	public void sendOutPercept() {
 		NodeStructure copy = new NodeStructureImpl(percept);
@@ -196,17 +146,16 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void setDecayBehavior(DecayBehavior b) {
 		pamNodeStructure.setNodesDecayBehavior(b);
 	}
-
 	public void setExciteBehavior(ExciteBehavior behavior) {
 		pamNodeStructure.setNodesExciteBehavior(behavior);
 	}// method
 
-	/**
-	 * returns a PamNode from the PAM
-	 */
-	public PamNode getPamNode(long id) {
-		return (PamNode) pamNodeStructure.getNode(id);
-	}
+//	/**
+//	 * returns a PamNode from the PAM
+//	 */
+//	public PamNode getPamNode(long id) {
+//		return (PamNode) pamNodeStructure.getNode(id);
+//	}
 	public Collection<FeatureDetector> getFeatureDetectors(){
 		return featureDetectors;
 	}
@@ -232,9 +181,19 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * This method can be changed to store the burst and then excite all the
 	 * nodes together.
 	 */
-	public void receiveActivationBurst(PamNode node, double activation) {
-		ExcitationTask task = new ExcitationTask(node, activation, pamNodeStructure);
+	public void receiveActivationBurst(PamNode node, double amount) {
+		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, this);
 		taskSpawner.addTask(task);		
 	}
+	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
+		for(PamNode n: nodes)
+			receiveActivationBurst(n, amount);
+	}
 
-}// class PAM.java
+	public synchronized void addToPercept(PamNode pamNode) {
+		//TODO: Should percept be sent out everytime a node is added?
+		//Should we just send nodes and links to the perceptual buffer instead?
+		percept.addNode(pamNode);
+	}
+
+}//class

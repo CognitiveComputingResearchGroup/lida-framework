@@ -2,8 +2,11 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -19,7 +22,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	/**
 	 * The running tasks
 	 */
-	private Set<LidaTask> runningTasks = new HashSet<LidaTask>();
+	protected Set<LidaTask> runningTasks = new HashSet<LidaTask>();
+	
 	/**
 	 * Determines whether or not spawned task should run
 	 */
@@ -79,28 +83,24 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 * If it is overridden then is should still be called first using super.
 	 */
 	public void receiveFinishedTask(LidaTask task, Throwable t) {
-		switch (task.getTaskStatus()) {
+		switch (task.getStatus()) {
 		case LidaTask.FINISHED: 
-			// TODO: get and process result
-			//System.out.println("FINISHED");
+			break;
 		case LidaTask.CANCELLED:
 			logger.log(Level.FINEST, "cancelling task {0}", task);
 			synchronized(this){
 				runningTasks.remove(task);
 			}
-			//System.out.println("CANCELLED");
 			break;
 		case LidaTask.TO_RESET:
 			logger.log(Level.FINEST, "reseting task {0}", task);
 			task.reset();
-			//System.out.println("TO_RESET");
 		case LidaTask.WAITING_TO_RUN:
 			//TODO:
 		case LidaTask.RUNNING:
 			logger.log(Level.FINEST, "Running task {0}", task);
 			task.setTaskStatus(LidaTask.WAITING_TO_RUN);			
 			runTask(task);
-			//System.out.println("RUN");
 			break;
 		}
 	}// method
@@ -158,7 +158,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		}
 		logger.log(Level.FINE,"resume spawned tasks called");
 		for (LidaTask task : runningTasks) {
-			int status = task.getTaskStatus();
+			int status = task.getStatus();
 			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {
 				task.setTaskStatus(LidaTask.WAITING_TO_RUN);
 				logger.log(Level.FINEST, "Resuming task {0}", task);

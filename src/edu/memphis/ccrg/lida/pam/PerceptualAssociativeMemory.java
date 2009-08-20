@@ -49,10 +49,16 @@ public interface PerceptualAssociativeMemory{
 	 */
 	public void decayPam();
 	
-	public void receiveActivationBurst(PamNode pNode,double activation);
-	public PamNode getPamNode(long id);
+	public void receiveActivationBurst(PamNode pNode, double amount);
+	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
+	
+//	public PamNode getPamNode(long id);
+	//TODO: unless there's a need for getPamNode, I'm commenting it out.
+	
 	public Collection<FeatureDetector> getFeatureDetectors();
 	
 	public void addPamListener(PamListener pl);
-		
+
+	public void addToPercept(PamNode pamNode);
+
 }//interface PAMinterface

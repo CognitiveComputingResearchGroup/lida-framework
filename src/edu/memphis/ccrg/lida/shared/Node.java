@@ -19,15 +19,19 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public interface Node extends Linkable, Activatible{
 	
-	//Standard for node
 	public void setValue(Map<String, Object> values);
-	public double getImportance(); 
+	
+	public double getImportance();
+	public void setImportance(double importance);
+	
     public PamNode getReferencedNode();
     public void setReferencedNode (PamNode n);
+    
     public long getId();
     public void setId(long id);
+    
+    //getLabel() is in Linkable
     public void setLabel(String label);
 
-   
 }//interface Node
 

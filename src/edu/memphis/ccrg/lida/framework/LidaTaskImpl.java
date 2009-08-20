@@ -37,11 +37,11 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @return the status
 	 */
-	public int getTaskStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public long getTaskID() {
+	public long getTaskId() {
 		return taskID;
 	}
 
