@@ -8,13 +8,16 @@
  *
  * Created on 12/07/2009, 10:08:22
  */
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 
 /**
  *

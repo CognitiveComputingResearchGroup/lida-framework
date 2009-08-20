@@ -9,10 +9,12 @@
  * Created on 17/08/2009, 08:08:08
  */
 
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
+
 import javax.swing.JPanel;
 
 /**

@@ -8,7 +8,7 @@
  *
  * Created on 12/07/2009, 09:26:00
  */
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,8 @@ import javax.swing.JSlider;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 

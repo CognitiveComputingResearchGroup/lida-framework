@@ -8,7 +8,7 @@
  *
  * Created on 14/08/2009, 13:37:17
  */
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

@@ -9,7 +9,7 @@
  * Created on 17/08/2009, 08:55:55
  */
 
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
 import java.util.Collection;

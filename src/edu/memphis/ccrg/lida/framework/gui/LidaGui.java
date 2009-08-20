@@ -25,6 +25,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
 
 /**
  * 

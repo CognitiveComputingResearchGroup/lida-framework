@@ -2,11 +2,8 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -22,7 +19,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	/**
 	 * The running tasks
 	 */
-	protected Set<LidaTask> runningTasks = new HashSet<LidaTask>();
+	private Set<LidaTask> runningTasks = new HashSet<LidaTask>();
 	
 	/**
 	 * Determines whether or not spawned task should run
@@ -114,19 +111,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		return runningTasks.size();
 	}// method
 
-//	public void stopRunning() {
-//		logger.log(Level.FINE,"stop running called in task spawner");
-//		for (LidaTask s : runningTasks) {
-//			logger.log(Level.INFO, "Stopping task: {0}", s);
-//			s.stopRunning();
-//			//Don't remove this! we need it!!!!!!
-//			s.setTaskStatus(LidaTask.CANCELLED);
-//			//Don't remove this.
-//		}
-//		executorService.shutdownNow();
-//		logger.info("All spawned tasks have been told to stop");
-//	}// method
-
 	/**
 	 * This method is override in this class in order to spawn the ticks to the
 	 * sub tasks
@@ -135,10 +119,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	public void addTicks(int ticks) {
 		logger.log(Level.FINE,"Add ticks called");
 		super.addTicks(ticks);
-		for (LidaTask s : runningTasks) {
-			s.addTicks(ticks);
-			runTask(s);
-		}// for
+		synchronized(this){
+			for (LidaTask s : runningTasks) {
+				s.addTicks(ticks);
+				runTask(s);
+			}// for
+		}
 	}// method
 	
 	public void pauseSpawnedTasks() {

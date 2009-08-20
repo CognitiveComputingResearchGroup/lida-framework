@@ -8,7 +8,7 @@
  *
  * Created on 12/07/2009, 09:42:13
  */
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.logging.Formatter;
 import java.util.logging.Handler;

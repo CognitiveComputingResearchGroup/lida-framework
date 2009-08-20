@@ -24,7 +24,7 @@ public class VisionFeatureDetector extends FeatureDetectorImpl {
 
 	public double detect() {
 		try {
-			Thread.sleep(100);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
