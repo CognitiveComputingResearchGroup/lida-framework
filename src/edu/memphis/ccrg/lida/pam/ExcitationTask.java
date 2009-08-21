@@ -49,8 +49,7 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 		return results;
 	}
 
-	public List<Object> get(long timeout, TimeUnit unit) throws InterruptedException,
-			ExecutionException, TimeoutException {
+	public List<Object> getResult(){
 		return null;
 	}
 
@@ -60,6 +59,12 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 
 	public boolean isDone() {
 		return false;
+	}
+
+	public List<Object> get(long arg0, TimeUnit arg1)
+			throws InterruptedException, ExecutionException, TimeoutException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }//class

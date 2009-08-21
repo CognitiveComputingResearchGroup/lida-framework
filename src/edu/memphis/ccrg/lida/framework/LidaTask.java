@@ -37,6 +37,8 @@ public interface LidaTask extends Runnable, Activatible{
 	public static final int WAITING_TO_RUN=4;
 	
 	public static final int TO_RESET=8;
+
+	public static final int FINISHED_WITH_RESULTS = 32;
 	
 	public abstract int getStatus();
 	public abstract void setTaskStatus(int status);

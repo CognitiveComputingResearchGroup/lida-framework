@@ -81,6 +81,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	public void receiveFinishedTask(LidaTask task, Throwable t) {
 		switch (task.getStatus()) {
+		case LidaTask.FINISHED_WITH_RESULTS:
+			processResuts(task);
+			break;
 		case LidaTask.FINISHED: 
 			break;
 		case LidaTask.CANCELLED:
@@ -101,6 +104,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			break;
 		}
 	}// method
+
+	protected void processResuts(LidaTask task) {
+	}
 
 	public Collection<LidaTask> getRunningTasks() {
 		logger.log(Level.FINEST,"getting all tasks");
