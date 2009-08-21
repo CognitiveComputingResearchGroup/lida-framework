@@ -195,5 +195,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		//Should we just send nodes and links to the perceptual buffer instead?
 		percept.addNode(pamNode);
 	}
-
+public NodeStructure getNodeStructure(){
+	return pamNodeStructure;
+}
 }//class

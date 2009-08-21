@@ -4,126 +4,151 @@
 package edu.memphis.ccrg.lida.framework.gui.utils;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import edu.memphis.ccrg.lida.shared.Link;
+import edu.memphis.ccrg.lida.shared.Linkable;
+import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.uci.ics.jung.graph.AbstractTypedGraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
 
 /**
- * @author Javier
- *
+ * @author Javier Snaider
+ * 
  */
-public class NodeStructureGuiAdapter  extends AbstractTypedGraph{
-	public NodeStructureGuiAdapter(EdgeType edge_type) {
-		super(edge_type);
+public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> {
+
+	private NodeStructure nc;
+
+	public NodeStructureGuiAdapter(NodeStructure nc) {
+		super(EdgeType.DIRECTED);
+		this.nc=nc;
 		// TODO Auto-generated constructor stub
 	}
 
-	private NodeStructure ns;
 	@Override
-	public boolean addEdge(Object arg0, Pair arg1, EdgeType arg2) {
+	public boolean addEdge(Link arg0, Pair<? extends Linkable> arg1,
+			EdgeType arg2) {
 		return false;
 	}
 
-	public Object getDest(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Linkable getDest(Link arg0) {
+		return arg0.getSink();
 	}
 
-	public Pair getEndpoints(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Pair<Linkable> getEndpoints(Link arg0) {
+		return new Pair<Linkable>(arg0.getSink(), arg0.getSource());
 	}
 
-	public Collection getInEdges(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Link> getInEdges(Linkable arg0) {
+		Set<Link> links = nc.getLinks(arg0);
+		Set<Link> ret = new HashSet<Link>();
+		for (Link l : links) {
+			if (l.getSink().equals(arg0)) {
+				ret.add(l);
+			}
+		}
+		return ret;
 	}
 
-	public Collection getOutEdges(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Link> getOutEdges(Linkable arg0) {
+		Set<Link> links = nc.getLinks(arg0);
+		Set<Link> ret = new HashSet<Link>();
+		for (Link l : links) {
+			if (l.getSource().equals(arg0)) {
+				ret.add(l);
+			}
+		}
+		return ret;
 	}
 
-	public Collection getPredecessors(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Linkable> getPredecessors(Linkable arg0) {
+		Set<Link> links = nc.getLinks(arg0);
+		Set<Linkable> ret = new HashSet<Linkable>();
+		for (Link l : links) {
+			if (l.getSink().equals(arg0)) {
+				ret.add(l.getSource());
+			}
+		}
+		return ret;
 	}
 
-	public Object getSource(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Linkable getSource(Link arg0) {
+		return arg0.getSource();
 	}
 
-	public Collection getSuccessors(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Linkable> getSuccessors(Linkable arg0) {
+		Set<Link> links = nc.getLinks(arg0);
+		Set<Linkable> ret = new HashSet<Linkable>();
+		for (Link l : links) {
+			if (l.getSource().equals(arg0)) {
+				ret.add(l.getSink());
+			}
+		}
+		return ret;
 	}
 
-	public boolean isDest(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
+	public boolean isDest(Linkable arg0, Link arg1) {
+		return (arg1.getSink()).equals(arg0);
+	}
+
+	public boolean isSource(Linkable arg0, Link arg1) {
+		return (arg1.getSource()).equals(arg0);
+	}
+
+	public boolean addVertex(Linkable arg0) {
 		return false;
 	}
 
-	public boolean isSource(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsEdge(Link arg0) {
+		return nc.hasLink(arg0);
 	}
 
-	public boolean addVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean containsEdge(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean containsVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean containsVertex(Linkable arg0) {
+		if (arg0 instanceof Node) {
+			return nc.hasNode((Node) arg0);
+		} else {
+			return nc.hasLink((Link) arg0);
+		}
 	}
 
 	public int getEdgeCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nc.getLinkCount();
 	}
 
-	public Collection getEdges() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Link> getEdges() {
+		return nc.getLinks();
 	}
 
-	public Collection getIncidentEdges(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Link> getIncidentEdges(Linkable arg0) {
+		return nc.getLinks(arg0);
 	}
 
-	public Collection getNeighbors(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Linkable> getNeighbors(Linkable arg0) {
+		Collection<Linkable> res = getPredecessors(arg0);
+		res.addAll(getSuccessors(arg0));
+		if (res.isEmpty()){
+			res=null;
+		}
+		return res;
 	}
 
 	public int getVertexCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return nc.getLinkableMap().size();
 	}
 
-	public Collection getVertices() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Linkable> getVertices() {
+		 return nc.getLinkableMap().keySet();
 	}
 
-	public boolean removeEdge(Object arg0) {
-		// TODO Auto-generated method stub
+	public boolean removeEdge(Link arg0) {
 		return false;
 	}
 
-	public boolean removeVertex(Object arg0) {
-		// TODO Auto-generated method stub
+	public boolean removeVertex(Linkable arg0) {
 		return false;
 	}
-	
 }

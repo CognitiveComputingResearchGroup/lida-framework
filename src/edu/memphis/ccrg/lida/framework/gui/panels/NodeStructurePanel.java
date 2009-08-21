@@ -14,6 +14,10 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.awt.Dimension;
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Linkable;
 import edu.memphis.ccrg.lida.shared.NodeFactory;
 import edu.memphis.ccrg.lida.shared.NodeImpl;
@@ -42,8 +46,6 @@ public class NodeStructurePanel extends LidaPanelImpl {
     /** Creates new form NodeStructurePanel */
     public NodeStructurePanel() {
         initComponents();
-        draw();
-        this.repaint();
     }
 
     /** This method is called from within the constructor to
@@ -125,128 +127,21 @@ private Graph getGraph(){
 //	ns.addNode(new NodeImpl());
 //	ns.addNode(new NodeImpl());
 
-	Graph<Integer, String> g2 = new SparseMultigraph<Integer, String>();
-
-	g2.addVertex((Integer)1);
-	g2.addVertex((Integer)2);
-	g2.addVertex((Integer)3);
-	g2.addEdge("Edge-A", 1,3);
-	g2.addEdge("Edge-B", 2,3, EdgeType.DIRECTED);
-	g2.addEdge("Edge-C", 3, 2, EdgeType.DIRECTED);
-	g2.addEdge("Edge-P", 2,3); // A parallel edge
-	return g2;
+//	Graph<Integer, String> g2 = new SparseMultigraph<Integer, String>();
+//
+//	g2.addVertex((Integer)1);
+//	g2.addVertex((Integer)2);
+//	g2.addVertex((Integer)3);
+//	g2.addEdge("Edge-A", 1,3);
+//	g2.addEdge("Edge-B", 2,3, EdgeType.DIRECTED);
+//	g2.addEdge("Edge-C", 3, 2, EdgeType.DIRECTED);
+//	g2.addEdge("Edge-P", 2,3); // A parallel edge
+//	return g2;
+	Graph<Linkable,Link> g=new NodeStructureGuiAdapter(((PerceptualAssociativeMemoryImpl)lida.getPam()).getNodeStructure());
+return g;
 }
-private class mygraph extends AbstractTypedGraph{
-	public mygraph(EdgeType edge_type) {
-		super(edge_type);
-		// TODO Auto-generated constructor stub
-	}
-
-	private NodeStructure ns;
-	@Override
-	public boolean addEdge(Object arg0, Pair arg1, EdgeType arg2) {
-		return false;
-	}
-
-	public Object getDest(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Pair getEndpoints(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getInEdges(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getOutEdges(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getPredecessors(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Object getSource(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getSuccessors(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isDest(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isSource(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean addVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean containsEdge(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean containsVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public int getEdgeCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Collection getEdges() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getIncidentEdges(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Collection getNeighbors(Object arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int getVertexCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Collection getVertices() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean removeEdge(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean removeVertex(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
+public void registrerLida(Lida lida){
+	super.registrerLida(lida);
+	draw();
 }
 }
