@@ -21,6 +21,8 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 public class LidaFactory {
 	
 	private static Logger logger = Logger.getLogger("lida.framework.LidaFactory");
+	private static String commandsPropertiesPath = "configs/guiCommands.properties";
+	private static String panelsPropertiesPath = "configs/guiPanels.properties";
 	
 	public static void start(final EnvironmentImpl environment, 
 							 final SensoryMemoryImpl sensoryMemory, 
@@ -32,10 +34,12 @@ public class LidaFactory {
 		else{
 			java.awt.EventQueue.invokeLater(new Runnable(){
 			public void run(){	
-	        	//Create the model and the controller
+	        	//Create the model 
 	        	Lida lida = new Lida(environment, sensoryMemory, lidaProperties);
-	        	LidaGuiController controller = new LidaGuiControllerImpl(lida,"configs/guiCommands.properties");	        	
-	            new LidaGui(lida, controller,"configs/guiPanels.properties").setVisible(true);
+	        	//Create the controller
+	        	LidaGuiController controller = new LidaGuiControllerImpl(lida, commandsPropertiesPath);
+	        	//Start the GUI
+	            new LidaGui(lida, controller, panelsPropertiesPath).setVisible(true);
 	        }//run
 			});//invokeLater
 		}
