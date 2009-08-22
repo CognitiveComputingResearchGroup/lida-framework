@@ -10,5 +10,7 @@ package edu.memphis.ccrg.lida.framework.gui;
  * @author Javier Snaider
  */
 public interface FrameworkGuiEventListener {
-    	public abstract void receiveGuiEvent(FrameworkGuiEvent event);
+	
+	public abstract void receiveGuiEvent(FrameworkGuiEvent event);
+	
 }
