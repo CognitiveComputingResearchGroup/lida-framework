@@ -35,11 +35,22 @@ public class PamInitializer implements Initializer {
     	PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl", "gold");
     	PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "metal");
     	PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl", "solid");
+    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
+    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
+    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
+    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
+    	
+    	
     	pam.addNodes(factory.getStoredNodes());
     	
     	//Links
-    	factory.storeLink(gold, metal, LinkType.GROUNDING);
+    	factory.storeLink(gold, metal, LinkType.CHILD);
     	factory.storeLink(metal, solid, LinkType.GROUNDING);   
+    	factory.storeLink(iron, metal, LinkType.CHILD);   
+    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
+    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
+    	factory.storeLink(metal, noMetal, LinkType.OPOSITE);   
+    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
     	pam.addLinks(factory.getStoredLinks());
     	
     	//Feature detectors
