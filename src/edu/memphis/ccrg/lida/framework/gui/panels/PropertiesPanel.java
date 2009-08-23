@@ -19,11 +19,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JPanel;
 import javax.swing.table.AbstractTableModel;
-
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.Module;
 
 /**
  * 

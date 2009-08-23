@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -13,8 +12,7 @@ import edu.memphis.ccrg.lida.shared.Node;
 import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
-public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
-		BroadcastListener {
+public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener {
 
 	//private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
 	//
@@ -38,7 +36,6 @@ public class AttentionDriver extends ModuleDriverImpl implements TaskSpawner,
 
 	public void runSingleProcessingStep() {
 		activateCodelets();
-		// learn();
 	}
 
 	public void activateCodelets() {

@@ -16,9 +16,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import javax.swing.JPanel;
-
-import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.Module;
 
 /**

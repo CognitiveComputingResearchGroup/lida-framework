@@ -10,8 +10,6 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
-import javax.swing.JPanel;
-
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.Module;

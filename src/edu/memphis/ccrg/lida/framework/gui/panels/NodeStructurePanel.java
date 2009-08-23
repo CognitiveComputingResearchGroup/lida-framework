@@ -12,25 +12,14 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
-import java.util.Collection;
-
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.shared.Link;
 import edu.memphis.ccrg.lida.shared.Linkable;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
-import edu.memphis.ccrg.lida.shared.NodeImpl;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.graph.AbstractTypedGraph;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.SparseMultigraph;
-import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.graph.util.Pair;
-import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
@@ -43,7 +32,12 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
  */
 public class NodeStructurePanel extends LidaPanelImpl {
 
-    /** Creates new form NodeStructurePanel */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/** Creates new form NodeStructurePanel */
     public NodeStructurePanel() {
         initComponents();
     }
@@ -101,10 +95,11 @@ public class NodeStructurePanel extends LidaPanelImpl {
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
     
+@SuppressWarnings("unchecked")
 private void draw(){
 	// The Layout<V, E> is parameterized by the vertex and edge types
 	
-	Layout<Integer, String> layout = new CircleLayout(getGraph());
+	Layout<Integer, String> layout = new CircleLayout( getGraph());
 	layout.setSize(new Dimension(300,300)); // sets the initial size of the space
 	// The BasicVisualizationServer<V,E> is parameterized by the edge types
 	VisualizationViewer<Integer,String> vv =
@@ -114,12 +109,12 @@ private void draw(){
 	vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
 	vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
 	// Create a graph mouse and add it to the visualization component
-	DefaultModalGraphMouse gm = new DefaultModalGraphMouse();
+	DefaultModalGraphMouse gm = new DefaultModalGraphMouse<Object, Object>();
 	gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 	vv.setGraphMouse(gm);
 	jScrollPane1.setViewportView(vv);
 }
-private Graph getGraph(){
+private Graph<?, ?> getGraph(){
 	
 //	NodeStructure ns=new NodeStructureImpl();
 //	ns.addNode(new NodeImpl());

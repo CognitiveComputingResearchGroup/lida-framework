@@ -73,7 +73,8 @@ public class GraphZoomScrollPaneDemo {
      * demo the zoom features.
      * 
      */
-    public GraphZoomScrollPaneDemo() {
+    @SuppressWarnings("unchecked")
+	public GraphZoomScrollPaneDemo() {
         
         // create a simple graph for the demo
         graph = new DirectedSparseGraph<String, Number>();

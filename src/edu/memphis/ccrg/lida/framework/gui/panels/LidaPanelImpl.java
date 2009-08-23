@@ -22,6 +22,10 @@ import javax.swing.JPanel;
  * @author Javier
  */
 public class LidaPanelImpl extends javax.swing.JPanel implements LidaPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected LidaGuiController controller;
 	protected Lida lida;
     private Module supportedModule;
