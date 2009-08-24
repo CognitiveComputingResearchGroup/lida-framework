@@ -30,8 +30,7 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	@Override
-	public boolean addEdge(Link arg0, Pair<? extends Linkable> arg1,
-			EdgeType arg2) {
+	public boolean addEdge(Link arg0, Pair<? extends Linkable> arg1, EdgeType arg2) {
 		return false;
 	}
 
