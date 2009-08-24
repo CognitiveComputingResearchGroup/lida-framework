@@ -12,6 +12,7 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
+
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -22,13 +23,13 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 
 /**
  *
- * @author Javier
+ * @author Javier Snaider
  */
 public class NodeStructurePanel extends LidaPanelImpl {
 
@@ -95,26 +96,25 @@ public class NodeStructurePanel extends LidaPanelImpl {
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
     
-@SuppressWarnings("unchecked")
 private void draw(){
 	// The Layout<V, E> is parameterized by the vertex and edge types
 	
-	Layout<Integer, String> layout = new CircleLayout( getGraph());
+	Layout<Linkable, Link> layout = new CircleLayout<Linkable, Link>(getGraph());
 	layout.setSize(new Dimension(300,300)); // sets the initial size of the space
 	// The BasicVisualizationServer<V,E> is parameterized by the edge types
-	VisualizationViewer<Integer,String> vv =
-	new VisualizationViewer<Integer,String>(layout);
+	VisualizationViewer<Linkable, Link> vv =
+	new VisualizationViewer<Linkable, Link>(layout);
 	vv.setPreferredSize(new Dimension(350,350)); //Sets the viewing area size
 	// Show vertex and edge labels
-	vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-	vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
+	vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Linkable>());
+	vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Link>());
 	// Create a graph mouse and add it to the visualization component
-	DefaultModalGraphMouse gm = new DefaultModalGraphMouse<Object, Object>();
+	DefaultModalGraphMouse<Linkable, Link> gm = new DefaultModalGraphMouse<Linkable, Link>();
 	gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 	vv.setGraphMouse(gm);
 	jScrollPane1.setViewportView(vv);
 }
-private Graph<?, ?> getGraph(){
+private Graph<Linkable,Link> getGraph(){
 	
 //	NodeStructure ns=new NodeStructureImpl();
 //	ns.addNode(new NodeImpl());

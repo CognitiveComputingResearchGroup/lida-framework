@@ -10,7 +10,6 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 public abstract class SensoryMemoryImpl implements SensoryMemory, SensoryMotorListener{
 	
 	private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
-	@SuppressWarnings("unused")
 	protected EnvironmentImpl environment;
 	
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {

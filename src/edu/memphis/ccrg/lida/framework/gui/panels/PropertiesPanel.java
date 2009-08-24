@@ -4,7 +4,7 @@
  */
 
 /*
- * PropertiesPanel.java
+ * PropertiesPanel.java 
  *
  * Created on 14/08/2009, 13:37:17
  */
@@ -23,7 +23,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * 
- * @author Javier
+ * @author Javier Snaider
  */
 public class PropertiesPanel extends LidaPanelImpl {
 
