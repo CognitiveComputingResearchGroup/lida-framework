@@ -2,8 +2,8 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	

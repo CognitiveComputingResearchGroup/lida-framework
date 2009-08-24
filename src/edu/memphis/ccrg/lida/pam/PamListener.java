@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * @author Ryan McCall

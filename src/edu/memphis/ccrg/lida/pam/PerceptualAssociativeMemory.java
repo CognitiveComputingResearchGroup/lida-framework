@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
 
 /**
  * @author Ryan McCall

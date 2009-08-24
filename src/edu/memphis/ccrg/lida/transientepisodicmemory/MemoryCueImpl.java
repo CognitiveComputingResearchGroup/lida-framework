@@ -8,8 +8,8 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 /**
  * This class is the cannonical implementation of the memory cue for tansient

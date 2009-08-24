@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import edu.memphis.ccrg.lida.example.genericlida.main.VisionFeatureDetector;
+import edu.memphis.ccrg.lida.framework.shared.LinkType;
+import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
-import edu.memphis.ccrg.lida.shared.LinkType;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
 
 public class PamInitializer implements Initializer {
 	
@@ -49,7 +49,7 @@ public class PamInitializer implements Initializer {
     	factory.storeLink(iron, metal, LinkType.CHILD);   
     	factory.storeLink(wood, noMetal, LinkType.CHILD);   
     	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
-    	factory.storeLink(metal, noMetal, LinkType.OPOSITE);   
+    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
     	factory.storeLink(wood, solid, LinkType.GROUNDING);   
     	pam.addLinks(factory.getStoredLinks());
     	

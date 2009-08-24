@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 
 public interface PamNode extends Node{
 

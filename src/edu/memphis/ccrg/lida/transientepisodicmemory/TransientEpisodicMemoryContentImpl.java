@@ -5,8 +5,8 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 /**
  *

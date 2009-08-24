@@ -8,9 +8,9 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
-import edu.memphis.ccrg.lida.shared.NodeImpl;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 /**
  * Test for the Translator class.
