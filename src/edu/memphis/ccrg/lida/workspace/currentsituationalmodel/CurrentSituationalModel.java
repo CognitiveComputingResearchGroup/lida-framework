@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.currentsituationalmodel;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletWritable;

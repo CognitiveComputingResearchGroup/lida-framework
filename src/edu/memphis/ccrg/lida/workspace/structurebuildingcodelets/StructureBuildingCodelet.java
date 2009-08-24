@@ -5,7 +5,7 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface StructureBuildingCodelet extends LidaTask{
 

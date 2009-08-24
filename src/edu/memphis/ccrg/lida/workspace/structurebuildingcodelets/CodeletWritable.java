@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import edu.memphis.ccrg.lida.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface CodeletWritable {
 	

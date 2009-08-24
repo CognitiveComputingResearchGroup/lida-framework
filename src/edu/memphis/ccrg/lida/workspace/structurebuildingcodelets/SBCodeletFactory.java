@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.shared.strategies.DefaultExciteBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
-import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
 /**
