@@ -4,11 +4,11 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodelet{

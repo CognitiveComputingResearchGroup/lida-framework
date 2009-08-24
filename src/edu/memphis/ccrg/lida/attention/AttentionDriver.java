@@ -5,11 +5,11 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener {

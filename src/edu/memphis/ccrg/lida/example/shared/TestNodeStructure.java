@@ -1,11 +1,11 @@
 package edu.memphis.ccrg.lida.example.shared;
 
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.LinkType;
-import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkType;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class TestNodeStructure {
 

@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
-import edu.memphis.ccrg.lida.shared.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.Activatible;
 
 
 /**

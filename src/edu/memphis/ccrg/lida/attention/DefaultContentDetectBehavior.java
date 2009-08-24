@@ -2,10 +2,10 @@ package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.shared.Link;
-import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeStructure;
-import edu.memphis.ccrg.lida.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 
 public class DefaultContentDetectBehavior implements ContentDetectBehavior{

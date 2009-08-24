@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.example.shared;
 
-import edu.memphis.ccrg.lida.shared.Node;
-import edu.memphis.ccrg.lida.shared.NodeFactory;
-import edu.memphis.ccrg.lida.shared.strategies.LinearDecayBehavior;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
 
 public class TestNodeFactory {
 

@@ -3,7 +3,7 @@
  */
 package edu.memphis.ccrg.lida.framework;
 
-import edu.memphis.ccrg.lida.shared.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 
 /**
  * @author Javier Snaider
