@@ -75,5 +75,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public int hashCode() {
 		return ((int) id % 31);
 	}
-	
+	public String toString(){
+		return "["+getId()+"]:"+getLabel();
+	}
 }//class

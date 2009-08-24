@@ -53,8 +53,8 @@ public class NodeFactory {
 	private Map<String, ExciteBehavior> exciteBehaviors = new HashMap<String, ExciteBehavior>();	
 	
 	private NodeFactory() {
-		DefaultNodeClassName = "edu.memphis.ccrg.lida.shared.NodeImpl";
-		DefaultLinkClassName = "edu.memphis.ccrg.lida.shared.LinkImpl";
+		DefaultNodeClassName = "edu.memphis.ccrg.lida.framework.shared.NodeImpl";
+		DefaultLinkClassName = "edu.memphis.ccrg.lida.framework.shared.LinkImpl";
 		DefaultNodeType = "NodeImpl";
 		DefaultLinkType = "LinkImpl";
 		defaultDecay = new LinearDecayBehavior();
@@ -62,6 +62,7 @@ public class NodeFactory {
 		nodeClasses.put(DefaultNodeType, DefaultNodeClassName);
 		linkClasses.put(DefaultLinkType, DefaultLinkClassName);
 		nodeClasses.put("PamNodeImpl", "edu.memphis.ccrg.lida.pam.PamNodeImpl");
+		
 	}
 
 	public void addDecayBehavior(String name, DecayBehavior decay) {
