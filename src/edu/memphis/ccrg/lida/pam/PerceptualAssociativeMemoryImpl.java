@@ -39,39 +39,20 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
 	private PamNodeStructure pamNodeStructure = new PamNodeStructure();
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
-	private NodeStructureImpl percept = new NodeStructureImpl();
+	
 	private List<PamListener> pamListeners = new ArrayList<PamListener>();
 	// Shared variables
-	// private NodeStructure topDownContent = new NodeStructureImpl();
+	private NodeStructure topDownContent = new NodeStructureImpl();
 	private NodeStructure broadcastContent = new NodeStructureImpl();
-	// private NodeStructure preafferantSignal = new NodeStructureImpl();
+    private NodeStructure preafferantSignal = new NodeStructureImpl();
 	// for GUI
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<Object> guiContent = new ArrayList<Object>();
 	private PamDriver taskSpawner;
-
-	/**
-     * 
-     */
-	public void setParameters(Map<String, Object> parameters) {
-		Object o = parameters.get("upscale");
-		if ((o != null) && (o instanceof Double)) {
-			synchronized (this) {
-				pamNodeStructure.setUpscale((Double) o);
-			}
-		}
-		o = parameters.get("downscale");
-		if ((o != null) && (o instanceof Double))
-			synchronized (this) {
-				pamNodeStructure.setDownscale((Double) o);
-			}
-		o = parameters.get("selectivity");
-		if ((o != null) && (o instanceof Double)) {
-			synchronized (this) {
-				pamNodeStructure.setSelectivity((Double) o);
-			}
-		}
-	}// method
+	
+	public void setTaskSpawner(TaskSpawner spawner) {
+		taskSpawner = (PamDriver) spawner;
+	}
 
 	public void addNodes(Set<PamNode> nodes) {
 		pamNodeStructure.addPamNodes(nodes);
@@ -100,10 +81,6 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		return false;
 	}//method
 
-	public void setTaskSpawner(TaskSpawner spawner) {
-		taskSpawner = (PamDriver) spawner;
-	}
-
 	// ******INTERMODULE COMMUNICATION******
 	public void addPamListener(PamListener pl) {
 		pamListeners.add(pl);
@@ -111,7 +88,10 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 
 	public synchronized void receiveWorkspaceContent(Module originatingBuffer,
 													 NodeStructure content) {
-		// topDownContent = content;
+		// TODO:impl episodic buffer activation into activation passing
+		topDownContent = content;
+		Collection<Node> nodes = topDownContent.getNodes();
+		for (Node n : nodes) {n.getId();}
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -119,46 +99,21 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	public synchronized void receivePreafferentSignal(NodeStructure ns) {
-		// preafferantSignal = ns;
+		// TODO:use preafferent signal
+		preafferantSignal = ns;
+		Collection<Node> nodes = preafferantSignal.getNodes();
+		for (Node n : nodes) {n.getId();}
 	}
-
-	// TODO:impl episodic buffer activation into activation passing
-	// TODO:use preafferent signal
-
-	public void sendOutPercept() {
-		NodeStructure copy = new NodeStructureImpl(percept);
-		for (int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receivePamContent(copy);
-	}// method
 
 	public void learn() {
 		Collection<Node> nodes = broadcastContent.getNodes();
-		for (Node n : nodes) {
-			// TODO:
-			n.getId();
-		}
+		for (Node n : nodes) {n.getId();}
 	}//method
 
 	public void decayPam() {
 		pamNodeStructure.decayNodes();
 	}// method
 
-	public void setDecayBehavior(DecayBehavior b) {
-		pamNodeStructure.setNodesDecayBehavior(b);
-	}
-	public void setExciteBehavior(ExciteBehavior behavior) {
-		pamNodeStructure.setNodesExciteBehavior(behavior);
-	}// method
-
-//	/**
-//	 * returns a PamNode from the PAM
-//	 */
-//	public PamNode getPamNode(long id) {
-//		return (PamNode) pamNodeStructure.getNode(id);
-//	}
-	public Collection<FeatureDetector> getFeatureDetectors(){
-		return featureDetectors;
-	}
 	
 	//**************GUI***************
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
@@ -166,12 +121,11 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 	public void sendEvent() {
 		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					Module.perceptualAssociativeMemory, "data", guiContent);
-			for (FrameworkGuiEventListener gui : guis) {
+			FrameworkGuiEvent event = new FrameworkGuiEvent(Module.perceptualAssociativeMemory, 
+														    "data", guiContent);
+			for (FrameworkGuiEventListener gui : guis)
 				gui.receiveGuiEvent(event);
-			}
-		}
+		}//if
 	}//method
 
 	/**
@@ -190,12 +144,59 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 			receiveActivationBurst(n, amount);
 	}
 
-	public synchronized void addToPercept(PamNode pamNode) {
-		//TODO: Should percept be sent out everytime a node is added?
-		//Should we just send nodes and links to the perceptual buffer instead?
-		percept.addNode(pamNode);
+	public void checkIfOverThreshold(PamNode pamNode){
+		ThresholdTask task = new ThresholdTask(pamNode, this);
+		taskSpawner.addTask(task);
+	}
+	
+	public void addNodeToPercept(PamNode pamNode) {
+		for (int i = 0; i < pamListeners.size(); i++)
+			pamListeners.get(i).receiveNode(pamNode);
+	}
+	public void addLinkToPercept(Link l) {
+		for (int i = 0; i < pamListeners.size(); i++)
+			pamListeners.get(i).receiveLink(l);
+	}
+	public void addNodeStructureToPercept(NodeStructure ns) {
+		for (int i = 0; i < pamListeners.size(); i++)
+			pamListeners.get(i).receiveNodeStructure(ns);
+	}
+	
+	public void setDecayBehavior(DecayBehavior b) {
+		pamNodeStructure.setNodesDecayBehavior(b);
+	}
+	public void setExciteBehavior(ExciteBehavior behavior) {
+		pamNodeStructure.setNodesExciteBehavior(behavior);
+	}// method
+	
+	/**
+     * 
+     */
+	public void setParameters(Map<String, Object> parameters) {
+		Object o = parameters.get("upscale");
+		if ((o != null) && (o instanceof Double)) {
+			synchronized (this) {
+				pamNodeStructure.setUpscale((Double) o);
+			}
+		}
+		o = parameters.get("downscale");
+		if ((o != null) && (o instanceof Double))
+			synchronized (this) {
+				pamNodeStructure.setDownscale((Double) o);
+			}
+		o = parameters.get("selectivity");
+		if ((o != null) && (o instanceof Double)) {
+			synchronized (this) {
+				pamNodeStructure.setSelectivity((Double) o);
+			}
+		}
+	}// method
+
+	public Collection<FeatureDetector> getFeatureDetectors(){
+		return featureDetectors;
 	}
 	public NodeStructure getNodeStructure(){
 		return pamNodeStructure;
 	}
+
 }//class

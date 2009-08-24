@@ -93,5 +93,11 @@ public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	public int getType() {
 		return type;
 	}
+
+	public void addReadableBuffer(NodeStructure buffer) {
+		List<NodeStructure> list = new ArrayList<NodeStructure>();
+		list.add(buffer);
+		accessibleBuffers.add(list);
+	}
 	
 }//class SBCodelet

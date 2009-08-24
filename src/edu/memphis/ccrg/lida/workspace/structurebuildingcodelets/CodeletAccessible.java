@@ -6,5 +6,6 @@ import edu.memphis.ccrg.lida.shared.NodeStructure;
 
 public interface CodeletAccessible {
 
-	public abstract Collection<NodeStructure> getBufferContent();
+	public abstract NodeStructure getBufferContent();
+	public abstract Collection<NodeStructure> getContentCollection();
 }

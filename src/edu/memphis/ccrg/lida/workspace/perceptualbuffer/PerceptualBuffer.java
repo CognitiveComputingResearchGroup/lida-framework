@@ -5,6 +5,6 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessib
 
 public interface PerceptualBuffer extends CodeletAccessible{
 
-	void addBufferListener(WorkspaceBufferListener workspace);
+	public abstract void addBufferListener(WorkspaceBufferListener workspace);
 
 }

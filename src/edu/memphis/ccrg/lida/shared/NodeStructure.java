@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * A NodeStructure holds a collection of Nodes an Links. An implementation of this interface
@@ -52,7 +53,7 @@ public interface NodeStructure {
 
 	public abstract Link getLink (String ids);
 	
-	public abstract void mergeNodeStructure (NodeStructure ns);
+	public abstract void mergeWith (NodeStructure ns);
 
 	public abstract Map<Linkable, Set<Link>> getLinkableMap();
 
@@ -63,5 +64,9 @@ public interface NodeStructure {
 	public abstract int getNodeCount();
 
 	public abstract int getLinkCount();
+
+	public abstract void mergeWith(Link l);
+
+	public abstract void mergeWith(PamNode node);
 	
 }

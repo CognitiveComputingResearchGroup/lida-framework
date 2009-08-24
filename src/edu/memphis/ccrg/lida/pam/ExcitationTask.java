@@ -32,8 +32,7 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 
 	public void run() {
 		pamNode.excite(excitationAmount);
-		if(pamNode.isOverThreshold())
-			pam.addToPercept(pamNode);
+		pam.checkIfOverThreshold(pamNode);
 		Set<PamNode> nodes = nodeStruct.getParents(pamNode);
 		double newAmount = pamNode.getTotalActivation() * nodeStruct.getUpscale();
 		results.add(nodesIndex, nodes);

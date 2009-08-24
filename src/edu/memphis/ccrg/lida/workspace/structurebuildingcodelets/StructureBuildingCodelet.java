@@ -15,7 +15,7 @@ public interface StructureBuildingCodelet extends LidaTask{
 	 public void setCodeletAction(CodeletAction a);
 	 public CodeletAction getCodeletAction();
 
-	 public void addReadableBuffer(Collection<NodeStructure> buffer);
+	 public void addReadableBuffer(NodeStructure buffer);
 	 public List<Collection<NodeStructure>> getReadableBuffers();
 	 public void addWritableModule(CodeletWritable module);
 	 public List<CodeletWritable> getWriteableBuffers();

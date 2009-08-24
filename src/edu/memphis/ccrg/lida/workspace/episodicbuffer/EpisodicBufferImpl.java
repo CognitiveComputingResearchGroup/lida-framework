@@ -39,8 +39,8 @@ public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListe
 			episodicBuffer.remove(0);//remove oldest	
 	}
 
-	public Collection<NodeStructure> getBufferContent() {
-		return Collections.unmodifiableCollection(episodicBuffer);
+	public NodeStructure getBufferContent() {
+		return null;
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
@@ -55,6 +55,10 @@ public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListe
 				gui.receiveGuiEvent(event);
 			}
 		}		
+	}
+
+	public Collection<NodeStructure> getContentCollection() {
+		return Collections.unmodifiableCollection(episodicBuffer);
 	}
 	
 }//class

@@ -30,8 +30,8 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener,
 			broadcastQueue.remove(0);//remove oldest	
 	}
 
-	public Collection<NodeStructure> getBufferContent() {
-		return Collections.unmodifiableCollection(broadcastQueue);
+	public NodeStructure getBufferContent() {
+		return null;
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
@@ -47,6 +47,10 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener,
 	public void learn() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Collection<NodeStructure> getContentCollection() {
+		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 
 }//class

@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
@@ -377,7 +378,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return nodes.size();
 	}
 	
-	public void mergeNodeStructure(NodeStructure ns) {
+	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
 		ns.getLinks();
 		//TODO: Must add links differently than above statement.
@@ -414,5 +415,30 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public boolean hasNode(Node n) {
 		return nodes.containsKey(n.getId());
 	}
+
+	public void mergeWith(Link l) {
+		Link existingLink = links.get(l.getIds());
+		if(existingLink == null){
+			addLink(l);
+		}else{
+			existingLink.setSink(l.getSink());
+			existingLink.setSource(l.getSource());
+			existingLink.setType(l.getType());
+		}
+	}//method
+
+	public void mergeWith(PamNode node) {
+		Node existingNode = nodes.get(node.getId());
+		if(existingNode == null)
+			addNode(node);
+		else{
+			existingNode.setActivation(node.getActivation());
+			existingNode.setDecayBehavior(node.getDecayBehavior());
+			existingNode.setExciteBehavior(node.getExciteBehavior());
+			existingNode.setImportance(node.getImportance());
+			//TODO: consider if the below is correct
+			existingNode.setReferencedNode(node);
+		}
+	}//method
 
 }//class

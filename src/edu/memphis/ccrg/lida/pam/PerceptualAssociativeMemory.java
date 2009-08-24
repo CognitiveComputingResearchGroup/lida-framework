@@ -18,6 +18,14 @@ import edu.memphis.ccrg.lida.shared.strategies.ExciteBehavior;
  */
 public interface PerceptualAssociativeMemory{
 	
+	public void setTaskSpawner(TaskSpawner spawner);
+	//
+	public void addNodes(Set<PamNode> nodes);
+	public void addLinks(Set<Link> links);
+	public boolean addFeatureDetector(FeatureDetector fd);
+	//
+	public void addPamListener(PamListener pl);
+	
 	/**
 	 * Updates PAM's parameters from the supplied map
 	 */
@@ -31,19 +39,6 @@ public interface PerceptualAssociativeMemory{
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public void setDecayBehavior(DecayBehavior c);
 	
-	public void addNodes(Set<PamNode> nodes);
-	
-	public boolean addFeatureDetector(FeatureDetector fd);
-	
-	public void addLinks(Set<Link> links);
-	
-	public void setTaskSpawner(TaskSpawner spawner);
-	
-	/**
-	 * Send Percept to PAM Listeners
-	 */
-	public void sendOutPercept();	
-	
 	/**
 	 * Decay activations of PAM nodes and/or links
 	 */
@@ -52,13 +47,8 @@ public interface PerceptualAssociativeMemory{
 	public void receiveActivationBurst(PamNode pNode, double amount);
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
 	
-//	public PamNode getPamNode(long id);
-	//TODO: unless there's a need for getPamNode, I'm commenting it out.
+	public void checkIfOverThreshold(PamNode pamNode);
+	public void addNodeToPercept(PamNode pamNode);
 	
 	public Collection<FeatureDetector> getFeatureDetectors();
-	
-	public void addPamListener(PamListener pl);
-
-	public void addToPercept(PamNode pamNode);
-
 }//interface PAMinterface

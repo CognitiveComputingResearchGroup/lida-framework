@@ -26,7 +26,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 	}
 	
 	public synchronized void addCodeletContent(NodeStructure ns) {
-		model.mergeNodeStructure(ns);
+		model.mergeWith(ns);
 	}
 	
 	public NodeStructure getModel(){
@@ -46,7 +46,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 	 * Called by Workspace.  Codelets are typically adding the content.
 	 */
 	public synchronized void addWorkspaceContent(NodeStructure content) {
-		model.mergeNodeStructure((NodeStructure) content);	
+		model.mergeWith((NodeStructure) content);	
 	}//method
 	
 
@@ -55,10 +55,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		return new NodeStructureImpl(model);
 	}
 
-	public Collection<NodeStructure> getBufferContent() {
-		List<NodeStructure> list = new ArrayList<NodeStructure>();
-		list.add(model);
-		return Collections.unmodifiableCollection(list);
+	public NodeStructure getBufferContent() {
+		return model;
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
@@ -76,5 +74,11 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 			}
 		}		
 	}//method
+
+	public Collection<NodeStructure> getContentCollection() {
+		List<NodeStructure> list = new ArrayList<NodeStructure>();
+		list.add(model);
+		return Collections.unmodifiableCollection(list);
+	}
 
 }//class

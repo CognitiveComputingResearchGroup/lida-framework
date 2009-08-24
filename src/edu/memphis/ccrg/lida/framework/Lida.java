@@ -121,10 +121,10 @@ public class Lida {
 		declarativeMemory = new DeclarativeMemoryImpl();
 		
 		//Workspace
-		int bufferCapacity = 2;//TODO: this will be unnecessary soon
+		int episodicBufferCapacity = 2;//TODO: this will be unnecessary soon
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
-		workspace = new WorkspaceImpl(new PerceptualBufferImpl(bufferCapacity),
-									  new EpisodicBufferImpl(bufferCapacity), 
+		workspace = new WorkspaceImpl(new PerceptualBufferImpl(),
+									  new EpisodicBufferImpl(episodicBufferCapacity), 
 									  new BroadcastQueueImpl(queueCapacity),
 									  new CurrentSituationalModelImpl());
 		
