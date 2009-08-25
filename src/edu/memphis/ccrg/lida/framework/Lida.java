@@ -92,14 +92,13 @@ public class Lida {
 	}
 
 	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
-		//Properties for Module Parameters
+		//Properties for Lida module parameters
 		this.lidaProperties = properties;
 		
 		//Task manager
-		//TODO: Use Properties
-    	boolean tasksStartOutRunning = false;
-		int tickDuration = 10;
-		taskManager = new LidaTaskManager(tasksStartOutRunning, tickDuration);
+    	boolean startPaused = true;
+		int tickDuration = Integer.parseInt(lidaProperties.getProperty("taskManager.tickDuration"));
+		taskManager = new LidaTaskManager(startPaused, tickDuration);
 
 		//Environment
 		environment = environ;
@@ -121,7 +120,7 @@ public class Lida {
 		declarativeMemory = new DeclarativeMemoryImpl();
 		
 		//Workspace
-		int episodicBufferCapacity = 2;//TODO: this will be unnecessary soon
+		int episodicBufferCapacity = 2;//TODO:will this be unnecessary?
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
 		workspace = new WorkspaceImpl(new PerceptualBufferImpl(),
 									  new EpisodicBufferImpl(episodicBufferCapacity), 
@@ -144,31 +143,36 @@ public class Lida {
 	}
 
 	private void initDrivers() {
-		//TODO: Use Properties
-		int pamTicksPerStep = 10;
-		int attnTicksPerStep = 10;
-		int sbCodeletTicksPerStep = 10;
-		int smTicksPerStep = 10;
-		int procMemTicksPerStep = 10;
+		int pamTicksPerStep = Integer.parseInt(lidaProperties.getProperty("pam.ticksPerStep"));
+		int attnTicksPerStep = Integer.parseInt(lidaProperties.getProperty("attention.ticksPerStep"));
+		int sbCodeletTicksPerStep = Integer.parseInt(lidaProperties.getProperty("sbCodelets.ticksPerStep"));
+		int smTicksPerStep = Integer.parseInt(lidaProperties.getProperty("sensoryMemory.ticksPerStep"));
+		int procMemTicksPerStep = Integer.parseInt(lidaProperties.getProperty("proceduralMemory.ticksPerStep"));
 		
-		//finish initializing drivers 
-		attentionDriver = new AttentionDriver(taskManager, workspace.getCSM(), 
-											  globalWksp, attnTicksPerStep);
-		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager, sbCodeletTicksPerStep);
-		//Add drivers to a list for execution
+		//Environment
 		moduleDrivers.add(environment);
+		
+		//Sensory Memory Driver
 		moduleDrivers.add(new SensoryMemoryDriver(sensoryMemory, taskManager, smTicksPerStep));
 		
+		//Pam Driver
 		pamDriver = new PamDriver(pam, taskManager, pamTicksPerStep);
-		pamDriver.setInitialTasks(pam.getFeatureDetectors());
 		pam.setTaskSpawner(pamDriver);
+		pamDriver.setInitialTasks(pam.getFeatureDetectors());
 		moduleDrivers.add(pamDriver);
 		
+		//Attention Driver
+		attentionDriver = new AttentionDriver(taskManager, workspace.getCSM(), 
+				  globalWksp, attnTicksPerStep);
 		moduleDrivers.add(attentionDriver);
-		moduleDrivers.add(sbCodeletDriver);
-		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
 		
-		//done creating drivers
+		//SbCodelet Driver
+		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager, sbCodeletTicksPerStep);
+		moduleDrivers.add(sbCodeletDriver);
+		
+		//Procedural Memory Driver
+		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
+
 		logger.info("Lida drivers Created");		
 	}
 

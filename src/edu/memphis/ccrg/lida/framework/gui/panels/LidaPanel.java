@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
  */
 public interface LidaPanel {
 	public void registrerLidaGuiController(LidaGuiController lgc);
-	public void registrerLida(Lida lida);
+	public void registerLida(Lida lida);
 	public void display (Object o);
 	public void refresh();
 	public JPanel getPanel();

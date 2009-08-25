@@ -22,6 +22,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
 	public VisionEnvironment(int height, int width) {
+		super();
 		IMAGE_HEIGHT = height;
 		IMAGE_WIDTH = width;
 		iloc = IMAGE_HEIGHT / 2;

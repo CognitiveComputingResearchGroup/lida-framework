@@ -66,8 +66,8 @@ public class VisualFieldPanel extends LidaPanelImpl implements
 
 	// End of variables declaration//GEN-END:variables
 
-	public void registrerLida(Lida lida) {
-		super.registrerLida(lida);
+	public void registerLida(Lida lida) {
+		super.registerLida(lida);
 		Environment e = lida.getEnvironment();
 		if (e instanceof GuiContentProvider) {
 			((GuiContentProvider) e).addFrameworkGuiEventListener(this);

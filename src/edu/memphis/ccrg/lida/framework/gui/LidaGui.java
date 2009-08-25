@@ -89,7 +89,7 @@ public class LidaGui extends javax.swing.JFrame {
 				continue;
 			}
 			panel.setName(vals[0]);
-			panel.registrerLida(lida);
+			panel.registerLida(lida);
 			panel.registrerLidaGuiController(controller);
 			addLidaPanel(panel, vals[2]);
 			panels.add(panel);

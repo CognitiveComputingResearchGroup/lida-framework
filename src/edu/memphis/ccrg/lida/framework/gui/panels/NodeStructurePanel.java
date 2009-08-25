@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -96,47 +97,32 @@ public class NodeStructurePanel extends LidaPanelImpl {
     private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
     
-private void draw(){
-	// The Layout<V, E> is parameterized by the vertex and edge types
-	
-	Layout<Linkable, Link> layout = new CircleLayout<Linkable, Link>(getGraph());
-	layout.setSize(new Dimension(300,300)); // sets the initial size of the space
-	// The BasicVisualizationServer<V,E> is parameterized by the edge types
-	VisualizationViewer<Linkable, Link> vv =
-	new VisualizationViewer<Linkable, Link>(layout);
-	vv.setPreferredSize(new Dimension(350,350)); //Sets the viewing area size
-	// Show vertex and edge labels
-	vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Linkable>());
-	vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Link>());
-	// Create a graph mouse and add it to the visualization component
-	DefaultModalGraphMouse<Linkable, Link> gm = new DefaultModalGraphMouse<Linkable, Link>();
-	gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-	vv.setGraphMouse(gm);
-	jScrollPane1.setViewportView(vv);
-}
-private Graph<Linkable,Link> getGraph(){
-	
-//	NodeStructure ns=new NodeStructureImpl();
-//	ns.addNode(new NodeImpl());
-//	ns.addNode(new NodeImpl());
-//	ns.addNode(new NodeImpl());
-//	ns.addNode(new NodeImpl());
+	private void draw(){
+		// The Layout<V, E> is parameterized by the vertex and edge types
+		
+		Layout<Linkable, Link> layout = new CircleLayout<Linkable, Link>(getGraph());
+		layout.setSize(new Dimension(300,300)); // sets the initial size of the space
+		// The BasicVisualizationServer<V,E> is parameterized by the edge types
+		VisualizationViewer<Linkable, Link> vv =
+		new VisualizationViewer<Linkable, Link>(layout);
+		vv.setPreferredSize(new Dimension(350,350)); //Sets the viewing area size
+		// Show vertex and edge labels
+		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Linkable>());
+		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Link>());
+		// Create a graph mouse and add it to the visualization component
+		DefaultModalGraphMouse<Linkable, Link> gm = new DefaultModalGraphMouse<Linkable, Link>();
+		gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+		vv.setGraphMouse(gm);
+		jScrollPane1.setViewportView(vv);
+	}
+	private Graph<Linkable,Link> getGraph(){
+		NodeStructure struct = ((PerceptualAssociativeMemoryImpl) lida.getPam()).getNodeStructure();
+		Graph<Linkable,Link> g = new NodeStructureGuiAdapter(struct);
+		return g;
+	}
 
-//	Graph<Integer, String> g2 = new SparseMultigraph<Integer, String>();
-//
-//	g2.addVertex((Integer)1);
-//	g2.addVertex((Integer)2);
-//	g2.addVertex((Integer)3);
-//	g2.addEdge("Edge-A", 1,3);
-//	g2.addEdge("Edge-B", 2,3, EdgeType.DIRECTED);
-//	g2.addEdge("Edge-C", 3, 2, EdgeType.DIRECTED);
-//	g2.addEdge("Edge-P", 2,3); // A parallel edge
-//	return g2;
-	Graph<Linkable,Link> g=new NodeStructureGuiAdapter(((PerceptualAssociativeMemoryImpl)lida.getPam()).getNodeStructure());
-return g;
-}
-public void registrerLida(Lida lida){
-	super.registrerLida(lida);
-	draw();
-}
+	public void registerLida(Lida lida){
+		super.registerLida(lida);
+		draw();
+	}
 }

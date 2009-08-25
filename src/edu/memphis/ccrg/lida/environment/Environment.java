@@ -4,6 +4,6 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 
 public interface Environment extends ActionSelectionListener{
 
-	void resetEnvironment();
+	public abstract void resetEnvironment();
 
 }

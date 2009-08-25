@@ -22,7 +22,6 @@ public class PamInitializer implements Initializer {
 		this.sm = sm;
 	}
 
-	//TODO: return a boolean for success/fail?
 	public void initModule(Properties properties) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("upscale", properties.getProperty("pam.Upscale"));
@@ -39,8 +38,6 @@ public class PamInitializer implements Initializer {
     	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
     	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
     	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
-    	
-    	
     	pam.addNodes(factory.getStoredNodes());
     	
     	//Links
@@ -54,7 +51,6 @@ public class PamInitializer implements Initializer {
     	pam.addLinks(factory.getStoredLinks());
     	
     	//Feature detectors
-    	//TODO: Separate from PAM?
     	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam);
     	pam.addFeatureDetector(fd);
 	}//method

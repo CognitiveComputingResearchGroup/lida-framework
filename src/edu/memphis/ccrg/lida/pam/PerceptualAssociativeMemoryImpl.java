@@ -62,7 +62,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	/**
-	 *  
+	 * 
 	 */
 	public boolean addFeatureDetector(FeatureDetector detector) {
 //		Since nodes are copied when added to a NodeStructure, 

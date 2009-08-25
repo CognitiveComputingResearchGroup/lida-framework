@@ -20,34 +20,38 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		globalWksp = g;		
 	}//method
 
-	//TODO: Use properties for trigger parameters
 	public void initModule(Properties p) {
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
 		tr = new TimeOutTrigger();
 		parameters = new HashMap<String, Object>();
-		parameters.put("name", "TimeOut");
-		parameters.put("delay", 5L); //Individual activation trigger will still dominate.
+		parameters.put("name", "TimeOut");		
+		long broadcastTimeOut = Long.parseLong(p.getProperty("globalWorkspace.timeOut"));
+		parameters.put("delay", broadcastTimeOut); //Individual activation trigger will still dominate.
+		tr.setUp(parameters, (TriggerListener) globalWksp);
+		globalWksp.addBroadcastTrigger(tr);
+		
+		//If there hasn't been a broadcast for delayParameter milliseconds 
+		tr = new TimeOutLapTrigger();
+		parameters = new HashMap<String, Object>();
+		parameters.put("name", "TimeOutLap");
+		long timeOutLap = Long.parseLong(p.getProperty("globalWorkspace.timeOutLap"));
+		parameters.put("delay", timeOutLap);
 		tr.setUp(parameters, (TriggerListener) globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 	
 		tr = new AggregateActivationTrigger();
 		parameters = new HashMap<String, Object>();
-		parameters.put("threshold", 0.8);
-		tr.setUp(parameters, (TriggerListener) globalWksp);
-		globalWksp.addBroadcastTrigger(tr);
-	
-		tr = new TimeOutLapTrigger();
-		parameters = new HashMap<String, Object>();
-		parameters.put("name", "TimeOutLap");
-		parameters.put("delay", 50L);
+		double aggActivThresh = Double.parseDouble(p.getProperty("globalWorkspace.aggregateActivationThreshold"));
+		parameters.put("threshold", aggActivThresh);
 		tr.setUp(parameters, (TriggerListener) globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 	
 		tr = new IndividualActivationTrigger();
 		parameters = new HashMap<String, Object>();
-		parameters.put("threshold", 0.5);
+		double individActivThresh = Double.parseDouble(p.getProperty("globalWorkspace.individualActivationThreshold"));
+		parameters.put("threshold", individActivThresh);
 		tr.setUp(parameters, (TriggerListener) globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 	}
