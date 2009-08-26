@@ -14,6 +14,7 @@ public class ThresholdTask extends LidaTaskImpl {
 	}
 
 	public void run() {
+		//System.out.println(pamNode.getLabel() + " " + pamNode.getActivation());
 		if(pamNode.isOverThreshold())
 			pam.addNodeToPercept(pamNode);
 		this.setTaskStatus(LidaTask.FINISHED);

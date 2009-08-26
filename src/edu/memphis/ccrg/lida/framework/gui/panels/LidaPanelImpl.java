@@ -74,7 +74,7 @@ public class LidaPanelImpl extends javax.swing.JPanel implements LidaPanel{
         return this;
     }
 
-    	public void registerLida(Lida lida) {
+    public void registerLida(Lida lida) {
 		this.lida=lida;
 	}
 

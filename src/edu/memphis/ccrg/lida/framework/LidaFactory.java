@@ -42,7 +42,7 @@ public class LidaFactory {
 	            new LidaGui(lida, controller, panelsPropertiesPath).setVisible(true);
 	        }//run
 			});//invokeLater
-		}
+		}//else
 		
 	}//method
 
