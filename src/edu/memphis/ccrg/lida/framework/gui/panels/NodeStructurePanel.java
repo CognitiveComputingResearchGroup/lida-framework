@@ -123,7 +123,7 @@ private Graph<Linkable,Link> getGraph(){
 		return g;
 }
 
-public void registrerLida(Lida lida){
+public void registerLida(Lida lida){
 	super.registerLida(lida);
 	draw();
 }
