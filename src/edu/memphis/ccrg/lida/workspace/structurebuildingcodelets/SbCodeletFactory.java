@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
  *
  * Pattern: Factory, Singleton
  */
-public class SBCodeletFactory {
+public class SbCodeletFactory {
 	
 	public static final int PERCEPTUAL_TYPE = 0;
 	public static final int EPISODIC_TYPE = 1;
@@ -32,7 +32,7 @@ public class SBCodeletFactory {
 	/**
 	 * Holds singleton instance
 	 */
-	private static SBCodeletFactory instance;
+	private static SbCodeletFactory instance;
 
 	/**
 	 * Pool keeping all recycled codelets.
@@ -67,9 +67,9 @@ public class SBCodeletFactory {
 	 * 
 	 * @return the singleton instance
 	 */
-	static public SBCodeletFactory getInstance(Workspace w, LidaTaskManager timer) {
+	static public SbCodeletFactory getInstance(Workspace w, LidaTaskManager timer) {
 		if(instance == null)
-			instance = new SBCodeletFactory(w, timer);
+			instance = new SbCodeletFactory(w, timer);
 		return instance;
 	}//constructor
 	
@@ -78,7 +78,7 @@ public class SBCodeletFactory {
 	 * TODO: Are we going to use this?
 	 * @post pool.size() == 0
 	 */
-	public SBCodeletFactory(Workspace workspace, LidaTaskManager timer) {
+	public SbCodeletFactory(Workspace workspace, LidaTaskManager timer) {
 		DefaultSBCodeletType = "SBCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
@@ -157,19 +157,19 @@ public class SBCodeletFactory {
 				codelet.setSoughtContent(defaultObjective);
 				codelet.setCodeletAction(defaultActions);			
 				
-				if(type == SBCodeletFactory.PERCEPTUAL_TYPE){
+				if(type == PERCEPTUAL_TYPE){
 					codelet.addReadableBuffer(perceptualBuffer.getBufferContent());
 					codelet.addWritableModule(csm);
-				}else if(type == SBCodeletFactory.EPISODIC_TYPE){
+				}else if(type == EPISODIC_TYPE){
 					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
 					codelet.addWritableModule(csm);
-				}else if(type == SBCodeletFactory.BROADCAST_TYPE){
+				}else if(type == BROADCAST_TYPE){
 					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
 					codelet.addWritableModule(csm);
-				}else if(type == SBCodeletFactory.CSM_TYPE){
+				}else if(type == CSM_TYPE){
 					codelet.addReadableBuffer(csmReadable.getBufferContent());
 					codelet.addWritableModule(csm);
-				}else if(type == SBCodeletFactory.ALL_TYPE){
+				}else if(type == ALL_TYPE){
 					codelet.addReadableBuffer(perceptualBuffer.getBufferContent());
 					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
 					codelet.addReadableBuffer(broadcastQueue.getBufferContent());

@@ -34,11 +34,11 @@ public class GenericLida{
 		//Specify a configuration file path
         String configFilePath = "configs/lidaConfig.properties";
         Properties lidaProperties = new Properties();
-        try {
+        try{
 			lidaProperties.load(new BufferedReader(new FileReader(configFilePath)));
-		} catch (FileNotFoundException e) {
+		}catch(FileNotFoundException e){
 			throw new IllegalArgumentException();
-		} catch (IOException e) {
+		}catch(IOException e){
 			logger.log(Level.SEVERE, "Error reading lida properties file {0}", e.getMessage());
 		}
 		

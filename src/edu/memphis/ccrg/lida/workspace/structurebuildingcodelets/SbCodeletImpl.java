@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
-public class SBCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
+public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
 
 	//Initialized by constructor
 	private LidaTaskManager timer;

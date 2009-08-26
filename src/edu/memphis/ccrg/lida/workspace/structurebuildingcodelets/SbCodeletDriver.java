@@ -13,17 +13,17 @@ import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
-public class SBCodeletDriver extends ModuleDriverImpl implements GuiContentProvider {
+public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvider {
 
 	private Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
-	private SBCodeletFactory sbCodeletFactory;
+	private SbCodeletFactory sbCodeletFactory;
 	//Gui
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
-	public SBCodeletDriver(Workspace w, LidaTaskManager timer, int ticksPerCycle) {
+	public SbCodeletDriver(Workspace w, LidaTaskManager timer, int ticksPerCycle) {
 		super(timer, ticksPerCycle);
 		setNumberOfTicksPerStep(10);//TODO: check
-		sbCodeletFactory = SBCodeletFactory.getInstance(w, timer);
+		sbCodeletFactory = SbCodeletFactory.getInstance(w, timer);
 	}// method
 	
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

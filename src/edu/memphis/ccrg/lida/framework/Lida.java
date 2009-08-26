@@ -41,7 +41,7 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SBCodeletDriver;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver;
 
 /**
  * @author Javier Snaider
@@ -71,7 +71,7 @@ public class Lida {
 	private DeclarativeMemory declarativeMemory;
 	// Workspace
 	private Workspace workspace;
-	private SBCodeletDriver sbCodeletDriver;
+	private SbCodeletDriver sbCodeletDriver;
 	// Attention
 	private AttentionDriver attentionDriver;
 	private GlobalWorkspace globalWksp;
@@ -167,7 +167,7 @@ public class Lida {
 		moduleDrivers.add(attentionDriver);
 		
 		//SbCodelet Driver
-		sbCodeletDriver = new SBCodeletDriver(workspace, taskManager, sbCodeletTicksPerStep);
+		sbCodeletDriver = new SbCodeletDriver(workspace, taskManager, sbCodeletTicksPerStep);
 		moduleDrivers.add(sbCodeletDriver);
 		
 		//Procedural Memory Driver
@@ -281,7 +281,7 @@ public class Lida {
 	/**
 	 * @return the sbCodeletDriver
 	 */
-	public SBCodeletDriver getSbCodeletDriver() {
+	public SbCodeletDriver getSbCodeletDriver() {
 		return sbCodeletDriver;
 	}
 	public AttentionDriver getAttentionDriver() {
