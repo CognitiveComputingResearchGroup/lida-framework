@@ -12,51 +12,27 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 
 /**
+ * This triggers activates if 'delay' milliseconds has passed without
+ * a broadcast.
+ * 
  * @author Javier Snaider
  * 
  */
-public class TimeOutTrigger implements BroadcastTrigger {
+public class NoBroadcastTrigger implements BroadcastTrigger {
 
 	/**
-	 * 
+	 * How long since last broadcast before this trigger is activated
 	 */
 	private long delay;
+	
+	/**
+	 * Java library class used to handle the timing
+	 */
 	private Timer timer;
 	private TriggerTask tt;
 	private TriggerListener gw;
 	private String name="";
-
-	private class TriggerTask extends TimerTask{
-
-		@Override
-		public void run() {
-			//System.out.println("time trigger");
-			gw.triggerBroadcast();			
-		}		
-	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
-	 */
-	public void checkForTrigger(Set<Coalition> coalitions) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
-	 */
-	public void reset() {
-		if (tt != null) {
-			tt.cancel();
-		}
-		start();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -86,4 +62,37 @@ public class TimeOutTrigger implements BroadcastTrigger {
 		tt=new TriggerTask();
 		timer.schedule(tt, delay);
 	}
-}
+
+	/**
+	 * TriggerTask is executed when the Timer object goes off
+	 * In this case the global workspace is told to trigger 
+	 * the broadcast
+	 *
+	 */
+	private class TriggerTask extends TimerTask{
+		@Override
+		public void run() {
+			gw.triggerBroadcast();			
+		}		
+	}//class
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
+	 */
+	public void checkForTrigger(Set<Coalition> coalitions) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
+	 */
+	public void reset() {
+		if (tt != null)
+			tt.cancel();
+		start();
+	}
+
+}//class

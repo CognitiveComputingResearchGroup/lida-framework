@@ -7,8 +7,8 @@ import java.util.Properties;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateActivationTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualActivationTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.TimeOutLapTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.TimeOutTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoNewCoalitionTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
@@ -24,7 +24,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
-		tr = new TimeOutTrigger();
+		tr = new NoBroadcastTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOut");		
 		long broadcastTimeOut = Long.parseLong(p.getProperty("globalWorkspace.timeOut"));
@@ -33,7 +33,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		globalWksp.addBroadcastTrigger(tr);
 		
 		//If there hasn't been a broadcast for delayParameter milliseconds 
-		tr = new TimeOutLapTrigger();
+		tr = new NoNewCoalitionTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOutLap");
 		long timeOutLap = Long.parseLong(p.getProperty("globalWorkspace.timeOutLap"));

@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  * 
  */
 public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
-		GuiContentProvider {
+											GuiContentProvider {
 	private Set<Coalition> coalitions = new HashSet<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
@@ -38,10 +38,6 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * 
-	 * 
-	 * 
 	 * 
 	 * @seelida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
 	 * ccrg. globalworkspace.BroadcastListener)

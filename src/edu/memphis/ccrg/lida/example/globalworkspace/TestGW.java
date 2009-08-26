@@ -14,8 +14,8 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateActivationTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualActivationTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.TimeOutLapTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.TimeOutTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoNewCoalitionTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastTrigger;
 
 
 /**
@@ -33,7 +33,7 @@ public class TestGW {
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
-		tr = new TimeOutTrigger();
+		tr = new NoBroadcastTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOut");
 		parameters.put("delay", 100L);
@@ -46,7 +46,7 @@ public class TestGW {
 		tr.setUp(parameters, (TriggerListener) gw);
 		gw.addBroadcastTrigger(tr);
 
-		tr = new TimeOutLapTrigger();
+		tr = new NoNewCoalitionTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOutLap");
 		parameters.put("delay", 50L);

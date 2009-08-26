@@ -33,8 +33,7 @@ public class AggregateActivationTrigger implements BroadcastTrigger {
 	}//method
 
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		// not applicable
 	}
 
 	public void setUp(Map<String, Object> parameters, TriggerListener gw) {
@@ -43,12 +42,10 @@ public class AggregateActivationTrigger implements BroadcastTrigger {
 		if ((o != null)&& (o instanceof Double)) {
 			threshold= (Double)o;
 		}
-
-	}
+	}//method
 
 	public void start() {
-		// TODO Auto-generated method stub
-
+		// not applicable
 	}
 
-}
+}//class
