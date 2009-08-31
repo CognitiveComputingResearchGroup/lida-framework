@@ -25,8 +25,6 @@ public class MockCoalition implements Coalition {
 		return activation;
 	}
 	public void decay() {
-		// TODO Auto-generated method stub
-		
 	}
 
 

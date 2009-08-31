@@ -177,11 +177,8 @@ public class SbCodeletFactory {
 					codelet.addWritableModule(csm);
 				}
 			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 			}			
 		}//if
 		return codelet;

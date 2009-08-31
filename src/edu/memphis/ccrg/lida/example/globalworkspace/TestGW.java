@@ -28,7 +28,6 @@ public class TestGW {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		GlobalWorkspace gw = new GlobalWorkspaceImpl();
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
@@ -66,7 +65,7 @@ public class TestGW {
 			}
 
 			public void learn() {
-				// TODO Auto-generated method stub
+
 				
 			}});
 		

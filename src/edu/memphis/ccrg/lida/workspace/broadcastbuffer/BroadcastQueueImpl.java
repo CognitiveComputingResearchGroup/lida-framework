@@ -17,6 +17,7 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener,
 	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
 	private final int broadcastQueueCapacity;
+	private List<FrameworkGuiEventListener> queueListeners = new ArrayList<FrameworkGuiEventListener>();
 
 	public BroadcastQueueImpl(int capacity){
 		broadcastQueueCapacity = capacity;
@@ -35,18 +36,14 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener,
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		// TODO Auto-generated method stub
-		
+		queueListeners.add(listener);
 	}
-
 	public void sendEvent() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void learn() {
-		// TODO Auto-generated method stub
-		
+		//Not applicable
 	}
 
 	public Collection<NodeStructure> getContentCollection() {

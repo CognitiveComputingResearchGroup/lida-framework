@@ -24,11 +24,8 @@ public class LinkFactory {
 
 
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return l;
 	}

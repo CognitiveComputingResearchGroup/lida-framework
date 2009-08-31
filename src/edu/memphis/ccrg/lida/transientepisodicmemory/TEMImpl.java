@@ -87,12 +87,10 @@ public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueL
     }
 
 	public void receiveCue(NodeStructure cue) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void learn() {
-		// TODO Auto-generated method stub
-		
+
 	}
 }

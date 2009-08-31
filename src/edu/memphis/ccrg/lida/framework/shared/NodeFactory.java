@@ -109,11 +109,8 @@ public class NodeFactory {
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return l;
 	}
@@ -126,11 +123,8 @@ public class NodeFactory {
 			l.setSink(oLink.getSink());
 			l.setType(oLink.getType());
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return l;
 	}
@@ -143,11 +137,8 @@ public class NodeFactory {
 			l.setSink(sink);
 			l.setType(type);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return l;
 	}
@@ -161,11 +152,8 @@ public class NodeFactory {
 			l.setSink(sink);
 			l.setType(type);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return l;
 	}
@@ -178,11 +166,8 @@ public class NodeFactory {
 			n.setDecayBehavior(defaultDecay);
 			n.setId(nodeIdCount++);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}
@@ -199,11 +184,8 @@ public class NodeFactory {
 			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}
@@ -220,11 +202,8 @@ public class NodeFactory {
 			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}
@@ -241,11 +220,8 @@ public class NodeFactory {
 			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}
@@ -263,11 +239,8 @@ public class NodeFactory {
 			n.setLabel(oNode.getLabel());
 
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}
@@ -280,11 +253,8 @@ public class NodeFactory {
 			n.setDecayBehavior(defaultDecay);
 			n.setId(nodeIdCount++);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}
@@ -304,11 +274,8 @@ public class NodeFactory {
 			n.setDecayBehavior(decayBehaviors.get(decayBehavior));
 			n.setId(nodeIdCount++);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 		}
 		return n;
 	}

@@ -10,7 +10,6 @@ public class TestNodeFactory {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		NodeFactory factory = NodeFactory.getInstance();
 		
 		//adding a Node Type to the Factory
