@@ -53,7 +53,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * ten for Sensory Memory. In order to have the framework running accurately
 	 * the relative speed of each part of the framework must be set.
 	 */
-	public static void setInTicksMode(boolean mode) {
+	public static synchronized void setInTicksMode(boolean mode) {
 		inTicksMode = mode;
 	}
 	public static boolean isInTicksMode() {

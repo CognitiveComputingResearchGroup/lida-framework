@@ -8,7 +8,6 @@ public class AddTicksCommand extends GenericCommandImpl {
 	public void execute(Lida lida) {
 		int ticks= (Integer)getParameter("ticks");
 		lida.getTaskManager().addTicks(ticks);
-
 	}
 
 }
