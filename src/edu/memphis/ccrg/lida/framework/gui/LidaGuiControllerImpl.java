@@ -48,7 +48,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.gui.LidaGuiController#executeCommand(java.lang.String, java.util.Map)
 	 */
-	public Object executeCommand (String commandName,Map<String,Object> parameters){
+	public Object executeCommand (String commandName, Map<String,Object> parameters){
 		String commandClass = commands.getProperty(commandName);
 		Command command=null;
 		if(commandClass != null){
@@ -65,7 +65,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 			command.setParameters(parameters);
 		}
 		command.execute(lida);
-		logger.info("Command "+ commandName + " executed");
+		logger.log(Level.FINE, "Command "+ commandName + " executed");
 		return command.getResult();
 	}
 
@@ -76,7 +76,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	 */
 	public Object executeCommand (Command command){
 		command.execute(lida);
-		logger.info("Command "+ command + " executed");
+		logger.log(Level.FINE, "Command "+ command + " executed");
 		return command.getResult();
 	}
 	public boolean isSystemPaused() {

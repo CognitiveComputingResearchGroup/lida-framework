@@ -1,6 +1,10 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.logging.Logger;
+
 public class LidaTaskManager extends TaskSpawnerImpl {
+	
+	private Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
 	
 	/**
 	 * The length of time that 1 tick equals in milliseconds.
@@ -98,11 +102,13 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	
 	public void stopRunning(){
 		super.stopRunning();
+		logger.info("All threads and tasks told to stop");
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		logger.info("Exiting");
 		System.exit(0);
 	}
 

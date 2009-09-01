@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
@@ -81,10 +82,8 @@ public class Lida {
 	// A class that helps pause and control the drivers.
 	private LidaTaskManager taskManager;
 
-	
-
 	public Lida(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
-		logger.info("Starting Lida");
+		logger.log(Level.FINE, "Starting Lida");
 		initComponents(environ, sm, properties);
 		initDrivers();
 		initListeners();
@@ -139,7 +138,7 @@ public class Lida {
 		//Sensory-motor Memory
 		sensoryMotorMemory = new SensoryMotorMemoryImpl();
 		
-		logger.info("Lida submodules Created");		
+		logger.log(Level.FINE, "Lida submodules Created");		
 	}
 
 	private void initDrivers() {
@@ -173,7 +172,7 @@ public class Lida {
 		//Procedural Memory Driver
 		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, taskManager, procMemTicksPerStep));
 
-		logger.info("Lida drivers Created");		
+		logger.log(Level.FINE, "Lida drivers Created");		
 	}
 
 	private void initListeners() {
@@ -223,12 +222,12 @@ public class Lida {
 			actionSelection.addActionSelectionListener((ActionSelectionListener)workspace);
 		actionSelection.addActionSelectionListener(environment);
 		
-		logger.info("Lida listeners added");	
+		logger.log(Level.FINE, "Lida listeners added");	
 	}
 	public void start(){
-		globalWksp.start(); //TODO: change to the ThreadSpawner  
+		globalWksp.start();   
 		taskManager.setInitialTasks(moduleDrivers);		
-		logger.info("Lida submodules Started\n");		
+		logger.info("Lida modules have been started\n");		
 	}
 
 	/**

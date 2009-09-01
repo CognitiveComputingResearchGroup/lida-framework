@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
+//TODO: make a TaskSpawner
 /**
  * This class implements GlobalWorkspace and maintains the collection of
  * Coalitions. It supports triggers that are in charge to trigger the new

@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
@@ -93,7 +94,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 		// fillImageBlank(image);
 		 environContent=image;
 		 sendEvent();
-		 logger.info("Environment Reseted");
+		 logger.log(Level.FINE, "Environment Reseted");
 	}// method
 
 	// ************Specific methods**************

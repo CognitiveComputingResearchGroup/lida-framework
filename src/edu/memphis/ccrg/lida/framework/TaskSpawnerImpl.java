@@ -82,15 +82,15 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	public void receiveFinishedTask(LidaTask task, Throwable t) {
 		switch (task.getStatus()) {
 		case LidaTask.FINISHED_WITH_RESULTS:
-			processResuts(task);
+			processResults(task);
+			removeTask(task);
 			break;
 		case LidaTask.FINISHED: 
+			removeTask(task);
 			break;
 		case LidaTask.CANCELLED:
 			logger.log(Level.FINEST, "cancelling task {0}", task);
-			synchronized(this){
-				runningTasks.remove(task);
-			}
+			removeTask(task);
 			break;
 		case LidaTask.TO_RESET:
 			logger.log(Level.FINEST, "reseting task {0}", task);
@@ -104,8 +104,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			break;
 		}
 	}// method
-
-	protected void processResuts(LidaTask task) {
+	protected synchronized void removeTask(LidaTask t){
+		runningTasks.remove(t);
+	}
+	protected void processResults(LidaTask task) {
 	}
 
 	public Collection<LidaTask> getRunningTasks() {
@@ -180,12 +182,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		//Tell the running tasks to shut themselves down.
 		synchronized(this){
 			for(LidaTask s : runningTasks) {
-				logger.log(Level.INFO, "Stopping task: {0}", s);
+				logger.log(Level.FINER, "Stopping task: {0}", s);
 				s.stopRunning();
 			}//for
 		}
 		this.setTaskStatus(LidaTask.CANCELLED);
-		logger.info("ThreadSpawner " + this.toString() + " and all tasks it spawned have been told to stop");
+		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString() + "\n");
 	}// method
 
 }// class

@@ -51,7 +51,7 @@ public class LidaGui extends javax.swing.JFrame {
 			
 		loadPanels(panelsFile);
 		pack();
-		logger.info("LidaGUI started");
+		logger.info("LidaGUI started\n");
 	}
 
 	/**
