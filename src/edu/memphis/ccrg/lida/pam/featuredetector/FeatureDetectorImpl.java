@@ -40,7 +40,7 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	}
 	
 	public void init(Map<String, Object> parameters) {
-		// TODO Auto-generated method stub
+		//Override
 	}
 
 	public void setNode(PamNode node) {

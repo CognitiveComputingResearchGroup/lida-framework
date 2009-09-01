@@ -9,7 +9,7 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
 	private TaskSpawner spawner;
 
-	//TODO: override whatever executing method we use.  In the override
+	// consider overriding whatever executing method we use.  In the override
 	// set id for the LidaTask to be run.  This way we can ensure that
 	// all running threads in Lida have unique id as long as only this class
 	// is used to execute threads.

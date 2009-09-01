@@ -86,7 +86,6 @@ public class SbCodeletFactory {
 		defaultDecay = new LinearDecayBehavior();
 		defaultExcite = new DefaultExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
-		//TODO: TO FIX THIS!!!!!!!!!!!!
 		perceptualBuffer = workspace.getPerceptualBuffer();
 		episodicBuffer = workspace.getEpisodicBuffer();
 		broadcastQueue = workspace.getBroadcastQueue();

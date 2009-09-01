@@ -62,7 +62,6 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 
 	public List<Object> get(long arg0, TimeUnit arg1)
 			throws InterruptedException, ExecutionException, TimeoutException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

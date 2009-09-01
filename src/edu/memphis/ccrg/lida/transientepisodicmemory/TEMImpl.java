@@ -52,7 +52,6 @@ public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueL
     }
 
     public TEMImpl() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -26,7 +26,6 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	public NodeStructureGuiAdapter(NodeStructure nc) {
 		super(EdgeType.DIRECTED);
 		this.nc=nc;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

@@ -1,16 +1,15 @@
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SensoryMotorMemoryImpl implements SensoryMotorMemory{
 
-//	public void receiveSensoryMemoryContent(SensoryMemoryContent sc) {
-//		// TODO Auto-generated method stub
-//		
-//	}
+	private List<SensoryMotorListener> listeners = new ArrayList<SensoryMotorListener>();
 
 	public void addSensoryMotorListener(SensoryMotorListener l) {
-		// TODO Auto-generated method stub
-		
+		listeners.add(l);		
 	}
 
 }

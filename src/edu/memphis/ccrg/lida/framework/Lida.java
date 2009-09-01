@@ -226,7 +226,7 @@ public class Lida {
 		logger.info("Lida listeners added");	
 	}
 	public void start(){
-		globalWksp.start(); //TODO: change to the ThreadSpawner  <--What does this comment mean? - (Ryan)
+		globalWksp.start(); //TODO: change to the ThreadSpawner  
 		taskManager.setInitialTasks(moduleDrivers);		
 		logger.info("Lida submodules Started\n");		
 	}

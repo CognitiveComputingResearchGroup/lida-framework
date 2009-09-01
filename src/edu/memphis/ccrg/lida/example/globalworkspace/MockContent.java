@@ -15,12 +15,10 @@ public class MockContent implements BroadcastContent {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return content.toString();
 	}
 	
 	public Object getContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
