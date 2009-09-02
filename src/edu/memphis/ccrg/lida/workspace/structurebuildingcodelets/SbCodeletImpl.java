@@ -12,7 +12,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
 
 	//Initialized by constructor
-	private LidaTaskManager timer;
 	private List<Collection<NodeStructure>> accessibleBuffers = new ArrayList<Collection<NodeStructure>>();
 	private List<CodeletWritable> writables = new ArrayList<CodeletWritable>();
 	
@@ -21,32 +20,12 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	//
 	private int type;
 	private CodeletResult results = new BasicCodeletResult();
-	
-	public void addFrameworkTimer(LidaTaskManager timer) {
-		this.timer = timer;
-	}	
 
 	public Object getResult(){
 		return results;
 	}
-	
-	public void run() {
-		if (!LidaTaskManager.isInTicksMode()){
-			runOneStep();
-		}else if(hasEnoughTicks()){
-			useOneStepOfTicks();
-			runOneStep();
-		}
-	}
-	private void runOneStep(){
-		try {
-			// Sleeps a lap proportional for each task
-			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
-		}catch (InterruptedException e){
-			stopRunning();
-		}
-	
-		timer.checkForStartPause();
+
+	protected void runThisLidaTask(){	
 		for(Collection<NodeStructure> buffer: accessibleBuffers)
 			for(CodeletWritable writable: writables)
 				action.performAction(buffer, writable);	

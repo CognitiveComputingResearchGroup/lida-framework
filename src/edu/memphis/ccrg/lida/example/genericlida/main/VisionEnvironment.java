@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
@@ -38,7 +39,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 	private int arrow = 0;
 	private int counter = 0;
 
-	public void runSingleProcessingStep() {
+	public void runThisLidaTask() {
 		Integer latestAction = null;
 
 		if(arrow == 0)
@@ -203,6 +204,11 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 			FrameworkGuiEvent evt = new FrameworkGuiEvent(Module.environment,"data",environContent);
 			fg.receiveGuiEvent(evt);
 		}
+	}
+
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
 	}
 
 	// public void printImage(double[][] image){

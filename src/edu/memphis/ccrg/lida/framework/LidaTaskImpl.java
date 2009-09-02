@@ -25,6 +25,33 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		setNumberOfTicksPerStep(ticksForCycle);
 	}
 	
+	public void run(){
+		if (!LidaTaskManager.isInTicksMode()){
+			sleep();
+			runThisLidaTask();
+		}else if(hasEnoughTicks()){
+			useOneStepOfTicks();
+			sleep();
+			runThisLidaTask();
+		}
+	}
+	private void sleep(){
+		try {
+			// Sleeps a lap proportional for each task
+			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
+		}catch(InterruptedException e){
+			stopRunning();
+		}
+	}
+	/**
+	 * To be overridden by child classes. Overriding method should execute 
+	 * a handful of statements considered to constitute a single iteration of 
+	 * the task.  For example, a codelet might look in a buffer for some
+	 * representation and make a change to it in a single iteration.
+	 *  
+	 */
+	protected abstract void runThisLidaTask();
+	
 	/**
 	 * @param status the status to set
 	 */

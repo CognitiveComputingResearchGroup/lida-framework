@@ -30,14 +30,14 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 		this.pam = pam;
 	}
 
-	public void run() {
+	protected void runThisLidaTask() {
 		pamNode.excite(excitationAmount);
 		pam.checkIfOverThreshold(pamNode);
 		Set<PamNode> nodes = nodeStruct.getParents(pamNode);
 		double newAmount = pamNode.getTotalActivation() * nodeStruct.getUpscale();
 		results.add(nodesIndex, nodes);
 		results.add(amountIndex, newAmount);
-		this.setTaskStatus(LidaTask.FINISHED);
+		this.setTaskStatus(LidaTask.FINISHED_WITH_RESULTS);
 	}//method
 
 	public boolean cancel(boolean mayInterruptIfRunning) {

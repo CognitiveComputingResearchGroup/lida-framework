@@ -24,7 +24,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	/**
 	 * Determines whether or not spawned task should run
 	 */
-	private boolean tasksPaused = false;
+	private static boolean tasksPaused;
 	
 	/**
 	 * Used to prevent resumeSpawnedTasks() from running once a shutdown has been started. 
@@ -33,6 +33,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	
 	public TaskSpawnerImpl(int ticksForCycle) {
 		super(ticksForCycle);
+		TaskSpawnerImpl.tasksPaused = LidaTaskManager.isSystemPaused();
 		//thread pool executor
 		int corePoolSize = 5;
 		int maxPoolSize = 100;
@@ -40,18 +41,20 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, 
 												  keepAliveTime, TimeUnit.SECONDS);
 	}// method
-
 	public TaskSpawnerImpl() {
 		this(1);
 	}
 
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
-		for (LidaTask r : initialTasks)
+		System.out.println(this.getClass().toString() + " setting initial tasks. system paused? " + tasksPaused);
+		for (LidaTask r : initialTasks){
 			addTask(r);
+		}
 	}
 
 	public void addTask(LidaTask task) {
 		task.setTaskStatus(LidaTask.WAITING_TO_RUN);
+		//System.out.println("adding task " + task.getClass().toString());
 		synchronized(this){
 			runningTasks.add(task);
 		}
@@ -107,8 +110,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	protected synchronized void removeTask(LidaTask t){
 		runningTasks.remove(t);
 	}
-	protected void processResults(LidaTask task) {
-	}
+	/**
+	 * When a finished task is received and its status is FINISHED_WITH_RESULTS
+	 * This method is called to handle the results.
+	 * @param task
+	 */
+	protected abstract void processResults(LidaTask task);
 
 	public Collection<LidaTask> getRunningTasks() {
 		logger.log(Level.FINEST,"getting all tasks");
@@ -160,10 +167,11 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			}//if
 		}//for
 	}// method
+	
 	/**
 	 * @return the tasksPaused
 	 */
-	public boolean isTasksPaused() {
+	public static boolean isTasksPaused() {
 		return tasksPaused;
 	}
 

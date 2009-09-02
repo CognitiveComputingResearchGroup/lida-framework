@@ -1,21 +1,28 @@
 package edu.memphis.ccrg.lida.workspace.broadcastbuffer;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 public class BroadcastQueueDriver extends ModuleDriverImpl {
 
-	private BroadcastQueueImpl bBuffer;
+	private BroadcastQueueImpl broadcastQueue;
 
-	public BroadcastQueueDriver(BroadcastQueueImpl bb, LidaTaskManager timer, int ticksPerCycle) {
-		super(timer, ticksPerCycle);
-		bBuffer = bb;
+	public BroadcastQueueDriver(BroadcastQueueImpl bq, int ticksPerCycle) {
+		super(ticksPerCycle);
+		broadcastQueue = bq;
 	}// method
 
 
-	public void runSingleProcessingStep() {
+	public void runThisLidaTask() {
 		//bBuffer.activateCodelets();
-		bBuffer.sendEvent();
+		broadcastQueue.sendEvent();
+	}
+
+
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }// class

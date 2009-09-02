@@ -22,18 +22,16 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 */
 	private static boolean inTicksMode = false;
 	
+	private static boolean systemPaused = true;
+	
 	/**
 	 * 
 	 * @param tasksStartOutRunning
 	 * @param tickDuration
 	 */
-	public LidaTaskManager(boolean tasksStartOutRunning, int tickDuration) {
-		super(0);//Task manager should not be run
-		if (tasksStartOutRunning)
-			pauseSpawnedTasks();
-		else
-			resumeSpawnedTasks();
-	
+	public LidaTaskManager(int tickDuration) {
+		//O ticks per step - Task manager should not be run
+		super(0);	
 		LidaTaskManager.tickDuration = tickDuration;
 	}
 	
@@ -60,6 +58,10 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		return inTicksMode;
 	} 
 
+	public static boolean isSystemPaused(){
+		return systemPaused;
+	}
+	
 	/**
 	 * 
 	 */
@@ -94,11 +96,6 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	public synchronized void setTickDuration(int newTickDuration) {
 		tickDuration = newTickDuration;
 	}
-
-	/**
-	 * Since it is a LidaTask, this class implements runnable but run is not used for the task manager.
-	 */
-	public void run(){}
 	
 	public void stopRunning(){
 		super.stopRunning();
@@ -110,6 +107,20 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		}
 		logger.info("Exiting");
 		System.exit(0);
+	}
+
+	/**
+	 * Since it is a LidaTask, this class inherits, 
+	 * but should not use or implement, this method.
+	 */
+	@Override
+	protected void runThisLidaTask() {
+		// Not applicable
+	}
+
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
 	}
 
 }// class FrameworkTimer

@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -20,17 +21,17 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	//Gui
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
-	public SbCodeletDriver(Workspace w, LidaTaskManager timer, int ticksPerCycle) {
-		super(timer, ticksPerCycle);
+	public SbCodeletDriver(Workspace w, int ticksPerCycle) {
+		super(ticksPerCycle);
 		setNumberOfTicksPerStep(10);
-		sbCodeletFactory = SbCodeletFactory.getInstance(w, timer);
+		sbCodeletFactory = SbCodeletFactory.getInstance(w);
 	}// method
 	
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
 	
-	public void runSingleProcessingStep() {
+	public void runThisLidaTask() {
 		activateCodelets();
 		//sendEvent();
 	}
@@ -64,5 +65,11 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 		addTask(sbc);
 		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
 	}// method
+
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }// class

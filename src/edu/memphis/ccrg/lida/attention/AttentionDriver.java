@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.attention;
 import java.util.Collection;
 //import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -23,9 +24,9 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	private NodeStructure broadcastContent;
 	private int defaultTicksPerStep = 3;
 
-	public AttentionDriver(LidaTaskManager timer, CurrentSituationalModel csm,
+	public AttentionDriver(CurrentSituationalModel csm,
 						   GlobalWorkspace gwksp, int ticksPerCycle) {
-		super(timer, ticksPerCycle);
+		super(ticksPerCycle);
 		this.csm = csm;
 		global = gwksp;
 	}
@@ -34,7 +35,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	public void runSingleProcessingStep() {
+	public void runThisLidaTask() {
 		activateCodelets();
 	}
 
@@ -52,5 +53,11 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 			n.getId();
 		}
 	}// method
+
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }// class

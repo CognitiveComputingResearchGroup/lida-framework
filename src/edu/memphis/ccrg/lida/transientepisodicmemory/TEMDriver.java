@@ -8,8 +8,8 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import java.util.concurrent.Future;
 
 /**
@@ -29,17 +29,13 @@ public class TEMDriver extends ModuleDriverImpl {
      * @param timer the timer used to handle the start/pause of the thread
      * @param cue the cue used to write on this memory
      */
-    public TEMDriver(TransientEpisodicMemory tem, LidaTaskManager timer,
-            MemoryCue cue, int ticksPerCycle) {
-    	super(timer, ticksPerCycle);
+    public TEMDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle) {
+    	super(ticksPerCycle);
         this.tem = tem;
         this.cue = cue;
     }
 
-
-
-
-	public void runSingleProcessingStep() {
+	public void runThisLidaTask() {
 		association = tem.cue(cue);
 	}//method
     
@@ -50,4 +46,10 @@ public class TEMDriver extends ModuleDriverImpl {
     public Future<LocalAssociation> getAssociation() {
         return association;
     }//method
+
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
+		
+	}
 }//class

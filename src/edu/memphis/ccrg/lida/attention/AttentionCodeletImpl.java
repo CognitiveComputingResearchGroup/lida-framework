@@ -31,30 +31,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
     	//this.timer=timer;
     }
 
-	public void run() {
-		//If not is ticks Mode then business as usual.
-		if (!LidaTaskManager.isInTicksMode()){
-			//System.out.println("not in ticks mode");
-			runOneStep();
-		}else if(hasEnoughTicks()){
-			//System.out.println("use ticks");
-			useOneStepOfTicks();
-			runOneStep();
-		}
-		//setTaskStatus(LidaTask.RUNNING);
-		//System.out.println("module driver impl, run, setting task status to run " + LidaTask.RUNNING);
-	}//method	
-	private void runOneStep(){
-		runOneProcessingStep();
-		try {
-			// Sleeps a lap proportional for each task
-			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
-		}catch (InterruptedException e){
-			stopRunning();
-		}
-	}
-
-	protected void runOneProcessingStep(){
+	protected void runThisLidaTask(){
 		if(checkBehavior.hasSoughtContent(csm)){
 			NodeStructure csmContent = checkBehavior.getSoughtContent(csm); 
 			if(csmContent != null)

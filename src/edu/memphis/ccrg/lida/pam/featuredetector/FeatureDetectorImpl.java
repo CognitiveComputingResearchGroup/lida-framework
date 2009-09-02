@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.pam.featuredetector;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -50,21 +49,7 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		return pamNode;
 	}
 	
-	public void run() {
-		if (!LidaTaskManager.isInTicksMode()){
-			runOneStep();
-		}else if(hasEnoughTicks()){
-			useOneStepOfTicks();
-			runOneStep();
-		}
-	}
-	private void runOneStep(){
-		try {
-			// Sleeps a lap proportional for each task
-			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
-		}catch(InterruptedException e){
-			stopRunning();
-		}
+	protected void runThisLidaTask(){
 		executeDetection();
 	}
 
@@ -76,7 +61,7 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		return 0.0;
 	}
 	public void excitePam(double amount){
-		pam.receiveActivationBurst(pamNode, amount);
+		//pam.receiveActivationBurst(pamNode, amount);
 	}
 	
 	/**

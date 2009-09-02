@@ -26,6 +26,4 @@ public interface StructureBuildingCodelet extends LidaTask{
 	  */
 	 public int getType();
 
-	 public void addFrameworkTimer(LidaTaskManager timer);
-
 }//interface

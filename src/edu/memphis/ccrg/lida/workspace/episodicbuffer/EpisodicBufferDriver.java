@@ -1,21 +1,26 @@
 package edu.memphis.ccrg.lida.workspace.episodicbuffer;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 public class EpisodicBufferDriver extends ModuleDriverImpl {
 
 	private EpisodicBufferImpl eBuffer;
 
-	public EpisodicBufferDriver(EpisodicBufferImpl eb, LidaTaskManager timer, int ticksPerCycle) {
-		super(timer, ticksPerCycle);
+	public EpisodicBufferDriver(EpisodicBufferImpl eb, int ticksPerCycle) {
+		super(ticksPerCycle);
 		this.eBuffer = eb;
 	}
 
-	public void runSingleProcessingStep() {
+	public void runThisLidaTask() {
 		//eBuffer.activateCodelets();
 		eBuffer.sendEvent();
+	}
 
+	@Override
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }// class

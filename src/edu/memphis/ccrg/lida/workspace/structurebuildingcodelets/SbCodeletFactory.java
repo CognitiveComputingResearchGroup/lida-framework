@@ -60,16 +60,15 @@ public class SbCodeletFactory {
 	private double defaultActivation = 1.0;	
 	private NodeStructure defaultObjective = new NodeStructureImpl();
 	private CodeletAction defaultActions = new BasicCodeletAction();
-	private LidaTaskManager timer;
 	
 	/**
 	 * Returns the singleton instance.
 	 * 
 	 * @return the singleton instance
 	 */
-	static public SbCodeletFactory getInstance(Workspace w, LidaTaskManager timer) {
+	static public SbCodeletFactory getInstance(Workspace w) {
 		if(instance == null)
-			instance = new SbCodeletFactory(w, timer);
+			instance = new SbCodeletFactory(w);
 		return instance;
 	}//constructor
 	
@@ -78,7 +77,7 @@ public class SbCodeletFactory {
 	 * TODO: Are we going to use this?
 	 * @post pool.size() == 0
 	 */
-	public SbCodeletFactory(Workspace workspace, LidaTaskManager timer) {
+	public SbCodeletFactory(Workspace workspace) {
 		DefaultSBCodeletType = "SBCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
@@ -90,8 +89,7 @@ public class SbCodeletFactory {
 		episodicBuffer = workspace.getEpisodicBuffer();
 		broadcastQueue = workspace.getBroadcastQueue();
 		csmReadable = workspace.getCSM();
-		csm = workspace.getCSM();
-		this.timer = timer;		
+		csm = workspace.getCSM();	
 	}
 	
 	/**
@@ -148,7 +146,6 @@ public class SbCodeletFactory {
 		if(codelet == null){
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
-				codelet.addFrameworkTimer(timer);	
 				codelet.setTaskID(LidaTaskManager.getNextTaskID());
 				codelet.setExciteBehavior(defaultExcite);
 				codelet.setDecayBehavior(defaultDecay);
