@@ -13,13 +13,15 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	}
 	
 	public void run(){
-		if (!LidaTaskManager.isInTicksMode()){
-			sleep();
-			runThisDriver();
-		}else if(hasEnoughTicks()){
-			useOneStepOfTicks();
-			sleep();
-			runThisDriver();
+		while(keepRunning){
+			if (!LidaTaskManager.isInTicksMode()){
+				sleep();
+				runThisDriver();
+			}else if(hasEnoughTicks()){
+				useOneStepOfTicks();
+				sleep();
+				runThisDriver();
+			}
 		}
 	}
 	private void sleep(){
@@ -31,5 +33,10 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		}
 	}
 	protected abstract void runThisDriver();
+	
+	public synchronized void stopRunning(){
+		super.stopRunning();
+		keepRunning = false;
+	}
 
 }// class
