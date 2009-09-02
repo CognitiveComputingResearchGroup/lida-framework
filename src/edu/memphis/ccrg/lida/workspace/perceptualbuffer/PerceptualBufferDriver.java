@@ -13,7 +13,7 @@ public class PerceptualBufferDriver extends ModuleDriverImpl {
 	}// constructor
 
 
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		//pb.activateCodelets();
 		pb.sendEvent();
 	}

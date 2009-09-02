@@ -13,7 +13,7 @@ public class BroadcastQueueDriver extends ModuleDriverImpl {
 	}// method
 
 
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		//bBuffer.activateCodelets();
 		broadcastQueue.sendEvent();
 	}

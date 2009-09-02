@@ -35,7 +35,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		activateCodelets();
 	}
 

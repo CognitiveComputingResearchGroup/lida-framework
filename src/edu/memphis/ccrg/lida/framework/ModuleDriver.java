@@ -11,7 +11,5 @@ package edu.memphis.ccrg.lida.framework;
  *
  */
 public interface ModuleDriver extends TaskSpawner{
-	
-	public abstract void runThisDriver();
-	
+
 }

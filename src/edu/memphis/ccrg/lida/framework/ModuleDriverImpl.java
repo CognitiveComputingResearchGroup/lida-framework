@@ -30,9 +30,6 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 			stopRunning();
 		}
 	}
-	
-	public void runThisDriver(){
-		
-	}
+	protected abstract void runThisDriver();
 
 }// class

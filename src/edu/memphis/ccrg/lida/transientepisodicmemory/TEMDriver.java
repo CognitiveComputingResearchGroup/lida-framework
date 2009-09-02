@@ -35,7 +35,7 @@ public class TEMDriver extends ModuleDriverImpl {
         this.cue = cue;
     }
 
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		association = tem.cue(cue);
 	}//method
     

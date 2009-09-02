@@ -61,7 +61,7 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		return 0.0;
 	}
 	public void excitePam(double amount){
-		//pam.receiveActivationBurst(pamNode, amount);
+		pam.receiveActivationBurst(pamNode, amount);
 	}
 	
 	/**

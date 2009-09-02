@@ -12,7 +12,7 @@ public class EpisodicBufferDriver extends ModuleDriverImpl {
 		this.eBuffer = eb;
 	}
 
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		//eBuffer.activateCodelets();
 		eBuffer.sendEvent();
 	}

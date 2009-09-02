@@ -23,8 +23,7 @@ public class VisionFeatureDetector extends FeatureDetectorImpl {
 	}
 
 	public double detect() {
-//		return 1.0;
-		return 0.0;
+		return 1.0;
 	}//method
 	
 }//class

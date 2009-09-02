@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 /**
@@ -20,7 +19,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	/**
 	 * This loop drives the procedural memory
 	 */
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		//procMem.sendEvent();   // Change for Logger 
 	}// method
 

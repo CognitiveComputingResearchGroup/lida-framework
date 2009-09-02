@@ -31,7 +31,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 		guis.add(listener);
 	}
 	
-	public void runThisLidaTask() {
+	public void runThisDriver() {
 		activateCodelets();
 		//sendEvent();
 	}

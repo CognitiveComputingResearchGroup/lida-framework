@@ -50,7 +50,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * representation and make a change to it in a single iteration.
 	 *  
 	 */
-	protected abstract void runThisLidaTask();
+	protected void runThisLidaTask(){}
 	
 	/**
 	 * @param status the status to set

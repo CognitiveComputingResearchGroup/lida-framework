@@ -46,10 +46,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	}
 
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
-		System.out.println(this.getClass().toString() + " setting initial tasks. system paused? " + tasksPaused);
-		for (LidaTask r : initialTasks){
+//		System.out.println(this.getClass().toString() + " setting initial tasks. system paused? " + tasksPaused);
+		for (LidaTask r : initialTasks)
 			addTask(r);
-		}
 	}
 
 	public void addTask(LidaTask task) {

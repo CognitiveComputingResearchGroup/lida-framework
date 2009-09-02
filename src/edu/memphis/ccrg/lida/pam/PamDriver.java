@@ -18,7 +18,7 @@ public class PamDriver extends ModuleDriverImpl{
 	}//constructor
 	
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisDriver() {
 		if (pam instanceof PerceptualAssociativeMemoryImpl){
 			((PerceptualAssociativeMemoryImpl)pam).sendEvent();
 		}
@@ -28,13 +28,13 @@ public class PamDriver extends ModuleDriverImpl{
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void processResults(LidaTask task) {
-		System.out.println(isTasksPaused() + " in pam driver");
+//		System.out.println(isTasksPaused() + " in pam driver");
 		try {
 			List<Object> results = (List<Object>) ((Future) task).get();
 			Set<PamNode> nodes = (Set<PamNode>) results.get(ExcitationTask.nodesIndex);
-			for(PamNode n: nodes)
-				System.out.println(n.getLabel());
-			System.out.println();
+//			for(PamNode n: nodes)
+//				System.out.println(n.getLabel());
+//			System.out.println();
 			Double amount = (Double) results.get(ExcitationTask.amountIndex);
 			pam.receiveActivationBurst(nodes, amount);
 		} catch (InterruptedException e) {
