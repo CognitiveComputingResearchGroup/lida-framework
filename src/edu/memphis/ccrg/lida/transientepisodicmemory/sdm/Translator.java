@@ -30,7 +30,8 @@ public class Translator {
 
     /**
      * The constructor for the class.
-     * @param nodeStructure the node structure used for translation
+     * @param nodeStructure the node structure used for translation, this
+     * structure contains the primitive feature detectors in PAM
      */
     public Translator(NodeStructure nodeStructure) {
         indexMap = new HashMap<Node, Integer>();
@@ -39,7 +40,6 @@ public class Translator {
         nodes = nodeStructure.getNodes();
         int index = 0;
         for (Node n : nodes) {
-            //long nodeID = n.getId();
             indexMap.put(n, index);
             nodeMap.put(index, n);
             index++;

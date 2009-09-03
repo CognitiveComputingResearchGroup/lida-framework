@@ -33,11 +33,11 @@ public class SparseDistributedMemory {
 
     /**
      *
-     * @param a
-     * @param p
-     * @param h
-     * @param c
-     * @param u
+     * @param a the address (hard locations) matrix
+     * @param p the activation probability
+     * @param h the activation radius
+     * @param c the counter range
+     * @param u the word size
      */
     public SparseDistributedMemory(byte [][]a, double p, int h, int[] c, int u) {
         //Memory's internal parameters
