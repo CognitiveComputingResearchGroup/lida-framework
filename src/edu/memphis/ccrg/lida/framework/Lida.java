@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
-import edu.memphis.ccrg.lida.transientepisodicmemory.TEMImpl;
+import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TransientEpisodicMemory;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModelImpl;
@@ -112,7 +112,7 @@ public class Lida {
 		initializer.initModule(lidaProperties);
 		
 		//Transient Episodic Memory
-		tem = new TEMImpl(); 
+		tem = new TemImpl(); 
 		
 		//Declarative Memory
 		declarativeMemory = new DeclarativeMemoryImpl();

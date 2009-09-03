@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
  * of running the thread and allowing access to the local associaiton.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public class TEMDriver extends ModuleDriverImpl {
+public class TemDriver extends ModuleDriverImpl {
 
     private TransientEpisodicMemory tem;
     private MemoryCue cue;
@@ -29,7 +29,7 @@ public class TEMDriver extends ModuleDriverImpl {
      * @param timer the timer used to handle the start/pause of the thread
      * @param cue the cue used to write on this memory
      */
-    public TEMDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle) {
+    public TemDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle) {
     	super(ticksPerCycle);
         this.tem = tem;
         this.cue = cue;

@@ -12,7 +12,7 @@ package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
  * This is a test of the episodic memory using an SDM implementation.
  * @author rsilva
  */
-public class SDMTest {
+public class SdmTest {
 
     /**
      * The main method of the class.

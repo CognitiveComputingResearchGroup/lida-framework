@@ -13,4 +13,5 @@ public interface GuiContentProvider {
 
 	public abstract void sendEvent();
 	public abstract void addFrameworkGuiEventListener(FrameworkGuiEventListener listener);
+	
 }

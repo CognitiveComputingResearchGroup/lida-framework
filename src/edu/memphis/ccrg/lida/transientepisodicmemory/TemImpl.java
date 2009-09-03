@@ -25,7 +25,7 @@ import java.util.concurrent.FutureTask;
  * memory to store the information.
  * @author Rodrigo Silva L.
  */
-public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
+public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
     private SparseDistributedMemory sdm;
     private HashMap<Long, Integer> indexMap;
@@ -37,7 +37,7 @@ public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueL
      * The constructor of the class.
      * @param structure the structure with the nodes used for this TEM
      */
-    public TEMImpl(NodeStructure structure) {
+    public TemImpl(NodeStructure structure) {
         translator = new Translator(structure);
         indexMap = new HashMap<Long, Integer>();
         nodeMap = new HashMap<Integer, Long>();
@@ -51,7 +51,7 @@ public class TEMImpl implements TransientEpisodicMemory, BroadcastListener, CueL
         }
     }
 
-    public TEMImpl() {
+    public TemImpl() {
 	}
 
 	/**
