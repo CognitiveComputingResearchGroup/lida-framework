@@ -33,27 +33,30 @@ public class PamInitializer implements Initializer {
 		pam.setParameters(params);
 		
 		//Nodes
+		//TODO: Make this a loop.  Reading in the nodes from a file.
     	NodeFactory factory = NodeFactory.getInstance();
     	PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl", "gold");
     	PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "metal");
     	PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl", "solid");
-    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
-    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
-    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
-    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
+//    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
+//    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
+//    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
+//    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
     	pam.addNodes(factory.getStoredNodes());
     	
     	//Links
+    	//TODO: make this a loop
     	factory.storeLink(gold, metal, LinkType.CHILD);
-    	factory.storeLink(metal, solid, LinkType.GROUNDING);   
-    	factory.storeLink(iron, metal, LinkType.CHILD);   
-    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
-    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
-    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
-    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
+    	factory.storeLink(metal, solid, LinkType.CHILD);   
+//    	factory.storeLink(iron, metal, LinkType.CHILD);   
+//    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
+//    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
+//    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
+//    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
     	pam.addLinks(factory.getStoredLinks());
     	
     	//Feature detectors
+    	//TODO: make this a loop
     	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
 	}//method

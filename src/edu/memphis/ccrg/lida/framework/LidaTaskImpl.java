@@ -29,7 +29,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 	
 	public void run(){
-		if (!taskManager.isInTicksMode()){
+		if (!LidaTaskManager.isInTicksMode()){
 			sleep();
 			runThisLidaTask();
 		}else if(hasEnoughTicks()){

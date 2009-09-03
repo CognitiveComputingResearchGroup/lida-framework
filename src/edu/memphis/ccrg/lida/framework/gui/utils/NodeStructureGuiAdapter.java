@@ -21,11 +21,11 @@ import edu.uci.ics.jung.graph.util.Pair;
  */
 public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> {
 
-	private NodeStructure nc;
+	private NodeStructure nodeStructure;
 
-	public NodeStructureGuiAdapter(NodeStructure nc) {
+	public NodeStructureGuiAdapter(NodeStructure ns) {
 		super(EdgeType.DIRECTED);
-		this.nc=nc;
+		this.nodeStructure=ns;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	public Collection<Link> getInEdges(Linkable arg0) {
-		Set<Link> links = nc.getLinks(arg0);
+		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Link> ret = new HashSet<Link>();
 		for (Link l : links) {
 			if (l.getSink().equals(arg0)) {
@@ -53,7 +53,7 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	public Collection<Link> getOutEdges(Linkable arg0) {
-		Set<Link> links = nc.getLinks(arg0);
+		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Link> ret = new HashSet<Link>();
 		for (Link l : links) {
 			if (l.getSource().equals(arg0)) {
@@ -64,7 +64,7 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	public Collection<Linkable> getPredecessors(Linkable arg0) {
-		Set<Link> links = nc.getLinks(arg0);
+		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
 		for (Link l : links) {
 			if (l.getSink().equals(arg0)) {
@@ -79,7 +79,7 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	public Collection<Linkable> getSuccessors(Linkable arg0) {
-		Set<Link> links = nc.getLinks(arg0);
+		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
 		for (Link l : links) {
 			if (l.getSource().equals(arg0)) {
@@ -102,27 +102,27 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	public boolean containsEdge(Link arg0) {
-		return nc.hasLink(arg0);
+		return nodeStructure.hasLink(arg0);
 	}
 
 	public boolean containsVertex(Linkable arg0) {
 		if (arg0 instanceof Node) {
-			return nc.hasNode((Node) arg0);
+			return nodeStructure.hasNode((Node) arg0);
 		} else {
-			return nc.hasLink((Link) arg0);
+			return nodeStructure.hasLink((Link) arg0);
 		}
 	}
 
 	public int getEdgeCount() {
-		return nc.getLinkCount();
+		return nodeStructure.getLinkCount();
 	}
 
 	public Collection<Link> getEdges() {
-		return nc.getLinks();
+		return nodeStructure.getLinks();
 	}
 
 	public Collection<Link> getIncidentEdges(Linkable arg0) {
-		return nc.getLinks(arg0);
+		return nodeStructure.getLinks(arg0);
 	}
 
 	public Collection<Linkable> getNeighbors(Linkable arg0) {
@@ -135,11 +135,11 @@ public class NodeStructureGuiAdapter extends AbstractTypedGraph<Linkable, Link> 
 	}
 
 	public int getVertexCount() {
-		return nc.getLinkableMap().size();
+		return nodeStructure.getLinkableMap().size();
 	}
 
 	public Collection<Linkable> getVertices() {
-		 return nc.getLinkableMap().keySet();
+		 return nodeStructure.getLinkableMap().keySet();
 	}
 
 	public boolean removeEdge(Link arg0) {

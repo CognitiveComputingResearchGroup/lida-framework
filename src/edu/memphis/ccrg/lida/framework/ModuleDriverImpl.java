@@ -16,7 +16,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	
 	public void run(){
 		while(keepRunning){
-			if (!taskManager.isInTicksMode()){
+			if (!LidaTaskManager.isInTicksMode()){
 				sleep();
 				runThisDriver();
 			}else if(hasEnoughTicks()){
