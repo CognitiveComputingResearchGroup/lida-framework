@@ -24,16 +24,20 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	/**
 	 * Determines whether or not spawned task should run
 	 */
-	private static boolean tasksPaused;
+	private boolean tasksPaused = true;
 	
 	/**
 	 * Used to prevent resumeSpawnedTasks() from running once a shutdown has been started. 
 	 */
 	private boolean shuttingDown = false;
 	
-	public TaskSpawnerImpl(int ticksForCycle) {
-		super(ticksForCycle);
-		TaskSpawnerImpl.tasksPaused = LidaTaskManager.isSystemPaused();
+	private LidaTaskManager taskManager;
+	
+	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm) {
+		super(ticksForCycle, tm);
+		taskManager = tm;
+		if(taskManager != null)
+			tasksPaused = taskManager.isSystemPaused();
 		//thread pool executor
 		int corePoolSize = 5;
 		int maxPoolSize = 100;
@@ -41,8 +45,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		executorService = new LidaExecutorService(this, corePoolSize, maxPoolSize, 
 												  keepAliveTime, TimeUnit.SECONDS);
 	}// method
-	public TaskSpawnerImpl() {
-		this(1);
+	public TaskSpawnerImpl(LidaTaskManager tm) {
+		this(1, tm);
 	}
 
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
@@ -170,7 +174,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	/**
 	 * @return the tasksPaused
 	 */
-	public static boolean isTasksPaused() {
+	public boolean isTasksPaused() {
 		return tasksPaused;
 	}
 
@@ -196,5 +200,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		this.setTaskStatus(LidaTask.CANCELLED);
 		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString() + "\n");
 	}// method
+	public void setTaskManager(LidaTaskManager taskManager) {
+		super.setTaskManager(taskManager);
+		this.taskManager = taskManager;
+		tasksPaused = taskManager.isTasksPaused();
+	}
 
 }// class

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
@@ -146,7 +144,6 @@ public class SbCodeletFactory {
 		if(codelet == null){
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
-				codelet.setTaskID(LidaTaskManager.getNextTaskID());
 				codelet.setExciteBehavior(defaultExcite);
 				codelet.setDecayBehavior(defaultDecay);
 				codelet.setActivation(defaultActivation);
@@ -180,18 +177,20 @@ public class SbCodeletFactory {
 		return codelet;
 	}//method
 	
-	public StructureBuildingCodelet getCodelet(int type){
-		return getGenericCodelet(type);
-	}
-
-	public StructureBuildingCodelet getCodelet(int type, double activation,
-			NodeStructure context, CodeletAction actions) {
-		StructureBuildingCodelet sbc = getGenericCodelet(type);
-		sbc.setActivation(activation);
-		sbc.setSoughtContent(context);
-		sbc.setCodeletAction(actions);
-		return sbc;
-	}
+	//TODO: outstanding issues with whether there should be an Id and how to use
+	//class for name if the object, here an SBC requires a paramter, in this case the TaskManager
+//	public StructureBuildingCodelet getCodelet(int type){
+//		return getGenericCodelet(type);
+//	}
+//
+//	public StructureBuildingCodelet getCodelet(int type, double activation,
+//			NodeStructure context, CodeletAction actions) {
+//		StructureBuildingCodelet sbc = getGenericCodelet(type);
+//		sbc.setActivation(activation);
+//		sbc.setSoughtContent(context);
+//		sbc.setCodeletAction(actions);
+//		return sbc;
+//	}
 		
 	/**
 	 * Recycles the given codelet to be re-used later on, for quickly providing

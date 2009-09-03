@@ -24,9 +24,9 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	private NodeStructure broadcastContent;
 	private int defaultTicksPerStep = 3;
 
-	public AttentionDriver(CurrentSituationalModel csm,
-						   GlobalWorkspace gwksp, int ticksPerCycle) {
-		super(ticksPerCycle);
+	public AttentionDriver(CurrentSituationalModel csm, GlobalWorkspace gwksp, 
+						   int ticksPerCycle, LidaTaskManager tm) {
+		super(ticksPerCycle, tm);
 		this.csm = csm;
 		global = gwksp;
 	}

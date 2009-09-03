@@ -10,6 +10,7 @@ import java.util.concurrent.TimeoutException;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 
 public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>> {
 	
@@ -23,7 +24,9 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 
 	public ExcitationTask(PamNode node, double activation,
 			              PamNodeStructure pamNodeStructure, 
-			              PerceptualAssociativeMemory pam) {
+			              PerceptualAssociativeMemory pam, 
+			              LidaTaskManager tm) {
+		super(tm);
 		pamNode = node;
 		excitationAmount = activation;
 		nodeStruct = pamNodeStructure;

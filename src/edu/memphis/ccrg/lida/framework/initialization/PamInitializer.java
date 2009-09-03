@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import edu.memphis.ccrg.lida.example.genericlida.main.VisionFeatureDetector;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -16,8 +17,10 @@ public class PamInitializer implements Initializer {
 	
 	private PerceptualAssociativeMemory pam;
 	private SensoryMemory sm;
+	private LidaTaskManager taskManager;
 	
-	public PamInitializer(PerceptualAssociativeMemory pam, SensoryMemory sm){
+	public PamInitializer(PerceptualAssociativeMemory pam, SensoryMemory sm, LidaTaskManager tm){
+		taskManager = tm;
 		this.pam = pam;
 		this.sm = sm;
 	}
@@ -51,7 +54,7 @@ public class PamInitializer implements Initializer {
     	pam.addLinks(factory.getStoredLinks());
     	
     	//Feature detectors
-    	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam);
+    	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
 	}//method
 	

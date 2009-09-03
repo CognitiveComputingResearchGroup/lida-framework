@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
@@ -21,8 +22,8 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	//Gui
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
-	public SbCodeletDriver(Workspace w, int ticksPerCycle) {
-		super(ticksPerCycle);
+	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
+		super(ticksPerCycle, tm);
 		setNumberOfTicksPerStep(10);
 		sbCodeletFactory = SbCodeletFactory.getInstance(w);
 	}// method
@@ -60,8 +61,8 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	@SuppressWarnings("unused")
 	private void spawnNewCodelet(int type, double activation, 
 								 NodeStructure context, CodeletAction actions){
-		StructureBuildingCodelet sbc = sbCodeletFactory.getCodelet(type, activation, 
-																   context, actions);
+		//TODO: use factory?
+		StructureBuildingCodelet sbc = null;//sbCodeletFactory.getCodelet(type, activation, context, actions);
 		addTask(sbc);
 		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
 	}// method

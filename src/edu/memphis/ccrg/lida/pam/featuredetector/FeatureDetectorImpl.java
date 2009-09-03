@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.pam.featuredetector;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -27,16 +28,14 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	protected SensoryMemory sm;
 
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
-							   PerceptualAssociativeMemory pam) {
+							   PerceptualAssociativeMemory pam, 
+							   LidaTaskManager tm) {
+		super(tm);
 		this.pam = pam;
 		this.sm = sm;
-		pamNode = n;
+		this.pamNode = n;
 	}
-	public FeatureDetectorImpl(FeatureDetectorImpl n) {
-		this.pam = n.pam;
-		this.sm = n.sm;
-		pamNode = n.pamNode;
-	}
+
 	
 	public void init(Map<String, Object> parameters) {
 		//Override

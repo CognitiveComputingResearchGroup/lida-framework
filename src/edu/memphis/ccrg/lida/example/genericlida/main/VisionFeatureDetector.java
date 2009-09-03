@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetectorImpl;
@@ -18,8 +19,9 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public class VisionFeatureDetector extends FeatureDetectorImpl {
 
 	public VisionFeatureDetector(PamNodeImpl pNode, SensoryMemory sm, 
-								 PerceptualAssociativeMemory pam) {
-		super(pNode, sm, pam);
+								 PerceptualAssociativeMemory pam, 
+								 LidaTaskManager tm) {
+		super(pNode, sm, pam, tm);
 	}
 
 	public double detect() {

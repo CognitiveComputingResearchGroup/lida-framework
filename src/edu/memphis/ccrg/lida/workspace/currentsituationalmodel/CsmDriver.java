@@ -1,14 +1,15 @@
 package edu.memphis.ccrg.lida.workspace.currentsituationalmodel;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 public class CsmDriver extends ModuleDriverImpl {
 
 	private CurrentSituationalModelImpl csm;
 
-	public CsmDriver(CurrentSituationalModelImpl csm, int ticksPerCycle) {
-		super(ticksPerCycle);
+	public CsmDriver(CurrentSituationalModelImpl csm, int ticksPerCycle, LidaTaskManager tm) {
+		super(ticksPerCycle, tm);
 		this.csm = csm;
 	}
 

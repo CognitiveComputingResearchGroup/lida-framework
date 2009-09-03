@@ -7,7 +7,6 @@ import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 
 /**
  * @author Javier Snaider
- *
  */
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
@@ -16,17 +15,21 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private int accumulatedTicks;
 	protected int status = LidaTask.WAITING;
 	
-	public LidaTaskImpl(){
-		this (1);
+	private LidaTaskManager taskManager;
+	
+	public LidaTaskImpl(LidaTaskManager tm){
+		this (1, tm);
 	}
 	
-	public LidaTaskImpl(int ticksForCycle){
-		setTaskID(LidaTaskManager.getNextTaskID());
+	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm){
+		taskManager = tm;
+		if(taskManager != null)
+			taskID = taskManager.getNextTaskID();
 		setNumberOfTicksPerStep(ticksForCycle);
 	}
 	
 	public void run(){
-		if (!LidaTaskManager.isInTicksMode()){
+		if (!taskManager.isInTicksMode()){
 			sleep();
 			runThisLidaTask();
 		}else if(hasEnoughTicks()){
@@ -38,7 +41,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private void sleep(){
 		try {
 			// Sleeps a lap proportional for each task
-			Thread.sleep(LidaTaskManager.getTickDuration() * getTicksPerStep());
+			Thread.sleep(taskManager.getTickDuration() * getTicksPerStep());
 		}catch(InterruptedException e){
 			stopRunning();
 		}
@@ -110,5 +113,10 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	public void stopRunning(){
 		setTaskStatus(LidaTask.CANCELLED);
+	}
+
+	public void setTaskManager(LidaTaskManager taskManager) {
+		this.taskManager = taskManager;
+		taskID = this.taskManager.getNextTaskID();
 	}
 }//class

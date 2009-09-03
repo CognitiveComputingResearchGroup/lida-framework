@@ -9,20 +9,20 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	/**
 	 * The length of time that 1 tick equals in milliseconds.
 	 */
-	private static int tickDuration = 1;
+	private int tickDuration = 1;
 	
 	/**
 	 * All tasks in the Lida system are created, executed, and managed by this class.  
 	 * This variable is to be used to get unique ids for each task.
 	 */
-	private static long nextTaskID = 0L;
+	private long nextTaskID = 0L;
 	
 	/**
 	 * A boolean to track whether or not the system is in ticks mode.
 	 */
 	private static boolean inTicksMode = false;
 	
-	private static boolean systemPaused = true;
+	private boolean systemPaused = true;
 	
 	/**
 	 * 
@@ -31,8 +31,9 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 */
 	public LidaTaskManager(int tickDuration) {
 		//O ticks per step - Task manager should not be run
-		super(0);	
-		LidaTaskManager.tickDuration = tickDuration;
+		//Null, LidaTaskManager should not have a LidaTaskManager
+		super(0, null);	
+		this.tickDuration = tickDuration;
 	}
 	
 	/**
@@ -40,7 +41,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * 
 	 * @return nextThreadID
 	 */
-	public static long getNextTaskID() {
+	public long getNextTaskID() {
 		return nextTaskID++;
 	}
 
@@ -51,14 +52,14 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * ten for Sensory Memory. In order to have the framework running accurately
 	 * the relative speed of each part of the framework must be set.
 	 */
-	public static synchronized void setInTicksMode(boolean mode) {
+	public synchronized void setInTicksMode(boolean mode) {
 		inTicksMode = mode;
 	}
 	public static boolean isInTicksMode() {
 		return inTicksMode;
 	} 
 
-	public static boolean isSystemPaused(){
+	public boolean isSystemPaused(){
 		return systemPaused;
 	}
 	
@@ -90,7 +91,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * 
 	 * @return how long to sleep
 	 */
-	public static int getTickDuration() {
+	public int getTickDuration() {
 		return tickDuration;
 	}
 	public synchronized void setTickDuration(int newTickDuration) {

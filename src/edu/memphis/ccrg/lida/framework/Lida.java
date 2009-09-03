@@ -100,7 +100,7 @@ public class Lida {
 
 		//Environment
 		environment = environ;
-//		environment.setTaskManager(taskManager);
+		environment.setTaskManager(taskManager);
 		
 		//Sensory Memory
 		sensoryMemory = sm;
@@ -108,7 +108,7 @@ public class Lida {
 		
 		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
-		PamInitializer initializer = new PamInitializer(pam, sm);
+		PamInitializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
 		
 		//Transient Episodic Memory
@@ -151,24 +151,24 @@ public class Lida {
 		moduleDrivers.add(environment);
 		
 		//Sensory Memory Driver
-		moduleDrivers.add(new SensoryMemoryDriver(sensoryMemory, smTicksPerStep));
+		moduleDrivers.add(new SensoryMemoryDriver(sensoryMemory, smTicksPerStep, taskManager));
 		
 		//Pam Driver
-		pamDriver = new PamDriver(pam, pamTicksPerStep);
+		pamDriver = new PamDriver(pam, pamTicksPerStep, taskManager);
 		pam.setTaskSpawner(pamDriver);
 		pamDriver.setInitialTasks(pam.getFeatureDetectors());
 		moduleDrivers.add(pamDriver);
 		
 		//Attention Driver
-		attentionDriver = new AttentionDriver(workspace.getCSM(), globalWksp, attnTicksPerStep);
+		attentionDriver = new AttentionDriver(workspace.getCSM(), globalWksp, attnTicksPerStep, taskManager);
 		moduleDrivers.add(attentionDriver);
 		
 		//SbCodelet Driver
-		sbCodeletDriver = new SbCodeletDriver(workspace, sbCodeletTicksPerStep);
+		sbCodeletDriver = new SbCodeletDriver(workspace, sbCodeletTicksPerStep, taskManager);
 		moduleDrivers.add(sbCodeletDriver);
 		
 		//Procedural Memory Driver
-		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, procMemTicksPerStep));
+		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, procMemTicksPerStep, taskManager));
 
 		logger.log(Level.FINE, "Lida drivers Created");		
 	}

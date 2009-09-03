@@ -136,7 +136,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
-		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, this);
+		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, this, taskSpawner.getTaskManager());
 		taskSpawner.addTask(task);		
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
@@ -145,7 +145,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	public void checkIfOverThreshold(PamNode pamNode){
-		ThresholdTask task = new ThresholdTask(pamNode, this);
+		ThresholdTask task = new ThresholdTask(pamNode, this, taskSpawner.getTaskManager());
 		taskSpawner.addTask(task);
 	}
 	

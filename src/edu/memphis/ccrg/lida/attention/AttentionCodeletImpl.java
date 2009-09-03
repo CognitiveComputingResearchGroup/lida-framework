@@ -21,8 +21,8 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 	private NodeStructure soughtContent;
 	    
     public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, int ticksPerStep,
-    							double activation,LidaTaskManager timer, NodeStructure soughtContent){
-    	super(ticksPerStep);
+    							double activation,LidaTaskManager tm, NodeStructure soughtContent){
+    	super(ticksPerStep, tm);
     	setActivation(activation);
     	this.csm = csm;
     	global = g;
