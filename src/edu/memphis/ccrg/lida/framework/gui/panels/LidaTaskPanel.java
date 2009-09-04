@@ -14,18 +14,22 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
+import edu.memphis.ccrg.lida.framework.LidaTask;
+
 /**
  * 
  * @author Javier Snaider
  */
-public class PropertiesPanel extends LidaPanelImpl {
+public class LidaTaskPanel extends LidaPanelImpl {
 
 	/**
 	 * 
@@ -33,22 +37,14 @@ public class PropertiesPanel extends LidaPanelImpl {
 	private static final long serialVersionUID = -3135377683820863184L;
 	private static Logger logger = Logger
 			.getLogger("lida.framework.gui.PropertiesPanel");
-	Properties properties;
+	private Collection<LidaTask> tasks;
+	private LidaTask[] taskArray;
 
 	/** Creates new form PropertiesPanel */
-	public PropertiesPanel() {
+	public LidaTaskPanel() {
 		initComponents();
-		properties = new Properties();
-		String propertiesFile = "configs/lidaConfig.properties";
-		try {
-			properties.load(new BufferedReader(new FileReader(propertiesFile)));
-		} catch (FileNotFoundException e) {
-			logger.log(Level.SEVERE, "Error reading properties  {0}", e
-					.toString());
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error reading properties  {0}", e
-					.toString());
-		}
+		tasks = new HashSet();
+		taskArray = tasks.toArray(new LidaTask[0]);
 	}
 
 	/**
@@ -171,56 +167,70 @@ public class PropertiesPanel extends LidaPanelImpl {
 	private class PropertiesTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
-
+		private int columnCnt=4;
 		public int getColumnCount() {
-			return 2;
+			return 4;
 		}
 
 		public int getRowCount() {
-			return properties.size();
+			return tasks.size();
 		}
 
 		public String getColumnName(int column) {
-			if (column == 0) {
-				return "Key";
-			} else {
-				return "Value";
+			String cName = "";
+			switch (column) {
+			case 0:
+				cName = "Task ID";
+				break;
+			case 1:
+				cName = "Activation";
+				break;
+			case 2:
+				cName = "Status";
+				break;
+			case 3:
+				cName = "description";
+				break;
+			default:
+				cName="col"+column;
 			}
+			return cName;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			if (columnIndex == 0) {
-				return getKey(rowIndex);
-			} else {
-				return properties.get(getKey(rowIndex));
-			} // if-else
-
-		}
-
-		private String getKey(int a_index) {
-			String retval = "";
-			Enumeration<Object> e = properties.keys();
-			for (int i = 0; i < a_index + 1; i++) {
-				retval = (String) e.nextElement();
-			} // for
-
-			return retval;
+			LidaTask task= taskArray[rowIndex];
+			Object o=null;
+			switch (columnIndex) {
+			case 0:
+				o=task.getTaskId();
+				break;
+			case 1:
+				o=task.getActivation();
+				break;
+			case 2:
+				o=task.getStatus();
+				break;
+			case 3:
+				o = task;
+				break;
+			default:
+				o="";
+			}
+			return o;
 		}
 
 		public void setValueAt(Object value, int row, int column) {
-			if (column == 1) {
-				properties.setProperty(getKey(row), (String) value);
-			}
 		}
 
 		public boolean isCellEditable(int row, int column) {
-			return (column == 1);
+			return false;
 		}
 	}
 
 	public void display(Object o) {
-		if (o instanceof Properties) {
-			properties = (Properties) o;
+		if (o instanceof Collection) {
+			tasks = (Collection<LidaTask>) o;
+			taskArray = tasks.toArray(new LidaTask[0]);			
 		}
 
 	}
