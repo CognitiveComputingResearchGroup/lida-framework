@@ -25,8 +25,7 @@ import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
  * 
  * @author Javier Snaider
  */
-public class ControlPanel extends LidaPanelImpl implements
-		FrameworkGuiEventListener {
+public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventListener {
 
 	private static final long serialVersionUID = 1L;
 
