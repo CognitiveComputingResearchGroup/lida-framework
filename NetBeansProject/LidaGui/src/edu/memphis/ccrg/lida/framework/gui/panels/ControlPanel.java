@@ -53,35 +53,23 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
     private void initComponents() {
 
         startPauseButton = new javax.swing.JButton();
-        resetEnvironmentButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        threadCountTextField = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         statusLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         sleepTimeTextField = new javax.swing.JTextField();
         speedSlider = new javax.swing.JSlider();
-        minSleepTimeLabel = new javax.swing.JLabel();
-        maxSleepTimeLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         addTicksButton = new javax.swing.JButton();
         sleepTimeTextField1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         TicksEnabledCheckBox = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
 
         startPauseButton.setText("Start/Pause");
         startPauseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startPauseButtonActionPerformed(evt);
-            }
-        });
-
-        resetEnvironmentButton.setText("Reset Environment");
-        resetEnvironmentButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetEnvironmentButtonClicked(evt);
             }
         });
 
@@ -93,15 +81,9 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
         });
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14));
-        jLabel1.setText("LIDA Control Panel");
+        jLabel1.setText("Control Panel");
 
-        jLabel4.setText("Thread Count");
-
-        threadCountTextField.setText("--");
-
-        jLabel7.setText("System Status");
-
-        statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        statusLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         statusLabel.setText("Paused");
 
         jLabel2.setText("Ticks Scale (ms)");
@@ -113,10 +95,6 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
                 speedSliderStateChanged(evt);
             }
         });
-
-        minSleepTimeLabel.setText("Min");
-
-        maxSleepTimeLabel.setText("Max");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -148,10 +126,10 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sleepTimeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addTicksButton, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                .addComponent(addTicksButton, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(TicksEnabledCheckBox)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,84 +142,57 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
                     .addComponent(jLabel5)))
         );
 
+        jLabel3.setText("Status:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addComponent(resetEnvironmentButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(quitButton))
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel2)
+                        .addGap(28, 28, 28)
+                        .addComponent(sleepTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(speedSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(statusLabel))
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(threadCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel7))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(startPauseButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(speedSlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(minSleepTimeLabel)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                                        .addComponent(sleepTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(maxSleepTimeLabel)))))))
-                .addContainerGap())
+                                .addGap(8, 8, 8)
+                                .addComponent(startPauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addComponent(quitButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(threadCountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(startPauseButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(minSleepTimeLabel)
-                            .addComponent(maxSleepTimeLabel)
-                            .addComponent(jLabel2)
-                            .addComponent(sleepTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                .addComponent(jLabel1)
+                .addGap(7, 7, 7)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(resetEnvironmentButton)
-                    .addComponent(quitButton))
-                .addContainerGap())
+                    .addComponent(jLabel2)
+                    .addComponent(sleepTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(quitButton)
+                    .addComponent(startPauseButton))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -256,11 +207,6 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
 		}
 		refresh();
     }//GEN-LAST:event_startPauseButtonActionPerformed
-
-    private void resetEnvironmentButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetEnvironmentButtonClicked
-     	//environment.resetEnvironment();
-    	controller.resetEnvironment();
-    }//GEN-LAST:event_resetEnvironmentButtonClicked
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
     	statusLabel.setText("QUITTING");
@@ -290,20 +236,15 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
     private javax.swing.JButton addTicksButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel maxSleepTimeLabel;
-    private javax.swing.JLabel minSleepTimeLabel;
     private javax.swing.JButton quitButton;
-    private javax.swing.JButton resetEnvironmentButton;
     private javax.swing.JTextField sleepTimeTextField;
     private javax.swing.JTextField sleepTimeTextField1;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton startPauseButton;
     private javax.swing.JLabel statusLabel;
-    private javax.swing.JTextField threadCountTextField;
     // End of variables declaration//GEN-END:variables
 
 

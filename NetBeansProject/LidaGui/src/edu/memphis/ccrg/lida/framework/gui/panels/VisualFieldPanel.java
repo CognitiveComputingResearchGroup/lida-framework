@@ -68,8 +68,7 @@ public class VisualFieldPanel extends  LidaPanelImpl implements FrameworkGuiEven
 	public void receiveGuiEvent(FrameworkGuiEvent event) {
 		double [][] smc=(double[][])event.getData();
 		String s=convertToString(smc);
-		jTextArea1.setText(s);
-		
+		jTextArea1.setText(s);	
 	}
 	public String convertToString(double[][] a) {
 		String res = "";
