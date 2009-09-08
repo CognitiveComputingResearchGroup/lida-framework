@@ -392,6 +392,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			existingLink.setSink(l.getSink());
 			existingLink.setSource(l.getSource());
 			existingLink.setType(l.getType());
+			
+			existingLink.setActivation(l.getActivation());
+			existingLink.setDecayBehavior(l.getDecayBehavior());
+			existingLink.setExciteBehavior(l.getExciteBehavior());
+			existingLink.setReferencedLink(l);
 		}
 	}//method
 

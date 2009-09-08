@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 
-public interface Link extends Linkable{
+public interface Link extends Linkable, Activatible{
 
 	public abstract Linkable getSource();
 
@@ -16,5 +16,8 @@ public interface Link extends Linkable{
 	public abstract void setSink(Linkable sink);
 
 	public abstract void setType(LinkType type);
+
+	public abstract void setReferencedLink(Link l);
+	public abstract Link getReferencedLink();
 
 }

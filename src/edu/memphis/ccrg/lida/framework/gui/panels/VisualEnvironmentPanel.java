@@ -21,13 +21,13 @@ import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
  * 
  * @author Javier Snaider
  */
-public class VisualFieldPanel extends LidaPanelImpl implements
+public class VisualEnvironmentPanel extends LidaPanelImpl implements
 		FrameworkGuiEventListener {
 
 	private static final long serialVersionUID = 13L;
 
 	/** Creates new form VisualFieldPanel */
-	public VisualFieldPanel() {
+	public VisualEnvironmentPanel() {
 		initComponents();
 		setSupportedModule(Module.environment);
 	}

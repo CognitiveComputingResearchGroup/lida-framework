@@ -4,12 +4,13 @@ package edu.memphis.ccrg.lida.framework.shared;
  * 
  * @author Ryan McCall
  */
-public class LinkImpl implements Link {
+public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private Linkable sink;
 	private Linkable source;
 	private String ids;
 	private LinkType type;
+	private Link referencedLink = null;
 
 	public LinkImpl(Linkable source, Linkable sink, LinkType type, String ids) {
 		this.source = source;
@@ -24,6 +25,7 @@ public class LinkImpl implements Link {
 		source = l.getSource();
 		type = l.getType();
 		ids = l.getIds();
+		referencedLink = l.getReferencedLink();
 		updateIds();
 	}
 
@@ -116,5 +118,13 @@ public class LinkImpl implements Link {
 
 	private void updateIds() {
 		ids = "L( " + ((source!=null)?source.getIds():"") + " : " + ((sink!=null)?sink.getIds():"") + " : " + type + " )";
+	}
+
+	public Link getReferencedLink() {
+		return referencedLink;
+	}
+
+	public void setReferencedLink(Link l) {
+		referencedLink = l;
 	}
 }
