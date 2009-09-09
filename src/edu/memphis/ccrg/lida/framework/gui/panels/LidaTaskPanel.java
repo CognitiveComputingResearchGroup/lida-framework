@@ -36,7 +36,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	 */
 	private static final long serialVersionUID = -3135377683820863184L;
 	private static Logger logger = Logger
-			.getLogger("lida.framework.gui.PropertiesPanel");
+			.getLogger("lida.framework.gui.LidaTaskPanel");
 	private Collection<LidaTask> tasks;
 	private LidaTask[] taskArray;
 
@@ -147,11 +147,8 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	}// GEN-LAST:event_SaveButtonActionPerformed
 
 	private void ApplyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-		// -
-		// FIRST
-		// :
-		// event_ApplyButtonActionPerformed
-		// TODO add your handling code here:
+		refresh();
+		
 	}// GEN-LAST:event_ApplyButtonActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -232,7 +229,8 @@ public class LidaTaskPanel extends LidaPanelImpl {
 			tasks = (Collection<LidaTask>) o;
 			taskArray = tasks.toArray(new LidaTask[0]);			
 		}
-
 	}
-
+	public void refresh(){
+		display(lida.getPamDriver().getRunningTasks());
+	}
 }

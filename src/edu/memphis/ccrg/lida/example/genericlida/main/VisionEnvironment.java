@@ -92,7 +92,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 		iloc = -1;
 		jloc = -1;
 		 double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
-		// fillImageBlank(image);
+		 fillImageBlank(image);
 		 environContent=image;
 		 sendEvent();
 		 logger.log(Level.FINE, "Environment Reseted");

@@ -71,8 +71,9 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		long id = detector.getPamNode().getId();
 		PamNode node = (PamNode) pamNodeStructure.getNode(id);
 		if(node != null){
-			detector.setNode(node);
+			detector.setPamNode(node);
 			featureDetectors.add(detector);
+			//taskSpawner.addTask(detector);
 			return true;
 		}else
 			logger.log(Level.SEVERE, "Failed to addFeatureDetector. Node " + 

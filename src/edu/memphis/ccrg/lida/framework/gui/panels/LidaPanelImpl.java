@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Javier
+ * @author Javier Snaider
  */
 public class LidaPanelImpl extends javax.swing.JPanel implements LidaPanel{
 	/**

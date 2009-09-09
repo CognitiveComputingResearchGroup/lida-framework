@@ -66,6 +66,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	protected void runTask(LidaTask task) {
 		if (!tasksPaused) {
 			if (shouldRun(task)) {
+				logger.log(Level.FINEST,"Sending to executor task {0}", task);
 				task.setTaskStatus(LidaTask.RUNNING);
 				executorService.execute(task);
 			}
@@ -94,7 +95,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		case LidaTask.FINISHED: 
 			removeTask(task);
 			break;
-		case LidaTask.CANCELLED:
+		case LidaTask.CANCELED:
 			logger.log(Level.FINEST, "cancelling task {0}", task);
 			removeTask(task);
 			break;
@@ -146,14 +147,14 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	}// method
 	
 	public void pauseSpawnedTasks() {
-		logger.log(Level.FINE, "All Tasks paused.");
+		logger.log(Level.INFO, "All Tasks paused.");
 		synchronized(this){
 			tasksPaused = true;
 		}
 	}
 
 	public void resumeSpawnedTasks() {
-		logger.log(Level.FINE,"resume spawned tasks called");
+		logger.log(Level.INFO,"resume spawned tasks called");
 		if(shuttingDown)
 			return;
 		
@@ -186,19 +187,18 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			shuttingDown = true;
 		}
 		pauseSpawnedTasks();
-		
-		//Now that we can be sure that active tasks will no longer be executed the executor service can be shutdown.
-		executorService.shutdown();
-		
 		//Tell the running tasks to shut themselves down.
 		synchronized(this){
 			for(LidaTask s : runningTasks) {
 				logger.log(Level.FINER, "Stopping task: {0}", s);
 				s.stopRunning();
 			}//for
-		}
-		this.setTaskStatus(LidaTask.CANCELLED);
-		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString() + "\n");
+		}		
+		//Now that we can be sure that active tasks will no longer be executed the executor service can be shutdown.
+		executorService.shutdown();		
+
+		this.setTaskStatus(LidaTask.CANCELED);
+		logger.log(Level.INFO, "Shutdown ThreadSpawner " + this.toString() + "\n");
 	}// method
 	public void setTaskManager(LidaTaskManager taskManager) {
 		super.setTaskManager(taskManager);

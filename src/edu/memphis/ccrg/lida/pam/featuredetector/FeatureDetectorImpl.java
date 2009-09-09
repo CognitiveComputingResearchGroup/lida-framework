@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.pam.featuredetector;
 
-import java.util.Map;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
@@ -23,10 +25,10 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  */
 public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
 
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private PamNode pamNode;
 	private PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
-
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
 							   PerceptualAssociativeMemory pam, 
 							   LidaTaskManager tm) {
@@ -35,13 +37,10 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		this.sm = sm;
 		this.pamNode = n;
 	}
-
-	
-	public void init(Map<String, Object> parameters) {
-		//Override
+	public FeatureDetectorImpl(){		
 	}
-
-	public void setNode(PamNode node) {
+	
+	public void setPamNode(PamNode node) {
 		pamNode = (PamNodeImpl) node;
 	}
 	public PamNode getPamNode() {
@@ -49,12 +48,14 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	}
 	
 	protected void runThisLidaTask(){
-		executeDetection();
+		double amount = detect();
+		logger.log(Level.FINEST,"detection performed:{0}",amount);
+		if (amount>0.0){
+			logger.log(Level.FINEST,"Pam excited:{0}",amount);			
+			excitePam(amount);
+		}
 	}
 
-	public void executeDetection() {
-		excitePam(detect());
-	}
 	//Override this method for domain-specific feature detector impl's
 	public double detect() {
 		return 0.0;
@@ -63,11 +64,9 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		pam.receiveActivationBurst(pamNode, amount);
 	}
 	
-	/**
-	 * @return the SensoryMemory
-	 */
-	protected SensoryMemory getSensoryMemory() {
-		return sm;
+	public void init(){
+		pam=(PerceptualAssociativeMemory)getParameter("PAM");
+		sm=(SensoryMemory)getParameter("SensoryMemory");
+		pamNode=(PamNode)getParameter("PamNode");
 	}
-	
 }// class

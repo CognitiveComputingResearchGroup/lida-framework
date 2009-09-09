@@ -15,7 +15,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * All tasks in the Lida system are created, executed, and managed by this class.  
 	 * This variable is to be used to get unique ids for each task.
 	 */
-	private long nextTaskID = 0L;
+	private static long nextTaskID = 0L;
 	
 	/**
 	 * A boolean to track whether or not the system is in ticks mode.
@@ -41,7 +41,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * 
 	 * @return nextThreadID
 	 */
-	public long getNextTaskID() {
+	public static long getNextTaskID() {
 		return nextTaskID++;
 	}
 

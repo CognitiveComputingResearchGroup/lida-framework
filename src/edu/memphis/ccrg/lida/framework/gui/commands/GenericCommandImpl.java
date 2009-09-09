@@ -13,7 +13,11 @@ public abstract class GenericCommandImpl implements Command {
 	public abstract void execute(Lida lida);
 
 	public Object getParameter(String name) {
-		return parameters.get(name);
+		Object res=null;
+		if (parameters!=null){
+			res=parameters.get(name);
+		}
+		return res;
 	}
 
 	public Object getResult() {

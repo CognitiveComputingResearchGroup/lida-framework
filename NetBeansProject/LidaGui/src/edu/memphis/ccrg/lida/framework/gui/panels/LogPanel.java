@@ -19,6 +19,7 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import java.util.logging.Level;
 
 /**
  *
@@ -29,10 +30,11 @@ public class LogPanel extends LidaPanelImpl {
 	private static final long serialVersionUID = 12L;
 
     private String logName = "lida"; 
-    private Logger logger = Logger.getLogger(logName); 
-
+    private Logger logger = Logger.getLogger(logName);
+    private String level="INFO";
     /** Creates new form LogPanel */
     public LogPanel() {
+
         initComponents();
         logger.addHandler(new GuiLogHandler()); 
     }
@@ -51,6 +53,7 @@ public class LogPanel extends LidaPanelImpl {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         clearButton = new javax.swing.JButton();
+        levelComboBox = new javax.swing.JComboBox();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -72,6 +75,14 @@ public class LogPanel extends LidaPanelImpl {
             }
         });
 
+        levelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SEVERE", "WRNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST", "ALL", "OFF" }));
+        levelComboBox.setSelectedItem("INFO");
+        levelComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                levelComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -79,7 +90,9 @@ public class LogPanel extends LidaPanelImpl {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addComponent(levelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(clearButton)
                 .addContainerGap())
         );
@@ -89,7 +102,8 @@ public class LogPanel extends LidaPanelImpl {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearButton)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(levelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -100,11 +114,18 @@ public class LogPanel extends LidaPanelImpl {
         loggingText.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
 
+    private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelComboBoxActionPerformed
+        Level level=Level.parse(levelComboBox.getSelectedItem().toString());
+
+        Logger.getLogger("").setLevel(level);
+}//GEN-LAST:event_levelComboBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox levelComboBox;
     private javax.swing.JTextArea loggingText;
     // End of variables declaration//GEN-END:variables
     
@@ -114,6 +135,20 @@ public class LogPanel extends LidaPanelImpl {
             String s = (String) o;
             loggingText.append(s);
         }
+    }
+
+    /**
+     * @return the level
+     */
+    public String getLevel() {
+        return level;
+    }
+
+    /**
+     * @param level the level to set
+     */
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public class GuiLogHandler extends Handler {

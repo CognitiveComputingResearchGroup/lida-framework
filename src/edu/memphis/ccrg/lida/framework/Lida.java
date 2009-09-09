@@ -108,6 +108,7 @@ public class Lida {
 		
 		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
+		
 		PamInitializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
 		

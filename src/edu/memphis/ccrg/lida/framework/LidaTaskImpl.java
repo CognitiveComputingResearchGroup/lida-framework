@@ -3,67 +3,97 @@
  */
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 
 /**
  * @author Javier Snaider
  */
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
-	
+
+	private static int defaultTicksPerStep = 1;
+
+	/**
+	 * @return the defaultTicksPerStep
+	 */
+	public static int getDefaultTicksPerStep() {
+		return defaultTicksPerStep;
+	}
+
+	/**
+	 * @param defaultTicksPerStep
+	 *            the defaultTicksPerStep to set
+	 */
+	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
+		if (defaultTicksPerStep > 0) {
+			LidaTaskImpl.defaultTicksPerStep = defaultTicksPerStep;
+		}
+	}
+
 	private long taskID;
-	private int ticksPerStep = 1;
+	private int ticksPerStep = defaultTicksPerStep;
 	private int accumulatedTicks;
 	protected int status = LidaTask.WAITING;
-	
+
 	private LidaTaskManager taskManager;
-	
-	public LidaTaskImpl(LidaTaskManager tm){
-		this (1, tm);
+	private Map<String, Object> parameters;
+
+	public LidaTaskImpl() {
+		this(defaultTicksPerStep, null);
 	}
-	
-	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm){
+
+	public LidaTaskImpl(LidaTaskManager tm) {
+		this(defaultTicksPerStep, tm);
+	}
+
+	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm) {
 		taskManager = tm;
-		if(taskManager != null)
-			taskID = taskManager.getNextTaskID();
+		taskID = LidaTaskManager.getNextTaskID();
 		setNumberOfTicksPerStep(ticksForCycle);
 	}
-	
-	public void run(){
-		if (!LidaTaskManager.isInTicksMode()){
+
+	public void run() {
+		if (!LidaTaskManager.isInTicksMode()) {
 			sleep();
 			runThisLidaTask();
-		}else if(hasEnoughTicks()){
+		} else if (hasEnoughTicks()) {
 			useOneStepOfTicks();
 			sleep();
 			runThisLidaTask();
 		}
 	}
-	private void sleep(){
+
+	private void sleep() {
 		try {
 			// Sleeps a lap proportional for each task
 			Thread.sleep(taskManager.getTickDuration() * getTicksPerStep());
-		}catch(InterruptedException e){
+		} catch (InterruptedException e) {
 			stopRunning();
 		}
 	}
+
 	/**
-	 * To be overridden by child classes. Overriding method should execute 
-	 * a handful of statements considered to constitute a single iteration of 
-	 * the task.  For example, a codelet might look in a buffer for some
+	 * To be overridden by child classes. Overriding method should execute a
+	 * handful of statements considered to constitute a single iteration of the
+	 * task. For example, a codelet might look in a buffer for some
 	 * representation and make a change to it in a single iteration.
-	 *  
+	 * 
 	 */
-	protected void runThisLidaTask(){}
-	
+	protected void runThisLidaTask() {
+	}
+
 	/**
-	 * @param status the status to set
+	 * @param status
+	 *            the status to set
 	 */
 	public void setTaskStatus(int status) {
-		//If a task is cancelled it cannot be restarted.
-		//So only set the status if the status is not CANCELLED.
-		if(this.status != CANCELLED)
+		// If a task is canceled it cannot be restarted.
+		// So only set the status if the status is not CANCELED.
+		if (this.status != LidaTask.CANCELED)
 			this.status = status;
 	}
+
 	/**
 	 * @return the status
 	 */
@@ -76,15 +106,16 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	public void setTaskID(long id) {
-		taskID=id;		
+		taskID = id;
 	}
+
 	public int getTicksPerStep() {
 		return ticksPerStep;
 	}
 
 	public void setNumberOfTicksPerStep(int ticks) {
-		if(ticks > 0)
-			ticksPerStep = ticks;		
+		if (ticks > 0)
+			ticksPerStep = ticks;
 	}
 
 	public void addTicks(int ticks) {
@@ -96,7 +127,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	public boolean useOneStepOfTicks() {
-		if (accumulatedTicks >= ticksPerStep){
+		if (accumulatedTicks >= ticksPerStep) {
 			accumulatedTicks = accumulatedTicks - ticksPerStep;
 			return true;
 		}
@@ -106,17 +137,40 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public boolean hasEnoughTicks() {
 		return accumulatedTicks >= ticksPerStep;
 	}
-	
-	public void reset(){
-		
+
+	public void reset() {
+
 	}
-	
-	public void stopRunning(){
-		setTaskStatus(LidaTask.CANCELLED);
+
+	public void stopRunning() {
+		setTaskStatus(LidaTask.CANCELED);
 	}
 
 	public void setTaskManager(LidaTaskManager taskManager) {
 		this.taskManager = taskManager;
-		taskID = this.taskManager.getNextTaskID();
+		if (taskID == 0) {
+			taskID = LidaTaskManager.getNextTaskID();
+		}
 	}
-}//class
+
+	public LidaTaskManager getTaskManager() {
+		return taskManager;
+	}
+
+	public void init(Map<String, Object> parameters) {
+		this.parameters = parameters;
+		init();
+	}
+
+	protected void init() {
+	}
+
+	public Object getParameter(String name) {
+		Object res = null;
+		if (parameters != null) {
+			res = parameters.get(name);
+		}
+		return res;
+	}
+
+}// class
