@@ -57,24 +57,6 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		return inTicksMode;
 	} 
 
-	public boolean isSystemPaused(){
-		return super.isTasksPaused();
-	}
-	/**
-	 * 
-	 */
-	public synchronized void resumeSpawnedTasks() {
-		System.out.println("resume called");
-		super.resumeSpawnedTasks();
-		System.out.println("");
-		//this.notifyAll();
-	}
-	public void pauseSpawnedTasks(){
-		System.out.println("paused called");
-		super.pauseSpawnedTasks();
-		System.out.println();
-	}
-
 	/**
 	 * Threads should call this in every iteration of their cycle so that the
 	 * system is pausable.

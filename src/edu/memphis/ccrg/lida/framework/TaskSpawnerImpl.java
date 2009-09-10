@@ -157,10 +157,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}// method
 
 	public void pauseSpawnedTasks() {
-
-		System.out.println("pause called");
-		logger.log(Level.FINE, "All tasks paused.");
-
 		logger.log(Level.INFO, "All Tasks paused.");
 
 		synchronized(this){
