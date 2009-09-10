@@ -58,9 +58,9 @@ public class PamInitializer implements Initializer {
     	
     	//Feature detectors
     	//TODO: make this a loop
-    	//FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam, taskManager);
-    	//pam.addFeatureDetector(fd);
-    	FeatureDetector fd = new TopLeftDetector(gold, sm, pam, taskManager);
+    	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam, taskManager);
+    	pam.addFeatureDetector(fd);
+    	fd = new TopLeftDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
 	}//method
 	
