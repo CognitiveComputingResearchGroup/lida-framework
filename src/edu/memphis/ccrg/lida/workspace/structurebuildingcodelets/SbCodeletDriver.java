@@ -9,6 +9,7 @@ import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
@@ -23,7 +24,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiContentProvi
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
 	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm);
+		super(ticksPerCycle, tm, LidaTaskNames.sbCodeletDriver);
 		setNumberOfTicksPerStep(10);
 		sbCodeletFactory = SbCodeletFactory.getInstance(w);
 	}// method

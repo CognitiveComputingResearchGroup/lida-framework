@@ -3,13 +3,14 @@ package edu.memphis.ccrg.lida.workspace.perceptualbuffer;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 
 public class PerceptualBufferDriver extends ModuleDriverImpl {
 
 	private PerceptualBufferImpl pb;
 
 	public PerceptualBufferDriver(PerceptualBufferImpl pb, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm);
+		super(ticksPerCycle, tm, LidaTaskNames.perceptualBufferDriver);
 		this.pb = pb;
 	}// constructor
 

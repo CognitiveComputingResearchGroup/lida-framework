@@ -6,6 +6,7 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
@@ -22,7 +23,7 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	private CodeletResult results = new BasicCodeletResult();
 	
 	public SbCodeletImpl(LidaTaskManager tm){
-		super(tm);
+		super(tm, LidaTaskNames.structureBuildingCodelet);
 	}
 
 	public Object getResult(){

@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 
 /**
  * 
@@ -13,7 +14,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	//private ProceduralMemory procMem;
 
 	public ProceduralMemoryDriver(ProceduralMemory pm, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm);
+		super(ticksPerCycle, tm, LidaTaskNames.proceduralMemoryDriver);
 	//	procMem = pm;
 	}// constructor
 
