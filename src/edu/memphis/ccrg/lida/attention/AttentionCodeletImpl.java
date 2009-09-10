@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -18,17 +19,16 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 	private GlobalWorkspace global;
 	private NodeStructure soughtContent;
 
-	public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g,
-			int ticksPerStep, double activation, LidaTaskManager tm,
-			NodeStructure soughtContent) {
-		super(ticksPerStep, tm);
-		setActivation(activation);
-		this.csm = csm;
-		global = g;
-		this.soughtContent = soughtContent;
-
-		// this.timer=timer;
-	}
+    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, int ticksPerStep,
+    							double activation,LidaTaskManager tm, NodeStructure soughtContent){
+    	super(ticksPerStep, tm, LidaTaskNames.attentionCodelet);
+    	setActivation(activation);
+    	this.csm = csm;
+    	global = g;
+    	this.soughtContent=soughtContent;
+    	
+    	//this.timer=timer;
+    }
 
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(csm)) {
