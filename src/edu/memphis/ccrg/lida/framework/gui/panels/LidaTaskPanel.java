@@ -43,7 +43,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	/** Creates new form PropertiesPanel */
 	public LidaTaskPanel() {
 		initComponents();
-		tasks = new HashSet();
+		tasks = new HashSet<LidaTask>();
 		taskArray = tasks.toArray(new LidaTask[0]);
 	}
 
@@ -58,14 +58,14 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	private void initComponents() {
 
 		jScrollPane1 = new javax.swing.JScrollPane();
-		PropertiesTable = new javax.swing.JTable();
+		tasksTable = new javax.swing.JTable();
 		jToolBar1 = new javax.swing.JToolBar();
 		LoadButton = new javax.swing.JButton();
 		SaveButton = new javax.swing.JButton();
 		ApplyButton = new javax.swing.JButton();
 
-		PropertiesTable.setModel(new TaskTableModel());
-		jScrollPane1.setViewportView(PropertiesTable);
+		tasksTable.setModel(new TaskTableModel());
+		jScrollPane1.setViewportView(tasksTable);
 
 		jToolBar1.setRollover(true);
 
@@ -154,7 +154,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton ApplyButton;
 	private javax.swing.JButton LoadButton;
-	private javax.swing.JTable PropertiesTable;
+	private javax.swing.JTable tasksTable;
 	private javax.swing.JButton SaveButton;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
@@ -166,7 +166,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		private static final long serialVersionUID = 1L;
 		private int columnCnt=4;
 		public int getColumnCount() {
-			return 4;
+			return columnCnt;
 		}
 
 		public int getRowCount() {
@@ -227,7 +227,8 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	public void display(Object o) {
 		if (o instanceof Collection) {
 			tasks = (Collection<LidaTask>) o;
-			taskArray = tasks.toArray(new LidaTask[0]);			
+			taskArray = tasks.toArray(new LidaTask[0]);
+			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
 	}
 	public void refresh(){

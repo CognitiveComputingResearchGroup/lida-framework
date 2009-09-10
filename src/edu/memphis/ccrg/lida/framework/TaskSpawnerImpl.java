@@ -34,13 +34,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 */
 	private boolean shuttingDown = false;
 
-	private LidaTaskManager taskManager;
-
 	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm, LidaTaskNames name) {
 		super(ticksForCycle, tm, name);
-		taskManager = tm;
-		if (taskManager != null)
-			tasksPaused = taskManager.isSystemPaused();
+		if (tm != null)
+			tasksPaused = tm.isSystemPaused();
 		// thread pool executor
 		int corePoolSize = 5;
 		int maxPoolSize = 100;
@@ -61,7 +58,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	public void addTask(LidaTask task) {
 		task.setTaskStatus(LidaTask.WAITING_TO_RUN);
-		// System.out.println("adding task " + task.getClass().toString());
 		synchronized (this) {
 			runningTasks.add(task);
 		}
@@ -158,7 +154,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	public void pauseSpawnedTasks() {
 		logger.log(Level.INFO, "All Tasks paused.");
-
 		synchronized(this){
 			tasksPaused = true;
 		}
@@ -226,7 +221,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	public void setTaskManager(LidaTaskManager taskManager) {
 		super.setTaskManager(taskManager);
-		this.taskManager = taskManager;
 		tasksPaused = taskManager.isTasksPaused();
 	}
 

@@ -27,7 +27,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 
 	public AttentionDriver(CurrentSituationalModel csm, GlobalWorkspace gwksp, 
 						   int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm, LidaTaskNames.attentionDriver);
+		super(ticksPerCycle, tm, LidaTaskNames.ATTENTION_DRIVER);
 		this.csm = csm;
 		global = gwksp;
 	}

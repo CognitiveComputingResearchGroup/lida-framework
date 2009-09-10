@@ -230,7 +230,7 @@ public class Lida {
 	}
 
 	/**
-	 * @return the environment
+	 * @return the ENVIRONMENT
 	 */
 	public Environment getEnvironment() {
 		return environment;

@@ -15,7 +15,7 @@ public class PamDriver extends ModuleDriverImpl{
 	//private Logger logger = Logger.getLogger("lida.pam.PamDriver");
 	
 	public PamDriver(PerceptualAssociativeMemory pam, int ticksPerCycle, LidaTaskManager tm){
-		super(ticksPerCycle, tm, LidaTaskNames.pamDriver);
+		super(ticksPerCycle, tm, LidaTaskNames.PAM_DRIVER);
 		this.pam = pam;
 	}//constructor
 	

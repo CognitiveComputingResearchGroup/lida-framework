@@ -33,7 +33,7 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
 							   PerceptualAssociativeMemory pam, 
 							   LidaTaskManager tm) {
-		super(tm, LidaTaskNames.featureDetector);
+		super(tm, LidaTaskNames.FEATURE_DETECTOR);
 		this.pam = pam;
 		this.sm = sm;
 		this.pamNode = n;

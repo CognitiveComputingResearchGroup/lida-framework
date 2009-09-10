@@ -33,7 +33,7 @@ public class TemDriver extends ModuleDriverImpl {
      * @param cue the cue used to write on this memory
      */
     public TemDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle, LidaTaskManager tm) {
-    	super(ticksPerCycle, tm, LidaTaskNames.temDriver);
+    	super(ticksPerCycle, tm, LidaTaskNames.TEM_DRIVER);
         this.tem = tem;
         this.cue = cue;
     }

@@ -10,7 +10,7 @@ public class BroadcastQueueDriver extends ModuleDriverImpl {
 	private BroadcastQueueImpl broadcastQueue;
 
 	public BroadcastQueueDriver(BroadcastQueueImpl bq, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm, LidaTaskNames.broadcastQueueDriver);
+		super(ticksPerCycle, tm, LidaTaskNames.BROADCAST_QUEUE_DRIVER);
 		broadcastQueue = bq;
 	}// method
 

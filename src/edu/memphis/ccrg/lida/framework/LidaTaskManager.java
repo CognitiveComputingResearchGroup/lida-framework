@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 public class LidaTaskManager extends TaskSpawnerImpl {
 	
-	private Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
+	private static Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
 	
 	/**
 	 * The length of time that 1 tick equals in milliseconds.
@@ -29,8 +29,8 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 */
 	public LidaTaskManager(int tickDuration) {
 		//O ticks per step - Task manager should not be run
-		//Null, LidaTaskManager should not have a LidaTaskManager
-		super(0, null, LidaTaskNames.LidaTaskManager);	
+		//Null, LIDA_TASK_MANAGER should not have a LIDA_TASK_MANAGER
+		super(0, null, LidaTaskNames.LIDA_TASK_MANAGER);	
 		this.tickDuration = tickDuration;
 	}
 	
@@ -56,6 +56,10 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	public static boolean isInTicksMode() {
 		return inTicksMode;
 	} 
+
+	public boolean isSystemPaused(){
+		return super.isTasksPaused();
+	}
 
 	/**
 	 * Threads should call this in every iteration of their cycle so that the
@@ -104,17 +108,12 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * Since it is a LidaTask, this class inherits, 
 	 * but should not use or implement, this method.
 	 */
-	@Override
 	protected void runThisLidaTask() {
 		// Not applicable
 	}
 
-	/**
-	 * 
-	 */
-	@Override
 	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
+		// Not applicable
 	}
 
-}// class FrameworkTimer
+}// class LIDA_TASK_MANAGER

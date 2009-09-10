@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements ModuleDriver {
 
-	private Logger logger = Logger.getLogger("lida.framework.ModuleDriverImpl");
+	private static Logger logger = Logger.getLogger("lida.framework.ModuleDriverImpl");
 
 	public ModuleDriverImpl(int ticksPerCycle, LidaTaskManager tm, LidaTaskNames name){
 		super(ticksPerCycle, tm, name);

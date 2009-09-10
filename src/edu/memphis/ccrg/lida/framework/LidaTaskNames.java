@@ -2,23 +2,23 @@ package edu.memphis.ccrg.lida.framework;
 
 public enum LidaTaskNames {
 	
-	structureBuildingCodelet, 
-	attentionCodelet, 
-	environment, 
-	sensoryMemoryDriver,
-	pamDriver,
-	perceptualBufferDriver,
-	episodicBufferDriver,
-	broadcastQueueDriver,
-	proceduralMemoryDriver,
-	actionSelectionDriver, 
-	LidaTaskManager, 
-	excitationTask, 
-	thresholdTask, 
-	attentionDriver, 
-	featureDetector, 
-	temDriver, 
-	csmDriver, 
-	sbCodeletDriver
+	STRUCTURE_BUILDING_CODELET, 
+	ATTENTION_CODELET, 
+	ENVIRONMENT, 
+	SENSORY_MEMORY_DRIVER,
+	PAM_DRIVER,
+	PERCEPTUAL_BUFFER_DRIVER,
+	EPISODIC_BUFFER_DRIVER,
+	BROADCAST_QUEUE_DRIVER,
+	PROCEDURAL_MEMORY_DRIVER,
+	ACTION_SELECTION_DRIVER, 
+	LIDA_TASK_MANAGER, 
+	EXCITATION_TASK, 
+	THRESHOLD_TASK, 
+	ATTENTION_DRIVER, 
+	FEATURE_DETECTOR, 
+	TEM_DRIVER, 
+	CSM_DRIVER, 
+	SB_CODELET_DRIVER
 
 }

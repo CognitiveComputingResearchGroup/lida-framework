@@ -139,7 +139,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
 		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, 
-												 this, taskSpawner.getTaskManager(), LidaTaskNames.excitationTask);
+												 this, taskSpawner.getTaskManager(), LidaTaskNames.EXCITATION_TASK);
 		taskSpawner.addTask(task);		
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {

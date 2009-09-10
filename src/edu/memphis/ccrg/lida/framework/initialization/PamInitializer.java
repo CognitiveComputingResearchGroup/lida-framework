@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BottomRightDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector;
 import edu.memphis.ccrg.lida.example.genericlida.main.VisionFeatureDetector;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
@@ -39,21 +40,21 @@ public class PamInitializer implements Initializer {
     	PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl", "gold");
     	PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "metal");
     	PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl", "solid");
-//    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
-//    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
-//    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
-//    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
+    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
+    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
+    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
+    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
     	pam.addNodes(factory.getStoredNodes());
     	
     	//Links
     	//TODO: make this a loop
     	factory.storeLink(gold, metal, LinkType.CHILD);
     	factory.storeLink(metal, solid, LinkType.CHILD);   
-//    	factory.storeLink(iron, metal, LinkType.CHILD);   
-//    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
-//    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
-//    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
-//    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
+    	factory.storeLink(iron, metal, LinkType.CHILD);   
+    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
+    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
+    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
+    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
     	pam.addLinks(factory.getStoredLinks());
     	
     	//Feature detectors
@@ -61,6 +62,8 @@ public class PamInitializer implements Initializer {
     	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
     	fd = new TopLeftDetector(gold, sm, pam, taskManager);
+    	pam.addFeatureDetector(fd);
+    	fd = new BottomRightDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
 	}//method
 	

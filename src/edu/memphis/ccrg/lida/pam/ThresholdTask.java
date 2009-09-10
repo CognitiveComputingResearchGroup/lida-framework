@@ -11,7 +11,7 @@ public class ThresholdTask extends LidaTaskImpl {
 	private PerceptualAssociativeMemory pam;
 
 	public ThresholdTask(PamNode pamNode, PerceptualAssociativeMemory pam, LidaTaskManager tm) {
-		super(tm, LidaTaskNames.thresholdTask);
+		super(tm, LidaTaskNames.THRESHOLD_TASK);
 		this.pamNode = pamNode;
 		this.pam = pam;
 	}

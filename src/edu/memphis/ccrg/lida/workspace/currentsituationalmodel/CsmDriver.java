@@ -10,7 +10,7 @@ public class CsmDriver extends ModuleDriverImpl {
 	private CurrentSituationalModelImpl csm;
 
 	public CsmDriver(CurrentSituationalModelImpl csm, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm, LidaTaskNames.csmDriver);
+		super(ticksPerCycle, tm, LidaTaskNames.CSM_DRIVER);
 		this.csm = csm;
 	}
 
