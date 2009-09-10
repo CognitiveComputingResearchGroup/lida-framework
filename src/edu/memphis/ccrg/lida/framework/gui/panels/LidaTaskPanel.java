@@ -64,7 +64,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		SaveButton = new javax.swing.JButton();
 		ApplyButton = new javax.swing.JButton();
 
-		PropertiesTable.setModel(new PropertiesTableModel());
+		PropertiesTable.setModel(new TaskTableModel());
 		jScrollPane1.setViewportView(PropertiesTable);
 
 		jToolBar1.setRollover(true);
@@ -161,7 +161,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 	// End of variables declaration//GEN-END:variables
 
-	private class PropertiesTableModel extends AbstractTableModel {
+	private class TaskTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
 		private int columnCnt=4;
@@ -170,7 +170,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		}
 
 		public int getRowCount() {
-			return tasks.size();
+			return taskArray.length;
 		}
 
 		public String getColumnName(int column) {

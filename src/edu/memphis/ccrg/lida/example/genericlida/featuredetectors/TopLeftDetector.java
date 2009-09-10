@@ -26,6 +26,7 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 
 	public double detect() {
 		double[][] data = (double[][]) sm.getContent("vision");
+		
 		if (data[0][0] > 0.0) {
 			setActivation(getActivation()+.01);
 			return 1.0;

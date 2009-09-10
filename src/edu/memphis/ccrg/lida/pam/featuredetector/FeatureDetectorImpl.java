@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  */
 public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
 
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private Logger logger = Logger.getLogger("lida.pam.featuredetector.FeatureDetectorImpl");
 	private PamNode pamNode;
 	private PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
@@ -49,9 +49,9 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	
 	protected void runThisLidaTask(){
 		double amount = detect();
-		logger.log(Level.FINEST,"detection performed:{0}",amount);
+		logger.log(Level.INFO,"detection performed:{0}",amount);
 		if (amount>0.0){
-			logger.log(Level.FINEST,"Pam excited:{0}",amount);			
+			logger.log(Level.INFO,"Pam excited:{0}",amount);			
 			excitePam(amount);
 		}
 	}
