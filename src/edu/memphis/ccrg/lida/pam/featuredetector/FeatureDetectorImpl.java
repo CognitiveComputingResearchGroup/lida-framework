@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -32,12 +33,13 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
 							   PerceptualAssociativeMemory pam, 
 							   LidaTaskManager tm) {
-		super(tm);
+		super(tm, LidaTaskNames.featureDetector);
 		this.pam = pam;
 		this.sm = sm;
 		this.pamNode = n;
 	}
-	public FeatureDetectorImpl(){		
+	public FeatureDetectorImpl(){	
+		super(null, null);
 	}
 	
 	public void setPamNode(PamNode node) {

@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
@@ -137,7 +138,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
-		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, this, taskSpawner.getTaskManager());
+		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, 
+												 this, taskSpawner.getTaskManager(), LidaTaskNames.excitationTask);
 		taskSpawner.addTask(task);		
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {

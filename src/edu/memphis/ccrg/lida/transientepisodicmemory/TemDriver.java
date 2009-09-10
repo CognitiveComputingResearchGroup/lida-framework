@@ -11,6 +11,8 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
+
 import java.util.concurrent.Future;
 
 /**
@@ -31,7 +33,7 @@ public class TemDriver extends ModuleDriverImpl {
      * @param cue the cue used to write on this memory
      */
     public TemDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle, LidaTaskManager tm) {
-    	super(ticksPerCycle, tm);
+    	super(ticksPerCycle, tm, LidaTaskNames.temDriver);
         this.tem = tem;
         this.cue = cue;
     }

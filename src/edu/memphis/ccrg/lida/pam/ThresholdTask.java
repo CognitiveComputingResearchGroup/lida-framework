@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.pam;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 
 public class ThresholdTask extends LidaTaskImpl {
 	
@@ -10,7 +11,7 @@ public class ThresholdTask extends LidaTaskImpl {
 	private PerceptualAssociativeMemory pam;
 
 	public ThresholdTask(PamNode pamNode, PerceptualAssociativeMemory pam, LidaTaskManager tm) {
-		super(tm);
+		super(tm, LidaTaskNames.thresholdTask);
 		this.pamNode = pamNode;
 		this.pam = pam;
 	}

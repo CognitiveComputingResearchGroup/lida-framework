@@ -36,8 +36,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	private LidaTaskManager taskManager;
 
-	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm) {
-		super(ticksForCycle, tm);
+	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm, LidaTaskNames name) {
+		super(ticksForCycle, tm, name);
 		taskManager = tm;
 		if (taskManager != null)
 			tasksPaused = taskManager.isSystemPaused();
@@ -49,10 +49,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
 	}// method
 
-	public TaskSpawnerImpl(LidaTaskManager tm) {
-		this(1, tm);
+	public TaskSpawnerImpl(LidaTaskManager tm, LidaTaskNames name) {
+		this(1, tm, name);
 	}
-
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
 		// System.out.println(this.getClass().toString() +
 		// " setting initial tasks. system paused? " + tasksPaused);
@@ -158,8 +157,13 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}// method
 
 	public void pauseSpawnedTasks() {
+
+		System.out.println("pause called");
+		logger.log(Level.FINE, "All tasks paused.");
+
 		logger.log(Level.INFO, "All Tasks paused.");
-		synchronized (this) {
+
+		synchronized(this){
 			tasksPaused = true;
 		}
 		for (LidaTask task : runningTasks) {
@@ -168,8 +172,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 			}
 		}
 	}
-
 	public void resumeSpawnedTasks() {
+
 		logger.log(Level.INFO, "resume spawned tasks called");
 		if (shuttingDown)
 			return;
@@ -177,9 +181,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		synchronized (this) {
 			tasksPaused = false;
 		}
-		logger.log(Level.FINE, "resume spawned tasks called");
+
 		for (LidaTask task : runningTasks) {
 			int status = task.getStatus();
+		
 			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {
 				task.setTaskStatus(LidaTask.WAITING_TO_RUN);
 				logger.log(Level.FINEST, "Resuming task {0}", task);
