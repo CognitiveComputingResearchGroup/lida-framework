@@ -34,8 +34,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 */
 	private boolean shuttingDown = false;
 
-	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm, LidaTaskNames name) {
-		super(ticksForCycle, tm, name);
+	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm) {
+		super(ticksForCycle, tm);
 		if (tm != null)
 			tasksPaused = tm.isSystemPaused();
 		// thread pool executor
@@ -46,8 +46,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
 	}// method
 
-	public TaskSpawnerImpl(LidaTaskManager tm, LidaTaskNames name) {
-		this(1, tm, name);
+	public TaskSpawnerImpl(LidaTaskManager tm) {
+		this(1, tm);
 	}
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
 		// System.out.println(this.getClass().toString() +

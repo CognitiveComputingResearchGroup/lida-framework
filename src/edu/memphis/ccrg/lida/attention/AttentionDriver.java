@@ -6,7 +6,6 @@ import java.util.Collection;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -27,7 +26,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 
 	public AttentionDriver(CurrentSituationalModel csm, GlobalWorkspace gwksp, 
 						   int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm, LidaTaskNames.ATTENTION_DRIVER);
+		super(ticksPerCycle, tm);
 		this.csm = csm;
 		global = gwksp;
 	}

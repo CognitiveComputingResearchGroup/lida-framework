@@ -30,7 +30,7 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	public LidaTaskManager(int tickDuration) {
 		//O ticks per step - Task manager should not be run
 		//Null, LIDA_TASK_MANAGER should not have a LIDA_TASK_MANAGER
-		super(0, null, LidaTaskNames.LIDA_TASK_MANAGER);	
+		super(0, null);	
 		this.tickDuration = tickDuration;
 	}
 	

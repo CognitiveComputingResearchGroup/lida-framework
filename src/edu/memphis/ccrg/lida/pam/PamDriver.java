@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskNames;
 
 public class PamDriver extends ModuleDriverImpl{
 
@@ -15,7 +14,7 @@ public class PamDriver extends ModuleDriverImpl{
 	//private Logger logger = Logger.getLogger("lida.pam.PamDriver");
 	
 	public PamDriver(PerceptualAssociativeMemory pam, int ticksPerCycle, LidaTaskManager tm){
-		super(ticksPerCycle, tm, LidaTaskNames.PAM_DRIVER);
+		super(ticksPerCycle, tm);
 		this.pam = pam;
 	}//constructor
 	

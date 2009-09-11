@@ -6,8 +6,8 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 
 	private static Logger logger = Logger.getLogger("lida.framework.ModuleDriverImpl");
 
-	public ModuleDriverImpl(int ticksPerCycle, LidaTaskManager tm, LidaTaskNames name){
-		super(ticksPerCycle, tm, name);
+	public ModuleDriverImpl(int ticksPerCycle, LidaTaskManager tm){
+		super(ticksPerCycle, tm);
 	}
 
 	protected void runThisLidaTask(){
