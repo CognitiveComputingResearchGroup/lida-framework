@@ -10,6 +10,10 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
+import java.text.DateFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -32,6 +36,8 @@ public class LogPanel extends LidaPanelImpl {
     private String logName = "lida"; 
     private Logger logger = Logger.getLogger(logName);
     private String level="INFO";
+	private DateFormat df= new SimpleDateFormat("HH:mm:ss:SSS");
+	
     /** Creates new form LogPanel */
     public LogPanel() {
 
@@ -153,25 +159,29 @@ public class LogPanel extends LidaPanelImpl {
 
     public class GuiLogHandler extends Handler {
         String logMessages = new String("");
-        java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
-        
+        String dateString;
+         
         /** Creates a new instance of GuiLogHandler */    
         public GuiLogHandler() {
         }
 
         public void publish(LogRecord logRecord){
-        	Formatter f = getFormatter();
-        	if(f == null){
-        		f=new SimpleFormatter();
-        	}
-        	   	
-//             logMessages = logRecord.getSequenceNumber() + " " + 
-//                          dateString + " " + 
-//                          logRecord.getLevel() + "\n" + 
-//                          logRecord.getMessage() + "\n" +
-//                          logRecord.getSourceClassName() + " " + 
-//                          logRecord.getSourceMethodName() + "\n";
-            loggingText.append(f.format(logRecord));
+//        	Formatter f = getFormatter();
+//        	if(f == null){
+//        		f=new SimpleFormatter();     		
+//        	}
+        	Date date = new Date(logRecord.getMillis());
+        	MessageFormat mf=new MessageFormat(logRecord.getMessage());
+        	dateString=df.format(date);      
+
+            logMessages = logRecord.getSequenceNumber() + ":" + 
+                          dateString + "- " + 
+                          logRecord.getLevel() +": "+ 
+                          logRecord.getLoggerName() + "- " +
+                          mf.format(logRecord.getParameters()) + "\n";
+        	
+            loggingText.append(logMessages);
+//            loggingText.append(f.format(logRecord));
         }
 
         public void flush(){

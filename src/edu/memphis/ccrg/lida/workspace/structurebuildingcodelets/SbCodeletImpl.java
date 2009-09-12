@@ -82,5 +82,8 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 		list.add(buffer);
 		accessibleBuffers.add(list);
 	}
+	public String toString(){
+		return "SBCodelet-"+ getTaskId();
+	}
 	
 }//class SBCodelet

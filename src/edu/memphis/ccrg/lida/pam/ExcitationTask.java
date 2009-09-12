@@ -67,5 +67,8 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 			throws InterruptedException, ExecutionException, TimeoutException {
 		return null;
 	}
+	public String toString(){
+		return "ExitationTask-"+ getTaskId();
+	}
 
 }//class

@@ -70,4 +70,8 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		sm=(SensoryMemory)getParameter("SensoryMemory");
 		pamNode=(PamNode)getParameter("PamNode");
 	}
+	public String toString(){
+		return "FeatureDetector-"+ getTaskId();
+	}
+
 }// class

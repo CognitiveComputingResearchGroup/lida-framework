@@ -34,7 +34,4 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 		}
 		return 0.0;
 	}
-	public String toString(){
-		return "FeatureDetector "+ getTaskId();
-	}
 }

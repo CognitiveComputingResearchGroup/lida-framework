@@ -76,8 +76,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * representation and make a change to it in a single iteration.
 	 * 
 	 */
-	protected void runThisLidaTask() {
-	}
+	protected abstract void runThisLidaTask();
 
 	/**
 	 * @param status
@@ -168,5 +167,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 		return res;
 	}
-
+	public String toString(){
+		return "LidaTask-"+taskID;
+	}
 }// class

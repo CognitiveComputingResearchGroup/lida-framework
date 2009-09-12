@@ -59,4 +59,8 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 		else
 			return null;
 	}
+	public String toString(){
+		return "AttentionCodelet-"+ getTaskId();
+	}
+
 }// class

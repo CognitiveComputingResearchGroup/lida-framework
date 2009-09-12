@@ -21,5 +21,8 @@ public class ThresholdTask extends LidaTaskImpl {
 			pam.addNodeToPercept(pamNode);
 		this.setTaskStatus(LidaTask.FINISHED);
 	}
+	public String toString(){
+		return "ThresholdTask-"+ getTaskId();
+	}
 
 }//class
