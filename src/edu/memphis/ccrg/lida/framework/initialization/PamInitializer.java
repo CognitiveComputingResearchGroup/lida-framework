@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BottomRightDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector;
-import edu.memphis.ccrg.lida.example.genericlida.main.VisionFeatureDetector;
+import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
@@ -59,7 +59,7 @@ public class PamInitializer implements Initializer {
     	
     	//Feature detectors
     	//TODO: make this a loop
-    	FeatureDetector fd = new VisionFeatureDetector(gold, sm, pam, taskManager);
+    	FeatureDetector fd = new BasicDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
     	fd = new TopLeftDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);

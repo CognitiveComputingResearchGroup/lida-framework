@@ -21,9 +21,6 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TopLeftDetector() {
-	}
-
 	public double detect() {
 		double[][] data = (double[][]) sm.getContent("vision");
 		
@@ -34,4 +31,5 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 		}
 		return 0.0;
 	}
+	
 }

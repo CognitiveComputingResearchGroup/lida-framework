@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @author Ryan McCall - Javier Snaider
  *
  */
-public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
+public abstract class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
 
 	private Logger logger = Logger.getLogger("lida.pam.featuredetector.FeatureDetectorImpl");
 	private PamNode pamNode;
@@ -37,10 +37,13 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		this.sm = sm;
 		this.pamNode = n;
 	}
-	public FeatureDetectorImpl(){	
-		super(null);
-	}
 	
+	public void init(){
+		pam=(PerceptualAssociativeMemory)getParameter("PAM");
+		sm=(SensoryMemory)getParameter("SensoryMemory");
+		pamNode=(PamNode)getParameter("PamNode");
+	}
+
 	public void setPamNode(PamNode node) {
 		pamNode = (PamNodeImpl) node;
 	}
@@ -51,7 +54,7 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 	protected void runThisLidaTask(){
 		double amount = detect();
 		logger.log(Level.INFO,"detection performed:{0}",amount);
-		if (amount>0.0){
+		if (amount > 0.0){
 			logger.log(Level.INFO,"Pam excited:{0}",amount);			
 			excitePam(amount);
 		}
@@ -65,11 +68,6 @@ public class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector
 		pam.receiveActivationBurst(pamNode, amount);
 	}
 	
-	public void init(){
-		pam=(PerceptualAssociativeMemory)getParameter("PAM");
-		sm=(SensoryMemory)getParameter("SensoryMemory");
-		pamNode=(PamNode)getParameter("PamNode");
-	}
 	public String toString(){
 		return "FeatureDetector-"+ getTaskId();
 	}

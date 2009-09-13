@@ -13,24 +13,6 @@ import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
 	private static int defaultTicksPerStep = 1;
-
-	/**
-	 * @return the defaultTicksPerStep
-	 */
-	public static int getDefaultTicksPerStep() {
-		return defaultTicksPerStep;
-	}
-
-	/**
-	 * @param defaultTicksPerStep
-	 *            the defaultTicksPerStep to set
-	 */
-	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
-		if (defaultTicksPerStep > 0) {
-			LidaTaskImpl.defaultTicksPerStep = defaultTicksPerStep;
-		}
-	}
-
 	private long taskID;
 	private int ticksPerStep = defaultTicksPerStep;
 	private int accumulatedTicks;
@@ -47,6 +29,18 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		taskID = LidaTaskManager.getNextTaskID();
 
 		setNumberOfTicksPerStep(ticksForCycle);
+	}
+	
+	/**
+	 * @return the defaultTicksPerStep
+	 */
+	public static int getDefaultTicksPerStep() {
+		return defaultTicksPerStep;
+	}
+	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
+		if (defaultTicksPerStep > 0) {
+			LidaTaskImpl.defaultTicksPerStep = defaultTicksPerStep;
+		}
 	}
 
 	public void run() {
