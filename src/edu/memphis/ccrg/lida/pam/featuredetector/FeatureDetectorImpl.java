@@ -53,9 +53,9 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	
 	protected void runThisLidaTask(){
 		double amount = detect();
-		logger.log(Level.INFO,"detection performed:{0}",amount);
+		logger.log(Level.FINE,"detection performed:{0}",amount);
 		if (amount > 0.0){
-			logger.log(Level.INFO,"Pam excited:{0}",amount);			
+			logger.log(Level.FINE,"Pam excited:{0}",amount);			
 			excitePam(amount);
 		}
 	}
