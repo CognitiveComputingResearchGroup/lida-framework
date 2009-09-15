@@ -8,8 +8,8 @@
 	<classpathentry kind="lib" path="lib/jung-3d-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jung-3d-demos-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jung-algorithms-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/jung-api-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jung-api-2.0-tests.jar"/>
+	<classpathentry kind="lib" path="lib/jung-api-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jung-graph-impl-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jung-io-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jung-jai-2.0.jar"/>
