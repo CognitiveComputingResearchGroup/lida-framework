@@ -153,7 +153,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}// method
 
 	public void pauseSpawnedTasks() {
-		logger.log(Level.INFO, "All Tasks paused.");
+		logger.log(Level.FINE, "All Tasks paused.");
 		synchronized(this){
 			tasksPaused = true;
 		}
@@ -165,7 +165,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}
 	public void resumeSpawnedTasks() {
 
-		logger.log(Level.INFO, "resume spawned tasks called");
+		logger.log(Level.FINE, "resume spawned tasks called");
 		if (shuttingDown)
 			return;
 
@@ -215,7 +215,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		executorService.shutdown();
 
 		this.setTaskStatus(LidaTask.CANCELED);
-		logger.log(Level.INFO, "Shutdown ThreadSpawner " + this.toString()
+		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString()
 				+ "\n");
 	}// method
 

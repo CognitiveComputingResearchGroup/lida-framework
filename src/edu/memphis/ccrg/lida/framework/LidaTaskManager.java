@@ -94,13 +94,13 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	@Override
 	public void stopRunning(){
 		super.stopRunning();
-		logger.info("All threads and tasks told to stop");
+		logger.info("All threads and tasks told to stop\n");
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		logger.info("Exiting");
+		logger.info("Exiting\n");
 		System.exit(0);
 	}
 
