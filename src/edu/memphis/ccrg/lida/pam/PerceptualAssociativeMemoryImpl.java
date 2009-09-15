@@ -197,7 +197,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public Collection<FeatureDetector> getFeatureDetectors(){
 		return featureDetectors;
 	}
-	public NodeStructure getNodeStructure(){
+	public PamNodeStructure getNodeStructure(){
 		return pamNodeStructure;
 	}
 

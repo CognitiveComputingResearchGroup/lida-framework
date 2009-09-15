@@ -11,6 +11,13 @@
 
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
+import java.util.Collection;
+
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PamNodeStructure;
+
 /**
  *
  * @author ryanjmccall
@@ -80,5 +87,12 @@ public class NodeStructureTable extends LidaPanelImpl {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
     // End of variables declaration
+    
+    public void refresh(){
+    	
+    	PamNodeStructure ns = lida.getPam().getNodeStructure();
+    	Collection<Link> links = ns.getLinks();
+    	//Collection<PamNode> nodes = ns.getPamNodes();
+    }
 
 }

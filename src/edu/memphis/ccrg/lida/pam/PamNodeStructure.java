@@ -252,4 +252,5 @@ public class PamNodeStructure extends NodeStructureImpl{
 			((PamNodeImpl)n).printActivationString();
 	}//method
 
+
 }//class

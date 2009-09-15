@@ -9,6 +9,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
@@ -50,5 +51,6 @@ public interface PerceptualAssociativeMemory{
 	public void checkIfOverThreshold(PamNode pamNode);
 	public void addNodeToPercept(PamNode pamNode);
 	
+	public PamNodeStructure getNodeStructure();
 	public Collection<FeatureDetector> getFeatureDetectors();
 }//interface PAMinterface
