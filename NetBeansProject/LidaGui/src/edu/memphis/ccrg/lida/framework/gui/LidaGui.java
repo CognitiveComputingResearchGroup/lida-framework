@@ -64,8 +64,6 @@ public class LidaGui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBar1 = new javax.swing.JToolBar();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
         principalTabbedPanel = new javax.swing.JTabbedPane();
@@ -86,16 +84,6 @@ public class LidaGui extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jToolBar1.setRollover(true);
-
-        jToggleButton1.setText("jToggleButton1");
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jToggleButton1);
-
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setLeftComponent(jSplitPane2);
@@ -161,7 +149,7 @@ public class LidaGui extends javax.swing.JFrame {
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
+}//GEN-LAST:event_exitMenuItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -177,8 +165,6 @@ public class LidaGui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
