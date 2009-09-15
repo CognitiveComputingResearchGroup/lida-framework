@@ -32,4 +32,8 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 		return 0.0;
 	}
 	
+	public String toString(){
+		return "TopLeftDetector " + getTaskId();
+	}
+	
 }

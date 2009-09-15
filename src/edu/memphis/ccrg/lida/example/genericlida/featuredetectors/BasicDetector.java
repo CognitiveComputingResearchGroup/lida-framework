@@ -27,5 +27,9 @@ public class BasicDetector extends FeatureDetectorImpl {
 	public double detect() {
 		return 1.0;
 	}//method
+	
+	public String toString(){
+		return "BasicDetector " + getTaskId();
+	}
 
 }//class
