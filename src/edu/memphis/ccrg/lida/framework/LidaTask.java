@@ -26,7 +26,7 @@ public interface LidaTask extends Runnable, Activatible{
 	/**
 	 * Task is finished
 	 */
-	public static final int CANCELED=16;
+	public static final int CANCELLED=16;
 	
 	/**
 	 * Task is finished and has a result
@@ -120,5 +120,6 @@ public interface LidaTask extends Runnable, Activatible{
 	 */
 	public abstract void reset();
 	public void init(Map<String, Object> parameters);
-	public Object getParameter(String name);	
+	public Object getParameter(String name);
+	public abstract String getStatusString();	
 }

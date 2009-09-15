@@ -30,7 +30,7 @@ public class ActivatibleImpl implements Activatible {
 		this.decayBehavior = db;
 	}
 
-	public void decay() {
+	public void decay() {	
 		if (decayBehavior != null) {
 			synchronized(this){
 				activation = decayBehavior.decay(activation);
@@ -38,7 +38,7 @@ public class ActivatibleImpl implements Activatible {
 		}
 	}
 
-	public void excite(double excitation) {
+	public void excite(double excitation) {	
 		if (exciteBehavior != null) {
 			synchronized(this){
 				activation = exciteBehavior.excite(activation, excitation);

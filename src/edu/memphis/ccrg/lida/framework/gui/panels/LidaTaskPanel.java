@@ -158,13 +158,13 @@ public class LidaTaskPanel extends LidaPanelImpl {
 			Object o=null;
 			switch (columnIndex) {
 			case 0:
-				o=task.getTaskId();
+				o= task.getTaskId();
 				break;
 			case 1:
-				o=task.getActivation();
+				o = Math.round(task.getActivation()*1000.0) / 1000.0;
 				break;
 			case 2:
-				o=task.getStatus();
+				o=task.getStatusString();
 				break;
 			case 3:
 				o = task;
@@ -188,15 +188,10 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		if (o instanceof Collection) {
 			tasks = (Collection<LidaTask>) o;
 			
-			//Concurrent Modification Exception here. 9/15/09			
+			//Concurrent Modification Exception here. 9/15/09	
+			//Iterating over a shared Collection during the call to 'toArray'
 			taskArray = tasks.toArray(new LidaTask[0]);
-			//RELEVANT STACK TRACE
-//			at java.util.HashMap$HashIterator.nextEntry(HashMap.java:793)
-//			at java.util.HashMap$KeyIterator.next(HashMap.java:828)
-//			at java.util.AbstractCollection.finishToArray(AbstractCollection.java:200)
-//			at java.util.AbstractCollection.toArray(AbstractCollection.java:173)
-//			at java.util.Collections$UnmodifiableCollection.toArray(Collections.java:1002)
-		
+
 			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
 	}

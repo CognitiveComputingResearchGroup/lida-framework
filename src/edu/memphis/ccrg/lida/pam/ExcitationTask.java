@@ -68,7 +68,7 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 		return null;
 	}
 	public String toString(){
-		return "ExitationTask-"+ getTaskId();
+		return "Excitation";
 	}
 
 }//class

@@ -97,7 +97,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		case LidaTask.FINISHED:
 			removeTask(task);
 			break;
-		case LidaTask.CANCELED:
+		case LidaTask.CANCELLED:
 			logger.log(Level.FINEST, "cancelling task {0}", task);
 			removeTask(task);
 			break;
@@ -214,7 +214,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		// the executor service can be shutdown.
 		executorService.shutdown();
 
-		this.setTaskStatus(LidaTask.CANCELED);
+		this.setTaskStatus(LidaTask.CANCELLED);
 		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString()
 				+ "\n");
 	}// method

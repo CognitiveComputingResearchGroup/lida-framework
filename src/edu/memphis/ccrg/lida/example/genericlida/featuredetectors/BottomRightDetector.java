@@ -25,9 +25,8 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 		double[][] data = (double[][]) sm.getContent("vision");
 		
 		if (data[data.length-1][data[0].length-1] > 0.0) {
-			setActivation(getActivation()+.01);
+			this.excite(0.01);
 			return 1.0;
-			
 		}
 		return 0.0;
 	}

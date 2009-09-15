@@ -22,7 +22,7 @@ public class ThresholdTask extends LidaTaskImpl {
 		this.setTaskStatus(LidaTask.FINISHED);
 	}
 	public String toString(){
-		return "ThresholdTask-"+ getTaskId();
+		return "Threshold";
 	}
 
 }//class

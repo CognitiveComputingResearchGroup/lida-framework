@@ -79,7 +79,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void setTaskStatus(int status) {
 		// If a task is canceled it cannot be restarted.
 		// So only set the status if the status is not CANCELED.
-		if (this.status != LidaTask.CANCELED)
+		if (this.status != LidaTask.CANCELLED)
 			this.status = status;
 	}
 
@@ -132,7 +132,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	public void stopRunning() {
-		setTaskStatus(LidaTask.CANCELED);
+		setTaskStatus(LidaTask.CANCELLED);
 	}
 
 	public void setTaskManager(LidaTaskManager taskManager) {
@@ -164,4 +164,33 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public String toString(){
 		return "LidaTask-"+taskID;
 	}
+	
+	public String getStatusString(){
+		String res = "--";
+		switch(this.status){
+		case LidaTask.RUNNING:
+			res = "Running";
+			break;
+		case LidaTask.WAITING_TO_RUN:
+			res = "Waiting to Run";
+			break;
+		case LidaTask.WAITING:
+			res = "Waiting";
+			break;
+		case LidaTask.TO_RESET:
+			res = "To reset";
+			break;
+		case LidaTask.FINISHED_WITH_RESULTS:
+			res = "Finished w results";
+			break;
+		case LidaTask.FINISHED:
+			res = "Finished";
+			break;
+		case LidaTask.CANCELLED:
+			res = "Cancelled";
+			break;
+		}
+		return res;
+	}//method
+	
 }// class
