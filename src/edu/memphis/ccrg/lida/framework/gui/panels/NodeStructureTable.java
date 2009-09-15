@@ -35,7 +35,6 @@ public class NodeStructureTable extends LidaPanelImpl {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -48,6 +47,9 @@ public class NodeStructureTable extends LidaPanelImpl {
                 "Name", "Base Activation", "Current Activation", "Total Activation"
             }
         ) {
+            /**
+			 * 
+			 */
 			private static final long serialVersionUID = 6179671698280895467L;
 			boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -59,31 +61,22 @@ public class NodeStructureTable extends LidaPanelImpl {
         });
         jScrollPane1.setViewportView(table);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        jLabel1.setText("Node Structure Table");
-
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 432, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-            .add(layout.createSequentialGroup()
-                .add(114, 114, 114)
-                .add(jLabel1))
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
-                .add(jLabel1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 295, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE))
         );
     }// </editor-fold>
 
 
     // Variables declaration - do not modify
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
     // End of variables declaration

@@ -108,8 +108,6 @@ public class LidaGui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
-        jToolBar1 = new javax.swing.JToolBar();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
         principalTabbedPanel = new javax.swing.JTabbedPane();
@@ -130,16 +128,6 @@ public class LidaGui extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jToolBar1.setRollover(true);
-
-        jToggleButton1.setText("What did you have in mind for this button, Javier?");
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jToggleButton1);
-
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setLeftComponent(jSplitPane2);
@@ -197,8 +185,6 @@ public class LidaGui extends javax.swing.JFrame {
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
-        
-        this.setSize(10000, 10000);
 
         pack();
     }// </editor-fold>
@@ -207,31 +193,26 @@ public class LidaGui extends javax.swing.JFrame {
 		//System.exit(0);
 	}// GEN-LAST:event_exitMenuItemActionPerformed
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JMenuItem aboutMenuItem;
-	private javax.swing.JMenuItem contentsMenuItem;
-	private javax.swing.JMenuItem copyMenuItem;
-	private javax.swing.JMenuItem cutMenuItem;
-	private javax.swing.JMenuItem deleteMenuItem;
-	private javax.swing.JMenu editMenu;
-	private javax.swing.JMenuItem exitMenuItem;
-	private javax.swing.JMenu fileMenu;
-	private javax.swing.JMenu helpMenu;
-	private javax.swing.JSplitPane jSplitPane1;
-	private javax.swing.JSplitPane jSplitPane2;
-	private javax.swing.JToggleButton jToggleButton1;
-	private javax.swing.JToolBar jToolBar1;
-	private javax.swing.JMenuBar menuBar;
-	private javax.swing.JMenuItem openMenuItem;
-	private javax.swing.JMenuItem pasteMenuItem;
-	private javax.swing.JTabbedPane principalTabbedPanel;
-	private javax.swing.JMenuItem saveAsMenuItem;
-	private javax.swing.JMenuItem saveMenuItem;
-
-	// End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenuItem contentsMenuItem;
+    private javax.swing.JMenuItem copyMenuItem;
+    private javax.swing.JMenuItem cutMenuItem;
+    private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem pasteMenuItem;
+    private javax.swing.JTabbedPane principalTabbedPanel;
+    private javax.swing.JMenuItem saveAsMenuItem;
+    private javax.swing.JMenuItem saveMenuItem;
+    // End of variables declaration
 	
-	
-
 	/**
 	 * Adds a Panel to the main GUI.
 	 * 

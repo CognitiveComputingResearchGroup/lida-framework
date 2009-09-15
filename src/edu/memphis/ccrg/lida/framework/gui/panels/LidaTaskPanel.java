@@ -35,8 +35,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	 * 
 	 */
 	private static final long serialVersionUID = -3135377683820863184L;
-	private static Logger logger = Logger
-			.getLogger("lida.framework.gui.LidaTaskPanel");
+	private static Logger logger = Logger.getLogger("lida.framework.gui.LidaTaskPanel");
 	private Collection<LidaTask> tasks;
 	private LidaTask[] taskArray;
 
@@ -60,8 +59,6 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		jScrollPane1 = new javax.swing.JScrollPane();
 		tasksTable = new javax.swing.JTable();
 		jToolBar1 = new javax.swing.JToolBar();
-		LoadButton = new javax.swing.JButton();
-		SaveButton = new javax.swing.JButton();
 		ApplyButton = new javax.swing.JButton();
 
 		tasksTable.setModel(new TaskTableModel());
@@ -69,29 +66,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 		jToolBar1.setRollover(true);
 
-		LoadButton.setText("Load");
-		LoadButton.setFocusable(false);
-		LoadButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		LoadButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		LoadButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				LoadButtonActionPerformed(evt);
-			}
-		});
-		jToolBar1.add(LoadButton);
-
-		SaveButton.setText("Save");
-		SaveButton.setFocusable(false);
-		SaveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		SaveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		SaveButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				SaveButtonActionPerformed(evt);
-			}
-		});
-		jToolBar1.add(SaveButton);
-
-		ApplyButton.setText("Apply");
+		ApplyButton.setText("Refresh");
 		ApplyButton.setFocusable(false);
 		ApplyButton
 				.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -130,22 +105,6 @@ public class LidaTaskPanel extends LidaPanelImpl {
 												269, Short.MAX_VALUE)));
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void LoadButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-		// -
-		// FIRST
-		// :
-		// event_LoadButtonActionPerformed
-
-	}// GEN-LAST:event_LoadButtonActionPerformed
-
-	private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-		// -
-		// FIRST
-		// :
-		// event_SaveButtonActionPerformed
-		// TODO add your handling code here:
-	}// GEN-LAST:event_SaveButtonActionPerformed
-
 	private void ApplyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
 		refresh();
 		
@@ -153,9 +112,9 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton ApplyButton;
-	private javax.swing.JButton LoadButton;
+//	private javax.swing.JButton LoadButton;
 	private javax.swing.JTable tasksTable;
-	private javax.swing.JButton SaveButton;
+//	private javax.swing.JButton SaveButton;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
 
@@ -224,10 +183,20 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Collection) {
 			tasks = (Collection<LidaTask>) o;
+			
+			//Concurrent Modification Exception here. 9/15/09			
 			taskArray = tasks.toArray(new LidaTask[0]);
+			//RELEVANT STACK TRACE
+//			at java.util.HashMap$HashIterator.nextEntry(HashMap.java:793)
+//			at java.util.HashMap$KeyIterator.next(HashMap.java:828)
+//			at java.util.AbstractCollection.finishToArray(AbstractCollection.java:200)
+//			at java.util.AbstractCollection.toArray(AbstractCollection.java:173)
+//			at java.util.Collections$UnmodifiableCollection.toArray(Collections.java:1002)
+		
 			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
 	}
