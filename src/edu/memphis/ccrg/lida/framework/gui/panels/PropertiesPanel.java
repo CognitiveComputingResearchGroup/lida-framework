@@ -216,13 +216,12 @@ public class PropertiesPanel extends LidaPanelImpl {
 		public boolean isCellEditable(int row, int column) {
 			return (column == 1);
 		}
-	}
+	}//inner class
 
 	public void display(Object o) {
-		if (o instanceof Properties) {
+		if (o instanceof Properties)
 			properties = (Properties) o;
-		}
 
-	}
+	}//method
 
 }

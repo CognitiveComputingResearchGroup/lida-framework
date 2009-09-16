@@ -4,7 +4,7 @@
  */
 
 /*
- * VisualFieldPanel.java
+ * VisualEnvironmentPanel.java
  *
  * Created on 12/07/2009, 10:08:22
  */
@@ -25,7 +25,7 @@ public class VisualFieldPanel extends  LidaPanelImpl implements FrameworkGuiEven
 
 	private static final long serialVersionUID = 13L;
     
-    /** Creates new form VisualFieldPanel */
+    /** Creates new form VisualEnvironmentPanel */
     public VisualFieldPanel() {
         initComponents();
     }
@@ -46,7 +46,7 @@ public class VisualFieldPanel extends  LidaPanelImpl implements FrameworkGuiEven
         setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 18));
-        jLabel1.setText("Sensory Stimulus");
+        jLabel1.setText("                               Visual Environment");
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jTextArea1.setColumns(20);

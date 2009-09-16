@@ -71,10 +71,10 @@ public class LogPanel extends LidaPanelImpl {
 
         jPanel1.setMinimumSize(new java.awt.Dimension(100, 60));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14));
-        jLabel1.setText("Log");
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jLabel1.setText("Logging level");
 
-        clearButton.setText("Clear");
+        clearButton.setText("Clear log");
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
@@ -93,22 +93,22 @@ public class LogPanel extends LidaPanelImpl {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(levelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(36, 36, 36)
                 .addComponent(clearButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clearButton)
                     .addComponent(jLabel1)
+                    .addComponent(clearButton)
                     .addComponent(levelComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -120,11 +120,11 @@ public class LogPanel extends LidaPanelImpl {
         loggingText.setText("");
     }                                           
 
-    private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+    private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                              
         Level level=Level.parse(levelComboBox.getSelectedItem().toString());
 
         Logger.getLogger("").setLevel(level);
-}
+    }                                             
 
     // Variables declaration - do not modify
     private javax.swing.JButton clearButton;
@@ -135,7 +135,6 @@ public class LogPanel extends LidaPanelImpl {
     private javax.swing.JTextArea loggingText;
     // End of variables declaration
     
-
     public void display(Object o) {
         if (o instanceof String) {
             String s = (String) o;
@@ -143,16 +142,9 @@ public class LogPanel extends LidaPanelImpl {
         }
     }
 
-    /**
-     * @return the level
-     */
     public String getLevel() {
         return level;
     }
-
-    /**
-     * @param level the level to set
-     */
     public void setLevel(String level) {
         this.level = level;
     }
@@ -190,6 +182,6 @@ public class LogPanel extends LidaPanelImpl {
         public void close(){
             logMessages = null;
         }
-    }
+    }//inner class
 
-}
+}//class
