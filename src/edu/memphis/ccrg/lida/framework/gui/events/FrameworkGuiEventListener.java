@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.events;
+
 
 /**
  *

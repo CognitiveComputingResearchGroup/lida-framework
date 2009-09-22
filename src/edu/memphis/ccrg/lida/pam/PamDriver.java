@@ -1,17 +1,26 @@
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 
-public class PamDriver extends ModuleDriverImpl{
+public class PamDriver extends ModuleDriverImpl implements GuiEventProvider{
 
 	private PerceptualAssociativeMemory pam;
-	//private Logger logger = Logger.getLogger("lida.pam.PamDriver");
+	private Logger logger = Logger.getLogger("lida.pam.PamDriver");
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	
 	public PamDriver(PerceptualAssociativeMemory pam, int ticksPerCycle, LidaTaskManager tm){
 		super(ticksPerCycle, tm);
@@ -20,22 +29,18 @@ public class PamDriver extends ModuleDriverImpl{
 	
 	@Override
 	protected void runThisDriver() {
-		if (pam instanceof PerceptualAssociativeMemoryImpl){
-			((PerceptualAssociativeMemoryImpl)pam).sendEvent();
-		}
+		FrameworkGuiEvent event = new TaskCountEvent(Module.perceptualAssociativeMemory, 
+													 getSpawnedTaskCount());
+		sendEvent(event);
 		pam.decayPam();  //Decay the activations	
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void processResults(LidaTask task) {
-//		System.out.println(isTasksPaused() + " in pam driver");
 		try {
 			List<Object> results = (List<Object>) ((Future) task).get();
 			Set<PamNode> nodes = (Set<PamNode>) results.get(ExcitationTask.nodesIndex);
-//			for(PamNode n: nodes)
-//				System.out.println(n.getLabel());
-//			System.out.println();
 			Double amount = (Double) results.get(ExcitationTask.amountIndex);
 			pam.receiveActivationBurst(nodes, amount);
 		} catch (InterruptedException e) {
@@ -43,7 +48,15 @@ public class PamDriver extends ModuleDriverImpl{
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		
+	}//method
+	
+	//**************GUI***************
+	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
+		guis.add(listener);
+	}	
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener gui: guis)
+			gui.receiveGuiEvent(evt);
 	}//method
 
 }//class 

@@ -6,20 +6,16 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class CurrentSituationalModelImpl implements CurrentSituationalModel, GuiContentProvider{
+public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	
 	private NodeStructure model = new NodeStructureImpl();
 	private List<WorkspaceBufferListener> csmListeners = new ArrayList<WorkspaceBufferListener>();
-	//
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	private List<Object> guiContent = new ArrayList<Object>();
 
 	public void addBufferListener(WorkspaceBufferListener l){
 		csmListeners.add(l);
@@ -59,20 +55,14 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Gui
 		return model;
 	}
 
+	//**************GUI***************
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
-	}
-
-	public void sendEvent() {
-		guiContent.clear();
-		guiContent.add(model.getNodeCount());
-		guiContent.add(model.getLinkCount());
-		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(Module.currentSituationalModel, "data", guiContent);
-			for (FrameworkGuiEventListener gui : guis) {
-				gui.receiveGuiEvent(event);
-			}
-		}		
+	}	
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener gui : guis)
+			gui.receiveGuiEvent(evt);
 	}//method
 
 	public Collection<NodeStructure> getContentCollection() {

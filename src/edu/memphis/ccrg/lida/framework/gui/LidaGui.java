@@ -16,6 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -26,6 +28,7 @@ import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
+import edu.memphis.ccrg.lida.framework.gui.panels.LidaTaskPanel;
 
 /**
  * 
@@ -242,6 +245,10 @@ public class LidaGui extends javax.swing.JFrame {
 			logger.warning("Position error for panel " + panel.getName()
 					+ " pos:" + panelPosition);
 		}
+	}
+
+	public Collection<LidaPanel> getPanels() {
+		return Collections.unmodifiableCollection(panels);
 	}
 
 }

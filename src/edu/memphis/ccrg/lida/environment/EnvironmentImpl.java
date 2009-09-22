@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 
 public abstract class EnvironmentImpl extends ModuleDriverImpl implements Environment{
-	
+
 	public EnvironmentImpl() {
 		super(10, null);
 	}

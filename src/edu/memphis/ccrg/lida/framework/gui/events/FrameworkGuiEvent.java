@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework.gui;
+package edu.memphis.ccrg.lida.framework.gui.events;
 
 import edu.memphis.ccrg.lida.framework.Module;
 

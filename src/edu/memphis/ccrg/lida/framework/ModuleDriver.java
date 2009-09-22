@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+
 /**
  * A ModuleDriver is a class that runs a major module of the 
  * framework such as PAM or Procedural Memory.
@@ -10,6 +12,6 @@ package edu.memphis.ccrg.lida.framework;
  * @author Ryan J. McCall
  *
  */
-public interface ModuleDriver extends TaskSpawner{
+public interface ModuleDriver extends TaskSpawner, GuiEventProvider{
 
 }

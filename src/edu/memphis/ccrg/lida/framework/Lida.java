@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -13,6 +14,7 @@ import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
+import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
 import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -308,6 +310,13 @@ public class Lida {
 	 */
 	public LidaTaskManager getTaskManager() {
 		return taskManager;
+	}
+
+	public void addPanels(Collection<LidaPanel> panels) {
+		for(ModuleDriver m: moduleDrivers){
+			for(LidaPanel p: panels)
+				m.addFrameworkGuiEventListener(p);
+		}
 	}
 
 }//class

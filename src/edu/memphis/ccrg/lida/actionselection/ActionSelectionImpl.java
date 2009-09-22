@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
-public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryListener, GuiContentProvider {
+public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryListener, GuiEventProvider {
 
 	private List<FrameworkGuiEventListener> guiEventListeners = new ArrayList<FrameworkGuiEventListener>();
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
@@ -29,9 +29,10 @@ public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryLis
 		guiEventListeners.add(listener);
 	}
 
-	public void sendEvent() {
-		for(FrameworkGuiEventListener g: guiEventListeners)
-			g.receiveGuiEvent(new FrameworkGuiEvent(Module.actionSelection,"data", guiContent));
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for(FrameworkGuiEventListener g: guiEventListeners){
+			//g.receiveGuiEvent(new FrameworkGuiEvent(Module.actionSelection,"data", guiContent));
+		}
 	}
 
 }//class

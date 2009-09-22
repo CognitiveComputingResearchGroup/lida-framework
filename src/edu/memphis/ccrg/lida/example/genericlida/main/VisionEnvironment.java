@@ -8,11 +8,11 @@ import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
-public class VisionEnvironment extends EnvironmentImpl implements GuiContentProvider {
+public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvider {
 
 	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");
 	private boolean actionHasChanged = false;
@@ -60,7 +60,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 				arrow = (int) Math.floor(Math.random() * 4);
 		}
 		
-		sendEvent();
+		sendEvent(new FrameworkGuiEvent(Module.environment, "matrix", environContent));
 		if (actionHasChanged) {
 			latestAction = (Integer) actionContent.getContent();
 			synchronized (this) {
@@ -94,7 +94,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 		 double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 		 fillImageBlank(image);
 		 environContent=image;
-		 sendEvent();
+		 sendEvent(new FrameworkGuiEvent(Module.environment, "matrix", environContent));
 		 logger.log(Level.FINE, "Environment Reseted");
 	}// method
 
@@ -199,11 +199,9 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiContentProv
 		frameworkGuis.add(listener);
 	}
 
-	public void sendEvent() {
-		for (FrameworkGuiEventListener fg : frameworkGuis) {
-			FrameworkGuiEvent evt = new FrameworkGuiEvent(Module.environment,"data",environContent);
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener fg : frameworkGuis)
 			fg.receiveGuiEvent(evt);
-		}
 	}
 
 	@Override

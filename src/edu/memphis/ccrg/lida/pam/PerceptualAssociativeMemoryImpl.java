@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -31,8 +31,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
-public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMemory, 
-														GuiContentProvider, 
+public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMemory,  
 														BroadcastListener, 
 														WorkspaceListener{
 
@@ -45,9 +44,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private NodeStructure topDownContent = new NodeStructureImpl();
 	private NodeStructure broadcastContent = new NodeStructureImpl();
     private NodeStructure preafferantSignal = new NodeStructureImpl();
-	// for GUI
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	private List<Object> guiContent = new ArrayList<Object>();
+	//
 	private PamDriver taskSpawner;
 	
 	public void setTaskSpawner(TaskSpawner spawner) {
@@ -114,20 +111,6 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void decayPam() {
 		pamNodeStructure.decayNodes();
 	}// method
-
-	
-	//**************GUI***************
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		guis.add(listener);
-	}
-	public void sendEvent() {
-		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(Module.perceptualAssociativeMemory, 
-														    "data", guiContent);
-			for (FrameworkGuiEventListener gui : guis)
-				gui.receiveGuiEvent(event);
-		}//if
-	}//method
 
 	/**
 	 * receives activation from feature detectors or other codelets to excite a

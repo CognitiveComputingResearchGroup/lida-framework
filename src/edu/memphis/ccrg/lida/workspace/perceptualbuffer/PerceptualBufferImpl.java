@@ -3,11 +3,8 @@ package edu.memphis.ccrg.lida.workspace.perceptualbuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -15,21 +12,11 @@ import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class PerceptualBufferImpl implements PerceptualBuffer, PamListener, 
-											 GuiContentProvider{
+public class PerceptualBufferImpl implements PerceptualBuffer, PamListener{
 	
 	private NodeStructure perceptualBuffer = new NodeStructureImpl();	
-//	private List<NodeStructure> perceptBuffer = new ArrayList<NodeStructure>();
 	private List<WorkspaceBufferListener> pbListeners = new ArrayList<WorkspaceBufferListener>();
-//	private final int PERCEPT_BUFFER_CAPACITY;
-	private List<Object> guiContent = new ArrayList<Object>();
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	
-//	public PerceptualBufferImpl(int capacity){
-//		PERCEPT_BUFFER_CAPACITY = capacity;
-//		perceptBuffer.add(pamContent);
-//	}
-	
+
 	public void addBufferListener(WorkspaceBufferListener l){
 		pbListeners.add(l);
 	}
@@ -53,19 +40,15 @@ public class PerceptualBufferImpl implements PerceptualBuffer, PamListener,
 		return perceptualBuffer;
 	}
 
+	//**************GUI***************
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
-	}
-
-	public void sendEvent() {
-		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					Module.perceptualBuffer, "data", guiContent);
-			for (FrameworkGuiEventListener gui : guis) {
-				gui.receiveGuiEvent(event);
-			}
-		}		
-	}
+	}	
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener gui : guis)
+			gui.receiveGuiEvent(evt);
+	}//method
 
 	public Collection<NodeStructure> getContentCollection() {
 		List<NodeStructure> list = new ArrayList<NodeStructure>();

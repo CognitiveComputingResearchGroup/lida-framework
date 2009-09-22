@@ -33,13 +33,15 @@ public class LidaFactory {
 	
 		else{
 			java.awt.EventQueue.invokeLater(new Runnable(){
-			public void run(){	
+			public void run(){					
 	        	//Create the model 
 	        	Lida lida = new Lida(environment, sensoryMemory, lidaProperties);
 	        	//Create the controller
 	        	LidaGuiController controller = new LidaGuiControllerImpl(lida, commandsPropertiesPath);
+	        	LidaGui lidaGui = new LidaGui(lida, controller, panelsPropertiesPath);
+	        	lida.addPanels(lidaGui.getPanels());
 	        	//Start the GUI
-	            new LidaGui(lida, controller, panelsPropertiesPath).setVisible(true);
+	            lidaGui.setVisible(true);
 	        }//run
 			});//invokeLater
 		}//else

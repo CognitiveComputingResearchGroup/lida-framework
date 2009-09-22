@@ -13,9 +13,9 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
 /**
  * 
@@ -69,8 +69,8 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	public void registerLida(Lida lida) {
 		super.registerLida(lida);
 		Environment e = lida.getEnvironment();
-		if (e instanceof GuiContentProvider) {
-			((GuiContentProvider) e).addFrameworkGuiEventListener(this);
+		if (e instanceof GuiEventProvider) {
+			((GuiEventProvider) e).addFrameworkGuiEventListener(this);
 		}
 	}
 

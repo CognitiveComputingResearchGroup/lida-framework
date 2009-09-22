@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
@@ -29,13 +30,12 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  * 
  */
 public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
-											GuiContentProvider {
+											GuiEventProvider {
 	private Set<Coalition> coalitions = new HashSet<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private Boolean broadcastStarted = false;
-	List<Object> guiContent = new ArrayList<Object>();
 
 	/*
 	 * (non-Javadoc)
@@ -119,7 +119,9 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
-			sendEvent();
+			
+			FrameworkGuiEvent ge = new TaskCountEvent(Module.globalWorkspace, coalitions.size()+"");
+			sendEvent(ge);
 		}
 
 		// TODO: No attention codelet is going
@@ -164,17 +166,9 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 		guis.add(listener);
 	}
 
-	public void sendEvent() {
-		if (!guis.isEmpty()) {
-			guiContent.clear();
-			guiContent.add(coalitions.size());
-			guiContent.add(-1);
-			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					Module.globalWorkspace, "coalitions",
-					guiContent);
-			for (FrameworkGuiEventListener fg : guis)
-				fg.receiveGuiEvent(event);
-		}
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener fg : guis)
+			fg.receiveGuiEvent(evt);
 	}
 
 }// class

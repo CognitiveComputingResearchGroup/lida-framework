@@ -5,15 +5,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
-public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener, 
-										   GuiContentProvider{
+public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
 	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
 	private final int broadcastQueueCapacity;
@@ -33,13 +33,6 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener,
 
 	public NodeStructure getBufferContent() {
 		return null;
-	}
-
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		queueListeners.add(listener);
-	}
-	public void sendEvent() {
-		// TODO Auto-generated method stub
 	}
 
 	public void learn() {

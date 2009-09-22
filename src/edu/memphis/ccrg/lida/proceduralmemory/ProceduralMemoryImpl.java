@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 public class ProceduralMemoryImpl implements ProceduralMemory, 
 											 BroadcastListener,
-											 GuiContentProvider{
+											 GuiEventProvider{
 
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
@@ -49,18 +49,13 @@ public class ProceduralMemoryImpl implements ProceduralMemory,
 		}
 	}
 
+	//**************GUI***************
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
-	}
-
-	public void sendEvent() {
-		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					Module.proceduralMemory, "data", guiContent);
-			for (FrameworkGuiEventListener gui : guis) {
-				gui.receiveGuiEvent(event);
-			}
-		}
+	}	
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener gui : guis)
+			gui.receiveGuiEvent(evt);
 	}//method
 
 }// class

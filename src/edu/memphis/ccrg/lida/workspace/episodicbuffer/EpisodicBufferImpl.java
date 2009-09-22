@@ -5,23 +5,20 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.GuiContentProvider;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
 public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListener, 
-										   GuiContentProvider{
+										   GuiEventProvider{
 
     private List<NodeStructure> episodicBuffer = new ArrayList<NodeStructure>();
     private List<WorkspaceBufferListener> listeners = new ArrayList<WorkspaceBufferListener>();
 	private final int episodicBufferCapacity;
-	private List<Object> guiContent = new ArrayList<Object>();	
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
     
 	public EpisodicBufferImpl(int capacity){
 		episodicBufferCapacity = capacity;
@@ -43,19 +40,15 @@ public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListe
 		return null;
 	}
 
+	//**************GUI***************
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
-	}
-
-	public void sendEvent() {
-		if (!guis.isEmpty()) {
-			FrameworkGuiEvent event = new FrameworkGuiEvent(
-					Module.episodicBuffer, "data", guiContent);
-			for (FrameworkGuiEventListener gui : guis) {
-				gui.receiveGuiEvent(event);
-			}
-		}		
-	}
+	}	
+	public void sendEvent(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener gui : guis)
+			gui.receiveGuiEvent(evt);
+	}//method
 
 	public Collection<NodeStructure> getContentCollection() {
 		return Collections.unmodifiableCollection(episodicBuffer);
