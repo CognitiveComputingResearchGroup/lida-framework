@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import java.util.logging.Level;
@@ -81,7 +82,7 @@ public class LogPanel extends LidaPanelImpl {
             }
         });
 
-        levelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SEVERE", "WRNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST", "ALL", "OFF" }));
+        levelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SEVERE", "WARNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST", "ALL", "OFF" }));
         levelComboBox.setSelectedItem("INFO");
         levelComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,13 +167,16 @@ public class LogPanel extends LidaPanelImpl {
         	MessageFormat mf=new MessageFormat(logRecord.getMessage());
         	dateString=df.format(date);      
 
-            logMessages = logRecord.getSequenceNumber() + ":" + 
+            logMessages = logRecord.getSequenceNumber() + ": " + 
                           dateString + "- " + 
                           logRecord.getLevel() +": "+ 
                           logRecord.getLoggerName() + "- " +
                           mf.format(logRecord.getParameters()) + "\n";
         	
             loggingText.append(logMessages);
+            JScrollBar jsb=jScrollPane1.getVerticalScrollBar();
+            jsb.setValue(jsb.getMaximum());
+//            loggingText.setCaretPosition(loggingText.getText().length()-1);
 //            loggingText.append(f.format(logRecord));
         }
 
