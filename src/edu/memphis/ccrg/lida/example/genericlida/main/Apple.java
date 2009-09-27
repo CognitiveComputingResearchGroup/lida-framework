@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaFactory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
-public class GenericLida{
+public class Apple{
 	
 	private Logger logger = Logger.getLogger("lida.example.genericlida.main.GenericLida");
 	
@@ -20,7 +20,7 @@ public class GenericLida{
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		new GenericLida().setup();
+		new Apple().setup();
 	}//main
 	
 	public void setup(){
@@ -32,17 +32,17 @@ public class GenericLida{
 		SensoryMemoryImpl sensoryMemory = new VisionSensoryMemory();
 		
 		//Specify a configuration file path
-        String configFilePath = "configs/lidaConfig.properties";
+        String lidaConfigPath = "configs/lidaConfig.properties";
         Properties lidaProperties = new Properties();
         try{
-			lidaProperties.load(new BufferedReader(new FileReader(configFilePath)));
+			lidaProperties.load(new BufferedReader(new FileReader(lidaConfigPath)));
 		}catch(FileNotFoundException e){
 			throw new IllegalArgumentException();
 		}catch(IOException e){
 			logger.log(Level.SEVERE, "Error reading lida properties file {0}", e.getMessage());
 		}
 		
-		String guiPanelConfigPath = "configs/guiPanels.properties";
+		String guiPanelConfigPath = "configs/appleGuiPanels.properties";
 		Properties guiPanelProperties = new Properties();
         try{
 			guiPanelProperties.load(new BufferedReader(new FileReader(guiPanelConfigPath)));

@@ -22,29 +22,23 @@ public class LidaFactory {
 	
 	private static Logger logger = Logger.getLogger("lida.framework.LidaFactory");
 	private static String commandsPropertiesPath = "configs/guiCommands.properties";
-	private static String panelsPropertiesPath = "configs/guiPanels.properties";
-	
-	public static void start(final EnvironmentImpl environment, 
-							 final SensoryMemoryImpl sensoryMemory, 
-				             final Properties lidaProperties){
-		
-		if(environment == null || sensoryMemory == null || lidaProperties == null)
-			logger.log(Level.SEVERE, "null object supplied in call to start");
-	
-		else{
-			java.awt.EventQueue.invokeLater(new Runnable(){
+
+	public static void start(final EnvironmentImpl environment,
+							  final SensoryMemoryImpl sensoryMemory, 
+							  final Properties lidaProperties,
+							  final Properties panelsProperties) {
+		java.awt.EventQueue.invokeLater(new Runnable(){
 			public void run(){					
 	        	//Create the model 
 	        	Lida lida = new Lida(environment, sensoryMemory, lidaProperties);
 	        	//Create the controller
 	        	LidaGuiController controller = new LidaGuiControllerImpl(lida, commandsPropertiesPath);
-	        	LidaGui lidaGui = new LidaGui(lida, controller, panelsPropertiesPath);
+	        	LidaGui lidaGui = new LidaGui(lida, controller, panelsProperties);
 	        	lida.addPanels(lidaGui.getPanels());
 	        	//Start the GUI
 	            lidaGui.setVisible(true);
 	        }//run
-			});//invokeLater
-		}//else
+		});//invokeLater
 		
 	}//method
 

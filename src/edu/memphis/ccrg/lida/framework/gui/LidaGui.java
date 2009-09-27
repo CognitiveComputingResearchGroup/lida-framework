@@ -43,16 +43,12 @@ public class LidaGui extends javax.swing.JFrame {
 	private LidaGuiController controller;
 	private Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
 
-	public LidaGui(Lida lida, LidaGuiController controller, String panelsFile) {
+	public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {
 		initComponents();
 		this.lida = lida;
 		this.controller = controller;
-
-		if (panelsFile == null || panelsFile.equals("")) {
-			panelsFile = "configs/guiPanels.properties";
-		}
 			
-		loadPanels(panelsFile);
+		loadPanels(panelProperties);
 		pack();
 		logger.info("LidaGUI started\n");
 	}
@@ -62,21 +58,7 @@ public class LidaGui extends javax.swing.JFrame {
 	 * @param controller
 	 * @param panelsFile
 	 */
-	private void loadPanels(String panelsFile) {
-		Properties panelProp = new Properties();
-		if (panelsFile != null) {
-			try {
-				panelProp.load(new BufferedReader(new FileReader(panelsFile)));
-			} catch (FileNotFoundException e) {
-				throw new IllegalArgumentException();
-			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error reading GuiPanels List {0}", e
-						.getMessage());
-			}
-		} else {
-			logger.log(Level.WARNING, "GuiPanels File no especified");
-		}
-
+	private void loadPanels(Properties panelProp) {
 		for (Object key : panelProp.keySet()) {
 			LidaPanel panel;
 			String line = panelProp.getProperty((String) key);
