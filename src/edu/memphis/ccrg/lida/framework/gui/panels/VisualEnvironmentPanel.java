@@ -75,9 +75,11 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	}
 
 	public void receiveGuiEvent(FrameworkGuiEvent event) {
-		double[][] smc = (double[][]) event.getData();
-		String s = convertToString(smc);
-		jTextArea1.setText(s);
+		if(event.getModule() == Module.environment){
+			double[][] smc = (double[][]) event.getData();
+			String s = convertToString(smc);
+			jTextArea1.setText(s);
+		}
 	}
 
 	public String convertToString(double[][] a) {

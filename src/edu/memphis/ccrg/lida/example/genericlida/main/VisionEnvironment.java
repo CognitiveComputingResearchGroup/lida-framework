@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.gui.panels.VisualEnvironmentPanel;
 
 public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvider {
 
@@ -20,8 +21,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	private int IMAGE_HEIGHT = 5;
 	private int IMAGE_WIDTH = 5;
 	private double[][] environContent = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
-	
-	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
+	//
+	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(Module.environment, "matrix", environContent);
 
 	public VisionEnvironment(int height, int width) {
 		super();
@@ -51,6 +52,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		else if(arrow == 3)
 			getNextMoveLeft();
 			
+		sendContentEvent(contentEvent);
+		
 		counter++;
 		if(counter == 3){
 			counter = 0;
@@ -60,7 +63,6 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 				arrow = (int) Math.floor(Math.random() * 4);
 		}
 		
-		sendEvent(new FrameworkGuiEvent(Module.environment, "matrix", environContent));
 		if (actionHasChanged) {
 			latestAction = (Integer) actionContent.getContent();
 			synchronized (this) {
@@ -71,7 +73,6 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 			}
 		}// if actionHasChanged
 	}//run one step
-
 
 	/**
 	 * @return the environContent
@@ -93,8 +94,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		jloc = -1;
 		 double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 		 fillImageBlank(image);
-		 environContent=image;
-		 sendEvent(new FrameworkGuiEvent(Module.environment, "matrix", environContent));
+		 contentEvent.setData(image);
+		 sendContentEvent(contentEvent);
 		 logger.log(Level.FINE, "Environment Reseted");
 	}// method
 
@@ -137,7 +138,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		double image[][] = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 		fillImageBlank(image);
 		addBlock(i, j, image);
-		environContent = image;
+		contentEvent.setData(image);
 		// environContent.setGuiContent(convertToString(image));
 	}
 
@@ -194,29 +195,24 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		}
 		return res;
 	}// method
+	
+	List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 
+	private void sendContentEvent(FrameworkGuiEvent evt) {
+		for(FrameworkGuiEventListener l: frameworkGuis)
+			if(l instanceof VisualEnvironmentPanel)
+				l.receiveGuiEvent(evt);
+	}
+	
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		frameworkGuis.add(listener);
 	}
-
 	public void sendEvent(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : frameworkGuis)
 			fg.receiveGuiEvent(evt);
 	}
-
 	@Override
 	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
 	}
-
-	// public void printImage(double[][] image){
-	// for(int i = 0; i < IMAGE_HEIGHT; i++){
-	// for(int j = 0; j < IMAGE_WIDTH; j++){
-	// System.out.print((int)image[i][j] + " ");
-	// }//for j
-	// System.out.println();
-	// }//for i
-	// System.out.println();
-	// }//printImage
 
 }// class

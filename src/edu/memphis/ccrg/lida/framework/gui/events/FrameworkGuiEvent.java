@@ -25,6 +25,9 @@ public class FrameworkGuiEvent {
 		this.data = data;
 	}
 
+	public void setModule(Module m){
+		module = m;
+	}
 	/**
 	 * @return the moduleId
 	 */
@@ -32,6 +35,9 @@ public class FrameworkGuiEvent {
 		return module;
 	}
 
+	public void setMessage(String m){
+		message = m;
+	}
 	/**
 	 * @return the message
 	 */
@@ -39,6 +45,9 @@ public class FrameworkGuiEvent {
 		return message;
 	}
 
+	public void setData(Object o){
+		data = o;
+	}
 	/**
 	 * @return the data
 	 */

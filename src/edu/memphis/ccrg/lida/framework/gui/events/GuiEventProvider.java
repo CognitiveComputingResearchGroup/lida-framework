@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework.gui.events;
 
+import java.util.List;
+
 
 
 /**
@@ -18,6 +20,8 @@ public interface GuiEventProvider {
 	 * @param evt
 	 */
 	public abstract void sendEvent(FrameworkGuiEvent evt);
+
+	//public void sendGuiEvent(List<FrameworkGuiEventListener> listeners, FrameworkGuiEvent evt);
 	public abstract void addFrameworkGuiEventListener(FrameworkGuiEventListener listener);
 	
 }
