@@ -30,7 +30,7 @@ import java.util.logging.Level;
  *
  * @author Javier Snaider
  */
-public class LogPanel extends LidaPanelImpl {
+public class LoggingPanel extends LidaPanelImpl {
 
 	private static final long serialVersionUID = 12L;
 
@@ -40,7 +40,7 @@ public class LogPanel extends LidaPanelImpl {
 	private DateFormat df= new SimpleDateFormat("HH:mm:ss:SSS");
 	
     /** Creates new form LogPanel */
-    public LogPanel() {
+    public LoggingPanel() {
 
         initComponents();
         logger.addHandler(new GuiLogHandler()); 

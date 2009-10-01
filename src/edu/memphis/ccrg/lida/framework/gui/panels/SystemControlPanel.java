@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
  * 
  * @author Javier Snaider
  */
-public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventListener {
+public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEventListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
 	private int sliderStartValue = (sliderMax - sliderMin) / 2;
 
 	/** Creates new form ControlPanel */
-	public ControlPanel() {
+	public SystemControlPanel() {
 		initComponents();
 		setSupportedModule(Module.noModule);
 

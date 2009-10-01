@@ -183,6 +183,9 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		}
 	}
 
+	public void refresh(){
+		display(lida.getPamDriver().getRunningTasks());
+	}
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Collection) {
@@ -194,8 +197,6 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
-	}
-	public void refresh(){
-		display(lida.getPamDriver().getRunningTasks());
-	}
-}
+	}//method
+
+}//class
