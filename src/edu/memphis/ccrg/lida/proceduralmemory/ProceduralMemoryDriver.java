@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -40,6 +41,11 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	public void sendEvent(FrameworkGuiEvent evt) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String toString() {
+		return Module.proceduralDriver + "";
 	}
 
 }// class

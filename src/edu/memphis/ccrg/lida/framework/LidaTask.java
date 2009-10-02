@@ -122,4 +122,5 @@ public interface LidaTask extends Runnable, Activatible{
 	public void init(Map<String, Object> parameters);
 	public Object getParameter(String name);
 	public abstract String getStatusString();	
+	public abstract String toString();
 }

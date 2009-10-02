@@ -84,9 +84,13 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
         }
         return future;
     }
-
-	public void receiveCue(NodeStructure cue) {
-		
+    
+    // Rodrigo, this method is called continually.  The rate at which is called 
+	// can be modified by changing the 'ticksPerCycle' parameter of PerceptualBufferDriver.
+	// This is set in the Lida Class.  The higher the value for 'tickPerCycle' the slower
+	// the rate of cueing will be.
+	public synchronized void receiveCue(NodeStructure cue) {		
+		//System.out.println("in Tem");
 	}
 
 	public void learn() {

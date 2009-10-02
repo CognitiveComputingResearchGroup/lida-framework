@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
+
 public enum Module {
 	
 	environment, 
@@ -23,5 +25,13 @@ public enum Module {
 	sensoryMotorMemory,
 	
 	allModules,
-	noModule
+	noModule, 
+	
+	sensoryMemoryDriver,
+	pamDriver,
+	perceptualBufferDriver,
+	attentionDriver,
+	sbCodeletDriver, 
+	temDriver, 
+	proceduralDriver
 }

@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 public class PamDriver extends ModuleDriverImpl implements GuiEventProvider{
 
 	private PerceptualAssociativeMemory pam;
+	@SuppressWarnings("unused")
 	private Logger logger = Logger.getLogger("lida.pam.PamDriver");
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	
@@ -58,5 +59,10 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider{
 		for (FrameworkGuiEventListener gui: guis)
 			gui.receiveGuiEvent(evt);
 	}//method
+
+	@Override
+	public String toString() {
+		return Module.pamDriver + "";
+	}
 
 }//class 

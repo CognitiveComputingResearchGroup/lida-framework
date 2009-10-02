@@ -43,4 +43,11 @@ public class BroadcastQueueDriver extends ModuleDriverImpl implements GuiEventPr
 			gui.receiveGuiEvent(evt);
 	}//method
 
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }// class

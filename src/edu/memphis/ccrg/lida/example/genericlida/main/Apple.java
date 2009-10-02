@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaFactory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;

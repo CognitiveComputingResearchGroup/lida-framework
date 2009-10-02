@@ -7,4 +7,6 @@ public interface PerceptualBuffer extends CodeletAccessible{
 
 	public abstract void addBufferListener(WorkspaceBufferListener workspace);
 
+	public abstract void cueEpisodicMemory();
+
 }

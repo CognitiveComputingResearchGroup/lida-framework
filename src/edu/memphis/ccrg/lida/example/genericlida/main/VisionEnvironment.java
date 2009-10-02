@@ -215,4 +215,9 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	protected void processResults(LidaTask task) {
 	}
 
+	@Override
+	public String toString() {
+		return "VisionEnvironment";
+	}
+
 }// class

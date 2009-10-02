@@ -161,9 +161,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 		return res;
 	}
-	public String toString(){
-		return "LidaTask-"+taskID;
-	}
+	public abstract String toString();
 	
 	public String getStatusString(){
 		String res = "--";

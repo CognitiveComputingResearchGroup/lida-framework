@@ -6,10 +6,8 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;

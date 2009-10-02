@@ -1,9 +1,5 @@
 package edu.memphis.ccrg.lida.framework.gui.events;
 
-import java.util.List;
-
-
-
 /**
  * A GuiContentProvider is a class that provides content
  * for FrameworkGui's.   GUIs listen to providers using Observer pattern.

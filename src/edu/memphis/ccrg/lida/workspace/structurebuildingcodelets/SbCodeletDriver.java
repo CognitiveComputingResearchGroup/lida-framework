@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -64,6 +65,11 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	protected void processResults(LidaTask task) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String toString() {
+		return Module.structureBuildingCodelets + "";
 	}
 
 }// class

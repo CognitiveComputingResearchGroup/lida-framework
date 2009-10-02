@@ -41,8 +41,11 @@ import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
+import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBuffer;
+import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver;
 
@@ -75,6 +78,8 @@ public class Lida {
 	// Workspace
 	private Workspace workspace;
 	private SbCodeletDriver sbCodeletDriver;
+	private PerceptualBuffer perceptualBuffer;
+	private PerceptualBufferDriver pbDriver;
 	// Attention
 	private AttentionDriver attentionDriver;
 	private GlobalWorkspace globalWksp;
@@ -121,9 +126,10 @@ public class Lida {
 		declarativeMemory = new DeclarativeMemoryImpl();
 		
 		//Workspace
-		int episodicBufferCapacity = 2;//TODO:will this be unnecessary?
+		int episodicBufferCapacity = 2; //TODO: Will this be unnecessary?
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
-		workspace = new WorkspaceImpl(new PerceptualBufferImpl(),
+		perceptualBuffer = new PerceptualBufferImpl();
+		workspace = new WorkspaceImpl(perceptualBuffer,
 									  new EpisodicBufferImpl(episodicBufferCapacity), 
 									  new BroadcastQueueImpl(queueCapacity),
 									  new CurrentSituationalModelImpl());
@@ -162,6 +168,10 @@ public class Lida {
 		pamDriver.setInitialTasks(pam.getFeatureDetectors());
 		moduleDrivers.add(pamDriver);
 		
+		//Perceptual Buffer Driver
+		pbDriver = new PerceptualBufferDriver(perceptualBuffer, 10, taskManager);
+		moduleDrivers.add(pbDriver);
+		
 		//Attention Driver
 		attentionDriver = new AttentionDriver(workspace.getCSM(), globalWksp, attnTicksPerStep, taskManager);
 		moduleDrivers.add(attentionDriver);
@@ -176,34 +186,46 @@ public class Lida {
 		logger.log(Level.FINE, "Lida drivers Created");		
 	}
 
+	//Below comments "A ---> B" signify that the statement is establishing
+	// the relationship  "Module A is sending data to Module B" 
 	private void initListeners() {
+		//Sensory-Motor Memory ---> SensoryMemory
 		if (sensoryMemory instanceof SensoryMotorListener)
 			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
 		else
 			logger.warning("Cannot add SM as a listener");
 		
+		//Sensory Memory ---> Sensory-Motor Memory
 		if(sensoryMotorMemory instanceof SensoryMemoryListener)
 			sensoryMemory.addSensoryMemoryListener((SensoryMemoryListener) sensoryMotorMemory);
 		
+		//Pam ---> Workspace
 		if (workspace instanceof PamListener)
 			pam.addPamListener((PamListener) workspace);
 		else
 			logger.warning("Cannot add WORKSPACE as a listener");
 
+		//Workspace ---> Declarative Memory
 		if (declarativeMemory instanceof CueListener)
 			workspace.addCueListener((CueListener)declarativeMemory);
 		else
 			logger.warning("Cannot add DM as a listener");
 		
+		//Workspace ---> Transient Episodic Memory
 		if (tem instanceof CueListener)		
 			workspace.addCueListener((CueListener)tem);
 		else
 			logger.warning("Cannot add TEM as a listener");
 		
+		//Workspace ---> Pam
 		if(pam instanceof WorkspaceListener)
 			workspace.addPamWorkspaceListener((WorkspaceListener) pam);
 		else 
 			logger.warning("Cannot add PAM as a listener");
+		
+		//PerceptualBuffer ---> Workspace
+		if(workspace instanceof WorkspaceBufferListener)
+			perceptualBuffer.addBufferListener((WorkspaceBufferListener) workspace);
 		
 		if(pam instanceof BroadcastListener)
 			globalWksp.addBroadcastListener((BroadcastListener) pam);			
@@ -316,7 +338,7 @@ public class Lida {
 		for(ModuleDriver m: moduleDrivers){
 			for(LidaPanel p: panels)
 				m.addFrameworkGuiEventListener(p);
-		}
+		}//
 	}
 
 }//class

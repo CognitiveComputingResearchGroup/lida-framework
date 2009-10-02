@@ -17,9 +17,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;

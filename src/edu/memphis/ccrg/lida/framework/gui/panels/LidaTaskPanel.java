@@ -10,15 +10,8 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
@@ -35,6 +28,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	 * 
 	 */
 	private static final long serialVersionUID = -3135377683820863184L;
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger("lida.framework.gui.LidaTaskPanel");
 	private Collection<LidaTask> tasks;
 	private LidaTask[] taskArray;

@@ -81,8 +81,9 @@ public class WorkspaceImpl implements Workspace, PamListener,
 	}//method
 
 	public void cue(NodeStructure content){
-		for(CueListener c: cueListeners)
+		for(CueListener c: cueListeners){
 			c.receiveCue(content);
+		}
 	}
 	
 	//****Input into the Workspace from other Modules is sent to the appropriate

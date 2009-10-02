@@ -116,4 +116,9 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		// Not applicable
 	}
 
+	@Override
+	public String toString() {
+		return "LidaTaskManager";
+	}
+
 }// class LIDA_TASK_MANAGER
