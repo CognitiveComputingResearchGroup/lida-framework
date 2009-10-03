@@ -75,7 +75,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 
 	@Override
 	public String toString() {
-		return Module.attentionDriver +"";
+		return Module.AttentionDriver +"";
 	}
 
 }// class

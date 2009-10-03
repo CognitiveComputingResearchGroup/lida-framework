@@ -58,7 +58,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, PamListener{
 	}
 
 	public void cueEpisodicMemory() {
-		((WorkspaceBufferListener) workspace).receiveBufferContent(Module.perceptualBuffer, perceptualBuffer);
+		((WorkspaceBufferListener) workspace).receiveBufferContent(Module.PerceptualBuffer, perceptualBuffer);
 	}
 
 }//PerceptualBuffer

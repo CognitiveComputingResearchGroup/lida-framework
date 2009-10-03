@@ -37,7 +37,7 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 	/** Creates new form ControlPanel */
 	public SystemControlPanel() {
 		initComponents();
-		setSupportedModule(Module.noModule);
+		setSupportedModule(Module.NoModule);
 
 		minSleepTimeLabel.setText(sliderMin + " ms");
 		maxSleepTimeLabel.setText(sliderMax + " ms");

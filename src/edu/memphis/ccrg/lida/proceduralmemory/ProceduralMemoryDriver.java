@@ -45,7 +45,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 
 	@Override
 	public String toString() {
-		return Module.proceduralDriver + "";
+		return Module.ProceduralDriver + "";
 	}
 
 }// class

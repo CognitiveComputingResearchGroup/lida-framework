@@ -69,7 +69,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 
 	@Override
 	public String toString() {
-		return Module.structureBuildingCodelets + "";
+		return Module.StructureBuildingCodelets + "";
 	}
 
 }// class

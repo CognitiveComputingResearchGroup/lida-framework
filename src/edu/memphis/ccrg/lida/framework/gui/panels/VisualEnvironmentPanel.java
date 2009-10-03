@@ -29,7 +29,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	/** Creates new form VisualFieldPanel */
 	public VisualEnvironmentPanel() {
 		initComponents();
-		setSupportedModule(Module.environment);
+		setSupportedModule(Module.Environment);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	}
 
 	public void receiveGuiEvent(FrameworkGuiEvent event) {
-		if(event.getModule() == Module.environment){
+		if(event.getModule() == Module.Environment){
 			double[][] smc = (double[][]) event.getData();
 			String s = convertToString(smc);
 			jTextArea1.setText(s);

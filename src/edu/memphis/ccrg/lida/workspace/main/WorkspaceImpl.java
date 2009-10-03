@@ -75,8 +75,8 @@ public class WorkspaceImpl implements Workspace, PamListener,
 		that get produced and put in the CSM
 	 */ 	 
 	public void receiveBufferContent(Module originatingBuffer, NodeStructure content) {
-		if(originatingBuffer == Module.episodicBuffer)
-			pamWorkspaceListener.receiveWorkspaceContent(Module.episodicBuffer, content);
+		if(originatingBuffer == Module.EpisodicBuffer)
+			pamWorkspaceListener.receiveWorkspaceContent(Module.EpisodicBuffer, content);
 		cue(content);
 	}//method
 

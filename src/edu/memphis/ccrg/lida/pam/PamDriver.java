@@ -30,7 +30,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider{
 	
 	@Override
 	protected void runThisDriver() {
-		FrameworkGuiEvent event = new TaskCountEvent(Module.perceptualAssociativeMemory, 
+		FrameworkGuiEvent event = new TaskCountEvent(Module.PerceptualAssociativeMemory, 
 													 getSpawnedTaskCount());
 		sendEvent(event);
 		pam.decayPam();  //Decay the activations	
@@ -62,7 +62,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider{
 
 	@Override
 	public String toString() {
-		return Module.pamDriver + "";
+		return Module.PamDriver + "";
 	}
 
 }//class 

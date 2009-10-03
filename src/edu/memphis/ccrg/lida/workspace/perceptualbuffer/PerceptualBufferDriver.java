@@ -40,7 +40,7 @@ public class PerceptualBufferDriver extends ModuleDriverImpl {
 
 	@Override
 	public String toString() {
-		return Module.perceptualBufferDriver + "";
+		return Module.PerceptualBufferDriver + "";
 	}
 
 }// class

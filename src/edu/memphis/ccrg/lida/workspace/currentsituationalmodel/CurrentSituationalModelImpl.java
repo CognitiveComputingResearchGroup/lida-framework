@@ -35,7 +35,7 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 	 */
 	public void sendCSMContent(){
 		for(WorkspaceBufferListener l: csmListeners)
-			l.receiveBufferContent(Module.currentSituationalModel, model);
+			l.receiveBufferContent(Module.CurrentSituationalModel, model);
 	}//method
 	
 	/**

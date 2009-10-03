@@ -10,20 +10,14 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.TaskSpawnerImpl;
 
 /**
  * 
@@ -107,17 +101,13 @@ public class TaskManagerPanel extends LidaPanelImpl {
 
 	private void ApplyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
 		refresh();
-		
 	}// GEN-LAST:event_ApplyButtonActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton ApplyButton;
-//	private javax.swing.JButton LoadButton;
 	private javax.swing.JTable tasksTable;
-//	private javax.swing.JButton SaveButton;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
-
 	// End of variables declaration//GEN-END:variables
 
 	private class Task2TableModel extends AbstractTableModel {
@@ -136,16 +126,17 @@ public class TaskManagerPanel extends LidaPanelImpl {
 			String cName = "";
 			switch (column) {
 			case 0:
-				cName = "Task ID";
+				cName = "Name";
 				break;
 			case 1:
-				cName = "Activation";
+				cName = "Task ID";
+				
 				break;
 			case 2:
 				cName = "Status";
 				break;
 			case 3:
-				cName = "description";
+				cName = "Spawned Task Count";	
 				break;
 			default:
 				cName="col"+column;
@@ -158,16 +149,16 @@ public class TaskManagerPanel extends LidaPanelImpl {
 			Object o=null;
 			switch (columnIndex) {
 			case 0:
-				o= task.getTaskId();
+				o = task;
 				break;
 			case 1:
-				o = Math.round(task.getActivation()*1000.0) / 1000.0;
+				o= task.getTaskId();
 				break;
 			case 2:
 				o=task.getStatusString();
 				break;
 			case 3:
-				o = task;
+				o = ((TaskSpawnerImpl) task).getSpawnedTaskCount();
 				break;
 			default:
 				o="";

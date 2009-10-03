@@ -40,7 +40,9 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 * @return nextThreadID
 	 */
 	public static long getNextTaskID() {
-		return nextTaskID++;
+		long currentID = nextTaskID;
+		nextTaskID++;
+		return currentID;
 	}
 
 	/**

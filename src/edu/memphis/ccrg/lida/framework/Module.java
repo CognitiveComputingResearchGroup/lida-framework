@@ -1,37 +1,35 @@
 package edu.memphis.ccrg.lida.framework;
 
-import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
-
 public enum Module {
 	
-	environment, 
-	sensoryMemory,
-	perceptualAssociativeMemory,
+	Environment, 
+	SensoryMemory,
+	PerceptualAssociativeMemory,
 	
-	transientEpisodicMemory,
-	declarativeMemory,
+	TransientEpisodicMemory,
+	DeclarativeMemory,
 	
-	perceptualBuffer,
-	episodicBuffer,
-	broadcastQueue,
-	currentSituationalModel,
+	PerceptualBuffer,
+	EpisodicBuffer,
+	BroadcastQueue,
+	CurrentSituationalModel,
 	
-	structureBuildingCodelets,
-	attentionCodelets,	
-	globalWorkspace,
+	StructureBuildingCodelets,
+	AttentionCodelets,	
+	GlobalWorkspace,
 	
-	proceduralMemory,
-	actionSelection,
-	sensoryMotorMemory,
+	ProceduralMemory,
+	ActionSelection,
+	SensoryMotorMemory,
 	
-	allModules,
-	noModule, 
+	AllModules,
+	NoModule, 
 	
-	sensoryMemoryDriver,
-	pamDriver,
-	perceptualBufferDriver,
-	attentionDriver,
-	sbCodeletDriver, 
-	temDriver, 
-	proceduralDriver
+	SensoryMemoryDriver,
+	PamDriver,
+	PerceptualBufferDriver,
+	AttentionDriver,
+	SbCodeletDriver, 
+	TemDriver, 
+	ProceduralDriver
 }

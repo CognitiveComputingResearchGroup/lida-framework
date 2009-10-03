@@ -70,6 +70,6 @@ public class TemDriver extends ModuleDriverImpl {
 
 	@Override
 	public String toString() {
-		return Module.temDriver + "";
+		return Module.TemDriver + "";
 	}
 }//class

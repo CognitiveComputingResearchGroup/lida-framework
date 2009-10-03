@@ -120,7 +120,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
 			
-			FrameworkGuiEvent ge = new TaskCountEvent(Module.globalWorkspace, coalitions.size()+"");
+			FrameworkGuiEvent ge = new TaskCountEvent(Module.GlobalWorkspace, coalitions.size()+"");
 			sendEvent(ge);
 		}
 

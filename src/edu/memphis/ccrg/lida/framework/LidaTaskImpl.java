@@ -27,7 +27,6 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm) {
 		taskManager = tm;
 		taskID = LidaTaskManager.getNextTaskID();
-
 		setNumberOfTicksPerStep(ticksForCycle);
 	}
 	

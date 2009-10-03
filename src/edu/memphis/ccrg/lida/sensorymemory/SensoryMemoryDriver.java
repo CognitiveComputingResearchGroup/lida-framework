@@ -38,7 +38,7 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 
 	@Override
 	public String toString() {
-		return Module.sensoryMemoryDriver + "";
+		return Module.SensoryMemoryDriver + "";
 	}
 	
 }//class SMDriver

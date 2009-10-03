@@ -22,7 +22,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	private int IMAGE_WIDTH = 5;
 	private double[][] environContent = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 	//
-	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(Module.environment, "matrix", environContent);
+	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(Module.Environment, "matrix", environContent);
 
 	public VisionEnvironment(int height, int width) {
 		super();
