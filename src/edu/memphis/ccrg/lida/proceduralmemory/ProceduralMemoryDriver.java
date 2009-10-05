@@ -27,12 +27,6 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 		//procMem.sendEvent();   // Change for Logger 
 	}// method
 
-	@Override
-	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		// TODO Auto-generated method stub
 		

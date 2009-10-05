@@ -3,11 +3,17 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.pam.ExcitationTask;
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		TaskSpawner {

@@ -20,12 +20,6 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 		sm.processSensors();		
 	}
 
-	@Override
-	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		// TODO Auto-generated method stub
 		

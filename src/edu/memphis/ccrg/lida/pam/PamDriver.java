@@ -30,26 +30,11 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider{
 	
 	@Override
 	protected void runThisDriver() {
-		FrameworkGuiEvent event = new TaskCountEvent(Module.PerceptualAssociativeMemory, 
-													 getSpawnedTaskCount());
-		sendEvent(event);
+	//	FrameworkGuiEvent event = new TaskCountEvent(Module.PerceptualAssociativeMemory, 
+	//												 getSpawnedTaskCount());
+	//	sendEvent(event);
 		pam.decayPam();  //Decay the activations	
 	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void processResults(LidaTask task) {
-		try {
-			List<Object> results = (List<Object>) ((Future) task).get();
-			Set<PamNode> nodes = (Set<PamNode>) results.get(ExcitationTask.nodesIndex);
-			Double amount = (Double) results.get(ExcitationTask.amountIndex);
-			pam.receiveActivationBurst(nodes, amount);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	}//method
 	
 	//**************GUI***************
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

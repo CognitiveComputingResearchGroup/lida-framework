@@ -211,9 +211,6 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		for (FrameworkGuiEventListener fg : frameworkGuis)
 			fg.receiveGuiEvent(evt);
 	}
-	@Override
-	protected void processResults(LidaTask task) {
-	}
 
 	@Override
 	public String toString() {

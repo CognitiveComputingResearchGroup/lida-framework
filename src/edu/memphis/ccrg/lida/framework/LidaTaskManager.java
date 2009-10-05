@@ -1,6 +1,13 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.pam.ExcitationTask;
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 public class LidaTaskManager extends TaskSpawnerImpl {
 	
@@ -114,9 +121,20 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		// Not applicable
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
 	protected void processResults(LidaTask task) {
-		// Not applicable
-	}
+		try {
+			List<Object> results = (List<Object>) ((Future) task).get();
+			Set<PamNode> nodes = (Set<PamNode>) results.get(ExcitationTask.nodesIndex);
+			Double amount = (Double) results.get(ExcitationTask.amountIndex);
+	//		pam.receiveActivationBurst(nodes, amount);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}//method
 
 	@Override
 	public String toString() {

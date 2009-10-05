@@ -20,13 +20,6 @@ public class PerceptualBufferDriver extends ModuleDriverImpl {
 		pb.cueEpisodicMemory();
 	}
 
-	@Override
-	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		// TODO Auto-generated method stub
 		

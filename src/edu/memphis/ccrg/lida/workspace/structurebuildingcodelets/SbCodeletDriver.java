@@ -9,6 +9,7 @@ import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -19,9 +20,10 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 
 	private Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	private SbCodeletFactory sbCodeletFactory;
+	private TaskSpawner taskSpawner;
 
-	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm);
+	public SbCodeletDriver(Workspace w, int ticksPerCycle, TaskSpawner tm) {
+		super(ticksPerCycle, (LidaTaskManager) tm);
 		setNumberOfTicksPerStep(10);
 		sbCodeletFactory = SbCodeletFactory.getInstance(w);
 	}// method
@@ -53,19 +55,14 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	 * @param type - See SBCodeletFactory for which integer values correspond to
 	 * which type
 	 */
+	@SuppressWarnings("unused")
 	private void spawnNewCodelet(int type, double activation, 
 								 NodeStructure context, CodeletAction actions){
 		//TODO: use factory?
 		StructureBuildingCodelet sbc = null;//sbCodeletFactory.getCodelet(type, activation, context, actions);
-		addTask(sbc);
+		taskSpawner.addTask(sbc);
 		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
 	}// method
-
-	@Override
-	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public String toString() {

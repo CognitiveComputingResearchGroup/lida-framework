@@ -19,19 +19,10 @@ public class BroadcastQueueDriver extends ModuleDriverImpl implements GuiEventPr
 		broadcastQueue = bq;
 	}// method
 
-
 	public void runThisDriver() {
 		//bBuffer.activateCodelets();
 	//	broadcastQueue.sendEvent();
 	}
-
-
-	@Override
-	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 
 	//**************GUI***************
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();

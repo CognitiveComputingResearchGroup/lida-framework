@@ -42,10 +42,10 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private NodeStructure broadcastContent = new NodeStructureImpl();
     private NodeStructure preafferantSignal = new NodeStructureImpl();
 	//
-	private PamDriver taskSpawner;
+	private TaskSpawner taskSpawner;
 	
 	public void setTaskSpawner(TaskSpawner spawner) {
-		taskSpawner = (PamDriver) spawner;
+		taskSpawner = spawner;
 	}
 
 	public void addNodes(Set<PamNode> nodes) {
@@ -118,7 +118,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
 		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, 
-												 this, taskSpawner.getTaskManager());
+												 this, taskSpawner);
 		taskSpawner.addTask(task);		
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
@@ -127,7 +127,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	public void checkIfOverThreshold(PamNode pamNode){
-		ThresholdTask task = new ThresholdTask(pamNode, this, taskSpawner.getTaskManager());
+		ThresholdTask task = new ThresholdTask(pamNode, this, taskSpawner);
 		taskSpawner.addTask(task);
 	}
 	

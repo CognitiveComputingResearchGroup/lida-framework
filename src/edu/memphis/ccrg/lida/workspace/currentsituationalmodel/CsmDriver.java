@@ -19,12 +19,6 @@ public class CsmDriver extends ModuleDriverImpl {
 		csm.sendCSMContent();
 	}
 
-	@Override
-	protected void processResults(LidaTask task) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		// TODO Auto-generated method stub
 		

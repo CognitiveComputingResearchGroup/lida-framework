@@ -164,8 +164,8 @@ public class Lida {
 		
 		//Pam Driver
 		pamDriver = new PamDriver(pam, pamTicksPerStep, taskManager);
-		pam.setTaskSpawner(pamDriver);
-		pamDriver.setInitialTasks(pam.getFeatureDetectors());
+		pam.setTaskSpawner(taskManager);
+		taskManager.setInitialTasks(pam.getFeatureDetectors());
 		moduleDrivers.add(pamDriver);
 		
 		//Perceptual Buffer Driver

@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.logging.Logger;
 
-public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements ModuleDriver {
+public abstract class ModuleDriverImpl extends LidaTaskImpl implements ModuleDriver {
 
 	private static Logger logger = Logger.getLogger("lida.framework.ModuleDriverImpl");
 
