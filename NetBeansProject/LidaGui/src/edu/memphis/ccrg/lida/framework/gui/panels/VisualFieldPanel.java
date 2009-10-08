@@ -10,6 +10,8 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.*;
 import javax.swing.JPanel;
 

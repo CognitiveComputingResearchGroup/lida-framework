@@ -334,11 +334,11 @@ public class Lida {
 		return taskManager;
 	}
 
-	public void addPanels(Collection<LidaPanel> panels) {
-		for(ModuleDriver m: moduleDrivers){
-			for(LidaPanel p: panels)
-				m.addFrameworkGuiEventListener(p);
-		}//
-	}
+//	public void addPanels(Collection<LidaPanel> panels) {
+//		for(ModuleDriver m: moduleDrivers){
+//			for(LidaPanel p: panels)
+//				m.addFrameworkGuiEventListener(p);
+//		}//
+//	}
 
 }//class

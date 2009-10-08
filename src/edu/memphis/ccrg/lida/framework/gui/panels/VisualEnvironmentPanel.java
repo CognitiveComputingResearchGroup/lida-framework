@@ -81,6 +81,13 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 			jTextArea1.setText(s);
 		}
 	}
+	
+	public void initPanel(String[] params){
+		Environment e=lida.getEnvironment();
+		if (e instanceof GuiEventProvider){
+			((GuiEventProvider)e).addFrameworkGuiEventListener(this);
+		}
+	}
 
 	public String convertToString(double[][] a) {
 		String res = "";

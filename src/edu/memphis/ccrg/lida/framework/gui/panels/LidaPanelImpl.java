@@ -85,7 +85,7 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
     public void setSupportedModule(Module module) {
          this.supportedModule=module;
     }
-
-	public void receiveGuiEvent(FrameworkGuiEvent event){}
 	
+	public void initPanel(String[] param){
+	}
 }

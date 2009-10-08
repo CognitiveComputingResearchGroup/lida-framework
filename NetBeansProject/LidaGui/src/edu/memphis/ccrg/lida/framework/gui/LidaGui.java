@@ -1,5 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
+/* To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
@@ -16,8 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -37,22 +38,24 @@ import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
 public class LidaGui extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 100L;
+	private static int PANEL_NAME=0;
+	private static int CLASS_NAME=1;
+	private static int PANEL_POSITION=2;
+	private static int TAB_ORDER=3;
+	private static int MUST_REFRESH=4;
+	private static int FIRST_PARAM=5;
 
 	private List<LidaPanel> panels = new ArrayList<LidaPanel>();
 	private Lida lida;
 	private LidaGuiController controller;
 	private Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
 
-	public LidaGui(Lida lida, LidaGuiController controller, String panelsFile) {
+	public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {
 		initComponents();
 		this.lida = lida;
 		this.controller = controller;
-
-		if (panelsFile == null || panelsFile.equals("")) {
-			panelsFile = "configs/guiPanels.properties";
-		}
 			
-		loadPanels(panelsFile);
+		loadPanels(panelProperties);
 		pack();
 		logger.info("LidaGUI started\n");
 	}
@@ -62,41 +65,51 @@ public class LidaGui extends javax.swing.JFrame {
 	 * @param controller
 	 * @param panelsFile
 	 */
-	private void loadPanels(String panelsFile) {
-		Properties panelProp = new Properties();
-		if (panelsFile != null) {
-			try {
-				panelProp.load(new BufferedReader(new FileReader(panelsFile)));
-			} catch (FileNotFoundException e) {
-				throw new IllegalArgumentException();
-			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error reading GuiPanels List {0}", e
-						.getMessage());
-			}
-		} else {
-			logger.log(Level.WARNING, "GuiPanels File no especified");
-		}
-
+	private void loadPanels(Properties panelProp) {
+		
+		String [][] panelsArray=new String [panelProp.size()][];		
+		int i=0;
 		for (Object key : panelProp.keySet()) {
-			LidaPanel panel;
 			String line = panelProp.getProperty((String) key);
-			String[] vals = line.split(","); // name,class,pos,refresh[Y/N]
-			if (!(vals.length == 4)) {
+			String[] vals = line.split(","); // name,class,pos,tab Order,refresh[Y/N],[optional parameters],...			
+			if ((vals.length < FIRST_PARAM)) {
 				logger.warning("Error reading line for Panel " + key);
-				continue;
+			}else{
+				panelsArray[i++]=vals;
 			}
+		}
+		Arrays.sort(panelsArray, new Comparator<String[]>(){ //sort panel by position and tab order
+			public int compare(String[] arg0, String[] arg1) {
+				String s1=arg0[PANEL_POSITION];
+				String s2=arg1[PANEL_POSITION];			
+				int pos=s1.compareToIgnoreCase(s2);
+				if (pos==0){
+					s1=arg0[TAB_ORDER];
+					s2=arg1[TAB_ORDER];			
+					pos=s1.compareToIgnoreCase(s2);
+				}			
+				return pos;	
+			}
+		});
+		
+		for (String [] vals : panelsArray) {
+			LidaPanel panel;
+
 			try {
-				panel = (LidaPanel) (Class.forName(vals[1])).newInstance();
+				panel = (LidaPanel) (Class.forName(vals[CLASS_NAME])).newInstance();
 			} catch (Exception e) {
 				logger.warning(e.toString());
 				continue;
 			}
-			panel.setName(vals[0]);
-			panel.registrerLida(lida);
+			panel.setName(vals[PANEL_NAME]);
+			panel.registerLida(lida);
 			panel.registrerLidaGuiController(controller);
-			addLidaPanel(panel, vals[2]);
+			String[] param = new String [vals.length-FIRST_PARAM];
+			System.arraycopy(vals, FIRST_PARAM, param,0, vals.length-FIRST_PARAM);
+			panel.initPanel(param);
+			addLidaPanel(panel, vals[PANEL_POSITION]);
 			panels.add(panel);
-			if (vals[3].equalsIgnoreCase("Y")) {
+			if (vals[MUST_REFRESH].equalsIgnoreCase("Y")) {
 				panel.refresh();
 			}
 		}
@@ -111,8 +124,6 @@ public class LidaGui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBar1 = new javax.swing.JToolBar();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
         jTabbedPanelR = new javax.swing.JTabbedPane();
@@ -128,21 +139,12 @@ public class LidaGui extends javax.swing.JFrame {
         copyMenuItem = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jToolBar1.setRollover(true);
-
-        jToggleButton1.setText("jToggleButton1");
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jToggleButton1);
-
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
@@ -191,6 +193,9 @@ public class LidaGui extends javax.swing.JFrame {
 
         menuBar.add(editMenu);
 
+        jMenu1.setText("Panels");
+        menuBar.add(jMenu1);
+
         helpMenu.setText("Help");
 
         contentsMenuItem.setText("Contents");
@@ -220,11 +225,10 @@ public class LidaGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPanelR;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
@@ -232,7 +236,6 @@ public class LidaGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
-	
 	
 	/**
 	 * Adds a Panel to the main GUI.
@@ -242,23 +245,27 @@ public class LidaGui extends javax.swing.JFrame {
 	 * @param panelPosition
 	 *            Determines where the panel is going to be placed. </br>
 	 *            A: Upper Left position. </br>
-	 *            B: Lower Left position. </br>
-	 *            TAB: In a new TAB. </br>
+	 *            B: Upper Right position. In a new TAB</br>
+	 *            C: Lower position. In a new TAB</br>
+	 *			  TOOL: In the ToolBox </br>
 	 *            FLOAT: In a new frame. </br>
 	 */
 	private void addLidaPanel(LidaPanel panel, String panelPosition) {
 		JPanel jPanel = panel.getPanel();
-		if ("A".equals(panelPosition)) {
+
+		if ("A".equalsIgnoreCase(panelPosition)) {
 			jSplitPane2.setTopComponent(jPanel);
-		} else if ("B".equals(panelPosition)) {
-			jSplitPane2.setBottomComponent(jPanel);
-		} else if ("TAB".equals(panelPosition)) {
+		} else if ("B".equalsIgnoreCase(panelPosition)) {
+			jTabbedPanelR.addTab(panel.getName(), jPanel);
+		} else if ("C".equalsIgnoreCase(panelPosition)) {
 			principalTabbedPanel.addTab(panel.getName(), jPanel);
-		} else if ("FLOAT".equals(panelPosition)) {
+		} else if ("FLOAT".equalsIgnoreCase(panelPosition)) {
 			JDialog dialog=new JDialog(this,panel.getName());
 			dialog.add(jPanel);
 			dialog.pack();
 			dialog.setVisible(true);
+		} else if ("TOOL".equalsIgnoreCase(panelPosition)) {
+			getContentPane().add(jPanel, java.awt.BorderLayout.PAGE_START);
 		} else {
 			logger.warning("Position error for panel " + panel.getName()
 					+ " pos:" + panelPosition);
@@ -271,3 +278,4 @@ public class LidaGui extends javax.swing.JFrame {
 
 
 }
+

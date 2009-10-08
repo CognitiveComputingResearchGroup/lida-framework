@@ -34,7 +34,6 @@ public class LidaFactory {
 	        	//Create the controller
 	        	LidaGuiController controller = new LidaGuiControllerImpl(lida, commandsPropertiesPath);
 	        	LidaGui lidaGui = new LidaGui(lida, controller, panelsProperties);
-	        	lida.addPanels(lidaGui.getPanels());
 	        	//Start the GUI
 	            lidaGui.setVisible(true);
 	        }//run

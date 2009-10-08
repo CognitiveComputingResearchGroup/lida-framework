@@ -2,26 +2,34 @@ package edu.memphis.ccrg.lida.framework;
 
 public enum Module {
 	
-	environment, 
-	sensoryMemory,
-	perceptualAssociativeMemory,
+	Environment, 
+	SensoryMemory,
+	PerceptualAssociativeMemory,
 	
-	transientEpisodicMemory,
-	declarativeMemory,
+	TransientEpisodicMemory,
+	DeclarativeMemory,
 	
-	perceptualBuffer,
-	episodicBuffer,
-	broadcastQueue,
-	currentSituationalModel,
+	PerceptualBuffer,
+	EpisodicBuffer,
+	BroadcastQueue,
+	CurrentSituationalModel,
 	
-	structureBuildingCodelets,
-	attentionCodelets,	
-	globalWorkspace,
+	StructureBuildingCodelets,
+	AttentionCodelets,	
+	GlobalWorkspace,
 	
-	proceduralMemory,
-	actionSelection,
-	sensoryMotorMemory,
+	ProceduralMemory,
+	ActionSelection,
+	SensoryMotorMemory,
 	
-	allModules,
-	noModule
+	AllModules,
+	NoModule, 
+	
+	SensoryMemoryDriver,
+	PamDriver,
+	PerceptualBufferDriver,
+	AttentionDriver,
+	SbCodeletDriver, 
+	TemDriver, 
+	ProceduralDriver
 }
