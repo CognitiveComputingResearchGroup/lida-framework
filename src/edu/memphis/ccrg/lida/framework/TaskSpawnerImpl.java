@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import edu.memphis.ccrg.lida.pam.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
@@ -221,8 +220,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		executorService.shutdown();
 
 		this.setTaskStatus(LidaTask.CANCELLED);
-		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString()
-				+ "\n");
+		logger.log(Level.FINE, "Shutdown TaskSpawner " + this.toString() + "\n");
 	}// method
 
 	public void setTaskManager(LidaTaskManager taskManager) {

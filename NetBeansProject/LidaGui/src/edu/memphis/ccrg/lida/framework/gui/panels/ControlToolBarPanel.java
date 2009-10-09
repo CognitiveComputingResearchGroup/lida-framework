@@ -54,14 +54,17 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
 
         jComboBox1 = new javax.swing.JComboBox();
         toolbar = new javax.swing.JToolBar();
+        startPauseButton = new javax.swing.JButton();
+        statusLabel = new javax.swing.JLabel();
+        quitButton = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         ticksModeTB = new javax.swing.JToggleButton();
         addTicksButton = new javax.swing.JButton();
         tiksTB = new javax.swing.JTextField();
-        speedSlider = new javax.swing.JSlider();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
         jLabel2 = new javax.swing.JLabel();
+        speedSlider = new javax.swing.JSlider();
         sleepTimeTextField = new javax.swing.JTextField();
-        startPauseButton = new javax.swing.JButton();
-        statusLabel = new javax.swing.JLabel();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -70,6 +73,36 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
         toolbar.setRollover(true);
         toolbar.setPreferredSize(new java.awt.Dimension(50, 25));
 
+        startPauseButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        startPauseButton.setText("Start/Pause");
+        startPauseButton.setFocusable(false);
+        startPauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        startPauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        startPauseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startPauseButtonActionPerformed(evt);
+            }
+        });
+        toolbar.add(startPauseButton);
+
+        statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        statusLabel.setText("Paused");
+        toolbar.add(statusLabel);
+
+        quitButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        quitButton.setText("Quit");
+        quitButton.setFocusable(false);
+        quitButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        quitButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        quitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitButtonActionPerformed(evt);
+            }
+        });
+        toolbar.add(quitButton);
+        toolbar.add(jSeparator2);
+
+        ticksModeTB.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         ticksModeTB.setText("Ticks mode");
         ticksModeTB.setFocusable(false);
         ticksModeTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -81,7 +114,8 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
         });
         toolbar.add(ticksModeTB);
 
-        addTicksButton.setText("add ticks");
+        addTicksButton.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        addTicksButton.setText("Add ticks");
         addTicksButton.setFocusable(false);
         addTicksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addTicksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -94,6 +128,11 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
 
         tiksTB.setText("0");
         toolbar.add(tiksTB);
+        toolbar.add(jSeparator1);
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabel2.setText("Ticks Scale (ms)");
+        toolbar.add(jLabel2);
 
         speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -102,26 +141,8 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
         });
         toolbar.add(speedSlider);
 
-        jLabel2.setText("Ticks Scale (ms)");
-        toolbar.add(jLabel2);
-
         sleepTimeTextField.setText("--");
         toolbar.add(sleepTimeTextField);
-
-        startPauseButton.setText("Start/Pause");
-        startPauseButton.setFocusable(false);
-        startPauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        startPauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        startPauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startPauseButtonActionPerformed(evt);
-            }
-        });
-        toolbar.add(startPauseButton);
-
-        statusLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18));
-        statusLabel.setText("Paused");
-        toolbar.add(statusLabel);
 
         add(toolbar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -167,11 +188,18 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
         // TODO add your handling code here:
     }//GEN-LAST:event_ticksModeTBActionPerformed
 
+    private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_quitButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTicksButton;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JButton quitButton;
     private javax.swing.JTextField sleepTimeTextField;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton startPauseButton;
