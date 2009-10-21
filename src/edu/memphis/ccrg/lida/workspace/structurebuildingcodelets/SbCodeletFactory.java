@@ -48,8 +48,6 @@ public class SbCodeletFactory {
 	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
 	//
-	//
-	private CodeletAccessible perceptualBuffer;
 	private CodeletAccessible episodicBuffer;
 	private CodeletAccessible broadcastQueue;
 	private CodeletAccessible csmReadable;	
@@ -83,7 +81,6 @@ public class SbCodeletFactory {
 		defaultDecay = new LinearDecayBehavior();
 		defaultExcite = new DefaultExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
-		perceptualBuffer = workspace.getPerceptualBuffer();
 		episodicBuffer = workspace.getEpisodicBuffer();
 		broadcastQueue = workspace.getBroadcastQueue();
 		csmReadable = workspace.getCSM();
@@ -151,7 +148,6 @@ public class SbCodeletFactory {
 				codelet.setCodeletAction(defaultActions);			
 				
 				if(type == PERCEPTUAL_TYPE){
-					codelet.addReadableBuffer(perceptualBuffer.getBufferContent());
 					codelet.addWritableModule(csm);
 				}else if(type == EPISODIC_TYPE){
 					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
@@ -163,7 +159,6 @@ public class SbCodeletFactory {
 					codelet.addReadableBuffer(csmReadable.getBufferContent());
 					codelet.addWritableModule(csm);
 				}else if(type == ALL_TYPE){
-					codelet.addReadableBuffer(perceptualBuffer.getBufferContent());
 					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
 					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
 					codelet.addReadableBuffer(csmReadable.getBufferContent());

@@ -8,11 +8,14 @@ import java.util.List;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.PamListener;
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
-public class CurrentSituationalModelImpl implements CurrentSituationalModel{
+public class CurrentSituationalModelImpl implements CurrentSituationalModel, PamListener{
 	
 	private NodeStructure model = new NodeStructureImpl();
 	private List<WorkspaceBufferListener> csmListeners = new ArrayList<WorkspaceBufferListener>();
@@ -69,6 +72,21 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel{
 		List<NodeStructure> list = new ArrayList<NodeStructure>();
 		list.add(model);
 		return Collections.unmodifiableCollection(list);
+	}
+
+	public void receiveLink(Link l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void receiveNode(PamNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void receiveNodeStructure(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class

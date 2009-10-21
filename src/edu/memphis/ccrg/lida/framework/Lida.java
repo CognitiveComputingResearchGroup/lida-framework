@@ -78,7 +78,6 @@ public class Lida {
 	// Workspace
 	private Workspace workspace;
 	private SbCodeletDriver sbCodeletDriver;
-	private PerceptualBuffer perceptualBuffer;
 	private PerceptualBufferDriver pbDriver;
 	// Attention
 	private AttentionDriver attentionDriver;
@@ -128,9 +127,7 @@ public class Lida {
 		//Workspace
 		int episodicBufferCapacity = 2; //TODO: Will this be unnecessary?
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
-		perceptualBuffer = new PerceptualBufferImpl();
-		workspace = new WorkspaceImpl(perceptualBuffer,
-									  new EpisodicBufferImpl(episodicBufferCapacity), 
+		workspace = new WorkspaceImpl(new EpisodicBufferImpl(episodicBufferCapacity), 
 									  new BroadcastQueueImpl(queueCapacity),
 									  new CurrentSituationalModelImpl());
 		
@@ -167,10 +164,6 @@ public class Lida {
 		pam.setTaskSpawner(taskManager);
 		taskManager.setInitialTasks(pam.getFeatureDetectors());
 		moduleDrivers.add(pamDriver);
-		
-		//Perceptual Buffer Driver
-		pbDriver = new PerceptualBufferDriver(perceptualBuffer, 10, taskManager);
-		moduleDrivers.add(pbDriver);
 		
 		//Attention Driver
 		attentionDriver = new AttentionDriver(workspace.getCSM(), globalWksp, attnTicksPerStep, taskManager);
@@ -224,23 +217,31 @@ public class Lida {
 			logger.warning("Cannot add PAM as a listener");
 		
 		//PerceptualBuffer ---> Workspace
-		if(workspace instanceof WorkspaceBufferListener)
-			perceptualBuffer.addBufferListener((WorkspaceBufferListener) workspace);
+//		if(workspace instanceof WorkspaceBufferListener)
+//			perceptualBuffer.addBufferListener((WorkspaceBufferListener) workspace);
+//		
 		
+		//Global Workspace ---> PAM
 		if(pam instanceof BroadcastListener)
-			globalWksp.addBroadcastListener((BroadcastListener) pam);			
+			globalWksp.addBroadcastListener((BroadcastListener) pam);
+		//Global Workspace ---> Workspace
 		if(workspace instanceof BroadcastListener)	
 			globalWksp.addBroadcastListener((BroadcastListener) workspace);
+		//Global Workspace ---> TEM
 		if(tem instanceof BroadcastListener)
 			globalWksp.addBroadcastListener((BroadcastListener) tem);
+		//Global Workspace ---> ATTN
 		if(attentionDriver instanceof BroadcastListener)
 			globalWksp.addBroadcastListener((BroadcastListener) attentionDriver);
+		//Global Workspace ---> Procedural Memory
 		if(proceduralMemory instanceof BroadcastListener)
 			globalWksp.addBroadcastListener((BroadcastListener) proceduralMemory);
 
+		//Procedural Memory ---> Action Selection
 		if(actionSelection instanceof ProceduralMemoryListener)
 			proceduralMemory.addProceduralMemoryListener((ProceduralMemoryListener)actionSelection);
 		
+		//Action Selection ---> Workspace
 		if(workspace instanceof ActionSelectionListener)
 			actionSelection.addActionSelectionListener((ActionSelectionListener)workspace);
 		actionSelection.addActionSelectionListener(environment);
@@ -254,7 +255,7 @@ public class Lida {
 	}
 
 	/**
-	 * @return the ENVIRONMENT
+	 * @return the Environment
 	 */
 	public Environment getEnvironment() {
 		return environment;
@@ -333,12 +334,5 @@ public class Lida {
 	public LidaTaskManager getTaskManager() {
 		return taskManager;
 	}
-
-//	public void addPanels(Collection<LidaPanel> panels) {
-//		for(ModuleDriver m: moduleDrivers){
-//			for(LidaPanel p: panels)
-//				m.addFrameworkGuiEventListener(p);
-//		}//
-//	}
 
 }//class

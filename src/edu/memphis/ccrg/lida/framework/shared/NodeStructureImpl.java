@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
