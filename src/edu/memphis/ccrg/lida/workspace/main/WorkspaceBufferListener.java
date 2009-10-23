@@ -5,7 +5,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * A WorkspaceBuffer listener must receive buffer content.
- * The source of the content is coded using an int.  
+ * The WorkspaceImpl class is an example of a WorkspaceBufferListener
  * 
  * @author ryanjmccall
  *

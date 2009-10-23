@@ -1,13 +1,16 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionContent;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
@@ -16,6 +19,8 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBuffer;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletWritable;
 
 /**
  * 
@@ -32,13 +37,17 @@ public class WorkspaceImpl implements Workspace, PamListener,
 									  LocalAssociationListener,
 									  BroadcastListener, 
 									  ActionSelectionListener, 
-									  WorkspaceBufferListener{
+									  WorkspaceBufferListener,  
+									  CodeletWritable, 
+									  CodeletAccessible{
 	
 	//Workspace contains these components
 	//private PerceptualBuffer perceptualBuffer;
 	private EpisodicBuffer episodicBuffer;
 	private BroadcastQueue broadcastQueue;
 	private CurrentSituationalModel csm;
+	
+	private static Logger logger = Logger.getLogger("lida.workspace.main.WorkpaceImpl");
 	
 	//These listeners listen buffers of the Workspace
 	/**
@@ -58,7 +67,7 @@ public class WorkspaceImpl implements Workspace, PamListener,
 		
 		//Register the Workspace as a listener of these buffers:
 		episodicBuffer.addBufferListener(this);
-		this.csm.addBufferListener(this);
+		csm.addBufferListener(this);
 	}//
 
 	
@@ -134,13 +143,6 @@ public class WorkspaceImpl implements Workspace, PamListener,
 	}
 
 	/**
-	 * Codelets use this to access CSM
-	 */
-	public void addContentToCSM(NodeStructure updatedContent) {
-		csm.addWorkspaceContent(updatedContent);		
-	}
-
-	/**
 	 * For Codelets to access the buffers
 	 */
 	public CurrentSituationalModel getCSM() {
@@ -157,5 +159,36 @@ public class WorkspaceImpl implements Workspace, PamListener,
 	 * Not applicable for WorkspaceImpl
 	 */
 	public void learn() {}
+
+	/**
+	 * Adds NodeStructure ns to Module m
+	 */
+	public void addCodeletContent(Module m, NodeStructure ns) {
+		if(m == Module.CurrentSituationalModel)
+			((CodeletWritable) csm).addCodeletContent(m, ns);
+		else 
+			logger.warning("codelet wants to add content to unsupported module "+ this);
+	}
+
+
+	public NodeStructure getBufferContent(Module m) {
+		if(m == Module.EpisodicBuffer)
+			return episodicBuffer.getBufferContent(m);
+		else if(m == Module.CurrentSituationalModel)
+			return csm.getModel();
+		else if(m == Module.BroadcastQueue)
+			return broadcastQueue.getBufferContent(m);
+		else {
+			logger.warning("Request to get non-existent workspace buffer " + 
+							m + " by " + this.toString());
+			return new NodeStructureImpl();
+		}
+	}
+
+
+	public Collection<NodeStructure> getContentCollection(Module m) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }//class

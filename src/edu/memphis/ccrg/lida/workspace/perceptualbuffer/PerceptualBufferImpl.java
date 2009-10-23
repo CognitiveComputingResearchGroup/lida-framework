@@ -15,6 +15,11 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 
+/**
+ * Not used.
+ * @author ryanjmccall
+ *
+ */
 public class PerceptualBufferImpl implements PerceptualBuffer, PamListener{
 	
 	private NodeStructure perceptualBuffer = new NodeStructureImpl();	
@@ -37,7 +42,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, PamListener{
 		perceptualBuffer.mergeWith(node);
 	}
 
-	public NodeStructure getBufferContent() {
+	public NodeStructure getBufferContent(Module m) {
 		return perceptualBuffer;
 	}
 
@@ -51,7 +56,7 @@ public class PerceptualBufferImpl implements PerceptualBuffer, PamListener{
 			gui.receiveGuiEvent(evt);
 	}//method
 
-	public Collection<NodeStructure> getContentCollection() {
+	public Collection<NodeStructure> getContentCollection(Module m) {
 		List<NodeStructure> list = new ArrayList<NodeStructure>();
 		list.add(perceptualBuffer);
 		return list;

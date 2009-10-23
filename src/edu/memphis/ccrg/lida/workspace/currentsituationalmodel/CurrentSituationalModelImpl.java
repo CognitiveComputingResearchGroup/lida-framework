@@ -14,8 +14,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletWritable;
 
-public class CurrentSituationalModelImpl implements CurrentSituationalModel, PamListener{
+public class CurrentSituationalModelImpl implements CurrentSituationalModel, PamListener, CodeletWritable{
 	
 	private NodeStructure model = new NodeStructureImpl();
 	private List<WorkspaceBufferListener> csmListeners = new ArrayList<WorkspaceBufferListener>();
@@ -23,18 +24,8 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Pam
 	public void addBufferListener(WorkspaceBufferListener l){
 		csmListeners.add(l);
 	}
-	
-	public synchronized void addCodeletContent(NodeStructure ns) {
-		model.mergeWith(ns);
-	}
-	
-	public NodeStructure getModel(){
-		//TODO: this needs to be more sophisticated
-		return new NodeStructureImpl(model);
-	}
-	
 	/**
-	 * Send content to listeners, e.g. TEM, DM
+	 * Sends content to listeners, e.g. TEM, DM
 	 */
 	public void sendCSMContent(){
 		for(WorkspaceBufferListener l: csmListeners)
@@ -44,11 +35,14 @@ public class CurrentSituationalModelImpl implements CurrentSituationalModel, Pam
 	/**
 	 * Called by Workspace.  Codelets are typically adding the content.
 	 */
-	public synchronized void addWorkspaceContent(NodeStructure content) {
-		model.mergeWith((NodeStructure) content);	
-	}//method
+	public synchronized void addCodeletContent(Module m, NodeStructure ns) {
+		model.mergeWith(ns);
+	}
 	
-
+	public NodeStructure getModel(){
+		//TODO: this needs to be more sophisticated
+		return new NodeStructureImpl(model);
+	}
 	public NodeStructure getCSMContent(){
 		//TODO: this needs to be more sophisticated
 		return new NodeStructureImpl(model);

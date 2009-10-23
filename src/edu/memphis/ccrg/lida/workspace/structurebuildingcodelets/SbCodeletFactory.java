@@ -50,8 +50,8 @@ public class SbCodeletFactory {
 	//
 	private CodeletAccessible episodicBuffer;
 	private CodeletAccessible broadcastQueue;
-	private CodeletAccessible csmReadable;	
-	private CodeletWritable csm;
+//	private CodeletAccessible csmReadable;	
+//	private CodeletWritable csm;
 	//
 	private double defaultActivation = 1.0;	
 	private NodeStructure defaultObjective = new NodeStructureImpl();
@@ -83,8 +83,8 @@ public class SbCodeletFactory {
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 		episodicBuffer = workspace.getEpisodicBuffer();
 		broadcastQueue = workspace.getBroadcastQueue();
-		csmReadable = workspace.getCSM();
-		csm = workspace.getCSM();	
+//		csmReadable = workspace.getCSM();
+//		csm = workspace.getCSM();	
 	}
 	
 	/**
@@ -147,23 +147,23 @@ public class SbCodeletFactory {
 				codelet.setSoughtContent(defaultObjective);
 				codelet.setCodeletAction(defaultActions);			
 				
-				if(type == PERCEPTUAL_TYPE){
-					codelet.addWritableModule(csm);
-				}else if(type == EPISODIC_TYPE){
-					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
-					codelet.addWritableModule(csm);
-				}else if(type == BROADCAST_TYPE){
-					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
-					codelet.addWritableModule(csm);
-				}else if(type == CSM_TYPE){
-					codelet.addReadableBuffer(csmReadable.getBufferContent());
-					codelet.addWritableModule(csm);
-				}else if(type == ALL_TYPE){
-					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
-					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
-					codelet.addReadableBuffer(csmReadable.getBufferContent());
-					codelet.addWritableModule(csm);
-				}
+//				if(type == PERCEPTUAL_TYPE){
+//					codelet.addWritableModule(csm);
+//				}else if(type == EPISODIC_TYPE){
+//					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
+//					codelet.addWritableModule(csm);
+//				}else if(type == BROADCAST_TYPE){
+//					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
+//					codelet.addWritableModule(csm);
+//				}else if(type == CSM_TYPE){
+//					codelet.addReadableBuffer(csmReadable.getBufferContent());
+//					codelet.addWritableModule(csm);
+//				}else if(type == ALL_TYPE){
+//					codelet.addReadableBuffer(episodicBuffer.getBufferContent());
+//					codelet.addReadableBuffer(broadcastQueue.getBufferContent());
+//					codelet.addReadableBuffer(csmReadable.getBufferContent());
+//					codelet.addWritableModule(csm);
+//				}
 			} catch (InstantiationException e) {
 			} catch (IllegalAccessException e) {
 			} catch (ClassNotFoundException e) {

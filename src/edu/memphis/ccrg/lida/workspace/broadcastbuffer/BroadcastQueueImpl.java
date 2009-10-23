@@ -5,14 +5,20 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
+/**
+ * This implementation stores incoming conscious broadcasts.  There is a limit on the 
+ * queue's capacity.
+ * 
+ * @author ryanjmccall
+ *
+ */
 public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
 	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
@@ -31,15 +37,15 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
 			broadcastQueue.remove(0);//remove oldest	
 	}
 
-	public NodeStructure getBufferContent() {
-		return null;
+	public NodeStructure getBufferContent(Module m) {
+		throw new UnsupportedOperationException();
 	}
 
 	public void learn() {
 		//Not applicable
 	}
 
-	public Collection<NodeStructure> getContentCollection() {
+	public Collection<NodeStructure> getContentCollection(Module m) {
 		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 

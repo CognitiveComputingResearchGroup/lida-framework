@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -36,8 +37,8 @@ public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListe
 			episodicBuffer.remove(0);//remove oldest	
 	}
 
-	public NodeStructure getBufferContent() {
-		return null;
+	public NodeStructure getBufferContent(Module m) {
+		throw new UnsupportedOperationException();
 	}
 
 	//**************GUI***************
@@ -50,7 +51,7 @@ public class EpisodicBufferImpl implements EpisodicBuffer, LocalAssociationListe
 			gui.receiveGuiEvent(evt);
 	}//method
 
-	public Collection<NodeStructure> getContentCollection() {
+	public Collection<NodeStructure> getContentCollection(Module m) {
 		return Collections.unmodifiableCollection(episodicBuffer);
 	}
 	

@@ -12,7 +12,8 @@ public class BasicCodeletAction implements CodeletAction {
 	}//method
 
 	public void performAction(NodeStructure buffer, CodeletWritable destination) {
-		destination.addCodeletContent(buffer);		
+		//destination.addCodeletContent(buffer);		
+		//MUST access buffers through workspace
 	}
 
 }//class
