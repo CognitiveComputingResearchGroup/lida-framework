@@ -10,12 +10,12 @@ package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public interface AttentionCodelet extends LidaTask{
 
-	public abstract boolean hasSoughtContent(CodeletAccessible csm);
+	public abstract boolean hasSoughtContent(WorkspaceBuffer csm);
 
-	public abstract NodeStructure getSoughtContent(CodeletAccessible csm);
+	public abstract NodeStructure getSoughtContent(WorkspaceBuffer csm);
 
 }

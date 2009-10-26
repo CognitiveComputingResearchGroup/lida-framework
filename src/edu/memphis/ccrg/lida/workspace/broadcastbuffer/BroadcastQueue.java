@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.broadcastbuffer;
 
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * The BroadcastQueue is the data structure storing the recent contents of consciousness.
@@ -9,6 +9,6 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessib
  * @author ryanjmccall
  *
  */
-public interface BroadcastQueue extends CodeletAccessible{
+public interface BroadcastQueue extends WorkspaceBuffer{
 
 }

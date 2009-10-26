@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+
 /**
  * An encapsulation of the action of a codelet.
  *
@@ -13,7 +15,7 @@ public interface CodeletAction {
 	 * @param buffer
 	 * @param destination
 	 */	
-	public void performAction(CodeletAccessible buffer);
+	public void performAction(WorkspaceBuffer buffer);
 	
 }
   

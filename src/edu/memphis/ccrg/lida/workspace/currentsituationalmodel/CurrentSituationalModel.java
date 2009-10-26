@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.currentsituationalmodel;
 
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferListener;
 
 /**
  * A CurrentSituationalModel is both CodeletWritable and Accessible.  It has methods
@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessib
  * @author ryanjmccall
  *
  */
-public interface CurrentSituationalModel extends CodeletAccessible{
+public interface CurrentSituationalModel extends WorkspaceBuffer{
 	
 	/**
 	 * Sends the CSM content to listeners.  For example when a cue to the episodic memories

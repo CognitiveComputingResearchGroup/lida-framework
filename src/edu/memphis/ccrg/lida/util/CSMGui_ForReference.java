@@ -22,8 +22,8 @@ import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferListener;
 
 public class CSMGui_ForReference extends javax.swing.JFrame implements WorkspaceBufferListener{
 

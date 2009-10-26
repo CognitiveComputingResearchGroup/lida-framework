@@ -10,12 +10,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class AttentionCodeletImpl extends LidaTaskImpl implements
 		AttentionCodelet {
 	
-	private CodeletAccessible csm; 
+	private WorkspaceBuffer csm; 
 	private GlobalWorkspace global;
 	private NodeStructure soughtContent;
 
@@ -39,7 +39,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 		}// if
 	}
 
-	public boolean hasSoughtContent(CodeletAccessible csm) {
+	public boolean hasSoughtContent(WorkspaceBuffer csm) {
 		NodeStructure model = csm.getModuleContent();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
@@ -54,7 +54,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 		return true;
 	}
 
-	public NodeStructure getSoughtContent(CodeletAccessible csm) {
+	public NodeStructure getSoughtContent(WorkspaceBuffer csm) {
 		if (hasSoughtContent(csm))
 			return csm.getModuleContent();
 		else

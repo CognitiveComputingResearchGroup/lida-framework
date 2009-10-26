@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
+package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collection;
 
@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * @author ryanjmccall
  *
  */
-public interface CodeletAccessible {
+public interface WorkspaceBuffer {
 
 	/**
 	 * @return NodeStructure representation of the buffer contents.
@@ -34,4 +34,5 @@ public interface CodeletAccessible {
 	public abstract boolean deleteNode(Node n);
 	
 	public abstract boolean deleteLink(Link l);
+	
 }

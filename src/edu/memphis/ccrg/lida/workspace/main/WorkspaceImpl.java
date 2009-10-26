@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBuffer;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferListener;
 
 /**
  * 

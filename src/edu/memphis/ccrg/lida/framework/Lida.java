@@ -41,13 +41,13 @@ import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModelImpl;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBuffer;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferDriver;
 import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferListener;
 
 /**
  * @author Javier Snaider

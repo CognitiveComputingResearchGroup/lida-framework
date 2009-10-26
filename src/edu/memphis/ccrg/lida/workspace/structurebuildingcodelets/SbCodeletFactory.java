@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * The CodeletFactory is responsible for loading codelets dynamically. There are
@@ -48,8 +49,8 @@ public class SbCodeletFactory {
 	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
 	//
-	private CodeletAccessible episodicBuffer;
-	private CodeletAccessible broadcastQueue;
+	private WorkspaceBuffer episodicBuffer;
+	private WorkspaceBuffer broadcastQueue;
 //	private CodeletAccessible csmReadable;	
 //	private CodeletWritable csm;
 	//

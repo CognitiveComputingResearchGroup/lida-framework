@@ -7,11 +7,12 @@ import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
 
 	//Initialized by constructor
-	private Set<CodeletAccessible> accessibleModules = new HashSet<CodeletAccessible>();
+	private Set<WorkspaceBuffer> accessibleModules = new HashSet<WorkspaceBuffer>();
 	
 	private NodeStructure soughtContent;
 	private CodeletAction action;
@@ -28,7 +29,7 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
 
 	protected void runThisLidaTask(){	
-		for(CodeletAccessible buffer: accessibleModules)
+		for(WorkspaceBuffer buffer: accessibleModules)
 			action.performAction(buffer);	
 		results.reportFinished();
 	}
@@ -48,10 +49,10 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 		return action;
 	}
 
-	public void addAccessibleModule(CodeletAccessible module) {
+	public void addAccessibleModule(WorkspaceBuffer module) {
 		accessibleModules.add(module);		
 	}
-	public Set<CodeletAccessible> getAccessibleModules() {
+	public Set<WorkspaceBuffer> getAccessibleModules() {
 		return accessibleModules;
 	}
 

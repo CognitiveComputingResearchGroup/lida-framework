@@ -15,8 +15,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferListener;
 
 public class CurrentSituationalModelImpl implements CurrentSituationalModel, PamListener, GuiEventProvider{
 	

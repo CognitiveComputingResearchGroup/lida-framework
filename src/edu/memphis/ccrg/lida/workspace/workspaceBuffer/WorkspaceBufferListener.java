@@ -1,6 +1,7 @@
-package edu.memphis.ccrg.lida.workspace.main;
+package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  * A WorkspaceBuffer listener must receive buffer content.
