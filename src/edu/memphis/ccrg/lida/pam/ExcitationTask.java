@@ -26,8 +26,8 @@ public class ExcitationTask extends LidaTaskImpl implements Future<List<Object>>
 	public ExcitationTask(PamNode node, double activation,
 			              PamNodeStructure pamNodeStructure, 
 			              PerceptualAssociativeMemory pam, 
-			              TaskSpawner taskSpawner) {
-		super(taskSpawner);
+			              LidaTaskManager tm) {
+		super(tm);
 		pamNode = node;
 		excitationAmount = activation;
 		nodeStruct = pamNodeStructure;

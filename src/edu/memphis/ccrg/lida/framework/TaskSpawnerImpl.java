@@ -3,16 +3,11 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import edu.memphis.ccrg.lida.pam.ExcitationTask;
-import edu.memphis.ccrg.lida.pam.PamNode;
 
 public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		TaskSpawner {
@@ -129,7 +124,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 * 
 	 * @param task
 	 */
-	protected abstract void processResults(LidaTask task);
+	protected void processResults(LidaTask task) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public Collection<LidaTask> getRunningTasks() {
 		logger.log(Level.FINEST, "getting all tasks");
@@ -220,7 +218,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		executorService.shutdown();
 
 		this.setTaskStatus(LidaTask.CANCELLED);
-		logger.log(Level.FINE, "Shutdown TaskSpawner " + this.toString() + "\n");
+		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString()
+				+ "\n");
 	}// method
 
 	public void setTaskManager(LidaTaskManager taskManager) {

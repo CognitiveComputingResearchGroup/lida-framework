@@ -114,7 +114,7 @@ public class Lida {
 		
 		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
-		
+		pam.setTaskManager(taskManager);
 		PamInitializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
 		
@@ -161,8 +161,8 @@ public class Lida {
 		
 		//Pam Driver
 		pamDriver = new PamDriver(pam, pamTicksPerStep, taskManager);
-		pam.setTaskSpawner(taskManager);
-		taskManager.setInitialTasks(pam.getFeatureDetectors());
+		pam.setTaskSpawner(pamDriver);
+		pamDriver.setInitialTasks(pam.getFeatureDetectors());
 		moduleDrivers.add(pamDriver);
 		
 		//Attention Driver

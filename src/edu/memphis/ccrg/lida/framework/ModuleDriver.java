@@ -12,6 +12,6 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
  * @author Ryan J. McCall
  *
  */
-public interface ModuleDriver extends LidaTask, GuiEventProvider{
+public interface ModuleDriver extends LidaTask, GuiEventProvider, TaskSpawner{
 
 }

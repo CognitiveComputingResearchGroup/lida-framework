@@ -42,5 +42,4 @@ public interface TaskSpawner extends LidaTask{
 	public abstract void pauseSpawnedTasks();
 
 	public abstract void resumeSpawnedTasks();
-	public abstract int getTickDuration();
 }

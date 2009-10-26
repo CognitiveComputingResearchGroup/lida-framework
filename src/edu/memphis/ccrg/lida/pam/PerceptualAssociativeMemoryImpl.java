@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -42,10 +43,18 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private NodeStructure broadcastContent = new NodeStructureImpl();
     private NodeStructure preafferantSignal = new NodeStructureImpl();
 	//
+	private LidaTaskManager taskManager;
 	private TaskSpawner taskSpawner;
 	
-	public void setTaskSpawner(TaskSpawner spawner) {
-		taskSpawner = spawner;
+	/**
+	 * @param taskSpawner the taskSpawner to set
+	 */
+	public void setTaskSpawner(TaskSpawner taskSpawner) {
+		this.taskSpawner = taskSpawner;
+	}
+
+	public void setTaskManager(LidaTaskManager tm) {
+		taskManager = tm;
 	}
 
 	public void addNodes(Set<PamNode> nodes) {
@@ -67,7 +76,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		if(node != null){
 			detector.setPamNode(node);
 			featureDetectors.add(detector);
-			//taskSpawner.addTask(detector);
+			//taskManager.addTask(detector);
 			return true;
 		}else
 			logger.log(Level.SEVERE, "Failed to addFeatureDetector. Node " + 
@@ -118,8 +127,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
 		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, 
-												 this, taskSpawner);
-		taskSpawner.addTask(task);		
+												 this, taskManager);
+		taskSpawner.addTask(task);	
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
 		for(PamNode n: nodes)
@@ -127,8 +136,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	public void checkIfOverThreshold(PamNode pamNode){
-		ThresholdTask task = new ThresholdTask(pamNode, this, taskSpawner);
-		taskSpawner.addTask(task);
+		ThresholdTask task = new ThresholdTask(pamNode, this, taskManager);
+		taskManager.addTask(task);
 	}
 	
 	public void addNodeToPercept(PamNode pamNode) {
