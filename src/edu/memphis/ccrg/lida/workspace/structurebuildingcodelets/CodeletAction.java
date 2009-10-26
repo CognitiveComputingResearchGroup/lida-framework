@@ -1,9 +1,5 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import java.util.Collection;
-
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-
 /**
  * An encapsulation of the action of a codelet.
  *
@@ -17,13 +13,7 @@ public interface CodeletAction {
 	 * @param buffer
 	 * @param destination
 	 */	
-	public void performAction(Collection<NodeStructure> buffer, CodeletWritable destination);
-	/**
-	 * An action from a standard buffer to a destination buffer 
-	 * @param buffer
-	 * @param destination
-	 */
-	public void performAction(NodeStructure buffer, CodeletWritable destination);
+	public void performAction(CodeletAccessible buffer);
 	
 }
   

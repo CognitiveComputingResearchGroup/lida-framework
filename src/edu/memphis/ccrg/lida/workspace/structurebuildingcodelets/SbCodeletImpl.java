@@ -1,8 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
@@ -12,8 +11,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
 
 	//Initialized by constructor
-	private List<Collection<NodeStructure>> accessibleBuffers = new ArrayList<Collection<NodeStructure>>();
-	private List<CodeletWritable> writables = new ArrayList<CodeletWritable>();
+	private Set<CodeletAccessible> accessibleModules = new HashSet<CodeletAccessible>();
 	
 	private NodeStructure soughtContent;
 	private CodeletAction action;
@@ -30,9 +28,8 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
 
 	protected void runThisLidaTask(){	
-		for(Collection<NodeStructure> buffer: accessibleBuffers)
-			for(CodeletWritable writable: writables)
-				action.performAction(buffer, writable);	
+		for(CodeletAccessible buffer: accessibleModules)
+			action.performAction(buffer);	
 		results.reportFinished();
 	}
 	
@@ -51,22 +48,15 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 		return action;
 	}
 
-	public void addReadableBuffer(Collection<NodeStructure> buffer) {
-		accessibleBuffers.add(buffer);		
+	public void addAccessibleModule(CodeletAccessible module) {
+		accessibleModules.add(module);		
 	}
-	public void addWritableModule(CodeletWritable module) {
-		writables.add(module);
+	public Set<CodeletAccessible> getAccessibleModules() {
+		return accessibleModules;
 	}
-	public List<Collection<NodeStructure>> getReadableBuffers() {
-		return accessibleBuffers;
-	}
-	public List<CodeletWritable> getWriteableBuffers() {
-		return writables;
-	}
-	//
+
 	public void reset() {
-		accessibleBuffers.clear();
-		writables.clear();
+		accessibleModules.clear();
 		setNumberOfTicksPerStep(50);
 		setActivation(0.0);
 		soughtContent = new NodeStructureImpl();
@@ -77,11 +67,6 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 		return type;
 	}
 
-	public void addReadableBuffer(NodeStructure buffer) {
-		List<NodeStructure> list = new ArrayList<NodeStructure>();
-		list.add(buffer);
-		accessibleBuffers.add(list);
-	}
 	public String toString(){
 		return "SBCodelet-"+ getTaskId();
 	}

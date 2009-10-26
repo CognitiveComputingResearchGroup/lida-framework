@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,7 +9,6 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
@@ -19,8 +17,6 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBuffer;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletAccessible;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletWritable;
 
 /**
  * 
@@ -33,13 +29,12 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletWritable
  * @author Ryan J. McCall
  *
  */
-public class WorkspaceImpl implements Workspace, PamListener, 
+public class WorkspaceImpl implements Workspace,  
+									  WorkspaceBufferListener,
+									  PamListener, 
 									  LocalAssociationListener,
 									  BroadcastListener, 
-									  ActionSelectionListener, 
-									  WorkspaceBufferListener,  
-									  CodeletWritable, 
-									  CodeletAccessible{
+									  ActionSelectionListener{
 	
 	//Workspace contains these components
 	//private PerceptualBuffer perceptualBuffer;
@@ -49,7 +44,6 @@ public class WorkspaceImpl implements Workspace, PamListener,
 	
 	private static Logger logger = Logger.getLogger("lida.workspace.main.WorkpaceImpl");
 	
-	//These listeners listen buffers of the Workspace
 	/**
 	 * TEM and DM are cue listeners
 	 */
@@ -60,27 +54,36 @@ public class WorkspaceImpl implements Workspace, PamListener,
 	private WorkspaceListener pamWorkspaceListener;
 	
 	public WorkspaceImpl(EpisodicBuffer eb, BroadcastQueue bq, 
-					     CurrentSituationalModel csm){
+					     CurrentSituationalModel csModel){
 		episodicBuffer = eb;
 		broadcastQueue = bq;
-		this.csm = csm;	
+		csm = csModel;	
 		
-		//Register the Workspace as a listener of these buffers:
+		//Workspace listens to these buffers:
 		episodicBuffer.addBufferListener(this);
 		csm.addBufferListener(this);
-	}//
+	}
 
-	
-	//Methods to add listeners..
+	//Implementations for Workspace interface
 	public void addCueListener(CueListener l){
 		cueListeners.add(l);
 	}
-	//check
 	public void addPamWorkspaceListener(WorkspaceListener listener){
 		pamWorkspaceListener = listener;
 	}
+	public CurrentSituationalModel getCSM() {
+		return csm;
+	}
+	public EpisodicBuffer getEpisodicBuffer(){
+		return episodicBuffer;
+	}
+	public BroadcastQueue getBroadcastQueue(){
+		return broadcastQueue;
+	}
+
 	
 	/**
+	 * Implementation for WorkspaceBufferListener interface
 	 * WorkspaceImpl listens to its submodules and forwards the content
 	 * that they send to the appropriate modules outside the workspace.
 	
@@ -89,12 +92,12 @@ public class WorkspaceImpl implements Workspace, PamListener,
 		TODO: May want to also activate PAM based on new representations created by codelets
 		that get produced and put in the CSM
 	 */ 	 
-	public void receiveBufferContent(Module originatingBuffer, NodeStructure content) {
+	public void receiveBufferContent(Module originatingBuffer, WorkspaceContent content) {
 		if(originatingBuffer == Module.EpisodicBuffer)
 			pamWorkspaceListener.receiveWorkspaceContent(Module.EpisodicBuffer, content);
 		cue(content);
 	}//method
-	public void cue(NodeStructure content){
+	private void cue(NodeStructure content){
 		for(CueListener c: cueListeners){
 			c.receiveCue(content);
 		}
@@ -114,7 +117,6 @@ public class WorkspaceImpl implements Workspace, PamListener,
 	public void receiveLink(Link l) {
 		((PamListener) csm).receiveLink(l);
 	}
-	
 	/**
 	 * Implementation of the PamListener interface.  Send received node to the
 	 * the csm.
@@ -137,58 +139,14 @@ public class WorkspaceImpl implements Workspace, PamListener,
 		((BroadcastListener) broadcastQueue).receiveBroadcast(bc);		
 	}
 	/**
-	 * TODO: Implementing this is a long way off as of (3.30.09)	
-	 */
-	public void receiveBehaviorContent(ActionContent c) {
-	}
-
-	/**
-	 * For Codelets to access the buffers
-	 */
-	public CurrentSituationalModel getCSM() {
-		return csm;
-	}
-	public EpisodicBuffer getEpisodicBuffer(){
-		return episodicBuffer;
-	}
-	public BroadcastQueue getBroadcastQueue(){
-		return broadcastQueue;
-	}
-
-	/**
 	 * Not applicable for WorkspaceImpl
 	 */
 	public void learn() {}
-
+	
 	/**
-	 * Adds NodeStructure ns to Module m
+	 * TODO: Implementing this is a long way off as of (3.30.09)	
 	 */
-	public void addCodeletContent(Module m, NodeStructure ns) {
-		if(m == Module.CurrentSituationalModel)
-			((CodeletWritable) csm).addCodeletContent(m, ns);
-		else 
-			logger.warning("codelet wants to add content to unsupported module "+ this);
-	}
-
-
-	public NodeStructure getBufferContent(Module m) {
-		if(m == Module.EpisodicBuffer)
-			return episodicBuffer.getBufferContent(m);
-		else if(m == Module.CurrentSituationalModel)
-			return csm.getModel();
-		else if(m == Module.BroadcastQueue)
-			return broadcastQueue.getBufferContent(m);
-		else {
-			logger.warning("Request to get non-existent workspace buffer " + 
-							m + " by " + this.toString());
-			return new NodeStructureImpl();
-		}
-	}
-
-
-	public Collection<NodeStructure> getContentCollection(Module m) {
-		// TODO Auto-generated method stub
-		return null;
+	public void receiveBehaviorContent(ActionContent c) {
 	}
 	
 }//class

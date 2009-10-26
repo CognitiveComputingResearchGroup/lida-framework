@@ -20,7 +20,7 @@ public class CsmDriver extends ModuleDriverImpl {
 	}
 
 	public void runThisDriver() {
-		csm.sendCSMContent();
+		csm.sendCsmContent();
 	}
 
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {

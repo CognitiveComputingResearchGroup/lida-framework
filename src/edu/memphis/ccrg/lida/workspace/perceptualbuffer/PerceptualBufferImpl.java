@@ -8,12 +8,14 @@ import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceBufferListener;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
  * Not used.
@@ -63,7 +65,42 @@ public class PerceptualBufferImpl implements PerceptualBuffer, PamListener{
 	}
 
 	public void cueEpisodicMemory() {
-		((WorkspaceBufferListener) workspace).receiveBufferContent(Module.PerceptualBuffer, perceptualBuffer);
+		((WorkspaceBufferListener) workspace).receiveBufferContent(Module.PerceptualBuffer, (WorkspaceContent) perceptualBuffer);
+	}
+
+	public boolean addLink(Link l) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addNode(Node n) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean deleteLink(Link l) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean deleteNode(Node n) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public NodeStructure getModuleContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Collection<NodeStructure> getModuleContentCollection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void mergeIn(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//PerceptualBuffer

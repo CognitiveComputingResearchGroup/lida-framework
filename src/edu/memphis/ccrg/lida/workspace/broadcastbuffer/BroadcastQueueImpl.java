@@ -7,6 +7,8 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -37,16 +39,42 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
 			broadcastQueue.remove(0);//remove oldest	
 	}
 
-	public NodeStructure getBufferContent(Module m) {
-		throw new UnsupportedOperationException();
-	}
-
 	public void learn() {
 		//Not applicable
 	}
 
-	public Collection<NodeStructure> getContentCollection(Module m) {
+	public Collection<NodeStructure> getModuleContentCollection() {
 		return Collections.unmodifiableCollection(broadcastQueue);
+	}
+
+	public boolean addLink(Link l) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addNode(Node n) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean deleteLink(Link l) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean deleteNode(Node n) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public NodeStructure getModuleContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void mergeIn(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class

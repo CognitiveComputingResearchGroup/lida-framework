@@ -27,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
 public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMemory,  
@@ -91,7 +92,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	public synchronized void receiveWorkspaceContent(Module originatingBuffer,
-													 NodeStructure content) {
+													 WorkspaceContent content) {
 		// TODO:impl episodic buffer activation into activation passing
 		topDownContent = content;
 		Collection<Node> nodes = topDownContent.getNodes();
