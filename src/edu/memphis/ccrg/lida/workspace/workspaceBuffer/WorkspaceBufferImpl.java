@@ -1,8 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -57,6 +55,15 @@ public class WorkspaceBufferImpl implements WorkspaceBuffer{
 	public void mergeIn(NodeStructure ns) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int hashCode(){
+		//TODO:
+		return 0;
+	}
+	public boolean equals(){
+		//TODO:
+		return false;
 	}
 
 }
