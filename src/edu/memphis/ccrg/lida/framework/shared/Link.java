@@ -2,6 +2,8 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 
 public interface Link extends Linkable, Activatible{
+	
+	public static final Link NULL_LINK=new LinkImpl(null,null,LinkType.NONE,"");
 
 	public abstract Linkable getSource();
 

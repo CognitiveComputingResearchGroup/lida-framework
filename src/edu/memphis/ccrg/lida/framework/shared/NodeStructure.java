@@ -67,6 +67,6 @@ public interface NodeStructure {
 
 	public abstract void mergeWith(Link l);
 
-	public abstract void mergeWith(PamNode node);
+	public abstract void mergeWith(Node node);
 	
 }

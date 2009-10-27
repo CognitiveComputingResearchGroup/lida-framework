@@ -20,8 +20,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 
 	private Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	private SbCodeletFactory sbCodeletFactory;
-	private TaskSpawner taskSpawner;
-
+	
 	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
 		super(ticksPerCycle, (LidaTaskManager) tm);
 		setNumberOfTicksPerStep(10);
@@ -60,7 +59,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 								 NodeStructure context, CodeletAction actions){
 		//TODO: use factory?
 		StructureBuildingCodelet sbc = null;//sbCodeletFactory.getCodelet(type, activation, context, actions);
-		taskSpawner.addTask(sbc);
+		this.addTask(sbc);
 		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
 	}// method
 

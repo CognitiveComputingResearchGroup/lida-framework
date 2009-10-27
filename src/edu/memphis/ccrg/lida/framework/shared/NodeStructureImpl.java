@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -26,9 +28,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	private String defaultLinkType;
 
 	public NodeStructureImpl() {
-		linkableMap = new HashMap<Linkable, Set<Link>>();
-		nodes = new HashMap<Long, Node>();
-		links = new HashMap<String, Link>();
+		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
+		nodes = new ConcurrentHashMap<Long, Node>();
+		links = new ConcurrentHashMap<String, Link>();
 		defaultNodeType = factory.getDefaultNodeType();
 		defaultLinkType = factory.getDefaultLinkType();
 	}
@@ -40,9 +42,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	public NodeStructureImpl(NodeStructure oldGraph) {		
-		nodes = new HashMap<Long, Node>();
-		links = new HashMap<String, Link>();
-		linkableMap = new HashMap<Linkable, Set<Link>>();	
+		nodes = new ConcurrentHashMap<Long, Node>();
+		links = new ConcurrentHashMap<String, Link>();
+		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();	
 		
 		Collection<Node> oldNodes = oldGraph.getNodes();
 		if(oldNodes != null)
@@ -133,7 +135,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 		Link newLink = getNewLink(l, newSource, newSink, l.getType());
 		links.put(newLink.getIds(), newLink);
-
+		linkableMap.put(newLink, new HashSet<Link>());
+		
 		Set<Link> tempLinks = linkableMap.get(source);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
@@ -166,7 +169,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		if (!nodes.keySet().contains(n.getId())) {
 			Node newNode = getNewNode(n);
 			nodes.put(newNode.getId(), newNode);
-			linkableMap.put(newNode, null);
+			linkableMap.put(newNode, new HashSet<Link>());
 			return newNode;
 		}
 		return null;
@@ -378,7 +381,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
-		ns.getLinks();
+		Collection<Link> cl= ns.getLinks();
+		boolean pending=true;
+		while(pending){
+			pending=false;
+			for (Link l:cl){
+				if (addLink(l)==null){
+					pending=true;
+				}
+			}
+		}
+		
 		//TODO: Must add links differently than above statement.
 	}
 
@@ -398,7 +411,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 	}//method
 
-	public void mergeWith(PamNode node) {
+	public void mergeWith(Node node) {
 		Node existingNode = nodes.get(node.getId());
 		if(existingNode == null)
 			addNode(node);
@@ -408,7 +421,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			existingNode.setExciteBehavior(node.getExciteBehavior());
 			existingNode.setImportance(node.getImportance());
 			//TODO: consider if the below is correct
-			existingNode.setReferencedNode(node);
+			existingNode.setReferencedNode(node.getReferencedNode());
 		}
 	}//method
 	
@@ -433,7 +446,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}//method
 
 	public void clearNodes() {
-		nodes = new HashMap<Long, Node>();		
+		nodes = new ConcurrentHashMap<Long, Node>();		
 	}
 
 	public boolean hasLink(Link l) {
