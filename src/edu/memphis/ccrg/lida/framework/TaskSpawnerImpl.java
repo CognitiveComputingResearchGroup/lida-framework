@@ -2,10 +2,11 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,41 +15,60 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	private static Logger logger = Logger
 			.getLogger("lida.framework.TaskSpawnerImpl");
-	/**
-	 * Used to execute the tasks
-	 */
-	private ThreadPoolExecutor executorService;
+
+	private CompletionService<LidaTask> cs;
 	/**
 	 * The running tasks
 	 */
-	private Set<LidaTask> runningTasks = new HashSet<LidaTask>();
+	private ConcurrentLinkedQueue<LidaTask> runningTasks = new ConcurrentLinkedQueue<LidaTask>();
 
-	/**
-	 * Determines whether or not spawned task should run
-	 */
-	private boolean tasksPaused = true;
-
-	/**
+	/*
 	 * Used to prevent resumeSpawnedTasks() from running once a shutdown has
 	 * been started.
 	 */
 	private boolean shuttingDown = false;
 
+	private Thread completionThread;
+
 	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm) {
 		super(ticksForCycle, tm);
-		if (tm != null)
-			tasksPaused = tm.isSystemPaused();
-		// thread pool executor
-		int corePoolSize = 5;
-		int maxPoolSize = 100;
-		long keepAliveTime = 10;
-		executorService = new LidaExecutorService(this, corePoolSize,
-				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
+		if (tm != null) {
+			startCompletionService(tm);
+		}
 	}// method
+
+	/**
+	 * @param tm
+	 */
+	private void startCompletionService(LidaTaskManager tm) {
+		cs = new ExecutorCompletionService<LidaTask>(tm.getExecutorService());
+		logger.log(Level.INFO,
+				"Starting completionThread of {0}", toString());
+
+		completionThread = new Thread(new Runnable() {
+			public void run() {
+				while (true) {
+					try {
+						Future<LidaTask> f = cs.take();
+						receiveFinishedTask(f.get(), null);
+					} catch (InterruptedException e) {
+						logger.log(Level.FINE,
+								"Stopping completionThread of {0}", toString());
+						return;
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		completionThread.start();
+	}
 
 	public TaskSpawnerImpl(LidaTaskManager tm) {
 		this(1, tm);
 	}
+
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
 		// System.out.println(this.getClass().toString() +
 		// " setting initial tasks. system paused? " + tasksPaused);
@@ -65,11 +85,11 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}
 
 	protected void runTask(LidaTask task) {
-		if (!tasksPaused) {
+		if (!getTaskManager().isTasksPaused()) {
 			if (shouldRun(task)) {
 				logger.log(Level.FINEST, "Sending to executor task {0}", task);
 				task.setTaskStatus(LidaTask.RUNNING);
-				executorService.execute(task);
+				cs.submit(task);
 			}
 		}
 	}
@@ -126,10 +146,10 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 */
 	protected void processResults(LidaTask task) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public Collection<LidaTask> getRunningTasks() {
+	public Collection<LidaTask> getSpawnedTasks() {
 		logger.log(Level.FINEST, "getting all tasks");
 		return Collections.unmodifiableCollection(runningTasks);
 	}
@@ -156,29 +176,26 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}// method
 
 	public void pauseSpawnedTasks() {
-		logger.log(Level.FINE, "All Tasks paused.");
-		synchronized(this){
-			tasksPaused = true;
-		}
+		// logger.log(Level.FINE, "All Tasks paused.");
+		// synchronized(this){
+		// tasksPaused = true;
+		// }
 		for (LidaTask task : runningTasks) {
 			if (task instanceof TaskSpawner) {
 				((TaskSpawner) task).pauseSpawnedTasks();
 			}
 		}
 	}
+
 	public void resumeSpawnedTasks() {
 
 		logger.log(Level.FINE, "resume spawned tasks called");
 		if (shuttingDown)
 			return;
 
-		synchronized (this) {
-			tasksPaused = false;
-		}
-
 		for (LidaTask task : runningTasks) {
 			int status = task.getStatus();
-		
+
 			if ((status & (LidaTask.RUNNING | LidaTask.WAITING_TO_RUN | LidaTask.TO_RESET)) != 0) {
 				task.setTaskStatus(LidaTask.WAITING_TO_RUN);
 				logger.log(Level.FINEST, "Resuming task {0}", task);
@@ -189,13 +206,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 			}// if
 		}// for
 	}// method
-
-	/**
-	 * @return the tasksPaused
-	 */
-	public boolean isTasksPaused() {
-		return tasksPaused;
-	}
 
 	public void stopRunning() {
 		// First ensure that 'resumeSpawnedTasks()' will not function normally
@@ -213,9 +223,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 				s.stopRunning();
 			}// for
 		}
-		// Now that we can be sure that active tasks will no longer be executed
-		// the executor service can be shutdown.
-		executorService.shutdown();
+
+		completionThread.interrupt();
 
 		this.setTaskStatus(LidaTask.CANCELLED);
 		logger.log(Level.FINE, "Shutdown ThreadSpawner " + this.toString()
@@ -224,7 +233,9 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	public void setTaskManager(LidaTaskManager taskManager) {
 		super.setTaskManager(taskManager);
-		tasksPaused = taskManager.isTasksPaused();
+		if (taskManager != null && cs == null) {
+			startCompletionService(taskManager);
+		}
 	}
 
 }// class

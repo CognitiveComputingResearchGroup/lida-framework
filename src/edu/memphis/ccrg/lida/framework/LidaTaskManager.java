@@ -1,23 +1,37 @@
 package edu.memphis.ccrg.lida.framework;
 
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.pam.ExcitationTask;
-import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.framework.strategies.AllModuleDriver;
 
-public class LidaTaskManager extends TaskSpawnerImpl {
+public class LidaTaskManager{
 	
 	private static Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
+
+	/**
+	 * Determines whether or not spawned task should run
+	 */
+	private boolean tasksPaused = true;
+	private boolean shuttingDown = false;
+	private long totalTicks=0L;
+
 	
+	/**
+	 * @return the totalTicks
+	 */
+	public long getTotalTicks() {
+		return totalTicks;
+	}
+
 	/**
 	 * The length of time that 1 tick equals in milliseconds.
 	 */
 	private int tickDuration = 1;
-	
+	private ExecutorService executorService;
 	/**
 	 * All tasks in the Lida system are created, executed, and managed by this class.  
 	 * This variable is to be used to get unique ids for each task.
@@ -29,18 +43,41 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	 */
 	private static boolean inTicksMode = false;
 	
+	private TaskSpawner mainTaskSpawner;
+	
+	/**
+	 * @return the mainTaskSpawner
+	 */
+	public TaskSpawner getMainTaskSpawner() {
+		return mainTaskSpawner;
+	}
+
+
 	/**
 	 * 
 	 * @param tasksStartOutRunning
 	 * @param tickDuration
 	 */
-	public LidaTaskManager(int tickDuration) {
+	public LidaTaskManager(int tickDuration, int maxPoolSize) {
 		//O ticks per step - Task manager should not be run
 		//Null, LIDA_TASK_MANAGER should not have a LIDA_TASK_MANAGER
-		super(0, null);	
+		int corePoolSize = 5;
+		long keepAliveTime = 10;
 		this.tickDuration = tickDuration;
+		executorService = new LidaExecutorService( corePoolSize,
+				maxPoolSize, keepAliveTime, TimeUnit.SECONDS);
+		
+		mainTaskSpawner= new AllModuleDriver(this);
 	}
 	
+	
+	/**
+	 * @return the executorService
+	 */
+	public ExecutorService getExecutorService() {
+		return executorService;
+	}
+
 	/**
 	 * Convenience method to obtain the next ID for LidaTasks
 	 * 
@@ -66,9 +103,9 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		return inTicksMode;
 	} 
 
-	public boolean isSystemPaused(){
-		return super.isTasksPaused();
-	}
+//	public boolean isSystemPaused(){
+//		return super.isTasksPaused();
+//	}
 
 	/**
 	 * Threads should call this in every iteration of their cycle so that the
@@ -100,9 +137,14 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 	/**
 	 * 
 	 */
-	@Override
 	public void stopRunning(){
-		super.stopRunning();
+		shuttingDown=true;
+		mainTaskSpawner.stopRunning();
+		
+		// Now that we can be sure that active tasks will no longer be executed
+		// the executor service can be shutdown.
+		executorService.shutdown();
+
 		logger.info("All threads and tasks told to stop\n");
 		try {
 			Thread.sleep(400);
@@ -113,32 +155,39 @@ public class LidaTaskManager extends TaskSpawnerImpl {
 		System.exit(0);
 	}
 
-	/**
-	 * Since it is a LidaTask, this class inherits, 
-	 * but should not use or implement, this method.
-	 */
-	protected void runThisLidaTask() {
-		// Not applicable
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void processResults(LidaTask task) {
-		try {
-			List<Object> results = (List<Object>) ((Future) task).get();
-			Set<PamNode> nodes = (Set<PamNode>) results.get(ExcitationTask.nodesIndex);
-			Double amount = (Double) results.get(ExcitationTask.amountIndex);
-	//		pam.receiveActivationBurst(nodes, amount);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-	}//method
-
 	@Override
 	public String toString() {
 		return "LidaTaskManager";
 	}
+	/**
+	 * @return the tasksPaused
+	 */
+	public boolean isTasksPaused() {
+		return tasksPaused;
+	}
+	public void pauseSpawnedTasks() {
+		logger.log(Level.FINE, "All Tasks paused.");
 
+		tasksPaused = true;
+		mainTaskSpawner.pauseSpawnedTasks();
+	}
+	
+	public void resumeSpawnedTasks() {
+		logger.log(Level.FINE, "resume spawned tasks called");
+		if (shuttingDown)
+			return;
+		
+		tasksPaused = false;
+
+		mainTaskSpawner.resumeSpawnedTasks();
+	}// method
+
+	public void addTicks(int ticks){
+		totalTicks=totalTicks + ticks;
+		mainTaskSpawner.addTicks(ticks);
+	}
+
+	public Collection<LidaTask> getSpawnedTasks() {
+		return mainTaskSpawner.getSpawnedTasks();
+	}
 }// class LIDA_TASK_MANAGER

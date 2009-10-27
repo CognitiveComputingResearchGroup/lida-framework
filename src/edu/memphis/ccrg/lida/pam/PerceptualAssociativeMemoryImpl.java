@@ -138,7 +138,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 
 	public void checkIfOverThreshold(PamNode pamNode){
 		ThresholdTask task = new ThresholdTask(pamNode, this, taskManager);
-		taskManager.addTask(task);
+		taskSpawner.addTask(task);
 	}
 	
 	public void addNodeToPercept(PamNode pamNode) {

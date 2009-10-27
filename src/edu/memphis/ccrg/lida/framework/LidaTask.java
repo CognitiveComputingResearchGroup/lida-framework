@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 
@@ -11,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.Activatible;
  *
  */
 
-public interface LidaTask extends Runnable, Activatible{
+public interface LidaTask extends Callable, Activatible{
 	
 	/**
 	 * Task is scheduled to be run, but is not running yet.

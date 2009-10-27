@@ -22,7 +22,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	private SbCodeletFactory sbCodeletFactory;
 	private TaskSpawner taskSpawner;
 
-	public SbCodeletDriver(Workspace w, int ticksPerCycle, TaskSpawner tm) {
+	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
 		super(ticksPerCycle, (LidaTaskManager) tm);
 		setNumberOfTicksPerStep(10);
 		sbCodeletFactory = SbCodeletFactory.getInstance(w);

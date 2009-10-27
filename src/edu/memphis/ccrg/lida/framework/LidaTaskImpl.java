@@ -42,7 +42,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 	}
 
-	public void run() {
+	public LidaTask call() {
 		if (!LidaTaskManager.isInTicksMode()) {
 			sleep();
 			runThisLidaTask();
@@ -51,6 +51,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 			sleep();
 			runThisLidaTask();
 		}
+		return this;
 	}
 
 	private void sleep() {
@@ -141,6 +142,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 	}
 
+	protected LidaTaskManager getTaskManager(){
+		return taskManager;
+	}
 	public void init(Map<String, Object> parameters) {
 		this.parameters = parameters;
 		init();

@@ -102,7 +102,9 @@ public class Lida {
 		
 		//Task manager
 		int tickDuration = Integer.parseInt(lidaProperties.getProperty("taskManager.tickDuration"));
-		taskManager = new LidaTaskManager(tickDuration);
+		int maxNumberOfThreads = Integer.parseInt(lidaProperties.getProperty("taskManager.maxNumberOfThreads"));
+		
+		taskManager = new LidaTaskManager(tickDuration, maxNumberOfThreads);
 
 		//Environment
 		environment = environ;
@@ -250,7 +252,7 @@ public class Lida {
 	}
 	public void start(){
 		globalWksp.start();   
-		taskManager.setInitialTasks(moduleDrivers);		
+		taskManager.getMainTaskSpawner().setInitialTasks(moduleDrivers);		
 		logger.info("Lida modules have been started\n");		
 	}
 

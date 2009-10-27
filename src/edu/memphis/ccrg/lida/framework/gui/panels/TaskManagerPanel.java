@@ -175,7 +175,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 	}
 
 	public void refresh(){
-		display(lida.getTaskManager().getRunningTasks());
+		display(lida.getTaskManager().getSpawnedTasks());
 	}
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {

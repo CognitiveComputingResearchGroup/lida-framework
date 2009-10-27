@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class LidaExecutorService extends ThreadPoolExecutor {
 	private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
-	private TaskSpawner spawner;
+//	private TaskSpawner spawner;
 
 	// consider overriding whatever executing method we use.  In the override
 	// set id for the LidaTask to be run.  This way we can ensure that
@@ -29,16 +29,15 @@ public class LidaExecutorService extends ThreadPoolExecutor {
     * are executed. This queue will hold only the <tt>Runnable</tt>
     * tasks submitted by the <tt>execute</tt> method.
     */
-	public LidaExecutorService(TaskSpawner spawner, int corePoolSize, int maximumPoolSize,
+	public LidaExecutorService(int corePoolSize, int maximumPoolSize,
 							   long keepAliveTime, TimeUnit unit) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>());
-		this.spawner = spawner;
 	}
 	
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
 		logger.finest(r.getClass().getName());
-		spawner.receiveFinishedTask((LidaTask)r, t);
+//		spawner.receiveFinishedTask((LidaTask)r, t);
 	}
 	
 	 //Future<?> 	submit(Runnable task)

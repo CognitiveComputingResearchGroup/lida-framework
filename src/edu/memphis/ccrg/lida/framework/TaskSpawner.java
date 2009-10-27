@@ -24,7 +24,7 @@ public interface TaskSpawner extends LidaTask{
 	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
 	 * @return
 	 */
-	public abstract Collection<LidaTask> getRunningTasks();
+	public abstract Collection<LidaTask> getSpawnedTasks();
 	
 	/**
 	 * The supplied LidaTask will be start by the spawner right away.
