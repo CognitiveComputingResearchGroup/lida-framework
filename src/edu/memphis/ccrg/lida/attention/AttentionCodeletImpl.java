@@ -9,7 +9,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class AttentionCodeletImpl extends LidaTaskImpl implements
@@ -19,7 +18,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 	private GlobalWorkspace global;
 	private NodeStructure soughtContent;
 
-    public AttentionCodeletImpl(CurrentSituationalModel csm, GlobalWorkspace g, int ticksPerStep,
+    public AttentionCodeletImpl(WorkspaceBuffer csm, GlobalWorkspace g, int ticksPerStep,
     							double activation,LidaTaskManager tm, NodeStructure soughtContent){
     	super(ticksPerStep, tm);
     	setActivation(activation);

@@ -1,9 +1,7 @@
 package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
-//import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
@@ -14,20 +12,20 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModel;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener {
 
 	//private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
 	//
-	private CurrentSituationalModel csm;
+	private WorkspaceBuffer csm;
 	private GlobalWorkspace global;
 	//
 	private double defaultActiv = 1.0;// TODO: move these to factory?
 	private NodeStructure broadcastContent;
 	private int defaultTicksPerStep = 3;
 
-	public AttentionDriver(CurrentSituationalModel csm, GlobalWorkspace gwksp, 
+	public AttentionDriver(WorkspaceBuffer csm, GlobalWorkspace gwksp, 
 						   int ticksPerCycle, LidaTaskManager tm) {
 		super(ticksPerCycle, tm);
 		this.csm = csm;

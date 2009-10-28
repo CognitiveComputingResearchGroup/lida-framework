@@ -1,11 +1,11 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
@@ -14,7 +14,6 @@ import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
 import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -31,23 +30,19 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryDriver;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TransientEpisodicMemory;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
-import edu.memphis.ccrg.lida.workspace.currentsituationalmodel.CurrentSituationalModelImpl;
-import edu.memphis.ccrg.lida.workspace.episodicbuffer.EpisodicBufferImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
-import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBuffer;
-import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferDriver;
-import edu.memphis.ccrg.lida.workspace.perceptualbuffer.PerceptualBufferImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferListener;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
  * @author Javier Snaider
@@ -78,7 +73,6 @@ public class Lida {
 	// Workspace
 	private Workspace workspace;
 	private SbCodeletDriver sbCodeletDriver;
-	private PerceptualBufferDriver pbDriver;
 	// Attention
 	private AttentionDriver attentionDriver;
 	private GlobalWorkspace globalWksp;
@@ -129,9 +123,8 @@ public class Lida {
 		//Workspace
 		int episodicBufferCapacity = 2; //TODO: Will this be unnecessary?
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
-		workspace = new WorkspaceImpl(new EpisodicBufferImpl(episodicBufferCapacity), 
-									  new BroadcastQueueImpl(queueCapacity),
-									  new CurrentSituationalModelImpl());
+		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(),new WorkspaceBufferImpl(),  new WorkspaceBufferImpl(),
+									  new BroadcastQueueImpl(queueCapacity));
 		
 		//Global Workspace
 		globalWksp = new GlobalWorkspaceImpl();

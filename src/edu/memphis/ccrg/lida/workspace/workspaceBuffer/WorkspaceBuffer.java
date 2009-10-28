@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -19,20 +20,4 @@ public interface WorkspaceBuffer {
 	 * @return NodeStructure representation of the buffer contents.
 	 */
 	public abstract NodeStructure getModuleContent();
-	
-	/**
-	 * @return A collection of NodeStructures comprising the contents of the buffer
-	 */
-	public abstract Collection<NodeStructure> getModuleContentCollection();
-	
-	public abstract boolean addNode(Node n);
-	
-	public abstract boolean addLink(Link l);
-	
-	public abstract void mergeIn(NodeStructure ns);
-	
-	public abstract boolean deleteNode(Node n);
-	
-	public abstract boolean deleteLink(Link l);
-	
 }

@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
@@ -16,7 +17,7 @@ public interface PamListener {
 	 */
 	public void receiveNodeStructure(NodeStructure ns);
 	
-	public void receiveNode(PamNode node);
+	public void receiveNode(Node node);
 	
 	public void receiveLink(Link l);
 }
