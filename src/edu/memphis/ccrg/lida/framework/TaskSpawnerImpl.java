@@ -10,11 +10,9 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
-		TaskSpawner {
+public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawner{
 
-	private static Logger logger = Logger
-			.getLogger("lida.framework.TaskSpawnerImpl");
+	private static Logger logger = Logger.getLogger("lida.framework.TaskSpawnerImpl");
 
 	private CompletionService<LidaTask> cs;
 	/**

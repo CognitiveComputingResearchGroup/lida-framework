@@ -12,6 +12,8 @@ import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.PropagationBehavior;
+import edu.memphis.ccrg.lida.pam.UpscalePropagationBehavior;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
@@ -65,6 +67,9 @@ public class PamInitializer implements Initializer {
     	pam.addFeatureDetector(fd);
     	fd = new BottomRightDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
+    	
+    	PropagationBehavior b = new UpscalePropagationBehavior();
+    	pam.setPropagationBehavior(b);
 	}//method
 	
 }//class

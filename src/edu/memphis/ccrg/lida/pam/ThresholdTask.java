@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.pam;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.TaskSpawner;
 
 public class ThresholdTask extends LidaTaskImpl {
 	

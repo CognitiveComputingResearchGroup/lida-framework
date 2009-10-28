@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -26,6 +27,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	protected double baselevelActivation = 0.0;
 	protected double currentActivation = 0.0;
 	protected int type = 0;
+	private PropagationBehavior propogationBehavior; //TODO: set get methods copy constructor
 	
 	public PamNodeImpl() {
 		super();
@@ -168,5 +170,9 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void printActivationString() {
 		System.out.println(getId() + " total activation: " + getActivation());	
 	}//method
+
+	public double getActivationToPropagate(Map<String, Object> propagateParams) {
+		return propogationBehavior.getActivationToPropagate(propagateParams);
+	}
 
 }//class

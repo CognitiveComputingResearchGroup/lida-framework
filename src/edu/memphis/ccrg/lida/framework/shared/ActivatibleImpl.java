@@ -4,6 +4,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
+
 /**
  * generic Activatible Implementation. Useful to inherit from it 
  * Activatible classes like nodes or codelets.
@@ -11,7 +12,6 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
  * @author Javier Snaider
  * 
  */
-
 public class ActivatibleImpl implements Activatible {
 	
 	private double activation;

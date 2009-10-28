@@ -49,9 +49,10 @@ public interface PerceptualAssociativeMemory{
 	public void receiveActivationBurst(PamNode pNode, double amount);
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
 	
-	public void checkIfOverThreshold(PamNode pamNode);
 	public void addNodeToPercept(PamNode pamNode);
 	
 	public PamNodeStructure getNodeStructure();
 	public Collection<FeatureDetector> getFeatureDetectors();
+	public void sendActivationToParentsOf(PamNode pamNode);
+	public void setPropagationBehavior(PropagationBehavior b);
 }//interface PAMinterface

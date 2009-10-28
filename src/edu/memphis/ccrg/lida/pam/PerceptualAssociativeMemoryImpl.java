@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,6 +47,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	//
 	private LidaTaskManager taskManager;
 	private TaskSpawner taskSpawner;
+	//
+	private PropagationBehavior propagationBehavior;
 	
 	/**
 	 * @param taskSpawner the taskSpawner to set
@@ -56,6 +59,10 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 
 	public void setTaskManager(LidaTaskManager tm) {
 		taskManager = tm;
+	}
+	
+	public void setPropagationBehavior(PropagationBehavior b){
+		propagationBehavior = b;
 	}
 
 	public void addNodes(Set<PamNode> nodes) {
@@ -127,20 +134,23 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
-		ExcitationTask task = new ExcitationTask(node, amount, pamNodeStructure, 
-												 this, taskManager);
+		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner, taskManager);
 		taskSpawner.addTask(task);	
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
 		for(PamNode n: nodes)
 			receiveActivationBurst(n, amount);
 	}
-
-	public void checkIfOverThreshold(PamNode pamNode){
-		ThresholdTask task = new ThresholdTask(pamNode, this, taskManager);
-		taskSpawner.addTask(task);
-	}
+	private Map<String, Object> propagateParams = new HashMap<String, Object>();
 	
+	public void sendActivationToParentsOf(PamNode pamNode) {
+		Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
+		propagateParams.put("upscale", pamNodeStructure.getUpscale());
+		propagateParams.put("totalActivation", pamNode.getTotalActivation());//TODO: Abstract out
+		double amount = propagationBehavior.getActivationToPropagate(propagateParams);
+		this.receiveActivationBurst(nodes, amount);
+	}
+
 	public void addNodeToPercept(PamNode pamNode) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNode(pamNode);
@@ -190,5 +200,6 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public PamNodeStructure getNodeStructure(){
 		return pamNodeStructure;
 	}
+
 
 }//class

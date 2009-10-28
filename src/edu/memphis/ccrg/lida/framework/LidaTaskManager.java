@@ -52,7 +52,6 @@ public class LidaTaskManager{
 		return mainTaskSpawner;
 	}
 
-
 	/**
 	 * 
 	 * @param tasksStartOutRunning

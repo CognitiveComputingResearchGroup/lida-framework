@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 public interface PamNode extends Node{
@@ -39,5 +41,7 @@ public interface PamNode extends Node{
 	public abstract void setSelectionThreshold(double threshold);
 
 	public abstract void synchronize();
+
+	public abstract double getActivationToPropagate(Map<String, Object> params);
 
 }// interface
