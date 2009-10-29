@@ -18,7 +18,6 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 	public BottomRightDetector(PamNode n, SensoryMemory sm,
 			PerceptualAssociativeMemory pam, LidaTaskManager tm) {
 		super(n, sm, pam, tm);
-		// TODO Auto-generated constructor stub
 	}
 
 	public double detect() {

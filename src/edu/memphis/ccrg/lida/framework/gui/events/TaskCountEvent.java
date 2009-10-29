@@ -1,13 +1,13 @@
 package edu.memphis.ccrg.lida.framework.gui.events;
 
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 
 public class TaskCountEvent extends FrameworkGuiEvent{
 
-	public TaskCountEvent(Module m, String count) {
+	public TaskCountEvent(ModuleType m, String count) {
 		super(m, count, null);
 	}
-	public TaskCountEvent(Module m, int count) {
+	public TaskCountEvent(ModuleType m, int count) {
 		super(m, count + "", null);
 	}
 

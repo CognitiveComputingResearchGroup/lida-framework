@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -17,7 +18,7 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 /**
  * @author Ryan McCall
  */
-public interface PerceptualAssociativeMemory{
+public interface PerceptualAssociativeMemory extends LidaModule{
 	
 	public void setTaskManager(LidaTaskManager tm);
 	public void setTaskSpawner(TaskSpawner spawner);

@@ -13,9 +13,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 /**
- * Test for the Translator class.
+ * Test for the TranslatorImpl class.
  * @author Rodrigo Silva L.
- * @also Translator
+ * @also TranslatorImpl
  */
 public class TranslatorTest {
 
@@ -36,7 +36,7 @@ public class TranslatorTest {
             structure.addNode(node);
             vector[i] = 1;
         }
-        Translator translator = new Translator(structure);
+        Translator translator = new TranslatorImpl(structure);
         resultStructure = translator.translate(vector);
         resultVector = translator.translate(structure);
         System.out.println(resultStructure.getNodeCount() + resultVector.length);

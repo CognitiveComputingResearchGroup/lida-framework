@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
@@ -12,6 +13,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 //TODO: Check this class
 public class PamNodeStructure extends NodeStructureImpl{
+	private Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
 	
 	private Double upscaleFactor = 0.7;
 	private Double downscaleFactor = 0.5;
@@ -240,6 +242,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	}//method
 
 	public void decayNodes(){
+		logger.fine("Decaing PAM");
 		for(Node n: getNodes())
 			n.decay();
 	}//method

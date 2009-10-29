@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -41,7 +41,7 @@ public class TemDriver extends ModuleDriverImpl {
     }
 
 	public void runThisDriver() {
-		association = tem.cue(cue);
+		tem.cue(cue);
 	}//method
     
     /**
@@ -65,6 +65,6 @@ public class TemDriver extends ModuleDriverImpl {
 
 	@Override
 	public String toString() {
-		return Module.TemDriver + "";
+		return ModuleType.TemDriver + "";
 	}
 }//class

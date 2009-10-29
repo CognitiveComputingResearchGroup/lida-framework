@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -120,7 +120,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
 			
-			FrameworkGuiEvent ge = new TaskCountEvent(Module.GlobalWorkspace, coalitions.size()+"");
+			FrameworkGuiEvent ge = new TaskCountEvent(ModuleType.GlobalWorkspace, coalitions.size()+"");
 			sendEvent(ge);
 		}
 

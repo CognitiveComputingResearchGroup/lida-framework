@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.attention;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -67,7 +67,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 
 	@Override
 	public String toString() {
-		return Module.AttentionDriver +"";
+		return ModuleType.AttentionDriver +"";
 	}
 
 }// class

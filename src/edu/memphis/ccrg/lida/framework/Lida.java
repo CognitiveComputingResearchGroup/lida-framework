@@ -41,7 +41,6 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
@@ -84,15 +83,15 @@ public class Lida {
 
 	public Lida(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
 		logger.log(Level.FINE, "Starting Lida");
-		initComponents(environ, sm, properties);
+		//Properties for Lida module parameters
+		this.lidaProperties = properties;
+		initComponents(environ, sm);
 		initDrivers();
 		initListeners();
 		start();
 	}
 
-	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
-		//Properties for Lida module parameters
-		this.lidaProperties = properties;
+	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm) {
 		
 		//Task manager
 		int tickDuration = Integer.parseInt(lidaProperties.getProperty("taskManager.tickDuration"));
@@ -111,6 +110,7 @@ public class Lida {
 		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
 		pam.setTaskManager(taskManager);
+		pam.init(lidaProperties);
 		PamInitializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
 		
@@ -121,7 +121,7 @@ public class Lida {
 		declarativeMemory = new DeclarativeMemoryImpl();
 		
 		//Workspace
-		int episodicBufferCapacity = 2; //TODO: Will this be unnecessary?
+		//int episodicBufferCapacity = 2; //TODO: Will this be unnecessary?
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
 		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(),new WorkspaceBufferImpl(),  new WorkspaceBufferImpl(),
 									  new BroadcastQueueImpl(queueCapacity));
@@ -175,7 +175,7 @@ public class Lida {
 	}
 
 	//Below comments "A ---> B" signify that the statement is establishing
-	// the relationship  "Module A is sending data to Module B" 
+	// the relationship  "ModuleType A is sending data to ModuleType B" 
 	private void initListeners() {
 		//Sensory-Motor Memory ---> SensoryMemory
 		if (sensoryMemory instanceof SensoryMotorListener)

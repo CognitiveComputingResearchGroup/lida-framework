@@ -12,12 +12,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -49,6 +50,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private TaskSpawner taskSpawner;
 	//
 	private PropagationBehavior propagationBehavior;
+	
+	private Properties lidaProperties;
 	
 	/**
 	 * @param taskSpawner the taskSpawner to set
@@ -98,7 +101,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		pamListeners.add(pl);
 	}
 
-	public synchronized void receiveWorkspaceContent(Module originatingBuffer,
+	public synchronized void receiveWorkspaceContent(ModuleType originatingBuffer,
 													 WorkspaceContent content) {
 		// TODO:impl episodic buffer activation into activation passing
 		topDownContent = content;
@@ -141,9 +144,9 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		for(PamNode n: nodes)
 			receiveActivationBurst(n, amount);
 	}
-	private Map<String, Object> propagateParams = new HashMap<String, Object>();
 	
 	public void sendActivationToParentsOf(PamNode pamNode) {
+		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
 		propagateParams.put("totalActivation", pamNode.getTotalActivation());//TODO: Abstract out
@@ -199,6 +202,15 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 	public PamNodeStructure getNodeStructure(){
 		return pamNodeStructure;
+	}
+
+	public ModuleType getModuleType() {
+		return ModuleType.PerceptualAssociativeMemory;
+	}
+
+	public void init(Properties lidaProperties) {
+		this.lidaProperties=lidaProperties;
+		
 	}
 
 

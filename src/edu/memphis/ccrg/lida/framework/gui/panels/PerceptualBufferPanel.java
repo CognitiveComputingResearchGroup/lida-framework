@@ -30,7 +30,7 @@ import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
  *
  * @author Javier Snaider
  */
-public class NodeStructurePanel extends LidaPanelImpl {
+public class PerceptualBufferPanel extends LidaPanelImpl {
 
     /**
 	 * 
@@ -38,7 +38,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	private static final long serialVersionUID = 1L;
 
 	/** Creates new form NodeStructurePanel */
-    public NodeStructurePanel() {
+    public PerceptualBufferPanel() {
         initComponents();
     }
 
@@ -85,7 +85,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        // TODO add your handling code here:
+    	draw();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
 
@@ -114,7 +114,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		jScrollPane1.setViewportView(vv);
 	}
 	private Graph<Linkable,Link> getGraph(){
-		NodeStructure struct = ((PerceptualAssociativeMemoryImpl) lida.getPam()).getNodeStructure();
+		NodeStructure struct =  lida.getWorkspace().getPerceptualBuffer().getModuleContent();
 		Graph<Linkable,Link> g = new NodeStructureGuiAdapter(struct);
 		return g;
 	}

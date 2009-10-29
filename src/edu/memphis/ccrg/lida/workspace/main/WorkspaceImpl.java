@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,6 +28,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J. McCall
  *
  */
+
 public class WorkspaceImpl implements Workspace,  
 									  PamListener, 
 									  LocalAssociationListener,
@@ -39,18 +41,40 @@ public class WorkspaceImpl implements Workspace,
 	 * TEM and DM are cue listeners
 	 */
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
-	
+
+	private static final int DEFAULT_DECAY_TIME=10; 
+
 	//Workspace contains these components
 	private WorkspaceBuffer episodicBuffer;
 	private WorkspaceBuffer perceptualBuffer;
 	private BroadcastQueue broadcastQueue;
 	private WorkspaceBuffer csm;
+	private int decayCounter = 0;
+	private int decayTime=DEFAULT_DECAY_TIME;
+	private double lowerActivationBound;
 	
 	/**
 	 * PAM also listens.
 	 */
 	private WorkspaceListener pamWorkspaceListener;
+		
 	
+	/**
+	 * @param lowerActivationBound the lowerActivationBound to set
+	 */
+	public void setLowerActivationBound(double lowerActivationBound) {
+		this.lowerActivationBound = lowerActivationBound;
+	}
+
+
+	/**
+	 * @param decayTime
+	 *            the decayTime to set
+	 */
+	public void setDecayTime(int decayTime) {
+		this.decayTime = decayTime;
+	}
+
 	
 	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
 		this.episodicBuffer = episodicBuffer;
@@ -116,9 +140,9 @@ public class WorkspaceImpl implements Workspace,
 		TODO: May want to also activate PAM based on new representations created by codelets
 		that get produced and put in the CSM
 	 */ 	 
-//	public void receiveBufferContent(Module originatingBuffer, WorkspaceContent content) {
-//		if(originatingBuffer == Module.EpisodicBuffer)
-//			pamWorkspaceListener.receiveWorkspaceContent(Module.EpisodicBuffer, content);
+//	public void receiveBufferContent(ModuleType originatingBuffer, WorkspaceContent content) {
+//		if(originatingBuffer == ModuleType.EpisodicBuffer)
+//			pamWorkspaceListener.receiveWorkspaceContent(ModuleType.EpisodicBuffer, content);
 //		cue(content);
 //	}//method
 	
@@ -151,6 +175,23 @@ public class WorkspaceImpl implements Workspace,
 	 */
 	public void receiveNodeStructure(NodeStructure ns) {
 		perceptualBuffer.getModuleContent().mergeWith(ns);	
+	}
+	
+
+	/**
+	 * Decays all Nodes of all buffers in the Workspace
+	 */
+	public void decayWorkspaceNodes(){
+		
+		decayCounter++;
+
+		if (decayCounter >= decayTime) {
+			decayCounter=0;
+			perceptualBuffer.decayNodes(lowerActivationBound);
+			csm.decayNodes(lowerActivationBound);
+			episodicBuffer.decayNodes(lowerActivationBound);
+			broadcastQueue.decayNodes(lowerActivationBound);
+		}
 	}
 	
 }//class

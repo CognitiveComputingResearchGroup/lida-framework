@@ -8,7 +8,6 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import java.util.concurrent.Future;
 
 /**
  * The interface for LIDA's episodic memory. Episodic memory in LIDA
@@ -30,5 +29,5 @@ public interface TransientEpisodicMemory{
      * @param cue the cue used to read this TEM
      * @return a Future object with the local association
      */
-    public Future<LocalAssociation> cue(MemoryCue cue);
+    public void cue(MemoryCue cue);
 }

@@ -46,8 +46,9 @@ public class PamInitializer implements Initializer {
     	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
     	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
     	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
+    	PamNodeImpl topLeft = (PamNodeImpl)factory.storeNode("PamNodeImpl", "topLeft");
+    	PamNodeImpl bottomRight = (PamNodeImpl)factory.storeNode("PamNodeImpl", "bottomRight");
     	pam.addNodes(factory.getStoredNodes());
-    	
     	//Links
     	//TODO: make this a loop
     	factory.storeLink(gold, metal, LinkType.CHILD);
@@ -63,9 +64,9 @@ public class PamInitializer implements Initializer {
     	//TODO: make this a loop
     	FeatureDetector fd = new BasicDetector(gold, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
-    	fd = new TopLeftDetector(gold, sm, pam, taskManager);
+    	fd = new TopLeftDetector(topLeft, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
-    	fd = new BottomRightDetector(gold, sm, pam, taskManager);
+    	fd = new BottomRightDetector(bottomRight, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
     	
     	PropagationBehavior b = new UpscalePropagationBehavior();

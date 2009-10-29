@@ -15,9 +15,14 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
+import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.TranslatorImpl;
+import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -28,28 +33,17 @@ import java.util.concurrent.FutureTask;
 public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
     private SparseDistributedMemory sdm;
-    private HashMap<Long, Integer> indexMap;
-    private HashMap<Integer, Long> nodeMap;
     @SuppressWarnings("unused")
 	private Translator translator;
-
+	private List<LocalAssociationListener> localAssocListeners = new ArrayList<LocalAssociationListener>();
+    
     /**
      * The constructor of the class.
      * @param structure the structure with the nodes used for this TEM
      */
     public TemImpl(NodeStructure structure) {
-        translator = new Translator(structure);
-        indexMap = new HashMap<Long, Integer>();
-        nodeMap = new HashMap<Integer, Long>();
-        Collection<Node> nodes = structure.getNodes();
-        int index = 0;
-        for (Node n : nodes) {
-            long nodeID = n.getId();
-            indexMap.put(nodeID, index);
-            nodeMap.put(index, nodeID);
-            index++;
-        }
-    }
+        translator = new TranslatorImpl(structure);
+     }
 
     public TemImpl() {
 	}
@@ -67,22 +61,22 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
      * @param cue a set of nodes used to cue this episodic memory
      * @return a future task with the local association related to the cue
      */
-    public FutureTask<LocalAssociation> cue(MemoryCue cue) {
-        Collection<Node> nodes = cue.getNodeStructure().getNodes();
-        LocalAssociationImpl association = new LocalAssociationImpl();
-        FutureTask<LocalAssociation> future = null;
-        for (Node n : nodes) {
-            byte[] address = new byte[nodeMap.size()];
-            address[indexMap.get(n.getId())] = 1;
-            byte[] out = sdm.retrieve(address);
-            for (int j = 0; j != out.length; j++) {
-                if (out[j] == 1) {
-                    association.addNode((NodeImpl) cue.getNodeStructure()
-                            .getNode(nodeMap.get(j)));
-                }
+    public void cue(MemoryCue cue) {
+    	NodeStructure ns =cue.getNodeStructure();
+//        Collection<Node> nodes = cue.getNodeStructure().getNodes();
+//        LocalAssociationImpl association = new LocalAssociationImpl();
+//        FutureTask<LocalAssociation> future = null;
+        
+        	byte[] address = translator.translate(ns);
+            
+        	byte[] out = sdm.retrieve(address);
+            
+            NodeStructure result = translator.translate(out);
+           
+            for(LocalAssociationListener l : localAssocListeners){
+            	l.receiveLocalAssociation(result);
             }
-        }
-        return future;
+        return;
     }
     
     // Rodrigo, this method is called continually.  The rate at which is called 
@@ -90,10 +84,14 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
 	// This is set in the Lida Class.  The higher the value for 'tickPerCycle' the slower
 	// the rate of cueing will be.
 	public synchronized void receiveCue(NodeStructure cue) {		
-		//System.out.println("in Tem");
+		//cue(cue);
 	}
 
 	public void learn() {
 
 	}
+	public void addLocalAssociationListener(LocalAssociationListener listener){
+		localAssocListeners.add(listener);
+	}
+
 }

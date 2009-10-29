@@ -16,7 +16,7 @@ import java.util.Map;
 
 import javax.swing.JSlider;
 
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -37,7 +37,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
     /** Creates new form ControlToolBarPanel */
     public ControlToolBarPanel() {
         initComponents();
-        setSupportedModule(Module.NoModule);
+        setSupportedModule(ModuleType.NoModule);
 
 		sleepTimeTextField.setText(this.sliderStartValue + "");
     }

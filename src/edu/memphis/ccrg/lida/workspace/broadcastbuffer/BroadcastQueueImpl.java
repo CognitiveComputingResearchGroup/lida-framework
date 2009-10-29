@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.Module;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -73,6 +72,11 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
 	}
 
 	public void mergeIn(NodeStructure ns) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void decayNodes(double lowerActivationBound) {
 		// TODO Auto-generated method stub
 		
 	}

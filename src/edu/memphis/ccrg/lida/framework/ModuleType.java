@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
-public enum Module {
+public enum ModuleType {
 	
 	Environment, 
 	SensoryMemory,

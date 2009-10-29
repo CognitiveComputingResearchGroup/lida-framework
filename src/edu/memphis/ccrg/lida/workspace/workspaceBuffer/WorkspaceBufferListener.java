@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
@@ -12,6 +12,6 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  */
 public interface WorkspaceBufferListener {
 
-	public abstract void receiveBufferContent(Module originatingBuffer, WorkspaceContent ns);
+	public abstract void receiveBufferContent(ModuleType originatingBuffer, WorkspaceContent ns);
 
 }

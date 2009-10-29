@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 
 /**
  * A workspace listener receives content from the workspace.
@@ -10,10 +10,10 @@ import edu.memphis.ccrg.lida.framework.Module;
 public interface WorkspaceListener {
 	
 	/**
-	 * Receive NodeStructure content from Module originatingBuffer 
+	 * Receive NodeStructure content from ModuleType originatingBuffer 
 	 * @param originatingBuffer
 	 * @param content
 	 */
-	public abstract void receiveWorkspaceContent(Module originatingBuffer, WorkspaceContent content);
+	public abstract void receiveWorkspaceContent(ModuleType originatingBuffer, WorkspaceContent content);
 
 }

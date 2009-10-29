@@ -5,7 +5,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import javax.swing.JPanel;
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.Module;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 
 /**
@@ -19,8 +19,8 @@ public interface LidaPanel {
 	public void display (Object o);
 	public void refresh();
 	public JPanel getPanel();
-    public Module getSupportedModule();
-    public void setSupportedModule(Module module);
+    public ModuleType getSupportedModule();
+    public void setSupportedModule(ModuleType module);
     public void setName(String name);
     public String getName();
     public void initPanel(String[] param);
