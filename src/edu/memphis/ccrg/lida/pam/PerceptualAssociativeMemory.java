@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
  * @author Ryan McCall
  */
 public interface PerceptualAssociativeMemory extends LidaModule{
-	
+
 	public void setTaskManager(LidaTaskManager tm);
 	public void setTaskSpawner(TaskSpawner spawner);
 	//
@@ -40,6 +40,11 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param behavior
 	 */
 	public void setExciteBehavior(ExciteBehavior behavior);
+	
+	/**
+	 * Change how nodes and links are decayed
+	 * @param c
+	 */
 	public void setDecayBehavior(DecayBehavior c);
 	
 	/**

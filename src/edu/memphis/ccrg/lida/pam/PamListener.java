@@ -5,7 +5,8 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * @author Ryan McCall
+ * A PamListener receives percepts from Pam asynchronously
+ * @author Ryan J. McCall
  * 
  */
 public interface PamListener {
@@ -13,11 +14,19 @@ public interface PamListener {
 	 * This method should return as possible in order to 
 	 * no delay the rest of the broadcasting.
 	 * A good implementation should just store the content in a buffer and return.
-	 * @param sc the Content of the Broadcast
+	 * @param ns a NodeStructure
 	 */
 	public void receiveNodeStructure(NodeStructure ns);
 	
+	/**
+	 * Same as above for a single node.
+	 * @param node
+	 */
 	public void receiveNode(Node node);
 	
+	/**
+	 * Same as above for a single link.
+	 * @param l
+	 */
 	public void receiveLink(Link l);
 }

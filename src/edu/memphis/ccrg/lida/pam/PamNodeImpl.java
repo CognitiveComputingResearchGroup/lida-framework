@@ -4,12 +4,10 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.NodeType;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
-	protected final int TYPE_UNDEF = -1;
-	protected final int TYPE_OBJECT = 1;
-	protected final int TYPE_CATEGORY = 2;
 	protected final double MIN_ACTIVATION = 0.0;
 	protected final double MAX_ACTIVATION = 1.0;
 	/** Activation required for node to be part of the percept.
@@ -25,8 +23,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	protected double maxActivation = 1.0;
 	protected double baselevelActivation = 0.0;
 	protected double currentActivation = 0.0;
-	protected int type = 0;
-	private PropagationBehavior propogationBehavior; //TODO: set get methods copy constructor
+	protected NodeType type;
 	
 	public PamNodeImpl() {
 		super();
@@ -121,7 +118,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	public int hashCode() { 
 	    int hash = 1;
-	    Integer i = new Integer(type);
+	    Integer i = new Integer(type.getValue());
 	    Long id =  getId();
 	    
 	    hash = hash * 31 + id.hashCode();
@@ -169,9 +166,5 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void printActivationString() {
 		System.out.println(getId() + " total activation: " + getActivation());	
 	}//method
-
-	public double getActivationToPropagate(Map<String, Object> propagateParams) {
-		return propogationBehavior.getActivationToPropagate(propagateParams);
-	}
-
+	
 }//class

@@ -37,11 +37,26 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 														WorkspaceListener{
 
 	private Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
+	
+	/**
+	 * Contains all of the Node, Links and their connections.
+	 */
 	private PamNodeStructure pamNodeStructure = new PamNodeStructure();
+	
+	/**
+	 * All of the running featureDetectors should be in this list. 
+	 * TODO: Separate featureDetectors from PAM?
+	 */
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	
+	/**
+	 * Things that are listening for the percept
+	 */
 	private List<PamListener> pamListeners = new ArrayList<PamListener>();
-	// Shared variables
+
+	/**
+	 * 
+	 */
 	private NodeStructure topDownContent = new NodeStructureImpl();
 	private NodeStructure broadcastContent = new NodeStructureImpl();
     private NodeStructure preafferantSignal = new NodeStructureImpl();

@@ -11,23 +11,40 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
+/**
+ * PamDriver run the PAM
+ * @author ryanjmccall
+ *
+ */
 public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
-
-	private static final int DEFAULT_DECAY_TIME=10; 
-	private PerceptualAssociativeMemory pam;
+	
 	@SuppressWarnings("unused")
 	private Logger logger = Logger.getLogger("lida.pam.PamDriver");
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	private int decayCounter = 0;
-	private int decayTime=DEFAULT_DECAY_TIME;
-
+	
 	/**
-	 * @param decayTime
-	 *            the decayTime to set
+	 * Counter for the decay 
 	 */
-	public void setDecayTime(int decayTime) {
-		this.decayTime = decayTime;
-	}
+	private int decayCounter = 0;
+	
+	/**
+	 * Determines how often the Pam is decayed by this Driver.
+	 */
+	private int decayTime = DEFAULT_DECAY_TIME;
+	
+	/**
+	 * Parameter for how ofen pam is decayed.
+	 */
+	private static final int DEFAULT_DECAY_TIME = 10;
+	
+	/**
+	 * 
+	 */
+	private PerceptualAssociativeMemory pam;
+	
+	/**
+	 * 
+	 */
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
 	public PamDriver(PerceptualAssociativeMemory pam, int ticksPerCycle,
 			LidaTaskManager tm) {
@@ -37,22 +54,31 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 
 	@Override
 	protected void runThisDriver() {
-		// FrameworkGuiEvent event = new
-		// TaskCountEvent(ModuleType.PerceptualAssociativeMemory,
-		// getSpawnedTaskCount());
-		// sendEvent(event);
 		decayCounter++;
 		if (decayCounter >= decayTime) {
 			pam.decayPam(); // Decay the activations
 			decayCounter = 0;
 		}
 	}
+	
+	/**
+	 * @param decayTime
+	 *            the decayTime to set
+	 */
+	public void setDecayTime(int decayTime) {
+		this.decayTime = decayTime;
+	}
 
-	// **************GUI***************
+	/**
+	 * Add a gui panel
+	 */
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
-
+	
+	/**
+	 * Send a gui event
+	 */
 	public void sendEvent(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)
 			gui.receiveGuiEvent(evt);
