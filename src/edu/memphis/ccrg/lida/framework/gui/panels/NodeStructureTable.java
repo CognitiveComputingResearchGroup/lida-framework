@@ -14,9 +14,24 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeStructure;
+import java.awt.Dimension;
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 /**
  *
@@ -24,8 +39,9 @@ import edu.memphis.ccrg.lida.pam.PamNodeStructure;
  */
 public class NodeStructureTable extends LidaPanelImpl {
 
-	private static final long serialVersionUID = -9163422648584567656L;
-	
+	private static final long serialVersionUID = 1L;
+	 
+    
 	/** Creates new form NodeStructureTable */
     public NodeStructureTable() {
         initComponents();
@@ -41,6 +57,37 @@ public class NodeStructureTable extends LidaPanelImpl {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
+        jToolBar1 = new javax.swing.JToolBar();
+        refreshButton = new javax.swing.JButton();        
+
+        jToolBar1.setRollover(true);
+
+        refreshButton.setText("refresh");
+        refreshButton.setFocusable(false);
+        refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(refreshButton);
+        
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
+        );
+        
         table = new javax.swing.JTable();
 
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -51,9 +98,10 @@ public class NodeStructureTable extends LidaPanelImpl {
                 {null, null, null, null}
             },
             new String [] {
-                "Name", "Base Activation", "Current Activation", "Total Activation"
+                "Node", "Base Activation", "Current Activation", "Total Activation"
             }
-        ) {
+        ) 
+        {
             /**
 			 * 
 			 */
@@ -68,7 +116,7 @@ public class NodeStructureTable extends LidaPanelImpl {
         });
         jScrollPane1.setViewportView(table);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+       /* org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -79,20 +127,31 @@ public class NodeStructureTable extends LidaPanelImpl {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE))
-        );
+        );*/
     }// </editor-fold>
 
 
     // Variables declaration - do not modify
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton refreshButton;
     // End of variables declaration
+    
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // TODO add your handling code here:
+    	refresh();
+    }//GEN-LAST:event_refreshButtonActionPerformed
     
     public void refresh(){
     	
     	PamNodeStructure ns = lida.getPam().getNodeStructure();
     	Collection<Link> links = ns.getLinks();
-    	//Collection<PamNode> nodes = ns.getPamNodes();
+    	Collection<Node> nodes = ns.getNodes();
     }
+    public void registerLida(Lida lida){
+		super.registerLida(lida);
+		
+	}
 
 }
