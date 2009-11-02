@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
+
 //TODO: Check this class
 public class PamNodeStructure extends NodeStructureImpl{
 	private Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
