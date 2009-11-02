@@ -9,8 +9,11 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
 /**
- *
- * @author Rodrigo Silva L.
+ * Implementation of Kanerva's sparse distributed memory. This implementation is
+ * based on the model described in P. Kanerva, "Sparse Distributed Memory and
+ * Related Models" in <i>Associative Neural Memories: Theory and Implementation
+ * </i>, pp. 50-76, Oxford University Press, 1993.
+ * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public class SparseDistributedMemory {
 
@@ -22,8 +25,8 @@ public class SparseDistributedMemory {
     private int [][]contentsMatrix;
     private int []similarityVector;
     private int []sumVector;
-    private int addressSize;
-    private int wordSize;
+    private int addressLength;
+    private int wordLength;
     private int memorySize;
     @SuppressWarnings("unused")
 	private double activationProbability;
@@ -32,7 +35,8 @@ public class SparseDistributedMemory {
     private int []counterRange;
 
     /**
-     *
+     * Constructor of the class that receives all the parameters necessary for
+     * this sparse distributed memory.
      * @param a the address (hard locations) matrix
      * @param p the activation probability
      * @param h the activation radius
@@ -50,20 +54,20 @@ public class SparseDistributedMemory {
 
         //Memory's state and operation
         address = new byte[a[0].length];
-        addressSize = address.length;
+        addressLength = address.length;
         similarityVector = new int[memorySize];
         activationVector = new byte[memorySize];
-        wordSize = u;
-        inputWord = new byte[wordSize];
-        contentsMatrix = new int[memorySize][wordSize];
-        sumVector = new int[wordSize];
-        outputWord = new byte[wordSize];
+        wordLength = u;
+        inputWord = new byte[wordLength];
+        contentsMatrix = new int[memorySize][wordLength];
+        sumVector = new int[wordLength];
+        outputWord = new byte[wordLength];
     }
 
     /**
-     *
-     * @param w
-     * @param x
+     * Stores a word in the given address in this sparse distributed memory.
+     * @param w the word to be stored
+     * @param x the address where the word is to be stored
      */
     public void store(byte[] w, byte[] x) {
         inputWord = w;
@@ -75,9 +79,11 @@ public class SparseDistributedMemory {
     }
 
     /**
-     *
-     * @param x
-     * @return
+     * Retrieves the contents of this sparse distributed memory at the given
+     * address.
+     * @param x the address of the contents to be retrieved
+     * @return the contents of this sparse distributed memory associated with
+     * the given address
      */
     public byte[] retrieve(byte[] x) {
         address = x;
@@ -89,40 +95,47 @@ public class SparseDistributedMemory {
     }
 
     /**
-     *
-     * @param d
-     * @return
+     * Gets the acticvation of each hard location in the address matrix. This
+     * activation is 1 if the Hamming distance between the address register and
+     * the hard location is less or equal to the activation threshold.
+     * @param d the Hamming distances vector between the address register and
+     * the hard locations
+     * @return a vector with the activation of each hard location
      */
     private byte[] getActivations(int[] d)
     {
         byte[] y = new byte[memorySize];
         for (int i = 0; i != memorySize; i++) {
-            y[i] = d[i] >= activationThreshold ? (byte) 1 : (byte) 0;
+            y[i] = d[i] <= activationThreshold ? (byte) 1 : (byte) 0;
         }
         return y;
     }
 
     /**
-     *
-     * @param s
-     * @return
+     * Gets the output word based on the sums vector. For each position in the
+     * sums vector, if the position is greater than zero, the output is 1,
+     * otherwise the output is 0.
+     * @param s the sums vector, position i contains the sum of all the counters
+     * in column i of the contents matrix
+     * @return the output word
      */
     private byte[] getOutput(int[] s) {
-        byte[] z = new byte[wordSize];
-        for (int i = 0; i != wordSize; i++) {
-            z[i] = s[i] > 0 ? (byte) 1 : (byte) -1;
+        byte[] z = new byte[wordLength];
+        for (int i = 0; i != wordLength; i++) {
+            z[i] = s[i] > 0 ? (byte) 1 : (byte) 0;
         }
         return z;
     }
 
     /**
-     *
-     * @return
+     * Calculates the Hamming distances between the address register, and each
+     * of the hard locations in the address matrix.
+     * @return a vector with the Hamming distances
      */
     private int[] getSimilarities() {
         for (int i = 0; i != memorySize; i++) {
             similarityVector[i] = 0;
-            for (int j = 0; j!= addressSize; j++) {
+            for (int j = 0; j!= addressLength; j++) {
                 similarityVector[i] += addressMatrix[i][j] == address[j] ? 1 : 0;
             }
         }
@@ -151,7 +164,7 @@ public class SparseDistributedMemory {
     }
 
     /**
-     *
+     * Trasposes a matrix.
      * @param contents
      * @return
      */

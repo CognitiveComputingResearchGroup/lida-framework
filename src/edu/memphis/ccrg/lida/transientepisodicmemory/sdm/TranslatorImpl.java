@@ -16,58 +16,113 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /**
- * This is the class that translates from nodes to boolean vectors and vice
- * versa.
- * @author Rodrigo Silva L.
+ * This is the class that translates from nodes to boolean vectors and vice-
+ * versa. The translation works by assigning a unique index to every node. For
+ * example, if there are four nodes in total, namely n1, n2, n3 and n4, the
+ * boolean vector will have four positions. If the structure to be translated
+ * has nodes n1 and n2, the output vector will be 1100. If the input vector to be
+ * translated is 0101, the output structure will have two nodes i.e. n2 and n4.
+ * In this case the dictionaries will be:
+ * indexToNodeDictionary = {(0,n1),(1,n2),(2,n3),(3,n4)}
+ * nodeToIndexDictionary = {(n1,0),(n2,1),(n3,2),(n4,3)}
+ * Both dictionaries are always the same size, which corresponds to the total
+ * number of nodes used to create the translator.
+ * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public class TranslatorImpl implements Translator {
 
-    private HashMap<Node, Integer> indexMap;
-    private HashMap<Integer, Node> nodeMap;
+    /**
+     * The dictionary used to translate from nodes to vectors. Each node, has
+     * a unique corresponding index in the vector
+     */
+    private HashMap<Node, Integer> nodeToIndexDictionary;
+    
+    /**
+     * The dictionary used to translate from vextors to indices. Each position
+     * in the vector corresponds to a unique node.
+     */
+    private HashMap<Integer, Node> indexToNodeDictionary;
+
+    /** The boolean vector used for the translation. */
     private byte[] vector;
+
+    /** The node structure used for the translation. */
     private NodeStructure nodeStructure;
+
+    /** The nodes in the node structure, this collection is used in the for
+     * loops since it has an enumerator. */
     private Collection<Node> nodes;
 
     /**
-     * The constructor for the class.
-     * @param nodeStructure the node structure used for translation, this
-     * structure contains the primitive feature detectors in PAM
+     * The constructor for the class. the dictionaries are created and populated.
+     * The nodes from the input structure are stored, and the boolean vector is
+     * initialized.
+     * @param nodeStructure the node structure that contains all the nodes used
+     * for translation
      */
     public TranslatorImpl(NodeStructure nodeStructure) {
-        indexMap = new HashMap<Node, Integer>();
-        nodeMap = new HashMap<Integer, Node>();
+        nodeToIndexDictionary = new HashMap<Node, Integer>();
+        indexToNodeDictionary = new HashMap<Integer, Node>();
         this.nodeStructure = nodeStructure;
         nodes = nodeStructure.getNodes();
         int index = 0;
         for (Node n : nodes) {
-            indexMap.put(n, index);
-            nodeMap.put(index, n);
+            nodeToIndexDictionary.put(n, index);
+            indexToNodeDictionary.put(index, n);
             index++;
         }
-        vector = new byte[indexMap.size()];
+        vector = new byte[nodeToIndexDictionary.size()];
     }
 
-    /* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator#translate(byte[])
-	 */
-    public NodeStructure translate(byte[] data) {
+    /**
+     * Translates a boolean vector into a node structure.
+     * @param data the boolean vector to be translated, must be the same size as
+     * the dictionaries
+     * @return the node structure with the nodes corresponding to the input
+     * vector
+     * @throws Exception when the input vector is not the same size as the
+     * dictionaries
+     */
+    public NodeStructure translate(byte[] data) throws Exception {
         NodeStructureImpl ns = new NodeStructureImpl();
+        if (data.length == vector.length) {
+            vector = data;
+        } else {
+            throw new Exception("The data vector size is incorrect.");
+        }
         for (int i = 0; i != vector.length; i++) {
-            if (data[i] != 0) {
-                ns.addNode(nodeStructure.getNode(nodeMap.get(i).getId()));
+            if (vector[i] != 0) {
+                ns.addNode(nodeStructure.getNode(indexToNodeDictionary
+                        .get(i).getId()));
             }
         }
         return ns;
     }
 
-    /* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator#translate(edu.memphis.ccrg.lida.framework.shared.NodeStructure)
-	 */
-    public byte[] translate(NodeStructure structure) {
+    /**
+     * Translates a node structure into a boolean vector.
+     * @param structure the node structure to be translated, must have at most
+     * as many nodes as any of the dictionaries
+     * @return a boolean vector representing the node structure
+     * @throws Exception when the input node structure size is larger than the
+     * dictionaries, or a node in the structure is not in the dictionary
+     */
+    public byte[] translate(NodeStructure structure) throws Exception {
         byte[] v = new byte[vector.length];
-        for (Node n : structure.getNodes()) {
-            v[indexMap.get(n)] = 1;
+        if (structure.getNodes().size() <= nodes.size()) {
+            for (Node n : structure.getNodes()) {
+                Integer i = nodeToIndexDictionary.get(n);
+                if (!i.equals(null)) {
+                    v[nodeToIndexDictionary.get(n)] = 1;
+                } else {
+                    throw new Exception("The node " + n.toString()
+                            + " is not in the dictionary");
+                }
+            }
+            return v;
+        } else {
+            throw new Exception("The structure size is incorrect, should be "
+                    + "less or equal than " + nodes.size());
         }
-        return v;
     }
 }

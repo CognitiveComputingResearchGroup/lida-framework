@@ -8,9 +8,12 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
+import static java.lang.Math.random;
+import static java.lang.Math.round;
+
 /**
  * This is a test of the episodic memory using an SDM implementation.
- * @author rsilva
+ * @author Rodrigo Silva L. <rsilval@acm.org>
  */
 public class SdmTest {
 
@@ -19,29 +22,57 @@ public class SdmTest {
      * @param args command line arguments, not used
      */
     public static void main(String[] args) {
-        byte[][] addressMatrix = new byte [2][2];
+        
+        final int NUM_HARD_LOCATIONS = 100;
+        final int ADDRESS_LENGTH = 25;
+        final int WORD_LENGTH = 10;
+        final int NUM_TESTS = 10;
+        byte[][] addressMatrix = new byte [NUM_HARD_LOCATIONS][ADDRESS_LENGTH];
         double activationProbability = 0.7;
         int activationRadius = 0;
         int[] counterRange = new int[2];
-        int wordSize = 2;
-        byte[] inputWord = new byte[2];
-        byte[] address = new byte[2];
-        addressMatrix[0][0] = 0;
-        addressMatrix[0][1] = 1;
-        addressMatrix[1][0] = 1;
-        addressMatrix[1][1] = 0;
-        counterRange[0] = -1;
-        counterRange[1] = 1;
-        inputWord[0] = 0;
-        inputWord[1] = 1;
-        address[0] = 0;
-        address[1] = 1;
-        SparseDistributedMemory sdm
-                = new SparseDistributedMemory(addressMatrix,
-                    activationProbability,
-                    activationRadius,
-                    counterRange,
-                    wordSize);
-        sdm.store(inputWord, address);
+        byte[] inputWord = new byte[WORD_LENGTH];
+        byte[] outputWord = new byte[WORD_LENGTH];
+        byte[] address = new byte[ADDRESS_LENGTH];
+
+        // Initialize the address matrix with random hard locations.
+        for (int i = 0; i != NUM_HARD_LOCATIONS; i++) {
+            for (int j = 0; j != ADDRESS_LENGTH; j++) {
+                addressMatrix[i][j] = (byte) round(random());
+            }
+        }
+        System.out.println("Address matrix initialized.");
+        counterRange[0] = -5;
+        counterRange[1] = 5;
+
+        for (int j = 1; j <= NUM_TESTS; j++) {
+            System.out.println("\nTest " + j);
+
+            // Create a random input word.
+            System.out.print("Input word: ");
+            for (int i = 0; i != WORD_LENGTH; i++) {
+                inputWord[i] = (byte) round(random());
+                System.out.print(inputWord[i]);
+            }
+
+            // Create a random address.
+            System.out.print("\nAddress: ");
+            for (int i = 0; i != ADDRESS_LENGTH; i++) {
+                address[i] = (byte) round(random());
+                System.out.print(address[i]);
+            }
+            SparseDistributedMemory sdm
+                    = new SparseDistributedMemory(addressMatrix,
+                        activationProbability,
+                        activationRadius,
+                        counterRange,
+                        WORD_LENGTH);
+            sdm.store(inputWord, address);
+            outputWord = sdm.retrieve(address);
+            System.out.print("\nOutput word: ");
+            for (int i = 0; i != WORD_LENGTH; i++) {
+                System.out.print(outputWord[i]);
+            }
+        }
     }
 }

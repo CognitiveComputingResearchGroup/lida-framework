@@ -1,21 +1,38 @@
+/*
+ * @(#)Translator.java  1.0  June 30, 2009
+ *
+ * Copyright 2006-2009 Cognitive Computing Research Group.
+ * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
+ * All rights reserved.
+ */
+
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
+/**
+ * Interface for the translator between boolean vectors in sparse distributed
+ * memory, and node structures in the LIDA cognitive architecture.
+ * @author Rodrigo Silva L. <rsilval@acm.org>
+ */
 public interface Translator {
 
 	/**
 	 * Translates a boolean address into a node structure.
 	 * @param data a byte vector with the boolean vector to be translated
 	 * @return the node structure associated with the address
+         * @throws Excaeption when the boolean vector is the wrong size
 	 */
-	public abstract NodeStructure translate(byte[] data);
+	public abstract NodeStructure translate(byte[] data) throws Exception;
 
 	/**
 	 * Translates a node structure into a boolean address.
 	 * @param structure the node structure to be translated
-	 * @return a byte vector with the boolean address associated with the structure
+	 * @return a byte vector with the boolean address associated with
+         * the structure
+         * @throws Exception when the node structure is the wrong size
 	 */
-	public abstract byte[] translate(NodeStructure structure);
+	public abstract byte[] translate(NodeStructure structure)
+                throws Exception;
 
 }
