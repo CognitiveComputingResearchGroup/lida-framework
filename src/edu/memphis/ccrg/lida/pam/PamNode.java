@@ -49,18 +49,11 @@ public interface PamNode extends Node{
 	 * @return
 	 */
 	public abstract double getMaxActivation();
-
 	
 	/**
 	 * Set the threshold
 	 * @param threshold
 	 */
 	public abstract void setSelectionThreshold(double threshold);
-     
-	/**
-	 * Update the total activation as it isn't updated when current activation is.
-	 * TODO: Remove
-	 */
-	public abstract void synchronize();
 
 }// interface

@@ -10,30 +10,30 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	protected final double MIN_ACTIVATION = 0.0;
 	protected final double MAX_ACTIVATION = 1.0;
+	
 	/** Activation required for node to be part of the percept.
 	 *  Bounded by minActivation and maxActivation
 	 */
 	protected double selectionThreshold = 0.9;
+	
 	/**
 	 * Specifies the relative importance of a Node. Only relevant for nodes
 	 * that represent feelings. Lies between 00.d and 1.0d inclusive.
 	 */
 	protected double importance = 0.0;
-	protected double baselevelActivation = 0.0;
-	protected double currentActivation = 0.0;
+	protected double baseLevelActivation = 0.0;
 	protected NodeType type;
 	
 	public PamNodeImpl() {
 		super();
-		refNode=this;
+		refNode = this;
 	}
 
 	public PamNodeImpl(PamNodeImpl p) {
 		super(p);
 		selectionThreshold = p.selectionThreshold;
 		importance = p.importance;
-		baselevelActivation = p.baselevelActivation;
-		currentActivation = p.currentActivation;
+		baseLevelActivation = p.baseLevelActivation;
 		type = p.type;
 	}
 
@@ -43,10 +43,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 * be invoked when activation passing for this cycle is complete.
 	 */
 	public void synchronize() {		
-		if((currentActivation + baselevelActivation) > MAX_ACTIVATION)
-			setActivation(MAX_ACTIVATION);
+		double currentActivation = getActivation();
+		if((currentActivation + baseLevelActivation) < MAX_ACTIVATION)
+			setActivation(currentActivation + baseLevelActivation); 
 		else
-			setActivation(currentActivation + baselevelActivation);   
+			setActivation(MAX_ACTIVATION);
 	}
 	
 	/**
@@ -57,8 +58,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	  * @see        #selectionThreshold
 	  */
 	public boolean isOverThreshold() {
-		//System.out.println(getLabel() + " " + getActivation() + " " + selectionThreshold);
-	    return getActivation() >= selectionThreshold;
+	    return getTotalActivation() >= selectionThreshold;
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		
 		o = values.get("baselevelactivation");
 		if ((o != null)&& (o instanceof Double)) 
-			baselevelActivation = (Double)o;		
-	}//public void setValue(Map<String, Object> values)
+			baseLevelActivation = (Double)o;		
+	}//method
 
 	/**
 	 * @param n
@@ -115,11 +115,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 
 	public double getBaselevelActivation() {
-	    return baselevelActivation;
+	    return baseLevelActivation;
 	}
 
 	public double getTotalActivation() {
-	    return getActivation();
+	    return getActivation() + baseLevelActivation;
 	}
 
 	public double getMaxActivation() {
@@ -130,12 +130,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		return MIN_ACTIVATION;
 	}
 
+	//TODO: Remove.
 	public Node copy() {
 		return new PamNodeImpl(this);
 	}
 
 	public void printActivationString() {
-		System.out.println(getId() + " total activation: " + getActivation());	
+		System.out.println(getId() + " total activation: " + getTotalActivation());	
 	}//method
 	
 }//class

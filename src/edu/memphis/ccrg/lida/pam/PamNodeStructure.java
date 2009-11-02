@@ -151,50 +151,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 	}//method
 	
 	/**
-	 * Pass activation upward starting from the set of nodes
-	 * provided in the argument.
-	 * 
-	 * TODO: Vunerable to cyclic node connections. Ensure elsewhere this won't happen?  
-	 * 
-	 * @param layerOfNodes
-	 */
-	public void passActivationUpward(Set<PamNode> layerOfNodes) {
-		Set<PamNode> parents = new HashSet<PamNode>();
-		while(layerOfNodes.size() != 0){	
-			for(PamNode n: layerOfNodes){
-				n.synchronize();
-		  		double currentActivation = n.getActivation();
-		  		parents = getParents(n);
-		  		for(PamNode parent: parents){ 
-		  			parent.excite(currentActivation * upscaleFactor);
-		  			parents.add(parent);
-		  		}//for each parent
-		  		layerOfNodes = parents;
-			}//for 
-		}//while
-	}//method	
-	
-	/**
-	 * Same as pass activation upward but in the opposite direction
-	 * @param layerOfNodes
-	 */
-	public void passActivationDownward(Set<PamNode> layerOfNodes) {
-		Set<PamNode> children = new HashSet<PamNode>();
-		while(layerOfNodes.size() != 0){	
-			for(PamNode n: layerOfNodes){
-				n.synchronize();
-		  		double currentActivation = n.getActivation();
-		  		children = getChildren(n);
-		  		for(PamNode child: children){ 
-		  			child.excite(currentActivation * downscaleFactor);
-		  			children.add(child);
-		  		}//for each parent
-		  		layerOfNodes = children;
-			}//for 
-		}//while
-	}//method
-
-	/**
 	 * Get parents of this linkable. 
 	 * O(l) where l = number of links connected to n.
 	 * 
