@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
@@ -52,13 +53,60 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 */
 	public void decayPam();
 	
+	/**
+	 * Send a burst of activation to a node.
+	 * @param pNode The node to receiving the activation
+	 * @param amount The amount of activation
+	 */
 	public void receiveActivationBurst(PamNode pNode, double amount);
+	
+	/**
+	 * Send a burst of activation to a Set of node.
+	 * @param nodes Nodes to receive activation
+	 * @param amount Amount of activation
+	 */
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
 	
+	/**
+	 * Propagates activation from a PamNode to its parents
+	 * @param pamNode The node to propagate activation from.
+	 */
+	public void sendActivationToParentsOf(PamNode pamNode);
+	
+	/**
+	 * Set the behavior governing how activation is propagated
+	 * @param b
+	 */
+	public void setPropagationBehavior(PropagationBehavior b);
+	
+	/**
+	 * Put a PamNode into the percept
+	 * @param pamNode
+	 */
 	public void addNodeToPercept(PamNode pamNode);
 	
+	/**
+	 * Put a Link into the percept
+	 * @param l
+	 */
+	public void addLinkToPercept(Link l);
+	
+	/**
+	 * Put a NodeStructure into the percept
+	 * @param ns
+	 */
+	public void addNodeStructureToPercept(NodeStructure ns);
+	
+	/**
+	 * Get Pam represented as a node structure
+	 * @return
+	 */
 	public PamNodeStructure getNodeStructure();
+	
+	/**
+	 * Get the running feature detectors
+	 * @return
+	 */
 	public Collection<FeatureDetector> getFeatureDetectors();
-	public void sendActivationToParentsOf(PamNode pamNode);
-	public void setPropagationBehavior(PropagationBehavior b);
+
 }//interface PAMinterface

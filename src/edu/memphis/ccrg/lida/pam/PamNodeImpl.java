@@ -19,8 +19,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 * that represent feelings. Lies between 00.d and 1.0d inclusive.
 	 */
 	protected double importance = 0.0;
-	protected double minActivation = 0.0;
-	protected double maxActivation = 1.0;
 	protected double baselevelActivation = 0.0;
 	protected double currentActivation = 0.0;
 	protected NodeType type;
@@ -34,8 +32,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		super(p);
 		selectionThreshold = p.selectionThreshold;
 		importance = p.importance;
-		minActivation = p.minActivation;
-		maxActivation = p.maxActivation;
 		baselevelActivation = p.baselevelActivation;
 		currentActivation = p.currentActivation;
 		type = p.type;
@@ -47,8 +43,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 * be invoked when activation passing for this cycle is complete.
 	 */
 	public void synchronize() {		
-		if((currentActivation + baselevelActivation) > maxActivation)
-			setActivation(maxActivation);
+		if((currentActivation + baselevelActivation) > MAX_ACTIVATION)
+			setActivation(MAX_ACTIVATION);
 		else
 			setActivation(currentActivation + baselevelActivation);   
 	}
@@ -64,22 +60,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		//System.out.println(getLabel() + " " + getActivation() + " " + selectionThreshold);
 	    return getActivation() >= selectionThreshold;
 	}
-
-	/**
-	 * 
-	 * @param activ
-	 */
-	public void setMinActivation(double activ) {
-		minActivation = activ;
-	}
-
-	/**
-	 * 
-	 * @param activ
-	 */
-	public void setMaxActivation(double activ) {
-		maxActivation = activ; 
-	}//method
 
 	/**
 	 * 
@@ -142,20 +122,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	    return getActivation();
 	}
 
-	public double getMinActivation() {
-	    return minActivation;
-	    
-	}
-
 	public double getMaxActivation() {
-	    return maxActivation;
-	}
-
-	public double getDefaultMaxActivation() {
 		return MAX_ACTIVATION;
 	}
 
-	public double getDefaultMinActivation() {
+	public double getMinActivation() {
 		return MIN_ACTIVATION;
 	}
 

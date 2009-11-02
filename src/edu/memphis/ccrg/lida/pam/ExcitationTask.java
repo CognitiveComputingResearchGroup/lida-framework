@@ -25,7 +25,7 @@ public class ExcitationTask extends LidaTaskImpl{
 	private double excitationAmount;
 	
 	/**
-	 * 
+	 * Used to make another excitation call
 	 */
 	private PerceptualAssociativeMemory pam;
 	

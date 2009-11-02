@@ -66,12 +66,11 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
 //        Collection<Node> nodes = cue.getNodeStructure().getNodes();
 //        LocalAssociationImpl association = new LocalAssociationImpl();
 //        FutureTask<LocalAssociation> future = null;
-        
+    
         	byte[] address = null;
 			try {
 				address = translator.translate(ns);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
             
@@ -81,7 +80,6 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
 			try {
 				result = translator.translate(out);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
            

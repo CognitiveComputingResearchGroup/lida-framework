@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.Map;
-
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
@@ -40,26 +38,29 @@ public interface PamNode extends Node{
 	 */
 	public abstract double getTotalActivation();
 
-	//TODO: Remove
+	/**
+	 * Returns final min activation variable
+	 * @return
+	 */
 	public abstract double getMinActivation();
 
-	//TODO: Remove
+	/**
+	 * Returns final max activation variable
+	 * @return
+	 */
 	public abstract double getMaxActivation();
 
-	//TODO: Remove
-	public abstract double getDefaultMinActivation();
-
-	//TODO: Remove
-	public abstract double getDefaultMaxActivation();
-
-	//TODO: Remove
-	public abstract void setMinActivation(double amount);
-
-	//TODO: Remove
-	public abstract void setMaxActivation(double amount);
-
+	
+	/**
+	 * Set the threshold
+	 * @param threshold
+	 */
 	public abstract void setSelectionThreshold(double threshold);
      
+	/**
+	 * Update the total activation as it isn't updated when current activation is.
+	 * TODO: Remove
+	 */
 	public abstract void synchronize();
 
 }// interface

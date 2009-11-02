@@ -35,16 +35,24 @@ public class PamNodeStructure extends NodeStructureImpl{
 		return upscaleFactor;
 	}
 
+	/**
+	 * Set downscale factor
+	 * @param d
+	 */
 	public void setDownscale(Double d) {
 		downscaleFactor  = d;		
 	}
 
-	public void setSelectivity(Double d) {
-		selectivityThreshold = d;		
+	/**
+	 * Set selectivity threshold
+	 * @param s
+	 */
+	public void setSelectivity(Double s) {
+		selectivityThreshold = s;		
 	}
 	
 	/**
-	 * 
+	 * Add a collection of PamNodes to this pam node structure
 	 */	
 	public void addPamNodes(Collection<PamNode> nodes){
 		for(Node n: nodes)
@@ -52,6 +60,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
 	}//method
+	/**
+	 * Add a single PamNode to this pam node structure
+	 * @param node
+	 */
 	public void addPamNode(PamNode node){
 		addNode(node);
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
@@ -68,43 +80,9 @@ public class PamNodeStructure extends NodeStructureImpl{
 		Collection<Node> nodes = getNodes();
         for(Node n: nodes){
         	PamNode pamNode = (PamNode)n;
-        	updateMinActivation(pamNode, upscale);
-        	updateMaxActivation(pamNode, upscale);
         	updateSelectionThreshold(pamNode, selectivity);
         }//for	
     }//method
-
-    /**
-     * Calc min activation based on the number of children and upscale
-     */
-    private void updateMinActivation(PamNode n, double upscale) {
-        if(isAtBottom(n))
-        	n.setMinActivation(n.getDefaultMinActivation());
-        else{
-        	double sumOfChildMinActiv = 0.0;
-        	Set<PamNode> children = getChildren(n);
-            for(PamNode child: children)
-            	sumOfChildMinActiv += child.getMinActivation();
-            
-            n.setMinActivation(sumOfChildMinActiv * upscale);            
-        }  
-    }//method
-	
-    /**
-     * Calc max activation based on the number of children and upscale
-     */
-	private void updateMaxActivation(PamNode n, double upscale){
-	    if(isAtBottom(n))
-	        n.setMaxActivation(n.getDefaultMaxActivation());
-	    else{
-	    	double sumOfChildMaxActiv = 0.0;
-	    	Set<PamNode> children = getChildren(n);
-	    	for(PamNode child: children)
-	        	sumOfChildMaxActiv += child.getMaxActivation();
-	        
-	        n.setMaxActivation(sumOfChildMaxActiv * upscale);       
-	    }    
-	}//method
 	
 	/**
      * Calc selection threshold based on the selectivity and min and max activ.
@@ -117,10 +95,11 @@ public class PamNodeStructure extends NodeStructureImpl{
 	}   
 	
 	/** 
+	 * Determines if linkable has no children.
 	 * @param n
 	 * @return true if n has no children (it is at the 'bottom' of the network)
 	 */
-    public boolean isAtBottom(Linkable n) {
+    public boolean hasNoChildren(Linkable n) {
 		Set<Link> links = getLinkableMap().get(n);
 		if(links != null){
 			for(Link link: links){
@@ -134,10 +113,11 @@ public class PamNodeStructure extends NodeStructureImpl{
 	}//method
     
 	/** 
+	 * Determine if linkable has no parents.
 	 * @param n
 	 * @return true if n has no parent (it is at the 'top' of the network)
 	 */
-	public boolean isAtTop(Linkable n) {
+	public boolean hasNoParents(Linkable n) {
 		Set<Link> links = getLinkableMap().get(n);
 		if(links != null){
 			for(Link l: links){
@@ -152,11 +132,19 @@ public class PamNodeStructure extends NodeStructureImpl{
 	
 	//************END OF METHODS RELATED TO NODE ADDING*************	
 
+	/**
+	 * Set the excite behavior for all nodes
+	 */
 	public void setNodesExciteBehavior(ExciteBehavior behavior) {
     	for(Node n: getNodes())
     		n.setExciteBehavior(behavior);
 	}//method
 	
+	/**
+	 * Set the decay behavior for all nodes.
+	 * TODO: make the behavior a field on this class instead?
+	 * @param behavior
+	 */
 	public void setNodesDecayBehavior(DecayBehavior behavior) {
     	for(Node n: getNodes())
     		n.setDecayBehavior(behavior);
@@ -186,6 +174,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 		}//while
 	}//method	
 	
+	/**
+	 * Same as pass activation upward but in the opposite direction
+	 * @param layerOfNodes
+	 */
 	public void passActivationDownward(Set<PamNode> layerOfNodes) {
 		Set<PamNode> children = new HashSet<PamNode>();
 		while(layerOfNodes.size() != 0){	
@@ -242,8 +234,11 @@ public class PamNodeStructure extends NodeStructureImpl{
 		return children;
 	}//method
 
+	/**
+	 * Decay the nodes of this pam node structure
+	 */
 	public void decayNodes(){
-		logger.fine("Decaing PAM");
+		logger.fine("Decaying the Pam NodeStructure");
 		for(Node n: getNodes())
 			n.decay();
 	}//method
