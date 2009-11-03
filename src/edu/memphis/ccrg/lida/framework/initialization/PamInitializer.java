@@ -39,35 +39,35 @@ public class PamInitializer implements Initializer {
 		//Nodes
 		//TODO: Make this a loop.  Reading in the nodes from a file.
     	NodeFactory factory = NodeFactory.getInstance();
-    	PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl", "gold");
-    	PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "metal");
-    	PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl", "solid");
-    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
-    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
-    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
-    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
+//    	PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl", "gold");
+//    	PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "metal");
+//    	PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl", "solid");
+//    	PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl", "iron");
+//    	PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl", "plastic");
+//    	PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl", "noMetal");
+//    	PamNodeImpl wood = (PamNodeImpl)factory.storeNode("PamNodeImpl", "wood");
     	PamNodeImpl topLeft = (PamNodeImpl)factory.storeNode("PamNodeImpl", "topLeft");
     	PamNodeImpl bottomRight = (PamNodeImpl)factory.storeNode("PamNodeImpl", "bottomRight");
     	pam.addNodes(factory.getStoredNodes());
     	//Links
     	//TODO: make this a loop
-    	factory.storeLink(gold, metal, LinkType.CHILD);
-    	factory.storeLink(metal, solid, LinkType.CHILD);   
-    	factory.storeLink(iron, metal, LinkType.CHILD);   
-    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
-    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
-    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
-    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
+//    	factory.storeLink(gold, metal, LinkType.CHILD);
+//    	factory.storeLink(metal, solid, LinkType.CHILD);   
+//    	factory.storeLink(iron, metal, LinkType.CHILD);   
+//    	factory.storeLink(wood, noMetal, LinkType.CHILD);   
+//    	factory.storeLink(plastic, noMetal, LinkType.CHILD);   
+//    	factory.storeLink(metal, noMetal, LinkType.CHILD);   
+//    	factory.storeLink(wood, solid, LinkType.GROUNDING);   
     	pam.addLinks(factory.getStoredLinks());
     	
     	//Feature detectors
     	//TODO: make this a loop
-    	FeatureDetector fd = new BasicDetector(gold, sm, pam, taskManager);
+//    	FeatureDetector fd = new BasicDetector(gold, sm, pam, taskManager);
+//    	pam.addFeatureDetector(fd);
+    	FeatureDetector fd = new TopLeftDetector(topLeft, sm, pam, taskManager);
     	pam.addFeatureDetector(fd);
-    	fd = new TopLeftDetector(topLeft, sm, pam, taskManager);
-    	pam.addFeatureDetector(fd);
-    	fd = new BottomRightDetector(bottomRight, sm, pam, taskManager);
-    	pam.addFeatureDetector(fd);
+//    	fd = new BottomRightDetector(bottomRight, sm, pam, taskManager);
+//    	pam.addFeatureDetector(fd);
     	
     	PropagationBehavior b = new UpscalePropagationBehavior();
     	pam.setPropagationBehavior(b);

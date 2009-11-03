@@ -22,7 +22,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	protected double importance = 0.0;
 	protected double baseLevelActivation = 0.0;
-	protected NodeType type;
 	
 	public PamNodeImpl() {
 		super();
@@ -34,7 +33,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		selectionThreshold = p.selectionThreshold;
 		importance = p.importance;
 		baseLevelActivation = p.baseLevelActivation;
-		type = p.type;
 	}
 
 	/**
@@ -90,7 +88,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		if(!(obj instanceof PamNodeImpl))
 			return false;
 		PamNodeImpl other = (PamNodeImpl)obj;
-		return getId() == other.getId() && type == other.type;
+		return getId() == other.getId();
 	}
 
 	/**
@@ -98,11 +96,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	public int hashCode() { 
 	    int hash = 1;
-	    Integer i = new Integer(type.getValue());
 	    Long id =  getId();
-	    
 	    hash = hash * 31 + id.hashCode();
-	    hash = hash * 31 + (i == null ? 0 : i.hashCode());
 	    return hash;
 	}
 
