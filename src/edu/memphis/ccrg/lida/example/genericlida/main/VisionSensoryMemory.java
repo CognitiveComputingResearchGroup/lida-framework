@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
+import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 public class VisionSensoryMemory extends SensoryMemoryImpl{
@@ -20,5 +21,6 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 		
 		return null;
 	}
+
 	
 }// class

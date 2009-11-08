@@ -96,12 +96,3 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
 	public synchronized void receiveCue(NodeStructure cue) {		
 		//cue(cue);
 	}
-
-	public void learn() {
-
-	}
-	public void addLocalAssociationListener(LocalAssociationListener listener){
-		localAssocListeners.add(listener);
-	}
-
-}

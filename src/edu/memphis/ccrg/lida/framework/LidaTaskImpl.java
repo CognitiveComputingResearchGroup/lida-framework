@@ -8,7 +8,12 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 
 /**
+ * This class implements the LidaTask Interface. This class should be used as the base class for all LidaTasks.
  * @author Javier Snaider
+ */
+/**
+ * @author Javier
+ *
  */
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
@@ -42,6 +47,11 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 	}
 
+	/** 
+	 * This method is not supposed to be called directly nor overwritten.
+	 * Overwrite the run ThisLidaTask.
+	 * @see java.util.concurrent.Callable#call()
+	 */
 	public LidaTask call() {
 		if (!LidaTaskManager.isInTicksMode()) {
 			sleep();
@@ -56,6 +66,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
 	private void sleep() {
 		try {
+			//TODO: Change this with a Scheduled Task
 			// Sleeps a lap proportional for each task
 			Thread.sleep(taskManager.getTickDuration() * getTicksPerStep());
 		} catch (InterruptedException e) {
@@ -90,31 +101,52 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		return status;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTaskId()
+	 */
 	public long getTaskId() {
 		return taskID;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setTaskID(long)
+	 */
 	public void setTaskID(long id) {
 		taskID = id;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTicksPerStep()
+	 */
 	public int getTicksPerStep() {
 		return ticksPerStep;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setNumberOfTicksPerStep(int)
+	 */
 	public void setNumberOfTicksPerStep(int ticks) {
 		if (ticks > 0)
 			ticksPerStep = ticks;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#addTicks(int)
+	 */
 	public void addTicks(int ticks) {
 		this.accumulatedTicks = accumulatedTicks + ticks;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getAccumulatedTicks()
+	 */
 	public int getAccumulatedTicks() {
 		return accumulatedTicks;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#useOneStepOfTicks()
+	 */
 	public boolean useOneStepOfTicks() {
 		if (accumulatedTicks >= ticksPerStep) {
 			accumulatedTicks = accumulatedTicks - ticksPerStep;
@@ -123,18 +155,30 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		return false;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#hasEnoughTicks()
+	 */
 	public boolean hasEnoughTicks() {
 		return accumulatedTicks >= ticksPerStep;
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#reset()
+	 */
 	public void reset() {
 
 	}
 
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#stopRunning()
+	 */
 	public void stopRunning() {
 		setTaskStatus(LidaTask.CANCELLED);
 	}
 
+	/**
+	 * @param taskManager
+	 */
 	public void setTaskManager(LidaTaskManager taskManager) {
 		this.taskManager = taskManager;
 		if (taskID == 0) {
@@ -142,9 +186,16 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 	}
 
+	/**
+	 * @return the LidaTaskManager
+	 */
 	protected LidaTaskManager getTaskManager(){
 		return taskManager;
 	}
+	
+	/**
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#init(java.util.Map)
+	 */
 	public void init(Map<String, Object> parameters) {
 		this.parameters = parameters;
 		init();

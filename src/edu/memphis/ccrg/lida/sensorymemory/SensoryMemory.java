@@ -1,10 +1,10 @@
 package edu.memphis.ccrg.lida.sensorymemory;
 
-import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
+import edu.memphis.ccrg.lida.environment.Environment;
 
 public interface SensoryMemory{
 
-	public abstract void setEnvironment(EnvironmentImpl environ);
+	public abstract void setEnvironment(Environment environ);
 	
 	public abstract void processSensors();
 	

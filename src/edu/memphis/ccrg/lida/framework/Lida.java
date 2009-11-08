@@ -13,7 +13,6 @@ import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -44,6 +43,11 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
+ * This class implements the Model of the framework. All modules, drivers, and other structures that comprise LIDA. 
+ * To customize modules, this class should be extended and the various init method should be overwritten.
+ * 
+ * TODO: This class must be rewritten to use the classes for modules than can be specified in a file.
+ * 
  * @author Javier Snaider
  */
 public class Lida {
@@ -53,35 +57,44 @@ public class Lida {
 	/**
 	 * List of drivers which run the major components of LIDA
 	 */
-	private List<ModuleDriver> moduleDrivers = new ArrayList<ModuleDriver>();
+	protected List<ModuleDriver> moduleDrivers = new ArrayList<ModuleDriver>();
 	
 	/**
 	 * To read a parameter file
 	 */
-	private Properties lidaProperties;
+	protected Properties lidaProperties;
 	
 	// Perception
-	private EnvironmentImpl environment;
-	private SensoryMotorMemory sensoryMotorMemory;
-	private SensoryMemory sensoryMemory;
-	private PerceptualAssociativeMemory pam;
-	private PamDriver pamDriver;
+	protected Environment environment;
+	protected SensoryMotorMemory sensoryMotorMemory;
+	protected SensoryMemory sensoryMemory;
+	protected PerceptualAssociativeMemory pam;
+	protected PamDriver pamDriver;
 	// Episodic memory
-	private TransientEpisodicMemory tem;
-	private DeclarativeMemory declarativeMemory;
+	protected TransientEpisodicMemory tem;
+	protected DeclarativeMemory declarativeMemory;
 	// Workspace
-	private Workspace workspace;
-	private SbCodeletDriver sbCodeletDriver;
+	protected Workspace workspace;
+	protected SbCodeletDriver sbCodeletDriver;
 	// Attention
-	private AttentionDriver attentionDriver;
-	private GlobalWorkspace globalWksp;
+	protected AttentionDriver attentionDriver;
+	protected GlobalWorkspace globalWksp;
 	// Action Selection
-	private ProceduralMemory proceduralMemory;
-	private ActionSelection actionSelection;
+	protected ProceduralMemory proceduralMemory;
+	protected ActionSelection actionSelection;
 	// A class that helps pause and control the drivers.
-	private LidaTaskManager taskManager;
+	protected LidaTaskManager taskManager;
 
-	public Lida(EnvironmentImpl environ, SensoryMemoryImpl sm, Properties properties) {
+	
+	/**
+	 * Constructs a new LIDA.
+	 * This constructor calls initComponents(), initDrivers()and initListeners()
+	 * 
+	 * @param environ the Environment
+	 * @param sm
+	 * @param properties
+	 */
+	public Lida(Environment environ, SensoryMemoryImpl sm, Properties properties) {
 		logger.log(Level.FINE, "Starting Lida");
 		//Properties for Lida module parameters
 		this.lidaProperties = properties;
@@ -91,7 +104,13 @@ public class Lida {
 		start();
 	}
 
-	private void initComponents(EnvironmentImpl environ, SensoryMemoryImpl sm) {
+	/**
+	 * Initializes the main component modules of LIDA
+	 * 
+	 * @param environ The Environment
+	 * @param sm The Sensory Memory
+	 */
+	protected void initComponents(Environment environ, SensoryMemoryImpl sm) {
 		
 		//Task manager
 		int tickDuration = Integer.parseInt(lidaProperties.getProperty("taskManager.tickDuration"));
@@ -141,7 +160,10 @@ public class Lida {
 		logger.log(Level.FINE, "Lida submodules Created");		
 	}
 
-	private void initDrivers() {
+	/**
+	 * Initializes the ModuleDrivers of LIDA
+	 */
+	protected void initDrivers() {
 		int pamTicksPerStep = Integer.parseInt(lidaProperties.getProperty("pam.ticksPerStep"));
 		int attnTicksPerStep = Integer.parseInt(lidaProperties.getProperty("attention.ticksPerStep"));
 		int sbCodeletTicksPerStep = Integer.parseInt(lidaProperties.getProperty("sbCodelets.ticksPerStep"));
@@ -149,7 +171,9 @@ public class Lida {
 		int procMemTicksPerStep = Integer.parseInt(lidaProperties.getProperty("proceduralMemory.ticksPerStep"));
 		
 		//Environment
-		moduleDrivers.add(environment);
+		if (environment instanceof ModuleDriver){
+			moduleDrivers.add((ModuleDriver)environment);
+		}
 		
 		//Sensory Memory Driver
 		moduleDrivers.add(new SensoryMemoryDriver(sensoryMemory, smTicksPerStep, taskManager));
@@ -176,7 +200,7 @@ public class Lida {
 
 	//Below comments "A ---> B" signify that the statement is establishing
 	// the relationship  "ModuleType A is sending data to ModuleType B" 
-	private void initListeners() {
+	protected void initListeners() {
 		//Sensory-Motor Memory ---> SensoryMemory
 		if (sensoryMemory instanceof SensoryMotorListener)
 			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
