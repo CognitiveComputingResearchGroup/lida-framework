@@ -9,6 +9,7 @@ edu.memphis.ccrg.lida.example.shared
 edu.memphis.ccrg.lida.framework
 edu.memphis.ccrg.lida.framework.gui
 edu.memphis.ccrg.lida.framework.gui.commands
+edu.memphis.ccrg.lida.framework.gui.events
 edu.memphis.ccrg.lida.framework.gui.panels
 edu.memphis.ccrg.lida.framework.gui.utils
 edu.memphis.ccrg.lida.framework.initialization
@@ -26,8 +27,6 @@ edu.memphis.ccrg.lida.transientepisodicmemory
 edu.memphis.ccrg.lida.transientepisodicmemory.sdm
 edu.memphis.ccrg.lida.util
 edu.memphis.ccrg.lida.workspace.broadcastbuffer
-edu.memphis.ccrg.lida.workspace.currentsituationalmodel
-edu.memphis.ccrg.lida.workspace.episodicbuffer
 edu.memphis.ccrg.lida.workspace.main
-edu.memphis.ccrg.lida.workspace.perceptualbuffer
 edu.memphis.ccrg.lida.workspace.structurebuildingcodelets
+edu.memphis.ccrg.lida.workspace.workspaceBuffer

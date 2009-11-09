@@ -123,7 +123,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 			logger.log(Level.FINEST, "reseting task {0}", task);
 			task.reset();
 		case LidaTask.WAITING_TO_RUN:
-			// TODO:
 		case LidaTask.RUNNING:
 			logger.log(Level.FINEST, "Running task {0}", task);
 			task.setTaskStatus(LidaTask.WAITING_TO_RUN);

@@ -11,10 +11,6 @@ import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
  * This class implements the LidaTask Interface. This class should be used as the base class for all LidaTasks.
  * @author Javier Snaider
  */
-/**
- * @author Javier
- *
- */
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
 	private static int defaultTicksPerStep = 1;

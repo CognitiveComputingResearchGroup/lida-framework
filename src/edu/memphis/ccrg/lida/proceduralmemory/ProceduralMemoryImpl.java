@@ -44,7 +44,7 @@ public class ProceduralMemoryImpl implements ProceduralMemory,
 	public void learn() {
 		Collection<Node> nodes = broadcastContent.getNodes();
 		for (Node n : nodes) {
-			// TODO:
+			// TODO: Implement learning here
 			n.getId();
 		}
 	}

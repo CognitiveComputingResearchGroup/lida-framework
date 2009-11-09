@@ -50,7 +50,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	public void learn() {
 		Collection<Node> nodes = broadcastContent.getNodes();
 		for (Node n : nodes) {
-			// TODO:
+			//  Implement learning here
 			n.getId();
 		}
 	}// method
