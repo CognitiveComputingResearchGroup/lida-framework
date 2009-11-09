@@ -8,8 +8,9 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -17,13 +18,6 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.TranslatorImpl;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.FutureTask;
 
 /**
  * This is the cannonical implementation of TEM. It uses a sparse distributed
@@ -33,8 +27,7 @@ import java.util.concurrent.FutureTask;
 public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
     private SparseDistributedMemory sdm;
-    @SuppressWarnings("unused")
-	private Translator translator;
+ 	private Translator translator;
 	private List<LocalAssociationListener> localAssocListeners = new ArrayList<LocalAssociationListener>();
     
     /**
@@ -96,3 +89,9 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
 	public synchronized void receiveCue(NodeStructure cue) {		
 		//cue(cue);
 	}
+
+	public void learn() {
+		// TODO Auto-generated method stub
+		
+	}
+}
