@@ -69,7 +69,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	}
 	
 	public String toString(){
-		return "FeatureDetector-"+ getTaskId();
+		return "Feature Detector ["+getTaskId()+"] ";
 	}
 
 }// class

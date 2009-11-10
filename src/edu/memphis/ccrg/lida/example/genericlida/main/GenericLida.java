@@ -52,7 +52,7 @@ public class GenericLida{
 			logger.log(Level.SEVERE, "Error reading GUI panel properties file {0}", e.getMessage());
 		}
 		
-        //Use the LidaFactory to start the agent
+       //Use the LidaFactory to start the agent
        LidaFactory.start(environment, sensoryMemory, lidaProperties, guiPanelProperties);
 	}//method
 	

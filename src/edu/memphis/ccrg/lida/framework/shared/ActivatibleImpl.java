@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
@@ -17,6 +19,7 @@ public class ActivatibleImpl implements Activatible {
 	private double activation;
 	private ExciteBehavior exciteBehavior;
 	private DecayBehavior decayBehavior;
+	private Logger logger = Logger.getLogger("lida.framework.shared.ActivatibleImpl");
 
 	public ActivatibleImpl() {
 		activation = 0.0;
@@ -32,17 +35,23 @@ public class ActivatibleImpl implements Activatible {
 
 	public void decay() {	
 		if (decayBehavior != null) {
+			logger.config(this.toString() + " before decay has " + activation);
 			synchronized(this){
 				activation = decayBehavior.decay(activation);
 			}
+			logger.config(this.toString() + " after decay has " + activation + "\n");
 		}
 	}
 
 	public void excite(double excitation) {	
 		if (exciteBehavior != null) {
+			logger.config(this.toString() + " before excite has " + activation);
+			//System.out.println(this.toString() + " before excite has " + activation);
 			synchronized(this){
 				activation = exciteBehavior.excite(activation, excitation);
 			}
+			logger.config(this.toString() + " after excite has " + activation + "\n");
+			//System.out.println(this.toString() + " after excite has " + activation + "\n");
 		}
 	}
 

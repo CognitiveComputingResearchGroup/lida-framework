@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeType;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	

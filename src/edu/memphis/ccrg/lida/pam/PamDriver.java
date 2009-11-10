@@ -34,7 +34,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	/**
 	 * Parameter for how ofen pam is decayed.
 	 */
-	private static final int DEFAULT_DECAY_TIME = 10;
+	private static final int DEFAULT_DECAY_TIME = 5;
 	
 	/**
 	 * 
