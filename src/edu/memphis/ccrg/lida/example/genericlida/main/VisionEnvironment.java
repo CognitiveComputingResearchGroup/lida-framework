@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import edu.memphis.ccrg.lida.actionselection.ActionContent;
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.ModuleType;
@@ -17,7 +17,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 
 	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");
 	private boolean actionHasChanged = false;
-	private ActionContent actionContent = null;
+	private LidaAction actionContent = null;
 	private int IMAGE_HEIGHT = 5;
 	private int IMAGE_WIDTH = 5;
 	private double[][] environContent = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
@@ -32,7 +32,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		jloc = IMAGE_WIDTH / 2;
 	}
 
-	public synchronized void receiveBehaviorContent(ActionContent action) {
+	public synchronized void receiveBehaviorContent(LidaAction action) {
 		actionContent = action;
 		actionHasChanged = true;
 	}

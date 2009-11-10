@@ -2,15 +2,15 @@ package edu.memphis.ccrg.lida.actionselection;
 
 
 
-public class ActionContentImpl implements ActionContent{
+public class LidaActionImpl implements LidaAction{
 	
 	private Integer action = 0;
 
-	public ActionContentImpl(){
+	public LidaActionImpl(){
 		
 	}
 		
-	public ActionContentImpl(int i){
+	public LidaActionImpl(int i){
 		action = new Integer(i);		
 	}
 	

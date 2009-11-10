@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.ActionContent;
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -122,7 +122,7 @@ public class WorkspaceImpl implements Workspace,
 	/**
 	 * TODO: Implementing this is a long way off as of (3.30.09)	
 	 */
-	public void receiveBehaviorContent(ActionContent c) {
+	public void receiveBehaviorContent(LidaAction c) {
 	}
 	/**
 	 * Received broadcasts are sent to the broadcast queue.

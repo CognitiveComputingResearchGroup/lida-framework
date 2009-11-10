@@ -20,7 +20,7 @@ public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryLis
 		listeners.add(listener);
 	}
 	
-	public void receiveSchemes(List<Scheme> schemes) {
+	public void receiveScheme(Scheme ss) {
 		// TODO Auto-generated method stub
 		
 	}

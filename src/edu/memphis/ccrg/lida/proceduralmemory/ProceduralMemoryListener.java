@@ -20,5 +20,6 @@ public interface ProceduralMemoryListener {
      * 
      * @param scheme
      */
-    public void receiveSchemes(List<Scheme> schemes);
+    public void receiveScheme(Scheme s);
+   
 }
