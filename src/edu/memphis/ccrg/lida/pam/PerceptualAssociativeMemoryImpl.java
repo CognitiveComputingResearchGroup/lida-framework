@@ -79,6 +79,9 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		taskManager = tm;
 	}
 	
+	/**
+	 * set the propagation behavior for this pam
+	 */
 	public void setPropagationBehavior(PropagationBehavior b){
 		propagationBehavior = b;
 	}
@@ -91,7 +94,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	/**
-	 * 
+	 * Feature detectors should be added after the nodes they excite are added
 	 */
 	public boolean addFeatureDetector(FeatureDetector detector) {
 //		Since nodes are copied when added to a NodeStructure, 
@@ -171,16 +174,20 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	}
 
 	public void addNodeToPercept(PamNode pamNode) {
-		for (int i = 0; i < pamListeners.size(); i++)
+		for (int i = 0; i < pamListeners.size(); i++){
 			pamListeners.get(i).receiveNode(pamNode);
+		//	System.out.println(pamListeners.get(i).toString());
+		}
 	}
 	public void addLinkToPercept(Link l) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveLink(l);
 	}
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		for (int i = 0; i < pamListeners.size(); i++)
+		for (int i = 0; i < pamListeners.size(); i++){
 			pamListeners.get(i).receiveNodeStructure(ns);
+			//System.out.println(pamListeners.get(i).toString());
+		}
 	}
 	
 	public void setDecayBehavior(DecayBehavior b) {
