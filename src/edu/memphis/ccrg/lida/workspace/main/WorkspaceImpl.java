@@ -122,7 +122,7 @@ public class WorkspaceImpl implements Workspace,
 	/**
 	 * TODO: Implementing this is a long way off as of (3.30.09)	
 	 */
-	public void receiveBehaviorContent(LidaAction c) {
+	public void receiveAction(LidaAction c) {
 	}
 	/**
 	 * Received broadcasts are sent to the broadcast queue.

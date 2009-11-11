@@ -28,7 +28,7 @@ public interface Scheme extends Activatible{
 	public NodeStructure getResult();
 	public void setResult(NodeStructure ns);
 	
-	public LidaAction getAction();
+	public LidaAction getSchemeAction();
 	public void setSchemeAction(LidaAction a);
 	
 }//interface

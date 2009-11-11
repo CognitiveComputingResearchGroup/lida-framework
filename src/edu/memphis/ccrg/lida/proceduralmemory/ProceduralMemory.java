@@ -8,6 +8,8 @@
 
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import java.util.Collection;
+
 public interface ProceduralMemory{
 
 	/**
@@ -25,4 +27,10 @@ public interface ProceduralMemory{
 	 * Send out the active schemes to the PM listeners.
 	 */
 	public abstract void sendInstantiatedScheme(Scheme s);
+	
+	/**
+	 * Add supplied schemes to this procedural memory.
+	 * @param params
+	 */
+	public abstract void addSchemes(Collection<Scheme> schemes);
 }

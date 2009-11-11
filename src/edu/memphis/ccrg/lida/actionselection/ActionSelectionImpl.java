@@ -2,37 +2,24 @@ package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.memphis.ccrg.lida.framework.ModuleType;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
-public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryListener, GuiEventProvider {
-
-	private List<FrameworkGuiEventListener> guiEventListeners = new ArrayList<FrameworkGuiEventListener>();
-	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-	private List<Object> guiContent = new ArrayList<Object>();
+public class ActionSelectionImpl implements ActionSelection, ProceduralMemoryListener{
 	
+	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
+
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
 	
-	public void receiveScheme(Scheme ss) {
-		// TODO Auto-generated method stub
-		
+	public void receiveScheme(Scheme s) {
+		//System.out.println("scheme id " + s.getId());
 	}
-
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		guiEventListeners.add(listener);
-	}
-
-	public void sendEvent(FrameworkGuiEvent evt) {
-		for(FrameworkGuiEventListener g: guiEventListeners){
-			//g.receiveGuiEvent(new FrameworkGuiEvent(ModuleType.actionSelection,"data", guiContent));
-		}
+	
+	public void sendAction(LidaAction a){
+		for(ActionSelectionListener l: listeners)
+			l.receiveAction(a);
 	}
 
 }//class

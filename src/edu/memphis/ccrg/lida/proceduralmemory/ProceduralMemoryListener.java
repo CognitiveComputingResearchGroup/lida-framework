@@ -8,8 +8,6 @@
 
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.List;
-
 /**
  *
  * @author Rodrigo Silva L.
