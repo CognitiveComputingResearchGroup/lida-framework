@@ -12,10 +12,10 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateActivationTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualActivationTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.NoNewCoalitionTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualCoaltionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastOccurringTrigger;
 
 
 /**
@@ -32,27 +32,27 @@ public class TestGW {
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
-		tr = new NoBroadcastTrigger();
+		tr = new NoBroadcastOccurringTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOut");
 		parameters.put("delay", 100L);
 		tr.setUp(parameters, (TriggerListener) gw);
 		gw.addBroadcastTrigger(tr);
 
-		tr = new AggregateActivationTrigger();
+		tr = new AggregateCoalitionActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("threshold", 0.8);
 		tr.setUp(parameters, (TriggerListener) gw);
 		gw.addBroadcastTrigger(tr);
 
-		tr = new NoNewCoalitionTrigger();
+		tr = new NoCoalitionArrivingTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOutLap");
 		parameters.put("delay", 50L);
 		tr.setUp(parameters, (TriggerListener) gw);
 		gw.addBroadcastTrigger(tr);
 
-		tr = new IndividualActivationTrigger();
+		tr = new IndividualCoaltionActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("threshold", 0.5);
 		tr.setUp(parameters, (TriggerListener) gw);

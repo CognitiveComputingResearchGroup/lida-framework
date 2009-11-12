@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateActivationTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualActivationTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.NoNewCoalitionTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualCoaltionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastOccurringTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
@@ -24,7 +24,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
-		tr = new NoBroadcastTrigger();
+		tr = new NoBroadcastOccurringTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOut");		
 		long broadcastTimeOut = Long.parseLong(p.getProperty("globalWorkspace.timeOut"));
@@ -33,7 +33,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		globalWksp.addBroadcastTrigger(tr);
 		
 		//If there hasn't been a broadcast for delayParameter milliseconds 
-		tr = new NoNewCoalitionTrigger();
+		tr = new NoCoalitionArrivingTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOutLap");
 		long timeOutLap = Long.parseLong(p.getProperty("globalWorkspace.timeOutLap"));
@@ -41,14 +41,14 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		tr.setUp(parameters, (TriggerListener) globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 	
-		tr = new AggregateActivationTrigger();
+		tr = new AggregateCoalitionActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		double aggActivThresh = Double.parseDouble(p.getProperty("globalWorkspace.aggregateActivationThreshold"));
 		parameters.put("threshold", aggActivThresh);
 		tr.setUp(parameters, (TriggerListener) globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 	
-		tr = new IndividualActivationTrigger();
+		tr = new IndividualCoaltionActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		double individActivThresh = Double.parseDouble(p.getProperty("globalWorkspace.individualActivationThreshold"));
 		parameters.put("threshold", individActivThresh);

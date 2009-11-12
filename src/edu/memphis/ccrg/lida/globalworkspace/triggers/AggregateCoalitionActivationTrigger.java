@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  *
  */
-public class AggregateActivationTrigger implements BroadcastTrigger {
+public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 
 	protected TriggerListener gw;
 	protected double threshold;

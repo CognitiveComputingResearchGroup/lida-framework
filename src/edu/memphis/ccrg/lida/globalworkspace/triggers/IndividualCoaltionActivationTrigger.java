@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  *
  */
-public class IndividualActivationTrigger extends AggregateActivationTrigger {
+public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActivationTrigger {
 	
 	public void checkForTrigger(Set<Coalition> coallitions) {
 		for(Coalition c:coallitions){

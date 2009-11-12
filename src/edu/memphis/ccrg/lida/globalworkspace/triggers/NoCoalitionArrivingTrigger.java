@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  *
  */
-public class NoNewCoalitionTrigger extends NoBroadcastTrigger {
+public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	
 	/**
 	 * Every time a new coalition is added 'checkForTrigger' is called for each trigger.

@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  * @author Javier Snaider
  * 
  */
-public class NoBroadcastTrigger implements BroadcastTrigger {
+public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 
 	/**
 	 * How long since last broadcast before this trigger is activated
