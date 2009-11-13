@@ -8,7 +8,6 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;

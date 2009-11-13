@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
  */
 public class BroadcastQueueDriver extends ModuleDriverImpl implements GuiEventProvider{
 
-	private BroadcastQueueImpl broadcastQueue;
+	private BroadcastQueue broadcastQueue;
 
 	public BroadcastQueueDriver(BroadcastQueueImpl bq, int ticksPerCycle, LidaTaskManager tm) {
 		super(ticksPerCycle, tm);

@@ -1,10 +1,5 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import java.util.Collection;
-
-import edu.memphis.ccrg.lida.framework.shared.Activatible;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**

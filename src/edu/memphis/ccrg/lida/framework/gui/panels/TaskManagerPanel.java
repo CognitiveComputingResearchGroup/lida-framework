@@ -13,11 +13,9 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Logger;
-
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
-import edu.memphis.ccrg.lida.framework.TaskSpawnerImpl;
 
 /**
  * 
@@ -175,6 +173,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 	}
 
 	public void refresh(){
+		logger.finer("Refreshing TaskManager Panel");
 		display(lida.getTaskManager().getSpawnedTasks());
 	}
 	@SuppressWarnings("unchecked")

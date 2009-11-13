@@ -17,7 +17,6 @@ import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;

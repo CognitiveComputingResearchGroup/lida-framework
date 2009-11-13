@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
@@ -81,6 +80,33 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}//method
 
 	/**
+	 * returns selection threshold
+	 * @return Selection threshold
+	 */
+	public double getSelectionThreshold() {
+	    return selectionThreshold;
+	}
+
+	public double getBaselevelActivation() {
+	    return baseLevelActivation;
+	}
+	public synchronized void setBaselevelActivation(double d) {
+		baseLevelActivation = d;
+	}
+
+	public double getTotalActivation() {
+	    return getActivation() + baseLevelActivation;
+	}
+
+	public double getMaxActivation() {
+		return MAX_ACTIVATION;
+	}
+
+	public double getMinActivation() {
+		return MIN_ACTIVATION;
+	}
+	
+	/**
 	 * @param n
 	 */
 	public boolean equals(Object obj) {
@@ -100,37 +126,9 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	    return hash;
 	}
 
-	/**
-	 * returns selection threshold
-	 * @return Selection threshold
-	 */
-	public double getSelectionThreshold() {
-	    return selectionThreshold;
-	}
-
-	public double getBaselevelActivation() {
-	    return baseLevelActivation;
-	}
-
-	public double getTotalActivation() {
-	    return getActivation() + baseLevelActivation;
-	}
-
-	public double getMaxActivation() {
-		return MAX_ACTIVATION;
-	}
-
-	public double getMinActivation() {
-		return MIN_ACTIVATION;
-	}
-
-	//TODO: Remove.
-	public Node copy() {
-		return new PamNodeImpl(this);
-	}
-
 	public void printActivationString() {
 		System.out.println(getId() + " total activation: " + getTotalActivation());	
 	}//method
+
 	
 }//class

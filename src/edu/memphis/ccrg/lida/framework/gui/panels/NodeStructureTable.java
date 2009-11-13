@@ -15,23 +15,8 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeStructure;
-import java.awt.Dimension;
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
-import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 
 /**
  *
@@ -144,10 +129,13 @@ public class NodeStructureTable extends LidaPanelImpl {
     }//GEN-LAST:event_refreshButtonActionPerformed
     
     public void refresh(){
-    	
     	PamNodeStructure ns = lida.getPam().getNodeStructure();
     	Collection<Link> links = ns.getLinks();
     	Collection<Node> nodes = ns.getNodes();
+    	for(Link l: links)
+    		l.getIds();
+    	for(Node n: nodes)
+    		n.getId();
     }
     public void registerLida(Lida lida){
 		super.registerLida(lida);

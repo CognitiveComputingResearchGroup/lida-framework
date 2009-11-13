@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.pam.PamNode;
-
 /**
  * A NodeStructure holds a collection of Nodes an Links. An implementation of this interface
  * could be used as the "Common Currency" between the Modules of LIDA

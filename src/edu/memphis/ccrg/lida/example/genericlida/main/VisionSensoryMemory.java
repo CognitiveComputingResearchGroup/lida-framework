@@ -1,6 +1,5 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
-import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 public class VisionSensoryMemory extends SensoryMemoryImpl{
@@ -18,9 +17,7 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 	public Object getContent(String type, Object... parameters) {
 		if ("vision".equalsIgnoreCase(type))
 			return sensoryContent;
-		
 		return null;
 	}
 
-	
 }// class

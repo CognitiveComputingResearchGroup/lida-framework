@@ -65,7 +65,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	private TaskSpawner taskSpawner;
 	//
 	private PropagationBehavior propagationBehavior;
-	
+
 	private Properties lidaProperties;
 	
 	/**

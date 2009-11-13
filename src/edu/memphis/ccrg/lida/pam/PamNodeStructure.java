@@ -17,6 +17,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	private Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
 	
 	private Double upscaleFactor = 0.7;
+	@SuppressWarnings("unused")
 	private Double downscaleFactor = 0.5;
 	private Double selectivityThreshold = 0.8;
 	

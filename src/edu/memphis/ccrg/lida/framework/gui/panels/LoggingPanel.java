@@ -14,16 +14,11 @@ import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
-import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
-import edu.memphis.ccrg.lida.framework.Lida;
 import java.util.logging.Level;
 
 /**

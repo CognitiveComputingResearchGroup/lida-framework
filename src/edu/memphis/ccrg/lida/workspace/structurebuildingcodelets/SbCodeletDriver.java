@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;

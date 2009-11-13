@@ -1,12 +1,12 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -58,14 +58,12 @@ public class WorkspaceImpl implements Workspace,
 	 */
 	private WorkspaceListener pamWorkspaceListener;
 		
-	
 	/**
 	 * @param lowerActivationBound the lowerActivationBound to set
 	 */
 	public void setLowerActivationBound(double lowerActivationBound) {
 		this.lowerActivationBound = lowerActivationBound;
 	}
-
 
 	/**
 	 * @param decayTime
@@ -130,27 +128,15 @@ public class WorkspaceImpl implements Workspace,
 	public void receiveBroadcast(BroadcastContent bc) {
 		((BroadcastListener) broadcastQueue).receiveBroadcast(bc);		
 	}
-	/**
-	 * Implementation for WorkspaceBufferListener interface
-	 * WorkspaceImpl listens to its submodules and forwards the content
-	 * that they send to the appropriate modules outside the workspace.
-	
-	1. Contents from perceptual & episodic buffers as well as the csm cues the episodic memories
-	2. Additionally episodic buffer content is sent to PAM for grounded episodic recall
-		TODO: May want to also activate PAM based on new representations created by codelets
-		that get produced and put in the CSM
-	 */ 	 
-//	public void receiveBufferContent(ModuleType originatingBuffer, WorkspaceContent content) {
-//		if(originatingBuffer == ModuleType.EpisodicBuffer)
-//			pamWorkspaceListener.receiveWorkspaceContent(ModuleType.EpisodicBuffer, content);
-//		cue(content);
-//	}//method
 	
 	/**
-	 * Received local associations are sent to the episodic buffer
+	 * Received local associations are merged into the episodic buffer.
+	 * Then they are sent to PAM.
 	 */
 	public void receiveLocalAssociation(NodeStructure association) {
-		 episodicBuffer.getModuleContent().mergeWith(association);	
+		WorkspaceContent ns = (WorkspaceContent) episodicBuffer.getModuleContent(); 
+		ns.mergeWith(association);
+		pamWorkspaceListener.receiveWorkspaceContent(ModuleType.EpisodicBuffer, ns);
 	}
 	/**
 	 * Implementation of the PamListener interface. Send received node to the
@@ -182,10 +168,9 @@ public class WorkspaceImpl implements Workspace,
 	 * Decays all Nodes of all buffers in the Workspace
 	 */
 	public void decayWorkspaceNodes(){
-		
 		decayCounter++;
-
 		if (decayCounter >= decayTime) {
+			logger.finer("Decaying all workspace buffer content");
 			decayCounter=0;
 			perceptualBuffer.decayNodes(lowerActivationBound);
 			csm.decayNodes(lowerActivationBound);

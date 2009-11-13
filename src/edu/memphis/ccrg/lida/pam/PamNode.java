@@ -25,12 +25,24 @@ public interface PamNode extends Node{
 	 * @return Selection threshold
 	 */
 	public abstract double getSelectionThreshold();
+	
+	/**
+	 * Set the threshold
+	 * @param threshold
+	 */
+	public abstract void setSelectionThreshold(double threshold);
 
 	/**
 	 * Returns base level activation. 
 	 * @return
 	 */
 	public abstract double getBaselevelActivation();
+	
+	/**
+	 * Modify the node's base level activation
+	 * @param d
+	 */
+	public abstract void setBaselevelActivation(double d);
 
 	/**
 	 * Returns sum of base and current activation.
@@ -50,10 +62,6 @@ public interface PamNode extends Node{
 	 */
 	public abstract double getMaxActivation();
 	
-	/**
-	 * Set the threshold
-	 * @param threshold
-	 */
-	public abstract void setSelectionThreshold(double threshold);
+
 
 }// interface
