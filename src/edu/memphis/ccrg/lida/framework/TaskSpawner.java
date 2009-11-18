@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.Collection;
 
 /**
- * ThreadSpawners create, manage, and end new threads.  
+ * TaskSpawners create, manage, and end new LidaTasks.  
  * 
  * @author ryanjmccall
  *
@@ -16,8 +16,8 @@ public interface TaskSpawner extends LidaTask{
 	 */
 	public abstract int getSpawnedTaskCount();
 	/**
-	 * Adds a new LidaTask to this Spawner
-	 * @param r
+	 * Adds a new LidaTask to this Spawner.
+	 * @param task the task to add.
 	 */
 	public abstract void addTask(LidaTask task);
 	/**
@@ -39,7 +39,7 @@ public interface TaskSpawner extends LidaTask{
 	 */
 	public abstract void receiveFinishedTask(LidaTask task, Throwable t);
 
-	public abstract void pauseSpawnedTasks();
-
-	public abstract void resumeSpawnedTasks();
+//	public abstract void pauseSpawnedTasks();
+//
+//	public abstract void resumeSpawnedTasks();
 }

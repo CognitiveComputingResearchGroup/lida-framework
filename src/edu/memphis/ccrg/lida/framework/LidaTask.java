@@ -112,30 +112,6 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	public abstract int getTicksPerStep();
 	
 	/**
-	 * 
-	 * @return The accumulated ticks that this LidaTask has.
-	 */
-	public abstract int getAccumulatedTicks();
-	
-	/**
-	 * Adds Ticks to the LidaTasks
-	 * @param ticks
-	 */
-	public abstract void addTicks(int ticks);
-	
-	/**
-	 * @return true if the number of accumulated ticks is greater than the number of ticks per step
-	 */
-	public abstract boolean hasEnoughTicks();
-	
-	/**
-	 * Consumes ticks from the accumulated ticks to perform an step.
-	 * @return true if there was enough ticks to perform the step.
-	 */
-	public abstract boolean useOneStepOfTicks();
-
-	
-	/**
 	 * Resets the LidaTask.
 	 */
 	public abstract void reset();
@@ -143,4 +119,16 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	public Object getParameter(String name);
 	public abstract String getStatusString();	
 	public abstract String toString();
+	
+	/**
+	 * Sets the TaskSpawner that controls this LidaTask.
+	 * @param ts the TaskSpawner
+	 */
+	public abstract void setTaskSpawner(TaskSpawner ts);
+	
+	/**
+	 * Gets the TaskSpawner that controls this LidaTask.
+	 * @return the TaskSpawner.
+	 */
+	public abstract TaskSpawner getTaskSpawner();
 }

@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -7,7 +9,7 @@ import java.util.logging.Logger;
 
 public class LidaExecutorService extends ThreadPoolExecutor {
 	private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
-//	private TaskSpawner spawner;
+	private LidaTaskManager taskManager;
 
 	// consider overriding whatever executing method we use.  In the override
 	// set id for the LidaTask to be run.  This way we can ensure that
@@ -30,14 +32,21 @@ public class LidaExecutorService extends ThreadPoolExecutor {
     * tasks submitted by the <tt>execute</tt> method.
     */
 	public LidaExecutorService(int corePoolSize, int maximumPoolSize,
-							   long keepAliveTime, TimeUnit unit) {
+							   long keepAliveTime, TimeUnit unit,LidaTaskManager taskManager) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>());
+		this.taskManager=taskManager;
 	}
 	
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
 		logger.finest(r.getClass().getName());
-//		spawner.receiveFinishedTask((LidaTask)r, t);
+		try {
+			taskManager.receiveFinishedTask(((Future<LidaTask>)r).get(), t);
+		} catch (InterruptedException e) {
+			logger.finest(e.getMessage());
+		} catch (ExecutionException e) {
+			logger.finest(e.getMessage());
+		}
 	}
 	
 	 //Future<?> 	submit(Runnable task)

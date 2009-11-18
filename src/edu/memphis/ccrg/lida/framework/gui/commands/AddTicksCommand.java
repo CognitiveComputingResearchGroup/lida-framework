@@ -7,7 +7,9 @@ public class AddTicksCommand extends GenericCommandImpl {
 	@Override
 	public void execute(Lida lida) {
 		int ticks= (Integer)getParameter("ticks");
-		lida.getTaskManager().addTicks(ticks);
+		long actualTicks=lida.getTaskManager().getActualTick();
+		lida.getTaskManager().setLapTicks(ticks+actualTicks);
+		
 	}
 
 }

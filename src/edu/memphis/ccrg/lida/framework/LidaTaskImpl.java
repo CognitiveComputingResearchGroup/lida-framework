@@ -16,19 +16,24 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private static int defaultTicksPerStep = 1;
 	private long taskID;
 	private int ticksPerStep = defaultTicksPerStep;
-	private int accumulatedTicks;
 	protected int status = LidaTask.WAITING;
 	private LidaTaskManager taskManager;
 	private Map<String, Object> parameters;
+	private TaskSpawner ts;
 	
 	public LidaTaskImpl(LidaTaskManager tm) {
-		this(defaultTicksPerStep, tm);
+		this(defaultTicksPerStep, tm,null);
+	}
+	public LidaTaskImpl(int ticksForCycle,LidaTaskManager tm) {
+		this(ticksForCycle, tm,null);
 	}
 
-	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm) {
+	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm,TaskSpawner ts) {
 		taskManager = tm;
 		taskID = LidaTaskManager.getNextTaskID();
+		this.ts=ts;
 		setNumberOfTicksPerStep(ticksForCycle);
+		
 	}
 	
 	/**
@@ -37,6 +42,12 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public static int getDefaultTicksPerStep() {
 		return defaultTicksPerStep;
 	}
+	
+	
+	/**
+	 * Sets the default number of ticks that is used in the constructor without this parameter.
+	 * @param defaultTicksPerStep
+	 */
 	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
 		if (defaultTicksPerStep > 0) {
 			LidaTaskImpl.defaultTicksPerStep = defaultTicksPerStep;
@@ -49,26 +60,12 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public LidaTask call() {
-		if (!LidaTaskManager.isInTicksMode()) {
-			sleep();
-			runThisLidaTask();
-		} else if (hasEnoughTicks()) {
-			useOneStepOfTicks();
-			sleep();
-			runThisLidaTask();
-		}
+		
+		runThisLidaTask();
+
 		return this;
 	}
 
-	private void sleep() {
-		try {
-			//TODO: Change this with a Scheduled Task
-			// Sleeps a lap proportional for each task
-			Thread.sleep(taskManager.getTickDuration() * getTicksPerStep());
-		} catch (InterruptedException e) {
-			stopRunning();
-		}
-	}
 
 	/**
 	 * To be overridden by child classes. Overriding method should execute a
@@ -127,38 +124,6 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#addTicks(int)
-	 */
-	public void addTicks(int ticks) {
-		this.accumulatedTicks = accumulatedTicks + ticks;
-	}
-
-	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getAccumulatedTicks()
-	 */
-	public int getAccumulatedTicks() {
-		return accumulatedTicks;
-	}
-
-	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#useOneStepOfTicks()
-	 */
-	public boolean useOneStepOfTicks() {
-		if (accumulatedTicks >= ticksPerStep) {
-			accumulatedTicks = accumulatedTicks - ticksPerStep;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#hasEnoughTicks()
-	 */
-	public boolean hasEnoughTicks() {
-		return accumulatedTicks >= ticksPerStep;
-	}
-
-	/**
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#reset()
 	 */
 	public void reset() {
@@ -209,6 +174,8 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 	public abstract String toString();
 	
+	//TODO: Changer the status by an enum
+	
 	public String getStatusString(){
 		String res = "--";
 		switch(this.status){
@@ -236,5 +203,19 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 		return res;
 	}//method
+
+	/* 
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTaskSpawner()
+	 */
+	public TaskSpawner getTaskSpawner() {		
+		return ts;
+	}
+
+	/*
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setTaskSpawner(edu.memphis.ccrg.lida.framework.TaskSpawner)
+	 */
+	public void setTaskSpawner(TaskSpawner ts) {
+		this.ts=ts;		
+	}
 	
 }// class
