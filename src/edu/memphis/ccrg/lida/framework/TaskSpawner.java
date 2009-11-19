@@ -32,14 +32,13 @@ public interface TaskSpawner extends LidaTask{
 	public abstract void setInitialTasks(Collection<? extends LidaTask> initialTasks);
 		
 	/**
-	 * This method receives the tasks that have finished.
+	 * This method receives the tasks that have finished. Each TaskSpawner can choose what to do 
+	 * with each LidaTask each time it finished to run one step. Generally the LidaTask's status commands this 
+	 * action.
 	 * 
 	 * @param task
 	 * @param t
 	 */
 	public abstract void receiveFinishedTask(LidaTask task, Throwable t);
 
-//	public abstract void pauseSpawnedTasks();
-//
-//	public abstract void resumeSpawnedTasks();
 }

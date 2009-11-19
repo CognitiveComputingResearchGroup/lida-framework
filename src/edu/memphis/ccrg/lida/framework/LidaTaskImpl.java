@@ -16,7 +16,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private static int defaultTicksPerStep = 1;
 	private long taskID;
 	private int ticksPerStep = defaultTicksPerStep;
-	protected int status = LidaTask.WAITING;
+	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
 	private LidaTaskManager taskManager;
 	private Map<String, Object> parameters;
 	private TaskSpawner ts;
@@ -80,17 +80,17 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @param status
 	 *            the status to set
 	 */
-	public void setTaskStatus(int status) {
+	public void setTaskStatus(LidaTaskStatus status) {
 		// If a task is canceled it cannot be restarted.
 		// So only set the status if the status is not CANCELED.
-		if (this.status != LidaTask.CANCELLED)
+		if (this.status != LidaTaskStatus.CANCELLED)
 			this.status = status;
 	}
 
 	/**
 	 * @return the status
 	 */
-	public int getStatus() {
+	public LidaTaskStatus getStatus() {
 		return status;
 	}
 
@@ -134,7 +134,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#stopRunning()
 	 */
 	public void stopRunning() {
-		setTaskStatus(LidaTask.CANCELLED);
+		setTaskStatus(LidaTaskStatus.CANCELLED);
 	}
 
 	/**
@@ -162,9 +162,16 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		init();
 	}
 
+	/**
+	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
+	 * Subclasses can overwrite this method in order to initialize the LidaTask
+	 */
 	protected void init() {
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getParameter(java.lang.String)
+	 */
 	public Object getParameter(String name) {
 		Object res = null;
 		if (parameters != null) {
@@ -172,37 +179,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		}
 		return res;
 	}
-	public abstract String toString();
 	
-	//TODO: Changer the status by an enum
-	
-	public String getStatusString(){
-		String res = "--";
-		switch(this.status){
-		case LidaTask.RUNNING:
-			res = "Running";
-			break;
-		case LidaTask.WAITING_TO_RUN:
-			res = "Waiting to Run";
-			break;
-		case LidaTask.WAITING:
-			res = "Waiting";
-			break;
-		case LidaTask.TO_RESET:
-			res = "To reset";
-			break;
-		case LidaTask.FINISHED_WITH_RESULTS:
-			res = "Finished w results";
-			break;
-		case LidaTask.FINISHED:
-			res = "Finished";
-			break;
-		case LidaTask.CANCELLED:
-			res = "Cancelled";
-			break;
-		}
-		return res;
-	}//method
 
 	/* 
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTaskSpawner()

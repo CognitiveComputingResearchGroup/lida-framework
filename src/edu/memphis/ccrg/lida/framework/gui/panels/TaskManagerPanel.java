@@ -153,7 +153,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 				o= task.getTaskId();
 				break;
 			case 2:
-				o=task.getStatusString();
+				o=task.getStatus();
 				break;
 			case 3:
 				//o = ((TaskSpawnerImpl) task).getSpawnedTaskCount();

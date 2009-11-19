@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -11,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.strategies.AllModuleDriver;
-
+//TODO: Comment!!!
 public class LidaTaskManager {
 
 	private static Logger logger = Logger
@@ -91,7 +93,7 @@ public class LidaTaskManager {
 	public LidaTaskManager(int tickDuration, int maxPoolSize) {
 		// O ticks per step - Task manager should not be run
 		// Null, LIDA_TASK_MANAGER should not have a LIDA_TASK_MANAGER
-		int corePoolSize = 5;
+		int corePoolSize = 10;
 		long keepAliveTime = 10;
 		this.tickDuration = tickDuration;
 		taskQueue = new ConcurrentHashMap<Long, Queue<LidaTask>>();
@@ -289,6 +291,9 @@ public class LidaTaskManager {
 		}
 	}
 
+	public Map<Long, Queue<LidaTask>> getTaskQueue(){
+		return Collections.unmodifiableMap(taskQueue);
+	}
 	private class TaskManagerMainLoop implements Runnable {
 
 		public void run() {

@@ -158,7 +158,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 				o = Math.round(task.getActivation()*1000.0) / 1000.0;
 				break;
 			case 2:
-				o=task.getStatusString();
+				o=task.getStatus();
 				break;
 			case 3:
 				o = task;

@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 
 /**
@@ -71,7 +71,7 @@ public class ExcitationTask extends LidaTaskImpl{
 		}
 		//Tell PAM to propagate the activation of pamNode to its parents
 		pam.sendActivationToParentsOf(pamNode);
-		this.setTaskStatus(LidaTask.FINISHED);
+		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}//method
 
 	/**

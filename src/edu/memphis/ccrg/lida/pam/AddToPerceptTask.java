@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
 
 /**
  * A task to add a node to the percept.
@@ -26,7 +26,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 */
 	public void runThisLidaTask() {
 		pam.addNodeToPercept(pamNode);
-		this.setTaskStatus(LidaTask.FINISHED);
+		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	public String toString(){
 		return "Threshold " + getTaskId();

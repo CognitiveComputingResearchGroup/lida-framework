@@ -7,6 +7,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+/**
+ * @author Javier
+ *
+ */
 public class LidaExecutorService extends ThreadPoolExecutor {
 	private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
 	private LidaTaskManager taskManager;
@@ -37,6 +41,11 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 		this.taskManager=taskManager;
 	}
 	
+	/**
+	 * Calls reciveFinishedTask method in LidaTaskManager.
+	 * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
+	 */
+	@SuppressWarnings("unchecked")
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
 		logger.finest(r.getClass().getName());
@@ -49,8 +58,4 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 		}
 	}
 	
-	 //Future<?> 	submit(Runnable task)
-     
-     //<T> Future<T> submit(Runnable task, T result) 
-
 }//class

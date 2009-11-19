@@ -25,60 +25,16 @@ import edu.memphis.ccrg.lida.framework.shared.Activatible;
  */
 
 public interface LidaTask extends Callable<LidaTask>, Activatible{
-	
-	/**
-	 * LidaTask status value:
-	 * Task is scheduled to be run, but is not running yet.
-	 */
-	public static final int WAITING=0;
-	
-	/**
-	 * LidaTask status value:
-	 * Task is running
-	 */
-	public static final int RUNNING=1;
-	
-	/**
-	 * LidaTask status value:
-	 * Task is finished
-	 */
-	public static final int CANCELLED=16;
-	
-	/**
-	 * LidaTask status value:
-	 * Task is finished and has a result
-	 */
-	public static final int FINISHED=2;
-	
-	/**
-	 * LidaTask status value:
-	 * Task is not running and not finished.
-	 */
-	public static final int WAITING_TO_RUN=4;
-	
-	/**
-	 * LidaTask status value:
-	 * Task has finished and must be reseted and started again.
-	 */
-	public static final int TO_RESET=8;
-
-	/**
-	 * LidaTask status value:
-	 * Task has finished and has results to process
-	 */
-	public static final int FINISHED_WITH_RESULTS = 32;
-	
-	
 	/**
 	 * returns the LidaTask's status code. It must be one of the static members of this interface. 
 	 * @return the status code.
 	 */
-	public abstract int getStatus();
+	public abstract LidaTaskStatus getStatus();
 	/**
 	 * Sets the LidaTask's status code. It must be one of the static members of this interface. 
 	 * @param the status code
 	 */
-	public abstract void setTaskStatus(int status);
+	public abstract void setTaskStatus(LidaTaskStatus status);
 
 	/**
 	 * The LidaTask must stop.
@@ -115,9 +71,23 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * Resets the LidaTask.
 	 */
 	public abstract void reset();
+	
+	
+	/**
+	 * Receives a Map of init parameters for initalization.
+	 * @param parameters the Map with the parameters.
+	 */
 	public void init(Map<String, Object> parameters);
+
+	/**
+	 * A convenience method to get the value of one init parameter
+	 * @param name the name of the parameter
+	 * @return the value of the parameter
+	 * 
+	 * @see init(Map<String, Object> parameters)
+	 */
 	public Object getParameter(String name);
-	public abstract String getStatusString();	
+
 	public abstract String toString();
 	
 	/**
