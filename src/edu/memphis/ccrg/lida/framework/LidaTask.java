@@ -101,4 +101,22 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * @return the TaskSpawner.
 	 */
 	public abstract TaskSpawner getTaskSpawner();
+	
+	
+	/**
+	 * Sets the the lap of ticks to schedule the next execution of this
+	 * LidaTask.
+	 * It should be set by the LidaTask.
+	 * 
+	 * @param lapTick the number of ticks to wait until the next execution.
+	 */
+	public abstract void setNextExcecutionTickLap(long lapTick);
+	
+	/**
+	 * Gets the the lap of ticks to schedule the next execution of this
+	 * LidaTask.
+	 * 
+	 * @return
+	 */
+	public abstract long getNextExcecutionTickLap();
 }

@@ -53,7 +53,7 @@ public abstract  class TaskSpawnerImpl extends LidaTaskImpl implements
 	protected void runTask(LidaTask task) {
 		logger.log(Level.FINEST, "Running task {0}", task);
 		task.setTaskStatus(LidaTaskStatus.RUNNING);
-		getTaskManager().scheduleTask(task, task.getTicksPerStep());
+		getTaskManager().scheduleTask(task, task.getNextExcecutionTickLap());
 	}
 
 	/**

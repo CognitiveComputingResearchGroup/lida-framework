@@ -16,6 +16,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private static int defaultTicksPerStep = 1;
 	private long taskID;
 	private int ticksPerStep = defaultTicksPerStep;
+	private long nextExcecutionTickLap = defaultTicksPerStep;
 	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
 	private LidaTaskManager taskManager;
 	private Map<String, Object> parameters;
@@ -61,6 +62,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 */
 	public LidaTask call() {
 		
+		nextExcecutionTickLap=ticksPerStep;
 		runThisLidaTask();
 
 		return this;
@@ -193,6 +195,15 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 */
 	public void setTaskSpawner(TaskSpawner ts) {
 		this.ts=ts;		
+	}
+	
+	public long getNextExcecutionTickLap() {		
+		return nextExcecutionTickLap;
+	}
+	
+	public void setNextExcecutionTickLap(long lapTick) {
+		this.nextExcecutionTickLap=lapTick;
+		
 	}
 	
 }// class

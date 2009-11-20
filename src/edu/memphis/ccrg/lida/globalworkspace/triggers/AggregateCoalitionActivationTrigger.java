@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
@@ -21,7 +21,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
  * 
  * @param coalitions a Set with all the coallitions in the GW.
  */
-	public void checkForTrigger(Set<Coalition> coalitions) {
+	public void checkForTrigger(Queue<Coalition> coalitions) {
 		double acc=0;
 		for(Coalition c:coalitions){
 			acc=acc+c.getActivation();

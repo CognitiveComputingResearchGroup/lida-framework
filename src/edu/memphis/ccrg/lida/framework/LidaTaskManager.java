@@ -312,6 +312,7 @@ public class LidaTaskManager {
 				
 				long initTime = System.currentTimeMillis(); // For real time 
 				goNextTick();
+				
 				long duration = System.currentTimeMillis() - initTime;
 				if (duration < tickDuration) {
 					try {

@@ -4,7 +4,7 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -81,7 +81,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
-	public void checkForTrigger(Set<Coalition> coalitions) {
+	public void checkForTrigger(Queue<Coalition> coalitions) {
 	}
 
 	/*

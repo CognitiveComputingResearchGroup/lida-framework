@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /** 
@@ -16,7 +17,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  * 
  * @author Javier Snaider
  */
-public interface GlobalWorkspace {
+public interface GlobalWorkspace extends LidaModule{
 	/**
 	 * This method is invoked by the 
 	 * @param coalition

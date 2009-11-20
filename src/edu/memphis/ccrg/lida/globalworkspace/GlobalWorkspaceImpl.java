@@ -4,9 +4,10 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Properties;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -31,7 +32,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  */
 public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 											GuiEventProvider {
-	private Set<Coalition> coalitions = new HashSet<Coalition>();
+	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
@@ -72,7 +73,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#putCoalition(edu.memphis
 	 * .ccrg.globalworkspace .Coalition)
 	 */
-	public synchronized boolean addCoalition(Coalition coalition) {
+	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
 			newCoalitionEvent();
 			return true;
@@ -134,11 +135,8 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 		// hand, we need to delete coalitions from the set when their
 		// activation is 0. So, for now, I suggest to use your solution,
 		// but copy this comment in the code and add a note please.
-		synchronized (this) {
-			for (Coalition c : coalitions) {
-				c.decay();
-			}
-		}
+
+		decay();
 		resetTriggers();
 		synchronized (broadcastStarted) {
 			broadcastStarted = false;
@@ -171,4 +169,21 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 			fg.receiveGuiEvent(evt);
 	}
 
+	public ModuleType getModuleType() {
+		return ModuleType.GlobalWorkspace;
+	}
+
+	public void init(Properties lidaProperties) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void decay(){
+		for (Coalition c : coalitions) {
+			c.decay();
+			if (c.getActivation()<=0.0){
+				coalitions.remove(c);
+			}
+	}
+	}
 }// class
