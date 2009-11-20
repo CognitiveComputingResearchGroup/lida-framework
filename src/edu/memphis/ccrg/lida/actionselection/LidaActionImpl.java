@@ -1,30 +1,26 @@
 package edu.memphis.ccrg.lida.actionselection;
 
-
-
 public class LidaActionImpl implements LidaAction{
 	
-	private Integer action = 0;
+	private Integer content = 0;
 
 	public LidaActionImpl(){
-		
 	}
 		
 	public LidaActionImpl(int i){
-		action = new Integer(i);		
+		content = new Integer(i);		
 	}
 	
-	public void setContent(int i){
-		action = new Integer(i);
+	public void setContent(Object o){
+		content = (Integer) o;
 	}
 	
 	public Object getContent() {
-		return action;
+		return content;
 	}
 
 	public void print() {
-		System.out.println("Action is: " + action);
+		System.out.println("Action is: " + content);
 	}
 	
-
 }
