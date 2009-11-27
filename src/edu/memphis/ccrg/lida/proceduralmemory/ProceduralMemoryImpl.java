@@ -26,6 +26,8 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	 */
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
 
+	private double schemeSelectionThreshold = 0.6;
+
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		listeners.add(listener);
 	}
@@ -53,24 +55,28 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 		//Currently just get the nodes from the broadcast.
 		Collection<Node> nodes = broadcastContent.getNodes();
 		//Iterate over the nodes
-		for(Node n: nodes){
+		Scheme s = null;
+		for(NodeStructure ns: schemeMap.keySet()){
 			//For each node check if a key contains it.
-			for(NodeStructure ns: schemeMap.keySet()){
+			for(Node n: nodes){
 				//If the NodeStructure contains it 
 				if(ns.containsNode(n)){
 					//The excite the scheme and see if that puts it over threshold
-					Scheme s = schemeMap.get(ns);
-					s.excite(1.0);
+					if(s == null)
+						s = schemeMap.get(ns);
+					
+					s.excite(1.0 / (ns.getNodeCount() * 1.0));
 					//If over threshold the send
-					if(s.getActivation() > 0.9)
+					if(s.getActivation() > schemeSelectionThreshold )
 						sendInstantiatedScheme(s);
 				}
 			}
+			s = null;
 		}
 	}//method
 
 	public void sendInstantiatedScheme(Scheme s) {
-		for (ProceduralMemoryListener listener : listeners)
+		for(ProceduralMemoryListener listener: listeners)
 			listener.receiveScheme(s);
 	}
 
