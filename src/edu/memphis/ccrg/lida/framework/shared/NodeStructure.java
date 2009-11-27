@@ -66,5 +66,9 @@ public interface NodeStructure {
 	public abstract void mergeWith(Link l);
 
 	public abstract void mergeWith(Node node);
+
+	public abstract boolean containsNode(Node n);
+	
+	public abstract boolean containsLink(Link n);
 	
 }

@@ -15,7 +15,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 public interface ProceduralMemoryListener {
 
     /**
-     * 
      * @param scheme
      */
     public void receiveScheme(Scheme s);

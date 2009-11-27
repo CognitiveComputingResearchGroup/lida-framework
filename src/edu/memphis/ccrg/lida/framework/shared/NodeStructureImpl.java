@@ -455,4 +455,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return nodes.containsKey(n.getId());
 	}
 
+	public boolean containsNode(Node n) {
+		if(nodes.get(n.getId()) != null)
+			return true;
+		return false;
+	}
+
+	public boolean containsLink(Link l) {
+		if(links.get(l.getIds()) != null) 
+			return true;
+		return false;
+	}
+
 }//class

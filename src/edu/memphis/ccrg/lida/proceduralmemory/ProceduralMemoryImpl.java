@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -49,11 +50,24 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	 * Updates the list of schemes to send with a 
 	 */
 	public void activateSchemesWithBroadcast() {
-		// Using the current broadcast content, activate schemes in the scheme map
-		//TODO: Instantiate schemes
-		Scheme s = new SchemeImpl(101, new NodeStructureImpl(), null, new NodeStructureImpl());
-		sendInstantiatedScheme(s);
-	}
+		//Currently just get the nodes from the broadcast.
+		Collection<Node> nodes = broadcastContent.getNodes();
+		//Iterate over the nodes
+		for(Node n: nodes){
+			//For each node check if a key contains it.
+			for(NodeStructure ns: schemeMap.keySet()){
+				//If the NodeStructure contains it 
+				if(ns.containsNode(n)){
+					//The excite the scheme and see if that puts it over threshold
+					Scheme s = schemeMap.get(ns);
+					s.excite(1.0);
+					//If over threshold the send
+					if(s.getActivation() > 0.9)
+						sendInstantiatedScheme(s);
+				}
+			}
+		}
+	}//method
 
 	public void sendInstantiatedScheme(Scheme s) {
 		for (ProceduralMemoryListener listener : listeners)
