@@ -12,8 +12,11 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	private LidaAction action;
 	private NodeStructure result = new NodeStructureImpl();
 	
-	public SchemeImpl(long id, NodeStructure context, NodeStructure action, NodeStructure result){
-		
+	public SchemeImpl(long id, NodeStructure context, LidaAction action, NodeStructure result){
+		this.id = id;
+		this.context = context;
+		this.action = action;
+		this.result = result;
 	}
 
 	public long getId() {
@@ -43,7 +46,4 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	public void setResult(NodeStructure r) {
 		result = r;
 	}
-
-
-
 }
