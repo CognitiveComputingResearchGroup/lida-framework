@@ -3,9 +3,13 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -19,7 +23,10 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	 */
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	
-	private Map<NodeStructure, Scheme> schemeMap = new HashMap<NodeStructure, Scheme>();
+	/**
+	 * Schemes indexed by Linkables in their context.
+	 */
+	private Map<Linkable, Set<Scheme>> schemeMap = new HashMap<Linkable, Set<Scheme>>();
 
 	/**
 	 * Listeners of this Procedural Memory
@@ -33,9 +40,33 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	}
 
 	public void addSchemes(Collection<Scheme> schemes) {
-		for(Scheme s: schemes)
-			schemeMap.put(s.getContext(), s);		
+		for(Scheme s: schemes){
+			NodeStructure context = s.getContext();
+			for(Node n: context.getNodes()){
+				if(schemeMap.containsKey(n)){
+					Set<Scheme> existingSchemes = schemeMap.get(n);
+					existingSchemes.add(s);
+					schemeMap.put(n, existingSchemes);
+				}else{
+					Set<Scheme> indexedSchemes = new HashSet<Scheme>();
+					indexedSchemes.add(s);
+					schemeMap.put(n, indexedSchemes);
+				}
+			}
+			for(Link l: context.getLinks()){
+				if(schemeMap.containsKey(l)){
+					Set<Scheme> existingSchemes = schemeMap.get(l);
+					existingSchemes.add(s);
+					schemeMap.put(l, existingSchemes);
+				}else{
+					Set<Scheme> indexedSchemes = new HashSet<Scheme>();
+					indexedSchemes.add(s);
+					schemeMap.put(l, indexedSchemes);
+				}
+			}
+		}
 	}
+	
 
 	/**
 	 * TODO: Consider other ways of storing the incoming broadcast.
@@ -49,32 +80,34 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	}
 
 	/**
-	 * Updates the list of schemes to send with a 
+	 * 
 	 */
 	public void activateSchemesWithBroadcast() {
-		//Currently just get the nodes from the broadcast.
+		//TODO: synchronize this?
 		Collection<Node> nodes = broadcastContent.getNodes();
-		//Iterate over the nodes
-		Scheme s = null;
-		for(NodeStructure ns: schemeMap.keySet()){
-			//For each node check if a key contains it.
-			for(Node n: nodes){
-				//If the NodeStructure contains it 
-				if(ns.containsNode(n)){
-					//The excite the scheme and see if that puts it over threshold
-					if(s == null)
-						s = schemeMap.get(ns);
-					
-					s.excite(1.0 / (ns.getNodeCount() * 1.0));
-					//If over threshold the send
-					if(s.getActivation() > schemeSelectionThreshold )
-						sendInstantiatedScheme(s);
-				}
+		Collection<Link> links = broadcastContent.getLinks();
+		//
+		for(Node n: nodes)
+			auxActivateSchemes(n);
+		for(Link l: links)
+			auxActivateSchemes(l);
+
+	}//method
+	public void auxActivateSchemes(Linkable l){
+		if(schemeMap.containsKey(l)){
+			Set<Scheme> schemes = schemeMap.get(l);
+			for(Scheme s: schemes){
+				int contextCount = s.getContext().getNodeCount();
+				s.excite(1.0 / (contextCount * 1.0));
+				if(s.getActivation() > schemeSelectionThreshold)
+					sendInstantiatedScheme(s);
 			}
-			s = null;
 		}
 	}//method
 
+	/**
+	 * Impl. of observer pattern.  Send s to all registered ProceduralMemory Listeners 
+	 */
 	public void sendInstantiatedScheme(Scheme s) {
 		for(ProceduralMemoryListener listener: listeners)
 			listener.receiveScheme(s);

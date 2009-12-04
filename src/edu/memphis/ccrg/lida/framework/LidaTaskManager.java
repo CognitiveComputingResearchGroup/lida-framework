@@ -16,8 +16,7 @@ import edu.memphis.ccrg.lida.framework.strategies.AllModuleDriver;
 //TODO: Comment!!!
 public class LidaTaskManager {
 
-	private static Logger logger = Logger
-			.getLogger("lida.framework.LidaTaskManager");
+	private static Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
 
 	/**
 	 * Determines whether or not spawned task should run
