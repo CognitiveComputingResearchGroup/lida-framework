@@ -46,4 +46,14 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	public void setResult(NodeStructure r) {
 		result = r;
 	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof Scheme)) {
+			return false;
+		}
+		return ((Scheme) o).getId() == id;
+	}
+	public int hashCode() {
+		return ((int) id % 31);
+	}
 }
