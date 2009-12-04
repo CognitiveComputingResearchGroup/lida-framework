@@ -8,7 +8,11 @@ import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 
 /**
@@ -23,34 +27,46 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	/**
 	 * How long since last broadcast before this trigger is activated
 	 */
-	private long delay;
+	private int delay;
 	
 	/**
 	 * Java library class used to handle the timing
 	 */
-	private Timer timer;
-	private TriggerTask tt;
-	private TriggerListener gw;
+	private TriggerTask task;
+	private GlobalWorkspace gw;
 	private String name="";
-	
+	private LidaTaskManager tm;
+
+	/**
+	 * @return the lidaTaskManager
+	 */
+	public LidaTaskManager getLidaTaskManager() {
+		return tm;
+	}
+
+	/**
+	 * @param lidaTaskManager the lidaTaskManager to set
+	 */
+	public void setLidaTaskManager(LidaTaskManager lidaTaskManager) {
+		this.tm = lidaTaskManager;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
-	public void setUp(Map<String, Object> parameters, TriggerListener gw) {
+	public void setUp(Map<String, Object> parameters, GlobalWorkspace gw) {
 		this.gw=gw;
 		Object o = parameters.get("delay");
-		if ((o != null)&& (o instanceof Long)) {
-			delay= (Long)o;
+		if ((o != null)&& (o instanceof Integer)) {
+			delay= (Integer)o;
 		}
 		
 		o = parameters.get("name");
 		if ((o != null)&& (o instanceof String)) {
 			name= (String)o;
-		}
-		timer=new Timer(name,true);
-		
+		}		
 	}
 
 	/*
@@ -59,23 +75,10 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
 	public void start() {
-		tt=new TriggerTask();
-		timer.schedule(tt, delay);
+		task=new TriggerTask(delay,tm,gw);
+		gw.addTask(task);
 	}
 
-	/**
-	 * TriggerTask is executed when the Timer object goes off
-	 * In this case the global workspace is told to trigger 
-	 * the broadcast
-	 *
-	 */
-	private class TriggerTask extends TimerTask{
-		@Override
-		public void run() {
-			gw.triggerBroadcast();			
-		}		
-	}//class
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -90,8 +93,8 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
 	 */
 	public void reset() {
-		if (tt != null)
-			tt.cancel();
+		if (task != null)
+			gw.cancelTask(task);
 		start();
 	}
 

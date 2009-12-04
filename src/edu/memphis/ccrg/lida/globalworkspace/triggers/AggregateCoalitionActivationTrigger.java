@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
  * Implements a trigger that is activated when the sum of all coalitions in GW 
@@ -14,7 +15,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  */
 public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 
-	protected TriggerListener gw;
+	protected GlobalWorkspace gw;
 	protected double threshold;
 /**
  * This method is executed each time a new coalition enters the GW.
@@ -36,7 +37,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		// not applicable
 	}
 
-	public void setUp(Map<String, Object> parameters, TriggerListener gw) {
+	public void setUp(Map<String, Object> parameters, GlobalWorkspace gw) {
 		this.gw=gw;
 		Object o = parameters.get("threshold");
 		if ((o != null)&& (o instanceof Double)) {

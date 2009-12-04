@@ -1,7 +1,9 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,10 +15,18 @@ import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemory;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer;
+import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualCoaltionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastOccurringTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.pam.PamDriver;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -130,7 +140,7 @@ public class Lida {
 		pam = new PerceptualAssociativeMemoryImpl();
 		pam.setTaskManager(taskManager);
 		pam.init(lidaProperties);
-		PamInitializer initializer = new PamInitializer(pam, sm, taskManager);
+		Initializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
 		
 		//Transient Episodic Memory
@@ -140,13 +150,18 @@ public class Lida {
 		declarativeMemory = new DeclarativeMemoryImpl();
 		
 		//Workspace
-		//int episodicBufferCapacity = 2; //TODO: Will this be unnecessary?
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
 		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(),new WorkspaceBufferImpl(),  new WorkspaceBufferImpl(),
 									  new BroadcastQueueImpl(queueCapacity));
 		
 		//Global Workspace
-		globalWksp = new GlobalWorkspaceImpl();
+		int gwtTicksPerStep = Integer.parseInt(lidaProperties.getProperty("globalWorkspace.ticksPerStep"));
+		
+		globalWksp = new GlobalWorkspaceImpl(gwtTicksPerStep, taskManager);
+		initializer = new GlobalWorkspaceInitalizer(globalWksp);
+		initializer.initModule(lidaProperties);
+		
+
 		
 		//Procedural Memory
 		proceduralMemory = new ProceduralMemoryImpl();
@@ -194,6 +209,9 @@ public class Lida {
 		
 		//Procedural Memory Driver
 		moduleDrivers.add(new ProceduralMemoryDriver(proceduralMemory, procMemTicksPerStep, taskManager));
+
+		//Globalworkspace
+		moduleDrivers.add(globalWksp);
 
 		logger.log(Level.FINE, "Lida drivers Created");		
 	}
@@ -268,7 +286,7 @@ public class Lida {
 		logger.log(Level.FINE, "Lida listeners added");	
 	}
 	public void start(){
-		globalWksp.start();   
+		//globalWksp.start();   
 		taskManager.getMainTaskSpawner().setInitialTasks(moduleDrivers);		
 		logger.info("Lida modules have been started\n");		
 	}

@@ -147,7 +147,8 @@ public class LoggingPanel extends LidaPanelImpl {
 
     public class GuiLogHandler extends Handler {
         String logMessages = new String("");
-        String dateString;
+        String dateString="";
+        long actualTick=0L;String name;
          
         /** Creates a new instance of GuiLogHandler */    
         public GuiLogHandler() {
@@ -158,14 +159,18 @@ public class LoggingPanel extends LidaPanelImpl {
 //        	if(f == null){
 //        		f=new SimpleFormatter();     		
 //        	}
-        	Date date = new Date(logRecord.getMillis());
+//        	Date date = new Date(logRecord.getMillis());
         	MessageFormat mf=new MessageFormat(logRecord.getMessage());
-        	dateString=df.format(date);      
-
-            logMessages = logRecord.getSequenceNumber() + ": " + 
-                          dateString + "- " + 
-                          logRecord.getLevel() +": "+ 
-                          logRecord.getLoggerName() + "- " +
+//        	dateString=df.format(date);      
+        	Object[] param = logRecord.getParameters();
+        	if (param !=null && param[0] instanceof Long){
+        		actualTick=(Long)param[0];
+        	}
+        	name=logRecord.getLoggerName();
+            logMessages = logRecord.getSequenceNumber() + "\t:" + 
+                          actualTick + "\t:" + 
+                          logRecord.getLevel() +"\t:"+ 
+                          logRecord.getLoggerName() + "\t -> " +
                           mf.format(logRecord.getParameters()) + "\n";
         	
             loggingText.append(logMessages);

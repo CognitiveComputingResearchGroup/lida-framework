@@ -21,7 +21,20 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private LidaTaskManager taskManager;
 	private Map<String, Object> parameters;
 	private TaskSpawner ts;
+	private long scheduledTick;
 	
+	/**
+	 * @return the scheduledTick
+	 */
+	public long getScheduledTick() {
+		return scheduledTick;
+	}
+	/**
+	 * @param scheduledTick the scheduledTick to set
+	 */
+	public void setScheduledTick(long scheduledTick) {
+		this.scheduledTick = scheduledTick;
+	}
 	public LidaTaskImpl(LidaTaskManager tm) {
 		this(defaultTicksPerStep, tm,null);
 	}

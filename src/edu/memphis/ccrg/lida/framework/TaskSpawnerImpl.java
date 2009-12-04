@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.gui.panels.TaskManagerPanel;
+
 /**
  * Implements the TaskSpawner interface.
  * 
@@ -13,7 +15,7 @@ import java.util.logging.Logger;
  * @author Javier Snaider
  *
  */
-public abstract  class TaskSpawnerImpl extends LidaTaskImpl implements
+public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		TaskSpawner {
 
 	private static Logger logger = Logger
@@ -111,4 +113,10 @@ public abstract  class TaskSpawnerImpl extends LidaTaskImpl implements
 		logger.log(Level.FINEST, "get spawned count");
 		return runningTasks.size();
 	}// method
+
+	public void cancelTask(LidaTask task) {
+		removeTask(task);
+		getTaskManager().cancelTask(task);
+		
+	}
 }// class

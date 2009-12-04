@@ -28,34 +28,34 @@ public class TestGW {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GlobalWorkspace gw = new GlobalWorkspaceImpl();
+		GlobalWorkspace gw = new GlobalWorkspaceImpl(1,null);
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		
 		tr = new NoBroadcastOccurringTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOut");
-		parameters.put("delay", 100L);
-		tr.setUp(parameters, (TriggerListener) gw);
+		parameters.put("delay", 100);
+		tr.setUp(parameters,  gw);
 		gw.addBroadcastTrigger(tr);
 
 		tr = new AggregateCoalitionActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("threshold", 0.8);
-		tr.setUp(parameters, (TriggerListener) gw);
+		tr.setUp(parameters, gw);
 		gw.addBroadcastTrigger(tr);
 
 		tr = new NoCoalitionArrivingTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("name", "TimeOutLap");
 		parameters.put("delay", 50L);
-		tr.setUp(parameters, (TriggerListener) gw);
+		tr.setUp(parameters,  gw);
 		gw.addBroadcastTrigger(tr);
 
 		tr = new IndividualCoaltionActivationTrigger();
 		parameters = new HashMap<String, Object>();
 		parameters.put("threshold", 0.5);
-		tr.setUp(parameters, (TriggerListener) gw);
+		tr.setUp(parameters,  gw);
 		gw.addBroadcastTrigger(tr);
 
 		gw.addBroadcastListener(new BroadcastListener(){

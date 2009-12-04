@@ -261,6 +261,7 @@ public class LidaTaskManager {
 			}
 		}
 		queue.add(task);
+		task.setScheduledTick(time);
 		return true;
 	}
 
@@ -323,5 +324,25 @@ public class LidaTaskManager {
 
 			}
 		}
+	}
+	
+	/**
+	 * Cancels the task from the Task Queue. This is only possible if the tick for witch the task 
+	 * is scheduled has not been reached.
+	 * 
+	 * @param task The task to cancel.
+	 * @return true if it was , false otherwise. 
+	 */
+	public boolean cancelTask(LidaTask task){
+		long time = task.getScheduledTick();
+		Queue<LidaTask> queue =null;
+		if (time>actualTick){
+			queue=taskQueue.get(time);			
+		}
+		if (queue!=null){
+			queue.remove(task);
+			return true;
+		}
+		return false;
 	}
 }// class LIDA_TASK_MANAGER

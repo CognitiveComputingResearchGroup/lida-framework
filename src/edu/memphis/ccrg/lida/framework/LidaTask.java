@@ -119,4 +119,19 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * @return
 	 */
 	public abstract long getNextExcecutionTickLap();
+	
+	/**
+	 * @return The last ScheduledTick for this task. Could be in the future if this task is 
+	 * scheduled for execution. 
+	 */
+	public long getScheduledTick();
+	
+	/**
+	 * Sets the next scheduledTick for this task. This method is used by LidaTaskManager when
+	 * a new task is added.
+	 * 
+	 * @param scheduledTick
+	 */
+	public void setScheduledTick(long scheduledTick);
+
 }

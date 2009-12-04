@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
  * A Trigger determines when a new Broadcast must be triggered.
@@ -28,7 +29,7 @@ public interface BroadcastTrigger {
 	 * @param gw A TriggerListener. Most of the cases is the same class that 
 	 * implements GlobalWorkspace Interface.
 	 */
-	public void setUp (Map<String,Object> parameters,TriggerListener gw);
+	public void setUp (Map<String,Object> parameters,GlobalWorkspace gw);
 	/**
 	 * Each time a new Coalition is put in the GW, this method is called for all registered the Triggers.
 	 * @param coalitions All the coalitions in the GW.

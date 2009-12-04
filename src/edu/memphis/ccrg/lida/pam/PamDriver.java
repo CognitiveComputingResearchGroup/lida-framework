@@ -41,11 +41,6 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	 */
 	private PerceptualAssociativeMemory pam;
 	
-	/**
-	 * 
-	 */
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-
 	public PamDriver(PerceptualAssociativeMemory pam, int ticksPerCycle,
 			LidaTaskManager tm) {
 		super(ticksPerCycle, tm);
@@ -69,20 +64,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 		this.decayTime = decayTime;
 	}
 
-	/**
-	 * Add a gui panel
-	 */
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		guis.add(listener);
-	}
-	
-	/**
-	 * Send a gui event
-	 */
-	public void sendEvent(FrameworkGuiEvent evt) {
-		for (FrameworkGuiEventListener gui : guis)
-			gui.receiveGuiEvent(evt);
-	}// method
+
 
 	@Override
 	public String toString() {

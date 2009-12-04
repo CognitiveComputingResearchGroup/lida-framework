@@ -8,7 +8,13 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -30,13 +36,21 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
+public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorkspace,
 											GuiEventProvider {
+	
+	private Logger logger = Logger.getLogger("lida.globalworkspace.GlobalWorkspaceImpl");
+
+	public GlobalWorkspaceImpl(int ticksPerCycle, LidaTaskManager tm) {
+		super(ticksPerCycle, tm);
+		// TODO Auto-generated constructor stub
+	}
+
 	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	private Boolean broadcastStarted = false;
+	private AtomicBoolean broadcastStarted = new AtomicBoolean(false);
 
 	/*
 	 * (non-Javadoc)
@@ -98,32 +112,28 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 	 * 
 	 */
 	public void triggerBroadcast() {
-		synchronized (broadcastStarted) {
-			if (!broadcastStarted) {
-				broadcastStarted = true;
+			if (broadcastStarted.compareAndSet(false, true)) {
 				sendBroadcast();
 			}
-		}// synch
 	}// method
 
 	private void sendBroadcast() {
 		Coalition coal;
-		synchronized (this) {
 			coal = chooseCoalition();
 			if (coal != null) {
 				coalitions.remove(coal);
 			}
-		}
+		
 		if (coal != null) {
 			NodeStructure copy = new NodeStructureImpl((NodeStructure) coal
 					.getContent());
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
-			
 			FrameworkGuiEvent ge = new TaskCountEvent(ModuleType.GlobalWorkspace, coalitions.size()+"");
 			sendEvent(ge);
 		}
+		logger.fine("Broadcast Performed at tick: "+getTaskManager().getActualTick());
 
 		// TODO: No attention codelet is going
 		// to be able to add a new coalition while the decaying
@@ -138,9 +148,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 
 		decay();
 		resetTriggers();
-		synchronized (broadcastStarted) {
-			broadcastStarted = false;
-		}
+		broadcastStarted.set(false);
 	}
 
 	private Coalition chooseCoalition() {
@@ -185,5 +193,11 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace, TriggerListener,
 				coalitions.remove(c);
 			}
 	}
+	}
+
+	@Override
+	protected void runThisDriver() {
+		start();
+		setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 	}
 }// class
