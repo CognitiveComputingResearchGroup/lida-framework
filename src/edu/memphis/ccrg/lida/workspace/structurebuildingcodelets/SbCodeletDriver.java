@@ -57,7 +57,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 		//TODO: use factory?
 		StructureBuildingCodelet sbc = null;//sbCodeletFactory.getCodelet(type, activation, context, actions);
 		this.addTask(sbc);
-		logger.log(Level.FINER,"New codelet {0} spawned",sbc);
+		logger.log(Level.FINER,"New codelet "+sbc+"spawned",LidaTaskManager.getActualTick());
 	}// method
 
 	@Override

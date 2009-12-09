@@ -95,7 +95,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		 fillImageBlank(image);
 		 contentEvent.setData(image);
 		 sendContentEvent(contentEvent);
-		 logger.log(Level.FINE, "Environment Reseted");
+		 logger.log(Level.FINE, "Environment Reseted",0L);
 	}// method
 
 	// ************Specific methods**************

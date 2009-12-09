@@ -3,8 +3,10 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -195,7 +197,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * Decay the nodes of this pam node structure
 	 */
 	public void decayNodes(){
-		logger.fine("Decaying the Pam NodeStructure");
+		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getActualTick());
 		for(Node n: getNodes())
 			n.decay();
 	}//method

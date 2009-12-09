@@ -105,7 +105,7 @@ public class Lida {
 	 * @param properties
 	 */
 	public Lida(Environment environ, SensoryMemoryImpl sm, Properties properties) {
-		logger.log(Level.FINE, "Starting Lida");
+		logger.log(Level.FINE, "Starting Lida",0L);
 		//Properties for Lida module parameters
 		this.lidaProperties = properties;
 		initComponents(environ, sm);
@@ -172,7 +172,7 @@ public class Lida {
 		//Sensory-motor Memory
 		sensoryMotorMemory = new SensoryMotorMemoryImpl();
 		
-		logger.log(Level.FINE, "Lida submodules Created");		
+		logger.log(Level.FINE, "Lida submodules Created",0L);		
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class Lida {
 		//Globalworkspace
 		moduleDrivers.add(globalWksp);
 
-		logger.log(Level.FINE, "Lida drivers Created");		
+		logger.log(Level.FINE, "Lida drivers Created",0L);		
 	}
 
 	//Below comments "A ---> B" signify that the statement is establishing
@@ -223,7 +223,7 @@ public class Lida {
 		if (sensoryMemory instanceof SensoryMotorListener)
 			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
 		else
-			logger.warning("Cannot add SM as a listener");
+			logger.log(Level.WARNING,"Cannot add SM as a listener",0L);
 		
 		//Sensory Memory ---> Sensory-Motor Memory
 		if(sensoryMotorMemory instanceof SensoryMemoryListener)
@@ -233,25 +233,25 @@ public class Lida {
 		if (workspace instanceof PamListener)
 			pam.addPamListener((PamListener) workspace);
 		else
-			logger.warning("Cannot add WORKSPACE as a listener");
+			logger.log(Level.WARNING,"Cannot add WORKSPACE as a listener", 0L);
 
 		//Workspace ---> Declarative Memory
 		if (declarativeMemory instanceof CueListener)
 			workspace.addCueListener((CueListener)declarativeMemory);
 		else
-			logger.warning("Cannot add DM as a listener");
+			logger.log(Level.WARNING,"Cannot add DM as a listener", 0L);
 		
 		//Workspace ---> Transient Episodic Memory
 		if (tem instanceof CueListener)		
 			workspace.addCueListener((CueListener)tem);
 		else
-			logger.warning("Cannot add TEM as a listener");
+			logger.log(Level.WARNING,"Cannot add TEM as a listener", 0L);
 		
 		//Workspace ---> Pam
 		if(pam instanceof WorkspaceListener)
 			workspace.addPamWorkspaceListener((WorkspaceListener) pam);
 		else 
-			logger.warning("Cannot add PAM as a listener");
+			logger.log(Level.WARNING,"Cannot add PAM as a listener", 0L);
 		
 		//PerceptualBuffer ---> Workspace
 //		if(workspace instanceof WorkspaceBufferListener)
@@ -283,12 +283,12 @@ public class Lida {
 			actionSelection.addActionSelectionListener((ActionSelectionListener)workspace);
 		actionSelection.addActionSelectionListener(environment);
 		
-		logger.log(Level.FINE, "Lida listeners added");	
+		logger.log(Level.FINE, "Lida listeners added",0L);	
 	}
 	public void start(){
 		//globalWksp.start();   
 		taskManager.getMainTaskSpawner().setInitialTasks(moduleDrivers);		
-		logger.info("Lida modules have been started\n");		
+		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
 	}
 
 	/**

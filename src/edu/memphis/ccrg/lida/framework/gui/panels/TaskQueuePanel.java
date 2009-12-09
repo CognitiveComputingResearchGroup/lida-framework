@@ -10,10 +10,14 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
@@ -23,21 +27,19 @@ import edu.memphis.ccrg.lida.framework.LidaTaskManager;
  * 
  * @author Javier Snaider
  */
-public class TaskManagerPanel extends LidaPanelImpl {
+public class TaskQueuePanel extends LidaPanelImpl {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3135377683820863184L;
-	private static Logger logger = Logger.getLogger("lida.framework.gui.LidaTaskPanel");
-	private Collection<LidaTask> tasks;
-	private LidaTask[] taskArray;
+	private static final long serialVersionUID = 3129545758505110771L;
+	private static Logger logger = Logger
+			.getLogger("lida.framework.gui.TaskQueuePanel");
+	private Map<Long, Queue<LidaTask>> tasks= new HashMap<Long, Queue<LidaTask>>();
 
-	
-	public TaskManagerPanel() {
+	// private LidaTask[] taskArray;
+
+	public TaskQueuePanel() {
 		initComponents();
-		tasks = new HashSet<LidaTask>();
-		taskArray = tasks.toArray(new LidaTask[0]);
+		//tasks = new HashMap<Long, Queue<LidaTask>>();
+		// taskArray = tasks.toArray(new LidaTask[0]);
 	}
 
 	/**
@@ -55,7 +57,8 @@ public class TaskManagerPanel extends LidaPanelImpl {
 		jToolBar1 = new javax.swing.JToolBar();
 		ApplyButton = new javax.swing.JButton();
 
-		tasksTable.setModel(new Task2TableModel());
+		tasksTable.setModel(new TaskQueueTableModel());
+		tasksTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		jScrollPane1.setViewportView(tasksTable);
 
 		jToolBar1.setRollover(true);
@@ -108,71 +111,59 @@ public class TaskManagerPanel extends LidaPanelImpl {
 	private javax.swing.JTable tasksTable;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
+
 	// End of variables declaration//GEN-END:variables
 
-	private class Task2TableModel extends AbstractTableModel {
+	private class TaskQueueTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
-		private int columnCnt=5;
+
 		public int getColumnCount() {
-			return columnCnt;
+			int total = 0;
+			for (Queue<LidaTask> qt : tasks.values()) {
+				if (qt.size() > total)
+					total = qt.size();
+			}
+			return total+1; //the first one is the tick number
 		}
 
 		public int getRowCount() {
-			return taskArray.length;
+			int rows = (int) (lida.getTaskManager().getMaxTick() - LidaTaskManager
+					.getActualTick())+1;
+			return rows;
 		}
 
 		public String getColumnName(int column) {
-			String cName = "";
-			switch (column) {
-			case 0:
-				cName = "Name";
-				break;
-			case 1:
-				cName = "Task ID";
-				
-				break;
-			case 2:
-				cName = "Status";
-				break;
-			case 3:
-				cName = "Spawned Task Count";	
-				break;
-			case 4:
-				cName = "Scheduled Tick";	
-				break;
-			default:
-				cName="col"+column;
+			String cName;
+			if (column == 0) {
+				cName = "tick";
+			} else {
+				cName = "Task " + column;
 			}
 			return cName;
 		}
 
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			LidaTask task= taskArray[rowIndex];
-			Object o=null;
-			switch (columnIndex) {
-			case 0:
-				o = task;
-				break;
-			case 1:
-				o= task.getTaskId();
-				break;
-			case 2:
-				o=task.getStatus();
-				break;
-			case 3:
-				//o = ((TaskSpawnerImpl) task).getSpawnedTaskCount();
-				break;
-			case 4:
-				o=task.getScheduledTick();
-				break;
-			default:
-				o="";
+			Object o = null;
+			if (columnIndex==0){
+				return LidaTaskManager.getActualTick()+ rowIndex;
+			}
+			
+			Queue<LidaTask> qt = tasks.get(LidaTaskManager.getActualTick()
+					+ rowIndex);
+			if (qt == null) {
+				return "";
+			}
+			Iterator<LidaTask> it = qt.iterator();
+			for (int i = 1; i <= columnIndex; i++) {
+				if (it.hasNext()) {
+					o = it.next();
+				} else {
+					o = "";
+					break;
+				}
 			}
 			return o;
-		}
-
-		public void setValueAt(Object value, int row, int column) {
 		}
 
 		public boolean isCellEditable(int row, int column) {
@@ -180,21 +171,22 @@ public class TaskManagerPanel extends LidaPanelImpl {
 		}
 	}
 
-	public void refresh(){
-		logger.log(Level.FINEST, "Refreshing TaskManager Panel",LidaTaskManager.getActualTick());
+	public void refresh() {
+		logger.log(Level.FINEST, "Refreshing TaskQueue Panel",
+				LidaTaskManager.getActualTick());
 
-		display(lida.getTaskManager().getSpawnedTasks());
+		display(lida.getTaskManager().getTaskQueue());
 	}
+
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
-		if (o instanceof Collection) {
-			tasks = (Collection<LidaTask>) o;
-			
-			//Concurrent Modification Exception here. 9/15/09	
-			//Iterating over a shared Collection during the call to 'toArray'
-			taskArray = tasks.toArray(new LidaTask[0]);
-			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
-		}
-	}//method
+		if (o instanceof Map) {
+			tasks = (Map<Long,Queue<LidaTask>>) o;
 
-}//class
+			// Concurrent Modification Exception here. 9/15/09
+			// Iterating over a shared Collection during the call to 'toArray'
+			((AbstractTableModel) tasksTable.getModel()).fireTableStructureChanged();
+		}
+	}// method
+
+}// class

@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -48,13 +49,13 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	@SuppressWarnings("unchecked")
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
-		logger.finest(r.getClass().getName());
+		logger.log(Level.FINEST,r.getClass().getName(),LidaTaskManager.getActualTick());
 		try {
 			taskManager.receiveFinishedTask(((Future<LidaTask>)r).get(), t);
 		} catch (InterruptedException e) {
-			logger.finest(e.getMessage());
+			logger.log(Level.INFO,e.getMessage(),LidaTaskManager.getActualTick());
 		} catch (ExecutionException e) {
-			logger.finest(e.getMessage());
+			logger.log(Level.WARNING,e.getMessage(),LidaTaskManager.getActualTick());
 		}
 	}
 	

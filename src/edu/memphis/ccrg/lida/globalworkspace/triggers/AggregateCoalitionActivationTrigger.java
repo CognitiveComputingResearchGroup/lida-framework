@@ -2,7 +2,10 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Map;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
@@ -14,7 +17,8 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  *
  */
 public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
-
+	
+	private Logger logger = Logger.getLogger("lida.globalworkspace.triggers");
 	protected GlobalWorkspace gw;
 	protected double threshold;
 /**
@@ -28,6 +32,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 			acc=acc+c.getActivation();
 		}
 		if(acc>threshold){
+			logger.log(Level.FINE,"Aggregate Activation trigger ",LidaTaskManager.getActualTick());
 			//System.out.println("aggregate ");
 			gw.triggerBroadcast();
 		}

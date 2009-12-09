@@ -30,7 +30,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		
 		tr = new NoBroadcastOccurringTrigger();
 		parameters = new HashMap<String, Object>();
-		parameters.put("name", "TimeOut");
+		parameters.put("name", "NoBroadcastOccurringTrigger");
 		parameters.put("delay", delayNoBroadcast);
 		tr.setUp(parameters,  globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
@@ -43,7 +43,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 
 		tr = new NoCoalitionArrivingTrigger();
 		parameters = new HashMap<String, Object>();
-		parameters.put("name", "TimeOutLap");
+		parameters.put("name", "NoCoalitionArrivingTrigger");
 		parameters.put("delay", delayNoNewCoalition);
 		tr.setUp(parameters,  globalWksp);
 		globalWksp.addBroadcastTrigger(tr);

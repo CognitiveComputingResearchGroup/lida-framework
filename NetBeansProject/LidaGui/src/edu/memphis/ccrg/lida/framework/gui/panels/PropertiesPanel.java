@@ -44,6 +44,7 @@ public class PropertiesPanel extends LidaPanelImpl {
         ApplyButton = new javax.swing.JButton();
 
         PropertiesTable.setModel(new PropertiesTableModel());
+        PropertiesTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(PropertiesTable);
 
         jToolBar1.setRollover(true);

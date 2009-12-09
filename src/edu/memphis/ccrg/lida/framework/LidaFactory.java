@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
@@ -31,12 +32,12 @@ public class LidaFactory {
 			public void run(){					
 	        	//Create the model 
 	        	Lida lida = new Lida(environment, sensoryMemory, lidaProperties);
-				logger.config("LIDA created");
+				logger.log(Level.CONFIG,"LIDA created",0L);
 	        	//Create the controller
 	        	LidaGuiController controller = new LidaGuiControllerImpl(lida, commandsPropertiesPath);
-				logger.config("GUI Controller created");
+				logger.log(Level.CONFIG,"GUI Controller created",0L);
 	        	LidaGui lidaGui = new LidaGui(lida, controller, panelsProperties);
-				logger.config("GUI created");
+				logger.log(Level.CONFIG,"GUI created",0L);
 	        	//Start the GUI
 	            lidaGui.setVisible(true);
 	        }//run

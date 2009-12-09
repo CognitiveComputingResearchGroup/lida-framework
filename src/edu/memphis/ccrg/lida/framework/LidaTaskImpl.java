@@ -134,8 +134,10 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setNumberOfTicksPerStep(int)
 	 */
 	public void setNumberOfTicksPerStep(int ticks) {
-		if (ticks > 0)
+		if (ticks > 0){
 			ticksPerStep = ticks;
+			setNextExcecutionTickLap(ticks);
+		}
 	}
 
 	/**

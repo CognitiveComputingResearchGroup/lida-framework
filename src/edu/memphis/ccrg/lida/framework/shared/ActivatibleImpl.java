@@ -1,7 +1,9 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
@@ -35,22 +37,22 @@ public class ActivatibleImpl implements Activatible {
 
 	public void decay() {	
 		if (decayBehavior != null) {
-			logger.config(this.toString() + " before decay has " + activation);
+			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getActualTick());
 			synchronized(this){
 				activation = decayBehavior.decay(activation);
 			}
-			logger.config(this.toString() + " after decay has " + activation + "\n");
+			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getActualTick());
 		}
 	}
 
 	public void excite(double excitation) {	
 		if (exciteBehavior != null) {
-			logger.config(this.toString() + " before excite has " + activation);
+			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getActualTick());
 			//System.out.println(this.toString() + " before excite has " + activation);
 			synchronized(this){
 				activation = exciteBehavior.excite(activation, excitation);
 			}
-			logger.config(this.toString() + " after excite has " + activation + "\n");
+			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getActualTick());
 			//System.out.println(this.toString() + " after excite has " + activation + "\n");
 		}
 	}

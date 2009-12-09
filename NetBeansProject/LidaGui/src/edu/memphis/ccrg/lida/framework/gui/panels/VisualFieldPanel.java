@@ -64,7 +64,7 @@ public class VisualFieldPanel extends  LidaPanelImpl implements FrameworkGuiEven
     // End of variables declaration//GEN-END:variables
 
     public Module moduleSuported() {
-        return Module.environment;
+        return Module.Environment;
     }
 
 	public void receiveGuiEvent(FrameworkGuiEvent event) {

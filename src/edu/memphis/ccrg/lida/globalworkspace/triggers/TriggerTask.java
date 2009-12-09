@@ -3,8 +3,12 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
 
 /**
  * @author Javier
@@ -17,19 +21,24 @@ import edu.memphis.ccrg.lida.framework.LidaTaskManager;
  *
  */
 public class TriggerTask extends LidaTaskImpl{
+	private Logger logger = Logger.getLogger("lida.globalworkspace.triggers");
 
+	private String name;
 	private TriggerListener gw;
-	public TriggerTask(int ticksForCycle, LidaTaskManager tm,TriggerListener gw) {
+	public TriggerTask(int ticksForCycle, LidaTaskManager tm,TriggerListener gw,String name) {
 		super(ticksForCycle, tm);
 		this.gw=gw;
+		this.name=name;
 	}
 
 	@Override
 	protected void runThisLidaTask() {
-		gw.triggerBroadcast();						
+		logger.log(Level.FINE,name,LidaTaskManager.getActualTick());
+		gw.triggerBroadcast();
+		setTaskStatus(LidaTaskStatus.FINISHED);
 	}		
 	public String toString(){
-		return "TriggerTask " + getTaskId();
+		return "TriggerTask "+name +" " + getTaskId();
 	}
 
 

@@ -2,10 +2,12 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -170,7 +172,7 @@ public class WorkspaceImpl implements Workspace,
 	public void decayWorkspaceNodes(){
 		decayCounter++;
 		if (decayCounter >= decayTime) {
-			logger.finer("Decaying all workspace buffer content");
+			logger.log(Level.FINER,"Decaying all workspace buffer content",LidaTaskManager.getActualTick());
 			decayCounter=0;
 			perceptualBuffer.decayNodes(lowerActivationBound);
 			csm.decayNodes(lowerActivationBound);

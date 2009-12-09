@@ -38,7 +38,7 @@ public class Apple{
 		}catch(FileNotFoundException e){
 			throw new IllegalArgumentException();
 		}catch(IOException e){
-			logger.log(Level.SEVERE, "Error reading lida properties file {0}", e.getMessage());
+			logger.log(Level.SEVERE, "Error reading lida properties file {1}",new Object[]{0L, e.getMessage()});
 		}
 		
 		String guiPanelConfigPath = "configs/appleGuiPanels.properties";
@@ -48,7 +48,7 @@ public class Apple{
 		}catch(FileNotFoundException e){
 			throw new IllegalArgumentException();
 		}catch(IOException e){
-			logger.log(Level.SEVERE, "Error reading GUI panel properties file {0}", e.getMessage());
+			logger.log(Level.SEVERE, "Error reading GUI panel properties file {1}", new Object[]{0L, e.getMessage()});
 		}
 		
         //Use the LidaFactory to start the agent

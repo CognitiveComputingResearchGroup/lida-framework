@@ -24,8 +24,15 @@ public class LidaTaskManager {
 	private volatile boolean tasksPaused = true;
 	private volatile boolean shuttingDown = false;
 	private volatile long lapTicks = 0L;
-	private volatile long actualTick = 0L;
-	private volatile Long maxTime = 0L;
+	private volatile static long actualTick = 0L;
+	private volatile Long maxTick = 0L;
+	/**
+	 * @return the maxTick
+	 */
+	public Long getMaxTick() {
+		return maxTick;
+	}
+
 	private volatile boolean lapMode = false;
 	private Object lock = new Object();
 
@@ -33,7 +40,7 @@ public class LidaTaskManager {
 	/**
 	 * @return the actualTick
 	 */
-	public long getActualTick() {
+	public static long getActualTick() {
 		return actualTick;
 	}
 
@@ -183,8 +190,7 @@ public class LidaTaskManager {
 		// Now that we can be sure that active tasks will no longer be executed
 		// the executor service can be shutdown.
 		executorService.shutdown();
-
-		logger.info("All threads and tasks told to stop\n");
+		logger.log(Level.INFO,"All threads and tasks told to stop",getActualTick());
 		try {
 			Thread.sleep(400);
 			executorService.awaitTermination(400, TimeUnit.MILLISECONDS);
@@ -193,7 +199,7 @@ public class LidaTaskManager {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		logger.info("Exiting\n");
+		logger.log(Level.INFO,"Exiting",getActualTick());
 		System.exit(0);
 	}
 
@@ -210,13 +216,13 @@ public class LidaTaskManager {
 	}
 
 	public void pauseSpawnedTasks() {
-		logger.log(Level.FINE, "All Tasks paused.");
+		logger.log(Level.INFO,"All Tasks paused.",getActualTick());
 
 		tasksPaused = true;
 	}
 
 	public void resumeSpawnedTasks() {
-		logger.log(Level.FINE, "resume spawned tasks called actualTime: "+actualTick+" maxTime: "+maxTime);
+		logger.log(Level.FINE, "resume spawned tasks called actualTime: {0} maxTick: {1}",new Object[]{actualTick,maxTick});
 		if (shuttingDown)
 			return;
 
@@ -250,9 +256,9 @@ public class LidaTaskManager {
 			if (queue2 != null) {// there was a previous one
 				queue = queue2;
 			} else {
-				synchronized (maxTime) {
-					if (time > maxTime) {
-						maxTime = time;
+				synchronized (maxTick) {
+					if (time > maxTick) {
+						maxTick = time;
 						synchronized(lock){
 							lock.notify();
 						}
@@ -275,7 +281,7 @@ public class LidaTaskManager {
 			try {
 				executorService.invokeAll(queue);
 			} catch (InterruptedException e) {
-				logger.fine(e.getMessage());
+				logger.log(Level.WARNING, e.getMessage(), actualTick);
 			}
 		}
 		return actualTick;
@@ -287,7 +293,7 @@ public class LidaTaskManager {
 		if (ts !=null){
 			ts.receiveFinishedTask(task, t);
 		}else{
-			logger.log(Level.FINEST, "Taskmanager is deleting task {0}", task);
+			logger.log(Level.FINEST, "Taskmanager is deleting task {1}", new Object[]{actualTick,task});
 		}
 	}
 
@@ -299,7 +305,7 @@ public class LidaTaskManager {
 		public void run() {
 			while (!shuttingDown) {
 				synchronized (lock) {
-					if ((actualTick >= maxTime)
+					if ((actualTick >= maxTick)
 							|| (lapMode && (actualTick >= lapTicks)) || tasksPaused) {
 						try {
 							lock.wait();

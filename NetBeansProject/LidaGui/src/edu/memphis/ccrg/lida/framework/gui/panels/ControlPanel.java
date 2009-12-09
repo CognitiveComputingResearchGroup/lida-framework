@@ -223,17 +223,15 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
     	isPaused = !isPaused;
 		if(isPaused){
 			statusLabel.setText("PAUSED");
-		controller.pauseRunningThreads();
+		//controller.pauseRunningThreads();
 		}else{
 			statusLabel.setText("RUNNING");
-			controller.resumeRunningThreads();
+		//	controller.resumeRunningThreads();
 		}
 		refresh();
     }//GEN-LAST:event_startPauseButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-    	statusLabel.setText("QUITTING");
-    	controller.quitAll();
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
@@ -241,7 +239,7 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
    	 	if(!source.getValueIsAdjusting()){
    	 		int sleepTime = (int)source.getValue();
    	 		sleepTimeTextField.setText(sleepTime + "");
-   	 		controller.setSleepTime(sleepTime);
+  // 	 		controller.setSleepTime(sleepTime);
    	 		refresh();
    	 	}    
     }//GEN-LAST:event_speedSliderStateChanged
@@ -288,7 +286,7 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
     }
 
     public Module getSupportedModule() {
-        return Module.allModules;
+        return Module.NoModule;
     }
 
     public void receiveGuiEvent(FrameworkGuiEvent event) {

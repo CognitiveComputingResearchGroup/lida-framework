@@ -6,8 +6,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.TaskManagerPanel;
-
 /**
  * Implements the TaskSpawner interface.
  * 
@@ -44,7 +42,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 		task.setTaskSpawner(this);
 		runningTasks.add(task);
 		runTask(task);
-		logger.log(Level.FINEST, "Task {0} added", task);		
+		logger.log(Level.FINEST, "Task {1} added", new Object[]{LidaTaskManager.getActualTick(),task});
 	}
 
 	/**
@@ -53,7 +51,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 * @param task
 	 */
 	protected void runTask(LidaTask task) {
-		logger.log(Level.FINEST, "Running task {0}", task);
+		logger.log(Level.FINEST, "Running task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 		task.setTaskStatus(LidaTaskStatus.RUNNING);
 		getTaskManager().scheduleTask(task, task.getNextExcecutionTickLap());
 	}
@@ -75,7 +73,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 			removeTask(task);
 			break;
 		case TO_RESET:
-			logger.log(Level.FINEST, "reseting task {0}", task);
+			logger.log(Level.FINEST, "Reseting task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 			task.reset();
 		case WAITING_TO_RUN:
 		case RUNNING:
@@ -91,7 +89,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 * @param task the LidaTask to remove.
 	 */
 	protected void removeTask(LidaTask task) {
-		logger.log(Level.FINEST, "cancelling task {0}", task);
+		logger.log(Level.FINEST, "Cancelling task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 		runningTasks.remove(task);
 	}
 
@@ -105,12 +103,12 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	}
 
 	public Collection<LidaTask> getSpawnedTasks() {
-		logger.log(Level.FINEST, "getting all tasks");
+		logger.log(Level.FINEST, "Getting all tasks", LidaTaskManager.getActualTick());
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 
 	public int getSpawnedTaskCount() {
-		logger.log(Level.FINEST, "get spawned count");
+		logger.log(Level.FINEST, "Getting spawned count", LidaTaskManager.getActualTick());
 		return runningTasks.size();
 	}// method
 

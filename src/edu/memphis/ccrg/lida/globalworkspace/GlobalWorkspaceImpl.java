@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
@@ -23,7 +23,6 @@ import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
-import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
 //TODO: make a TaskSpawner
 /**
@@ -133,7 +132,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 			FrameworkGuiEvent ge = new TaskCountEvent(ModuleType.GlobalWorkspace, coalitions.size()+"");
 			sendEvent(ge);
 		}
-		logger.fine("Broadcast Performed at tick: "+getTaskManager().getActualTick());
+		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
 
 		// TODO: No attention codelet is going
 		// to be able to add a new coalition while the decaying

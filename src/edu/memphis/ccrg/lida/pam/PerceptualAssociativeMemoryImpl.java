@@ -110,7 +110,7 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 		}else
 			logger.log(Level.SEVERE, "Failed to addFeatureDetector. Node " + 
 									 detector.getPamNode().getLabel() + 
-									 " was not found in pam");
+									 " was not found in pam",LidaTaskManager.getActualTick());
 		return false;
 	}//method
 
@@ -155,7 +155,8 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
-		logger.fine(node.getLabel() + " amount " + amount + " tot activ " + node.getTotalActivation());
+		logger.log(Level.FINE,node.getLabel() + " gets activation burst. Amount: " + amount + "- total activation: " +
+						node.getTotalActivation(),LidaTaskManager.getActualTick());
 		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner, taskManager);
 		taskSpawner.addTask(task);	
 	}

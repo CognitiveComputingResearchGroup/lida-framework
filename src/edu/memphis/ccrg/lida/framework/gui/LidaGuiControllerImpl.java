@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 
 /**
@@ -55,7 +56,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 			try {
 				command=(Command)(Class.forName(commandClass)).newInstance();
 			} catch (Exception e) {
-				logger.warning(e.getMessage());
+				logger.log(Level.WARNING,e.getMessage());
 			}
 		}
 		if (command == null){
@@ -65,7 +66,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 			command.setParameters(parameters);
 		}
 		command.execute(lida);
-		logger.log(Level.FINE, "Command "+ commandName + " executed");
+		logger.log(Level.FINE, "Command "+ commandName + " executed",LidaTaskManager.getActualTick());
 		return command.getResult();
 	}
 
@@ -76,7 +77,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	 */
 	public Object executeCommand (Command command){
 		command.execute(lida);
-		logger.log(Level.FINE, "Command "+ command + " executed");
+		logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getActualTick());
 		return command.getResult();
 	}
 	public boolean isSystemPaused() {

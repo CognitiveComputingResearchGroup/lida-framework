@@ -9,7 +9,7 @@
  * Created on 12/07/2009, 09:42:13
  */
 package edu.memphis.ccrg.lida.framework.gui.panels;
- 
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,13 +30,12 @@ import javax.swing.JScrollBar;
  */
 public class LoggingPanel extends LidaPanelImpl {
 
-	private static final long serialVersionUID = 12L;
-
-    private String logName = "lida"; 
+    private static final long serialVersionUID = 12L;
+    private String logName = "lida";
     private Logger logger = Logger.getLogger(logName);
-    private String level="INFO";
-	//private DateFormat df= new SimpleDateFormat("HH:mm:ss:SSS");
-	
+    private String level = "INFO";
+    //private DateFormat df= new SimpleDateFormat("HH:mm:ss:SSS");
+
     /** Creates new form LogPanel */
     public LoggingPanel() {
 
@@ -50,6 +49,7 @@ public class LoggingPanel extends LidaPanelImpl {
             String logN = el.nextElement();
             if (logN.length() >= 4 && "lida".equals(logN.substring(0, 4))) {
                 names.add(logN);
+                loggerComboBox.addItem(logN);
             }
         }
         Collections.sort(names);
@@ -150,38 +150,39 @@ public class LoggingPanel extends LidaPanelImpl {
 
     private void loggerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loggerComboBoxActionPerformed
 
-        String loggerN =loggerComboBox.getSelectedItem().toString();
-        if (loggerN.equals("GLOBAL"))
-            loggerN="";
+        String loggerN = loggerComboBox.getSelectedItem().toString();
+        if (loggerN.equals("GLOBAL")) {
+            loggerN = "";
+        }
 
         String levelName;
         Level levelVal = Logger.getLogger(loggerN).getLevel();
-        if (levelVal == null){
-        	levelName= "<Parent Level>";
-        }else{
-        	levelName=levelVal.toString();
+        if (levelVal == null) {
+            levelName = "<Parent Level>";
+        } else {
+            levelName = levelVal.toString();
         }
-        
+
         levelComboBox.setSelectedItem(levelName);
     }//GEN-LAST:event_loggerComboBoxActionPerformed
 
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {
         loggingText.setText("");
-    }                                           
+    }
 
     private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-    	Level levelVal = null;
-    	if (levelComboBox.getSelectedIndex()!=0){
-    		levelVal=Level.parse(levelComboBox.getSelectedItem().toString());
-    	}
-        String loggerN =loggerComboBox.getSelectedItem().toString();
-        if (loggerN.equals("GLOBAL"))
-            loggerN="";
+        Level levelVal = null;
+        if (levelComboBox.getSelectedIndex() != 0) {
+            levelVal = Level.parse(levelComboBox.getSelectedItem().toString());
+        }
+        String loggerN = loggerComboBox.getSelectedItem().toString();
+        if (loggerN.equals("GLOBAL")) {
+            loggerN = "";
+        }
 
 
         Logger.getLogger(loggerN).setLevel(levelVal);
-    }                                                                                          
-
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearButton;
     private javax.swing.JLabel jLabel1;
@@ -192,8 +193,8 @@ public class LoggingPanel extends LidaPanelImpl {
     private javax.swing.JComboBox loggerComboBox;
     private javax.swing.JTextArea loggingText;
     // End of variables declaration//GEN-END:variables
-    
-   @Override
+
+    @Override
     public void display(Object o) {
         if (o instanceof String) {
             String s = (String) o;
@@ -204,55 +205,56 @@ public class LoggingPanel extends LidaPanelImpl {
     public String getLevel() {
         return level;
     }
+
     public void setLevel(String level) {
         this.level = level;
     }
 
     public class GuiLogHandler extends Handler {
-         
-        /** Creates a new instance of GuiLogHandler */    
+
+        /** Creates a new instance of GuiLogHandler */
         public GuiLogHandler() {
         }
 
-        public void publish(LogRecord logRecord){
+        public void publish(LogRecord logRecord) {
 //        	Formatter f = getFormatter();
 //        	if(f == null){
 //        		f=new SimpleFormatter();     		
 //        	}
 //        	Date date = new Date(logRecord.getMillis());
 
-        	String logMessages = new String("");
+            String logMessages = new String("");
 //            String dateString="";
-            long actualTick=0L;
+            long actualTick = 0L;
 //            String name;
 
-        	
-        	MessageFormat mf=new MessageFormat(logRecord.getMessage());
+
+            MessageFormat mf = new MessageFormat(logRecord.getMessage());
 //        	dateString=df.format(date);      
-        	Object[] param = logRecord.getParameters();
-        	if (param !=null && param[0] instanceof Long){
-        		actualTick=(Long)param[0];
-        	}
+            Object[] param = logRecord.getParameters();
+            if (param != null && param[0] instanceof Long) {
+                actualTick = (Long) param[0];
+            }
 //        	name=logRecord.getLoggerName();
-        	logMessages = String.format("%010d :%010d :%-10s :%-60s \t-> %s %n", 
-             logRecord.getSequenceNumber(), 
-                          actualTick ,
-                          logRecord.getLevel() ,
-                          logRecord.getLoggerName() ,
-                          mf.format(logRecord.getParameters()));
-        	synchronized(loggingText){
-        		loggingText.append(logMessages);
-        	}
-            JScrollBar jsb=jScrollPane1.getVerticalScrollBar();
+            logMessages = String.format("%010d :%010d :%-10s :%-60s \t-> %s %n",
+                    logRecord.getSequenceNumber(),
+                    actualTick,
+                    logRecord.getLevel(),
+                    logRecord.getLoggerName(),
+                    mf.format(logRecord.getParameters()));
+            synchronized (loggingText) {
+                loggingText.append(logMessages);
+            }
+            JScrollBar jsb = jScrollPane1.getVerticalScrollBar();
             jsb.setValue(jsb.getMaximum());
         }
 
-        public void flush(){
+        public void flush() {
         }
-        
-        public void close(){
+
+        public void close() {
             //logMessages = null;
         }
     }//inner class
-
 }//class
+
