@@ -13,16 +13,22 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
 
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
+
+import org.apache.commons.collections15.Transformer;
 
 import Samples.MouseMenu.GraphElements;
 import Samples.MouseMenu.MyMouseMenus;
 import Samples.MouseMenu.PopupVertexEdgeMenuMousePlugin;
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
+import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -106,40 +112,61 @@ public class NodeStructurePanel extends LidaPanelImpl {
     private void draw(){
 		// The Layout<V, E> is parameterized by the vertex and edge types
 		
-		Layout<Linkable, Link> layout = new FRLayout<Linkable, Link>(getGraph());
+		Layout<Linkable, GuiLink> layout = new FRLayout<Linkable, GuiLink>(getGraph());
 		layout.setSize(new Dimension(300,300)); // sets the initial size of the space
 		// The BasicVisualizationServer<V,E> is parameterized by the edge types
-		VisualizationViewer<Linkable, Link> vv =
-		new VisualizationViewer<Linkable, Link>(layout);
+		VisualizationViewer<Linkable, GuiLink> vv =
+		new VisualizationViewer<Linkable, GuiLink>(layout);
 		vv.setPreferredSize(new Dimension(350,350)); //Sets the viewing area size
 		// Show vertex and edge labels
-		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Linkable>());
-		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Link>());
-		// Create a graph mouse and add it to the visualization component
-		DefaultModalGraphMouse<Linkable, Link> gm2 = new DefaultModalGraphMouse<Linkable, Link>();
-		gm2.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+		vv.getRenderContext().setVertexLabelTransformer(new Transformer<Linkable,String>(){
+			public String transform (final Linkable l){
+				if (l instanceof Link){
+					return ((Link)l).getType().toString();
+				}
+				return l.toString();
+			}		
+		});
 		
-		EditingModalGraphMouse gm = new EditingModalGraphMouse(vv.getRenderContext(), 
-                GraphElements.MyVertexFactory.getInstance(),
-               GraphElements.MyEdgeFactory.getInstance()); 
+		//vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<GuiLink>());
+		// Create a graph mouse and add it to the visualization component
+		DefaultModalGraphMouse<Linkable, GuiLink> gm2 = new DefaultModalGraphMouse<Linkable, GuiLink>();
+		gm2.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+	    vv.getRenderContext().setVertexIconTransformer(new Transformer<Linkable,Icon>() {	    	
+	        	/*
+	        	 * Implements the Icon interface to draw an Icon with background color
+	        	 */
+				public Icon transform(final Linkable v) {
+					if (v instanceof Node){
+						return NodeIcon.NODEICON;
+					}else{
+						return NodeIcon.LINKICON;
+					}
+				}
+	    });
+//		EditingModalGraphMouse gm = new EditingModalGraphMouse(vv.getRenderContext(), 
+//                GraphElements.MyVertexFactory.getInstance(),
+//               GraphElements.MyEdgeFactory.getInstance()); 
+		vv.setGraphMouse(gm2);
+		vv.getRenderContext().setLabelOffset(2);
 		
 		jScrollPane1.setViewportView(vv);
-		// Trying out our new popup menu mouse plugin...
-        PopupVertexEdgeMenuMousePlugin myPlugin = new PopupVertexEdgeMenuMousePlugin();
-        // Add some popup menus for the edges and vertices to our mouse plugin.
-        JFrame frame = new JFrame("Editing and Mouse Menu Demo");
-        JPopupMenu edgeMenu = new MyMouseMenus.EdgeMenu(frame);
-        JPopupMenu vertexMenu = new MyMouseMenus.VertexMenu();
-        myPlugin.setEdgePopup(edgeMenu);
-        myPlugin.setVertexPopup(vertexMenu);
-        //gm.remove(gm.getPopupEditingPlugin()); 
-        gm.add(myPlugin);   // Add our new plugin to the mouse
-        vv.setGraphMouse(gm);
-        gm.setMode(ModalGraphMouse.Mode.EDITING); 
+//		// Trying out our new popup menu mouse plugin...
+//        PopupVertexEdgeMenuMousePlugin myPlugin = new PopupVertexEdgeMenuMousePlugin();
+//        // Add some popup menus for the edges and vertices to our mouse plugin.
+//        JFrame frame = new JFrame("Editing and Mouse Menu Demo");
+//        JPopupMenu edgeMenu = new MyMouseMenus.EdgeMenu(frame);
+//        JPopupMenu vertexMenu = new MyMouseMenus.VertexMenu();
+//        myPlugin.setEdgePopup(edgeMenu);
+//        myPlugin.setVertexPopup(vertexMenu);
+//        //gm.remove(gm.getPopupEditingPlugin()); 
+//        gm.add(myPlugin);   // Add our new plugin to the mouse
+//        vv.setGraphMouse(gm);
+//        gm.setMode(ModalGraphMouse.Mode.EDITING); 
 	}
-	private Graph<Linkable,Link> getGraph(){
+	private Graph<Linkable,GuiLink> getGraph(){
 		NodeStructure struct = ((PerceptualAssociativeMemoryImpl) lida.getPam()).getNodeStructure();
-		Graph<Linkable,Link> g = new NodeStructureGuiAdapter(struct);
+		Graph<Linkable,GuiLink> g = new NodeStructureGuiAdapter(struct);
 		return g;
 	}
 

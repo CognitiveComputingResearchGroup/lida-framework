@@ -13,6 +13,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
@@ -97,24 +98,24 @@ public class PerceptualBufferPanel extends LidaPanelImpl {
     private void draw(){
 		// The Layout<V, E> is parameterized by the vertex and edge types
 		
-		Layout<Linkable, Link> layout = new FRLayout<Linkable, Link>(getGraph());
+		Layout<Linkable, GuiLink> layout = new FRLayout<Linkable, GuiLink>(getGraph());
 		layout.setSize(new Dimension(300,300)); // sets the initial size of the space
 		// The BasicVisualizationServer<V,E> is parameterized by the edge types
-		VisualizationViewer<Linkable, Link> vv =
-		new VisualizationViewer<Linkable, Link>(layout);
+		VisualizationViewer<Linkable, GuiLink> vv =
+		new VisualizationViewer<Linkable, GuiLink>(layout);
 		vv.setPreferredSize(new Dimension(350,350)); //Sets the viewing area size
 		// Show vertex and edge labels
 		vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Linkable>());
-		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Link>());
+		vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<GuiLink>());
 		// Create a graph mouse and add it to the visualization component
 		DefaultModalGraphMouse<Linkable, Link> gm = new DefaultModalGraphMouse<Linkable, Link>();
 		gm.setMode(ModalGraphMouse.Mode.TRANSFORMING);
 		vv.setGraphMouse(gm);
 		jScrollPane1.setViewportView(vv);
 	}
-	private Graph<Linkable,Link> getGraph(){
+	private Graph<Linkable,GuiLink> getGraph(){
 		NodeStructure struct =  lida.getWorkspace().getPerceptualBuffer().getModuleContent();
-		Graph<Linkable,Link> g = new NodeStructureGuiAdapter(struct);
+		Graph<Linkable,GuiLink> g = new NodeStructureGuiAdapter(struct);
 		return g;
 	}
 
