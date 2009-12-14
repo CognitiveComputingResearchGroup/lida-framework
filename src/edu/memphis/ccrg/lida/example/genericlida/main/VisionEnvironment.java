@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
@@ -214,6 +215,15 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	@Override
 	public String toString() {
 		return "VisionEnvironment";
+	}
+
+	public Object getModuleContent() {
+		return environContent;
+	}
+
+	public void init(Properties lidaProperties) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }// class

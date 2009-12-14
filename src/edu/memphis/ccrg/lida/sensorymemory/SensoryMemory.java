@@ -1,8 +1,9 @@
 package edu.memphis.ccrg.lida.sensorymemory;
 
 import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 
-public interface SensoryMemory{
+public interface SensoryMemory extends LidaModule{
 
 	public abstract void setEnvironment(Environment environ);
 	

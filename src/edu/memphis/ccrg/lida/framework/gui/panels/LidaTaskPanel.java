@@ -180,6 +180,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	public void refresh(){
 		display(lida.getPamDriver().getSpawnedTasks());
 	}
+	
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Collection) {

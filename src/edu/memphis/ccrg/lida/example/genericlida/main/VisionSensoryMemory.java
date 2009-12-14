@@ -20,4 +20,8 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 		return null;
 	}
 
+	public Object getModuleContent() {
+		return getContent("vision");
+	}
+
 }// class

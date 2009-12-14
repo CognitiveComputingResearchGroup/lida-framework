@@ -8,6 +8,8 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
+
 
 /**
  * The interface for LIDA's episodic memory. Episodic memory in LIDA
@@ -21,7 +23,7 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
  * @also LocalAssociation
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public interface TransientEpisodicMemory{
+public interface TransientEpisodicMemory extends LidaModule{
     
     /**
      * Cues this episodic memory. Typically the cue would be a set of nodes, and

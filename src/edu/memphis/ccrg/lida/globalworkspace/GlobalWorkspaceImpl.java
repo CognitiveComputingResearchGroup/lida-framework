@@ -4,6 +4,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Queue;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
@@ -199,4 +201,13 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		start();
 		setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 	}
+
+	public Object getModuleContent() {
+		return Collections.unmodifiableCollection(coalitions);
+	}
+
+	public LidaModule getSubmodule(ModuleType type) {
+		return null;
+	}
+
 }// class

@@ -24,6 +24,21 @@ public class NodeStructureGuiAdapter extends
 
 	private NodeStructure nodeStructure;
 
+	/**
+	 * @return the nodeStructure
+	 */
+	public NodeStructure getNodeStructure() {
+		return nodeStructure;
+	}
+
+	/**
+	 * @param nodeStructure
+	 *            the nodeStructure to set
+	 */
+	public void setNodeStructure(NodeStructure nodeStructure) {
+		this.nodeStructure = nodeStructure;
+	}
+
 	public NodeStructureGuiAdapter(NodeStructure ns) {
 		super(EdgeType.DIRECTED);
 		this.nodeStructure = ns;
@@ -47,8 +62,7 @@ public class NodeStructureGuiAdapter extends
 			return new Pair<Linkable>(arg0.getLink().getSource(), arg0
 					.getLink());
 		else
-			return new Pair<Linkable>(arg0.getLink(), arg0.getLink()
-					.getSink());
+			return new Pair<Linkable>(arg0.getLink(), arg0.getLink().getSink());
 	}
 
 	public Collection<GuiLink> getInEdges(Linkable arg0) {
@@ -85,13 +99,14 @@ public class NodeStructureGuiAdapter extends
 	public Collection<Linkable> getPredecessors(Linkable arg0) {
 		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
-		for (Link l : links) {
-			if (l.getSink().equals(arg0)) {
-				ret.add(l);
+		if (links != null) {
+			for (Link l : links) {
+				if (l.getSink().equals(arg0)) {
+					ret.add(l);
+				}
+				if (arg0 instanceof Link)
+					ret.add(((Link) arg0).getSource());
 			}
-			if (arg0 instanceof Link)
-				ret.add(((Link) arg0).getSource());
-
 		}
 		return ret;
 	}
@@ -103,17 +118,17 @@ public class NodeStructureGuiAdapter extends
 			return arg0.getLink();
 	}
 
-	// /////////////////////////////////////////////////
 	public Collection<Linkable> getSuccessors(Linkable arg0) {
 		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
-		for (Link l : links) {
-			if (l.getSource().equals(arg0)) {
-				ret.add(l);
+		if (links != null) {
+			for (Link l : links) {
+				if (l.getSource().equals(arg0)) {
+					ret.add(l);
+				}
+				if (arg0 instanceof Link)
+					ret.add(((Link) arg0).getSink());
 			}
-			if (arg0 instanceof Link)
-				ret.add(((Link) arg0).getSink());
-
 		}
 		return ret;
 	}
@@ -177,8 +192,12 @@ public class NodeStructureGuiAdapter extends
 
 	public Collection<Linkable> getNeighbors(Linkable arg0) {
 		Collection<Linkable> res = getPredecessors(arg0);
-		res.addAll(getSuccessors(arg0));
-		if (res.isEmpty()) {
+		if (res != null)
+			res.addAll(getSuccessors(arg0));
+		else
+			res = getSuccessors(arg0);
+
+		if (res != null && res.isEmpty()) {
 			res = null;
 		}
 		return res;
@@ -199,5 +218,4 @@ public class NodeStructureGuiAdapter extends
 	public boolean removeVertex(Linkable arg0) {
 		return false;
 	}
-
 }

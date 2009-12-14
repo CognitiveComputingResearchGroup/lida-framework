@@ -11,6 +11,8 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -24,7 +26,7 @@ import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
  * memory to store the information.
  * @author Rodrigo Silva L.
  */
-public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
+public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
     private SparseDistributedMemory sdm;
  	private Translator translator;
@@ -35,10 +37,12 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
      * @param structure the structure with the nodes used for this TEM
      */
     public TemImpl(NodeStructure structure) {
+    	super(ModuleType.TransientEpisodicMemory);
         translator = new TranslatorImpl(structure);
      }
 
     public TemImpl() {
+    	super(ModuleType.TransientEpisodicMemory);
 	}
 
 	/**
@@ -93,5 +97,10 @@ public class TemImpl implements TransientEpisodicMemory, BroadcastListener, CueL
 	public void learn() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Object getModuleContent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

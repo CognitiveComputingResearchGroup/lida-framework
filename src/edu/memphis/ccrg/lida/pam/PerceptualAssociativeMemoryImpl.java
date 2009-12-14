@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
@@ -32,11 +33,11 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
-public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMemory,  
+public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	PerceptualAssociativeMemory,  
 														BroadcastListener, 
 														WorkspaceListener{
 
-	private Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
+	private static Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
 	
 	/**
 	 * Contains all of the Node, Links and their connections.
@@ -68,6 +69,10 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 
 	private Properties lidaProperties;
 	
+	
+	public PerceptualAssociativeMemoryImpl(){
+		super(ModuleType.PerceptualAssociativeMemory);
+	}
 	/**
 	 * @param taskSpawner the taskSpawner to set
 	 */
@@ -235,6 +240,10 @@ public class PerceptualAssociativeMemoryImpl implements	PerceptualAssociativeMem
 	public void init(Properties lidaProperties) {
 		this.lidaProperties=lidaProperties;
 		
+	}
+
+	public Object getModuleContent() {
+		return pamNodeStructure;
 	}
 
 

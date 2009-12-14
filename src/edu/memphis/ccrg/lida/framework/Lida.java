@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,6 +69,10 @@ public class Lida {
 	 * List of drivers which run the major components of LIDA
 	 */
 	protected List<ModuleDriver> moduleDrivers = new ArrayList<ModuleDriver>();
+	/**
+	 * List of drivers which run the major components of LIDA
+	 */
+	protected Map<ModuleType, LidaModule> modules = new ConcurrentHashMap<ModuleType, LidaModule>();
 	
 	/**
 	 * To read a parameter file
@@ -131,10 +136,12 @@ public class Lida {
 		//Environment
 		environment = environ;
 		environment.setTaskManager(taskManager);
+		modules.put(environment.getModuleType(), environment);
 		
 		//Sensory Memory
 		sensoryMemory = sm;
 		sm.setEnvironment(environment);
+		modules.put(sm.getModuleType(), sm);
 		
 		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
@@ -142,9 +149,11 @@ public class Lida {
 		pam.init(lidaProperties);
 		Initializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
+		modules.put(pam.getModuleType(), pam);
 		
 		//Transient Episodic Memory
 		tem = new TemImpl(); 
+		modules.put(tem.getModuleType(), tem);
 		
 		//Declarative Memory
 		declarativeMemory = new DeclarativeMemoryImpl();
@@ -372,4 +381,9 @@ public class Lida {
 		return taskManager;
 	}
 
+	public LidaModule getModule(ModuleType mt){
+		
+		return modules.get(mt);
+		
+	}
 }//class
