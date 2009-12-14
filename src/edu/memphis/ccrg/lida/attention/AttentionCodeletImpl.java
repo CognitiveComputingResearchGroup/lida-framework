@@ -39,7 +39,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 	}
 
 	public boolean hasSoughtContent(WorkspaceBuffer csm) {
-		NodeStructure model = csm.getModuleContent();
+		NodeStructure model = (NodeStructure)csm.getModuleContent();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
 		for (Node n : nodes)
@@ -55,7 +55,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 
 	public NodeStructure getSoughtContent(WorkspaceBuffer csm) {
 		if (hasSoughtContent(csm))
-			return csm.getModuleContent();
+			return (NodeStructure)csm.getModuleContent();
 		else
 			return null;
 	}

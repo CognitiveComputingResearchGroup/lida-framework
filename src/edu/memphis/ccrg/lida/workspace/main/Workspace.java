@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -12,7 +13,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author ryanjmccall
  *
  */
-public interface Workspace{
+public interface Workspace extends LidaModule{
 
 	public abstract WorkspaceBuffer getCSM();	
 	public abstract WorkspaceBuffer getEpisodicBuffer();

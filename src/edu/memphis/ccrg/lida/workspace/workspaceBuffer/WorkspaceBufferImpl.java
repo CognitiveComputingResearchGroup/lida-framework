@@ -2,12 +2,18 @@ package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
-public class WorkspaceBufferImpl implements WorkspaceBuffer{
+public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
+	public WorkspaceBufferImpl(ModuleType lidaModule) {
+		super(lidaModule);
+	}
+
 	private NodeStructure buffer = new NodeStructureImpl();
 
 	/**

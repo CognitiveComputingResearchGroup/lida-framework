@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
@@ -9,12 +10,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * @author ryanjmccall
  *
  */
-public interface WorkspaceBuffer {
+public interface WorkspaceBuffer extends LidaModule{
 
 	/**
 	 * @return NodeStructure representation of the buffer contents.
 	 */
-	public abstract NodeStructure getModuleContent();
+	public abstract Object getModuleContent();
 	
 	/**
 	 * decays all the nodes in the buffer.

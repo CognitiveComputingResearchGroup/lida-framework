@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -31,7 +32,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  *
  */
 
-public class WorkspaceImpl implements Workspace,  
+public class WorkspaceImpl extends LidaModuleImpl implements Workspace,  
 									  PamListener, 
 									  LocalAssociationListener,
 									  BroadcastListener, 
@@ -77,10 +78,16 @@ public class WorkspaceImpl implements Workspace,
 
 	
 	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
+		super (ModuleType.Workspace);
 		this.episodicBuffer = episodicBuffer;
+		getSubmodules().put(ModuleType.EpisodicBuffer,episodicBuffer);
 		this.broadcastQueue = broadcastQueue;
+		getSubmodules().put(ModuleType.BroadcastQueue,broadcastQueue);
 		this.perceptualBuffer=perceptualBuffer;
+		getSubmodules().put(ModuleType.PerceptualBuffer,perceptualBuffer);
 		this.csm = csm;	
+		getSubmodules().put(ModuleType.CurrentSituationalModel,csm);
+		
 	}
 	
 	//Implementations for Workspace interface
@@ -145,7 +152,7 @@ public class WorkspaceImpl implements Workspace,
 	 * the perceptualBuffer.
 	 */
 	public void receiveNode(Node node) {
-		perceptualBuffer.getModuleContent().mergeWith(node);	
+		((NodeStructure)perceptualBuffer.getModuleContent()).mergeWith(node);	
 	}
 	
 	/**
@@ -153,7 +160,7 @@ public class WorkspaceImpl implements Workspace,
 	 * the perceptualBuffer.
 	 */
 	public void receiveLink(Link l) {
-		perceptualBuffer.getModuleContent().mergeWith(l);
+		((NodeStructure)perceptualBuffer.getModuleContent()).mergeWith(l);
 	}	
 
 	
@@ -162,7 +169,7 @@ public class WorkspaceImpl implements Workspace,
 	 * the perceptualBuffer.
 	 */
 	public void receiveNodeStructure(NodeStructure ns) {
-		perceptualBuffer.getModuleContent().mergeWith(ns);	
+		((NodeStructure)perceptualBuffer.getModuleContent()).mergeWith(ns);	
 	}
 	
 
@@ -179,6 +186,10 @@ public class WorkspaceImpl implements Workspace,
 			episodicBuffer.decayNodes(lowerActivationBound);
 			broadcastQueue.decayNodes(lowerActivationBound);
 		}
+	}
+
+	public Object getModuleContent() {
+		return null;
 	}
 	
 }//class

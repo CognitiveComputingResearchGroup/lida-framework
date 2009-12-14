@@ -31,5 +31,7 @@ public enum ModuleType {
 	AttentionDriver,
 	SbCodeletDriver, 
 	TemDriver, 
-	ProceduralDriver
+	ProceduralDriver,
+	
+	Workspace
 }

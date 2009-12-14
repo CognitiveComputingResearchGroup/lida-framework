@@ -12,12 +12,15 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
 import org.apache.commons.collections15.Transformer;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
@@ -43,9 +46,6 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
  */
 public class NodeStructurePanel extends LidaPanelImpl {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
 	private VisualizationViewer<Linkable, GuiLink> vv;
@@ -220,16 +220,36 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	public void initPanel(String[]param){
 		ModuleType moduleType=null;
 		if (param==null || param.length==0){
-		//LOG
+		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
 		return;
 		}
 		try{
 		 moduleType= ModuleType.valueOf(param[0]);
 		}catch (Exception e){
-			//log
+			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
 		}
-		display(lida.getModule(moduleType).getModuleContent());
+		LidaModule module = lida.getModule(moduleType);
+		if (module==null){
+			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Module does not exist in LIDA.",0L);
+			return;			
+		}
+		for (int i=1; i<param.length;i++){
+			try{
+				 moduleType= ModuleType.valueOf(param[i]);
+				}catch (Exception e){
+					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
+					return;
+				}
+			
+			module=module.getSubmodule(moduleType);
+			if (module==null){
+				logger.log(Level.WARNING,"Error initializing NodeStructure Panel, SubModule "+moduleType+ " does not exist.",0L);
+				return;			
+			}
+		}
+		
+		display(module.getModuleContent());
 		draw();
 	}
 	

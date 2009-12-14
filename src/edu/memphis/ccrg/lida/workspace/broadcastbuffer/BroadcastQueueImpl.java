@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleType;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -20,13 +22,14 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * @author ryanjmccall
  *
  */
-public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
+public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue, BroadcastListener{
 	
 	private List<NodeStructure> broadcastQueue = new ArrayList<NodeStructure>();
 	private final int broadcastQueueCapacity;
 	private List<FrameworkGuiEventListener> queueListeners = new ArrayList<FrameworkGuiEventListener>();
 
 	public BroadcastQueueImpl(int capacity){
+		super(ModuleType.BroadcastQueue);
 		broadcastQueueCapacity = capacity;
 		broadcastQueue.add(new NodeStructureImpl());
 	}
@@ -66,9 +69,8 @@ public class BroadcastQueueImpl implements BroadcastQueue, BroadcastListener{
 		return false;
 	}
 
-	public NodeStructure getModuleContent() {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getModuleContent() {
+		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 
 	public void mergeIn(NodeStructure ns) {

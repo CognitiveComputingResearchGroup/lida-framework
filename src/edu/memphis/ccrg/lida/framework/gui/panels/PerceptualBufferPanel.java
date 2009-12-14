@@ -114,7 +114,11 @@ public class PerceptualBufferPanel extends LidaPanelImpl {
 		jScrollPane1.setViewportView(vv);
 	}
 	private Graph<Linkable,GuiLink> getGraph(){
-		NodeStructure struct =  lida.getWorkspace().getPerceptualBuffer().getModuleContent();
+		NodeStructure struct=null;
+		Object o =  lida.getWorkspace().getPerceptualBuffer().getModuleContent();
+		if (o instanceof NodeStructure){
+			struct=(NodeStructure)o;
+		}
 		Graph<Linkable,GuiLink> g = new NodeStructureGuiAdapter(struct);
 		return g;
 	}

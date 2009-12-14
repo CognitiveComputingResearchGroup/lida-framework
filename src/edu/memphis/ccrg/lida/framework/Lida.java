@@ -157,11 +157,14 @@ public class Lida {
 		
 		//Declarative Memory
 		declarativeMemory = new DeclarativeMemoryImpl();
+//		modules.put(declarativeMemory.getModuleType(), declarativeMemory);
 		
 		//Workspace
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
-		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(),new WorkspaceBufferImpl(),  new WorkspaceBufferImpl(),
-									  new BroadcastQueueImpl(queueCapacity));
+		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(ModuleType.EpisodicBuffer),new WorkspaceBufferImpl(ModuleType.PerceptualBuffer),
+				new WorkspaceBufferImpl(ModuleType.CurrentSituationalModel),new BroadcastQueueImpl(queueCapacity));
+		modules.put(workspace.getModuleType(), workspace);
+		
 		
 		//Global Workspace
 		int gwtTicksPerStep = Integer.parseInt(lidaProperties.getProperty("globalWorkspace.ticksPerStep"));
