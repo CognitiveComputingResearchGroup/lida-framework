@@ -5,7 +5,7 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 
@@ -15,7 +15,7 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
 	protected Environment environment;
 	
 	public SensoryMemoryImpl(){
-		super(ModuleType.SensoryMemory);
+		super(ModuleName.SensoryMemory);
 
 	}
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {

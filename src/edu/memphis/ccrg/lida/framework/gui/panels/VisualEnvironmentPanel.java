@@ -12,7 +12,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -29,7 +29,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	/** Creates new form VisualFieldPanel */
 	public VisualEnvironmentPanel() {
 		initComponents();
-		setSupportedModule(ModuleType.Environment);
+		setSupportedModule(ModuleName.Environment);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	}
 
 	public void receiveGuiEvent(FrameworkGuiEvent event) {
-		if(event.getModule() == ModuleType.Environment){
+		if(event.getModule() == ModuleName.Environment){
 			double[][] smc = (double[][]) event.getData();
 			String s = convertToString(smc);
 			jTextArea1.setText(s);

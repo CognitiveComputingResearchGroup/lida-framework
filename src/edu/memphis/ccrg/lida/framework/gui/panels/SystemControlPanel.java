@@ -15,7 +15,7 @@ import java.util.Map;
 
 import javax.swing.JSlider;
 
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -37,7 +37,7 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 	/** Creates new form ControlPanel */
 	public SystemControlPanel() {
 		initComponents();
-		setSupportedModule(ModuleType.NoModule);
+		setSupportedModule(ModuleName.NoModule);
 
 		minSleepTimeLabel.setText(sliderMin + " ms");
 		maxSleepTimeLabel.setText(sliderMax + " ms");

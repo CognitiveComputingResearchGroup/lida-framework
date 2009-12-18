@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -131,7 +131,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
-			FrameworkGuiEvent ge = new TaskCountEvent(ModuleType.GlobalWorkspace, coalitions.size()+"");
+			FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.GlobalWorkspace, coalitions.size()+"");
 			sendEvent(ge);
 		}
 		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
@@ -178,8 +178,8 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 			fg.receiveGuiEvent(evt);
 	}
 
-	public ModuleType getModuleType() {
-		return ModuleType.GlobalWorkspace;
+	public ModuleName getModuleName() {
+		return ModuleName.GlobalWorkspace;
 	}
 
 	public void init(Properties lidaProperties) {
@@ -206,7 +206,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		return Collections.unmodifiableCollection(coalitions);
 	}
 
-	public LidaModule getSubmodule(ModuleType type) {
+	public LidaModule getSubmodule(ModuleName type) {
 		return null;
 	}
 

@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -72,7 +71,7 @@ public class Lida {
 	/**
 	 * List of drivers which run the major components of LIDA
 	 */
-	protected Map<ModuleType, LidaModule> modules = new ConcurrentHashMap<ModuleType, LidaModule>();
+	protected Map<ModuleName, LidaModule> modules = new ConcurrentHashMap<ModuleName, LidaModule>();
 	
 	/**
 	 * To read a parameter file
@@ -136,12 +135,12 @@ public class Lida {
 		//Environment
 		environment = environ;
 		environment.setTaskManager(taskManager);
-		modules.put(environment.getModuleType(), environment);
+		modules.put(environment.getModuleName(), environment);
 		
 		//Sensory Memory
 		sensoryMemory = sm;
 		sm.setEnvironment(environment);
-		modules.put(sm.getModuleType(), sm);
+		modules.put(sm.getModuleName(), sm);
 		
 		//Perceptual Associative Memory		
 		pam = new PerceptualAssociativeMemoryImpl();
@@ -149,11 +148,11 @@ public class Lida {
 		pam.init(lidaProperties);
 		Initializer initializer = new PamInitializer(pam, sm, taskManager);
 		initializer.initModule(lidaProperties);
-		modules.put(pam.getModuleType(), pam);
+		modules.put(pam.getModuleName(), pam);
 		
 		//Transient Episodic Memory
 		tem = new TemImpl(); 
-		modules.put(tem.getModuleType(), tem);
+		modules.put(tem.getModuleName(), tem);
 		
 		//Declarative Memory
 		declarativeMemory = new DeclarativeMemoryImpl();
@@ -161,9 +160,9 @@ public class Lida {
 		
 		//Workspace
 		int queueCapacity = Integer.parseInt(lidaProperties.getProperty("broadcastQueueCapacity"));
-		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(ModuleType.EpisodicBuffer),new WorkspaceBufferImpl(ModuleType.PerceptualBuffer),
-				new WorkspaceBufferImpl(ModuleType.CurrentSituationalModel),new BroadcastQueueImpl(queueCapacity));
-		modules.put(workspace.getModuleType(), workspace);
+		workspace = new WorkspaceImpl(new WorkspaceBufferImpl(ModuleName.EpisodicBuffer),new WorkspaceBufferImpl(ModuleName.PerceptualBuffer),
+				new WorkspaceBufferImpl(ModuleName.CurrentSituationalModel),new BroadcastQueueImpl(queueCapacity));
+		modules.put(workspace.getModuleName(), workspace);
 		
 		
 		//Global Workspace
@@ -384,7 +383,7 @@ public class Lida {
 		return taskManager;
 	}
 
-	public LidaModule getModule(ModuleType mt){
+	public LidaModule getModule(ModuleName mt){
 		
 		return modules.get(mt);
 		

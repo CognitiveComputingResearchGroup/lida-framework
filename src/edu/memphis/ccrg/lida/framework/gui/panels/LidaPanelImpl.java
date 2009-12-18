@@ -14,7 +14,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 
 import javax.swing.JPanel;
@@ -30,7 +30,7 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 	private static final long serialVersionUID = 1L;
 	protected LidaGuiController controller;
 	protected Lida lida;
-    private ModuleType supportedModule;
+    private ModuleName supportedModule;
 
     /** Creates new form LidaPanelImpl */
     public LidaPanelImpl() {
@@ -80,10 +80,10 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 		this.lida=lida;
 	}
 
-    public ModuleType getSupportedModule() {
+    public ModuleName getSupportedModule() {
         return supportedModule;
     }
-    public void setSupportedModule(ModuleType module) {
+    public void setSupportedModule(ModuleName module) {
          this.supportedModule=module;
     }
 	

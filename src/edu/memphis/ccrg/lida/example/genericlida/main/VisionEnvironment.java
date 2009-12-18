@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -22,7 +22,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	private int IMAGE_WIDTH = 5;
 	private double[][] environContent = new double[IMAGE_HEIGHT][IMAGE_WIDTH];
 	//
-	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(ModuleType.Environment, "matrix", environContent);
+	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(ModuleName.Environment, "matrix", environContent);
 
 	public VisionEnvironment(int height, int width) {
 		super();

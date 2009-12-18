@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -68,7 +68,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 
 	@Override
 	public String toString() {
-		return ModuleType.PamDriver + "";
+		return ModuleName.PamDriver + "";
 	}
 
 }// class 

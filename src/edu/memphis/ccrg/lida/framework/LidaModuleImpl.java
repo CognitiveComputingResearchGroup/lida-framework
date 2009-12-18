@@ -13,17 +13,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class LidaModuleImpl implements LidaModule {
 
-	private ModuleType lidaModule;
+	private ModuleName lidaModule;
 	private Properties lidaProperties;
-	private Map<ModuleType,LidaModule> submodules=new ConcurrentHashMap<ModuleType,LidaModule>();
+	private Map<ModuleName,LidaModule> submodules=new ConcurrentHashMap<ModuleName,LidaModule>();
 	
-	public LidaModuleImpl(ModuleType lidaModule){
+	public LidaModuleImpl(ModuleName lidaModule){
 		this.lidaModule = lidaModule;
 	}
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleType()
 	 */
-	public ModuleType getModuleType() {
+	public ModuleName getModuleName() {
 		return lidaModule;
 	}
 
@@ -35,11 +35,11 @@ public abstract class LidaModuleImpl implements LidaModule {
 
 	}
 
-	public LidaModule getSubmodule(ModuleType type) {
+	public LidaModule getSubmodule(ModuleName type) {
 		return submodules.get(type);
 	}
 
-	protected Map<ModuleType,LidaModule> getSubmodules(){
+	protected Map<ModuleName,LidaModule> getSubmodules(){
 		return submodules;
 	}
 }

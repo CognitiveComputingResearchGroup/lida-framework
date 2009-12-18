@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -29,7 +29,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	private List<FrameworkGuiEventListener> queueListeners = new ArrayList<FrameworkGuiEventListener>();
 
 	public BroadcastQueueImpl(int capacity){
-		super(ModuleType.BroadcastQueue);
+		super(ModuleName.BroadcastQueue);
 		broadcastQueueCapacity = capacity;
 		broadcastQueue.add(new NodeStructureImpl());
 	}

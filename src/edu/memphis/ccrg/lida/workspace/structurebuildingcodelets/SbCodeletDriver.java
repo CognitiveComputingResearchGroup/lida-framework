@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -62,7 +62,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 
 	@Override
 	public String toString() {
-		return ModuleType.StructureBuildingCodelets + "";
+		return ModuleName.StructureBuildingCodelets + "";
 	}
 
 }// class

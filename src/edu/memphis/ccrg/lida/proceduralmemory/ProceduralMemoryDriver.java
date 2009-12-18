@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -50,7 +50,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	
 	@Override
 	public String toString() {
-		return ModuleType.ProceduralDriver + "";
+		return ModuleName.ProceduralDriver + "";
 	}
 
 }// class

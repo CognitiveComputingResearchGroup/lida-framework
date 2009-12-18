@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -37,12 +37,12 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
      * @param structure the structure with the nodes used for this TEM
      */
     public TemImpl(NodeStructure structure) {
-    	super(ModuleType.TransientEpisodicMemory);
+    	super(ModuleName.TransientEpisodicMemory);
         translator = new TranslatorImpl(structure);
      }
 
     public TemImpl() {
-    	super(ModuleType.TransientEpisodicMemory);
+    	super(ModuleName.TransientEpisodicMemory);
 	}
 
 	/**

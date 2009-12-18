@@ -21,9 +21,9 @@ public interface LidaModule {
 	/**
 	 * @return ModuleType
 	 */
-	public abstract ModuleType getModuleType();
+	public abstract ModuleName getModuleName();
 	
-	public abstract LidaModule getSubmodule(ModuleType type);
+	public abstract LidaModule getSubmodule(ModuleName name);
 	
 	public abstract Object getModuleContent();
 }

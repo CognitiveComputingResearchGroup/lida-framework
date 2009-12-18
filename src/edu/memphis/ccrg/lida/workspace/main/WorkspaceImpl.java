@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -78,15 +78,15 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 
 	
 	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
-		super (ModuleType.Workspace);
+		super (ModuleName.Workspace);
 		this.episodicBuffer = episodicBuffer;
-		getSubmodules().put(ModuleType.EpisodicBuffer,episodicBuffer);
+		getSubmodules().put(ModuleName.EpisodicBuffer,episodicBuffer);
 		this.broadcastQueue = broadcastQueue;
-		getSubmodules().put(ModuleType.BroadcastQueue,broadcastQueue);
+		getSubmodules().put(ModuleName.BroadcastQueue,broadcastQueue);
 		this.perceptualBuffer=perceptualBuffer;
-		getSubmodules().put(ModuleType.PerceptualBuffer,perceptualBuffer);
+		getSubmodules().put(ModuleName.PerceptualBuffer,perceptualBuffer);
 		this.csm = csm;	
-		getSubmodules().put(ModuleType.CurrentSituationalModel,csm);
+		getSubmodules().put(ModuleName.CurrentSituationalModel,csm);
 		
 	}
 	
@@ -145,7 +145,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 	public void receiveLocalAssociation(NodeStructure association) {
 		WorkspaceContent ns = (WorkspaceContent) episodicBuffer.getModuleContent(); 
 		ns.mergeWith(association);
-		pamWorkspaceListener.receiveWorkspaceContent(ModuleType.EpisodicBuffer, ns);
+		pamWorkspaceListener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, ns);
 	}
 	/**
 	 * Implementation of the PamListener interface. Send received node to the

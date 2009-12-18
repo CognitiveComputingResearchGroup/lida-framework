@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -71,7 +71,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	
 	
 	public PerceptualAssociativeMemoryImpl(){
-		super(ModuleType.PerceptualAssociativeMemory);
+		super(ModuleName.PerceptualAssociativeMemory);
 	}
 	/**
 	 * @param taskSpawner the taskSpawner to set
@@ -124,7 +124,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		pamListeners.add(pl);
 	}
 
-	public synchronized void receiveWorkspaceContent(ModuleType originatingBuffer,
+	public synchronized void receiveWorkspaceContent(ModuleName originatingBuffer,
 													 WorkspaceContent content) {
 		// TODO:impl episodic buffer activation into activation passing
 		topDownContent = content;
@@ -233,8 +233,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		return pamNodeStructure;
 	}
 
-	public ModuleType getModuleType() {
-		return ModuleType.PerceptualAssociativeMemory;
+	public ModuleName getModuleName() {
+		return ModuleName.PerceptualAssociativeMemory;
 	}
 
 	public void init(Properties lidaProperties) {

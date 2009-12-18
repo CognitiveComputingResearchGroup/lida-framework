@@ -21,7 +21,7 @@ import org.apache.commons.collections15.Transformer;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
@@ -218,13 +218,13 @@ public class NodeStructurePanel extends LidaPanelImpl {
 
 	
 	public void initPanel(String[]param){
-		ModuleType moduleType=null;
+		ModuleName moduleType=null;
 		if (param==null || param.length==0){
 		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
 		return;
 		}
 		try{
-		 moduleType= ModuleType.valueOf(param[0]);
+		 moduleType= ModuleName.valueOf(param[0]);
 		}catch (Exception e){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
@@ -236,7 +236,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		}
 		for (int i=1; i<param.length;i++){
 			try{
-				 moduleType= ModuleType.valueOf(param[i]);
+				 moduleType= ModuleName.valueOf(param[i]);
 				}catch (Exception e){
 					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 					return;

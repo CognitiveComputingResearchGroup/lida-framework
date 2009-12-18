@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.ModuleType;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 
 public abstract   class EnvironmentImpl extends ModuleDriverImpl implements Environment{
 
@@ -22,11 +22,11 @@ public abstract   class EnvironmentImpl extends ModuleDriverImpl implements Envi
 		super.setTaskManager(taskManager);
 	}
 
-	public ModuleType getModuleType() {
-		return ModuleType.Environment;
+	public ModuleName getModuleName() {
+		return ModuleName.Environment;
 	}
 
-	public LidaModule getSubmodule(ModuleType type) {
+	public LidaModule getSubmodule(ModuleName type) {
 		return null;
 	}
 
