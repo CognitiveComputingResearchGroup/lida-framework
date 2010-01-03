@@ -5,8 +5,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
@@ -25,9 +27,10 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	
 	/**
 	 * Schemes indexed by Linkables in their context.
-	 * TODO: check concurrent hash map
+	 * Operations on ConcurrentHashmap do not block but they may not reflect 
+	 * the true state of the Map if multiple operations are concurrent. 
 	 */
-	private Map<Linkable, Set<Scheme>> schemeMap = new ConcurrentHashMap<Linkable, Set<Scheme>>();
+	private Map<Linkable, Queue<Scheme>> schemeMap = new ConcurrentHashMap<Linkable, Queue<Scheme>>();
 
 	/**
 	 * Listeners of this Procedural Memory
@@ -44,18 +47,17 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 		for(Scheme s: schemes){
 			NodeStructure context = s.getContext();
 			for(Node n: context.getNodes()){
-				Set<Scheme> existingSchemes = schemeMap.get(n);
+				Queue<Scheme> existingSchemes = schemeMap.get(n);
 				if(existingSchemes == null){
-					//TODO: find a concurrent data structure instead of HashSet
-					existingSchemes = new HashSet<Scheme>();
+					existingSchemes = new ConcurrentLinkedQueue<Scheme>();
 					schemeMap.put(n, existingSchemes);
 				}
 				existingSchemes.add(s);
 			}
 			for(Link l: context.getLinks()){
-				Set<Scheme> existingSchemes = schemeMap.get(l);
+				Queue<Scheme> existingSchemes = schemeMap.get(l);
 				if(existingSchemes == null){
-					existingSchemes = new HashSet<Scheme>();
+					existingSchemes = new ConcurrentLinkedQueue<Scheme>();
 					schemeMap.put(l, existingSchemes);
 				}
 				existingSchemes.add(s);
@@ -91,7 +93,7 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	}//method
 	public void auxActivateSchemes(Linkable l){
 		if(schemeMap.containsKey(l)){
-			Set<Scheme> schemes = schemeMap.get(l);
+			Queue<Scheme> schemes = schemeMap.get(l);
 			for(Scheme s: schemes){
 				int contextCount = s.getContext().getNodeCount();
 				s.excite(1.0 / (contextCount * 1.0));

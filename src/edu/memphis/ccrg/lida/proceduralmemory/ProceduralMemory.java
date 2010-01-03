@@ -13,7 +13,7 @@ import java.util.Collection;
 public interface ProceduralMemory{
 
 	/**
-	 * 
+	 * For adding modules that listen to Procedural Memory
 	 * @param listener
 	 */
     public abstract void addProceduralMemoryListener(ProceduralMemoryListener listener); 
