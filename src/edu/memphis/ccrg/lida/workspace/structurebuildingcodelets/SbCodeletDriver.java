@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -15,13 +17,16 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
 public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvider {
 
-	private Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
+	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	private SbCodeletFactory sbCodeletFactory;
-	
+	private Workspace workspace;
 	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, (LidaTaskManager) tm);
-		setNumberOfTicksPerStep(10);
-		sbCodeletFactory = SbCodeletFactory.getInstance(w);
+		super(ticksPerCycle, (LidaTaskManager) tm,ModuleName.SbCodeletDriver);
+		sbCodeletFactory = SbCodeletFactory.getInstance();
+	}// method
+
+	public SbCodeletDriver() {
+		this(null,DEFAULT_TICKS_PER_CYCLE, null);
 	}// method
 
 	public void runThisDriver() {
@@ -63,6 +68,14 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	@Override
 	public String toString() {
 		return ModuleName.StructureBuildingCodelets + "";
+	}
+	public void setAssociatedModule(LidaModule module) {
+		if (module != null) {
+			if (module instanceof Workspace
+					&& module.getModuleName() == ModuleName.Workspace) {
+				workspace = (Workspace) module;
+			}
+		}
 	}
 
 }// class

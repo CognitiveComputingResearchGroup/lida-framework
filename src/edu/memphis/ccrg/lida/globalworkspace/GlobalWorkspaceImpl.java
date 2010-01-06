@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -42,9 +43,11 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	
 	private Logger logger = Logger.getLogger("lida.globalworkspace.GlobalWorkspaceImpl");
 
-	public GlobalWorkspaceImpl(int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm);
-		// TODO Auto-generated constructor stub
+	public GlobalWorkspaceImpl(LidaTaskManager tm) {
+		super(1, tm,ModuleName.GlobalWorkspace);
+	}
+	public GlobalWorkspaceImpl() {
+		super(1, null,ModuleName.GlobalWorkspace);
 	}
 
 	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
@@ -147,7 +150,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		// activation is 0. So, for now, I suggest to use your solution,
 		// but copy this comment in the code and add a note please.
 
-		decay();
+		//decay(); TODO: change decay method for decayModule()
 		resetTriggers();
 		broadcastStarted.set(false);
 	}
@@ -178,18 +181,14 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 			fg.receiveGuiEvent(evt);
 	}
 
-	public ModuleName getModuleName() {
-		return ModuleName.GlobalWorkspace;
-	}
-
 	public void init(Properties lidaProperties) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void decay(){
+	public void decay(long ticks){
 		for (Coalition c : coalitions) {
-			c.decay();
+			c.decay(ticks);
 			if (c.getActivation()<=0.0){
 				coalitions.remove(c);
 			}
@@ -210,4 +209,22 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		return null;
 	}
 
+	public void decayModule(long ticks){
+		decay(ticks);
+	}
+
+	public void addModule(LidaModule lm) {
+	}
+
+	public void setModuleName(ModuleName moduleName) {
+	}
+
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof BroadcastListener){
+			addBroadcastListener((BroadcastListener)listener);
+		}
+	}
+
+	public void setAssociatedModule(LidaModule module) {
+	}
 }// class

@@ -7,7 +7,11 @@ import java.util.Properties;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BottomRightDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector;
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.ModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -19,17 +23,19 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 public class PamInitializer implements Initializer {
 	
-	private PerceptualAssociativeMemory pam;
-	private SensoryMemory sm;
-	private LidaTaskManager taskManager;
 	
-	public PamInitializer(PerceptualAssociativeMemory pam, SensoryMemory sm, LidaTaskManager tm){
-		taskManager = tm;
-		this.pam = pam;
-		this.sm = sm;
+	public PamInitializer(){
 	}
 
-	public void initModule(Properties properties) {
+	public void initModule(Initializable module,Lida lida,Properties properties) {
+		
+		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
+		SensoryMemory sm = (SensoryMemory)lida.getSubmodule(ModuleName.SensoryMemory);
+		LidaTaskManager taskManager = lida.getTaskManager();
+		ModuleDriver driver=lida.getModuleDriver(ModuleName.PamDriver);
+		pam.setTaskSpawner(driver);
+		
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("upscale", properties.getProperty("pam.Upscale"));
 		params.put("downscale", properties.getProperty("pam.Downscale"));
@@ -79,6 +85,7 @@ public class PamInitializer implements Initializer {
     	
     	PropagationBehavior b = new UpscalePropagationBehavior();
     	pam.setPropagationBehavior(b);
+    	driver.setInitialTasks(pam.getFeatureDetectors());
 	}//method
 	
 }//class

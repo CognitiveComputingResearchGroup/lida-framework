@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,8 +13,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.strategies.AllModuleDriver;
 //TODO: Comment!!!
+/**
+ * @author Javier Snaider
+ *
+ */
 public class LidaTaskManager {
 
 	private static Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
@@ -26,6 +30,7 @@ public class LidaTaskManager {
 	private volatile long lapTicks = 0L;
 	private volatile static long actualTick = 0L;
 	private volatile Long maxTick = 0L;
+	private volatile long lastDecayTick=0L;
 	/**
 	 * @return the maxTick
 	 */
@@ -83,6 +88,8 @@ public class LidaTaskManager {
 	private TaskSpawner mainTaskSpawner;
 
 	private Thread taskManagerThread;
+
+	private Collection<LidaModule> modules=new HashSet<LidaModule>();
 
 	/**
 	 * @return the mainTaskSpawner
@@ -150,20 +157,6 @@ public class LidaTaskManager {
 	public boolean isSystemPaused() {
 		return tasksPaused;
 	}
-
-	// /**
-	// * Threads should call this in every iteration of their cycle so that the
-	// * system is pausable.
-	// */
-	// public synchronized void checkForStartPause() {
-	// if(isTasksPaused()){
-	// try{
-	// this.wait();
-	// }catch(InterruptedException e){
-	// stopRunning();
-	// }
-	// }//if
-	// }// method
 
 	/**
 	 * Threads call this to get the standard sleep time. This way the system
@@ -279,13 +272,23 @@ public class LidaTaskManager {
 		logger.log(Level.FINER, "Tick {0} executed", actualTick);
 		if (queue != null) {
 			try {
-				executorService.invokeAll(queue);
+				decayModules();
+				executorService.invokeAll(queue); //Execute all tasks scheduled for this tick
 			} catch (InterruptedException e) {
 				logger.log(Level.WARNING, e.getMessage(), actualTick);
 			}
 		}
 		return actualTick;
 	}
+
+	private void decayModules() {
+		for(LidaModule lm:modules){
+			lm.decayModule(actualTick-lastDecayTick);
+		}
+		lastDecayTick=actualTick;
+		logger.log(Level.FINEST, "Modules decayed", actualTick);	
+	}
+
 
 	public void receiveFinishedTask(LidaTask task, Throwable t) {
 		
@@ -300,6 +303,12 @@ public class LidaTaskManager {
 	public Map<Long, Queue<LidaTask>> getTaskQueue(){
 		return Collections.unmodifiableMap(taskQueue);
 	}
+	
+	
+	/**
+	 * This inner class implements the main loop of the system.
+	 *
+	 */
 	private class TaskManagerMainLoop implements Runnable {
 
 		public void run() {
@@ -349,6 +358,16 @@ public class LidaTaskManager {
 			queue.remove(task);
 			return true;
 		}
-		return false;
+		return false;		
 	}
+	
+	/**
+	 * Set the Collection of modules for decaying 
+	 * @param modules a Collection with the LidaModules
+	 */
+	public void setDecayingModules(Collection<LidaModule> modules){
+		
+		this.modules.addAll(modules);
+	}
+
 }// class LIDA_TASK_MANAGER

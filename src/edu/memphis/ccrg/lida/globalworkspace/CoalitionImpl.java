@@ -25,9 +25,9 @@ public class CoalitionImpl implements Coalition{
 		return struct;
 	}
 	
-	public void decay() {
+	public void decay(long ticks) {
 		for(Node n: struct.getNodes())
-			n.decay();
+			n.decay(ticks);
 	}
 
 }//class

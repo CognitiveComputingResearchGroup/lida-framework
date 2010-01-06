@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.declarativememory;
 
-public interface DeclarativeMemoryListener {
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+
+public interface DeclarativeMemoryListener extends ModuleListener{
 	
 	public abstract void receivenDMContent(DeclarativeMemoryContent association);
 

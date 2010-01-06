@@ -1,10 +1,8 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework.strategies;
+package edu.memphis.ccrg.lida.framework;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.TaskSpawnerImpl;
 
 /**
  * @author Javier Snaider

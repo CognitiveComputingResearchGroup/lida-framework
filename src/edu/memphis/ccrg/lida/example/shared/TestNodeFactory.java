@@ -38,7 +38,7 @@ public class TestNodeFactory {
 		System.out.println("Activation: "+n.getActivation());
 		System.out.println("Decaying...");
 
-		n.decay();
+		n.decay(1L);
 		System.out.println("Activation: "+n.getActivation());
 		
 

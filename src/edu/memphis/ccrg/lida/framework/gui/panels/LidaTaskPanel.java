@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
  * 
@@ -178,7 +179,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	}
 
 	public void refresh(){
-		display(lida.getPamDriver().getSpawnedTasks());
+		display(lida.getModuleDriver(ModuleName.PamDriver).getSpawnedTasks());
 	}
 	
 	@SuppressWarnings("unchecked")

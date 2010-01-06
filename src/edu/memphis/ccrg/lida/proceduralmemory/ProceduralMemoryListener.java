@@ -8,11 +8,13 @@
 
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+
 /**
  *
  * @author Rodrigo Silva L.
  */
-public interface ProceduralMemoryListener {
+public interface ProceduralMemoryListener extends ModuleListener{
 
     /**
      * @param scheme

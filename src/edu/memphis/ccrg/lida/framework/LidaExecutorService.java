@@ -54,8 +54,10 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 			taskManager.receiveFinishedTask(((Future<LidaTask>)r).get(), t);
 		} catch (InterruptedException e) {
 			logger.log(Level.INFO,e.getMessage(),LidaTaskManager.getActualTick());
+			e.printStackTrace();
 		} catch (ExecutionException e) {
 			logger.log(Level.WARNING,e.getMessage(),LidaTaskManager.getActualTick());
+			e.printStackTrace();
 		}
 	}
 	

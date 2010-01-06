@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 
 //TODO: Check this class
 public class PamNodeStructure extends NodeStructureImpl{
-	private Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
+	private static Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
 	
 	private Double upscaleFactor = 0.7;
 	@SuppressWarnings("unused")
@@ -196,10 +196,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 	/**
 	 * Decay the nodes of this pam node structure
 	 */
-	public void decayNodes(){
+	public void decayNodes(long ticks){
 		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getActualTick());
 		for(Node n: getNodes())
-			n.decay();
+			n.decay(ticks);
 	}//method
 	
 	/**

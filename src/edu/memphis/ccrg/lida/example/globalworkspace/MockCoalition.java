@@ -24,7 +24,7 @@ public class MockCoalition implements Coalition {
 	public double getActivation() {
 		return activation;
 	}
-	public void decay() {
+	public void decay(long ticks) {
 	}
 
 

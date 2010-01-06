@@ -5,8 +5,6 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 
 public interface SensoryMemory extends LidaModule{
 
-	public abstract void setEnvironment(Environment environ);
-	
 	public abstract void processSensors();
 	
 	public abstract Object getContent(String type, Object... parameters);

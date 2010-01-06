@@ -1,4 +1,3 @@
-
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
@@ -16,12 +15,13 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  * @author Javier Snaider
  * 
  */
-public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent {
-	
+public class NodeStructureImpl implements NodeStructure, BroadcastContent,
+		WorkspaceContent {
+
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
 	private Map<Linkable, Set<Link>> linkableMap;
-	private NodeFactory factory = NodeFactory.getInstance();
+	private static NodeFactory factory = NodeFactory.getInstance();
 	private String defaultNodeType;
 	private String defaultLinkType;
 
@@ -39,38 +39,70 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		this.defaultLinkType = defaultLink;
 	}
 
-	public NodeStructureImpl(NodeStructure oldGraph) {		
+	public NodeStructureImpl(NodeStructure oldGraph) {
 		nodes = new ConcurrentHashMap<Long, Node>();
 		links = new ConcurrentHashMap<String, Link>();
-		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();	
-		
+		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
+		this.defaultNodeType = ((NodeStructureImpl) oldGraph).defaultNodeType;
+		this.defaultLinkType = ((NodeStructureImpl) oldGraph).defaultLinkType;
+
+		// Copy nodes
 		Collection<Node> oldNodes = oldGraph.getNodes();
-		if(oldNodes != null)
-			for(Node n: oldNodes)
-				nodes.put(n.getId(), factory.getNode(n));
-		
+		if (oldNodes != null)
+			for (Node n : oldNodes)
+				nodes.put(n.getId(), getNewNode(n));
+
+		// Copy Links but with Source and Sink pointing the old ones.
 		Collection<Link> oldLinks = oldGraph.getLinks();
-		if(oldLinks != null)
-			for(Link l: oldLinks)
-				links.put(l.getIds(), l);				
-			
+		if (oldLinks != null)
+			for (Link l : oldLinks) {
+				links.put(l.getIds(), getNewLink(l.getSource(),l.getSink(),l.getType()));
+			}
+
+		// Fix Source and Sinks now that all new Nodes and Links have been
+		// copied
+		for (String ids : links.keySet()) {
+			Link l = links.get(ids);
+			if (l.getSource() instanceof Node) {
+				l.setSource(nodes.get(((Node) l).getId()));
+			} else {
+				l.setSource(links.get(l.getIds()));
+			}
+
+			if (l.getSink() instanceof Node) {
+				l.setSink(nodes.get(((Node) l).getId()));
+			} else {
+				l.setSink(links.get(l.getIds()));
+			}
+		}
+
+		// Generate LinkableMap
 		Map<Linkable, Set<Link>> oldlinkableMap = oldGraph.getLinkableMap();
-		if(oldlinkableMap != null){
+		if (oldlinkableMap != null) {
 			Set<Linkable> oldKeys = oldlinkableMap.keySet();
-			if(oldKeys != null){
-				for(Linkable l: oldKeys){
-					if(l instanceof LinkImpl){
-						LinkImpl castLink = (LinkImpl)l;
-						this.linkableMap.put(new LinkImpl(castLink), new HashSet<Link>());
-					}else if(l instanceof PamNodeImpl){
-						PamNodeImpl castNode = (PamNodeImpl)l;
-						this.linkableMap.put(new PamNodeImpl(castNode), new HashSet<Link>());
+			if (oldKeys != null) {
+				for (Linkable l : oldKeys) {
+					Set<Link> newLinks = null;
+					Set<Link> llinks = oldlinkableMap.get(l);
+					if (llinks != null) {
+						newLinks = new HashSet<Link>();
+						for (Link link : llinks) {
+							newLinks.add(links.get(link.getIds()));
+						}
+					} else {
+						newLinks = null;
+					}
+					if (l instanceof Link) {
+						linkableMap.put(links.get(l.getIds()), newLinks);
+					} else if (l instanceof Node) {
+						this.linkableMap.put(nodes.get(((Node) l).getId()),
+								newLinks);
 					}
 				}
 			}
 		}
-	}//constructor
-	
+	}// constructor
+
 	/**
 	 * @param defaultNode
 	 *            the defaultNode to set
@@ -95,6 +127,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * .shared.Link)
 	 */
 	public Link addLink(Link l) {
+
+		Link oldLink = links.get(l.getIds());
+		if (oldLink != null) { // if the link already exists only actualize the
+								// activation.
+			double newActiv = l.getActivation();
+			if (oldLink.getActivation() < newActiv) {
+				oldLink.setActivation(newActiv);
+			}
+			return oldLink;
+		}
 		Linkable source = l.getSource();
 		Linkable sink = l.getSink();
 
@@ -131,10 +173,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			}
 		}
 
-		Link newLink = getNewLink(l, newSource, newSink, l.getType());
+		Link newLink = getNewLink( newSource, newSink, l.getType());
 		links.put(newLink.getIds(), newLink);
 		linkableMap.put(newLink, new HashSet<Link>());
-		
+
 		Set<Link> tempLinks = linkableMap.get(source);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
@@ -164,23 +206,28 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	public Node addNode(Node n) {
-		if (!nodes.keySet().contains(n.getId())) {
-			Node newNode = getNewNode(n);
-			nodes.put(newNode.getId(), newNode);
-			linkableMap.put(newNode, new HashSet<Link>());
-			return newNode;
+		Node node = nodes.get(n.getId());
+		if (node == null) {
+			node = getNewNode(n);
+			nodes.put(node.getId(), node);
+			linkableMap.put(node, new HashSet<Link>());
+		} else {
+			double newActiv = n.getActivation();
+			if (node.getActivation() < newActiv) {
+				node.setActivation(newActiv);
+			}
 		}
-		return null;
+		return node;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
 	public void addNodes(Collection<Node> nodesToAdd) {
-		for(Node n : nodesToAdd)
-			addNode(n);	
+		for (Node n : nodesToAdd)
+			addNode(n);
 	}
 
 	/**
@@ -198,8 +245,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * This method can be overwritten to customize the Link Creation. some of
 	 * the parameter could be redundant in some cases.
 	 * 
-	 * @param l
-	 *            The original Link
 	 * @param source
 	 *            The new source
 	 * @param sink
@@ -208,9 +253,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 *            the type of the link
 	 * @return The link to be used in this NodeStructure
 	 */
-	protected Link getNewLink(Link l, Linkable source, Linkable sink,
+	protected Link getNewLink( Linkable source, Linkable sink,
 			LinkType type) {
-		return factory.getLink(defaultLinkType, source, sink, l.getType());
+		return factory.getLink(defaultLinkType, source, sink, type);
 	}
 
 	public NodeStructure copy() {
@@ -226,7 +271,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 */
 	public void deleteLink(Link l) {
 		deleteLinkable(l);
-	}//method
+	}// method
 
 	/*
 	 * (non-Javadoc)
@@ -273,17 +318,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 				sinkLinks.remove(aux);
 		}
 
-	}//method
+	}// method
 
 	public void deleteNode(Node n) {
 		deleteLinkable(n);
 	}
 
-
 	public Link getLink(String ids) {
 		return links.get(ids);
 	}
-	
+
 	public Collection<Link> getLinks() {
 		Collection<Link> aux = links.values();
 		if (aux == null) {
@@ -301,16 +345,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable)
 	 */
 	public Set<Link> getLinks(Linkable l) {
-		if(l==null){
+		if (l == null) {
 			return null;
 		}
 		Set<Link> aux = linkableMap.get(l);
-		if(aux == null) 
+		if (aux == null)
 			return null;
-	    else 
+		else
 			return Collections.unmodifiableSet(aux); // This returns the
 		// set of Links but it prevents to be modified
-	}//method
+	}// method
 
 	/*
 	 * (non-Javadoc)
@@ -329,7 +373,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			}// for each link
 		}// result != null
 		return result;
-	}//method
+	}// method
 
 	public Set<Link> getLinks(LinkType type) {
 		Set<Link> result = new HashSet<Link>();
@@ -350,12 +394,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 */
 	public Collection<Node> getNodes() {
 		Collection<Node> aux = nodes.values();
-		if(aux == null)
+		if (aux == null)
 			return null;
 		else
 			return Collections.unmodifiableCollection(aux);
-		
-	}//method
+
+	}// method
 
 	public Object getContent() {
 		return this;
@@ -364,10 +408,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	/**
 	 * 
 	 */
-	public Map<Linkable, Set<Link>> getLinkableMap(){
+	public Map<Linkable, Set<Link>> getLinkableMap() {
 		return linkableMap;
 	}
-	
+
 	public Node getNode(long id) {
 		return nodes.get(id);
 	}
@@ -375,79 +419,40 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public int getLinkCount() {
 		return links.size();
 	}
-	
-	public int getNodeCount(){
+
+	public int getNodeCount() {
 		return nodes.size();
 	}
-	
+
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
-		Collection<Link> cl= ns.getLinks();
-		boolean pending=true;
-		while(pending){
-			pending=false;
-			for (Link l:cl){
-				if (addLink(l)==null){
-					pending=true;
+		Collection<Link> cl = ns.getLinks();
+		boolean pending = true;
+		while (pending) {
+			pending = false;
+			for (Link l : cl) {
+				if (addLink(l) == null) {
+					pending = true;
 				}
 			}
 		}
-		
-		//TODO: Must add links differently than above statement.
+
+		// TODO: Must add links differently than above statement.
 	}
 
-	public void mergeWith(Link l) {
-		Link existingLink = links.get(l.getIds());
-		if(existingLink == null){
-			addLink(l);
-		}else{
-			existingLink.setSink(l.getSink());
-			existingLink.setSource(l.getSource());
-			existingLink.setType(l.getType());
-			
-			existingLink.setActivation(l.getActivation());
-			existingLink.setDecayBehavior(l.getDecayBehavior());
-			existingLink.setExciteBehavior(l.getExciteBehavior());
-			existingLink.setReferencedLink(l);
-		}
-	}//method
-
-	public void mergeWith(Node node) {
-		Node existingNode = nodes.get(node.getId());
-		if(existingNode == null)
-			addNode(node);
-		else{
-			existingNode.setActivation(node.getActivation());
-			existingNode.setDecayBehavior(node.getDecayBehavior());
-			existingNode.setExciteBehavior(node.getExciteBehavior());
-			existingNode.setImportance(node.getImportance());
-			//TODO: consider if the below is correct
-			existingNode.setReferencedNode(node.getReferencedNode());
-		}
-	}//method
-	
-	public void printLinkMap() {
-		Set<Linkable> keys = linkableMap.keySet();
-		for(Linkable key: keys){
-			Set<Link> links = linkableMap.get(key);
-			for(Link l: links)
-				System.out.println("Source: " + l.getSource().toString() + " sink " + l.getSink().toString());
-			System.out.println();
-		}
-	}//method
 
 	public Set<Link> getLinksByType(LinkType type) {
 		Set<Link> result = new HashSet<Link>();
-		for(Link l: links.values()){
-			if(l.getType() == type)
+		for (Link l : links.values()) {
+			if (l.getType() == type)
 				result.add(l);
-		}//for
-		
+		}// for
+
 		return result;
-	}//method
+	}// method
 
 	public void clearNodes() {
-		nodes = new ConcurrentHashMap<Long, Node>();		
+		nodes = new ConcurrentHashMap<Long, Node>();
 	}
 
 	public boolean hasLink(Link l) {
@@ -458,16 +463,4 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return nodes.containsKey(n.getId());
 	}
 
-	public boolean containsNode(Node n) {
-		if(nodes.get(n.getId()) != null)
-			return true;
-		return false;
-	}
-
-	public boolean containsLink(Link l) {
-		if(links.get(l.getIds()) != null) 
-			return true;
-		return false;
-	}
-
-}//class
+}// class

@@ -49,11 +49,6 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	public void setDecayBehavior(DecayBehavior c);
 	
 	/**
-	 * Decay activations of PAM nodes and/or links
-	 */
-	public void decayPam();
-	
-	/**
 	 * Send a burst of activation to a node.
 	 * @param pNode The node to receiving the activation
 	 * @param amount The amount of activation

@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -148,8 +149,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		for (Node n : nodes) {n.getId();}
 	}//method
 
-	public void decayPam() {
-		pamNodeStructure.decayNodes();
+	public void decayModule(long ticks) {
+		pamNodeStructure.decayNodes(ticks);
 	}// method
 
 	/**
@@ -244,6 +245,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public Object getModuleContent() {
 		return pamNodeStructure;
+	}
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof PamListener){
+			addPamListener((PamListener)listener);
+		}
 	}
 
 

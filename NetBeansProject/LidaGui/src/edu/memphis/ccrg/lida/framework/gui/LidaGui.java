@@ -10,10 +10,6 @@
 
 package edu.memphis.ccrg.lida.framework.gui;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,7 +44,7 @@ public class LidaGui extends javax.swing.JFrame {
 	private List<LidaPanel> panels = new ArrayList<LidaPanel>();
 	private Lida lida;
 	private LidaGuiController controller;
-	private Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
+	private static Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
 
 	public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {
 		initComponents();
@@ -57,7 +53,7 @@ public class LidaGui extends javax.swing.JFrame {
 			
 		loadPanels(panelProperties);
 		pack();
-		logger.info("LidaGUI started\n");
+		logger.log(Level.INFO,"LidaGUI started",0L);
 	}
 
 	/**
@@ -73,7 +69,7 @@ public class LidaGui extends javax.swing.JFrame {
 			String line = panelProp.getProperty((String) key);
 			String[] vals = line.split(","); // name,class,pos,tab Order,refresh[Y/N],[optional parameters],...			
 			if ((vals.length < FIRST_PARAM)) {
-				logger.warning("Error reading line for Panel " + key);
+				logger.log(Level.WARNING,"Error reading line for Panel " + key,0L);
 			}else{
 				panelsArray[i++]=vals;
 			}
@@ -98,7 +94,7 @@ public class LidaGui extends javax.swing.JFrame {
 			try {
 				panel = (LidaPanel) (Class.forName(vals[CLASS_NAME])).newInstance();
 			} catch (Exception e) {
-				logger.warning(e.toString());
+				logger.log(Level.WARNING,e.getMessage(),0L);
 				continue;
 			}
 			panel.setName(vals[PANEL_NAME]);
@@ -159,12 +155,27 @@ public class LidaGui extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         openMenuItem.setText("Open");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setText("Save");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         saveAsMenuItem.setText("Save As ...");
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveAsMenuItem);
 
         exitMenuItem.setText("Exit");
@@ -210,6 +221,18 @@ public class LidaGui extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		//System.exit(0);
@@ -267,8 +290,8 @@ public class LidaGui extends javax.swing.JFrame {
 		} else if ("TOOL".equalsIgnoreCase(panelPosition)) {
 			getContentPane().add(jPanel, java.awt.BorderLayout.PAGE_START);
 		} else {
-			logger.warning("Position error for panel " + panel.getName()
-					+ " pos:" + panelPosition);
+			logger.log(Level.WARNING,"Position error for panel " + panel.getName()
+					+ " pos:" + panelPosition,0L);
 		}
 	}
 

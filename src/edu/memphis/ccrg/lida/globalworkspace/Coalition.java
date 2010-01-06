@@ -27,5 +27,5 @@ public interface Coalition {
 	 * this method decay the activation of the coalition. It should be called after
 	 * each broadcast by the GlobalWorkspace
 	 */
-	public void decay();
+	public void decay(long ticks);
 }

@@ -133,5 +133,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * @param scheduledTick
 	 */
 	public void setScheduledTick(long scheduledTick);
+	//public void setTaskManager(LidaTaskManager taskManager);
+	public LidaTaskManager getTaskManager();
 
 }

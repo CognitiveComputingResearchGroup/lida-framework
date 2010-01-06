@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
-import edu.memphis.ccrg.lida.framework.LidaFactory;
+import edu.memphis.ccrg.lida.framework.gui.LidaGuiFactory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 public class GenericLida{
@@ -52,8 +52,8 @@ public class GenericLida{
 			logger.log(Level.SEVERE, "Error reading GUI panel properties file {1}",new Object[]{0L, e.getMessage()});
 		}
 		
-       //Use the LidaFactory to start the agent
-       LidaFactory.start(environment, sensoryMemory, lidaProperties, guiPanelProperties);
+       //Use the LidaGuiFactory to start the agent
+       LidaGuiFactory.start(environment, sensoryMemory, lidaProperties, guiPanelProperties);
 	}//method
 	
 }//class

@@ -8,11 +8,13 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 import java.util.concurrent.Future;
 
@@ -34,9 +36,12 @@ public class TemDriver extends ModuleDriverImpl {
      * @param cue the cue used to write on this memory
      */
     public TemDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle, LidaTaskManager tm) {
-    	super(ticksPerCycle, tm);
+    	super(ticksPerCycle, tm,ModuleName.TemDriver);
         this.tem = tem;
         this.cue = cue;
+    }
+    public TemDriver() {
+    	super(DEFAULT_TICKS_PER_CYCLE, null,ModuleName.TemDriver);
     }
 
 	public void runThisDriver() {
@@ -66,4 +71,14 @@ public class TemDriver extends ModuleDriverImpl {
 	public String toString() {
 		return ModuleName.TemDriver + "";
 	}
+	
+	public void setAssociatedModule(LidaModule module) {
+		if (module != null) {
+			if (module instanceof TransientEpisodicMemory
+					&& module.getModuleName() == ModuleName.TransientEpisodicMemory) {
+				tem = (TransientEpisodicMemory) module;
+			}
+		}
+	}
+
 }//class

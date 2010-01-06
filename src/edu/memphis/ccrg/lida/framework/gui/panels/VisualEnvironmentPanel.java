@@ -68,7 +68,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 
 	public void registerLida(Lida lida) {
 		super.registerLida(lida);
-		Environment e = lida.getEnvironment();
+		Environment e = (Environment)lida.getSubmodule(ModuleName.Environment);
 		if (e instanceof GuiEventProvider) {
 			((GuiEventProvider) e).addFrameworkGuiEventListener(this);
 		}
@@ -83,7 +83,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	}
 	
 	public void initPanel(String[] params){
-		Environment e=lida.getEnvironment();
+		Environment e = (Environment)lida.getSubmodule(ModuleName.Environment);
 		if (e instanceof GuiEventProvider){
 			((GuiEventProvider)e).addFrameworkGuiEventListener(this);
 		}

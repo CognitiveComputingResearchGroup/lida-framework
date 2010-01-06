@@ -1,14 +1,11 @@
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
 /**
@@ -19,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	
 	@SuppressWarnings("unused")
-	private Logger logger = Logger.getLogger("lida.pam.PamDriver");
+	private static Logger logger = Logger.getLogger("lida.pam.PamDriver");
 	
 	/**
 	 * Counter for the decay 
@@ -36,22 +33,23 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	 */
 	private static final int DEFAULT_DECAY_TIME = 5;
 	
-	/**
-	 * 
-	 */
 	private PerceptualAssociativeMemory pam;
 	
 	public PamDriver(PerceptualAssociativeMemory pam, int ticksPerCycle,
 			LidaTaskManager tm) {
-		super(ticksPerCycle, tm);
+		super(ticksPerCycle, tm,ModuleName.PamDriver);
 		this.pam = pam;
+	}// constructor
+
+	public PamDriver() {
+		super(DEFAULT_TICKS_PER_CYCLE, null,ModuleName.PamDriver);
 	}// constructor
 
 	@Override
 	protected void runThisDriver() {
 		decayCounter++;
 		if (decayCounter >= decayTime) {
-			pam.decayPam(); // Decay the activations
+			//pam.decayPam(); // Decay the activations TODO: delete this class
 			decayCounter = 0;
 		}
 	}
@@ -71,4 +69,12 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 		return ModuleName.PamDriver + "";
 	}
 
+	public void setAssociatedModule(LidaModule module) {
+		if (module != null) {
+			if (module instanceof PerceptualAssociativeMemory
+					&& module.getModuleName() == ModuleName.PerceptualAssociativeMemory) {
+				pam = (PerceptualAssociativeMemory) module;
+			}
+		}
+	}
 }// class 

@@ -25,7 +25,7 @@ public class BasicDetector extends FeatureDetectorImpl {
 	}
 
 	public double detect() {
-		return 1.0;
+		return 0.1;
 	}//method
 	
 	public String toString(){

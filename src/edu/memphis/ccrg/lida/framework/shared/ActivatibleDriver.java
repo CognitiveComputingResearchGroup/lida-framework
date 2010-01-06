@@ -26,9 +26,9 @@ public class ActivatibleDriver {
 	/**
 	 * this method decays all the Activatible elements
 	 */
-	public void decay() {
+	public void decay(long ticks) {
 		for(Activatible a: activatibles){
-			a.decay();
+			a.decay (ticks);
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
-public interface SensoryMotorListener {
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+
+public interface SensoryMotorListener extends ModuleListener{
 
 }

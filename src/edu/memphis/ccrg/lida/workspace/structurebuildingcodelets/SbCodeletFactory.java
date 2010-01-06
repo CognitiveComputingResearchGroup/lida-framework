@@ -49,8 +49,8 @@ public class SbCodeletFactory {
 	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
 	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
 	//
-	private WorkspaceBuffer episodicBuffer;
-	private WorkspaceBuffer broadcastQueue;
+//	private WorkspaceBuffer episodicBuffer;
+//	private WorkspaceBuffer broadcastQueue;
 //	private CodeletAccessible csmReadable;	
 //	private CodeletWritable csm;
 	//
@@ -63,9 +63,9 @@ public class SbCodeletFactory {
 	 * 
 	 * @return the singleton instance
 	 */
-	static public SbCodeletFactory getInstance(Workspace w) {
+	static public SbCodeletFactory getInstance() {
 		if(instance == null)
-			instance = new SbCodeletFactory(w);
+			instance = new SbCodeletFactory();
 		return instance;
 	}//constructor
 	
@@ -74,7 +74,7 @@ public class SbCodeletFactory {
 	 * TODO: Are we going to use this?
 	 * @post pool.size() == 0
 	 */
-	public SbCodeletFactory(Workspace workspace) {
+	public SbCodeletFactory() {
 		DefaultSBCodeletType = "SBCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
@@ -82,8 +82,8 @@ public class SbCodeletFactory {
 		defaultDecay = new LinearDecayBehavior();
 		defaultExcite = new DefaultExciteBehavior();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
-		episodicBuffer = workspace.getEpisodicBuffer();
-		broadcastQueue = workspace.getBroadcastQueue();
+//		episodicBuffer = workspace.getEpisodicBuffer();
+//		broadcastQueue = workspace.getBroadcastQueue();
 //		csmReadable = workspace.getCSM();
 //		csm = workspace.getCSM();	
 	}

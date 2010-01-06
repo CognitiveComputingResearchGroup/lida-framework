@@ -7,7 +7,7 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 	private double[][] sensoryContent;
 
 	public VisionSensoryMemory() {
-		sensoryContent = new double[1][1];
+		sensoryContent = new double[5][5];
 	}
 
 	public void processSensors() {

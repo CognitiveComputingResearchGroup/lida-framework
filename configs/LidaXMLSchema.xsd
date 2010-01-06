@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://ccrg.cs.memphis.edu/LidaXMLSchema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaXMLSchema">
+
+
+    <complexType name="module">
+    	<sequence>
+    		<element name="class" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="submodules" type="tns:modules"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+            <element name="associatedmodule" type="tns:associatedmodule" maxOccurs="unbounded" minOccurs="0"></element>
+            <element name="param" type="tns:param" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    		<element name="isdriver" type="boolean" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="initializerclass" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+
+
+
+
+    <complexType name="modules">
+    	<sequence>
+    		<element name="module" type="tns:module" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    
+    <complexType name="drivers">
+    	<sequence>
+    		<element name="driver" type="tns:driver" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="driver">
+    	<sequence>
+    		<element name="class" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="associatedmodule" type="tns:associatedmodule"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="ticksperstep" type="int" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="param" type="tns:param" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+    <element name="lida" type="tns:lida"></element>
+    
+    <complexType name="lida">
+    	<sequence>
+            <element name="taskmanager" type="tns:taskmanager" maxOccurs="1" minOccurs="1"></element>
+            <element name="submodules" type="tns:modules" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="drivers" type="tns:drivers" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="listeners" type="tns:listeners" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="param">
+       <simpleContent>
+      <extension base="string">
+    	<attribute name="name" type="string" use="required"></attribute>
+      </extension>
+    </simpleContent>
+    </complexType>
+
+    <complexType name="listener">
+    	<sequence>
+    		<element name="listenertype" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="modulename" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="listenername" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="listeners">
+    	<sequence>
+    		<element name="listener" type="tns:listener" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="taskmanager">
+    	<sequence>
+    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="associatedmodule">
+       <simpleContent>
+      <extension base="string">
+    	<attribute name="function" type="string" use="optional"></attribute>
+      </extension>
+    </simpleContent>
+    </complexType>
+</schema>

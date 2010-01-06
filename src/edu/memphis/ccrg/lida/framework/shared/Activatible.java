@@ -24,7 +24,7 @@ public interface Activatible {
 	public void setExciteBehavior(ExciteBehavior behavior);
 	public ExciteBehavior getExciteBehavior();
 	
-	public void decay();	
+	public void decay(long ticks);	
 	public void setDecayBehavior(DecayBehavior c);
 	public DecayBehavior getDecayBehavior();
 

@@ -49,6 +49,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	private static final long serialVersionUID = 1L;
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
 	private VisualizationViewer<Linkable, GuiLink> vv;
+	private LidaModule module;
 	
 	/** Creates new form NodeStructurePanel */
 	public NodeStructurePanel() {
@@ -223,20 +224,21 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
 		return;
 		}
+		String[] modules = param[0].split("\\.");
 		try{
-		 moduleType= ModuleName.valueOf(param[0]);
+		 moduleType= ModuleName.valueOf(modules[0]);
 		}catch (Exception e){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
 		}
-		LidaModule module = lida.getModule(moduleType);
+		module = lida.getSubmodule(moduleType);
 		if (module==null){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Module does not exist in LIDA.",0L);
 			return;			
 		}
-		for (int i=1; i<param.length;i++){
+		for (int i=1; i<modules.length;i++){
 			try{
-				 moduleType= ModuleName.valueOf(param[i]);
+				 moduleType= ModuleName.valueOf(modules[i]);
 				}catch (Exception e){
 					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 					return;
@@ -254,6 +256,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	}
 	
 	public void refresh(){
+		display(module.getModuleContent());
 		Layout<Linkable, GuiLink> layout = vv.getGraphLayout();
 		layout.initialize();
 		Relaxer relaxer = vv.getModel().getRelaxer();

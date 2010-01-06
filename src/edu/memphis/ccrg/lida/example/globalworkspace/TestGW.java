@@ -28,7 +28,7 @@ public class TestGW {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GlobalWorkspace gw = new GlobalWorkspaceImpl(1,null);
+		GlobalWorkspace gw = new GlobalWorkspaceImpl();
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;
 		

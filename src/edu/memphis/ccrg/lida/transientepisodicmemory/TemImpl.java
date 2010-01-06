@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.TranslatorImpl;
@@ -102,5 +104,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 	public Object getModuleContent() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public void addListener(ModuleListener listener) {
 	}
 }

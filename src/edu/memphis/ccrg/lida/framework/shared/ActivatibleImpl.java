@@ -21,7 +21,7 @@ public class ActivatibleImpl implements Activatible {
 	private double activation;
 	private ExciteBehavior exciteBehavior;
 	private DecayBehavior decayBehavior;
-	private Logger logger = Logger.getLogger("lida.framework.shared.ActivatibleImpl");
+	private static Logger logger = Logger.getLogger("lida.framework.shared.ActivatibleImpl");
 
 	public ActivatibleImpl() {
 		activation = 0.0;
@@ -35,11 +35,11 @@ public class ActivatibleImpl implements Activatible {
 		this.decayBehavior = db;
 	}
 
-	public void decay() {	
+	public void decay(long ticks) {	
 		if (decayBehavior != null) {
 			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getActualTick());
 			synchronized(this){
-				activation = decayBehavior.decay(activation);
+				activation = decayBehavior.decay(activation,ticks);
 			}
 			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getActualTick());
 		}

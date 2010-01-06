@@ -2,28 +2,46 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Properties;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * Generic Module Interface in LIDA.
- * Mostly initialization tasks.
  * @author Javier Snaider
  *
  */
-public interface LidaModule {
+public interface LidaModule extends Initializable{
 
-	/**
-	 * This metod initializaes the module using properties from LIDA Properties File
-	 * @param lidaProperties
-	 */
-	public abstract void init (Properties lidaProperties);
 	
 	/**
-	 * @return ModuleType
+	 * @return ModuleName
 	 */
 	public abstract ModuleName getModuleName();
 	
+	/**
+	 * param ModuleName
+	 */
+	public abstract void setModuleName(ModuleName moduleName);
+	
+	/**
+	 * @param name of the desired submodule.
+	 * @return the submodule.
+	 */
 	public abstract LidaModule getSubmodule(ModuleName name);
 	
+	/**
+	 * @return the generic content of this module.
+	 */
+	//TODO:public abstract Object getModuleContent(Object... params);
 	public abstract Object getModuleContent();
+	
+	/**
+	 * Decay the module and all the submodules. 
+	 * @param ticks number of ticks to decay.
+	 */
+	public abstract void decayModule(long ticks);
+
+	public abstract void addModule(LidaModule lm);
+
+	public abstract void addListener(ModuleListener listener);
 }

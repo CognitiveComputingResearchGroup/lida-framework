@@ -3,13 +3,40 @@ package edu.memphis.ccrg.lida.sensorymotormemory;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.pam.PamListener;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
-public class SensoryMotorMemoryImpl implements SensoryMotorMemory{
+
+public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
+
+	public SensoryMotorMemoryImpl() {
+		super(ModuleName.SensoryMotorMemory);
+		// TODO Auto-generated constructor stub
+	}
 
 	private List<SensoryMotorListener> listeners = new ArrayList<SensoryMotorListener>();
 
 	public void addSensoryMotorListener(SensoryMotorListener l) {
 		listeners.add(l);		
+	}
+
+	public Object getModuleContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof SensoryMotorListener){
+			addSensoryMotorListener((SensoryMotorListener)listener);
+		}
+	}
+
+	public void receiveSensoryMemoryContent(Object content) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

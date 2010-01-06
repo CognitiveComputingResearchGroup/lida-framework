@@ -30,6 +30,6 @@ public interface Workspace extends LidaModule{
 	 * Add pam that will listen for episodic memories to ground in PAM.
 	 * @param pam
 	 */
-	public abstract void addPamWorkspaceListener(WorkspaceListener pam);
+	public abstract void addWorkspaceListener(WorkspaceListener pam);
 	
 }

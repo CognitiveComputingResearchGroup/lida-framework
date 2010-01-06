@@ -10,6 +10,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -17,8 +21,14 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.pam.PamListener;
 
-public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener{
+public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener{
+
+	public ProceduralMemoryImpl() {
+		super(ModuleName.ProceduralMemory);
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Shared variable to store the asynchronously arriving broadcast
@@ -111,6 +121,16 @@ public class ProceduralMemoryImpl implements ProceduralMemory, BroadcastListener
 	public void sendInstantiatedScheme(Scheme s) {
 		for(ProceduralMemoryListener listener: listeners)
 			listener.receiveScheme(s);
+	}
+
+	public Object getModuleContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof ProceduralMemoryListener){
+			addProceduralMemoryListener((ProceduralMemoryListener)listener);
+		}
 	}
 
 }// class

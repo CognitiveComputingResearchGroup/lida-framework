@@ -6,8 +6,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
-	protected final double MIN_ACTIVATION = 0.0;
-	protected final double MAX_ACTIVATION = 1.0;
+	protected static final double MIN_ACTIVATION = 0.0;
+	protected static final double MAX_ACTIVATION = 1.0;
 	
 	/** Activation required for node to be part of the percept.
 	 *  Bounded by minActivation and maxActivation

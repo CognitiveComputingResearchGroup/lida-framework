@@ -167,7 +167,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @return the LidaTaskManager
 	 */
-	protected LidaTaskManager getTaskManager(){
+	public LidaTaskManager getTaskManager(){
 		return taskManager;
 	}
 	

@@ -12,11 +12,19 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
 
+import javax.swing.table.AbstractTableModel;
+
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeStructure;
-import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
  *
@@ -24,8 +32,8 @@ import edu.memphis.ccrg.lida.framework.Lida;
  */
 public class NodeStructureTable extends LidaPanelImpl {
 
-	private static final long serialVersionUID = 1L;
-	 
+	private static final long serialVersionUID = -2584446529055507492L;
+	private NodeStructure nodeStructure;
     
 	/** Creates new form NodeStructureTable */
     public NodeStructureTable() {
@@ -75,30 +83,7 @@ public class NodeStructureTable extends LidaPanelImpl {
         
         table = new javax.swing.JTable();
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Node", "Base Activation", "Current Activation", "Total Activation"
-            }
-        ) 
-        {
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = 6179671698280895467L;
-			boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        table.setModel(new NodeStructureTableModel());
         jScrollPane1.setViewportView(table);
 
        /* org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -122,24 +107,118 @@ public class NodeStructureTable extends LidaPanelImpl {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton refreshButton;
     // End of variables declaration
+	private LidaModule module;
     
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        // TODO add your handling code here:
     	refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
     
+    
+	public void initPanel(String[]param){
+		ModuleName moduleType=null;
+		if (param==null || param.length==0){
+		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
+		return;
+		}
+		String[] modules = param[0].split("\\.");
+		try{
+		 moduleType= ModuleName.valueOf(modules[0]);
+		}catch (Exception e){
+			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
+			return;
+		}
+		module = lida.getSubmodule(moduleType);
+		if (module==null){
+			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Module does not exist in LIDA.",0L);
+			return;			
+		}
+		for (int i=1; i<modules.length;i++){
+			try{
+				 moduleType= ModuleName.valueOf(modules[i]);
+				}catch (Exception e){
+					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
+					return;
+				}
+			
+			module=module.getSubmodule(moduleType);
+			if (module==null){
+				logger.log(Level.WARNING,"Error initializing NodeStructure Panel, SubModule "+moduleType+ " does not exist.",0L);
+				return;			
+			}
+		}
+		
+		display(module.getModuleContent());
+		//draw();
+	}
+
     public void refresh(){
-    	PamNodeStructure ns = lida.getPam().getNodeStructure();
-    	Collection<Link> links = ns.getLinks();
-    	Collection<Node> nodes = ns.getNodes();
-    	for(Link l: links)
-    		l.getIds();
-    	for(Node n: nodes)
-    		n.getId();
+    		display(module.getModuleContent());
     }
+    
     public void registerLida(Lida lida){
 		super.registerLida(lida);
 		
 	}
+	private class NodeStructureTableModel extends AbstractTableModel {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3902918248689475445L;
+		private String[] columNames ={"Node","Activation","Base Activation","Threshold"};
+		public int getColumnCount() {
+			return columNames.length;
+		}
+
+		public int getRowCount() {
+			return nodeStructure.getNodeCount();
+		}
+
+		public String getColumnName(int column){
+			if(column<columNames.length){
+				return columNames[column];
+			}
+			return "";
+		}
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			Node node=null;
+			if (rowIndex>nodeStructure.getNodeCount() || columnIndex > columNames.length
+					||rowIndex<0||columnIndex<0){
+				return null;
+			}
+			Collection<Node> nodes = nodeStructure.getNodes();
+			Iterator<Node> it = nodes.iterator();
+			for (int i=0;i<=rowIndex;i++){
+				node=it.next();
+			}
+			switch(columnIndex){
+			case 0:
+				return node.getLabel();
+			case 1:
+				return node.getActivation();
+			case 2:
+				if (node instanceof PamNode){
+					return ((PamNode)node).getBaselevelActivation();
+				}else{
+					return "";
+				}
+			case 3:
+				if (node instanceof PamNode){
+					return ((PamNode)node).getSelectionThreshold();
+				}else{
+					return "";
+				}
+			default:
+				return "";
+			}
+		}
+	}
+	
+	public void display(Object o) {
+		if (o instanceof NodeStructure) {
+			nodeStructure = (NodeStructure) o;
+			((AbstractTableModel) table.getModel()).fireTableStructureChanged();
+		}
+	}// method
 }

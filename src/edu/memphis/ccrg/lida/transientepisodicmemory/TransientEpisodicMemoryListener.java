@@ -8,11 +8,13 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+
 /**
  *
  * @author Rodrigo Silva L.
  */
-public interface TransientEpisodicMemoryListener {
+public interface TransientEpisodicMemoryListener extends ModuleListener{
 
     /**
      * 

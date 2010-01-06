@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
@@ -7,7 +8,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
  * The prime example is PAM. 
  *
  */
-public interface WorkspaceListener {
+public interface WorkspaceListener extends ModuleListener{
 	
 	/**
 	 * Receive NodeStructure content from ModuleType originatingBuffer 
