@@ -17,6 +17,13 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 		super(ticksPerCycle, tm);
 		this.moduleName= moduleName;
 	}
+	public ModuleDriverImpl(int ticksPerCycle,ModuleName moduleName){
+		super(ticksPerCycle);
+		this.moduleName= moduleName;
+	}
+	public ModuleDriverImpl(){
+		super();
+	}
 
 	protected void runThisLidaTask(){
 		runThisDriver();

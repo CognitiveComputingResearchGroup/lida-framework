@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.shared.Activatible;
  * @author Ryan J. McCall, Javier Snaider
  *
  */
-
+ 
 public interface LidaTask extends Callable<LidaTask>, Activatible{
 	/**
 	 * returns the LidaTask's status code. It must be one of the static members of this interface. 
@@ -77,7 +77,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * Receives a Map of init parameters for initalization.
 	 * @param parameters the Map with the parameters.
 	 */
-	public void init(Map<String, Object> parameters);
+	public void init(Map<String, ? extends Object> parameters);
 
 	/**
 	 * A convenience method to get the value of one init parameter
@@ -133,7 +133,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * @param scheduledTick
 	 */
 	public void setScheduledTick(long scheduledTick);
-	//public void setTaskManager(LidaTaskManager taskManager);
-	public LidaTaskManager getTaskManager();
+
+//	public LidaTaskManager getTaskManager();
 
 }

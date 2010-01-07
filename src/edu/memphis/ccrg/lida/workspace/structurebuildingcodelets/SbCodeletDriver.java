@@ -20,13 +20,14 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	private SbCodeletFactory sbCodeletFactory;
 	private Workspace workspace;
+	
 	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
 		super(ticksPerCycle, (LidaTaskManager) tm,ModuleName.SbCodeletDriver);
 		sbCodeletFactory = SbCodeletFactory.getInstance();
 	}// method
 
 	public SbCodeletDriver() {
-		this(null,DEFAULT_TICKS_PER_CYCLE, null);
+		super();
 	}// method
 
 	public void runThisDriver() {

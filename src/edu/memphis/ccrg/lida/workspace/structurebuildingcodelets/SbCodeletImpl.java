@@ -20,8 +20,8 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	private int type;
 	private CodeletResult results = new BasicCodeletResult();
 	
-	public SbCodeletImpl(LidaTaskManager tm){
-		super(tm);
+	public SbCodeletImpl(){
+		super();
 	}
 
 	public Object getResult(){

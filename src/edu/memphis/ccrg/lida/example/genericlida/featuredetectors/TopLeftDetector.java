@@ -16,8 +16,8 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public class TopLeftDetector extends FeatureDetectorImpl {
 
 	public TopLeftDetector(PamNode n, SensoryMemory sm,
-			PerceptualAssociativeMemory pam, LidaTaskManager tm) {
-		super(n, sm, pam, tm);
+			PerceptualAssociativeMemory pam) {
+		super(n, sm, pam);
 		// TODO Auto-generated constructor stub
 	}
 

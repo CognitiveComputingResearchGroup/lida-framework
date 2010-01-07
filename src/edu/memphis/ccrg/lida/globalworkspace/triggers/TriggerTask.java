@@ -25,8 +25,8 @@ public class TriggerTask extends LidaTaskImpl{
 
 	private String name;
 	private TriggerListener gw;
-	public TriggerTask(int ticksForCycle, LidaTaskManager tm,TriggerListener gw,String name) {
-		super(ticksForCycle, tm);
+	public TriggerTask(int ticksForCycle,TriggerListener gw,String name) {
+		super(ticksForCycle);
 		this.gw=gw;
 		this.name=name;
 	}

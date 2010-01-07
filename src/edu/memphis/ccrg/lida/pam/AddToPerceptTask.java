@@ -14,8 +14,8 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	private PamNode pamNode;
 	private PerceptualAssociativeMemory pam;
 
-	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam, LidaTaskManager tm) {
-		super(tm);
+	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
+		super();
 		this.pamNode = pamNode;
 		this.pam = pam;
 	}

@@ -26,21 +26,10 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	/**
 	 * @param lida
 	 */
-	public LidaGuiControllerImpl(Lida lida, String commandsFile) {
+	public LidaGuiControllerImpl(Lida lida, Properties commands) {
 		super();
 		this.lida = lida;
- 		commands = new Properties();
-		if(commandsFile!=null){
-		try {
-			commands.load(new BufferedReader(new FileReader(commandsFile)));
-		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException();
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error reading Commands List {0}", e.getMessage());
-		}
-		}else{
-			logger.log(Level.WARNING, "Commands File no especified");			
-		}
+ 		this.commands = commands;
 	}
 	public LidaGuiControllerImpl(Lida lida) {
 		this(lida,null);

@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
-
+ 
 public class AttentionDriver extends ModuleDriverImpl implements
 		BroadcastListener {
 
@@ -37,7 +37,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 	}
 
 	public AttentionDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE, null, ModuleName.AttentionDriver);
+		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.AttentionDriver);
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {

@@ -75,7 +75,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
 	public void start() {
-		task=new TriggerTask(delay,tm,gw,name);
+		task=new TriggerTask(delay,gw,name);
 		gw.addTask(task);
 	}
 

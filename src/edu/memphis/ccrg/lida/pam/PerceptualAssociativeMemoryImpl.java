@@ -63,7 +63,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	private NodeStructure broadcastContent = new NodeStructureImpl();
     private NodeStructure preafferantSignal = new NodeStructureImpl();
 	//
-	private LidaTaskManager taskManager;
 	private TaskSpawner taskSpawner;
 	//
 	private PropagationBehavior propagationBehavior;
@@ -81,10 +80,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		this.taskSpawner = taskSpawner;
 	}
 
-	public void setTaskManager(LidaTaskManager tm) {
-		taskManager = tm;
-	}
-	
 	/**
 	 * set the propagation behavior for this pam
 	 */
@@ -163,7 +158,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void receiveActivationBurst(PamNode node, double amount) {
 		logger.log(Level.FINE,node.getLabel() + " gets activation burst. Amount: " + amount + "- total activation: " +
 						node.getTotalActivation(),LidaTaskManager.getActualTick());
-		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner, taskManager);
+		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {

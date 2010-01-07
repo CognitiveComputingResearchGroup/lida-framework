@@ -16,6 +16,8 @@ import java.util.Set;
 public interface NodeStructure {
 
 	public abstract Link addLink(Link l);
+	
+//	public Link addLink(String idSource, String idSink, LinkType type, double activation);
 
 	public abstract void addLinks(Collection<Link> links);
 

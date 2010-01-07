@@ -21,7 +21,6 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
  */
 public interface PerceptualAssociativeMemory extends LidaModule{
 
-	public void setTaskManager(LidaTaskManager tm);
 	public void setTaskSpawner(TaskSpawner spawner);
 	//
 	public void addNodes(Set<PamNode> nodes);

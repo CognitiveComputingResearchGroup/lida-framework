@@ -12,7 +12,7 @@ public class AllModuleDriver extends TaskSpawnerImpl {
 
 	
 	public AllModuleDriver(LidaTaskManager tm){
-	super(1,tm);
+	super(tm);
 	}
 
 	@Override

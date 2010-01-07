@@ -118,7 +118,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	private class TaskTableModel extends AbstractTableModel {
 
 		private static final long serialVersionUID = 1L;
-		private int columnCnt=4;
+		private int columnCnt=5;
 		public int getColumnCount() {
 			return columnCnt;
 		}
@@ -142,6 +142,9 @@ public class LidaTaskPanel extends LidaPanelImpl {
 			case 3:
 				cName = "description";
 				break;
+			case 4:
+				cName = "Scheduled Tick";
+				break;
 			default:
 				cName="col"+column;
 			}
@@ -163,6 +166,9 @@ public class LidaTaskPanel extends LidaPanelImpl {
 				break;
 			case 3:
 				o = task;
+				break;
+			case 4:
+				o = task.getScheduledTick();
 				break;
 			default:
 				o="";

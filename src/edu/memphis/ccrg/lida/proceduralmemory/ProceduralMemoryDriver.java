@@ -29,7 +29,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	}
 	
 	public ProceduralMemoryDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE, null,ModuleName.ProceduralDriver);
+		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.ProceduralDriver);
 	}
 
 	/**

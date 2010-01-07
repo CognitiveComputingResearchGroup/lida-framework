@@ -18,18 +18,29 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	private static Logger logger = Logger
 			.getLogger("lida.framework.TaskSpawnerImpl");
+	
+	private LidaTaskManager taskManager;
 
 	/**
 	 * The running tasks
 	 */
 	private ConcurrentLinkedQueue<LidaTask> runningTasks = new ConcurrentLinkedQueue<LidaTask>();
 
-	public TaskSpawnerImpl(int ticksForCycle, LidaTaskManager tm) {
-		super(ticksForCycle, tm, null);
+	public TaskSpawnerImpl(int ticksForCycle) {
+		super(ticksForCycle);
 	}// method
 
 	public TaskSpawnerImpl(LidaTaskManager tm) {
-		this(1, tm);
+		super();
+		taskManager=tm;
+	}
+
+	public TaskSpawnerImpl(int ticksForCycle,LidaTaskManager tm) {
+		super(ticksForCycle);
+		taskManager=tm;
+	}
+	public TaskSpawnerImpl() {
+		super();
 	}
 
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
@@ -53,7 +64,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	protected void runTask(LidaTask task) {
 		logger.log(Level.FINEST, "Running task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 		task.setTaskStatus(LidaTaskStatus.RUNNING);
-		getTaskManager().scheduleTask(task, task.getNextExcecutionTickLap());
+		taskManager.scheduleTask(task, task.getNextExcecutionTickLap());
 	}
 
 	/**
@@ -114,7 +125,20 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 
 	public void cancelTask(LidaTask task) {
 		removeTask(task);
-		getTaskManager().cancelTask(task);
-		
+		taskManager.cancelTask(task);		
 	}
+	/**
+	 * @param taskManager
+	 */
+	public void setTaskManager(LidaTaskManager taskManager) {
+		this.taskManager = taskManager;
+	}
+
+	/**
+	 * @return the LidaTaskManager
+	 */
+	public LidaTaskManager getTaskManager(){
+		return taskManager;
+	}
+
 }// class

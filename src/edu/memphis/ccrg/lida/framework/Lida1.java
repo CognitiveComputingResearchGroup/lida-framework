@@ -12,6 +12,9 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
 import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
+import edu.memphis.ccrg.lida.example.genericlida.main.VisionEnvironment;
+import edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
@@ -98,12 +101,12 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 	 * @param sm
 	 * @param properties
 	 */
-	public Lida1(Environment environ, SensoryMemoryImpl sm, Properties properties) {
+	public Lida1(Properties properties) {
 		super(ModuleName.LIDA);
 		logger.log(Level.FINE, "Starting Lida",0L);
 		//Properties for Lida module parameters
 		this.lidaProperties = properties;
-		initComponents(environ, sm);
+		initComponents();
 		initDrivers();
 		initListeners();
 		start();
@@ -115,7 +118,7 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 	 * @param environ The Environment
 	 * @param sm The Sensory Memory
 	 */
-	protected void initComponents(Environment environ, SensoryMemoryImpl sm) {
+	protected void initComponents() {
 		
 		LidaModule module;
 		Map<ModuleName,LidaModule> modules=getSubmodules();
@@ -124,6 +127,13 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		int maxNumberOfThreads = Integer.parseInt(lidaProperties.getProperty("taskManager.maxNumberOfThreads"));
 		
 		taskManager = new LidaTaskManager(tickDuration, maxNumberOfThreads);
+		//Declare an EnvironmentImpl
+		int height = 10, width = 10;
+		EnvironmentImpl environ = new VisionEnvironment(height, width);
+		
+		//Declare a SensoryMemoryImpl
+		SensoryMemoryImpl sm = new VisionSensoryMemory();
+		
 
 		//Environment
 		environ.setTaskManager(taskManager);
@@ -138,7 +148,7 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		
 		//Perceptual Associative Memory		
 		module = new PerceptualAssociativeMemoryImpl();
-		((PerceptualAssociativeMemoryImpl)module).setTaskManager(taskManager);
+//		((PerceptualAssociativeMemoryImpl)module).setTaskManager(taskManager);
 		module.init(lidaProperties);
 		Initializer initializer = new PamInitializer();
 		initializer.initModule(module,this,lidaProperties);

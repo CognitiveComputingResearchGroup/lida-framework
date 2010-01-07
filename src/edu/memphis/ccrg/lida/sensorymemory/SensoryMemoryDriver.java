@@ -18,7 +18,7 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 	}//constructor
 		
 	public SensoryMemoryDriver(){
-		super(DEFAULT_TICKS_PER_CYCLE, null,ModuleName.SensoryMemoryDriver);
+		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.SensoryMemoryDriver);
 	}//constructor
 		
 	public void runThisDriver(){

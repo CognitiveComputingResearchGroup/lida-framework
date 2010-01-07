@@ -19,9 +19,10 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private long nextExcecutionTickLap = defaultTicksPerStep;
 	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
 	private LidaTaskManager taskManager;
-	private Map<String, Object> parameters;
+	private Map<String, ? extends Object> parameters;
 	private TaskSpawner ts;
 	private long scheduledTick;
+	private static long nextTickID;
 	
 	/**
 	 * @return the scheduledTick
@@ -35,16 +36,15 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void setScheduledTick(long scheduledTick) {
 		this.scheduledTick = scheduledTick;
 	}
-	public LidaTaskImpl(LidaTaskManager tm) {
-		this(defaultTicksPerStep, tm,null);
+	public LidaTaskImpl() {
+		this(defaultTicksPerStep,null);
 	}
-	public LidaTaskImpl(int ticksForCycle,LidaTaskManager tm) {
-		this(ticksForCycle, tm,null);
+	public LidaTaskImpl(int ticksForCycle) {
+		this(ticksForCycle,null);
 	}
 
-	public LidaTaskImpl(int ticksForCycle, LidaTaskManager tm,TaskSpawner ts) {
-		taskManager = tm;
-		taskID = LidaTaskManager.getNextTaskID();
+	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
+		taskID = nextTickID++;
 		this.ts=ts;
 		setNumberOfTicksPerStep(ticksForCycle);
 		
@@ -154,27 +154,27 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		setTaskStatus(LidaTaskStatus.CANCELLED);
 	}
 
-	/**
-	 * @param taskManager
-	 */
-	public void setTaskManager(LidaTaskManager taskManager) {
-		this.taskManager = taskManager;
-		if (taskID == 0) {
-			taskID = LidaTaskManager.getNextTaskID();
-		}
-	}
-
-	/**
-	 * @return the LidaTaskManager
-	 */
-	public LidaTaskManager getTaskManager(){
-		return taskManager;
-	}
+//	/**
+//	 * @param taskManager
+//	 */
+//	public void setTaskManager(LidaTaskManager taskManager) {
+//		this.taskManager = taskManager;
+//		if (taskID == 0) {
+//			taskID = LidaTaskManager.getNextTaskID();
+//		}
+//	}
+//
+//	/**
+//	 * @return the LidaTaskManager
+//	 */
+//	public LidaTaskManager getTaskManager(){
+//		return taskManager;
+//	}
 	
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#init(java.util.Map)
 	 */
-	public void init(Map<String, Object> parameters) {
+	public void init(Map<String, ? extends Object> parameters) {
 		this.parameters = parameters;
 		init();
 	}

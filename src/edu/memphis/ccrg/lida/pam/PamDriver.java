@@ -29,7 +29,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	private int decayTime = DEFAULT_DECAY_TIME;
 	
 	/**
-	 * Parameter for how ofen pam is decayed.
+	 * Parameter for how often pam is decayed.
 	 */
 	private static final int DEFAULT_DECAY_TIME = 5;
 	
@@ -42,7 +42,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	}// constructor
 
 	public PamDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE, null,ModuleName.PamDriver);
+		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.PamDriver);
 	}// constructor
 
 	@Override

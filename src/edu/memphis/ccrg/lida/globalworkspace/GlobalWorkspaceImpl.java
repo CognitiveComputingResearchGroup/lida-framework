@@ -44,10 +44,10 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	private Logger logger = Logger.getLogger("lida.globalworkspace.GlobalWorkspaceImpl");
 
 	public GlobalWorkspaceImpl(LidaTaskManager tm) {
-		super(1, tm,ModuleName.GlobalWorkspace);
+		super(1,tm,ModuleName.GlobalWorkspace);
 	}
 	public GlobalWorkspaceImpl() {
-		super(1, null,ModuleName.GlobalWorkspace);
+		super(1,ModuleName.GlobalWorkspace);
 	}
 
 	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();

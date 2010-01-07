@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 /**
  * This class implements the FeatureDetector interface and provides 
  * hook default methods. 
- * Users should extend this class and overwrite the detect() and burstPam() methods.
+ * Users should extend this class and overwrite the detect() and excitePam() methods.
  * A convenience init() method is added to initialize the class. This method can be 
  * overwritten as well.
  * This implementation is oriented to detect features from sensoryMemory, but the implementation 
@@ -30,9 +30,8 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	private PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
-							   PerceptualAssociativeMemory pam, 
-							   LidaTaskManager tm) {
-		super(tm);
+							   PerceptualAssociativeMemory pam) {
+		super();
 		this.pam = pam;
 		this.sm = sm;
 		this.pamNode = n;

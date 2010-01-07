@@ -19,7 +19,6 @@ public interface ModuleDriver extends Initializable,GuiEventProvider, TaskSpawne
 
 	public abstract ModuleName getModuleName();
 	public abstract void setModuleName(ModuleName name);
-	public abstract void setTaskManager(LidaTaskManager taskManager);
 	public abstract void setAssociatedModule(LidaModule module);
 
 }

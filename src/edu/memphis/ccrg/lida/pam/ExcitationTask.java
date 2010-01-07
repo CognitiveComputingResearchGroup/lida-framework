@@ -30,11 +30,6 @@ public class ExcitationTask extends LidaTaskImpl{
 	private PerceptualAssociativeMemory pam;
 	
 	/**
-	 * For Task control
-	 */
-	private LidaTaskManager taskManager;
-	
-	/**
 	 * For threshold task creation
 	 */
 	private TaskSpawner taskSpawner;
@@ -45,18 +40,15 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * @param excitation
 	 * @param pam
 	 * @param ts
-	 * @param tm
 	 */
 	public ExcitationTask(PamNode node, double excitation,
 			              PerceptualAssociativeMemory pam, 
-			              TaskSpawner ts, 
-			              LidaTaskManager tm) {
-		super(tm);
+			              TaskSpawner ts) {
+		super();
 		pamNode = node;
 		excitationAmount = excitation;
 		this.pam = pam;
 		taskSpawner = ts;
-		taskManager = tm;
 	}
 
 	/**
@@ -66,7 +58,7 @@ public class ExcitationTask extends LidaTaskImpl{
 		pamNode.excite(excitationAmount);  
 		if(pamNode.isOverThreshold()){
 			//If over threshold then spawn a new task to add the node to the percept
-			AddToPerceptTask task = new AddToPerceptTask(pamNode, pam, taskManager);
+			AddToPerceptTask task = new AddToPerceptTask(pamNode, pam);
 			taskSpawner.addTask(task);
 		}
 		//Tell PAM to propagate the activation of pamNode to its parents

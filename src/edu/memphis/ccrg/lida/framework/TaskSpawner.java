@@ -49,4 +49,7 @@ public interface TaskSpawner extends LidaTask{
 	 */
 	public abstract void cancelTask(LidaTask task);
 
+	public abstract LidaTaskManager getTaskManager();
+	public abstract void setTaskManager(LidaTaskManager taskManager);
+
 }

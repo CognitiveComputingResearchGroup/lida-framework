@@ -8,15 +8,14 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
+import java.util.concurrent.Future;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
-
-import java.util.concurrent.Future;
 
 /**
  * This is the driver for the transient episodic memory. The driver takes care
@@ -41,7 +40,7 @@ public class TemDriver extends ModuleDriverImpl {
         this.cue = cue;
     }
     public TemDriver() {
-    	super(DEFAULT_TICKS_PER_CYCLE, null,ModuleName.TemDriver);
+    	super(DEFAULT_TICKS_PER_CYCLE,ModuleName.TemDriver);
     }
 
 	public void runThisDriver() {
