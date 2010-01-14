@@ -16,7 +16,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
-import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -110,24 +109,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 		for(WorkspaceListener c: wsListeners){
 			c.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent)content);
 		}
-	}
-	public BroadcastQueue getBroadcastQueue(){
-		return (BroadcastQueue) getSubmodule(ModuleName.BroadcastQueue);
-	}
-	
-	public WorkspaceBuffer getCSM() {
-		return (WorkspaceBuffer) getSubmodule(ModuleName.CurrentSituationalModel);
-	}
-	public WorkspaceBuffer getEpisodicBuffer(){
-		return (WorkspaceBuffer) getSubmodule(ModuleName.EpisodicBuffer);
-	}
-
-	
-	/**
-	 * @return the perceptualBuffer
-	 */
-	public WorkspaceBuffer getPerceptualBuffer() {
-		return (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
 	}
 	/**
 	 * Not applicable for WorkspaceImpl

@@ -10,7 +10,7 @@
 			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionEnvironment</class>
 			<param name="height"> 10 </param>
 			<param name="width">10 </param>
-			<isdriver>true</isdriver>
+			<isdriver>true</isdriver>			
 		</module>
 		<module name="SensoryMemory">
 			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory</class>

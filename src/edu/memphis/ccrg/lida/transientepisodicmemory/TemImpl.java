@@ -11,6 +11,8 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 import java.util.ArrayList;
 import java.util.List;
 
+import cern.colt.bitvector.BitVector;
+
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -73,11 +75,11 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 				e.printStackTrace();
 			}
             
-        	byte[] out = sdm.retrieve(address);
+//        	BitVector out = sdm.retrieve(address);
             
             NodeStructure result = null;
 			try {
-				result = translator.translate(out);
+//				result = translator.translate(out);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

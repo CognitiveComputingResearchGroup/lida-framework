@@ -1,211 +1,269 @@
-/*
- * @(#)SparseDistributedMemory.java  1.0  February 12, 2009
- *
- * Copyright 2006-2009 Cognitive Computing Research Group.
- * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
- * All rights reserved.
- */
-
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
+
+import cern.colt.bitvector.BitVector;
 
 /**
  * Implementation of Kanerva's sparse distributed memory. This implementation is
  * based on the model described in P. Kanerva, "Sparse Distributed Memory and
  * Related Models" in <i>Associative Neural Memories: Theory and Implementation
  * </i>, pp. 50-76, Oxford University Press, 1993.
- * @author Rodrigo Silva L. <rsilval@acm.org>
+ * 
+ * @author Javier Snaider
  */
 public class SparseDistributedMemory {
 
-    private byte []inputWord;
-    private byte []outputWord;
-    private byte []address;
-    private byte [][]addressMatrix;
-    private byte []activationVector;
-    private int [][]contentsMatrix;
-    private int []similarityVector;
-    private int []sumVector;
-    private int addressLength;
-    private int wordLength;
-    private int memorySize;
-    @SuppressWarnings("unused")
-	private double activationProbability;
-    private int activationRadius;
-    private int activationThreshold;
-    private int []counterRange;
+	private static final int MAX_ITERATIONS = 20;
+	private BitVector[] addressMatrix;
+	private byte[][] contentsMatrix;
+	private int wordLength;
+	private int memorySize;
+	private int activationRadius;
+	private int counterMax;
+	private int activationThreshold;
 
-    /**
-     * Constructor of the class that receives all the parameters necessary for
-     * this sparse distributed memory.
-     * @param a the address (hard locations) matrix
-     * @param p the activation probability
-     * @param h the activation radius
-     * @param c the counter range
-     * @param u the word size
-     */
-    public SparseDistributedMemory(byte [][]a, double p, int h, int[] c, int u) {
-        //Memory's internal parameters
-        memorySize = a.length;
-        addressMatrix = a;
-        activationProbability = p;
-        activationRadius = h;
-        activationThreshold = memorySize - 2 * activationRadius;
-        counterRange = c;
+	/**
+	 * Constructor of the class that receives all the parameters necessary for
+	 * this sparse distributed memory.
+	 * 
+	 * @param a
+	 *            the address (hard locations) matrix
+	 * @param p
+	 *            the activation probability
+	 * @param h
+	 *            the activation radius
+	 * @param c
+	 *            the counter range
+	 * @param u
+	 *            the word size
+	 */
+	public SparseDistributedMemory(BitVector[] a, int h, int counterMax, int u) {
+		// Memory's internal parameters
+		memorySize = a.length;
+		addressMatrix = a;
+		activationRadius = h;
+		activationThreshold = memorySize - 2 * activationRadius;
+		this.counterMax = counterMax;
 
-        //Memory's state and operation
-        address = new byte[a[0].length];
-        addressLength = address.length;
-        similarityVector = new int[memorySize];
-        activationVector = new byte[memorySize];
-        wordLength = u;
-        inputWord = new byte[wordLength];
-        contentsMatrix = new int[memorySize][wordLength];
-        sumVector = new int[wordLength];
-        outputWord = new byte[wordLength];
-    }
+		wordLength = u;
+		contentsMatrix = new byte[memorySize][wordLength];
+	}
 
-    /**
-     * Stores a word in the given address in this sparse distributed memory.
-     * @param w the word to be stored
-     * @param x the address where the word is to be stored
-     */
-    public void store(byte[] w, byte[] x) {
-        inputWord = w;
-        address = x;
-        similarityVector = getSimilarities();
-        activationVector = getActivations(similarityVector);
-        contentsMatrix = getNewContents(contentsMatrix,
-                calculateCounters(activationVector, inputWord));
-    }
+	/**
+	 * Stores a word in the given address in this sparse distributed memory.
+	 * 
+	 * @param w
+	 *            the word to be stored
+	 * @param x
+	 *            the address where the word is to be stored
+	 */
+	public void store(BitVector wrd, BitVector addr) {
 
-    /**
-     * Retrieves the contents of this sparse distributed memory at the given
-     * address.
-     * @param x the address of the contents to be retrieved
-     * @return the contents of this sparse distributed memory associated with
-     * the given address
-     */
-    public byte[] retrieve(byte[] x) {
-        address = x;
-        similarityVector = getSimilarities();
-        activationVector = getActivations(similarityVector);
-        sumVector = getSums(traspose(contentsMatrix), activationVector);
-        outputWord = getOutput(sumVector);
-        return outputWord;
-    }
+		for (int i = 0; i < addressMatrix.length; i++) {
+			if (hamming(addr, addressMatrix[i]) <= activationRadius) {
+				actualizeCounters(i, wrd);
+			}
+		}
+	}
 
-    /**
-     * Gets the acticvation of each hard location in the address matrix. This
-     * activation is 1 if the Hamming distance between the address register and
-     * the hard location is less or equal to the activation threshold.
-     * @param d the Hamming distances vector between the address register and
-     * the hard locations
-     * @return a vector with the activation of each hard location
-     */
-    private byte[] getActivations(int[] d)
-    {
-        byte[] y = new byte[memorySize];
-        for (int i = 0; i != memorySize; i++) {
-            y[i] = d[i] <= activationThreshold ? (byte) 1 : (byte) 0;
-        }
-        return y;
-    }
+	/**
+	 * Stores a word in this sparse distributed memory using the word as address.
+	 * 
+	 * @param wrd
+	 *            the word to be stored
+	 */
+	public void store(BitVector wrd) {
+		store(wrd,wrd);
+			}
 
-    /**
-     * Gets the output word based on the sums vector. For each position in the
-     * sums vector, if the position is greater than zero, the output is 1,
-     * otherwise the output is 0.
-     * @param s the sums vector, position i contains the sum of all the counters
-     * in column i of the contents matrix
-     * @return the output word
-     */
-    private byte[] getOutput(int[] s) {
-        byte[] z = new byte[wordLength];
-        for (int i = 0; i != wordLength; i++) {
-            z[i] = s[i] > 0 ? (byte) 1 : (byte) 0;
-        }
-        return z;
-    }
+	/**
+	 * Stores a word in this sparse distributed memory using the word as address.
+	 * The word is mapped (xor) with the mapping address.
+	 * 
+	 * @param wrd
+	 *            the word to be stored.
+	 * @param mapping
+	 *            the mapping address.
+	 */
+	public void mappedStore(BitVector wrd, BitVector mapping) {
+		BitVector mapped = wrd.copy();
+		mapped.xor(mapping);
+		store(mapped);
+			}
 
-    /**
-     * Calculates the Hamming distances between the address register, and each
-     * of the hard locations in the address matrix.
-     * @return a vector with the Hamming distances
-     */
-    private int[] getSimilarities() {
-        for (int i = 0; i != memorySize; i++) {
-            similarityVector[i] = 0;
-            for (int j = 0; j!= addressLength; j++) {
-                similarityVector[i] += addressMatrix[i][j] == address[j] ? 1 : 0;
-            }
-        }
-        return similarityVector;
-    }
+	/**
+	 * Retrieves the contents of this sparse distributed memory at the given
+	 * address.
+	 * 
+	 * @param x
+	 *            the address of the contents to be retrieved
+	 * @return the contents of this sparse distributed memory associated with
+	 *         the given address
+	 */
+	public BitVector retrieve(BitVector addr) {
+		int[] buff = new int[wordLength];
+		for (int i = 0; i < addressMatrix.length; i++) {
+			if (hamming(addr, addressMatrix[i]) <= activationRadius) {
+				readHard(buff, i);
+			}
+		}
+		BitVector res = new BitVector(wordLength);
+		for (int i = 0; i < wordLength; i++) {
+			res.putQuick(i, buff[i] > 0);
+		}
+		return res;
+	}
 
-    /**
-     *
-     * @param a
-     * @param b
-     * @return
-     */
-    private int[][] getNewContents(int[][] contents, int[][] oldCounters) {
-        int r = contents.length;
-        int c = contents[0].length;
-        int[][] newCounters = new int[r][c];
-        for (int i = 0; i != r; i++) {
-            for (int j = 0; j != c; j++) {
-                if (contents[i][j] > counterRange[0]
-                    && contents[i][j] < counterRange[1]) {
-                    newCounters[i][j] = contents[i][j] + oldCounters[i][j];
-                }
-            }
-        }
-        return newCounters;
-    }
+	public BitVector retrieveIterating(BitVector addr) {
 
-    /**
-     * Trasposes a matrix.
-     * @param contents
-     * @return
-     */
-    private int[][] traspose(int[][] m) {
-        int[][] mt = new int[m[0].length][m.length];
-        for (int i = 0; i != mt.length; i++) {
-            for (int j = 0; j != m[0].length; j++) {
-                mt[i][j] = m [j][i];
-            }
-        }
-        return mt;
-    }
+		BitVector res=null;
+		if (wordLength == addr.size()) {
+			for (int i = 1; i < MAX_ITERATIONS; i++) {
+				res = retrieve(addr);
+				if (res.equals(addr)) {
+					return res;
+				}
+				addr = res;
+			}
+		}
+		return res;
+	}
 
-    /**
-     *
-     * @param activations
-     * @param word
-     * @return
-     */
-    private int[][] calculateCounters(byte[] activations, byte[] word) {
-        int[][] counters = new int[activations.length][word.length];
-        for (int i = 0; i != counters.length; i++)
-            for (int j = 0; j != counters[0].length; j++) {
-                counters[i][j] += activations[i] * word[j];
-            }
-        return counters;
-    }
+	public BitVector retrieveIterating(BitVector addr,BitVector mapping) {
+		BitVector mapped = addr.copy();
+		mapped.xor(mapping);
 
-    /**
-     *
-     * @param contents
-     * @param activations
-     * @return
-     */
-    private int[] getSums(int[][] contents, byte[] activations) {
-        int[] sums = new int[contents.length];
-        for (int i = 0; i != contents.length; i++) {
-            for (int j = 0; j != contents[0].length; j++) {
-                sums[i] += contents[i][j] * activations[j];
-            }
-        }
-        return sums;
-    }
+		BitVector res= retrieveIterating(mapped);
+		res.xor(mapping);
+		return res;
+	}
+
+	
+	
+	/**
+	 * Gets the acticvation of each hard location in the address matrix. This
+	 * activation is 1 if the Hamming distance between the address register and
+	 * the hard location is less or equal to the activation threshold.
+	 * 
+	 * @param d
+	 *            the Hamming distances vector between the address register and
+	 *            the hard locations
+	 * @return a vector with the activation of each hard location
+	 */
+	private byte[] getActivations(int[] d) {
+		byte[] y = new byte[memorySize];
+		for (int i = 0; i != memorySize; i++) {
+			y[i] = d[i] <= activationThreshold ? (byte) 1 : (byte) 0;
+		}
+		return y;
+	}
+
+	/**
+	 * Calculates the Hamming distances between the address register, and each
+	 * of the hard locations in the address matrix.
+	 * 
+	 * @return a vector with the Hamming distances
+	 */
+	private int hamming(BitVector addr, BitVector hardLoc) {
+		BitVector aux = hardLoc.copy();
+		aux.xor(addr);
+
+		return aux.cardinality();
+	}
+
+	private void actualizeCounters(int row, BitVector word) {
+		for (int j = 0; j != word.size(); j++) {
+			if (word.getQuick(j)) {
+				if (contentsMatrix[row][j] < counterMax) {
+					contentsMatrix[row][j] += 1;
+				}
+			} else {
+				if (contentsMatrix[row][j] > -counterMax) {
+					contentsMatrix[row][j] += -1;
+				}
+			}
+		}
+	}
+
+	private int[] readHard(int[] buff, int row) {
+
+		for (int i = 0; i < wordLength; i++) {
+			buff[i] += Integer.signum(contentsMatrix[row][i]);
+		}
+		return buff;
+	}
+	public static BitVector getRandomVector(int size) {
+		BitVector v = new BitVector(size);
+		for (int i = 0; i < size; i++) {
+			v.putQuick(i, Math.random() > .5);
+		}
+		return v;
+	}
+
+	public static BitVector noisyVector(BitVector orig, int noise) {
+		BitVector v = orig.copy();
+		int size = v.size();
+		for (int i = 0; i < noise; i++) {
+			int pos = (int) (Math.random() * size);
+			v.putQuick(pos, !v.getQuick(pos));
+		}
+		return v;
+	}
+	
+	public static int[] sumVectors (int[] accum, BitVector v) {
+
+		for (int i = 0; i < v.size(); i++) {
+			accum[i] += (v.getQuick(i)) ? 1: -1;
+		}
+		return accum;
+	}
+	public static BitVector substractVectors (BitVector a, BitVector b) {
+		BitVector r=b.copy().copy();
+		r.not();
+		BitVector res = new BitVector(a.size());
+		for (int i = 0; i < a.size(); i++) {
+				boolean bit=(a.getQuick(i)^r.getQuick(i))?(Math.random()>.5):a.getQuick(i);
+		}
+		return res;
+	}
+	
+	public static int[] sumVectors (int[] accum, int[] vector) {
+
+		for (int i = 0; i < vector.length; i++) {
+			accum[i] += vector[i];
+		}
+		return accum;
+	}
+	
+	public static int[] vectorToBipolar (int[] accum, BitVector v) {
+
+		for (int i = 0; i < v.size(); i++) {
+			accum[i] += (v.getQuick(i)) ? 1: -1;
+		}
+		return accum;
+	}
+	
+	public static int[] vectorToBipolar (BitVector v) {
+		int[] accum=new int[v.size()];
+		for (int i = 0; i < v.size(); i++) {
+			accum[i] += (v.getQuick(i)) ? 1: -1;
+		}
+		return accum;
+	}
+
+	public static BitVector normalizeVector(int[] buff){
+		BitVector res = new BitVector(buff.length);
+		for (int i=0;i<buff.length;i++){
+			res.putQuick(i, buff[i]>0);
+			if(buff[i]==0){
+				res.putQuick(i, (Math.random()>.5));
+			}
+		}
+		return res;
+	}
+	
+	public static BitVector multiplyVectors(BitVector a, BitVector b){
+		BitVector res = a.copy();
+		res.xor(b);
+		return res;
+	}
 }

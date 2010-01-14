@@ -43,6 +43,7 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
@@ -228,7 +229,7 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		//Attention Driver
 		module=getSubmodule(ModuleName.Workspace);
 		GlobalWorkspace gwt=(GlobalWorkspace) getSubmodule(ModuleName.GlobalWorkspace);
-		driver = new AttentionDriver(((Workspace)module).getCSM(), gwt, attnTicksPerStep, taskManager);
+		driver = new AttentionDriver((WorkspaceBuffer) (((Workspace)module).getSubmodule(ModuleName.CurrentSituationalModel)), gwt, attnTicksPerStep, taskManager);
 		drivers.put(driver.getModuleName(),driver);
 		
 		//SbCodelet Driver

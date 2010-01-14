@@ -2,8 +2,6 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
-import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * The workspace collection of submodules where episodic memories, recent contents
@@ -15,11 +13,6 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  */
 public interface Workspace extends LidaModule{
 
-	public abstract WorkspaceBuffer getCSM();	
-	public abstract WorkspaceBuffer getEpisodicBuffer();
-	public abstract WorkspaceBuffer getPerceptualBuffer();
-	public abstract BroadcastQueue getBroadcastQueue();
-	
 	/**
 	 * Add episodic memory that will listen for cues from the Workspace
 	 * @param l
