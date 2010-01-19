@@ -22,7 +22,7 @@ public class LidaGuiFactory {
 	private static String DEFAULT_COMMANDS_FILENAME = "configs/guiCommands.properties";
 	private static final String DEFAULT_PANELS_FILENAME = "configs/guiPanels.properties";
 
-	public static void start( final Lida lida, final Properties lidaProperties) {
+	public static void start(final Lida lida, final Properties lidaProperties) {
 		java.awt.EventQueue.invokeLater(new Runnable(){
 			public void run(){					
 	        	//Create the controller

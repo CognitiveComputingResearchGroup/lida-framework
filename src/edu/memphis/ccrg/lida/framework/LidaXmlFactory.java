@@ -265,24 +265,22 @@ public class LidaXmlFactory implements LidaFactory {
 	}
 
 	private void associateModules() {
-		ModuleName moduleName=ModuleName.NoModule;
-		
+		ModuleName moduleName = ModuleName.NoModule;
 		for (Object[] vals : toAssociate) {
 			Initializable ini = (Initializable) vals[0];
 			String assocModule = (String) vals[1];
-		
-		try {
-			moduleName = Enum.valueOf(ModuleName.class, assocModule);
-		} catch (Exception e) {
-			logger.log(Level.WARNING,
+			try {
+				moduleName = Enum.valueOf(ModuleName.class, assocModule);
+			} catch (Exception e) {
+				logger.log(Level.WARNING,
 					"Module associated module name: " + assocModule + " is not valid.", 0L);
-			break;
-		}
-		LidaModule module=lida.getSubmodule(moduleName);
+				break;
+			}
+			LidaModule module=lida.getSubmodule(moduleName);
 		
-		ini.setAssociatedModule(module);
-		logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
-		}
+			ini.setAssociatedModule(module);
+			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
+		}//for
 	}
 
 	private void getListeners(Element element) {

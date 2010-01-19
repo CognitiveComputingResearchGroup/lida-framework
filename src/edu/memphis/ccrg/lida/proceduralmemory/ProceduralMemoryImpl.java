@@ -101,6 +101,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		for(Link l: links)
 			auxActivateSchemes(l);
 	}//method
+	
+	//TODO: Create comparison behavior
 	public void auxActivateSchemes(Linkable l){
 		if(schemeMap.containsKey(l)){
 			Queue<Scheme> schemes = schemeMap.get(l);

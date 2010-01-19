@@ -44,7 +44,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	public void runThisDriver() {
+	public void runThisDriver(){
 		activateCodelets();
 	}
 
