@@ -2,15 +2,12 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -21,14 +18,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.pam.PamListener;
 
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener{
-
-	public ProceduralMemoryImpl() {
-		super(ModuleName.ProceduralMemory);
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * Shared variable to store the asynchronously arriving broadcast
@@ -41,16 +32,28 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * the true state of the Map if multiple operations are concurrent. 
 	 */
 	private Map<Linkable, Queue<Scheme>> schemeMap = new ConcurrentHashMap<Linkable, Queue<Scheme>>();
+	
+	/**
+	 * Determines how scheme are given activation and whether they should be instantiated
+	 */
+	SchemeActivationBehavior schemeActivationBehavior = new BasicSchemeActivationBehavior(this);
 
 	/**
 	 * Listeners of this Procedural Memory
 	 */
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
 
-	private double schemeSelectionThreshold = 0.6;
-
+	public ProceduralMemoryImpl() {
+		super(ModuleName.ProceduralMemory);
+		// TODO Auto-generated constructor stub
+	}
+	
 	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
 		listeners.add(listener);
+	}
+	
+	public void setSchemeActivationBehavior(SchemeActivationBehavior b){
+		schemeActivationBehavior = b;
 	}
 
 	public void addSchemes(Collection<Scheme> schemes) {
@@ -89,32 +92,12 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	/**
 	 * 
 	 */
-	public void activateSchemesWithBroadcast() {
-		Collection<Node> nodes = null;
-		Collection<Link> links = null;
+	public void activateSchemes() {
+		NodeStructure ns = null;
 		synchronized(this){
-			nodes = broadcastContent.getNodes();
-			links = broadcastContent.getLinks();
+			ns = broadcastContent;
 		}
-		for(Node n: nodes)
-			auxActivateSchemes(n);
-		for(Link l: links)
-			auxActivateSchemes(l);
-	}//method
-	
-	//TODO: Create comparison behavior
-	public void auxActivateSchemes(Linkable l){
-		if(schemeMap.containsKey(l)){
-			Queue<Scheme> schemes = schemeMap.get(l);
-			for(Scheme s: schemes){
-				int contextCount = s.getContext().getNodeCount();
-				s.excite(1.0 / (contextCount * 1.0));
-				if(s.getActivation() > schemeSelectionThreshold){
-					//Copy?
-					sendInstantiatedScheme(s);
-				}	
-			}//for
-		}
+		schemeActivationBehavior.activateSchemesWithBroadcast(ns, schemeMap);
 	}//method
 
 	/**

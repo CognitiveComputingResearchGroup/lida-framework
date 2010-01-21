@@ -37,7 +37,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	 */
 	public void runThisDriver() {
 		if(activateCounter > schemeActivationRate){
-			proceduralMemory.activateSchemesWithBroadcast();
+			proceduralMemory.activateSchemes();
 			activateCounter = 0;
 		}else
 			activateCounter++;

@@ -18,10 +18,16 @@ public interface ProceduralMemory{
 	 */
     public abstract void addProceduralMemoryListener(ProceduralMemoryListener listener); 
 	
+    /**
+     * To change how scheme are activated based on the broadcast.
+     * @param b
+     */
+    public void setSchemeActivationBehavior(SchemeActivationBehavior b);
+    
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 
 	 */
-	public abstract void activateSchemesWithBroadcast();
+	public abstract void activateSchemes();
 	
 	/**
 	 * Send out the active schemes to the PM listeners.
