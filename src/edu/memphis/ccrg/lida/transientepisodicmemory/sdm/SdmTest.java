@@ -28,7 +28,7 @@ public class SdmTest {
 		final int NUM_HARD_LOCATIONS = 100000;
 		final int ADDRESS_LENGTH = 1000;
 		final int WORD_LENGTH = 1000;
-		final int NUM_TESTS = 10;
+		final int NUM_TESTS = 50;
 		final int NOISE = 300;
 		BitVector[] addressMatrix = new BitVector[NUM_HARD_LOCATIONS];
 		double activationProbability = 0.7;
@@ -93,95 +93,59 @@ public class SdmTest {
 			System.out.println("Input word: " + inputWord);
 			// Create a random address.
 			testSet[j] = inputWord.copy();
-			inputWord.xor(elemSpace);
-			address = inputWord.copy();
-			System.out.println("Address: " + address);
 
-			sdm.store(inputWord, address);
-			BitVector address2 = SparseDistributedMemory.noisyVector(address,
+			sdm.mappedStore(inputWord, elemSpace);
+
+			BitVector address2 = SparseDistributedMemory.noisyVector(inputWord,
 					NOISE);
-			outputWord = sdm.retrieveIterating(address2);
 			System.out.println("Output noise address: " + address2);
-			System.out.println("Output word: " + outputWord);
-			inputWord.xor(outputWord);
-			address2.xor(outputWord);
-			System.out.println("Dif1: " + address2);
-			System.out.println("Dif: " + inputWord);
-			outputWord.xor(elemSpace);
+			outputWord = sdm.retrieveIterating(address2, elemSpace);
 			System.out.println("Output word unmapped: " + outputWord);
-			outputWord.xor(testSet[j]);
-
-			System.out.println("Dif unmapped: " + outputWord);
+			inputWord.xor(outputWord);
+			System.out.println("Dif: " + inputWord);
 		}
 
 		input1 = testSet[0].copy();
 		BitVector address2 = SparseDistributedMemory.noisyVector(input1, NOISE);
-		address2.xor(elemSpace);
-		outputWord = sdm.retrieveIterating(address2);
-		input1 = testSet[0].copy();
+		outputWord = sdm.retrieveIterating(address2, elemSpace);
 		System.out.println("Input word1: " + testSet[0]);
 		System.out.println("Output word1: " + outputWord);
 		input1.xor(outputWord);
-		address2.xor(outputWord);
-		System.out.println("Dif1: " + address2);
 		System.out.println("Dif: " + input1);
 
 		int[] sum = new int[inputWord.size()];
-		for (int j = 0; j < 5; j++) {
+		for (int j = 0; j < 3; j++) {
 			inputWord = testSet[j].copy();
 			System.out.println("Input word: " + inputWord);
 
 			SparseDistributedMemory.sumVectors(sum, inputWord);
-
-			// inputWord.xor(elemSpace);
-			// System.out.println("mapped word: " + inputWord);
-			// // Create a random address.
-			// address = inputWord.copy();
-			//
-			// sdm.store(inputWord, address);
-			// address2 = SparseDistributedMemory.noisyVector(address, NOISE);
-			// outputWord = sdm.retrieveIterating(address2);
-			// System.out.println("Output noise address: " + address2);
-			// System.out.println("Output word: " + outputWord);
-			// inputWord.xor(outputWord);
-			// System.out.println("Dif: " + inputWord);
-			// outputWord.xor(elemSpace);
-			// System.out.println("Output word unmapped: " + outputWord);
-			// outputWord.xor(testSet[j]);
-			//
-			// System.out.println("Dif unmapped: " + inputWord);
 		}
+
 		BitVector sumVector = SparseDistributedMemory.normalizeVector(sum);
-		inputWord = sumVector.copy();
-		inputWord.xor(sumSpace);
-		sdm.store(inputWord, inputWord);
+
+		sdm.mappedStore(sumVector, sumSpace);
 		address2 = SparseDistributedMemory.noisyVector(sumVector, NOISE);
-		address2.xor(sumSpace);
-		outputWord = sdm.retrieveIterating(address2);
-		outputWord.xor(sumSpace);
+		outputWord = sdm.retrieveIterating(address2, sumSpace);
 		System.out.println("Output Sum unmapped: " + outputWord);
 
 		address1 = outputWord.copy();
 		address1.xor(sumVector);
+
 		System.out.println("Dif: " + address1);
 
 		address1 = outputWord.copy();
-		address2 = outputWord.copy();
-		address1.xor(elemSpace);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 3; i++) {
 
-		BitVector outSum = sdm.retrieveIterating(address1);
-		System.out.println("Output Sum element: " + outSum);
-		BitVector out2 = outSum.copy();
-			out2.xor(elemSpace);
-			System.out.println("Output Sum element unmapped: " + out2);
-			for (int j = 0; j < 5; j++) {
+			BitVector outSum = sdm.retrieveIterating(address1, elemSpace);
+			System.out.println("Output Sum element: " + outSum);
+			for (int j = 0; j < 3; j++) {
 				inputWord = testSet[j].copy();
-				inputWord.xor(out2);
+				inputWord.xor(outSum);
 				System.out.println("Dif " + j + ":" + inputWord);
-				if (inputWord.cardinality()==0){
-					address2=SparseDistributedMemory.substractVectors(address2, testSet[j]);
-					address1=address2.copy();
+				if (inputWord.cardinality() == 0) {
+					address2 = SparseDistributedMemory.substractVectors(
+							address2, testSet[j]);
+					address1 = address2.copy();
 				}
 			}
 		}

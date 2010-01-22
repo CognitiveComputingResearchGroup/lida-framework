@@ -1,5 +1,8 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import cern.colt.bitvector.BitVector;
 
 /**
@@ -12,6 +15,7 @@ import cern.colt.bitvector.BitVector;
  */
 public class SparseDistributedMemory {
 
+	private static Logger logger = Logger.getLogger("sdm");
 	private static final int MAX_ITERATIONS = 20;
 	private BitVector[] addressMatrix;
 	private byte[][] contentsMatrix;
@@ -120,6 +124,7 @@ public class SparseDistributedMemory {
 			for (int i = 1; i < MAX_ITERATIONS; i++) {
 				res = retrieve(addr);
 				if (res.equals(addr)) {
+					logger.log(Level.INFO,"number of iterations: "+i);
 					return res;
 				}
 				addr = res;
@@ -217,11 +222,12 @@ public class SparseDistributedMemory {
 		return accum;
 	}
 	public static BitVector substractVectors (BitVector a, BitVector b) {
-		BitVector r=b.copy().copy();
+		BitVector r=b.copy();
 		r.not();
 		BitVector res = new BitVector(a.size());
 		for (int i = 0; i < a.size(); i++) {
 				boolean bit=(a.getQuick(i)^r.getQuick(i))?(Math.random()>.5):a.getQuick(i);
+				res.putQuick(i, bit);
 		}
 		return res;
 	}
