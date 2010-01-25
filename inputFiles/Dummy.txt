@@ -1,8 +1,0 @@
-<Dummy0>
-  <howDumb>77</howDumb>
-</Dummy0>
-*
-<Dummy1>
-  <howDumb>33</howDumb>
-</Dummy1>
-*
