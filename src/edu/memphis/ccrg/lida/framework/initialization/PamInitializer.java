@@ -26,7 +26,8 @@ public class PamInitializer implements Initializer {
 
 	public void initModule(Initializable module, Lida lida,
 			Properties properties) {
-
+		
+		
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 		SensoryMemory sm = (SensoryMemory) lida
 				.getSubmodule(ModuleName.SensoryMemory);

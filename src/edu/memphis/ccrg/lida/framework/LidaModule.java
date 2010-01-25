@@ -1,9 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
-import java.util.Properties;
-
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * Generic Module Interface in LIDA.

@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
  * @author Ryan J. McCall
  *
  */
-public interface ModuleDriver extends Initializable,GuiEventProvider, TaskSpawner{
+public interface ModuleDriver extends Initializable, GuiEventProvider, TaskSpawner{
 
 	public abstract ModuleName getModuleName();
 	public abstract void setModuleName(ModuleName name);

@@ -12,6 +12,14 @@ public class Printer{
     	return Math.round(d*10.0)/10.0;
     }
 	
+	public static void printStackTrace(){
+		try{
+			throw new Exception();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	public static void p(double d){
 		System.out.println(d + "");
 	}

@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 
-public interface Environment extends ActionSelectionListener,LidaModule{
+public interface Environment extends ActionSelectionListener, LidaModule{
 
 	public abstract void resetEnvironment();
 	

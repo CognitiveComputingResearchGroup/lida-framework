@@ -11,7 +11,7 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 	}
 
 	public void processSensors() {
-		sensoryContent = ((VisionEnvironment) environment).getEnvironContent();
+		sensoryContent = (double[][]) environment.getModuleContent();
 	}
 
 	public Object getContent(String type, Object... parameters) {
