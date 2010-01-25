@@ -226,8 +226,10 @@ public class LoggingPanel extends LidaPanelImpl {
             long actualTick=0L;
 //            String name;
 
-        	
-        	MessageFormat mf=new MessageFormat(logRecord.getMessage());
+        	String message = logRecord.getMessage();
+        	if(message == null) //TODO: handle case where message is null
+        		System.out.println("in Logging Panel message was null");
+        	MessageFormat mf=new MessageFormat(message);
 //        	dateString=df.format(date);      
         	Object[] param = logRecord.getParameters();
         	if (param !=null && param[0] instanceof Long){

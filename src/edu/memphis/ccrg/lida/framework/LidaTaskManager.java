@@ -210,7 +210,6 @@ public class LidaTaskManager {
 
 	public void pauseSpawnedTasks() {
 		logger.log(Level.INFO,"All Tasks paused.",getActualTick());
-
 		tasksPaused = true;
 	}
 

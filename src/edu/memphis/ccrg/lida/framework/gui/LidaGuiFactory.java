@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 
 /**
- * For specific lida agent implementations create a main class simply 
+ * For specific lida agent implementations, create a main class simply 
  * need call this class's start method with particular parameters for that agent:
  * Environment, SensoryMemory and config file path.
  * Creates a MVC for LIDA
@@ -32,7 +32,7 @@ public class LidaGuiFactory {
 				logger.log(Level.CONFIG,"GUI Controller created",0L);
 				
 				filename=lidaProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);
-				properties =ConfigUtils.loadProperties(filename);
+				properties = ConfigUtils.loadProperties(filename);
 	        	LidaGui lidaGui = new LidaGui(lida, controller, properties);
 				logger.log(Level.CONFIG,"GUI created",0L);
 	        	//Start the GUI
