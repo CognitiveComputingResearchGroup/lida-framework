@@ -3,6 +3,9 @@
  */
 package edu.memphis.ccrg.lida.framework;
 
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
+
 
 /**
  * @author Javier Snaider

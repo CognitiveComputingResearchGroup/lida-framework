@@ -1,8 +1,8 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 
 /**
  * A task to add a node to the percept.

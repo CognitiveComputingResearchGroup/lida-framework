@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+
 /**
  * Basic Lida Implementation.
  * @author Javier Snaider

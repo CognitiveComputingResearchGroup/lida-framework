@@ -3,10 +3,10 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{

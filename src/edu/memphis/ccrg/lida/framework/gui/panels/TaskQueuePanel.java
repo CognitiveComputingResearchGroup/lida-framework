@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * 

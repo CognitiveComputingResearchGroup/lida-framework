@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class AddTicksCommand extends GenericCommandImpl {
 

@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * @author Javier Snaider

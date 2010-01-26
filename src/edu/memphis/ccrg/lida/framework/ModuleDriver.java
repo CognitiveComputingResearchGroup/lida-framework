@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 //TODO: Delete this and rename ModuleDriverImpl to ModuleDriver
 /**
  * A ModuleDriver is a class that runs a major module of the 

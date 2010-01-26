@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.pam.featuredetector;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
 public interface FeatureDetector extends LidaTask {

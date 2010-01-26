@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework;
+package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,9 +15,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.initialization.Initializer;
-import edu.memphis.ccrg.lida.framework.initialization.XmlUtils;
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaImpl;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleDriver;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * @author Javier Snaider
@@ -25,6 +29,7 @@ import edu.memphis.ccrg.lida.framework.initialization.XmlUtils;
  */ 
 public class LidaXmlFactory implements LidaFactory {
 
+	private static final String DEFAULT_FILE_NAME = "configs/lida.xml";
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	private static Logger logger = Logger
@@ -38,14 +43,15 @@ public class LidaXmlFactory implements LidaFactory {
 	 * @see edu.memphis.ccrg.lida.framework.LidaFactory#getLida()
 	 */
 	public Lida getLida(Properties properties) { //Properties not used in this Factory
-				
-		parseXmlFile();
+		
+		String fileName = properties.getProperty("lida.factory.data",DEFAULT_FILE_NAME);
+		parseXmlFile(fileName);
 		parseDocument();
 		lida.start();
 		return lida;
 	}
 
-	private void parseXmlFile() {
+	private void parseXmlFile(String fileName) {
 		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -55,7 +61,7 @@ public class LidaXmlFactory implements LidaFactory {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 
 			// parse using builder to get DOM representation of the XML file
-			dom = db.parse("configs/lida.xml");
+			dom = db.parse(fileName);
 
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();

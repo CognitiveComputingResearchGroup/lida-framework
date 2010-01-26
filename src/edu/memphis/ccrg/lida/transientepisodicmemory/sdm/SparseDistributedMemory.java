@@ -144,37 +144,6 @@ public class SparseDistributedMemory {
 
 	
 	
-	/**
-	 * Gets the acticvation of each hard location in the address matrix. This
-	 * activation is 1 if the Hamming distance between the address register and
-	 * the hard location is less or equal to the activation threshold.
-	 * 
-	 * @param d
-	 *            the Hamming distances vector between the address register and
-	 *            the hard locations
-	 * @return a vector with the activation of each hard location
-	 */
-	private byte[] getActivations(int[] d) {
-		byte[] y = new byte[memorySize];
-		for (int i = 0; i != memorySize; i++) {
-			y[i] = d[i] <= activationThreshold ? (byte) 1 : (byte) 0;
-		}
-		return y;
-	}
-
-	/**
-	 * Calculates the Hamming distances between the address register, and each
-	 * of the hard locations in the address matrix.
-	 * 
-	 * @return a vector with the Hamming distances
-	 */
-	private int hamming(BitVector addr, BitVector hardLoc) {
-		BitVector aux = hardLoc.copy();
-		aux.xor(addr);
-
-		return aux.cardinality();
-	}
-
 	private void actualizeCounters(int row, BitVector word) {
 		for (int j = 0; j != word.size(); j++) {
 			if (word.getQuick(j)) {
@@ -202,6 +171,18 @@ public class SparseDistributedMemory {
 			v.putQuick(i, Math.random() > .5);
 		}
 		return v;
+	}
+
+	/**
+	 * Calculates the Hamming distances between two address.
+	 * 
+	 * @return the Hamming distances
+	 */
+	public static int hamming(BitVector addr, BitVector hardLoc) {
+		BitVector aux = hardLoc.copy();
+		aux.xor(addr);
+
+		return aux.cardinality();
 	}
 
 	public static BitVector noisyVector(BitVector orig, int noise) {

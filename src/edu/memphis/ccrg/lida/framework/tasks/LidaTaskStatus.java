@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework;
+package edu.memphis.ccrg.lida.framework.tasks;
 
 /**
  * Possible status of a LidaTask

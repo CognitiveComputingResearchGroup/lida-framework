@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 /**
  * For specific lida agent implementations, create a main class simply 
  * need call this class's start method with particular parameters for that agent:
- * Environment, SensoryMemory and config file path.
+ * Lida instance and a Properties.
  * Creates a MVC for LIDA
  * 
  * @author ryanjmccall

@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+
 public interface Lida extends LidaModule{
 
 	/**

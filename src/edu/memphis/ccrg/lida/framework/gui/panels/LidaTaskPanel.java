@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 
 /**
  * 

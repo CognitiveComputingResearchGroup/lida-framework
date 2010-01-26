@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.TaskSpawner;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
  
 /**

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework;
+package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Map;
 
@@ -110,28 +110,28 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTaskId()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#getTaskId()
 	 */
 	public long getTaskId() {
 		return taskID;
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setTaskID(long)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setTaskID(long)
 	 */
 	public void setTaskID(long id) {
 		taskID = id;
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTicksPerStep()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#getTicksPerStep()
 	 */
 	public int getTicksPerStep() {
 		return ticksPerStep;
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setNumberOfTicksPerStep(int)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setNumberOfTicksPerStep(int)
 	 */
 	public void setNumberOfTicksPerStep(int ticks) {
 		if (ticks > 0){
@@ -141,14 +141,14 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#reset()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#reset()
 	 */
 	public void reset() {
 
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#stopRunning()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#stopRunning()
 	 */
 	public void stopRunning() {
 		setTaskStatus(LidaTaskStatus.CANCELLED);
@@ -172,7 +172,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 //	}
 	
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#init(java.util.Map)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#init(java.util.Map)
 	 */
 	public void init(Map<String, ? extends Object> parameters) {
 		this.parameters = parameters;

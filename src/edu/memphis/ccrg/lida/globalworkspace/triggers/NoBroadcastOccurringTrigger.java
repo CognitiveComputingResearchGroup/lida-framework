@@ -8,9 +8,9 @@ import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import edu.memphis.ccrg.lida.framework.LidaTask;
-import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 

@@ -3,11 +3,11 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * generic Activatible Implementation. Useful to inherit from it 

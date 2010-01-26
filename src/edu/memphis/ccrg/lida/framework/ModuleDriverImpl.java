@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
 public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements ModuleDriver {
 	protected static final int DEFAULT_TICKS_PER_CYCLE = 10;

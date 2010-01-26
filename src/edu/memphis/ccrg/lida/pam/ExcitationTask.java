@@ -1,9 +1,9 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.LidaTaskStatus;
-import edu.memphis.ccrg.lida.framework.TaskSpawner;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * A task that allows PAM nodes to be excited asynchronously.

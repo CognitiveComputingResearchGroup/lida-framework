@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.initialization.PamInitializer;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
