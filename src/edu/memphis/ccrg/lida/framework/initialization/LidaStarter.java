@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiFactory;
 
 /**
- * This class allows a LIDA agent to be started in 3 ways using the static methods start()
+ * This class allows a LIDA agent to be started in these ways using the static methods start()
  * 		1. Using the default lida properties path (a String)
  * 		2. Using a lida properties path (a String)
  * 		3. Using a Properties object created in another class (and/or project).
@@ -20,8 +20,7 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGuiFactory;
  */
 public class LidaStarter {
 
-	private static Logger logger = Logger
-			.getLogger("lida.example.genericlida.main.LidaStarter");
+	private static Logger logger = Logger.getLogger("lida.example.genericlida.main.LidaStarter");
 
 	/**
 	 * Default lida configuation
@@ -47,12 +46,12 @@ public class LidaStarter {
 			propertiesPath = args[0];
 
 		Properties properties = ConfigUtils.loadProperties(propertiesPath);
-		 start(properties);
+		start(properties);
 	}// method
 
 	/**
-	 * @param p
-	 *            - Properties used for the agent
+	 * Load supplied properties
+	 * @param p - Properties used for the agent
 	 */
 	public static void start(Properties p) {
 		lidaProperties = p;
@@ -62,15 +61,23 @@ public class LidaStarter {
 			run();
 		}
 	}
+	/**
+	 * Load the default properties
+	 */
+	public static void start() {
+		String propertiesPath = DEFAULT_LIDA_PROPERTIES_PATH;
+		lidaProperties = ConfigUtils.loadProperties(propertiesPath);
+		run();
+	}
 
 	/**
 	 * @param path
 	 *            - Properties file used for the agent
 	 */
 	public static void start(String propertiesPath) {
-		if (propertiesPath == null) {
+		if (propertiesPath == null) 
 			propertiesPath = DEFAULT_LIDA_PROPERTIES_PATH;
-		}
+	
 		lidaProperties = ConfigUtils.loadProperties(propertiesPath);
 		if (lidaProperties == null) {
 			start();
@@ -79,13 +86,9 @@ public class LidaStarter {
 		}
 	}
 
-	public static void start() {
-
-		String propertiesPath = DEFAULT_LIDA_PROPERTIES_PATH;
-		lidaProperties = ConfigUtils.loadProperties(propertiesPath);
-		run();
-	}
-
+	/**
+	 * Create and run a LIDA and a LidaGuiFactory using the properties object
+	 */
 	private static void run() {
 		// Create model, LIDA
 		Lida lida = new LidaXmlFactory().getLida(lidaProperties);
