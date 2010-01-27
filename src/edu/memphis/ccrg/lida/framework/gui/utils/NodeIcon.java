@@ -21,6 +21,8 @@ public class NodeIcon implements Icon {
 	private int size;
 	private Color color;
 	
+	private int a;
+	
 	/**
 	 * @param size
 	 * @param color
