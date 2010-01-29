@@ -10,41 +10,49 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
-
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.BasicTranslator;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory;
+import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemoryImp;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
-import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.TranslatorImpl;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
 /**
  * This is the cannonical implementation of TEM. It uses a sparse distributed
  * memory to store the information.
- * @author Rodrigo Silva L.
+ * @author Javier Snaider
  */
 public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
+	private static Logger logger = Logger.getLogger("lida.transientepisodicmemory.TemImpl");
+	
+	private final int DEF_HARD_LOCATIONS = 10000;
+	private final int DEF_ADDRESS_LENGTH = 1000;
+	private final int DEF_WORD_LENGTH = 1000;
+	private final int DEF_ACTIVATION_RADIOUS = 451;
+	
     private SparseDistributedMemory sdm;
  	private Translator translator;
 	private List<LocalAssociationListener> localAssocListeners = new ArrayList<LocalAssociationListener>();
-    
-    /**
-     * The constructor of the class.
-     * @param structure the structure with the nodes used for this TEM
-     */
-    public TemImpl(NodeStructure structure) {
-    	super(ModuleName.TransientEpisodicMemory);
-        translator = new TranslatorImpl(structure);
-     }
-
+	private PerceptualAssociativeMemory pam;
+	private int numOfHardLoc = DEF_HARD_LOCATIONS;
+	private int addressLength = DEF_ADDRESS_LENGTH;
+	private int wordLength = DEF_WORD_LENGTH;
+ 
     public TemImpl() {
     	super(ModuleName.TransientEpisodicMemory);
 	}
@@ -64,38 +72,31 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
      */
     public void cue(MemoryCue cue) {
     	NodeStructure ns =cue.getNodeStructure();
-//        Collection<Node> nodes = cue.getNodeStructure().getNodes();
-//        LocalAssociationImpl association = new LocalAssociationImpl();
-//        FutureTask<LocalAssociation> future = null;
-    
-        	byte[] address = null;
-			try {
-				address = translator.translate(ns);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-            
-//        	BitVector out = sdm.retrieve(address);
-            
-            NodeStructure result = null;
-			try {
-//				result = translator.translate(out);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-           
-            for(LocalAssociationListener l : localAssocListeners){
-            	l.receiveLocalAssociation(result);
-            }
-        return;
+    	receiveCue(ns);
     }
     
-    // Rodrigo, this method is called continually.  The rate at which is called 
-	// can be modified by changing the 'ticksPerCycle' parameter of PerceptualBufferDriver.
-	// This is set in the Lida Class.  The higher the value for 'tickPerCycle' the slower
-	// the rate of cueing will be.
-	public synchronized void receiveCue(NodeStructure cue) {		
-		//cue(cue);
+	public void receiveCue(NodeStructure ns) {		
+    	BitVector address = null;
+		try {
+			address = translator.translate(ns);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+    	BitVector out = sdm.retrieveIterating(address);
+        
+        NodeStructure result = null;
+		try {
+			result = translator.translate(out);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+       
+        for(LocalAssociationListener l : localAssocListeners){
+        	l.receiveLocalAssociation(result);
+    		logger.log(Level.FINER,"Local Association sent.",LidaTaskManager.getActualTick());
+        }
+   return;
 	}
 
 	public void learn() {
@@ -107,6 +108,30 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	public void addListener(ModuleListener listener) {
+		if (listener instanceof LocalAssociationListener){
+			localAssocListeners.add((LocalAssociationListener)listener);
+		}
 	}
+	
+	public void setAssociatedModule(LidaModule module) {
+		if (module != null) {
+			if (module instanceof PerceptualAssociativeMemory
+					&& module.getModuleName() == ModuleName.PerceptualAssociativeMemory) {
+				pam = (PerceptualAssociativeMemory) module;
+			}
+		}
+	}
+	
+	public void init(Properties lidaProperties) {
+		this.lidaProperties=lidaProperties;
+		numOfHardLoc = Integer.parseInt(lidaProperties.getProperty("tem.numOfHardLoc",""+DEF_HARD_LOCATIONS));
+		addressLength = Integer.parseInt(lidaProperties.getProperty("tem.addressLength",""+DEF_ADDRESS_LENGTH));
+		wordLength = Integer.parseInt(lidaProperties.getProperty("tem.wordLength",""+DEF_WORD_LENGTH));
+		int radious = Integer.parseInt(lidaProperties.getProperty("tem.activationRadious",""+DEF_ACTIVATION_RADIOUS));
+		translator=new BasicTranslator(wordLength,pam);
+		sdm=new SparseDistributedMemoryImp(numOfHardLoc,radious,wordLength);
+	}
+
 }

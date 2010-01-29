@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 
 /**
@@ -24,5 +25,6 @@ public interface Workspace extends LidaModule{
 	 * @param pam
 	 */
 	public abstract void addWorkspaceListener(WorkspaceListener pam);
-	
+
+	public void cue(NodeStructure content);
 }

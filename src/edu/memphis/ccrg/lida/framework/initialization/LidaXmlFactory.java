@@ -355,11 +355,11 @@ public class LidaXmlFactory implements LidaFactory {
 		if (module != null && listener != null
 				&& listenerClass.isInstance(listener)) {
 			module.addListener(listener);
+			logger.log(Level.INFO, "Listener type: "+listenerType + listener + " -> " + module + " added.", 0L);
 		} else {
 			logger.log(Level.WARNING, "Listener: " + listenername
 					+ " is not a valid " + listenerType + " listener.", 0L);
 			return;
-
 		}
 	}
 }

@@ -246,6 +246,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			addPamListener((PamListener)listener);
 		}
 	}
+	public PamNode getNode(long id) {
+		return (PamNode)pamNodeStructure.getNode(id) ;
+	}
 
 
 }//class

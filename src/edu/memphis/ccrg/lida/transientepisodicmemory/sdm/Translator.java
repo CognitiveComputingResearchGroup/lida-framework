@@ -8,6 +8,7 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
+import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
@@ -23,7 +24,7 @@ public interface Translator {
 	 * @return the node structure associated with the address
          * @throws Excaeption when the boolean vector is the wrong size
 	 */
-	public abstract NodeStructure translate(byte[] data) throws Exception;
+	public abstract NodeStructure translate(BitVector data) throws Exception;
 
 	/**
 	 * Translates a node structure into a boolean address.
@@ -32,7 +33,7 @@ public interface Translator {
          * the structure
          * @throws Exception when the node structure is the wrong size
 	 */
-	public abstract byte[] translate(NodeStructure structure)
+	public abstract BitVector translate(NodeStructure structure)
                 throws Exception;
 
 }

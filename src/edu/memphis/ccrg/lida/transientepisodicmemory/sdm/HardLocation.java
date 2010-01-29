@@ -27,5 +27,7 @@ public interface HardLocation {
 	public abstract void write(BitVector word);
 
 	public abstract int[] read(int[] buff);
+	
+	public int hamming(BitVector vector);
 
 }

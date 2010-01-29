@@ -56,16 +56,6 @@ public class TemDriver extends ModuleDriverImpl {
     }//method
 
 
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void sendEvent(FrameworkGuiEvent evt) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public String toString() {
 		return ModuleName.TemDriver + "";

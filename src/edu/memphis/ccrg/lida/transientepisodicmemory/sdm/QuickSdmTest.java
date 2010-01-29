@@ -15,7 +15,7 @@ import cern.colt.bitvector.BitVector;
  * 
  * @author Javier Snaider
  */
-public class SdmTest {
+public class QuickSdmTest {
 
 	/**
 	 * The main method of the class.
@@ -25,12 +25,13 @@ public class SdmTest {
 	 */
 	public static void main(String[] args) {
 
-		final int NUM_HARD_LOCATIONS = 20000;
+		final int NUM_HARD_LOCATIONS = 1000000;
 		final int ADDRESS_LENGTH = 1000;
 		final int WORD_LENGTH = 1000;
 		final int NUM_TESTS = 50;
-		final int NOISE = 150;
+		final int NOISE = 300;
 //		double activationProbability = 0.7;
+		BitVector[] addressMatrix=new BitVector[NUM_HARD_LOCATIONS];
 		int activationRadius = 451;
 		int counterMax = 50;
 		BitVector inputWord = null;
@@ -38,7 +39,7 @@ public class SdmTest {
 		BitVector address = null;
 		BitVector address1 = null;
 		BitVector input1 = null;
-		SparseDistributedMemory sdm;
+		QuickSparseDistributedMemory sdm;
 		BitVector[] testSet = new BitVector[NUM_TESTS];
 		BitVector sumSpace = BitVectorUtils
 				.getRandomVector(ADDRESS_LENGTH);
@@ -46,13 +47,13 @@ public class SdmTest {
 				.getRandomVector(ADDRESS_LENGTH);
 
 		// Initialize the address matrix with random hard locations.
-//		for (int i = 0; i != NUM_HARD_LOCATIONS; i++) {
-//			addressMatrix[i] = BitVectorUtils
-//					.getRandomVector(ADDRESS_LENGTH);
-//		}
-//		System.out.println("Address matrix initialized.");
+		for (int i = 0; i != NUM_HARD_LOCATIONS; i++) {
+			addressMatrix[i] = BitVectorUtils
+					.getRandomVector(ADDRESS_LENGTH);
+		}
+		System.out.println("Address matrix initialized.");
 
-		// sdm = new BitVectorUtils(
+		// sdm = new SparseDistributedMemoryImp(
 		// addressMatrix, activationRadius, counterMax, WORD_LENGTH);
 		//
 		// for (int j = 1; j <= NUM_TESTS; j++) {
@@ -81,7 +82,7 @@ public class SdmTest {
 		// input1.xor(outputWord);
 		// System.out.println("Dif: " + input1);
 
-		sdm = new SparseDistributedMemoryImp(NUM_HARD_LOCATIONS, activationRadius,
+		sdm = new QuickSparseDistributedMemory(addressMatrix, activationRadius,counterMax,
 				WORD_LENGTH);
 
 		for (int j = 0; j < NUM_TESTS; j++) {

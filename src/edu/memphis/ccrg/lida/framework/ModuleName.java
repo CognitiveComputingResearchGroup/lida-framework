@@ -34,5 +34,6 @@ public enum ModuleName {
 	ProceduralDriver,
 	
 	Workspace, 
+	WorkspaceDriver,
 	LIDA
 }

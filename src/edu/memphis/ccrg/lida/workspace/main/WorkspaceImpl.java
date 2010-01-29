@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
@@ -13,6 +14,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
@@ -100,10 +102,12 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 	public void addWorkspaceListener(WorkspaceListener listener){
 		wsListeners.add(listener);
 	}
+	
 	public void cue(NodeStructure content){
 		for(CueListener c: cueListeners){
 			c.receiveCue(content);
 		}
+		logger.log(Level.FINER,"Cue Performed ",LidaTaskManager.getActualTick());
 	}
 	private void sendToListeners(NodeStructure content){
 		for(WorkspaceListener c: wsListeners){

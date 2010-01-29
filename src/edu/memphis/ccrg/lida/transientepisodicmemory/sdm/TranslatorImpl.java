@@ -29,7 +29,7 @@ import java.util.HashMap;
  * number of nodes used to create the translator.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
-public class TranslatorImpl implements Translator {
+public class TranslatorImpl {
 
     /**
      * The dictionary used to translate from nodes to vectors. Each node, has

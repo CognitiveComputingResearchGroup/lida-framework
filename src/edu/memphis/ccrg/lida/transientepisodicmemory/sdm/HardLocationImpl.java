@@ -8,7 +8,7 @@ private BitVector address;
 private int wordLength;
 private byte[] counters;
 private int writes;
-private byte counterMax = DEFAULT_COUNTER_MAX;
+private final byte counterMax = DEFAULT_COUNTER_MAX;
 
 
 public HardLocationImpl (BitVector address,int wordLength){
@@ -52,9 +52,9 @@ public void write(BitVector word) {
 	writes++;
 	int size=word.size();
 	
-	if (size>wordLength){
-		throw new IllegalArgumentException();
-	}
+//	if (size>wordLength){
+//		throw new IllegalArgumentException();
+//	}
 	for (int j = 0; j < size; j++) {
 		if (word.getQuick(j)) {
 			if (counters[j] < counterMax) {
@@ -73,14 +73,26 @@ public void write(BitVector word) {
  */
 public int[] read(int[] buff) {
 
-	if (buff.length<wordLength){
-		throw new IllegalArgumentException();
-	}
+//	if (buff.length<wordLength){
+//		throw new IllegalArgumentException();
+//	}
 
 	for (int i = 0; i < wordLength; i++) {
 		buff[i] += Integer.signum(counters[i]);
 	}
 	return buff;
+}
+
+/**
+ * Calculates the Hamming distances between the vector and the hardlocation address.
+ * 
+ * @return the Hamming distances
+ */
+public int hamming(BitVector vector) {
+	BitVector aux = vector.copy();
+	aux.xor(address);
+
+	return aux.cardinality();
 }
 
 }

@@ -103,4 +103,5 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 */
 	public Collection<FeatureDetector> getFeatureDetectors();
 
+	public PamNode getNode(long id);
 }//interface PAMinterface
