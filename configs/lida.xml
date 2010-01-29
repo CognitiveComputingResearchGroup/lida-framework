@@ -30,9 +30,17 @@
 		</module>
 		<module name="TransientEpisodicMemory">
 			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
+			<param name="tem.numOfHardLoc">10000</param>			
+			<param name="tem.addressLength">1000</param>			
+			<param name="tem.wordLength">1000</param>			
+			<param name="tem.activationRadious">451</param>			
 		</module>
 		<module name="DeclarativeMemory">
 			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
+			<param name="tem.numOfHardLoc">10000</param>			
+			<param name="tem.addressLength">1000</param>			
+			<param name="tem.wordLength">1000</param>			
+			<param name="tem.activationRadious">451</param>						
 		</module>
 		<module name="Workspace">
 			<class>edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl</class>
@@ -96,6 +104,12 @@
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryDriver</class>
 			<associatedmodule>ProceduralMemory</associatedmodule>
 			<ticksperstep>5</ticksperstep>
+		</driver>
+		<driver name="WorkspaceDriver">
+			<class>edu.memphis.ccrg.lida.workspace.main.WorkspaceDriver</class>
+			<associatedmodule>Workspace</associatedmodule>
+			<ticksperstep>9</ticksperstep>
+			<param name="workspace.actThreshold">.4</param>
 		</driver>
 	</drivers>
 	<listeners>
@@ -162,6 +176,11 @@
 		<listener>
 			<listenertype>edu.memphis.ccrg.lida.actionselection.ActionSelectionListener</listenertype>
 			<modulename>ActionSelection</modulename>
+			<listenername>Workspace</listenername>
+		</listener>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener</listenertype>
+			<modulename>TransientEpisodicMemory</modulename>
 			<listenername>Workspace</listenername>
 		</listener>
 	</listeners>
