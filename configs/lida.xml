@@ -26,7 +26,7 @@
 			<param name="pam.Upscale">.4 </param>
 			<param name="pam.Downscale">.5 </param>
 			<param name="pam.Selectivity">.9 </param>
-			<initializerclass>edu.memphis.ccrg.lida.framework.initialization.PamInitializer</initializerclass>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer</initializerclass>
 		</module>
 		<module name="TransientEpisodicMemory">
 			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
@@ -67,7 +67,7 @@
 			<param name="globalWorkspace.aggregateActivationThreshold">.8 </param>
 			<param name="globalWorkspace.individualActivationThreshold">.5 </param>
 			<isdriver>true</isdriver>
-			<initializerclass>edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
 		</module>
 		<module name="ProceduralMemory">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl</class>

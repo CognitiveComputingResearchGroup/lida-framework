@@ -95,7 +95,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void activateSchemes() {
 		NodeStructure ns = null;
 		synchronized(this){
-			ns = broadcastContent;
+			ns = broadcastContent.copy();
 		}
 		schemeActivationBehavior.activateSchemesWithBroadcast(ns, schemeMap);
 	}//method

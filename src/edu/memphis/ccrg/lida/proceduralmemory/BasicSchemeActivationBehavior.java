@@ -12,6 +12,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 	
 	ProceduralMemory pm;
+	
+	//TODO: Look at GWSPC impl to see how to setup this parameter when behavior is created.
 	private double schemeSelectionThreshold = 0.6;
 	
 	public BasicSchemeActivationBehavior(ProceduralMemory pm){

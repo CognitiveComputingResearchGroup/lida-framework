@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework.initialization;
+package edu.memphis.ccrg.lida.example.framework.initialization;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,8 @@ import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetecto
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;

@@ -49,7 +49,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 		setLayout(new java.awt.BorderLayout());
 
 		jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-		jLabel1.setText("Vision Environment");
+		jLabel1.setText("Environment");
 		add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
 		jTextArea1.setColumns(20);
