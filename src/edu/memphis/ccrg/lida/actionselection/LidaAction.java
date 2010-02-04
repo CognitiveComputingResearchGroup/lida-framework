@@ -7,6 +7,20 @@ package edu.memphis.ccrg.lida.actionselection;
  */
 public interface LidaAction {
 
+	/**
+	 * 
+	 */
+	public abstract void performAction();
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public abstract Object getContent();
+	
+	/**
+	 * 
+	 * @param o
+	 */
 	public abstract void setContent(Object o);
 }

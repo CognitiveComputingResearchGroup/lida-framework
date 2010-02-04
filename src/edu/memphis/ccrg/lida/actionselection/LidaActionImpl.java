@@ -22,5 +22,10 @@ public class LidaActionImpl implements LidaAction{
 	public void print() {
 		System.out.println("Action is: " + content);
 	}
+
+	public void performAction() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
