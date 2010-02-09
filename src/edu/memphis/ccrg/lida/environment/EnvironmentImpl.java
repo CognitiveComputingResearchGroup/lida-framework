@@ -8,11 +8,11 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 public abstract class EnvironmentImpl extends ModuleDriverImpl implements Environment{
 
 	public EnvironmentImpl() {
-		super(10,ModuleName.Environment);
+		super(10, ModuleName.Environment);
 	}
 	
 	public EnvironmentImpl(int ticksPerCycle){
-		super(ticksPerCycle,ModuleName.Environment);
+		super(ticksPerCycle, ModuleName.Environment);
 	}
 
 

@@ -34,6 +34,10 @@ public class ScreenCaptureUtil{
 		}
 	}
 	
+	public static void main(String[] args){
+		System.out.println(new ScreenCaptureUtil().getScreenCapture().getType());
+	}
+	
 	public ScreenCaptureUtil(Rectangle r){
 		try {
 			robot = new Robot();
