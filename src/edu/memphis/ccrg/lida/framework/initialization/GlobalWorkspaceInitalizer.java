@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.example.framework.initialization;
+package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;

@@ -1,8 +1,13 @@
 /*
- * @(#)TransientEpisodicMemory.java  1.0  February 12, 2009
+ * TransientEpisodicMemory.java
  *
- * Copyright 2006-2009 Cognitive Computing Research Group.
+ * Part of the Lida Framework, a computational implementation
+ * of the Lida Model of cognition.
+ * 
+ * Copyright 2006-2010 Cognitive Computing Research Group.
  * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
+ * http://ccrg.cs.memphis.edu/
+ * 
  * All rights reserved.
  */
 
@@ -21,7 +26,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
  * @also MemoryCue
  * @also LocalAssociation
- * @author Rodrigo Silva L. <rsilval@acm.org>
+ * @author Rodrigo Silva L.
  */
 public interface TransientEpisodicMemory extends LidaModule{
     

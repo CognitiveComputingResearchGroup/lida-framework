@@ -8,6 +8,8 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
+import java.util.Arrays;
+
 import cern.colt.bitvector.BitVector;
 
 /**
@@ -17,6 +19,14 @@ import cern.colt.bitvector.BitVector;
  */
 public class SdmTest {
 
+	static final int NUM_HARD_LOCATIONS = 100000;
+	static final int ADDRESS_LENGTH = 1000;
+	static final int WORD_LENGTH = 1000;
+	static final int NUM_TESTS = 300;
+	static final int NOISE = 200;
+	static final int SUM_OP = 3;
+	static final int SUM_WEIGHT = 3;
+
 	/**
 	 * The main method of the class.
 	 * 
@@ -25,12 +35,7 @@ public class SdmTest {
 	 */
 	public static void main(String[] args) {
 
-		final int NUM_HARD_LOCATIONS = 20000;
-		final int ADDRESS_LENGTH = 1000;
-		final int WORD_LENGTH = 1000;
-		final int NUM_TESTS = 50;
-		final int NOISE = 150;
-//		double activationProbability = 0.7;
+		// double activationProbability = 0.7;
 		int activationRadius = 451;
 		int counterMax = 50;
 		BitVector inputWord = null;
@@ -40,49 +45,24 @@ public class SdmTest {
 		BitVector input1 = null;
 		SparseDistributedMemory sdm;
 		BitVector[] testSet = new BitVector[NUM_TESTS];
-		BitVector sumSpace = BitVectorUtils
-				.getRandomVector(ADDRESS_LENGTH);
-		BitVector elemSpace = BitVectorUtils
-				.getRandomVector(ADDRESS_LENGTH);
+		BitVector sumSpace = BitVectorUtils.getRandomVector(ADDRESS_LENGTH);
+		BitVector elemSpace = BitVectorUtils.getRandomVector(ADDRESS_LENGTH);
+		BitVector sumOpSpace = BitVectorUtils.getRandomVector(ADDRESS_LENGTH);
 
-		// Initialize the address matrix with random hard locations.
-//		for (int i = 0; i != NUM_HARD_LOCATIONS; i++) {
-//			addressMatrix[i] = BitVectorUtils
-//					.getRandomVector(ADDRESS_LENGTH);
-//		}
-//		System.out.println("Address matrix initialized.");
+		BitVector[] sumOperandsMapping = new BitVector[SUM_OP];
+		BitVector[] sumWeights = new BitVector[SUM_WEIGHT];
 
-		// sdm = new BitVectorUtils(
-		// addressMatrix, activationRadius, counterMax, WORD_LENGTH);
-		//
-		// for (int j = 1; j <= NUM_TESTS; j++) {
-		// System.out.println("\nTest " + j);
-		//
-		// // Create a random input word.
-		// inputWord = getRandomVector(WORD_LENGTH);
-		// System.out.println("Input word: " + inputWord);
-		// // Create a random address.
-		// address = getRandomVector(ADDRESS_LENGTH);
-		// System.out.println("Address: " + address);
-		//
-		// if (j == 1) {
-		// address1 = address.copy();
-		// input1 = inputWord.copy();
-		// }
-		// sdm.store(inputWord, address);
-		// outputWord = sdm.retrieve(address);
-		// System.out.println("Output word: " + outputWord);
-		// inputWord.xor(outputWord);
-		// System.out.println("Dif: " + inputWord);
-		// }
-		// outputWord = sdm.retrieve(address1);
-		// System.out.println("Input word1: " + input1);
-		// System.out.println("Output word1: " + outputWord);
-		// input1.xor(outputWord);
-		// System.out.println("Dif: " + input1);
+		for (int i = 0; i < sumOperandsMapping.length; i++) {
+			sumOperandsMapping[i] = BitVectorUtils
+					.getRandomVector(ADDRESS_LENGTH);
+		}
 
-		sdm = new SparseDistributedMemoryImp(NUM_HARD_LOCATIONS, activationRadius,
-				WORD_LENGTH);
+		for (int i = 0; i < sumWeights.length; i++) {
+			sumWeights[i] = BitVectorUtils.getRandomVector(ADDRESS_LENGTH);
+		}
+
+		sdm = new SparseDistributedMemoryImp(NUM_HARD_LOCATIONS,
+				activationRadius, WORD_LENGTH);
 
 		for (int j = 0; j < NUM_TESTS; j++) {
 			System.out.println("\nTest " + (j + 1));
@@ -95,36 +75,74 @@ public class SdmTest {
 
 			sdm.mappedStore(inputWord, elemSpace);
 
-			BitVector address2 = BitVectorUtils.noisyVector(inputWord,
-					NOISE);
+			BitVector address2 = BitVectorUtils.noisyVector(inputWord, NOISE);
 			System.out.println("Output noise address: " + address2);
 			outputWord = sdm.retrieveIterating(address2, elemSpace);
 			System.out.println("Output word unmapped: " + outputWord);
 			inputWord.xor(outputWord);
 			System.out.println("Dif: " + inputWord);
 		}
+/*		System.out.println("\nRetrieving the first 10 inputs");
 
-		input1 = testSet[0].copy();
-		BitVector address2 = BitVectorUtils.noisyVector(input1, NOISE);
-		outputWord = sdm.retrieveIterating(address2, elemSpace);
-		System.out.println("Input word1: " + testSet[0]);
-		System.out.println("Output word1: " + outputWord);
-		input1.xor(outputWord);
-		System.out.println("Dif: " + input1);
-
+		for (int j = 0; j < 10; j++) {
+			input1 = testSet[j].copy();
+			BitVector address2 = BitVectorUtils.noisyVector(input1, NOISE);
+			outputWord = sdm.retrieveIterating(address2, elemSpace);
+			System.out.println("Input word1: " + testSet[j]);
+			System.out.println("Output word1: " + outputWord);
+			input1.xor(outputWord);
+			System.out.println("Dif: " + input1);
+		}
+*/
 		int[] sum = new int[inputWord.size()];
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < SUM_OP; j++) {
 			inputWord = testSet[j].copy();
 			System.out.println("Input word: " + inputWord);
-
 			BitVectorUtils.sumVectors(sum, inputWord);
 		}
 
-		BitVector sumVector = BitVectorUtils.normalizeVector(sum);
-
+		BitVector[] weights = BitVectorUtils.discretizeIntVector(sum,SUM_WEIGHT);
+		int[] bufAux = new int[sum.length];
+		for (int j = 0; j < weights.length; j++) {
+			inputWord = BitVectorUtils.multiplyVectors(weights[j],sumWeights[j]);
+			BitVectorUtils.sumVectors(bufAux, inputWord);
+			sdm.mappedStore(weights[j], sumOpSpace);
+		}
+		BitVector sumVector = BitVectorUtils.normalizeVector(bufAux);
 		sdm.mappedStore(sumVector, sumSpace);
-		address2 = BitVectorUtils.noisyVector(sumVector, NOISE);
-		outputWord = sdm.retrieveIterating(address2, sumSpace);
+		System.out.println("Sum word: " + sumVector);
+
+		int[] sumOut = BitVectorUtils.denormalizeVector(weights);
+		int[] sumAux = new int[sumOut.length];
+		System.arraycopy(sumOut, 0, sumAux, 0, sumOut.length);
+		System.out.println("Sum:  "+ Arrays.toString(sum));
+		System.out.println("SumO: "+ Arrays.toString(sumOut));
+		System.out.print("Dif Sums:");
+		for (int i=0;i<sumOut.length;i++){
+			if(sum[i]-sumOut[i]!=0)
+				System.out.print(i+",");
+		}
+		System.out.println();
+		
+		int[] sum2 = new int[inputWord.size()];
+		for (int j = 0; j < SUM_OP; j++) {
+			inputWord = testSet[j].copy();
+			inputWord = BitVectorUtils.noisyVector(inputWord, NOISE);
+			System.out.println("Input word: " + inputWord);
+			BitVectorUtils.sumVectors(sum2, inputWord);
+		}
+
+		BitVector[] weightsOut = BitVectorUtils.discretizeIntVector(sum2,SUM_WEIGHT);
+
+		bufAux = new int[sum.length];
+		for (int j = 0; j < weightsOut.length; j++) {
+			inputWord = BitVectorUtils.multiplyVectors(weightsOut[j],
+					sumWeights[j]);
+			BitVectorUtils.sumVectors(bufAux, inputWord);
+		}
+		inputWord = BitVectorUtils.normalizeVector(bufAux);
+
+		outputWord = sdm.retrieveIterating(inputWord, sumSpace);
 		System.out.println("Output Sum unmapped: " + outputWord);
 
 		address1 = outputWord.copy();
@@ -133,21 +151,44 @@ public class SdmTest {
 		System.out.println("Dif: " + address1);
 
 		address1 = outputWord.copy();
-		for (int i = 0; i < 3; i++) {
 
-			BitVector outSum = sdm.retrieveIterating(address1, elemSpace);
-			System.out.println("Output Sum element: " + outSum);
-			for (int j = 0; j < 3; j++) {
-				inputWord = testSet[j].copy();
-				inputWord.xor(outSum);
-				System.out.println("Dif " + j + ":" + inputWord);
-				if (inputWord.cardinality() == 0) {
-					address2 = BitVectorUtils.substractVectors(
-							address2, testSet[j]);
-					address1 = address2.copy();
-				}
-			}
+		for (int j = 0; j < weights.length; j++) {
+			inputWord = BitVectorUtils.multiplyVectors(outputWord,
+					sumWeights[j]);
+			weightsOut[j] = sdm.retrieveIterating(inputWord, sumOpSpace);
+			System.out.println("weightsOut "+j+": " + weightsOut[j]);
+
+			address1 = weightsOut[j].copy();
+			address1.xor(weights[j]);
+
+			System.out.println("Dif: " + address1);
+		}
+		
+		sumOut = BitVectorUtils.denormalizeVector(weightsOut);
+		sumAux = new int[sumOut.length];
+		System.arraycopy(sumOut, 0, sumAux, 0, sumOut.length);
+		System.out.print("Dif Sums:");
+		for (int i=0;i<sumOut.length;i++){
+			if(sum[i]-sumOut[i]!=0)
+				System.out.print(i+",");
+		}
+		System.out.println();
+		
+		for (int i = 0; i < SUM_OP; i++) {
+			inputWord = BitVectorUtils.normalizeVector(sumAux);
+			input1 = sdm.retrieveIterating(inputWord, elemSpace);
+
+			System.out.println("Sum Operand " + i + ":" + outputWord);
+			verify(testSet, input1);
+			sumAux = BitVectorUtils.substractVectors(sumAux, input1);
 		}
 	}
 
+	public static void verify(BitVector[] testSet, BitVector v) {
+		for (int j = 0; j < SUM_OP; j++) {
+			BitVector inputWord = testSet[j].copy();
+			inputWord.xor(v);
+			System.out.println("Dif " + j + ":" + inputWord);
+		}
+	}
 }

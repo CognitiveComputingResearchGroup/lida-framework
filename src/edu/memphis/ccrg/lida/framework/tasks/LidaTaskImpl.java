@@ -18,7 +18,6 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private int ticksPerStep = defaultTicksPerStep;
 	private long nextExcecutionTickLap = defaultTicksPerStep;
 	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
-	private LidaTaskManager taskManager;
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner ts;
 	private long scheduledTick;
@@ -70,7 +69,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
 	/** 
 	 * This method is not supposed to be called directly nor overwritten.
-	 * Overwrite the run ThisLidaTask.
+	 * Overwrite the runThisLidaTask method.
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public LidaTask call() {

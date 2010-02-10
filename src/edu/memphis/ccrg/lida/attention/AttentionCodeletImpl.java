@@ -6,7 +6,6 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -19,14 +18,12 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 	private NodeStructure soughtContent;
 
     public AttentionCodeletImpl(WorkspaceBuffer csm, GlobalWorkspace g, int ticksPerStep,
-    							double activation,LidaTaskManager tm, NodeStructure soughtContent){
+    							double activation, NodeStructure soughtContent){
     	super(ticksPerStep);
     	setActivation(activation);
     	this.csm = csm;
     	global = g;
     	this.soughtContent=soughtContent;
-    	
-    	//this.timer=timer;
     }
 
 	protected void runThisLidaTask() {

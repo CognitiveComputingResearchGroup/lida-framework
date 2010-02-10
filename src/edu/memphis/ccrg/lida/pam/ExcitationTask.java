@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 

@@ -87,8 +87,8 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		getListeners(docEle);
 
-		initializeModules();
 		associateModules();
+		initializeModules();
 	}
 
 	/**

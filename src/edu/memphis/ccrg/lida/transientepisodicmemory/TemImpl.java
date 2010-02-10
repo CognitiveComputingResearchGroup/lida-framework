@@ -29,7 +29,6 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemoryImp;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
 /**
  * This is the cannonical implementation of TEM. It uses a sparse distributed

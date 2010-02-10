@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/LidaFactories" xmlns:tns="http://www.example.org/LidaFactories" elementFormDefault="qualified">
+
+    <complexType name="behaviordef">
+    	<sequence>
+            <element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+            <element name="type" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="class" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="nodedef">
+    	<sequence>
+    		<element name="name" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="class" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="behavior" type="tns:behavior"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="linkdef">
+    	<sequence>
+    		<element name="name" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="class" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="behavior" type="tns:behavior"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="behavior">
+    	<sequence>
+    		<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="param">
+       <simpleContent>
+      <extension base="string">
+    	<attribute name="name" type="string" use="required"></attribute>
+      </extension>
+    </simpleContent>
+    </complexType>
+
+
+
+    <element name="LidaFactories" type="tns:LidaFactories"></element>
+    
+    <complexType name="LidaFactories">
+    	<sequence>
+    		<element name="behaviors" type="tns:behaviors" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="nodes" type="tns:nodes" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="links" type="tns:links" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="codelets" type="tns:codelets" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="nodes">
+    	<sequence>
+    		<element name="node" type="tns:nodedef" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="links">
+    	<sequence>
+    		<element name="link" type="tns:linkdef" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="behaviors">
+    	<sequence>
+    		<element name="behaviordef" type="tns:behaviordef" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="codeletdef">
+    	<annotation>
+    		<documentation>
+    			Refers to FeatureDetectors, SBCodelets and
+    			AttentionCodelets
+    		</documentation>
+    	</annotation>
+    	<sequence>
+    		<element name="name" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="class" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="behavior" type="tns:behavior"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="param" type="tns:param" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="type">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="FeatureDetector"></enumeration>
+    				<enumeration value="SBCodelet"></enumeration>
+    				<enumeration value="AttentionCodelet"></enumeration>
+    				<enumeration value="FD"></enumeration>
+    				<enumeration value="SBC"></enumeration>
+    				<enumeration value="AC"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+    
+    <complexType name="codelets">
+    	<sequence>
+    		<element name="codelet" type="tns:codeletdef" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+</schema>
