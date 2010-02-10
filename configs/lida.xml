@@ -68,7 +68,7 @@
 			<param name="globalWorkspace.aggregateActivationThreshold">.8 </param>
 			<param name="globalWorkspace.individualActivationThreshold">.5 </param>
 			<isdriver>true</isdriver>
-			<initializerclass>edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
 		</module>
 		<module name="ProceduralMemory">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl</class>

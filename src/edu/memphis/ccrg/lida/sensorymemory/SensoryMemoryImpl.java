@@ -41,4 +41,9 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements
 			}
 		}
 	}
+	
+	public void processSensors(){
+		
+	}
+	
 }// class
