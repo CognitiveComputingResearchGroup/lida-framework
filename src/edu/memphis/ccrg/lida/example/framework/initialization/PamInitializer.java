@@ -27,9 +27,7 @@ public class PamInitializer implements Initializer {
 	}
 
 	public void initModule(Initializable module, Lida lida,
-			Properties properties) {
-		
-		
+			Properties properties) {		
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 		SensoryMemory sm = (SensoryMemory) lida
 				.getSubmodule(ModuleName.SensoryMemory);
@@ -45,18 +43,6 @@ public class PamInitializer implements Initializer {
 		// Nodes
 		// TODO: Make this a loop. Reading in the nodes from a file.
 		NodeFactory factory = NodeFactory.getInstance();
-		// PamNodeImpl gold = (PamNodeImpl)factory.storeNode("PamNodeImpl",
-		// "gold");
-		// PamNodeImpl metal = (PamNodeImpl)factory.storeNode("PamNodeImpl",
-		// "metal");
-		// PamNodeImpl solid = (PamNodeImpl)factory.storeNode("PamNodeImpl",
-		// "solid");
-		// PamNodeImpl iron = (PamNodeImpl)factory.storeNode("PamNodeImpl",
-		// "iron");
-		// PamNodeImpl plastic = (PamNodeImpl)factory.storeNode("PamNodeImpl",
-		// "plastic");
-		// PamNodeImpl noMetal = (PamNodeImpl)factory.storeNode("PamNodeImpl",
-		// "noMetal");
 		PamNodeImpl wood = (PamNodeImpl) factory.storeNode("PamNodeImpl",
 				"wood");
 		PamNodeImpl gold = (PamNodeImpl) factory.storeNode("PamNodeImpl",
