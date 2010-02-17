@@ -1,5 +1,12 @@
+/**
+ * @(#)AttentionCodelet.java  1.0  Feb, 27, 2009
+ *
+ * Copyright 2006-2008 Cognitive Computing Research Group.
+ * 365 Innovation Dr, Rm 303, Memphis, TN 38152, USA.
+ * http://ccrg.cs.memphis.edu/
+ * All rights reserved.
+ */
 package edu.memphis.ccrg.lida.attention;
-
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -9,7 +16,11 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
-
+/**
+ * These classes implements the coalitions for the tasks performed at LidaTask
+ * @author Murali Krishna Ankaraju
+ *
+ */
 public class AttentionCodeletImpl extends LidaTaskImpl implements
 		AttentionCodelet {
 	
