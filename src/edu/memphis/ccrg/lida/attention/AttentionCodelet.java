@@ -16,6 +16,11 @@ public interface AttentionCodelet extends LidaTask{
 
 	public abstract boolean hasSoughtContent(WorkspaceBuffer csm);
 
+	/**
+	 * 
+	 * @param csm
+	 * @return
+	 */
 	public abstract NodeStructure getSoughtContent(WorkspaceBuffer csm);
 
 }
