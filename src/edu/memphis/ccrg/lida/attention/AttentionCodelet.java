@@ -12,10 +12,12 @@ package edu.memphis.ccrg.lida.attention;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
-/**The interface for LIDA's AttentionCodelet.
+
+/**
+ * The interface for LIDA's AttentionCodelet.
  * Specific implementations of AttentionCodlet must implement this interface.
  * AttentionCodelet in LIDA communicates with the workspace returning coalitions
- * @author Murali Krishna Ankaraju
+ * @author Ryan J McCall
  */
 public interface AttentionCodelet extends LidaTask{
  /**

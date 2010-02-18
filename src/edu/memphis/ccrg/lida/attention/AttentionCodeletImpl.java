@@ -16,10 +16,11 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+
 /**
  * These classes implements the coalitions for the tasks performed at LidaTask
- * @author Murali Krishna Ankaraju
- *
+ * @author Ryan J McCall
+ * 
  */
 public class AttentionCodeletImpl extends LidaTaskImpl implements
 		AttentionCodelet {
