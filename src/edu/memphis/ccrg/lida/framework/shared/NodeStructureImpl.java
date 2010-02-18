@@ -130,6 +130,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		Link oldLink = links.get(l.getIds());
 		if (oldLink != null) { // if the link already exists only actualize the
 								// activation.
+			//if link already there update activation 
 			double newActiv = l.getActivation();
 			if (oldLink.getActivation() < newActiv) {
 				oldLink.setActivation(newActiv);
