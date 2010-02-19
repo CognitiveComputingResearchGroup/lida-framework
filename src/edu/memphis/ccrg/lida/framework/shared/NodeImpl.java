@@ -15,6 +15,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private String label = "";
 	private double importance;
 	protected PamNode refNode;
+	private NodeClass nodeClass = NodeClass.none;
 	
 	public NodeImpl(){
 		super();
@@ -77,5 +78,13 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	public String toString(){
 		return getLabel() + " node ["+getId()+"] ";
+	}
+
+	public NodeClass getNodeClass() {
+		return nodeClass ;
+	}
+
+	public void setNodeClass(NodeClass n) {
+		nodeClass = n;
 	}
 }//class

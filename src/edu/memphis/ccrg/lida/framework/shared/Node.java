@@ -32,6 +32,9 @@ public interface Node extends Linkable, Activatible{
     public long getId();
     public void setId(long id);
     
+    public NodeClass getNodeClass();
+    public void setNodeClass(NodeClass n);
+    
     //getLabel() is in Linkable
     public void setLabel(String label);
 
