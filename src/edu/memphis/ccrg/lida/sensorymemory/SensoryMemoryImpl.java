@@ -43,7 +43,7 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements
 	}
 	
 	public void processSensors(){
-		
+		Object o = environment.getModuleContent();
 	}
 	
 }// class
