@@ -10,66 +10,74 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * @author Siminder Kaur
+ * 
+ */
+
 public class NodeStructureImplTest extends TestCase{
-	NodeImpl inputNode = new NodeImpl();
-	NodeImpl resultNode = new NodeImpl();
-	
-	//Collection<Node> nodesToAdd = new Collection<Node>();
+	NodeImpl node1 = new NodeImpl();
+	NodeImpl node2 = new NodeImpl();
+	NodeImpl node3 = new NodeImpl();
+	LinkImpl link1 = new LinkImpl();
+	LinkImpl link2 = new LinkImpl();
 	Map<Long, Node> nodes;
+	NodeStructureImpl nodeStructure1 = new NodeStructureImpl();	
+	NodeStructureImpl nodeStructure2 = new NodeStructureImpl();
 
 	@Before
 	public void setUp() throws Exception {		
-		inputNode.setId(1);		
-		inputNode.setLabel("red");
-		inputNode.setActivation(1);
-		//inputNode.setImportance(1);
+		node1.setId(1);		
+		node1.setLabel("red");
+		node1.setActivation(1);
+		node1.setImportance(1);
 		
-		resultNode.setId(1);
-		resultNode.setLabel("blue");
-		resultNode.setActivation(2);
-		//resultNode.setImportance(1);
+		node2.setId(2);
+		node2.setLabel("blue");
+		node2.setActivation(2);
+		node2.setImportance(1);
 		
-		/*Node m=null,n = null ;	
-		m.setId(3);
-		n.setId(3);
-		long l=1;
+		node3.setId(3);
 		
-		//for (long i=0;i<5;i++){
-			nodes.put(l, n);
-		//}*/
+		link1.setIds("link1");
+		link1.setSource(node1);
+		link1.setSink(node2);
 		
+		link2.setIds("link2");	
+		link2.setSource(node2);
+		link2.setSink(node3);
+		
+		/*long i=1;
+		nodes.put(i, node1);
+		nodes.put(i+1, node2);*/	
+
+		nodeStructure1.addNode(node1);		
+		nodeStructure1.addNode(node2);
+		nodeStructure1.addNode(node3);
+		nodeStructure1.addLink(link1);
 	}
+	
 
 	@After
 	public void tearDown() throws Exception {
 	}
-
-	@Test
-	public void testNodeStructureImpl() {
-		
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNodeStructureImplStringString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNodeStructureImplNodeStructure() {
-		fail("Not yet implemented");
-	}
-
+	
 	@Test
 	public void testAddLink() {
-		fail("Not yet implemented");
+		
+		nodeStructure1.addLink(link2);
+		if(!nodeStructure1.hasLink(link2))		
+			fail("Problem with addLink");
 	}
 
 	@Test
@@ -78,31 +86,45 @@ public class NodeStructureImplTest extends TestCase{
 	}
 
 	@Test
-	public void testAddNode() {
-	
-		assertEquals("Problem with addNode", inputNode,resultNode);	
-		
-		
+	public void testAddNode() {		
+		//nodeStructure1.addNode(node3);
+		if(!nodeStructure1.hasNode(node2))		
+			fail("Problem with addNode");			
 	}
 
 	@Test
 	public void testAddNodes() {
-		fail("Not yet implemented");
+		/*Collection<Node> nodesToAdd = new Collection<Node>();
+		
+		nodesToAdd.add(node2);		
+		nodeStructure2.addNodes(nodesToAdd);
+		
+		if(!nodeStructure2.hasNode(node1) )		
+			fail("Problem with addNodes");
+		*/
 	}
 
 	@Test
 	public void testDeleteLink() {
-		fail("Not yet implemented");
+
+		nodeStructure1.deleteLink(link1);
+		if(nodeStructure1.hasLink(link1))		
+			fail("Problem with deleteLink");
 	}
 
 	@Test
-	public void testDeleteLinkable() {
-		fail("Not yet implemented");
-	}
+	public void testClearNodes() {
+
+			nodeStructure1.clearNodes();
+			if (nodeStructure1.getNodeCount()>0)
+			fail("Problem with clearNodes");
+	}	
 
 	@Test
 	public void testDeleteNode() {
-		fail("Not yet implemented");
+		
+		nodeStructure1.deleteNode(node3);
+		if(nodeStructure1.hasNode(node3))		
+			fail("Problem with deleteNode");
 	}
-
 }
