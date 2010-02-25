@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.actionselection;
 
 public class LidaActionImpl implements LidaAction{
 	
-	private Integer content = 0;
+	private Object content = 0;
 
 	public LidaActionImpl(){
 	}
@@ -12,7 +12,7 @@ public class LidaActionImpl implements LidaAction{
 	}
 	
 	public void setContent(Object o){
-		content = (Integer) o;
+		content =  o;
 	}
 	
 	public Object getContent() {

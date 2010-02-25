@@ -41,39 +41,44 @@ public class PamInitializer implements Initializer {
 		pam.setParameters(params);
 
 		// Nodes
-		// TODO: Make this a loop. Reading in the nodes from a file.
 		NodeFactory factory = NodeFactory.getInstance();
-		PamNodeImpl wood = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		PamNodeImpl wood = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"wood");
-		PamNodeImpl gold = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(wood);
+		PamNodeImpl gold = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"gold");
-		PamNodeImpl metal = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(gold);
+		PamNodeImpl metal = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"metal");
-		PamNodeImpl solid = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(metal);
+		PamNodeImpl solid = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"solid");
-		PamNodeImpl iron = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(solid);
+		PamNodeImpl iron = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"iron");
-		PamNodeImpl plastic = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(iron);
+		PamNodeImpl plastic = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"plastic");
-		PamNodeImpl noMetal = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(plastic);
+		PamNodeImpl noMetal = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"noMetal");
-		PamNodeImpl topLeft = (PamNodeImpl) factory.storeNode("PamNodeImpl",
+		pam.addNode(noMetal);
+		PamNodeImpl topLeft = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"topLeft");
-		PamNodeImpl bottomRight = (PamNodeImpl) factory.storeNode(
+		pam.addNode(topLeft);
+		PamNodeImpl bottomRight = (PamNodeImpl) factory.getNode(
 				"PamNodeImpl", "bottomRight");
-		pam.addNodes(factory.getStoredNodes());
 		// Links
 		// TODO: make this a loop
-		factory.storeLink(gold, metal, LinkType.CHILD);
-		factory.storeLink(metal, solid, LinkType.CHILD);
-		factory.storeLink(iron, metal, LinkType.CHILD);
-		factory.storeLink(wood, noMetal, LinkType.CHILD);
-		factory.storeLink(plastic, noMetal, LinkType.CHILD);
-		factory.storeLink(metal, noMetal, LinkType.CHILD);
-		factory.storeLink(wood, solid, LinkType.GROUNDING);
+		pam.addLink(gold, metal, LinkType.CHILD,1.0);
+		pam.addLink(metal, solid, LinkType.CHILD,1.0);
+		pam.addLink(iron, metal, LinkType.CHILD,1.0);
+		pam.addLink(wood, noMetal, LinkType.CHILD,1.0);
+		pam.addLink(plastic, noMetal, LinkType.CHILD,1.0);
+		pam.addLink(metal, noMetal, LinkType.CHILD,1.0);
+		pam.addLink(wood, solid, LinkType.GROUNDING,1.0);
 
-		factory.storeLink(topLeft, wood, LinkType.CHILD);
-		pam.addLinks(factory.getStoredLinks());
+		pam.addLink(topLeft, wood, LinkType.CHILD,1.0);
 
 		// Feature detectors
 		// TODO: make this a loop

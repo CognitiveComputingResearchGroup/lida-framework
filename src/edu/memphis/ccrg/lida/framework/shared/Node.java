@@ -20,9 +20,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 public interface Node extends Linkable, Activatible{
 	
 	public static final Node NULL_NODE = new NodeImpl();
-	
-	public void setValue(Map<String, Object> values);
-	
+		
 	public double getImportance();
 	public void setImportance(double importance);
 	

@@ -9,9 +9,10 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
@@ -22,11 +23,10 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public void setTaskSpawner(TaskSpawner spawner);
-	//
+	public void addNode(PamNode node);
 	public void addNodes(Set<PamNode> nodes);
 	public void addLinks(Set<Link> links);
 	public boolean addFeatureDetector(FeatureDetector fd);
-	//
 	public void addPamListener(PamListener pl);
 	
 	/**
@@ -39,13 +39,13 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * 
 	 * @param behavior
 	 */
-	public void setExciteBehavior(ExciteBehavior behavior);
+	public void setExciteStrategy(ExciteStrategy behavior);
 	
 	/**
 	 * Change how nodes and links are decayed
 	 * @param c
 	 */
-	public void setDecayBehavior(DecayBehavior c);
+	public void setDecayStrategy(DecayStrategy c);
 	
 	/**
 	 * Send a burst of activation to a node.
@@ -104,4 +104,8 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	public Collection<FeatureDetector> getFeatureDetectors();
 
 	public PamNode getNode(long id);
+	
+	public void addLink(PamNode source, PamNode sink, LinkType type, double activation);
+
+	public void addLink(String sourceId, String sinkId, LinkType type, double activation);
 }//interface PAMinterface

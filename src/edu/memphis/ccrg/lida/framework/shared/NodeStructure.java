@@ -17,7 +17,7 @@ public interface NodeStructure {
 
 	public abstract Link addLink(Link l);
 	
-//	public Link addLink(String idSource, String idSink, LinkType type, double activation);
+	public Link addLink(String idSource, String idSink, LinkType type, double activation);
 
 	public abstract void addLinks(Collection<Link> links);
 
@@ -51,7 +51,11 @@ public interface NodeStructure {
 
 	public abstract Node getNode(long id);
 
+	public abstract Node getNode(String ids);
+
 	public abstract Link getLink (String ids);
+
+	public abstract Linkable getLinkable (String ids);
 	
 	public abstract void mergeWith (NodeStructure ns);
 

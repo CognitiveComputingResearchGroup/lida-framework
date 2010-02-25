@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.LinearDecayBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
@@ -44,10 +44,10 @@ public class SbCodeletFactory {
 	private String DefaultSBCodeletType;
 	private Map<String, String> sbCodeletClasses = new HashMap<String, String>();
 
-	private DecayBehavior defaultDecay;
-	private ExciteBehavior defaultExcite;
-	private Map<String, DecayBehavior> decays = new HashMap<String, DecayBehavior>();
-	private Map<String, ExciteBehavior> excites = new HashMap<String, ExciteBehavior>();
+	private DecayStrategy defaultDecay;
+	private ExciteStrategy defaultExcite;
+	private Map<String, DecayStrategy> decays = new HashMap<String, DecayStrategy>();
+	private Map<String, ExciteStrategy> excites = new HashMap<String, ExciteStrategy>();
 	//
 //	private WorkspaceBuffer episodicBuffer;
 //	private WorkspaceBuffer broadcastQueue;
@@ -79,8 +79,8 @@ public class SbCodeletFactory {
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);
 		//
-		defaultDecay = new LinearDecayBehavior();
-		defaultExcite = new DefaultExciteBehavior();
+		defaultDecay = new LinearDecayStrategy();
+		defaultExcite = new DefaultExciteStrategy();
 		pool = new HashMap<String, List<StructureBuildingCodelet>>();
 //		episodicBuffer = workspace.getEpisodicBuffer();
 //		broadcastQueue = workspace.getBroadcastQueue();
@@ -93,10 +93,10 @@ public class SbCodeletFactory {
 	 * @param name
 	 * @param decay
 	 */
-	public void addDecayBehavior(String name, DecayBehavior decay) {
+	public void addDecayStrategy(String name, DecayStrategy decay) {
 		decays.put(name, decay);
 	}
-	public void addExciteBehavior(String name, ExciteBehavior excite) {
+	public void addExciteStrategy(String name, ExciteStrategy excite) {
 		excites.put(name, excite);
 	}
 	
@@ -104,16 +104,16 @@ public class SbCodeletFactory {
 	 * @param name
 	 * @return
 	 */
-	public DecayBehavior getDecayBehavior(String name) {
-		DecayBehavior d = decays.get(name);
+	public DecayStrategy getDecayStrategy(String name) {
+		DecayStrategy d = decays.get(name);
 		if (d == null) {
 			d = defaultDecay;
 		}
 		return d;
 	}
 
-	public ExciteBehavior getExciteBehavior(String name) {
-		ExciteBehavior d = excites.get(name);
+	public ExciteStrategy getExciteStrategy(String name) {
+		ExciteStrategy d = excites.get(name);
 		if (d == null) {
 			d = defaultExcite;
 		}
@@ -142,8 +142,8 @@ public class SbCodeletFactory {
 		if(codelet == null){
 			try {
 				codelet = (StructureBuildingCodelet) Class.forName(DefaultSBCodeletClassName).newInstance();
-				codelet.setExciteBehavior(defaultExcite);
-				codelet.setDecayBehavior(defaultDecay);
+				codelet.setExciteStrategy(defaultExcite);
+				codelet.setDecayStrategy(defaultDecay);
 				codelet.setActivation(defaultActivation);
 				codelet.setSoughtContent(defaultObjective);
 				codelet.setCodeletAction(defaultActions);			

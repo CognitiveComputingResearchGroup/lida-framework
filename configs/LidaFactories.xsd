@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/LidaFactories" xmlns:tns="http://www.example.org/LidaFactories" elementFormDefault="qualified">
+<schema targetNamespace="http://ccrg.cs.memphis.edu/LidaFactories" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaFactories">
 
-    <complexType name="behaviordef">
+    <complexType name="strategydef">
     	<sequence>
-            <element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
-            <element name="type" type="string" maxOccurs="1" minOccurs="1"></element>
-    		<element name="class" type="string" maxOccurs="1" minOccurs="1"></element>
-    	</sequence>
-    </complexType>
-
-    <complexType name="nodedef">
-    	<sequence>
-    		<element name="name" type="string" maxOccurs="1"
-    			minOccurs="1">
-    		</element>
     		<element name="class" type="string" maxOccurs="1"
     			minOccurs="1">
     		</element>
-    		<element name="behavior" type="tns:behavior"
-    			maxOccurs="unbounded" minOccurs="0">
+    		<element name="param" type="tns:param" maxOccurs="unbounded"
+    			minOccurs="0">
     		</element>
-    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
     	</sequence>
-    </complexType>
-
-    <complexType name="linkdef">
-    	<sequence>
-    		<element name="name" type="string" maxOccurs="1"
-    			minOccurs="1">
-    		</element>
-    		<element name="class" type="string" maxOccurs="1"
-    			minOccurs="1">
-    		</element>
-    		<element name="behavior" type="tns:behavior"
-    			maxOccurs="unbounded" minOccurs="0">
-    		</element>
-    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
-    	</sequence>
-    </complexType>
-
-    <complexType name="behavior">
-    	<sequence>
-    		<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
-    		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
-    	</sequence>
-    </complexType>
-    
-    <complexType name="param">
-       <simpleContent>
-      <extension base="string">
     	<attribute name="name" type="string" use="required"></attribute>
-      </extension>
-    </simpleContent>
+    	<attribute name="type" use="optional">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="excite"></enumeration>
+    				<enumeration value="decay"></enumeration>
+    				<enumeration value="transmit"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="flyweight" type="boolean" use="optional"></attribute>
+    </complexType>
+
+
+    <complexType name="linkabledef">
+    	<sequence>
+    		<element name="class" type="string" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="defaultstrategy" type="string"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="param" type="tns:param" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="name" type="string" use="required"></attribute>
+    </complexType>
+
+
+    <complexType name="param">
+    	<simpleContent>
+    		<extension base="string">
+    			<attribute name="name" type="string" use="required"></attribute>
+    			<attribute name="type" use="optional">
+    				<simpleType>
+    					<restriction base="string">
+    						<enumeration value="int"></enumeration>
+    						<enumeration value="double"></enumeration>
+    						<enumeration value="string"></enumeration>
+    						<enumeration value="boolean"></enumeration>
+    					</restriction>
+    				</simpleType>
+    			</attribute>
+    		</extension>
+    	</simpleContent>
     </complexType>
 
 
@@ -60,7 +64,7 @@
     
     <complexType name="LidaFactories">
     	<sequence>
-    		<element name="behaviors" type="tns:behaviors" maxOccurs="1"
+    		<element name="strategies" type="tns:strategies" maxOccurs="1"
     			minOccurs="0">
     		</element>
     		<element name="nodes" type="tns:nodes" maxOccurs="1"
@@ -75,19 +79,19 @@
     
     <complexType name="nodes">
     	<sequence>
-    		<element name="node" type="tns:nodedef" maxOccurs="unbounded" minOccurs="1"></element>
+    		<element name="node" type="tns:linkabledef" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
 
     <complexType name="links">
     	<sequence>
-    		<element name="link" type="tns:linkdef" maxOccurs="unbounded" minOccurs="1"></element>
+    		<element name="link" type="tns:linkabledef" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
 
-    <complexType name="behaviors">
+    <complexType name="strategies">
     	<sequence>
-    		<element name="behaviordef" type="tns:behaviordef" maxOccurs="unbounded" minOccurs="1"></element>
+    		<element name="strategy" type="tns:strategydef" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
 
@@ -99,20 +103,18 @@
     		</documentation>
     	</annotation>
     	<sequence>
-    		<element name="name" type="string" maxOccurs="1"
-    			minOccurs="1">
-    		</element>
     		<element name="class" type="string" maxOccurs="1"
     			minOccurs="1">
     		</element>
-    		<element name="behavior" type="tns:behavior"
+    		<element name="defaultstrategy" type="string"
     			maxOccurs="unbounded" minOccurs="0">
     		</element>
     		<element name="param" type="tns:param" maxOccurs="unbounded"
     			minOccurs="0">
     		</element>
     	</sequence>
-    	<attribute name="type">
+        <attribute name="name" type="string" use="required"></attribute>
+        <attribute name="type" use="required">
     		<simpleType>
     			<restriction base="string">
     				<enumeration value="FeatureDetector"></enumeration>
@@ -125,7 +127,7 @@
     		</simpleType>
     	</attribute>
     </complexType>
-    
+
     <complexType name="codelets">
     	<sequence>
     		<element name="codelet" type="tns:codeletdef" maxOccurs="unbounded" minOccurs="1"></element>

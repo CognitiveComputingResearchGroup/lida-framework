@@ -4,7 +4,9 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.w3c.dom.Element;
@@ -61,6 +63,43 @@ public class XmlUtils {
 		return prop;
 	}
 
+	public static Map<String,Object> getTypedParams(Element moduleElement) {
+		Map<String,Object> prop = new HashMap<String,Object>();
+		NodeList nl = moduleElement.getElementsByTagName("param");
+		if (nl != null && nl.getLength() > 0) {
+			for (int i = 0; i < nl.getLength(); i++) {
+				Element param = (Element) nl.item(i);
+				String name = param.getAttribute("name");
+				String type = param.getAttribute("type");
+				String sValue = (getValue(param)).trim();
+				Object value=sValue;
+				
+				if(type==null ||"string".equalsIgnoreCase(type)){
+					value=sValue;
+				}else if("int".equalsIgnoreCase(type)){
+					try{
+					value=Integer.parseInt(sValue);
+					}catch(NumberFormatException e){
+						value=sValue;
+						//TODO:log the error
+					}
+				}else if("double".equalsIgnoreCase(type)){
+					try{
+					value=Double.parseDouble(sValue);
+					}catch(NumberFormatException e){
+						value=sValue;
+						//TODO:log the error
+					}
+				}else if("boolean".equalsIgnoreCase(type)){
+						value=Boolean.parseBoolean(sValue);
+				}
+				
+				prop.put(name, value);
+			}
+		}
+		return prop;
+	}
+
 	public static Element getChild(Element parent, String name) {
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
@@ -70,6 +109,7 @@ public class XmlUtils {
 		}
 		return null;
 	}
+	
 	public static String getValue(Element parent) {
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
@@ -79,8 +119,19 @@ public class XmlUtils {
 		}
 		return null;
 	}
-
-	public static List<Element> getChilds(Element parent, String name) {
+	public static List<String> getChildrenValues(Element element, String name) {
+		List<String> vals = new ArrayList<String>();
+		NodeList nl = element.getElementsByTagName(name);
+		if (nl != null && nl.getLength() > 0) {
+			for (int i = 0; i < nl.getLength(); i++) {
+				Element el = (Element) nl.item(i);
+				String value = (getValue(el)).trim();
+				vals.add(value);
+			}
+		}
+		return vals;
+	}
+	public static List<Element> getChildren(Element parent, String name) {
 		List<Element> nl = new ArrayList<Element>();
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {

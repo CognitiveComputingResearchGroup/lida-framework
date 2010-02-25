@@ -21,11 +21,12 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -192,11 +193,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		}
 	}
 	
-	public void setDecayBehavior(DecayBehavior b) {
-		pamNodeStructure.setNodesDecayBehavior(b);
+	public void setDecayStrategy(DecayStrategy b) {
+		pamNodeStructure.setNodesDecayStrategy(b);
 	}
-	public void setExciteBehavior(ExciteBehavior behavior) {
-		pamNodeStructure.setNodesExciteBehavior(behavior);
+	public void setExciteStrategy(ExciteStrategy behavior) {
+		pamNodeStructure.setNodesExciteStrategy(behavior);
 	}// method
 	
 	/**
@@ -248,6 +249,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 	public PamNode getNode(long id) {
 		return (PamNode)pamNodeStructure.getNode(id) ;
+	}
+	public void addNode(PamNode node) {
+		pamNodeStructure.addNode(node);		
+	}
+	public void addLink(PamNode source, PamNode sink, LinkType type, double activation) {
+		pamNodeStructure.addLink(source.getIds(),sink.getIds(),type,activation);		
+	}
+
+	public void addLink(String sourceId, String sinkId, LinkType type, double activation) {
+		pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
 	}
 
 

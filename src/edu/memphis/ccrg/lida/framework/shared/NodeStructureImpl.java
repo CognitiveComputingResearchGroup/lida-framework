@@ -126,12 +126,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * .shared.Link)
 	 */
 	public Link addLink(Link l) {
-
+		double newActiv=0;
 		Link oldLink = links.get(l.getIds());
 		if (oldLink != null) { // if the link already exists only actualize the
 								// activation.
 			//if link already there update activation 
-			double newActiv = l.getActivation();
+			newActiv = l.getActivation();
 			if (oldLink.getActivation() < newActiv) {
 				oldLink.setActivation(newActiv);
 			}
@@ -173,27 +173,53 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			}
 		}
 
-		Link newLink = getNewLink( newSource, newSink, l.getType());
-		links.put(newLink.getIds(), newLink);
-		linkableMap.put(newLink, new HashSet<Link>());
-
-		Set<Link> tempLinks = linkableMap.get(source);
-		if (tempLinks == null) {
-			tempLinks = new HashSet<Link>();
-			linkableMap.put(source, tempLinks);
-		}
-		tempLinks.add(newLink);
-
-		tempLinks = linkableMap.get(sink);
-		if (tempLinks == null) {
-			tempLinks = new HashSet<Link>();
-			linkableMap.put(sink, tempLinks);
-			tempLinks.add(newLink);
-		}
-		tempLinks.add(newLink);
-
-		return newLink;
+		return generateNewLink(newSource, newSink,l.getType(),newActiv);
 	}
+
+public Link addLink(String sourceId, String sinkId, LinkType type, double activation){
+	
+	Linkable source = getLinkable(sourceId);
+	Linkable sink = getLinkable(sinkId);
+
+	if (source==null || sink==null){
+		return null;
+	}
+	
+	return generateNewLink(source, sink, type, activation);
+	
+}
+/**
+ * @param l
+ * @param source
+ * @param sink
+ * @param newSource
+ * @param newSink
+ * @return
+ */
+private Link generateNewLink(Linkable newSource, Linkable newSink, LinkType type, double activation) {
+	Link newLink = getNewLink( newSource, newSink, type);
+	newLink.setActivation(activation);
+	links.put(newLink.getIds(), newLink);
+	linkableMap.put(newLink, new HashSet<Link>());
+
+	Set<Link> tempLinks = linkableMap.get(newSource);
+	if (tempLinks == null) {
+		tempLinks = new HashSet<Link>();
+		linkableMap.put(newSource, tempLinks);
+	}
+	tempLinks.add(newLink);
+
+	tempLinks = linkableMap.get(newLink);
+	if (tempLinks == null) {
+		tempLinks = new HashSet<Link>();
+		linkableMap.put(newLink, tempLinks);
+		tempLinks.add(newLink);
+	}
+	tempLinks.add(newLink);
+
+	return newLink;
+}
+
 
 	/*
 	 * (non-Javadoc)
@@ -416,6 +442,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return nodes.get(id);
 	}
 
+	public Node getNode(String id) {
+		Long idl=0L;
+		try{
+			idl=new Long(id);
+		}catch(NumberFormatException e){
+			return null;
+		}
+		return nodes.get(idl);
+	}
+
 	public int getLinkCount() {
 		return links.size();
 	}
@@ -461,6 +497,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	public boolean hasNode(Node n) {
 		return nodes.containsKey(n.getId());
+	}
+
+	public Linkable getLinkable(String ids) {
+		Linkable linkable = getNode(ids);
+		if (linkable==null){
+			linkable=getLink(ids);
+		}
+		return linkable;
 	}
 
 }// class

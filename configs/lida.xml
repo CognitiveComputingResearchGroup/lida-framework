@@ -68,8 +68,8 @@
 			<param name="globalWorkspace.aggregateActivationThreshold">.8 </param>
 			<param name="globalWorkspace.individualActivationThreshold">.5 </param>
 			<isdriver>true</isdriver>
-			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
-		</module>
+			<initializerclass>edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
+		</module> 
 		<module name="ProceduralMemory">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl</class>
 			<param name="proceduralMemory.ticksPerStep"> 14 </param>
@@ -77,7 +77,7 @@
 		<module name="ActionSelection">
 			<class>edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl</class>
 			<param name="actionSelection.ticksPerStep"> 10</param>
-		</module>
+		</module> 
 	</submodules>
 	<drivers>
 		<driver name="SensoryMemoryDriver">

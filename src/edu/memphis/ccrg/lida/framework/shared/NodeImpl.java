@@ -22,12 +22,12 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	public NodeImpl(NodeImpl n) {
-		super(n.getActivation(), n.getExciteBehavior(), n.getDecayBehavior());
+		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy());
 		this.id = n.id;
 		this.refNode = n.refNode;
 	}
 	
-	public void setValue(Map<String, Object> values) {
+	public void init(Map<String, Object> params) {
 		// TODO Auto-generated method stub
 	}
 	

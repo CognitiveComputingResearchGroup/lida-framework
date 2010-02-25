@@ -151,7 +151,7 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure3.addNode(node2);
 		//nodeStructure3.addLink(link1);
 		
-		ns = nodeStructure3.copy();		
+		ns = nodeStructure3.copy();
 		if (!ns.equals(nodeStructure3))
 			fail("Problem with copy");
 	}	

@@ -33,7 +33,7 @@ public class LidaXmlFactory implements LidaFactory {
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	private static Logger logger = Logger
-			.getLogger("lida.framework.LidaFactory");
+			.getLogger("lida.framework.initialization.LidaFactory");
 	private Document dom;
 	private Lida lida;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();
@@ -140,7 +140,7 @@ public class LidaXmlFactory implements LidaFactory {
 		NodeList nl = element.getElementsByTagName("submodules");
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChilds(modulesElemet,"module");
+			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
 			if (list != null && list.size() > 0) {
 				for (Element moduleElement:list) {					
 					LidaModule module = getModule(moduleElement);

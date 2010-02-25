@@ -10,8 +10,8 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 //TODO: Check this class
@@ -138,9 +138,9 @@ public class PamNodeStructure extends NodeStructureImpl{
 	/**
 	 * Set the excite behavior for all nodes
 	 */
-	public void setNodesExciteBehavior(ExciteBehavior behavior) {
+	public void setNodesExciteStrategy(ExciteStrategy behavior) {
     	for(Node n: getNodes())
-    		n.setExciteBehavior(behavior);
+    		n.setExciteStrategy(behavior);
 	}//method
 	
 	/**
@@ -148,9 +148,9 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * TODO: make the behavior a field on this class instead?
 	 * @param behavior
 	 */
-	public void setNodesDecayBehavior(DecayBehavior behavior) {
+	public void setNodesDecayStrategy(DecayStrategy behavior) {
     	for(Node n: getNodes())
-    		n.setDecayBehavior(behavior);
+    		n.setDecayStrategy(behavior);
 	}//method
 	
 	/**

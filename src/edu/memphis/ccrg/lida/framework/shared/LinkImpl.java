@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.util.Map;
+
 /**
  * 
  * @author Ryan McCall
@@ -127,4 +129,10 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	public void setReferencedLink(Link l) {
 		referencedLink = l;
 	}
+	
+	public void init(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+	}
+	
+
 }

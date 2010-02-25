@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
-import edu.memphis.ccrg.lida.framework.strategies.DecayBehavior;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteBehavior;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 /**
  * 
@@ -21,11 +21,11 @@ public interface Activatible {
 	 *          this node
 	 */
     public void excite(double amount); 
-	public void setExciteBehavior(ExciteBehavior behavior);
-	public ExciteBehavior getExciteBehavior();
+	public void setExciteStrategy(ExciteStrategy behavior);
+	public ExciteStrategy getExciteStrategy();
 	
 	public void decay(long ticks);	
-	public void setDecayBehavior(DecayBehavior c);
-	public DecayBehavior getDecayBehavior();
+	public void setDecayStrategy(DecayStrategy c);
+	public DecayStrategy getDecayStrategy();
 
 }
