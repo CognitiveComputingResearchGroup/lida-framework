@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public class BottomRightDetector extends FeatureDetectorImpl {
 
 	public BottomRightDetector(PamNode n, SensoryMemory sm,
-			PerceptualAssociativeMemory pam) {
+							   PerceptualAssociativeMemory pam) {
 		super(n, sm, pam);
 	}
 

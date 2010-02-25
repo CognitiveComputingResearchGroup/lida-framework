@@ -11,19 +11,15 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 
-public abstract class SensoryMemoryImpl extends LidaModuleImpl implements
-		SensoryMemory, SensoryMotorListener {
+public abstract class SensoryMemoryImpl extends LidaModuleImpl 
+										implements SensoryMemory, SensoryMotorListener {
 
 	private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
 	protected Environment environment;
+	protected Object sensoryMemoryContent;
 
 	public SensoryMemoryImpl() {
 		super(ModuleName.SensoryMemory);
-
-	}
-
-	public void addSensoryMemoryListener(SensoryMemoryListener l) {
-		listeners.add(l);
 	}
 
 	public void addListener(ModuleListener listener) {
@@ -31,19 +27,20 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements
 			addSensoryMemoryListener((SensoryMemoryListener) listener);
 		}
 	}
+	public void addSensoryMemoryListener(SensoryMemoryListener l) {
+		listeners.add(l);
+	}
 	
 	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
-			if (module instanceof Environment
-					&& module.getModuleName() == ModuleName.Environment) {
+			if (module instanceof Environment && 
+				module.getModuleName() == ModuleName.Environment) {
 				environment = (Environment) module;
 			}
 		}
 	}
 	
-	public void processSensors(){
-		Object o = environment.getModuleContent();
-	}
+	public abstract void processSensors();
 	
 }// class

@@ -14,17 +14,20 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	public EnvironmentImpl(int ticksPerCycle){
 		super(ticksPerCycle, ModuleName.Environment);
 	}
-
-
-	public LidaModule getSubmodule(ModuleName type) {
-		return null;
-	}
-
-	public void decayModule(long ticks){
-		
-	}
+	
 	
 	public void addListener(ModuleListener listener) {
 	}
 
+	public void addModule(LidaModule lm) {
+		
+	}
+	public LidaModule getSubmodule(ModuleName type) {
+		return null;
+	}
+	public void decayModule(long ticks){
+		
+	}
+	
+	
 }//class

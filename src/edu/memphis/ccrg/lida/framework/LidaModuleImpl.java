@@ -76,5 +76,4 @@ public abstract class LidaModuleImpl implements LidaModule {
 	public void setAssociatedModule(LidaModule module) {
 	}
 
-
 }
