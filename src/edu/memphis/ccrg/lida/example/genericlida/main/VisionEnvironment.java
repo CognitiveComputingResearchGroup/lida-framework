@@ -26,7 +26,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(ModuleName.Environment, "matrix", environContent);
 
 	public VisionEnvironment(int height, int width) {
-		super();
+		super(1);
 		imageHeight = height;
 		imageWidth = width;
 		iloc = imageHeight / 2;
@@ -34,7 +34,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		environContent = new double[imageHeight][imageWidth];
 	}
 	public VisionEnvironment() {
-		super();
+		super(1);
 		iloc = imageHeight / 2;
 		jloc = imageWidth / 2;
 		environContent = new double[imageHeight][imageWidth];
