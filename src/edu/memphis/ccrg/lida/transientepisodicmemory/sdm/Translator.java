@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public interface Translator {
 
 	/**
-	 * Translates a boolean address into a node structure.
+	 * Translates a boolean vector into a node structure.
 	 * @param data a byte vector with the boolean vector to be translated
 	 * @return the node structure associated with the address
          * @throws Excaeption when the boolean vector is the wrong size
@@ -27,7 +27,7 @@ public interface Translator {
 	public abstract NodeStructure translate(BitVector data) throws Exception;
 
 	/**
-	 * Translates a node structure into a boolean address.
+	 * Translates a node structure into a boolean vector.
 	 * @param structure the node structure to be translated
 	 * @return a byte vector with the boolean address associated with
          * the structure
