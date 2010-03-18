@@ -34,6 +34,19 @@ public interface SparseDistributedMemory {
 	public abstract void mappedStore(BitVector wrd, BitVector mapping);
 
 	/**
+	 * Stores a word in this sparse distributed memory using the word as address.
+	 * The word is mapped (xor) with the mapping address.
+	 * 
+	 * @param wrd
+	 *            the word to be stored.
+	 * @param addr
+	 *            the address.
+	 * @param mapping
+	 *            the mapping address.
+	 */
+	public abstract void mappedStore(BitVector wrd,BitVector addr, BitVector mapping);
+
+	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
 	 * address.
 	 * 

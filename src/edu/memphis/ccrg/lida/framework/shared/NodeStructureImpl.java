@@ -14,6 +14,10 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  * @author Javier Snaider
  * 
  */
+/**
+ * @author Javier
+ *
+ */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		WorkspaceContent {
 
@@ -55,7 +59,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		Collection<Link> oldLinks = oldGraph.getLinks();
 		if (oldLinks != null)
 			for (Link l : oldLinks) {
-				links.put(l.getIds(), getNewLink(l.getSource(),l.getSink(),l.getType()));
+				links.put(l.getIds(), getNewLink(l.getSource(), l.getSink(), l
+						.getType()));
 			}
 
 		// Fix Source and Sinks now that all new Nodes and Links have been
@@ -126,11 +131,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * .shared.Link)
 	 */
 	public Link addLink(Link l) {
-		double newActiv=0;
+		double newActiv = 0;
 		Link oldLink = links.get(l.getIds());
 		if (oldLink != null) { // if the link already exists only actualize the
-								// activation.
-			//if link already there update activation 
+			// activation.
+			// if link already there update activation
 			newActiv = l.getActivation();
 			if (oldLink.getActivation() < newActiv) {
 				oldLink.setActivation(newActiv);
@@ -173,53 +178,55 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			}
 		}
 
-		return generateNewLink(newSource, newSink,l.getType(),newActiv);
+		return generateNewLink(newSource, newSink, l.getType(), newActiv);
 	}
 
-public Link addLink(String sourceId, String sinkId, LinkType type, double activation){
-	
-	Linkable source = getLinkable(sourceId);
-	Linkable sink = getLinkable(sinkId);
+	public Link addLink(String sourceId, String sinkId, LinkType type,
+			double activation) {
 
-	if (source==null || sink==null){
-		return null;
+		Linkable source = getLinkable(sourceId);
+		Linkable sink = getLinkable(sinkId);
+
+		if (source == null || sink == null) {
+			return null;
+		}
+
+		return generateNewLink(source, sink, type, activation);
+
 	}
-	
-	return generateNewLink(source, sink, type, activation);
-	
-}
-/**
- * @param l
- * @param source
- * @param sink
- * @param newSource
- * @param newSink
- * @return
- */
-private Link generateNewLink(Linkable newSource, Linkable newSink, LinkType type, double activation) {
-	Link newLink = getNewLink( newSource, newSink, type);
-	newLink.setActivation(activation);
-	links.put(newLink.getIds(), newLink);
-	linkableMap.put(newLink, new HashSet<Link>());
 
-	Set<Link> tempLinks = linkableMap.get(newSource);
-	if (tempLinks == null) {
-		tempLinks = new HashSet<Link>();
-		linkableMap.put(newSource, tempLinks);
-	}
-	tempLinks.add(newLink);
+	/**
+	 * @param l
+	 * @param source
+	 * @param sink
+	 * @param newSource
+	 * @param newSink
+	 * @return
+	 */
+	private Link generateNewLink(Linkable newSource, Linkable newSink,
+			LinkType type, double activation) {
+		Link newLink = getNewLink(newSource, newSink, type);
+		newLink.setActivation(activation);
+		links.put(newLink.getIds(), newLink);
+		linkableMap.put(newLink, new HashSet<Link>());
 
-	tempLinks = linkableMap.get(newLink);
-	if (tempLinks == null) {
-		tempLinks = new HashSet<Link>();
-		linkableMap.put(newLink, tempLinks);
+		Set<Link> tempLinks = linkableMap.get(newSource);
+		if (tempLinks == null) {
+			tempLinks = new HashSet<Link>();
+			linkableMap.put(newSource, tempLinks);
+		}
 		tempLinks.add(newLink);
+
+		tempLinks = linkableMap.get(newLink);
+		if (tempLinks == null) {
+			tempLinks = new HashSet<Link>();
+			linkableMap.put(newLink, tempLinks);
+			tempLinks.add(newLink);
+		}
+		tempLinks.add(newLink);
+
+		return newLink;
 	}
-	tempLinks.add(newLink);
-
-	return newLink;
-}
-
 
 	/*
 	 * (non-Javadoc)
@@ -279,8 +286,7 @@ private Link generateNewLink(Linkable newSource, Linkable newSink, LinkType type
 	 *            the type of the link
 	 * @return The link to be used in this NodeStructure
 	 */
-	protected Link getNewLink( Linkable source, Linkable sink,
-			LinkType type) {
+	protected Link getNewLink(Linkable source, Linkable sink, LinkType type) {
 		return factory.getLink(defaultLinkType, source, sink, type);
 	}
 
@@ -443,10 +449,10 @@ private Link generateNewLink(Linkable newSource, Linkable newSink, LinkType type
 	}
 
 	public Node getNode(String id) {
-		Long idl=0L;
-		try{
-			idl=new Long(id);
-		}catch(NumberFormatException e){
+		Long idl = 0L;
+		try {
+			idl = new Long(id);
+		} catch (NumberFormatException e) {
 			return null;
 		}
 		return nodes.get(idl);
@@ -476,7 +482,6 @@ private Link generateNewLink(Linkable newSource, Linkable newSink, LinkType type
 		// TODO: Must add links differently than above statement.
 	}
 
-
 	public Set<Link> getLinksByType(LinkType type) {
 		Set<Link> result = new HashSet<Link>();
 		for (Link l : links.values()) {
@@ -501,10 +506,27 @@ private Link generateNewLink(Linkable newSource, Linkable newSink, LinkType type
 
 	public Linkable getLinkable(String ids) {
 		Linkable linkable = getNode(ids);
-		if (linkable==null){
-			linkable=getLink(ids);
+		if (linkable == null) {
+			linkable = getLink(ids);
 		}
 		return linkable;
 	}
 
+	/**
+	 * Returns true if both NodeStructures have the same Nodes and Links.
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		boolean result = false;
+		if ((o != null) && (o instanceof NodeStructure)) {
+			NodeStructure ns = (NodeStructure) o;
+			Set<Linkable> nsLinkables = ns.getLinkableMap().keySet();
+			Set<Linkable> thisLinkables = linkableMap.keySet();
+			if (thisLinkables.size() == nsLinkables.size()
+					&& thisLinkables.containsAll(nsLinkables)) {
+				result = true;
+			}
+		}
+		return result;
+	}
 }// class

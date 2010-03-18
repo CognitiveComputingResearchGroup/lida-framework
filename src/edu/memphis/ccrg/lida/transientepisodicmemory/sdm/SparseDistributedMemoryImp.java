@@ -19,6 +19,7 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	private static final int MAX_ITERATIONS = 20;
 	private HardLocation[] hardlocations;
 	private int wordLength;
+	private int addrLength;
 	private int memorySize;
 	private int activationRadius;
 	private int activationThreshold;
@@ -46,6 +47,32 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 			hardlocations[i]=new HardLocationImpl(BitVectorUtils.getRandomVector(wordLength));
 		}
 	}
+	/**
+	 * Constructor of the class that receives all the parameters necessary for
+	 * this sparse distributed memory.
+	 * 
+	 * @param memorySize
+	 *            the size of the memory
+	 * @param radious
+	 *            the activation radius
+	 * @param wordLength
+	 *            the word size
+	 * @param addrLength
+	 *            the address size
+	 */
+	public SparseDistributedMemoryImp(int memorySize, int radious, int wordLength, int addrLength) {
+		this.activationRadius = radious;
+		activationThreshold = memorySize - 2 * activationRadius;
+
+		this.addrLength = addrLength;
+		this.memorySize = memorySize;
+		this.wordLength = wordLength;
+		hardlocations = new HardLocation[memorySize];
+		for (int i =0; i<memorySize;i++){
+			hardlocations[i]=new HardLocationImpl(BitVectorUtils.getRandomVector(addrLength),wordLength);
+		}
+	}
+
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#store(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
@@ -70,10 +97,28 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
 	public void mappedStore(BitVector wrd, BitVector mapping) {
+		if(wrd.size()==addrLength){
 		BitVector mapped = wrd.copy();
 		mapped.xor(mapping);
 		store(mapped);
+		}else{
+			BitVector mapped = wrd.partFromTo(0, addrLength-1);
+			mapped.xor(mapping);
+			BitVector aux=wrd.copy();
+			aux.replaceFromToWith(0, addrLength-1, mapped, 0);
+			store(aux,mapped);
+		}
 			}
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector,cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
+	 */
+	@Override
+	public void mappedStore(BitVector wrd, BitVector addr, BitVector mapping) {
+		BitVector mapped = addr.copy();
+		mapped.xor(mapping);
+		store(wrd,mapped);
+	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieve(cern.colt.bitvector.BitVector)
@@ -98,15 +143,14 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	public BitVector retrieveIterating(BitVector addr) {
 
 		BitVector res=null;
-		if (wordLength == addr.size()) {
 			for (int i = 1; i < MAX_ITERATIONS; i++) {
 				res = retrieve(addr);
-				if (res.equals(addr)) {
+				BitVector aux =res.partFromTo(0, addr.size()-1);
+				if (aux.equals(addr)) {
 					logger.log(Level.FINER,"number of iterations: "+i);
 					return res;
 				}
-				addr = res;
-			}
+				addr = aux;
 		}
 		return res;
 	}
@@ -119,7 +163,13 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 		mapped.xor(mapping);
 
 		BitVector res= retrieveIterating(mapped);
-		res.xor(mapping);
+		if (res.size()==addrLength){
+			res.xor(mapping);			
+		}else{
+		BitVector aux = res.partFromTo(0, addrLength-1);
+		aux.xor(mapping);
+		res.replaceFromToWith(0, addrLength-1, aux, 0);
+		}
 		return res;
 	}
 }

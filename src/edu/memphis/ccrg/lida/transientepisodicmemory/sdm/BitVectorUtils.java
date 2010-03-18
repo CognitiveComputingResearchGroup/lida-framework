@@ -109,28 +109,28 @@ public class BitVectorUtils {
 
 	public static BitVector[] discretizeIntVector(int[] buff, int bitSteps) {
 		BitVector[] weights = new BitVector[bitSteps];
+		int maxUnsignedValue=(1<<bitSteps);
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = new BitVector(buff.length);
 		}
 
 		for (int i = 0; i < buff.length; i++) {
 			int aux = buff[i];
-			
 			//In case of 0, a value is chosen by random
-			if (aux == 0) {
-				aux = (Math.random() > .5) ? 1 : -1;
-			}
-			//The value is decreased by 1 in case of a positive value. In this way the value zero is used
-			if (aux > 0) {
-				aux--;
-			}
+//			if (aux == 0) {
+//				aux = (Math.random() > .5) ? 1 : -1;
+//			}
+//			//The value is decreased by 1 in case of a positive value. In this way the value zero is used
+//			if (aux > 0) {
+//				aux--;
+//			}
 			//the value is biased by 4 to use only positive values
-			aux = aux + 4;
-			//the value is truncated between 0 and 7 to be stored in 3 bits
-			aux = (aux > 7) ? 7 : aux;
+			aux = aux + maxUnsignedValue/2;
+			//the value is truncated between 0 and maxUnsignedValue to be stored in bitSteps bits
+			aux = (aux >= maxUnsignedValue) ? maxUnsignedValue-1 : aux;
 			aux = (aux < 0) ? 0 : aux;
 			
-			for (int j = 0; j < weights.length; j++) {
+			for (int j = 0; j < bitSteps; j++) {
 				boolean b=((aux & (1 << j)) != 0);
 				weights[j].putQuick(i, b);
 			}
@@ -140,17 +140,20 @@ public class BitVectorUtils {
 
 	public static int[] denormalizeVector(BitVector[] weights) {
 
+		int bitSteps=weights.length;
+		int maxUnsignedValue=1<<bitSteps;
 		int[] sum = new int[weights[0].size()];
 		for (int i = 0; i < sum.length; i++) {
 			int totDigit = 0;
-			for (int j = 0; j < weights.length; j++) {
+			for (int j = 0; j < bitSteps; j++) {
 				int aux = (weights[j].getQuick(i)) ? 1 : 0;
 				totDigit += aux << j;
 			}
-			totDigit = totDigit - 4;
-			if (totDigit >= 0) {
-				totDigit++;
-			}
+			totDigit = totDigit - maxUnsignedValue/2;
+
+//			if (totDigit >= 0) {
+//				totDigit++;
+//			}
 			sum[i] += totDigit;
 		}
 
