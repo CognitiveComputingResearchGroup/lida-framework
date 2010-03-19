@@ -113,7 +113,6 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector,cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
-	@Override
 	public void mappedStore(BitVector wrd, BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
