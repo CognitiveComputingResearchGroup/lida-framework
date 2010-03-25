@@ -27,7 +27,7 @@ import java.util.HashMap;
  * nodeToIndexDictionary = {(n1,0),(n2,1),(n3,2),(n4,3)}
  * Both dictionaries are always the same size, which corresponds to the total
  * number of nodes used to create the translator.
- * @author Rodrigo Silva L. <rsilval@acm.org>
+ * @author Rodrigo Silva-Lugo <rsilval@acm.org>
  */
 public class TranslatorImpl {
 

@@ -70,7 +70,5 @@ public class MappingTranslator implements Translator {
         //TODO: add links in the node structure to the set. Will links need an ID?
         v = BitVectorUtils.normalizeVector(sum);
         return v;
-
     }
-
 }
