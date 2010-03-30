@@ -33,8 +33,8 @@ import java.util.Set;
  */
 
 public class NodeStructureImplTest extends TestCase{
-	NodeImpl node1,node2,node3;
-	LinkImpl link1,link2;	
+	NodeImpl node1,node2,node3,node4;
+	LinkImpl link1,link2,link3;	
 	Map<Long, Node> nodes;
 	LinkType linktype1,linktype2;	
 	NodeStructureImpl nodeStructure1,nodeStructure2,nodeStructure3;
@@ -50,8 +50,10 @@ public class NodeStructureImplTest extends TestCase{
 		node1 = new NodeImpl();
 		node2 = new NodeImpl();
 		node3 = new NodeImpl();
+		node4 = new NodeImpl();
 		link1 = new LinkImpl();
 		link2 = new LinkImpl();
+		link3 = new LinkImpl();
 		linktype1 = LinkType.PARENT ;
 		linktype2 = LinkType.CHILD ;			 
 		nodeStructure1 = new NodeStructureImpl();	
@@ -73,6 +75,8 @@ public class NodeStructureImplTest extends TestCase{
 		node2.setLabel("purple");
 		node2.setActivation(3);
 		node2.setImportance(3);
+		
+		node4.setId(3);
 
 		link1.setIds("link1");
 		link1.setSource(node1);
@@ -82,7 +86,12 @@ public class NodeStructureImplTest extends TestCase{
 		link2.setIds("link2");	
 		link2.setSource(node2);
 		link2.setSink(node3);
-		link2.setType(linktype2);			
+		link2.setType(linktype2);
+		
+		link3.setIds("link3");
+		link3.setSource(node2);
+		link2.setSink(node4);
+		link2.setType(linktype2);
 	}
 
 	/**
@@ -200,8 +209,12 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure3.addNode(node2);
 		nodeStructure3.addLink(link1);
 
-		ns = nodeStructure3.copy();
-		assertEquals("Problem with copy", ns, nodeStructure3);		
+		//NodeStructureImpl ns = new NodeStructureImpl();
+		
+		ns = (NodeStructureImpl) nodeStructure3.copy();		
+			
+		assertEquals("Problem with copy", ns, nodeStructure3);	
+		
 	}	
 
 	/**
@@ -215,4 +228,28 @@ public class NodeStructureImplTest extends TestCase{
 			break;				
 		}	
 	}
+	
+	/**
+	 * This method is used to test the NodeStructureImpl.equals() method
+	 */
+	@Test
+	public void testEquals() {
+		
+		nodeStructure1.addNode(node1);
+		nodeStructure1.addNode(node2);
+		nodeStructure1.addNode(node3);
+		nodeStructure1.addLink(link1);
+		nodeStructure1.addLink(link2);
+		
+		nodeStructure2.addNode(node1);
+		nodeStructure2.addNode(node2);
+		nodeStructure2.addNode(node3);
+		nodeStructure2.addLink(link1);
+		nodeStructure2.addLink(link2);
+		
+		if(!(nodeStructure1.equals(nodeStructure2)))
+			fail("Problem with equals");
+			
+		//assertEquals("Problem with equals", nodeStructure1, nodeStructure2);			
+	}	
 }
