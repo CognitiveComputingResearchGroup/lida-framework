@@ -55,7 +55,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 			return false;
 		}
 
-		if (ids.equals(other)) {
+		if (ids.equals(other.getIds())) {
 			return true;
 		}
 		return false;

@@ -67,16 +67,18 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		// copied
 		for (String ids : links.keySet()) {
 			Link l = links.get(ids);
-			if (l.getSource() instanceof Node) {
-				l.setSource(nodes.get(((Node) l).getId()));
+			Linkable lso=l.getSource();
+			Linkable lsi=l.getSink();
+			if (lso instanceof Node) {
+				l.setSource(nodes.get(((Node) lso).getId()));
 			} else {
-				l.setSource(links.get(l.getIds()));
+				l.setSource(links.get(lso.getIds()));
 			}
 
-			if (l.getSink() instanceof Node) {
-				l.setSink(nodes.get(((Node) l).getId()));
+			if (lsi instanceof Node) {
+				l.setSink(nodes.get(((Node) lsi).getId()));
 			} else {
-				l.setSink(links.get(l.getIds()));
+				l.setSink(links.get(lsi.getIds()));
 			}
 		}
 
@@ -217,7 +219,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 		tempLinks.add(newLink);
 
-		tempLinks = linkableMap.get(newLink);
+		tempLinks = linkableMap.get(newSink);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
 			linkableMap.put(newLink, tempLinks);
