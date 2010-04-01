@@ -76,8 +76,8 @@ public class LidaXmlFactory implements LidaFactory {
 		// get the root element
 		Element docEle = dom.getDocumentElement();
 
-		LidaTaskManager tm= getTaskManager(docEle);
-		lida=new LidaImpl(tm);
+		LidaTaskManager tm = getTaskManager(docEle);
+		lida = new LidaImpl(tm);
 		
 		for (LidaModule lm : getModules(docEle)) {
 			lida.addModule(lm);
@@ -101,8 +101,7 @@ public class LidaXmlFactory implements LidaFactory {
 			Properties p = (Properties) vals[2];
 			Initializer initializer = null;
 			try {
-				initializer = (Initializer) Class.forName(classInit)
-						.newInstance();
+				initializer = (Initializer) Class.forName(classInit).newInstance();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -73,8 +73,9 @@ public class LidaGui extends javax.swing.JFrame {
 	 * @param lida
 	 * @param controller
 	 * @param panelsFile
+	 * @throws Exception 
 	 */
-	private void loadPanels(Properties panelProp) {
+	private void loadPanels(Properties panelProp){
 
 		String[][] panelsArray = new String[panelProp.size()][];
 		int i = 0;
