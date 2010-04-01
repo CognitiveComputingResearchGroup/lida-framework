@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGuiFactory;
  * 		2. Using a lida properties path (a String)
  * 		3. Using a Properties object created in another class (and/or project).
  * 
- * Or using the main(0 method with a lida properties path (a String)
+ * Or using the main method with a lida properties path (a String)
  * specified in the command line arguments.
  * 
  * @author Ryan J McCall, Javier Snaider

@@ -221,12 +221,12 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	public void initPanel(String[]param){
 		ModuleName moduleType=null;
 		if (param==null || param.length==0){
-		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
-		return;
+			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
+			return;
 		}
 		String[] modules = param[0].split("\\.");
 		try{
-		 moduleType= ModuleName.valueOf(modules[0]);
+			moduleType= ModuleName.valueOf(modules[0]);
 		}catch (Exception e){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
