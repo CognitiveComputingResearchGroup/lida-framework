@@ -69,6 +69,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 		return ModuleName.PamDriver + "";
 	}
 
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
 			if (module instanceof PerceptualAssociativeMemory

@@ -63,6 +63,9 @@ public class LidaFactoriesXMLLoader {
 			}
 			nfactory.addStrategy(sd.getName(), sd);
 		}
+		for(CodeletDef cd:codelets.values()){
+			nfactory.addCodeletType(cd);
+		}
 	}
 
 	private void parseXmlFile(String fileName) {

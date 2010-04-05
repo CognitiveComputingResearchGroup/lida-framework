@@ -90,6 +90,9 @@ public class LidaStarter {
 	 * Create and run a LIDA and a LidaGuiFactory using the properties object
 	 */
 	private static void run() {
+		//Load factories data
+		LidaFactoriesXMLLoader lidaFactoriesLoader=new LidaFactoriesXMLLoader();
+		lidaFactoriesLoader.loadData(lidaProperties);
 		// Create model, LIDA
 		Lida lida = new LidaXmlFactory().getLida(lidaProperties);
 		logger.log(Level.CONFIG, "LIDA created", 0L);

@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,7 +81,7 @@ public class LidaXmlFactory implements LidaFactory {
 		lida = new LidaImpl(tm);
 		
 		for (LidaModule lm : getModules(docEle)) {
-			lida.addModule(lm);
+			lida.addSubModule(lm);
 		}
 		for (ModuleDriver md : getDrivers(docEle)) {
 			lida.addModuleDriver(md);
@@ -91,14 +92,12 @@ public class LidaXmlFactory implements LidaFactory {
 		initializeModules();
 	}
 
-	/**
-	 * 
-	 */
+	@SuppressWarnings("unchecked")
 	private void initializeModules() {
 		for (Object[] vals : toInitialize) {
 			Initializable ini = (Initializable) vals[0];
 			String classInit = (String) vals[1];
-			Properties p = (Properties) vals[2];
+			Map<String,?> p = (Map<String,Object>) vals[2];
 			Initializer initializer = null;
 			try {
 				initializer = (Initializer) Class.forName(classInit).newInstance();
@@ -115,20 +114,16 @@ public class LidaXmlFactory implements LidaFactory {
 		if (nl != null && nl.getLength() > 0) {
 			 moduleElement = (Element) nl.item(0);
 		}
-		Properties params = XmlUtils.getParams(moduleElement);
-		int tickDuration=DEFAULT_TICK_DURATION;
-		int maxNumberOfThreads=DEFAULT_NUMBER_OF_THREADS;
-		try{
-		tickDuration = Integer.parseInt(params.getProperty("taskManager.tickDuration"));
-		}catch(Exception e){
-			logger.log(Level.WARNING, "TaskManager parameters are invalid. Default used.",0L);
-		}
-		try{
-		maxNumberOfThreads = Integer.parseInt(params.getProperty("taskManager.maxNumberOfThreads"));
-		}catch(Exception e){
-			logger.log(Level.WARNING, "TaskManager parameters are invalid. Default used.",0L);
-		}
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		
+		Integer tickDuration =(Integer) params.get("taskManager.tickDuration");
+		Integer maxNumberOfThreads =(Integer) params.get("taskManager.maxNumberOfThreads");
+		if (tickDuration==null){
+			tickDuration=DEFAULT_TICK_DURATION;
+		}
+		if(maxNumberOfThreads==null){
+			 maxNumberOfThreads=DEFAULT_NUMBER_OF_THREADS;			
+		}		
 		LidaTaskManager taskManager = new LidaTaskManager(tickDuration, maxNumberOfThreads);
 
 		return taskManager;
@@ -168,10 +163,10 @@ public class LidaXmlFactory implements LidaFactory {
 					+ " is not valid.", 0L);
 		}
 		module.setModuleName(moduleName);
-		Properties params = XmlUtils.getParams(moduleElement);
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		module.init(params);
 		for (LidaModule lm : getModules(moduleElement)) {
-			module.addModule(lm);
+			module.addSubModule(lm);
 		}
 		String classInit = XmlUtils.getTextValue(moduleElement,
 				"initializerclass");
@@ -241,7 +236,7 @@ public class LidaXmlFactory implements LidaFactory {
 		driver.setModuleName(moduleName);
 		driver.setTaskManager(lida.getTaskManager());
 		driver.setNumberOfTicksPerStep(ticks);
-		Properties params = XmlUtils.getParams(moduleElement);
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		driver.init(params);
 
 		String classInit = XmlUtils.getTextValue(moduleElement,

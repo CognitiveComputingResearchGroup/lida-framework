@@ -27,17 +27,13 @@ public class PamInitializer implements Initializer {
 	}
 
 	public void initModule(Initializable module, Lida lida,
-			Properties properties) {		
+			Map<String,?> params) {		
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 		SensoryMemory sm = (SensoryMemory) lida
 				.getSubmodule(ModuleName.SensoryMemory);
 		ModuleDriver driver = lida.getModuleDriver(ModuleName.PamDriver);
 		pam.setTaskSpawner(driver);
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("upscale", properties.getProperty("pam.Upscale"));
-		params.put("downscale", properties.getProperty("pam.Downscale"));
-		params.put("selectivity", properties.getProperty("pam.Selectivity"));
 		pam.setParameters(params);
 
 		// Nodes
@@ -68,6 +64,7 @@ public class PamInitializer implements Initializer {
 		pam.addNode(topLeft);
 		PamNodeImpl bottomRight = (PamNodeImpl) factory.getNode(
 				"PamNodeImpl", "bottomRight");
+		pam.addNode(bottomRight);
 		// Links
 		// TODO: make this a loop
 		pam.addLink(gold, metal, LinkType.CHILD,1.0);

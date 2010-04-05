@@ -1,20 +1,23 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
-public class CoalitionImpl implements Coalition{
+public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	
-	private NodeStructureImpl struct = new NodeStructureImpl();	
+	private NodeStructure struct = new NodeStructureImpl();	
 	private double attentionCodeletActivation;
 
 	public CoalitionImpl(NodeStructure content, double attnCodeActiv){
-		struct = (NodeStructureImpl) content;
+		struct = content;
 		attentionCodeletActivation = attnCodeActiv;
+		setActivation(calculateActivation());
+		
 	}
 
-	public double getActivation() {
+	public double calculateActivation() {
 		double sum = 0.0;
 		for(Node n: struct.getNodes())
 			sum += n.getActivation();
@@ -22,12 +25,7 @@ public class CoalitionImpl implements Coalition{
 	}
 
 	public BroadcastContent getContent() {
-		return struct;
+		return (BroadcastContent)struct;
 	}
 	
-	public void decay(long ticks) {
-		for(Node n: struct.getNodes())
-			n.decay(ticks);
-	}
-
 }//class

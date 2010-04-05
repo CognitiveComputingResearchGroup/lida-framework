@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -50,13 +51,17 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 		this(DEFAULT_QUEUE_SIZE);
 	}
 
+	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastQueue.offer((NodeStructure) bc);
+		NodeStructure ns=((NodeStructure) bc).copy();
+		broadcastQueue.offer(ns);
 		// Keep the buffer at a fixed size
-		if (broadcastQueue.size() > broadcastQueueCapacity)
+		while (broadcastQueue.size() > broadcastQueueCapacity){
 			broadcastQueue.poll();// remove oldest
+		}
 	}
 
+	@Override
 	public void learn() {
 		// Not applicable
 	}
@@ -81,6 +86,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 		return false;
 	}
 
+	@Override
 	public Object getModuleContent() {
 		return Collections.unmodifiableCollection(broadcastQueue);
 	}
@@ -88,6 +94,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 	public void mergeIn(NodeStructure ns) {
 	}
 
+	@Override
 	public void decayModule(long ticks) {
 		for (NodeStructure ns : broadcastQueue) {
 			Collection<Node> nodes = ns.getNodes();
@@ -107,12 +114,8 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 	public void addListener(ModuleListener listener) {
 	}
 
-	public void init(Properties p) {
-		try {
-			broadcastQueueCapacity = Integer.parseInt(p
-					.getProperty("workspace.broadcastQueueCapacity"));
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Error reading properties",0L);
-		}
+	public void init(Map<String,?> p) {
+		lidaProperties=p;
+		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_SIZE);
 	}
 }// class

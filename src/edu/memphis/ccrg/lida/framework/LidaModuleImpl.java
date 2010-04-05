@@ -4,7 +4,6 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class LidaModuleImpl implements LidaModule {
 
 	private ModuleName moduleName;
-	protected Properties lidaProperties;
+	protected Map<String, ?> lidaProperties;
 	private Map<ModuleName, LidaModule> submodules = new ConcurrentHashMap<ModuleName, LidaModule>();
 
 	public LidaModuleImpl(ModuleName moduleName) {
@@ -39,15 +38,15 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * @see
 	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
 	 */
-	public void init(Properties lidaProperties) {
-		this.lidaProperties = lidaProperties;
+	public void init(Map<String, ?> params) {
+		this.lidaProperties = params;
 	}
 
 	public LidaModule getSubmodule(ModuleName type) {
 		return submodules.get(type);
 	}
 
-	public void addModule(LidaModule lm) {
+	public void addSubModule(LidaModule lm) {
 		submodules.put(lm.getModuleName(), lm);
 	}
 
@@ -66,14 +65,24 @@ public abstract class LidaModuleImpl implements LidaModule {
 		for (LidaModule lm : submodules.values()) {
 			lm.decayModule(ticks);
 		}
-	} 
+	}
 
 	public void setModuleName(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
-	
 
 	public void setAssociatedModule(LidaModule module) {
+	}
+
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (lidaProperties != null) {
+			value = lidaProperties.get(name);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
 	}
 
 }

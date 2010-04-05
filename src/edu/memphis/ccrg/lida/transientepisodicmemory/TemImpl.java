@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,11 +70,13 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
      * @param cue a set of nodes used to cue this episodic memory
      * @return a future task with the local association related to the cue
      */
+	@Override
     public void cue(MemoryCue cue) {
     	NodeStructure ns =cue.getNodeStructure();
     	receiveCue(ns);
     }
     
+	@Override
 	public void receiveCue(NodeStructure ns) {		
     	BitVector address = null;
 		try {
@@ -98,22 +101,26 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
    return;
 	}
 
+	@Override
 	public void learn() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public Object getModuleContent() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof LocalAssociationListener){
 			localAssocListeners.add((LocalAssociationListener)listener);
 		}
 	}
 	
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
 			if (module instanceof PerceptualAssociativeMemory
@@ -123,12 +130,13 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 		}
 	}
 	
-	public void init(Properties lidaProperties) {
-		this.lidaProperties=lidaProperties;
-		numOfHardLoc = Integer.parseInt(lidaProperties.getProperty("tem.numOfHardLoc",""+DEF_HARD_LOCATIONS));
-		addressLength = Integer.parseInt(lidaProperties.getProperty("tem.addressLength",""+DEF_ADDRESS_LENGTH));
-		wordLength = Integer.parseInt(lidaProperties.getProperty("tem.wordLength",""+DEF_WORD_LENGTH));
-		int radious = Integer.parseInt(lidaProperties.getProperty("tem.activationRadious",""+DEF_ACTIVATION_RADIOUS));
+	@Override
+	public void init(Map<String,?> params) {
+		this.lidaProperties=params;
+		numOfHardLoc = (Integer)getParam("tem.numOfHardLoc",DEF_HARD_LOCATIONS);
+		addressLength = (Integer)getParam("tem.addressLength",DEF_ADDRESS_LENGTH);
+		wordLength = (Integer)getParam("tem.wordLength",DEF_WORD_LENGTH);
+		int radious = (Integer)getParam("tem.activationRadious",DEF_ACTIVATION_RADIOUS);
 		translator=new BasicTranslator(wordLength,pam);
 		sdm=new SparseDistributedMemoryImp(numOfHardLoc,radious,wordLength);
 	}

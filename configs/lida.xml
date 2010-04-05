@@ -2,46 +2,46 @@
 <lida xmlns="http://ccrg.cs.memphis.edu/LidaXMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaXMLSchema LidaXMLSchema.xsd ">
 	<taskmanager>
-		<param name="taskManager.tickDuration">1 </param>
-		<param name="taskManager.maxNumberOfThreads"> 100</param>
+		<param name="taskManager.tickDuration" type="int">1 </param>
+		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
 	</taskmanager>
 	<submodules>
 		<module name="Environment">
 			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionEnvironment</class>
-			<param name="height"> 10 </param>
-			<param name="width">10 </param>
+			<param name="height" type="int"> 10 </param>
+			<param name="width" type="int">10 </param>
 			<isdriver>true</isdriver>			
 		</module>
 		<module name="SensoryMemory">
 			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory</class>
 			<associatedmodule>Environment</associatedmodule>
-			<param name="sensoryMemory.ticksPerStep">12 </param>
+			<param name="sensoryMemory.ticksPerStep" type="int">12 </param>
 		</module>
 		<module name="SensoryMotorMemory">
 			<class>edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl</class>
 		</module>
 		<module name="PerceptualAssociativeMemory">
 			<class>edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl</class>
-			<param name="pam.ticksPerStep">8 </param>
-			<param name="pam.Upscale">.4 </param>
-			<param name="pam.Downscale">.5 </param>
-			<param name="pam.Selectivity">.9 </param>
+			<param name="pam.ticksPerStep" type="int">8 </param>
+			<param name="pam.Upscale" type="double">.4 </param>
+			<param name="pam.Downscale" type="double">.5 </param>
+			<param name="pam.Selectivity" type="double">.9 </param>
 			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer</initializerclass>
 		</module>
 		<module name="TransientEpisodicMemory">
 			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
 			<associatedmodule>PerceptualAssociativeMemory</associatedmodule>
-			<param name="tem.numOfHardLoc">10000</param>			
-			<param name="tem.addressLength">1000</param>			
-			<param name="tem.wordLength">1000</param>			
-			<param name="tem.activationRadious">451</param>			
+			<param name="tem.numOfHardLoc" type="int">10000</param>			
+			<param name="tem.addressLength" type="int">1000</param>			
+			<param name="tem.wordLength" type="int">1000</param>			
+			<param name="tem.activationRadious" type="int">451</param>			
 		</module>
 		<module name="DeclarativeMemory">
 			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
-			<param name="tem.numOfHardLoc">10000</param>			
-			<param name="tem.addressLength">1000</param>			
-			<param name="tem.wordLength">1000</param>			
-			<param name="tem.activationRadious">451</param>						
+			<param name="tem.numOfHardLoc" type="int">10000</param>			
+			<param name="tem.addressLength" type="int">1000</param>			
+			<param name="tem.wordLength" type="int">1000</param>			
+			<param name="tem.activationRadious" type="int">451</param>						
 		</module>
 		<module name="Workspace">
 			<class>edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl</class>
@@ -57,26 +57,27 @@
 				</module>
 				<module name="BroadcastQueue">
 					<class>edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl</class>
-					<param name="workspace.broadcastQueueCapacity">20 </param>
+					<param name="workspace.broadcastQueueCapacity" type="int">20 </param>
 				</module>
 			</submodules>
 		</module>
 		<module name="GlobalWorkspace">
 			<class>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl</class>
-			<param name="globalWorkspace.delayNoBroadcast">100 </param>
-			<param name="globalWorkspace.delayNoNewCoalition">50 </param>
-			<param name="globalWorkspace.aggregateActivationThreshold">.8 </param>
-			<param name="globalWorkspace.individualActivationThreshold">.5 </param>
+			<param name="globalWorkspace.delayNoBroadcast" type="int">100 </param>
+			<param name="globalWorkspace.delayNoNewCoalition" type="int">50 </param>
+			<param name="globalWorkspace.aggregateActivationThreshold" type="double">.8 </param>
+			<param name="globalWorkspace.individualActivationThreshold" type="double">.5 </param>
 			<isdriver>true</isdriver>
 			<initializerclass>edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer</initializerclass>
 		</module> 
 		<module name="ProceduralMemory">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl</class>
-			<param name="proceduralMemory.ticksPerStep"> 14 </param>
+			<param name="proceduralMemory.ticksPerStep" type="int"> 14 </param>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.ProceduralMemoryInitializer</initializerclass>
 		</module>
 		<module name="ActionSelection">
 			<class>edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl</class>
-			<param name="actionSelection.ticksPerStep"> 10</param>
+			<param name="actionSelection.ticksPerStep" type="int"> 10</param>
 		</module> 
 	</submodules>
 	<drivers>
@@ -95,6 +96,7 @@
 			<associatedmodule>Workspace</associatedmodule>
 			<associatedmodule>GlobalWorkspace</associatedmodule>
 			<ticksperstep>8</ticksperstep>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.AtentionDriverInitializer</initializerclass>
 		</driver>
 		<driver name="SbCodeletDriver">
 			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver</class>
@@ -104,13 +106,14 @@
 		<driver name="ProceduralDriver">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryDriver</class>
 			<associatedmodule>ProceduralMemory</associatedmodule>
-			<ticksperstep>5</ticksperstep>
+			<ticksperstep>20</ticksperstep>
 		</driver>
 		<driver name="WorkspaceDriver">
 			<class>edu.memphis.ccrg.lida.workspace.main.WorkspaceDriver</class>
 			<associatedmodule>Workspace</associatedmodule>
 			<ticksperstep>9</ticksperstep>
-			<param name="workspace.actThreshold">.4</param>
+			<param name="workspace.actThreshold"  type="double">0.4</param>
+			<param name="workspace.cueLap"  type="int">3</param>
 		</driver>
 	</drivers>
 	<listeners>

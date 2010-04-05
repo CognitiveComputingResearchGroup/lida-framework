@@ -6,7 +6,6 @@ package edu.memphis.ccrg.lida.globalworkspace;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,7 +26,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
-//TODO: make a TaskSpawner
 /**
  * This class implements GlobalWorkspace and maintains the collection of
  * Coalitions. It supports triggers that are in charge to trigger the new
@@ -93,6 +91,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	 */
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
+			logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getActualTick());
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -139,18 +138,6 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		}
 		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
 
-		// TODO: No attention codelet is going
-		// to be able to add a new coalition while the decaying
-		// process is working. The decaying process can be slow.
-		// So, a better solution maybe to create an aux collection
-		// before to decay and iterate over this aux collection.
-		// The add of the references to this aux collection does be
-		// synchronized but the decay iteration doesn't. On the other
-		// hand, we need to delete coalitions from the set when their
-		// activation is 0. So, for now, I suggest to use your solution,
-		// but copy this comment in the code and add a note please.
-
-		//decay(); TODO: change decay method for decayModule()
 		resetTriggers();
 		broadcastStarted.set(false);
 	}
@@ -181,16 +168,13 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 			fg.receiveGuiEvent(evt);
 	}
 
-	public void init(Properties lidaProperties) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public void decay(long ticks){
 		for (Coalition c : coalitions) {
 			c.decay(ticks);
 			if (c.getActivation()<=0.0){
 				coalitions.remove(c);
+				logger.log(Level.FINE,"Coallition removed",LidaTaskManager.getActualTick());
 			}
 	}
 	}
@@ -211,12 +195,10 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 
 	public void decayModule(long ticks){
 		decay(ticks);
+		logger.log(Level.FINEST,"Coallitions Decayed",LidaTaskManager.getActualTick());
 	}
 
-	public void addModule(LidaModule lm) {
-	}
-
-	public void setModuleName(ModuleName moduleName) {
+	public void addSubModule(LidaModule lm) {
 	}
 
 	public void addListener(ModuleListener listener) {
@@ -225,6 +207,4 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		}
 	}
 
-	public void setAssociatedModule(LidaModule module) {
-	}
 }// class

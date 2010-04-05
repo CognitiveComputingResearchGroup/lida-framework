@@ -188,12 +188,16 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getParameter(java.lang.String)
 	 */
-	public Object getParameter(String name) {
-		Object res = null;
+	@Override
+	public Object getParam(String name,Object defaultValue) {
+		Object value = null;
 		if (parameters != null) {
-			res = parameters.get(name);
+			value = parameters.get(name);
 		}
-		return res;
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
 	}
 	
 
@@ -216,8 +220,6 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 	
 	public void setNextExcecutionTickLap(long lapTick) {
-		this.nextExcecutionTickLap=lapTick;
-		
-	}
-	
+		this.nextExcecutionTickLap=lapTick;	
+	}	
 }// class

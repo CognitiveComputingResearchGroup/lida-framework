@@ -10,7 +10,9 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
 
-public interface ProceduralMemory{
+import edu.memphis.ccrg.lida.framework.LidaModule;
+
+public interface ProceduralMemory extends LidaModule{
 
 	/**
 	 * For adding modules that listen to Procedural Memory

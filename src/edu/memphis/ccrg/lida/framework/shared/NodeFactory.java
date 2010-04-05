@@ -18,6 +18,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * @author Javier Snaider
  * 
  */
+/**
+ * @author Javier
+ *
+ */
 public class NodeFactory {
 
 	private static NodeFactory instance;
@@ -53,6 +57,13 @@ public class NodeFactory {
 	private Map<String, LinkableDef> linkClasses = new HashMap<String, LinkableDef>();
 	private Map<String, LinkableDef> nodeClasses = new HashMap<String, LinkableDef>();
 	private Map<String, CodeletDef> codelets = new HashMap<String, CodeletDef>();
+
+	/**
+	 * @param nodeId the next nodeId to set
+	 */
+	public static void setNextNodeId(long nodeId) {
+		NodeFactory.nodeIdCount = nodeId;
+	}
 
 	private NodeFactory() {
 		defaultNodeClassName = "edu.memphis.ccrg.lida.framework.shared.NodeImpl";
@@ -108,8 +119,8 @@ public class NodeFactory {
 		nodeClasses.put(nodeDef.getName(), nodeDef);
 	}
 
-	public void addCodeletType(CodeletDef nodeDef) {
-		codelets.put(nodeDef.getName(), nodeDef);
+	public void addCodeletType(CodeletDef codeletDef) {
+		codelets.put(codeletDef.getName(), codeletDef);
 	}
 
 	public void addNodeType(String nodeType, String className) {
@@ -147,7 +158,7 @@ public class NodeFactory {
 		StrategyDef sd = exciteStrategies.get(name);
 		if (sd == null) {
 			sd = exciteStrategies.get(defaultExciteType);
-			logger.log(Level.WARNING, "Strategy " + defaultExciteType
+			logger.log(Level.WARNING, "Strategy " + name
 					+ " does not exist. Default used instead.", LidaTaskManager.getActualTick());
 		}
 		d = (ExciteStrategy) sd.getInstance();
@@ -168,9 +179,20 @@ public class NodeFactory {
 	}
 
 	public Link getLink(Link oLink, String linkT) {
-		LinkableDef linkDef = nodeClasses.get(linkT);		
+		LinkableDef linkDef = linkClasses.get(linkT);		
+		if (linkDef == null) {
+			logger.log(Level.WARNING, "LinkName " + linkT
+					+ " does not exist.", LidaTaskManager.getActualTick());
+			return null;
+		}
 		String decayB = linkDef.getDefeaultStrategies().get("decay");
 		String exciteB = linkDef.getDefeaultStrategies().get("excite");
+		if(decayB == null){
+			decayB=defaultDecayType;
+		}
+		if(exciteB == null){
+			exciteB=defaultExciteType;
+		}
 		
 		return getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getType(),decayB,exciteB,oLink.getActivation());
 	}
@@ -183,7 +205,22 @@ public class NodeFactory {
 	}
 
 	public Link getLink(String linkT, Linkable source, Linkable sink, LinkType type){
-		return getLink(linkT,source,sink,type,defaultDecayType,defaultExciteType,0.0);		
+		LinkableDef linkDef = linkClasses.get(linkT);		
+		if (linkDef == null) {
+			logger.log(Level.WARNING, "LinkName " + linkT
+					+ " does not exist.", LidaTaskManager.getActualTick());
+			return null;
+		}
+		String decayB = linkDef.getDefeaultStrategies().get("decay");
+		String exciteB = linkDef.getDefeaultStrategies().get("excite");
+		if(decayB == null){
+			decayB=defaultDecayType;
+		}
+		if(exciteB == null){
+			exciteB=defaultExciteType;
+		}
+		
+		return getLink(linkT,source,sink,type,decayB,exciteB,0.0);		
 	}
 		public Link getLink(String linkT, Linkable source, Linkable sink, LinkType type,String decayStrategy,
 				String exciteStrategy,double activation) {
@@ -203,8 +240,8 @@ public class NodeFactory {
 			l.setType(type);
 			l.setActivation(activation);
 
-//			String decayStrategy = linkDef.getDefeaultStrategies().get("decay");
-//			String exciteStrategy = linkDef.getDefeaultStrategies().get("excite");
+//			String decayB = linkDef.getDefeaultStrategies().get("decay");
+//			String exciteB = linkDef.getDefeaultStrategies().get("excite");
 			
 			setActivatibleStrategies(decayStrategy, exciteStrategy, l);	
 
@@ -232,7 +269,21 @@ public class NodeFactory {
 	}
 
 	public Node getNode(Node oNode, String nodeType) {
-		return getNode(oNode, nodeType, defaultDecayType, defaultExciteType);
+		LinkableDef nodeDef = nodeClasses.get(nodeType);		
+		if (nodeDef == null) {
+			logger.log(Level.WARNING, "nodeType " + nodeType
+					+ " does not exist.", LidaTaskManager.getActualTick());
+			return null;
+		}
+		String decayB = nodeDef.getDefeaultStrategies().get("decay");
+		String exciteB = nodeDef.getDefeaultStrategies().get("excite");
+		if(decayB == null){
+			decayB=defaultDecayType;
+		}
+		if(exciteB == null){
+			exciteB=defaultExciteType;
+		}
+		return getNode(oNode, nodeType, decayB, exciteB);
 	}
 
 	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy) {
@@ -255,13 +306,35 @@ public class NodeFactory {
 	public Node getNode(String nodeType, String nodeLabel) {
 
 		LinkableDef nodeDef = nodeClasses.get(nodeType);		
+		if (nodeDef == null) {
+			logger.log(Level.WARNING, "nodeType " + nodeType
+					+ " does not exist.", LidaTaskManager.getActualTick());
+			return null;
+		}
 		String decayB = nodeDef.getDefeaultStrategies().get("decay");
 		String exciteB = nodeDef.getDefeaultStrategies().get("excite");
+		if(decayB == null){
+			decayB=defaultDecayType;
+		}
+		if(exciteB == null){
+			exciteB=defaultExciteType;
+		}
 
 		Node n = getNode(nodeType, decayB, exciteB, nodeLabel,0.0);
 		return n;
 	}
 
+	/**
+	 * This method generates a new node.
+	 * A new id is generated for this node.
+	 * 
+	 * @param nodeType 
+	 * @param decayStrategy
+	 * @param exciteStrategy
+	 * @param nodeLabel
+	 * @param activation
+	 * @return
+	 */
 	public Node getNode(String nodeType, String decayStrategy,
 			String exciteStrategy, String nodeLabel, double activation) {
 		Node n = null;
@@ -397,5 +470,22 @@ public class NodeFactory {
 		}
 		return cod;
 	}
-
+	public Codelet getCodelet(String codeletName, int ticksPerStep, double activation, Map<String,?extends Object> params){
+		CodeletDef codeletDef = codelets.get(codeletName);
+		if (codeletDef == null) {
+			logger.log(Level.WARNING, "CodeletName " + codeletName
+					+ " does not exist.", LidaTaskManager.getActualTick());
+			return null;
+		}
+		String decayB = codeletDef.getDefeaultStrategies().get("decay");
+		String exciteB = codeletDef.getDefeaultStrategies().get("excite");
+		if(decayB == null){
+			decayB=defaultDecayType;
+		}
+		if(exciteB == null){
+			exciteB=defaultExciteType;
+		}
+	
+		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
+	}
 }// class

@@ -55,6 +55,9 @@
     		<element name="param" type="tns:param" maxOccurs="unbounded"
     			minOccurs="0">
     		</element>
+    		<element name="initializerclass" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
     	</sequence>
     	<attribute name="name" type="string" use="required"></attribute>
     </complexType>
@@ -77,11 +80,21 @@
     </complexType>
 
     <complexType name="param">
-       <simpleContent>
-      <extension base="string">
-    	<attribute name="name" type="string" use="required"></attribute>
-      </extension>
-    </simpleContent>
+    	<simpleContent>
+    		<extension base="string">
+    			<attribute name="name" type="string" use="required"></attribute>
+    			<attribute name="type" use="optional">
+    				<simpleType>
+    					<restriction base="string">
+    						<enumeration value="int"></enumeration>
+    						<enumeration value="double"></enumeration>
+    						<enumeration value="string"></enumeration>
+    						<enumeration value="boolean"></enumeration>
+    					</restriction>
+    				</simpleType>
+    			</attribute>
+    		</extension>
+    	</simpleContent>
     </complexType>
 
     <complexType name="listener">

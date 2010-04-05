@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,10 +40,11 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		jloc = imageWidth / 2;
 		environContent = new double[imageHeight][imageWidth];
 	}
-
-	public void init(Properties lidaProperties) {
-		imageHeight = Integer.parseInt(lidaProperties.getProperty("height"));
-		imageWidth = Integer.parseInt(lidaProperties.getProperty("width"));
+	@Override
+	public void init(Map<String,?> params) {
+		lidaProperties=params;
+		imageHeight = (Integer)getParam("height",10);
+		imageWidth = (Integer)getParam("width",10);
 		iloc = imageHeight / 2;
 		jloc = imageWidth / 2;
 		environContent = new double[imageHeight][imageWidth];
@@ -237,7 +239,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		return environContent;
 	}
 
-	public void addModule(LidaModule lm) {
+	public void addSubModule(LidaModule lm) {
 	}
 
 }// class

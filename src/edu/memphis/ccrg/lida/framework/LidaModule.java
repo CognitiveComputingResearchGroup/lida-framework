@@ -38,7 +38,7 @@ public interface LidaModule extends Initializable{
 	 */
 	public abstract void decayModule(long ticks);
 
-	public abstract void addModule(LidaModule lm);
+	public abstract void addSubModule(LidaModule lm);
 
 	public abstract void addListener(ModuleListener listener);
 }

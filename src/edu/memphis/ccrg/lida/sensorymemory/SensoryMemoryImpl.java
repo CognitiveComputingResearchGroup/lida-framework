@@ -22,11 +22,14 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl
 		super(ModuleName.SensoryMemory);
 	}
 
+	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof SensoryMemoryListener) {
 			addSensoryMemoryListener((SensoryMemoryListener) listener);
 		}
 	}
+	
+	@Override
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {
 		listeners.add(l);
 	}
@@ -40,7 +43,5 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl
 			}
 		}
 	}
-	
-	public abstract void processSensors();
-	
+		
 }// class

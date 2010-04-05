@@ -20,7 +20,7 @@ public class StrategyDef {
 	private Strategy instance = null;
 
 	/**
-	 * if this strategy is flyweight returns the instance, null otherwise.
+	 * if this strategy is flyweight returns the only one instance, a new instance otherwise.
 	 * 
 	 * @return the instance
 	 */

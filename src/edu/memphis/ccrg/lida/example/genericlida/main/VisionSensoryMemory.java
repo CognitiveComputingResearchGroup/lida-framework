@@ -10,16 +10,19 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 		sensoryContent = new double[5][5];
 	}
 
+	@Override
 	public void processSensors() {
 		sensoryContent = (double[][]) environment.getModuleContent();
 	}
 
+	@Override
 	public Object getContent(String type, Object... parameters) {
 		if ("vision".equalsIgnoreCase(type))
 			return sensoryContent;
 		return null;
 	}
 
+	@Override
 	public Object getModuleContent() {
 		return getContent("vision");
 	}

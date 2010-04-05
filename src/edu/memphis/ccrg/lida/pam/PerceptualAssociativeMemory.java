@@ -32,7 +32,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	/**
 	 * Updates PAM's parameters from the supplied map
 	 */
-	public void setParameters(Map<String, Object> parameters);
+	public void setParameters(Map<String, ?> parameters);
 	
 	/**
 	 * Changes how the nodes in this PAM are excited.

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LidaFactories xmlns="http://ccrg.cs.memphis.edu/LidaFactories" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaFactories LidaFactories.xsd ">
   <strategies>
-    <strategy flyweight="true" name="defaultexcite" type="excite">
+    <strategy flyweight="true" name="defaultExcite" type="excite">
       <class>edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy</class>
     </strategy>
-    <strategy flyweight="true" name="defaultdecay" type="decay">
+    <strategy flyweight="true" name="defaultDecay" type="decay">
       <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>
       <param name="m" type="double">0.006</param>
       <param name="b" type="double">0.0</param>
@@ -13,14 +13,14 @@
   <nodes>
     <node name="node">
       <class>edu.memphis.ccrg.lida.framework.shared.NodeImpl</class>
-      <defaultstrategy>defaultdecay</defaultstrategy>
-      <defaultstrategy>defaultexcite</defaultstrategy>
+      <defaultstrategy>defaultDecay</defaultstrategy>
+      <defaultstrategy>defaultExcite</defaultstrategy>
     </node>
   </nodes>
   <links>
     <link name="link">
       <class>edu.memphis.ccrg.lida.framework.shared.LinkImpl</class>
-      <defaultstrategy>defaultexcite</defaultstrategy>
+      <defaultstrategy>defaultExcite</defaultstrategy>
     </link>
   </links>
   <codelets>
@@ -32,9 +32,8 @@
       <class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector</class>
       <param name="rnd" type="double">0.03</param>
     </codelet>
-    <codelet name="attention" type="AttentionCodelet">
-      <class>edu.memphis.ccrg.lida.attention.AttentionCodeletImpl</class>
-      <param name="a" type="int">10</param>
-    </codelet>
+    <codelet name="BasicAttention" type="AttentionCodelet">
+      <class>edu.memphis.ccrg.lida.example.genericlida.attention.BasicAttention</class>
+     </codelet>
   </codelets>
 </LidaFactories>

@@ -1,7 +1,9 @@
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -151,9 +153,13 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		//Perceptual Associative Memory		
 		module = new PerceptualAssociativeMemoryImpl();
 //		((PerceptualAssociativeMemoryImpl)module).setTaskManager(taskManager);
-		module.init(lidaProperties);
+		Map<String,Object> params = new HashMap<String,Object>();
+		for(Entry<Object, Object> e:lidaProperties.entrySet()){
+			params.put((String)e.getKey(), e.getValue());
+		}
+		module.init(params);
 		Initializer initializer = new PamInitializer();
-		initializer.initModule(module,this,lidaProperties);
+		initializer.initModule(module,this,params);
 		modules.put(module.getModuleName(), module);
 		
 		//Transient Episodic Memory
@@ -176,7 +182,7 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		
 		module = new GlobalWorkspaceImpl(taskManager);
 		initializer = new GlobalWorkspaceInitalizer();
-		initializer.initModule(module,this,lidaProperties);
+		initializer.initModule(module,this,params);
 		modules.put(module.getModuleName(), module);
 		
 

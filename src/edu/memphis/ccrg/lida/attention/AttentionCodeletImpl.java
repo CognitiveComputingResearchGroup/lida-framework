@@ -9,6 +9,7 @@
 package edu.memphis.ccrg.lida.attention;
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -25,10 +26,13 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public class AttentionCodeletImpl extends LidaTaskImpl implements
 		AttentionCodelet {
 	
-	private WorkspaceBuffer csm; 
-	private GlobalWorkspace global;
-	private NodeStructure soughtContent;
+	protected WorkspaceBuffer csm;
+	protected GlobalWorkspace global;
+	protected NodeStructure soughtContent;
 
+	public  AttentionCodeletImpl() {		
+	}
+	
     public AttentionCodeletImpl(WorkspaceBuffer csm, GlobalWorkspace g, int ticksPerStep,
     							double activation, NodeStructure soughtContent){
     	super(ticksPerStep);
@@ -70,6 +74,60 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 	}
 	public String toString(){
 		return "AttentionCodelet-"+ getTaskId();
+	}
+	/**
+	 * @return the WorkspaceBuffer
+	 */
+	public WorkspaceBuffer getWorkspaceBuffer() {
+		return csm;
+	}
+
+	/**
+	 * @param csm the WorkspaceBuffer to set
+	 */
+	public void setWorkspaceBuffer(WorkspaceBuffer csm) {
+		this.csm = csm;
+	}
+
+	/**
+	 * @return the GlobalWorkspace
+	 */
+	public GlobalWorkspace getGlobalWorkspace() {
+		return global;
+	}
+
+	/**
+	 * @param gw the GlobalWorkspace to set
+	 */
+	public void setGlobalWorkspace(GlobalWorkspace gw) {
+		this.global = gw;
+	}
+
+	/**
+	 * @return the soughtContent
+	 */
+	public NodeStructure getSoughtContent() {
+		return soughtContent;
+	}
+
+	/**
+	 * @param soughtContent the soughtContent to set
+	 */
+	public void setSoughtContent(NodeStructure soughtContent) {
+		this.soughtContent = soughtContent;
+	}
+	
+	public void init(){
+		csm=(WorkspaceBuffer)getParam("csm",null);
+		soughtContent=(NodeStructure)getParam("soughtContent",null);
+		global=(GlobalWorkspace)getParam("gw",null);
+	}
+
+	@Override
+	public void setAssociatedModule(LidaModule module) {
+		if (module instanceof GlobalWorkspace){
+		global = (GlobalWorkspace) module;
+		}		
 	}
 
 }// class

@@ -10,7 +10,8 @@
 package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -19,7 +20,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * AttentionCodelet in LIDA communicates with the workspace returning coalitions
  * @author Ryan J McCall
  */
-public interface AttentionCodelet extends LidaTask{
+public interface AttentionCodelet extends Codelet{
  /**
   * Provides an accessable content in WorkspaceBuffer
   * @param csm
@@ -33,5 +34,16 @@ public interface AttentionCodelet extends LidaTask{
 	 * @return
 	 */
 	public abstract NodeStructure getSoughtContent(WorkspaceBuffer csm);
+	
+	/**
+	 * @param gw the GlobalWorkspace to set
+	 */
+	public void setGlobalWorkspace(GlobalWorkspace gw);
+	
+	public void setWorkspaceBuffer (WorkspaceBuffer wb);
+	/**
+	 * @return the WorkspaceBuffer
+	 */
+	public WorkspaceBuffer getWorkspaceBuffer();
 
 }

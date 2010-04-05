@@ -1,13 +1,11 @@
 package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
-import java.util.Properties;
+import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -27,7 +25,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 	//
 	private double defaultActiv = 1.0;// TODO: move these to factory?
 	private NodeStructure broadcastContent;
-	private static final int DEFAULT_TICKS_PER_CYCLE = 10;
+	private static final int DEFAULT_TICKS_PER_STEP = 10;
 
 	public AttentionDriver(WorkspaceBuffer csm, GlobalWorkspace gwksp,
 			int ticksPerCycle, LidaTaskManager tm) {
@@ -37,13 +35,15 @@ public class AttentionDriver extends ModuleDriverImpl implements
 	}
 
 	public AttentionDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.AttentionDriver);
+		super(DEFAULT_TICKS_PER_STEP, ModuleName.AttentionDriver);
 	}
 
+	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
 	}
 
+	@Override
 	public void runThisDriver(){
 		activateCodelets();
 	}
@@ -57,6 +57,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 		// }
 	}
 
+	@Override
 	public void learn() {
 		Collection<Node> nodes = broadcastContent.getNodes();
 		for (Node n : nodes) {
@@ -65,24 +66,14 @@ public class AttentionDriver extends ModuleDriverImpl implements
 		}
 	}// method
 
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		// TODO Auto-generated method stub
 
-	}
-
-	public void sendEvent(FrameworkGuiEvent evt) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void init(Properties p) {
+	@Override
+	public void init(Map<String,?> params) {
+		lidaProperties=params;
 		int ticksperstep = 0;
-		try {
-			ticksperstep = Integer.parseInt(p
-					.getProperty("AttetionSelection.ticksperstep"));
-		} catch (Exception e) {
-		}
+		ticksperstep = (Integer)getParam("AttetionSelection.ticksperstep",DEFAULT_TICKS_PER_STEP);
 		setNumberOfTicksPerStep(ticksperstep);
+		defaultActiv=(Double)getParam("AttetionSelection.defaultActiv",1.0);
 	}
 
 	@Override
@@ -90,6 +81,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 		return ModuleName.AttentionDriver + "";
 	}
 
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
 			if (module instanceof WorkspaceBuffer

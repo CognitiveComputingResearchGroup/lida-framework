@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,9 +66,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	private TaskSpawner taskSpawner;
 	//
 	private PropagationBehavior propagationBehavior;
-
-	private Properties lidaProperties;
-	
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
@@ -203,7 +199,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
      * 
      */
-	public void setParameters(Map<String, Object> parameters) {
+	public void setParameters(Map<String, ?> parameters) {
 		Object o = parameters.get("upscale");
 		if ((o != null) && (o instanceof Double)) {
 			synchronized (this) {
@@ -232,11 +228,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public ModuleName getModuleName() {
 		return ModuleName.PerceptualAssociativeMemory;
-	}
-
-	public void init(Properties lidaProperties) {
-		this.lidaProperties=lidaProperties;
-		
 	}
 
 	public Object getModuleContent() {

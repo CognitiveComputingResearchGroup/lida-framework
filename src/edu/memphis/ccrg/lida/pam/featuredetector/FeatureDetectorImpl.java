@@ -38,9 +38,9 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	}
 	
 	public void init(){
-		pam=(PerceptualAssociativeMemory)getParameter("PAM");
-		sm=(SensoryMemory)getParameter("SensoryMemory");
-		pamNode=(PamNode)getParameter("PamNode");
+		pam=(PerceptualAssociativeMemory)getParam("PAM",null);
+		sm=(SensoryMemory)getParam("SensoryMemory",null);
+		pamNode=(PamNode)getParam("PamNode",null);
 	}
 
 	public void setPamNode(PamNode node) {

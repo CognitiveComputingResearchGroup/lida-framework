@@ -20,15 +20,18 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.SensoryMemoryDriver);
 	}//constructor
 		
+	@Override
 	public void runThisDriver(){
 		sm.processSensors();		
 	}
 
+	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void sendEvent(FrameworkGuiEvent evt) {
 		// TODO Auto-generated method stub
 		
@@ -39,6 +42,7 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 		return ModuleName.SensoryMemoryDriver + "";
 	}
 	
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
 			if (module instanceof SensoryMemory

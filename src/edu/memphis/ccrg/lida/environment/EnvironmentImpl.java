@@ -27,7 +27,7 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	public EnvironmentImpl(int ticksPerCycle){
 		super(ticksPerCycle, ModuleName.Environment);
 	}
-	
+	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener){
 		listeners.add(listener);
 	}
@@ -37,6 +37,7 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	 * times, so the event to be sent is passed as a parameter.
 	 * @param evt
 	 */
+	@Override
 	public void sendEvent(FrameworkGuiEvent evt){
 		for(FrameworkGuiEventListener l: listeners)
 			l.receiveGuiEvent(evt);
@@ -48,11 +49,13 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	 * register instances of @FrameworkGuiEventListener to your environment
 	 * 
 	 */
+	@Override
 	public void addListener(ModuleListener listener){}
 	/**
 	 * Does not need to be implemented
 	 */
-	public void addModule(LidaModule lm) { 	}
+	@Override
+	public void addSubModule(LidaModule lm) { 	}
 	
 	/**
 	 * Does not need to be implemented

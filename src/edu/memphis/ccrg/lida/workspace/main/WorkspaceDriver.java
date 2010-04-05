@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.workspace.main;
 
+import java.util.Map;
 import java.util.Properties;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
@@ -19,8 +20,11 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  */
 public class WorkspaceDriver extends ModuleDriverImpl {
 
+	private static final double DEFAULT_ACT_THRESHOLD = 0.4;
 	private Workspace workspace;
 	private double actThreshold;
+	private int cueLap;
+	private int cueLapCounter;
 
 	/*
 	 * (non-Javadoc)
@@ -30,22 +34,35 @@ public class WorkspaceDriver extends ModuleDriverImpl {
 	@Override
 	protected void runThisDriver() {
 		cue();
+		moveToCSM();
 
 	}
 
-	private void cue() {
+	private void moveToCSM() {
 		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
-				.getSubmodule(ModuleName.PerceptualBuffer);
+		.getSubmodule(ModuleName.PerceptualBuffer);		
 		NodeStructure ns = (NodeStructure) percepBuff.getModuleContent();
-		NodeStructure cueNs = new NodeStructureImpl();
+		WorkspaceBuffer csm = (WorkspaceBuffer) workspace
+		.getSubmodule(ModuleName.CurrentSituationalModel);		
+		((NodeStructure)csm.getModuleContent()).mergeWith(ns);
+	}
 
-		for (Node n : ns.getNodes()) {
-			if (n.getActivation() >= actThreshold) {
-				cueNs.addNode(n);
+	private void cue() {
+		if (cueLapCounter++ >= cueLap) {
+			cueLapCounter = 0;
+			WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
+					.getSubmodule(ModuleName.PerceptualBuffer);
+			NodeStructure ns = (NodeStructure) percepBuff.getModuleContent();
+			NodeStructure cueNs = new NodeStructureImpl();
+
+			for (Node n : ns.getNodes()) {
+				if (n.getActivation() >= actThreshold) {
+					cueNs.addNode(n);
+				}
 			}
-		}
-		if (cueNs.getNodeCount() > 0) {
-			workspace.cue(cueNs);
+			if (cueNs.getNodeCount() > 0) {
+				workspace.cue(cueNs);
+			}
 		}
 	}
 
@@ -63,13 +80,11 @@ public class WorkspaceDriver extends ModuleDriverImpl {
 		}
 	}
 
-	public void init(Properties lidaProperties) {
-		this.lidaProperties = lidaProperties;
-		actThreshold = Double.parseDouble(lidaProperties
-				.getProperty("workspace.actThreshold"));
-		// addressLength =
-		// Integer.parseInt(lidaProperties.getProperty("tem.addressLength"
-		// ,""+DEF_ADDRESS_LENGTH));
+	@Override
+	public void init(Map<String, ?> params) {
+		this.lidaProperties = params;
+		actThreshold = (Double) getParam("workspace.actThreshold",DEFAULT_ACT_THRESHOLD);
+		cueLap = (Integer)getParam("workspace.cueLap",1);
 	}
 
 }

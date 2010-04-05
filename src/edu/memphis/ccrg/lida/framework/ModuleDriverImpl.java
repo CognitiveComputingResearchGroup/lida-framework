@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -13,7 +13,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	protected static final int DEFAULT_TICKS_PER_CYCLE = 10;
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private ModuleName moduleName;
-	protected Properties lidaProperties;
+	protected Map<String,?> lidaProperties;
 
 	public ModuleDriverImpl(int ticksPerCycle, LidaTaskManager tm,ModuleName moduleName){
 		super(ticksPerCycle, tm);
@@ -46,9 +46,12 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 			gui.receiveGuiEvent(evt);
 	}// method	
 	
+	@Override
 	public ModuleName getModuleName(){
 		return moduleName;
 	}
+
+	@Override
 	public void setModuleName(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
@@ -58,12 +61,24 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	 * @see
 	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
 	 */
-	public void init(Properties lidaProperties) {
-			this.lidaProperties = lidaProperties;
+	@Override
+	public void init(Map<String, ?> params) {
+			this.lidaProperties = params;
 	}
 
 	public void setAssociatedModule(LidaModule module) {
 	}
 
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (lidaProperties != null) {
+			value = lidaProperties.get(name);
+			if (value == null) {
+				value = defaultValue;
+			}
+		}
+		return value;
+	}
 	
 }// class

@@ -82,11 +82,12 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	/**
 	 * A convenience method to get the value of one init parameter
 	 * @param name the name of the parameter
+	 * @param defaultValue the value to be used if the parameter name is not present in the parameters
 	 * @return the value of the parameter
 	 * 
 	 * @see init(Map<String, Object> parameters)
 	 */
-	public Object getParameter(String name);
+	public Object getParam(String name,Object defaultValue);
 
 	public abstract String toString();
 	

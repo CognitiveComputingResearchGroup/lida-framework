@@ -6,25 +6,17 @@
  * http://ccrg.cs.memphis.edu/
  * All rights reserved.
  */
-package edu.memphis.ccrg.lida.example.shared;
+package edu.memphis.ccrg.lida.framework.shared;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
-import edu.memphis.ccrg.lida.framework.shared.LinkType;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class

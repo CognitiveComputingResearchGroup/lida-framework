@@ -11,19 +11,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  *
  */
 public interface WorkspaceBuffer extends LidaModule{
-
-//	/**
-//	 * @return NodeStructure representation of the buffer contents.
-//	 */
-//	public abstract Object getModuleContent();
-//	
-//	/**
-//	 * decays all the nodes in the buffer.
-//	 * If a node's activation results lower than lowerActivationBound, it is removed from the buffer.
-//	 * 
-//	 * @param lowerActivationBound
-//	 */
-//	public void decayNodes(double lowerActivationBound);
 	
  public void setLowerActivationBound (double lowerActivationBound);
 }
