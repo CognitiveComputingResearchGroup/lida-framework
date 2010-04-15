@@ -434,8 +434,8 @@ public class NodeFactory {
 		}
 	}
 	
-	public Codelet getCodelet(String codeletName, String decayStrategy,
-			String exciteStrategy, int ticksPerStep, double activation, Map<String,?extends Object> params){
+	public Codelet getCodelet(String codeletName, String decayStrategy, String exciteStrategy, 
+							  int ticksPerStep, double activation, Map<String,?extends Object> params){
 		Codelet cod = null;
 		try {
 			CodeletDef codeletDef = codelets.get(codeletName);
@@ -453,7 +453,7 @@ public class NodeFactory {
 			
 			if (params != null){
 				cod.init(params);
-			}else{
+			}else{//Use the default parameters in the factoriesData.xml file
 				cod.init(codeletDef.getParams());
 			}
 			
