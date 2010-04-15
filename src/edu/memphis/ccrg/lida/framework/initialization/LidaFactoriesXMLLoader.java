@@ -121,9 +121,9 @@ public class LidaFactoriesXMLLoader {
             result= true;
         }
         catch (SAXException ex) {
-        	logger.log(Level.WARNING,xmlFile + " is not valid because " +ex.getMessage());
+        	logger.log(Level.WARNING,xmlFile + " is not valid because " + ex.getMessage());
         } catch (IOException ex) {
-        	logger.log(Level.WARNING,xmlFile + " is not a valid file." +ex.getMessage());
+        	logger.log(Level.WARNING,xmlFile + " is not a valid file." + ex.getMessage());
 		}  
         return result;
 	}
