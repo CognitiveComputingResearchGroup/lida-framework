@@ -38,9 +38,9 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	}
 	
 	public void init(){
-		pam=(PerceptualAssociativeMemory)getParam("PAM",null);
-		sm=(SensoryMemory)getParam("SensoryMemory",null);
-		pamNode=(PamNode)getParam("PamNode",null);
+		pam = (PerceptualAssociativeMemory)getParam("PAM",null);
+		sm = (SensoryMemory)getParam("SensoryMemory",null);
+		pamNode = (PamNode)getParam("PamNode",null);
 	}
 
 	public void setPamNode(PamNode node) {
@@ -57,12 +57,13 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 			logger.log(Level.FINE,"Pam excited: "+amount,LidaTaskManager.getActualTick());			
 			excitePam(amount);
 		}
-	}
+	}//method
 
-	//Override this method for domain-specific feature detector impl's
-	public double detect() {
-		return 0.0;
-	}
+	/**
+	 * Override this method for domain-specific feature detection
+	 */
+	public abstract double detect();
+	
 	public void excitePam(double amount){
 		pam.receiveActivationBurst(pamNode, amount);
 	}

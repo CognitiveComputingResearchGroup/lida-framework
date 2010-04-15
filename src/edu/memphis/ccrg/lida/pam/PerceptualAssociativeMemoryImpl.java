@@ -200,18 +200,18 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
      * 
      */
 	public void setParameters(Map<String, ?> parameters) {
-		Object o = parameters.get("upscale");
+		Object o = parameters.get("pam.Upscale");
 		if ((o != null) && (o instanceof Double)) {
 			synchronized (this) {
 				pamNodeStructure.setUpscale((Double) o);
 			}
 		}
-		o = parameters.get("downscale");
+		o = parameters.get("pam.Downscale");
 		if ((o != null) && (o instanceof Double))
 			synchronized (this) {
 				pamNodeStructure.setDownscale((Double) o);
 			}
-		o = parameters.get("selectivity");
+		o = parameters.get("pam.Selectivity");
 		if ((o != null) && (o instanceof Double)) {
 			synchronized (this) {
 				pamNodeStructure.setSelectivity((Double) o);

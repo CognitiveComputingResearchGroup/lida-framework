@@ -116,8 +116,28 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		
-		Integer tickDuration =(Integer) params.get("taskManager.tickDuration");
-		Integer maxNumberOfThreads =(Integer) params.get("taskManager.maxNumberOfThreads");
+		Object t = params.get("taskManager.tickDuration");
+		Object m = params.get("taskManager.maxNumberOfThreads");
+		
+		Integer tickDuration = null; 
+		Integer maxNumberOfThreads = null;
+		
+		if(t instanceof String){
+			tickDuration = Integer.parseInt((String) t);
+		}else if(t instanceof Integer){
+			tickDuration = (Integer)t;
+		}else{
+			logger.warning("Could not load tick duration. using default");
+		}
+		
+		if(m instanceof String){
+			maxNumberOfThreads = Integer.parseInt((String) m);
+		}else if(m instanceof Integer){
+			maxNumberOfThreads = (Integer)m;
+		}else{
+			logger.warning("Could not load max no of threads, using default");
+		}
+		
 		if (tickDuration==null){
 			tickDuration=DEFAULT_TICK_DURATION;
 		}
