@@ -145,8 +145,7 @@ public class NodeImplTest extends TestCase{
 	 * This method is used to test the NodeImpl.getNodeClass() method
 	 */
 	@Test
-	public void testGetNodeClass() {
-		
+	public void testGetNodeClass() {		
 		
 		assertEquals("Problem with getNodeClass", classN,node1.getNodeClass());
 	}	
@@ -158,5 +157,15 @@ public class NodeImplTest extends TestCase{
 		
 		node2.setNodeClass(classN);	
 		assertEquals("Problem with setNodeClass", classN,node2.getNodeClass());
+	}	
+	
+	/**
+	 * This method is used to test the NodeImpl.hashCode() method
+	 */
+	@Test
+	public void testHashCode() {
+		
+		int code = node1.hashCode();	
+		assertEquals("Problem with setNodeClass", 1 % 31 ,code);
 	}	
 }
