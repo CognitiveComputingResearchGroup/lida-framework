@@ -23,7 +23,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	public void receiveScheme(Scheme s) {
-		//System.out.println("scheme id " + s.getId());
+		
 	}
 	
 	public void sendAction(LidaAction a){
