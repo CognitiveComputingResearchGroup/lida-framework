@@ -134,7 +134,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
 			FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.GlobalWorkspace, coalitions.size()+"");
-			sendEvent(ge);
+			sendEventToGui(ge);
 		}
 		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
 
@@ -163,7 +163,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		guis.add(listener);
 	}
 
-	public void sendEvent(FrameworkGuiEvent evt) {
+	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : guis)
 			fg.receiveGuiEvent(evt);
 	}

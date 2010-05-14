@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvider {
 
@@ -31,8 +33,16 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	}// method
 
 	public void runThisDriver() {
-		activateCodelets();
-		//sendEvent();
+		//activateCodelets();
+		//sendEventToGui();
+	}
+	
+
+	
+	@Override
+	public void init(Map<String, ?> params) {
+		super.init(params);
+		
 	}
 
 	/**
@@ -48,7 +58,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}	
-	public void sendEvent(FrameworkGuiEvent evt) {
+	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)
 			gui.receiveGuiEvent(evt);
 	}//method
@@ -57,13 +67,15 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	 * @param type - See SBCodeletFactory for which integer values correspond to
 	 * which type
 	 */
-	@SuppressWarnings("unused")
-	private void spawnNewCodelet(int type, double activation, 
-								 NodeStructure context, CodeletAction actions){
-		//TODO: use factory?
-		StructureBuildingCodelet sbc = null;//sbCodeletFactory.getCodelet(type, activation, context, actions);
-		this.addTask(sbc);
-		logger.log(Level.FINER,"New codelet "+sbc+"spawned",LidaTaskManager.getActualTick());
+	public void spawnNewCodelet(){
+		//TODO: use factory
+		WorkspaceBuffer csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
+		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
+		StructureBuildingCodelet basic = new SbCodeletImpl(csm, perceptualBuffer);
+		
+		//sbCodeletFactory.getCodelet(type, activation, context, actions);
+		this.addTask(basic);
+		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getActualTick());
 	}// method
 
 	@Override

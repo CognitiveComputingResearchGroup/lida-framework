@@ -13,9 +13,9 @@ public interface CodeletAction {
 	/**
 	 * An action from specified ordered buffer to a destination buffer 
 	 * @param buffer
-	 * @param destination
+	 * @param csm 
 	 */	
-	public void performAction(WorkspaceBuffer buffer);
+	public void performAction(WorkspaceBuffer buffer, WorkspaceBuffer csm);
 	
 }
   

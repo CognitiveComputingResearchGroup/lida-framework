@@ -31,7 +31,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	/**
 	 * Parameter for how often pam is decayed.
 	 */
-	private static final int DEFAULT_DECAY_TIME = 5;
+	private static final int DEFAULT_DECAY_TIME = 10;
 	
 	private PerceptualAssociativeMemory pam;
 	
@@ -49,6 +49,10 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	protected void runThisDriver() {
 		decayCounter++;
 		if (decayCounter >= decayTime) {
+//			PamNodeStructure pm = pam.getNodeStructure();
+//			System.out.println("\n upscale " + pm.getUpscale());
+//			System.out.println("downscale " + pm.getDownscale());
+//			System.out.println("selectivity " + pm.getSelectivity());
 			//pam.decayPam(); // Decay the activations TODO: delete this class
 			decayCounter = 0;
 		}

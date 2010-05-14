@@ -18,10 +18,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class PamNodeStructure extends NodeStructureImpl{
 	private static Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
 	
-	private Double upscaleFactor = 0.7;
-	@SuppressWarnings("unused")
-	private Double downscaleFactor = 0.5;
-	private Double selectivityThreshold = 0.8;
+	private Double upscaleFactor = 0.1;
+
+	private Double downscaleFactor = 0.2;
+	private Double selectivityThreshold = 0.3;
 	
 	public PamNodeStructure(){
 		super("PamNodeImpl", "LinkImpl");
@@ -45,7 +45,14 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public void setDownscale(Double d) {
 		downscaleFactor  = d;		
 	}
+	public double getDownscale(){
+		return downscaleFactor;
+	}
+	
 
+	public double getSelectivity() {
+		return selectivityThreshold;
+	}
 	/**
 	 * Set selectivity threshold
 	 * @param s
@@ -209,6 +216,5 @@ public class PamNodeStructure extends NodeStructureImpl{
 		for(Node n: getNodes())
 			((PamNodeImpl)n).printActivationString();
 	}//method
-
 
 }//class

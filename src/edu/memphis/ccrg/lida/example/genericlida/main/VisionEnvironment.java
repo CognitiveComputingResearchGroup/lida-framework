@@ -225,7 +225,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		frameworkGuis.add(listener);
 	}
-	public void sendEvent(FrameworkGuiEvent evt) {
+	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : frameworkGuis)
 			fg.receiveGuiEvent(evt);
 	}

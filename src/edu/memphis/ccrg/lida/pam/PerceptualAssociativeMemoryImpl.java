@@ -103,12 +103,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		if(node != null){
 			detector.setPamNode(node);
 			featureDetectors.add(detector);
-			//taskManager.addTask(detector);
+			
+			//TODO: Create method addInitialTask??
+			taskSpawner.addTask(detector);
 			return true;
 		}else
-			logger.log(Level.SEVERE, "Failed to addFeatureDetector. Node " + 
+			logger.log(Level.SEVERE, "Failed to add feature detector. Corresponding node \"" + 
 									 detector.getPamNode().getLabel() + 
-									 " was not found in pam",LidaTaskManager.getActualTick());
+									 "\" was not found in pam", LidaTaskManager.getActualTick());
 		return false;
 	}//method
 
@@ -201,21 +203,56 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
      */
 	public void setParameters(Map<String, ?> parameters) {
 		Object o = parameters.get("pam.Upscale");
-		if ((o != null) && (o instanceof Double)) {
-			synchronized (this) {
-				pamNodeStructure.setUpscale((Double) o);
+		if (o != null) {
+			if(o instanceof String){
+				double d = Double.parseDouble((String) o);
+				synchronized (this) {
+					pamNodeStructure.setUpscale(d);
+				}
+			}
+			else if (o instanceof Double){ 
+				synchronized (this) {
+					pamNodeStructure.setUpscale((Double) o);
+				}
+			}
+			else{
+				logger.warning("Unable to set UPSCALE parameter, using the default in PamNodeStructure");
 			}
 		}
 		o = parameters.get("pam.Downscale");
-		if ((o != null) && (o instanceof Double))
-			synchronized (this) {
-				pamNodeStructure.setDownscale((Double) o);
+		if (o != null){
+			if(o instanceof String){
+				double d = Double.parseDouble((String) o);
+				synchronized (this) {
+					pamNodeStructure.setDownscale(d);
+				}
 			}
+			else if (o instanceof Double){ 
+				synchronized (this) {
+					pamNodeStructure.setDownscale((Double) o);
+				}
+			}
+			else{
+				logger.warning("Unable to set DOWNSCALE parameter, using the default in PamNodeStructure");
+			}
+		}
+				
 		o = parameters.get("pam.Selectivity");
-		if ((o != null) && (o instanceof Double)) {
-			synchronized (this) {
-				pamNodeStructure.setSelectivity((Double) o);
+		if (o != null){
+			if(o instanceof String){
+				double d = Double.parseDouble((String) o);
+				synchronized (this) {
+					pamNodeStructure.setSelectivity(d);
+				}
 			}
+			else if (o instanceof Double){ 
+				synchronized (this) {
+					pamNodeStructure.setSelectivity((Double) o);
+				}
+			}
+			else{
+				logger.warning("Unable to set Selectivity parameter, using the default in PamNodeStructure");
+			} 
 		}
 	}// method
 

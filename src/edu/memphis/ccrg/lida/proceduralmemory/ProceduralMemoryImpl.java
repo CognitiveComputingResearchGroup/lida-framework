@@ -22,7 +22,16 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
+/**
+ * 
+ * @author ryanjmccall
+ *
+ */
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener{
+	
+	/**
+	 * 
+	 */
 	private static Logger logger = Logger.getLogger("lida.proceduralmemory");
 
 	/**
@@ -83,7 +92,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 				existingSchemes.add(s);
 			}//for links
 		}//for schemes
-	}
+	}//method
 	
 	/**
 	 * TODO: Consider other ways of storing the incoming broadcast.
@@ -130,6 +139,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		if (listener instanceof ProceduralMemoryListener){
 			addProceduralMemoryListener((ProceduralMemoryListener)listener);
 		}
-	}
+	}// method
 
 }// class

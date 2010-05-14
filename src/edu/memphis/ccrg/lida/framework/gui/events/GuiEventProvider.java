@@ -17,5 +17,5 @@ public interface GuiEventProvider {
 	 * times, so the event to be sent is passed as a parameter.
 	 * @param evt
 	 */
-	public abstract void sendEvent(FrameworkGuiEvent evt);
+	public abstract void sendEventToGui(FrameworkGuiEvent evt);
 }

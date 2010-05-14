@@ -32,7 +32,7 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 	}
 
 	@Override
-	public void sendEvent(FrameworkGuiEvent evt) {
+	public void sendEventToGui(FrameworkGuiEvent evt) {
 		// TODO Auto-generated method stub
 		
 	}

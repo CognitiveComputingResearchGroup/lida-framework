@@ -41,7 +41,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	/**
 	 * Send a gui event
 	 */
-	public void sendEvent(FrameworkGuiEvent evt) {
+	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)
 			gui.receiveGuiEvent(evt);
 	}// method	

@@ -9,4 +9,5 @@ public interface FeatureDetector extends LidaTask {
 	public abstract PamNode getPamNode();
 	public abstract void setPamNode(PamNode node);
 	public abstract void excitePam(double detectionActivation);
+	public abstract void setParam(String name, Object value);
 }
