@@ -196,7 +196,7 @@ public class LinkImplTest extends TestCase{
 		assertEquals("Problem with LinkImpl constructor having parameters", node1, link5.getSource());
 		assertEquals("Problem with LinkImpl constructor having parameters", node2, link5.getSink());
 		assertEquals("Problem with LinkImpl constructor having parameters", linktype1, link5.getType());
-		assertEquals("Problem with LinkImpl constructor having parameters", "link5", link5.getId());
+		assertEquals("Problem with LinkImpl constructor having parameters", "link5", link5.getIds());
 		
 	}
 
