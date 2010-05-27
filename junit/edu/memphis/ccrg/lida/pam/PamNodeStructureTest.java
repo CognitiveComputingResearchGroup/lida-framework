@@ -42,7 +42,6 @@ public class PamNodeStructureTest extends TestCase{
 		 
 		 node1.setId(1);
 		 node2.setId(2);
-		 link1.setIds("link1");
 		 link1.setSource(node1);
 		 link1.setSink(node2);
 		 

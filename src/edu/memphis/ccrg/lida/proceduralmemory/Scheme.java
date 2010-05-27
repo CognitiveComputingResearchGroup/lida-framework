@@ -7,6 +7,10 @@
  */
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -22,13 +26,54 @@ public interface Scheme extends Activatible{
 	public void setId(long id);
 	public long getId();
 	
-	public NodeStructure getContext();
-	public void setContext(NodeStructure ns);
+	public double getCuriosity();
+	public void setCuriosity(double curiosity);
+
+	public double getReliability();
+	public boolean isReliable();
 	
-	public NodeStructure getResult();
-	public void setResult(NodeStructure ns);
+	/**
+	 * Standard getter for intrinsicBehavior.
+	 * @return the boolean value of intrinsicBehavior
+	 */
+	public boolean isIntrinsicBehavior();
+	/**
+	 * Standard setter for intrinsicBehavior.
+	 * @param intrinsicBehavior the boolean value of intrinsicBehavior
+	 */
+	public void setIntrinsicBehavior(boolean intrinsicBehavior);
 	
-	public LidaAction getSchemeAction();
-	public void setSchemeAction(LidaAction a);
+	public int getNumberOfExecutions();
+	/**
+	 * Standard setter for numberOfExecutions.
+	 * @param numberOfExecutions the int value of numberOfExecutions
+	 */
+	public void setNumberOfExecutions(int numberOfExecutions);
+	/**
+	 * Increment numberOfExecutions.
+	 */
+	public void incrementNumberOfExecutions();
+
+	/**
+	 * Decay curiosity.
+	 */
+	public void decayCuriosity();
+
+	
+	public List<NodeStructure> getContextConditions();
+	public List<NodeStructure>  getContextConditions(long argumentId);
+	
+	public void addContextCondition(long argumentId,NodeStructure ns);
+	
+	public List<NodeStructure> getResultConditions();
+	public List<NodeStructure> getResultConditions(long argumentId);
+	public void addResultConditions(long argumentId,NodeStructure ns);
+	
+	public void addArgument (Argument a);
+	public Argument getArgument (long argumentId);
+	public Collection<Argument> getArguments ();
+	
+	public long getSchemeActionId();
+	public void setSchemeActionId(long actionId);
 	
 }//interface

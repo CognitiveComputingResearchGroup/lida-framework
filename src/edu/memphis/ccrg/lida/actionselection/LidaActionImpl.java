@@ -1,39 +1,54 @@
 package edu.memphis.ccrg.lida.actionselection;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 /**
  * @author Javier Snaider
- *
+ * 
  */
-public abstract class LidaActionImpl implements LidaAction{
-	
-	private Object content = 0;
+public abstract class LidaActionImpl implements LidaAction {
+
+	private long id;
+	private Object content;
 	protected LidaModule module;
 	private String label;
+	private List<LidaAction> subActions;
+	private Topology topology = Topology.BASIC;
 
-	public LidaActionImpl(){
+	public LidaActionImpl() {
 	}
-	
-	public LidaActionImpl(String label){
+
+	public LidaActionImpl(String label) {
 		this.label = label;
 	}
-		
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.actionselection.LidaAction#setContent(java.lang.Object)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.actionselection.LidaAction#setContent(java.lang
+	 * .Object)
 	 */
-	public void setContent(Object content){
-		this.content =  content;
+	public void setContent(Object content) {
+		this.content = content;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.memphis.ccrg.lida.actionselection.LidaAction#getContent()
 	 */
 	public Object getContent() {
 		return content;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.memphis.ccrg.lida.actionselection.LidaAction#getLabel()
 	 */
 	@Override
@@ -41,19 +56,79 @@ public abstract class LidaActionImpl implements LidaAction{
 		return label;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.actionselection.LidaAction#setLabel(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.actionselection.LidaAction#setLabel(java.lang.String
+	 * )
 	 */
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.actionselection.LidaAction#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.actionselection.LidaAction#setAssociatedModule(
+	 * edu.memphis.ccrg.lida.framework.LidaModule)
 	 */
 	@Override
 	public void setAssociatedModule(LidaModule module) {
-		this.module = module;		
+		this.module = module;
+	}
+
+	/**
+	 * @return the associated module
+	 */
+	public LidaModule getModule() {
+		return module;
+	}
+
+	/**
+	 * @return the subActions
+	 */
+	public List<LidaAction> getSubActions() {
+		return Collections.unmodifiableList(subActions);
+	}
+
+	/**
+	 * @return the topology of the subActions.
+	 */
+	public Topology getTopology() {
+		return topology;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void addSubAction(LidaAction action, Topology topology) {
+		switch (topology) {
+		case BASIC:
+			// error TODO: throw an exception
+			break;
+		case PARALLEL:
+		case SEQUENCIAL:
+			if (this.topology == Topology.BASIC || topology == this.topology) {
+				if(subActions==null){
+					subActions=new ArrayList<LidaAction>();
+				}
+				subActions.add(action);
+				this.topology=topology;
+			}
+		}
 	}
 }

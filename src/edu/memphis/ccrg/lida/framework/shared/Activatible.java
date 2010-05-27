@@ -10,22 +10,59 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  */
 public interface Activatible {
 	
+	/**
+	 * @return the current activation.
+	 */
 	public double getActivation();
-    public void setActivation(double amount);
+	
+	/**
+	 * Set the current activation.
+	 * @param activation
+	 */
+    public void setActivation(double activation);
+    /**
+     * 
+     * @return The total activation. It should return the 
+     * current activation if no based activation is used.
+     */
+	public double getTotalActivation();
     
 	/**
-	 * The current activation of this node is increased by the
-	 * excitation value.
+	 * The current activation of this node is increased 
+	 * using the excitation value as a parameter for the ExciteStrategy 
 	 * 
-	 * @param   excitation the value to be added to the current activation of
+	 * @param   amount the value to be used to increase the current activation of
 	 *          this node
 	 */
     public void excite(double amount); 
-	public void setExciteStrategy(ExciteStrategy behavior);
+    /**
+     * 
+     * @param strategy the Excite strategy for the current activation.
+     */
+	public void setExciteStrategy(ExciteStrategy strategy);
+	/**
+	 * 
+	 * @return the excite strategy
+	 */
 	public ExciteStrategy getExciteStrategy();
 	
+	/**
+	 * decay the current activation using the decay strategy. The decay depends on 
+	 * the time since the last decaying. It is indicated by the parameter ticks.
+	 * 
+	 * @param ticks the number of ticks to decay
+	 */
 	public void decay(long ticks);	
-	public void setDecayStrategy(DecayStrategy c);
+
+    /**
+     * 
+     * @param strategy the decay strategy for the current activation.
+     */
+	public void setDecayStrategy(DecayStrategy strategy);
+	/**
+	 * 
+	 * @return the decay strategy.
+	 */
 	public DecayStrategy getDecayStrategy();
 
 }

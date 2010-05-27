@@ -48,12 +48,10 @@ public class ActivatibleImpl implements Activatible {
 	public void excite(double excitation) {	
 		if (exciteStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getActualTick());
-			//System.out.println(this.toString() + " before excite has " + activation);
 			synchronized(this){
 				activation = exciteStrategy.excite(activation, excitation);
 			}
 			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getActualTick());
-			//System.out.println(this.toString() + " after excite has " + activation + "\n");
 		}
 	}
 
@@ -79,6 +77,11 @@ public class ActivatibleImpl implements Activatible {
 
 	public synchronized void setExciteStrategy(ExciteStrategy eb) {
 		this.exciteStrategy = eb;
+	}
+
+	@Override
+	public double getTotalActivation() {
+		return activation;
 	}
 
 }//

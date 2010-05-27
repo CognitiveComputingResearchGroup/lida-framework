@@ -1,13 +1,8 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**

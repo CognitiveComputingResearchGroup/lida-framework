@@ -70,17 +70,14 @@ public class NodeStructureImplTest extends TestCase{
 		
 		node4.setId(3);
 
-		link1.setIds("link1");
 		link1.setSource(node1);
 		link1.setSink(node2);
 		link1.setType(linktype1);
 
-		link2.setIds("link2");	
 		link2.setSource(node2);
 		link2.setSink(node3);
 		link2.setType(linktype2);
 		
-		link3.setIds("link3");
 		link3.setSource(node2);
 		link3.setSink(node4);
 		link3.setType(linktype2);

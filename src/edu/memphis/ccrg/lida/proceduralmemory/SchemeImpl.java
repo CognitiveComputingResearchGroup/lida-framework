@@ -1,5 +1,13 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -7,46 +15,41 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	
+	private static final double RELIABLE_TRESHOLD = 0.5;
 	private long id;
-	private NodeStructure context = new NodeStructureImpl();
-	private LidaAction action;
-	private NodeStructure result = new NodeStructureImpl();
+	private boolean intrinsicBehavior;
+	private int numberOfExecutions;
+	private int successExecutions;
+	private double curiosity;
+	private List <NodeStructure> contextConditions=new ArrayList<NodeStructure>();
+	private List <NodeStructure> resultConditions=new ArrayList<NodeStructure>();
+	private Map<Long,Argument> arguments = new ConcurrentHashMap<Long, Argument>();
+	private long actionId;
 	
-	public SchemeImpl(long id, NodeStructure context, LidaAction action, NodeStructure result){
+	public SchemeImpl(long id, long actionId){
 		this.id = id;
-		this.context = context;
-		this.action = action;
-		this.result = result;
+		this.actionId = actionId;
 	}
 
+	@Override
 	public long getId() {
 		return id;
 	}
+	@Override
 	public void setId(long id) {
 		this.id = id;
 	}
 	
-	public NodeStructure getContext() {
-		return context;
-	}
-	public void setContext(NodeStructure c) {
-		context = c;
-	}
 
-	public LidaAction getSchemeAction() {
-		return action;
+	@Override
+	public long getSchemeActionId() {
+		return actionId;
 	}
-	public void setSchemeAction(LidaAction a) {
-		action = a;
+	@Override
+	public void setSchemeActionId(long actionId) {
+		this.actionId = actionId;
 	}
-	
-	public NodeStructure getResult() {
-		return result;
-	}
-	public void setResult(NodeStructure r) {
-		result = r;
-	}
-	
+		
 	public boolean equals(Object o) {
 		if (!(o instanceof Scheme)) {
 			return false;
@@ -56,4 +59,116 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	public int hashCode() {
 		return ((int) id % 31);
 	}
+
+	@Override
+	public void addContextCondition(long argumentId, NodeStructure ns) {
+		Argument a = arguments.get(argumentId);
+		if (a!=null && ns!=null){
+		a.addContextCondition(ns);
+		contextConditions.add(ns);
+		}
+	}
+
+	@Override
+	public void decayCuriosity() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public List<NodeStructure> getContextConditions() {
+		return Collections.unmodifiableList(contextConditions);
+	}
+
+	@Override
+	public double getCuriosity() {
+		return curiosity;
+	}
+
+	@Override
+	public int getNumberOfExecutions() {
+		return numberOfExecutions;
+	}
+
+	@Override
+	public double getReliability() {
+		return (numberOfExecutions>0)?((double) successExecutions)/numberOfExecutions:0.0;
+	}
+
+	@Override
+	public List<NodeStructure> getResultConditions() {
+		return Collections.unmodifiableList(resultConditions);
+	}
+
+	@Override
+	public void incrementNumberOfExecutions() {
+		numberOfExecutions++;
+	}
+
+	@Override
+	public boolean isIntrinsicBehavior() {
+		return intrinsicBehavior;
+	}
+
+	@Override
+	public boolean isReliable() {
+		return (numberOfExecutions>0)&&((((double) successExecutions)/numberOfExecutions)>RELIABLE_TRESHOLD);
+	}
+
+	@Override
+	public void setCuriosity(double curiosity) {
+		this.curiosity=curiosity;
+	}
+
+	@Override
+	public void setIntrinsicBehavior(boolean intrinsicBehavior) {
+		this.intrinsicBehavior=intrinsicBehavior;		
+	}
+
+	@Override
+	public void setNumberOfExecutions(int numberOfExecutions) {
+		this.numberOfExecutions=numberOfExecutions;
+	}
+
+	@Override
+	public void addArgument(Argument a) {
+		arguments.put(a.getArgumentId(),a);		
+	}
+
+	@Override
+	public void addResultConditions(long argumentId, NodeStructure ns) {
+		Argument a = arguments.get(argumentId);
+		if (a!=null && ns!=null){
+		a.addResultCondition(ns);
+		resultConditions.add(ns);
+		}
+	}
+
+	@Override
+	public Argument getArgument(long argumentId) {
+		return arguments.get(argumentId);
+	}
+
+	@Override
+	public Collection<Argument> getArguments() {
+		return Collections.unmodifiableCollection(arguments.values());
+	}
+
+	@Override
+	public List<NodeStructure> getContextConditions(long argumentId) {
+		Argument a = arguments.get(argumentId);
+		if (a!=null){
+			return Collections.unmodifiableList(a.getContextConditions());
+		}
+		return null;
+	}
+
+	@Override
+	public List<NodeStructure> getResultConditions(long argumentId) {
+		Argument a = arguments.get(argumentId);
+		if (a!=null){
+			return Collections.unmodifiableList(a.getResultConditions());
+		}
+		return null;
+	}
+
 }

@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.actionselection;
 
+import java.util.List;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 /**
@@ -10,6 +12,10 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  *
  */
 public interface LidaAction {
+
+	public enum Topology {
+		BASIC, PARALLEL, SEQUENCIAL
+	}
 
 	/**
 	 * The actual action that should be performed.
@@ -39,8 +45,35 @@ public interface LidaAction {
 	public abstract void setLabel(String label);
 
 	/**
+	 * @return the subActions
+	 */
+	public List<LidaAction> getSubActions();
+
+	/**
+	 * @return the topology of the subActions.
+	 */
+	public Topology getTopology();
+
+	public void addSubAction(LidaAction action, Topology topology);
+
+	/**
 	 * Sets an associated LidaModule.
 	 * @param module the module to be associated.
 	 */
 	public abstract void setAssociatedModule(LidaModule module);
+
+	/**
+	 * @return the module
+	 */
+	public LidaModule getModule();
+
+	/**
+	 * @return the LidaAction id
+	 */
+	public long getId();
+
+	/**
+	 * @param id the LidaAction id to set. it should be unique
+	 */
+	public void setId(long id);
 }

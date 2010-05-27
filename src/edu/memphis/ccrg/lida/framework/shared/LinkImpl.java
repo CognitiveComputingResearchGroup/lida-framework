@@ -14,11 +14,10 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private LinkType type;
 	private Link referencedLink = null;
 
-	public LinkImpl(Linkable source, Linkable sink, LinkType type, String ids) {
+	public LinkImpl(Linkable source, Linkable sink, LinkType type) {
 		this.source = source;
 		this.sink = sink;
 		this.type = type;
-		this.ids = ids;
 		updateIds();
 	}
 
@@ -34,8 +33,8 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	public LinkImpl() {
 	}
 
-	public LinkImpl copy(LinkImpl l) {
-		return new LinkImpl(l);
+	public LinkImpl copy() {
+		return new LinkImpl(this);
 	}
 
 	/**
@@ -90,9 +89,9 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return hash;
 	}
 
-	public void setIds(String id) {
-		this.ids = id;
-	}
+//	public void setIds(String id) {
+//		//The ids can not be set
+//	}
 	
 	public String getId(){
 		return ids;
@@ -119,7 +118,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	private void updateIds() {
-		ids = "L( " + ((source!=null)?source.getIds():"") + " : " + ((sink!=null)?sink.getIds():"") + " : " + type + " )";
+		ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + type + ")";
 	}
 
 	public Link getReferencedLink() {

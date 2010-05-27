@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.initialization.CodeletDef;
 import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
@@ -18,17 +19,14 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * @author Javier Snaider
  * 
  */
-/**
- * @author Javier
- *
- */
 public class NodeFactory {
 
-	private static NodeFactory instance;
+	private static NodeFactory instance=new NodeFactory();;
 	private static Logger logger = Logger
 			.getLogger("lida.framework.shared.NodeFactory");
 
 	private static long nodeIdCount = 0;
+	private static long actionIdCount = 0;
 
 	/**
 	 * This static method returns the instance of the factory. Implements the
@@ -37,9 +35,6 @@ public class NodeFactory {
 	 * @return
 	 */
 	public static NodeFactory getInstance() {
-		if (instance == null) {
-			instance = new NodeFactory();
-		}
 		return instance;
 	}
 
@@ -58,11 +53,20 @@ public class NodeFactory {
 	private Map<String, LinkableDef> nodeClasses = new HashMap<String, LinkableDef>();
 	private Map<String, CodeletDef> codelets = new HashMap<String, CodeletDef>();
 
+	private Map<Long, LidaAction> actionsCache = new HashMap<Long, LidaAction>();
+
 	/**
-	 * @param nodeId the next nodeId to set
+	 * @param nextId the next nodeId
 	 */
-	public static void setNextNodeId(long nodeId) {
-		NodeFactory.nodeIdCount = nodeId;
+	public static void setNextNodeId(long nextId) {
+		NodeFactory.nodeIdCount = nextId;
+	}
+
+	/**
+	 * @param nextId the next actionId
+	 */
+	public static void setNextActionId(long nextId) {
+		NodeFactory.actionIdCount = nextId;
 	}
 
 	private NodeFactory() {
@@ -488,4 +492,13 @@ public class NodeFactory {
 	
 		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
 	}
+	
+	public void addAction(LidaAction action){
+		actionsCache.put(action.getId(),action);
+	}
+	
+	public LidaAction getAction(long id){
+		return actionsCache.get(id);
+	}
+	
 }// class

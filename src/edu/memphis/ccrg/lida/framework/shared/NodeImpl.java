@@ -60,7 +60,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	public String getIds() {
-		return "" + id;
+		return "" + getId();
 	}
 
 	/**
