@@ -98,6 +98,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 //		Since nodes are copied when added to a NodeStructure, 
 //		the node object that the featureDetectors excite must be 
 //		updated with the copied node that is in the pamNodeStructure
+	//	System.out.println("Adding feature detector " + detector.toString());
+		
 		long id = detector.getPamNode().getId();
 		PamNode node = (PamNode) pamNodeStructure.getNode(id);
 		if(node != null){
