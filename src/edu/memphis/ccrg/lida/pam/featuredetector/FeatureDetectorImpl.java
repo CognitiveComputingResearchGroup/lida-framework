@@ -63,11 +63,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	 * Override this method for domain-specific feature detection
 	 */
 	public abstract double detect();
-	
-	public void setParam(String name, Object value){
 		
-	}
-	
 	public void excitePam(double amount){
 		pam.receiveActivationBurst(pamNode, amount);
 	}
