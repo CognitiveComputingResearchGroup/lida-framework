@@ -50,7 +50,7 @@ public class PamNodeImplTest extends TestCase{
 		node1.setActivation(0.2);
 		
 		node1.synchronize();
-		assertEquals("Problem with Synchronize", 0.3,node1.getActivation());		
+		assertEquals("Problem with Synchronize", 0.3,(Math.round(node1.getActivation()*100.0)/100.0));		
 	}
 	@Test
 	public void testSynchronize2() {
