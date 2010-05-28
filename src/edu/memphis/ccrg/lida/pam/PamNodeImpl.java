@@ -18,7 +18,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 * Specifies the relative importance of a Node. Only relevant for nodes
 	 * that represent feelings. Lies between 00.d and 1.0d inclusive.
 	 */
-	protected double importance = 0.0;
+	//protected double importance = 0.0;
 	protected double baseLevelActivation = 0.0;
 	
 	public PamNodeImpl() {
@@ -29,7 +29,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public PamNodeImpl(PamNodeImpl p) {
 		super(p);
 		selectionThreshold = p.selectionThreshold;
-		importance = p.importance;
+		setImportance(p.getImportance());
+		//importance = p.importance;
 		baseLevelActivation = p.baseLevelActivation;
 	}
 
@@ -72,7 +73,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void setValue(Map<String, Object> values) {
 		Object o = values.get("importance");
 		if ((o != null)&& (o instanceof Double)) 
-			importance = (Double)o;
+			setImportance((Double)o);
+			//importance = (Double)o;
 		
 		o = values.get("baselevelactivation");
 		if ((o != null)&& (o instanceof Double)) 
