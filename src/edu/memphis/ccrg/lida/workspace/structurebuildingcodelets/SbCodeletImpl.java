@@ -50,10 +50,11 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
                             
 	protected void runThisLidaTask(){	
 		System.out.println("Running codelet");
-		for(WorkspaceBuffer buffer: accessibleModules)
+		for(WorkspaceBuffer buffer: accessibleModules){
+//			System.out.println("Basic codelet performing action on buffer " + buffer.toString());
 			action.performAction(buffer, csm);	
+		}
 		results.reportFinished();
-		System.out.println("Codelet finished");
 	}
 	
 	/**

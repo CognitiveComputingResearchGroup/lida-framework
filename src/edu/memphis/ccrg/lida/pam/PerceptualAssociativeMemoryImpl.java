@@ -35,8 +35,8 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
 public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	PerceptualAssociativeMemory,  
-														BroadcastListener, 
-														WorkspaceListener{
+																	            BroadcastListener, 
+																	            WorkspaceListener{
 
 	private static Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
 	
@@ -98,15 +98,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 //		Since nodes are copied when added to a NodeStructure, 
 //		the node object that the featureDetectors excite must be 
 //		updated with the copied node that is in the pamNodeStructure
-	//	System.out.println("Adding feature detector " + detector.toString());
-		
 		long id = detector.getPamNode().getId();
 		PamNode node = (PamNode) pamNodeStructure.getNode(id);
 		if(node != null){
 			detector.setPamNode(node);
 			featureDetectors.add(detector);
 			
-			//TODO: Create method addInitialTask??
 			taskSpawner.addTask(detector);
 			return true;
 		}else
@@ -289,6 +286,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public void addLink(String sourceId, String sinkId, LinkType type, double activation) {
 		pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
+	}
+	@Override
+	public PamNode getNode(String label) {
+		return pamNodeStructure.getNode(label);
 	}
 
 

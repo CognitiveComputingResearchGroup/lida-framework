@@ -26,8 +26,8 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public abstract class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
 
 	private static Logger logger = Logger.getLogger("lida.pam.featuredetector.FeatureDetectorImpl");
-	private PamNode pamNode;
-	private PerceptualAssociativeMemory pam;
+	protected PamNode pamNode;
+	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
 							   PerceptualAssociativeMemory pam) {

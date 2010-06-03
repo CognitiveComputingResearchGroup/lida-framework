@@ -21,19 +21,20 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  */
 public interface AttentionCodelet extends Codelet{
- /**
-  * Provides an accessable content in WorkspaceBuffer
-  * @param csm
-  * @return
-  */
-	public abstract boolean hasSoughtContent(WorkspaceBuffer csm);
+	
+	/**
+  	 * Returns true if the current situational model contains the content which this codelet seeks.
+  	 * 
+  	 * @return
+     */
+	public abstract boolean csmHasDesiredContent();
 
 	/**
 	 * 
 	 * @param csm
 	 * @return
 	 */
-	public abstract NodeStructure getSoughtContent(WorkspaceBuffer csm);
+	public abstract NodeStructure getCsmContent();
 	
 	/**
 	 * @param gw the GlobalWorkspace to set

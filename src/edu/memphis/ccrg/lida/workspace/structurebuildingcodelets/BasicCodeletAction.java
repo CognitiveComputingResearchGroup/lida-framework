@@ -5,10 +5,17 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class BasicCodeletAction implements CodeletAction {
 
+	/**
+	 * Simply get the content of the buffer and merge it into the CSM's content
+	 */
 	public void performAction(WorkspaceBuffer buffer, WorkspaceBuffer csm) {
-		NodeStructure ns = (NodeStructure) csm.getModuleContent();
-		ns.mergeWith((NodeStructure) buffer.getModuleContent());
+		
+		NodeStructure bufferContent = (NodeStructure) buffer.getModuleContent();
+		
+		System.out.println("Codelet performing action, perceptual buff has " + bufferContent.getNodeCount());
+		
+		NodeStructure csmContent = (NodeStructure) csm.getModuleContent();
+		csmContent.mergeWith(bufferContent);
 	} 
-
 
 }//class

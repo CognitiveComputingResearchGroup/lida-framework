@@ -145,8 +145,12 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 	 * the perceptualBuffer.
 	 */
 	public void receiveNode(Node node) {
+		//System.out.println("adding " + node.getLabel());
+		//System.out.println("adding node to percept. buffer " + getSubmodule(ModuleName.PerceptualBuffer));
+		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addNode(node);
 		
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addNode(node);	
+		//NodeStructure pb = (NodeStructure) getSubmodule(ModuleName.PerceptualBuffer).getModuleContent();
+		//System.out.println("after adding the buffer has " + pb.getNodeCount());
 	}
 	
 	/**

@@ -23,12 +23,11 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  * 
  */
-public class AttentionCodeletImpl extends LidaTaskImpl implements
-		AttentionCodelet {
+public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodelet {
 	
 	protected WorkspaceBuffer csm;
 	protected GlobalWorkspace global;
-	protected NodeStructure soughtContent;
+	protected NodeStructure desiredContent;
 
 	public  AttentionCodeletImpl() {		
 	}
@@ -39,22 +38,23 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
     	setActivation(activation);
     	this.csm = csm;
     	global = g;
-    	this.soughtContent=soughtContent;
+    	this.desiredContent=soughtContent;
     }
 
 	protected void runThisLidaTask() {
-		if (hasSoughtContent(csm)) {
-			NodeStructure csmContent = getSoughtContent(csm);
-			if (csmContent != null)
-				global.addCoalition(new CoalitionImpl(csmContent,
-						getActivation()));
+		if (csmHasDesiredContent()) {
+			NodeStructure csmContent = getCsmContent();
+			//System.out.println(csmContent.getNodeCount());
+			if (csmContent != null){
+				global.addCoalition(new CoalitionImpl(csmContent, getActivation()));
+			}
 		}// if
 	}
 
-	public boolean hasSoughtContent(WorkspaceBuffer csm) {
+	public boolean csmHasDesiredContent() {
 		NodeStructure model = (NodeStructure)csm.getModuleContent();
-		Collection<Node> nodes = soughtContent.getNodes();
-		Collection<Link> links = soughtContent.getLinks();
+		Collection<Node> nodes = desiredContent.getNodes();
+		Collection<Link> links = desiredContent.getLinks();
 		for (Node n : nodes)
 			if (!model.hasNode(n))
 				return false;
@@ -66,8 +66,8 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 		return true;
 	}
 
-	public NodeStructure getSoughtContent(WorkspaceBuffer csm) {
-		if (hasSoughtContent(csm))
+	public NodeStructure getCsmContent() {
+		if (csmHasDesiredContent())
 			return (NodeStructure)csm.getModuleContent();
 		else
 			return null;
@@ -104,22 +104,22 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements
 	}
 
 	/**
-	 * @return the soughtContent
+	 * @return the desired content
 	 */
-	public NodeStructure getSoughtContent() {
-		return soughtContent;
+	public NodeStructure getDesiredContent() {
+		return desiredContent;
 	}
 
 	/**
-	 * @param soughtContent the soughtContent to set
+	 * @param desiredContent the soughtContent to set
 	 */
-	public void setSoughtContent(NodeStructure soughtContent) {
-		this.soughtContent = soughtContent;
+	public void setDesiredContent(NodeStructure desiredContent) {
+		this.desiredContent = desiredContent;
 	}
 	
 	public void init(){
 		csm=(WorkspaceBuffer)getParam("csm",null);
-		soughtContent=(NodeStructure)getParam("soughtContent",null);
+		desiredContent=(NodeStructure)getParam("soughtContent",null);
 		global=(GlobalWorkspace)getParam("gw",null);
 	}
 

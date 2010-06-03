@@ -2,24 +2,29 @@ package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.workspace.main.Workspace;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletImpl;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
 public class AttentionDriver extends ModuleDriverImpl implements
 		BroadcastListener {
 
-	// private Logger logger =
-	// Logger.getLogger("lida.attention.AttentionDriver");
-	//
+	private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
+	
 	private WorkspaceBuffer csm;
 	private GlobalWorkspace global;
 	//
@@ -45,7 +50,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 
 	@Override
 	public void runThisDriver(){
-		activateCodelets();
+		//activateCodelets();
 	}
 
 	public void activateCodelets() {
@@ -84,13 +89,29 @@ public class AttentionDriver extends ModuleDriverImpl implements
 	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
-			if (module instanceof WorkspaceBuffer
-					&& module.getModuleName() == ModuleName.CurrentSituationalModel) {
-				csm = (WorkspaceBuffer) module;
+			if (module instanceof Workspace
+					&& module.getModuleName() == ModuleName.Workspace) {
+				csm = (WorkspaceBuffer) module.getSubmodule(ModuleName.CurrentSituationalModel);
 			} else if (module instanceof GlobalWorkspace
 					&& module.getModuleName() == ModuleName.GlobalWorkspace) {
 				global = (GlobalWorkspace) module;
 			}
 		}
 	}
+
+	public void spawnNewCodelet() {
+		//TODO: use factory
+		
+		//TODO: move tps var out
+		int ticksPerStep = 5;
+		double activation = 1.0;
+		NodeStructure ns = new NodeStructureImpl();
+		
+		AttentionCodelet basic = new AttentionCodeletImpl(this.csm, this.global, ticksPerStep, activation, ns);
+		
+		//sbCodeletFactory.getCodelet(type, activation, context, actions);
+		this.addTask(basic);
+		logger.log(Level.FINER,"New attention codelet "+basic+"spawned",LidaTaskManager.getActualTick());
+	}// method
+		
 }// class

@@ -16,16 +16,30 @@ import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
+ * Standard factory for the framework
  * @author Javier Snaider
- * 
  */
 public class NodeFactory {
+	
+	/**
+	 * Instance of this class
+	 */
+	private static NodeFactory instance = new NodeFactory();
+	
+	/**
+	 * Logger 
+	 */
+	private static Logger logger = Logger.getLogger("lida.framework.shared.NodeFactory");
 
-	private static NodeFactory instance=new NodeFactory();;
-	private static Logger logger = Logger
-			.getLogger("lida.framework.shared.NodeFactory");
-
+	/**
+	 * Used to assign unique IDs to nodes. 
+	 */
 	private static long nodeIdCount = 0;
+	
+	/**
+	 * TODO: document
+	 * ?????????????????????????????????
+	 */
 	private static long actionIdCount = 0;
 
 	/**
@@ -38,14 +52,47 @@ public class NodeFactory {
 		return instance;
 	}
 
+	/**
+	 * Used to retrieve default decay strategy from 'decayStrategies' map.
+	 */
 	private String defaultDecayType;
+	
+	/**
+	 * Used to retrieve default excite strategy from 'exciteStrategies' map.  
+	 */
 	private String defaultExciteType;
+	
+	/**
+	 * Used to retrieve default link class from 'linkClasses' map.
+	 * e.g. edu.memphis.ccrg.lida.framework.shared.LinkImpl
+	 */
 	private String defaultLinkClassName;
+	
+	/**
+	 * Specifies default link type used by the factory.
+	 * e.g. "LinkImpl"
+	 */
 	private String defaultLinkType;
+	
+	/**
+	 * Used to retrieve default node class from 'nodeClasses' map.
+	 * e.g. edu.memphis.ccrg.lida.framework.shared.NodeImpl
+	 */
 	private String defaultNodeClassName;
+	
+	/**
+	 * Specifies default node type used by the factory.
+	 * e.g. "NodeImpl"
+	 */
 	private String defaultNodeType;
 	
+	/**
+	 * Map of excite behaviors available to this factory
+	 */
 	private Map<String, StrategyDef> exciteStrategies = new HashMap<String, StrategyDef>();
+	/**
+	 * Map of excite behaviors available to this factory
+	 */
 	private Map<String, StrategyDef> decayStrategies = new HashMap<String, StrategyDef>();
 	private Map<String, StrategyDef> strategies = new HashMap<String, StrategyDef>();
 
@@ -264,14 +311,35 @@ public class NodeFactory {
 		return l;
 	}
 
+	/**
+	 * Creates a default node with the default behaviors and 0 activation
+	 * @return
+	 */
 	public Node getNode() {
 		return getNode(defaultNodeType,defaultDecayType, defaultExciteType, "",0.0);
 	}
 
+	/**
+	 * Creates a copy of the supplied node with the default behaviors.  
+	 * Note that the new node is of a default type regardless
+	 * of the node passed in the parameter.
+	 * @param oNode
+	 * @return
+	 */
 	public Node getNode(Node oNode) {
 		return getNode(oNode, defaultNodeType,defaultDecayType, defaultExciteType);
 	}
 
+	/**
+	 * Creates a copy of the supplied node with the default behaviors.  
+	 * The type of the new node is based on the argument. Note that the behaviors of the new node
+	 * are based on those node passed in the argument.  if the node type does not have default behaviors
+	 * then the default behaviors are used.
+	 * @param oNode
+	 * @param nodeType
+	 * @return
+	 * 
+	 */
 	public Node getNode(Node oNode, String nodeType) {
 		LinkableDef nodeDef = nodeClasses.get(nodeType);		
 		if (nodeDef == null) {
@@ -290,10 +358,28 @@ public class NodeFactory {
 		return getNode(oNode, nodeType, decayB, exciteB);
 	}
 
+	/**
+	 * Creates a copy of oNode with the specified decay and excite strategies.  The type of the new node
+	 * will be the default node type.
+	 * @param oNode
+	 * @param decayStrategy
+	 * @param exciteStrategy
+	 * @return
+	 */
 	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy) {
 		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy);
 	}
 
+	/**
+	 * Creates a copy of oNode with specified node type, decay and excite strategies.
+	 * TODO: use strategies not behaviors
+	 * 
+	 * @param oNode
+	 * @param nodeType
+	 * @param decayStrategy
+	 * @param exciteStrategy
+	 * @return
+	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy,
 			String exciteStrategy) {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation());
@@ -303,10 +389,22 @@ public class NodeFactory {
 		return n;
 	}
 
+	/**
+	 * Creates new node of specified type. Uses strategies based on specified node type, or the default strategies
+	 * if the node type has no strategies defined.
+	 * @param nodeType
+	 * @return
+	 */
 	public Node getNode(String nodeType) {
 		return getNode(nodeType, "");
 	}
 
+	/**
+	 * Creates new node of specified type with specified label.  Uses strategies based on specified node type, or the default strategies
+	 * if the node type has no strategies defined. 
+	 * @param nodeType
+	 * @return
+	 */
 	public Node getNode(String nodeType, String nodeLabel) {
 
 		LinkableDef nodeDef = nodeClasses.get(nodeType);		
@@ -329,8 +427,7 @@ public class NodeFactory {
 	}
 
 	/**
-	 * This method generates a new node.
-	 * A new id is generated for this node.
+	 * Creates a new node of specified type, strategies, label, and initial activation.
 	 * 
 	 * @param nodeType 
 	 * @param decayStrategy

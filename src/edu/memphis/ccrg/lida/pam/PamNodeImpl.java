@@ -21,6 +21,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	//protected double importance = 0.0;
 	protected double baseLevelActivation = 0.0;
 	
+	/**
+	 * Sensory Content associated with this node.
+	 */
+	private Object sensoryContent;
+	
 	public PamNodeImpl() {
 		super();
 		refNode = this;
@@ -32,6 +37,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		setImportance(p.getImportance());
 		//importance = p.importance;
 		baseLevelActivation = p.baseLevelActivation;
+	}
+	
+	public Object getSensoryContent(){
+		return sensoryContent;
+	}
+	public void setSensoryContent(Object o){
+		sensoryContent = o;
 	}
 
 	/**
