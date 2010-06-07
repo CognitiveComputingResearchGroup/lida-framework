@@ -29,17 +29,18 @@ public class LinkImplTest extends TestCase{
 		node2 = new NodeImpl();
 		node3 = new NodeImpl();
 		node4 = new NodeImpl();
+		
+		link1 = new LinkImpl();
+		link2 = new LinkImpl();
+		link3 = new LinkImpl();
+		linktype1 = LinkType.PARENT ;
+		linktype2 = LinkType.CHILD ;	
+
 		node1.setId(1);	
 		node2.setId(2);
 		node3.setId(3);		
 		node4.setId(4);		
 		
-		link1 = new LinkImpl(node1,node2,LinkType.CHILD);
-		link2 = new LinkImpl(node3,node4,LinkType.PARENT);
-		link3 = new LinkImpl(node3,link2,LinkType.GROUNDING);
-		linktype1 = LinkType.PARENT ;
-		linktype2 = LinkType.CHILD ;		
-	
 	}
 
 	/**
@@ -54,32 +55,25 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testCopy() {
-		LinkImpl linkAux;
-		linkAux= link1.copy();		
+			
+		link1.setSource(node1);
+		link1.setSink(node2);
+		link1.setType(linktype1);		
 		
-		assertEquals("Problem with copy", link1, linkAux);
-		assertEquals("Problem with copy", link1.getSink(), linkAux.getSink());
-		assertEquals("Problem with copy", link1.getSource(), linkAux.getSource());
-		assertEquals("Problem with copy", link1.getType(), linkAux.getType());
+		link2 = link1.copy();
 		
-		linkAux= link3.copy();		
-
-		assertEquals("Problem with copy", link3, linkAux);
-		assertEquals("Problem with copy", link3.getSink(), linkAux.getSink());
-		assertEquals("Problem with copy", link3.getSource(), linkAux.getSource());
-		assertEquals("Problem with copy", link3.getType(), linkAux.getType());
-
+		assertEquals("Problem with copy", link1, link2);		
 	}
 
 	/**
 	 * This method is used to test the LinkImpl.equals() method
 	 */
 	@Test
-	public void testEqualsObject() {
-		
+	public void testEqualsObject() {		
+			
 		link1.setSource(node1);
 		link1.setSink(node2);
-		link1.setType(linktype1);
+		link1.setType(linktype1);		
 		
 		link3.setSource(node1);
 		link3.setSink(node2);
@@ -94,6 +88,7 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetSink() {
+		
 		link1.setSink(node1);
 		assertEquals("Problem with getSink", node1, link1.getSink());
 	}
@@ -103,6 +98,7 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetSource() {
+		
 		link1.setSource(node1);
 		assertEquals("Problem with getSource", node1, link1.getSource());
 	}
@@ -112,18 +108,23 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetType() {
+		
 		link1.setType(linktype1);
 		assertEquals("Problem with getType", linktype1, link1.getType());
 	}
 
-
+	
 	/**
 	 * This method is used to test the LinkImpl.GetId() method
 	 */
 	@Test
-	public void testGetId() {
-		assertEquals("Problem with getId:"+link1.getId(), "L(1:2:CHILD)", link1.getId());
-		assertEquals("Problem with getId:"+link3.getId(), "L(3:L(3:4:PARENT):GROUNDING)", link3.getId());
+	public void testGetId() {		
+		link1.setSource(node1);
+		link1.setSink(node2);
+		link1.setType(linktype1);
+		
+		assertEquals("Problem with getId", "L(1:2:PARENT)", link1.getId());
+		
 	}
 
 	/**
@@ -158,7 +159,9 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetReferencedLink() {
-		link1.setReferencedLink(link2);
+		link2.setSource(node2);
+		link2.setSink(node3);
+		link1.setReferencedLink(link2);		
 		assertEquals("Problem with getReferencedLink", link2, link1.getReferencedLink());
 	}
 
@@ -167,6 +170,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetReferencedLink() {
+		link2.setSource(node2);
+		link2.setSink(node3);
 		link1.setReferencedLink(link2);
 		assertEquals("Problem with setReferencedLink", link2, link1.getReferencedLink());
 	}
@@ -181,7 +186,6 @@ public class LinkImplTest extends TestCase{
 		assertEquals("Problem with LinkImpl constructor having parameters", node1, link5.getSource());
 		assertEquals("Problem with LinkImpl constructor having parameters", node2, link5.getSink());
 		assertEquals("Problem with LinkImpl constructor having parameters", linktype1, link5.getType());
-		assertEquals("Problem with LinkImpl constructor having parameters", "L(1:2:PARENT)", link5.getId());
 		
 	}
 

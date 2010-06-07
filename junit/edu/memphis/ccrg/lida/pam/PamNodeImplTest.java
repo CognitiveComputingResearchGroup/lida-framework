@@ -154,8 +154,10 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testGetMaxActivation() {
 		node1.setId(1);
+		
 		assertEquals("Problem with GetMaxActivation", 1.0,node1.getMaxActivation());
 	}
+	
 
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#getMinActivation()}.

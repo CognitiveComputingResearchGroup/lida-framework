@@ -3,11 +3,10 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -27,23 +26,29 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 public class PamNodeStructureTest extends TestCase{
 	
 	PamNodeStructure nodeStructure1,nodeStructure2;
-	PamNodeImpl node1,node2;
+	PamNodeImpl node1,node2,node3;
 	LinkImpl link1,link2;
 	
 	@Before
 	public void setUp() throws Exception {
 		 nodeStructure1 =  new PamNodeStructure();
-		 nodeStructure2 =  new PamNodeStructure();
+		 nodeStructure2 =  new PamNodeStructure();	 
 		 
 		 node1 = new PamNodeImpl();
 		 node2 = new PamNodeImpl();
+		 node3 = new PamNodeImpl();
 		 
 		 link1 = new LinkImpl();
+		 link2 = new LinkImpl();
 		 
 		 node1.setId(1);
 		 node2.setId(2);
+		 node3.setId(3);
+		 
 		 link1.setSource(node1);
 		 link1.setSink(node2);
+		 link2.setSource(node1);
+		 link2.setSink(node3);
 		 
 		 nodeStructure1.addNode(node1);
 		 nodeStructure1.addNode(node2);
@@ -163,11 +168,12 @@ public class PamNodeStructureTest extends TestCase{
 	@Test
 	public void testSetNodesExciteStrategy() {
 		DefaultExciteStrategy behavior = new DefaultExciteStrategy();
+		behavior.excite(0.1, 0.2);		
 		
-		nodeStructure1.setNodesExciteStrategy(behavior);
+		nodeStructure1.setNodesExciteStrategy(behavior);		
 		
-		//no get method
-		//assertEquals("Problem with SetNodesExciteStrategy", behavior, nodeStructure1);
+		assertEquals("Problem with SetNodesExciteStrategy", behavior, node1.getExciteStrategy());
+		assertEquals("Problem with SetNodesExciteStrategy", behavior, node2.getExciteStrategy());
 	}
 
 	/**
@@ -175,8 +181,12 @@ public class PamNodeStructureTest extends TestCase{
 	 */
 	@Test
 	public void testSetNodesDecayStrategy() {
-		//no get method
-		fail("Not yet implemented"); // TODO
+				
+		DecayStrategy behavior = new LinearDecayStrategy();
+		behavior.decay(0.2, 200);
+		
+		assertEquals("Problem with SetNodesDecayStrategy", behavior, node1.getDecayStrategy());
+		assertEquals("Problem with SetNodesDecayStrategy", behavior, node2.getDecayStrategy());
 	}
 
 	/**
@@ -184,7 +194,18 @@ public class PamNodeStructureTest extends TestCase{
 	 */
 	@Test
 	public void testGetParents() {
-		fail("Not yet implemented"); // TODO
+		nodeStructure2.addNode(node1);
+		nodeStructure2.addNode(node2);
+		nodeStructure2.addNode(node3);
+		nodeStructure2.addLink(link1);
+		nodeStructure2.addLink(link2);
+		
+		Set<PamNode> parents = new HashSet<PamNode>();
+		parents.add(node2);	
+		parents.add(node3);
+		
+		assertEquals("Problem with GetParents", parents, nodeStructure2.getParents(node1));
+		
 	}
 
 	/**
@@ -192,7 +213,23 @@ public class PamNodeStructureTest extends TestCase{
 	 */
 	@Test
 	public void testGetChildren() {
-		fail("Not yet implemented"); // TODO
+		
+		link1.setSource(node1);
+		link1.setSink(node3);
+		link2.setSource(node2);
+		link2.setSink(node3);
+		 
+		nodeStructure2.addNode(node1);
+		nodeStructure2.addNode(node2);
+		nodeStructure2.addNode(node3);
+		nodeStructure2.addLink(link1);
+		nodeStructure2.addLink(link2);
+		
+		Set<PamNode> children = new HashSet<PamNode>();
+		children.add(node1);	
+		children.add(node2);
+		
+		assertEquals("Problem with GetChildren", children, nodeStructure2.getChildren(node3));
 	}
 
 	/**
@@ -200,15 +237,14 @@ public class PamNodeStructureTest extends TestCase{
 	 */
 	@Test
 	public void testDecayNodes() {
-		fail("Not yet implemented"); // TODO
+		node1.setActivation(0.7);
+		node2.setActivation(0.6);
+		nodeStructure2.addNode(node1);
+		nodeStructure2.addNode(node2);
+		
+		nodeStructure2.decayNodes(1000);
+		
+		assertTrue("Problem with DecayNodes",((node1.getActivation()<0.7) && (node2.getActivation()<0.6)));
+		
 	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#printPamNodeActivations()}.
-	 */
-	@Test
-	public void testPrintPamNodeActivations() {
-		fail("Not yet implemented"); // TODO
-	}
-
 }

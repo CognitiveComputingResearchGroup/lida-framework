@@ -69,11 +69,11 @@ public class NodeStructureImplTest extends TestCase{
 		node2.setImportance(3);
 		
 		node4.setId(3);
-
+		
 		link1.setSource(node1);
 		link1.setSink(node2);
 		link1.setType(linktype1);
-
+			
 		link2.setSource(node2);
 		link2.setSink(node3);
 		link2.setType(linktype2);
@@ -196,9 +196,7 @@ public class NodeStructureImplTest extends TestCase{
 		ns = null;		
 		nodeStructure3.addNode(node1);
 		nodeStructure3.addNode(node2);
-		nodeStructure3.addLink(link1);
-
-		//NodeStructureImpl ns = new NodeStructureImpl();
+		nodeStructure3.addLink(link1);		
 		
 		ns = (NodeStructureImpl) nodeStructure3.copy();		
 			
@@ -235,10 +233,7 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure2.addNode(node3);
 		nodeStructure2.addLink(link1);
 		nodeStructure2.addLink(link2);
-		
-		//if(!(nodeStructure1.equals(nodeStructure2)))
-			//fail("Problem with equals");
-			
+					
 		assertEquals("Problem with equals", nodeStructure1, nodeStructure2);			
 	}	
 }
