@@ -22,6 +22,11 @@ public class PamNodeStructure extends NodeStructureImpl{
 
 	private Double downscaleFactor = 0.2;
 	private Double selectivityThreshold = 0.3;
+
+	/**
+	 * If a node is below this threshold after being decayed it is deleted
+	 */
+	private double nodeRemovalThreshold = 0.01;
 	
 	public PamNodeStructure(){
 		super("PamNodeImpl", "LinkImpl");
@@ -205,8 +210,13 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 */
 	public void decayNodes(long ticks){
 		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getActualTick());
-		for(Node n: getNodes())
-			n.decay(ticks);
+		for(Node n: getNodes()){
+			PamNode pn = (PamNode) n;
+			pn.decay(ticks);
+//			if(pn.getTotalActivation() < nodeRemovalThreshold ){
+//				super.deleteLinkable(pn);
+//			}
+		}
 	}//method
 	
 	/**
@@ -216,16 +226,14 @@ public class PamNodeStructure extends NodeStructureImpl{
 		for(Node n: getNodes())
 			((PamNodeImpl)n).printActivationString();
 	}//method
-
-	public PamNode getNode(String label) {
-
+	
+	public PamNode getNodeByLabel(String label) {
 		for(Node n: getNodes()){
-			System.out.println(label + "-<>-" + n.getLabel());
 			if(n.getLabel().equals(label))
 				return (PamNode) n;
 		}
-		System.out.println("FAlse\n");
 		return null;
 	}
+
 
 }//class

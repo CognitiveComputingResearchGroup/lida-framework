@@ -8,8 +8,8 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * Encapsulation of an action to be executed.
  * Can be used as Flyweight objects.
  * 
- * @author ryanjmccall
- *
+ * @author ryanjmccall, Javier Snaider
+ * 
  */
 public interface LidaAction {
 

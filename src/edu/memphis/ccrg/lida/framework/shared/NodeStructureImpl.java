@@ -18,8 +18,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  * @author Javier
  *
  */
-public class NodeStructureImpl implements NodeStructure, BroadcastContent,
-		WorkspaceContent {
+public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent{
 
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;
@@ -183,18 +182,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return generateNewLink(newSource, newSink, l.getType(), newActiv);
 	}
 
-	public Link addLink(String sourceId, String sinkId, LinkType type,
-			double activation) {
-
+	public Link addLink(String sourceId, String sinkId, LinkType type, double activation) {
 		Linkable source = getLinkable(sourceId);
 		Linkable sink = getLinkable(sinkId);
-
 		if (source == null || sink == null) {
 			return null;
 		}
-
 		return generateNewLink(source, sink, type, activation);
-
 	}
 
 	/**
@@ -299,9 +293,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.shared.NodeStructure#deleteLink(edu.memphis.ccrg
-	 * .lida.shared.Link)
+	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#deleteLink(edu.memphis.ccrg.lida.shared.Link)
 	 */
 	public void deleteLink(Link l) {
 		deleteLinkable(l);

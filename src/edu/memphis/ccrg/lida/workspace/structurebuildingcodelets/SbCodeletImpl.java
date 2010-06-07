@@ -43,7 +43,7 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	private CodeletResult results = new BasicCodeletResult();
 	
 	public SbCodeletImpl(WorkspaceBuffer csm, WorkspaceBuffer perceptualBuffer){
-		super();
+		super(100);
 		this.csm = csm;
 		accessibleModules.add(perceptualBuffer);
 	}

@@ -152,7 +152,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 	}
 
     public void refresh(){
-    		display(module.getModuleContent());
+    	display(module.getModuleContent());
     }
     
     public void registerLida(Lida lida){
@@ -219,6 +219,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 		if (o instanceof NodeStructure) {
 			nodeStructure = (NodeStructure) o;
 			((AbstractTableModel) table.getModel()).fireTableStructureChanged();
+			//((AbstractTableModel) table.getModel()).fireTableDataChanged();
 		}
 	}// method
 }

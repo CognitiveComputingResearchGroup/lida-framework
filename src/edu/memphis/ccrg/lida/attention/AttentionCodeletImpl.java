@@ -44,8 +44,9 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 	protected void runThisLidaTask() {
 		if (csmHasDesiredContent()) {
 			NodeStructure csmContent = getCsmContent();
-			//System.out.println(csmContent.getNodeCount());
+		//	System.out.println("attention codelet finds nodes: " + csmContent.getNodeCount());
 			if (csmContent != null){
+		//		System.out.println("forming a coalition!");
 				global.addCoalition(new CoalitionImpl(csmContent, getActivation()));
 			}
 		}// if

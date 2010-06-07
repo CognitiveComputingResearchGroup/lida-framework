@@ -167,6 +167,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void sendActivationToParentsOf(PamNode pamNode) {
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
+//		System.out.println("num links " + pamNodeStructure.getLinkCount());
+//		System.out.println(pamNode.getLabel() + " num. parents " + nodes.size());
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
 		propagateParams.put("totalActivation", pamNode.getTotalActivation());//TODO: Abstract out
 		double amount = propagationBehavior.getActivationToPropagate(propagateParams);
@@ -289,7 +291,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 	@Override
 	public PamNode getNode(String label) {
-		return pamNodeStructure.getNode(label);
+		return pamNodeStructure.getNodeByLabel(label);
 	}
 
 

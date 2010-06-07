@@ -12,7 +12,7 @@ public class BasicCodeletAction implements CodeletAction {
 		
 		NodeStructure bufferContent = (NodeStructure) buffer.getModuleContent();
 		
-		System.out.println("Codelet performing action, perceptual buff has " + bufferContent.getNodeCount());
+		//System.out.println("Codelet performing action, perceptual buff has " + bufferContent.getNodeCount());
 		
 		NodeStructure csmContent = (NodeStructure) csm.getModuleContent();
 		csmContent.mergeWith(bufferContent);

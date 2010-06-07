@@ -30,9 +30,9 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
   
 	private static final long serialVersionUID = 76014332645842720L;
 	boolean isPaused = true;
-	private int sliderMin = 0;
-	private int sliderMax = 50;
-	private int sliderStartValue = (sliderMax - sliderMin) / 2;
+	private int sliderMin = 100;
+	private int sliderMax = 200;
+	private int sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;
 
     /** Creates new form ControlToolBarPanel */
     public ControlToolBarPanel() {
@@ -62,7 +62,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
         tiksTB = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jLabel2 = new javax.swing.JLabel();
-        speedSlider = new javax.swing.JSlider();
+        speedSlider = new javax.swing.JSlider(sliderMin, sliderMax);
         sleepTimeTextField = new javax.swing.JTextField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

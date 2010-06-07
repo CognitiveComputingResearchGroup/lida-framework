@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
-	private double lowerActivationBound;
+	private double lowerActivationBound = 0.01;
 	public WorkspaceBufferImpl(ModuleName lidaModule) {
 		super(lidaModule);
 	}
@@ -35,10 +35,10 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 * @param lowerActivationBound
 	 */
 	public void decayModule(long ticks){
-		
 		Collection<Node> nodes=buffer.getNodes();
 		for (Node n:nodes){
 			n.decay(ticks);
+			//System.out.println(this.toString() + ": actual activation " + n.getActivation() + " " + lowerActivationBound);
 			if (n.getActivation()<=lowerActivationBound){
 				buffer.deleteNode(n);
 			}
@@ -46,6 +46,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	}
 
 	public void setLowerActivationBound(double lowerActivationBound) {
+		//System.out.println("lower activation boudn being set "+ lowerActivationBound);
 		this.lowerActivationBound=lowerActivationBound;		
 	}
 	public void addListener(ModuleListener listener) {

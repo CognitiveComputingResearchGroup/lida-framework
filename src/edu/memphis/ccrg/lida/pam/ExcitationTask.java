@@ -54,6 +54,7 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * 
 	 */
 	protected void runThisLidaTask() {
+		//System.out.println("Exciting " + pamNode.getLabel());
 		pamNode.excite(excitationAmount);  
 		if(pamNode.isOverThreshold()){
 			//If over threshold then spawn a new task to add the node to the percept
