@@ -108,13 +108,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 		NodeStructure ns = null;
 		synchronized (this) {
 			ns = broadcastContent.copy();
-		}
-		System.out.println("in pm the broadcast has " + ns.getNodeCount());
-		
-		for(Node n: ns.getNodes()){
-			System.out.println("in pm " +n.getLabel());
-		}
-		
+		}		
 		schemeActivationBehavior.activateSchemesWithBroadcast(ns, schemeMap);
 	}// method
 
