@@ -168,8 +168,7 @@ public class PamNodeStructureTest extends TestCase{
 	@Test
 	public void testSetNodesExciteStrategy() {
 		DefaultExciteStrategy behavior = new DefaultExciteStrategy();
-		behavior.excite(0.1, 0.2);		
-		
+				
 		nodeStructure1.setNodesExciteStrategy(behavior);		
 		
 		assertEquals("Problem with SetNodesExciteStrategy", behavior, node1.getExciteStrategy());
@@ -183,8 +182,7 @@ public class PamNodeStructureTest extends TestCase{
 	public void testSetNodesDecayStrategy() {
 				
 		DecayStrategy behavior = new LinearDecayStrategy();
-		behavior.decay(0.2, 200);
-		
+				
 		assertEquals("Problem with SetNodesDecayStrategy", behavior, node1.getDecayStrategy());
 		assertEquals("Problem with SetNodesDecayStrategy", behavior, node2.getDecayStrategy());
 	}
@@ -242,7 +240,7 @@ public class PamNodeStructureTest extends TestCase{
 		nodeStructure2.addNode(node1);
 		nodeStructure2.addNode(node2);
 		
-		nodeStructure2.decayNodes(1000);
+		nodeStructure2.decayNodes(100);
 		
 		assertTrue("Problem with DecayNodes",((node1.getActivation()<0.7) && (node2.getActivation()<0.6)));
 		
