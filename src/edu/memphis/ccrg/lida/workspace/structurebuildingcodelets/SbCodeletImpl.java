@@ -19,7 +19,6 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	 * Set of workspace buffers this codelet 'looks at'
 	 */
 	private Set<WorkspaceBuffer> accessibleModules = new HashSet<WorkspaceBuffer>();
-	
 	private WorkspaceBuffer csm;
 	
 	/**
@@ -49,12 +48,14 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
                             
 	protected void runThisLidaTask(){	
+		//TODO: use Logger!!!
 		System.out.println("Running codelet");
 		for(WorkspaceBuffer buffer: accessibleModules){
 //			System.out.println("Basic codelet performing action on buffer " + buffer.toString());
 			action.performAction(buffer, csm);	
 		}
 		results.reportFinished();
+		System.out.println("Codelet finished");
 	}
 	
 	/**
