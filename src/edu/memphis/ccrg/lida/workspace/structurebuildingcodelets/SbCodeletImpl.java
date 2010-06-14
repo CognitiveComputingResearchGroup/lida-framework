@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -14,6 +15,8 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  *
  */
 public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
+	
+	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SbCodeletImpl");
 
 	/**
 	 * Set of workspace buffers this codelet 'looks at'
@@ -48,14 +51,12 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	}
                             
 	protected void runThisLidaTask(){	
-		//TODO: use Logger!!!
-		System.out.println("Running codelet");
+		logger.finest("SB codelet " + this.toString() + " being run.");
 		for(WorkspaceBuffer buffer: accessibleModules){
-//			System.out.println("Basic codelet performing action on buffer " + buffer.toString());
 			action.performAction(buffer, csm);	
 		}
 		results.reportFinished();
-		System.out.println("Codelet finished");
+		logger.finest("SB codelet " + this.toString() + " finishes one run.");
 	}
 	
 	/**
