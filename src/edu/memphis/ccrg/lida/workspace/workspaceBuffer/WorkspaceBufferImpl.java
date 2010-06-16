@@ -5,13 +5,14 @@ import java.util.Collection;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
-	private double lowerActivationBound = 0.01;
+	private double activationLowerBound = 0.01;
 	public WorkspaceBufferImpl(ModuleName lidaModule) {
 		super(lidaModule);
 	}
@@ -35,19 +36,24 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 * @param lowerActivationBound
 	 */
 	public void decayModule(long ticks){
-		Collection<Node> nodes=buffer.getNodes();
-		for (Node n:nodes){
+		Collection<Node> nodes = buffer.getNodes();
+		Collection<Link> links = buffer.getLinks();
+		for(Node n: nodes){
 			n.decay(ticks);
 			//System.out.println(this.toString() + ": actual activation " + n.getActivation() + " " + lowerActivationBound);
-			if (n.getActivation()<=lowerActivationBound){
-				buffer.deleteNode(n);
-			}
+			if (n.getActivation() <= activationLowerBound)
+				buffer.deleteNode(n);	
+		}
+		for(Link l: links){
+			l.decay(ticks);
+			if(l.getActivation() <= activationLowerBound)
+				buffer.deleteLink(l);
 		}
 	}
 
 	public void setLowerActivationBound(double lowerActivationBound) {
 		//System.out.println("lower activation boudn being set "+ lowerActivationBound);
-		this.lowerActivationBound=lowerActivationBound;		
+		this.activationLowerBound=lowerActivationBound;		
 	}
 	public void addListener(ModuleListener listener) {
 	}

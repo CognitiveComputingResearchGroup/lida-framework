@@ -287,6 +287,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	public NodeStructure copy() {
+		System.out.println("node strucutre copy " + this);
 		return new NodeStructureImpl(this);
 	}
 
