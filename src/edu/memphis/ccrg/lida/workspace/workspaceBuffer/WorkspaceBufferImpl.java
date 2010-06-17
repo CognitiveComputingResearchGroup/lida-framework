@@ -40,7 +40,6 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 		Collection<Link> links = buffer.getLinks();
 		for(Node n: nodes){
 			n.decay(ticks);
-			//System.out.println(this.toString() + ": actual activation " + n.getActivation() + " " + lowerActivationBound);
 			if (n.getActivation() <= activationLowerBound)
 				buffer.deleteNode(n);	
 		}
@@ -49,7 +48,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 			if(l.getActivation() <= activationLowerBound)
 				buffer.deleteLink(l);
 		}
-	}
+	}//method
 
 	public void setLowerActivationBound(double lowerActivationBound) {
 		//System.out.println("lower activation boudn being set "+ lowerActivationBound);

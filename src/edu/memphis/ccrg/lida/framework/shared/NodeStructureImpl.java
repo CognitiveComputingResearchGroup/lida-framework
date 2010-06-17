@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
@@ -26,6 +27,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	private static NodeFactory factory = NodeFactory.getInstance();
 	private String defaultNodeType;
 	private String defaultLinkType;
+	
+	private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.shared");
 
 	public NodeStructureImpl() {
 		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
@@ -132,12 +135,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * .shared.Link)
 	 */
 	public Link addLink(Link l) {
-		double newActiv = 0;
+		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getIds());
 		if (oldLink != null) { // if the link already exists only actualize the
 			// activation.
 			// if link already there update activation
-			newActiv = l.getActivation();
+			//newActiv = l.getActivation();
 			if (oldLink.getActivation() < newActiv) {
 				oldLink.setActivation(newActiv);
 			}
@@ -178,7 +181,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 				return null;
 			}
 		}
-
+		//System.out.println("about to generate new link with activation " + newActiv);
 		return generateNewLink(newSource, newSink, l.getType(), newActiv);
 	}
 
@@ -287,7 +290,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	public NodeStructure copy() {
-		System.out.println("node strucutre copy " + this);
+		logger.finer("node strucutre copy " + this);
 		return new NodeStructureImpl(this);
 	}
 
@@ -463,7 +466,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
-		Collection<Link> cl = ns.getLinks();
+		Collection<Link> cl = ns.getLinks();		
 		boolean pending = true;
 		while (pending) {
 			pending = false;
