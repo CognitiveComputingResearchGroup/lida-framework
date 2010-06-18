@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;

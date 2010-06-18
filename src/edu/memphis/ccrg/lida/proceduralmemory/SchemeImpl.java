@@ -5,13 +5,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	
@@ -63,9 +60,10 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	@Override
 	public void addContextCondition(long argumentId, NodeStructure ns) {
 		Argument a = arguments.get(argumentId);
+		//System.out.println("adding context condition " + a);
 		if (a!=null && ns!=null){
-		a.addContextCondition(ns);
-		contextConditions.add(ns);
+			a.addContextCondition(ns);
+			contextConditions.add(ns);
 		}
 	}
 

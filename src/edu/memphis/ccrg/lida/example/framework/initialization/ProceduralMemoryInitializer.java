@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
@@ -29,8 +28,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
  */
 public class ProceduralMemoryInitializer implements Initializer {
 
-	private static Logger logger = Logger
-			.getLogger("lida.framework.initialization");
+	private static Logger logger = Logger.getLogger("lida.framework.initialization");
 
 	/*
 	 * (non-Javadoc)
@@ -41,12 +39,10 @@ public class ProceduralMemoryInitializer implements Initializer {
 	 * edu.memphis.ccrg.lida.framework.Lida, java.util.Map)
 	 */
 	@Override
-	public void initModule(Initializable module, Lida lida,
-			Map<String, ?> params) {
+	public void initModule(Initializable module, Lida lida, Map<String, ?> params) {
 
 		ProceduralMemory pm = (ProceduralMemory) module;
-		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) lida
-				.getSubmodule(ModuleName.PerceptualAssociativeMemory);
+		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) lida.getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		Node[] nodes = pam.getNodeStructure().getNodes().toArray(new Node[0]);
 		List<Scheme> schemes = new ArrayList<Scheme>();
 		for (int i = 0; i < 20; i++) {
@@ -72,6 +68,6 @@ public class ProceduralMemoryInitializer implements Initializer {
 			pm.addSchemes(schemes);
 			logger.log(Level.INFO, "Random Schemes Loaded");
 
-		}
-	}
+		}//for
+	}//method
 }

@@ -69,11 +69,15 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 
 	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
+	//	System.out.println("Add schemes called " + schemes.size());
 		for (Scheme s : schemes) {
-			List<NodeStructure> context = s.getContextConditions();
-			for (NodeStructure ns : context) {
+			List<NodeStructure> contextConditions = s.getContextConditions();
+			//System.out.println("num contexts " + contextConditions.size());
+			for (NodeStructure ns : contextConditions) {
+				
 				for (Linkable ln : ns.getLinkableMap().keySet()) {
 					Set<Scheme> existingSchemes = schemeMap.get(ln);
+					//System.out.println("node in context " + ln.getLabel() + " exisiting? " + existingSchemes);
 					if (existingSchemes == null) {
 						existingSchemes = new HashSet<Scheme>();
 						schemeMap.put(ln, existingSchemes);
