@@ -71,23 +71,27 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements
 	 * Finished tasks from the FrameworkExecutorService are sent to this method.
 	 * If it is overridden then is should still be called first using super.
 	 */
-	public void receiveFinishedTask(LidaTask task, Throwable t) {
+	public void receiveFinishedTask(LidaTask task) {
 		switch (task.getStatus()) {
 		case FINISHED_WITH_RESULTS:
 			processResults(task);
 			removeTask(task);
+			logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 			break;
 		case FINISHED:
 			removeTask(task);
+			logger.log(Level.FINEST, "FINISHED {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 			break;
 		case CANCELLED:
 			removeTask(task);
+			logger.log(Level.FINEST, "CANCELLED {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 			break;
 		case TO_RESET:
-			logger.log(Level.FINEST, "Reseting task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
+			logger.log(Level.FINEST, "TO_RESET {1}", new Object[]{LidaTaskManager.getActualTick(),task});
 			task.reset();
 		case WAITING_TO_RUN:
 		case RUNNING:
+			logger.log(Level.FINEST, "RUNNING", new Object[]{LidaTaskManager.getActualTick(),task});
 			task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
 			runTask(task);
 			break;

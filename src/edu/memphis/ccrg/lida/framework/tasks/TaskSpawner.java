@@ -37,9 +37,8 @@ public interface TaskSpawner extends LidaTask{
 	 * action.
 	 * 
 	 * @param task
-	 * @param t
 	 */
-	public abstract void receiveFinishedTask(LidaTask task, Throwable t);
+	public abstract void receiveFinishedTask(LidaTask task);
 	
 	/**
 	 * Cancels the task from the Task Queue. This is only possible if the tick for witch the task 

@@ -97,7 +97,7 @@ public class PamInitializer implements Initializer {
 
 		PropagationBehavior b = new UpscalePropagationBehavior();
 		pam.setPropagationBehavior(b);
-		driver.setInitialTasks(pam.getFeatureDetectors());
+		//driver.setInitialTasks(pam.getFeatureDetectors());
 	}// method
 
 }// class

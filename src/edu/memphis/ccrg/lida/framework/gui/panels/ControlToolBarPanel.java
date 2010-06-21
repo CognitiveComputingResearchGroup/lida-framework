@@ -13,6 +13,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.swing.JSlider;
 
@@ -38,10 +39,30 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
     public ControlToolBarPanel() {
         initComponents();
         setSupportedModule(ModuleName.NoModule);
-
-		sleepTimeTextField.setText(this.sliderStartValue + "");
     }
-
+@Override
+public void initPanel(String[] params){
+	if(params.length>=1){
+		try{
+			sliderMin=Integer.parseInt(params[0]);
+		}catch (NumberFormatException e){
+			logger.log(Level.WARNING,"Invalid Parameter "+params[0],0L);
+		}
+	}
+	if(params.length>=2){
+		try{
+			sliderMax=Integer.parseInt(params[1]);
+		}catch (NumberFormatException e){
+			logger.log(Level.WARNING,"Invalid Parameter "+params[1],0L);
+		}
+	}
+	
+	sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;
+	speedSlider.setMaximum(sliderMax);
+	speedSlider.setMinimum(sliderMin);
+	speedSlider.setValue(sliderStartValue);
+	sleepTimeTextField.setText(this.sliderStartValue + "");		
+}
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

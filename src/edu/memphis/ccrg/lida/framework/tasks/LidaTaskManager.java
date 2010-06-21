@@ -1,10 +1,13 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -20,11 +23,12 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 //TODO: Comment!!!
 /**
  * @author Javier Snaider
- *
+ * 
  */
 public class LidaTaskManager {
 
-	private static Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
+	private static Logger logger = Logger
+	.getLogger("lida.framework.LidaTaskManager");
 
 	/**
 	 * Determines whether or not spawned task should run
@@ -34,7 +38,8 @@ public class LidaTaskManager {
 	private volatile long lapTicks = 0L;
 	private volatile static long actualTick = 0L;
 	private volatile Long maxTick = 0L;
-	private volatile long lastDecayTick=0L;
+	private volatile long lastDecayTick = 0L;
+
 	/**
 	 * @return the maxTick
 	 */
@@ -43,16 +48,14 @@ public class LidaTaskManager {
 	}
 
 	private volatile boolean lapMode = false;
-	private Object lock = new Object();
+	private volatile Object lock = new Object();
 
-	
 	/**
 	 * @return the actualTick
 	 */
 	public static long getActualTick() {
 		return actualTick;
 	}
-
 
 	/**
 	 * @return the lapMode
@@ -93,7 +96,7 @@ public class LidaTaskManager {
 
 	private Thread taskManagerThread;
 
-	private Collection<LidaModule> modules=new HashSet<LidaModule>();
+	private Collection<LidaModule> modules = new HashSet<LidaModule>();
 
 	/**
 	 * @return the mainTaskSpawner
@@ -182,12 +185,13 @@ public class LidaTaskManager {
 	public void stopRunning() {
 		shuttingDown = true;
 		mainTaskSpawner.stopRunning();
-		
+
 		taskManagerThread.interrupt();
 		// Now that we can be sure that active tasks will no longer be executed
 		// the executor service can be shutdown.
 		executorService.shutdown();
-		logger.log(Level.INFO,"All threads and tasks told to stop",getActualTick());
+		logger.log(Level.INFO, "All threads and tasks told to stop",
+				getActualTick());
 		try {
 			Thread.sleep(400);
 			executorService.awaitTermination(400, TimeUnit.MILLISECONDS);
@@ -196,7 +200,7 @@ public class LidaTaskManager {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		logger.log(Level.INFO,"Exiting",getActualTick());
+		logger.log(Level.INFO, "Exiting", getActualTick());
 		System.exit(0);
 	}
 
@@ -213,25 +217,27 @@ public class LidaTaskManager {
 	}
 
 	public void pauseSpawnedTasks() {
-		logger.log(Level.INFO,"All Tasks paused.",getActualTick());
+		logger.log(Level.INFO, "All Tasks paused.", getActualTick());
 		tasksPaused = true;
 	}
 
 	public void resumeSpawnedTasks() {
-		logger.log(Level.FINE, "resume spawned tasks called actualTime: {0} maxTick: {1}",new Object[]{actualTick,maxTick});
+		logger.log(Level.FINE,
+				"resume spawned tasks called actualTime: {0} maxTick: {1}",
+				new Object[] { actualTick, maxTick });
 		if (shuttingDown)
 			return;
 
 		tasksPaused = false;
 
-		synchronized(lock){
+		synchronized (lock) {
 			lock.notify();
 		}
 	}// method
 
 	public void setLapTicks(long l) {
 		lapTicks = l;
-		synchronized(lock){
+		synchronized (lock) {
 			lock.notify();
 		}
 	}
@@ -247,23 +253,22 @@ public class LidaTaskManager {
 		Long time = actualTick + delayTicks;
 		Queue<LidaTask> queue = taskQueue.get(time);
 		if (queue == null) {
-			queue = new ConcurrentLinkedQueue<LidaTask>();
-			Queue<LidaTask> queue2 = taskQueue.putIfAbsent(time, queue);
-			if (queue2 != null) {// there was a previous one
+			Queue<LidaTask> queue2 = new ConcurrentLinkedQueue<LidaTask>();
+			queue = taskQueue.putIfAbsent(time, queue2);
+			if (queue == null) {// there wasn't a previous one
 				queue = queue2;
-			} else {
 				synchronized (maxTick) {
 					if (time > maxTick) {
 						maxTick = time;
-						synchronized(lock){
+						synchronized (lock) {
 							lock.notify();
 						}
 					}
 				}
 			}
 		}
-		queue.add(task);
 		task.setScheduledTick(time);
+		queue.add(task);
 		return true;
 	}
 
@@ -276,7 +281,8 @@ public class LidaTaskManager {
 		if (queue != null) {
 			try {
 				decayModules();
-				executorService.invokeAll(queue); //Execute all tasks scheduled for this tick
+				executorService.invokeAll(queue); // Execute all tasks scheduled for
+				// this tick
 			} catch (InterruptedException e) {
 				logger.log(Level.WARNING, e.getMessage(), actualTick);
 			}
@@ -285,32 +291,28 @@ public class LidaTaskManager {
 	}
 
 	private void decayModules() {
-		for(LidaModule lm:modules){
-			lm.decayModule(actualTick-lastDecayTick);
+		List<DecaybleWrapper> decaybles = new ArrayList<DecaybleWrapper>();
+		long ticks=actualTick - lastDecayTick;
+		for (LidaModule lm : modules) {
+			decaybles.add(new DecaybleWrapper(lm,ticks));
 		}
-		lastDecayTick=actualTick;
-		logger.log(Level.FINEST, "Modules decayed", actualTick);	
-	}
-
-
-	public void receiveFinishedTask(LidaTask task, Throwable t) {
 		
-		TaskSpawner ts=task.getTaskSpawner();
-		if (ts !=null){
-			ts.receiveFinishedTask(task, t);
-		}else{
-			logger.log(Level.FINEST, "Taskmanager is deleting task {1}", new Object[]{actualTick,task});
+		try {
+			executorService.invokeAll(decaybles);
+		} catch (InterruptedException e) {
+			logger.log(Level.WARNING, e.getMessage(), actualTick);
 		}
+		lastDecayTick = actualTick;
+		logger.log(Level.FINEST, "Modules decayed", actualTick);
 	}
 
-	public Map<Long, Queue<LidaTask>> getTaskQueue(){
+	public Map<Long, Queue<LidaTask>> getTaskQueue() {
 		return Collections.unmodifiableMap(taskQueue);
 	}
-	
-	
+
 	/**
 	 * This inner class implements the main loop of the system.
-	 *
+	 * 
 	 */
 	private class TaskManagerMainLoop implements Runnable {
 
@@ -318,7 +320,8 @@ public class LidaTaskManager {
 			while (!shuttingDown) {
 				synchronized (lock) {
 					if ((actualTick >= maxTick)
-							|| (lapMode && (actualTick >= lapTicks)) || tasksPaused) {
+							|| (lapMode && (actualTick >= lapTicks))
+							|| tasksPaused) {
 						try {
 							lock.wait();
 							continue;
@@ -327,10 +330,10 @@ public class LidaTaskManager {
 						}
 					}
 				}
-				
-				long initTime = System.currentTimeMillis(); // For real time 
+
+				long initTime = System.currentTimeMillis(); // For real time
 				goNextTick();
-				
+
 				long duration = System.currentTimeMillis() - initTime;
 				if (duration < tickDuration) {
 					try {
@@ -343,34 +346,61 @@ public class LidaTaskManager {
 			}
 		}
 	}
-	
+
 	/**
-	 * Cancels the task from the Task Queue. This is only possible if the tick for witch the task 
-	 * is scheduled has not been reached.
+	 * Cancels the task from the Task Queue. This is only possible if the tick
+	 * for witch the task is scheduled has not been reached.
 	 * 
-	 * @param task The task to cancel.
-	 * @return true if it was , false otherwise. 
+	 * @param task
+	 *            The task to cancel.
+	 * @return true if it was , false otherwise.
 	 */
-	public boolean cancelTask(LidaTask task){
+	public boolean cancelTask(LidaTask task) {
 		long time = task.getScheduledTick();
-		Queue<LidaTask> queue =null;
-		if (time>actualTick){
-			queue=taskQueue.get(time);			
+		Queue<LidaTask> queue = null;
+		if (time > actualTick) {
+			queue = taskQueue.get(time);
 		}
-		if (queue!=null){
+		if (queue != null) {
 			queue.remove(task);
 			return true;
 		}
-		return false;		
-	}
-	
-	/**
-	 * Set the Collection of modules for decaying 
-	 * @param modules a Collection with the LidaModules
-	 */
-	public void setDecayingModules(Collection<LidaModule> modules){
-		
-		this.modules.addAll(modules);
+		return false;
 	}
 
-}// class LIDA_TASK_MANAGER
+	private class DecaybleWrapper implements Callable<Void> {
+		private LidaModule module;
+		private long ticks;
+
+		public DecaybleWrapper(LidaModule module,long ticks) {
+			this.module = module;
+			this.ticks=ticks;
+		}
+
+		public LidaModule getModule() {
+			return module;
+		}
+		
+		public void setTicks(long ticks){
+			this.ticks=ticks;
+		}
+
+		public Void call() throws Exception {
+			if (module!=null){
+				module.decayModule(ticks);
+			}
+			return null;
+		}
+	}
+		/**
+		 * Set the Collection of modules for decaying
+		 * 
+		 * @param modules
+		 *            a Collection with the LidaModules
+		 */
+		public void setDecayingModules(Collection<LidaModule> modules) {
+
+			this.modules.addAll(modules);
+		}
+
+	}// class LIDA_TASK_MANAGER

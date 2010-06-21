@@ -3,9 +3,9 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaModule;
@@ -14,6 +14,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.gui.panels.VisualEnvironmentPanel;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvider {
 
@@ -241,5 +242,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 
 	public void addSubModule(LidaModule lm) {
 	}
-
+//	public void setScheduledTick(long time){
+//		super.setScheduledTick(time);
+//		logger.log(Level.WARNING,"visual "+time,LidaTaskManager.getActualTick());
+//	}
 }// class

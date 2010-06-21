@@ -4,6 +4,8 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 
@@ -12,6 +14,8 @@ import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
  * @author Javier Snaider
  */
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
+	
+	private static Logger logger= Logger.getLogger("lida.framework.tasks.LidaTask");
 
 	private static int defaultTicksPerStep = 1;
 	private long taskID;
@@ -21,7 +25,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner ts;
 	private long scheduledTick;
-	private static long nextTickID;
+	private static long nextTaskID;
 	
 	/**
 	 * @return the scheduledTick
@@ -43,7 +47,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
-		taskID = nextTickID++;
+		taskID = nextTaskID++;
 		this.ts=ts;
 		setNumberOfTicksPerStep(ticksForCycle);
 		
@@ -76,7 +80,12 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		
 		nextExcecutionTickLap=ticksPerStep;
 		runThisLidaTask();
-
+		
+		if (ts != null) {
+			ts.receiveFinishedTask(this);
+		} else {
+			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] { LidaTaskManager.getActualTick(), this });
+		}
 		return this;
 	}
 

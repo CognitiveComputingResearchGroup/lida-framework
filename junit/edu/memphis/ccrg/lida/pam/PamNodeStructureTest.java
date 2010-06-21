@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -170,9 +171,9 @@ public class PamNodeStructureTest extends TestCase{
 		DefaultExciteStrategy behavior = new DefaultExciteStrategy();
 				
 		nodeStructure1.setNodesExciteStrategy(behavior);		
-		
-		assertEquals("Problem with SetNodesExciteStrategy", behavior, node1.getExciteStrategy());
-		assertEquals("Problem with SetNodesExciteStrategy", behavior, node2.getExciteStrategy());
+		for (Node n : nodeStructure1.getNodes()){
+			assertEquals("Problem with SetNodesExciteStrategy in Node: " + n, behavior, n.getExciteStrategy());
+		}
 	}
 
 	/**
@@ -184,9 +185,10 @@ public class PamNodeStructureTest extends TestCase{
 		DecayStrategy behavior = new LinearDecayStrategy();
 		
 		nodeStructure1.setNodesDecayStrategy(behavior);
-				
-		assertEquals("Problem with SetNodesDecayStrategy", behavior, node1.getDecayStrategy());
-		assertEquals("Problem with SetNodesDecayStrategy", behavior, node2.getDecayStrategy());
+		for (Node n : nodeStructure1.getNodes()){
+			assertEquals("Problem with SetNodesDecayStrategy in Node: " + n, behavior, n.getDecayStrategy());
+		}
+
 	}
 
 	/**
@@ -238,18 +240,17 @@ public class PamNodeStructureTest extends TestCase{
 	@Test
 	public void testDecayNodes() {
 		DecayStrategy ds = new LinearDecayStrategy();
-		nodeStructure2.setNodesDecayStrategy(ds);
-		node1.setDecayStrategy(ds);
-		node2.setDecayStrategy(ds);
 		
 		node1.setActivation(0.7);
 		node2.setActivation(0.6);		
-		nodeStructure2.addNode(node1);
-		nodeStructure2.addNode(node2);		
+		Node nodeA= nodeStructure2.addNode(node1);
+		Node nodeB= nodeStructure2.addNode(node2);		
+		nodeStructure2.setNodesDecayStrategy(ds);
 		
 		nodeStructure2.decayNodes(100);
 		
-		assertTrue("Problem with DecayNodes",((node1.getActivation()<0.7) && (node2.getActivation()<0.6)));
+		assertTrue("Problem with DecayNodes "+ nodeA,(nodeA.getActivation()<0.7));
+		assertTrue("Problem with DecayNodes "+ nodeB,(nodeB.getActivation()<0.6));
 		
 	}
 }

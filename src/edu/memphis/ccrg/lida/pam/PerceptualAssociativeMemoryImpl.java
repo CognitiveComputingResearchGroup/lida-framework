@@ -22,7 +22,6 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -67,8 +66,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	private TaskSpawner taskSpawner;
 	//
 	private PropagationBehavior propagationBehavior;
-	
-	private NodeFactory nodeFactory = NodeFactory.getInstance();
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
@@ -148,14 +145,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void decayModule(long ticks) {
 		pamNodeStructure.decayNodes(ticks);
 	}// method
-	
-	@Override
-	public void exciteFromSensoryMemory(PamNode source, PamNode sink, double amount) {
-		//TODO: logging
-		Link l = nodeFactory.getLink(source, sink, LinkType.GROUNDING, 1.0);
-		ExciteAndConnectTask task = new ExciteAndConnectTask(source, sink, l, amount, this, taskSpawner);
-		taskSpawner.addTask(task);	
-	}
 
 	/**
 	 * receives activation from feature detectors or other codelets to excite a
@@ -299,10 +288,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public void addLink(String sourceId, String sinkId, LinkType type, double activation) {
 		pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
-	}
-	@Override
-	public PamNode getNode(String label) {
-		return pamNodeStructure.getNodeByLabel(label);
 	}
 
 }//class

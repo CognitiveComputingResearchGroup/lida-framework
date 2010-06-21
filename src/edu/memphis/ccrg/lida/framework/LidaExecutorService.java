@@ -52,16 +52,16 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	@SuppressWarnings("unchecked")
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
-		logger.log(Level.FINEST,r.getClass().getName(),LidaTaskManager.getActualTick());
-		try {
-			taskManager.receiveFinishedTask(((Future<LidaTask>)r).get(), t);
-		} catch (InterruptedException e) {
-			logger.log(Level.INFO,e.getMessage(),LidaTaskManager.getActualTick());
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			logger.log(Level.WARNING,e.getMessage(),LidaTaskManager.getActualTick());
-			e.printStackTrace();
-		}
+//		logger.log(Level.FINEST,r.getClass().getName(),LidaTaskManager.getActualTick());
+//		try {
+//			taskManager.receiveFinishedTask(((Future<LidaTask>)r).get(), t);
+//		} catch (InterruptedException e) {
+//			logger.log(Level.INFO,e.getMessage(),LidaTaskManager.getActualTick());
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//			logger.log(Level.WARNING,e.getMessage(),LidaTaskManager.getActualTick());
+//			e.printStackTrace();
+//		}
 	}
 	
 }//class

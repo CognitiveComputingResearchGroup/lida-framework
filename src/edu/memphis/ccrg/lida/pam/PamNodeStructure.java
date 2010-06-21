@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 //TODO: Check this class
 public class PamNodeStructure extends NodeStructureImpl{
 	private static Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
-	
+	//TODO: put these values in params
 	private Double upscaleFactor = 0.1;
 
 	private Double downscaleFactor = 0.2;
@@ -79,9 +79,10 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * Add a single PamNode to this pam node structure
 	 * @param node
 	 */
-	public void addPamNode(PamNode node){
-		addNode(node);
+	public Node addNode(Node node){
+		Node n=super.addNode(node);
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+		return n;
 	}
 	
 	/**
@@ -227,13 +228,12 @@ public class PamNodeStructure extends NodeStructureImpl{
 			((PamNodeImpl)n).printActivationString();
 	}//method
 	
-	public PamNode getNodeByLabel(String label) {
-		for(Node n: getNodes()){
-			if(n.getLabel().equals(label))
-				return (PamNode) n;
-		}
-		return null;
-	}
-
+//	public PamNode getNodeByLabel(String label) {
+//		for(Node n: getNodes()){
+//			if(n.getLabel().equals(label))
+//				return (PamNode) n;
+//		}
+//		return null;
+//	}
 
 }//class

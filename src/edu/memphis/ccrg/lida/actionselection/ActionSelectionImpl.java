@@ -10,7 +10,6 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{
-	
 	public ActionSelectionImpl( ) {
 		super(ModuleName.ActionSelection);
 		// TODO Auto-generated constructor stub
@@ -23,6 +22,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	public void receiveScheme(Scheme s) {
+	//TODO:change for Logger
 		System.out.println("action selection receiving scheme!");
 	}
 	

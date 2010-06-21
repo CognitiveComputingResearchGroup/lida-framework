@@ -109,12 +109,4 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public void addLink(String sourceId, String sinkId, LinkType type, double activation);
 	
-	/**
-	 * returns node if this pam contains a node with supplied label
-	 * @param label
-	 * @return
-	 */
-	public PamNode getNode(String label);
-	
-	public void exciteFromSensoryMemory(PamNode sensorySceneNode, PamNode pamNode, double amount);
 }//interface PAMinterface
