@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -37,7 +38,9 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	PerceptualAssociativeMemory,  
 																	            BroadcastListener, 
 																	            WorkspaceListener{
-
+	/**
+	 * 
+	 */
 	private static Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
 	
 	/**
@@ -67,6 +70,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	//
 	private PropagationBehavior propagationBehavior;
 	
+	/**
+	 * Type of new nodes created by this PAM
+	 */
+	private String newNodeType = "PamNodeImpl";
+	
+	private NodeFactory nodeFactory = NodeFactory.getInstance();
+
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
 	}
@@ -84,8 +94,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		propagationBehavior = b;
 	}
 
-	public void addNodes(Set<PamNode> nodes) {
-		pamNodeStructure.addPamNodes(nodes);
+	public Set<PamNode> addNodes(Set<PamNode> nodes) {
+		return pamNodeStructure.addPamNodes(nodes);
 	}
 	public void addLinks(Set<Link> links) {
 		pamNodeStructure.addLinks(links);
@@ -94,23 +104,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Feature detectors should be added after the nodes they excite are added
 	 */
-	public boolean addFeatureDetector(FeatureDetector detector) {
-//		Since nodes are copied when added to a NodeStructure, 
-//		the node object that the featureDetectors excite must be 
-//		updated with the copied node that is in the pamNodeStructure
-		long id = detector.getPamNode().getId();
-		PamNode node = (PamNode) pamNodeStructure.getNode(id);
-		if(node != null){
-			detector.setPamNode(node);
-			featureDetectors.add(detector);
-			
-			taskSpawner.addTask(detector);
-			return true;
-		}else
-			logger.log(Level.SEVERE, "Failed to add feature detector. Corresponding node \"" + 
-									 detector.getPamNode().getLabel() + 
-									 "\" was not found in pam", LidaTaskManager.getActualTick());
-		return false;
+	public void addFeatureDetector(FeatureDetector detector) {
+		featureDetectors.add(detector);
+		taskSpawner.addTask(detector);
+		logger.log(Level.FINE, "Added feature detector to PAM", LidaTaskManager.getActualTick());	
 	}//method
 
 	// ******INTERMODULE COMMUNICATION******
@@ -279,8 +276,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public PamNode getNode(long id) {
 		return (PamNode)pamNodeStructure.getNode(id) ;
 	}
-	public void addNode(PamNode node) {
-		pamNodeStructure.addNode(node);		
+	public PamNode addNode(PamNode node) {
+		return (PamNode) pamNodeStructure.addNode(node);		
 	}
 	public void addLink(PamNode source, PamNode sink, LinkType type, double activation) {
 		pamNodeStructure.addLink(source.getIds(),sink.getIds(),type,activation);		
@@ -288,6 +285,27 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public void addLink(String sourceId, String sinkId, LinkType type, double activation) {
 		pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
+	}
+	@Override
+	public PamNode addNewNode(String label) {
+		PamNode newNode =  (PamNode) nodeFactory.getNode(newNodeType, label);
+		newNode = (PamNode) pamNodeStructure.addNode(newNode);
+		return newNode;
+	}
+	@Override
+	public String getNewNodeType() {
+		return this.newNodeType;
+	}
+	@Override
+	public void setNewNodeType(String type) {
+		newNodeType = type;
+	}
+	@Override
+	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount) {
+		logger.log(Level.FINEST, "exciting and connecting " + sourceNode.getLabel() + " to " + sinkNode.getLabel(), LidaTaskManager.getActualTick());
+		Link l = nodeFactory.getLink(sourceNode, sinkNode, LinkType.GROUNDING, 1.0);
+		ExciteAndConnectTask task = new ExciteAndConnectTask(sourceNode, sinkNode, l, excitationAmount, this, taskSpawner);
+		taskSpawner.addTask(task);	
 	}
 
 }//class

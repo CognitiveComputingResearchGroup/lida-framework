@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,7 +54,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public double getDownscale(){
 		return downscaleFactor;
 	}
-	
 
 	public double getSelectivity() {
 		return selectivityThreshold;
@@ -69,11 +69,13 @@ public class PamNodeStructure extends NodeStructureImpl{
 	/**
 	 * Add a collection of PamNodes to this pam node structure
 	 */	
-	public void addPamNodes(Collection<PamNode> nodes){
+	public Set<PamNode> addPamNodes(Collection<PamNode> nodes){
+		Set<PamNode> returnedNodes = new HashSet<PamNode>();
 		for(Node n: nodes)
-			addNode(n);
+			returnedNodes.add((PamNode) addNode(n));
 
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+		return returnedNodes;
 	}//method
 	/**
 	 * Add a single PamNode to this pam node structure
@@ -214,9 +216,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 		for(Node n: getNodes()){
 			PamNode pn = (PamNode) n;
 			pn.decay(ticks);
-//			if(pn.getTotalActivation() < nodeRemovalThreshold ){
-//				super.deleteLinkable(pn);
-//			}
 		}
 	}//method
 	

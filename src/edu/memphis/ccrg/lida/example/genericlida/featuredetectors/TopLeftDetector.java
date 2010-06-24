@@ -30,5 +30,11 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 		}
 		return 0.0;
 	}
+
+	@Override
+	public void detectMultipleNodes() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

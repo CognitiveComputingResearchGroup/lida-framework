@@ -13,7 +13,6 @@ import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 
@@ -23,10 +22,21 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public void setTaskSpawner(TaskSpawner spawner);
-	public void addNode(PamNode node);
-	public void addNodes(Set<PamNode> nodes);
+	
+	//TODO:
+    public void setNewNodeType(String type);
+ 	public String getNewNodeType();
+	
+	public PamNode addNewNode(String label);
+	/**
+	 * 
+	 * @param node
+	 * @return new copy of the pam node !
+	 */
+	public PamNode addNode(PamNode node);
+	public Set<PamNode> addNodes(Set<PamNode> nodes);
 	public void addLinks(Set<Link> links);
-	public boolean addFeatureDetector(FeatureDetector fd);
+	public void addFeatureDetector(FeatureDetector fd);
 	public void addPamListener(PamListener pl);
 	
 	/**
@@ -109,4 +119,12 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public void addLink(String sourceId, String sinkId, LinkType type, double activation);
 	
+	/**
+	 * 
+	 * @param sourceNode
+	 * @param sinkNode
+	 * @param excitationAmount
+	 */
+	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount);
+
 }//interface PAMinterface

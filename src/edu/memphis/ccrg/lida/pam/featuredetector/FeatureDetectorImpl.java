@@ -1,6 +1,9 @@
 package edu.memphis.ccrg.lida.pam.featuredetector;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +29,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public abstract class FeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
 
 	private static Logger logger = Logger.getLogger("lida.pam.featuredetector.FeatureDetectorImpl");
-	protected PamNode pamNode;
+	protected List<PamNode> pamNodes = new ArrayList<PamNode>();
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
@@ -34,20 +37,20 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 		super();
 		this.pam = pam;
 		this.sm = sm;
-		this.pamNode = n;
+		this.pamNodes.add(n);
 	}
 	
 	public void init(){
 		pam = (PerceptualAssociativeMemory)getParam("PAM",null);
 		sm = (SensoryMemory)getParam("SensoryMemory",null);
-		pamNode = (PamNode)getParam("PamNode",null);
+		pamNodes = (List<PamNode>) getParam("PamNodes",null);
 	}
 
-	public void setPamNode(PamNode node) {
-		pamNode = (PamNodeImpl) node;
+	public void addPamNode(PamNode node) {
+		pamNodes.add((PamNodeImpl) node);
 	}
-	public PamNode getPamNode() {
-		return pamNode;
+	public Collection<PamNode> getPamNodes() {
+		return pamNodes;
 	}
 	
 	protected void runThisLidaTask(){
@@ -65,7 +68,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements Featur
 	public abstract double detect();
 		
 	public void excitePam(double amount){
-		pam.receiveActivationBurst(pamNode, amount);
+		pam.receiveActivationBurst(pamNodes.get(0), amount);
 	}
 	
 	public String toString(){
