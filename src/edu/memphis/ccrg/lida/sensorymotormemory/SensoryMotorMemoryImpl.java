@@ -41,4 +41,10 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 		
 	}
 
+	@Override
+	public void receiveActionId(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

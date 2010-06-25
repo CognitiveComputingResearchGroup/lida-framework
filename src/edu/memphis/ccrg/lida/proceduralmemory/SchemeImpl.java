@@ -59,11 +59,11 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 
 	@Override
 	public void addContextCondition(long argumentId, NodeStructure ns) {
-		Argument a = arguments.get(argumentId);
-		//System.out.println("adding context condition " + a);
-		if (a!=null && ns!=null){
-			a.addContextCondition(ns);
+		Argument arg = arguments.get(argumentId);
+		if(ns != null){
 			contextConditions.add(ns);
+			if(arg != null)
+				arg.addContextCondition(ns);
 		}
 	}
 

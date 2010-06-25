@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 public class VisionSensoryMemory extends SensoryMemoryImpl{
@@ -25,6 +26,12 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 	@Override
 	public Object getModuleContent() {
 		return getContent("vision");
+	}
+
+	@Override
+	public void receiveAction(LidaAction a) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }// class

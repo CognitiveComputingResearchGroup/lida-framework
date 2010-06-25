@@ -24,9 +24,8 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
-public class ProceduralMemoryImpl extends LidaModuleImpl implements
-		ProceduralMemory, BroadcastListener {
-	private static Logger logger = Logger.getLogger("lida.proceduralmemory");
+public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
+	private static Logger logger = Logger.getLogger("lida.proceduralmemory.ProceduralMemoryImpl");
 
 	/**
 	 * Shared variable to store the asynchronously arriving broadcast
@@ -122,8 +121,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void sendInstantiatedScheme(Scheme s) {
-		logger.log(Level.FINE, "Scheme is sent", LidaTaskManager
-				.getActualTick());
+		logger.log(Level.FINE, "Sending scheme from procedural memory", LidaTaskManager.getActualTick());
 		for (ProceduralMemoryListener listener : listeners)
 			listener.receiveScheme(s);
 	}

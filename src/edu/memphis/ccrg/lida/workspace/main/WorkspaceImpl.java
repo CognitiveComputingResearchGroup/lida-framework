@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -38,7 +39,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 									  PamListener, 
 									  LocalAssociationListener,
 									  BroadcastListener, 
-									  ActionSelectionListener{
+									  SensoryMotorListener{
 	
 	private static Logger logger = Logger.getLogger("lida.workspace.main.Workpace");
 
@@ -120,11 +121,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 	public void learn() {}
 	
 	/**
-	 * TODO: Implementing this is a long way off as of (3.30.09)	
-	 */
-	public void receiveAction(LidaAction c) {
-	}
-	/**
 	 * Received broadcasts are sent to the broadcast queue.
 	 */
 	public void receiveBroadcast(BroadcastContent bc) {
@@ -195,6 +191,11 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace,
 		}else if (listener instanceof CueListener){
 			addCueListener((CueListener)listener);
 		}
+	}
+
+	@Override
+	public void receiveAction(LidaAction a) {
+		// TODO Maybe just pam receives this and not the workspace		
 	}
 	
 }//class

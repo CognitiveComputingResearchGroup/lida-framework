@@ -2,14 +2,22 @@ package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{
+	
+	private static Logger logger = Logger.getLogger("lida.actionselection.ActionSelectionImpl");
+	
+	private double selectionThreshold = 0.95;
+	
 	public ActionSelectionImpl( ) {
 		super(ModuleName.ActionSelection);
 		// TODO Auto-generated constructor stub
@@ -22,13 +30,15 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	public void receiveScheme(Scheme s) {
-	//TODO:change for Logger
-		System.out.println("action selection receiving scheme!");
+		if(s.getActivation() > selectionThreshold){
+			sendAction(s.getSchemeActionId());
+			logger.log(Level.FINE, "Selected action: " + s.getId(), LidaTaskManager.getActualTick());
+		}
 	}
 	
-	public void sendAction(LidaAction a){
+	public void sendAction(long schemeActionId){
 		for(ActionSelectionListener l: listeners)
-			l.receiveAction(a);
+			l.receiveActionId(schemeActionId);
 	}
 
 	public Object getModuleContent() {
