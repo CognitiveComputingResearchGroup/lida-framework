@@ -1,8 +1,11 @@
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -10,9 +13,10 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 
 public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
 
+	private Map<Long, LidaAction> actionMap = new HashMap<Long, LidaAction>();
+	
 	public SensoryMotorMemoryImpl() {
 		super(ModuleName.SensoryMotorMemory);
-		// TODO Auto-generated constructor stub
 	}
 
 	private List<SensoryMotorListener> listeners = new ArrayList<SensoryMotorListener>();
@@ -43,8 +47,19 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 
 	@Override
 	public void receiveActionId(long id) {
-		// TODO Auto-generated method stub
-		
+		//System.out.println("Sensory motor memory receiving " + id);
+		executeAction(actionMap.get(id));
+	}
+
+	@Override
+	public void executeAction(LidaAction action) {
+		for(SensoryMotorListener l: listeners)
+			l.receiveAction(action);		
+	}
+
+	@Override
+	public void setActionMap(Map<Long, LidaAction> actionMap) {
+		this.actionMap = actionMap;		
 	}
 
 }

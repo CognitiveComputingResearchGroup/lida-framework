@@ -32,7 +32,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public void receiveScheme(Scheme s) {
 		if(s.getActivation() > selectionThreshold){
 			sendAction(s.getSchemeActionId());
-			logger.log(Level.FINE, "Selected action: " + s.getId(), LidaTaskManager.getActualTick());
+			logger.log(Level.FINE, "Selected action: " + s.getSchemeActionId(), LidaTaskManager.getActualTick());
 		}
 	}
 	
