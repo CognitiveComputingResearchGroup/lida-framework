@@ -9,7 +9,7 @@
 		<module name="Environment">
 			<class>example.wumpus.environment.WumpusWorldEnvironment</class>
 		     	<param name="height"> 10 </param>
-				<param name="width">10 </param> -->
+				<param name="width">10 </param>
 			<isdriver>true</isdriver>			
 		</module>
 		<module name="SensoryMemory">

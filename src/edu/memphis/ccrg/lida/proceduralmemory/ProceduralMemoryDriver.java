@@ -28,7 +28,8 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	 */
 	@Override
 	public void runThisDriver() {
-			proceduralMemory.activateSchemes();
+		proceduralMemory.activateSchemes();
+		proceduralMemory.decayModule(5);
 	}// method
 
 	@Override

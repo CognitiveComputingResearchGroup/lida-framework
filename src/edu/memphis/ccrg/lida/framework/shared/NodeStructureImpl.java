@@ -375,9 +375,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable)
 	 */
 	public Set<Link> getLinks(Linkable l) {
-		if (l == null) {
+		if (l == null) 
 			return null;
-		}
+
 		Set<Link> aux = linkableMap.get(l);
 		if (aux == null)
 			return null;

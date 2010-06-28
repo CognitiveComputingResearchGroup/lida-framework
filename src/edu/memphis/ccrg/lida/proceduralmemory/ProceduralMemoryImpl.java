@@ -38,6 +38,10 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * the Map if multiple operations are concurrent.
 	 */
 	private Map<Linkable, Set<Scheme>> schemeMap = new ConcurrentHashMap<Linkable, Set<Scheme>>();
+	
+	//TODO: equals, hashcode
+	private Set<Scheme> schemeSet = new HashSet<Scheme>();
+	
 
 	/**
 	 * Determines how scheme are given activation and whether they should be
@@ -70,6 +74,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void addSchemes(Collection<Scheme> schemes) {
 	//	System.out.println("Add schemes called " + schemes.size());
 		for (Scheme s : schemes) {
+			schemeSet.add(s);
 			List<NodeStructure> contextConditions = s.getContextConditions();
 			//System.out.println("num contexts " + contextConditions.size());
 			for (NodeStructure ns : contextConditions) {
@@ -85,6 +90,12 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 				}
 			}// for schemes
 		}
+	}
+	
+	@Override
+	public void decayModule(long ticks) {
+		for(Scheme s: schemeSet)
+			s.decay(ticks);
 	}
 
 	/**
