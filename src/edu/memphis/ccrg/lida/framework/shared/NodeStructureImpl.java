@@ -463,6 +463,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public int getNodeCount() {
 		return nodes.size();
 	}
+	public int getLinkableCount() {
+		return linkableMap.size();
+	}
 
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
@@ -527,4 +530,5 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 		return result;
 	}
+
 }// class

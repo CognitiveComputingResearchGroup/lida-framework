@@ -69,4 +69,6 @@ public interface NodeStructure {
 
 	public abstract int getLinkCount();
 	
+	public abstract int getLinkableCount();
+	
 }
