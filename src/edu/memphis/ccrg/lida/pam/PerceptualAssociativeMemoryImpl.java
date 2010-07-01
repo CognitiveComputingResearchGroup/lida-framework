@@ -161,13 +161,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			receiveActivationBurst(n, amount);
 	}
 	
+	/**
+	 * Propagates the activation of 'pamNode' to its parents based on PAM's 
+	 * propagation behavior. 
+	 * 
+	 */
 	public void sendActivationToParentsOf(PamNode pamNode) {
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
-//		System.out.println("num links " + pamNodeStructure.getLinkCount());
-//		System.out.println(pamNode.getLabel() + " num. parents " + nodes.size());
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
-		propagateParams.put("totalActivation", pamNode.getTotalActivation());//TODO: Abstract out
+		propagateParams.put("totalActivation", pamNode.getTotalActivation());
 		double amount = propagationBehavior.getActivationToPropagate(propagateParams);
 		this.receiveActivationBurst(nodes, amount);
 	}

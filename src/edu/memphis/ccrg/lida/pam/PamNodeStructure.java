@@ -2,7 +2,10 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -181,12 +184,41 @@ public class PamNodeStructure extends NodeStructureImpl{
 		if(links != null){
 			for(Link l: links){
 				Linkable sink = l.getSink();//Sinks are 'above' this node. 
+				//TODO: I think I just need to check if sink equals n.
 				if(sink instanceof PamNode && !sink.equals(n))
 					parents.add((PamNode) sink);
 			}
 		}
 		return parents;
 	}//method 
+	
+	/**
+	 * When you excite the parents of a node you might want to excite the connecting links too.
+	 * Thus this method find the parents and all the links between supplied node and them
+	 * @param n
+	 * @return
+	 */
+	public Map<PamNode, Set<Link>> getParentsAndConnectingLinks(Node n){
+		Map<PamNode, Set<Link>> results = new HashMap<PamNode, Set<Link>>();
+		Set<Link> candidateLinks = getLinkableMap().get(n);
+		if(candidateLinks != null){
+			for(Link l: candidateLinks){
+				Linkable sink = l.getSink();//Sinks are "higher than" node n, i.e. the parents of this node. 
+				if(!sink.equals(n)){
+					PamNode key = (PamNode) sink;
+					Set<Link> existingLinks;
+					if(results.containsKey(key))
+						existingLinks = results.get(key);
+					else
+						existingLinks = new HashSet<Link>();
+					existingLinks.add(l);
+					results.put(key, existingLinks);	
+				}
+			}//for
+		}
+		
+		return results;
+	}
 	
 	/**
 	 * Get children of this linkable. 

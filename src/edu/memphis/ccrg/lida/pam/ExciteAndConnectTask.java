@@ -75,7 +75,7 @@ public class ExciteAndConnectTask extends LidaTaskImpl {
 		}
 		//Tell PAM to propagate the activation of pamNode to its parents
 		pam.sendActivationToParentsOf(sink);
-		//TODO: don't think I should excite source actually!
+		//Don't think I should excite source
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}//method
 
