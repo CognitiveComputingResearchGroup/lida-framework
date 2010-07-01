@@ -169,6 +169,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void sendActivationToParentsOf(PamNode pamNode) {
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
+		
+		//TODO: When parents are excited the links to them should be excited as well.
+		//Thus I have started on a method that returns the links connecting a node to its parents (and the parents)
+		//I haven't tested it out yet.
+		//Map<PamNode, Set<Link>> nodeAndConnectedLinks = pamNodeStructure.getParentsAndConnectingLinks(pamNode);
+		
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
 		propagateParams.put("totalActivation", pamNode.getTotalActivation());
 		double amount = propagationBehavior.getActivationToPropagate(propagateParams);
