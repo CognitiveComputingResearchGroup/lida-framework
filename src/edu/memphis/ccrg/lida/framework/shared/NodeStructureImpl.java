@@ -203,7 +203,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @return
 	 */
 	private Link generateNewLink(Linkable newSource, Linkable newSink,
-			LinkType type, double activation) {
+								 LinkType type, double activation) {
 		Link newLink = getNewLink(newSource, newSink, type);
 		newLink.setActivation(activation);
 		links.put(newLink.getIds(), newLink);
