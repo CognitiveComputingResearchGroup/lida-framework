@@ -258,13 +258,5 @@ public class PamNodeStructure extends NodeStructureImpl{
 		for(Node n: getNodes())
 			((PamNodeImpl)n).printActivationString();
 	}//method
-	
-//	public PamNode getNodeByLabel(String label) {
-//		for(Node n: getNodes()){
-//			if(n.getLabel().equals(label))
-//				return (PamNode) n;
-//		}
-//		return null;
-//	}
 
 }//class

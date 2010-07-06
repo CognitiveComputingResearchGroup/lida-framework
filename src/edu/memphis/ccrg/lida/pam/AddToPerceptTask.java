@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 /**
  * A task to add a node to the percept.
  * @author ryanjmccall
- *
+ * @see ExcitationTask - AddToPerceptTask is spawned by ExcitationTask
  */
 public class AddToPerceptTask extends LidaTaskImpl {
 	
@@ -41,7 +41,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	public String toString(){
-		return "Threshold " + getTaskId();
+		return "AddToPerceptTask " + getTaskId();
 	}
 
 }//class

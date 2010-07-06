@@ -115,9 +115,9 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public PamNode getNode(long id);
 	
-	public void addLink(PamNode source, PamNode sink, LinkType type, double activation);
+	public Link addLink(PamNode source, PamNode sink, LinkType type, double activation);
 
-	public void addLink(String sourceId, String sinkId, LinkType type, double activation);
+	public Link addLink(String sourceId, String sinkId, LinkType type, double activation);
 	
 	/**
 	 * 

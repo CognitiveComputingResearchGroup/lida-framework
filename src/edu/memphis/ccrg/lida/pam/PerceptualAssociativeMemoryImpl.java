@@ -288,12 +288,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		
 	}
-	public void addLink(PamNode source, PamNode sink, LinkType type, double activation) {
-		pamNodeStructure.addLink(source.getIds(),sink.getIds(),type,activation);		
+	public Link addLink(PamNode source, PamNode sink, LinkType type, double activation) {
+		return pamNodeStructure.addLink(source.getIds(),sink.getIds(),type,activation);		
 	}
 
-	public void addLink(String sourceId, String sinkId, LinkType type, double activation) {
-		pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
+	public Link addLink(String sourceId, String sinkId, LinkType type, double activation) {
+		return pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
 	}
 	@Override
 	public PamNode addNewNode(String label) {
