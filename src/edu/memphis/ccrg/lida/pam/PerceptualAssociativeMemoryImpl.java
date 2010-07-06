@@ -262,6 +262,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 				logger.warning("Unable to set Selectivity parameter, using the default in PamNodeStructure");
 			} 
 		}
+		
+		o = parameters.get("pam.newNodeType");
+		if(o != null){
+			setNewNodeType((String) o);
+		}
 	}// method
 
 	public Collection<FeatureDetector> getFeatureDetectors(){
