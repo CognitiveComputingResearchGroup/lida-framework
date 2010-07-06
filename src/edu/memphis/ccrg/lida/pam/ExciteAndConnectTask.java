@@ -4,6 +4,7 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -44,13 +45,13 @@ public class ExciteAndConnectTask extends LidaTaskImpl {
 	 * @param pam
 	 * @param ts
 	 */
-	public ExciteAndConnectTask(PamNode source, PamNode sink, Link l, 
+	public ExciteAndConnectTask(Linkable source, Linkable sink, Link l, 
 								double excitation,
 			              		PerceptualAssociativeMemory pam, 
 			              		TaskSpawner ts) {
 		super();
-		this.source = source;
-		this.sink = sink;
+		this.source = (PamNode) source;
+		this.sink = (PamNode) sink;
 		this.link = l;
 		excitationAmount = excitation;
 		this.pam = pam;
