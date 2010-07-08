@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * PamDriver run the PAM
- * @author ryanjmccall
+ * @author Ryan J McCall
  *
  */
 public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
@@ -57,7 +57,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 			//pam.decayPam(); // Decay the activations TODO: delete this class
 			decayCounter = 0;
 		}
-	}
+	}//
 	
 	/**
 	 * @param decayTime
@@ -66,8 +66,6 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	public void setDecayTime(int decayTime) {
 		this.decayTime = decayTime;
 	}
-
-
 
 	@Override
 	public String toString() {

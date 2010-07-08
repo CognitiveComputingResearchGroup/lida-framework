@@ -22,6 +22,7 @@ public class UpscalePropagationBehavior implements PropagationBehavior{
 	public double getActivationToPropagate(Map<String, Object> params) {
 		Double totalActiv = (Double) params.get("totalActivation");
 		Double upscale = (Double) params.get("upscale");
+		
 		if(totalActiv == null || upscale == null){
 			logger.log(Level.WARNING,"Unable to obtain parameters",LidaTaskManager.getActualTick());
 			return 0;

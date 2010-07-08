@@ -21,7 +21,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -168,19 +167,21 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * 
 	 */
 	public void sendActivationToParentsOf(PamNode pamNode) {
+		//Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
+		//TODO: make this a Collection of PamLinkables
+		Map<PamNode, Link> nodeAndConnectedLinks = pamNodeStructure.getParentsAndLinks(pamNode);
+		
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
-		Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
-		
-		//TODO: When parents are excited the links to them should be excited as well.
-		//Thus I have started on a method that returns the links connecting a node to its parents (and the parents)
-		//I haven't tested it out yet.
-		//Map<PamNode, Set<Link>> nodeAndConnectedLinks = pamNodeStructure.getParentsAndConnectingLinks(pamNode);
-		
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
-		propagateParams.put("totalActivation", pamNode.getTotalActivation());
-		double amount = propagationBehavior.getActivationToPropagate(propagateParams);
-		this.receiveActivationBurst(nodes, amount);
-	}
+		
+		for(PamNode parent: nodeAndConnectedLinks.keySet()){
+			propagateParams.put("totalActivation", pamNode.getTotalActivation());
+			double amount = propagationBehavior.getActivationToPropagate(propagateParams);
+			receiveActivationBurst(parent, amount);
+			//TODO: links cannot do this yet! 
+			//this.receiveActivationBurst(nodeAndConnectedLinks.get(parent), amount);
+		}
+	}//method
 
 	public void addNodeToPercept(PamNode pamNode) {
 		for (int i = 0; i < pamListeners.size(); i++){
