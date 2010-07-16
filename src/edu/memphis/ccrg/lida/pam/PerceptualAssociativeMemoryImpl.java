@@ -141,6 +141,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public void decayModule(long ticks) {
 		pamNodeStructure.decayNodes(ticks);
+		//TODO: pamNodeStructure.decayLink(ticks);
 	}// method
 
 	/**
@@ -319,7 +320,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	@Override
 	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount) {
 		logger.log(Level.FINEST, "exciting and connecting " + sourceNode.getLabel() + " to " + sinkNode.getLabel(), LidaTaskManager.getActualTick());
-		Link l = nodeFactory.getLink(sourceNode, sinkNode, LinkType.GROUNDING, 1.0);
+		Link l = nodeFactory.getLink(sourceNode, sinkNode, LinkType.Grounding, 1.0);
 		ExciteAndConnectTask task = new ExciteAndConnectTask(sourceNode, sinkNode, l, excitationAmount, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}

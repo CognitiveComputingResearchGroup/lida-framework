@@ -70,7 +70,7 @@ public class ExciteAndConnectTask extends LidaTaskImpl {
 			NodeStructure ns = new NodeStructureImpl();
 			ns.addNode(source);
 			ns.addNode(sink);
-			ns.addLink(source.getIds(), sink.getIds(), LinkType.GROUNDING, 1.0);
+			ns.addLink(source.getIds(), sink.getIds(), LinkType.Grounding, 1.0);
 			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
 			taskSpawner.addTask(task);
 		}

@@ -77,7 +77,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return ((int) id % 31);
 	}
 	public String toString(){
-		return getLabel() + " node ["+getId()+"] ";
+		return getLabel() + " ["+getId()+"] ";
 	}
 
 	public NodeClass getNodeClass() {

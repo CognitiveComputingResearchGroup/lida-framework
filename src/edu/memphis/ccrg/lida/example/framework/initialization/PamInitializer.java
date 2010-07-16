@@ -73,7 +73,7 @@ public class PamInitializer implements Initializer {
 		pam.addLink(wood, noMetal, LinkType.CHILD,1.0);
 		pam.addLink(plastic, noMetal, LinkType.CHILD,1.0);
 		pam.addLink(metal, noMetal, LinkType.CHILD,1.0);
-		pam.addLink(wood, solid, LinkType.GROUNDING,1.0);
+		pam.addLink(wood, solid, LinkType.Grounding,1.0);
 
 		pam.addLink(topLeft, wood, LinkType.CHILD,1.0);
 

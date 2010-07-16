@@ -8,7 +8,7 @@ public enum LinkType {
 	IN_FRONT_OF,
 	IN_LINE_WITH,
 	SAME_LOCATION,
-	GROUNDING,
+	Grounding,
 	//
 	CHILD,
 	PARENT,

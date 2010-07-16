@@ -29,9 +29,16 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		listeners.add(listener);
 	}
 	
+	private int coolDown = 100, coolDownCounter = 0;
+	
 	public void receiveScheme(Scheme s) {
 		if(s.getActivation() > selectionThreshold){
-			sendAction(s.getSchemeActionId());
+			if(coolDownCounter == coolDown){
+				sendAction(s.getSchemeActionId());
+				coolDownCounter = 0;
+			}else
+				coolDownCounter++;
+			
 			logger.log(Level.FINE, "Selected action: " + s.getSchemeActionId(), LidaTaskManager.getActualTick());
 		}
 	}

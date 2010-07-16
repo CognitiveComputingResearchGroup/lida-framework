@@ -41,4 +41,6 @@ public interface ProceduralMemory extends LidaModule{
 	 * @param params
 	 */
 	public abstract void addSchemes(Collection<Scheme> schemes);
+	
+	public abstract void addScheme(Scheme s);
 }

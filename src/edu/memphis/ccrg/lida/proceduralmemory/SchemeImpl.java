@@ -135,9 +135,11 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 	@Override
 	public void addResultConditions(long argumentId, NodeStructure ns) {
 		Argument a = arguments.get(argumentId);
-		if (a!=null && ns!=null){
-		a.addResultCondition(ns);
-		resultConditions.add(ns);
+		if (ns!=null){
+			resultConditions.add(ns);
+			if(a!=null){
+				a.addResultCondition(ns);
+			}
 		}
 	}
 

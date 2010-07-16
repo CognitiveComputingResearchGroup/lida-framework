@@ -55,7 +55,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	}
 
 	/**
-	 * Decay the module and all the submodules. Subclasses must call this
+	 * Do not call this method. Decay the module and all the submodules. Subclasses must call this
 	 * implementation in order to have all submodules decayed.
 	 * 
 	 * @param ticks

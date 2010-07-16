@@ -63,7 +63,7 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	 */
 	@Override
 	public void init(Map<String, ?> params) {
-			this.lidaProperties = params;
+		this.lidaProperties = params;
 	}
 
 	public void setAssociatedModule(LidaModule module) {

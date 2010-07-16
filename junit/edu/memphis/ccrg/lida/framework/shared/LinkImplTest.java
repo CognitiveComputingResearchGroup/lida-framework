@@ -43,7 +43,7 @@ public class LinkImplTest extends TestCase{
 		
 		link1 = new LinkImpl(node1,node2,LinkType.CHILD);
 		link2 = new LinkImpl(node3,node4,LinkType.PARENT);
-		link3 = new LinkImpl(node3,link2,LinkType.GROUNDING);
+		link3 = new LinkImpl(node3,link2,LinkType.Grounding);
 		linktype1 = LinkType.PARENT ;
 		linktype2 = LinkType.CHILD ;		
 	

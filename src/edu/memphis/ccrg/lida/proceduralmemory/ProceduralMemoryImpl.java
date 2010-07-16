@@ -92,6 +92,24 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		}
 	}
 	
+	public void addScheme(Scheme s){
+		schemeSet.add(s);
+		List<NodeStructure> contextConditions = s.getContextConditions();
+		//System.out.println("num contexts " + contextConditions.size());
+		for (NodeStructure ns : contextConditions) {
+			
+			for (Linkable ln : ns.getLinkableMap().keySet()) {
+				Set<Scheme> existingSchemes = schemeMap.get(ln);
+				//System.out.println("node in context " + ln.getLabel() + " exisiting? " + existingSchemes);
+				if (existingSchemes == null) {
+					existingSchemes = new HashSet<Scheme>();
+					schemeMap.put(ln, existingSchemes);
+				}
+				existingSchemes.add(s);
+			}
+		}// for schemes
+	}
+	
 	@Override
 	public void decayModule(long ticks) {
 		for(Scheme s: schemeSet)

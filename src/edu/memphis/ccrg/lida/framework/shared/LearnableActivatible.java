@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  * @author Javier Snaider
  *
  */
-public interface BasedActivatible extends Activatible{
+public interface LearnableActivatible extends Activatible{
 	/**
 	 * Returns base level activation. 
 	 * @return

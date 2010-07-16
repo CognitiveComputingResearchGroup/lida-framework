@@ -7,18 +7,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * @author Javier Snaider
  *
  */
-public class BasedActivatibleImpl extends ActivatibleImpl implements BasedActivatible {
+public class LearnableActivatibleImpl extends ActivatibleImpl implements LearnableActivatible {
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
 	private static Logger logger = Logger.getLogger("lida.framework.shared.BasedActivatibleImpl");
+
+	public LearnableActivatibleImpl(double activation, ExciteStrategy exciteStrategy, 
+									DecayStrategy decayStrategy) {
+		super(activation, exciteStrategy, decayStrategy);
+		this.baseLevelExciteStrategy = exciteStrategy;
+		this.baseLevelDecayStrategy = decayStrategy;
+	}
+
+	public LearnableActivatibleImpl() {
+		super();
+		baseLevelActivation = 0.0;
+		baseLevelDecayStrategy = new LinearDecayStrategy();
+		baseLevelExciteStrategy = new DefaultExciteStrategy();
+	}
 
 	@Override
 	public void decayBaseLevelActivation(long ticks) {

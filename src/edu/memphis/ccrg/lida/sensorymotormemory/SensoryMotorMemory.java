@@ -14,4 +14,6 @@ public interface SensoryMotorMemory extends LidaModule, SensoryMemoryListener, A
 	public abstract void executeAction(LidaAction a);
 
 	public abstract void setActionMap(Map<Long, LidaAction> actionMap);
+	
+	public abstract void addAction(long actionId, LidaAction action);
 }

@@ -62,4 +62,9 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 		this.actionMap = actionMap;		
 	}
 
+	@Override
+	public void addAction(long actionId, LidaAction action) {
+		actionMap.put(actionId, action);
+	}
+
 }
