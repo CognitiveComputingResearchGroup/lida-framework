@@ -199,7 +199,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 				return node.getActivation();
 			case 2:
 				if (node instanceof PamNode){
-					return ((PamNode)node).getBaselevelActivation();
+					return ((PamNode)node).getBaseLevelActivation();
 				}else{
 					return "";
 				}

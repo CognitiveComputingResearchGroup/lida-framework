@@ -1,8 +1,15 @@
 package edu.memphis.ccrg.lida.pam;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
@@ -20,6 +27,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	//protected double importance = 0.0;
 	protected double baseLevelActivation = 0.0;
+	
+	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
+	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
+	private static Logger logger = Logger.getLogger("lida.framework.pam.PamNodeImpl");
+
 	
 	public PamNodeImpl() {
 		super();
@@ -89,13 +101,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	    return selectionThreshold;
 	}
 
-	public double getBaselevelActivation() {
-	    return baseLevelActivation;
-	}
-	public synchronized void setBaselevelActivation(double d) {
-		baseLevelActivation = d;
-	}
-
 	public double getTotalActivation() {
 	    return getActivation() + baseLevelActivation;
 	}
@@ -131,6 +136,51 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void printActivationString() {
 		System.out.println(getId() + " total activation: " + getTotalActivation());	
 	}//method
+	
+	public void decayBaseLevelActivation(long ticks) {
+		if (baseLevelDecayStrategy != null) {
+			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			synchronized(this){
+				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
+			}
+			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+		}		
+	}
+
+	@Override
+	public double getBaseLevelActivation() {
+		return this.baseLevelActivation;
+	}
+
+	@Override
+	public DecayStrategy getBaseLevelDecayStrategy() {
+		return this.baseLevelDecayStrategy;
+	}
+
+	@Override
+	public ExciteStrategy getBaseLevelExciteStrategy() {
+		return this.baseLevelExciteStrategy;
+	}
+
+	@Override
+	public void reinforceBaseLevelActivation(double amount) {
+		baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
+	}
+
+	@Override
+	public void setBaseLevelActivation(double amount) {
+		baseLevelActivation = amount;
+	}
+
+	@Override
+	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
+		baseLevelDecayStrategy = strategy;
+	}
+
+	@Override
+	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
+		baseLevelExciteStrategy = strategy;		
+	}
 
 	
 }//class

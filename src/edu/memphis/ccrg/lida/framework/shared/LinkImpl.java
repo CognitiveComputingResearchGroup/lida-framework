@@ -6,7 +6,7 @@ import java.util.Map;
  * 
  * @author Ryan McCall
  */
-public class LinkImpl extends LearnableActivatibleImpl implements Link {
+public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private Linkable sink;
 	private Linkable source;

@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
@@ -8,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  * @author Ryan J McCall, Javier Snaider
  *
  */
-public interface PamNode extends Node{
+public interface PamNode extends Node, LearnableActivatible{
 
 	/**
 	 * Determines if this node is relevant. A node is relevant if its total
@@ -31,24 +32,6 @@ public interface PamNode extends Node{
 	 * @param threshold
 	 */
 	public abstract void setSelectionThreshold(double threshold);
-
-	/**
-	 * Returns base level activation. 
-	 * @return
-	 */
-	public abstract double getBaselevelActivation();
-	
-	/**
-	 * Modify the node's base level activation
-	 * @param d
-	 */
-	public abstract void setBaselevelActivation(double d);
-
-	/**
-	 * Returns sum of base and current activation.
-	 * @return
-	 */
-	public abstract double getTotalActivation();
 
 	/**
 	 * Returns final min activation variable

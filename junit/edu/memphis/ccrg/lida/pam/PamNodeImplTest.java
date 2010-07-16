@@ -46,7 +46,7 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testSynchronize() {
 		node1.setId(1);		
-		node1.setBaselevelActivation(0.1);
+		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(0.2);
 		
 		node1.synchronize();
@@ -55,7 +55,7 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testSynchronize2() {
 		node1.setId(1);		
-		node1.setBaselevelActivation(0.1);
+		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(1.0);
 		
 		node1.synchronize();
@@ -68,7 +68,7 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testIsOverThreshold() {
 		node1.setId(1);		
-		node1.setBaselevelActivation(0.1);
+		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(0.4);
 		node1.setSelectionThreshold(0.5);
 		node1.synchronize();
@@ -82,7 +82,7 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testSetSelectionThreshold() {
 		node1.setId(1);		
-		node1.setBaselevelActivation(0.1);
+		node1.setBaseLevelActivation(0.1);
 		node1.setSelectionThreshold(0.3);
 		
 		assertEquals("Problem with SetSelectionThreshold", 0.3,node1.getSelectionThreshold());
@@ -100,7 +100,7 @@ public class PamNodeImplTest extends TestCase{
 		node1.setValue(map);
 		
 		assertEquals("Problem with SetValue", 0.4,node1.getImportance());
-		assertEquals("Problem with SetValue", 0.2,node1.getBaselevelActivation());
+		assertEquals("Problem with SetValue", 0.2,node1.getBaseLevelActivation());
 	}
 
 	/**
@@ -120,9 +120,9 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testGetBaselevelActivation() {
 		node1.setId(1);			
-		node1.setBaselevelActivation(0.3);
+		node1.setBaseLevelActivation(0.3);
 		
-		assertEquals("Problem with GetBaselevelActivation", 0.3,node1.getBaselevelActivation());
+		assertEquals("Problem with GetBaselevelActivation", 0.3,node1.getBaseLevelActivation());
 	}
 
 	/**
@@ -131,9 +131,9 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testSetBaselevelActivation() {
 		node1.setId(1);			
-		node1.setBaselevelActivation(0.3);
+		node1.setBaseLevelActivation(0.3);
 		
-		assertEquals("Problem with SetBaselevelActivation", 0.3,node1.getBaselevelActivation());
+		assertEquals("Problem with SetBaselevelActivation", 0.3,node1.getBaseLevelActivation());
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testGetTotalActivation() {
 		node1.setId(1);			
-		node1.setBaselevelActivation(0.3);
+		node1.setBaseLevelActivation(0.3);
 		node1.setActivation(0.4);
 		
 		assertEquals("Problem with GetTotalActivation", 0.7,node1.getTotalActivation());
@@ -174,7 +174,7 @@ public class PamNodeImplTest extends TestCase{
 	@Test
 	public void testPrintActivationString() {
 		node1.setId(1);			
-		node1.setBaselevelActivation(0.3);
+		node1.setBaseLevelActivation(0.3);
 		node1.setActivation(0.4);
 		node1.printActivationString();
 	}
