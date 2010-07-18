@@ -86,12 +86,26 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void setTaskSpawner(TaskSpawner taskSpawner) {
 		this.taskSpawner = taskSpawner;
 	}
+	
+	/**
+	 * set the taskSpawner for this pam
+	 */
+	public TaskSpawner getTaskSpawner() {
+		return this.taskSpawner;
+	}
 
 	/**
 	 * set the propagation behavior for this pam
 	 */
 	public void setPropagationBehavior(PropagationBehavior b){
 		propagationBehavior = b;
+	}
+	
+	/**
+	 * get the propagation behavior for this pam
+	 */
+	public PropagationBehavior getPropagationBehavior(){
+		return this.propagationBehavior;
 	}
 
 	public Set<PamNode> addNodes(Set<PamNode> nodes) {
