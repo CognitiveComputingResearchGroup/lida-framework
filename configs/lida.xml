@@ -7,13 +7,13 @@
 	</taskmanager>
 	<submodules>
 		<module name="Environment">
-			<class>example.wumpus.environment.WumpusWorldEnvironment</class>
-		     	<param name="height"> 10 </param>
-				<param name="width">10 </param>
+			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionEnvironment</class>
+		     	<param name="height" type="int"> 10 </param>
+				<param name="width" type="int">10 </param>
 			<isdriver>true</isdriver>			
 		</module>
 		<module name="SensoryMemory">
-			<class>example.wumpus.sensoryMemory.WumpusSensoryMemory</class>
+			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory</class>
 			<associatedmodule>Environment</associatedmodule>
 			<param name="sensoryMemory.ticksPerStep">12 </param>
 		</module>
@@ -27,7 +27,7 @@
 			<param name="pam.Downscale" type="double">.6 </param>
 			<param name="pam.Selectivity" type="double">.5 </param>
 			<param name="pam.newNodeType" type="string">PamNodeImpl</param>
-			<initializerclass>example.wumpus.pam.WumpusPamInitializer</initializerclass>
+			
 		</module>
 		<module name="TransientEpisodicMemory">
 			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
@@ -60,12 +60,12 @@
 			<param name="globalWorkspace.aggregateActivationThreshold">.8 </param>
 			<param name="globalWorkspace.individualActivationThreshold">.5 </param>
 			<isdriver>true</isdriver>
-			<initializerclass>example.wumpus.initialization.GlobalWorkspaceInitializer</initializerclass>
+			<initializerclass>edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer.java</initializerclass>
 		</module>
 		<module name="ProceduralMemory">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl</class>
 			<param name="proceduralMemory.ticksPerStep"> 14 </param>
-			<initializerclass>example.wumpus.procedural.WumpusProceduralMemoryInitializer</initializerclass>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.ProceduralMemoryInitializer</initializerclass>
 		</module>
 		<module name="ActionSelection">
 			<class>edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl</class>
@@ -87,13 +87,12 @@
 			<class>edu.memphis.ccrg.lida.attention.AttentionDriver</class>
 			<associatedmodule>Workspace</associatedmodule>
 			<associatedmodule>GlobalWorkspace</associatedmodule>
-			<initializerclass>example.wumpus.initialization.AttentionCodeletInitializer</initializerclass>
+			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.AttentionDriverInitializer</initializerclass>
 			<ticksperstep>8</ticksperstep>
 		</driver>
 		<driver name="SbCodeletDriver">
 			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver</class>
 			<associatedmodule>Workspace</associatedmodule>
-			<initializerclass>example.wumpus.initialization.SbCodeletInitializer</initializerclass>
 			<ticksperstep>5</ticksperstep>
 		</driver>
 		<driver name="ProceduralDriver">

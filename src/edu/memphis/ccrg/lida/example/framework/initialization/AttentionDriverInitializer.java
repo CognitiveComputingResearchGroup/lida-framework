@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Javier Snaider
  *
  */
-public class AtentionDriverInitializer implements Initializer {
+public class AttentionDriverInitializer implements Initializer {
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializer#initModule(edu.memphis.ccrg.lida.framework.initialization.Initializable, edu.memphis.ccrg.lida.framework.Lida, java.util.Properties)
