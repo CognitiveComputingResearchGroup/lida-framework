@@ -60,23 +60,35 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	private List<PamListener> pamListeners = new ArrayList<PamListener>();
 
 	/**
-	 * 
+	 * Workspace content
 	 */
 	private NodeStructure topDownContent = new NodeStructureImpl();
-	private NodeStructure broadcastContent = new NodeStructureImpl();
-    private NodeStructure preafferantSignal = new NodeStructureImpl();
-	//
-	private TaskSpawner taskSpawner;
-	//
-	private PropagationBehavior propagationBehavior;
 	
 	/**
-	 * Type of new nodes created by this PAM
+	 * Current conscious broadcast
 	 */
-	private String newNodeType = "PamNodeImpl";
+	private NodeStructure broadcastContent = new NodeStructureImpl();
 	
-	private NodeFactory nodeFactory = NodeFactory.getInstance();
+	/**
+	 * From action selection
+	 */
+    private NodeStructure preafferantSignal = new NodeStructureImpl();
+	
+    /**
+     * Used by pam to spawn various tasks
+     */
+	private TaskSpawner taskSpawner;
+	
+	/**
+	 * How PAM calculates the activation to propagate
+	 */
+	private PropagationBehavior propagationBehavior;
 
+	/**
+	 * To create new node and links
+	 */
+	private NodeFactory nodeFactory = NodeFactory.getInstance();
+	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
 	}
@@ -227,61 +239,44 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
      */
 	public void setParameters(Map<String, ?> parameters) {
 		Object o = parameters.get("pam.Upscale");
-		if (o != null) {
-			if(o instanceof String){
-				double d = Double.parseDouble((String) o);
-				synchronized (this) {
-					pamNodeStructure.setUpscale(d);
-				}
-			}
-			else if (o instanceof Double){ 
+		if (o != null && o instanceof Double){ 
 				synchronized (this) {
 					pamNodeStructure.setUpscale((Double) o);
 				}
-			}
-			else{
-				logger.warning("Unable to set UPSCALE parameter, using the default in PamNodeStructure");
-			}
+		}else{
+			logger.warning("Unable to set UPSCALE parameter, using the default in PamNodeStructure");
 		}
+		
 		o = parameters.get("pam.Downscale");
-		if (o != null){
-			if(o instanceof String){
-				double d = Double.parseDouble((String) o);
-				synchronized (this) {
-					pamNodeStructure.setDownscale(d);
-				}
+		if (o != null && o instanceof Double){ 
+			synchronized (this) {
+				pamNodeStructure.setDownscale((Double) o);
 			}
-			else if (o instanceof Double){ 
-				synchronized (this) {
-					pamNodeStructure.setDownscale((Double) o);
-				}
-			}
-			else{
-				logger.warning("Unable to set DOWNSCALE parameter, using the default in PamNodeStructure");
-			}
+		}else{
+			logger.warning("Unable to set DOWNSCALE parameter, using the default in PamNodeStructure");
 		}
 				
 		o = parameters.get("pam.Selectivity");
-		if (o != null){
-			if(o instanceof String){
-				double d = Double.parseDouble((String) o);
-				synchronized (this) {
-					pamNodeStructure.setSelectivity(d);
-				}
+		if (o != null && o instanceof Double){ 
+			synchronized (this) {
+				pamNodeStructure.setSelectivity((Double) o);
 			}
-			else if (o instanceof Double){ 
-				synchronized (this) {
-					pamNodeStructure.setSelectivity((Double) o);
-				}
-			}
-			else{
-				logger.warning("Unable to set Selectivity parameter, using the default in PamNodeStructure");
-			} 
-		}
+		}else{
+			logger.warning("Unable to set Selectivity parameter, using the default in PamNodeStructure");
+		} 
 		
 		o = parameters.get("pam.newNodeType");
-		if(o != null){
-			setNewNodeType((String) o);
+		if(o != null && o instanceof String){
+			this.setNewNodeType((String) o);
+		}else{
+			logger.warning("Unable to set new Node type, using the default in PamNodeStructure");
+		}
+		
+		o = parameters.get("pam.newLinkType");
+		if(o != null && o instanceof String){
+			this.setNewLinkType((String) o);
+		}else{
+			logger.warning("Unable to set new Link type, using the default in PamNodeStructure");
 		}
 	}// method
 
@@ -310,27 +305,29 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		
 	}
-	public Link addLink(PamNode source, PamNode sink, LinkType type, double activation) {
+	public Link addNewLink(PamNode source, PamNode sink, LinkType type, double activation) {
 		return pamNodeStructure.addLink(source.getIds(),sink.getIds(),type,activation);		
 	}
 
-	public Link addLink(String sourceId, String sinkId, LinkType type, double activation) {
+	public Link addNewLink(String sourceId, String sinkId, LinkType type, double activation) {
 		return pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
 	}
 	@Override
 	public PamNode addNewNode(String label) {
-		PamNode newNode =  (PamNode) nodeFactory.getNode(newNodeType, label);
+		PamNode newNode =  (PamNode) nodeFactory.getNode(pamNodeStructure.getDefaultNodeType(), label);
 		newNode = (PamNode) pamNodeStructure.addNode(newNode);
 		return newNode;
 	}
 	@Override
-	public String getNewNodeType() {
-		return this.newNodeType;
-	}
-	@Override
 	public void setNewNodeType(String type) {
-		newNodeType = type;
+		pamNodeStructure.setDefaultNode(type);
 	}
+	
+	@Override
+	public void setNewLinkType(String type) {
+		pamNodeStructure.setDefaultLink(type);
+	}
+
 	@Override
 	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount) {
 		logger.log(Level.FINEST, "exciting and connecting " + sourceNode.getLabel() + " to " + sinkNode.getLabel(), LidaTaskManager.getActualTick());

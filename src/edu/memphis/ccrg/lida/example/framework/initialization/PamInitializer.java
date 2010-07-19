@@ -67,15 +67,15 @@ public class PamInitializer implements Initializer {
 		pam.addNode(bottomRight);
 		// Links
 		// TODO: make this a loop
-		pam.addLink(gold, metal, LinkType.CHILD,1.0);
-		pam.addLink(metal, solid, LinkType.CHILD,1.0);
-		pam.addLink(iron, metal, LinkType.CHILD,1.0);
-		pam.addLink(wood, noMetal, LinkType.CHILD,1.0);
-		pam.addLink(plastic, noMetal, LinkType.CHILD,1.0);
-		pam.addLink(metal, noMetal, LinkType.CHILD,1.0);
-		pam.addLink(wood, solid, LinkType.Grounding,1.0);
+		pam.addNewLink(gold, metal, LinkType.CHILD,1.0);
+		pam.addNewLink(metal, solid, LinkType.CHILD,1.0);
+		pam.addNewLink(iron, metal, LinkType.CHILD,1.0);
+		pam.addNewLink(wood, noMetal, LinkType.CHILD,1.0);
+		pam.addNewLink(plastic, noMetal, LinkType.CHILD,1.0);
+		pam.addNewLink(metal, noMetal, LinkType.CHILD,1.0);
+		pam.addNewLink(wood, solid, LinkType.Grounding,1.0);
 
-		pam.addLink(topLeft, wood, LinkType.CHILD,1.0);
+		pam.addNewLink(topLeft, wood, LinkType.CHILD,1.0);
 
 		// Feature detectors
 		// TODO: make this a loop

@@ -10,7 +10,6 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -22,29 +21,74 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
  */
 public interface PerceptualAssociativeMemory extends LidaModule{
 
-	public void setTaskSpawner(TaskSpawner spawner);
+	//**** Adding methods
 	
-	//TODO:
-    public void setNewNodeType(String type);
- 	public String getNewNodeType();
-	
+    /**
+     * Add a new node to this PAM with specified label
+     * @param label
+     * @return
+     */
 	public PamNode addNewNode(String label);
+
 	/**
 	 * 
 	 * @param node
 	 * @return new copy of the pam node !
 	 */
 	public PamNode addNode(PamNode node);
+	
+	/**
+	 * Add a collection of nodes
+	 * @param nodes
+	 * @return
+	 */
 	public Set<PamNode> addNodes(Set<PamNode> nodes);
+	
+	/**
+	 * Add a new link to this PAM
+	 * @param source
+	 * @param sink
+	 * @param type
+	 * @param activation
+	 * @return
+	 */
+	public Link addNewLink(PamNode source, PamNode sink, LinkType type, double activation);
+
+	public Link addNewLink(String sourceId, String sinkId, LinkType type, double activation);
+	
 	public void addLinks(Set<Link> links);
+	
 	public void addFeatureDetector(FeatureDetector fd);
+		
+	/**
+	 * 
+	 * @param pl
+	 */
 	public void addPamListener(PamListener pl);
+	
+	//*** Setting parameters	
 	
 	/**
 	 * Updates PAM's parameters from the supplied map
 	 */
 	public void setParameters(Map<String, ?> parameters);
 	
+	/**
+	 * Set the type of Link used in this PAM
+	 * @param type
+	 */
+	public void setNewLinkType(String type);
+	
+	public void setTaskSpawner(TaskSpawner spawner);
+	
+	/**
+	 * Set the type of Node used in this PAM
+	 * @param type
+	 */
+    public void setNewNodeType(String type);
+	
+    //*** Set strategies
+    
 	/**
 	 * Changes how the nodes in this PAM are excited.
 	 * 
@@ -57,6 +101,14 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param c
 	 */
 	public void setDecayStrategy(DecayStrategy c);
+	
+	/**
+	 * Set the behavior governing how activation is propagated
+	 * @param b
+	 */
+	public void setPropagationBehavior(PropagationBehavior b);
+	
+	//****Activation spreading methods
 	
 	/**
 	 * Send a burst of activation to a node.
@@ -79,10 +131,14 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	public void sendActivationToParentsOf(PamNode pamNode);
 	
 	/**
-	 * Set the behavior governing how activation is propagated
-	 * @param b
+	 * Excites sink node and connects an instance of source node to it as if sourceNode is creating a link to the sink node.
+	 * @param sourceNode
+	 * @param sinkNode
+	 * @param excitationAmount
 	 */
-	public void setPropagationBehavior(PropagationBehavior b);
+	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount);
+	
+	//*** Percept methods
 	
 	/**
 	 * Put a PamNode into the percept
@@ -102,6 +158,8 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
 	
+	//**** Get Methods
+	
 	/**
 	 * Get Pam represented as a node structure
 	 * @return
@@ -116,16 +174,4 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public PamNode getNode(long id);
 	
-	public Link addLink(PamNode source, PamNode sink, LinkType type, double activation);
-
-	public Link addLink(String sourceId, String sinkId, LinkType type, double activation);
-	
-	/**
-	 * 
-	 * @param sourceNode
-	 * @param sinkNode
-	 * @param excitationAmount
-	 */
-	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount);
-
 }//interface PAMinterface

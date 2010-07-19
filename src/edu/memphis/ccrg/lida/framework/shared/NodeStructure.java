@@ -71,4 +71,7 @@ public interface NodeStructure {
 	
 	public abstract int getLinkableCount();
 	
+	public abstract String getDefaultNodeType();
+	public abstract String getDefaultLinkType();
+	
 }

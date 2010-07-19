@@ -134,6 +134,10 @@ public class NodeFactory {
 				"edu.memphis.ccrg.lida.pam.PamNodeImpl",
 				new HashMap<String, String>(), "PamNodeImpl",
 				new HashMap<String, Object>()));
+		linkClasses.put("PamLinkImpl", new LinkableDef(
+				"edu.memphis.ccrg.lida.pam.PamLinkImpl",
+				new HashMap<String, String>(), "PamLinkImpl",
+				new HashMap<String, Object>()));
 
 		addDecayStrategy(defaultDecayType, new StrategyDef("edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy",
 				defaultDecayType,new HashMap<String, Object>(),"decay",true));

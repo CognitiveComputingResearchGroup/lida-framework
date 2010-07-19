@@ -126,7 +126,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public void setDefaultLink(String defaultLink) {
 		this.defaultLinkType = defaultLink;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -529,6 +529,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public String getDefaultLinkType() {
+		return defaultLinkType;
+	}
+
+	@Override
+	public String getDefaultNodeType() {
+		return defaultNodeType;
 	}
 
 }// class
