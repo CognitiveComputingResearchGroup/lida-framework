@@ -22,7 +22,7 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 		
 	@Override
 	public void runThisDriver(){
-		sm.processSensors();		
+		sm.runSensors();		
 	}
 
 	@Override

@@ -55,15 +55,12 @@ public class LidaXmlFactory implements LidaFactory {
 	private void parseXmlFile(String fileName) {
 		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
 		try {
-
 			// Using factory get an instance of document builder
 			DocumentBuilder db = dbf.newDocumentBuilder();
 
 			// parse using builder to get DOM representation of the XML file
 			dom = db.parse(fileName);
-
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
@@ -91,7 +88,110 @@ public class LidaXmlFactory implements LidaFactory {
 		associateModules();
 		initializeModules();
 	}
+	
+	private List<LidaModule> getModules(Element element) {
+		List<LidaModule> modules = new ArrayList<LidaModule>();
+		NodeList nl = element.getElementsByTagName("submodules");
+		if (nl != null && nl.getLength() > 0) {
+			Element modulesElemet = (Element) nl.item(0);
+			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
+			if (list != null && list.size() > 0) {
+				for (Element moduleElement:list) {					
+					LidaModule module = getModule(moduleElement);
+					modules.add(module);
+				}
+			}
+		}
+		return modules;
+	}
+	
+	private LidaModule getModule(Element moduleElement) {
+		LidaModule module = null;
+		String className = XmlUtils.getTextValue(moduleElement, "class");
+		String name = moduleElement.getAttribute("name");
+		ModuleName moduleName = ModuleName.NoModule;
+		try {
+			moduleName = Enum.valueOf(ModuleName.class, name);
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "ModuleName: " + name + " is not valid.",
+					0L);
+		}
+		try {
+			module = (LidaModule) Class.forName(className).newInstance();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Module class: " + className
+					+ " is not valid.", 0L);
+		}
+		module.setModuleName(moduleName);
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		module.init(params);
+		for (LidaModule lm : getModules(moduleElement)) {
+			module.addSubModule(lm);
+		}
+		String classInit = XmlUtils.getTextValue(moduleElement,
+				"initializerclass");
+		if (classInit != null) {
+			toInitialize.add(new Object[] { module, classInit, params });
+		}
+		getAssociatedModules(moduleElement, module);
 
+		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
+
+		
+		boolean isDriver = XmlUtils.getBooleanValue(moduleElement, "isdriver");
+		if (isDriver) {
+			if (module instanceof ModuleDriver) {
+				lida.addModuleDriver((ModuleDriver) module);
+				((ModuleDriver) module).setTaskManager(lida.getTaskManager());
+				logger.log(Level.INFO, "Module: " + name
+						+ " added as Driver.", 0L);
+			}else{
+				logger.log(Level.WARNING,
+						"Module name: " + name + " is marked as driver but it is not a valid ModuleDriver.", 0L);
+				
+			}
+		}
+
+		return module;
+	}
+
+	/**
+	 * @param moduleElement
+	 * @param initializable
+	 */
+	private void getAssociatedModules(Element moduleElement, Initializable initializable) {
+		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
+		if (nl != null && nl.getLength() > 0) {
+			
+			for (int i = 0; i < nl.getLength(); i++) {
+				String assocMod=XmlUtils.getValue((Element) nl.item(i));
+				toAssociate.add(new Object[]{initializable,assocMod});
+			}
+		}
+	}
+	
+	/**
+	 * Iterates through the module associated module pairs and associates them
+	 */
+	private void associateModules() {
+		ModuleName moduleName = ModuleName.NoModule;
+		for (Object[] vals : toAssociate) {
+			Initializable ini = (Initializable) vals[0];
+			String assocModule = (String) vals[1];
+			try {
+				moduleName = Enum.valueOf(ModuleName.class, assocModule);
+			} catch (Exception e) {
+				logger.log(Level.WARNING,
+					"Module associated module name: " + assocModule + " is not valid.", 0L);
+				break;
+			}
+			LidaModule module=lida.getSubmodule(moduleName);
+		
+			ini.setAssociatedModule(module);
+			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
+		}//for
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void initializeModules() {
 		for (Object[] vals : toInitialize) {
@@ -149,72 +249,6 @@ public class LidaXmlFactory implements LidaFactory {
 		return taskManager;
 	}
 
-	private List<LidaModule> getModules(Element element) {
-		List<LidaModule> modules = new ArrayList<LidaModule>();
-		NodeList nl = element.getElementsByTagName("submodules");
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
-			if (list != null && list.size() > 0) {
-				for (Element moduleElement:list) {					
-					LidaModule module = getModule(moduleElement);
-					modules.add(module);
-				}
-			}
-		}
-		return modules;
-	}
-
-	private LidaModule getModule(Element moduleElement) {
-		LidaModule module = null;
-		String className = XmlUtils.getTextValue(moduleElement, "class");
-		String name = moduleElement.getAttribute("name");
-		ModuleName moduleName = ModuleName.NoModule;
-		try {
-			moduleName = Enum.valueOf(ModuleName.class, name);
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "ModuleName: " + name + " is not valid.",
-					0L);
-		}
-		try {
-			module = (LidaModule) Class.forName(className).newInstance();
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Module class: " + className
-					+ " is not valid.", 0L);
-		}
-		module.setModuleName(moduleName);
-		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
-		module.init(params);
-		for (LidaModule lm : getModules(moduleElement)) {
-			module.addSubModule(lm);
-		}
-		String classInit = XmlUtils.getTextValue(moduleElement,
-				"initializerclass");
-		if (classInit != null) {
-			toInitialize.add(new Object[] { module, classInit, params });
-		}
-		getAssociatedModules(moduleElement, module);
-
-		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
-
-		
-		boolean isDriver = XmlUtils.getBooleanValue(moduleElement, "isdriver");
-		if (isDriver) {
-			if (module instanceof ModuleDriver) {
-				lida.addModuleDriver((ModuleDriver) module);
-				((ModuleDriver) module).setTaskManager(lida.getTaskManager());
-				logger.log(Level.INFO, "Module: " + name
-						+ " added as Driver.", 0L);
-			}else{
-				logger.log(Level.WARNING,
-						"Module name: " + name + " is marked as driver but it is not a valid ModuleDriver.", 0L);
-				
-			}
-		}
-
-		return module;
-	}
-
 	private List<ModuleDriver> getDrivers(Element element) {
 		List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 		NodeList nl = element.getElementsByTagName("drivers");
@@ -267,40 +301,6 @@ public class LidaXmlFactory implements LidaFactory {
 		getAssociatedModules(moduleElement, driver);
 		logger.log(Level.INFO, "Driver: " + name + " added.", 0L);
 		return driver;
-	}
-
-	/**
-	 * @param moduleElement
-	 * @param initializable
-	 */
-	private void getAssociatedModules(Element moduleElement, Initializable initializable) {
-		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
-		if (nl != null && nl.getLength() > 0) {
-			
-			for (int i = 0; i < nl.getLength(); i++) {
-				String assocMod=XmlUtils.getValue((Element) nl.item(i));
-				toAssociate.add(new Object[]{initializable,assocMod});
-			}
-		}
-	}
-
-	private void associateModules() {
-		ModuleName moduleName = ModuleName.NoModule;
-		for (Object[] vals : toAssociate) {
-			Initializable ini = (Initializable) vals[0];
-			String assocModule = (String) vals[1];
-			try {
-				moduleName = Enum.valueOf(ModuleName.class, assocModule);
-			} catch (Exception e) {
-				logger.log(Level.WARNING,
-					"Module associated module name: " + assocModule + " is not valid.", 0L);
-				break;
-			}
-			LidaModule module=lida.getSubmodule(moduleName);
-		
-			ini.setAssociatedModule(module);
-			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
-		}//for
 	}
 
 	private void getListeners(Element element) {

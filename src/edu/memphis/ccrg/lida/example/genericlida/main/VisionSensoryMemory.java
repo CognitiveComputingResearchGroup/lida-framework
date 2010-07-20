@@ -12,7 +12,7 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 	}
 
 	@Override
-	public void processSensors() {
+	public void runSensors() {
 		sensoryContent = (double[][]) environment.getModuleContent();
 	}
 
