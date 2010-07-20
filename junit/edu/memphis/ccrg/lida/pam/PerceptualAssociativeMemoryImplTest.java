@@ -37,6 +37,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	LinearDecayStrategy decayStrategy ;
 	LinkImpl link1,link2;
 	SensoryMemoryImpl sem;
+	PamNodeImpl pamNode;
 	//TaskSpawnerImpl taskSpawner;
 	
 	@Before
@@ -50,6 +51,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		link2 = new LinkImpl();
 		decayStrategy = new LinearDecayStrategy();
 		sem = new VisionSensoryMemory();
+		pamNode = new PamNodeImpl();
 		
 				
 		node1.setId(1);
@@ -140,7 +142,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddFeatureDetector() {
-		PamNodeImpl pamNode = new PamNodeImpl();
+		
 		pamNode.setId(12);		
 		FeatureDetector detector = new BasicDetector(pamNode,sem,pam);
 		
