@@ -115,7 +115,9 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param pNode The node to receiving the activation
 	 * @param amount The amount of activation
 	 */
-	public void receiveActivationBurst(PamNode pNode, double amount);
+	public void receiveActivationBurst(PamNode node, double amount);
+	
+	public void receiveActivationBurst(PamLink link, double amount);
 	
 	/**
 	 * Send a burst of activation to a Set of node.
@@ -123,6 +125,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param amount Amount of activation
 	 */
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
+
 	
 	/**
 	 * Propagates activation from a PamNode to its parents

@@ -14,7 +14,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	
 	protected static final double MIN_ACTIVATION = 0.0;
 	protected static final double MAX_ACTIVATION = 1.0;
-	protected double selectionThreshold = 0.9;
+	protected double selectionThreshold = 0.5;
 	protected double baseLevelActivation = 0.0;
 	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
 	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
@@ -37,6 +37,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 
 	@Override
 	public boolean isOverThreshold() {
+		//System.out.println("this link " + this.getLabel() + " has total Activation " + getTotalActivation() + " selection threshold " + selectionThreshold);
 		return getTotalActivation() >= selectionThreshold;
 	}
 	

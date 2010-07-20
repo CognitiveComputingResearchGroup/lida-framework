@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -178,11 +180,19 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
-		logger.log(Level.FINE,node.getLabel() + " gets activation burst. Amount: " + amount + "- total activation: " +
+		logger.log(Level.FINE,node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " +
 						node.getTotalActivation(),LidaTaskManager.getActualTick());
 		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}
+	
+	public void receiveActivationBurst(PamLink link, double amount){
+		logger.log(Level.FINE, link.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " +
+				   link.getTotalActivation(), LidaTaskManager.getActualTick());
+		ExcitationTask task = new ExcitationTask(link, amount, this, taskSpawner);
+		taskSpawner.addTask(task);	
+	}
+
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
 		for(PamNode n: nodes)
 			receiveActivationBurst(n, amount);
@@ -196,6 +206,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void sendActivationToParentsOf(PamNode pamNode) {
 		//Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
 		//TODO: make this a Collection of PamLinkables
+		
+		
 		Map<PamNode, Link> nodeAndConnectedLinks = pamNodeStructure.getParentsAndLinks(pamNode);
 		
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
@@ -205,8 +217,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			propagateParams.put("totalActivation", pamNode.getTotalActivation());
 			double amount = propagationBehavior.getActivationToPropagate(propagateParams);
 			receiveActivationBurst(parent, amount);
+			
+			//System.out.println(parent.getLabel() + " " + nodeAndConnectedLinks.get(parent).getLabel());
+			
 			//TODO: links cannot do this yet! 
-			//this.receiveActivationBurst(nodeAndConnectedLinks.get(parent), amount);
+			receiveActivationBurst((PamLink) nodeAndConnectedLinks.get(parent), amount);
 		}
 	}//method
 

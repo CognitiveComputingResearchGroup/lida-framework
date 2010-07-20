@@ -469,11 +469,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
-		Collection<Link> cl = ns.getLinks();		
+		Collection<Link> cl = ns.getLinks();
+//		for(Link l: cl){
+//			System.out.println(l.getLabel() + " " + l.getIds());
+//			
+//		}
 		boolean pending = true;
 		while (pending) {
 			pending = false;
 			for (Link l : cl) {
+				//System.out.println("add link is " + addLink(l));
 				if (addLink(l) == null) {
 					pending = true;
 				}

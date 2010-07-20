@@ -1,15 +1,10 @@
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.Map;
-
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -65,6 +60,10 @@ public class ExciteAndConnectTask extends LidaTaskImpl {
 		//System.out.println("Exciting " + pamNode.getLabel());
 		source.excite(excitationAmount);
 		sink.excite(excitationAmount);
+		//Tell PAM to propagate the activation of pamNode to its parents
+		pam.sendActivationToParentsOf(source);
+		pam.sendActivationToParentsOf(sink);
+		
 		if(source.isOverThreshold() && sink.isOverThreshold()){
 			//If over threshold then spawn a new task to add the node to the percept
 			NodeStructure ns = new NodeStructureImpl();
@@ -74,8 +73,7 @@ public class ExciteAndConnectTask extends LidaTaskImpl {
 			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
 			taskSpawner.addTask(task);
 		}
-		//Tell PAM to propagate the activation of pamNode to its parents
-		pam.sendActivationToParentsOf(sink);
+		
 		//Don't think I should excite source
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}//method

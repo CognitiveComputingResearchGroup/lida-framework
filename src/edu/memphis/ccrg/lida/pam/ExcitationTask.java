@@ -16,7 +16,7 @@ public class ExcitationTask extends LidaTaskImpl{
 	/**
 	 * PamNode to be excited
 	 */
-	private PamNode pamNode;
+	private PamLinkable pamLinkable;
 	
 	/**
 	 * Amount to excite
@@ -35,16 +35,16 @@ public class ExcitationTask extends LidaTaskImpl{
 
 	/**
 	 * 
-	 * @param node
+	 * @param linkable
 	 * @param excitation
 	 * @param pam
 	 * @param ts
 	 */
-	public ExcitationTask(PamNode node, double excitation,
+	public ExcitationTask(PamLinkable linkable, double excitation,
 			              PerceptualAssociativeMemory pam, 
 			              TaskSpawner ts) {
 		super();
-		pamNode = node;
+		pamLinkable = linkable;
 		excitationAmount = excitation;
 		this.pam = pam;
 		taskSpawner = ts;
@@ -54,15 +54,29 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * 
 	 */
 	protected void runThisLidaTask() {
-		//System.out.println("Exciting " + pamNode.getLabel());
-		pamNode.excite(excitationAmount);  
-		if(pamNode.isOverThreshold()){
+		//System.out.println("Exciting " + pamLinkable.getLabel() + " amount " + excitationAmount);
+		pamLinkable.excite(excitationAmount); 
+		
+		if(pamLinkable.isOverThreshold()){
 			//If over threshold then spawn a new task to add the node to the percept
-			AddToPerceptTask task = new AddToPerceptTask(pamNode, pam);
-			taskSpawner.addTask(task);
+			AddToPerceptTask task;
+			
+			if(pamLinkable instanceof PamNode){
+				PamNode pn = (PamNode) pamLinkable;
+				task = new AddToPerceptTask(pn, pam);
+				taskSpawner.addTask(task);
+				//Tell PAM to propagate the activation of pamNode to its parents
+				pam.sendActivationToParentsOf(pn);
+			}else if(pamLinkable instanceof PamLink){
+				task = new AddToPerceptTask((PamLink) pamLinkable, pam);
+				taskSpawner.addTask(task);
+			}else{
+				//log an error
+			}
+		}else if(pamLinkable instanceof PamNode){
+			pam.sendActivationToParentsOf((PamNode) pamLinkable);
 		}
-		//Tell PAM to propagate the activation of pamNode to its parents
-		pam.sendActivationToParentsOf(pamNode);
+		
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}//method
 
