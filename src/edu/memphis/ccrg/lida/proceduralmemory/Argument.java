@@ -1,8 +1,5 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
-import java.util.List;
-
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * Argument is used to denote a "slot" for real Node. It implements the Node interface, so
@@ -21,14 +18,4 @@ public interface Argument extends Node {
 	public void bindNode(Node n);
 	public Node getBindedNode();
 	public boolean isBinded();
-	public void addContextCondition (NodeStructure condition);
-	public void addResultCondition (NodeStructure condition);	
-	public List<NodeStructure> getContextConditions();
-	public List<NodeStructure> getResultConditions();
-	
-	/**
-	 * @return The id of the linked node or the argumentId * (-1) if no Node has been linked.
-	 */
-	public long getId();
-	
 }

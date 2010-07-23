@@ -32,11 +32,5 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 	public String toString(){
 		return "BottomRightDetector " + getTaskId();
 	}
-
-	@Override
-	public void detectMultipleNodes() {
-		// TODO Auto-generated method stub
-		
-	}
-
+ 
 }

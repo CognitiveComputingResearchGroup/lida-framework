@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.example.framework.initialization;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BottomRightDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector;

@@ -9,10 +9,8 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**

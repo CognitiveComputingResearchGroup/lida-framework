@@ -13,7 +13,6 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.attention.AttentionDriver;
 import edu.memphis.ccrg.lida.declarativememory.DeclarativeMemoryImpl;
-import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalWorkspaceInitalizer;
 import edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer;

@@ -9,9 +9,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
@@ -43,6 +40,10 @@ public interface Scheme extends Activatible{
 	 */
 	public void setIntrinsicBehavior(boolean intrinsicBehavior);
 	
+	/**
+	 * Standard getter for numberOfExecutions.
+	 * return the int value of numberOfExecutions
+	 */
 	public int getNumberOfExecutions();
 	/**
 	 * Standard setter for numberOfExecutions.
@@ -64,10 +65,12 @@ public interface Scheme extends Activatible{
 	public List<NodeStructure>  getContextConditions(long argumentId);
 	
 	public void addContextCondition(long argumentId,NodeStructure ns);
+	public void addContextCondition(NodeStructure ns);
 	
 	public List<NodeStructure> getResultConditions();
 	public List<NodeStructure> getResultConditions(long argumentId);
 	public void addResultConditions(long argumentId,NodeStructure ns);
+	public void addResultConditions(NodeStructure ns);
 	
 	public void addArgument (Argument a);
 	public Argument getArgument (long argumentId);

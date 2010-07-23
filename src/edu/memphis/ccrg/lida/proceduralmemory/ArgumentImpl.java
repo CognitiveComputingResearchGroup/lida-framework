@@ -23,8 +23,6 @@ public class ArgumentImpl implements Argument {
 
 	private long argumentId;
 	private Node node;
-	private List<NodeStructure> contextConditions = new ArrayList<NodeStructure>();
-	private List<NodeStructure> resultConditions = new ArrayList<NodeStructure>();
 
 	public ArgumentImpl(long argumentId) {
 		if (argumentId <= 0) {
@@ -59,41 +57,14 @@ public class ArgumentImpl implements Argument {
 		return node;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.proceduralmemory.Argument#getContextConditions()
-	 */
-	@Override
-	public List<NodeStructure> getContextConditions() {
-		return Collections.unmodifiableList(contextConditions);
-	}
 
 	/**
-	 * Returns the id of the binded Node. If the binded Node is null, then 
-	 * the argumentId * (-1) is returned.
-	 * Note: This can cause troubles with the location of the node in the NodeStructure where 
-	 * the Argument is included. TODO: Check!
+	 * Returns the id of the Attribute negated (* -1)
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.Argument#getId()
 	 */
 	@Override
 	public long getId() {
-		if (node != null) {
-			return node.getId();
-		}
 		return -argumentId;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.proceduralmemory.Argument#getResultConditions()
-	 */
-	@Override
-	public List<NodeStructure> getResultConditions() {
-		return Collections.unmodifiableList(resultConditions);
 	}
 
 	/*
@@ -342,15 +313,6 @@ public class ArgumentImpl implements Argument {
 	public void setExciteStrategy(ExciteStrategy strategy) {
 	}
 
-	@Override
-	public void addContextCondition(NodeStructure condition) {
-		contextConditions.add(condition);
-	}
-
-	@Override
-	public void addResultCondition(NodeStructure condition) {
-		resultConditions.add(condition);
-	}
 
 	/** 
 	 * If the Object o is an instance of Argument, 

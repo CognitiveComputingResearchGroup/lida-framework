@@ -20,7 +20,6 @@ import javax.swing.table.AbstractTableModel;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.pam.PamNode;

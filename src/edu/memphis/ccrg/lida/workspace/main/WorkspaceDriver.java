@@ -4,8 +4,6 @@
 package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.Map;
-import java.util.Properties;
-
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;

@@ -130,7 +130,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 	
 	public void init(Map<String, Object> params) {
-		// TODO Auto-generated method stub
 	}
 	
 

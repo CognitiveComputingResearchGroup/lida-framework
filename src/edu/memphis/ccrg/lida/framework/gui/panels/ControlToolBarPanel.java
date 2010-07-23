@@ -34,7 +34,6 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
 	private int sliderMin = 100;
 	private int sliderMax = 200;
 	private int sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;
-//TODO: read sliderMax and Min from params
     /** Creates new form ControlToolBarPanel */
     public ControlToolBarPanel() {
         initComponents();

@@ -5,8 +5,6 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
-
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 

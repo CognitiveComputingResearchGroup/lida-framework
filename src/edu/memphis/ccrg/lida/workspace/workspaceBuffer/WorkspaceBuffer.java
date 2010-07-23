@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * This interface defines how codelets can access data from Workspace sub modules.

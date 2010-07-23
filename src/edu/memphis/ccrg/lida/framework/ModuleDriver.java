@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.framework;
 
-import java.util.Properties;
-
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;

@@ -29,11 +29,5 @@ public class BasicDetector extends FeatureDetectorImpl {
 	public String toString(){
 		return "BasicDetector " + getTaskId();
 	}
-
-	@Override
-	public void detectMultipleNodes() {
-		// TODO Auto-generated method stub
-		
-	}
-
+ 
 }//class

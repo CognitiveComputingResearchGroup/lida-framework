@@ -15,7 +15,6 @@ import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import javax.swing.JPopupMenu;
 
 /**
  * A GraphMousePlugin that brings up distinct popup menus when an edge or vertex

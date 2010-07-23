@@ -16,8 +16,6 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletImpl;
-import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
 public class AttentionDriver extends ModuleDriverImpl implements

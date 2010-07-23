@@ -376,7 +376,6 @@ public class NodeFactory {
 
 	/**
 	 * Creates a copy of oNode with specified node type, decay and excite strategies.
-	 * TODO: use strategies not behaviors
 	 * 
 	 * @param oNode
 	 * @param nodeType
@@ -601,5 +600,4 @@ public class NodeFactory {
 	public LidaAction getAction(long id){
 		return actionsCache.get(id);
 	}
-	
-}// class
+}// class	
