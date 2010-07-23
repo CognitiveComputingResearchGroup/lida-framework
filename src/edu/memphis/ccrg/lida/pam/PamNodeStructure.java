@@ -198,15 +198,15 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * @param n
 	 * @return
 	 */
-	public Map<PamNode, Link> getParentsAndLinks(Node n){
-		Map<PamNode, Link> results = new HashMap<PamNode, Link>();
+	public Map<PamNode, PamLink> getParentsAndConnectingLinks(Node n){
+		Map<PamNode, PamLink> results = new HashMap<PamNode, PamLink>();
 		Set<Link> candidateLinks = getLinkableMap().get(n);
 		if(candidateLinks != null){
 			for(Link l: candidateLinks){
 				Linkable sink = l.getSink();//Sinks are "higher than" node n, i.e. the parents of this node. 
 				if(!sink.equals(n)){
 					//System.out.println(n.getLabel() + " has parent " + sink.getLabel() + " via link " + l.getLabel());
-					results.put((PamNode) sink, l);	
+					results.put((PamNode) sink, (PamLink) l);	
 				}
 			}//for
 		}

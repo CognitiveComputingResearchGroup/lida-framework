@@ -34,11 +34,10 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  *
  */
 
-public class WorkspaceImpl extends LidaModuleImpl implements Workspace,  
-									  PamListener, 
-									  LocalAssociationListener,
-									  BroadcastListener, 
-									  SensoryMotorListener{
+public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListener, 
+									  	LocalAssociationListener,
+									  	BroadcastListener, 
+									  	SensoryMotorListener{
 	
 	private static Logger logger = Logger.getLogger("lida.workspace.main.Workpace");
 

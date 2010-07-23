@@ -31,6 +31,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		this.pam = pam;
 		nodeStructure = new NodeStructureImpl();
 		nodeStructure.addLink(link);
+		System.out.println("Constructor!");
 	//	System.out.println("constructing add to percept for link " + link.getLabel());
 	}
 
@@ -45,6 +46,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * Thus it is justifiable to make this a separate thread
 	 */
 	public void runThisLidaTask() {
+		//((NodeStructureImpl)nodeStructure).print();
 		pam.addNodeStructureToPercept(nodeStructure);
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}

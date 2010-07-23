@@ -25,7 +25,6 @@ import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;

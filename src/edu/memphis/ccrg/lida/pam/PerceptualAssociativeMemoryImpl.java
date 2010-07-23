@@ -89,7 +89,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * To create new node and links
 	 */
-	private NodeFactory nodeFactory = NodeFactory.getInstance();
+	protected NodeFactory nodeFactory = NodeFactory.getInstance();
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
@@ -163,6 +163,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	public void learn() {
+		//TODO: learning algorithm 
 		Collection<Node> nodes = broadcastContent.getNodes();
 		for (Node n : nodes) {n.getId();}
 	}//method
@@ -185,61 +186,50 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}
-	
-	public void receiveActivationBurst(PamLink link, double amount){
-		logger.log(Level.FINE, link.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " +
-				   link.getTotalActivation(), LidaTaskManager.getActualTick());
-		ExcitationTask task = new ExcitationTask(link, amount, this, taskSpawner);
-		taskSpawner.addTask(task);	
-	}
 
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
 		for(PamNode n: nodes)
 			receiveActivationBurst(n, amount);
 	}
 	
+	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
+		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
+		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
+		taskSpawner.addTask(task);	
+	}
+	
 	/**
-	 * Propagates the activation of 'pamNode' to its parents based on PAM's 
-	 * propagation behavior. 
+	 * Based on PAM's propagation behavior, propagate activation from 'pamNode' 
+	 * to its parents and to the connecting links
 	 * 
 	 */
 	public void sendActivationToParentsOf(PamNode pamNode) {
-		//Set<PamNode> nodes = pamNodeStructure.getParents(pamNode);
-		//TODO: make this a Collection of PamLinkables
-		
-		
-		Map<PamNode, Link> nodeAndConnectedLinks = pamNodeStructure.getParentsAndLinks(pamNode);
-		
+		//Calculate the amount to propagate
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
+		propagateParams.put("totalActivation", pamNode.getTotalActivation());
+		double amountToPropagate = propagationBehavior.getActivationToPropagate(propagateParams);
 		
-		for(PamNode parent: nodeAndConnectedLinks.keySet()){
-			propagateParams.put("totalActivation", pamNode.getTotalActivation());
-			double amount = propagationBehavior.getActivationToPropagate(propagateParams);
-			receiveActivationBurst(parent, amount);
-			
-			//System.out.println(parent.getLabel() + " " + nodeAndConnectedLinks.get(parent).getLabel());
-			
-			//TODO: links cannot do this yet! 
-			receiveActivationBurst((PamLink) nodeAndConnectedLinks.get(parent), amount);
+		//Get parents of pamNode and the connecting link
+		Map<PamNode, PamLink> parentsAndConnectingLink = pamNodeStructure.getParentsAndConnectingLinks(pamNode);
+		for(PamNode parent: parentsAndConnectingLink.keySet()){
+			PamLink connectingLink = parentsAndConnectingLink.get(parent);
+			//Excite the connecting link and the parent
+			propagateActivation(pamNode, connectingLink, parent, amountToPropagate);
 		}
 	}//method
 
 	public void addNodeToPercept(PamNode pamNode) {
-		for (int i = 0; i < pamListeners.size(); i++){
+		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNode(pamNode);
-		//	System.out.println(pamListeners.get(i).toString());
-		}
 	}
 	public void addLinkToPercept(Link l) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveLink(l);
 	}
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		for (int i = 0; i < pamListeners.size(); i++){
+		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNodeStructure(ns);
-			//System.out.println(pamListeners.get(i).toString());
-		}
 	}
 	
 	public void setDecayStrategy(DecayStrategy b) {
@@ -341,14 +331,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	@Override
 	public void setNewLinkType(String type) {
 		pamNodeStructure.setDefaultLink(type);
-	}
-
-	@Override
-	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount) {
-		logger.log(Level.FINEST, "exciting and connecting " + sourceNode.getLabel() + " to " + sinkNode.getLabel(), LidaTaskManager.getActualTick());
-		Link l = nodeFactory.getLink(sourceNode, sinkNode, LinkType.Grounding, 1.0);
-		ExciteAndConnectTask task = new ExciteAndConnectTask(sourceNode, sinkNode, l, excitationAmount, this, taskSpawner);
-		taskSpawner.addTask(task);	
 	}
 
 }//class

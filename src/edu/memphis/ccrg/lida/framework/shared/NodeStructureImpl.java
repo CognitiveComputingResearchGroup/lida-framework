@@ -137,13 +137,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public Link addLink(Link l) {
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getIds());
-		if (oldLink != null) { // if the link already exists only actualize the
-			// activation.
-			// if link already there update activation
-			//newActiv = l.getActivation();
-			if (oldLink.getActivation() < newActiv) {
+		if (oldLink != null) { // if the link already exists in this node structure
+			//update activation
+			if (oldLink.getActivation() < newActiv) 
 				oldLink.setActivation(newActiv);
-			}
 			return oldLink;
 		}
 		Linkable source = l.getSource();
@@ -152,6 +149,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Linkable newSource = null;
 		Linkable newSink = null;
 
+		//If link's source is a node, but that node
+		//in not in this nodestructure, return null
 		if (source instanceof Node) {
 			Node snode = (Node) source;
 			newSource = nodes.get(snode.getId());
@@ -544,6 +543,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public String getDefaultNodeType() {
 		return defaultNodeType;
+	}
+
+	public void print() {
+		System.out.println("\nNODES");
+		for(Node n: nodes.values())
+			System.out.println(n.getLabel() + "--" + n.getId());
+		
+		System.out.println("\nLINKS");
+		for(Link l: links.values())
+			System.out.println(l.getLabel() + "--" + l.getIds());
 	}
 
 }// class

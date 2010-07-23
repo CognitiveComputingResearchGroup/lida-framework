@@ -54,7 +54,6 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * 
 	 */
 	protected void runThisLidaTask() {
-		//System.out.println("Exciting " + pamLinkable.getLabel() + " amount " + excitationAmount);
 		pamLinkable.excite(excitationAmount); 
 		
 		if(pamLinkable.isOverThreshold()){
@@ -72,6 +71,7 @@ public class ExcitationTask extends LidaTaskImpl{
 				taskSpawner.addTask(task);
 			}else{
 				//log an error
+				System.out.println("Error!");
 			}
 		}else if(pamLinkable instanceof PamNode){
 			pam.sendActivationToParentsOf((PamNode) pamLinkable);

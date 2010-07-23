@@ -117,7 +117,14 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 */
 	public void receiveActivationBurst(PamNode node, double amount);
 	
-	public void receiveActivationBurst(PamLink link, double amount);
+	/**
+	 * Amount is coming from source.  Link and sink should be excited amount
+	 * @param source
+	 * @param link
+	 * @param sink
+	 * @param amount
+	 */
+	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount);
 	
 	/**
 	 * Send a burst of activation to a Set of node.
@@ -132,14 +139,6 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param pamNode The node to propagate activation from.
 	 */
 	public void sendActivationToParentsOf(PamNode pamNode);
-	
-	/**
-	 * Excites sink node and connects an instance of source node to it as if sourceNode is creating a link to the sink node.
-	 * @param sourceNode
-	 * @param sinkNode
-	 * @param excitationAmount
-	 */
-	public void exciteAndConnect(PamNode sourceNode, PamNode sinkNode, double excitationAmount);
 	
 	//*** Percept methods
 	
