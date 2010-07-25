@@ -132,7 +132,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addNode(node3);
 		links.add(link1);
 		links.add(link2);
-		pam.addLinks(links);
+		//pam.addLinks(links);
 		
 		assertTrue("Problem with AddLinks",pam.getNodeStructure().hasLink(link1) && pam.getNodeStructure().hasLink(link2));
 	}

@@ -38,9 +38,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	PerceptualAssociativeMemory,  
 																	            BroadcastListener, 
 																	            WorkspaceListener{
-	/**
-	 * 
-	 */
+	
 	private static Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
 	
 	/**
@@ -55,32 +53,35 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	
 	/**
-	 * Things that are listening for the percept
+	 * Modules listening for the current Percept
 	 */
 	private List<PamListener> pamListeners = new ArrayList<PamListener>();
 
 	/**
 	 * Workspace content
+	 * TODO: top-down influences 
 	 */
 	private NodeStructure topDownContent = new NodeStructureImpl();
 	
 	/**
 	 * Current conscious broadcast
+	 * TODO: implement learning
 	 */
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	
 	/**
 	 * From action selection
+	 * TODO: make use of this
 	 */
     private NodeStructure preafferantSignal = new NodeStructureImpl();
 	
     /**
-     * Used by pam to spawn various tasks
+     * Used to spawn the various tasks for PAM
      */
 	private TaskSpawner taskSpawner;
 	
 	/**
-	 * How PAM calculates the activation to propagate
+	 * How PAM calculates the amount of activation to propagate
 	 */
 	private PropagationBehavior propagationBehavior;
 
@@ -100,41 +101,47 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 	
 	/**
-	 * set the taskSpawner for this pam
+	 * Get this PAM's task spawner
 	 */
 	public TaskSpawner getTaskSpawner() {
-		return this.taskSpawner;
+		return taskSpawner;
 	}
 
 	/**
-	 * set the propagation behavior for this pam
+	 * Set the propagation behavior for this PAM
 	 */
 	public void setPropagationBehavior(PropagationBehavior b){
 		propagationBehavior = b;
 	}
 	
 	/**
-	 * get the propagation behavior for this pam
+	 * Get the propagation behavior for this PAM
 	 */
 	public PropagationBehavior getPropagationBehavior(){
-		return this.propagationBehavior;
-	}
-
-	public Set<PamNode> addNodes(Set<PamNode> nodes) {
-		return pamNodeStructure.addPamNodes(nodes);
-	}
-	public void addLinks(Set<Link> links) {
-		pamNodeStructure.addLinks(links);
+		return propagationBehavior;
 	}
 
 	/**
-	 * Feature detectors should be added after the nodes they excite are added
+	 * Adds set of PamNodes to this PAM
+	 */
+	public Set<PamNode> addNodes(Set<PamNode> nodes) {
+		return pamNodeStructure.addPamNodes(nodes);
+	}
+	/**
+	 * Adds set of PamLinks to this PAM
+	 */
+	public Set<PamLink> addLinks(Set<PamLink> links) {
+		return pamNodeStructure.addPamLinks(links);
+	}
+
+	/**
+	 * Adds a feature detector to this PAM
 	 */
 	public void addFeatureDetector(FeatureDetector detector) {
 		featureDetectors.add(detector);
 		taskSpawner.addTask(detector);
 		logger.log(Level.FINE, "Added feature detector to PAM", LidaTaskManager.getActualTick());	
-	}//method
+	}
 
 	// ******INTERMODULE COMMUNICATION******
 	public void addPamListener(PamListener pl) {
@@ -143,10 +150,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public synchronized void receiveWorkspaceContent(ModuleName originatingBuffer,
 													 WorkspaceContent content) {
-		// TODO:impl episodic buffer activation into activation passing
 		topDownContent = content;
 		Collection<Node> nodes = topDownContent.getNodes();
 		for (Node n : nodes) {n.getId();}
+		// TODO:
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -154,10 +161,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	public synchronized void receivePreafferentSignal(NodeStructure ns) {
-		// TODO:use preafferent signal
 		preafferantSignal = ns;
 		Collection<Node> nodes = preafferantSignal.getNodes();
 		for (Node n : nodes) {n.getId();}
+		// TODO: Use preafferent signal
 	}
 
 	public void learn() {
@@ -166,21 +173,22 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		for (Node n : nodes) {n.getId();}
 	}//method
 
+	/**
+	 * Called by the task manager every tick
+	 */
 	public void decayModule(long ticks) {
 		pamNodeStructure.decayNodes(ticks);
 		//TODO: pamNodeStructure.decayLink(ticks);
 	}// method
 
 	/**
-	 * receives activation from feature detectors or other codelets to excite a
+	 * Receive activation from feature detectors or other codelets to excite a
 	 * PamNode
-	 * 
-	 * This method can be changed to store the burst and then excite all the
-	 * nodes together.
 	 */
 	public void receiveActivationBurst(PamNode node, double amount) {
-		logger.log(Level.FINE,node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " +
-						node.getTotalActivation(),LidaTaskManager.getActualTick());
+		logger.log(Level.FINE,
+				   node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " + node.getTotalActivation(),
+				   LidaTaskManager.getActualTick());
 		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}
@@ -190,15 +198,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			receiveActivationBurst(n, amount);
 	}
 	
-	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
-		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
-		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
-		taskSpawner.addTask(task);	
-	}
-	
 	/**
+	 * 
+	 * Called by Excitation tasks after their node has been excited.
 	 * Based on PAM's propagation behavior, propagate activation from 'pamNode' 
-	 * to its parents and to the connecting links
+	 * to its parents and to the connecting links.
 	 * 
 	 */
 	public void sendActivationToParentsOf(PamNode pamNode) {
@@ -216,12 +220,22 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			propagateActivation(pamNode, connectingLink, parent, amountToPropagate);
 		}
 	}//method
+	
+	/**
+	 * Propagates activation 'amount', which originates from 'source', to node 'sink'.  
+	 * Also give activation to 'link' which connects 'source' to 'sink'.
+	 */
+	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
+		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
+		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
+		taskSpawner.addTask(task);	
+	}
 
 	public void addNodeToPercept(PamNode pamNode) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNode(pamNode);
 	}
-	public void addLinkToPercept(Link l) {
+	public void addLinkToPercept(PamLink l) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveLink(l);
 	}
@@ -303,7 +317,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		}
 	}
 	public PamNode getNode(long id) {
-		return (PamNode)pamNodeStructure.getNode(id) ;
+		return (PamNode) pamNodeStructure.getNode(id) ;
 	}
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		

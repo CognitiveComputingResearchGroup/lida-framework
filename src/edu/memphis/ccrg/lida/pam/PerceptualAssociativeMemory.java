@@ -1,6 +1,3 @@
-/**
- * PAMinterface.java
- */
 package edu.memphis.ccrg.lida.pam;
 
 import java.util.Collection;
@@ -56,7 +53,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public Link addNewLink(String sourceId, String sinkId, LinkType type, double activation);
 	
-	public void addLinks(Set<Link> links);
+	public Set<PamLink> addLinks(Set<PamLink> links);
 	
 	public void addFeatureDetector(FeatureDetector fd);
 		
@@ -152,7 +149,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * Put a Link into the percept
 	 * @param l
 	 */
-	public void addLinkToPercept(Link l);
+	public void addLinkToPercept(PamLink l);
 	
 	/**
 	 * Put a NodeStructure into the percept
@@ -176,4 +173,4 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 
 	public PamNode getNode(long id);
 	
-}//interface PAMinterface
+}//interface 

@@ -27,6 +27,7 @@
 			<param name="pam.Downscale" type="double">.6 </param>
 			<param name="pam.Selectivity" type="double">.5 </param>
 			<param name="pam.newNodeType" type="string">PamNodeImpl</param>
+			<param name="pam.newLinkType" type="string">PamLinkImpl</param>
 			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer</initializerclass>
 		</module>
 		<module name="TransientEpisodicMemory">

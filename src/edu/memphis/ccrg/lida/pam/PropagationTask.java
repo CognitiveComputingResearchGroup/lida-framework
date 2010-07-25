@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 /**
  * A propagation task excites a node and a link.  
  * The link connects the source of the activation (not accessible) to the node.
- * @author ryanjmccall
+ * @author Ryan J McCall
  *
  */
 public class PropagationTask extends LidaTaskImpl {
@@ -61,7 +61,7 @@ public class PropagationTask extends LidaTaskImpl {
 	 * 
 	 */
 	public String toString(){
-		return "Propagation " + getTaskId();
+		return "Propagation task " + getTaskId();
 	}
 
 }//class

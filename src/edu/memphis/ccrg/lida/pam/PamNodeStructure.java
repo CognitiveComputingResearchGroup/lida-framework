@@ -19,20 +19,19 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 //TODO: Check this class
 public class PamNodeStructure extends NodeStructureImpl{
 	private static Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
-	//TODO: put these values in params
-	private Double upscaleFactor = 0.1;
 
-	private Double downscaleFactor = 0.2;
-	private Double selectivityThreshold = 0.3;
+	private Double upscaleFactor = 0.9;
+	private Double downscaleFactor = 0.5;
+	private Double selectivityThreshold = 0.8;
 
 	/**
 	 * If a node is below this threshold after being decayed it is deleted
 	 */
 	//TODO: think about how pam is decayed.  probably wont have this variable here
-	private double nodeRemovalThreshold = 0.01;
+	//private double nodeRemovalThreshold = 0.01;
 	
 	public PamNodeStructure(){
-		super("PamNodeImpl", "LinkImpl");
+		super("PamNodeImpl", "PamLinkImpl");
 	}
 
 	public PamNodeStructure(String defaultPamNode, String defaultLink) {
@@ -57,9 +56,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 		return downscaleFactor;
 	}
 
-	public double getSelectivity() {
-		return selectivityThreshold;
-	}
 	/**
 	 * Set selectivity threshold
 	 * @param s
@@ -67,7 +63,22 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public void setSelectivity(Double s) {
 		selectivityThreshold = s;		
 	}
+	public double getSelectivity() {
+		return selectivityThreshold;
+	}
 	
+	/**
+	 * Add a collection of PamLinks to this pam node structure
+	 */	
+	public Set<PamLink> addPamLinks(Collection<PamLink> links){
+		Set<PamLink> returnedLinks = new HashSet<PamLink>();
+		for(PamLink l: links)
+			returnedLinks.add((PamLink) addLink(l));
+			
+		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+		return returnedLinks;
+	}
+ 	
 	/**
 	 * Add a collection of PamNodes to this pam node structure
 	 */	
