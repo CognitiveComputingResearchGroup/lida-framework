@@ -47,17 +47,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 
 	@Override
 	protected void runThisDriver() {
-	//	System.out.println("PamDriver lives!");
-		decayCounter++;
-		if (decayCounter >= decayTime) {
-//			PamNodeStructure pm = pam.getNodeStructure();
-//			System.out.println("\n upscale " + pm.getUpscale());
-//			System.out.println("downscale " + pm.getDownscale());
-//			System.out.println("selectivity " + pm.getSelectivity());
-			//pam.decayPam(); // Decay the activations TODO: delete this class
-			decayCounter = 0;
-		}
-	}//
+	}
 	
 	/**
 	 * @param decayTime

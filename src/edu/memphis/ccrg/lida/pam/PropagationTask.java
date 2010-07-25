@@ -1,6 +1,5 @@
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.shared.LinkType;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;

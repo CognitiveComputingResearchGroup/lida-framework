@@ -1,10 +1,8 @@
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -30,6 +28,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	/**
 	 * If a node is below this threshold after being decayed it is deleted
 	 */
+	//TODO: think about how pam is decayed.  probably wont have this variable here
 	private double nodeRemovalThreshold = 0.01;
 	
 	public PamNodeStructure(){
