@@ -43,6 +43,8 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 			l.receiveGuiEvent(evt);
 	}
 	
+	public abstract String toString();
+	
 	/**
 	 * Does not need to be implemented.  Environment does not need to send any data.
 	 * If you want to send data to the GUI then
