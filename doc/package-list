@@ -3,10 +3,9 @@ edu.memphis.ccrg.lida.attention
 edu.memphis.ccrg.lida.declarativememory
 edu.memphis.ccrg.lida.environment
 edu.memphis.ccrg.lida.example.framework.initialization
+edu.memphis.ccrg.lida.example.genericlida.attention
 edu.memphis.ccrg.lida.example.genericlida.featuredetectors
 edu.memphis.ccrg.lida.example.genericlida.main
-edu.memphis.ccrg.lida.example.globalworkspace
-edu.memphis.ccrg.lida.example.shared
 edu.memphis.ccrg.lida.framework
 edu.memphis.ccrg.lida.framework.gui
 edu.memphis.ccrg.lida.framework.gui.commands
@@ -14,6 +13,7 @@ edu.memphis.ccrg.lida.framework.gui.events
 edu.memphis.ccrg.lida.framework.gui.panels
 edu.memphis.ccrg.lida.framework.gui.utils
 edu.memphis.ccrg.lida.framework.initialization
+edu.memphis.ccrg.lida.framework.mockclasses
 edu.memphis.ccrg.lida.framework.serialization
 edu.memphis.ccrg.lida.framework.shared
 edu.memphis.ccrg.lida.framework.strategies
@@ -28,11 +28,7 @@ edu.memphis.ccrg.lida.sensorymotormemory
 edu.memphis.ccrg.lida.transientepisodicmemory
 edu.memphis.ccrg.lida.transientepisodicmemory.sdm
 edu.memphis.ccrg.lida.util
-edu.memphis.ccrg.lida.workspace.broadcastbuffer
+edu.memphis.ccrg.lida.workspace.broadcastqueue
 edu.memphis.ccrg.lida.workspace.main
 edu.memphis.ccrg.lida.workspace.structurebuildingcodelets
 edu.memphis.ccrg.lida.workspace.workspaceBuffer
-samples
-samples.Basic
-samples.CheckingMouse
-samples.MouseMenu
