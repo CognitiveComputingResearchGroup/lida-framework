@@ -5,7 +5,7 @@ import java.util.Collection;
 /**
  * TaskSpawners create, manage, and end new LidaTasks.  
  * 
- * @author ryanjmccall
+ * @author Ryan J McCall
  *
  */
 public interface TaskSpawner extends LidaTask{

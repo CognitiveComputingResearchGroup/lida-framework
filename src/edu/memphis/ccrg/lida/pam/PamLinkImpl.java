@@ -37,7 +37,6 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 
 	@Override
 	public boolean isOverThreshold() {
-		//System.out.println("this link " + this.getLabel() + " has total Activation " + getTotalActivation() + " selection threshold " + selectionThreshold);
 		return getTotalActivation() >= selectionThreshold;
 	}
 	

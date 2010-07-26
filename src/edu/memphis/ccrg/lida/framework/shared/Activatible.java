@@ -4,8 +4,8 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 /**
- * 
- * @author ryanjmccall
+ * An object with activation that is excitable and decayable
+ * @author Ryan J McCall
  *
  */
 public interface Activatible {

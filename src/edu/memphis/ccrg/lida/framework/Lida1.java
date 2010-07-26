@@ -40,7 +40,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
-import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl;
+import edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueueImpl;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
@@ -177,7 +177,7 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		
 		
 		//Global Workspace
-		int gwtTicksPerStep = Integer.parseInt(lidaProperties.getProperty("globalWorkspace.ticksPerStep"));
+		//int gwtTicksPerStep = Integer.parseInt(lidaProperties.getProperty("globalWorkspace.ticksPerStep"));
 		
 		module = new GlobalWorkspaceImpl(taskManager);
 		initializer = new GlobalWorkspaceInitalizer();

@@ -22,14 +22,14 @@ public interface LidaGuiController {
 	 * @param parameters a Map of parameters for the command.
 	 * @return the result of the command.
 	 */
-	public Object executeCommand (String commandName, Map<String,Object> parameters);
+	public abstract Object executeCommand (String commandName, Map<String,Object> parameters);
 	/**
 	 * Executes a command sent by the GUI
 	 * @param command the command to execute. 
 	 * @return  The result of the command.
 	 */
-	public Object executeCommand (Command command);
+	public abstract Object executeCommand (Command command);
 	
-	void registrerLida(Lida lida);
+	public abstract void registrerLida(Lida lida);
 	
 }

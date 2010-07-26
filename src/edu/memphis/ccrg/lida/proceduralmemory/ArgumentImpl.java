@@ -3,14 +3,10 @@
  */
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeClass;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.PamNode;

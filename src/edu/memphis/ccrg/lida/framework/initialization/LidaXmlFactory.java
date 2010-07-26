@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
+ * Creates a Lida Object from an xml file
  * @author Javier Snaider
  * 
  */ 

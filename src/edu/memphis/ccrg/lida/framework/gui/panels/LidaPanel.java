@@ -14,13 +14,25 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
  *
  */
 public interface LidaPanel {
+	
 	public void registrerLidaGuiController(LidaGuiController lgc);
 	public void registerLida(Lida lida);
+	
+	/**
+	 * Update Panel to display supplied object
+	 * @param o
+	 */
 	public void display (Object o);
+	
+	/**
+	 * Update the panel's display of contents
+	 */
 	public void refresh();
 	public JPanel getPanel();
+	
     public ModuleName getSupportedModule();
     public void setSupportedModule(ModuleName module);
+    
     public void setName(String name);
     public String getName();
     public void initPanel(String[] param);

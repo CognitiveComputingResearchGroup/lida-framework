@@ -1,8 +1,6 @@
 package edu.memphis.ccrg.lida.example.framework.initialization;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BottomRightDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector;
@@ -33,7 +31,7 @@ public class PamInitializer implements Initializer {
 		ModuleDriver driver = lida.getModuleDriver(ModuleName.PamDriver);
 		pam.setTaskSpawner(driver);
 
-		pam.setParameters(params);
+		pam.init(params);
 
 		// Nodes
 		NodeFactory factory = NodeFactory.getInstance();

@@ -254,7 +254,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
      * 
      */
-	public void setParameters(Map<String, ?> parameters) {
+	public void init (Map<String,?> parameters){
 		Object o = parameters.get("pam.Upscale");
 		if (o != null && o instanceof Double){ 
 				synchronized (this) {

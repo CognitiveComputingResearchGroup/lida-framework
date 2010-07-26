@@ -42,6 +42,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		this.pamNodes.add(n);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void init() {
 		pam = (PerceptualAssociativeMemory) getParam("PAM", null);
 		sm = (SensoryMemory) getParam("SensoryMemory", null);

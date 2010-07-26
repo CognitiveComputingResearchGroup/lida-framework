@@ -51,6 +51,7 @@ public class PopupVertexFormMousePlugin<V, E> extends
 	 * 
 	 * @param e
 	 */
+	@SuppressWarnings("unchecked")
 	protected void handlePopup(MouseEvent e) {
 		final VisualizationViewer<V, E> vv = (VisualizationViewer<V, E>) e
 				.getSource();

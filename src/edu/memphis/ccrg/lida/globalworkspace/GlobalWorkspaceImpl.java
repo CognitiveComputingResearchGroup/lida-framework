@@ -165,7 +165,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : guis)
-			fg.receiveGuiEvent(evt);
+			fg.receiveFrameworkGuiEvent(evt);
 	}
 
 

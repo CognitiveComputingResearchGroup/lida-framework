@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  * A WorkspaceBuffer listener must receive buffer content.
  * The WorkspaceImpl class is an example of a WorkspaceBufferListener
  * 
- * @author ryanjmccall
+ * @author Ryan J McCall
  *
  */
 public interface WorkspaceBufferListener extends ModuleListener{

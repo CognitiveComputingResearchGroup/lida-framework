@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +20,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
-import edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueue;
+import edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -47,35 +48,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private List<WorkspaceListener> wsListeners = new ArrayList<WorkspaceListener>();
 
-	private static final int DEFAULT_DECAY_TIME=10; 
-
-	//Workspace contains these components
-//	private WorkspaceBuffer episodicBuffer;
-//	private WorkspaceBuffer perceptualBuffer;
-//	private BroadcastQueue broadcastQueue;
-//	private WorkspaceBuffer csm;
-	private int decayCounter = 0;
-	private int decayTime=DEFAULT_DECAY_TIME;
-	private double lowerActivationBound;
-			
-	/**
-	 * @param lowerActivationBound the lowerActivationBound to set
-	 */
-	public void setLowerActivationBound(double lowerActivationBound) {
-		this.lowerActivationBound = lowerActivationBound;
-		for (LidaModule lm:getSubmodules().values()){
-			((WorkspaceBuffer)lm).setLowerActivationBound(lowerActivationBound);
-		}
-	}
-
-	/**
-	 * @param decayTime
-	 *            the decayTime to set
-	 */
-	public void setDecayTime(int decayTime) {
-		this.decayTime = decayTime;
-	}
-
+	private double lowerActivationBound = 0.0;
 	
 	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
 		super (ModuleName.Workspace);
@@ -84,13 +57,42 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		getSubmodules().put(ModuleName.PerceptualBuffer,perceptualBuffer);
 		getSubmodules().put(ModuleName.CurrentSituationalModel,csm);
 		
+		setActivationLowerBound(lowerActivationBound);
+	}
+	public WorkspaceImpl(){
+		super (ModuleName.Workspace);
+	}
+	
+	/**
+	 * @param lowerActivationBound the lowerActivationBound to set
+	 */
+	public void setActivationLowerBound(double lowerActivationBound) {
+		this.lowerActivationBound = lowerActivationBound;
 		for (LidaModule lm:getSubmodules().values()){
 			((WorkspaceBuffer)lm).setLowerActivationBound(lowerActivationBound);
 		}
 	}
-
-	public WorkspaceImpl (){
-		super (ModuleName.Workspace);		
+	
+	public void init (Map<String,?> parameters){		
+		Object o = parameters.get("workspace.activationLowerBound");
+		if (o != null)
+			setActivationLowerBound((Double) o);
+		else
+			logger.warning("Unable to set Activation lower bound parameter, using the default instead");
+		
+//		System.out.println("submodules " + getSubmodules().size());
+//		getSubmodules().get(ModuleName.EpisodicBuffer).init(parameters);
+//		getSubmodules().get(ModuleName.BroadcastQueue).init(parameters);
+//		getSubmodules().get(ModuleName.PerceptualBuffer).init(parameters);
+//		getSubmodules().get(ModuleName.CurrentSituationalModel).init(parameters);
+	}
+	
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof WorkspaceListener){
+			addWorkspaceListener((WorkspaceListener)listener);
+		}else if (listener instanceof CueListener){
+			addCueListener((CueListener)listener);
+		}
 	}
 
 	//Implementations for Workspace interface
@@ -109,14 +111,10 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		logger.log(Level.FINER,"Cue Performed ",LidaTaskManager.getActualTick());
 	}
 	private void sendToListeners(NodeStructure content){
-		for(WorkspaceListener c: wsListeners){
-			c.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent)content);
+		for(WorkspaceListener listener: wsListeners){
+			listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent)content);
 		}
 	}
-	/**
-	 * Not applicable for WorkspaceImpl
-	 */
-	public void learn() {}
 	
 	/**
 	 * Received broadcasts are sent to the broadcast queue.
@@ -139,12 +137,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * the perceptualBuffer.
 	 */
 	public void receiveNode(Node node) {
-		//System.out.println("adding " + node.getLabel());
-		//System.out.println("adding node to percept. buffer " + getSubmodule(ModuleName.PerceptualBuffer));
 		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addNode(node);
-		
-		//NodeStructure pb = (NodeStructure) getSubmodule(ModuleName.PerceptualBuffer).getModuleContent();
-		//System.out.println("after adding the buffer has " + pb.getNodeCount());
 	}
 	
 	/**
@@ -163,37 +156,25 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	public void receiveNodeStructure(NodeStructure ns) {
 		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).mergeWith(ns);	
 	}
-	
-
-	/**
-	 * Decays all Nodes of all buffers in the Workspace
-	 */
-//	public void decayWorkspaceNodes(){
-//		decayCounter++;
-//		if (decayCounter >= decayTime) {
-//			logger.log(Level.FINER,"Decaying all workspace buffer content",LidaTaskManager.getActualTick());
-//			decayCounter=0;
-//			perceptualBuffer.decayNodes(lowerActivationBound);
-//			csm.decayNodes(lowerActivationBound);
-//			episodicBuffer.decayNodes(lowerActivationBound);
-//			broadcastQueue.decayNodes(lowerActivationBound);
-//		}
-//	}
 
 	public Object getModuleContent() {
 		return null;
-	}
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof WorkspaceListener){
-			addWorkspaceListener((WorkspaceListener)listener);
-		}else if (listener instanceof CueListener){
-			addCueListener((CueListener)listener);
-		}
 	}
 
 	@Override
 	public void receiveAction(LidaAction a) {
 		// TODO Maybe just pam receives this and not the workspace		
+	}
+	
+	/**
+	 * Not applicable for WorkspaceImpl
+	 */
+	public void learn() {}
+	
+	public void addSubModule(LidaModule lm){
+		super.addSubModule(lm);
+		//System.out.println(lm.getModuleName());
+		
 	}
 	
 }//class

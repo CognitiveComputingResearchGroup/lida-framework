@@ -27,10 +27,19 @@ import org.xml.sax.SAXException;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 
+/**
+ * 
+ * Loads the factoriesData.xml file which configures the factories of the framework i.e.
+ * what strategies are used by the objects created by the factory, the types of node,
+ * links, and codelets that can be created as well.
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class LidaFactoriesXMLLoader {
+	
 	private static final String DEFAULT_FILE_NAME = "configs/factoriesData.xml";
-	private static Logger logger = Logger
-			.getLogger("lida.framework.initialization.LidaFactoriesXMLLoader");
+	private static Logger logger = Logger.getLogger("lida.framework.initialization.LidaFactoriesXMLLoader");
 	private Document dom;
 	private NodeFactory nfactory=NodeFactory.getInstance();
 	private Map<String, StrategyDef> strategies;

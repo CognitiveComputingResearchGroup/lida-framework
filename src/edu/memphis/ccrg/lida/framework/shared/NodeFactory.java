@@ -37,12 +37,6 @@ public class NodeFactory {
 	private static long nodeIdCount = 0;
 	
 	/**
-	 * TODO: document
-	 * ?????????????????????????????????
-	 */
-	private static long actionIdCount = 0;
-
-	/**
 	 * This static method returns the instance of the factory. Implements the
 	 * Singleton pattern.
 	 * 
@@ -107,13 +101,6 @@ public class NodeFactory {
 	 */
 	public static void setNextNodeId(long nextId) {
 		NodeFactory.nodeIdCount = nextId;
-	}
-
-	/**
-	 * @param nextId the next actionId
-	 */
-	public static void setNextActionId(long nextId) {
-		NodeFactory.actionIdCount = nextId;
 	}
 
 	private NodeFactory() {

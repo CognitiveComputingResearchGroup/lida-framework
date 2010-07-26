@@ -59,7 +59,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	}	
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)
-			gui.receiveGuiEvent(evt);
+			gui.receiveFrameworkGuiEvent(evt);
 	}//method
 
 	/*

@@ -18,6 +18,7 @@ public class LinearDecayStrategy implements DecayStrategy{
 	    /** The y intercept of this linear curve. */
 	    private double b;
 
+		@SuppressWarnings("unused")
 		private Map<String, ? extends Object> params;
 	    
 	    /** Creates a new instance of LinearCurve. Values for slope and intercept

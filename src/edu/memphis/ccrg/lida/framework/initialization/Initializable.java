@@ -4,6 +4,13 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
+/**
+ * An Initializable module will be initialized automatically by the LidaXmlFactory
+ * 
+ * @see LidaXmlFactory
+ * @author ryanjmccall, Javier Snaider
+ *
+ */
 public interface Initializable {
 	/**
 	 * This method initializes the module using properties from LIDA Properties File

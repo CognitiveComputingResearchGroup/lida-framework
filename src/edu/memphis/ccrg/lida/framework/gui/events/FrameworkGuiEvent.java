@@ -10,19 +10,30 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
  */
 public class FrameworkGuiEvent {
 
+	/**
+	 * Module sending the event
+	 */
 	private ModuleName module;
+	
+	/**
+	 * Message describing the nature of the event's content
+	 */
 	private String message;
-	private Object data;
+	
+	/**
+	 * Content being sent
+	 */
+	private Object content;
 
 	/**
 	 * @param moduleId
 	 * @param message
-	 * @param data
+	 * @param content
 	 */
-	public FrameworkGuiEvent(ModuleName m, String message, Object data) {
+	public FrameworkGuiEvent(ModuleName m, String message, Object content) {
 		this.module = m;
 		this.message = message;
-		this.data = data;
+		this.content = content;
 	}
 
 	public void setModule(ModuleName m){
@@ -45,13 +56,13 @@ public class FrameworkGuiEvent {
 		return message;
 	}
 
-	public void setData(Object o){
-		data = o;
+	public void setContent(Object o){
+		content = o;
 	}
 	/**
 	 * @return the data
 	 */
-	public Object getData() {
-		return data;
+	public Object getContent() {
+		return content;
 	}
 }

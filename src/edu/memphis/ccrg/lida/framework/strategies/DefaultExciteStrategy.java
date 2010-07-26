@@ -2,9 +2,9 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
-
 public class DefaultExciteStrategy implements ExciteStrategy {
 	
+	@SuppressWarnings("unused")
 	private Map<String, ? extends Object> params;
 
 	public double excite(double currentActivation, double excitation) {

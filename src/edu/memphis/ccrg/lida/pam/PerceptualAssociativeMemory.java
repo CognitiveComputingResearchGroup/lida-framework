@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
@@ -64,11 +63,6 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	public void addPamListener(PamListener pl);
 	
 	//*** Setting parameters	
-	
-	/**
-	 * Updates PAM's parameters from the supplied map
-	 */
-	public void setParameters(Map<String, ?> parameters);
 	
 	/**
 	 * Set the type of Link used in this PAM

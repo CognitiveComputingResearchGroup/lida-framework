@@ -112,7 +112,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		jloc = -1;
 		environContent = new double[imageHeight][imageWidth];
 		 fillImageBlank(environContent);
-		 contentEvent.setData(environContent);
+		 contentEvent.setContent(environContent);
 		 sendContentEvent(contentEvent);
 		 logger.log(Level.FINE, "Environment Reseted",0L);
 	}// method
@@ -156,7 +156,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		environContent = new double[imageHeight][imageWidth];
 		fillImageBlank(environContent);
 		addBlock(i, j, environContent);
-		contentEvent.setData(environContent);
+		contentEvent.setContent(environContent);
 		// environContent.setGuiContent(convertToString(image));
 	}
 
@@ -219,7 +219,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	private void sendContentEvent(FrameworkGuiEvent evt) {
 		for(FrameworkGuiEventListener l: frameworkGuis)
 			if(l instanceof VisualEnvironmentPanel)
-				l.receiveGuiEvent(evt);
+				l.receiveFrameworkGuiEvent(evt);
 	}
 	
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
@@ -227,7 +227,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	}
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : frameworkGuis)
-			fg.receiveGuiEvent(evt);
+			fg.receiveFrameworkGuiEvent(evt);
 	}
 
 	@Override

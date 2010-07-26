@@ -40,7 +40,7 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt){
 		for(FrameworkGuiEventListener l: listeners)
-			l.receiveGuiEvent(evt);
+			l.receiveFrameworkGuiEvent(evt);
 	}
 	
 	public abstract String toString();

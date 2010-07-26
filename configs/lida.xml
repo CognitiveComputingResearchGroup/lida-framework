@@ -58,7 +58,7 @@
 					<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>
 				</module>
 				<module name="BroadcastQueue">
-					<class>edu.memphis.ccrg.lida.workspace.broadcastbuffer.BroadcastQueueImpl</class>
+					<class>edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueueImpl</class>
 					<param name="workspace.broadcastQueueCapacity" type="int">20 </param>
 				</module>
 			</submodules>

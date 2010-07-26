@@ -12,11 +12,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
 /**
- * @author Javier Snaider
- * 
- */
-/**
- * @author Javier
+ * @author Javier Snaider, Ryan McCall
  *
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent{

@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * 
- * @author Ryan McCall
+ * @author Ryan McCall, Javier Snaider
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 

@@ -10,13 +10,43 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
- *
+ * A command is an encapsulation of an event from the Gui such as a button press or a 
+ * slider state change.  
  * @author Javier Snaider
  */
 public interface Command {
-    public void setParameter(String name, Object value);
-    public Object getParameter(String name);
-    public Object getResult();
+
+    /**
+     * Executes this command performing the necessary steps in the model (Lida)
+     * @param lida
+     */
     public void execute(Lida lida);
+    
+    /**
+     * Expected result of the command
+     * @return
+     */
+    public Object getResult();    
+
+    /**
+     * Set multiple parameters using a map
+     * @param parameters
+     */
     public void setParameters(Map<String, Object> parameters);
+    
+    /**
+     * Set single parameter
+     * @param name
+     * @param value
+     */
+    public void setParameter(String name, Object value);
+    
+    /**
+     * Get a parameter
+     * @param name
+     * @return
+     */
+    public Object getParameter(String name);
+    
+    
 }

@@ -7,11 +7,8 @@ import java.util.Set;
 /**
  * A NodeStructure holds a collection of Nodes an Links. An implementation of this interface
  * could be used as the "Common Currency" between the Modules of LIDA
- * 
- * 
- * 
- * @author Javier Snaider
  *
+ * @author Javier Snaider
  */
 public interface NodeStructure {
 

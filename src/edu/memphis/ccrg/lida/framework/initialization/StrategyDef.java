@@ -10,8 +10,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class StrategyDef {
 
-	private static Logger logger = Logger
-			.getLogger("lida.framework.shared.StrategyDef");
+	private static Logger logger = Logger.getLogger("lida.framework.shared.StrategyDef");
 	private String name;
 	private String className;
 	private String type;

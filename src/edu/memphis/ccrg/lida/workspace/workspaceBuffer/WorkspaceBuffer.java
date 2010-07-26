@@ -6,10 +6,14 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * This interface defines how codelets can access data from Workspace sub modules.
  * Modules that need to be accessible to codelets should implement this interface.
  * 
- * @author ryanjmccall
+ * @author Ryan J McCall, Javier Snaider
  *
  */
 public interface WorkspaceBuffer extends LidaModule{
 	
- public void setLowerActivationBound (double lowerActivationBound);
+	/**
+	 * Lower bound for a node or link to remain in the buffer
+	 * @param lowerActivationBound
+	 */
+	public abstract void setLowerActivationBound (double lowerActivationBound);
 }

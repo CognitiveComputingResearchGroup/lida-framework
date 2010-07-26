@@ -1,5 +1,10 @@
 package edu.memphis.ccrg.lida.actionselection;
 
+/**
+ * Interface for the action selection module
+ * @author ryanjmccall
+ *
+ */
 public interface ActionSelection {
 	
 	/**

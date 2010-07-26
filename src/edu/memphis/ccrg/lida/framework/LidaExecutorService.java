@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  *
  */
 public class LidaExecutorService extends ThreadPoolExecutor {
-	private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
+	//private static Logger logger=Logger.getLogger("lida.framework.LidaExecutorService");
 	private LidaTaskManager taskManager;
 
 	// consider overriding whatever executing method we use.  In the override

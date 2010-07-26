@@ -7,6 +7,7 @@
  * All rights reserved.
  */
 package edu.memphis.ccrg.lida.attention;
+
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;

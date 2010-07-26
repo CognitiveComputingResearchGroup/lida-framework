@@ -133,11 +133,19 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 	public void init(Map<String,?> params) {
 		this.lidaProperties=params;
 		numOfHardLoc = (Integer)getParam("tem.numOfHardLoc",DEF_HARD_LOCATIONS);
-		addressLength = (Integer)getParam("tem.addressLength",DEF_ADDRESS_LENGTH);
+		setAddressLength((Integer)getParam("tem.addressLength",DEF_ADDRESS_LENGTH));
 		wordLength = (Integer)getParam("tem.wordLength",DEF_WORD_LENGTH);
 		int radious = (Integer)getParam("tem.activationRadious",DEF_ACTIVATION_RADIOUS);
 		translator=new BasicTranslator(wordLength,pam);
 		sdm=new SparseDistributedMemoryImp(numOfHardLoc,radious,wordLength);
+	}
+
+	public void setAddressLength(int addressLength) {
+		this.addressLength = addressLength;
+	}
+
+	public int getAddressLength() {
+		return addressLength;
 	}
 
 }

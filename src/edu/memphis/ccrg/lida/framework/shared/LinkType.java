@@ -1,6 +1,9 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 //TODO: Change from enum
+/**
+ * 
+ */
 public enum LinkType {
 	NONE,
 	LEFT_OF,
