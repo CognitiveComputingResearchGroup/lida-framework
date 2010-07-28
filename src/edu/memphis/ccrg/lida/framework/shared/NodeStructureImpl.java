@@ -551,4 +551,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			System.out.println(l.getLabel() + "--" + l.getIds());
 	}
 
+	@Override
+	public Collection<Linkable> getLinkables() {
+		return Collections.unmodifiableCollection(linkableMap.keySet());
+	}
+
 }// class

@@ -63,7 +63,6 @@ public class PamInitializer implements Initializer {
 				"PamNodeImpl", "bottomRight");
 		pam.addNode(bottomRight);
 		// Links
-		// TODO: make this a loop
 		pam.addNewLink(gold, metal, LinkType.CHILD,1.0);
 		pam.addNewLink(metal, solid, LinkType.CHILD,1.0);
 		pam.addNewLink(iron, metal, LinkType.CHILD,1.0);
@@ -75,7 +74,6 @@ public class PamInitializer implements Initializer {
 		pam.addNewLink(topLeft, wood, LinkType.CHILD,1.0);
 
 		// Feature detectors
-		// TODO: make this a loop
 		FeatureDetector fd = new BasicDetector(gold, sm, pam);
 		fd.setNumberOfTicksPerStep(5);
 		pam.addFeatureDetector(fd);

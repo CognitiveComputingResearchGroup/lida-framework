@@ -59,7 +59,7 @@ public class WorkspaceDriver extends ModuleDriverImpl {
 				}
 			}
 			if (cueNs.getNodeCount() > 0) {
-				workspace.cue(cueNs);
+				workspace.cueEpisodicMemories(cueNs);
 			}
 		}
 	}

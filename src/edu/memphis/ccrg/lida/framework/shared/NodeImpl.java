@@ -28,7 +28,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	
 	public void init(Map<String, Object> params) {
-		// TODO Auto-generated method stub
 	}
 	
 	public long getId() {

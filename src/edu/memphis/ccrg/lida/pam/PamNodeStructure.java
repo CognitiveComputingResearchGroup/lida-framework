@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -16,10 +17,14 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
-//TODO: Check this class
+/**
+ * A node structure that supports activation passing between linkables.
+ * @author Ryan J McCall
+ *
+ */
 public class PamNodeStructure extends NodeStructureImpl{
+	
 	private static Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
-
 	private Double upscaleFactor = 0.9;
 	private Double downscaleFactor = 0.5;
 	private Double selectivityThreshold = 0.8;
@@ -173,7 +178,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 	
 	/**
 	 * Set the decay behavior for all nodes.
-	 * TODO: make the behavior a field on this class instead?
 	 * @param behavior
 	 */
 	public void setNodesDecayStrategy(DecayStrategy behavior) {
@@ -194,7 +198,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 		if(links != null){
 			for(Link l: links){
 				Linkable sink = l.getSink();//Sinks are 'above' this node. 
-				//TODO: I think I just need to check if sink equals n.
 				if(sink instanceof PamNode && !sink.equals(n))
 					parents.add((PamNode) sink);
 			}
@@ -245,12 +248,14 @@ public class PamNodeStructure extends NodeStructureImpl{
 
 	/**
 	 * Decay the nodes of this pam node structure
+	 * 
 	 */
-	public void decayNodes(long ticks){
+	public void decayLinkables(long ticks){
 		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getActualTick());
-		for(Node n: getNodes()){
-			PamNode pn = (PamNode) n;
-			pn.decay(ticks);
+		for(Linkable l: getLinkables()){
+			LearnableActivatible la = (LearnableActivatible) l;
+			la.decay(ticks);
+			la.decayBaseLevelActivation(ticks);
 		}
 	}//method
 	

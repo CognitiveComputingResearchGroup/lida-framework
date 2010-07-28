@@ -30,7 +30,6 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 
 	@Override
 	public void receiveAction(LidaAction a) {
-		// TODO Auto-generated method stub
 		
 	}
 

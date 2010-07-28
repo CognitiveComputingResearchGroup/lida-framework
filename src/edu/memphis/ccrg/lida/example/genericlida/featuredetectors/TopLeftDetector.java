@@ -17,7 +17,6 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 	public TopLeftDetector(PamNode n, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super(n, sm, pam);
-		// TODO Auto-generated constructor stub
 	}
 
 	public double detect() {

@@ -17,12 +17,11 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 
 	private ProceduralMemory pm;
 
-	// TODO: Look at GWSPC impl to see how to setup this parameter when behavior
-	// is created.
 	private double schemeSelectionThreshold = 0.6;
 
-	public BasicSchemeActivationBehavior(ProceduralMemory pm) {
+	public BasicSchemeActivationBehavior(ProceduralMemory pm, double selectionThreshold) {
 		this.pm = pm;
+		this.schemeSelectionThreshold = selectionThreshold;
 	}
 
 	public void activateSchemesWithBroadcast(NodeStructure broadcast,

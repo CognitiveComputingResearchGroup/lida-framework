@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
@@ -45,7 +44,6 @@ public class LidaExecutorService extends ThreadPoolExecutor {
 	 * Calls reciveFinishedTask method in LidaTaskManager.
 	 * @see java.util.concurrent.ThreadPoolExecutor#afterExecute(java.lang.Runnable, java.lang.Throwable)
 	 */
-	@SuppressWarnings("unchecked")
 	protected void afterExecute(Runnable r, Throwable t){
 		super.afterExecute(r, t);
 //		logger.log(Level.FINEST,r.getClass().getName(),LidaTaskManager.getActualTick());

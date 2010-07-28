@@ -30,7 +30,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	
 	public ActionSelectionImpl( ) {
 		super(ModuleName.ActionSelection);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
@@ -57,7 +57,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 
 	public Object getModuleContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public void addListener(ModuleListener listener) {

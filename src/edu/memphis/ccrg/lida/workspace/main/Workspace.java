@@ -26,8 +26,7 @@ public interface Workspace extends LidaModule{
 	 */
 	public abstract void addWorkspaceListener(WorkspaceListener pam);
 
-	//TODO: is this used?
-	public abstract void cue(NodeStructure content);
+	public abstract void cueEpisodicMemories(NodeStructure content);
 	
 	public abstract void setActivationLowerBound(double lowerBound);
 }

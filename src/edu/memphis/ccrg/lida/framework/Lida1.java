@@ -52,8 +52,6 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
  * This class implements the Model of the framework. All modules, drivers, and other structures that comprise LIDA. 
  * To customize modules, this class should be extended and the various init method should be overwritten.
  * 
- * TODO: This class must be rewritten to use the classes for modules than can be specified in a file.
- * 
  * @author Javier Snaider
  */
 public class Lida1 extends LidaModuleImpl implements Lida{
@@ -228,7 +226,7 @@ public class Lida1 extends LidaModuleImpl implements Lida{
 		module=getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		driver = new PamDriver((PerceptualAssociativeMemory)module,
 				pamTicksPerStep, taskManager);
-		((PerceptualAssociativeMemory)module).setTaskSpawner(driver);//TODO:VER
+		((PerceptualAssociativeMemory)module).setTaskSpawner(driver);
 		driver.setInitialTasks(((PerceptualAssociativeMemory)module).getFeatureDetectors());
 		drivers.put(driver.getModuleName(),driver);
 		

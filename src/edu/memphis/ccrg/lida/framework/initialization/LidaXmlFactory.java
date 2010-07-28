@@ -319,9 +319,8 @@ public class LidaXmlFactory implements LidaFactory {
 		return;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void getListener(Element moduleElement) {
-		Class listenerClass = null;
+		Class<?> listenerClass = null;
 		String listenerType = XmlUtils.getTextValue(moduleElement,
 				"listenertype");
 		String name = XmlUtils.getTextValue(moduleElement, "modulename");

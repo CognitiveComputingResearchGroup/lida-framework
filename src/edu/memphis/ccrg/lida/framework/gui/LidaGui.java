@@ -261,7 +261,6 @@ public class LidaGui extends javax.swing.JFrame {
 
 		xstream.registerLocalConverter(NodeImpl.class, "refNode",
 				new AbstractSingleValueConverter() {
-					@SuppressWarnings("unchecked")
 					@Override
 					public boolean canConvert(Class arg0) {
 						return (PamNode.class).isAssignableFrom(arg0);
@@ -269,7 +268,6 @@ public class LidaGui extends javax.swing.JFrame {
 
 					@Override
 					public Object fromString(String arg0) {
-						// TODO Auto-generated method stub
 						return null;
 					}
 
@@ -288,7 +286,6 @@ public class LidaGui extends javax.swing.JFrame {
 		  try {
 			xstream.toXML(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getModuleContent(),new FileWriter("configs/lidaPAM.xml"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//String xml = xstream.toXML(lida.getTaskManager().getSpawnedTasks());
@@ -312,7 +309,7 @@ public class LidaGui extends javax.swing.JFrame {
 																				// FIRST
 																				// :
 																				// event_openMenuItemActionPerformed
-		// TODO add your handling code here:
+
 	}// GEN-LAST:event_openMenuItemActionPerformed
 
 	private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN
@@ -320,7 +317,6 @@ public class LidaGui extends javax.swing.JFrame {
 																				// FIRST
 																				// :
 																				// event_saveAsMenuItemActionPerformed
-		// TODO add your handling code here:
 	}// GEN-LAST:event_saveAsMenuItemActionPerformed
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

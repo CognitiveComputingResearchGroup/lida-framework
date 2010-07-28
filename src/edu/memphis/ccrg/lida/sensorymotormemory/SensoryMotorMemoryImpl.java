@@ -28,7 +28,6 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 
 	@Override
 	public Object getModuleContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -41,7 +40,6 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 
 	@Override
 	public void receiveSensoryMemoryContent(Object content) {
-		// TODO Auto-generated method stub
 		
 	}
 

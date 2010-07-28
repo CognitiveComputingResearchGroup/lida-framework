@@ -61,7 +61,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
      * @param bc the content of the conscious broadcast
      */
     public void receiveBroadcast(BroadcastContent bc) {
-        //TODO: logic for episodic learning goes here...
+        //logic for episodic learning goes here...
     }
 
     /**
@@ -102,13 +102,11 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 
 	@Override
 	public void learn() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Object getModuleContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

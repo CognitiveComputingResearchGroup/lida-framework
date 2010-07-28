@@ -67,6 +67,7 @@ public interface NodeStructure {
 	public abstract int getLinkCount();
 	
 	public abstract int getLinkableCount();
+	public abstract Collection<Linkable> getLinkables();
 	
 	public abstract String getDefaultNodeType();
 	public abstract String getDefaultLinkType();

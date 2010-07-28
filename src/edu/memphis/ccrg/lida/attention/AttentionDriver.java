@@ -100,7 +100,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 	public void spawnNewCodelet() {
 		//TODO: use factory
 		
-		//TODO: move tps var out
+		//TODO: move vars out
 		int ticksPerStep = 5;
 		double activation = 1.0;
 		NodeStructure ns = new NodeStructureImpl();

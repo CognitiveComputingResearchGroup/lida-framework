@@ -10,7 +10,7 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 
     public DeclarativeMemoryImpl() {
 		super(ModuleName.DeclarativeMemory);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	// This method is called continually.  The rate at which is called 
@@ -22,7 +22,6 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 	}
 
 	public Object getModuleContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public void addListener(ModuleListener listener) {

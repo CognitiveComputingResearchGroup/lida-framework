@@ -104,10 +104,9 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		wsListeners.add(listener);
 	}
 	
-	public void cue(NodeStructure content){
-		for(CueListener c: cueListeners){
+	public void cueEpisodicMemories(NodeStructure content){
+		for(CueListener c: cueListeners)
 			c.receiveCue(content);
-		}
 		logger.log(Level.FINER,"Cue Performed ",LidaTaskManager.getActualTick());
 	}
 	private void sendToListeners(NodeStructure content){
@@ -163,7 +162,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 
 	@Override
 	public void receiveAction(LidaAction a) {
-		// TODO Maybe just pam receives this and not the workspace		
+		// Maybe just pam receives this and not the workspace		
 	}
 	
 	/**

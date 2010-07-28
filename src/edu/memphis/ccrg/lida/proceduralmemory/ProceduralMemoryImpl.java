@@ -45,7 +45,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * instantiated
 	 */
 	SchemeActivationBehavior schemeActivationBehavior = new BasicSchemeActivationBehavior(
-			this);
+			this, 0.6);
 
 	/**
 	 * Listeners of this Procedural Memory
@@ -54,7 +54,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 
 	public ProceduralMemoryImpl() {
 		super(ModuleName.ProceduralMemory);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -154,7 +153,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 
 	@Override
 	public Object getModuleContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

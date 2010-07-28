@@ -69,7 +69,6 @@ public class SbCodeletFactory {
 	
 	/**
 	 * Builds a new pooling codelet factory
-	 * TODO: Are we going to use this?
 	 * @post pool.size() == 0
 	 */
 	public SbCodeletFactory() {

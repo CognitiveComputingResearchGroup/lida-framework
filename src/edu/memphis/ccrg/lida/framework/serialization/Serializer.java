@@ -44,8 +44,7 @@ public class Serializer{
 	 * Note: Only 1 object type at a time, all object in 'objectList' 
 	 * must be of type 'objectClass'
 	 */
-	@SuppressWarnings("unchecked")
-	private void serialize(List<Object> objectList, String objectNamePrefix, Class objectClass, String outputFileName){
+	private void serialize(List<Object> objectList, String objectNamePrefix, Class<DummyClass> objectClass, String outputFileName){
 		try{
 			BufferedWriter out = new BufferedWriter(new FileWriter(outputFileName));
 			int numObjects = objectList.size();

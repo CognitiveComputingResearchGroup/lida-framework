@@ -59,19 +59,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	/**
 	 * Workspace content
-	 * TODO: top-down influences 
 	 */
 	private NodeStructure topDownContent = new NodeStructureImpl();
 	
 	/**
 	 * Current conscious broadcast
-	 * TODO: implement learning
 	 */
 	private NodeStructure broadcastContent = new NodeStructureImpl();
 	
 	/**
 	 * From action selection
-	 * TODO: make use of this
 	 */
     private NodeStructure preafferantSignal = new NodeStructureImpl();
 	
@@ -153,7 +150,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		topDownContent = content;
 		Collection<Node> nodes = topDownContent.getNodes();
 		for (Node n : nodes) {n.getId();}
-		// TODO:
+		//  handle workspace content
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
@@ -168,7 +165,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	public void learn() {
-		//TODO: learning algorithm 
+		// learning algorithm 
 		Collection<Node> nodes = broadcastContent.getNodes();
 		for (Node n : nodes) {n.getId();}
 	}//method
@@ -177,8 +174,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Called by the task manager every tick
 	 */
 	public void decayModule(long ticks) {
-		pamNodeStructure.decayNodes(ticks);
-		//TODO: pamNodeStructure.decayLink(ticks);
+		pamNodeStructure.decayLinkables(ticks);
 	}// method
 
 	/**

@@ -86,7 +86,6 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 
 	@Override
 	public void decayCuriosity() {
-		// TODO Auto-generated method stub
 	}
 
 	public boolean equals(Object o) {

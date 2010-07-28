@@ -48,7 +48,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 	 * if BufferContent activates a sbCodelet's context, start a new codelet
 	 */
 	private void activateCodelets() {
-		// TODO: CODE to determine when/what codelets to activate
+		// CODE to determine when/what codelets to activate
 	}// method
 
 	//**************GUI***************

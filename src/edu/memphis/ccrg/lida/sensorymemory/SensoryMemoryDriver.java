@@ -27,13 +27,11 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 
 	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
-		// TODO Auto-generated method stub
 		
 	}
 
