@@ -22,7 +22,6 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	private int addrLength;
 	private int memorySize;
 	private int activationRadius;
-	private int activationThreshold;
 
 	/**
 	 * Constructor of the class that receives all the parameters necessary for
@@ -39,7 +38,6 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 		// Memory's internal parameters
 		this.memorySize = memorySize;
 		activationRadius = radious;
-		activationThreshold = memorySize - 2 * activationRadius;
 
 		this.wordLength = wordLength;
 		hardlocations = new HardLocation[memorySize];
@@ -62,7 +60,6 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	 */
 	public SparseDistributedMemoryImp(int memorySize, int radious, int wordLength, int addrLength) {
 		this.activationRadius = radious;
-		activationThreshold = memorySize - 2 * activationRadius;
 
 		this.addrLength = addrLength;
 		this.memorySize = memorySize;

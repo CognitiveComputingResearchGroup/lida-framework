@@ -23,7 +23,6 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	private int memorySize;
 	private int activationRadius;
 	private int counterMax;
-	private int activationThreshold;
 
 	/**
 	 * Constructor of the class that receives all the parameters necessary for
@@ -45,7 +44,6 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 		memorySize = a.length;
 		addressMatrix = a;
 		activationRadius = h;
-		activationThreshold = memorySize - 2 * activationRadius;
 		this.counterMax = counterMax;
 
 		wordLength = u;

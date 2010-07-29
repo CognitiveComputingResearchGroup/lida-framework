@@ -10,8 +10,6 @@
 
 package edu.memphis.ccrg.lida.framework.gui;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +17,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,17 +24,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
-import com.thoughtworks.xstream.converters.collections.MapConverter;
-
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
-import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * 
@@ -249,74 +237,15 @@ public class LidaGui extends javax.swing.JFrame {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-																				// -
-																				// FIRST
-																				// :
-																				// event_saveMenuItemActionPerformed
-		XStream xstream = new XStream();
-		xstream.alias("node", NodeImpl.class);
-		xstream.alias("pamNode", PamNodeImpl.class);
-		xstream.alias("map", ConcurrentHashMap.class);
-		xstream.alias("link", LinkImpl.class);
-
-		xstream.registerLocalConverter(NodeImpl.class, "refNode",
-				new AbstractSingleValueConverter() {
-					@Override
-					public boolean canConvert(Class arg0) {
-						return (PamNode.class).isAssignableFrom(arg0);
-					}
-
-					@Override
-					public Object fromString(String arg0) {
-						return null;
-					}
-
-					@Override
-					public String toString(Object o) {
-						return ((PamNode) o).getId() + "";
-					}
-				});
-		xstream.registerConverter(new MapConverter(xstream.getMapper()) {
-			@SuppressWarnings("unchecked")
-			public boolean canConvert(Class type) {
-				return type.isAssignableFrom(ConcurrentHashMap.class);
-			}
-		});
-		logger.log(Level.INFO, "saving in XML");
-		  try {
-			xstream.toXML(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getModuleContent(),new FileWriter("configs/lidaPAM.xml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//String xml = xstream.toXML(lida.getTaskManager().getSpawnedTasks());
-		logger.log(Level.INFO, "XML Generated");
-//		System.out.println(xml);
-//		try {
-//			PrintWriter out = new FileWriter("configs/lida.xml");
-//			logger.log(Level.INFO, "File Opened");
-//			out.print(xml);
-//			out.flush();
-//			out.close();
-//			logger.log(Level.INFO, "File closed");
-//		} catch (FileNotFoundException e) {
-//			logger.log(Level.WARNING, Arrays.toString(e.getStackTrace()), 0L);
-//		}
 
 	}// GEN-LAST:event_saveMenuItemActionPerformed
 
 	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-																				// -
-																				// FIRST
-																				// :
-																				// event_openMenuItemActionPerformed
 
 	}// GEN-LAST:event_openMenuItemActionPerformed
 
 	private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-																				// -
-																				// FIRST
-																				// :
-																				// event_saveAsMenuItemActionPerformed
+
 	}// GEN-LAST:event_saveAsMenuItemActionPerformed
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
