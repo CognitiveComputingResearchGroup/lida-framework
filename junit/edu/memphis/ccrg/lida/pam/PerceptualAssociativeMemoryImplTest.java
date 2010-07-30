@@ -14,8 +14,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
@@ -31,10 +30,10 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	PamNodeStructure nodeStructure;
 	PamNodeImpl node1,node2,node3;
 	LinearDecayStrategy decayStrategy ;
-	LinkImpl link1,link2;
+	PamLinkImpl link1,link2;
 	SensoryMemoryImpl sem;
 	PamNodeImpl pamNode;
-	//TaskSpawnerImpl taskSpawner;
+	
 	
 	@Before
 	public void setUp() throws Exception {
@@ -43,8 +42,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		node1 = new PamNodeImpl();
 		node2 = new PamNodeImpl();
 		node3 = new PamNodeImpl();
-		link1 = new LinkImpl();
-		link2 = new LinkImpl();
+		link1 = new PamLinkImpl();
+		link2 = new PamLinkImpl();
 		decayStrategy = new LinearDecayStrategy();
 		sem = new VisionSensoryMemory();
 		pamNode = new PamNodeImpl();
@@ -62,7 +61,11 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		link2.setSource(node2);
 		link2.setSink(node3);
 		
-		pam.addNode(node1);	
+		//pam.addNode(node1);	
+		
+		TaskSpawner taskSpawner = new MockTaskSpawner();	
+		taskSpawner.setTaskID(1);
+		pam.setTaskSpawner(taskSpawner);
 	}
 
 	/**
@@ -78,8 +81,10 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#decayModule(long)}.
 	 */
 	@Test
-	public void testDecayModule() {
+	public void testDecayModule() {		
+		pam.addNode(node1);	
 		pam.decayModule(100);
+		
 		assertTrue("Problem with DecayModule",pam.getNode(1).getTotalActivation()<0.8);		
 	}
 
@@ -112,6 +117,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		Set<PamNode> nodes = new HashSet<PamNode>();
 		nodes.add(node2);
 		nodes.add(node3);
+		pam.addNode(node1);	
 		pam.addNodes(nodes);
 		
 		assertTrue("Problem with AddNodes", pam.getNodeStructure().hasNode(node1) && pam.getNodeStructure().hasNode(node2) && pam.getNodeStructure().hasNode(node3));
@@ -122,13 +128,14 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddLinks() {
-		Set<Link> links = new HashSet<Link>();
+		Set<PamLink> links = new HashSet<PamLink>();
 		
+		pam.addNode(node1);	
 		pam.addNode(node2);
 		pam.addNode(node3);
 		links.add(link1);
 		links.add(link2);
-		//pam.addLinks(links);
+		pam.addLinks(links);
 		
 		assertTrue("Problem with AddLinks",pam.getNodeStructure().hasLink(link1) && pam.getNodeStructure().hasLink(link2));
 	}
@@ -146,20 +153,17 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		assertTrue("Problem with AddFeatureDetector",pam.getFeatureDetectors().contains(detector));
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addPamListener(edu.memphis.ccrg.lida.pam.PamListener)}.
-	 */
-	@Test
-	public void testAddPamListener() {
-		fail("Not yet implemented"); // TODO
-	}
-
+	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#receiveWorkspaceContent(edu.memphis.ccrg.lida.framework.ModuleName, edu.memphis.ccrg.lida.workspace.main.WorkspaceContent)}.
 	 */
 	@Test
 	public void testReceiveWorkspaceContent() {
-		fail("Not yet implemented"); // TODO
+		nodeStructure.addNode(node1);
+		nodeStructure.addNode(node2);
+		pam.receiveWorkspaceContent(ModuleName.Workspace, nodeStructure);
+		assertEquals("Problem with ReceiveWorkspaceContent",nodeStructure,pam.getNodeStructure());
+		
 	}
 
 	/**
@@ -167,25 +171,13 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testReceiveBroadcast() {
-		fail("Not yet implemented"); 
+		nodeStructure.addNode(node1);
+		nodeStructure.addNode(node2);
+		pam.receiveBroadcast(nodeStructure);
+		
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#receivePreafferentSignal(edu.memphis.ccrg.lida.framework.shared.NodeStructure)}.
-	 */
-	@Test
-	public void testReceivePreafferentSignal() {
-		fail("Not yet implemented"); 
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#learn()}.
-	 */
-	@Test
-	public void testLearn() {
-		fail("Not yet implemented"); 
-	}
-
+	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#receiveActivationBurst(edu.memphis.ccrg.lida.pam.PamNode, double)}.
 	 */
@@ -247,7 +239,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetExciteStrategy() {
-		fail("Not yet implemented"); 
+		fail("Not yet implemented");
 	}
 
 	/**
@@ -343,7 +335,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetNewNodeType() {
-		fail("Not yet implemented"); 
+		fail("Not yet implemented");
 	}
 
 	/**
