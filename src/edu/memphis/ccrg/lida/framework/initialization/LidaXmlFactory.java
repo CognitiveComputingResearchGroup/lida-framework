@@ -35,7 +35,7 @@ public class LidaXmlFactory implements LidaFactory {
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	private static Logger logger = Logger
-			.getLogger("lida.framework.initialization.LidaFactory");
+			.getLogger("initialization.LidaXmlFactory");
 	private Document dom;
 	private Lida lida;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();

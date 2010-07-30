@@ -27,6 +27,18 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	private long scheduledTick;
 	private static long nextTaskID;
 	
+	public LidaTaskImpl() {
+		this(defaultTicksPerStep,null);
+	}
+	public LidaTaskImpl(int ticksForCycle) {
+		this(ticksForCycle,null);
+	}
+	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
+		taskID = nextTaskID++;
+		this.ts=ts;
+		setNumberOfTicksPerStep(ticksForCycle);
+	}
+	
 	/**
 	 * @return the scheduledTick
 	 */
@@ -38,19 +50,6 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 */
 	public void setScheduledTick(long scheduledTick) {
 		this.scheduledTick = scheduledTick;
-	}
-	public LidaTaskImpl() {
-		this(defaultTicksPerStep,null);
-	}
-	public LidaTaskImpl(int ticksForCycle) {
-		this(ticksForCycle,null);
-	}
-
-	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
-		taskID = nextTaskID++;
-		this.ts=ts;
-		setNumberOfTicksPerStep(ticksForCycle);
-		
 	}
 	
 	/**
@@ -77,15 +76,14 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public LidaTask call() {
-		
 		nextExcecutionTickLap=ticksPerStep;
 		runThisLidaTask();
 		
-		if (ts != null) {
+		if (ts != null) 
 			ts.receiveFinishedTask(this);
-		} else {
+		else 
 			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] { LidaTaskManager.getActualTick(), this });
-		}
+		
 		return this;
 	}
 
@@ -100,13 +98,13 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	protected abstract void runThisLidaTask();
 
 	/**
-	 * @param status
-	 *            the status to set
+	 *  If a task is canceled it cannot be restarted.
+     *  So only set the status if the status is not CANCELED.
+     *  
+	 * @param status - the status to set
 	 */
 	public void setTaskStatus(LidaTaskStatus status) {
-		// If a task is canceled it cannot be restarted.
-		// So only set the status if the status is not CANCELED.
-		if (this.status != LidaTaskStatus.CANCELLED)
+		if (this.status != LidaTaskStatus.CANCELED)
 			this.status = status;
 	}
 
@@ -159,7 +157,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#stopRunning()
 	 */
 	public void stopRunning() {
-		setTaskStatus(LidaTaskStatus.CANCELLED);
+		setTaskStatus(LidaTaskStatus.CANCELED);
 	}
 
 //	/**

@@ -22,6 +22,8 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 
 //TODO: Comment!!!
 /**
+ * All tasks in the Lida system are created, executed, and managed by this
+ * class. 
  * @author Javier Snaider
  * 
  */
@@ -30,61 +32,33 @@ public class LidaTaskManager {
 	private static Logger logger = Logger.getLogger("lida.framework.LidaTaskManager");
 
 	/**
-	 * Determines whether or not spawned task should run
+	 * Determines whether or not spawned tasks should run
 	 */
 	private volatile boolean tasksPaused = true;
+	
+	/**
+	 * Whether or not this task manager is shutting down its tasks
+	 */
 	private volatile boolean shuttingDown = false;
+	
 	private volatile long lapTicks = 0L;
 	private volatile static long actualTick = 0L;
 	private volatile Long maxTick = 0L;
 	private volatile long lastDecayTick = 0L;
-
-	/**
-	 * @return the maxTick
-	 */
-	public Long getMaxTick() {
-		return maxTick;
-	}
-
 	private volatile boolean lapMode = false;
 	private volatile Object lock = new Object();
 
-	/**
-	 * @return the actualTick
-	 */
-	public static long getActualTick() {
-		return actualTick;
-	}
-
-	/**
-	 * @return the lapMode
-	 */
-	public boolean isLapMode() {
-		return lapMode;
-	}
-
-	/**
-	 * @param lapMode
-	 *            the lapMode to set
-	 */
-	public void setLapMode(boolean lapMode) {
-		this.lapMode = lapMode;
-	}
-
 	private ConcurrentMap<Long, Queue<LidaTask>> taskQueue;
 	/**
-	 * The length of time that 1 tick equals in milliseconds.
+	 * length of time for 1 tick in milliseconds.  The actual time which the tick unit is pegged to
 	 */
 	private int tickDuration = 1;
 
 	/**
-	 * @return the totalTicks
+	 * Service used to execute the tasks
 	 */
-	public long getLapTicks() {
-		return lapTicks;
-	}
-
 	private ExecutorService executorService;
+	
 	/**
 	 * All tasks in the Lida system are created, executed, and managed by this
 	 * class. This variable is to be used to get unique ids for each task.
@@ -95,35 +69,60 @@ public class LidaTaskManager {
 
 	private Thread taskManagerThread;
 
+	/**
+	 * List of the Lida Modules managed by this class
+	 */
 	private Collection<LidaModule> modules = new HashSet<LidaModule>();
 
 	/**
-	 * @return the mainTaskSpawner
-	 */
-	public TaskSpawner getMainTaskSpawner() {
-		return mainTaskSpawner;
-	}
-
-	/**
 	 * 
-	 * @param tasksStartOutRunning
-	 * @param tickDuration
+	 * @param tickDuration - length of time of 1 tick in milliseconds
+	 * @param maxPoolSize - max number of threads used by the ExecutorService
 	 */
 	public LidaTaskManager(int tickDuration, int maxPoolSize) {
+		//TODO is this important below?
 		// O ticks per step - Task manager should not be run
 		// Null, LIDA_TASK_MANAGER should not have a LIDA_TASK_MANAGER
-		int corePoolSize = 10;
+		int corePoolSize = 50;
 		long keepAliveTime = 10;
 		this.tickDuration = tickDuration;
 		taskQueue = new ConcurrentHashMap<Long, Queue<LidaTask>>();
-		executorService = new LidaExecutorService(corePoolSize, maxPoolSize,
-				keepAliveTime, TimeUnit.SECONDS, this);
+		executorService = new LidaExecutorService(corePoolSize, maxPoolSize, keepAliveTime, 
+												  TimeUnit.SECONDS, this);
 
 		mainTaskSpawner = new AllModuleDriver(this);
 
 		taskManagerThread = new Thread(new TaskManagerMainLoop());
 		taskManagerThread.start();
+	}
+	
 
+	/**
+	 * @return the actualTick
+	 */
+	public static long getActualTick() {
+		return actualTick;
+	}
+	
+	/**
+	 * @return the maxTick
+	 */
+	public Long getMaxTick() {
+		return maxTick;
+	}
+	
+	/**
+	 * @return the totalTicks
+	 */
+	public long getLapTicks() {
+		return lapTicks;
+	}
+	
+	/**
+	 * @return the mainTaskSpawner
+	 */
+	public TaskSpawner getMainTaskSpawner() {
+		return mainTaskSpawner;
 	}
 
 	/**
@@ -143,6 +142,19 @@ public class LidaTaskManager {
 		nextTaskID++;
 		return currentID;
 	}
+	
+	/**
+	 * Threads call this to get the standard sleep time. This way the system
+	 * operates roughly at the same speed across threads.
+	 * 
+	 * @return how long to sleep
+	 */
+	public int getTickDuration() {
+		return tickDuration;
+	}
+	public synchronized void setTickDuration(int newTickDuration) {
+		tickDuration = newTickDuration;
+	}
 
 	// /**
 	// * The ticksMode permits to run the framework in a step by step fashion.
@@ -159,32 +171,35 @@ public class LidaTaskManager {
 	// public static boolean isInTicksMode() {
 	// return inTicksMode;
 	// }
-
-	public boolean isSystemPaused() {
-		return tasksPaused;
-	}
-
+	
 	/**
-	 * Threads call this to get the standard sleep time. This way the system
-	 * operates roughly at the same speed across threads.
-	 * 
-	 * @return how long to sleep
+	 * @return the lapMode
 	 */
-	public int getTickDuration() {
-		return tickDuration;
+	public boolean isLapMode() {
+		return lapMode;
+	}
+	/**
+	 * @param lapMode
+	 *            the lapMode to set
+	 */
+	public void setLapMode(boolean lapMode) {
+		this.lapMode = lapMode;
+	}
+	
+	public Map<Long, Queue<LidaTask>> getTaskQueue() {
+		return Collections.unmodifiableMap(taskQueue);
 	}
 
-	public synchronized void setTickDuration(int newTickDuration) {
-		tickDuration = newTickDuration;
+	public Collection<LidaTask> getSpawnedTasks() {
+		return mainTaskSpawner.getSpawnedTasks();
 	}
 
 	/**
-	 * 
+	 * Method shuts down all tasks, the executor service, waits and exits
 	 */
 	public void stopRunning() {
 		shuttingDown = true;
 		mainTaskSpawner.stopRunning();
-
 		taskManagerThread.interrupt();
 		// Now that we can be sure that active tasks will no longer be executed
 		// the executor service can be shutdown.
@@ -208,6 +223,9 @@ public class LidaTaskManager {
 		return "LidaTaskManager";
 	}
 
+	public boolean isSystemPaused() {
+		return tasksPaused;
+	}
 	/**
 	 * @return the tasksPaused
 	 */
@@ -241,20 +259,16 @@ public class LidaTaskManager {
 		}
 	}
 
-	public Collection<LidaTask> getSpawnedTasks() {
-		return mainTaskSpawner.getSpawnedTasks();
-	}
-
 	public boolean scheduleTask(LidaTask task, long delayTicks) {
-		if (delayTicks <= 0) {
+		if (delayTicks <= 0) 
 			return false;
-		}
+		
 		Long time = actualTick + delayTicks;
 		Queue<LidaTask> queue = taskQueue.get(time);
 		if (queue == null) {
 			Queue<LidaTask> queue2 = new ConcurrentLinkedQueue<LidaTask>();
 			queue = taskQueue.putIfAbsent(time, queue2);
-			if (queue == null) {// there wasn't a previous one
+			if (queue == null) {// there wasn't a Queue already at key 'time'
 				queue = queue2;
 				synchronized (maxTick) {
 					if (time > maxTick) {
@@ -272,16 +286,13 @@ public class LidaTaskManager {
 	}
 
 	public long goNextTick() {
-		Queue<LidaTask> queue;
-
-		queue = taskQueue.get(++actualTick);
+		Queue<LidaTask> queue = taskQueue.get(++actualTick);
 		taskQueue.remove(actualTick);
 		logger.log(Level.FINER, "Tick {0} executed", actualTick);
 		if (queue != null) {
 			try {
 				decayModules();
-				executorService.invokeAll(queue); // Execute all tasks scheduled for
-				// this tick
+				executorService.invokeAll(queue); // Execute all tasks scheduled for this tick
 			} catch (InterruptedException e) {
 				logger.log(Level.WARNING, e.getMessage(), actualTick);
 			}
@@ -303,10 +314,6 @@ public class LidaTaskManager {
 		}
 		lastDecayTick = actualTick;
 		logger.log(Level.FINEST, "Modules decayed", actualTick);
-	}
-
-	public Map<Long, Queue<LidaTask>> getTaskQueue() {
-		return Collections.unmodifiableMap(taskQueue);
 	}
 
 	/**
@@ -342,9 +349,10 @@ public class LidaTaskManager {
 					}
 				}
 
-			}
-		}
-	}
+			}//while
+		}//method
+		
+	}//private sclass
 
 	/**
 	 * Cancels the task from the Task Queue. This is only possible if the tick
@@ -390,16 +398,16 @@ public class LidaTaskManager {
 			}
 			return null;
 		}
+	}//private class
+	
+	/**
+	 * Set the Collection of modules for decaying
+	 * 
+	 * @param modules
+	 *            a Collection with the LidaModules
+	 */
+	public void setDecayingModules(Collection<LidaModule> modules) {
+		this.modules.addAll(modules);
 	}
-		/**
-		 * Set the Collection of modules for decaying
-		 * 
-		 * @param modules
-		 *            a Collection with the LidaModules
-		 */
-		public void setDecayingModules(Collection<LidaModule> modules) {
-
-			this.modules.addAll(modules);
-		}
 
 }// class LIDA_TASK_MANAGER

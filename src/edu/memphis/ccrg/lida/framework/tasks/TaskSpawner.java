@@ -48,7 +48,16 @@ public interface TaskSpawner extends LidaTask{
 	 */
 	public abstract void cancelTask(LidaTask task);
 
+	/**
+	 * Returns the task manager for the taskspawner
+	 * @return
+	 */
 	public abstract LidaTaskManager getTaskManager();
+	
+	/**
+	 * Set the task manager this task spawner will use
+	 * @param taskManager
+	 */
 	public abstract void setTaskManager(LidaTaskManager taskManager);
 
 }
