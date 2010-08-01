@@ -15,7 +15,7 @@ public interface ActionSelection {
 	
 	/**
 	 * Action is send to action selection listeners
-	 * @param a
+	 * @param actionId
 	 */
 	public abstract void sendAction(long actionId);
 }

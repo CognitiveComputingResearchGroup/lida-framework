@@ -26,7 +26,7 @@ public class FrameworkGuiEvent {
 	private Object content;
 
 	/**
-	 * @param moduleId
+	 * @param m
 	 * @param message
 	 * @param content
 	 */

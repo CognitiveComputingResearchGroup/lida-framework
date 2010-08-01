@@ -11,7 +11,7 @@ public class LinkableDef {
 
 	/**
 	 * @param className
-	 * @param defeaultBehaviors
+	 * @param defeaultStrategies
 	 * @param name
 	 * @param params
 	 */
@@ -61,7 +61,7 @@ public class LinkableDef {
 		return defeaultStrategies;
 	}
 	/**
-	 * @param defeaultBehaviors the defeaultBehaviors to set
+	 * @param defeaultStrategies the defeaultBehaviors to set
 	 */
 	public void setDefeaultStrategies(Map<String,String> defeaultStrategies) {
 		this.defeaultStrategies = defeaultStrategies;

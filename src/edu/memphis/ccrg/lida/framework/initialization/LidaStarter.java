@@ -71,8 +71,7 @@ public class LidaStarter {
 	}
 
 	/**
-	 * @param path
-	 *            - Properties file used for the agent
+	 * @param propertiesPath - Properties file used for the agent
 	 */
 	public static void start(String propertiesPath) {
 		if (propertiesPath == null) 

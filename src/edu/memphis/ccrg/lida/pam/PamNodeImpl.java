@@ -114,7 +114,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 	
 	/**
-	 * @param n
+	 * @param obj
 	 */
 	public boolean equals(Object obj) {
 		if(!(obj instanceof PamNodeImpl))

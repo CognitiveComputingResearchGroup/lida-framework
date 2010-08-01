@@ -31,7 +31,6 @@ public class XmlUtils {
 	 * 
 	 * @param ele
 	 * @param tagName
-	 * @return
 	 */
 	public static int getIntValue(Element ele, String tagName) {
 		// in production application you would catch the exception
@@ -43,7 +42,6 @@ public class XmlUtils {
 	 * 
 	 * @param ele
 	 * @param tagName
-	 * @return
 	 */
 	public static boolean getBooleanValue(Element ele, String tagName) {
 		return Boolean.parseBoolean(getTextValue(ele, tagName));

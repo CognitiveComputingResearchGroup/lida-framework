@@ -16,7 +16,6 @@ public interface FeatureDetector extends LidaTask {
 	
 	/**
 	 * Get nodes that this detector is looking for.
-	 * @return
 	 */
 	public abstract Collection<PamNode> getPamNodes();
 	

@@ -32,7 +32,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	public abstract LidaTaskStatus getStatus();
 	/**
 	 * Sets the LidaTask's status code. It must be one of the static members of this interface. 
-	 * @param the status code
+	 * @param status - code for this tasks current status
 	 */
 	public abstract void setTaskStatus(LidaTaskStatus status);
 
@@ -85,7 +85,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * @param defaultValue the value to be used if the parameter name is not present in the parameters
 	 * @return the value of the parameter
 	 * 
-	 * @see init(Map<String, Object> parameters)
+	 * @see #init(Map)
 	 */
 	public Object getParam(String name,Object defaultValue);
 
@@ -116,8 +116,6 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	/**
 	 * Gets the the lap of ticks to schedule the next execution of this
 	 * LidaTask.
-	 * 
-	 * @return
 	 */
 	public abstract long getNextExcecutionTickLap();
 	

@@ -25,7 +25,6 @@ public class TransientEpisodicMemoryContentImpl implements TransientEpisodicMemo
     
     /**
      * 
-     * @return
      */
     public NodeStructure getContent() {
         return structure;

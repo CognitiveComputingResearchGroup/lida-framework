@@ -27,10 +27,11 @@ public class TemDriver extends ModuleDriverImpl {
     private Future<LocalAssociation> association;
 
     /**
-     * Constructor of the class.
-     * @param tem a transient episodic memory for this driver
-     * @param timer the timer used to handle the start/pause of the thread
-     * @param cue the cue used to write on this memory
+     * 
+     * @param tem
+     * @param cue
+     * @param ticksPerCycle
+     * @param tm
      */
     public TemDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle, LidaTaskManager tm) {
     	super(ticksPerCycle, tm,ModuleName.TemDriver);

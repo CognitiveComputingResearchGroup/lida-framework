@@ -63,9 +63,7 @@ public class LidaGui extends javax.swing.JFrame {
 	}
 
 	/**
-	 * @param lida
-	 * @param controller
-	 * @param panelsFile
+	 * @param panelProp
 	 * @throws Exception 
 	 */
 	private void loadPanels(Properties panelProp){

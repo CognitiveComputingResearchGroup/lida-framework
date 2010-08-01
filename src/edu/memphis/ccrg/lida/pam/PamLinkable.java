@@ -10,7 +10,6 @@ public interface PamLinkable extends Linkable, Activatible{
 	 * activation is greater or equal to the selection threshold.
 	 * 
 	 * @return <code>true</code> if this linkable is relevant
-	 * @see #selectionThreshold
 	 */
 	public abstract boolean isOverThreshold();
 
@@ -29,13 +28,11 @@ public interface PamLinkable extends Linkable, Activatible{
 
 	/**
 	 * Returns final min activation variable
-	 * @return
 	 */
 	public abstract double getMinActivation();
 
 	/**
 	 * Returns final max activation variable
-	 * @return
 	 */
 	public abstract double getMaxActivation();
 

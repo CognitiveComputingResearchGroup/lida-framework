@@ -11,7 +11,7 @@ package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 /**
  * Test for the TranslatorImpl class.
  * @author Rodrigo Silva L. <rsilval@acm.org>
- * @also TranslatorImpl
+ * @see TranslatorImpl
  */
 public class TranslatorTest {
 //

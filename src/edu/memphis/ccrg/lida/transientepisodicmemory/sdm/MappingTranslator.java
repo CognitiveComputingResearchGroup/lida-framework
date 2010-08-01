@@ -39,7 +39,6 @@ public class MappingTranslator implements Translator {
     /**
      * 
      * @param data
-     * @return
      * @throws Exception
      */
     public NodeStructure translate(BitVector data) throws Exception {

@@ -12,7 +12,7 @@ public interface TaskSpawner extends LidaTask{
 
 	/**
 	 * Gets the number of Tasks in this Spawner
-	 * @return
+	 * @return number of tasks spawned
 	 */
 	public abstract int getSpawnedTaskCount();
 	/**
@@ -22,7 +22,7 @@ public interface TaskSpawner extends LidaTask{
 	public abstract void addTask(LidaTask task);
 	/**
 	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
-	 * @return
+	 * @return collection
 	 */
 	public abstract Collection<LidaTask> getSpawnedTasks();
 	
@@ -50,7 +50,7 @@ public interface TaskSpawner extends LidaTask{
 
 	/**
 	 * Returns the task manager for the taskspawner
-	 * @return
+	 * @return LidaTaskManager
 	 */
 	public abstract LidaTaskManager getTaskManager();
 	

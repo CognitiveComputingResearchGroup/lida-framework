@@ -16,7 +16,6 @@ public interface TransientEpisodicMemoryContent {
     
     /**
      * 
-     * @return
      */
     public Object getContent();
 

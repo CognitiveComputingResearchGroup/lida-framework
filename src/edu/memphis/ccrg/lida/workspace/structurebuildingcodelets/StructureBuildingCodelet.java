@@ -19,7 +19,7 @@ public interface StructureBuildingCodelet extends LidaTask{
 	
 	 /**
 	  * Type is determined by what buffers are accessible to this codelet
-	  * @return
+	  * @return type
 	  */
 	 public int getType();
 

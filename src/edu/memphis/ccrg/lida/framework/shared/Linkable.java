@@ -11,13 +11,11 @@ public interface Linkable {
 
 	/**
 	 * Readable label
-	 * @return
 	 */
 	public abstract String getLabel();
 	
 	/**
 	 * Id in String form
-	 * @return
 	 */
 	public abstract String getIds();
 	

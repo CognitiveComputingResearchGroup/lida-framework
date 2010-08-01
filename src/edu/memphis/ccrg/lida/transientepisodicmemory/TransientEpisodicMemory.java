@@ -24,8 +24,8 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * Specific implementations of episodic memories must implement
  * this interface. Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
- * @also MemoryCue
- * @also LocalAssociation
+ * @see MemoryCue
+ * @see LocalAssociation
  * @author Rodrigo Silva L.
  */
 public interface TransientEpisodicMemory extends LidaModule{
@@ -34,7 +34,6 @@ public interface TransientEpisodicMemory extends LidaModule{
      * Cues this episodic memory. Typically the cue would be a set of nodes, and
      * in the future links.
      * @param cue the cue used to read this TEM
-     * @return a Future object with the local association
      */
     public void cue(MemoryCue cue);
 }

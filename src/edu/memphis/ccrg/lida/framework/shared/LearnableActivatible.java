@@ -17,7 +17,6 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 public interface LearnableActivatible extends Activatible{
 	/**
 	 * Returns base level activation. 
-	 * @return
 	 */
 	public abstract double getBaseLevelActivation();
 	

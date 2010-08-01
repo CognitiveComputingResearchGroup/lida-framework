@@ -19,6 +19,6 @@ public interface ProceduralMemoryListener extends ModuleListener{
     /**
      * @param scheme
      */
-    public void receiveScheme(Scheme s);
+    public void receiveScheme(Scheme scheme);
    
 }

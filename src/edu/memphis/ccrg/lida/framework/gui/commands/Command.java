@@ -24,7 +24,6 @@ public interface Command {
     
     /**
      * Expected result of the command
-     * @return
      */
     public Object getResult();    
 
@@ -44,7 +43,6 @@ public interface Command {
     /**
      * Get a parameter
      * @param name
-     * @return
      */
     public Object getParameter(String name);
     

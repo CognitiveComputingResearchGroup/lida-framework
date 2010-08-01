@@ -23,7 +23,7 @@ public interface GlobalWorkspace extends LidaModule, TriggerListener,ModuleDrive
 	/**
 	 * This method is invoked by the 
 	 * @param coalition
-	 * @return
+	 * @return true is coalition was added
 	 */
 	public boolean addCoalition(Coalition coalition);
 	/**

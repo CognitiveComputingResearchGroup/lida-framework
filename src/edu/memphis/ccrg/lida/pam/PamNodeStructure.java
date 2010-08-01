@@ -190,7 +190,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * O(l) where l = number of links connected to n.
 	 * 
 	 * @param n
-	 * @return
+	 * @return parents of n
 	 */
 	public Set<PamNode> getParents(Node n) {
 		Set<PamNode> parents = new HashSet<PamNode>();
@@ -209,7 +209,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * When you excite the parents of a node you might want to excite the connecting links too.
 	 * Thus this method find the parents and all the links between supplied node and them
 	 * @param n
-	 * @return
+	 * @return map of parents and links connecting node to them
 	 */
 	public Map<PamNode, PamLink> getParentsAndConnectingLinks(Node n){
 		Map<PamNode, PamLink> results = new HashMap<PamNode, PamLink>();

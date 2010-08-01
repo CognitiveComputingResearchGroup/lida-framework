@@ -190,12 +190,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	/**
-	 * @param l
-	 * @param source
-	 * @param sink
 	 * @param newSource
 	 * @param newSink
-	 * @return
+	 * @param type
+	 * @param activation
 	 */
 	private Link generateNewLink(Linkable newSource, Linkable newSink,
 								 LinkType type, double activation) {

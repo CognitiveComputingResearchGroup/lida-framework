@@ -69,7 +69,6 @@ public class SbCodeletFactory {
 	
 	/**
 	 * Builds a new pooling codelet factory
-	 * @post pool.size() == 0
 	 */
 	public SbCodeletFactory() {
 		DefaultSBCodeletType = "SBCodeletImpl";
@@ -99,7 +98,7 @@ public class SbCodeletFactory {
 	
 	/**
 	 * @param name
-	 * @return
+	 * @return d
 	 */
 	public DecayStrategy getDecayStrategy(String name) {
 		DecayStrategy d = decays.get(name);
@@ -189,8 +188,7 @@ public class SbCodeletFactory {
 	 * Recycles the given codelet to be re-used later on, for quickly providing
 	 * new empty codelets.
 	 * 
-	 * @param p
-	 *            The codelet to be recycled
+	 * @param sbCode The codelet to be recycled
 	 */
 	public void recycle(StructureBuildingCodelet sbCode) {
 		sbCode.reset();

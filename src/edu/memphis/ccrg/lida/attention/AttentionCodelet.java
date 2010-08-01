@@ -25,14 +25,11 @@ public interface AttentionCodelet extends Codelet{
 	/**
   	 * Returns true if the current situational model contains the content which this codelet seeks.
   	 * 
-  	 * @return
      */
 	public abstract boolean csmHasDesiredContent();
 
 	/**
 	 * 
-	 * @param csm
-	 * @return
 	 */
 	public abstract NodeStructure getCsmContent();
 	

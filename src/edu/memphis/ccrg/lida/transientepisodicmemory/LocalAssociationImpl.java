@@ -54,7 +54,6 @@ public class LocalAssociationImpl implements LocalAssociation {
 
     /**
      * 
-     * @return
      */
     public NodeStructure getNodeStructure() {
         return nodeStructure;

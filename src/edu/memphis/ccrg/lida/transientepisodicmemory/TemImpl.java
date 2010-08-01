@@ -67,7 +67,6 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
     /**
      * Cues this episodic memory.
      * @param cue a set of nodes used to cue this episodic memory
-     * @return a future task with the local association related to the cue
      */
 	@Override
     public void cue(MemoryCue cue) {

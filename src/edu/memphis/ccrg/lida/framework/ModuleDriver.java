@@ -17,8 +17,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 public interface ModuleDriver extends Initializable, GuiEventProvider, TaskSpawner{
 
 	/**
-	 * 
-	 * @return
+	 *
 	 */
 	public abstract ModuleName getModuleName();
 	

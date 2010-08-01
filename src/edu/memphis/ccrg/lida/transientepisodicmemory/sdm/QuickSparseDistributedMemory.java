@@ -30,11 +30,10 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * 
 	 * @param a
 	 *            the address (hard locations) matrix
-	 * @param p
-	 *            the activation probability
+	 *            
 	 * @param h
 	 *            the activation radius
-	 * @param c
+	 * @param counterMax
 	 *            the counter range
 	 * @param u
 	 *            the word size
@@ -53,9 +52,9 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	/**
 	 * Stores a word in the given address in this sparse distributed memory.
 	 * 
-	 * @param w
+	 * @param wrd
 	 *            the word to be stored
-	 * @param x
+	 * @param addr
 	 *            the address where the word is to be stored
 	 */
 	public void store(BitVector wrd, BitVector addr) {
@@ -110,7 +109,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * Retrieves the contents of this sparse distributed memory at the given
 	 * address.
 	 * 
-	 * @param x
+	 * @param addr
 	 *            the address of the contents to be retrieved
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address

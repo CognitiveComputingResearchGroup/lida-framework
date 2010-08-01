@@ -22,7 +22,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
     /**
      * Add a new node to this PAM with specified label
      * @param label
-     * @return
+     * @return the new node
      */
 	public PamNode addNewNode(String label);
 
@@ -36,7 +36,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	/**
 	 * Add a collection of nodes
 	 * @param nodes
-	 * @return
+	 * @return actual node stored in this PAM
 	 */
 	public Set<PamNode> addNodes(Set<PamNode> nodes);
 	
@@ -46,7 +46,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param sink
 	 * @param type
 	 * @param activation
-	 * @return
+	 * @return created link
 	 */
 	public Link addNewLink(PamNode source, PamNode sink, LinkType type, double activation);
 
@@ -103,7 +103,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	
 	/**
 	 * Send a burst of activation to a node.
-	 * @param pNode The node to receiving the activation
+	 * @param node The node to receiving the activation
 	 * @param amount The amount of activation
 	 */
 	public void receiveActivationBurst(PamNode node, double amount);
@@ -155,13 +155,11 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	
 	/**
 	 * Get Pam represented as a node structure
-	 * @return
 	 */
 	public PamNodeStructure getNodeStructure();
 	
 	/**
 	 * Get the running feature detectors
-	 * @return
 	 */
 	public Collection<FeatureDetector> getFeatureDetectors();
 

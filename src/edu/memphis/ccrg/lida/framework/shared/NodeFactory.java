@@ -40,7 +40,6 @@ public class NodeFactory {
 	 * This static method returns the instance of the factory. Implements the
 	 * Singleton pattern.
 	 * 
-	 * @return
 	 */
 	public static NodeFactory getInstance() {
 		return instance;
@@ -173,7 +172,6 @@ public class NodeFactory {
 
 	/**
 	 * @param name
-	 * @return
 	 */
 	public DecayStrategy getDecayStrategy(String name) {
 		DecayStrategy d = null;
@@ -304,7 +302,6 @@ public class NodeFactory {
 
 	/**
 	 * Creates a default node with the default behaviors and 0 activation
-	 * @return
 	 */
 	public Node getNode() {
 		return getNode(defaultNodeType,defaultDecayType, defaultExciteType, "",0.0);
@@ -315,7 +312,6 @@ public class NodeFactory {
 	 * Note that the new node is of a default type regardless
 	 * of the node passed in the parameter.
 	 * @param oNode
-	 * @return
 	 */
 	public Node getNode(Node oNode) {
 		return getNode(oNode, defaultNodeType,defaultDecayType, defaultExciteType);
@@ -328,7 +324,6 @@ public class NodeFactory {
 	 * then the default behaviors are used.
 	 * @param oNode
 	 * @param nodeType
-	 * @return
 	 * 
 	 */
 	public Node getNode(Node oNode, String nodeType) {
@@ -355,7 +350,6 @@ public class NodeFactory {
 	 * @param oNode
 	 * @param decayStrategy
 	 * @param exciteStrategy
-	 * @return
 	 */
 	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy) {
 		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy);
@@ -368,7 +362,6 @@ public class NodeFactory {
 	 * @param nodeType
 	 * @param decayStrategy
 	 * @param exciteStrategy
-	 * @return
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy,
 			String exciteStrategy) {
@@ -383,7 +376,6 @@ public class NodeFactory {
 	 * Creates new node of specified type. Uses strategies based on specified node type, or the default strategies
 	 * if the node type has no strategies defined.
 	 * @param nodeType
-	 * @return
 	 */
 	public Node getNode(String nodeType) {
 		return getNode(nodeType, "");
@@ -393,7 +385,6 @@ public class NodeFactory {
 	 * Creates new node of specified type with specified label.  Uses strategies based on specified node type, or the default strategies
 	 * if the node type has no strategies defined. 
 	 * @param nodeType
-	 * @return
 	 */
 	public Node getNode(String nodeType, String nodeLabel) {
 
@@ -424,7 +415,6 @@ public class NodeFactory {
 	 * @param exciteStrategy
 	 * @param nodeLabel
 	 * @param activation
-	 * @return
 	 */
 	public Node getNode(String nodeType, String decayStrategy,
 			String exciteStrategy, String nodeLabel, double activation) {

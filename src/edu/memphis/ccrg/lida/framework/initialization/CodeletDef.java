@@ -24,7 +24,7 @@ public class CodeletDef {
 	}
 	/**
 	 * @param className
-	 * @param defeaultBehaviors
+	 * @param defeaultStrategies
 	 * @param name
 	 * @param params
 	 */
@@ -76,7 +76,7 @@ public class CodeletDef {
 		this.className = className;
 	}
 	/**
-	 * @param defeaultBehaviors the defeaultBehaviors to set
+	 * @param defeaultStrategies the defeaultBehaviors to set
 	 */
 	public void setDefeaultStrategies(Map<String,String> defeaultStrategies) {
 		this.defeaultStrategies = defeaultStrategies;

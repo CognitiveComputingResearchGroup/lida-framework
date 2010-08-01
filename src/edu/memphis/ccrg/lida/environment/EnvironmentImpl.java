@@ -24,7 +24,6 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	private final static int defaultTicksPerRun = 10;
 	/**
 	 * 
-	 * @param ticksPerRun
 	 */
 	public EnvironmentImpl(){
 		super(defaultTicksPerRun, ModuleName.Environment);
