@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.environment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
@@ -13,23 +14,29 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
 /**
  * 
- * @author ryanjmccall
+ * @author Ryan J McCall
  *
  */
 public abstract class EnvironmentImpl extends ModuleDriverImpl implements Environment, GuiEventProvider{
 	
 	private List<FrameworkGuiEventListener> listeners = new ArrayList<FrameworkGuiEventListener>();
 
+	private final static int defaultTicksPerRun = 10;
 	/**
 	 * 
-	 * @param ticksPerCycle
+	 * @param ticksPerRun
 	 */
-	public EnvironmentImpl(int ticksPerCycle){
-		super(ticksPerCycle, ModuleName.Environment);
+	public EnvironmentImpl(){
+		super(defaultTicksPerRun, ModuleName.Environment);
 	}
 	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener){
 		listeners.add(listener);
+	}
+	
+	@Override
+	public void init(Map<String, ?> params){
+		//You can override this method to initialize your environment with a map of parameters
 	}
 
 	/**
