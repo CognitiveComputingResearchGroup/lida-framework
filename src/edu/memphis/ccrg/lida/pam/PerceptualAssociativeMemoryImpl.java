@@ -86,6 +86,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * To create new node and links
 	 */
 	protected NodeFactory nodeFactory = NodeFactory.getInstance();
+
+	/**
+	 * 
+	 */
+	private int excitationTicksPerRun = 1;
+	
+	/**
+	 * 
+	 */
+	private int propagationTicksPerRun = 1;
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
@@ -186,6 +196,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 				   node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " + node.getTotalActivation(),
 				   LidaTaskManager.getActualTick());
 		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner);
+		task.setNumberOfTicksPerStep(excitationTicksPerRun);
 		taskSpawner.addTask(task);	
 	}
 
@@ -224,6 +235,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
 		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
 		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
+		task.setNumberOfTicksPerStep(propagationTicksPerRun);
 		taskSpawner.addTask(task);	
 	}
 
@@ -291,6 +303,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		}else{
 			logger.warning("Unable to set new Link type, using the default in PamNodeStructure");
 		}
+		
+		o = parameters.get("pam.excitationTicksPerRun");
+		if(o != null)
+			excitationTicksPerRun = (Integer) o;
+		
+		o = parameters.get("pam.propagationTicksPerRun");
+		if(o != null)
+			propagationTicksPerRun = (Integer) o;
 	}// method
 
 	public Collection<FeatureDetector> getFeatureDetectors(){
