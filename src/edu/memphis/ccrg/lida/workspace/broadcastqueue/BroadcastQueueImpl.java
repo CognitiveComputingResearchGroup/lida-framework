@@ -24,15 +24,14 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * @author Ryan J McCall
  * 
  */
-public class BroadcastQueueImpl extends LidaModuleImpl implements
-		BroadcastQueue, BroadcastListener {
+public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue, BroadcastListener {
 
 	private static Logger logger = Logger.getLogger("lida.workspace.main.Workpace");
 
 	private Queue<NodeStructure> broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
 	private volatile int broadcastQueueCapacity;
 	private double lowerActivationBound;
-	private static final int DEFAULT_QUEUE_SIZE = 20;
+	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 
 	public BroadcastQueueImpl(int capacity) {
 		super(ModuleName.BroadcastQueue);
@@ -41,7 +40,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 	}
 
 	public BroadcastQueueImpl() {
-		this(DEFAULT_QUEUE_SIZE);
+		this(DEFAULT_QUEUE_CAPACITY);
 	}
 
 	@Override
@@ -109,11 +108,9 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 
 	public void init(Map<String,?> p) {
 		lidaProperties=p;
-		Object o = getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_SIZE);
-		if(o instanceof String)
-			broadcastQueueCapacity = Integer.parseInt((String) o); 
-		else if(o instanceof Integer)
-			broadcastQueueCapacity = (Integer)o;
+		Object o = getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
+		if(o != null)
+			broadcastQueueCapacity = (Integer) o;
 		else
 			logger.warning("could not load broadcast queue capacity");
 	}

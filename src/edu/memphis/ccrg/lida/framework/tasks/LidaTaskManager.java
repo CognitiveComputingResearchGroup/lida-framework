@@ -12,12 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.AllModuleDriver;
-import edu.memphis.ccrg.lida.framework.LidaExecutorService;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 //TODO: Comment!!!
@@ -87,8 +88,8 @@ public class LidaTaskManager {
 		long keepAliveTime = 10;
 		this.tickDuration = tickDuration;
 		taskQueue = new ConcurrentHashMap<Long, Queue<LidaTask>>();
-		executorService = new LidaExecutorService(corePoolSize, maxPoolSize, keepAliveTime, 
-												  TimeUnit.SECONDS, this);
+		executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, 
+												  TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
 		mainTaskSpawner = new AllModuleDriver(this);
 
@@ -384,10 +385,12 @@ public class LidaTaskManager {
 			this.ticks=ticks;
 		}
 
+		@SuppressWarnings("unused")
 		public LidaModule getModule() {
 			return module;
 		}
 		
+		@SuppressWarnings("unused")
 		public void setTicks(long ticks){
 			this.ticks=ticks;
 		}

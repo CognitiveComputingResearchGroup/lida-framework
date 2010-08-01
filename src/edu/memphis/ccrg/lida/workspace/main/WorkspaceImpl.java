@@ -79,12 +79,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 			setActivationLowerBound((Double) o);
 		else
 			logger.warning("Unable to set Activation lower bound parameter, using the default instead");
-		
-//		System.out.println("submodules " + getSubmodules().size());
-//		getSubmodules().get(ModuleName.EpisodicBuffer).init(parameters);
-//		getSubmodules().get(ModuleName.BroadcastQueue).init(parameters);
-//		getSubmodules().get(ModuleName.PerceptualBuffer).init(parameters);
-//		getSubmodules().get(ModuleName.CurrentSituationalModel).init(parameters);
 	}
 	
 	public void addListener(ModuleListener listener) {
