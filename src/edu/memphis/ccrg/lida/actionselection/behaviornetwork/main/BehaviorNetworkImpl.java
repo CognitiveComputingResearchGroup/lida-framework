@@ -129,62 +129,61 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }        
     }    
     
-/*
- *   
- *  Selection Algorithm
- *
- *  1.  Reinfrocement Phase
- *      If the winner is not null:
- *          a. Reset its activation
- *          b. Reinforce the winner
- *
- *  2.  Initialization Phase:
- *          a. Increment the time stamp
- *          b. Set the winner to null.
- *          c. Reset the selector
- *
- *  3.  Activation Spreading Phase
- *          a. Add activation from the wnvironment.
- *          b. Add activation from the goals.
- *          c. Add excitation from internal spreading by the behaviors.
- *          d. Add inhibition.
- *
- *  4.  Merging Phase
- *          a. Add reinforcement contribution to activation.
- *
- *  5.  Normalization Phase:
- *          a. Scan the streams.
- *          b. Normalize
- *
- *  6.  Selection Phase
- *          a. Add Behaviors to the selectors if:
- *              i.  They are executable (active)
- *              ii. They meet the threshold conditions
- *          b. Select a winner
- *
- *  7.  Deactivation Phase:
- *          a. Deactivate all Behaviors except the winner.
- *
- *  8.  Decay Phase:
- *          a. Decay base level activation of all behaviors.
- *
- *  9.  Preparation Phase:
- *          a. If a winner emerged, let him prepare to fire, bind necessary 
- *             variables.
- */   
-    public void selectAction()
-    {           
+	/*
+	 *   
+	 *  Selection Algorithm
+	 *
+
+	 *
+
+	 *
+	 *  3.  Activation Spreading Phase
+	 *          a. Add activation from the wnvironment.
+	 *          b. Add activation from the goals.
+	 *          c. Add excitation from internal spreading by the behaviors.
+	 *          d. Add inhibition.
+	 *
+	 *  4.  Merging Phase
+	 *          a. Add reinforcement contribution to activation.
+	 *
+	 *  5.  Normalization Phase:
+	 *          a. Scan the streams.
+	 *          b. Normalize
+	 *
+	 *  6.  Selection Phase
+	 *          a. Add Behaviors to the selectors if:
+	 *              i.  They are executable (active)
+	 *              ii. They meet the threshold conditions
+	 *          b. Select a winner
+	 *
+	 *  7.  Deactivation Phase:
+	 *          a. Deactivate all Behaviors except the winner.
+	 *
+	 *  8.  Decay Phase:
+	 *          a. Decay base level activation of all behaviors.
+	 *
+	 *  9.  Preparation Phase:
+	 *          a. If a winner emerged, let him prepare to fire, bind necessary 
+	 *             variables.
+	 */   
+    public void selectAction(){   
+    	
+//   	   1.  Reinforcement Phase
+//	       If the winner is not null:
+//	           a. Reset its activation
+//	           b. Reinforce the winner
         report();
-        if(winner != null)                                                      //phase 1
-        {
-            winner.deactivate();
-            
+        if(winner != null){
+            winner.deactivate();  
             winner.resetActivation();
-            //reinforcer.reinforce(winner);        
+            reinforcer.reinforce(winner);        
         }
-                
-        cycle ++;                                                                //phase 2
-        
+            
+//   	 *  2.  Initialization Phase:
+//   		 *          a. Increment the time stamp
+//   		 *          b. Set the winner to null.
+//   		 *          c. Reset the selector
+        cycle ++;                                                                //phase 2 
         winner = null;
         selector.reset();        
                             
@@ -269,7 +268,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             winner.prepareToFire();                
        
         report();
-    }    
+    }   //method 
     
     public void reduceTheta(){
     	//TODO Strategy pattern
@@ -307,44 +306,20 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     public Goal getGoal(String name){
-        Goal goal = null;
-        
-        if(name != null)
-        {
-            ListIterator iterator = goals.listIterator();            
-            while(iterator.hasNext() && goal == null)
-            {                
-                if(((Goal)iterator.next()).getName().compareTo(name) == 0)
-                {
-                    goal = (Goal)iterator.previous();
-                }
-            }
-        }
-        
-        return goal;
+    	for(Goal g: goals)
+        	if(g.getName().equalsIgnoreCase(name))
+        		return g;
+        return null;
     }
     
-    public Stream getStream(String name) throws NullPointerException
-    {
-        Stream stream = null;
-        
-        if(name != null)
-        {
-            ListIterator iterator = streams.listIterator();            
-            while(iterator.hasNext() && stream == null)
-            {                
-                if(((Stream)iterator.next()).getName().compareTo(name) == 0)
-                {
-                    stream = (Stream)iterator.previous();
-                }
-            }
-        }
-        else
-            throw new NullPointerException();
-        
-        return stream;
+    public Stream getStream(String name){
+        for(Stream s: streams)
+        	if(s.getName().equalsIgnoreCase(name))
+        		return s;
+        return null;
     }
     
+    //TODO combine gets and sets
     public double getTheta(){
         return theta;
     }
@@ -357,116 +332,80 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public double getDelta(){
         return delta;
     }
-    
-    public double getPi()
-    {
+    public double getPi(){
         return pi;
     }
-    
-    public double getOmega()
-    {
+    public double getOmega(){
         return omega;
     }            
-        
-    public Environment getEnvironment()
-    {
+    public void setConstants(double theta, double phi, double gamma, 
+            double delta, double pi, double omega){
+		setTheta(theta);
+		setPhi(phi);
+		setGamma(gamma);
+		setDelta(delta);
+		setPi(pi);   
+		setOmega(omega);
+	}    
+	public void setTheta(double theta){
+		logger.info("CONSTANT-CHANGE: theta:\t" + getTheta() + "--> " + theta);
+		this.theta = theta;
+		threshold = theta;
+	}
+	public void setPhi(double phi){
+		logger.info("CONSTANT-CHANGE: phi:\t" + getPhi() + "--> " + phi);
+		this.phi = phi;
+	}
+	public void setGamma(double gamma){
+		logger.info("CONSTANT-CHANGE: gamma:\t" + getGamma() + "--> " + gamma);
+		this.gamma = gamma;
+	}
+	public void setDelta(double delta){
+		logger.info("CONSTANT-CHANGE: delta:\t" + getDelta() + "--> " + delta);
+		this.delta = delta;
+	}                            
+	public void setPi(double pi){
+		logger.info("CONSTANT-CHANGE: pi:\t" + getPi() + "--> " + pi);
+		this.pi = pi;
+	}                   
+	public void setOmega(double omega){
+		logger.info("CONSTANT-CHANGE: omega:\t" + getOmega() + "--> " + omega);
+		this.omega = omega;
+	}
+         
+    public Environment getEnvironment(){
         return environment;
     }
-    
-    public List<Goal> getGoals()
-    {
+    public List<Goal> getGoals(){
         return goals;
-    }
-    
-    public List<Stream> getStreams()
-    {
+    } 
+    public List<Stream> getStreams(){
         return streams;        
     }        
-    
-    public long getCycle()
-    {
+    public long getCycle(){
         return cycle;
-    }
-    
-    public void setConstants(double theta, double phi, double gamma, 
-                             double delta, double pi, double omega)
-    {
-        setTheta(theta);
-        setPhi(phi);
-        setGamma(gamma);
-        setDelta(delta);
-        setPi(pi);   
-        setOmega(omega);
-    }    
-    
-    public void setTheta(double theta)
-    {
-        logger.info("CONSTANT-CHANGE: theta:\t" + getTheta() + "--> " + theta);
-        this.theta = theta;
-        threshold = theta;
-    }
-    
-    public void setPhi(double phi)
-    {
-        logger.info("CONSTANT-CHANGE: phi:\t" + getPhi() + "--> " + phi);
-        this.phi = phi;
-    }
-    
-    public void setGamma(double gamma)
-    {
-        logger.info("CONSTANT-CHANGE: gamma:\t" + getGamma() + "--> " + gamma);
-        this.gamma = gamma;
-    }
-    
-    public void setDelta(double delta)
-    {
-        logger.info("CONSTANT-CHANGE: delta:\t" + getDelta() + "--> " + delta);
-        this.delta = delta;
-    }                            
-    
-    public void setPi(double pi)
-    {
-        logger.info("CONSTANT-CHANGE: pi:\t" + getPi() + "--> " + pi);
-        this.pi = pi;
     }                   
     
-    public void setOmega(double omega)
-    {
-        logger.info("CONSTANT-CHANGE: omega:\t" + getOmega() + "--> " + omega);
-        this.omega = omega;
-    }                   
-    
-    public void setReinforcer(Reinforcer reinforcer)
-    {
+    public void setReinforcer(Reinforcer reinforcer){
         if(reinforcer != null)
             this.reinforcer = reinforcer;
-        else
-            throw new NullPointerException();
     }
     
-    private void report()
-    {
-        Iterator si = streams.iterator();
-        while(si.hasNext())
-        {
-            Iterator bi = ((Stream)si.next()).getBehaviors().iterator();
-            while(bi.hasNext())
-            {
-                Behavior behavior = (Behavior)bi.next();
-                logger.info(behavior.getName() + "::" + behavior.getAlpha());
-            }
+    private void report(){        
+        for(Stream s: streams){
+        	for(Behavior b: s.getBehaviors()){
+        		logger.info(b.getName() + "::" + b.getAlpha());
+        	}
         }
     }
     
-    public void reset()
-    {
+    public void reset(){
         cycle = 0;
-        
         winner = null;        
         threshold = theta;   
         
-        for(Iterator i = streams.iterator(); i.hasNext();)
-            ((Stream)i.next()).reset();
+        for(Stream s: streams)
+            s.reset();
     }
 
 	@Override
@@ -485,8 +424,5 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public void receiveScheme(Scheme scheme) {
 		// TODO Auto-generated method stub
 		
-	}
-
-
-      
-}
+	} 
+}//class
