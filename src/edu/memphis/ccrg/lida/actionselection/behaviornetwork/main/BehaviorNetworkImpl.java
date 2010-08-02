@@ -25,18 +25,18 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{    
 
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
-    public final static double THETA_REDUCTION  = 10;   //percent to reduce the threshold 
+    public final double THETA_REDUCTION  = 10;   //percent to reduce the threshold 
     
-    private static double theta;    //threshold for execution
-    private static double phi;      //amount of excitation by environment
-    private static double gamma;    //amount of excitation by goals
-    private static double delta;    //amount of inhibition by protected goal
-    private static double pi;       //mean activation
-    private static double omega;    //amplification factor for base level activation    
+    private double theta;    //threshold for execution
+    private double phi;      //amount of excitation by environment
+    private double gamma;    //amount of excitation by goals
+    private double delta;    //amount of inhibition by protected goal
+    private double pi;       //mean activation
+    private double omega;    //amplification factor for base level activation    
     
-    private static Environment environment;
-    private static List<Goal> goals = new ArrayList<Goal>();
-    private static List<Stream> streams = new ArrayList<Stream>();  
+    private Environment environment;
+    private List<Goal> goals = new ArrayList<Goal>();
+    private List<Stream> streams = new ArrayList<Stream>();  
     
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
     
@@ -52,9 +52,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private Selector selector;
     private Reinforcer reinforcer;
     
-    private static long cycle;
+    private long cycle;
     
-    private static Behavior winner;        
+    private Behavior winner;        
     private double threshold;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
     
@@ -188,7 +188,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         winner = null;
         selector.reset();        
                             
-        environment.grantActivation();                                          //phase 3
+        environment.grantActivation(this.phi);                                          //phase 3
         
         Iterator gi = Environment.getCurrentGoals().keySet().iterator();    
         while(gi.hasNext())
@@ -196,7 +196,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             String name = (String)gi.next();
             Goal goal = getGoal(name);
             if(goal != null)
-                goal.grantActivation();
+                goal.grantActivation(gamma);
             else
                 logger.warning("UNRECOGNIZED GOAL : " + name);
         }        
@@ -210,7 +210,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             {
                 Behavior b = (Behavior)bi.next();
                 b.spreadExcitation();
-                b.spreadInhibition();
+                b.spreadInhibition(this.environment);
 
                 //((Behavior)bi.next()).spreadExcitation();
 
@@ -223,14 +223,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             Iterator bi = (Iterator)((Stream)si.next()).getBehaviors().iterator();
             while(bi.hasNext())
             {
-                ((Behavior)bi.next()).merge();
+                ((Behavior)bi.next()).merge(this.omega);
             }
         }                
         
         if(cycle != 1)
         {
             normalizer.scan();                                                  //phase 5
-            normalizer.normalize(); 
+            normalizer.normalize(this.pi); 
             normalizer.scan();
         }  
         
@@ -271,19 +271,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         report();
     }    
     
-    public void reduceTheta()
-    {        
+    public void reduceTheta(){
+    	//TODO Strategy pattern
         theta = theta - (theta * (THETA_REDUCTION / 100));
         logger.info("NET : THETA REDUCED TO " + theta);
     }
-    
-    public void restoreTheta()
-    {
+    public void restoreTheta(){
         theta = threshold;
         logger.info("NET : THETA RESTORED TO " + theta);
     }
-    
-    
+   
     public void addActionSelectionListener(ActionSelectionListener listener){
          listeners.add(listener);
     }
@@ -309,8 +306,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         return reinforcer;
     }
     
-    public Goal getGoal(String name) throws NullPointerException
-    {
+    public Goal getGoal(String name){
         Goal goal = null;
         
         if(name != null)
@@ -324,8 +320,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 }
             }
         }
-        else
-            throw new NullPointerException();
         
         return goal;
     }
@@ -351,37 +345,30 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         return stream;
     }
     
-    public static double getTheta()
-    {
+    public double getTheta(){
         return theta;
     }
-    
-    public static double getPhi()
-    {
+    public double getPhi(){
         return phi;                
     }
-    
-    public static double getGamma()
-    {
+    public double getGamma(){
         return gamma;
     }
-    
-    public static double getDelta()
-    {
+    public double getDelta(){
         return delta;
     }
     
-    public static double getPi()
+    public double getPi()
     {
         return pi;
     }
     
-    public static double getOmega()
+    public double getOmega()
     {
         return omega;
     }            
         
-    public static Environment getEnvironment()
+    public Environment getEnvironment()
     {
         return environment;
     }
@@ -396,7 +383,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         return streams;        
     }        
     
-    public static long getCycle()
+    public long getCycle()
     {
         return cycle;
     }

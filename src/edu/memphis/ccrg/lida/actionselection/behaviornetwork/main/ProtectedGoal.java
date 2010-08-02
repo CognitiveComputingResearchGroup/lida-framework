@@ -28,9 +28,9 @@ public class ProtectedGoal extends Goal
         inhibitoryPropositions = new Hashtable();
     }
     
-    public void grantActivation()
+    public void grantActivation(double delta, double gamma)
     {        
-        super.grantActivation();
+        super.grantActivation(gamma);
         
         if(super.isActive())
         {         
@@ -47,7 +47,7 @@ public class ProtectedGoal extends Goal
 
                     if(behaviors.size() > 0)
                     {
-                        double inhibited = BehaviorNetworkImpl.getDelta() / behaviors.size();
+                        double inhibited = delta / behaviors.size();
 
                         Iterator li = behaviors.iterator();            
                         while(li.hasNext())
@@ -84,6 +84,8 @@ public class ProtectedGoal extends Goal
     
     public static double getInhibitoryStrength()
     {
-        return BehaviorNetworkImpl.getDelta();
+    	//TODO
+    	return 0.8;
+     //   return BehaviorNetworkImpl.getDelta();
     }    
 }

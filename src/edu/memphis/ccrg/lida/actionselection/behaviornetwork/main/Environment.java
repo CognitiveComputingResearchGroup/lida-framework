@@ -37,7 +37,7 @@ public class Environment
  *  For true preconditions with no value: "true" is the value.
  *  False preconditions do not appear in the state Hashtable.
  */    
-    public void grantActivation()
+    public void grantActivation(double phi)
     {
         logger.info("ENVIRONMENT : EXCITATION");
         
@@ -51,7 +51,7 @@ public class Environment
             {
                 if(behaviors.size() > 0)
                 {
-                    double granted = BehaviorNetworkImpl.getPhi() / behaviors.size();
+                    double granted = phi / behaviors.size();
             
                     Iterator lj = behaviors.iterator();            
                     while(lj.hasNext())
@@ -133,7 +133,9 @@ public class Environment
     
     public static double getEnergy()
     {
-        return BehaviorNetworkImpl.getPhi();
+    	//TODO
+    	return 0.4;
+        //return BehaviorNetworkImpl.getPhi();
     }
     
     public Hashtable getPropositions()

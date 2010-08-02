@@ -80,9 +80,9 @@ public class Behavior
                                                reinforcement); 
     }
     
-    public void merge()
+    public void merge(double omega)
     {        
-        alpha = alpha + (BehaviorNetworkImpl.getOmega() * beta) + incoming;
+        alpha = alpha + (omega * beta) + incoming;
         if(alpha < 0)
             alpha = 0;
         
@@ -111,10 +111,10 @@ public class Behavior
             spreadPredecessorActivation();                
     }
     
-    public void spreadInhibition()
+    public void spreadInhibition(Environment e)
     {
         //logger.info("BEHAVIOR : INHIBITION " + name);
-        spreadConflictorActivation();        
+        spreadConflictorActivation(e);        
     }
   
     public void spreadSuccessorActivation()
@@ -168,7 +168,7 @@ public class Behavior
     }
     
     
-    public void spreadConflictorActivation()
+    public void spreadConflictorActivation(Environment e)
     {
         double fraction = ProtectedGoal.getInhibitoryStrength() / Goal.getExcitatoryStrength();
         
@@ -178,7 +178,7 @@ public class Behavior
             Object precondition = iterator.next();
             
             //if(((Boolean)(preconditions.get(precondition))).booleanValue())
-            if(BehaviorNetworkImpl.getEnvironment().isPropositionTrue(precondition))
+            if(e.isPropositionTrue(precondition))
             {                             
                 LinkedList behaviors = (LinkedList)conflictors.get(precondition); 
                 if(behaviors != null)

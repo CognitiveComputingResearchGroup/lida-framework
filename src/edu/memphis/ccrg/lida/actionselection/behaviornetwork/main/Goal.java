@@ -14,6 +14,7 @@ public class Goal
 {   
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Goal");
 	
+	//TODO: change to ID
     protected String name;
     protected boolean persistent;    
     
@@ -81,7 +82,7 @@ public class Goal
         }
     }
     
-    public void grantActivation()
+    public void grantActivation(double gamma)
     {        
         if(active)
         {
@@ -95,7 +96,7 @@ public class Goal
 
                 if(behaviors.size() > 0)
                 {
-                    double granted = BehaviorNetworkImpl.getGamma() / behaviors.size();
+                    double granted = gamma / behaviors.size();
 
                     Iterator li = behaviors.iterator();            
                     while(li.hasNext())
@@ -134,7 +135,9 @@ public class Goal
     
     public static double getExcitatoryStrength()
     {
-        return BehaviorNetworkImpl.getGamma();
+    	return 0.5;
+    	//TODO
+       // return BehaviorNetworkImpl.getGamma();
     }
     
     public Hashtable getExcitatoryPropositions()

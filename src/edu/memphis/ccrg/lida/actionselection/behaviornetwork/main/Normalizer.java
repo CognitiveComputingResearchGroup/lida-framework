@@ -79,11 +79,11 @@ public class Normalizer
         logger.info("");                
     }
     
-    public void normalize()
+    public void normalize(double pi)
     {
         report("\nNORMALIZER : ACTIVATION LEVELS BEFORE NORMALIZATION");
         
-        double n_sum = BehaviorNetworkImpl.getPi() * count;
+        double n_sum = pi * count;
         
         Iterator i = streams.iterator();        
         while(i.hasNext())
