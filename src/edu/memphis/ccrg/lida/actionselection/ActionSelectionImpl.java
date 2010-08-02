@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -63,6 +64,30 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		if (listener instanceof ActionSelectionListener){
 			addActionSelectionListener((ActionSelectionListener)listener);
 		}
+	}
+	//TODO Remove below
+	@Override
+	public void runAStep() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Behavior getFiredBehavior() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void reduceTheta() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void restoreTheta() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }//class
