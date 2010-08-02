@@ -52,6 +52,12 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		}
 	}
 	
+	@Override
+	public void selectAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void sendAction(long schemeActionId){
 		for(ActionSelectionListener l: listeners)
 			l.receiveActionId(schemeActionId);
@@ -66,11 +72,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		}
 	}
 	//TODO Remove below
-	@Override
-	public void runAStep() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Behavior getFiredBehavior() {

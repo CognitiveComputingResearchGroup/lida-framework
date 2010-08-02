@@ -33,8 +33,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private static Environment environment;
     private static LinkedList goals;
     private static LinkedList streams;        
+    private LinkedList listeners;
     
+    /**
+     * Creates links between behaviors
+     */
     private Linker linker;
+    
+    /**
+     * utility to normalize
+     */
     private Normalizer normalizer;
     private Selector selector;
     private Reinforcer reinforcer;
@@ -45,8 +53,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private static Behavior winner;        
     private double threshold;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
-    
-    private LinkedList listeners;
     
     public BehaviorNetworkImpl() 
     {
@@ -111,11 +117,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     {
         environment.updateGoals(goals);
     }
-    
-    public void runOneCycle()
-    {
-        select();
-    }
         
     public void run()
     {    
@@ -126,7 +127,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         else
         {
             reduceTheta();                                                      //reduce threshold for firing 
-            select();
+            selectAction();
         }        
     }    
     
@@ -173,7 +174,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
  *          a. If a winner emerged, let him prepare to fire, bind necessary 
  *             variables.
  */   
-    protected void select()
+    public void selectAction()
     {           
         report();
         if(winner != null)                                                      //phase 1
@@ -526,10 +527,5 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void runAStep() {
-		// TODO Auto-generated method stub
-		
-	}           
+      
 }

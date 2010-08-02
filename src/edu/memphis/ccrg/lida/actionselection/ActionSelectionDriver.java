@@ -16,8 +16,8 @@ public class ActionSelectionDriver extends ModuleDriverImpl{
 	
 	@Override
 	protected void runThisDriver() {
-		net.runAStep();
-		//TODO Move into BehaviorNetwork
+		net.selectAction();
+		//TODO perform this inside BehaviorNetwork
         winner = net.getFiredBehavior();                         
         if(winner == null)          
             net.reduceTheta();                                        

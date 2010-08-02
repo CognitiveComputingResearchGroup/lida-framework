@@ -182,7 +182,7 @@ public abstract class Runner
  */    
     public void runOneCycle()
     {                
-        net.runOneCycle();
+        net.selectAction();
         winner = net.getFiredBehavior();                        
         
         CycleInformation cycle = new CycleInformation((int)BehaviorNetworkImpl.getCycle() - 1);

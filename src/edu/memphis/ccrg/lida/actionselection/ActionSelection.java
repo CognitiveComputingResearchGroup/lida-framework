@@ -22,8 +22,8 @@ public interface ActionSelection {
 	public abstract void sendAction(long actionId);
 
 	//TODO Remove methods below eventually	
-	public abstract void runAStep();
 	public abstract Behavior getFiredBehavior();
 	public abstract void reduceTheta();
 	public abstract void restoreTheta();
+	public abstract void selectAction();
 }
