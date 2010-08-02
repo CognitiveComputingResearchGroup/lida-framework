@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class Normalizer 
 {         
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Normalizer");
-    private LinkedList streams;
+    private List<Stream> streams;
     
     private int count;
     private double sum;
@@ -22,7 +22,7 @@ public class Normalizer
     private double average;
     
         
-    public Normalizer(LinkedList streams) 
+    public Normalizer(List<Stream> streams) 
     {        
         if(streams != null)
         {
@@ -40,10 +40,10 @@ public class Normalizer
 
         if(!streams.isEmpty())
         {
-            Stream stream = (Stream)streams.getFirst();
+            Stream stream = (Stream)streams.get(0);
             if(!stream.getBehaviors().isEmpty())
             {
-                min = ((Behavior)stream.getBehaviors().getFirst()).getAlpha();
+                min = ((Behavior)stream.getBehaviors().get(0)).getAlpha();
                 max = min;
             }
         }

@@ -13,33 +13,27 @@ import java.util.*;
  * Stream is a list of behaviors that may be "instantiated"
  *
  */
-public class Stream 
-{    
+public class Stream{
+	
     private String name;
     
-    private LinkedList behaviors;
-    private boolean instantiated;
+    private List<Behavior> behaviors = new ArrayList<Behavior>();
     
-    public Stream(String name) throws NullPointerException
-    {
+    private boolean instantiated = false;
+    
+    public Stream(String name){
         if(name != null)
-        {
-            this.name = name;
-            
-            behaviors = new LinkedList();
-            instantiated = false;         
-        }
-        else
-            throw new NullPointerException();                
+        	name = Math.random()+"";              
+    }
+    public Stream(){
+    	this(null);
     }
     
-    public void instantiate()
-    {
+    public void instantiate(){
         instantiated = true;
     }
     
-    public void uninstantiated()
-    {
+    public void uninstantiate(){
         instantiated = false;
     }
     
@@ -54,13 +48,11 @@ public class Stream
             throw new NullPointerException();        
     }    
     
-    public String getName()
-    {
+    public String getName(){
         return name;
     }
     
-    public LinkedList getBehaviors()
-    {
+    public List<Behavior> getBehaviors(){
         return behaviors;
     }
     
@@ -69,12 +61,9 @@ public class Stream
         return instantiated;
     }
     
-    public void setBehaviors(LinkedList behaviors)throws NullPointerException
-    {
+    public void setBehaviors(LinkedList<Behavior> behaviors){
         if(behaviors != null)
-            this.behaviors = behaviors;
-        else
-            throw new NullPointerException();        
+            this.behaviors = behaviors;       
     }
     
     public Behavior getBehavior(String name) throws NullPointerException
@@ -101,8 +90,7 @@ public class Stream
             ((Behavior)i.next()).reset();
     }
     
-    public String toString()
-    {
+    public String toString(){
         return name;
     }
 }

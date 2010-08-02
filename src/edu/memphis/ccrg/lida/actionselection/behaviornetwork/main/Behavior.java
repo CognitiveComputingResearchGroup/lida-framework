@@ -606,6 +606,11 @@ public class Behavior
     {
         return name;
     }
+
+	public long getActionId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
     
 //end set methods    

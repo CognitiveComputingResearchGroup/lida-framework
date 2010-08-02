@@ -7,7 +7,12 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
@@ -17,8 +22,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
-public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener
-{    
+public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{    
 
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     public final static double THETA_REDUCTION  = 10;   //percent to reduce the threshold 
@@ -31,9 +35,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private static double omega;    //amplification factor for base level activation    
     
     private static Environment environment;
-    private static LinkedList goals;
-    private static LinkedList streams;        
-    private LinkedList listeners;
+    private static List<Goal> goals = new ArrayList<Goal>();
+    private static List<Stream> streams = new ArrayList<Stream>();  
+    
+    private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
     
     /**
      * Creates links between behaviors
@@ -46,7 +51,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private Normalizer normalizer;
     private Selector selector;
     private Reinforcer reinforcer;
-    private Decayer decayer;
     
     private static long cycle;
     
@@ -59,8 +63,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         setConstants(0, 0, 0, 0, 0, 0);        
         
         environment = new Environment();
-        goals = new LinkedList();
-        streams = new LinkedList();
         
         linker = new Linker(this);
         link();
@@ -68,9 +70,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         normalizer = new Normalizer(streams);
         selector = new Selector();
         reinforcer = new Reinforcer();
-        decayer = new Decayer(streams);
-                
-        listeners = new LinkedList();
     }
     
     public BehaviorNetworkImpl(Environment environment, LinkedList goals, LinkedList streams)
@@ -88,7 +87,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             normalizer = new Normalizer(streams);
             selector = new Selector();
             reinforcer = new Reinforcer();
-            decayer = new Decayer(streams);
             
             cycle = 0;
             winner = null;
@@ -265,8 +263,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 }
             }            
         }
-        
-        decayer.decay();                                                        //phase 8
+                                                         //phase 8
         
         if(winner != null)                                                      //phase 9
             winner.prepareToFire();                
@@ -287,41 +284,28 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     
-    public void addNetEventListener(NetEventListener listener)
-    {
-	if(listener != null)
-            listeners.add(listener);
+    public void addActionSelectionListener(ActionSelectionListener listener){
+         listeners.add(listener);
+    }
+    
+	@Override
+	public void sendAction(long actionId) {
+        for(ActionSelectionListener l: listeners)
+        	l.receiveActionId(actionId);
+                       
+        if(winner == null)          
+            reduceTheta();                                        
         else
-            throw new NullPointerException();
+            restoreTheta();
     }
     
-    public void removeNetEventListener(NetEventListener listener)
-    {
-        listeners.remove(listener);
-    }
-    
-    private void firecycleStartEvent()
-    {        
-        NetEvent event = new NetEvent(this);
-        
-        for(Iterator i = listeners.iterator(); i.hasNext();)
-        {
-            ((NetEventListener)i.next()).cycleStart(event);            
-        }
-    }
-    
-    public Linker getLinker()
-    {
+    public Linker getLinker(){
         return linker;
     }
-    
-    public Normalizer getNormalizer()
-    {
+    public Normalizer getNormalizer(){
         return normalizer;
     }
-    
-    public Reinforcer getReinforcer()
-    {
+    public Reinforcer getReinforcer(){
         return reinforcer;
     }
     
@@ -402,12 +386,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         return environment;
     }
     
-    public LinkedList getGoals()
+    public List<Goal> getGoals()
     {
         return goals;
     }
     
-    public LinkedList getStreams()
+    public List<Stream> getStreams()
     {
         return streams;        
     }        
@@ -516,16 +500,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 
-	@Override
-	public void addActionSelectionListener(ActionSelectionListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void sendAction(long actionId) {
-		// TODO Auto-generated method stub
-		
-	}
       
 }
