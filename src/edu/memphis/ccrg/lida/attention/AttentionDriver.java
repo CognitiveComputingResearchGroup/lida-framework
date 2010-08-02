@@ -26,7 +26,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 	private WorkspaceBuffer csm;
 	private GlobalWorkspace global;
 	//
-	private double defaultActiv = 1.0;// TODO: move these to factory?
+	//private double defaultActiv = 1.0;// TODO: move these to factory?
 	private NodeStructure broadcastContent;
 	private static final int DEFAULT_TICKS_PER_STEP = 10;
 
@@ -76,7 +76,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 		int ticksperstep = 0;
 		ticksperstep = (Integer)getParam("AttetionSelection.ticksperstep",DEFAULT_TICKS_PER_STEP);
 		setNumberOfTicksPerStep(ticksperstep);
-		defaultActiv=(Double)getParam("AttetionSelection.defaultActiv",1.0);
+	//	defaultActiv=(Double)getParam("AttetionSelection.defaultActiv",1.0);
 	}
 
 	@Override

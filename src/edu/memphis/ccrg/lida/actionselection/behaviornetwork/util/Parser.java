@@ -16,15 +16,15 @@ import java.util.logging.Logger;
 import org.w3c.dom.*;
 
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.BehaviorNetworkImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Environment;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Goal;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.ProtectedGoal;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.ReinforcementCurve;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Reinforcer;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.SidneyCodelet;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Stream;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Goal;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ProtectedGoal;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ReinforcementCurve;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Reinforcer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

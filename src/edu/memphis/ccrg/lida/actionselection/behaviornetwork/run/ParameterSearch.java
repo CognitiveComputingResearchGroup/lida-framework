@@ -6,7 +6,7 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.run;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.*;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.*;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.*;
 
 import java.util.*;

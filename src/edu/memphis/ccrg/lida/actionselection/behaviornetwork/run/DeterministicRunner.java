@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.run;
 import java.io.IOException;
 import java.util.*;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Goal;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Goal;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.EnvironmentReader;
 
 public class DeterministicRunner extends Runner

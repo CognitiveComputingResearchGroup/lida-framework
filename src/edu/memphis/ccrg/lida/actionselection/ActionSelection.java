@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
  * Interface for the action selection module

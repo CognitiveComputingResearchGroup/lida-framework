@@ -10,8 +10,8 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.run;
 import java.io.*;
 import java.util.*;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.BehaviorNetworkImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.CycleInformation;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.MultiMap;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.Parser;

@@ -6,7 +6,7 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.SidneyCodelet;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 
 import java.util.*;
 

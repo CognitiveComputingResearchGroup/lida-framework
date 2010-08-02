@@ -9,8 +9,8 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
 import java.util.*;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.Environment;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.SidneyCodelet;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 
 public class ExpectationCodelet extends SidneyCodelet
 {        

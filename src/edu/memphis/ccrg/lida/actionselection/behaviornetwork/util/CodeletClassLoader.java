@@ -8,7 +8,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
 import java.util.Hashtable;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.SidneyCodelet;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 
 public class CodeletClassLoader
 {       

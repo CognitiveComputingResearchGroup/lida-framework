@@ -7,7 +7,7 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main2.ReinforcementCurve;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ReinforcementCurve;
 
 public class SigmoidCurve implements ReinforcementCurve
 {
