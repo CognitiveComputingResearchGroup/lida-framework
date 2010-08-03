@@ -20,7 +20,7 @@ public class Reinforcer
         //curve = new SigmoidCurve(Net.
     }
     
-    public void reinforce(Behavior behavior) throws NullPointerException
+    public void reinforce(Behavior behavior, Environment e) throws NullPointerException
     {                
         if(behavior != null)
         {
@@ -32,7 +32,7 @@ public class Reinforcer
                 {
 
                     ExpectationCodelet expectationCodelet = (ExpectationCodelet)li.next();
-                    expectationCodelet.execute();
+                    expectationCodelet.execute(e);
                         
                     fitness += expectationCodelet.getPerformance();
 

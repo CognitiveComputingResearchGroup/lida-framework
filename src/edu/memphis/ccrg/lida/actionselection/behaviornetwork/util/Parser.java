@@ -8,8 +8,10 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,20 +59,12 @@ public class Parser
     
     public BehaviorNetworkImpl parse(String netFileName)
     {
-        BehaviorNetworkImpl net = null;
-        
-        Environment environment = new Environment();
-        LinkedList goals = new LinkedList();
-        LinkedList streams = new LinkedList();
-        
-        net = new BehaviorNetworkImpl(environment, goals, streams);
-        
+        BehaviorNetworkImpl net = new BehaviorNetworkImpl();
+        List<Goal> goals = new ArrayList<Goal>();
+        List<Stream> streams = new ArrayList<Stream>();
         Document document = null;
-        
         logger.log(Level.INFO, "Parse request with file: " + netFileName);
-        
-        try
-        {
+        try{
             document = open(netFileName);
             if(document != null)
             {   

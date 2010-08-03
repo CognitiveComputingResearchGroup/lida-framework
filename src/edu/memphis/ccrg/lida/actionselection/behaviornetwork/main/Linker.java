@@ -9,8 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class Linker 
-{    
+public class Linker{    
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Linker");
 	
     //private final static String PROTECTED_GOAL = "edu.memphis.bnt.engine.ProtectedGoal";
@@ -312,7 +311,7 @@ public class Linker
         }                    
     }
     
-    private void report(String header, Hashtable links)
+    private void report(String header, Map<Object,List<Behavior>> links)
     {
         if(header != null)
             logger.info(header);

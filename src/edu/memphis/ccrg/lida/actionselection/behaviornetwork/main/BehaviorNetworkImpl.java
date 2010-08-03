@@ -4,15 +4,12 @@
  * Sidney D'Mello
  * Created on December 10, 2003, 6:25 PM
  */
-
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
@@ -34,85 +31,43 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double pi;       //mean activation
     private double omega;    //amplification factor for base level activation    
     
-    private Environment environment;
+    private Environment environment = new Environment();
     private List<Goal> goals = new ArrayList<Goal>();
     private List<Stream> streams = new ArrayList<Stream>();  
-    
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
     
     /**
      * Creates links between behaviors
      */
-    private Linker linker;
+    private Linker linker = new Linker(this);
     
     /**
      * utility to normalize
      */
-    private Normalizer normalizer;
-    private Selector selector;
-    private Reinforcer reinforcer;
+    private Normalizer normalizer = new Normalizer(streams);
+    private Selector selector = new Selector();
+    private Reinforcer reinforcer = new Reinforcer();
     
-    private long cycle;
+    private long cycle = 0;
     
-    private Behavior winner;        
-    private double threshold;       //used as a backup copy for the 
+    private Behavior winner = null;        
+    private double threshold = theta;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
     
-    public BehaviorNetworkImpl() 
-    {
-        setConstants(0, 0, 0, 0, 0, 0);        
-        
-        environment = new Environment();
-        
-        linker = new Linker(this);
-        link();
-        
-        normalizer = new Normalizer(streams);
-        selector = new Selector();
-        reinforcer = new Reinforcer();
-    }
-    
-    public BehaviorNetworkImpl(Environment environment, LinkedList goals, LinkedList streams)
-               throws NullPointerException
-    {
-        if(environment != null && goals != null && streams != null)
-        {
-            this.environment = environment;
-            this.goals = goals;
-            this.streams = streams;
-            
-            linker = new Linker(this);
-            link();
-            
-            normalizer = new Normalizer(streams);
-            selector = new Selector();
-            reinforcer = new Reinforcer();
-            
-            cycle = 0;
-            winner = null;
-            threshold = theta;                        
-        }
-        else
-            throw new NullPointerException();
-    }
-    
-    public void link()
-    {
+    public BehaviorNetworkImpl() {
+        setConstants(0, 0, 0, 0, 0, 0);     
         linker.buildLinks();
     }
-    
-    public Behavior getFiredBehavior()
-    {
+
+    public Behavior getFiredBehavior(){
         return winner;
     }
        
-    public void updateState(Hashtable state)
-    {
+    public void updateState(Hashtable state){
         environment.updateState(state);
     }
     
-    public void updateGoals(Hashtable goals)
-    {
+    public void updateGoals(Hashtable goals){
         environment.updateGoals(goals);
     }
         
@@ -142,9 +97,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 *          b. Add activation from the goals.
 	 *          c. Add excitation from internal spreading by the behaviors.
 	 *          d. Add inhibition.
-	 *
-	 *  4.  Merging Phase
-	 *          a. Add reinforcement contribution to activation.
+	 
 	 *
 	 *  5.  Normalization Phase:
 	 *          a. Scan the streams.
@@ -176,7 +129,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         if(winner != null){
             winner.deactivate();  
             winner.resetActivation();
-            reinforcer.reinforce(winner);        
+            reinforcer.reinforce(winner, environment);        
         }
             
 //   	 *  2.  Initialization Phase:
@@ -186,86 +139,61 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         cycle ++;                                                                //phase 2 
         winner = null;
         selector.reset();        
-                            
         environment.grantActivation(this.phi);                                          //phase 3
         
-        Iterator gi = Environment.getCurrentGoals().keySet().iterator();    
-        while(gi.hasNext())
-        {
-            String name = (String)gi.next();
-            Goal goal = getGoal(name);
+        Set<String> curGoals = environment.getCurrentGoals().keySet();    
+        for(String goalName: curGoals){
+            Goal goal = getGoal(goalName);
             if(goal != null)
                 goal.grantActivation(gamma);
             else
-                logger.warning("UNRECOGNIZED GOAL : " + name);
+                logger.warning("UNRECOGNIZED GOAL : " + goalName);
         }        
-                
         
-        Iterator si = (Iterator)streams.iterator();
-        while(si.hasNext())
-        {
-            Iterator bi = (Iterator)((Stream)si.next()).getBehaviors().iterator();
-            while(bi.hasNext())
-            {
-                Behavior b = (Behavior)bi.next();
-                b.spreadExcitation();
+        for(Stream s: streams){
+        	for(Behavior b: s.getBehaviors()){
+        		b.spreadExcitation(environment);
                 b.spreadInhibition(this.environment);
-
                 //((Behavior)bi.next()).spreadExcitation();
-
-            }
-        }        
-                                
-        si = (Iterator)streams.iterator();                                      //phase 4
-        while(si.hasNext())
-        {
-            Iterator bi = (Iterator)((Stream)si.next()).getBehaviors().iterator();
-            while(bi.hasNext())
-            {
-                ((Behavior)bi.next()).merge(this.omega);
-            }
-        }                
+        	}
+        }
         
-        if(cycle != 1)
-        {
+//   	 *  4.  Merging Phase
+//	     *      a. Add reinforcement contribution to activation.
+        for(Stream s: streams){//Phase 4
+        	for(Behavior b: s.getBehaviors()){
+        		b.merge(omega);
+        	}
+        } 
+        
+        if(cycle != 1){
             normalizer.scan();                                                  //phase 5
             normalizer.normalize(this.pi); 
             normalizer.scan();
         }  
         
-        si = (Iterator)streams.iterator();                                      //phase 6
-        while(si.hasNext())
-        {
-            Iterator bi = (Iterator)((Stream)si.next()).getBehaviors().iterator();
-            while(bi.hasNext())
-            {
-                Behavior behavior = (Behavior)bi.next();                
-                if(behavior.isActive())
-                {
-                    if(behavior.getAlpha() >= theta)
-                      selector.addCompetitor(behavior);                    
-                }                
-            }
-            winner = selector.evaluateAbsoluteWinner();            
-        }  
         
-        si = (Iterator)streams.iterator();                                      //phase 7
-        while(si.hasNext())
-        {
-            Iterator bi = (Iterator)((Stream)si.next()).getBehaviors().iterator();
-            while(bi.hasNext())
-            {
-                Behavior behavior = (Behavior)bi.next();
-                if(!behavior.equals(winner))
-                {
-                    behavior.deactivate();
-                }
-            }            
+        for(Stream s: streams){				//phase 6
+        	for(Behavior b: s.getBehaviors()){
+        		if(b.isActive() && b.getAlpha() >= theta){
+        			selector.addCompetitor(b);
+        		}
+        	}
+        	winner = selector.evaluateAbsoluteWinner();   
         }
-                                                         //phase 8
         
-        if(winner != null)                                                      //phase 9
-            winner.prepareToFire();                
+        for(Stream s: streams){				//phase 7
+        	for(Behavior b: s.getBehaviors()){
+        		if(!b.equals(winner)){
+        			b.deactivate();
+        		}
+        	}
+        }
+        
+        //phase 8
+        //phase 9
+        if(winner != null)                                                      
+            winner.prepareToFire(environment);                
        
         report();
     }   //method 
@@ -425,4 +353,5 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		// TODO Auto-generated method stub
 		
 	} 
+	
 }//class

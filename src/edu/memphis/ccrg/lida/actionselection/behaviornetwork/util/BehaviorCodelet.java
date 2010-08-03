@@ -6,6 +6,7 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 
 import java.util.*;
@@ -23,7 +24,7 @@ public class BehaviorCodelet extends SidneyCodelet
         super(name, SidneyCodelet.BEHAVIOR);
     }
     
-    public void execute() 
+    public void execute(Environment e) 
     {
     }
     

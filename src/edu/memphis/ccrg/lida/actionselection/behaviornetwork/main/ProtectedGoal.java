@@ -28,7 +28,7 @@ public class ProtectedGoal extends Goal
         inhibitoryPropositions = new Hashtable();
     }
     
-    public void grantActivation(double delta, double gamma)
+    public void grantActivation(double delta, double gamma, Environment e)
     {        
         super.grantActivation(gamma);
         
@@ -41,7 +41,7 @@ public class ProtectedGoal extends Goal
             {
                 Object deleteProposition = iterator.next();
                 
-                if(Environment.getCurrentState().containsKey(deleteProposition))
+                if(e.getCurrentState().containsKey(deleteProposition))
                 {
                     LinkedList behaviors = (LinkedList)inhibitoryPropositions.get(deleteProposition);
 

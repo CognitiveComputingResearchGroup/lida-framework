@@ -101,12 +101,12 @@ public class Behavior
         alpha = 0;
     }
      
-    public void spreadExcitation()
+    public void spreadExcitation(Environment e)
     {           
         //logger.info("BEHAVIOR : EXCITATION " + name);
         
         if(isActive())
-            spreadSuccessorActivation();        
+            spreadSuccessorActivation(e);        
         else
             spreadPredecessorActivation();                
     }
@@ -117,7 +117,7 @@ public class Behavior
         spreadConflictorActivation(e);        
     }
   
-    public void spreadSuccessorActivation()
+    public void spreadSuccessorActivation(Environment e)
     {           
         Iterator iterator = successors.keySet().iterator();
         while(iterator.hasNext())
@@ -131,7 +131,7 @@ public class Behavior
                 Behavior successor = (Behavior)li.next();
                 if(!((Boolean)(successor.getPreconditions().get(addProposition))).booleanValue())
                 {
-                    double granted = ((alpha * Environment.getEnergy()) / Goal.getExcitatoryStrength()) / (behaviors.size() * successor.getPreconditions().size());
+                    double granted = ((alpha * e.getEnergy()) / Goal.getExcitatoryStrength()) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
 
                     logger.info("\t:+" + name + "-->" + granted + " to " +
@@ -253,7 +253,7 @@ public class Behavior
         }
     }
     
-    public void prepareToFire()
+    public void prepareToFire(Environment e)
     {
         logger.info("BEHAVIOR : PREPARE TO FIRE " + name);
         
@@ -265,7 +265,7 @@ public class Behavior
             while(ci.hasNext())
             {
                 Object name = ci.next();
-                Object value = Environment.getCurrentState().get(name);
+                Object value = e.getCurrentState().get(name);
                 if(value != null)
                     codelet.addProperty(name, value );
             }

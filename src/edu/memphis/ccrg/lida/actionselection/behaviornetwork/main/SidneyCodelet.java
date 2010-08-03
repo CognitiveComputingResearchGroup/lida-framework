@@ -49,7 +49,7 @@ public abstract class SidneyCodelet
             throw new NullPointerException();        
     }
     
-    public abstract void execute();
+    public abstract void execute(Environment e);
     
     protected abstract void initialize(Hashtable initializationData);
     

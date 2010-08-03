@@ -10,35 +10,28 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Environment 
-{        
+public class Environment{ 
+	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Environment");
 	
-    private Hashtable propositions;
+    private Map<Object, List<Behavior>> propositions = new HashMap<Object, List<Behavior>>();
+    private Map<String, Object> state = new HashMap<String, Object>();
+    private Map<String, Goal> goals = new HashMap<String, Goal>();
     
-    private static Hashtable state;
-    private static Hashtable goals;
-    
-    public Environment()
-    {
-        propositions = new Hashtable();
-        
-        state = new Hashtable();        
-        goals = new Hashtable();        
+    public Environment(){      
     }
     
-/*
- *  Spreads activation to Behaviors in the propositions Hashtable for
- *  true propositions as specified by the state.
- *
- *  The state Hashtable consists of proposition as a key and value, as
- *  a value that may be reuired by the winning Behavior as an Object.
- *  
- *  For true preconditions with no value: "true" is the value.
- *  False preconditions do not appear in the state Hashtable.
- */    
-    public void grantActivation(double phi)
-    {
+	/*
+	 *  Spreads activation to Behaviors in the propositions Hashtable for
+	 *  true propositions as specified by the state.
+	 *
+	 *  The state Hashtable consists of proposition as a key and value, as
+	 *  a value that may be reuired by the winning Behavior as an Object.
+	 *  
+	 *  For true preconditions with no value: "true" is the value.
+	 *  False preconditions do not appear in the state Hashtable.
+	 */    
+    public void grantActivation(double phi){
         logger.info("ENVIRONMENT : EXCITATION");
         
         Iterator li = state.keySet().iterator();
@@ -103,10 +96,8 @@ public class Environment
             throw new NullPointerException();
     }        
     
-    public void updateGoals(Hashtable currentGoals) throws NullPointerException
+    public void updateGoals(Hashtable<String, Goal> currentGoals) throws NullPointerException
     {
-        if(currentGoals != null)
-        {
             goals = currentGoals;
             
             logger.info("ENVIRONMENT: GOAL UPDATE");
@@ -116,44 +107,32 @@ public class Environment
                 String goal = (String)i.next();
                 logger.info(goal + "-->" + goals.get(goal));
             }                        
-        }
-        else
-            throw new NullPointerException();
+
     }
         
-    public static Hashtable getCurrentState()
-    {
+    public Map<String, Object> getCurrentState(){
         return state;
     }
     
-    public static Hashtable getCurrentGoals()
-    {
+    public Map<String, Goal> getCurrentGoals(){
         return goals;
     }
     
-    public static double getEnergy()
-    {
+    public double getEnergy(){
     	//TODO
     	return 0.4;
         //return BehaviorNetworkImpl.getPhi();
     }
     
-    public Hashtable getPropositions()
-    {
+    public Map<Object, List<Behavior>> getPropositions(){
         return propositions;
     }    
         
-    public void setPropositions(Hashtable propositions)
-                                throws NullPointerException
-    {
-        if(propositions != null)
-            this.propositions = propositions;
-        else
-            throw new NullPointerException();
+    public void setPropositions(Map<Object, List<Behavior>> propositions){
+        this.propositions = propositions;
     }
     
-    public boolean isPropositionTrue(Object proposition)
-    {
+    public boolean isPropositionTrue(Object proposition){
         return state.containsKey(proposition);
     }
 }

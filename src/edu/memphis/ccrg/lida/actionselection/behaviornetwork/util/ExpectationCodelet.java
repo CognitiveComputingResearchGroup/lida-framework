@@ -27,12 +27,12 @@ public class ExpectationCodelet extends SidneyCodelet
         super(name, SidneyCodelet.EXPECTATION);
     }
     
-    public void execute()
+    public void execute(Environment e)
     {
-        evaluate();
+        evaluate(e);
     }
     
-    protected void evaluate()
+    protected void evaluate(Environment e)
     {
         performance = 0;
                 
@@ -40,7 +40,7 @@ public class ExpectationCodelet extends SidneyCodelet
         while(li.hasNext())
         {            
             Object proposition = li.next();
-            if(proposition.equals(Environment.getCurrentState().get(proposition)))                        
+            if(proposition.equals(e.getCurrentState().get(proposition)))                        
                 performance ++;                        
             else
                 performance --;
