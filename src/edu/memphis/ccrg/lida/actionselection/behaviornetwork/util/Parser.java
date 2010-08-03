@@ -19,6 +19,7 @@ import org.w3c.dom.*;
 
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorCodelet;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Goal;
@@ -189,7 +190,7 @@ public class Parser
                             if(c.getAttribute(ParserTags.TYPE).trim().compareToIgnoreCase(ParserTags.BEHAVIOR) == 0)
                             {
                                 codelet.setType(SidneyCodelet.BEHAVIOR);
-                                behavior.addBehaviorCodelet(codelet);
+                                behavior.addBehaviorCodelet((BehaviorCodelet) codelet);
                             }
                             else if(c.getAttribute(ParserTags.TYPE).trim().compareToIgnoreCase(ParserTags.EXPECTATION) == 0)
                             {

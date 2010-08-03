@@ -25,20 +25,18 @@ public class Behavior{
     private double beta; 
     private double incoming;
  
-    private Hashtable preconditions;
-    private LinkedList addList;
-    private LinkedList deleteList;        
+    private Map<Object, Boolean> preconditions;
+    private List<Object> addList;
+    private List<Object> deleteList;        
     
-    private Hashtable predecessors;
-    private Hashtable successors;
-    private Hashtable conflictors;
+    private Map<Object, List<Behavior>> predecessors;
+    private Map<Object, List<Behavior>> successors;
+    private Map<Object, List<Behavior>> conflictors;
     
-    private LinkedList behaviorCodelets;
-    private LinkedList<ExpectationCodelet> expectationCodelets;
-    
+    private List<BehaviorCodelet> behaviorCodelets;
+    private List<ExpectationCodelet> expectationCodelets;
+   
     private Stream stream;
-    
-    private LinkedList history;
     
     public Behavior(String name) throws NullPointerException
     {
@@ -277,19 +275,12 @@ public class Behavior{
         }        
     }
     
-    public Collection getHistory()
-    {
-        return history;
-    }
-
-    
-   
 // start add methods    
     public void addPrecondition(Object precondition) throws NullPointerException
     {
         if(precondition != null)
         {
-            if(!preconditions.contains(precondition))
+            if(!preconditions.containsKey(precondition))
                 preconditions.put(precondition, new Boolean(false));            
         }
         else
@@ -381,7 +372,7 @@ public class Behavior{
             throw new NullPointerException();
     }
     
-    public void addBehaviorCodelet(Object behaviorCodelet) throws NullPointerException
+    public void addBehaviorCodelet(BehaviorCodelet behaviorCodelet) throws NullPointerException
     {
         if(behaviorCodelet != null)
         {
@@ -421,37 +412,37 @@ public class Behavior{
         return beta;
     }        
     
-    public Hashtable getPreconditions()
+    public Map<Object, Boolean> getPreconditions()
     {
         return preconditions;
     }
     
-    public LinkedList getAddList()
+    public List getAddList()
     {
         return addList;
     }
     
-    public LinkedList getDeleteList()
+    public List<Object> getDeleteList()
     {
         return deleteList;
     }
     
-    public Hashtable getPredecessors()
+    public Map<Object, List<Behavior>> getPredecessors()
     {
         return predecessors;
     }
     
-    public Hashtable getSuccessors()
+    public Map<Object, List<Behavior>> getSuccessors()
     {
         return successors;
     } 
     
-    public Hashtable getConflictors()
+    public Map<Object, List<Behavior>> getConflictors()
     {
         return conflictors;
     }
         
-    public LinkedList getBehaviorCodelets()
+    public List<BehaviorCodelet> getBehaviorCodelets()
     {
         return behaviorCodelets;
     } 
@@ -599,10 +590,7 @@ public class Behavior{
     {
         alpha = 0;
         beta = 0;
-        incoming = 0;
-            
-        history = new LinkedList();
-        
+        incoming = 0;        
         deactivate();
     }
     

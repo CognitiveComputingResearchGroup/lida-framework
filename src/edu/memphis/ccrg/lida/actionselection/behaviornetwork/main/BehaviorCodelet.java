@@ -10,7 +10,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class BehaviorCodelet extends SidneyCodelet{
 	
-	
     public BehaviorCodelet(){
         super();
         setType(SidneyCodelet.BEHAVIOR);

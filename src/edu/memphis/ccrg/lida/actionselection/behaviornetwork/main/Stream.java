@@ -66,28 +66,16 @@ public class Stream{
             this.behaviors = behaviors;       
     }
     
-    public Behavior getBehavior(String name) throws NullPointerException
-    {
-        Behavior behavior = null;
-        if(name != null)
-        {
-            ListIterator li = behaviors.listIterator();
-            while(li.hasNext() && behavior == null)
-            {
-                if(((Behavior)li.next()).getName().compareTo(name) == 0)
-                    behavior = (Behavior)li.previous();
-            }
-        }
-        else
-            throw new NullPointerException();
-        
-        return behavior;            
+    public Behavior getBehavior(String name){
+        for(Behavior b: behaviors)
+            if(b.getName().compareTo(name) == 0)
+                 return b;
+        return null;          
     }
     
-    public void reset()
-    {
-        for(Iterator i = behaviors.iterator(); i.hasNext();)
-            ((Behavior)i.next()).reset();
+    public void reset(){
+    	for(Behavior b: behaviors)
+    		b.reset();
     }
     
     public String toString(){

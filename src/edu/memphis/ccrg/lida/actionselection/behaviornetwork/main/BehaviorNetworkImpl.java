@@ -53,8 +53,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private Selector selector = new Selector();
     private Reinforcer reinforcer = new Reinforcer();
     
-    private long cycle = 0;
-    
     private Behavior winner = null;        
     private double threshold = theta;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
@@ -65,90 +63,34 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         setConstants(0, 0, 0, 0, 0, 0);     
         
         buildEnvironmentalLinks();        
-        buildGoalLinks();        
+        buildExcitatoryGoalLinks(); 
+        buildInhibitoryGoalLinks();    
         buildBehaviorLinks();
     }
     
-    public void buildEnvironmentalLinks() throws NullPointerException
-    {        
+    public void buildEnvironmentalLinks(){        
         logger.info("ENVIRONMENTAL LINKS");
         
-        Iterator iterator = getStreams().iterator();                        //iterator for all streams
-        while(iterator.hasNext())
-        {
-            Iterator li = ((Stream)(iterator.next())).getBehaviors().iterator();//iterator for a stream
-            while(li.hasNext())
-            {
-                Behavior behavior = (Behavior)li.next();
-                Iterator lj = behavior.getPreconditions().keySet().iterator();  //iterator for a behavior
-                
-                while(lj.hasNext())
-                {   
-                    Object proposition = lj.next();                    
+        for(Stream s: streams){
+        	for(Behavior behavior: s.getBehaviors()){
+                for(Object proposition: behavior.getPreconditions().keySet()){                   
                     
-                    LinkedList behaviors = (LinkedList)getPropositions().get(proposition);
-                    if(behaviors == null)
-                    {
-                        behaviors = new LinkedList();
-                        behaviors.add(behavior);
-                        getPropositions().put((Linkable) proposition, behaviors);
-                    }
-                    else                        
-                        behaviors.add(behavior);                                                                        
+                    List<Behavior> behaviors = propositions.get(proposition);
+                    if(behaviors == null){
+                        behaviors = new ArrayList<Behavior>();
+                        propositions.put((Linkable) proposition, behaviors);
+                    }                  
+                    behaviors.add(behavior);                                                                        
                 }
             }
-        }
- //       report(null, net.getPropositions());
-        
-        logger.info("\n");
-    }
+        }     
+    }//method
     
-    public void buildGoalLinks(){
-        logger.info("GOAL LINKS");
-        
-        logger.info("EXCITATORY GOAL LINKS");
-        buildExcitatoryGoalLinks();        
-        
-        Iterator i = getGoals().iterator();
-        while(i.hasNext())
-        {
-            Goal goal = (Goal)i.next();
-            report("GOAL " + goal.getName(), goal.getExcitatoryPropositions());
-        }
-        logger.info("");
-        
-        logger.info("INHIBITATORY GOAL LINKS");
-        buildInhibitoryGoalLinks();        
-        
-        i = getGoals().iterator();
-        while(i.hasNext())
-        {
-            Goal goal = (Goal)i.next();
-            if(goal instanceof ProtectedGoal)
-                report("GOAL " + goal.getName(), ((ProtectedGoal)goal).getInhibitoryPropositions());
-        }
-        logger.info("\n");
-    }
-    
-    public void buildExcitatoryGoalLinks()
-    {                                
-        Iterator iterator = getStreams().iterator();                        //iterate over streams
-        while(iterator.hasNext())
-        {            
-            Iterator li = ((Stream)(iterator.next())).getBehaviors().iterator();//iterator gor a stream
-            while(li.hasNext())
-            {
-                Behavior behavior = (Behavior)li.next();                
-                Iterator lj = behavior.getAddList().iterator();                 //iterator the add list for a behavior
-                
-                while(lj.hasNext())
-                {   
-                    Object proposition = lj.next();
-                    
-                    Iterator lk = getGoals().iterator();                    //iterator forr all goals
-                    while(lk.hasNext())
-                    {
-                        Goal goal = (Goal)lk.next();                        
+    public void buildExcitatoryGoalLinks(){                                
+    	for(Stream s: streams){
+        	for(Behavior behavior: s.getBehaviors()){                             
+                for(Object proposition: behavior.getAddList()){
+                    for(Goal goal: goals){                        
                         Hashtable propositions = goal.getExcitatoryPropositions();
                         
                         if(propositions.containsKey(proposition))
@@ -345,8 +287,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }                    
     }
     
-    private void report(String header, Map<Object,List<Behavior>> links)
-    {
+    private void report(String header, Map<Object,List<Behavior>> links){
         if(header != null)
             logger.info(header);
         
@@ -379,20 +320,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void updateGoals(List<Goal> goals){
         this.goals = goals;
     }
-        
-    public void run()
-    {    
-        if(winner != null)
-        {
-            restoreTheta();
-        }
-        else
-        {
-            reduceTheta();                                                      //reduce threshold for firing 
-            selectAction();
-        }        
-    }    
-    
+          
 	/*
 	 *  
 	 *
@@ -429,7 +357,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   		 *          a. Increment the time stamp
 //   		 *          b. Set the winner to null.
 //   		 *          c. Reset the selector
-        cycle ++;                                                                //phase 2 
+    //    cycle ++;                                                                //phase 2 
         winner = null;
         selector.reset();
         
@@ -462,11 +390,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   	 *  5.  Normalization Phase:
 //   		 *          a. Scan the streams.
 //   		 *          b. Normalize
-        if(cycle != 1){
+     //   if(cycle != 1){
             normalizer.scan();                                                  //phase 5
             normalizer.normalize(this.pi); 
             normalizer.scan();
-        }  
+     //   }  
         
         for(Stream s: streams){				//phase 6
         	for(Behavior b: s.getBehaviors()){
@@ -627,10 +555,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     } 
     public List<Stream> getStreams(){
         return streams;        
-    }        
-    public long getCycle(){
-        return cycle;
-    }                   
+    }                       
     
     public void setReinforcer(Reinforcer reinforcer){
         if(reinforcer != null)
@@ -646,7 +571,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     public void reset(){
-        cycle = 0;
         winner = null;        
         threshold = theta;   
         
@@ -672,8 +596,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 
-	public Map<Linkable, List<Behavior>> getPropositions() {
-		return propositions;
-	} 
-	
+//	public Map<Linkable, List<Behavior>> getPropositions() {
+//		return propositions;
+//	} 
+//	
 }//class
