@@ -8,7 +8,7 @@
  * sdmello@memphis.edu
  */
 
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 import java.util.Arrays;
 import java.util.Random;

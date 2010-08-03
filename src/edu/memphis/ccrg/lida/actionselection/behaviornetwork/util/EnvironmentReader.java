@@ -16,7 +16,7 @@ public class EnvironmentReader
     public final static String TOKEN    = "\t";    
     public final static int    TOKENS   = 2;
     
-    private MultiMap state;
+    private Map<String, Boolean> state = new HashMap<String, Boolean>();
     private Hashtable goals;
 
     public EnvironmentReader(String fileName) 
@@ -26,7 +26,6 @@ public class EnvironmentReader
     
     private void read(String fileName)
     {
-        state = new MultiMap();
         goals = new Hashtable();
         
         try
@@ -51,8 +50,7 @@ public class EnvironmentReader
         }
     }
     
-    public MultiMap getState()
-    {
+    public Map<String, Boolean> getState(){
         return state;
     }
     

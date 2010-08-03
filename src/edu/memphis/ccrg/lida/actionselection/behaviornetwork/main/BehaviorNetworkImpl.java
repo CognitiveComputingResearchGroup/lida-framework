@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforcer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
@@ -85,23 +87,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }    
     
 	/*
-	 *   
-	 *  Selection Algorithm
-	 *
-
-	 *
-
-	 *
-	 *  3.  Activation Spreading Phase
-	 *          a. Add activation from the wnvironment.
-	 *          b. Add activation from the goals.
-	 *          c. Add excitation from internal spreading by the behaviors.
-	 *          d. Add inhibition.
-	 
-	 *
-	 *  5.  Normalization Phase:
-	 *          a. Scan the streams.
-	 *          b. Normalize
+	 *  
 	 *
 	 *  6.  Selection Phase
 	 *          a. Add Behaviors to the selectors if:
@@ -138,7 +124,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   		 *          c. Reset the selector
         cycle ++;                                                                //phase 2 
         winner = null;
-        selector.reset();        
+        selector.reset();
+        
+//   	 *  3.  Activation Spreading Phase
+//	 *          a. Add activation from the environment.
+//	 *          b. Add activation from the goals.
+//	 *          c. Add excitation from internal spreading by the behaviors.
+//	 *          d. Add inhibition.
         environment.grantActivation(this.phi);                                          //phase 3
         
         Set<String> curGoals = environment.getCurrentGoals().keySet();    
@@ -166,12 +158,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	}
         } 
         
+//   	 *  5.  Normalization Phase:
+//   		 *          a. Scan the streams.
+//   		 *          b. Normalize
         if(cycle != 1){
             normalizer.scan();                                                  //phase 5
             normalizer.normalize(this.pi); 
             normalizer.scan();
         }  
-        
         
         for(Stream s: streams){				//phase 6
         	for(Behavior b: s.getBehaviors()){

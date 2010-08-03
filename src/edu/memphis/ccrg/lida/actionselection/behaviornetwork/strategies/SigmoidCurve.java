@@ -5,9 +5,8 @@
  * Created on June 9, 2004, 7:53 PM
  */
 
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ReinforcementCurve;
 
 public class SigmoidCurve implements ReinforcementCurve
 {

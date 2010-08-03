@@ -20,13 +20,13 @@ import org.w3c.dom.*;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Goal;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ProtectedGoal;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ReinforcementCurve;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Reinforcer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ReinforcementCurve;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforcer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SigmoidCurve;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -193,7 +193,7 @@ public class Parser
                             else if(c.getAttribute(ParserTags.TYPE).trim().compareToIgnoreCase(ParserTags.EXPECTATION) == 0)
                             {
                                 codelet.setType(SidneyCodelet.EXPECTATION);                                
-                                behavior.addExpectationCodelet(codelet);
+                                behavior.addExpectationCodelet((ExpectationCodelet) codelet);
                             }                            
                             Element prs = (Element)c.getElementsByTagName(ParserTags.PROPERTIES).item(0);
                             if(prs != null)

@@ -10,6 +10,8 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.ExpectationCodelet;
+
 public class Behavior
 {   
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Behavior");
@@ -29,7 +31,7 @@ public class Behavior
     private Hashtable conflictors;
     
     private LinkedList behaviorCodelets;
-    private LinkedList expectationCodelets;
+    private LinkedList<ExpectationCodelet> expectationCodelets;
     
     private Stream stream;
     
@@ -50,7 +52,7 @@ public class Behavior
             conflictors = new Hashtable();
             
             behaviorCodelets = new LinkedList();
-            expectationCodelets = new LinkedList();
+            expectationCodelets = new LinkedList<ExpectationCodelet>();
             
             stream = null;
             
@@ -387,7 +389,7 @@ public class Behavior
             throw new NullPointerException();
     }    
     
-    public void addExpectationCodelet(Object expectationCodelet) throws NullPointerException
+    public void addExpectationCodelet(ExpectationCodelet expectationCodelet) throws NullPointerException
     {
         if(expectationCodelet != null)
         {
@@ -451,8 +453,7 @@ public class Behavior
         return behaviorCodelets;
     } 
     
-    public LinkedList getExpectationCodelets()
-    {
+    public List<ExpectationCodelet> getExpectationCodelets(){
         return expectationCodelets;
     }
     
