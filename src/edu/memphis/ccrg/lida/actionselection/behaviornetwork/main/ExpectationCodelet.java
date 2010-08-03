@@ -4,13 +4,11 @@
  * Created on December 26, 2003, 3:28 PM
  */
 
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 
 import java.util.*;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class ExpectationCodelet extends SidneyCodelet
@@ -34,7 +32,7 @@ public class ExpectationCodelet extends SidneyCodelet
     }
     
     /**
-     * Iterate throught the add list of this codelets behavior.
+     * Ryan says: Iterate throught the add list of this codelets behavior.
      * If a proposition in the add list matches the current state then increment this codelets performance
      * else decrement it.
      * 

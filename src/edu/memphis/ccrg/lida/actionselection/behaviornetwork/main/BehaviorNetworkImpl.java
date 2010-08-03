@@ -8,6 +8,9 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -16,6 +19,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforcer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.Normalizer;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
@@ -43,11 +47,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
     
     /**
-     * Creates links between behaviors
-     */
-    private Linker linker = new Linker(this);
-    
-    /**
      * utility to normalize
      */
     private Normalizer normalizer = new Normalizer(streams);
@@ -64,9 +63,306 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     public BehaviorNetworkImpl() {
         setConstants(0, 0, 0, 0, 0, 0);     
-        linker.buildLinks();
+        
+        buildEnvironmentalLinks();        
+        buildGoalLinks();        
+        buildBehaviorLinks();
+    }
+    
+    public void buildEnvironmentalLinks() throws NullPointerException
+    {        
+        logger.info("ENVIRONMENTAL LINKS");
+        
+        Iterator iterator = getStreams().iterator();                        //iterator for all streams
+        while(iterator.hasNext())
+        {
+            Iterator li = ((Stream)(iterator.next())).getBehaviors().iterator();//iterator for a stream
+            while(li.hasNext())
+            {
+                Behavior behavior = (Behavior)li.next();
+                Iterator lj = behavior.getPreconditions().keySet().iterator();  //iterator for a behavior
+                
+                while(lj.hasNext())
+                {   
+                    Object proposition = lj.next();                    
+                    
+                    LinkedList behaviors = (LinkedList)getPropositions().get(proposition);
+                    if(behaviors == null)
+                    {
+                        behaviors = new LinkedList();
+                        behaviors.add(behavior);
+                        getPropositions().put((Linkable) proposition, behaviors);
+                    }
+                    else                        
+                        behaviors.add(behavior);                                                                        
+                }
+            }
+        }
+ //       report(null, net.getPropositions());
+        
+        logger.info("\n");
+    }
+    
+    public void buildGoalLinks(){
+        logger.info("GOAL LINKS");
+        
+        logger.info("EXCITATORY GOAL LINKS");
+        buildExcitatoryGoalLinks();        
+        
+        Iterator i = getGoals().iterator();
+        while(i.hasNext())
+        {
+            Goal goal = (Goal)i.next();
+            report("GOAL " + goal.getName(), goal.getExcitatoryPropositions());
+        }
+        logger.info("");
+        
+        logger.info("INHIBITATORY GOAL LINKS");
+        buildInhibitoryGoalLinks();        
+        
+        i = getGoals().iterator();
+        while(i.hasNext())
+        {
+            Goal goal = (Goal)i.next();
+            if(goal instanceof ProtectedGoal)
+                report("GOAL " + goal.getName(), ((ProtectedGoal)goal).getInhibitoryPropositions());
+        }
+        logger.info("\n");
+    }
+    
+    public void buildExcitatoryGoalLinks()
+    {                                
+        Iterator iterator = getStreams().iterator();                        //iterate over streams
+        while(iterator.hasNext())
+        {            
+            Iterator li = ((Stream)(iterator.next())).getBehaviors().iterator();//iterator gor a stream
+            while(li.hasNext())
+            {
+                Behavior behavior = (Behavior)li.next();                
+                Iterator lj = behavior.getAddList().iterator();                 //iterator the add list for a behavior
+                
+                while(lj.hasNext())
+                {   
+                    Object proposition = lj.next();
+                    
+                    Iterator lk = getGoals().iterator();                    //iterator forr all goals
+                    while(lk.hasNext())
+                    {
+                        Goal goal = (Goal)lk.next();                        
+                        Hashtable propositions = goal.getExcitatoryPropositions();
+                        
+                        if(propositions.containsKey(proposition))
+                        {
+                            LinkedList behaviors = (LinkedList)propositions.get(proposition);
+                            if(behaviors == null)
+                            {                                
+                                behaviors = new LinkedList();
+                                behaviors.add(behavior);
+                                propositions.put(proposition, behaviors);
+                            }
+                            else
+                            {                             
+                                behaviors.add(behavior);                                                                    
+                            }
+                        }                        
+                    }
+                }
+            }
+        }           
     }
 
+    public void buildInhibitoryGoalLinks()
+    {                                        
+        Iterator iterator = getStreams().iterator();                        //iterate over streams
+        while(iterator.hasNext())
+        {            
+            Iterator li = ((Stream)(iterator.next())).getBehaviors().iterator();//iterate over a stream
+            while(li.hasNext())
+            {
+                Behavior behavior = (Behavior)li.next();                
+                Iterator lj = behavior.getDeleteList().iterator();              //iterate over the delete list
+                while(lj.hasNext())
+                {   
+                    Object proposition = lj.next();
+                    
+                    Iterator lk = getGoals().iterator();                    //iterate over the goals
+                    while(lk.hasNext())
+                    {
+                        Object goal = lk.next();
+                        if(goal instanceof ProtectedGoal)
+                        {                            
+                            Hashtable propositions = ((ProtectedGoal)goal).getInhibitoryPropositions();
+                                                        
+                            if(((ProtectedGoal)goal).getExcitatoryPropositions().containsKey(proposition))
+                            {
+                                LinkedList behaviors = (LinkedList)propositions.get(proposition);
+                                if(behaviors == null)
+                                {
+                                    behaviors = new LinkedList();
+                                    behaviors.add(behavior);
+                                    propositions.put(proposition, behaviors);
+                                }
+                                else
+                                {
+                                    behaviors.add(behavior);                                    
+                                }
+                            }                            
+                        }                        
+                    }
+                }
+            }
+        }   
+    }
+    
+    public void buildBehaviorLinks()
+    {
+        logger.info("BEHAVIOR LINKS");
+        
+        Iterator iterator = getStreams().iterator();                        //iterate over all streams
+        while(iterator.hasNext())
+        {
+            Stream currentStream = (Stream)iterator.next();
+            
+            Iterator li = currentStream.getBehaviors().iterator();              //iterate over a single stream
+            while(li.hasNext())
+            {
+                Behavior firstBehavior = (Behavior)li.next();                                  
+                Iterator lj = currentStream.getBehaviors().iterator();          //iterate over current stream
+                while(lj.hasNext())
+                {
+                    Behavior secondBehavior = (Behavior)lj.next();
+                    if(!firstBehavior.equals(secondBehavior))
+                    {
+                        buildSuccessorLinks(firstBehavior, secondBehavior);
+                        buildPredecessorLinks(firstBehavior, secondBehavior);
+                        buildConflictorLinks(firstBehavior, secondBehavior);
+                    }
+                }
+                logger.info("BEHAVIOR : " + firstBehavior);
+                logger.info("SUCCESSOR LINKS");
+                report(null, firstBehavior.getSuccessors());
+                logger.info("");
+                
+                logger.info("PREDECESSOR LINKS");
+                report(null, firstBehavior.getPredecessors());
+                logger.info("");
+                
+                logger.info("CONFLICTOR LINKS");
+                report(null, firstBehavior.getConflictors());
+                logger.info("\n");
+            }
+        }   
+    }
+    
+    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior)
+    {                
+        
+        Iterator iterator = firstBehavior.getAddList().iterator();              //iterate over add propositions of first behavior
+        while(iterator.hasNext())
+        {   
+            Object addProposition = iterator.next();
+            Iterator li = secondBehavior.getPreconditions().keySet().iterator();//iterate over preconditions of second behavior
+            while(li.hasNext())
+            {   
+                if(addProposition.equals(li.next()))
+                {
+                    LinkedList behaviors = (LinkedList)firstBehavior.getSuccessors().get(addProposition);
+                    if(behaviors == null)
+                    {
+                        behaviors = new LinkedList();
+                        behaviors.add(secondBehavior);
+                        firstBehavior.getSuccessors().put(addProposition, behaviors);
+                    }
+                    else
+                    {
+                        if(!behaviors.contains(secondBehavior))
+                        {
+                            behaviors.add(secondBehavior);
+                        }
+                    }
+                }
+            }
+        }       
+    }
+    
+    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior)
+    {                        
+        Iterator iterator = firstBehavior.getPreconditions().keySet().iterator();        //iterate over preconditon of first behavior
+        while(iterator.hasNext())
+        {   
+            Object precondition = iterator.next();
+            Iterator li = secondBehavior.getAddList().iterator();               //iterate over addlist of second behavior
+            while(li.hasNext())
+            {   
+                if(precondition.equals(li.next()))
+                {
+                    LinkedList behaviors = (LinkedList)firstBehavior.getPredecessors().get(precondition);
+                    if(behaviors == null)
+                    {
+                        behaviors = new LinkedList();
+                        behaviors.add(secondBehavior);
+                        firstBehavior.getPredecessors().put(precondition, behaviors);
+                    }
+                    else
+                    {
+                        if(!behaviors.contains(secondBehavior))
+                        {
+                            behaviors.add(secondBehavior);
+                        }
+                    }
+                }
+            }
+        }               
+    }
+    
+    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior)
+    {                        
+        Iterator iterator = firstBehavior.getPreconditions().keySet().iterator();        //iterate over preconditon of first behavior
+        while(iterator.hasNext())
+        {   
+            Object precondition = iterator.next();
+            Iterator li = secondBehavior.getDeleteList().iterator();               //iterate over delete list of second behavior
+            while(li.hasNext())
+            {   
+                if(precondition.equals(li.next()))
+                {
+                    LinkedList behaviors = (LinkedList)firstBehavior.getConflictors().get(precondition);
+                    if(behaviors == null)
+                    {
+                        behaviors = new LinkedList();
+                        behaviors.add(secondBehavior);
+                        firstBehavior.getConflictors().put(precondition, behaviors);
+                    }
+                    else
+                    {
+                        if(!behaviors.contains(secondBehavior))
+                        {
+                            behaviors.add(secondBehavior);
+                        }
+                    }
+                }
+            }
+        }                    
+    }
+    
+    private void report(String header, Map<Object,List<Behavior>> links)
+    {
+        if(header != null)
+            logger.info(header);
+        
+        if(links != null)
+        {
+            Iterator i = links.keySet().iterator();
+            while(i.hasNext())
+            {
+                Object proposition = i.next();
+                LinkedList behaviors = (LinkedList)links.get(proposition);
+                
+                logger.info("\t" + proposition + " --> " + behaviors);
+            }
+        }        
+    }
+    
     public Behavior getFiredBehavior(){
         return winner;
     }
@@ -214,13 +510,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //For each behavior, excite it an amount equal to (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
     public void grantActivationFromEnvironment(){
         logger.info("ENVIRONMENT : EXCITATION");
-        
         for(Linkable proposition: currentState.getLinkables()){
-
             List<Behavior> behaviors = propositions.get(proposition);
             double granted = phi / behaviors.size();
             for(Behavior b: behaviors){
-                 
                  b.getPreconditions().put(proposition, new Boolean(true));
                  b.excite(granted / b.getPreconditions().size());       
                  logger.info("\t-->" + b.getName() + " " + granted / b.getPreconditions().size() + " for " + proposition);
@@ -254,9 +547,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             restoreTheta();
     }
     
-    public Linker getLinker(){
-        return linker;
-    }
     public Normalizer getNormalizer(){
         return normalizer;
     }
@@ -383,7 +673,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
 
 	public Map<Linkable, List<Behavior>> getPropositions() {
-		return this.propositions;
+		return propositions;
 	} 
 	
 }//class

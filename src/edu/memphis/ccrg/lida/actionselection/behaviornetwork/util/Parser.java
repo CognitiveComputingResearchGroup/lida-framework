@@ -20,6 +20,7 @@ import org.w3c.dom.*;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Goal;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ProtectedGoal;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;

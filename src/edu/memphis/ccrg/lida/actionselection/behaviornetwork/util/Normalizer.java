@@ -5,13 +5,21 @@
  * Created on February 28, 2004, 3:48 PM
  */
 
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
 import java.util.*;
 import java.util.logging.Logger;
 
-public class Normalizer 
-{         
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
+
+/**
+ * This class basically performs statistics on a list of streams
+ * @author Sidney D'Mello, ryanjmccall
+ *
+ */
+public class Normalizer{
+	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Normalizer");
     private List<Stream> streams;
     
@@ -21,16 +29,9 @@ public class Normalizer
     private double max;        
     private double average;
     
-        
-    public Normalizer(List<Stream> streams) 
-    {        
-        if(streams != null)
-        {
-            this.streams = streams;
-            reset();
-        }
-        else
-            throw new NullPointerException();                
+    public Normalizer(List<Stream> streams){        
+        this.streams = streams;
+        reset();            
     }
     
 
@@ -38,8 +39,7 @@ public class Normalizer
     {                                
         reset();
 
-        if(!streams.isEmpty())
-        {
+        if(!streams.isEmpty()){
             Stream stream = (Stream)streams.get(0);
             if(!stream.getBehaviors().isEmpty())
             {
@@ -48,16 +48,10 @@ public class Normalizer
             }
         }
                 
-        Iterator i = streams.iterator();        
-        while(i.hasNext())
-        {
-            Iterator j = ((Stream)i.next()).getBehaviors().iterator();
-            while(j.hasNext())
-            {
-                Behavior behavior = (Behavior)j.next();                                  
+        for(Stream s: streams){
+            for(Behavior behavior: s.getBehaviors()){   
+            	count ++;
                 double activation = behavior.getAlpha();
-
-                count ++;
                 sum += activation;
                 
                 if(min > activation)
@@ -85,15 +79,10 @@ public class Normalizer
         
         double n_sum = pi * count;
         
-        Iterator i = streams.iterator();        
-        while(i.hasNext())
-        {
-            Iterator j = ((Stream)i.next()).getBehaviors().iterator();
-            while(j.hasNext())
-            {
-                Behavior behavior = (Behavior)j.next();                                
+        for(Stream s: streams){
+            for(Behavior behavior: s.getBehaviors()){   
+            	
                 double activation = behavior.getAlpha();
-                
                 double strength = activation / sum;
                 double n_activation = strength * n_sum;
                 
@@ -111,8 +100,7 @@ public class Normalizer
         report("\nNORMALIZER : ACTIVATION LEVELS AFTER NORMALIZATION");
     }
     
-    public void reset()
-    {                
+    public void reset(){                
         count = 0;
         sum = 0;
         min = 0;
@@ -120,43 +108,30 @@ public class Normalizer
         average = 0;        
     }
     
-    public int getBehaviorCount()
-    {
+    public int getBehaviorCount(){
         return count;
     }
-    
-    public double getTotalActivation()
-    {
+    public double getTotalActivation(){
         return sum;
     }
-    
-    public double getMinimumActivation()
-    {
+    public double getMinimumActivation(){
         return min;
     }
-    
-    public double getMaximumActivation()
-    {
+    public double getMaximumActivation(){
         return max;
     }    
     
-    public double getAverageActivation()
-    {
+    public double getAverageActivation(){
         return average;
     }    
-    
-    private void report(String header)
-    {
+ 
+    private void report(String header){
         logger.info(header);
-        Iterator i = streams.iterator();        
-        while(i.hasNext())
-        {
-            Iterator j = ((Stream)i.next()).getBehaviors().iterator();
-            while(j.hasNext())
-            {
-                Behavior behavior = (Behavior)j.next();
+        for(Stream s: streams)
+            for(Behavior behavior: s.getBehaviors()) 
                 logger.info("\t" + behavior.getName() + "\t" + behavior.getAlpha());
-            }
-        }
-    }
-}
+    }//method
+
+}//class
+
+

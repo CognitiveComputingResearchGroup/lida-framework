@@ -9,6 +9,9 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+
 public class ProtectedGoal extends Goal
 {
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.ProtectedGoal");
@@ -28,7 +31,7 @@ public class ProtectedGoal extends Goal
         inhibitoryPropositions = new Hashtable();
     }
     
-    public void grantActivation(double delta, double gamma, Environment e)
+    public void grantActivation(double delta, double gamma, NodeStructure state)
     {        
         super.grantActivation(gamma);
         
@@ -41,7 +44,7 @@ public class ProtectedGoal extends Goal
             {
                 Object deleteProposition = iterator.next();
                 
-                if(e.getCurrentState().containsKey(deleteProposition))
+                if(state.hasNode((Node) deleteProposition))
                 {
                     LinkedList behaviors = (LinkedList)inhibitoryPropositions.get(deleteProposition);
 

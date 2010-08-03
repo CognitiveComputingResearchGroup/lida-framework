@@ -10,14 +10,13 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.ExpectationCodelet;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public class Behavior
-{   
+public class Behavior{
+	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Behavior");
 	
     private String name;

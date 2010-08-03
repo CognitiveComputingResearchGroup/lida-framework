@@ -10,8 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 import java.util.*;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.ExpectationCodelet;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class Reinforcer{

@@ -4,9 +4,8 @@
  * Created on December 26, 2003, 3:25 PM
  */
 
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class BehaviorCodelet extends SidneyCodelet{
