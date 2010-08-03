@@ -47,10 +47,6 @@ public class ExpectationCodelet extends SidneyCodelet
         }        
     }                         
     
-    protected void initialize(Hashtable initializationData) 
-    {
-    }
-    
     public double getPerformance()
     {
         return performance;

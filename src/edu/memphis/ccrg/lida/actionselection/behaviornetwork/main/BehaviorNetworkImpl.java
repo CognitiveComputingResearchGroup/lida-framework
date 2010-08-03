@@ -69,6 +69,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         environment.updateState(state);
     }
     
+    
     public void updateGoals(Hashtable goals){
         environment.updateGoals(goals);
     }

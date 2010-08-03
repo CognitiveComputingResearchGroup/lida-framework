@@ -22,11 +22,7 @@ public class WOFSelector
     public WOFSelector(double weights[])
     {
         this.weights = weights;
-        initialize();
-    }
-    
-    private void initialize()
-    {
+
         min = new double[weights.length];
         max = new double[weights.length];
         

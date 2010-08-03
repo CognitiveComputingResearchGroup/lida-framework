@@ -51,8 +51,6 @@ public abstract class SidneyCodelet
     
     public abstract void execute(Environment e);
     
-    protected abstract void initialize(Hashtable initializationData);
-    
     public Behavior getBehavior()
     {
         return behavior;

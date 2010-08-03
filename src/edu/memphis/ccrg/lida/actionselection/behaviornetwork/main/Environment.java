@@ -26,11 +26,15 @@ public class Environment{
 	 *  true propositions as specified by the state.
 	 *
 	 *  The state Hashtable consists of proposition as a key and value, as
-	 *  a value that may be reuired by the winning Behavior as an Object.
+	 *  a value that may be required by the winning Behavior as an Object.
 	 *  
 	 *  For true preconditions with no value: "true" is the value.
 	 *  False preconditions do not appear in the state Hashtable.
-	 */    
+	 */ 
+    
+    //Iterate through the propositions in the current state.
+    //For each proposition get the behaviors indexed by that proposition
+    //For each behavior, excite it an amount equal to (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
     public void grantActivation(double phi){
         logger.info("ENVIRONMENT : EXCITATION");
         
