@@ -12,6 +12,7 @@ import java.util.*;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.ExpectationCodelet;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class Reinforcer{
 	
@@ -20,12 +21,12 @@ public class Reinforcer{
     public Reinforcer() {
     }
     
-    public void reinforce(Behavior behavior, Environment e){
+    public void reinforce(Behavior behavior, NodeStructure currentState){
     	List<ExpectationCodelet> expectationCodelets = behavior.getExpectationCodelets();
         if(!expectationCodelets.isEmpty()){
 	        double fitness = 0;
 	        for(ExpectationCodelet codelet: expectationCodelets){
-	        	codelet.execute(e);
+	        	codelet.execute(currentState);
 	            fitness += codelet.getPerformance();
 	            behavior.reinforce(reinforcement(fitness, behavior.getBeta()));   
 	        } 

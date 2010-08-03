@@ -9,6 +9,8 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+
 public class Linker{    
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Linker");
 	
@@ -50,19 +52,19 @@ public class Linker{
                 {   
                     Object proposition = lj.next();                    
                     
-                    LinkedList behaviors = (LinkedList)net.getEnvironment().getPropositions().get(proposition);
+                    LinkedList behaviors = (LinkedList)net.getPropositions().get(proposition);
                     if(behaviors == null)
                     {
                         behaviors = new LinkedList();
                         behaviors.add(behavior);
-                        net.getEnvironment().getPropositions().put(proposition, behaviors);
+                        net.getPropositions().put((Linkable) proposition, behaviors);
                     }
                     else                        
                         behaviors.add(behavior);                                                                        
                 }
             }
         }
-        report(null, net.getEnvironment().getPropositions());
+ //       report(null, net.getPropositions());
         
         logger.info("\n");
     }

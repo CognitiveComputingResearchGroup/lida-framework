@@ -11,6 +11,7 @@ import java.util.*;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class ExpectationCodelet extends SidneyCodelet
 {        
@@ -27,24 +28,31 @@ public class ExpectationCodelet extends SidneyCodelet
         super(name, SidneyCodelet.EXPECTATION);
     }
     
-    public void execute(Environment e)
+    public void execute(NodeStructure e)
     {
         evaluate(e);
     }
     
-    protected void evaluate(Environment e)
+    /**
+     * Iterate throught the add list of this codelets behavior.
+     * If a proposition in the add list matches the current state then increment this codelets performance
+     * else decrement it.
+     * 
+     * @param e
+     */
+    protected void evaluate(NodeStructure e)
     {
         performance = 0;
                 
-        Iterator li = behavior.getAddList().iterator();
-        while(li.hasNext())
-        {            
-            Object proposition = li.next();
-            if(proposition.equals(e.getCurrentState().get(proposition)))                        
-                performance ++;                        
-            else
-                performance --;
-        }        
+//        Iterator li = behavior.getAddList().iterator();
+//        while(li.hasNext())
+//        {            
+//            Object proposition = li.next();
+//            if(proposition.equals(e.get(proposition)))                        
+//                performance ++;                        
+//            else
+//                performance --;
+//        }        
     }                         
     
     public double getPerformance()

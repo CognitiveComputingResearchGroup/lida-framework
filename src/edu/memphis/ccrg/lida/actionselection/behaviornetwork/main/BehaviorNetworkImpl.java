@@ -7,9 +7,14 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
@@ -18,10 +23,15 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforc
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
-public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{    
+public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener, BroadcastListener{    
 
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     public final double THETA_REDUCTION  = 10;   //percent to reduce the threshold 
@@ -33,7 +43,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double pi;       //mean activation
     private double omega;    //amplification factor for base level activation    
     
-    private Environment environment = new Environment();
     private List<Goal> goals = new ArrayList<Goal>();
     private List<Stream> streams = new ArrayList<Stream>();  
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
@@ -56,6 +65,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double threshold = theta;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
     
+    private NodeStructure currentState = new NodeStructureImpl();
+    
     public BehaviorNetworkImpl() {
         setConstants(0, 0, 0, 0, 0, 0);     
         linker.buildLinks();
@@ -64,14 +75,18 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public Behavior getFiredBehavior(){
         return winner;
     }
-       
-    public void updateState(Hashtable state){
-        environment.updateState(state);
+    
+    public void receiveBroadcast(BroadcastContent bc){
+    	currentState = (NodeStructure) bc;
     }
+	/**
+	 * Theory says receivers of the broadcast should learn from it.
+	 */
+	public void learn(){}
     
     
-    public void updateGoals(Hashtable goals){
-        environment.updateGoals(goals);
+    public void updateGoals(List<Goal> goals){
+        this.goals = goals;
     }
         
     public void run()
@@ -116,7 +131,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         if(winner != null){
             winner.deactivate();  
             winner.resetActivation();
-            reinforcer.reinforce(winner, environment);        
+            reinforcer.reinforce(winner, currentState);        
         }
             
 //   	 *  2.  Initialization Phase:
@@ -132,21 +147,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //	 *          b. Add activation from the goals.
 //	 *          c. Add excitation from internal spreading by the behaviors.
 //	 *          d. Add inhibition.
-        environment.grantActivation(this.phi);                                          //phase 3
+        grantActivationFromEnvironment();                                          //phase 3
         
-        Set<String> curGoals = environment.getCurrentGoals().keySet();    
-        for(String goalName: curGoals){
-            Goal goal = getGoal(goalName);
-            if(goal != null)
-                goal.grantActivation(gamma);
-            else
-                logger.warning("UNRECOGNIZED GOAL : " + goalName);
-        }        
+        for(Goal goal: goals)
+        	goal.grantActivation(gamma);
         
         for(Stream s: streams){
         	for(Behavior b: s.getBehaviors()){
-        		b.spreadExcitation(environment);
-                b.spreadInhibition(this.environment);
+        		b.spreadExcitation(phi);
+                b.spreadInhibition(currentState);
                 //((Behavior)bi.next()).spreadExcitation();
         	}
         }
@@ -188,10 +197,42 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         //phase 8
         //phase 9
         if(winner != null)                                                      
-            winner.prepareToFire(environment);                
+            winner.prepareToFire(currentState);                
        
         report();
     }   //method 
+    
+    private Map<Linkable, List<Behavior>> propositions = new HashMap<Linkable, List<Behavior>>();
+    
+    /*
+	 *  Spreads activation to Behaviors in the propositions Hashtable for
+	 *  true propositions as specified by the state.
+	 *
+	 *  The state Hashtable consists of proposition as a key and value, as
+	 *  a value that may be required by the winning Behavior as an Object.
+	 *  
+	 *  For true preconditions with no value: "true" is the value.
+	 *  False preconditions do not appear in the state Hashtable.
+	 */ 
+    //Iterate through the propositions in the current state.
+    //For each proposition get the behaviors indexed by that proposition
+    //For each behavior, excite it an amount equal to (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
+    public void grantActivationFromEnvironment(){
+        logger.info("ENVIRONMENT : EXCITATION");
+        
+        for(Linkable proposition: currentState.getLinkables()){
+
+            List<Behavior> behaviors = propositions.get(proposition);
+            double granted = phi / behaviors.size();
+            for(Behavior b: behaviors){
+                 
+                 b.getPreconditions().put(proposition, new Boolean(true));
+                 b.excite(granted / b.getPreconditions().size());       
+                 logger.info("\t-->" + b.getName() + " " + granted / b.getPreconditions().size() + " for " + proposition);
+            }
+
+        }
+    }
     
     public void reduceTheta(){
     	//TODO Strategy pattern
@@ -295,10 +336,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		logger.info("CONSTANT-CHANGE: omega:\t" + getOmega() + "--> " + omega);
 		this.omega = omega;
 	}
-         
-    public Environment getEnvironment(){
-        return environment;
-    }
+
     public List<Goal> getGoals(){
         return goals;
     } 
@@ -347,6 +385,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public void receiveScheme(Scheme scheme) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Map<Linkable, List<Behavior>> getPropositions() {
+		return this.propositions;
 	} 
 	
 }//class

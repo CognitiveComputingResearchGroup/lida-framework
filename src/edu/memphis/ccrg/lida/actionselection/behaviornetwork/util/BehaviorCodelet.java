@@ -6,8 +6,8 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Environment;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.SidneyCodelet;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class BehaviorCodelet extends SidneyCodelet{
 	
@@ -20,7 +20,7 @@ public class BehaviorCodelet extends SidneyCodelet{
         super(name, SidneyCodelet.BEHAVIOR);
     }
     
-    public void execute(Environment e) {
+    public void execute(NodeStructure ns) {
     }
 
 }

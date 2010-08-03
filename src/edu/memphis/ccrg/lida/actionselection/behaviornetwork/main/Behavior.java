@@ -11,6 +11,10 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.ExpectationCodelet;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class Behavior
 {   
@@ -103,23 +107,23 @@ public class Behavior
         alpha = 0;
     }
      
-    public void spreadExcitation(Environment e)
+    public void spreadExcitation(double phi)
     {           
         //logger.info("BEHAVIOR : EXCITATION " + name);
         
         if(isActive())
-            spreadSuccessorActivation(e);        
+            spreadSuccessorActivation(phi);        
         else
             spreadPredecessorActivation();                
     }
     
-    public void spreadInhibition(Environment e)
+    public void spreadInhibition(NodeStructure state)
     {
         //logger.info("BEHAVIOR : INHIBITION " + name);
-        spreadConflictorActivation(e);        
+        spreadConflictorActivation(state);        
     }
   
-    public void spreadSuccessorActivation(Environment e)
+    public void spreadSuccessorActivation(double phi)
     {           
         Iterator iterator = successors.keySet().iterator();
         while(iterator.hasNext())
@@ -133,7 +137,7 @@ public class Behavior
                 Behavior successor = (Behavior)li.next();
                 if(!((Boolean)(successor.getPreconditions().get(addProposition))).booleanValue())
                 {
-                    double granted = ((alpha * e.getEnergy()) / Goal.getExcitatoryStrength()) / (behaviors.size() * successor.getPreconditions().size());
+                    double granted = ((alpha * phi) / Goal.getExcitatoryStrength()) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
 
                     logger.info("\t:+" + name + "-->" + granted + " to " +
@@ -170,17 +174,17 @@ public class Behavior
     }
     
     
-    public void spreadConflictorActivation(Environment e)
+    public void spreadConflictorActivation(NodeStructure state)
     {
         double fraction = ProtectedGoal.getInhibitoryStrength() / Goal.getExcitatoryStrength();
         
         Iterator iterator = preconditions.keySet().iterator();
         while(iterator.hasNext())
         {
-            Object precondition = iterator.next();
+            Linkable precondition = (Linkable) iterator.next();
             
             //if(((Boolean)(preconditions.get(precondition))).booleanValue())
-            if(e.isPropositionTrue(precondition))
+            if(state.hasNode((Node) precondition) || state.hasLink((Link) precondition))
             {                             
                 LinkedList behaviors = (LinkedList)conflictors.get(precondition); 
                 if(behaviors != null)
@@ -255,7 +259,7 @@ public class Behavior
         }
     }
     
-    public void prepareToFire(Environment e)
+    public void prepareToFire(NodeStructure state)
     {
         logger.info("BEHAVIOR : PREPARE TO FIRE " + name);
         
@@ -267,7 +271,7 @@ public class Behavior
             while(ci.hasNext())
             {
                 Object name = ci.next();
-                Object value = e.getCurrentState().get(name);
+                Object value = ((Hashtable) state).get(name);
                 if(value != null)
                     codelet.addProperty(name, value );
             }

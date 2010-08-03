@@ -8,6 +8,8 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+
 public abstract class SidneyCodelet 
 {        
     public final static int UNKNOWN     = 0;
@@ -49,7 +51,7 @@ public abstract class SidneyCodelet
             throw new NullPointerException();        
     }
     
-    public abstract void execute(Environment e);
+    public abstract void execute(NodeStructure ns);
     
     public Behavior getBehavior()
     {
