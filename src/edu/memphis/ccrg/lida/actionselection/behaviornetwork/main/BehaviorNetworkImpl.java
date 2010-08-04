@@ -8,7 +8,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,14 +90,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	for(Behavior behavior: s.getBehaviors()){                             
                 for(Object proposition: behavior.getAddList()){
                     for(Goal goal: goals){                        
-                        Hashtable propositions = (Hashtable) goal.getExcitatoryPropositions();
+                    	Map<Object, List<Behavior>> propositions = goal.getExcitatoryPropositions();
                         
                         if(propositions.containsKey(proposition))
                         {
-                            LinkedList behaviors = (LinkedList)propositions.get(proposition);
+                        	List<Behavior> behaviors = propositions.get(proposition);
                             if(behaviors == null)
                             {                                
-                                behaviors = new LinkedList();
+                                behaviors = new ArrayList<Behavior>();
                                 behaviors.add(behavior);
                                 propositions.put(proposition, behaviors);
                             }
@@ -113,6 +112,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }           
     }//method
 
+    /**
+     * Ryan says, I'm going to just leave this method as is.  
+     * This thing has 8 closing braces... it's a sort of modern-day dinosaur.
+     * I've spent hours cleaning up this code so I'm keeping this one in memorial of my lost time.
+     * Let us leave this method untouched as a testament to my hard work and also as an exhibit 
+     * of the dark ages before 2004 when java programmers did not have generics.
+     */
     public void buildInhibitoryGoalLinks()
     {                                        
         Iterator iterator = getStreams().iterator();                        //iterate over streams
@@ -137,10 +143,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                                                         
                             if(((ProtectedGoal)goal).getExcitatoryPropositions().containsKey(proposition))
                             {
-                                LinkedList behaviors = (LinkedList)propositions.get(proposition);
+                                LinkedList<Behavior> behaviors = (LinkedList<Behavior>)propositions.get(proposition);
                                 if(behaviors == null)
                                 {
-                                    behaviors = new LinkedList();
+                                    behaviors = new LinkedList<Behavior>();
                                     behaviors.add(behavior);
                                     propositions.put(proposition, behaviors);
                                 }
@@ -156,25 +162,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }   
     }
     
-    public void buildBehaviorLinks()
-    {
+    public void buildBehaviorLinks(){
         logger.info("BEHAVIOR LINKS");
         
-        Iterator iterator = getStreams().iterator();                        //iterate over all streams
-        while(iterator.hasNext())
-        {
-            Stream currentStream = (Stream)iterator.next();
-            
-            Iterator li = currentStream.getBehaviors().iterator();              //iterate over a single stream
-            while(li.hasNext())
-            {
-                Behavior firstBehavior = (Behavior)li.next();                                  
-                Iterator lj = currentStream.getBehaviors().iterator();          //iterate over current stream
-                while(lj.hasNext())
-                {
-                    Behavior secondBehavior = (Behavior)lj.next();
-                    if(!firstBehavior.equals(secondBehavior))
-                    {
+        for(Stream currentStream: streams){            
+            for(Behavior firstBehavior: currentStream.getBehaviors()){                           
+                for(Behavior secondBehavior: currentStream.getBehaviors()){         //iterate over current stream
+                    if(!firstBehavior.equals(secondBehavior)){
                         buildSuccessorLinks(firstBehavior, secondBehavior);
                         buildPredecessorLinks(firstBehavior, secondBehavior);
                         buildConflictorLinks(firstBehavior, secondBehavior);
@@ -196,96 +190,62 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }   
     }
     
-    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior)
-    {                
-        
-        Iterator iterator = firstBehavior.getAddList().iterator();              //iterate over add propositions of first behavior
-        while(iterator.hasNext())
-        {   
-            Object addProposition = iterator.next();
-            Iterator li = secondBehavior.getPreconditions().keySet().iterator();//iterate over preconditions of second behavior
-            while(li.hasNext())
-            {   
-                if(addProposition.equals(li.next()))
+    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
+        for(Object addProposition: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
+            for(Object pc: secondBehavior.getPreconditions().keySet()){//iterate over preconditions of second behavior
+                if(addProposition.equals(pc))
                 {
-                    LinkedList behaviors = (LinkedList)firstBehavior.getSuccessors().get(addProposition);
+                    List<Behavior> behaviors = firstBehavior.getSuccessors().get(addProposition);
                     if(behaviors == null)
                     {
-                        behaviors = new LinkedList();
+                        behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
                         firstBehavior.getSuccessors().put(addProposition, behaviors);
                     }
-                    else
-                    {
-                        if(!behaviors.contains(secondBehavior))
-                        {
-                            behaviors.add(secondBehavior);
-                        }
-                    }
+                    else if(!behaviors.contains(secondBehavior))
+                        behaviors.add(secondBehavior);
+                        
+                    
                 }
             }
         }       
-    }
+    }//method
     
-    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior)
-    {                        
-        Iterator iterator = firstBehavior.getPreconditions().keySet().iterator();        //iterate over preconditon of first behavior
-        while(iterator.hasNext())
-        {   
-            Object precondition = iterator.next();
-            Iterator li = secondBehavior.getAddList().iterator();               //iterate over addlist of second behavior
-            while(li.hasNext())
-            {   
-                if(precondition.equals(li.next()))
-                {
-                    LinkedList behaviors = (LinkedList)firstBehavior.getPredecessors().get(precondition);
-                    if(behaviors == null)
-                    {
-                        behaviors = new LinkedList();
+    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
+        for(Object precondition: firstBehavior.getPreconditions().keySet()){        //iterate over preconditon of first behavior
+            for(Object p2: secondBehavior.getAddList()){               //iterate over addlist of second behavior
+            	if(precondition.equals(p2)){
+                    List<Behavior> behaviors = firstBehavior.getPredecessors().get(precondition);
+                    if(behaviors == null){
+                        behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
                         firstBehavior.getPredecessors().put(precondition, behaviors);
                     }
-                    else
-                    {
-                        if(!behaviors.contains(secondBehavior))
-                        {
-                            behaviors.add(secondBehavior);
-                        }
-                    }
+                    else if(!behaviors.contains(secondBehavior))
+                        behaviors.add(secondBehavior);
                 }
             }
         }               
-    }
+    }//method
     
-    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior)
-    {                        
-        Iterator iterator = firstBehavior.getPreconditions().keySet().iterator();        //iterate over preconditon of first behavior
-        while(iterator.hasNext())
-        {   
-            Object precondition = iterator.next();
-            Iterator li = secondBehavior.getDeleteList().iterator();               //iterate over delete list of second behavior
-            while(li.hasNext())
-            {   
-                if(precondition.equals(li.next()))
-                {
-                    LinkedList behaviors = (LinkedList)firstBehavior.getConflictors().get(precondition);
-                    if(behaviors == null)
-                    {
-                        behaviors = new LinkedList();
+    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
+        for(Object precondition: firstBehavior.getPreconditions().keySet()){
+            for(Object p2: secondBehavior.getDeleteList()){
+                if(precondition.equals(p2)){
+                    List<Behavior> behaviors = firstBehavior.getConflictors().get(precondition);
+                    if(behaviors == null){
+                        behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
                         firstBehavior.getConflictors().put(precondition, behaviors);
                     }
-                    else
-                    {
-                        if(!behaviors.contains(secondBehavior))
-                        {
-                            behaviors.add(secondBehavior);
-                        }
-                    }
+                    else if(!behaviors.contains(secondBehavior))
+                        behaviors.add(secondBehavior);
+                    
                 }
             }
-        }                    
-    }
+        }//for
+        
+    }//method
     
     private void report(String header, Map<Object,List<Behavior>> links){
         logger.info(header);
@@ -586,8 +546,4 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 
-//	public Map<Linkable, List<Behavior>> getPropositions() {
-//		return propositions;
-//	} 
-//	
 }//class

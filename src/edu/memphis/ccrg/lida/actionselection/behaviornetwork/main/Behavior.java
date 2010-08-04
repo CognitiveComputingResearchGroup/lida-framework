@@ -12,9 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class Behavior{
 	
@@ -89,18 +89,11 @@ public class Behavior{
     }
   
     public void spreadSuccessorActivation(double phi, double gamma){           
-        Iterator iterator = successors.keySet().iterator();
-        while(iterator.hasNext())
-        {
-            Object addProposition = iterator.next();
-            LinkedList behaviors = (LinkedList)successors.get(addProposition);
-
-            Iterator li = behaviors.iterator();                
-            while(li.hasNext())
-            {                               
-                Behavior successor = (Behavior)li.next();
-                if(!((Boolean)(successor.getPreconditions().get(addProposition))).booleanValue())
-                {
+        for(Object addProposition: successors.keySet()){
+            List<Behavior> behaviors = successors.get(addProposition);
+            for(Behavior successor: behaviors){
+                if(!((Boolean)(successor.getPreconditions().get(addProposition))).booleanValue()){
+                	//TODO double check this
                     double granted = ((alpha * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
 
@@ -109,109 +102,74 @@ public class Behavior{
                 }                
             }
         }        
-    }
+    }//method
     
-    public void spreadPredecessorActivation()
-    {             
-        Iterator iterator = preconditions.keySet().iterator();
-        while(iterator.hasNext())
-        {
-            Object precondition = iterator.next();
-            if(!((Boolean)(preconditions.get(precondition))).booleanValue())
-            {                      
-                LinkedList behaviors = (LinkedList)predecessors.get(precondition);                                
-                if(behaviors != null)
-                {
-                    Iterator li = behaviors.iterator();                    
-                    while(li.hasNext())
-                    {
-                        Behavior predecessor = (Behavior)li.next();                                              
-                        double granted = (alpha / predecessor.getAddList().size())/behaviors.size();                        
-                        predecessor.excite(granted);
-
-                        logger.info("\t:+" + alpha + " " + name + "<--" + granted + " to " +
+    public void spreadPredecessorActivation(){             
+        for(Object precondition: preconditions.keySet()){
+        	boolean b = ((Boolean)(preconditions.get(precondition))).booleanValue();
+            if(b == false){
+            	List<Behavior> behaviors = predecessors.get(precondition);     
+            	for(Behavior predecessor: behaviors){
+            		double granted = (alpha / predecessor.getAddList().size())/behaviors.size();                        
+                    predecessor.excite(granted);
+                    logger.info("\t:+" + alpha + " " + name + "<--" + granted + " to " +
                                         predecessor + " for " + precondition);
-                    }
+                    
                 }
             }
         }        
     }
     
-    
-    public void spreadConflictorActivation(NodeStructure state, double gamma, double delta)
-    {
+    //TODO Double check I converted this monster correctly
+    public void spreadConflictorActivation(NodeStructure state, double gamma, double delta){
         double fraction = delta / gamma;
-        
-        Iterator iterator = preconditions.keySet().iterator();
-        while(iterator.hasNext())
-        {
-            Linkable precondition = (Linkable) iterator.next();
-            
+        for(Object precondition: preconditions.keySet()){
             //if(((Boolean)(preconditions.get(precondition))).booleanValue())
-            if(state.hasNode((Node) precondition) || state.hasLink((Link) precondition))
-            {                             
-                LinkedList behaviors = (LinkedList)conflictors.get(precondition); 
-                if(behaviors != null)
-                {
-                    Iterator li = behaviors.iterator();                    
-                                
-                    while(li.hasNext())
-                    {
-                        boolean mutualConflict = false;
-                        Behavior conflictor = (Behavior)li.next();
-                        double inhibited = (alpha * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+            if(state.hasNode((Node) precondition) || state.hasLink((Link) precondition)){
+                List<Behavior> behaviors = conflictors.get(precondition); 
+                for(Behavior conflictor: behaviors){
+                	boolean mutualConflict = false;
+                    double inhibited = (alpha * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
-                        Iterator lj = conflictor.getPreconditions().keySet().iterator();
-                        while(lj.hasNext() && !mutualConflict)
-                        {
-                            Object conflictorPreCondition = lj.next();
-                            if(((Boolean)conflictor.getPreconditions().get(conflictorPreCondition)).booleanValue())
-                            {
-                                Iterator lk = deleteList.iterator();
-                                while(lk.hasNext() && !mutualConflict)
-                                {
-                                    if(conflictorPreCondition.equals(lk.next()))
-                                    {
-                                        mutualConflict = true;
-                                    }
-                                }
-                            }
-                        }    
+                    Set<Object> preconds = conflictor.getPreconditions().keySet();
+                    for(Object conflictorPreCondition: preconds){
+                    	Boolean b2 = conflictor.getPreconditions().get(conflictorPreCondition);
+                    	if(b2.booleanValue() == true){
+                    		for(Object o2: deleteList){
+                    			if(conflictorPreCondition.equals(o2)){
+                    				mutualConflict = true;
+                    				break;
+                    			}
+                    		}
+                    	}
                         if(mutualConflict)
-                        {
-                            //System.out.println("Mutual conflict detected");
-                            if(conflictor.getAlpha() < this.getAlpha())
-                            {
+                        	break;
+                    }   
+                    if(mutualConflict){
+                        if(conflictor.getAlpha() < this.getAlpha()){
                                 conflictor.inhibit(inhibited);
                                 logger.info("\t:-" + name + "---" + 
                                                 inhibited + " to " + conflictor 
                                                 + " for " + precondition);                                
-                            }
                         }
-                        else
-                        {
-                            //System.out.println("No Mutual conflict detected");
+                    }else{
                             conflictor.inhibit(inhibited);
                             logger.info("\t:-" + name + "---" + inhibited + 
                                             " to " + conflictor + " for " + precondition);                                
-                        }
                     }
-                }
+                    
+                }//for behaviors
             }                
-        }        
-    }    
+        }//for preconditions        
+    }//method    
     
-    public boolean isActive()
-    {
-        boolean active = true;
-        
-        Iterator iterator = preconditions.keySet().iterator();
-        while(iterator.hasNext() && active)        
-        {
-            if(!((Boolean)preconditions.get(iterator.next())).booleanValue())
-                active = false;
+    public boolean isActive(){
+        for(Object o: preconditions.keySet()){
+        	boolean b = ((Boolean)preconditions.get(o)).booleanValue();
+        	if(b == false)
+        		return false;
         }
-        return active;
+        return true;
     }    
         
     public void deactivate(){                
@@ -222,15 +180,11 @@ public class Behavior{
     public void prepareToFire(NodeStructure state){
         logger.info("BEHAVIOR : PREPARE TO FIRE " + name);
         
-        Iterator bi = behaviorCodelets.iterator();
-        while(bi.hasNext())
-        {
-            SidneyCodelet codelet = (SidneyCodelet)bi.next();
-            Iterator ci = ((Map) codelet.getProperties()).keySet().iterator();
-            while(ci.hasNext())
-            {
-                Object name = ci.next();
+        for(BehaviorCodelet codelet: behaviorCodelets){
+        	Map<Object, Object> properties = codelet.getProperties();
+            for(Object name: properties.keySet()){
                 Object value = ((Hashtable) state).get(name);
+                //TODO ???? Check original code.
                 if(value != null)
                     codelet.addProperty(name, value );
             }
@@ -238,122 +192,60 @@ public class Behavior{
     }
     
 // start add methods    
-    public void addPrecondition(Object precondition) throws NullPointerException
-    {
-        if(precondition != null)
-        {
-            if(!preconditions.containsKey(precondition))
+    public void addPrecondition(Object precondition){
+        if(precondition != null && !preconditions.containsKey(precondition))
                 preconditions.put(precondition, new Boolean(false));            
-        }
-        else
-            throw new NullPointerException();
     }
     
-    public void addAddCondition(Object addCondition) throws NullPointerException
-    {    
-        if(addCondition != null)
-        {
-            if(!addList.contains(addCondition))
-                addList.add(addCondition);
-        }
-        else
-            throw new NullPointerException();
+    public void addAddCondition(Object addCondition){
+    	addList.add(addCondition);
     }
     
-    public void addDeleteCondition(Object deleteCondition) throws NullPointerException
-    {    
-        if(deleteCondition != null)
-        {
-            if(!deleteList.contains(deleteCondition))
-                deleteList.add(deleteCondition);
-        }
-        else
-            throw new NullPointerException();
+    public void addDeleteCondition(Object deleteCondition){
+    	deleteList.add(deleteCondition);
     }    
     
-    public void addPredecessor(Object precondition, Behavior predecessor) throws NullPointerException
-    {
-        if(precondition != null && predecessor != null)
-        {
-            LinkedList list = (LinkedList)predecessors.get(precondition);            
-            if(list == null)
-            {
-                list = new LinkedList();
-                list.add(predecessor);
+    public void addPredecessor(Object precondition, Behavior predecessor){
+        if(precondition != null && predecessor != null){
+            List<Behavior> list = predecessors.get(precondition);            
+            if(list == null){
+                list = new ArrayList<Behavior>();
                 predecessors.put(precondition, list);
             }
-            else
-            {
-                if(!list.contains(predecessor))                
-                    list.add(predecessor);                                    
-            }
+            list.add(predecessor);
         }
         else
-            throw new NullPointerException();
+            logger.log(Level.WARNING, "", LidaTaskManager.getActualTick());
     } 
     
-    public void addSuccessor(Object addProposition, Behavior successor) throws NullPointerException
-    {
-        if(addProposition != null && successor != null)
-        {
-            LinkedList list = (LinkedList)successors.get(addProposition);
-            if(list == null)
-            {              
-                list = new LinkedList();
-                list.add(successor);
+    public void addSuccessor(Object addProposition, Behavior successor){
+        if(addProposition != null && successor != null){
+            List<Behavior> list = successors.get(addProposition);
+            if(list == null){              
+                list = new ArrayList<Behavior>();
                 successors.put(addProposition, list);
             }
-            else
-            {                
-                if(!list.contains(successor))                
-                    list.add(successor);                                    
-            }
+            list.add(successor);
         }
-        else
-            throw new NullPointerException();
     }
     
-    public void addConflictor(Object precondition, Behavior conflictor) throws NullPointerException
-    {
-        if(precondition != null && conflictor != null)
-        {
-            LinkedList list = (LinkedList)conflictors.get(precondition);
-            if(list == null)
-            {
-                list = new LinkedList();
-                list.add(conflictor);
+    public void addConflictor(Object precondition, Behavior conflictor){
+        if(precondition != null && conflictor != null){
+            List<Behavior> list = conflictors.get(precondition);
+            if(list == null){
+                list = new ArrayList<Behavior>();
                 conflictors.put(precondition, list);
             }
-            else
-            {
-                if(!list.contains(conflictor))
-                    list.add(conflictor);
-            }
+            list.add(conflictor);            
         }
-        else
-            throw new NullPointerException();
     }
     
-    public void addBehaviorCodelet(BehaviorCodelet behaviorCodelet) throws NullPointerException
-    {
-        if(behaviorCodelet != null)
-        {
-            if(!behaviorCodelets.contains(behaviorCodelet))
-                behaviorCodelets.add(behaviorCodelet);
-        }
-        else
-            throw new NullPointerException();
+    public void addBehaviorCodelet(BehaviorCodelet behaviorCodelet){
+    	behaviorCodelets.add(behaviorCodelet);
     }    
     
-    public void addExpectationCodelet(ExpectationCodelet expectationCodelet) throws NullPointerException
-    {
-        if(expectationCodelet != null)
-        {
-            if(!expectationCodelets.contains(expectationCodelet))
-                expectationCodelets.add(expectationCodelet);
-        }
-        else
-            throw new NullPointerException();
+    public void addExpectationCodelet(ExpectationCodelet expectationCodelet){
+    	expectationCodelets.add(expectationCodelet);
     }     
 // end add methods    
     
@@ -379,7 +271,7 @@ public class Behavior{
         return preconditions;
     }
     
-    public List getAddList()
+    public List<Object> getAddList()
     {
         return addList;
     }
@@ -404,161 +296,87 @@ public class Behavior{
         return conflictors;
     }
         
-    public List<BehaviorCodelet> getBehaviorCodelets()
-    {
+    public List<BehaviorCodelet> getBehaviorCodelets(){
         return behaviorCodelets;
     } 
-    
     public List<ExpectationCodelet> getExpectationCodelets(){
         return expectationCodelets;
     }
     
-    private Stream getStream()
-    {
+    private Stream getStream(){
         return stream;
     }
 //end get methods    
     
 //start set methods    
     
-    public void setPreconditions(Hashtable preconditions)
-                                throws NullPointerException
-                                 
-    {
-        if(preconditions != null)
-            this.preconditions = preconditions;
-        else
-            throw new NullPointerException();
+    public void setPreconditions(Map<Object, Boolean> preconditions){
+    	this.preconditions = preconditions;
     }
     
-    public void setAddList(LinkedList addList) throws NullPointerException                                 
-    {
-        if(addList != null)
-            this.addList = addList;
-        else
-            throw new NullPointerException();
+    public void setAddList(List<Object> addList){
+    	this.addList = addList;
     } 
     
-    public void setDeleteList(LinkedList deleteList) throws NullPointerException                                 
-    {
-        if(deleteList != null)
-            this.deleteList = deleteList;
-        else
-            throw new NullPointerException();
+    public void setDeleteList(List<Object> deleteList){
+    	this.deleteList = deleteList;
     }
     
-    public void setPredecessors(Hashtable predecessors) 
-                                 throws NullPointerException
-    {
-        if(predecessors != null)
-            this.predecessors = predecessors;
-        else
-            throw new NullPointerException();
+    public void setPredecessors(Map<Object, List<Behavior>> predecessors){
+    	this.predecessors = predecessors;
     }    
     
-    public void setSuccesors(Hashtable successors)
-                                 throws NullPointerException
-    {
-        if(successors != null)
-            this.successors = successors;
-        else
-            throw new NullPointerException();
+    public void setSuccesors(Map<Object, List<Behavior>> successors){
+    	this.successors = successors;
     }    
     
-    public void setConflictors(Hashtable conflictors) 
-                                 throws NullPointerException
-    {
-        if(conflictors != null)
-            this.conflictors = conflictors;
-        else
-            throw new NullPointerException();
+    public void setConflictors(Map<Object, List<Behavior>> conflictors){
+    	this.conflictors = conflictors;
     }    
     
-    public void setBehaviorCodelets(LinkedList behaviorCodelets)
-                                 throws NullPointerException
-    {
-        if(behaviorCodelets != null)
-            this.behaviorCodelets = behaviorCodelets;
-        else
-            throw new NullPointerException();
+    public void setBehaviorCodelets(List<BehaviorCodelet> behaviorCodelets){
+    	this.behaviorCodelets = behaviorCodelets;
     }
     
-    public void setExpectationCodelets(LinkedList expectationCodelets)
-                                 throws NullPointerException
-    {
-        if(expectationCodelets != null)
-            this.expectationCodelets = expectationCodelets;
-        else
-            throw new NullPointerException();
+    public void setExpectationCodelets(List<ExpectationCodelet> expectationCodelets){
+    	this.expectationCodelets = expectationCodelets;
     }
     
-    public void setStream(Stream stream)throws NullPointerException                                 
-    {
-        if(stream != null)
-            this.stream = stream;
-        else
-            throw new NullPointerException();
+    public void setStream(Stream stream){
+    	this.stream = stream;
     }    
-// end of set methods
     
-    public SidneyCodelet getCodelet(String name) throws NullPointerException
-    {
+    public SidneyCodelet getCodelet(String name){
         SidneyCodelet codelet = getBehaviorCodelet(name);
-        
-        if(codelet == null)
-            codelet = getExpectationCodelet(name);
-        
-        return codelet;        
-    }
-    
-    
-    public SidneyCodelet getBehaviorCodelet(String name) throws NullPointerException
-    {
-        SidneyCodelet codelet = null;
-        if(name != null)
-        {
-            ListIterator li = behaviorCodelets.listIterator();
-            while(li.hasNext() && codelet == null)
-            {
-                if(((SidneyCodelet)li.next()).getName().compareTo(name) == 0)
-                    codelet = (SidneyCodelet)li.previous();
-            }
-        }
+        if(codelet != null)
+        	return codelet;
         else
-            throw new NullPointerException();
-        
-        return codelet;            
+            return getExpectationCodelet(name);    
     }
     
-    public SidneyCodelet getExpectationCodelet(String name) throws NullPointerException
-    {
-        SidneyCodelet codelet = null;
-        if(name != null)
-        {
-            ListIterator li = expectationCodelets.listIterator();
-            while(li.hasNext() && codelet == null)
-            {
-                if(((SidneyCodelet)li.next()).getName().compareTo(name) == 0)
-                    codelet = (SidneyCodelet)li.previous();
-            }
-        }
-        else
-            throw new NullPointerException();
-        
-        return codelet;            
+    public SidneyCodelet getBehaviorCodelet(String name){
+    	for(SidneyCodelet sc: behaviorCodelets)
+            if(sc.getName().compareTo(name) == 0)
+            	return sc;
+        return null;            
     }
     
-    public void reset()
-    {
+    public SidneyCodelet getExpectationCodelet(String name){
+    	for(SidneyCodelet sc: expectationCodelets)
+            if(sc.getName().compareTo(name) == 0)
+            	return sc;
+        return null; 
+    }
+    
+    public void reset(){
         alpha = 0;
         beta = 0;
         incoming = 0;        
         deactivate();
     }
     
-    public String toString()
-    {
-        return name;
+    public String toString(){
+    	return name;
     }
 
 	public long getActionId() {
@@ -566,8 +384,6 @@ public class Behavior{
 		return 0;
 	}
     
-    
-//end set methods    
 }
 
 

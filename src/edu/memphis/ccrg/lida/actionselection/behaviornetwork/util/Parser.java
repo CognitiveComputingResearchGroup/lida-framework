@@ -200,7 +200,7 @@ public class Parser
                             Element prs = (Element)c.getElementsByTagName(ParserTags.PROPERTIES).item(0);
                             if(prs != null)
                             {                                
-                                Hashtable properties = new Hashtable();                                
+                                Hashtable<Object, Object> properties = new Hashtable<Object, Object>();                                
                                 logger.info("\t\t\t\t\t\t" + prs.getTagName());
                         
                                 NodeList prl = prs.getElementsByTagName(ParserTags.PROPERTY);           //iterate over properties
