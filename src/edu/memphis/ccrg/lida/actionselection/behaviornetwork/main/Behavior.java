@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -21,107 +22,73 @@ public class Behavior{
 	
     private String name;
 
-    private double alpha;    
-    private double beta; 
-    private double incoming;
+    private double alpha = 0.0;    
+    private double beta = 0.0; 
+    private double incoming = 0.0;
  
-    private Map<Object, Boolean> preconditions;
-    private List<Object> addList;
-    private List<Object> deleteList;        
+    private Map<Object, Boolean> preconditions = new HashMap<Object, Boolean>();
+    private List<Object> addList = new ArrayList<Object>();
+    private List<Object> deleteList = new ArrayList<Object>();        
     
-    private Map<Object, List<Behavior>> predecessors;
-    private Map<Object, List<Behavior>> successors;
-    private Map<Object, List<Behavior>> conflictors;
+    private Map<Object, List<Behavior>> predecessors = new HashMap<Object, List<Behavior>>();
+    private Map<Object, List<Behavior>> successors = new HashMap<Object, List<Behavior>>();
+    private Map<Object, List<Behavior>> conflictors = new HashMap<Object, List<Behavior>>();
     
-    private List<BehaviorCodelet> behaviorCodelets;
-    private List<ExpectationCodelet> expectationCodelets;
+    private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
+    private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
    
-    private Stream stream;
+    private Stream stream = null;
     
-    public Behavior(String name) throws NullPointerException
-    {
-        if(name != null)
-        {
-            this.name = name;                        
-            
-            preconditions = new Hashtable();
-            addList = new LinkedList();
-            deleteList = new LinkedList();
-            
-            predecessors = new Hashtable();
-            successors = new Hashtable();
-            conflictors = new Hashtable();
-            
-            behaviorCodelets = new LinkedList();
-            expectationCodelets = new LinkedList<ExpectationCodelet>();
-            
-            stream = null;
-            
-            reset();
-        }
-        else
-            throw new NullPointerException();
+    public Behavior(String name){
+    	this.name = name;                 
+        deactivate();
     }
         
-    public void excite(double excitation)
-    {        
+    public void excite(double excitation){        
         incoming += Math.abs(excitation);
     }
-    
-    public void inhibit(double inhibition)
-    {       
+    public void inhibit(double inhibition){       
         incoming -= Math.abs(inhibition);                 
     }
     
-    public void reinforce(double reinforcement)
-    {
+    public void reinforce(double reinforcement){
         if(reinforcement >= 0 && reinforcement <= 1)
             beta = reinforcement;
         else
-            throw new IllegalArgumentException("Reinforcement must be 0 <= " +
-                                               "reinforcement <= 1 " + 
-                                               reinforcement); 
+        	logger.log(Level.WARNING, "Reinforcement must be between 0 and 1 " + reinforcement);
     }
     
-    public void merge(double omega)
-    {        
+    public void merge(double omega){        
         alpha = alpha + (omega * beta) + incoming;
         if(alpha < 0)
             alpha = 0;
-        
         incoming = 0;        
     }
     
-    public void decay(double alpha)
-    {
+    public void decay(double alpha){
         this.alpha = alpha;
         if(alpha < 0)
             alpha = 0;
     }
     
-    public void resetActivation()
-    {
+    public void resetActivation(){
         alpha = 0;
     }
      
-    public void spreadExcitation(double phi)
-    {           
+    public void spreadExcitation(double phi, double gamma){           
         //logger.info("BEHAVIOR : EXCITATION " + name);
-        
         if(isActive())
-            spreadSuccessorActivation(phi);        
+            spreadSuccessorActivation(phi, gamma);        
         else
             spreadPredecessorActivation();                
     }
     
-    public void spreadInhibition(NodeStructure state)
-    {
+    public void spreadInhibition(NodeStructure state, double gamma, double delta){
         //logger.info("BEHAVIOR : INHIBITION " + name);
-        spreadConflictorActivation(state);        
+        spreadConflictorActivation(state, gamma, delta);        
     }
   
-    public void spreadSuccessorActivation(double phi)
-    {           
+    public void spreadSuccessorActivation(double phi, double gamma){           
         Iterator iterator = successors.keySet().iterator();
         while(iterator.hasNext())
         {
@@ -134,7 +101,7 @@ public class Behavior{
                 Behavior successor = (Behavior)li.next();
                 if(!((Boolean)(successor.getPreconditions().get(addProposition))).booleanValue())
                 {
-                    double granted = ((alpha * phi) / Goal.getExcitatoryStrength()) / (behaviors.size() * successor.getPreconditions().size());
+                    double granted = ((alpha * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
 
                     logger.info("\t:+" + name + "-->" + granted + " to " +
@@ -171,9 +138,9 @@ public class Behavior{
     }
     
     
-    public void spreadConflictorActivation(NodeStructure state)
+    public void spreadConflictorActivation(NodeStructure state, double gamma, double delta)
     {
-        double fraction = ProtectedGoal.getInhibitoryStrength() / Goal.getExcitatoryStrength();
+        double fraction = delta / gamma;
         
         Iterator iterator = preconditions.keySet().iterator();
         while(iterator.hasNext())
@@ -247,17 +214,12 @@ public class Behavior{
         return active;
     }    
         
-    public void deactivate()
-    {                
-        Iterator iterator = preconditions.keySet().iterator();
-        while(iterator.hasNext())
-        {
-            preconditions.put(iterator.next(), new Boolean(false));
-        }
+    public void deactivate(){                
+        for(Object o: preconditions.keySet())
+        	preconditions.put(o, new Boolean(false));       
     }
     
-    public void prepareToFire(NodeStructure state)
-    {
+    public void prepareToFire(NodeStructure state){
         logger.info("BEHAVIOR : PREPARE TO FIRE " + name);
         
         Iterator bi = behaviorCodelets.iterator();

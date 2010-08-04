@@ -91,7 +91,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	for(Behavior behavior: s.getBehaviors()){                             
                 for(Object proposition: behavior.getAddList()){
                     for(Goal goal: goals){                        
-                        Hashtable propositions = goal.getExcitatoryPropositions();
+                        Hashtable propositions = (Hashtable) goal.getExcitatoryPropositions();
                         
                         if(propositions.containsKey(proposition))
                         {
@@ -111,7 +111,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 }
             }
         }           
-    }
+    }//method
 
     public void buildInhibitoryGoalLinks()
     {                                        
@@ -133,7 +133,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                         Object goal = lk.next();
                         if(goal instanceof ProtectedGoal)
                         {                            
-                            Hashtable propositions = ((ProtectedGoal)goal).getInhibitoryPropositions();
+                        	Map<Object, List<Behavior>> propositions = ((ProtectedGoal)goal).getInhibitoryPropositions();
                                                         
                             if(((ProtectedGoal)goal).getExcitatoryPropositions().containsKey(proposition))
                             {
@@ -288,20 +288,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     private void report(String header, Map<Object,List<Behavior>> links){
-        if(header != null)
-            logger.info(header);
-        
-        if(links != null)
-        {
-            Iterator i = links.keySet().iterator();
-            while(i.hasNext())
-            {
-                Object proposition = i.next();
-                LinkedList behaviors = (LinkedList)links.get(proposition);
-                
-                logger.info("\t" + proposition + " --> " + behaviors);
-            }
-        }        
+        logger.info(header);
+        for(Object o: links.keySet())
+            logger.info("\t" + o + " --> " + links.get(o));
+            
     }
     
     public Behavior getFiredBehavior(){
@@ -373,8 +363,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
         for(Stream s: streams){
         	for(Behavior b: s.getBehaviors()){
-        		b.spreadExcitation(phi);
-                b.spreadInhibition(currentState);
+        		b.spreadExcitation(phi, gamma);
+                b.spreadInhibition(currentState, gamma, delta);
                 //((Behavior)bi.next()).spreadExcitation();
         	}
         }

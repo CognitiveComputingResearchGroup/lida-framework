@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  * Stream is a list of behaviors that may be "instantiated"
- *
+ *  Sidney D'Mello, Ryan McCall
  */
 public class Stream{
 	

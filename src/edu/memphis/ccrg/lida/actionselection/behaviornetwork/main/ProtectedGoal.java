@@ -12,83 +12,47 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public class ProtectedGoal extends Goal
-{
+public class ProtectedGoal extends Goal{
+	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.ProtectedGoal");
-    private Hashtable inhibitoryPropositions;    
+    private Map<Object, List<Behavior>> inhibitoryPropositions = new HashMap<Object, List<Behavior>>();    
     
-    public ProtectedGoal(String name)
-    {
+    public ProtectedGoal(String name){
         super(name);
-                
-        inhibitoryPropositions = new Hashtable();
     }
     
-    public ProtectedGoal(String name, boolean persistent) 
-    {
+    public ProtectedGoal(String name, boolean persistent){
         super(name, persistent);
-                
-        inhibitoryPropositions = new Hashtable();
     }
     
-    public void grantActivation(double delta, double gamma, NodeStructure state)
-    {        
+    public void grantActivation(double delta, double gamma, NodeStructure state){        
         super.grantActivation(gamma);
-        
-        if(super.isActive())
-        {         
+        if(super.isActive()){
+        	
             logger.info("GOAL : INHIBITION " + name);
             
-            Iterator iterator = inhibitoryPropositions.keySet().iterator();
-            while(iterator.hasNext())
-            {
-                Object deleteProposition = iterator.next();
-                
-                if(state.hasNode((Node) deleteProposition))
-                {
-                    LinkedList behaviors = (LinkedList)inhibitoryPropositions.get(deleteProposition);
-
-                    if(behaviors.size() > 0)
-                    {
+            for(Object deleteProposition: inhibitoryPropositions.keySet()){
+            	if(state.hasNode((Node) deleteProposition)){ //TODO this is backwards?
+            		List<Behavior> behaviors = inhibitoryPropositions.get(deleteProposition);
+                    if(behaviors.size() > 0){
                         double inhibited = delta / behaviors.size();
 
-                        Iterator li = behaviors.iterator();            
-                        while(li.hasNext())
-                        {
-                            try 
-                            {
-                                Behavior behavior = (Behavior)li.next();
-                                behavior.inhibit(inhibited / behavior.getDeleteList().size());
-                                logger.info("\t<--" + behavior.getName() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
-                            }
-                            catch(ArithmeticException ae)
-                            {
-                                ae.printStackTrace();
-                            }
+                        for(Behavior behavior: behaviors){
+                            behavior.inhibit(inhibited / behavior.getDeleteList().size());
+                            logger.info("\t<--" + behavior.getName() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
+                           
                         }
                     }
                 }
-            }
-        }        
+            }//for
+        }//if        
     }
     
-    public Hashtable getInhibitoryPropositions()
-    {
+    public Map<Object, List<Behavior>> getInhibitoryPropositions(){
         return inhibitoryPropositions;
     }
-    
-    public void setInhibitoryPropositions(Hashtable inhibitoryPropositions) throws NullPointerException                                  
-    {
-        if(inhibitoryPropositions != null)
-            this.inhibitoryPropositions = inhibitoryPropositions;
-        else
-            throw new NullPointerException();
+    public void setInhibitoryPropositions(Map<Object, List<Behavior>> inhibitoryPropositions){
+    	this.inhibitoryPropositions = inhibitoryPropositions;
     }     
-    
-    public static double getInhibitoryStrength()
-    {
-    	//TODO
-    	return 0.8;
-     //   return BehaviorNetworkImpl.getDelta();
-    }    
+ 
 }

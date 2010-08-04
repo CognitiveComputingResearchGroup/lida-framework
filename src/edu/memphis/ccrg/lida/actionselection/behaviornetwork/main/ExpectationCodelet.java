@@ -7,23 +7,18 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 
-import java.util.*;
-
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 
-public class ExpectationCodelet extends SidneyCodelet
-{        
+public class ExpectationCodelet extends SidneyCodelet{        
     protected double performance;
     
-    public ExpectationCodelet() 
-    {
+    public ExpectationCodelet(){
         super();
-        setType(SidneyCodelet.EXPECTATION);
     }
-    
-    public ExpectationCodelet(String name)
-    {
-        super(name, SidneyCodelet.EXPECTATION);
+    public ExpectationCodelet(String name){
+        super(name);
     }
     
     public void execute(NodeStructure e)
@@ -38,19 +33,14 @@ public class ExpectationCodelet extends SidneyCodelet
      * 
      * @param e
      */
-    protected void evaluate(NodeStructure e)
-    {
-        performance = 0;
-                
-//        Iterator li = behavior.getAddList().iterator();
-//        while(li.hasNext())
-//        {            
-//            Object proposition = li.next();
-//            if(proposition.equals(e.get(proposition)))                        
-//                performance ++;                        
-//            else
-//                performance --;
-//        }        
+    protected void evaluate(NodeStructure e){
+        performance = 0; 
+        for(Object proposition: behavior.getAddList()){
+            if(e.hasNode((Node)proposition) || e.hasLink((Link) proposition))                        
+                performance ++;                        
+            else
+                performance --;
+        }        
     }                         
     
     public double getPerformance()

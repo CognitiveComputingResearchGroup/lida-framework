@@ -1,160 +1,94 @@
 /*
  * Goal.java
  *
- * Sidney D'Mello
+ * Sidney D'Mello, Ryan McCall
  * Created on December 10, 2003, 6:29 PM
  */
-
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.*;
 import java.util.logging.Logger;
 
-public class Goal 
-{   
+public class Goal{
+	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Goal");
 	
 	//TODO: change to ID
     protected String name;
-    protected boolean persistent;    
+    protected boolean persistent = true;    
     
-    private Hashtable excitatoryPropositions;           
+    private Map<Object, List<Behavior>> excitatoryPropositions = new HashMap<Object, List<Behavior>>();           
     
     private boolean active;
     
-    public Goal(String name) throws NullPointerException
-    {        
-        if(name != null)
-        {
-            this.name = name;
-            excitatoryPropositions = new Hashtable();                        
-            
-            persistent = true;                        
-            activate();
-        }
-        else
-            throw new NullPointerException();        
+    public Goal(String name){        
+        this.name = name;                             
+        activate();
     }    
     
-    public Goal(String name, boolean persistent) throws NullPointerException               
-    {
-        if(name != null)
-        {
-            this.name = name;
-            this.persistent = persistent;
-            if(persistent)
-                active = true;
-            else
-                active = false;
-            
-            excitatoryPropositions = new Hashtable();            
-        }
-        else
-            throw new NullPointerException();        
+    public Goal(String name, boolean persistent){
+    	this.name = name;
+        this.persistent = persistent;
+        active = persistent;
     }    
     
-    public boolean willSatisfy(Object proposition)
-    {
-        if(proposition != null)
-        {
-            return excitatoryPropositions.containsKey(proposition);
-        }
-        else 
-            throw new NullPointerException();
+    public boolean willSatisfy(Object proposition){
+        return excitatoryPropositions.containsKey(proposition);
     }
     
-    public void activate()
-    {
+    public void activate(){
         logger.info("GOAL : " + name + "ACTIVATED");
         active = true;
     }
     
-    public void deactivate()
-    {
-        if(!persistent)
-        {
+    public void deactivate(){
+        if(!persistent){
             logger.info("GOAL : " + name + "DEACTIVATED");
             active = false;
-        }
-        else
-        {
-            logger.warning("DEACTIVATION FAILED " + name + " PERSISTENT");
-        }
+        }else
+           logger.warning("DEACTIVATION FAILED " + name + " PERSISTENT");
     }
     
     public void grantActivation(double gamma)
     {        
-        if(active)
+        if(active)//TODO check before calling this method
         {
             logger.info("GOAL : EXCITATION " + name);
             
-            Iterator iterator = excitatoryPropositions.keySet().iterator();
-            while(iterator.hasNext())
-            {
-                Object addProposition = iterator.next();
-                LinkedList behaviors = (LinkedList)excitatoryPropositions.get(addProposition);
+            for(Object addProposition: excitatoryPropositions.keySet()){
+                List<Behavior> behaviors = excitatoryPropositions.get(addProposition);
 
-                if(behaviors.size() > 0)
-                {
+                if(behaviors.size() > 0){
                     double granted = gamma / behaviors.size();
 
-                    Iterator li = behaviors.iterator();            
-                    while(li.hasNext())
-                    {
-                        try 
-                        {
-                            Behavior behavior = (Behavior)li.next();
-                            behavior.excite(granted / behavior.getAddList().size());
-                            logger.info("\t-->" + behavior.getName() + " " + granted / behavior.getAddList().size() + " for " + addProposition);
-                        }
-                        catch(ArithmeticException ae)
-                        {
-                            ae.printStackTrace();
-                        }
+                    for(Behavior behavior: behaviors){
+                        behavior.excite(granted / behavior.getAddList().size());
+                        logger.info("\t-->" + behavior.getName() + " " + granted / behavior.getAddList().size() + " for " + addProposition);
                     }
                 }
-            }//while
+            }//for each proposition
         }
     }
-    
 
-    public String getName()
-    {
+    public String getName(){
         return name;
     }
-    
-    public boolean isActive()
-    {
+    public boolean isActive(){
         return active;
     }
-    
-    public boolean isPersistent()
-    {
+    public boolean isPersistent(){
         return persistent;
     }
     
-    public static double getExcitatoryStrength()
-    {
-    	return 0.5;
-    	//TODO
-       // return BehaviorNetworkImpl.getGamma();
-    }
-    
-    public Hashtable getExcitatoryPropositions()
-    {
+    public Map<Object,List<Behavior>> getExcitatoryPropositions(){
         return excitatoryPropositions;
     }
     
-    public void setExcitatoryPropositions(Hashtable excitatoryPropositions) throws NullPointerException                                  
-    {
-        if(excitatoryPropositions != null)
-            this.excitatoryPropositions = excitatoryPropositions;
-        else
-            throw new NullPointerException();
+    public void setExcitatoryPropositions(Map<Object,List<Behavior>> excitatoryPropositions){
+    	this.excitatoryPropositions = excitatoryPropositions;
     }
     
-    public String toString()
-    {
+    public String toString(){
         return name;
     }
 }

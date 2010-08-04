@@ -189,12 +189,12 @@ public class Parser
                             
                             if(c.getAttribute(ParserTags.TYPE).trim().compareToIgnoreCase(ParserTags.BEHAVIOR) == 0)
                             {
-                                codelet.setType(SidneyCodelet.BEHAVIOR);
+                                //codelet.setType(SidneyCodelet.BEHAVIOR);
                                 behavior.addBehaviorCodelet((BehaviorCodelet) codelet);
                             }
                             else if(c.getAttribute(ParserTags.TYPE).trim().compareToIgnoreCase(ParserTags.EXPECTATION) == 0)
                             {
-                                codelet.setType(SidneyCodelet.EXPECTATION);                                
+                               // codelet.setType(SidneyCodelet.EXPECTATION);                                
                                 behavior.addExpectationCodelet((ExpectationCodelet) codelet);
                             }                            
                             Element prs = (Element)c.getElementsByTagName(ParserTags.PROPERTIES).item(0);

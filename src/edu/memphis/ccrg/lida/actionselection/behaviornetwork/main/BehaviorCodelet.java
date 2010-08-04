@@ -12,10 +12,9 @@ public class BehaviorCodelet extends SidneyCodelet{
 	
     public BehaviorCodelet(){
         super();
-        setType(SidneyCodelet.BEHAVIOR);
     }
     public BehaviorCodelet(String name){
-        super(name, SidneyCodelet.BEHAVIOR);
+        super(name);
     }
     
     public void execute(NodeStructure ns) {

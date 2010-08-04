@@ -10,45 +10,18 @@ import java.util.*;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public abstract class SidneyCodelet 
-{        
-    public final static int UNKNOWN     = 0;
-    public final static int BEHAVIOR    = 1;
-    public final static int EXPECTATION = 2;
+public abstract class SidneyCodelet{
     
-    protected String name;
-    private int type;
-    protected Behavior behavior;
+    protected String name = "SidneyCodelet";
+    protected Behavior behavior = null;
     
-    protected Hashtable properties;    
+    protected Map<Object, Object> properties = new HashMap<Object, Object>();    
     
-    public SidneyCodelet()
-    {
-        behavior = null;
+    public SidneyCodelet(){
     }
     
-    public SidneyCodelet(String name) throws NullPointerException
-    {
-        if(name != null)
-        {
-            this.name = name;
-            setType(UNKNOWN);
-            properties = new Hashtable();
-        }
-        else
-            throw new NullPointerException();
-    }
-    
-    public SidneyCodelet(String name, int type) throws NullPointerException
-    {
-        if(name != null)
-        {
-            this.name = name;
-            setType(type);
-            properties = new Hashtable();
-        }
-        else
-            throw new NullPointerException();        
+    public SidneyCodelet(String name){
+    	this.name = name;
     }
     
     public abstract void execute(NodeStructure ns);
@@ -63,58 +36,24 @@ public abstract class SidneyCodelet
         return name;
     }
     
-    public final int getType()
-    {
-        return type;
-    }
-    
-    public final Hashtable getProperties()
-    {
+    public final Map<Object, Object> getProperties(){
         return properties;
     }
     
-    public void setName(String name) throws NullPointerException
-    {
-        if(name != null)
-        {
-            this.name = name;
-            setType(UNKNOWN);
-            properties = new Hashtable();
-        }
-        else
-            throw new NullPointerException();        
+    public void setName(String name){
+    	this.name = name;
+        properties = new HashMap<Object, Object>();   
+    }
+
+    public final void setProperties(Map<Object, Object> properties){                      
+    	this.properties = properties;
     }
     
-    public void setType(int type) throws IllegalArgumentException
-    {
-        if(type == BEHAVIOR)
-            this.type = BEHAVIOR;
-        else if (type == EXPECTATION)
-                this.type = EXPECTATION;
-        else if(type == UNKNOWN)
-            this.type = UNKNOWN;
-        else
-            throw new IllegalArgumentException("Unrecognized codelet type: " + type);
+    public final void setBehavior(Behavior behavior){
+    	this.behavior = behavior;
     }
     
-    public final void setProperties(Hashtable properties)                      
-    {
-        if(properties != null)
-        {
-            this.properties = properties;
-        }
-    }
-    
-    public final void setBehavior(Behavior behavior) throws NullPointerException
-    {
-        if(behavior != null)
-            this.behavior = behavior;
-        else
-            throw new NullPointerException();
-    }
-    
-    public void addProperty(Object name, Object value)
-    {
+    public void addProperty(Object name, Object value){
         properties.put(name, value);
     }
     
