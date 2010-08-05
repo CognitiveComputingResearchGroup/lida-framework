@@ -19,7 +19,7 @@ public class ActionSelectionDriver extends ModuleDriverImpl implements TriggerLi
 		
 		net.selectAction();
 		//TODO perform this inside BehaviorNetwork
-		net.sendAction(net.getFiredBehavior().getActionId());
+		net.sendAction();
 	}//method
 	
 	@Override

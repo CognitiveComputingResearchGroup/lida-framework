@@ -20,6 +20,8 @@ public interface ActionSelection {
 	 * @param actionId
 	 */
 	public abstract void sendAction(long actionId);
+	
+	public abstract void sendAction();
 
 	//TODO Remove methods below eventually	
 	public abstract Behavior getFiredBehavior();

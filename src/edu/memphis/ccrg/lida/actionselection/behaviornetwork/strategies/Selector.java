@@ -53,7 +53,7 @@ public class Selector{
                 winner = current;
                 maxAlpha = current.getAlpha();
             }else if(current.getAlpha() == maxAlpha && (Math.random() >= TIE_BREAKER)){   
-                    winner = current;                                    
+                winner = current;                                    
             }            
         }        
         if(winner != null)

@@ -29,16 +29,62 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
+/**
+ * From "How to Do the Right Thing" by Maes
+ * The global algorithm performs a loop, in which at each timestep the following takes place over all
+ * of the competence modules:
+ * 1. The impact of the state, goals and protected goals on the activation level of behaviors is computed
+ * 2. Activation and/or inhibition is spread through successor, predecessor, and conflicter links of behaviors
+ * 3. Decay ensures overall activation level remains constant
+ * 4. Behavior becomes active if
+ * 	i. it is executable (all preconditions are satisfied)
+ *  ii. its activation is over a certain threshold
+ *  iii. have more activation than other behaviors fulfulling (i) and (ii)
+ * - Break ties randomly
+ * - If nothing fulfills i and ii then lower threshold by 10% 
+ * 
+ * @author Sidney D'Mello, Ryan J McCall
+ *
+ */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener, BroadcastListener{    
 
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
-    public final double THETA_REDUCTION  = 10;   //percent to reduce the threshold 
+	
+	/**
+	 * Percent to reduce the theta threshold by if no behavior is selected
+	 */
+    public final double THETA_REDUCTION  = 10;   
     
-    private double theta;    //threshold for execution
-    private double phi;      //amount of excitation by environment
-    private double gamma;    //amount of excitation by goals
-    private double delta;    //amount of inhibition by protected goal
-    private double pi;       //mean activation
+    /**
+     * Current threshold for becoming active
+     */
+    private double theta;
+//    
+//    /**
+//     * Reset value for theta
+//     */
+//    private final double THETA_INITIAL_VALUE = 0.9;
+    
+    /**
+     * mean level of activation
+     */
+    private double pi;       
+    
+    /**
+     * Amount of excitation by conscious broadcast
+     */
+    private double phi;      
+    
+    /**
+     * Amount of excitation by a goal
+     */
+    private double gamma;    
+    
+    /**
+     * Amount of inhibition a protected goal takes away
+     */
+    private double delta;   
+    
     private double omega;    //amplification factor for base level activation    
     
     private List<Goal> goals = new ArrayList<Goal>();
@@ -56,7 +102,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double threshold = theta;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
     
+    /**
+     * Current conscious broadcast
+     */
     private NodeStructure currentState = new NodeStructureImpl();
+    
+    /**
+     * Map of behaviors indexed by the propositions appearing in their pre conditions
+     * Stores environmental links
+     */
+    private Map<String, List<Behavior>> propositions = new HashMap<String, List<Behavior>>();
     
     public BehaviorNetworkImpl() {
         setConstants(0, 0, 0, 0, 0, 0);     
@@ -72,12 +127,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
         for(Stream s: streams){
         	for(Behavior behavior: s.getBehaviors()){
-                for(Object proposition: behavior.getPreconditions().keySet()){                   
+                for(String proposition: behavior.getPreconditions().keySet()){                   
                     
                     List<Behavior> behaviors = propositions.get(proposition);
                     if(behaviors == null){
                         behaviors = new ArrayList<Behavior>();
-                        propositions.put((Linkable) proposition, behaviors);
+                        propositions.put( proposition, behaviors);
                     }                  
                     behaviors.add(behavior);                                                                        
                 }
@@ -90,7 +145,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	for(Behavior behavior: s.getBehaviors()){                             
                 for(Object proposition: behavior.getAddList()){
                     for(Goal goal: goals){                        
-                    	Map<Object, List<Behavior>> propositions = goal.getExcitatoryPropositions();
+                    	Map<String, List<Behavior>> propositions = goal.getExcitatoryPropositions();
                         
                         if(propositions.containsKey(proposition))
                         {
@@ -99,7 +154,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                             {                                
                                 behaviors = new ArrayList<Behavior>();
                                 behaviors.add(behavior);
-                                propositions.put(proposition, behaviors);
+                                propositions.put((String) proposition, behaviors);
                             }
                             else
                             {                             
@@ -191,8 +246,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
-        for(Object addProposition: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
-            for(Object pc: secondBehavior.getPreconditions().keySet()){//iterate over preconditions of second behavior
+        for(String addProposition: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
+            for(String pc: secondBehavior.getPreconditions().keySet()){//iterate over preconditions of second behavior
                 if(addProposition.equals(pc))
                 {
                     List<Behavior> behaviors = firstBehavior.getSuccessors().get(addProposition);
@@ -212,8 +267,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
     
     private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(Object precondition: firstBehavior.getPreconditions().keySet()){        //iterate over preconditon of first behavior
-            for(Object p2: secondBehavior.getAddList()){               //iterate over addlist of second behavior
+        for(String precondition: firstBehavior.getPreconditions().keySet()){        //iterate over preconditon of first behavior
+            for(String p2: secondBehavior.getAddList()){               //iterate over addlist of second behavior
             	if(precondition.equals(p2)){
                     List<Behavior> behaviors = firstBehavior.getPredecessors().get(precondition);
                     if(behaviors == null){
@@ -229,8 +284,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
     
     private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(Object precondition: firstBehavior.getPreconditions().keySet()){
-            for(Object p2: secondBehavior.getDeleteList()){
+        for(String precondition: firstBehavior.getPreconditions().keySet()){
+            for(String p2: secondBehavior.getDeleteList()){
                 if(precondition.equals(p2)){
                     List<Behavior> behaviors = firstBehavior.getConflictors().get(precondition);
                     if(behaviors == null){
@@ -247,9 +302,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
     }//method
     
-    private void report(String header, Map<Object,List<Behavior>> links){
+    private void report(String header, Map<String, List<Behavior>> links){
         logger.info(header);
-        for(Object o: links.keySet())
+        for(String o: links.keySet())
             logger.info("\t" + o + " --> " + links.get(o));
             
     }
@@ -371,8 +426,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         report();
     }   //method 
     
-    private Map<Linkable, List<Behavior>> propositions = new HashMap<Linkable, List<Behavior>>();
-    
     /*
 	 *  Spreads activation to Behaviors in the propositions Hashtable for
 	 *  true propositions as specified by the state.
@@ -392,7 +445,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             List<Behavior> behaviors = propositions.get(proposition);
             double granted = phi / behaviors.size();
             for(Behavior b: behaviors){
-                 b.getPreconditions().put(proposition, new Boolean(true));
+            	//TODO remove comment below
+                // b.getPreconditions().put(proposition, new Boolean(true));
                  b.excite(granted / b.getPreconditions().size());       
                  logger.info("\t-->" + b.getName() + " " + granted / b.getPreconditions().size() + " for " + proposition);
             }
@@ -420,10 +474,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	l.receiveActionId(actionId);
                        
         if(winner == null)          
-            reduceTheta();                                        
+            reduceTheta();         //TODO this should be done elsewhere                               
         else
             restoreTheta();
     }
+
+	@Override
+	public void sendAction() {
+		sendAction(getFiredBehavior().getActionId());
+	}
     
     public Normalizer getNormalizer(){
         return normalizer;

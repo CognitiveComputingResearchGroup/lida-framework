@@ -6,7 +6,6 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -27,7 +26,7 @@ public class ExpectationCodelet extends SidneyCodelet{
     }
     
     /**
-     * Ryan says: Iterate throught the add list of this codelets behavior.
+     * Ryan says: Iterate through the add list of this codelets behavior.
      * If a proposition in the add list matches the current state then increment this codelets performance
      * else decrement it.
      * 
@@ -43,8 +42,7 @@ public class ExpectationCodelet extends SidneyCodelet{
         }        
     }                         
     
-    public double getPerformance()
-    {
+    public double getPerformance(){
         return performance;
     }    
 }

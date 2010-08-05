@@ -17,7 +17,7 @@ public class Goal{
     protected String name;
     protected boolean persistent = true;    
     
-    private Map<Object, List<Behavior>> excitatoryPropositions = new HashMap<Object, List<Behavior>>();           
+    private Map<String, List<Behavior>> excitatoryPropositions = new HashMap<String, List<Behavior>>();           
     
     private boolean active;
     
@@ -80,11 +80,11 @@ public class Goal{
         return persistent;
     }
     
-    public Map<Object,List<Behavior>> getExcitatoryPropositions(){
+    public Map<String, List<Behavior>> getExcitatoryPropositions(){
         return excitatoryPropositions;
     }
     
-    public void setExcitatoryPropositions(Map<Object,List<Behavior>> excitatoryPropositions){
+    public void setExcitatoryPropositions(Map<String,List<Behavior>> excitatoryPropositions){
     	this.excitatoryPropositions = excitatoryPropositions;
     }
     

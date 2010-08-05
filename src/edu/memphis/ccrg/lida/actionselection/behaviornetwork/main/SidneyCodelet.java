@@ -15,7 +15,7 @@ public abstract class SidneyCodelet{
     protected String name = "SidneyCodelet";
     protected Behavior behavior = null;
     
-    protected Map<Object, Object> properties = new HashMap<Object, Object>();    
+    protected Map<String, String> properties = new HashMap<String, String>();    
     
     public SidneyCodelet(){
     }
@@ -36,16 +36,16 @@ public abstract class SidneyCodelet{
         return name;
     }
     
-    public final Map<Object, Object> getProperties(){
+    public final Map<String, String> getProperties(){
         return properties;
     }
     
     public void setName(String name){
     	this.name = name;
-        properties = new HashMap<Object, Object>();   
+        properties = new HashMap<String, String>();   
     }
 
-    public final void setProperties(Map<Object, Object> properties){                      
+    public final void setProperties(Map<String, String> properties){                      
     	this.properties = properties;
     }
     
@@ -53,7 +53,7 @@ public abstract class SidneyCodelet{
     	this.behavior = behavior;
     }
     
-    public void addProperty(Object name, Object value){
+    public void addProperty(String name, String value){
         properties.put(name, value);
     }
     

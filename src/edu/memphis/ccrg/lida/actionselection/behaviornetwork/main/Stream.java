@@ -37,15 +37,8 @@ public class Stream{
         instantiated = false;
     }
     
-    public void addBehavior(Behavior behavior)throws NullPointerException
-    {
-        if(behavior != null)
-        {
-            if(!behaviors.contains(behavior))
-                behaviors.add(behavior);
-        }
-        else
-            throw new NullPointerException();        
+    public void addBehavior(Behavior behavior){
+    	behaviors.add(behavior);
     }    
     
     public String getName(){

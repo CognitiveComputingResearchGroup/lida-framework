@@ -91,4 +91,10 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 
+	@Override
+	public void sendAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }//class
