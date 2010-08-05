@@ -54,9 +54,8 @@ public class Stream{
         return instantiated;
     }
     
-    public void setBehaviors(LinkedList<Behavior> behaviors){
-        if(behaviors != null)
-            this.behaviors = behaviors;       
+    public void setBehaviors(List<Behavior> behaviors){
+        this.behaviors = behaviors;       
     }
     
     public Behavior getBehavior(String name){
@@ -65,12 +64,7 @@ public class Stream{
                  return b;
         return null;          
     }
-    
-    public void reset(){
-    	for(Behavior b: behaviors)
-    		b.reset();
-    }
-    
+
     public String toString(){
         return name;
     }

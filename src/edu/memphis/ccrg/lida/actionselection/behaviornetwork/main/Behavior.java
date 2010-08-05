@@ -41,7 +41,7 @@ public class Behavior{
     
     public Behavior(String name){
     	this.name = name;                 
-        deactivate();
+    	deactivate();
     }
         
     public void excite(double excitation){        
@@ -365,19 +365,12 @@ public class Behavior{
         return null; 
     }
     
-    public void reset(){
-        alphaActivation = 0;
-        betaActivation = 0;
-        incomingActivation = 0;        
-        deactivate();
-    }
-    
     public String toString(){
     	return name;
     }
 
 	public long getActionId() {
-		// TODO Auto-generated method stub
+		//TODO
 		return 0;
 	}
     

@@ -8,8 +8,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -96,7 +94,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      */
     private Normalizer normalizer = new Normalizer(streams);
     private Selector selector = new Selector();
+    
+    //TODO make strategy
     private Reinforcer reinforcer = new Reinforcer();
+    
+    //TODO maintain
     
     private Behavior winner = null;        
     private double threshold = theta;       //used as a backup copy for the 
@@ -109,9 +111,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     /**
      * Map of behaviors indexed by the propositions appearing in their pre conditions
-     * Stores environmental links
+     * Stores environmental links.
+     * 
+     * this is similar to our 
      */
-    private Map<String, List<Behavior>> propositions = new HashMap<String, List<Behavior>>();
+    private Map<String, List<Behavior>> behaviorsByPropositionMap = new HashMap<String, List<Behavior>>();
     
     public BehaviorNetworkImpl() {
         setConstants(0, 0, 0, 0, 0, 0);     
@@ -122,6 +126,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         buildBehaviorLinks();
     }
     
+    /**
+     * Builds up propositions from all the streams.
+     * Propositions is a map where the key is a proposition and the value is a list
+     * of behaviors who have the key as a precondition
+     * 
+     */
     public void buildEnvironmentalLinks(){        
         logger.info("ENVIRONMENTAL LINKS");
         
@@ -129,10 +139,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	for(Behavior behavior: s.getBehaviors()){
                 for(String proposition: behavior.getPreconditions().keySet()){                   
                     
-                    List<Behavior> behaviors = propositions.get(proposition);
+                    List<Behavior> behaviors = behaviorsByPropositionMap.get(proposition);
                     if(behaviors == null){
                         behaviors = new ArrayList<Behavior>();
-                        propositions.put( proposition, behaviors);
+                        behaviorsByPropositionMap.put( proposition, behaviors);
                     }                  
                     behaviors.add(behavior);                                                                        
                 }
@@ -147,19 +157,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                     for(Goal goal: goals){                        
                     	Map<String, List<Behavior>> propositions = goal.getExcitatoryPropositions();
                         
-                        if(propositions.containsKey(proposition))
-                        {
+                        if(propositions.containsKey(proposition)){
                         	List<Behavior> behaviors = propositions.get(proposition);
-                            if(behaviors == null)
-                            {                                
-                                behaviors = new ArrayList<Behavior>();
-                                behaviors.add(behavior);
+                            if(behaviors == null){                                
+                                behaviors = new ArrayList<Behavior>();                               
                                 propositions.put((String) proposition, behaviors);
-                            }
-                            else
-                            {                             
-                                behaviors.add(behavior);                                                                    
-                            }
+                            }                            
+                            behaviors.add(behavior);                                                                    
+                            
                         }                        
                     }
                 }
@@ -168,54 +173,33 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
 
     /**
-     * Ryan says, I'm going to just leave this method as is.  
-     * This thing has 8 closing braces... it's a sort of modern-day dinosaur.
-     * I've spent hours cleaning up this code so I'm keeping this one in memorial of my lost time.
-     * Let us leave this method untouched as a testament to my hard work and also as an exhibit 
-     * of the dark ages before 2004 when java programmers did not have generics.
+     * Check every delete list item and if there's a protected goal 
+     * whose excitatory proposition is in the delete list the add the behavior
+     * to the protected goal's map
      */
-    public void buildInhibitoryGoalLinks()
-    {                                        
-        Iterator iterator = getStreams().iterator();                        //iterate over streams
-        while(iterator.hasNext())
-        {            
-            Iterator li = ((Stream)(iterator.next())).getBehaviors().iterator();//iterate over a stream
-            while(li.hasNext())
-            {
-                Behavior behavior = (Behavior)li.next();                
-                Iterator lj = behavior.getDeleteList().iterator();              //iterate over the delete list
-                while(lj.hasNext())
-                {   
-                    Object proposition = lj.next();
-                    
-                    Iterator lk = getGoals().iterator();                    //iterate over the goals
-                    while(lk.hasNext())
-                    {
-                        Object goal = lk.next();
-                        if(goal instanceof ProtectedGoal)
-                        {                            
-                        	Map<Object, List<Behavior>> propositions = ((ProtectedGoal)goal).getInhibitoryPropositions();
+    public void buildInhibitoryGoalLinks(){                                        
+    	for(Stream s: streams){
+        	for(Behavior behavior: s.getBehaviors()){                
+                for(String proposition: behavior.getDeleteList()){//iterate over the delete list
+                    for(Goal goal: goals){
+                        if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
+                        	ProtectedGoal pGoal = (ProtectedGoal) goal;
+                        	Map<Object, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();
                                                         
-                            if(((ProtectedGoal)goal).getExcitatoryPropositions().containsKey(proposition))
-                            {
-                                LinkedList<Behavior> behaviors = (LinkedList<Behavior>)propositions.get(proposition);
-                                if(behaviors == null)
-                                {
-                                    behaviors = new LinkedList<Behavior>();
-                                    behaviors.add(behavior);
-                                    propositions.put(proposition, behaviors);
+                            if(pGoal.getExcitatoryPropositions().containsKey(proposition)){
+                                List<Behavior> behaviors = inhibitoryProps.get(proposition);
+                                if(behaviors == null){
+                                    behaviors = new ArrayList<Behavior>();
+                                    inhibitoryProps.put(proposition, behaviors);
                                 }
-                                else
-                                {
-                                    behaviors.add(behavior);                                    
-                                }
+                                behaviors.add(behavior);
                             }                            
                         }                        
-                    }
+                    }//for goals
                 }
             }
         }   
-    }
+    }//method
     
     public void buildBehaviorLinks(){
         logger.info("BEHAVIOR LINKS");
@@ -442,7 +426,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void grantActivationFromEnvironment(){
         logger.info("ENVIRONMENT : EXCITATION");
         for(Linkable proposition: currentState.getLinkables()){
-            List<Behavior> behaviors = propositions.get(proposition);
+            List<Behavior> behaviors = behaviorsByPropositionMap.get(proposition);
             double granted = phi / behaviors.size();
             for(Behavior b: behaviors){
             	//TODO remove comment below
@@ -567,8 +551,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }                       
     
     public void setReinforcer(Reinforcer reinforcer){
-        if(reinforcer != null)
-            this.reinforcer = reinforcer;
+        this.reinforcer = reinforcer;
     }
     
     private void report(){        
@@ -578,30 +561,22 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	}
         }
     }
-    
-    public void reset(){
-        winner = null;        
-        threshold = theta;   
-        
-        for(Stream s: streams)
-            s.reset();
-    }
 
 	@Override
 	public Object getModuleContent() {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		
 	}
 
 	@Override
 	public void receiveScheme(Scheme scheme) {
-		// TODO Auto-generated method stub
+		// TODO Important!
 		
 	}
 
