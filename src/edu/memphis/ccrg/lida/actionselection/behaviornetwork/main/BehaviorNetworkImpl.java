@@ -55,6 +55,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     /**
      * Current threshold for becoming active
+     * TODO Change 
      */
     private double theta;
 //    

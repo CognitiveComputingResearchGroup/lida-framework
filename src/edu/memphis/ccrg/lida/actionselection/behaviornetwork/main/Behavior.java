@@ -25,7 +25,11 @@ public class Behavior{
     private double incomingActivation = 0.0;
  
     //Strings represent "node values".  See parser
+    //TODO Integer keys
     private Map<String, Boolean> preconditions = new HashMap<String, Boolean>();
+    
+    //Have elements be Equal.
+    //Have elements be Nodes.
     private List<String> addList = new ArrayList<String>();
     private List<String> deleteList = new ArrayList<String>();        
     
