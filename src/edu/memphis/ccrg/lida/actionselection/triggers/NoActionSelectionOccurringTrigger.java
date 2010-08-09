@@ -3,18 +3,13 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 import java.util.Map;
 import java.util.Queue;
 
-import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 public class NoActionSelectionOccurringTrigger implements
 		ActionSelectionTrigger {
-
-	@Override
-	public void checkForTrigger(Queue<Scheme> behaviors) {
-		
-	}
+	
 	/**
 	 * How long since last broadcast before this trigger is activated
 	 */
@@ -47,7 +42,8 @@ public class NoActionSelectionOccurringTrigger implements
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
-	public void setUp(Map<String, Object> parameters, ActionSelection as) {
+	public void setUp(Map<String, Object> parameters, ActionSelectionDriver asd) {
+		this.asd=asd;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Integer)) {
 			delay= (Integer)o;
@@ -65,10 +61,17 @@ public class NoActionSelectionOccurringTrigger implements
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
 	public void start() {
-		asd = new ActionSelectionDriver();
-				
+						
 		task=new TriggerTask(delay,asd,name);	
 		asd.addTask(task);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
+	 */
+	public void checkForTrigger(Queue<Scheme> behaviors) {
 	}
 	
 	/*
