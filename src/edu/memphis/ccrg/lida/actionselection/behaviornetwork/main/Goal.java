@@ -9,6 +9,8 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.Node;
+
 public class Goal{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Goal");
@@ -17,7 +19,7 @@ public class Goal{
     protected String name;
     protected boolean persistent = true;    
     
-    private Map<String, List<Behavior>> excitatoryPropositions = new HashMap<String, List<Behavior>>();           
+    private Map<Node, List<Behavior>> excitatoryPropositions = new HashMap<Node, List<Behavior>>();           
     
     private boolean active;
     
@@ -80,11 +82,11 @@ public class Goal{
         return persistent;
     }
     
-    public Map<String, List<Behavior>> getExcitatoryPropositions(){
+    public Map<Node, List<Behavior>> getExcitatoryPropositions(){
         return excitatoryPropositions;
     }
     
-    public void setExcitatoryPropositions(Map<String,List<Behavior>> excitatoryPropositions){
+    public void setExcitatoryPropositions(Map<Node, List<Behavior>> excitatoryPropositions){
     	this.excitatoryPropositions = excitatoryPropositions;
     }
     

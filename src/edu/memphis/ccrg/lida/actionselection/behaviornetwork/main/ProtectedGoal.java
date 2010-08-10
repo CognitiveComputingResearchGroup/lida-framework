@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public class ProtectedGoal extends Goal{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.ProtectedGoal");
-    private Map<Object, List<Behavior>> inhibitoryPropositions = new HashMap<Object, List<Behavior>>();    
+    private Map<Node, List<Behavior>> inhibitoryPropositions = new HashMap<Node, List<Behavior>>();    
     
     public ProtectedGoal(String name){
         super(name);
@@ -31,7 +31,7 @@ public class ProtectedGoal extends Goal{
         	
             logger.info("GOAL : INHIBITION " + name);
             
-            for(Object deleteProposition: inhibitoryPropositions.keySet()){
+            for(Node deleteProposition: inhibitoryPropositions.keySet()){
             	if(state.hasNode((Node) deleteProposition)){ //TODO this is backwards?
             		List<Behavior> behaviors = inhibitoryPropositions.get(deleteProposition);
                     if(behaviors.size() > 0){
@@ -48,10 +48,10 @@ public class ProtectedGoal extends Goal{
         }//if        
     }
     
-    public Map<Object, List<Behavior>> getInhibitoryPropositions(){
+    public Map<Node, List<Behavior>> getInhibitoryPropositions(){
         return inhibitoryPropositions;
     }
-    public void setInhibitoryPropositions(Map<Object, List<Behavior>> inhibitoryPropositions){
+    public void setInhibitoryPropositions(Map<Node, List<Behavior>> inhibitoryPropositions){
     	this.inhibitoryPropositions = inhibitoryPropositions;
     }     
  

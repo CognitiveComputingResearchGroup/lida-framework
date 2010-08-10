@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +103,7 @@ public class Parser
                     for(int j = 0; j < pl.getLength(); j++)
                     {
                         //System.out.println(pl.item(j).getFirstChild().getNodeValue().trim());
-                        goal.getExcitatoryPropositions().put(pl.item(j).getFirstChild().getNodeValue().trim(), new LinkedList());
+     //                   goal.getExcitatoryPropositions().put(pl.item(j).getFirstChild().getNodeValue().trim(), new LinkedList());
                     }
                     goal.activate();
                     goals.add(goal);
@@ -141,7 +140,7 @@ public class Parser
                         for(int k = 0; k < pl.getLength(); k++)
                         {
                             //System.out.println(pl.item(k).getFirstChild().getNodeValue().trim());
-                            behavior.getPreconditions().put(pl.item(k).getFirstChild().getNodeValue().trim(), new Boolean(false));                            
+                       //     behavior.getPreconditions().put(pl.item(k).getFirstChild().getNodeValue().trim(), new Boolean(false));                            
                         }                 
                         
                         Element as = (Element)b.getElementsByTagName(ParserTags.ADDLIST).item(0);
@@ -153,7 +152,7 @@ public class Parser
                             for(int k = 0; k < al.getLength(); k++)                             //iterate over add list
                             {
                                 //System.out.println(al.item(k).getFirstChild().getNodeValue().trim());
-                                behavior.getAddList().add(al.item(k).getFirstChild().getNodeValue().trim());                            
+                       //         behavior.getAddList().add(al.item(k).getFirstChild().getNodeValue().trim());                            
                             }
                         }
                         else
@@ -170,7 +169,7 @@ public class Parser
                             for(int k = 0; k < dl.getLength(); k++)
                             {
                                 //System.out.println(dl.item(k).getFirstChild().getNodeValue().trim());
-                                behavior.getDeleteList().add(dl.item(k).getFirstChild().getNodeValue().trim());                            
+                       //         behavior.getDeleteList().add(dl.item(k).getFirstChild().getNodeValue());                            
                             }
                         }
                         
@@ -212,7 +211,7 @@ public class Parser
                                     properties.put(pr.getAttribute(ParserTags.NAME).trim(),
                                                    pr.getAttribute(ParserTags.VALUE).trim());
                                 }
-                                codelet.setProperties(properties);
+                                //codelet.setProperties(properties);
                             }
                         }
                     }

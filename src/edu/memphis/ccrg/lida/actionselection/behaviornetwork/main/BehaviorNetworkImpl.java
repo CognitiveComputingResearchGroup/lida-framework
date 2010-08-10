@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.Normalizer;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -116,7 +117,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * 
      * this is similar to our 
      */
-    private Map<String, List<Behavior>> behaviorsByPropositionMap = new HashMap<String, List<Behavior>>();
+    private Map<Node, List<Behavior>> behaviorsByPropositionMap = new HashMap<Node, List<Behavior>>();
     
     public BehaviorNetworkImpl() {
         setConstants(0, 0, 0, 0, 0, 0);     
@@ -138,7 +139,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
         for(Stream s: streams){
         	for(Behavior behavior: s.getBehaviors()){
-                for(String proposition: behavior.getPreconditions().keySet()){                   
+                for(Node proposition: behavior.getPreconditions()){                   
                     
                     List<Behavior> behaviors = behaviorsByPropositionMap.get(proposition);
                     if(behaviors == null){
@@ -154,15 +155,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void buildExcitatoryGoalLinks(){                                
     	for(Stream s: streams){
         	for(Behavior behavior: s.getBehaviors()){                             
-                for(Object proposition: behavior.getAddList()){
+                for(Node proposition: behavior.getAddList()){
                     for(Goal goal: goals){                        
-                    	Map<String, List<Behavior>> propositions = goal.getExcitatoryPropositions();
+                    	Map<Node, List<Behavior>> propositions = goal.getExcitatoryPropositions();
                         
                         if(propositions.containsKey(proposition)){
                         	List<Behavior> behaviors = propositions.get(proposition);
                             if(behaviors == null){                                
                                 behaviors = new ArrayList<Behavior>();                               
-                                propositions.put((String) proposition, behaviors);
+                                propositions.put( proposition, behaviors);
                             }                            
                             behaviors.add(behavior);                                                                    
                             
@@ -181,11 +182,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void buildInhibitoryGoalLinks(){                                        
     	for(Stream s: streams){
         	for(Behavior behavior: s.getBehaviors()){                
-                for(String proposition: behavior.getDeleteList()){//iterate over the delete list
+                for(Node proposition: behavior.getDeleteList()){//iterate over the delete list
                     for(Goal goal: goals){
                         if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
                         	ProtectedGoal pGoal = (ProtectedGoal) goal;
-                        	Map<Object, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();
+                        	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();
                                                         
                             if(pGoal.getExcitatoryPropositions().containsKey(proposition)){
                                 List<Behavior> behaviors = inhibitoryProps.get(proposition);
@@ -231,8 +232,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
-        for(String addProposition: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
-            for(String pc: secondBehavior.getPreconditions().keySet()){//iterate over preconditions of second behavior
+        for(Node addProposition: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
+            for(Node pc: secondBehavior.getPreconditions()){//iterate over preconditions of second behavior
                 if(addProposition.equals(pc))
                 {
                     List<Behavior> behaviors = firstBehavior.getSuccessors().get(addProposition);
@@ -252,8 +253,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
     
     private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(String precondition: firstBehavior.getPreconditions().keySet()){        //iterate over preconditon of first behavior
-            for(String p2: secondBehavior.getAddList()){               //iterate over addlist of second behavior
+        for(Node precondition: firstBehavior.getPreconditions()){        //iterate over preconditon of first behavior
+            for(Node p2: secondBehavior.getAddList()){               //iterate over addlist of second behavior
             	if(precondition.equals(p2)){
                     List<Behavior> behaviors = firstBehavior.getPredecessors().get(precondition);
                     if(behaviors == null){
@@ -269,8 +270,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
     
     private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(String precondition: firstBehavior.getPreconditions().keySet()){
-            for(String p2: secondBehavior.getDeleteList()){
+        for(Node precondition: firstBehavior.getPreconditions()){
+            for(Node p2: secondBehavior.getDeleteList()){
                 if(precondition.equals(p2)){
                     List<Behavior> behaviors = firstBehavior.getConflictors().get(precondition);
                     if(behaviors == null){
@@ -287,9 +288,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
     }//method
     
-    private void report(String header, Map<String, List<Behavior>> links){
+    private void report(String header, Map<Node, List<Behavior>> links){
         logger.info(header);
-        for(String o: links.keySet())
+        for(Node o: links.keySet())
             logger.info("\t" + o + " --> " + links.get(o));
             
     }

@@ -7,36 +7,49 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class Behavior{
 	
-	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Behavior");
+	private static Logger logger = Logger.getLogger("lida.behaviornetwork.main.Behavior");
 	
-    private String name;
+	/**
+	 * Label for description
+	 */
+    private String name = "blank behavior";
 
-    private double alphaActivation = 0.0;    
+    private double alphaActivation = 0.0;
+    
+    /**
+     * Reinforcement activation?
+     */
     private double betaActivation = 0.0; 
+    
+    /**
+     * Positive or negative activation from other behaviors?
+     */
     private double incomingActivation = 0.0;
  
-    //Strings represent "node values".  See parser
-    //TODO Integer keys
-    private Map<String, Boolean> preconditions = new HashMap<String, Boolean>();
+    //TODO Integer values
+    private Map<Node, Boolean> preconditions = new HashMap<Node, Boolean>();
+
+    private List<Node> addList = new ArrayList<Node>();
+    private List<Node> deleteList = new ArrayList<Node>();        
     
-    //Have elements be Equal.
-    //Have elements be Nodes.
-    private List<String> addList = new ArrayList<String>();
-    private List<String> deleteList = new ArrayList<String>();        
-    
-    private Map<String, List<Behavior>> predecessors = new HashMap<String, List<Behavior>>();
-    private Map<String, List<Behavior>> successors = new HashMap<String, List<Behavior>>();
-    private Map<String, List<Behavior>> conflictors = new HashMap<String, List<Behavior>>();
-    
+    private Map<Node, List<Behavior>> predecessors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> successors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> conflictors = new HashMap<Node, List<Behavior>>();
+
     private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
    
@@ -93,10 +106,10 @@ public class Behavior{
     }
   
     public void spreadSuccessorActivation(double phi, double gamma){           
-        for(String addProposition: successors.keySet()){
+        for(Node addProposition: successors.keySet()){
             List<Behavior> behaviors = successors.get(addProposition);
             for(Behavior successor: behaviors){
-                if(!((Boolean)(successor.getPreconditions().get(addProposition))).booleanValue()){
+                if(!successor.containsPrecondition(addProposition)){
                 	//TODO double check this
                     double granted = ((alphaActivation * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
@@ -108,10 +121,13 @@ public class Behavior{
         }        
     }//method
     
+    private boolean containsPrecondition(Node prop){
+    	return preconditions.get(prop) == true;
+    }
+    
     public void spreadPredecessorActivation(){             
-        for(String precondition: preconditions.keySet()){
-        	boolean b = ((Boolean)(preconditions.get(precondition))).booleanValue();
-            if(b == false){
+        for(Node precondition: preconditions.keySet()){
+            if(!this.containsPrecondition(precondition)){
             	List<Behavior> behaviors = predecessors.get(precondition);     
             	for(Behavior predecessor: behaviors){
             		double granted = (alphaActivation / predecessor.getAddList().size())/behaviors.size();                        
@@ -127,19 +143,18 @@ public class Behavior{
     //TODO Double check I converted this monster correctly
     public void spreadConflictorActivation(NodeStructure state, double gamma, double delta){
         double fraction = delta / gamma;
-        for(String precondition: preconditions.keySet()){
+        for(Node precondition: preconditions.keySet()){
             //if(((Boolean)(preconditions.get(precondition))).booleanValue())
-            if(state.getNode(precondition) != null || state.getLink(precondition) != null){
+            if(state.hasNode(precondition)){
                 List<Behavior> behaviors = conflictors.get(precondition); 
                 for(Behavior conflictor: behaviors){
                 	boolean mutualConflict = false;
                     double inhibited = (alphaActivation * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
-                    Set<String> preconds = conflictor.getPreconditions().keySet();
-                    for(String conflictorPreCondition: preconds){
-                    	Boolean b2 = conflictor.getPreconditions().get(conflictorPreCondition);
-                    	if(b2.booleanValue() == true){
-                    		for(String o2: deleteList){
+                    Set<Node> preconds = conflictor.getPreconditions();
+                    for(Node conflictorPreCondition: preconds){
+                    	if(!conflictor.containsPrecondition(conflictorPreCondition)){
+                    		for(Node o2: deleteList){
                     			if(conflictorPreCondition.equals(o2)){
                     				mutualConflict = true;
                     				break;
@@ -168,8 +183,7 @@ public class Behavior{
     }//method    
     
     public boolean isActive(){
-        for(String o: preconditions.keySet()){
-        	boolean b = ((Boolean)preconditions.get(o)).booleanValue();
+        for(Boolean b: preconditions.values()){
         	if(b == false)
         		return false;
         }
@@ -177,38 +191,38 @@ public class Behavior{
     }    
         
     public void deactivate(){                
-        for(String s: preconditions.keySet())
-        	preconditions.put(s, new Boolean(false));       
+        for(Node s: preconditions.keySet())
+        	preconditions.put(s, false);       
     }
     
     public void prepareToFire(NodeStructure state){
         logger.info("BEHAVIOR : PREPARE TO FIRE " + name);
         
-        for(BehaviorCodelet codelet: behaviorCodelets){
-        	Map<String, String> properties = codelet.getProperties();
-            for(String name: properties.keySet()){
-                String value = state.getNode(name).getLabel();
-                if(value != null)
-                    codelet.addProperty(name, value );
-            }
-        }        
+//        for(BehaviorCodelet codelet: behaviorCodelets){
+//        	Map<String, String> properties = codelet.getProperties();
+//            for(String name: properties.keySet()){
+//                String value = state.getNode(name).getLabel();
+//                if(value != null)
+//                    codelet.addProperty(name, value );
+//            }
+//        }        
     }
     
 // start add methods    
-    public void addPrecondition(String precondition){
-        if(precondition != null && !preconditions.containsKey(precondition))
-        	preconditions.put(precondition, new Boolean(false));            
+    public void addPrecondition(Node precondition){
+        if(!preconditions.containsKey(precondition))
+        	preconditions.put(precondition, false);            
     }
     
-    public void addAddCondition(String addCondition){
+    public void addAddCondition(Node addCondition){
     	addList.add(addCondition);
     }
     
-    public void addDeleteCondition(String deleteCondition){
+    public void addDeleteCondition(Node deleteCondition){
     	deleteList.add(deleteCondition);
     }    
     
-    public void addPredecessor(String precondition, Behavior predecessor){
+    public void addPredecessor(Node precondition, Behavior predecessor){
         if(precondition != null && predecessor != null){
             List<Behavior> list = predecessors.get(precondition);            
             if(list == null){
@@ -221,7 +235,7 @@ public class Behavior{
             logger.log(Level.WARNING, "", LidaTaskManager.getActualTick());
     } 
     
-    public void addSuccessor(String addProposition, Behavior successor){
+    public void addSuccessor(Node addProposition, Behavior successor){
         if(addProposition != null && successor != null){
             List<Behavior> list = successors.get(addProposition);
             if(list == null){              
@@ -232,7 +246,7 @@ public class Behavior{
         }
     }
     
-    public void addConflictor(String precondition, Behavior conflictor){
+    public void addConflictor(Node precondition, Behavior conflictor){
         if(precondition != null && conflictor != null){
             List<Behavior> list = conflictors.get(precondition);
             if(list == null){
@@ -254,46 +268,43 @@ public class Behavior{
     
 // start get methods.          
     
-    public String getName()
-    {
+    public String getName(){
         return name;
     }    
     
-    public double getAlpha()
-    {
+    public double getAlpha(){
         return alphaActivation;
     }
     
-    public double getBeta()
-    {
+    public double getBeta(){
         return betaActivation;
     }        
     
-    public Map<String, Boolean> getPreconditions()
-    {
-        return preconditions;
+//    public Map<Node, Boolean> getPreconditions(){
+//        return preconditions;
+//    }
+    
+    public Set<Node> getPreconditions(){
+        return preconditions.keySet();
     }
     
-    public List<String> getAddList(){
+    public List<Node> getAddList(){
         return addList;
     }
     
-    public List<String> getDeleteList(){
+    public List<Node> getDeleteList(){
         return deleteList;
     }
     
-    public Map<String, List<Behavior>> getPredecessors()
-    {
+    public Map<Node, List<Behavior>> getPredecessors(){
         return predecessors;
     }
     
-    public Map<String, List<Behavior>> getSuccessors()
-    {
+    public Map<Node, List<Behavior>> getSuccessors(){
         return successors;
     } 
     
-    public Map<String, List<Behavior>> getConflictors()
-    {
+    public Map<Node, List<Behavior>> getConflictors(){
         return conflictors;
     }
         
@@ -311,27 +322,27 @@ public class Behavior{
     
 //start set methods    
     
-    public void setPreconditions(Map<String, Boolean> preconditions){
+    public void setPreconditions(Map<Node, Boolean> preconditions){
     	this.preconditions = preconditions;
     }
     
-    public void setAddList(List<String> addList){
+    public void setAddList(List<Node> addList){
     	this.addList = addList;
     } 
     
-    public void setDeleteList(List<String> deleteList){
+    public void setDeleteList(List<Node> deleteList){
     	this.deleteList = deleteList;
     }
     
-    public void setPredecessors(Map<String, List<Behavior>> predecessors){
+    public void setPredecessors(Map<Node, List<Behavior>> predecessors){
     	this.predecessors = predecessors;
     }    
     
-    public void setSuccesors(Map<String, List<Behavior>> successors){
+    public void setSuccesors(Map<Node, List<Behavior>> successors){
     	this.successors = successors;
     }    
     
-    public void setConflictors(Map<String, List<Behavior>> conflictors){
+    public void setConflictors(Map<Node, List<Behavior>> conflictors){
     	this.conflictors = conflictors;
     }    
     
@@ -347,31 +358,31 @@ public class Behavior{
 //    	this.stream = stream;
 //    }    
 //    
-    public SidneyCodelet getCodelet(String name){
-        SidneyCodelet codelet = getBehaviorCodelet(name);
-        if(codelet != null)
-        	return codelet;
-        else
-            return getExpectationCodelet(name);    
-    }
+//    public SidneyCodelet getCodelet(String name){
+//        SidneyCodelet codelet = getBehaviorCodelet(name);
+//        if(codelet != null)
+//        	return codelet;
+//        else
+//            return getExpectationCodelet(name);    
+//    }
     
-    public SidneyCodelet getBehaviorCodelet(String name){
-    	for(SidneyCodelet sc: behaviorCodelets)
-            if(sc.getName().compareTo(name) == 0)
-            	return sc;
-        return null;            
-    }
+//    public SidneyCodelet getBehaviorCodelet(String name){
+//    	for(SidneyCodelet sc: behaviorCodelets)
+//            if(sc.getName().compareTo(name) == 0)
+//            	return sc;
+//        return null;            
+//    }
     
-    public SidneyCodelet getExpectationCodelet(String name){
-    	for(SidneyCodelet sc: expectationCodelets)
-            if(sc.getName().compareTo(name) == 0)
-            	return sc;
-        return null; 
-    }
-    
-    public String toString(){
-    	return name;
-    }
+//    public SidneyCodelet getExpectationCodelet(String name){
+//    	for(SidneyCodelet sc: expectationCodelets)
+//            if(sc.getName().compareTo(name) == 0)
+//            	return sc;
+//        return null; 
+//    }
+//    
+//    public String toString(){
+//    	return name;
+//    }
 
 	public long getActionId() {
 		//TODO
