@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public class ProtectedGoal extends Goal{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.ProtectedGoal");
-    private Map<Node, List<Behavior>> inhibitoryPropositions = new HashMap<Node, List<Behavior>>();    
+    private Map<Node, List<BehaviorImpl>> inhibitoryPropositions = new HashMap<Node, List<BehaviorImpl>>();    
     
     public ProtectedGoal(String name){
         super(name);
@@ -33,13 +33,13 @@ public class ProtectedGoal extends Goal{
             
             for(Node deleteProposition: inhibitoryPropositions.keySet()){
             	if(state.hasNode((Node) deleteProposition)){ //TODO this is backwards?
-            		List<Behavior> behaviors = inhibitoryPropositions.get(deleteProposition);
+            		List<BehaviorImpl> behaviors = inhibitoryPropositions.get(deleteProposition);
                     if(behaviors.size() > 0){
                         double inhibited = delta / behaviors.size();
 
-                        for(Behavior behavior: behaviors){
+                        for(BehaviorImpl behavior: behaviors){
                             behavior.inhibit(inhibited / behavior.getDeleteList().size());
-                            logger.info("\t<--" + behavior.getName() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
+                            logger.info("\t<--" + behavior.toString() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
                            
                         }
                     }
@@ -48,10 +48,10 @@ public class ProtectedGoal extends Goal{
         }//if        
     }
     
-    public Map<Node, List<Behavior>> getInhibitoryPropositions(){
+    public Map<Node, List<BehaviorImpl>> getInhibitoryPropositions(){
         return inhibitoryPropositions;
     }
-    public void setInhibitoryPropositions(Map<Node, List<Behavior>> inhibitoryPropositions){
+    public void setInhibitoryPropositions(Map<Node, List<BehaviorImpl>> inhibitoryPropositions){
     	this.inhibitoryPropositions = inhibitoryPropositions;
     }
 

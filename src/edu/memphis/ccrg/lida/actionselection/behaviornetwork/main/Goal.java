@@ -19,7 +19,7 @@ public class Goal{
     protected String name;
     protected boolean persistent = true;    
     
-    private Map<Node, List<Behavior>> excitatoryPropositions = new HashMap<Node, List<Behavior>>();           
+    private Map<Node, List<BehaviorImpl>> excitatoryPropositions = new HashMap<Node, List<BehaviorImpl>>();           
     
     private boolean active;
     
@@ -58,14 +58,14 @@ public class Goal{
             logger.info("GOAL : EXCITATION " + name);
             
             for(Object addProposition: excitatoryPropositions.keySet()){
-                List<Behavior> behaviors = excitatoryPropositions.get(addProposition);
+                List<BehaviorImpl> behaviors = excitatoryPropositions.get(addProposition);
 
                 if(behaviors.size() > 0){
                     double granted = gamma / behaviors.size();
 
-                    for(Behavior behavior: behaviors){
+                    for(BehaviorImpl behavior: behaviors){
                         behavior.excite(granted / behavior.getAddList().size());
-                        logger.info("\t-->" + behavior.getName() + " " + granted / behavior.getAddList().size() + " for " + addProposition);
+                        logger.info("\t-->" + behavior.toString() + " " + granted / behavior.getAddList().size() + " for " + addProposition);
                     }
                 }
             }//for each proposition
@@ -82,11 +82,11 @@ public class Goal{
         return persistent;
     }
     
-    public Map<Node, List<Behavior>> getExcitatoryPropositions(){
+    public Map<Node, List<BehaviorImpl>> getExcitatoryPropositions(){
         return excitatoryPropositions;
     }
     
-    public void setExcitatoryPropositions(Map<Node, List<Behavior>> excitatoryPropositions){
+    public void setExcitatoryPropositions(Map<Node, List<BehaviorImpl>> excitatoryPropositions){
     	this.excitatoryPropositions = excitatoryPropositions;
     }
     

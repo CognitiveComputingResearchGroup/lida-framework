@@ -1,24 +1,15 @@
-/*
- * Reinforcer.java
- *
- * Sidney D'Mello
- * Created on January 6, 2004, 6:22 PM
- */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
-import java.util.*;
+import java.util.List;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public class Reinforcer{
+public class BasicReinforcementStrategy implements ReinforcementStrategy{
+
+	private ReinforcementCurve curve = new SigmoidCurve(0.5, 0.5);
 	
-    private ReinforcementCurve curve = new SigmoidCurve(0.5, 0.5);
-            
-    public Reinforcer() {
-    }
-    
     public void reinforce(Behavior behavior, NodeStructure currentState){
     	List<ExpectationCodelet> expectationCodelets = behavior.getExpectationCodelets();
         if(!expectationCodelets.isEmpty()){
@@ -31,7 +22,7 @@ public class Reinforcer{
         }
     }
     
-    protected double reinforcement(double fitness, double beta){
+    public double reinforcement(double fitness, double beta){
         double reinforcement = 0;
         
         double oy = beta;        
@@ -52,4 +43,5 @@ public class Reinforcer{
     public void setReinforcementCurve(ReinforcementCurve reinforcementCurve){
         curve = reinforcementCurve;
     }
+	
 }

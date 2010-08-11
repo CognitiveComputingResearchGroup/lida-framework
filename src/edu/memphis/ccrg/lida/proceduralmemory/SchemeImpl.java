@@ -30,6 +30,13 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 		this.id = id;
 		this.actionId = actionId;
 	}
+	
+	public SchemeImpl(Scheme s){
+		this.id = s.getId();
+		this.actionId = s.getSchemeActionId();
+		this.intrinsicBehavior = s.isIntrinsicBehavior();
+		//TODO: More copying
+	}
 
 	@Override
 	public synchronized void addArgument(Argument a) {

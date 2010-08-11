@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.util;
 import java.util.*;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 
 /**
@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 public class Normalizer{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Normalizer");
-    private List<Stream> streams;
+    private Queue<Stream> streams;
     
     private int count;
     private double sum;
@@ -29,7 +29,7 @@ public class Normalizer{
     private double max;        
     private double average;
     
-    public Normalizer(List<Stream> streams){        
+    public Normalizer(Queue<Stream> streams){        
         this.streams = streams;
         reset();            
     }
@@ -40,16 +40,16 @@ public class Normalizer{
         reset();
 
         if(!streams.isEmpty()){
-            Stream stream = (Stream)streams.get(0);
+            Stream stream = (Stream)streams.peek();
             if(!stream.getBehaviors().isEmpty())
             {
-                min = ((Behavior)stream.getBehaviors().get(0)).getAlpha();
+                min = ((BehaviorImpl)stream.getBehaviors().get(0)).getAlpha();
                 max = min;
             }
         }
                 
         for(Stream s: streams){
-            for(Behavior behavior: s.getBehaviors()){   
+            for(BehaviorImpl behavior: s.getBehaviors()){   
             	count ++;
                 double activation = behavior.getAlpha();
                 sum += activation;
@@ -80,7 +80,7 @@ public class Normalizer{
         double n_sum = pi * count;
         
         for(Stream s: streams){
-            for(Behavior behavior: s.getBehaviors()){   
+            for(BehaviorImpl behavior: s.getBehaviors()){   
             	
                 double activation = behavior.getAlpha();
                 double strength = activation / sum;
@@ -128,8 +128,8 @@ public class Normalizer{
     private void report(String header){
         logger.info(header);
         for(Stream s: streams)
-            for(Behavior behavior: s.getBehaviors()) 
-                logger.info("\t" + behavior.getName() + "\t" + behavior.getAlpha());
+            for(BehaviorImpl behavior: s.getBehaviors()) 
+                logger.info("\t" + behavior.toString() + "\t" + behavior.getAlpha());
     }//method
 
 }//class

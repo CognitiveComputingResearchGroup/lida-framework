@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 import java.util.*;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 
 /**
  * Selector iterates and chooses competitor with max alpha
@@ -20,12 +20,12 @@ public class Selector{
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
     private final double TIE_BREAKER = 0.5;
     
-    private List<Behavior> competitors = new ArrayList<Behavior>();
+    private List<BehaviorImpl> competitors = new ArrayList<BehaviorImpl>();
     
     public Selector() {       
     }
     
-    public void addCompetitor(Behavior behavior){        
+    public void addCompetitor(BehaviorImpl behavior){        
         if(behavior != null)  {
             competitors.add(behavior);                 
             logger.info("SELECTOR : ADDING Behavior " + behavior + 
@@ -33,7 +33,7 @@ public class Selector{
         }
     }    
     
-    public void removeCompetitor(Behavior behavior){                
+    public void removeCompetitor(BehaviorImpl behavior){                
         if(behavior != null){
             competitors.remove(behavior);            
             logger.info("SELECTOR : REMOVING Behavior " + behavior + 
@@ -42,13 +42,13 @@ public class Selector{
               
     }        
     
-    public Behavior evaluateAbsoluteWinner(){
-        Behavior winner = null;
+    public BehaviorImpl evaluateAbsoluteWinner(){
+        BehaviorImpl winner = null;
         double maxAlpha = 0.0;
         
         logger.info("SELECTOR : SELECTING " + getNumberOfCompetitors());
         
-        for(Behavior current: competitors){       
+        for(BehaviorImpl current: competitors){       
             if(current.getAlpha() > maxAlpha) {                    
                 winner = current;
                 maxAlpha = current.getAlpha();
@@ -57,7 +57,7 @@ public class Selector{
             }            
         }        
         if(winner != null)
-            logger.info("Winner: " + winner.getName() + ", alpha: " + winner.getAlpha());
+            logger.info("Winner: " + winner.toString() + ", alpha: " + winner.getAlpha());
         return winner;
     }
     
