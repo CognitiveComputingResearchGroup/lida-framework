@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -54,8 +54,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void selectAction() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void sendAction(long schemeActionId){
@@ -71,28 +69,25 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			addActionSelectionListener((ActionSelectionListener)listener);
 		}
 	}
-	//TODO Remove below
 
 	@Override
-	public Behavior getFiredBehavior() {
-		// TODO Auto-generated method stub
-		return null;
+	public void sendAction() {		
 	}
 
 	@Override
-	public void reduceTheta() {
+	public void receiveSchemes(List<Scheme> schemes) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void restoreTheta() {
+	public void receiveStream(Stream s) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void sendAction() {
+	public void receiveStreams(List<Stream> streams) {
 		// TODO Auto-generated method stub
 		
 	}

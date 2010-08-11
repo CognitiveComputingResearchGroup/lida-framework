@@ -565,5 +565,24 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public void addListener(ModuleListener listener) {
 	}
 
+	@Override
+	public void receiveSchemes(List<Scheme> schemes) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveStream(Stream s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveStreams(List<Stream> streams) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }//class
