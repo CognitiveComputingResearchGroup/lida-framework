@@ -308,6 +308,12 @@ public class Behavior{
         return conflictors;
     }
         
+
+	public List<Behavior> getConflictors(Node precondition1) {
+		return conflictors.get(precondition1);
+	}
+    
+    
     public List<BehaviorCodelet> getBehaviorCodelets(){
         return behaviorCodelets;
     } 
@@ -388,7 +394,11 @@ public class Behavior{
 		//TODO
 		return 0;
 	}
-    
+
+	public void addConflictors(Node precondition1, List<Behavior> behaviors) {
+		conflictors.put(precondition1, behaviors);
+	}
+
 }
 
 

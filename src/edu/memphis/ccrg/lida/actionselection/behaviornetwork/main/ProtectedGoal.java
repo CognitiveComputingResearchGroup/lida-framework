@@ -53,6 +53,10 @@ public class ProtectedGoal extends Goal{
     }
     public void setInhibitoryPropositions(Map<Node, List<Behavior>> inhibitoryPropositions){
     	this.inhibitoryPropositions = inhibitoryPropositions;
-    }     
+    }
+
+	public boolean containsExcitatoryProposition(Node proposition) {
+		return getExcitatoryPropositions().containsKey(proposition);		
+	}     
  
 }

@@ -52,40 +52,42 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	/**
 	 * Percent to reduce the theta threshold by if no behavior is selected
 	 */
-    public final double THETA_REDUCTION  = 10;   
+    public final double activationThresholdReduction  = 10;  
     
     /**
-     * Current threshold for becoming active
-     * TODO Change 
+     * Reset value for theta
      */
-    private double theta;
-//    
-//    /**
-//     * Reset value for theta
-//     */
-//    private final double THETA_INITIAL_VALUE = 0.9;
+    private final double initialActivationThreshold = 0.9;
     
     /**
-     * mean level of activation
+     * Current threshold for becoming active (THETA)
      */
-    private double pi;       
+    private double activationThreshold = initialActivationThreshold;
+    
+    /**
+     * mean level of activation (PI)
+     */
+    private double meanActivation = 0.0;       
     
     /**
      * Amount of excitation by conscious broadcast
      */
-    private double phi;      
+    private double broadcastExcitationAmount = 0.0;      
     
     /**
-     * Amount of excitation by a goal
+     * Amount of excitation by a goal (GAMMA)
      */
-    private double gamma;    
+    private double goalExcitationAmount = 0.0;    
     
     /**
-     * Amount of inhibition a protected goal takes away
+     * Amount of inhibition a protected goal takes away (DELTA)
      */
-    private double delta;   
+    private double protectedGoalInhibition = 0.0;   
     
-    private double omega;    //amplification factor for base level activation    
+    /**
+     * amplification factor for base level activation
+     */
+    private double baseLevelActivationAmplicationFactor = 0.0;        
     
     private List<Goal> goals = new ArrayList<Goal>();
     private List<Stream> streams = new ArrayList<Stream>();  
@@ -100,10 +102,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //TODO make strategy
     private Reinforcer reinforcer = new Reinforcer();
     
-    //TODO maintain
-    
     private Behavior winner = null;        
-    private double threshold = theta;       //used as a backup copy for the 
+//    private double threshold = theta;       //used as a backup copy for the 
                                     //threshold when thresholds are lowered
     
     /**
@@ -119,9 +119,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      */
     private Map<Node, List<Behavior>> behaviorsByPropositionMap = new HashMap<Node, List<Behavior>>();
     
-    public BehaviorNetworkImpl() {
-        setConstants(0, 0, 0, 0, 0, 0);     
-        
+    public BehaviorNetworkImpl() {        
         buildEnvironmentalLinks();        
         buildExcitatoryGoalLinks(); 
         buildInhibitoryGoalLinks();    
@@ -186,9 +184,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                     for(Goal goal: goals){
                         if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
                         	ProtectedGoal pGoal = (ProtectedGoal) goal;
-                        	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();
-                                                        
-                            if(pGoal.getExcitatoryPropositions().containsKey(proposition)){
+                        	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();                  
+                            if(pGoal.containsExcitatoryProposition(proposition)){
                                 List<Behavior> behaviors = inhibitoryProps.get(proposition);
                                 if(behaviors == null){
                                     behaviors = new ArrayList<Behavior>();
@@ -270,14 +267,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
     
     private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(Node precondition: firstBehavior.getPreconditions()){
-            for(Node p2: secondBehavior.getDeleteList()){
-                if(precondition.equals(p2)){
-                    List<Behavior> behaviors = firstBehavior.getConflictors().get(precondition);
+        for(Node precondition1: firstBehavior.getPreconditions()){
+            for(Node deleteItem2: secondBehavior.getDeleteList()){
+                if(precondition1.equals(deleteItem2)){
+                    List<Behavior> behaviors = firstBehavior.getConflictors(precondition1);
                     if(behaviors == null){
                         behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
-                        firstBehavior.getConflictors().put(precondition, behaviors);
+                        firstBehavior.addConflictors(precondition1, behaviors);
                     }
                     else if(!behaviors.contains(secondBehavior))
                         behaviors.add(secondBehavior);
@@ -287,6 +284,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }//for
         
     }//method
+    
+	@Override
+	public void receiveScheme(Scheme scheme) {
+		// TODO Important!
+		
+	}
     
     private void report(String header, Map<Node, List<Behavior>> links){
         logger.info(header);
@@ -357,15 +360,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //	 *          b. Add activation from the goals.
 //	 *          c. Add excitation from internal spreading by the behaviors.
 //	 *          d. Add inhibition.
-        grantActivationFromEnvironment();                                          //phase 3
+        grantActivationFromBroadcast();                                          //phase 3
         
         for(Goal goal: goals)
-        	goal.grantActivation(gamma);
+        	goal.grantActivation(goalExcitationAmount);
         
         for(Stream s: streams){
         	for(Behavior b: s.getBehaviors()){
-        		b.spreadExcitation(phi, gamma);
-                b.spreadInhibition(currentState, gamma, delta);
+        		b.spreadExcitation(broadcastExcitationAmount, goalExcitationAmount);
+                b.spreadInhibition(currentState, goalExcitationAmount, protectedGoalInhibition);
                 //((Behavior)bi.next()).spreadExcitation();
         	}
         }
@@ -374,7 +377,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //	     *      a. Add reinforcement contribution to activation.
         for(Stream s: streams){//Phase 4
         	for(Behavior b: s.getBehaviors()){
-        		b.merge(omega);
+        		b.merge(baseLevelActivationAmplicationFactor);
         	}
         } 
         
@@ -383,13 +386,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   		 *          b. Normalize
      //   if(cycle != 1){
             normalizer.scan();                                                  //phase 5
-            normalizer.normalize(this.pi); 
+            normalizer.normalize(this.meanActivation); 
             normalizer.scan();
      //   }  
         
         for(Stream s: streams){				//phase 6
         	for(Behavior b: s.getBehaviors()){
-        		if(b.isActive() && b.getAlpha() >= theta){
+        		if(b.isActive() && b.getAlpha() >= activationThreshold){
         			selector.addCompetitor(b);
         		}
         	}
@@ -425,11 +428,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //Iterate through the propositions in the current state.
     //For each proposition get the behaviors indexed by that proposition
     //For each behavior, excite it an amount equal to (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
-    public void grantActivationFromEnvironment(){
+    public void grantActivationFromBroadcast(){
         logger.info("ENVIRONMENT : EXCITATION");
         for(Linkable proposition: currentState.getLinkables()){
             List<Behavior> behaviors = behaviorsByPropositionMap.get(proposition);
-            double granted = phi / behaviors.size();
+            double granted = broadcastExcitationAmount / behaviors.size();
             for(Behavior b: behaviors){
             	//TODO remove comment below
                 // b.getPreconditions().put(proposition, new Boolean(true));
@@ -442,12 +445,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     public void reduceTheta(){
     	//TODO Strategy pattern
-        theta = theta - (theta * (THETA_REDUCTION / 100));
-        logger.info("NET : THETA REDUCED TO " + theta);
+        activationThreshold = activationThreshold - (activationThreshold * (activationThresholdReduction / 100));
+        logger.info("NET : THETA REDUCED TO " + activationThreshold);
     }
     public void restoreTheta(){
-        theta = threshold;
-        logger.info("NET : THETA RESTORED TO " + theta);
+        activationThreshold = initialActivationThreshold;
+        logger.info("NET : THETA RESTORED TO " + activationThreshold);
     }
    
     public void addActionSelectionListener(ActionSelectionListener listener){
@@ -491,58 +494,48 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         return null;
     }
     
-    //TODO combine gets and sets
     public double getTheta(){
-        return theta;
+        return activationThreshold;
     }
     public double getPhi(){
-        return phi;                
+        return broadcastExcitationAmount;                
     }
     public double getGamma(){
-        return gamma;
+        return goalExcitationAmount;
     }
     public double getDelta(){
-        return delta;
+        return protectedGoalInhibition;
     }
-    public double getPi(){
-        return pi;
+    public double getMeanActivation(){
+        return meanActivation;
     }
     public double getOmega(){
-        return omega;
+        return baseLevelActivationAmplicationFactor;
     }            
-    public void setConstants(double theta, double phi, double gamma, 
-            double delta, double pi, double omega){
-		setTheta(theta);
-		setPhi(phi);
-		setGamma(gamma);
-		setDelta(delta);
-		setPi(pi);   
-		setOmega(omega);
-	}    
+
 	public void setTheta(double theta){
 		logger.info("CONSTANT-CHANGE: theta:\t" + getTheta() + "--> " + theta);
-		this.theta = theta;
-		threshold = theta;
+		this.activationThreshold = theta;
 	}
 	public void setPhi(double phi){
 		logger.info("CONSTANT-CHANGE: phi:\t" + getPhi() + "--> " + phi);
-		this.phi = phi;
+		this.broadcastExcitationAmount = phi;
 	}
 	public void setGamma(double gamma){
 		logger.info("CONSTANT-CHANGE: gamma:\t" + getGamma() + "--> " + gamma);
-		this.gamma = gamma;
+		this.goalExcitationAmount = gamma;
 	}
 	public void setDelta(double delta){
 		logger.info("CONSTANT-CHANGE: delta:\t" + getDelta() + "--> " + delta);
-		this.delta = delta;
+		this.protectedGoalInhibition = delta;
 	}                            
 	public void setPi(double pi){
-		logger.info("CONSTANT-CHANGE: pi:\t" + getPi() + "--> " + pi);
-		this.pi = pi;
+		logger.info("CONSTANT-CHANGE: pi:\t" + getMeanActivation() + "--> " + pi);
+		this.meanActivation = pi;
 	}                   
 	public void setOmega(double omega){
 		logger.info("CONSTANT-CHANGE: omega:\t" + getOmega() + "--> " + omega);
-		this.omega = omega;
+		this.baseLevelActivationAmplicationFactor = omega;
 	}
 
     public List<Goal> getGoals(){
@@ -557,29 +550,20 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     private void report(){        
-        for(Stream s: streams){
-        	for(Behavior b: s.getBehaviors()){
+        for(Stream s: streams)
+        	for(Behavior b: s.getBehaviors())
         		logger.info(b.getName() + "::" + b.getAlpha());
-        	}
-        }
+        	
     }
 
 	@Override
 	public Object getModuleContent() {
-		// Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// Auto-generated method stub
-		
 	}
 
-	@Override
-	public void receiveScheme(Scheme scheme) {
-		// TODO Important!
-		
-	}
 
 }//class
