@@ -25,7 +25,7 @@ public class LidaStarter {
 	/**
 	 * Default lida configuation
 	 */
-	private static final String DEFAULT_LIDA_PROPERTIES_PATH = "configs/lidaConfig.properties";
+	public static final String DEFAULT_LIDA_PROPERTIES_PATH = "configs/lidaConfig.properties";
 
 	/**
 	 * The lida configuration to be used for this agent
