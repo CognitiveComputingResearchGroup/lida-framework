@@ -122,15 +122,13 @@ public class LidaGui extends javax.swing.JFrame {
     }
 
     private void loadPanelConfigFromFile(String path) {
-        int i = 1000;
-        while (panels.size() > 0 && i-- > 0) removePanelAt(0);
+        while (panels.size() > 0) removePanelAt(0);
         areaAPanelsMenu.removeAll();
         areaBPanelsMenu.removeAll();
         areaCPanelsMenu.removeAll();
         areaOthersPanelsMenu.removeAll();
         
         Properties panelProperties = ConfigUtils.loadProperties(path);
-
 
         loadPanels(panelProperties);
         pack();
@@ -450,7 +448,10 @@ public class LidaGui extends javax.swing.JFrame {
             private java.awt.Container cParent = parent;
             private String[] cParameters = panelParameters.get(panels.indexOf(panel));
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                int index = -1;
+                togglePanel();
+            }
+            private void togglePanel() {
+            	int index = -1;
                 for (java.awt.Component c : parent.getComponents()) {
                     if (c.equals(cjPanel)) {
                         for (int i = 0; i < panels.size(); i++) {
@@ -463,8 +464,10 @@ public class LidaGui extends javax.swing.JFrame {
                     }
                 }
                 if (index > -1) {
+                	//panel found, remove it
                     removePanelAt(index, false);
                 } else {
+                	//panel not found, add it
                     cParent.add(cjPanel);
                     panels.add(cLidaPanel);
                     panelParents.add(cParent);
