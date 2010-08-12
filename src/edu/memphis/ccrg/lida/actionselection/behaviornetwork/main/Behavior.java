@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 //TODO figure out how to cull the number of methods
 public interface Behavior extends Scheme {
 
-	void deactivate();
+	void deactivatePreconditions();
 
 	void resetActivation();
 

@@ -60,7 +60,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     
     public BehaviorImpl(Scheme s){
     	super(s);            
-    	deactivate();
+    	deactivatePreconditions();
     }
         
     public void excite(double excitation){        
@@ -192,7 +192,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         return true;
     }    
         
-    public void deactivate(){                
+    public void deactivatePreconditions(){                
         for(Node s: preconditions.keySet())
         	preconditions.put(s, false);       
     }

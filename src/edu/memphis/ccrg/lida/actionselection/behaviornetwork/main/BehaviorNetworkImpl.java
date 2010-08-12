@@ -99,7 +99,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //TODO review this
     private Selector selector = new Selector();
     
-    private ReinforcementStrategy reinforceStrat = new BasicReinforcementStrategy();
+    private ReinforcementStrategy reinforcementStrategy = new BasicReinforcementStrategy();
     
     /**
      * Currently selected behavior
@@ -414,11 +414,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //	       If the winner is not null:
 //	           a. Reset its activation
 //	           b. Reinforce the winner
-//        report();
         if(winner != null){
-            winner.deactivate();  
+            winner.deactivatePreconditions();  
             winner.resetActivation();
-            reinforceStrat.reinforce(winner, currentState);        
+            reinforcementStrategy.reinforce(winner, currentState);        
         }
             
 //   	 *  2.  Initialization Phase:
@@ -468,27 +467,24 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         			selector.addCompetitor(b);
         		}
         	}
-        	winner = selector.evaluateAbsoluteWinner();   
+        	//TODO why rewrite over the winner of the last stream?
+        	winner = selector.evaluateAbsoluteWinner();
+        	sendAction();
         }
         
-        for(Stream s: streams){				//phase 7
-        	for(Behavior b: s.getBehaviors()){
-        		if(!b.equals(winner)){
-        			b.deactivate();
-        		}
-        	}
-        }
+        for(Stream s: streams)				//phase 7
+        	for(Behavior b: s.getBehaviors())
+        		if(!b.equals(winner))
+        			b.deactivatePreconditions();       
         
         //phase 8
         //phase 9
-        if(winner != null)  {                                                    
+        if(winner != null){                                                    
             winner.prepareToFire(currentState);
             restoreTheta();
         }else       
             reduceTheta();
-       
-//        report();
-    }   //method 
+    }//method 
     
   //TODO what is pi?
     public void normalize(){
@@ -572,7 +568,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
     public void setReinforcementStrategy(ReinforcementStrategy reinforcer){
-        this.reinforceStrat = reinforcer;
+        this.reinforcementStrategy = reinforcer;
     }
     
 	public void setBehaviorActivationThreshold(double theta){
