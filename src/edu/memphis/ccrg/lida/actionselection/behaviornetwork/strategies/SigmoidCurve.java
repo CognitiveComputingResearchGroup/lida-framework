@@ -8,8 +8,8 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 
-public class SigmoidCurve implements ReinforcementCurve
-{
+public class SigmoidCurve implements ReinforcementCurve{
+	
     private double x;
     private double y;
     
