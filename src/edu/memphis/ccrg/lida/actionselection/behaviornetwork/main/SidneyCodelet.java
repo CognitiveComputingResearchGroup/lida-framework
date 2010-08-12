@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public abstract class SidneyCodelet{
     
     protected String name = "SidneyCodelet";
-    protected BehaviorImpl behavior = null;
+    protected Behavior behavior = null;
     
  //   protected Map<String, String> properties = new HashMap<String, String>();    
     
@@ -25,7 +25,7 @@ public abstract class SidneyCodelet{
     
     public abstract void execute(NodeStructure ns);
     
-    public BehaviorImpl getBehavior()
+    public Behavior getBehavior()
     {
         return behavior;
     }
@@ -48,7 +48,7 @@ public abstract class SidneyCodelet{
 //    	this.properties = properties;
 //    }
     
-    public final void setBehavior(BehaviorImpl behavior){
+    public final void setBehavior(Behavior behavior){
     	this.behavior = behavior;
     }
     

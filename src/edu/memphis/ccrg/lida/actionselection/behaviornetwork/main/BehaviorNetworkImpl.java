@@ -99,7 +99,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //TODO review this
     private Selector selector = new Selector();
     
-    //TODO make strategy
     private ReinforcementStrategy reinforceStrat = new BasicReinforcementStrategy();
     
     /**
@@ -119,7 +118,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * 
      * this is similar to our 
      */
-    private ConcurrentMap<Node, List<BehaviorImpl>> behaviorsByPropositionMap = new ConcurrentHashMap<Node, List<BehaviorImpl>>();
+    private ConcurrentMap<Node, List<Behavior>> preconditionBehaviorsMap = new ConcurrentHashMap<Node, List<Behavior>>();
     
     public BehaviorNetworkImpl() {    
     	super();
@@ -129,6 +128,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     public void receiveBroadcast(BroadcastContent bc){
     	currentState = (NodeStructure) bc;
+    	//TODO run current state over precondition behaviors map
     }
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
@@ -150,11 +150,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	@Override
-	public void receiveScheme(Scheme scheme){		
-		createLinksToBroadcast(scheme);        
-        createExcitatoryGoalLinks(scheme); 
-        createInhibitoryGoalLinks(scheme);    
-        createInterBehaviorLinks(scheme);
+	public void receiveScheme(Scheme scheme){
+		Behavior b = new BehaviorImpl(scheme);
+		createLinksToBroadcast(b);        
+        createExcitatoryGoalLinks(b); 
+        createInhibitoryGoalLinks(b);    
+        createInterBehaviorLinks(b);
 	}
 
 	@Override
@@ -167,102 +168,141 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	//*** Linking methods
 	
-	public void createLinksToBroadcast(Scheme newScheme){
-		//TODO
+	//Index the behaviors by their precondition
+	public void createLinksToBroadcast(Behavior newBehavior){
+		for(Node precondition: newBehavior.getPreconditions()){      
+			List<Behavior> behaviors = preconditionBehaviorsMap.get(precondition);
+            if(behaviors == null){
+                behaviors = new ArrayList<Behavior>();
+                preconditionBehaviorsMap.put(precondition, behaviors);
+            }                  
+            behaviors.add(newBehavior);
+		}
 	}
+//    /**
+//     * Builds up behaviorsByPropositionMap from all the streams.
+//     * Propositions is a map where the key is a proposition and the value is a list
+//     * of behaviors who have the key as a precondition
+//     * TODO Remove after creating new method
+//     */
+//    public void buildBroadcastLinks(){        
+//        logger.info("ENVIRONMENTAL LINKS");
+//        for(Stream s: streams){
+//        	for(Behavior behavior: s.getBehaviors()){
+//                for(Node proposition: behavior.getPreconditions()){                   
+//                    
+//                    List<Behavior> behaviors = preconditionBehaviorsMap.get(proposition);
+//                    if(behaviors == null){
+//                        behaviors = new ArrayList<Behavior>();
+//                        preconditionBehaviorsMap.put( proposition, behaviors);
+//                    }                  
+//                    behaviors.add(behavior);                                                                        
+//                }
+//            }
+//        }     
+//    }//method
     
-    /**
-     * Builds up propositions from all the streams.
-     * Propositions is a map where the key is a proposition and the value is a list
-     * of behaviors who have the key as a precondition
-     * TODO Remove after creating new method
-     */
-    public void buildBroadcastLinks(){        
-        logger.info("ENVIRONMENTAL LINKS");
-        
-        for(Stream s: streams){
-        	for(BehaviorImpl behavior: s.getBehaviors()){
-                for(Node proposition: behavior.getPreconditions()){                   
+	//Goals keep track of which behaviors will add things that they like
+    public void createExcitatoryGoalLinks(Behavior newBehavior){
+    	for(Node addItem: newBehavior.getAddList()){
+            for(Goal goal: goals){  
+            	//TODO write aux methods in goal to make this simpler
+            	Map<Node, List<Behavior>> propositions = goal.getExcitatoryPropositions();
+                
+                if(propositions.containsKey(addItem)){
+                	List<Behavior> behaviors = propositions.get(addItem);
+                    if(behaviors == null){                                
+                        behaviors = new ArrayList<Behavior>();                               
+                        propositions.put( addItem, behaviors);
+                    }                            
+                    behaviors.add(newBehavior);                                                                    
                     
-                    List<BehaviorImpl> behaviors = behaviorsByPropositionMap.get(proposition);
-                    if(behaviors == null){
-                        behaviors = new ArrayList<BehaviorImpl>();
-                        behaviorsByPropositionMap.put( proposition, behaviors);
-                    }                  
-                    behaviors.add(behavior);                                                                        
-                }
+                }                        
             }
-        }     
-    }//method
-    
-    public void createExcitatoryGoalLinks(Scheme scheme){
-    	//TODO
+        }
     }
     
-    public void buildExcitatoryGoalLinks(){                                
-    	for(Stream s: streams){
-        	for(BehaviorImpl behavior: s.getBehaviors()){                             
-                for(Node proposition: behavior.getAddList()){
-                    for(Goal goal: goals){                        
-                    	Map<Node, List<BehaviorImpl>> propositions = goal.getExcitatoryPropositions();
-                        
-                        if(propositions.containsKey(proposition)){
-                        	List<BehaviorImpl> behaviors = propositions.get(proposition);
-                            if(behaviors == null){                                
-                                behaviors = new ArrayList<BehaviorImpl>();                               
-                                propositions.put( proposition, behaviors);
-                            }                            
-                            behaviors.add(behavior);                                                                    
-                            
-                        }                        
-                    }
-                }
-            }
-        }           
-    }//method
+//    public void buildExcitatoryGoalLinks(){                                
+//    	for(Stream s: streams){
+//        	for(Behavior behavior: s.getBehaviors()){                             
+//                for(Node addItem: behavior.getAddList()){
+//                    for(Goal goal: goals){  
+//                    	//TODO write aux methods in goal to make this simpler
+//                    	Map<Node, List<Behavior>> propositions = goal.getExcitatoryPropositions();
+//                        
+//                        if(propositions.containsKey(addItem)){
+//                        	List<Behavior> behaviors = propositions.get(addItem);
+//                            if(behaviors == null){                                
+//                                behaviors = new ArrayList<Behavior>();                               
+//                                propositions.put( addItem, behaviors);
+//                            }                            
+//                            behaviors.add(behavior);                                                                    
+//                            
+//                        }                        
+//                    }
+//                }
+//            }
+//        }           
+//    }//method
     
-    public void createInhibitoryGoalLinks(Scheme scheme){
-    	
+    //The upshot is that Protected goals store the behaviors who might delete things they like
+    public void createInhibitoryGoalLinks(Behavior newBehavior){
+    	for(Node deleteItem: newBehavior.getDeleteList()){//iterate over the delete list
+            for(Goal goal: goals){
+                if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
+                	ProtectedGoal pGoal = (ProtectedGoal) goal;
+                	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();                  
+                    if(pGoal.containsExcitatoryProposition(deleteItem)){
+                        List<Behavior> behaviors = inhibitoryProps.get(deleteItem);
+                        if(behaviors == null){
+                            behaviors = new ArrayList<Behavior>();
+                            inhibitoryProps.put(deleteItem, behaviors);
+                        }
+                        behaviors.add(newBehavior);
+                    }                            
+                }                        
+            }//for goals
+        }
     }
 
-    /**
-     * Check every delete list item and if there's a protected goal 
-     * whose excitatory proposition is in the delete list the add the behavior
-     * to the protected goal's map
-     */
-    public void buildInhibitoryGoalLinks(){                                        
-    	for(Stream s: streams){
-        	for(BehaviorImpl behavior: s.getBehaviors()){                
-                for(Node proposition: behavior.getDeleteList()){//iterate over the delete list
-                    for(Goal goal: goals){
-                        if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
-                        	ProtectedGoal pGoal = (ProtectedGoal) goal;
-                        	Map<Node, List<BehaviorImpl>> inhibitoryProps = pGoal.getInhibitoryPropositions();                  
-                            if(pGoal.containsExcitatoryProposition(proposition)){
-                                List<BehaviorImpl> behaviors = inhibitoryProps.get(proposition);
-                                if(behaviors == null){
-                                    behaviors = new ArrayList<BehaviorImpl>();
-                                    inhibitoryProps.put(proposition, behaviors);
-                                }
-                                behaviors.add(behavior);
-                            }                            
-                        }                        
-                    }//for goals
-                }
-            }
-        }   
-    }//method
+//    /**
+//     * Check every delete list item and if there's a protected goal 
+//     * whose excitatory proposition is in the delete list the add the behavior
+//     * to the protected goal's map
+//     */
+//    public void buildInhibitoryGoalLinks(){                                        
+//    	for(Stream s: streams){
+//        	for(Behavior behavior: s.getBehaviors()){                
+//                for(Node deleteItem: behavior.getDeleteList()){//iterate over the delete list
+//                    for(Goal goal: goals){
+//                        if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
+//                        	ProtectedGoal pGoal = (ProtectedGoal) goal;
+//                        	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();                  
+//                            if(pGoal.containsExcitatoryProposition(deleteItem)){
+//                                List<Behavior> behaviors = inhibitoryProps.get(deleteItem);
+//                                if(behaviors == null){
+//                                    behaviors = new ArrayList<Behavior>();
+//                                    inhibitoryProps.put(deleteItem, behaviors);
+//                                }
+//                                behaviors.add(behavior);
+//                            }                            
+//                        }                        
+//                    }//for goals
+//                }
+//            }
+//        }   
+//    }//method
     
-    public void createInterBehaviorLinks(Scheme scheme){
-    	
+    public void createInterBehaviorLinks(Behavior newBehavior){
+    	//TODO this one wont be so straightforward
     }
     
     public void buildInterBehaviorLinks(){
         logger.info("BEHAVIOR LINKS");
         
         for(Stream currentStream: streams){            
-            for(BehaviorImpl firstBehavior: currentStream.getBehaviors()){                           
-                for(BehaviorImpl secondBehavior: currentStream.getBehaviors()){         //iterate over current stream
+            for(Behavior firstBehavior: currentStream.getBehaviors()){                           
+                for(Behavior secondBehavior: currentStream.getBehaviors()){         //iterate over current stream
                     if(!firstBehavior.equals(secondBehavior)){
                         buildSuccessorLinks(firstBehavior, secondBehavior);
                         buildPredecessorLinks(firstBehavior, secondBehavior);
@@ -285,17 +325,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }   
     }
     
-    private void buildSuccessorLinks(BehaviorImpl firstBehavior, BehaviorImpl secondBehavior){                
+    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
         for(Node addProposition: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
             for(Node pc: secondBehavior.getPreconditions()){//iterate over preconditions of second behavior
                 if(addProposition.equals(pc))
                 {
-                    List<BehaviorImpl> behaviors = firstBehavior.getSuccessors().get(addProposition);
+                    List<Behavior> behaviors = firstBehavior.getSuccessors(addProposition);
                     if(behaviors == null)
                     {
-                        behaviors = new ArrayList<BehaviorImpl>();
+                        behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
-                        firstBehavior.getSuccessors().put(addProposition, behaviors);
+                        firstBehavior.addSuccessors(addProposition, behaviors);
                     }
                     else if(!behaviors.contains(secondBehavior))
                         behaviors.add(secondBehavior);
@@ -306,15 +346,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }       
     }//method
     
-    private void buildPredecessorLinks(BehaviorImpl firstBehavior, BehaviorImpl secondBehavior){                        
+    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
         for(Node precondition: firstBehavior.getPreconditions()){        //iterate over preconditon of first behavior
             for(Node p2: secondBehavior.getAddList()){               //iterate over addlist of second behavior
             	if(precondition.equals(p2)){
-                    List<BehaviorImpl> behaviors = firstBehavior.getPredecessors().get(precondition);
+                    List<Behavior> behaviors = firstBehavior.getPredecessors(precondition);
                     if(behaviors == null){
-                        behaviors = new ArrayList<BehaviorImpl>();
+                        behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
-                        firstBehavior.getPredecessors().put(precondition, behaviors);
+                        firstBehavior.addPredecessors(precondition, behaviors);
                     }
                     else if(!behaviors.contains(secondBehavior))
                         behaviors.add(secondBehavior);
@@ -323,13 +363,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }               
     }//method
     
-    private void buildConflictorLinks(BehaviorImpl firstBehavior, BehaviorImpl secondBehavior){                        
+    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
         for(Node precondition1: firstBehavior.getPreconditions()){
             for(Node deleteItem2: secondBehavior.getDeleteList()){
                 if(precondition1.equals(deleteItem2)){
-                    List<BehaviorImpl> behaviors = firstBehavior.getConflictors(precondition1);
+                    List<Behavior> behaviors = firstBehavior.getConflictors(precondition1);
                     if(behaviors == null){
-                        behaviors = new ArrayList<BehaviorImpl>();
+                        behaviors = new ArrayList<Behavior>();
                         behaviors.add(secondBehavior);
                         firstBehavior.addConflictors(precondition1, behaviors);
                     }
@@ -400,7 +440,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	goal.grantActivation(goalExcitationAmount);
         
         for(Stream s: streams){
-        	for(BehaviorImpl b: s.getBehaviors()){
+        	for(Behavior b: s.getBehaviors()){
         		b.spreadExcitation(broadcastExcitationAmount, goalExcitationAmount);
                 b.spreadInhibition(currentState, goalExcitationAmount, protectedGoalInhibitionAmount);
                 //((Behavior)bi.next()).spreadExcitation();
@@ -410,7 +450,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   	 *  4.  Merging Phase
 //	     *      a. Add reinforcement contribution to activation.
         for(Stream s: streams){//Phase 4
-        	for(BehaviorImpl b: s.getBehaviors()){
+        	for(Behavior b: s.getBehaviors()){
         		b.merge(baseLevelActivationAmplicationFactor);
         	}
         } 
@@ -423,7 +463,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 
         
         for(Stream s: streams){				//phase 6
-        	for(BehaviorImpl b: s.getBehaviors()){
+        	for(Behavior b: s.getBehaviors()){
         		if(b.isActive() && b.getAlpha() >= behaviorActivationThreshold){
         			selector.addCompetitor(b);
         		}
@@ -432,7 +472,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }
         
         for(Stream s: streams){				//phase 7
-        	for(BehaviorImpl b: s.getBehaviors()){
+        	for(Behavior b: s.getBehaviors()){
         		if(!b.equals(winner)){
         			b.deactivate();
         		}
@@ -498,13 +538,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void grantActivationFromBroadcast(){
         logger.info("ENVIRONMENT : EXCITATION");
         for(Linkable proposition: currentState.getLinkables()){
-            List<BehaviorImpl> behaviors = behaviorsByPropositionMap.get(proposition);
+            List<Behavior> behaviors = preconditionBehaviorsMap.get(proposition);
             double granted = broadcastExcitationAmount / behaviors.size();
-            for(BehaviorImpl b: behaviors){
+            for(Behavior b: behaviors){
             	//TODO remove comment below
                 // b.getPreconditions().put(proposition, new Boolean(true));
-                 b.excite(granted / b.getPreconditions().size());       
-                 logger.info("\t-->" + b.toString() + " " + granted / b.getPreconditions().size() + " for " + proposition);
+                 b.excite(granted / b.getPreconditionCount());       
+                 logger.info("\t-->" + b.toString() + " " + granted / b.getPreconditionCount() + " for " + proposition);
             }
 
         }
@@ -581,7 +621,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public Queue<Stream> getStreams(){
         return streams;        
     }        
-    
 	@Override
 	public Object getModuleContent() {
 		return null;

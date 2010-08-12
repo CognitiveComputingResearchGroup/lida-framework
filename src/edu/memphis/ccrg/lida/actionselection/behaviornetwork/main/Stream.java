@@ -17,7 +17,7 @@ public class Stream{
 	
     private String name;
     
-    private List<BehaviorImpl> behaviors = new ArrayList<BehaviorImpl>();
+    private List<Behavior> behaviors = new ArrayList<Behavior>();
     
     private boolean instantiated = false;
     
@@ -37,7 +37,7 @@ public class Stream{
         instantiated = false;
     }
     
-    public void addBehavior(BehaviorImpl behavior){
+    public void addBehavior(Behavior behavior){
     	behaviors.add(behavior);
     }    
     
@@ -45,7 +45,7 @@ public class Stream{
         return name;
     }
     
-    public List<BehaviorImpl> getBehaviors(){
+    public List<Behavior> getBehaviors(){
         return behaviors;
     }
     
@@ -54,12 +54,12 @@ public class Stream{
         return instantiated;
     } 
     
-    public void setBehaviors(List<BehaviorImpl> behaviors){
+    public void setBehaviors(List<Behavior> behaviors){
         this.behaviors = behaviors;       
     }
     
-    public BehaviorImpl getBehavior(String name){
-        for(BehaviorImpl b: behaviors)
+    public Behavior getBehavior(String name){
+        for(Behavior b: behaviors)
             if(b.toString().compareTo(name) == 0)
                  return b;
         return null;          

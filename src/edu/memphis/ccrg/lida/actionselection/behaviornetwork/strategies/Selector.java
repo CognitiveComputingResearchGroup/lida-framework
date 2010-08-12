@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 import java.util.*;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
  * Selector iterates and chooses competitor with max alpha
@@ -20,12 +20,12 @@ public class Selector{
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
     private final double TIE_BREAKER = 0.5;
     
-    private List<BehaviorImpl> competitors = new ArrayList<BehaviorImpl>();
+    private List<Behavior> competitors = new ArrayList<Behavior>();
     
     public Selector() {       
     }
     
-    public void addCompetitor(BehaviorImpl behavior){        
+    public void addCompetitor(Behavior behavior){        
         if(behavior != null)  {
             competitors.add(behavior);                 
             logger.info("SELECTOR : ADDING Behavior " + behavior + 
@@ -33,7 +33,7 @@ public class Selector{
         }
     }    
     
-    public void removeCompetitor(BehaviorImpl behavior){                
+    public void removeCompetitor(Behavior behavior){                
         if(behavior != null){
             competitors.remove(behavior);            
             logger.info("SELECTOR : REMOVING Behavior " + behavior + 
@@ -42,13 +42,13 @@ public class Selector{
               
     }        
     
-    public BehaviorImpl evaluateAbsoluteWinner(){
-        BehaviorImpl winner = null;
+    public Behavior evaluateAbsoluteWinner(){
+        Behavior winner = null;
         double maxAlpha = 0.0;
         
         logger.info("SELECTOR : SELECTING " + getNumberOfCompetitors());
         
-        for(BehaviorImpl current: competitors){       
+        for(Behavior current: competitors){       
             if(current.getAlpha() > maxAlpha) {                    
                 winner = current;
                 maxAlpha = current.getAlpha();

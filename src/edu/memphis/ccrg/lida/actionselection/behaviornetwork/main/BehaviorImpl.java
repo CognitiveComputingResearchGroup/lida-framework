@@ -48,9 +48,9 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     private List<Node> addList = new ArrayList<Node>();
     private List<Node> deleteList = new ArrayList<Node>();        
     
-    private Map<Node, List<BehaviorImpl>> predecessors = new HashMap<Node, List<BehaviorImpl>>();
-    private Map<Node, List<BehaviorImpl>> successors = new HashMap<Node, List<BehaviorImpl>>();
-    private Map<Node, List<BehaviorImpl>> conflictors = new HashMap<Node, List<BehaviorImpl>>();
+    private Map<Node, List<Behavior>> predecessors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> successors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> conflictors = new HashMap<Node, List<Behavior>>();
 
     private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
@@ -109,8 +109,8 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
   
     public void spreadSuccessorActivation(double phi, double gamma){           
         for(Node addProposition: successors.keySet()){
-            List<BehaviorImpl> behaviors = successors.get(addProposition);
-            for(BehaviorImpl successor: behaviors){
+            List<Behavior> behaviors = successors.get(addProposition);
+            for(Behavior successor: behaviors){
                 if(!successor.containsPrecondition(addProposition)){
                 	//TODO double check this
                     double granted = ((alphaActivation * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
@@ -123,15 +123,15 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         }        
     }//method
     
-    private boolean containsPrecondition(Node prop){
+    public boolean containsPrecondition(Node prop){
     	return preconditions.get(prop) == true;
     }
     
     public void spreadPredecessorActivation(){             
         for(Node precondition: preconditions.keySet()){
             if(!this.containsPrecondition(precondition)){
-            	List<BehaviorImpl> behaviors = predecessors.get(precondition);     
-            	for(BehaviorImpl predecessor: behaviors){
+            	List<Behavior> behaviors = predecessors.get(precondition);     
+            	for(Behavior predecessor: behaviors){
             		double granted = (alphaActivation / predecessor.getAddList().size())/behaviors.size();                        
                     predecessor.excite(granted);
                     logger.info("\t:+" + alphaActivation + " " + name + "<--" + granted + " to " +
@@ -148,8 +148,8 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         for(Node precondition: preconditions.keySet()){
             //if(((Boolean)(preconditions.get(precondition))).booleanValue())
             if(state.hasNode(precondition)){
-                List<BehaviorImpl> behaviors = conflictors.get(precondition); 
-                for(BehaviorImpl conflictor: behaviors){
+                List<Behavior> behaviors = conflictors.get(precondition); 
+                for(Behavior conflictor: behaviors){
                 	boolean mutualConflict = false;
                     double inhibited = (alphaActivation * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
@@ -226,11 +226,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     	deleteList.add(deleteCondition);
     }    
     
-    public void addPredecessor(Node precondition, BehaviorImpl predecessor){
+    public void addPredecessor(Node precondition, Behavior predecessor){
         if(precondition != null && predecessor != null){
-            List<BehaviorImpl> list = predecessors.get(precondition);            
+            List<Behavior> list = predecessors.get(precondition);            
             if(list == null){
-                list = new ArrayList<BehaviorImpl>();
+                list = new ArrayList<Behavior>();
                 predecessors.put(precondition, list);
             }
             list.add(predecessor);
@@ -239,22 +239,22 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
             logger.log(Level.WARNING, "", LidaTaskManager.getActualTick());
     } 
     
-    public void addSuccessor(Node addProposition, BehaviorImpl successor){
+    public void addSuccessor(Node addProposition, Behavior successor){
         if(addProposition != null && successor != null){
-            List<BehaviorImpl> list = successors.get(addProposition);
+            List<Behavior> list = successors.get(addProposition);
             if(list == null){              
-                list = new ArrayList<BehaviorImpl>();
+                list = new ArrayList<Behavior>();
                 successors.put(addProposition, list);
             }
             list.add(successor);
         }
     }
     
-    public void addConflictor(Node precondition, BehaviorImpl conflictor){
+    public void addConflictor(Node precondition, Behavior conflictor){
         if(precondition != null && conflictor != null){
-            List<BehaviorImpl> list = conflictors.get(precondition);
+            List<Behavior> list = conflictors.get(precondition);
             if(list == null){
-                list = new ArrayList<BehaviorImpl>();
+                list = new ArrayList<Behavior>();
                 conflictors.put(precondition, list);
             }
             list.add(conflictor);            
@@ -300,20 +300,20 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         return deleteList;
     }
     
-    public Map<Node, List<BehaviorImpl>> getPredecessors(){
+    public Map<Node, List<Behavior>> getPredecessors(){
         return predecessors;
     }
     
-    public Map<Node, List<BehaviorImpl>> getSuccessors(){
+    public Map<Node, List<Behavior>> getSuccessors(){
         return successors;
     } 
     
-    public Map<Node, List<BehaviorImpl>> getConflictors(){
+    public Map<Node, List<Behavior>> getConflictors(){
         return conflictors;
     }
         
 
-	public List<BehaviorImpl> getConflictors(Node precondition1) {
+	public List<Behavior> getConflictors(Node precondition1) {
 		return conflictors.get(precondition1);
 	}
     
@@ -344,15 +344,15 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     	this.deleteList = deleteList;
     }
     
-    public void setPredecessors(Map<Node, List<BehaviorImpl>> predecessors){
+    public void setPredecessors(Map<Node, List<Behavior>> predecessors){
     	this.predecessors = predecessors;
     }    
     
-    public void setSuccesors(Map<Node, List<BehaviorImpl>> successors){
+    public void setSuccesors(Map<Node, List<Behavior>> successors){
     	this.successors = successors;
     }    
     
-    public void setConflictors(Map<Node, List<BehaviorImpl>> conflictors){
+    public void setConflictors(Map<Node, List<Behavior>> conflictors){
     	this.conflictors = conflictors;
     }    
     
@@ -394,13 +394,33 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 //    	return name;
 //    }
 
-	public long getSchemeActionId() {
-		//TODO
-		return 0;
+	public void addConflictors(Node precondition1, List<Behavior> behaviors) {
+		conflictors.put(precondition1, behaviors);
 	}
 
-	public void addConflictors(Node precondition1, List<BehaviorImpl> behaviors) {
-		conflictors.put(precondition1, behaviors);
+	@Override
+	public double getPreconditionCount() {
+		return preconditions.size();
+	}
+
+	@Override
+	public List<Behavior> getPredecessors(Node precondition) {
+		return predecessors.get(precondition);
+	}
+
+	@Override
+	public void addPredecessors(Node precondition, List<Behavior> behaviors) {
+		predecessors.put(precondition, behaviors);
+	}
+
+	@Override
+	public List<Behavior> getSuccessors(Node addProposition) {
+		return successors.get(addProposition);
+	}
+
+	@Override
+	public void addSuccessors(Node addProposition, List<Behavior> behaviors) {
+		successors.put(addProposition, behaviors);
 	}
 
 }
