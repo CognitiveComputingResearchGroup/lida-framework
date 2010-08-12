@@ -52,7 +52,7 @@ public class Stream{
     public boolean isInstantiated()
     {
         return instantiated;
-    }
+    } 
     
     public void setBehaviors(List<BehaviorImpl> behaviors){
         this.behaviors = behaviors;       
@@ -68,4 +68,7 @@ public class Stream{
     public String toString(){
         return name;
     }
+	public int getBehaviorCount() {
+		return behaviors.size();
+	}
 }

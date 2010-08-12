@@ -20,7 +20,6 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicReinforcementStrategy;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ReinforcementStrategy;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.util.Normalizer;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
@@ -96,13 +95,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private Queue<Goal> goals = new ConcurrentLinkedQueue<Goal>();
     private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-    
-    /**
-     * utility to normalize
-     * TODO review this 
-     * 
-     **/
-    private Normalizer normalizer = new Normalizer(streams);
     
     //TODO review this
     private Selector selector = new Selector();
@@ -426,11 +418,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   	 *  5.  Normalization Phase:
 //   		 *          a. Scan the streams.
 //   		 *          b. Normalize
-     //   if(cycle != 1){
-            normalizer.scan();                                                  //phase 5
-            normalizer.normalize(this.meanActivation); 
-            normalizer.scan();
-     //   }  
+                                                  //phase 5
+        normalize(); 
+
         
         for(Stream s: streams){				//phase 6
         	for(BehaviorImpl b: s.getBehaviors()){
@@ -459,6 +449,38 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
        
 //        report();
     }   //method 
+    
+  //TODO what is pi?
+    public void normalize(){
+        int behaviorCount = 0, alphaActivationSum = 0;
+        for(Stream s: streams){
+        	behaviorCount += s.getBehaviorCount();
+        	for(Behavior b: s.getBehaviors()){
+        		alphaActivationSum += b.getAlpha();
+        	}
+        }
+        
+        double n_sum = meanActivation * behaviorCount;
+        
+        for(Stream s: streams){
+            for(Behavior behavior: s.getBehaviors()){   
+            	
+                double activation = behavior.getAlpha();
+                double strength = activation / alphaActivationSum;
+                double n_activation = strength * n_sum;
+                
+                behavior.decay(n_activation);
+                /*
+                double change = n_activation - activation;                
+                
+                if(change > 0)
+                    behavior.excite(change);
+                else if (change < 0)
+                    behavior.inhibit(change);
+                 */
+            }
+        }
+    }
     
     /*
 	 *  Spreads activation to Behaviors in the propositions Hashtable for

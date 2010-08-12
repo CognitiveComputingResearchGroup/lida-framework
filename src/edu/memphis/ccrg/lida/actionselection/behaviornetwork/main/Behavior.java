@@ -19,4 +19,8 @@ public interface Behavior extends Scheme {
 
 	void prepareToFire(NodeStructure currentState);
 
+	double getAlpha();
+
+	void decay(double n_activation);
+
 }
