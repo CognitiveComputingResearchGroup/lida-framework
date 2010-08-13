@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
  * Rudimentary action selection that selects all behaviors sent to it which are
@@ -40,15 +39,15 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		listeners.add(listener);
 	}
 	
-	public void receiveScheme(Scheme s) {
-		if(s.getActivation() > selectionThreshold){
+	public void receiveBehavior(Behavior b) {
+		if(b.getActivation() > selectionThreshold){
 			if(coolDownCounter == selectionFrequency){
-				sendAction(s.getSchemeActionId());
+				sendAction(b.getSchemeActionId());
 				coolDownCounter = 0;
 			}else
 				coolDownCounter++;
 			
-			logger.log(Level.FINE, "Selected action: " + s.getSchemeActionId(), LidaTaskManager.getActualTick());
+			logger.log(Level.FINE, "Selected action: " + b.getSchemeActionId(), LidaTaskManager.getActualTick());
 		}
 	}
 	
@@ -74,22 +73,5 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public void sendAction() {		
 	}
 
-	@Override
-	public void receiveSchemes(List<Scheme> schemes) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void receiveStream(Stream s) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void receiveStreams(List<Stream> streams) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }//class

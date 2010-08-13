@@ -29,7 +29,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
  * From "How to Do the Right Thing" by Maes
@@ -142,16 +141,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	@Override
 	public void addListener(ModuleListener listener) {
 	}
-
-	@Override
-	public void receiveSchemes(List<Scheme> schemes) {
-		for(Scheme s: schemes)
-			receiveScheme(s);		
-	}
 	
 	@Override
-	public void receiveScheme(Scheme scheme){
-		Behavior newBehavior = new BehaviorImpl(scheme);
+	public void receiveBehavior(Behavior newBehavior){
 		createLinksToBroadcast(newBehavior);        
         createExcitatoryGoalLinks(newBehavior); 
         createInhibitoryGoalLinks(newBehavior);    
@@ -159,14 +151,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         Stream newStream = new Stream();
         newStream.addBehavior(newBehavior);
         streams.add(newStream);
-	}
-
-	@Override
-	public void receiveStream(Stream s) {
-	}
-
-	@Override
-	public void receiveStreams(List<Stream> streams) {
 	}
 	
 	//*** Linking methods
@@ -447,7 +431,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //   		 *          b. Normalize
                                                   //phase 5
         normalize(); 
-
         
         for(Stream s: streams){				//phase 6
         	for(Behavior b: s.getBehaviors()){

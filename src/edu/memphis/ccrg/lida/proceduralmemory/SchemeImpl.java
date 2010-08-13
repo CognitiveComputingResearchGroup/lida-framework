@@ -35,6 +35,8 @@ public class SchemeImpl extends ActivatibleImpl implements Scheme {
 		this.id = s.getId();
 		this.actionId = s.getSchemeActionId();
 		this.intrinsicBehavior = s.isIntrinsicBehavior();
+		this.contextConditions = s.getContextConditions();
+		this.resultConditions = s.getResultConditions();
 		//TODO: More copying
 	}
 
