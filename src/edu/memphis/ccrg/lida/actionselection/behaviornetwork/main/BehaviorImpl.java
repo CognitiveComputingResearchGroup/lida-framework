@@ -45,7 +45,6 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
      */
     private double incomingActivation = 0.0;
  
-    //TODO Integer values
     private Map<Node, Boolean> preconditions = new HashMap<Node, Boolean>();
 
     private List<Node> addList = new ArrayList<Node>();
@@ -393,10 +392,6 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 //            if(sc.getName().compareTo(name) == 0)
 //            	return sc;
 //        return null; 
-//    }
-//    
-//    public String toString(){
-//    	return name;
 //    }
 
 	public void addConflictors(Node precondition1, List<Behavior> behaviors) {
