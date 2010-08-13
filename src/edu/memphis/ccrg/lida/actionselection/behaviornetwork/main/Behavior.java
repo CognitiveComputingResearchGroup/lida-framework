@@ -16,7 +16,7 @@ public interface Behavior extends Scheme {
 
 	List<ExpectationCodelet> getExpectationCodelets();
 
-	double getBeta();
+	double getBaseLevelActivation();
 
 	void reinforce(double reinforcement);
 

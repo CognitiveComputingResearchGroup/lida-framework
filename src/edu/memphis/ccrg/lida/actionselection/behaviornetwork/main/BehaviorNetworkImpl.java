@@ -418,15 +418,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             winner.deactivatePreconditions();  
             winner.resetActivation();
             reinforcementStrategy.reinforce(winner, currentState);        
-        }
-            
-//   	 *  2.  Initialization Phase:
-//   		 *          a. Increment the time stamp
-//   		 *          b. Set the winner to null.
-//   		 *          c. Reset the selector
-    //    cycle ++;                                                                //phase 2 
+        } 
         winner = null;
-        selector.reset();
         
 //   	 *  3.  Activation Spreading Phase
 //	 *          a. Add activation from the environment.

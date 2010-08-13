@@ -17,7 +17,7 @@ public class BasicReinforcementStrategy implements ReinforcementStrategy{
 	        for(ExpectationCodelet codelet: expectationCodelets){
 	        	codelet.execute(currentState);
 	            fitness += codelet.getPerformance();
-	            behavior.reinforce(reinforcement(fitness, behavior.getBeta()));   
+	            behavior.reinforce(reinforcement(fitness, behavior.getBaseLevelActivation()));   
 	        } 
         }
     }

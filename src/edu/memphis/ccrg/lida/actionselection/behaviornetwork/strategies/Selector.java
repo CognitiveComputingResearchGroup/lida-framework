@@ -58,16 +58,12 @@ public class Selector{
         }        
         if(winner != null)
             logger.info("Winner: " + winner.toString() + ", alpha: " + winner.getAlpha());
+        competitors.clear();
         return winner;
     }
     
     public int getNumberOfCompetitors(){
         return competitors.size();
-    }
-    
-    public void reset(){        
-        logger.info("SELECTOR : RESET");
-        competitors.clear();
     }
 
 }

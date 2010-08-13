@@ -30,15 +30,18 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 	 */
     private String name = "blank behavior";
 
-    private double alphaActivation = 0.0;
-    
     /**
-     * Reinforcement activation?
+     * total activation
      */
-    private double betaActivation = 0.0; 
+    private double totalActivation = 0.0;
     
     /**
-     * Positive or negative activation from other behaviors?
+     * base level
+     */
+    private double baseLevelActivation = 0.0; 
+    
+    /**
+     * Positive or negative activation from other behaviors
      */
     private double incomingActivation = 0.0;
  
@@ -56,7 +59,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
    
     //TODO why would a behavior have a stream?  To spawn additional behaviors?
-//    private Stream stream = null;
+//   private Stream stream = null;
     
     public BehaviorImpl(Scheme s){
     	super(s);            
@@ -71,27 +74,29 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     }
     
     public void reinforce(double reinforcement){
-        if(reinforcement >= 0 && reinforcement <= 1)
-            betaActivation = reinforcement;
+        if(reinforcement >= 0.0 && reinforcement <= 1.0)
+            baseLevelActivation = reinforcement;
         else
         	logger.log(Level.WARNING, "Reinforcement must be between 0 and 1 " + reinforcement);
     }
     
-    public void merge(double omega){        
-        alphaActivation = alphaActivation + (omega * betaActivation) + incomingActivation;
-        if(alphaActivation < 0)
-            alphaActivation = 0;
+    //TODO this is like the synchronize method in the old pam
+    public void merge(double amplificationFactor){        
+        totalActivation += (amplificationFactor * baseLevelActivation) + incomingActivation;
+        if(totalActivation < 0)
+            totalActivation = 0;
         incomingActivation = 0;        
     }
     
+    //TODO fix
     public void decay(double alpha){
-        this.alphaActivation = alpha;
+        this.totalActivation = alpha;
         if(alpha < 0)
             alpha = 0;
     }
     
     public void resetActivation(){
-        alphaActivation = 0;
+        totalActivation = 0;
     }
      
     public void spreadExcitation(double phi, double gamma){           
@@ -113,7 +118,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
             for(Behavior successor: behaviors){
                 if(!successor.containsPrecondition(addProposition)){
                 	//TODO double check this
-                    double granted = ((alphaActivation * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
+                    double granted = ((totalActivation * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
 
                     logger.info("\t:+" + name + "-->" + granted + " to " +
@@ -132,9 +137,9 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
             if(!this.containsPrecondition(precondition)){
             	List<Behavior> behaviors = predecessors.get(precondition);     
             	for(Behavior predecessor: behaviors){
-            		double granted = (alphaActivation / predecessor.getAddList().size())/behaviors.size();                        
+            		double granted = (totalActivation / predecessor.getAddList().size())/behaviors.size();                        
                     predecessor.excite(granted);
-                    logger.info("\t:+" + alphaActivation + " " + name + "<--" + granted + " to " +
+                    logger.info("\t:+" + totalActivation + " " + name + "<--" + granted + " to " +
                                         predecessor + " for " + precondition);
                     
                 }
@@ -151,7 +156,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
                 List<Behavior> behaviors = conflictors.get(precondition); 
                 for(Behavior conflictor: behaviors){
                 	boolean mutualConflict = false;
-                    double inhibited = (alphaActivation * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+                    double inhibited = (totalActivation * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
                     Set<Node> preconds = conflictor.getPreconditions();
                     for(Node conflictorPreCondition: preconds){
@@ -277,11 +282,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     }    
     
     public double getAlpha(){
-        return alphaActivation;
+        return totalActivation;
     }
     
-    public double getBeta(){
-        return betaActivation;
+    public double getBaseLevelActivation(){
+        return baseLevelActivation;
     }        
     
 //    public Map<Node, Boolean> getPreconditions(){
