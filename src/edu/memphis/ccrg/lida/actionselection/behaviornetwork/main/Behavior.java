@@ -30,9 +30,9 @@ public interface Behavior extends Scheme {
 
 	Set<Node> getPreconditions();
 
-	List<Node> getAddList();
+	Set<Node> getAddList();
 
-	List<Node> getDeleteList();
+	Set<Node> getDeleteList();
 
 	void inhibit(double d);
 

@@ -93,4 +93,16 @@ public class Goal{
     public String toString(){
         return name;
     }
+
+	public boolean containsExcitatoryElement(Node addItem) {
+		return excitatoryPropositions.containsKey(addItem);
+	}
+
+	public List<Behavior> getExcitatoryBehaviors(Node addItem) {
+		return excitatoryPropositions.get(addItem);		
+	}
+
+	public void addExcitatoryBehavior(Node addItem, List<Behavior> behaviors) {
+		excitatoryPropositions.put(addItem, behaviors);		
+	}
 }

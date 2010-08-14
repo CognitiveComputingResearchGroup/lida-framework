@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,13 +46,30 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
      */
     private double incomingActivation = 0.0;
  
+    /**
+     * 
+     */
     private Map<Node, Boolean> preconditions = new HashMap<Node, Boolean>();
 
-    private List<Node> addList = new ArrayList<Node>();
-    private List<Node> deleteList = new ArrayList<Node>();        
+    private Set<Node> addList = new HashSet<Node>();
+    private Set<Node> deleteList = new HashSet<Node>();        
     
+    /**
+     * For each key, the key is in this behavior's precondition and indexes
+     * all behaviors which contain that key in their add list
+     */
     private Map<Node, List<Behavior>> predecessors = new HashMap<Node, List<Behavior>>();
+    
+    /**
+     * For each key, the key is in this behavior's add list and indexes all the 
+     * behaviors which have the key in their precondition
+     */
     private Map<Node, List<Behavior>> successors = new HashMap<Node, List<Behavior>>();
+    
+    /**
+     * Key is an element in this behavior's context.  It indexes all the behaviors which have 
+     * the key element in their delete list
+     */
     private Map<Node, List<Behavior>> conflictors = new HashMap<Node, List<Behavior>>();
 
     private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
@@ -296,11 +314,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         return preconditions.keySet();
     }
     
-    public List<Node> getAddList(){
+    public Set<Node> getAddList(){
         return addList;
     }
     
-    public List<Node> getDeleteList(){
+    public Set<Node> getDeleteList(){
         return deleteList;
     }
     
@@ -340,11 +358,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     	this.preconditions = preconditions;
     }
     
-    public void setAddList(List<Node> addList){
+    public void setAddList(Set<Node> addList){
     	this.addList = addList;
     } 
     
-    public void setDeleteList(List<Node> deleteList){
+    public void setDeleteList(Set<Node> deleteList){
     	this.deleteList = deleteList;
     }
     

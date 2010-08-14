@@ -115,7 +115,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * Map of behaviors indexed by the propositions appearing in their pre conditions
      * Stores environmental links.
      * 
-     * this is similar to our 
+     * this is similar to our procedural memory
      */
     private ConcurrentMap<Node, List<Behavior>> preconditionBehaviorsMap = new ConcurrentHashMap<Node, List<Behavior>>();
     
@@ -156,6 +156,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	//*** Linking methods
 	
 	//Index the behaviors by their precondition
+	//TODO Rename
 	public void createLinksToBroadcast(Behavior newBehavior){
 		for(Node precondition: newBehavior.getPreconditions()){      
 			List<Behavior> behaviors = preconditionBehaviorsMap.get(precondition);
@@ -192,18 +193,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	//Goals keep track of which behaviors will add things that they like
     public void createExcitatoryGoalLinks(Behavior newBehavior){
     	for(Node addItem: newBehavior.getAddList()){
-            for(Goal goal: goals){  
-            	//TODO write aux methods in goal to make this simpler
-            	Map<Node, List<Behavior>> propositions = goal.getExcitatoryPropositions();
-                
-                if(propositions.containsKey(addItem)){
-                	List<Behavior> behaviors = propositions.get(addItem);
+            for(Goal goal: goals){       
+                if(goal.containsExcitatoryElement(addItem)){                	
+                	List<Behavior> behaviors = goal.getExcitatoryBehaviors(addItem);
                     if(behaviors == null){                                
-                        behaviors = new ArrayList<Behavior>();                               
-                        propositions.put( addItem, behaviors);
+                        behaviors = new ArrayList<Behavior>();        
+                        goal.addExcitatoryBehavior(addItem, behaviors);
                     }                            
                     behaviors.add(newBehavior);                                                                    
-                    
                 }                        
             }
         }
@@ -457,7 +454,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             reduceTheta();
     }//method 
     
-  //TODO what is pi?
+    //TODO what is pi?
     public void normalize(){
         int behaviorCount = 0, alphaActivationSum = 0;
         for(Stream s: streams){
