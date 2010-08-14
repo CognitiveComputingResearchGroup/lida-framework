@@ -52,11 +52,6 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener, BroadcastListener{    
 
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
-	
-	/**
-	 * Percent to reduce the theta threshold by if no behavior is selected
-	 */
-    public final double activationThresholdReduction  = 10;  
     
     /**
      * Reset value for theta
@@ -93,18 +88,44 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      */
     private double baseLevelActivationAmplicationFactor = 0.0;        
     
-    private Queue<Goal> goals = new ConcurrentLinkedQueue<Goal>();
-    private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
-    private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
+    /**
+	 * Percent to reduce the theta threshold by if no behavior is selected
+	 */
+    private final double activationThresholdReduction  = 10;  
     
-    //TODO review this
-    private SelectorStrategy selector = new BasicSelector();
+    /**
+     * function by which theta is reduced
+     */
+	private ThetaReductionStrategy thetaReducer = new BasicThetaReductionStrategy();
     
+	/**
+	 * Way that a winning behavior is chosen among those over threshold 
+	 */
+    private SelectorStrategy selectorStrategy = new BasicSelector();
+    
+    /**
+     * How behaviors are reinforced
+     */
     private ReinforcementStrategy reinforcementStrategy = new BasicReinforcementStrategy();
     
     /**
+     * Listeners of this action selection
+     */
+    private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
+    
+    /**
+     * Goals currently in play in this behavior network
+     */
+    private Queue<Goal> goals = new ConcurrentLinkedQueue<Goal>();
+    
+    /**
+     * All the streams currently in this behavior network
+     */
+    private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
+    
+    
+    /**
      * Currently selected behavior
-     * TODO make volatile?
      */
     private Behavior winner = null;        
     
@@ -123,6 +144,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     public BehaviorNetworkImpl() {    
     	super();
+    }
+    
+    @Override
+    public void init(Map<String, ?> params) {
+    	//TODO strategies and parameters
     }
     
     //*** Module communication methods
@@ -347,6 +373,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
 //   	 *  4.  Merging Phase
 //	     *      a. Add reinforcement contribution to activation.
+        //TODO this phase should happen automatically when exciting occurs
         for(Stream s: streams){//Phase 4
         	for(Behavior b: s.getBehaviors()){
         		b.merge(baseLevelActivationAmplicationFactor);
@@ -362,11 +389,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         for(Stream s: streams){				//phase 6
         	for(Behavior b: s.getBehaviors()){
         		if(b.isActive() && b.getAlpha() >= behaviorActivationThreshold){
-        			selector.addCompetitor(b);
+        			selectorStrategy.addCompetitor(b);
         		}
         	}
         	//TODO why rewrite over the winner of the last stream?
-        	winner = selector.selectBehavior();
+        	winner = selectorStrategy.selectBehavior();
         	sendAction();
         }
         
@@ -447,8 +474,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method
     
     public void reduceTheta(){
-    	//TODO Strategy pattern
-    	ThetaReductionStrategy thetaReducer = new BasicThetaReductionStrategy();
     	behaviorActivationThreshold = thetaReducer.reduce(behaviorActivationThreshold, activationThresholdReduction);
         logger.info("NET : THETA REDUCED TO " + behaviorActivationThreshold);
     }
@@ -467,6 +492,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public void sendAction() {
 		sendAction(winner.getSchemeActionId());
 	}
+	
+	//*** set methods
 	
     public void setReinforcementStrategy(ReinforcementStrategy reinforcer){
         this.reinforcementStrategy = reinforcer;
@@ -515,12 +542,35 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public Queue<Goal> getGoals(){
         return goals;
     } 
+	public void setStreams(Queue<Stream> streams) {
+		this.streams = streams;
+	}
     public Queue<Stream> getStreams(){
         return streams;        
     }        
 	@Override
 	public Object getModuleContent() {
 		return null;
+	}
+
+	public ThetaReductionStrategy getThetaReducer() {
+		return thetaReducer;
+	}
+
+	public void setThetaReducer(ThetaReductionStrategy thetaReducer) {
+		this.thetaReducer = thetaReducer;
+	}
+
+	public SelectorStrategy getSelectorStrategy() {
+		return selectorStrategy;
+	}
+
+	public void setSelectorStrategy(SelectorStrategy selector) {
+		this.selectorStrategy = selector;
+	}
+
+	public ReinforcementStrategy getReinforcementStrategy() {
+		return reinforcementStrategy;
 	}
 
 }//class
