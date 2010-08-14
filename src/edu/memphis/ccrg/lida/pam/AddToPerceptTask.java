@@ -27,8 +27,8 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		this.pam = pam;
 		nodeStructure = new NodeStructureImpl();
 		nodeStructure.addLink(link);
-		System.out.println("Constructor!");
-	//	System.out.println("constructing add to percept for link " + link.getLabel());
+//		System.out.println("Constructor!");
+//	//	System.out.println("constructing add to percept for link " + link.getLabel());
 	}
 
 	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam) {

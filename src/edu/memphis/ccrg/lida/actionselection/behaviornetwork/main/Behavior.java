@@ -61,4 +61,6 @@ public interface Behavior extends Scheme {
 
 	void addSuccessors(Node addProposition, List<Behavior> behaviors);
 
+	void satisfyPrecondition(Node proposition);
+
 }

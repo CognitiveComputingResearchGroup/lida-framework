@@ -15,14 +15,14 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
  * Selector iterates and chooses competitor with max alpha
  *
  */
-public class Selector{
+public class BasicSelector implements SelectorStrategy{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
     private final double TIE_BREAKER = 0.5;
     
     private List<Behavior> competitors = new ArrayList<Behavior>();
     
-    public Selector() {       
+    public BasicSelector() {       
     }
     
     public void addCompetitor(Behavior behavior){        
@@ -42,7 +42,7 @@ public class Selector{
               
     }        
     
-    public Behavior evaluateAbsoluteWinner(){
+    public Behavior selectBehavior(){
         Behavior winner = null;
         double maxAlpha = 0.0;
         

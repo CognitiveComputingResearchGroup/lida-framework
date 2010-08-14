@@ -441,6 +441,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 		successors.put(addProposition, behaviors);
 	}
 
+	@Override
+	public void satisfyPrecondition(Node proposition) {
+		preconditions.put(proposition, true);
+	}
+
 }
 
 

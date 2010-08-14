@@ -18,11 +18,13 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicReinforcementStrategy;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicThetaReductionStrategy;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ReinforcementStrategy;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SelectorStrategy;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ThetaReductionStrategy;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -96,7 +98,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
     
     //TODO review this
-    private Selector selector = new Selector();
+    private SelectorStrategy selector = new BasicSelector();
     
     private ReinforcementStrategy reinforcementStrategy = new BasicReinforcementStrategy();
     
@@ -127,7 +129,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     public void receiveBroadcast(BroadcastContent bc){
     	currentState = (NodeStructure) bc;
-    	//TODO run current state over precondition behaviors map
+    	//TODO call grantActivationFromBroadcast() right now
     }
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
@@ -144,7 +146,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
-		createLinksToBroadcast(newBehavior);        
+		indexByPrecondition(newBehavior);        
         createExcitatoryGoalLinks(newBehavior); 
         createInhibitoryGoalLinks(newBehavior);    
         createInterBehaviorLinks(newBehavior);
@@ -155,9 +157,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	//*** Linking methods
 	
-	//Index the behaviors by their precondition
-	//TODO Rename
-	public void createLinksToBroadcast(Behavior newBehavior){
+	/**
+	 * Index the behaviors by their precondition
+	 */
+	public void indexByPrecondition(Behavior newBehavior){
 		for(Node precondition: newBehavior.getPreconditions()){      
 			List<Behavior> behaviors = preconditionBehaviorsMap.get(precondition);
             if(behaviors == null){
@@ -167,28 +170,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             behaviors.add(newBehavior);
 		}
 	}
-//    /**
-//     * Builds up behaviorsByPropositionMap from all the streams.
-//     * Propositions is a map where the key is a proposition and the value is a list
-//     * of behaviors who have the key as a precondition
-//     * TODO Remove after creating new method
-//     */
-//    public void buildBroadcastLinks(){        
-//        logger.info("ENVIRONMENTAL LINKS");
-//        for(Stream s: streams){
-//        	for(Behavior behavior: s.getBehaviors()){
-//                for(Node proposition: behavior.getPreconditions()){                   
-//                    
-//                    List<Behavior> behaviors = preconditionBehaviorsMap.get(proposition);
-//                    if(behaviors == null){
-//                        behaviors = new ArrayList<Behavior>();
-//                        preconditionBehaviorsMap.put( proposition, behaviors);
-//                    }                  
-//                    behaviors.add(behavior);                                                                        
-//                }
-//            }
-//        }     
-//    }//method
     
 	//Goals keep track of which behaviors will add things that they like
     public void createExcitatoryGoalLinks(Behavior newBehavior){
@@ -205,29 +186,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             }
         }
     }
-    
-//    public void buildExcitatoryGoalLinks(){                                
-//    	for(Stream s: streams){
-//        	for(Behavior behavior: s.getBehaviors()){                             
-//                for(Node addItem: behavior.getAddList()){
-//                    for(Goal goal: goals){  
-//                    	//TODO write aux methods in goal to make this simpler
-//                    	Map<Node, List<Behavior>> propositions = goal.getExcitatoryPropositions();
-//                        
-//                        if(propositions.containsKey(addItem)){
-//                        	List<Behavior> behaviors = propositions.get(addItem);
-//                            if(behaviors == null){                                
-//                                behaviors = new ArrayList<Behavior>();                               
-//                                propositions.put( addItem, behaviors);
-//                            }                            
-//                            behaviors.add(behavior);                                                                    
-//                            
-//                        }                        
-//                    }
-//                }
-//            }
-//        }           
-//    }//method
     
     //The upshot is that Protected goals store the behaviors who might delete things they like
     public void createInhibitoryGoalLinks(Behavior newBehavior){
@@ -249,34 +207,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }
     }
 
-//    /**
-//     * Check every delete list item and if there's a protected goal 
-//     * whose excitatory proposition is in the delete list the add the behavior
-//     * to the protected goal's map
-//     */
-//    public void buildInhibitoryGoalLinks(){                                        
-//    	for(Stream s: streams){
-//        	for(Behavior behavior: s.getBehaviors()){                
-//                for(Node deleteItem: behavior.getDeleteList()){//iterate over the delete list
-//                    for(Goal goal: goals){
-//                        if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
-//                        	ProtectedGoal pGoal = (ProtectedGoal) goal;
-//                        	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();                  
-//                            if(pGoal.containsExcitatoryProposition(deleteItem)){
-//                                List<Behavior> behaviors = inhibitoryProps.get(deleteItem);
-//                                if(behaviors == null){
-//                                    behaviors = new ArrayList<Behavior>();
-//                                    inhibitoryProps.put(deleteItem, behaviors);
-//                                }
-//                                behaviors.add(behavior);
-//                            }                            
-//                        }                        
-//                    }//for goals
-//                }
-//            }
-//        }   
-//    }//method
-    
     public void createInterBehaviorLinks(Behavior newBehavior){
     	for(Stream currentStream: streams){            
             for(Behavior existingBehavior: currentStream.getBehaviors()){
@@ -436,7 +366,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         		}
         	}
         	//TODO why rewrite over the winner of the last stream?
-        	winner = selector.evaluateAbsoluteWinner();
+        	winner = selector.selectBehavior();
         	sendAction();
         }
         
@@ -454,7 +384,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             reduceTheta();
     }//method 
     
-    //TODO what is pi?
     public void normalize(){
         int behaviorCount = 0, alphaActivationSum = 0;
         for(Stream s: streams){
@@ -486,7 +415,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }
     }
     
-    /*
+    /**
 	 *  Spreads activation to Behaviors in the propositions Hashtable for
 	 *  true propositions as specified by the state.
 	 *
@@ -495,28 +424,32 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 *  
 	 *  For true preconditions with no value: "true" is the value.
 	 *  False preconditions do not appear in the state Hashtable.
-	 */ 
-    //Iterate through the propositions in the current state.
+	 *  
+	 *  Iterate through the propositions in the current state.
     //For each proposition get the behaviors indexed by that proposition
     //For each behavior, excite it an amount equal to (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
+	 */
     public void grantActivationFromBroadcast(){
         logger.info("ENVIRONMENT : EXCITATION");
-        for(Linkable proposition: currentState.getLinkables()){
-            List<Behavior> behaviors = preconditionBehaviorsMap.get(proposition);
-            double granted = broadcastExcitationAmount / behaviors.size();
-            for(Behavior b: behaviors){
-            	//TODO remove comment below
-                // b.getPreconditions().put(proposition, new Boolean(true));
-                 b.excite(granted / b.getPreconditionCount());       
-                 logger.info("\t-->" + b.toString() + " " + granted / b.getPreconditionCount() + " for " + proposition);
-            }
-
-        }
-    }
+        for(Node proposition: currentState.getNodes()){
+        	if(preconditionBehaviorsMap.containsKey(proposition)){
+        		List<Behavior> behaviors = preconditionBehaviorsMap.get(proposition);
+                double excitationAmount = broadcastExcitationAmount / behaviors.size();
+                for(Behavior b: behaviors){
+                	b.satisfyPrecondition(proposition);
+                	//TODO use excitestrategy
+                    b.excite(excitationAmount / b.getPreconditionCount());       
+                    logger.info("\t-->" + b.toString() + " " + excitationAmount / b.getPreconditionCount() + " for " + proposition);
+                }
+        	}
+            
+        }//for
+    }//method
     
     public void reduceTheta(){
     	//TODO Strategy pattern
-        behaviorActivationThreshold = behaviorActivationThreshold - (behaviorActivationThreshold * (activationThresholdReduction / 100));
+    	ThetaReductionStrategy thetaReducer = new BasicThetaReductionStrategy();
+    	behaviorActivationThreshold = thetaReducer.reduce(behaviorActivationThreshold, activationThresholdReduction);
         logger.info("NET : THETA REDUCED TO " + behaviorActivationThreshold);
     }
     public void restoreTheta(){
