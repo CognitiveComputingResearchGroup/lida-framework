@@ -54,7 +54,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     
     /**
-     * Reset value for theta
+     * Reset value for behaviorActivationThreshold
      */
     private final double initialActivationThreshold = 0.9;
     
@@ -89,12 +89,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double baseLevelActivationAmplicationFactor = 0.0;        
     
     /**
-	 * Percent to reduce the theta threshold by if no behavior is selected
+	 * Percent to reduce the behavior activation threshold by if no behavior is selected
 	 */
     private final double activationThresholdReduction  = 10;  
     
     /**
-     * function by which theta is reduced
+     * function by which the behavior activation threshold is reduced
      */
 	private ThetaReductionStrategy thetaReducer = new BasicThetaReductionStrategy();
     
@@ -104,7 +104,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private SelectorStrategy selectorStrategy = new BasicSelector();
     
     /**
-     * How behaviors are reinforced
+     * How behavior's base-level activation are reinforced
      */
     private ReinforcementStrategy reinforcementStrategy = new BasicReinforcementStrategy();
     
@@ -148,7 +148,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     @Override
     public void init(Map<String, ?> params) {
-    	//TODO strategies and parameters
+    	
     }
     
     //*** Module communication methods
@@ -571,6 +571,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 
 	public ReinforcementStrategy getReinforcementStrategy() {
 		return reinforcementStrategy;
+	}
+
+	public Behavior getBehavior(long id, long actionId) {
+		for(Stream s: streams){
+			for(Behavior b: s.getBehaviors()){
+				if(b.getId() == id && b.getSchemeActionId() == actionId)
+					return b;
+			}
+		}
+		return null;		
 	}
 
 }//class

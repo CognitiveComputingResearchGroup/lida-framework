@@ -1,10 +1,9 @@
-/*
+/**
  * Behavior.java
  *
  * Sidney D'Mello
  * Created on December 10, 2003, 5:35 PM
  */
-
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
@@ -77,6 +76,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
    
     //TODO why would a behavior have a stream?  To spawn additional behaviors?
 //   private Stream stream = null;
+    
+    public BehaviorImpl(long id, long actionId){
+    	super(id, actionId);
+    	deactivatePreconditions();
+    }
     
     public BehaviorImpl(Scheme s){
     	super(s);            
@@ -234,18 +238,17 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 //        }        
     }
     
-// start add methods    
-    public void addPrecondition(Node precondition){
-        if(!preconditions.containsKey(precondition))
-        	preconditions.put(precondition, false);            
+    // start add methods    
+    public boolean addPrecondition(Node precondition){
+    	return (preconditions.put(precondition, false) != null);
     }
     
-    public void addAddCondition(Node addCondition){
-    	addList.add(addCondition);
+    public boolean addAddCondition(Node addCondition){
+    	return addList.add(addCondition);
     }
     
-    public void addDeleteCondition(Node deleteCondition){
-    	deleteList.add(deleteCondition);
+    public boolean addDeleteCondition(Node deleteCondition){
+    	return deleteList.add(deleteCondition);
     }    
     
     public void addPredecessor(Node precondition, Behavior predecessor){
@@ -417,7 +420,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 	}
 
 	@Override
-	public double getPreconditionCount() {
+	public int getPreconditionCount() {
 		return preconditions.size();
 	}
 
@@ -444,6 +447,21 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 	@Override
 	public void satisfyPrecondition(Node proposition) {
 		preconditions.put(proposition, true);
+	}
+
+	@Override
+	public int getSuccessorCount() {
+		return successors.size();
+	}
+
+	@Override
+	public int getPredecessorCount() {
+		return predecessors.size();
+	}
+
+	@Override
+	public int getConflictorCount() {
+		return conflictors.size();
 	}
 
 }

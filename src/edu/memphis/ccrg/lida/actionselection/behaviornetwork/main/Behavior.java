@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.List;
 import java.util.Set;
-
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -10,57 +9,61 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 //TODO figure out how to cull the number of methods
 public interface Behavior extends Scheme {
 
-	void deactivatePreconditions();
+	public abstract void deactivatePreconditions();
 
-	void resetActivation();
+	public abstract void resetActivation();
 
-	List<ExpectationCodelet> getExpectationCodelets();
+	public abstract List<ExpectationCodelet> getExpectationCodelets();
 
-	double getBaseLevelActivation();
+	public abstract double getBaseLevelActivation();
 
-	void reinforce(double reinforcement);
+	public abstract void reinforce(double reinforcement);
 
-	void prepareToFire(NodeStructure currentState);
+	public abstract void prepareToFire(NodeStructure currentState);
 
-	double getAlpha();
+	public abstract double getAlpha();
 
-	void decay(double n_activation);
+	public abstract void decay(double n_activation);
 
-	double getPreconditionCount();
+	public abstract void inhibit(double d);
 
-	Set<Node> getPreconditions();
+	public abstract void merge(double baseLevelActivationAmplicationFactor);
 
-	Set<Node> getAddList();
+	public abstract boolean isActive();
 
-	Set<Node> getDeleteList();
+	public abstract void spreadInhibition(NodeStructure currentState, double goalExcitationAmount, double protectedGoalInhibitionAmount);
 
-	void inhibit(double d);
-
-	void merge(double baseLevelActivationAmplicationFactor);
-
-	boolean isActive();
-
-	void spreadInhibition(NodeStructure currentState,
-			double goalExcitationAmount, double protectedGoalInhibitionAmount);
-
-	void spreadExcitation(double broadcastExcitationAmount,
-			double goalExcitationAmount);
+	public abstract void spreadExcitation(double broadcastExcitationAmount, double goalExcitationAmount);
 	
+	//Preconditions
+	public abstract int getPreconditionCount();
+	public abstract Set<Node> getPreconditions();
+	public abstract boolean addPrecondition(Node precondition);
+	
+	//Add list
+	public abstract Set<Node> getAddList();
+	public abstract boolean addAddCondition(Node addCondition);
+	
+	//Delete list
+	public abstract Set<Node> getDeleteList();	
+    public abstract boolean addDeleteCondition(Node deleteCondition);
+	
+    //Successors
+	public abstract int getSuccessorCount();
+	public abstract List<Behavior> getSuccessors(Node addProposition);
+	public abstract void addSuccessors(Node addProposition, List<Behavior> behaviors);
+	
+	//Predecessors
+	public abstract int getPredecessorCount();
+	public abstract List<Behavior> getPredecessors(Node precondition);
+	public abstract void addPredecessors(Node precondition, List<Behavior> behaviors);
+	
+	//Conflictors
+	public abstract int getConflictorCount();
+	public abstract List<Behavior> getConflictors(Node precondition1);
+	public abstract void addConflictors(Node precondition1, List<Behavior> behaviors);
+	
+	public abstract boolean containsPrecondition(Node addProposition);
+	public abstract void satisfyPrecondition(Node proposition);
 
-	List<Behavior> getConflictors(Node precondition1);
-
-	void addConflictors(Node precondition1, List<Behavior> behaviors);
-
-	boolean containsPrecondition(Node addProposition);
-
-	List<Behavior> getPredecessors(Node precondition);
-
-	void addPredecessors(Node precondition, List<Behavior> behaviors);
-
-	List<Behavior> getSuccessors(Node addProposition);
-
-	void addSuccessors(Node addProposition, List<Behavior> behaviors);
-
-	void satisfyPrecondition(Node proposition);
-
-}
+}//method
