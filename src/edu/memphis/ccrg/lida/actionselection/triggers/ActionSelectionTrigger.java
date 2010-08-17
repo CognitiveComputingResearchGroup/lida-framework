@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 import java.util.Map;
 import java.util.Queue;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
@@ -25,7 +26,7 @@ public interface ActionSelectionTrigger {
 	 * @param as A TriggerListener. Most of the cases is the same class that 
 	 * implements ActionSelection Interface.
 	 */
-	public void setUp (Map<String,Object> parameters,ActionSelectionDriver asd);
+	public void setUp (Map<String,Object> parameters,ActionSelection as);
 	/**
 	 * Each time a new Coalition is put in the GW, this method is called for all registered the Triggers.
 	 * @param coalitions All the coalitions in the GW.
