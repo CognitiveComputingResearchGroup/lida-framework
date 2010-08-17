@@ -585,4 +585,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		return null;		
 	}
 
+	@Override
+	public void triggerActionSelection() {
+		
+		
+	}
+
 }//class
