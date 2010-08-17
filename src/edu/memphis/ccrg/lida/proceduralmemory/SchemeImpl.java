@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public class SchemeImpl extends ActivatibleImpl implements Scheme {
+public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 
 	private static final double RELIABLE_TRESHOLD = 0.5;
 	private long id;

@@ -10,13 +10,14 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.Collection;
 import java.util.List;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  *
  * @author Ryan J. McCall
  */
-public interface Scheme extends Activatible{
+public interface Scheme extends LearnableActivatible{
 	
 //  TODO: To consider for next version: Curiosity, Reliability
 	

@@ -49,7 +49,8 @@ public class PamNodeImplTest extends TestCase{
 		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(0.2);
 		
-		node1.synchronize();
+		//TODO I don't think we need this method anymore.  ~Ryan 8/17/10
+		//node1.synchronize();
 		assertEquals("Problem with Synchronize", 0.3,(Math.round(node1.getActivation()*100.0)/100.0));		
 	}
 	@Test
@@ -58,7 +59,7 @@ public class PamNodeImplTest extends TestCase{
 		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(1.0);
 		
-		node1.synchronize();
+		//node1.synchronize();
 		assertEquals("Problem with Synchronize", 1.0,node1.getActivation());
 	}
 
@@ -71,7 +72,7 @@ public class PamNodeImplTest extends TestCase{
 		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(0.4);
 		node1.setSelectionThreshold(0.5);
-		node1.synchronize();
+		//node1.synchronize();
 		
 		assertEquals("Problem with IsOverThreshold", true,node1.isOverThreshold());
 	}

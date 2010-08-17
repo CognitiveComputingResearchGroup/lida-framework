@@ -29,7 +29,7 @@ public class BasicSelector implements SelectorStrategy{
         if(behavior != null)  {
             competitors.add(behavior);                 
             logger.info("SELECTOR : ADDING Behavior " + behavior + 
-                            " with " + behavior.getAlpha());
+                            " with " + behavior.getTotalActivation());
         }
     }    
     
@@ -37,7 +37,7 @@ public class BasicSelector implements SelectorStrategy{
         if(behavior != null){
             competitors.remove(behavior);            
             logger.info("SELECTOR : REMOVING Behavior " + behavior + 
-                            " with " + behavior.getAlpha());
+                            " with " + behavior.getTotalActivation());
         }
               
     }        
@@ -49,15 +49,15 @@ public class BasicSelector implements SelectorStrategy{
         logger.info("SELECTOR : SELECTING " + getNumberOfCompetitors());
         
         for(Behavior current: competitors){       
-            if(current.getAlpha() > maxAlpha) {                    
+            if(current.getTotalActivation() > maxAlpha) {                    
                 winner = current;
-                maxAlpha = current.getAlpha();
-            }else if(current.getAlpha() == maxAlpha && (Math.random() >= TIE_BREAKER)){   
+                maxAlpha = current.getTotalActivation();
+            }else if(current.getTotalActivation() == maxAlpha && (Math.random() >= TIE_BREAKER)){   
                 winner = current;                                    
             }            
         }        
         if(winner != null)
-            logger.info("Winner: " + winner.toString() + ", alpha: " + winner.getAlpha());
+            logger.info("Winner: " + winner.toString() + ", alpha: " + winner.getTotalActivation());
         competitors.clear();
         return winner;
     }

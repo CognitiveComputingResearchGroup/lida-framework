@@ -11,8 +11,9 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 		double newActivation = currentActivation + excitation;
 		if(newActivation > 1.0)
 			return 1.0;
-		else 
-			return newActivation;
+		if(newActivation < 0.0)
+			return 0.0;
+		return newActivation;
 	}
 
 	public void init(Map<String, ? extends Object> params) {

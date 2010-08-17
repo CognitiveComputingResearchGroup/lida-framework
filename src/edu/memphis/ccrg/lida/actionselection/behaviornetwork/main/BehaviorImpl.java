@@ -33,24 +33,31 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     /**
      * total activation
      */
-    private double totalActivation = 0.0;
+  //  private double totalActivation = 0.0;
     
     /**
      * base level
      */
-    private double baseLevelActivation = 0.0; 
+   // private double baseLevelActivation = 0.0; 
     
     /**
      * Positive or negative activation from other behaviors
      */
-    private double incomingActivation = 0.0;
+   // private double incomingActivation = 0.0;
  
     /**
      * 
      */
     private Map<Node, Boolean> preconditions = new HashMap<Node, Boolean>();
 
+    /**
+     * Set of nodes that this scheme adds
+     */
     private Set<Node> addList = new HashSet<Node>();
+    
+    /**
+     * 
+     */
     private Set<Node> deleteList = new HashSet<Node>();        
     
     /**
@@ -86,40 +93,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     	super(s);            
     	deactivatePreconditions();
     }
-        
-    public void excite(double excitation){        
-        incomingActivation += Math.abs(excitation);
-    }
-    public void inhibit(double inhibition){       
-        incomingActivation -= Math.abs(inhibition);                 
-    }
-    
-    public void reinforce(double reinforcement){
-        if(reinforcement >= 0.0 && reinforcement <= 1.0)
-            baseLevelActivation = reinforcement;
-        else
-        	logger.log(Level.WARNING, "Reinforcement must be between 0 and 1 " + reinforcement);
-    }
-    
-    //TODO this is like the synchronize method in the old pam
-    public void merge(double amplificationFactor){        
-        totalActivation += (amplificationFactor * baseLevelActivation) + incomingActivation;
-        if(totalActivation < 0)
-            totalActivation = 0;
-        incomingActivation = 0;        
-    }
-    
-    //TODO fix
-    public void decay(double alpha){
-        this.totalActivation = alpha;
-        if(alpha < 0)
-            alpha = 0;
-    }
-    
-    public void resetActivation(){
-        totalActivation = 0;
-    }
-     
+
     public void spreadExcitation(double phi, double gamma){           
         //logger.info("BEHAVIOR : EXCITATION " + name);
         if(isActive())
@@ -139,7 +113,7 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
             for(Behavior successor: behaviors){
                 if(!successor.containsPrecondition(addProposition)){
                 	//TODO double check this
-                    double granted = ((totalActivation * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
+                    double granted = ((getTotalActivation() * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
                     successor.excite(granted);
 
                     logger.info("\t:+" + name + "-->" + granted + " to " +
@@ -158,9 +132,9 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
             if(!this.containsPrecondition(precondition)){
             	List<Behavior> behaviors = predecessors.get(precondition);     
             	for(Behavior predecessor: behaviors){
-            		double granted = (totalActivation / predecessor.getAddList().size())/behaviors.size();                        
+            		double granted = (getTotalActivation() / predecessor.getAddList().size())/behaviors.size();                        
                     predecessor.excite(granted);
-                    logger.info("\t:+" + totalActivation + " " + name + "<--" + granted + " to " +
+                    logger.info("\t:+" + getTotalActivation() + " " + name + "<--" + granted + " to " +
                                         predecessor + " for " + precondition);
                     
                 }
@@ -172,12 +146,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     public void spreadConflictorActivation(NodeStructure state, double gamma, double delta){
         double fraction = delta / gamma;
         for(Node precondition: preconditions.keySet()){
-            //if(((Boolean)(preconditions.get(precondition))).booleanValue())
             if(state.hasNode(precondition)){
                 List<Behavior> behaviors = conflictors.get(precondition); 
                 for(Behavior conflictor: behaviors){
                 	boolean mutualConflict = false;
-                    double inhibited = (totalActivation * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+                    double inhibited = (getTotalActivation() * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
                     Set<Node> preconds = conflictor.getPreconditions();
                     for(Node conflictorPreCondition: preconds){
@@ -193,14 +166,14 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
                         	break;
                     }   
                     if(mutualConflict){
-                        if(conflictor.getAlpha() < this.getAlpha()){
-                                conflictor.inhibit(inhibited);
+                        if(conflictor.getTotalActivation() < getTotalActivation()){
+                                conflictor.excite(inhibited*-1);
                                 logger.info("\t:-" + name + "---" + 
                                                 inhibited + " to " + conflictor 
                                                 + " for " + precondition);                                
                         }
                     }else{
-                            conflictor.inhibit(inhibited);
+                            conflictor.excite(inhibited*-1);
                             logger.info("\t:-" + name + "---" + inhibited + 
                                             " to " + conflictor + " for " + precondition);                                
                     }
@@ -301,18 +274,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         return name + " schm " + super.toString();
     }    
     
-    public double getAlpha(){
-        return totalActivation;
+    public double getTotalActivation(){
+        return getActivation() + 
+        	   getBaseLevelActivation() * BehaviorNetworkImpl.baseLevelActivationAmplicationFactor;
     }
-    
-    public double getBaseLevelActivation(){
-        return baseLevelActivation;
-    }        
-    
-//    public Map<Node, Boolean> getPreconditions(){
-//        return preconditions;
-//    }
-    
+
     public Set<Node> getPreconditions(){
         return preconditions.keySet();
     }

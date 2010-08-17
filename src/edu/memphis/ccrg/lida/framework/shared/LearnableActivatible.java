@@ -7,7 +7,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 /**
- * An Activatible that has a base level activation. It is used mostly for learning.
+ * An Activatible that additionally has a base-level activation. It is used mostly for learning.
  * The classes that implement this interface have a decay and reinforce base level activation.
  * If the base level activation reaches zero, the element should be deleted (decay away)
  * 
@@ -63,4 +63,5 @@ public interface LearnableActivatible extends Activatible{
 	 * @return the decay strategy for the Base Level activation.
 	 */
 	public DecayStrategy getBaseLevelDecayStrategy();
+	
 }

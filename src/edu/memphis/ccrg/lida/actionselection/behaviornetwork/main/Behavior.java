@@ -11,23 +11,23 @@ public interface Behavior extends Scheme {
 
 	public abstract void deactivatePreconditions();
 
-	public abstract void resetActivation();
+	//public abstract void resetActivation();
 
 	public abstract List<ExpectationCodelet> getExpectationCodelets();
 
-	public abstract double getBaseLevelActivation();
+	//public abstract double getBaseLevelActivation();
 
-	public abstract void reinforce(double reinforcement);
+	//public abstract void reinforce(double reinforcement);
 
 	public abstract void prepareToFire(NodeStructure currentState);
 
-	public abstract double getAlpha();
+	//public abstract double getAlpha();
 
-	public abstract void decay(double n_activation);
+	//public abstract void decay(double n_activation);
 
-	public abstract void inhibit(double d);
+	//public abstract void inhibit(double d);
 
-	public abstract void merge(double baseLevelActivationAmplicationFactor);
+	//public abstract void merge(double baseLevelActivationAmplicationFactor);
 
 	public abstract boolean isActive();
 

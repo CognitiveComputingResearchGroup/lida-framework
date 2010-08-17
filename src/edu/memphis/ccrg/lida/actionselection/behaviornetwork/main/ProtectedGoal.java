@@ -38,7 +38,7 @@ public class ProtectedGoal extends Goal{
                         double inhibited = delta / behaviors.size();
 
                         for(Behavior behavior: behaviors){
-                            behavior.inhibit(inhibited / behavior.getDeleteList().size());
+                            behavior.excite(-1*inhibited / behavior.getDeleteList().size());
                             logger.info("\t<--" + behavior.toString() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
                            
                         }

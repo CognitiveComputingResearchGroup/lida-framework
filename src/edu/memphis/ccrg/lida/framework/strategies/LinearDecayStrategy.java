@@ -42,7 +42,7 @@ public class LinearDecayStrategy implements DecayStrategy{
 	    
 	    public double decay(double activ, long ticks){
 	    	
-	    	activ= activ -(m*ticks+b);
+	    	activ= activ - (m*ticks+b);
 	    	return (activ>0.0)?activ:0.0;
 	    }	    
 

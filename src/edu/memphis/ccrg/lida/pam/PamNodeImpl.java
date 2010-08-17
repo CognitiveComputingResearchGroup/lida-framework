@@ -22,10 +22,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	protected double selectionThreshold = 0.9;
 	
 	/**
-	 * Specifies the relative importance of a Node. Only relevant for nodes
-	 * that represent feelings. Lies between 00.d and 1.0d inclusive.
+	 * 
 	 */
-	//protected double importance = 0.0;
 	protected double baseLevelActivation = 0.0;
 	
 	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
@@ -41,23 +39,21 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public PamNodeImpl(PamNodeImpl p) {
 		super(p);
 		selectionThreshold = p.selectionThreshold;
-		setImportance(p.getImportance());
-		//importance = p.importance;
 		baseLevelActivation = p.baseLevelActivation;
 	}
 
-	/**
-	 * Adds this node's current, baseLevel, and residual activation to total
-	 * activation. Also updates activation buffers. This method should only
-	 * be invoked when activation passing for this cycle is complete.
-	 */
-	public void synchronize() {		
-		double currentActivation = getActivation();
-		if((currentActivation + baseLevelActivation) < MAX_ACTIVATION)
-			setActivation(currentActivation + baseLevelActivation); 
-		else
-			setActivation(MAX_ACTIVATION);
-	}
+//	/**
+//	 * Adds this node's current, baseLevel, and residual activation to total
+//	 * activation. Also updates activation buffers. This method should only
+//	 * be invoked when activation passing for this cycle is complete.
+//	 */
+//	public void synchronize() {		
+//		double currentActivation = getActivation();
+//		if((currentActivation + baseLevelActivation) < MAX_ACTIVATION)
+//			setActivation(currentActivation + baseLevelActivation); 
+//		else
+//			setActivation(MAX_ACTIVATION);
+//	}
 	
 	/**
 	  * Determines if this node is relevant. A node is relevant if its total

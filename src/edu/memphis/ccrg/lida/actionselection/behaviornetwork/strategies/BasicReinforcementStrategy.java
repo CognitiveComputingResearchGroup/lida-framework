@@ -6,6 +6,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
+//TODO have this implement excite strategy and use it as the LearnableActivatible's (parent of behavior) excite strategy
 public class BasicReinforcementStrategy implements ReinforcementStrategy{
 
 	private ReinforcementCurve curve = new SigmoidCurve(0.5, 0.5);
@@ -17,7 +18,7 @@ public class BasicReinforcementStrategy implements ReinforcementStrategy{
 	        for(ExpectationCodelet codelet: expectationCodelets){
 	        	codelet.execute(currentState);
 	            fitness += codelet.getPerformance();
-	            behavior.reinforce(reinforcement(fitness, behavior.getBaseLevelActivation()));   
+	            behavior.reinforceBaseLevelActivation(reinforcement(fitness, behavior.getBaseLevelActivation()));   
 	        } 
         }
     }

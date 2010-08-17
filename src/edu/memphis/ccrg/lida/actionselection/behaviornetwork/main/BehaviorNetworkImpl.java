@@ -86,7 +86,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     /**
      * amplification factor for base level activation
      */
-    private double baseLevelActivationAmplicationFactor = 0.0;        
+    public static double baseLevelActivationAmplicationFactor = 0.0;        
     
     /**
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected
@@ -348,7 +348,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //	           b. Reinforce the winner
         if(winner != null){
             winner.deactivatePreconditions();  
-            winner.resetActivation();
+            winner.decay(1000);
             reinforcementStrategy.reinforce(winner, currentState);        
         } 
         winner = null;
@@ -371,14 +371,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	}
         }
         
-//   	 *  4.  Merging Phase
-//	     *      a. Add reinforcement contribution to activation.
-        //TODO this phase should happen automatically when exciting occurs
-        for(Stream s: streams){//Phase 4
-        	for(Behavior b: s.getBehaviors()){
-        		b.merge(baseLevelActivationAmplicationFactor);
-        	}
-        } 
+////   	 *  4.  Merging Phase
+////	     *      a. Add reinforcement contribution to activation.
+//        //TODO this phase should happen automatically when exciting occurs
+//        for(Stream s: streams){//Phase 4
+//        	for(Behavior b: s.getBehaviors()){
+//        		b.merge(baseLevelActivationAmplicationFactor);
+//        	}
+//        } 
         
 //   	 *  5.  Normalization Phase:
 //   		 *          a. Scan the streams.
@@ -388,7 +388,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         
         for(Stream s: streams){				//phase 6
         	for(Behavior b: s.getBehaviors()){
-        		if(b.isActive() && b.getAlpha() >= behaviorActivationThreshold){
+        		if(b.isActive() && b.getTotalActivation() >= behaviorActivationThreshold){
         			selectorStrategy.addCompetitor(b);
         		}
         	}
@@ -410,13 +410,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }else       
             reduceTheta();
     }//method 
-    
+   
+    //TODO remove this after review.  
     public void normalize(){
         int behaviorCount = 0, alphaActivationSum = 0;
         for(Stream s: streams){
         	behaviorCount += s.getBehaviorCount();
         	for(Behavior b: s.getBehaviors()){
-        		alphaActivationSum += b.getAlpha();
+        		alphaActivationSum += b.getTotalActivation();
         	}
         }
         
@@ -425,11 +426,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         for(Stream s: streams){
             for(Behavior behavior: s.getBehaviors()){   
             	
-                double activation = behavior.getAlpha();
+                double activation = behavior.getTotalActivation();
                 double strength = activation / alphaActivationSum;
                 double n_activation = strength * n_sum;
                 
-                behavior.decay(n_activation);
+                //TODO work out this decay issue.  Activatible requires int representing ticks
+                //behavior.decay(n_activation);
                 /*
                 double change = n_activation - activation;                
                 
@@ -464,7 +466,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 double excitationAmount = broadcastExcitationAmount / behaviors.size();
                 for(Behavior b: behaviors){
                 	b.satisfyPrecondition(proposition);
-                	//TODO use excitestrategy
+                	//TODO use excite strategy
                     b.excite(excitationAmount / b.getPreconditionCount());       
                     logger.info("\t-->" + b.toString() + " " + excitationAmount / b.getPreconditionCount() + " for " + proposition);
                 }
