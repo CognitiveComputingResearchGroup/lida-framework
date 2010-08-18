@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 import java.util.Map;
 import java.util.Queue;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -84,5 +85,11 @@ public class NoActionSelectionOccurringTrigger implements
 		if (task != null)
 			asd.cancelTask(task);
 		start();
+	}
+
+	@Override
+	public void setUp(Map<String, Object> parameters, ActionSelection as) {
+		// TODO Auto-generated method stub
+		
 	}
 }

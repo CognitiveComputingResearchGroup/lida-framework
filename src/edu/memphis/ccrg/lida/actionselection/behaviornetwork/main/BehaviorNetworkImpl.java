@@ -433,8 +433,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     //TODO Double check I converted this monster correctly
-    //NodeStructure state, double gamma, double delta
-    //currentState, goalExcitationAmount, protectedGoalInhibitionAmount
     public void spreadConflictorActivation(Behavior b){
         double fraction = protectedGoalInhibitionAmount / goalExcitationAmount;
         for(Node precondition: b.getPreconditions()){
