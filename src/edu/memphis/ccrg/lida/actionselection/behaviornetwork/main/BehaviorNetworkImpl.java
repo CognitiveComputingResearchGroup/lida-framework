@@ -1,4 +1,4 @@
-/*
+/**
  * BehaviorNet.java
  *
  * Sidney D'Mello
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -64,12 +65,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double behaviorActivationThreshold = initialActivationThreshold;
     
     /**
-     * mean level of activation (PI)
+     * mean level of activation allowed (PI)
      */
     private double meanActivation = 0.0;       
     
     /**
-     * Amount of excitation by conscious broadcast
+     * Amount of excitation by conscious broadcast (PHI)
      */
     private double broadcastExcitationAmount = 0.0;      
     
@@ -84,9 +85,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double protectedGoalInhibitionAmount = 0.0;   
     
     /**
-     * amplification factor for base level activation
+     * amplification factor for base level activation (OMEGA)
      */
-    public static double baseLevelActivationAmplicationFactor = 0.0;        
+    private double baseLevelActivationAmplicationFactor = 0.0;        
     
     /**
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected
@@ -219,7 +220,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             for(Goal goal: goals){
                 if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
                 	ProtectedGoal pGoal = (ProtectedGoal) goal;
-                	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositions();                  
+                	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositionMap();                  
                     if(pGoal.containsExcitatoryProposition(deleteItem)){
                         List<Behavior> behaviors = inhibitoryProps.get(deleteItem);
                         if(behaviors == null){
@@ -247,26 +248,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             }
     	}
     }
-    
-//    /**
-//     * Old way of building links bw behaviors.  it's inefficient
-//     * TODO remove
-//     */
-//    public void buildInterBehaviorLinks(){
-//        logger.info("BEHAVIOR LINKS");
-//        
-//        for(Stream currentStream: streams){            
-//            for(Behavior firstBehavior: currentStream.getBehaviors()){                           
-//                for(Behavior secondBehavior: currentStream.getBehaviors()){         //iterate over current stream
-//                    if(!firstBehavior.equals(secondBehavior)){
-//                        buildSuccessorLinks(firstBehavior, secondBehavior);
-//                        buildPredecessorLinks(firstBehavior, secondBehavior);
-//                        buildConflictorLinks(firstBehavior, secondBehavior);
-//                    }
-//                }
-//            }
-//        }   
-//    }
     
     private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
         for(Node addItem: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
@@ -342,96 +323,182 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 */   
     public void selectAction(){   
     	
-//   	   1.  Reinforcement Phase
-//	       If the winner is not null:
-//	           a. Reset its activation
-//	           b. Reinforce the winner
-        if(winner != null){
-            winner.deactivatePreconditions();  
-            winner.decay(1000);
-            reinforcementStrategy.reinforce(winner, currentState);        
-        } 
-        winner = null;
+        grantActivationFromBroadcast();
+        grantActivationFromGoals();
+        //spread activation and inhibition among behaviors        
+        passActivationAmongBehaviors();
+        //Essentially readjusts the activations of all behaviors
+        normalizeActivations(); 
         
-//   	 *  3.  Activation Spreading Phase
-//	 *          a. Add activation from the environment.
-//	 *          b. Add activation from the goals.
-//	 *          c. Add excitation from internal spreading by the behaviors.
-//	 *          d. Add inhibition.
-        grantActivationFromBroadcast();                                          //phase 3
+        //TODO add to selector whenever over threshold?
+        //TODO collapse this into the Selector!
+        chooseBehaviorsForSelection();
         
-        for(Goal goal: goals)
-        	goal.grantActivation(goalExcitationAmount);
+        //Select winner
+        winner = selectorStrategy.selectBehavior();
+    	processWinner();
         
-        for(Stream s: streams){
-        	for(Behavior b: s.getBehaviors()){
-        		b.spreadExcitation(broadcastExcitationAmount, goalExcitationAmount);
-                b.spreadInhibition(currentState, goalExcitationAmount, protectedGoalInhibitionAmount);
-                //((Behavior)bi.next()).spreadExcitation();
-        	}
-        }
-        
-////   	 *  4.  Merging Phase
-////	     *      a. Add reinforcement contribution to activation.
-//        //TODO this phase should happen automatically when exciting occurs
-//        for(Stream s: streams){//Phase 4
-//        	for(Behavior b: s.getBehaviors()){
-//        		b.merge(baseLevelActivationAmplicationFactor);
-//        	}
-//        } 
-        
-//   	 *  5.  Normalization Phase:
-//   		 *          a. Scan the streams.
-//   		 *          b. Normalize
-                                                  //phase 5
-        normalize(); 
-        
-        for(Stream s: streams){				//phase 6
-        	for(Behavior b: s.getBehaviors()){
-        		if(b.isActive() && b.getTotalActivation() >= behaviorActivationThreshold){
-        			selectorStrategy.addCompetitor(b);
-        		}
-        	}
-        	//TODO why rewrite over the winner of the last stream?
-        	winner = selectorStrategy.selectBehavior();
-        	sendAction();
-        }
-        
-        for(Stream s: streams)				//phase 7
-        	for(Behavior b: s.getBehaviors())
-        		if(!b.equals(winner))
-        			b.deactivatePreconditions();       
-        
-        //phase 8
-        //phase 9
-        if(winner != null){                                                    
-            winner.prepareToFire(currentState);
-            restoreTheta();
-        }else       
-            reduceTheta();
+    	//Deactivate preconditions
+    	deactivateAllPreconditions();
     }//method 
-   
-    //TODO remove this after review.  
-    public void normalize(){
-        int behaviorCount = 0, alphaActivationSum = 0;
+    
+    private void grantActivationFromGoals(){
+    	for(Goal goal: goals){
+    		if(goal.isActive()){
+    			if(goal instanceof ProtectedGoal)
+    				grantActivation2((ProtectedGoal) goal);
+    			else
+    				grantActivation(goal);
+    		}
+    	}
+    }
+    private void grantActivation(Goal g){
+    	logger.info("GOAL : EXCITATION " + g.getName());
+        
+        for(Node addProposition: g.getExcitatoryPropositions()){
+            List<Behavior> behaviors = g.getExcitatoryBehaviors(addProposition);
+
+            if(behaviors.size() > 0){
+                double granted = goalExcitationAmount / behaviors.size();
+
+                for(Behavior behavior: behaviors){
+                    behavior.excite(granted / behavior.getAddList().size());
+                    logger.info("\t-->" + behavior.toString() + " " + granted / behavior.getAddList().size() + " for " + addProposition);
+                }
+            }
+        }//for each proposition
+    }
+    private void grantActivation2(ProtectedGoal g){
+    	g.grantActivation(goalExcitationAmount);	
+        logger.info("GOAL : INHIBITION " + g.getName());
+        for(Node deleteProposition: g.getInhibitoryPropositions()){
+        	if(currentState.hasNode((Node) deleteProposition)){ //TODO this is backwards?
+        		List<Behavior> behaviors = g.getInhibitoryBehaviors(deleteProposition);
+                if(behaviors.size() > 0){
+                    double inhibited = protectedGoalInhibitionAmount / behaviors.size();
+
+                    for(Behavior behavior: behaviors){
+                        behavior.excite(-1*inhibited / behavior.getDeleteList().size());
+                        logger.info("\t<--" + behavior.toString() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
+                       
+                    }
+                }
+           }
+        }//for 
+    }//method
+    
+    /**
+     * 
+     */
+    private void passActivationAmongBehaviors(){
+    	for(Stream stream: streams){
+        	for(Behavior behavior: stream.getBehaviors()){
+        		 if(behavior.isAllPreconditionsSatisfied())
+        	         spreadSuccessorActivation(behavior);        
+        	     else
+        	    	 spreadPredecessorActivation(behavior);
+        		 spreadConflictorActivation(behavior);
+        	}
+        }
+    }
+    private void spreadSuccessorActivation(Behavior behavior){           
+        for(Node addProposition: behavior.getAddList()){
+            List<Behavior> behaviors = behavior.getSuccessors(addProposition);
+            for(Behavior successor: behaviors){
+            	//TODO double check this assertion
+                if(successor.isPreconditionSatisfied(addProposition) == false){
+                	//TODO double check this activation
+                    double granted = ((getTotalActivation(behavior) * broadcastExcitationAmount) / goalExcitationAmount) / (behaviors.size() * successor.getPreconditionCount());
+                    successor.excite(granted);
+                    logger.info("\t:+" + behavior.getLabel() + "-->" + granted + " to " +
+                                    successor + " for " + addProposition);
+                }                
+            }
+        }        
+    }//method
+    
+    public void spreadPredecessorActivation(Behavior behavior){             
+        for(Node precondition: behavior.getPreconditions()){
+            if(!behavior.isPreconditionSatisfied(precondition)){
+            	List<Behavior> behaviors = behavior.getPredecessors(precondition);    
+            	for(Behavior predecessor: behaviors){
+            		double granted = (getTotalActivation(behavior) / predecessor.getAddListCount()) / behaviors.size();                        
+                    predecessor.excite(granted);
+                    logger.info("\t:+" + getTotalActivation(behavior) + " " + behavior.getLabel() + "<--" + granted + " to " +
+                                        predecessor + " for " + precondition);
+                    
+                }
+            }
+        }        
+    }
+    
+    //TODO Double check I converted this monster correctly
+    //NodeStructure state, double gamma, double delta
+    //currentState, goalExcitationAmount, protectedGoalInhibitionAmount
+    public void spreadConflictorActivation(Behavior b){
+        double fraction = protectedGoalInhibitionAmount / goalExcitationAmount;
+        for(Node precondition: b.getPreconditions()){
+            if(currentState.hasNode(precondition)){
+                List<Behavior> behaviors = b.getConflictors(precondition); 
+                for(Behavior conflictor: behaviors){
+                	boolean mutualConflict = false;
+                    double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+                    
+                    Set<Node> preconds = conflictor.getPreconditions();
+                    for(Node conflictorPreCondition: preconds){
+                    	if(conflictor.isPreconditionSatisfied(conflictorPreCondition) == false){
+                    		for(Node deleteItem: b.getDeleteList()){
+                    			if(conflictorPreCondition.equals(deleteItem)){
+                    				mutualConflict = true;
+                    				break;
+                    			}
+                    		}
+                    	}
+                        if(mutualConflict)
+                        	break;
+                    }   
+                    if(mutualConflict){
+                        if(getTotalActivation(conflictor) < getTotalActivation(b)){
+                                conflictor.excite(inhibited*-1);
+                                logger.info("\t:-" + b.getLabel() + "---" + 
+                                                inhibited + " to " + conflictor 
+                                                + " for " + precondition);                                
+                        }
+                    }else{
+                            conflictor.excite(inhibited*-1);
+                            logger.info("\t:-" + b.getLabel() + "---" + inhibited + 
+                                            " to " + conflictor + " for " + precondition);                                
+                    }
+                    
+                }//for behaviors
+            }                
+        }//for preconditions        
+    }//method    
+    
+    private double getTotalActivation(Behavior b){
+   	 return b.getActivation() + 
+ 	   			b.getBaseLevelActivation() * baseLevelActivationAmplicationFactor;
+   }
+
+    //TODO rework
+    public void normalizeActivations(){
+        int behaviorCount = 0, totalActivationSum = 0;
         for(Stream s: streams){
         	behaviorCount += s.getBehaviorCount();
         	for(Behavior b: s.getBehaviors()){
-        		alphaActivationSum += b.getTotalActivation();
+        		totalActivationSum += getTotalActivation(b);
         	}
         }
         
         double n_sum = meanActivation * behaviorCount;
-        
         for(Stream s: streams){
             for(Behavior behavior: s.getBehaviors()){   
             	
-                double activation = behavior.getTotalActivation();
-                double strength = activation / alphaActivationSum;
+                double activation = getTotalActivation(behavior);
+                double strength = activation / totalActivationSum;
                 double n_activation = strength * n_sum;
                 
-                //TODO work out this decay issue.  Activatible requires int representing ticks
-                //behavior.decay(n_activation);
+                behavior.setActivation(n_activation);
                 /*
                 double change = n_activation - activation;                
                 
@@ -443,6 +510,18 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             }
         }
     }
+    
+    public void chooseBehaviorsForSelection(){
+    	for(Stream s: streams){				
+        	for(Behavior b: s.getBehaviors()){
+        		//TODO move this inside selector?
+        		if(b.isAllPreconditionsSatisfied() && getTotalActivation(b) >= behaviorActivationThreshold){
+        			selectorStrategy.addCompetitor(b);
+        		}
+        	}
+        }
+    }
+    
     
     /**
 	 *  Spreads activation to Behaviors in the propositions Hashtable for
@@ -475,6 +554,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }//for
     }//method
     
+    public void processWinner(){
+    	if(winner != null){                                                    
+            prepareToFire(winner);
+            sendAction();
+            restoreTheta();
+            winner.setActivation(0.0);
+            reinforcementStrategy.reinforce(winner, currentState);
+        }else       
+            reduceTheta();
+    }
+    
     public void reduceTheta(){
     	behaviorActivationThreshold = thetaReducer.reduce(behaviorActivationThreshold, activationThresholdReduction);
         logger.info("NET : THETA REDUCED TO " + behaviorActivationThreshold);
@@ -493,6 +583,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	@Override
 	public void sendAction() {
 		sendAction(winner.getSchemeActionId());
+	}
+	
+	public void deactivateAllPreconditions(){
+		 for(Stream s: streams)				
+	        for(Behavior b: s.getBehaviors())
+	        	b.deactivateAllPreconditions();   
 	}
 	
 	//*** set methods
@@ -584,6 +680,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		}
 		return null;		
 	}
+	
+    public void prepareToFire(Behavior b){
+        logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
+        
+        
+        //TODO find out what the properties are for
+//        for(BehaviorCodelet codelet: behaviorCodelets){
+//        	Map<String, String> properties = codelet.getProperties();
+//            for(String name: properties.keySet()){
+//                String value = state.getNode(name).getLabel();
+//                if(value != null)
+//                    codelet.addProperty(name, value );
+//            }
+//        }        
+    }
 
 	@Override
 	public void triggerActionSelection() {
