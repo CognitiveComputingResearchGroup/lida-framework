@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
@@ -148,8 +149,10 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public void sendInstantiatedScheme(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory", LidaTaskManager.getActualTick());
-		for (ProceduralMemoryListener listener : listeners)
-			listener.receiveBehavior(new BehaviorImpl(s));
+		for (ProceduralMemoryListener listener : listeners){
+			Behavior b = new BehaviorImpl(s.getId(), s.getSchemeActionId());
+			listener.receiveBehavior(b);
+		}
 	}
 
 	@Override

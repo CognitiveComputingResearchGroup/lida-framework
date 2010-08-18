@@ -2,47 +2,32 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.List;
 import java.util.Set;
+
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 //TODO figure out how to cull the number of methods
-public interface Behavior extends Scheme {
-
-	public abstract void deactivatePreconditions();
-
-	//public abstract void resetActivation();
-
-	public abstract List<ExpectationCodelet> getExpectationCodelets();
-
-	//public abstract double getBaseLevelActivation();
-
-	//public abstract void reinforce(double reinforcement);
-
-	public abstract void prepareToFire(NodeStructure currentState);
-
-	//public abstract double getAlpha();
-
-	//public abstract void decay(double n_activation);
-
-	//public abstract void inhibit(double d);
-
-	//public abstract void merge(double baseLevelActivationAmplicationFactor);
-
-	public abstract boolean isActive();
-
-	public abstract void spreadInhibition(NodeStructure currentState, double goalExcitationAmount, double protectedGoalInhibitionAmount);
-
-	public abstract void spreadExcitation(double broadcastExcitationAmount, double goalExcitationAmount);
+public interface Behavior extends LearnableActivatible {
 	
+	//Ids
+	public abstract long getId();
+	public abstract long getSchemeActionId();
+	public abstract String getLabel();
+
 	//Preconditions
 	public abstract int getPreconditionCount();
 	public abstract Set<Node> getPreconditions();
 	public abstract boolean addPrecondition(Node precondition);
+	//Preconditions 2
+	public abstract void satisfyPrecondition(Node proposition);
+	public abstract boolean isAllPreconditionsSatisfied();
+	public abstract void deactivateAllPreconditions();
+	public abstract boolean isPreconditionSatisfied(Node addProposition);
 	
 	//Add list
 	public abstract Set<Node> getAddList();
 	public abstract boolean addAddCondition(Node addCondition);
+	public abstract double getAddListCount();
 	
 	//Delete list
 	public abstract Set<Node> getDeleteList();	
@@ -63,7 +48,8 @@ public interface Behavior extends Scheme {
 	public abstract List<Behavior> getConflictors(Node precondition1);
 	public abstract void addConflictors(Node precondition1, List<Behavior> behaviors);
 	
-	public abstract boolean containsPrecondition(Node addProposition);
-	public abstract void satisfyPrecondition(Node proposition);
+	//Codelets
+	public abstract List<ExpectationCodelet> getExpectationCodelets();
+
 
 }//method

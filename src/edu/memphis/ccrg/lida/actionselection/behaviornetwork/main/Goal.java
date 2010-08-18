@@ -82,8 +82,8 @@ public class Goal{
         return persistent;
     }
     
-    public Map<Node, List<Behavior>> getExcitatoryPropositions(){
-        return excitatoryPropositions;
+    public Set<Node> getExcitatoryPropositions(){
+        return excitatoryPropositions.keySet();
     }
     
     public void setExcitatoryPropositions(Map<Node, List<Behavior>> excitatoryPropositions){

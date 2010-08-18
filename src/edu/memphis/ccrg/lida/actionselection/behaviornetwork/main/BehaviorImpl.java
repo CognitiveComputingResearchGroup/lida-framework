@@ -3,6 +3,8 @@
  *
  * Sidney D'Mello
  * Created on December 10, 2003, 5:35 PM
+ * 
+ * Modified by Ryan McCall, 2010
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
@@ -15,35 +17,18 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
-import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
-public class BehaviorImpl extends SchemeImpl implements Behavior{
+public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.main.Behavior");
 	
 	/**
 	 * Label for description
 	 */
-    private String name = "blank behavior";
-
-    /**
-     * total activation
-     */
-  //  private double totalActivation = 0.0;
-    
-    /**
-     * base level
-     */
-   // private double baseLevelActivation = 0.0; 
-    
-    /**
-     * Positive or negative activation from other behaviors
-     */
-   // private double incomingActivation = 0.0;
+    private String label = "blank behavior";
  
     /**
      * 
@@ -80,137 +65,43 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
 
     private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
+
+	private long schemeActionId, id;
    
     //TODO why would a behavior have a stream?  To spawn additional behaviors?
 //   private Stream stream = null;
     
     public BehaviorImpl(long id, long actionId){
-    	super(id, actionId);
-    	deactivatePreconditions();
+    	this.id = id;
+    	this.schemeActionId = actionId;
+    	deactivateAllPreconditions();
     }
     
-    public BehaviorImpl(Scheme s){
-    	super(s);            
-    	deactivatePreconditions();
+    //Precondition methods
+    public void deactivateAllPreconditions(){                
+        for(Node s: preconditions.keySet())
+        	preconditions.put(s, false);       
     }
 
-    public void spreadExcitation(double phi, double gamma){           
-        //logger.info("BEHAVIOR : EXCITATION " + name);
-        if(isActive())
-            spreadSuccessorActivation(phi, gamma);        
-        else
-            spreadPredecessorActivation();                
+    public boolean isPreconditionSatisfied(Node prop){
+    	if(preconditions.containsKey(prop))
+    		return preconditions.get(prop) == true;
+    	return false;
     }
     
-    public void spreadInhibition(NodeStructure state, double gamma, double delta){
-        //logger.info("BEHAVIOR : INHIBITION " + name);
-        spreadConflictorActivation(state, gamma, delta);        
-    }
-  
-    public void spreadSuccessorActivation(double phi, double gamma){           
-        for(Node addProposition: successors.keySet()){
-            List<Behavior> behaviors = successors.get(addProposition);
-            for(Behavior successor: behaviors){
-                if(!successor.containsPrecondition(addProposition)){
-                	//TODO double check this
-                    double granted = ((getTotalActivation() * phi) / gamma) / (behaviors.size() * successor.getPreconditions().size());
-                    successor.excite(granted);
-
-                    logger.info("\t:+" + name + "-->" + granted + " to " +
-                                    successor + " for " + addProposition);
-                }                
-            }
-        }        
-    }//method
-    
-    public boolean containsPrecondition(Node prop){
-    	return preconditions.get(prop) == true;
-    }
-    
-    public void spreadPredecessorActivation(){             
-        for(Node precondition: preconditions.keySet()){
-            if(!this.containsPrecondition(precondition)){
-            	List<Behavior> behaviors = predecessors.get(precondition);     
-            	for(Behavior predecessor: behaviors){
-            		double granted = (getTotalActivation() / predecessor.getAddList().size())/behaviors.size();                        
-                    predecessor.excite(granted);
-                    logger.info("\t:+" + getTotalActivation() + " " + name + "<--" + granted + " to " +
-                                        predecessor + " for " + precondition);
-                    
-                }
-            }
-        }        
-    }
-    
-    //TODO Double check I converted this monster correctly
-    public void spreadConflictorActivation(NodeStructure state, double gamma, double delta){
-        double fraction = delta / gamma;
-        for(Node precondition: preconditions.keySet()){
-            if(state.hasNode(precondition)){
-                List<Behavior> behaviors = conflictors.get(precondition); 
-                for(Behavior conflictor: behaviors){
-                	boolean mutualConflict = false;
-                    double inhibited = (getTotalActivation() * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
-                    
-                    Set<Node> preconds = conflictor.getPreconditions();
-                    for(Node conflictorPreCondition: preconds){
-                    	if(!conflictor.containsPrecondition(conflictorPreCondition)){
-                    		for(Node o2: deleteList){
-                    			if(conflictorPreCondition.equals(o2)){
-                    				mutualConflict = true;
-                    				break;
-                    			}
-                    		}
-                    	}
-                        if(mutualConflict)
-                        	break;
-                    }   
-                    if(mutualConflict){
-                        if(conflictor.getTotalActivation() < getTotalActivation()){
-                                conflictor.excite(inhibited*-1);
-                                logger.info("\t:-" + name + "---" + 
-                                                inhibited + " to " + conflictor 
-                                                + " for " + precondition);                                
-                        }
-                    }else{
-                            conflictor.excite(inhibited*-1);
-                            logger.info("\t:-" + name + "---" + inhibited + 
-                                            " to " + conflictor + " for " + precondition);                                
-                    }
-                    
-                }//for behaviors
-            }                
-        }//for preconditions        
-    }//method    
-    
-    public boolean isActive(){
+    public boolean isAllPreconditionsSatisfied(){
         for(Boolean b: preconditions.values()){
         	if(b == false)
         		return false;
         }
         return true;
     }    
-        
-    public void deactivatePreconditions(){                
-        for(Node s: preconditions.keySet())
-        	preconditions.put(s, false);       
-    }
-    
-    public void prepareToFire(NodeStructure state){
-        logger.info("BEHAVIOR : PREPARE TO FIRE " + name);
-        
-        
-        //TODO find out what the properties are for
-//        for(BehaviorCodelet codelet: behaviorCodelets){
-//        	Map<String, String> properties = codelet.getProperties();
-//            for(String name: properties.keySet()){
-//                String value = state.getNode(name).getLabel();
-//                if(value != null)
-//                    codelet.addProperty(name, value );
-//            }
-//        }        
-    }
-    
+ 
+	@Override
+	public void satisfyPrecondition(Node proposition) {
+		preconditions.put(proposition, true);
+	}
+	
     // start add methods    
     public boolean addPrecondition(Node precondition){
     	return (preconditions.put(precondition, false) != null);
@@ -248,6 +139,11 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         }
     }
     
+	@Override
+	public void addSuccessors(Node addProposition, List<Behavior> behaviors) {
+		successors.put(addProposition, behaviors);
+	}
+    
     public void addConflictor(Node precondition, Behavior conflictor){
         if(precondition != null && conflictor != null){
             List<Behavior> list = conflictors.get(precondition);
@@ -259,26 +155,25 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         }
     }
     
+	public void addConflictors(Node precondition1, List<Behavior> behaviors) {
+		conflictors.put(precondition1, behaviors);
+	}
+    
     public void addBehaviorCodelet(BehaviorCodelet behaviorCodelet){
     	behaviorCodelets.add(behaviorCodelet);
     }    
     
     public void addExpectationCodelet(ExpectationCodelet expectationCodelet){
-    	expectationCodelets.add(expectationCodelet);
-    }     
-// end add methods    
-    
-// start get methods.          
-    
-    public String toString(){
-        return name + " schm " + super.toString();
-    }    
-    
-    public double getTotalActivation(){
-        return getActivation() + 
-        	   getBaseLevelActivation() * BehaviorNetworkImpl.baseLevelActivationAmplicationFactor;
-    }
 
+    	expectationCodelets.add(expectationCodelet);
+    }
+    
+	@Override
+	public void addPredecessors(Node precondition, List<Behavior> behaviors) {
+		predecessors.put(precondition, behaviors);
+	}
+    
+    //Get methods
     public Set<Node> getPreconditions(){
         return preconditions.keySet();
     }
@@ -303,26 +198,67 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
         return conflictors;
     }
         
-
 	public List<Behavior> getConflictors(Node precondition1) {
 		return conflictors.get(precondition1);
 	}
-    
-    
+      
     public List<BehaviorCodelet> getBehaviorCodelets(){
         return behaviorCodelets;
     } 
+    
     public List<ExpectationCodelet> getExpectationCodelets(){
         return expectationCodelets;
     }
+   
+	@Override
+	public int getPreconditionCount() {
+		return preconditions.size();
+	}
+
+	@Override
+	public List<Behavior> getPredecessors(Node precondition) {
+		return predecessors.get(precondition);
+	}
     
-//    private Stream getStream(){
-//        return stream;
-//    }
-//end get methods    
-    
-//start set methods    
-    
+	@Override
+	public List<Behavior> getSuccessors(Node addProposition) {
+		return successors.get(addProposition);
+	}
+
+	@Override
+	public int getSuccessorCount() {
+		return successors.size();
+	}
+
+	@Override
+	public int getPredecessorCount() {
+		return predecessors.size();
+	}
+
+	@Override
+	public int getConflictorCount() {
+		return conflictors.size();
+	}
+	
+	@Override
+	public double getAddListCount() {
+		return addList.size();
+	}
+
+	@Override
+	public long getSchemeActionId() {
+		return schemeActionId;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public String getLabel(){
+		return label;
+	}
+	
+    //Set methods       
     public void setPreconditions(Map<Node, Boolean> preconditions){
     	this.preconditions = preconditions;
     }
@@ -354,82 +290,13 @@ public class BehaviorImpl extends SchemeImpl implements Behavior{
     public void setExpectationCodelets(List<ExpectationCodelet> expectationCodelets){
     	this.expectationCodelets = expectationCodelets;
     }
-    
-//    public void setStream(Stream stream){
-//    	this.stream = stream;
-//    }    
-//    
-//    public SidneyCodelet getCodelet(String name){
-//        SidneyCodelet codelet = getBehaviorCodelet(name);
-//        if(codelet != null)
-//        	return codelet;
-//        else
-//            return getExpectationCodelet(name);    
-//    }
-    
-//    public SidneyCodelet getBehaviorCodelet(String name){
-//    	for(SidneyCodelet sc: behaviorCodelets)
-//            if(sc.getName().compareTo(name) == 0)
-//            	return sc;
-//        return null;            
-//    }
-    
-//    public SidneyCodelet getExpectationCodelet(String name){
-//    	for(SidneyCodelet sc: expectationCodelets)
-//            if(sc.getName().compareTo(name) == 0)
-//            	return sc;
-//        return null; 
-//    }
 
-	public void addConflictors(Node precondition1, List<Behavior> behaviors) {
-		conflictors.put(precondition1, behaviors);
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	@Override
-	public int getPreconditionCount() {
-		return preconditions.size();
+	public void setSchemeActionId(long schemeActionId) {
+		this.schemeActionId = schemeActionId;
 	}
 
-	@Override
-	public List<Behavior> getPredecessors(Node precondition) {
-		return predecessors.get(precondition);
-	}
-
-	@Override
-	public void addPredecessors(Node precondition, List<Behavior> behaviors) {
-		predecessors.put(precondition, behaviors);
-	}
-
-	@Override
-	public List<Behavior> getSuccessors(Node addProposition) {
-		return successors.get(addProposition);
-	}
-
-	@Override
-	public void addSuccessors(Node addProposition, List<Behavior> behaviors) {
-		successors.put(addProposition, behaviors);
-	}
-
-	@Override
-	public void satisfyPrecondition(Node proposition) {
-		preconditions.put(proposition, true);
-	}
-
-	@Override
-	public int getSuccessorCount() {
-		return successors.size();
-	}
-
-	@Override
-	public int getPredecessorCount() {
-		return predecessors.size();
-	}
-
-	@Override
-	public int getConflictorCount() {
-		return conflictors.size();
-	}
-
-}
-
-
+}//class

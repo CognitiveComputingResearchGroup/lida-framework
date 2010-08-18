@@ -43,16 +43,15 @@ public class BasicSelector implements SelectorStrategy{
     }        
     
     public Behavior selectBehavior(){
+        logger.info("SELECTING " + getNumberOfCompetitors());
+        double maxActivation = 0.0;
         Behavior winner = null;
-        double maxAlpha = 0.0;
-        
-        logger.info("SELECTOR : SELECTING " + getNumberOfCompetitors());
-        
-        for(Behavior current: competitors){       
-            if(current.getTotalActivation() > maxAlpha) {                    
+        for(Behavior current: competitors){ 
+        	double currentActivation = current.getTotalActivation();
+            if(currentActivation > maxActivation) {                    
                 winner = current;
-                maxAlpha = current.getTotalActivation();
-            }else if(current.getTotalActivation() == maxAlpha && (Math.random() >= TIE_BREAKER)){   
+                maxActivation = currentActivation;
+            }else if(currentActivation == maxActivation && (Math.random() >= TIE_BREAKER)){   
                 winner = current;                                    
             }            
         }        
