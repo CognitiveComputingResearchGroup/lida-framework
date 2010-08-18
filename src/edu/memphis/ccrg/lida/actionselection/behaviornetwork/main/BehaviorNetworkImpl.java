@@ -498,6 +498,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 
                 behavior.setActivation(n_activation);
                 /*
+                //appeared commented out in Sidney's original code 
                 double change = n_activation - activation;                
                 
                 if(change > 0)
