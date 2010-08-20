@@ -62,9 +62,9 @@ public class NoActionSelectionOccurringTrigger implements
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
 	public void start() {
-						
-		 //task=new TriggerTask(delay,as,name);	
+		 task=new TriggerTask(delay,as,name);	
 		//as.addTask(task);
+
 	}
 	
 	/*

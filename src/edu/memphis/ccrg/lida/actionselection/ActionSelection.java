@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 
 /**
  * Interface for the action selection module
- * @author ryanjmccall
+ * @author Ryan J McCall
  *
  */
 public interface ActionSelection extends TriggerListener{
@@ -14,14 +14,6 @@ public interface ActionSelection extends TriggerListener{
 	 * @param listener
 	 */
 	public abstract void addActionSelectionListener(ActionSelectionListener listener);
-	
-	/**
-	 * Action is send to action selection listeners
-	 * @param actionId
-	 */
-	public abstract void sendAction(long actionId);
-	
-	public abstract void sendAction();
 	
 	public abstract void selectAction();
 

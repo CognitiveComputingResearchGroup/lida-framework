@@ -301,6 +301,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void addGoal(Goal g){
     	goals.add(g);
     }
+
+	@Override
+	public void triggerActionSelection() {
+		selectAction();	
+	}
           
 	/*
 	 *  
@@ -573,14 +578,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         logger.info("NET : THETA RESTORED TO " + behaviorActivationThreshold);
     }
        
-	@Override
-	public void sendAction(long actionId) {
+	private void sendAction(long actionId) {
         for(ActionSelectionListener l: listeners)
         	l.receiveActionId(actionId);
     }
 
-	@Override
-	public void sendAction() {
+	private void sendAction() {
 		sendAction(winner.getSchemeActionId());
 	}
 	
@@ -683,7 +686,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void prepareToFire(Behavior b){
         logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
         
-        
         //TODO find out what the properties are for
 //        for(BehaviorCodelet codelet: behaviorCodelets){
 //        	Map<String, String> properties = codelet.getProperties();
@@ -694,11 +696,5 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 //            }
 //        }        
     }
-
-	@Override
-	public void triggerActionSelection() {
-		
-		
-	}
 
 }//class

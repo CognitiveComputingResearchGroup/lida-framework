@@ -20,36 +20,58 @@ import java.util.logging.Logger;
  */
 public class ScreenCaptureUtil{
 	
-	private Robot robot;
 	private static Logger logger = Logger.getLogger("lida.util.ScreenCaptureUtil");
+	
+	/**
+	 * Java utility
+	 */
+	private Robot robot;
+	
+	/**
+	 * Area in your screen where the robot will capture from
+	 */
 	private Rectangle areaToCapture;
 	
 	public ScreenCaptureUtil(){
-		try {
+		try{
 			robot = new Robot();
 			areaToCapture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-		} catch (AWTException e) {
+		}catch (AWTException e){
 			logger.warning("Robot could not be created for screen capture!");
-			e.printStackTrace();
 		}
 	}
 	
-	public static void main(String[] args){
-		System.out.println(new ScreenCaptureUtil().getScreenCapture().getType());
-	}
-	
+	/**
+	 * @param r
+	 */
 	public ScreenCaptureUtil(Rectangle r){
 		try {
 			robot = new Robot();
 			areaToCapture = r;
 		} catch (AWTException e) {
 			logger.warning("Robot could not be created for screen capture!");
-			e.printStackTrace();
 		}
 	}
 
 	public BufferedImage getScreenCapture() {
 		return robot.createScreenCapture(areaToCapture);	
 	}//method
+	
+	public static void main(String[] args){
+		System.out.println(new ScreenCaptureUtil().getScreenCapture().getType());
+		
+	    /**
+	     * Represents an image with 8-bit RGB color components packed into
+	     * integer pixels.  The image has a {@link DirectColorModel} without
+	     * alpha.
+	     * When data with non-opaque alpha is stored
+	     * in an image of this type,
+	     * the color data must be adjusted to a non-premultiplied form
+	     * and the alpha discarded,
+	     * as described in the
+	     * {@link java.awt.AlphaComposite} documentation.
+	     */
+	    //public static final int TYPE_INT_RGB = 1;
+	}
 
 }//class

@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -52,10 +51,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		}
 	}
 	
-	@Override
-	public void selectAction() {
-	}
-	
 	public void sendAction(long schemeActionId){
 		for(ActionSelectionListener l: listeners)
 			l.receiveActionId(schemeActionId);
@@ -71,12 +66,14 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 
 	@Override
-	public void sendAction() {		
+	public void triggerActionSelection() {
+				
 	}
 
 	@Override
-	public void triggerActionSelection() {
-				
+	public void selectAction() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	
