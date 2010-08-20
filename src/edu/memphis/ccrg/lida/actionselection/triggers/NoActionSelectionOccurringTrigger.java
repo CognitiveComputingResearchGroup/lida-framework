@@ -22,7 +22,7 @@ public class NoActionSelectionOccurringTrigger implements
 	private TriggerTask task;
 	private String name="";
 	private LidaTaskManager tm;
-	private ActionSelectionDriver asd;
+	private ActionSelection as;
 
 	/**
 	 * @return the lidaTaskManager
@@ -43,8 +43,8 @@ public class NoActionSelectionOccurringTrigger implements
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
-	public void setUp(Map<String, Object> parameters, ActionSelectionDriver asd) {
-		this.asd=asd;
+	public void setUp(Map<String, Object> parameters, ActionSelection as) {
+		this.as=as;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Integer)) {
 			delay= (Integer)o;
@@ -63,8 +63,8 @@ public class NoActionSelectionOccurringTrigger implements
 	 */
 	public void start() {
 						
-		task=new TriggerTask(delay,asd,name);	
-		asd.addTask(task);
+		 //task=new TriggerTask(delay,as,name);	
+		//as.addTask(task);
 	}
 	
 	/*
@@ -83,13 +83,8 @@ public class NoActionSelectionOccurringTrigger implements
 	public void reset() {
 	
 		if (task != null)
-			asd.cancelTask(task);
+			//as.cancelTask(task);
 		start();
 	}
-
-	@Override
-	public void setUp(Map<String, Object> parameters, ActionSelection as) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
