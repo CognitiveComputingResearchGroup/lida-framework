@@ -162,7 +162,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		nodeStructure.addNode(node1);
 		nodeStructure.addNode(node2);
 		pam.receiveWorkspaceContent(ModuleName.Workspace, nodeStructure);
-		assertEquals("Problem with ReceiveWorkspaceContent",nodeStructure,pam.getNodeStructure());
+		
+		//Workspace content not handled in pam
+		//assertEquals("Problem with ReceiveWorkspaceContent",nodeStructure,pam.getSubmodule(ModuleName.Workspace).getModuleContent());
 		
 	}
 
@@ -173,7 +175,10 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testReceiveBroadcast() {
 		nodeStructure.addNode(node1);
 		nodeStructure.addNode(node2);
-		pam.receiveBroadcast(nodeStructure);
+		pam.receiveBroadcast(nodeStructure);		
+			
+		//Broadcast content not handled in pam
+		//assertEquals("Problem with ReceiveBroadcast",nodeStructure,pam.getModuleContent());
 		
 	}
 
@@ -183,7 +188,13 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testReceiveActivationBurstPamNodeDouble() {
-		fail("Not yet implemented"); 
+		
+		node1.setActivation(0.2);
+		pam.addNode(node1);
+		pam.receiveActivationBurst(node1, 0.5);
+		
+		assertEquals("Problem with ReceiveActivationBurst",0.7,node1.getTotalActivation());
+		
 	}
 
 	/**
@@ -191,7 +202,18 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testReceiveActivationBurstSetOfPamNodeDouble() {
-		fail("Not yet implemented"); 
+		Set<PamNode> nodes = new HashSet<PamNode>();
+		
+		node1.setActivation(0.2);
+		node2.setActivation(0.2);
+		nodes.add(node1);
+		nodes.add(node2);
+		
+		pam.addNodes(nodes);
+		pam.receiveActivationBurst(nodes, 0.5);
+		
+		assertEquals("Problem with ReceiveActivationBurst",0.7,node1.getTotalActivation());
+		assertEquals("Problem with ReceiveActivationBurst",0.7,node2.getTotalActivation());
 	}
 
 	/**
