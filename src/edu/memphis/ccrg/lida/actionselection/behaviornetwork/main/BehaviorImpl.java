@@ -9,11 +9,11 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +33,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     /**
      * 
      */
-    private Map<Node, Boolean> preconditions = new HashMap<Node, Boolean>();
+    private Map<Node, Boolean> preconditions = new ConcurrentHashMap<Node, Boolean>();
 
     /**
      * Set of nodes that this scheme adds
@@ -49,19 +49,19 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
      * For each key, the key is in this behavior's precondition and indexes
      * all behaviors which contain that key in their add list
      */
-    private Map<Node, List<Behavior>> predecessors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> predecessors = new ConcurrentHashMap<Node, List<Behavior>>();
     
     /**
      * For each key, the key is in this behavior's add list and indexes all the 
      * behaviors which have the key in their precondition
      */
-    private Map<Node, List<Behavior>> successors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> successors = new ConcurrentHashMap<Node, List<Behavior>>();
     
     /**
      * Key is an element in this behavior's context.  It indexes all the behaviors which have 
      * the key element in their delete list
      */
-    private Map<Node, List<Behavior>> conflictors = new HashMap<Node, List<Behavior>>();
+    private Map<Node, List<Behavior>> conflictors = new ConcurrentHashMap<Node, List<Behavior>>();
 
     private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
