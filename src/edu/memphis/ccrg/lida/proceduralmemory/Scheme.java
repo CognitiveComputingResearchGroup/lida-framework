@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
@@ -19,10 +18,22 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  */
 public interface Scheme extends LearnableActivatible{
 	
-//  TODO: To consider for next version: Curiosity, Reliability
+	public String getLabel();
+	public void setLabel(String label);	
 	
+	/**
+	 * unique identifier for this scheme
+	 * @param id
+	 */
 	public void setId(long id);
 	public long getId();
+	
+	/**
+	 * id for the action's location in sensory-motor memory
+	 * @return
+	 */
+	public long getSchemeActionId();
+	public void setSchemeActionId(long actionId);	
 	
 	public double getCuriosity();
 	public void setCuriosity(double curiosity);
@@ -60,7 +71,6 @@ public interface Scheme extends LearnableActivatible{
 	 * Decay curiosity.
 	 */
 	public void decayCuriosity();
-
 	
 	public List<NodeStructure> getContextConditions();
 	public List<NodeStructure>  getContextConditions(long argumentId);
@@ -76,8 +86,5 @@ public interface Scheme extends LearnableActivatible{
 	public void addArgument (Argument a);
 	public Argument getArgument (long argumentId);
 	public Collection<Argument> getArguments ();
-	
-	public long getSchemeActionId();
-	public void setSchemeActionId(long actionId);
 	
 }//interface

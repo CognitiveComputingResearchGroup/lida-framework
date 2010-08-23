@@ -25,8 +25,10 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	private ConcurrentMap<Long, List<NodeStructure>> argumentsRC = new ConcurrentHashMap<Long, List<NodeStructure>>();
 
 	private long actionId;
+	private String label;
 
-	public SchemeImpl(long id, long actionId) {
+	public SchemeImpl(String label, long id, long actionId) {
+		this.label = label;
 		this.id = id;
 		this.actionId = actionId;
 	}
@@ -216,4 +218,15 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	public boolean isContextCompleted(){
 		return true;
 	}
+
+	@Override
+	public String getLabel() {
+		return label;
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
 }

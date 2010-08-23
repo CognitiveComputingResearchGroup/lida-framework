@@ -71,13 +71,21 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     //TODO why would a behavior have a stream?  To spawn additional behaviors?
 //   private Stream stream = null;
     
-    public BehaviorImpl(long id, long actionId){
-    	this.id = id;
-    	this.schemeActionId = actionId;
-    	deactivateAllPreconditions();
+	public BehaviorImpl(long id, long actionId) {
+	   	this.id = id;
+	   	this.schemeActionId = actionId;
+	   	deactivateAllPreconditions();
+	}
+	
+    public BehaviorImpl(String label, long id, long actionId, double totalActivation){
+    	this(id, actionId);
+    	this.label = label;
+    	
+    	//TODO this is a problem
+    	setActivation(totalActivation);
     }
-    
-    //Precondition methods
+
+	//Precondition methods
     public void deactivateAllPreconditions(){                
         for(Node s: preconditions.keySet())
         	preconditions.put(s, false);       

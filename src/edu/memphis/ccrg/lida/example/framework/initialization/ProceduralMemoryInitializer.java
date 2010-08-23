@@ -59,7 +59,7 @@ public class ProceduralMemoryInitializer implements Initializer {
 				Node n = nodes[idx];
 				rstl.addNode(n);
 			}
-			Scheme scheme = new SchemeImpl(i, 1L);
+			Scheme scheme = new SchemeImpl("test scheme", i, 1L);
 			scheme.addArgument(new ArgumentImpl(1L));
 			scheme.addContextCondition(1L, ctxt);
 			scheme.addResultConditions(1L, rstl);

@@ -150,7 +150,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void sendInstantiatedScheme(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory", LidaTaskManager.getActualTick());
 		for (ProceduralMemoryListener listener : listeners){
-			Behavior b = new BehaviorImpl(s.getId(), s.getSchemeActionId());
+			Behavior b = new BehaviorImpl(s.getLabel(), s.getId(), s.getSchemeActionId(), s.getTotalActivation());
 			listener.receiveBehavior(b);
 		}
 	}
