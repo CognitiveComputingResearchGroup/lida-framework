@@ -40,9 +40,11 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	public void receiveBehavior(Behavior b) {
-		System.out.println(b.getLabel() + " " + b.getId() + " " + b.getSchemeActionId() + " activ. " + b.getActivation());
 		if(b.getActivation() > selectionThreshold){
 			if(coolDownCounter == selectionFrequency){
+				logger.log(Level.FINE, 
+						   "selecting behavior " + b.getLabel() + " " + b.getId() + " " + b.getSchemeActionId() + " activ. " + b.getActivation(), 
+						   LidaTaskManager.getActualTick());
 				sendAction(b.getSchemeActionId());
 				coolDownCounter = 0;
 			}else

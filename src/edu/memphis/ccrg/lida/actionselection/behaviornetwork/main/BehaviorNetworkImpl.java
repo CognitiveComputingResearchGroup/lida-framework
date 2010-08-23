@@ -686,7 +686,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void prepareToFire(Behavior b){
         logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
         
-        //TODO find out what the properties are for
+//        TODO find out what the properties are for
 //        for(BehaviorCodelet codelet: behaviorCodelets){
 //        	Map<String, String> properties = codelet.getProperties();
 //            for(String name: properties.keySet()){
