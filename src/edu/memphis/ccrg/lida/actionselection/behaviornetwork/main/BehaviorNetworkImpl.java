@@ -75,24 +75,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double broadcastExcitationAmount = 0.0;      
     
     /**
-     * Amount of excitation by a goal (GAMMA)
-     */
-    private double goalExcitationAmount = 0.0;    
-    
-    /**
-     * Amount of inhibition a protected goal takes away (DELTA)
-     */
-    private double protectedGoalInhibitionAmount = 0.0;   
-    
-    /**
      * amplification factor for base level activation (OMEGA)
      */
     private double baseLevelActivationAmplicationFactor = 0.0;        
-    
-    /**
-	 * Percent to reduce the behavior activation threshold by if no behavior is selected
-	 */
-    private final double activationThresholdReduction  = 10;  
     
     /**
      * function by which the behavior activation threshold is reduced
@@ -113,12 +98,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * Listeners of this action selection
      */
     private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-    
-    /**
-     * Goals currently in play in this behavior network
-     */
-    private Queue<Goal> goals = new ConcurrentLinkedQueue<Goal>();
-    
+       
     /**
      * All the streams currently in this behavior network
      */
@@ -173,9 +153,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
-		indexByPrecondition(newBehavior);        
-        createExcitatoryGoalLinks(newBehavior); 
-        createInhibitoryGoalLinks(newBehavior);    
+		indexByPrecondition(newBehavior);          
         createInterBehaviorLinks(newBehavior);
         Stream newStream = new Stream();
         newStream.addBehavior(newBehavior);
@@ -197,42 +175,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             behaviors.add(newBehavior);
 		}
 	}
-    
-	//Goals keep track of which behaviors will add things that they like
-    public void createExcitatoryGoalLinks(Behavior newBehavior){
-    	for(Node addItem: newBehavior.getAddList()){
-            for(Goal goal: goals){       
-                if(goal.containsExcitatoryElement(addItem)){                	
-                	List<Behavior> behaviors = goal.getExcitatoryBehaviors(addItem);
-                    if(behaviors == null){                                
-                        behaviors = new ArrayList<Behavior>();        
-                        goal.addExcitatoryBehavior(addItem, behaviors);
-                    }                            
-                    behaviors.add(newBehavior);                                                                    
-                }                        
-            }
-        }
-    }
-    
-    //The upshot is that Protected goals store the behaviors who might delete things they like
-    public void createInhibitoryGoalLinks(Behavior newBehavior){
-    	for(Node deleteItem: newBehavior.getDeleteList()){//iterate over the delete list
-            for(Goal goal: goals){
-                if(goal instanceof ProtectedGoal){ //only protected goals inhibit 
-                	ProtectedGoal pGoal = (ProtectedGoal) goal;
-                	Map<Node, List<Behavior>> inhibitoryProps = pGoal.getInhibitoryPropositionMap();                  
-                    if(pGoal.containsExcitatoryProposition(deleteItem)){
-                        List<Behavior> behaviors = inhibitoryProps.get(deleteItem);
-                        if(behaviors == null){
-                            behaviors = new ArrayList<Behavior>();
-                            inhibitoryProps.put(deleteItem, behaviors);
-                        }
-                        behaviors.add(newBehavior);
-                    }                            
-                }                        
-            }//for goals
-        }
-    }
 
     public void createInterBehaviorLinks(Behavior newBehavior){
     	for(Stream currentStream: streams){            
@@ -294,13 +236,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             }
         }
     }//method
-    
-    public void addGoals(Queue<Goal> goals){
-        this.goals = goals;
-    }
-    public void addGoal(Goal g){
-    	goals.add(g);
-    }
 
 	@Override
 	public void triggerActionSelection() {
@@ -329,7 +264,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void selectAction(){   
     	
         grantActivationFromBroadcast();
-        grantActivationFromGoals();
         //spread activation and inhibition among behaviors        
         passActivationAmongBehaviors();
         //Essentially readjusts the activations of all behaviors
@@ -346,52 +280,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	//Deactivate preconditions
     	deactivateAllPreconditions();
     }//method 
-    
-    private void grantActivationFromGoals(){
-    	for(Goal goal: goals){
-    		if(goal.isActive()){
-    			if(goal instanceof ProtectedGoal)
-    				grantActivation2((ProtectedGoal) goal);
-    			else
-    				grantActivation(goal);
-    		}
-    	}
-    }
-    private void grantActivation(Goal g){
-    	logger.info("GOAL : EXCITATION " + g.getName());
-        
-        for(Node addProposition: g.getExcitatoryPropositions()){
-            List<Behavior> behaviors = g.getExcitatoryBehaviors(addProposition);
 
-            if(behaviors.size() > 0){
-                double granted = goalExcitationAmount / behaviors.size();
-
-                for(Behavior behavior: behaviors){
-                    behavior.excite(granted / behavior.getAddList().size());
-                    logger.info("\t-->" + behavior.toString() + " " + granted / behavior.getAddList().size() + " for " + addProposition);
-                }
-            }
-        }//for each proposition
-    }
-    private void grantActivation2(ProtectedGoal g){
-    	g.grantActivation(goalExcitationAmount);	
-        logger.info("GOAL : INHIBITION " + g.getName());
-        for(Node deleteProposition: g.getInhibitoryPropositions()){
-        	if(currentState.hasNode((Node) deleteProposition)){ //TODO this is backwards?
-        		List<Behavior> behaviors = g.getInhibitoryBehaviors(deleteProposition);
-                if(behaviors.size() > 0){
-                    double inhibited = protectedGoalInhibitionAmount / behaviors.size();
-
-                    for(Behavior behavior: behaviors){
-                        behavior.excite(-1*inhibited / behavior.getDeleteList().size());
-                        logger.info("\t<--" + behavior.toString() + " " + inhibited / behavior.getAddList().size() + " for " + deleteProposition);
-                       
-                    }
-                }
-           }
-        }//for 
-    }//method
-    
     /**
      * 
      */
@@ -406,14 +295,19 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         	}
         }
     }
+    
+    //TODO consider this
+    private double successorExcitationFactor = 0.9;
+    
     private void spreadSuccessorActivation(Behavior behavior){           
         for(Node addProposition: behavior.getAddList()){
             List<Behavior> behaviors = behavior.getSuccessors(addProposition);
             for(Behavior successor: behaviors){
-            	//TODO double check this assertion
+            	//Should only grant activation to a successor if its precondition
+            	//has not yet been satisfied
                 if(successor.isPreconditionSatisfied(addProposition) == false){
-                	//TODO double check this activation
-                    double granted = ((getTotalActivation(behavior) * broadcastExcitationAmount) / goalExcitationAmount) / (behaviors.size() * successor.getPreconditionCount());
+                	double granted = (behavior.getActivation() * successorExcitationFactor) / successor.getPreconditionCount();
+                   //oldway: double granted = ((behavior.getActivation() * broadcastExcitationAmount) / (goalExcitationAmount * behaviors.size() * successor.getPreconditionCount());
                     successor.excite(granted);
                     logger.info("\t:+" + behavior.getLabel() + "-->" + granted + " to " +
                                     successor + " for " + addProposition);
@@ -437,15 +331,18 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }        
     }
     
+    //TODO consider this
+    private double predecessorExcitationFactor = 0.9;
+    
     //TODO Double check I converted this monster correctly
     public void spreadConflictorActivation(Behavior b){
-        double fraction = protectedGoalInhibitionAmount / goalExcitationAmount;
         for(Node precondition: b.getPreconditions()){
             if(currentState.hasNode(precondition)){
                 List<Behavior> behaviors = b.getConflictors(precondition); 
                 for(Behavior conflictor: behaviors){
                 	boolean mutualConflict = false;
-                    double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+                	double inhibitionAmount = (b.getActivation() * predecessorExcitationFactor) / (conflictor.getDeleteListCount());
+                    //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
                     Set<Node> preconds = conflictor.getPreconditions();
                     for(Node conflictorPreCondition: preconds){
@@ -462,14 +359,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                     }   
                     if(mutualConflict){
                         if(getTotalActivation(conflictor) < getTotalActivation(b)){
-                                conflictor.excite(inhibited*-1);
+                                conflictor.excite(inhibitionAmount*-1);
                                 logger.info("\t:-" + b.getLabel() + "---" + 
-                                                inhibited + " to " + conflictor 
+                                                inhibitionAmount + " to " + conflictor 
                                                 + " for " + precondition);                                
                         }
                     }else{
-                            conflictor.excite(inhibited*-1);
-                            logger.info("\t:-" + b.getLabel() + "---" + inhibited + 
+                            conflictor.excite(inhibitionAmount*-1);
+                            logger.info("\t:-" + b.getLabel() + "---" + inhibitionAmount + 
                                             " to " + conflictor + " for " + precondition);                                
                     }
                     
@@ -481,7 +378,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double getTotalActivation(Behavior b){
    	 return b.getActivation() + 
  	   			b.getBaseLevelActivation() * baseLevelActivationAmplicationFactor;
-   }
+    }
 
     //TODO rework
     public void normalizeActivations(){
@@ -570,7 +467,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     public void reduceTheta(){
-    	behaviorActivationThreshold = thetaReducer.reduce(behaviorActivationThreshold, activationThresholdReduction);
+    	behaviorActivationThreshold = thetaReducer.reduce(behaviorActivationThreshold);
         logger.info("NET : THETA REDUCED TO " + behaviorActivationThreshold);
     }
     public void restoreTheta(){
@@ -605,12 +502,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public void setBroadcastExcitationAmount(double phi){
 		this.broadcastExcitationAmount = phi;
 	}
-	public void setGoalExcitationAmount(double gamma){
-		this.goalExcitationAmount = gamma;
-	}
-	public void setProtectedGoalInhibition(double delta){
-		this.protectedGoalInhibitionAmount = delta;
-	}                            
+                           
 	public void setMeanActivation(double pi){
 		this.meanActivation = pi;
 	}                   
@@ -626,22 +518,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public double getBroadcastExcitationAmount(){
         return broadcastExcitationAmount;                
     }
-    public double getGoalExcitationAmount(){
-        return goalExcitationAmount;
-    }
-    public double getProtectedGoalInhibition(){
-        return protectedGoalInhibitionAmount;
-    }
-    public double getMeanActivation(){
-        return meanActivation;
-    }
+
     public double getBaseLevelActivationAmplicationFactor(){
         return baseLevelActivationAmplicationFactor;
     }            
 
-    public Queue<Goal> getGoals(){
-        return goals;
-    } 
 	public void setStreams(Queue<Stream> streams) {
 		this.streams = streams;
 	}

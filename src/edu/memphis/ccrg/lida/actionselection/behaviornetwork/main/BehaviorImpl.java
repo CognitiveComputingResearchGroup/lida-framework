@@ -252,6 +252,11 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	public double getAddListCount() {
 		return addList.size();
 	}
+	
+	@Override
+	public double getDeleteListCount() {
+		return deleteList.size();
+	}
 
 	@Override
 	public long getSchemeActionId() {

@@ -32,6 +32,7 @@ public interface Behavior extends LearnableActivatible {
 	//Delete list
 	public abstract Set<Node> getDeleteList();	
     public abstract boolean addDeleteCondition(Node deleteCondition);
+    public abstract double getDeleteListCount();
 	
     //Successors
 	public abstract int getSuccessorCount();
@@ -50,6 +51,5 @@ public interface Behavior extends LearnableActivatible {
 	
 	//Codelets
 	public abstract List<ExpectationCodelet> getExpectationCodelets();
-
 
 }//method
