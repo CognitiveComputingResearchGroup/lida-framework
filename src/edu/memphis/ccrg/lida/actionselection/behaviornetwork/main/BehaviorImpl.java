@@ -147,10 +147,10 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
         }
     }
     
-	@Override
-	public void addSuccessors(Node addProposition, List<Behavior> behaviors) {
-		successors.put(addProposition, behaviors);
-	}
+//	@Override
+//	public void addSuccessors(Node addProposition, List<Behavior> behaviors) {
+//		successors.put(addProposition, behaviors);
+//	}
     
     public void addConflictor(Node precondition, Behavior conflictor){
         if(precondition != null && conflictor != null){
@@ -176,10 +176,10 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     	expectationCodelets.add(expectationCodelet);
     }
     
-	@Override
-	public void addPredecessors(Node precondition, List<Behavior> behaviors) {
-		predecessors.put(precondition, behaviors);
-	}
+//	@Override
+//	public void addPredecessors(Node precondition, List<Behavior> behaviors) {
+//		predecessors.put(precondition, behaviors);
+//	}
     
     //Get methods
     public Set<Node> getPreconditions(){

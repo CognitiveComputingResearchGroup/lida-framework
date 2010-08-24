@@ -37,19 +37,21 @@ public interface Behavior extends LearnableActivatible {
     //Successors
 	public abstract int getSuccessorCount();
 	public abstract List<Behavior> getSuccessors(Node addProposition);
-	public abstract void addSuccessors(Node addProposition, List<Behavior> behaviors);
+	public abstract void addSuccessor(Node contextNode, Behavior behavior);
 	
 	//Predecessors
 	public abstract int getPredecessorCount();
 	public abstract List<Behavior> getPredecessors(Node precondition);
-	public abstract void addPredecessors(Node precondition, List<Behavior> behaviors);
+	public abstract void addPredecessor(Node addItem, Behavior behavior);
 	
 	//Conflictors
 	public abstract int getConflictorCount();
 	public abstract List<Behavior> getConflictors(Node precondition1);
-	public abstract void addConflictors(Node precondition1, List<Behavior> behaviors);
+	public abstract void addConflictor(Node deleteItem, Behavior newBehavior);
+	public abstract void addConflictors(Node precondition, List<Behavior> deletors);
 	
 	//Codelets
 	public abstract List<ExpectationCodelet> getExpectationCodelets();
+	
 
 }//method

@@ -14,7 +14,7 @@ public abstract class SidneyCodelet{
     protected String name = "SidneyCodelet";
     protected Behavior behavior = null;
     
- //   protected Map<String, String> properties = new HashMap<String, String>();    
+ // protected Map<String, String> properties = new HashMap<String, String>();    
     
     public SidneyCodelet(){
     }

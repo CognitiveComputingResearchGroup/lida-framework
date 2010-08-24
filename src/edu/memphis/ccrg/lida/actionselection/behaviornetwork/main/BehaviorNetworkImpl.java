@@ -52,6 +52,9 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener, BroadcastListener{    
 
+	//TODO Decay for behavior network
+	//TODO Removing behaviors 
+	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     
     /**
@@ -121,7 +124,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * 
      * this is similar to our procedural memory
      */
-    private ConcurrentMap<Node, List<Behavior>> preconditionBehaviorsMap = new ConcurrentHashMap<Node, List<Behavior>>();
+    private ConcurrentMap<Node, List<Behavior>> behaviorsByPrecondition = new ConcurrentHashMap<Node, List<Behavior>>();
+    
+    private ConcurrentMap<Node, List<Behavior>> behaviorsByDeleteItem = new ConcurrentHashMap<Node, List<Behavior>>();
+
+	private ConcurrentMap<Node, List<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, List<Behavior>>();
     
     public BehaviorNetworkImpl() {    
     	super();
@@ -153,7 +160,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
-		indexByPrecondition(newBehavior);          
+		indexByPrecondition(newBehavior);      
+		indexByDeleteListItem(newBehavior);
+		indexByAddListItem(newBehavior);
         createInterBehaviorLinks(newBehavior);
         Stream newStream = new Stream();
         newStream.addBehavior(newBehavior);
@@ -167,75 +176,135 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 */
 	public void indexByPrecondition(Behavior newBehavior){
 		for(Node precondition: newBehavior.getPreconditions()){      
-			List<Behavior> behaviors = preconditionBehaviorsMap.get(precondition);
+			List<Behavior> behaviors = behaviorsByPrecondition.get(precondition);
             if(behaviors == null){
                 behaviors = new ArrayList<Behavior>();
-                preconditionBehaviorsMap.put(precondition, behaviors);
+                behaviorsByPrecondition.put(precondition, behaviors);
             }                  
             behaviors.add(newBehavior);
 		}
 	}
+	
+	/**
+	 * Index the behaviors by their delete list items
+	 */
+	public void indexByDeleteListItem(Behavior newBehavior){
+		for(Node deleteItem: newBehavior.getDeleteList()){      
+			List<Behavior> behaviors = behaviorsByDeleteItem.get(deleteItem);
+            if(behaviors == null){
+                behaviors = new ArrayList<Behavior>();
+                behaviorsByDeleteItem.put(deleteItem, behaviors);
+            }                  
+            behaviors.add(newBehavior);
+		}
+	}
+	
+	/**
+	 * Index the behaviors by their delete list items
+	 */
+	public void indexByAddListItem(Behavior newBehavior){
+		for(Node addItem: newBehavior.getAddList()){      
+			List<Behavior> behaviors = behaviorsByAddItem.get(addItem);
+            if(behaviors == null){
+                behaviors = new ArrayList<Behavior>();
+                behaviorsByAddItem.put(addItem, behaviors);
+            }                  
+            behaviors.add(newBehavior);
+		}
+	}
+	
+	public void createInterBehaviorLinks(Behavior newBehavior){
+		
+		//Go through the add items and create all predecessor/successor links 
+		//as required by behaviors whose preconditions overlap with these items
+		for(Node addItem: newBehavior.getAddList()){
+			List<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
+			for(Behavior successorBehavior: behaviors){
+				successorBehavior.addPredecessor(addItem, newBehavior);
+				newBehavior.addSuccessor(addItem, successorBehavior);
+			}
+		}
+		
+		//Add this new behavior as a conflictor of whatever behaviors stopped by new behavior
+		for(Node deleteItem: newBehavior.getDeleteList()){
+			List<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
+			for(Behavior b: behaviorsAffectedByDelete){
+				b.addConflictor(deleteItem, newBehavior);
+			}
+		}
+		
+		for(Node precondition: newBehavior.getPreconditions()){
+			//Find all of the new behavior's conflictors - behaviors that 
+			//hurt its chances of activating
+			List<Behavior> deletors = behaviorsByDeleteItem.get(precondition);
+			newBehavior.addConflictors(precondition, deletors);
+			
+			//Successor/ predecessor again
+			List<Behavior> adders = behaviorsByAddItem.get(precondition);
+			for(Behavior adder: adders){
+				newBehavior.addPredecessor(precondition, adder);
+				adder.addSuccessor(precondition, newBehavior);
+			}
+		}
+	}
 
-    public void createInterBehaviorLinks(Behavior newBehavior){
-    	for(Stream currentStream: streams){            
-            for(Behavior existingBehavior: currentStream.getBehaviors()){
-            	buildSuccessorLinks(newBehavior, existingBehavior);
-            	buildSuccessorLinks(existingBehavior, newBehavior);
-            	//TODO check if this is redundant
-            	buildPredecessorLinks(newBehavior, existingBehavior);
-            	buildPredecessorLinks(existingBehavior, newBehavior);
-            	//
-            	buildConflictorLinks(newBehavior, existingBehavior);
-            	buildConflictorLinks(existingBehavior, newBehavior);
-            }
-    	}
-    }
-    
-    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
-        for(Node addItem: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
-            for(Node precondition: secondBehavior.getPreconditions()){//iterate over preconditions of second behavior
-                if(addItem.equals(precondition)){
-                    List<Behavior> behaviors = firstBehavior.getSuccessors(addItem);
-                    if(behaviors == null){
-                        behaviors = new ArrayList<Behavior>();
-                        firstBehavior.addSuccessors(addItem, behaviors);
-                    }
-                    behaviors.add(secondBehavior);
-                }
-            }
-        }       
-    }//method
-    
-    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(Node precondition: firstBehavior.getPreconditions()){        //iterate over preconditon of first behavior
-            for(Node addItem: secondBehavior.getAddList()){               //iterate over addlist of second behavior
-            	if(precondition.equals(addItem)){
-                    List<Behavior> behaviors = firstBehavior.getPredecessors(precondition);
-                    if(behaviors == null){
-                        behaviors = new ArrayList<Behavior>();
-                        firstBehavior.addPredecessors(precondition, behaviors);
-                    }
-                    behaviors.add(secondBehavior);
-                }
-            }
-        }               
-    }//method
-    
-    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-        for(Node precondition: firstBehavior.getPreconditions()){
-            for(Node deleteItem: secondBehavior.getDeleteList()){
-                if(precondition.equals(deleteItem)){
-                    List<Behavior> behaviors = firstBehavior.getConflictors(precondition);
-                    if(behaviors == null){
-                        behaviors = new ArrayList<Behavior>();                        
-                        firstBehavior.addConflictors(precondition, behaviors);
-                    }
-                    behaviors.add(secondBehavior);
-                    
-                }
-            }
-        }
-    }//method
+//    public void createInterBehaviorLinks(Behavior newBehavior){
+//    	for(Stream currentStream: streams){            
+//            for(Behavior existingBehavior: currentStream.getBehaviors()){
+//            	buildSuccessorLinks(newBehavior, existingBehavior);
+//            	buildSuccessorLinks(existingBehavior, newBehavior);
+//            	//TODO check if this is redundant
+//            	buildPredecessorLinks(newBehavior, existingBehavior);
+//            	buildPredecessorLinks(existingBehavior, newBehavior);
+//            	//
+//            	buildConflictorLinks(newBehavior, existingBehavior);
+//            	buildConflictorLinks(existingBehavior, newBehavior);
+//            }
+//    	}
+//    }
+//    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
+//        for(Node addItem: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
+//            for(Node precondition: secondBehavior.getPreconditions()){//iterate over preconditions of second behavior
+//                if(addItem.equals(precondition)){
+//                    List<Behavior> behaviors = firstBehavior.getSuccessors(addItem);
+//                    if(behaviors == null){
+//                        behaviors = new ArrayList<Behavior>();
+//                        firstBehavior.addSuccessors(addItem, behaviors);
+//                    }
+//                    behaviors.add(secondBehavior);
+//                }
+//            }
+//        }       
+//    }//method
+//    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
+//        for(Node precondition: firstBehavior.getPreconditions()){        //iterate over preconditon of first behavior
+//            for(Node addItem: secondBehavior.getAddList()){               //iterate over addlist of second behavior
+//            	if(precondition.equals(addItem)){
+//                    List<Behavior> behaviors = firstBehavior.getPredecessors(precondition);
+//                    if(behaviors == null){
+//                        behaviors = new ArrayList<Behavior>();
+//                        firstBehavior.addPredecessors(precondition, behaviors);
+//                    }
+//                    behaviors.add(secondBehavior);
+//                }
+//            }
+//        }               
+//    }//method
+//    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
+//        for(Node precondition: firstBehavior.getPreconditions()){
+//            for(Node deleteItem: secondBehavior.getDeleteList()){
+//                if(precondition.equals(deleteItem)){
+//                    List<Behavior> behaviors = firstBehavior.getConflictors(precondition);
+//                    if(behaviors == null){
+//                        behaviors = new ArrayList<Behavior>();                        
+//                        firstBehavior.addConflictors(precondition, behaviors);
+//                    }
+//                    behaviors.add(secondBehavior);
+//                    
+//                }
+//            }
+//        }
+//    }//method
 
 	@Override
 	public void triggerActionSelection() {
@@ -441,8 +510,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void grantActivationFromBroadcast(){
         logger.info("ENVIRONMENT : EXCITATION");
         for(Node proposition: currentState.getNodes()){
-        	if(preconditionBehaviorsMap.containsKey(proposition)){
-        		List<Behavior> behaviors = preconditionBehaviorsMap.get(proposition);
+        	if(behaviorsByPrecondition.containsKey(proposition)){
+        		List<Behavior> behaviors = behaviorsByPrecondition.get(proposition);
                 double excitationAmount = broadcastExcitationAmount / behaviors.size();
                 for(Behavior b: behaviors){
                 	b.satisfyPrecondition(proposition);
