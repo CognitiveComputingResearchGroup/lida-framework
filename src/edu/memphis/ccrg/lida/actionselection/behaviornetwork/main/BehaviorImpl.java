@@ -65,7 +65,15 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
 
-	private long schemeActionId, id;
+    /**
+     * Id of the action(s) in sensory-motor to be taken if this behavior executes
+     */
+	private long schemeActionId;
+	
+	/**
+	 * unique identifier
+	 */
+	private long id;
    
     //TODO why would a behavior have a stream?  To spawn additional behaviors?
 //   private Stream stream = null;

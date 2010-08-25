@@ -156,7 +156,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     public void receiveBroadcast(BroadcastContent bc){
     	currentState = (NodeStructure) bc;
-    	//TODO call grantActivationFromBroadcast() right now
+    	
+    	//TODO make sure this method or this line runs in a separate thread
+    	grantActivationFromBroadcast();
     }
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
@@ -173,58 +175,68 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
-		indexByPrecondition(newBehavior);      
-		indexByDeleteListItem(newBehavior);
-		indexByAddListItem(newBehavior);
+		indexBehaviorsByElements(newBehavior, newBehavior.getPreconditions(), behaviorsByPrecondition);      
+		indexBehaviorsByElements(newBehavior, newBehavior.getAddList(), behaviorsByAddItem);
+		indexBehaviorsByElements(newBehavior, newBehavior.getDeleteList(), behaviorsByDeleteItem);
         createInterBehaviorLinks(newBehavior);
+        //
         Stream newStream = new Stream();
         newStream.addBehavior(newBehavior);
         streams.add(newStream);
 	}
 	
+	public void indexBehaviorsByElements(Behavior newBehavior, Set<Node> elements, Map<Node, List<Behavior>> map){
+		for(Node element: elements){
+			List<Behavior> values = map.get(element);
+			if(values == null){
+				values = new ArrayList<Behavior>();
+				map.put(element, values);
+			}
+			values.add(newBehavior);
+		}
+	}
+	
 	//*** Linking methods
 	
-	/**
-	 * Index the behaviors by their precondition
-	 */
-	public void indexByPrecondition(Behavior newBehavior){
-		for(Node precondition: newBehavior.getPreconditions()){      
-			List<Behavior> behaviors = behaviorsByPrecondition.get(precondition);
-            if(behaviors == null){
-                behaviors = new ArrayList<Behavior>();
-                behaviorsByPrecondition.put(precondition, behaviors);
-            }                  
-            behaviors.add(newBehavior);
-		}
-	}
-	
-	/**
-	 * Index the behaviors by their delete list items
-	 */
-	public void indexByDeleteListItem(Behavior newBehavior){
-		for(Node deleteItem: newBehavior.getDeleteList()){      
-			List<Behavior> behaviors = behaviorsByDeleteItem.get(deleteItem);
-            if(behaviors == null){
-                behaviors = new ArrayList<Behavior>();
-                behaviorsByDeleteItem.put(deleteItem, behaviors);
-            }                  
-            behaviors.add(newBehavior);
-		}
-	}
-	
-	/**
-	 * Index the behaviors by their delete list items
-	 */
-	public void indexByAddListItem(Behavior newBehavior){
-		for(Node addItem: newBehavior.getAddList()){      
-			List<Behavior> behaviors = behaviorsByAddItem.get(addItem);
-            if(behaviors == null){
-                behaviors = new ArrayList<Behavior>();
-                behaviorsByAddItem.put(addItem, behaviors);
-            }                  
-            behaviors.add(newBehavior);
-		}
-	}
+//	/**
+//	 * Index the behaviors by their precondition
+//	 */
+//	public void indexByPrecondition(Behavior newBehavior){
+//		for(Node precondition: newBehavior.getPreconditions()){      
+//			List<Behavior> behaviors = behaviorsByPrecondition.get(precondition);
+//            if(behaviors == null){
+//                behaviors = new ArrayList<Behavior>();
+//                behaviorsByPrecondition.put(precondition, behaviors);
+//            }                  
+//            behaviors.add(newBehavior);
+//		}
+//	}
+//	/**
+//	 * Index the behaviors by their delete list items
+//	 */
+//	public void indexByDeleteListItem(Behavior newBehavior){
+//		for(Node deleteItem: newBehavior.getDeleteList()){      
+//			List<Behavior> behaviors = behaviorsByDeleteItem.get(deleteItem);
+//            if(behaviors == null){
+//                behaviors = new ArrayList<Behavior>();
+//                behaviorsByDeleteItem.put(deleteItem, behaviors);
+//            }                  
+//            behaviors.add(newBehavior);
+//		}
+//	}
+//	/**
+//	 * Index the behaviors by their delete list items
+//	 */
+//	public void indexByAddListItem(Behavior newBehavior){
+//		for(Node addItem: newBehavior.getAddList()){      
+//			List<Behavior> behaviors = behaviorsByAddItem.get(addItem);
+//            if(behaviors == null){
+//                behaviors = new ArrayList<Behavior>();
+//                behaviorsByAddItem.put(addItem, behaviors);
+//            }                  
+//            behaviors.add(newBehavior);
+//		}
+//}
 	
 	public void createInterBehaviorLinks(Behavior newBehavior){
 		
@@ -233,7 +245,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		for(Node addItem: newBehavior.getAddList()){
 			List<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
 			for(Behavior successorBehavior: behaviors){
+				//Create predecessor link for other behavior
 				successorBehavior.addPredecessor(addItem, newBehavior);
+				//Create successor link for this behavior
 				newBehavior.addSuccessor(addItem, successorBehavior);
 			}
 		}
@@ -241,8 +255,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		//Add this new behavior as a conflictor of whatever behaviors stopped by new behavior
 		for(Node deleteItem: newBehavior.getDeleteList()){
 			List<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
-			for(Behavior b: behaviorsAffectedByDelete){
-				b.addConflictor(deleteItem, newBehavior);
+			for(Behavior affectedBehavior: behaviorsAffectedByDelete){
+				affectedBehavior.addConflictor(deleteItem, newBehavior);
 			}
 		}
 		
@@ -252,14 +266,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 			List<Behavior> deletors = behaviorsByDeleteItem.get(precondition);
 			newBehavior.addConflictors(precondition, deletors);
 			
-			//Successor/ predecessor again
-			List<Behavior> adders = behaviorsByAddItem.get(precondition);
-			for(Behavior adder: adders){
+			//Create successor links for other behaviors
+			//Create predecessor links for this behavior
+			List<Behavior> addingBehaviors = behaviorsByAddItem.get(precondition);
+			for(Behavior adder: addingBehaviors){
 				newBehavior.addPredecessor(precondition, adder);
 				adder.addSuccessor(precondition, newBehavior);
 			}
 		}
-	}
+	}//method
 
 //    public void createInterBehaviorLinks(Behavior newBehavior){
 //    	for(Stream currentStream: streams){            
@@ -344,8 +359,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 *             variables.
 	 */   
     public void selectAction(){   
-    	
-        grantActivationFromBroadcast();
         //spread activation and inhibition among behaviors        
         passActivationAmongBehaviors();
         //Essentially readjusts the activations of all behaviors
@@ -398,23 +411,26 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }        
     }//method
     
+    //TODO consider this
+    private double predecessorExcitationFactor = 0.9;
+    
     public void spreadPredecessorActivation(Behavior behavior){             
         for(Node precondition: behavior.getPreconditions()){
-            if(!behavior.isPreconditionSatisfied(precondition)){
-            	List<Behavior> behaviors = behavior.getPredecessors(precondition);    
-            	for(Behavior predecessor: behaviors){
-            		double granted = (getTotalActivation(behavior) / predecessor.getAddListCount()) / behaviors.size();                        
+            if(behavior.isPreconditionSatisfied(precondition) == false){
+            	List<Behavior> predecessors = behavior.getPredecessors(precondition);    
+            	for(Behavior predecessor: predecessors){
+            		double granted = (behavior.getActivation() * predecessorExcitationFactor) / (predecessor.getAddListCount() * predecessors.size());                        
                     predecessor.excite(granted);
-                    logger.info("\t:+" + getTotalActivation(behavior) + " " + behavior.getLabel() + "<--" + granted + " to " +
+                    logger.info("\t:+" + behavior.getActivation() + " " + behavior.getLabel() + "<--" + granted + " to " +
                                         predecessor + " for " + precondition);
                     
                 }
             }
         }        
     }
-    
-    //TODO consider this
-    private double predecessorExcitationFactor = 0.9;
+
+    //TODO 
+    private double conflictorExcitationFactor = 0.9;    
     
     //TODO Double check I converted this monster correctly
     public void spreadConflictorActivation(Behavior b){
@@ -423,7 +439,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 List<Behavior> behaviors = b.getConflictors(precondition); 
                 for(Behavior conflictor: behaviors){
                 	boolean mutualConflict = false;
-                	double inhibitionAmount = (b.getActivation() * predecessorExcitationFactor) / (conflictor.getDeleteListCount());
+                	double inhibitionAmount = (b.getActivation() * conflictorExcitationFactor) / (conflictor.getDeleteListCount());
                     //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
                     
                     Set<Node> preconds = conflictor.getPreconditions();
@@ -458,7 +474,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }//method    
     
     private double getTotalActivation(Behavior b){
-   	 return b.getActivation() + 
+    	return b.getActivation() + 
  	   			b.getBaseLevelActivation() * baseLevelActivationAmplicationFactor;
     }
 
@@ -507,18 +523,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     
     /**
-	 *  Spreads activation to Behaviors in the propositions Hashtable for
-	 *  true propositions as specified by the state.
-	 *
-	 *  The state Hashtable consists of proposition as a key and value, as
-	 *  a value that may be required by the winning Behavior as an Object.
-	 *  
-	 *  For true preconditions with no value: "true" is the value.
-	 *  False preconditions do not appear in the state Hashtable.
-	 *  
-	 *  Iterate through the propositions in the current state.
-    //For each proposition get the behaviors indexed by that proposition
-    //For each behavior, excite it an amount equal to (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
+     * For each proposition get the behaviors indexed by that proposition
+     * For each behavior, excite it an amount equal to 
+     * (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
 	 */
     public void grantActivationFromBroadcast(){
         logger.info("ENVIRONMENT : EXCITATION");

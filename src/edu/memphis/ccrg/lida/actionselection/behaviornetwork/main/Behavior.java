@@ -6,7 +6,6 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
-//TODO figure out how to cull the number of methods
 public interface Behavior extends LearnableActivatible {
 	
 	//Ids
@@ -15,14 +14,15 @@ public interface Behavior extends LearnableActivatible {
 	public abstract String getLabel();
 
 	//Preconditions
-	public abstract int getPreconditionCount();
 	public abstract Set<Node> getPreconditions();
 	public abstract boolean addPrecondition(Node precondition);
-	//Preconditions 2
+	public abstract int getPreconditionCount();
+	
+	//Precondition satisfiability
 	public abstract void satisfyPrecondition(Node proposition);
+	public abstract boolean isPreconditionSatisfied(Node addProposition);
 	public abstract boolean isAllPreconditionsSatisfied();
 	public abstract void deactivateAllPreconditions();
-	public abstract boolean isPreconditionSatisfied(Node addProposition);
 	
 	//Add list
 	public abstract Set<Node> getAddList();
@@ -52,6 +52,5 @@ public interface Behavior extends LearnableActivatible {
 	
 	//Codelets
 	public abstract List<ExpectationCodelet> getExpectationCodelets();
-	
 
 }//method

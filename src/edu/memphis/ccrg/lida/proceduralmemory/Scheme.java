@@ -18,9 +18,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  */
 public interface Scheme extends LearnableActivatible{
 	
-	public String getLabel();
-	public void setLabel(String label);	
-	
 	/**
 	 * unique identifier for this scheme
 	 * @param id
@@ -34,6 +31,9 @@ public interface Scheme extends LearnableActivatible{
 	 */
 	public long getSchemeActionId();
 	public void setSchemeActionId(long actionId);	
+	
+	public String getLabel();
+	public void setLabel(String label);	
 	
 	public double getCuriosity();
 	public void setCuriosity(double curiosity);
@@ -85,6 +85,6 @@ public interface Scheme extends LearnableActivatible{
 	
 	public void addArgument (Argument a);
 	public Argument getArgument (long argumentId);
-	public Collection<Argument> getArguments ();
+	public Collection<Argument> getArguments();
 	
 }//interface

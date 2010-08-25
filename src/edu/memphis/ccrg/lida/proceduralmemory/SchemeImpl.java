@@ -32,15 +32,6 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 		this.id = id;
 		this.actionId = actionId;
 	}
-	
-	public SchemeImpl(Scheme s){
-		this.id = s.getId();
-		this.actionId = s.getSchemeActionId();
-		this.intrinsicBehavior = s.isIntrinsicBehavior();
-		this.contextConditions = s.getContextConditions();
-		this.resultConditions = s.getResultConditions();
-		//TODO: More copying
-	}
 
 	@Override
 	public synchronized void addArgument(Argument a) {
