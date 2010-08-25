@@ -63,7 +63,6 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
      */
     private Map<Node, List<Behavior>> conflictors = new ConcurrentHashMap<Node, List<Behavior>>();
 
-    private List<BehaviorCodelet> behaviorCodelets = new ArrayList<BehaviorCodelet>();
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
 
 	private long schemeActionId, id;
@@ -167,12 +166,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 		conflictors.put(precondition1, behaviors);
 	}
     
-    public void addBehaviorCodelet(BehaviorCodelet behaviorCodelet){
-    	behaviorCodelets.add(behaviorCodelet);
-    }    
-    
     public void addExpectationCodelet(ExpectationCodelet expectationCodelet){
-
     	expectationCodelets.add(expectationCodelet);
     }
     
@@ -209,10 +203,6 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	public List<Behavior> getConflictors(Node precondition1) {
 		return conflictors.get(precondition1);
 	}
-      
-    public List<BehaviorCodelet> getBehaviorCodelets(){
-        return behaviorCodelets;
-    } 
     
     public List<ExpectationCodelet> getExpectationCodelets(){
         return expectationCodelets;
@@ -295,10 +285,6 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     public void setConflictors(Map<Node, List<Behavior>> conflictors){
     	this.conflictors = conflictors;
     }    
-    
-    public void setBehaviorCodelets(List<BehaviorCodelet> behaviorCodelets){
-    	this.behaviorCodelets = behaviorCodelets;
-    }
     
     public void setExpectationCodelets(List<ExpectationCodelet> expectationCodelets){
     	this.expectationCodelets = expectationCodelets;

@@ -1,41 +1,39 @@
-/*
- * ExpectationCodelet.java
- *
- * Created on December 26, 2003, 3:28 PM
- */
-
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 
-public class ExpectationCodelet extends SidneyCodelet{        
-    protected double performance;
-    
-    public ExpectationCodelet(){
-        super();
-    }
-    public ExpectationCodelet(String name){
-        super(name);
-    }
-    
-    public void execute(NodeStructure e)
-    {
-        evaluate(e);
-    }
-    
-    /**
-     * Ryan says: Iterate through the add list of this codelets behavior.
-     * If a proposition in the add list matches the current state then increment this codelets performance
-     * else decrement it.
-     * 
-     * @param e
-     */
-    protected void evaluate(NodeStructure e){
+//From old code: Iterate through the add list of an expecation codelet's associated behavior.
+//If a proposition in the add list matches the current state 
+//then increment this codelets performance else decrement it.
+public class ExpectationCodelet extends LidaTaskImpl{
+	
+	private NodeStructure currentState = new NodeStructureImpl();
+	
+	private double performance = 0.0;
+	
+	private Behavior behavior;
+	
+	public ExpectationCodelet(Behavior b){
+		this.behavior = b;
+	}
+	
+	public void setCurrentState(NodeStructure currentState) {
+		this.currentState = currentState;
+	}
+
+	@Override
+	protected void runThisLidaTask() {
+		evaluate();
+	}
+
+    protected void evaluate(){
         performance = 0; 
         for(Object proposition: behavior.getAddList()){
-            if(e.hasNode((Node)proposition) || e.hasLink((Link) proposition))                        
+            if(currentState.hasNode((Node)proposition) || currentState.hasLink((Link) proposition))                        
                 performance ++;                        
             else
                 performance --;
@@ -44,5 +42,6 @@ public class ExpectationCodelet extends SidneyCodelet{
     
     public double getPerformance(){
         return performance;
-    }    
+    }   
+
 }

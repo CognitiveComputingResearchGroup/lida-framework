@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
@@ -29,6 +30,8 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
@@ -51,9 +54,6 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  *
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener, BroadcastListener{    
-
-	//TODO Decay for behavior network
-	//TODO Removing behaviors 
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     
@@ -81,6 +81,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * amplification factor for base level activation (OMEGA)
      */
     private double baseLevelActivationAmplicationFactor = 0.0;        
+    
+    /**
+	 * If behaviors' activation falls below this threshold after they are decayed then the behavior
+	 * will be removed from the behavior network.
+	 */
+	private double activationLowerBound = 0.0;
     
     /**
      * function by which the behavior activation threshold is reduced
@@ -129,9 +135,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private ConcurrentMap<Node, List<Behavior>> behaviorsByDeleteItem = new ConcurrentHashMap<Node, List<Behavior>>();
 
 	private ConcurrentMap<Node, List<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, List<Behavior>>();
+	
+	private TaskSpawner taskSpawner;
     
     public BehaviorNetworkImpl() {    
     	super();
+    }
+    
+    //TODO make sure this is set up
+    public void setTaskSpawner(TaskSpawner ts){
+    	this.taskSpawner = ts;
     }
     
     @Override
@@ -530,9 +543,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             sendAction();
             restoreTheta();
             winner.setActivation(0.0);
-            reinforcementStrategy.reinforce(winner, currentState);
+            reinforcementStrategy.reinforce(winner, currentState, taskSpawner);
         }else       
             reduceTheta();
+    }
+    private void prepareToFire(Behavior b){
+        logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
+        //TODO spawn expectation codelets looking for results
     }
     
     public void reduceTheta(){
@@ -559,7 +576,27 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	        	b.deactivateAllPreconditions();   
 	}
 	
-	//*** set methods
+	/**
+	 * Decay all the behaviors in all the schemes.  
+	 * Remove the behavior after decay if its activation is below the lower bound.
+	 */
+	@Override
+	public void decayModule(long ticks){
+		for(Stream stream: streams){
+			for(Behavior behavior: stream.getBehaviors()){
+				behavior.decay(ticks);
+				if(behavior.getActivation() <= activationLowerBound){
+					logger.log(Level.FINER, "Removing behavior: " + behavior.getLabel(), LidaTaskManager.getActualTick());
+					removeBehavior(behavior);
+				}
+			}
+		}
+	}
+	
+	//TODO Removing behaviors 
+	private void removeBehavior(Behavior behavior){
+		
+	}
 	
     public void setReinforcementStrategy(ReinforcementStrategy reinforcer){
         this.reinforcementStrategy = reinforcer;
@@ -580,6 +617,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	//*** Gets ***
+	public Behavior getBehavior(long id, long actionId) {
+		for(Stream s: streams){
+			for(Behavior b: s.getBehaviors()){
+				if(b.getId() == id && b.getSchemeActionId() == actionId)
+					return b;
+			}
+		}
+		return null;		
+	}
     
     public double getBehaviorActivationThreshold(){
         return behaviorActivationThreshold;
@@ -591,17 +637,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public double getBaseLevelActivationAmplicationFactor(){
         return baseLevelActivationAmplicationFactor;
     }            
-
-	public void setStreams(Queue<Stream> streams) {
-		this.streams = streams;
-	}
+    
     public Queue<Stream> getStreams(){
         return streams;        
     }        
-	@Override
-	public Object getModuleContent() {
-		return null;
-	}
 
 	public ThetaReductionStrategy getThetaReducer() {
 		return thetaReducer;
@@ -622,29 +661,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public ReinforcementStrategy getReinforcementStrategy() {
 		return reinforcementStrategy;
 	}
-
-	public Behavior getBehavior(long id, long actionId) {
-		for(Stream s: streams){
-			for(Behavior b: s.getBehaviors()){
-				if(b.getId() == id && b.getSchemeActionId() == actionId)
-					return b;
-			}
-		}
-		return null;		
-	}
 	
-    public void prepareToFire(Behavior b){
-        logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
-        
-//        TODO find out what the properties are for
-//        for(BehaviorCodelet codelet: behaviorCodelets){
-//        	Map<String, String> properties = codelet.getProperties();
-//            for(String name: properties.keySet()){
-//                String value = state.getNode(name).getLabel();
-//                if(value != null)
-//                    codelet.addProperty(name, value );
-//            }
-//        }        
-    }
+	@Override
+	public Object getModuleContent() {
+		return null;
+	}
 
 }//class

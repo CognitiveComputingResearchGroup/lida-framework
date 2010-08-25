@@ -5,18 +5,20 @@ import java.util.List;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 //TODO have this implement excite strategy and use it as the LearnableActivatible's (parent of behavior) excite strategy
 public class BasicReinforcementStrategy implements ReinforcementStrategy{
 
 	private ReinforcementCurve curve = new SigmoidCurve(0.5, 0.5);
 	
-    public void reinforce(Behavior behavior, NodeStructure currentState){
+    public void reinforce(Behavior behavior, NodeStructure currentState, TaskSpawner ts){
     	List<ExpectationCodelet> expectationCodelets = behavior.getExpectationCodelets();
         if(!expectationCodelets.isEmpty()){
 	        double fitness = 0;
 	        for(ExpectationCodelet codelet: expectationCodelets){
-	        	codelet.execute(currentState);
+	        	codelet.setCurrentState(currentState);
+	        	ts.addTask(codelet);
 	            fitness += codelet.getPerformance();
 	            behavior.reinforceBaseLevelActivation(reinforcement(fitness, behavior.getBaseLevelActivation()));   
 	        } 
@@ -44,5 +46,11 @@ public class BasicReinforcementStrategy implements ReinforcementStrategy{
     public void setReinforcementCurve(ReinforcementCurve reinforcementCurve){
         curve = reinforcementCurve;
     }
+
+	@Override
+	public void reinforce(Behavior behavior, NodeStructure currentState) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

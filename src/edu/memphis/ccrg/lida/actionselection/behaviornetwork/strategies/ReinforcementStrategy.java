@@ -8,6 +8,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public interface ReinforcementStrategy{
     
@@ -18,4 +19,7 @@ public interface ReinforcementStrategy{
     public abstract ReinforcementCurve getReinforcementCurve();
     
     public abstract void setReinforcementCurve(ReinforcementCurve reinforcementCurve);
+
+	public abstract void reinforce(Behavior winner, NodeStructure currentState,
+			TaskSpawner taskSpawner);
 }
