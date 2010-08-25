@@ -9,6 +9,7 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -204,8 +205,8 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
         return successors;
     } 
     
-    public Map<Node, List<Behavior>> getConflictors(){
-        return conflictors;
+    public Collection<List<Behavior>> getConflictors(){
+        return conflictors.values();
     }
         
 	public List<Behavior> getConflictors(Node precondition1) {

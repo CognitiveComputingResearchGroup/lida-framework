@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +48,7 @@ public interface Behavior extends LearnableActivatible {
 	//Conflictors
 	public abstract int getConflictorCount();
 	public abstract List<Behavior> getConflictors(Node precondition1);
+	public abstract Collection<List<Behavior>> getConflictors();
 	public abstract void addConflictor(Node deleteItem, Behavior newBehavior);
 	public abstract void addConflictors(Node precondition, List<Behavior> deletors);
 	

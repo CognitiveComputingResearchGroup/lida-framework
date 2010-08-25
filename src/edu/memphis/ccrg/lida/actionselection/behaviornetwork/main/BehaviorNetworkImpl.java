@@ -50,7 +50,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  * - Break ties randomly
  * - If nothing fulfills i and ii then lower threshold by 10% 
  * 
- * @author Sidney D'Mello, Ryan J McCall
+ * @author Ryan J McCall, Sidney D'Mello
  *
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener, BroadcastListener{    
@@ -175,9 +175,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
-		indexBehaviorsByElements(newBehavior, newBehavior.getPreconditions(), behaviorsByPrecondition);      
-		indexBehaviorsByElements(newBehavior, newBehavior.getAddList(), behaviorsByAddItem);
-		indexBehaviorsByElements(newBehavior, newBehavior.getDeleteList(), behaviorsByDeleteItem);
+		indexBehaviorByElements(newBehavior, newBehavior.getPreconditions(), behaviorsByPrecondition);      
+		indexBehaviorByElements(newBehavior, newBehavior.getAddList(), behaviorsByAddItem);
+		indexBehaviorByElements(newBehavior, newBehavior.getDeleteList(), behaviorsByDeleteItem);
         createInterBehaviorLinks(newBehavior);
         //
         Stream newStream = new Stream();
@@ -185,14 +185,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         streams.add(newStream);
 	}
 	
-	public void indexBehaviorsByElements(Behavior newBehavior, Set<Node> elements, Map<Node, List<Behavior>> map){
+	public void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, List<Behavior>> map){
 		for(Node element: elements){
 			List<Behavior> values = map.get(element);
 			if(values == null){
 				values = new ArrayList<Behavior>();
 				map.put(element, values);
 			}
-			values.add(newBehavior);
+			values.add(behavior);
 		}
 	}
 	
@@ -394,6 +394,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //TODO consider this
     private double successorExcitationFactor = 0.9;
     
+    /**
+     * Only excite successor if precondition is not yet satisfied
+     * @param behavior
+     */
     private void spreadSuccessorActivation(Behavior behavior){           
         for(Node addProposition: behavior.getAddList()){
             List<Behavior> behaviors = behavior.getSuccessors(addProposition);
@@ -414,6 +418,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     //TODO consider this
     private double predecessorExcitationFactor = 0.9;
     
+    /**
+     * Don't bother exciting a predecessor for a precondition that 
+     * is already satisfied.
+     * @param behavior
+     */
     public void spreadPredecessorActivation(Behavior behavior){             
         for(Node precondition: behavior.getPreconditions()){
             if(behavior.isPreconditionSatisfied(precondition) == false){
@@ -433,44 +442,41 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double conflictorExcitationFactor = 0.9;    
     
     //TODO Double check I converted this monster correctly
-    public void spreadConflictorActivation(Behavior b){
-        for(Node precondition: b.getPreconditions()){
-            if(currentState.hasNode(precondition)){
-                List<Behavior> behaviors = b.getConflictors(precondition); 
-                for(Behavior conflictor: behaviors){
-                	boolean mutualConflict = false;
-                	double inhibitionAmount = (b.getActivation() * conflictorExcitationFactor) / (conflictor.getDeleteListCount());
-                    //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+    public void spreadConflictorActivation(Behavior behavior){
+        for(Node stateNode: currentState.getNodes()){
+        	List<Behavior> behaviors = behavior.getConflictors(stateNode); 
+            for(Behavior conflictor: behaviors){
+            	//between conflictor and behaivor
+              	boolean mutualConflict = false;
+               	double inhibitionAmount = -1.0 * (behavior.getActivation() * conflictorExcitationFactor) / (conflictor.getDeleteListCount());
+                //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+
+                for(Node conflictorPreCondition: conflictor.getPreconditions()){
+                   	if(conflictor.isPreconditionSatisfied(conflictorPreCondition) == false){
+                   		for(Node behaviorDeleteItem: behavior.getDeleteList()){
+                   			if(conflictorPreCondition.equals(behaviorDeleteItem)){
+                   				mutualConflict = true;
+                   				if(conflictor.getActivation() < behavior.getActivation()){
+                                    conflictor.excite(inhibitionAmount);
+                                    logger.info(behavior.getLabel() + " inhibited " + conflictor + 
+                                    		" amount " + inhibitionAmount + " for " + stateNode);                                
+                                }
+                   				break;
+                   			}
+                   		}
+                   	}
+                    if(mutualConflict)
+                       	break;
+                }//for   
+                
+                if(!mutualConflict){
+                    conflictor.excite(inhibitionAmount);
+                    logger.info(behavior.getLabel() + " inhibited " + conflictor + 
+                    		" amount " + inhibitionAmount + " for " + stateNode);                                      
+                }
                     
-                    Set<Node> preconds = conflictor.getPreconditions();
-                    for(Node conflictorPreCondition: preconds){
-                    	if(conflictor.isPreconditionSatisfied(conflictorPreCondition) == false){
-                    		for(Node deleteItem: b.getDeleteList()){
-                    			if(conflictorPreCondition.equals(deleteItem)){
-                    				mutualConflict = true;
-                    				break;
-                    			}
-                    		}
-                    	}
-                        if(mutualConflict)
-                        	break;
-                    }   
-                    if(mutualConflict){
-                        if(getTotalActivation(conflictor) < getTotalActivation(b)){
-                                conflictor.excite(inhibitionAmount*-1);
-                                logger.info("\t:-" + b.getLabel() + "---" + 
-                                                inhibitionAmount + " to " + conflictor 
-                                                + " for " + precondition);                                
-                        }
-                    }else{
-                            conflictor.excite(inhibitionAmount*-1);
-                            logger.info("\t:-" + b.getLabel() + "---" + inhibitionAmount + 
-                                            " to " + conflictor + " for " + precondition);                                
-                    }
-                    
-                }//for behaviors
-            }                
-        }//for preconditions        
+            }//for each conflictor
+        }//for nodes in current state    
     }//method    
     
     private double getTotalActivation(Behavior b){
@@ -480,20 +486,19 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 
     //TODO rework
     public void normalizeActivations(){
-        int behaviorCount = 0, totalActivationSum = 0;
+        int behaviorCount = 0;
+        int aggregateActivationofBehaviors = 0;
         for(Stream s: streams){
         	behaviorCount += s.getBehaviorCount();
-        	for(Behavior b: s.getBehaviors()){
-        		totalActivationSum += getTotalActivation(b);
-        	}
+        	for(Behavior b: s.getBehaviors())
+        		aggregateActivationofBehaviors += b.getActivation();
         }
         
         double n_sum = meanActivation * behaviorCount;
         for(Stream s: streams){
             for(Behavior behavior: s.getBehaviors()){   
             	
-                double activation = getTotalActivation(behavior);
-                double strength = activation / totalActivationSum;
+                double strength = behavior.getActivation() / aggregateActivationofBehaviors;
                 double n_activation = strength * n_sum;
                 
                 behavior.setActivation(n_activation);
