@@ -33,8 +33,8 @@ public class BehaviorNetTest extends TestCase{
 		a = behaviorNet.getBehavior(1, 10);
 		b = behaviorNet.getBehavior(2, 20);
 		
-		assertEquals("nothingA1", a.getPreconditionCount(), 0);
-		assertEquals("nothingB1", b.getPreconditionCount(), 0);
+		assertEquals("nothingA1", a.getContextSize(), 0);
+		assertEquals("nothingB1", b.getContextSize(), 0);
 		//
 		assertEquals("nothingA2", a.getSuccessorCount(), 0);
 		assertEquals("nothingB2", b.getSuccessorCount(), 0);
@@ -56,7 +56,7 @@ public class BehaviorNetTest extends TestCase{
 		Behavior b = new BehaviorImpl(2, 20);
 		
 		Node apple = gimmeNode("apple");
-		a.addPrecondition(apple);
+		a.addContextCondition(apple);
 		b.addDeleteCondition(apple);
 		
 		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
@@ -66,8 +66,8 @@ public class BehaviorNetTest extends TestCase{
 		a = behaviorNet.getBehavior(1, 10);
 		b = behaviorNet.getBehavior(2, 20);
 		
-		assertEquals("appleA1", a.getPreconditionCount(), 1);
-		assertEquals("appleB1", b.getPreconditionCount(), 0);
+		assertEquals("appleA1", a.getContextSize(), 1);
+		assertEquals("appleB1", b.getContextSize(), 0);
 		//
 		assertEquals("appleA2", a.getSuccessorCount(), 0);
 		assertEquals("appleB2", b.getSuccessorCount(), 0);
@@ -76,7 +76,7 @@ public class BehaviorNetTest extends TestCase{
 		assertEquals("appleB3", b.getPredecessorCount(), 0);
 		//
 		assertEquals("appleA4", a.getConflictorCount(), 1);
-		assertEquals("appleC4", a.getConflictors(apple).get(0), b);
+		assertEquals("appleC4", a.getConflictors(apple).remove(b), true);
 		assertEquals("appleB4", b.getConflictorCount(), 0);
 		
 	}//method
@@ -87,7 +87,7 @@ public class BehaviorNetTest extends TestCase{
 		Behavior b = new BehaviorImpl(2, 20);
 		
 		Node banana = gimmeNode("banana");
-		a.addPrecondition(banana);
+		a.addContextCondition(banana);
 		b.addAddCondition(banana);
 		
 		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
@@ -97,15 +97,15 @@ public class BehaviorNetTest extends TestCase{
 		a = behaviorNet.getBehavior(1, 10);
 		b = behaviorNet.getBehavior(2, 20);
 		
-		assertEquals("bananaA1", a.getPreconditionCount(), 1);
-		assertEquals("bananaB1", b.getPreconditionCount(), 0);
+		assertEquals("bananaA1", a.getContextSize(), 1);
+		assertEquals("bananaB1", b.getContextSize(), 0);
 		//
 		assertEquals("bananaA2", a.getSuccessorCount(), 0);
 		assertEquals("bananaB2", b.getSuccessorCount(), 1);
-		assertEquals("c2", b.getSuccessors(banana).get(0), a);
+		assertEquals("c2", b.getSuccessors(banana).remove(a), true);
 		//
 		assertEquals("bananaA3", a.getPredecessorCount(), 1);
-		assertEquals("c3", a.getPredecessors(banana).get(0), b);
+		assertEquals("c3", a.getPredecessors(banana).remove(b), true);
 		assertEquals("bananaB3", b.getPredecessorCount(), 0);
 		//
 		assertEquals("bananaA4", a.getConflictorCount(), 0);
@@ -119,7 +119,7 @@ public class BehaviorNetTest extends TestCase{
 		Behavior b = new BehaviorImpl(2, 20);
 		
 		Node banana = gimmeNode("banana");
-		a.addPrecondition(banana);
+		a.addContextCondition(banana);
 		b.addAddCondition(banana);
 		
 		Node apple = gimmeNode("apple");
@@ -132,15 +132,15 @@ public class BehaviorNetTest extends TestCase{
 		a = behaviorNet.getBehavior(1, 10);
 		b = behaviorNet.getBehavior(2, 20);
 		
-		assertEquals("bananaA1", a.getPreconditionCount(), 1);
-		assertEquals("bananaB1", b.getPreconditionCount(), 0);
+		assertEquals("bananaA1", a.getContextSize(), 1);
+		assertEquals("bananaB1", b.getContextSize(), 0);
 		//
 		assertEquals("bananaA2", a.getSuccessorCount(), 0);
 		assertEquals("bananaB2", b.getSuccessorCount(), 1);
-		assertEquals("c2", b.getSuccessors(banana).get(0), a);
+		assertEquals("c2", b.getSuccessors(banana).remove(a), true);
 		//
 		assertEquals("bananaA3", a.getPredecessorCount(), 1);
-		assertEquals("c3", a.getPredecessors(banana).get(0), b);
+		assertEquals("c3", a.getPredecessors(banana).remove(b), true);
 		assertEquals("bananaB3", b.getPredecessorCount(), 0);
 		//
 		assertEquals("bananaA4", a.getConflictorCount(), 0);

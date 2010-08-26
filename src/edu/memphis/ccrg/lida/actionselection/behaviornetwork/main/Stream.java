@@ -7,6 +7,8 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Stream is a list of behaviors that may be "instantiated"
@@ -16,7 +18,7 @@ public class Stream{
 	
     private String name = "blank stream";
     
-    private List<Behavior> behaviors = new ArrayList<Behavior>();
+    private ConcurrentMap<Long, Behavior> behaviors = new ConcurrentHashMap<Long, Behavior>();
     
     private boolean instantiated = false;
     
@@ -44,20 +46,21 @@ public class Stream{
         return instantiated;
     } 
     
-    public void addBehavior(Behavior behavior){
-    	behaviors.add(behavior);
+    public Behavior addBehavior(Behavior behavior){
+    	return behaviors.put(behavior.getId(), behavior);
     }    
-    public List<Behavior> getBehaviors(){
-        return behaviors;
+    public Collection<Behavior> getBehaviors(){
+        return behaviors.values();
     }
-    public Behavior getBehavior(String name){
-        for(Behavior b: behaviors)
-            if(b.toString().compareTo(name) == 0)
-                 return b;
-        return null;          
+    public Behavior getBehavior(long id){
+        return behaviors.get(id);       
     }
 	public int getBehaviorCount(){
 		return behaviors.size();
+	}
+	
+	public void removeBehavior(Behavior behavior) {
+		behaviors.remove(behavior);
 	}
 	
 }//class

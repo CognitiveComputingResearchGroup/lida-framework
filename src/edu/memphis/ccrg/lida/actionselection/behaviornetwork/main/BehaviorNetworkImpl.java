@@ -7,6 +7,7 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -87,6 +88,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 * will be removed from the behavior network.
 	 */
 	private double activationLowerBound = 0.0;
+	
+    //TODO consider this
+    private double successorExcitationFactor = 0.9;
+
+    //TODO consider this
+    private double predecessorExcitationFactor = 0.9;
+    
+    //TODO 
+    private double conflictorExcitationFactor = 0.9;   
     
     /**
      * function by which the behavior activation threshold is reduced
@@ -104,17 +114,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private ReinforcementStrategy reinforcementStrategy = new BasicReinforcementStrategy();
     
     /**
-     * Listeners of this action selection
-     */
-    private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-       
-    /**
-     * All the streams currently in this behavior network
-     */
-    private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
-    
-    
-    /**
      * Currently selected behavior
      */
     private Behavior winner = null;        
@@ -125,16 +124,26 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private NodeStructure currentState = new NodeStructureImpl();
     
     /**
+     * Listeners of this action selection
+     */
+    private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
+       
+    /**
+     * All the streams currently in this behavior network
+     */
+    private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
+    
+    /**
      * Map of behaviors indexed by the propositions appearing in their pre conditions
      * Stores environmental links.
      * 
      * this is similar to our procedural memory
      */
-    private ConcurrentMap<Node, List<Behavior>> behaviorsByPrecondition = new ConcurrentHashMap<Node, List<Behavior>>();
+    private ConcurrentMap<Node, Set<Behavior>> behaviorsByPrecondition = new ConcurrentHashMap<Node, Set<Behavior>>();
     
-    private ConcurrentMap<Node, List<Behavior>> behaviorsByDeleteItem = new ConcurrentHashMap<Node, List<Behavior>>();
+    private ConcurrentMap<Node, Set<Behavior>> behaviorsByDeleteItem = new ConcurrentHashMap<Node, Set<Behavior>>();
 
-	private ConcurrentMap<Node, List<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, List<Behavior>>();
+	private ConcurrentMap<Node, Set<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, Set<Behavior>>();
 	
 	private TaskSpawner taskSpawner;
     
@@ -142,7 +151,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	super();
     }
     
-    //TODO make sure this is set up
+    //TODO make sure this is set up by initializer
     public void setTaskSpawner(TaskSpawner ts){
     	this.taskSpawner = ts;
     }
@@ -175,7 +184,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
-		indexBehaviorByElements(newBehavior, newBehavior.getPreconditions(), behaviorsByPrecondition);      
+		indexBehaviorByElements(newBehavior, newBehavior.getContextConditions(), behaviorsByPrecondition);      
 		indexBehaviorByElements(newBehavior, newBehavior.getAddList(), behaviorsByAddItem);
 		indexBehaviorByElements(newBehavior, newBehavior.getDeleteList(), behaviorsByDeleteItem);
         createInterBehaviorLinks(newBehavior);
@@ -185,65 +194,23 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         streams.add(newStream);
 	}
 	
-	public void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, List<Behavior>> map){
+	public void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, Set<Behavior>> map){
 		for(Node element: elements){
-			List<Behavior> values = map.get(element);
+			Set<Behavior> values = map.get(element);
 			if(values == null){
-				values = new ArrayList<Behavior>();
+				values = new HashSet<Behavior>();
 				map.put(element, values);
 			}
 			values.add(behavior);
 		}
 	}
 	
-	//*** Linking methods
-	
-//	/**
-//	 * Index the behaviors by their precondition
-//	 */
-//	public void indexByPrecondition(Behavior newBehavior){
-//		for(Node precondition: newBehavior.getPreconditions()){      
-//			List<Behavior> behaviors = behaviorsByPrecondition.get(precondition);
-//            if(behaviors == null){
-//                behaviors = new ArrayList<Behavior>();
-//                behaviorsByPrecondition.put(precondition, behaviors);
-//            }                  
-//            behaviors.add(newBehavior);
-//		}
-//	}
-//	/**
-//	 * Index the behaviors by their delete list items
-//	 */
-//	public void indexByDeleteListItem(Behavior newBehavior){
-//		for(Node deleteItem: newBehavior.getDeleteList()){      
-//			List<Behavior> behaviors = behaviorsByDeleteItem.get(deleteItem);
-//            if(behaviors == null){
-//                behaviors = new ArrayList<Behavior>();
-//                behaviorsByDeleteItem.put(deleteItem, behaviors);
-//            }                  
-//            behaviors.add(newBehavior);
-//		}
-//	}
-//	/**
-//	 * Index the behaviors by their delete list items
-//	 */
-//	public void indexByAddListItem(Behavior newBehavior){
-//		for(Node addItem: newBehavior.getAddList()){      
-//			List<Behavior> behaviors = behaviorsByAddItem.get(addItem);
-//            if(behaviors == null){
-//                behaviors = new ArrayList<Behavior>();
-//                behaviorsByAddItem.put(addItem, behaviors);
-//            }                  
-//            behaviors.add(newBehavior);
-//		}
-//}
-	
 	public void createInterBehaviorLinks(Behavior newBehavior){
 		
 		//Go through the add items and create all predecessor/successor links 
 		//as required by behaviors whose preconditions overlap with these items
 		for(Node addItem: newBehavior.getAddList()){
-			List<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
+			Set<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
 			for(Behavior successorBehavior: behaviors){
 				//Create predecessor link for other behavior
 				successorBehavior.addPredecessor(addItem, newBehavior);
@@ -254,85 +221,30 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		
 		//Add this new behavior as a conflictor of whatever behaviors stopped by new behavior
 		for(Node deleteItem: newBehavior.getDeleteList()){
-			List<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
+			Set<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
 			for(Behavior affectedBehavior: behaviorsAffectedByDelete){
 				affectedBehavior.addConflictor(deleteItem, newBehavior);
 			}
 		}
 		
-		for(Node precondition: newBehavior.getPreconditions()){
+		for(Node condition: newBehavior.getContextConditions()){
 			//Find all of the new behavior's conflictors - behaviors that 
 			//hurt its chances of activating
-			List<Behavior> deletors = behaviorsByDeleteItem.get(precondition);
-			newBehavior.addConflictors(precondition, deletors);
+			Set<Behavior> deletors = behaviorsByDeleteItem.get(condition);
+			if(deletors != null)
+				newBehavior.addConflictors(condition, deletors);
 			
 			//Create successor links for other behaviors
 			//Create predecessor links for this behavior
-			List<Behavior> addingBehaviors = behaviorsByAddItem.get(precondition);
-			for(Behavior adder: addingBehaviors){
-				newBehavior.addPredecessor(precondition, adder);
-				adder.addSuccessor(precondition, newBehavior);
+			Set<Behavior> addingBehaviors = behaviorsByAddItem.get(condition);
+			if(addingBehaviors != null){
+				for(Behavior adder: addingBehaviors){
+					newBehavior.addPredecessor(condition, adder);
+					adder.addSuccessor(condition, newBehavior);
+				}
 			}
-		}
+		}//for
 	}//method
-
-//    public void createInterBehaviorLinks(Behavior newBehavior){
-//    	for(Stream currentStream: streams){            
-//            for(Behavior existingBehavior: currentStream.getBehaviors()){
-//            	buildSuccessorLinks(newBehavior, existingBehavior);
-//            	buildSuccessorLinks(existingBehavior, newBehavior);
-//            	//TODO check if this is redundant
-//            	buildPredecessorLinks(newBehavior, existingBehavior);
-//            	buildPredecessorLinks(existingBehavior, newBehavior);
-//            	//
-//            	buildConflictorLinks(newBehavior, existingBehavior);
-//            	buildConflictorLinks(existingBehavior, newBehavior);
-//            }
-//    	}
-//    }
-//    private void buildSuccessorLinks(Behavior firstBehavior, Behavior secondBehavior){                
-//        for(Node addItem: firstBehavior.getAddList()){              //iterate over add propositions of first behavior
-//            for(Node precondition: secondBehavior.getPreconditions()){//iterate over preconditions of second behavior
-//                if(addItem.equals(precondition)){
-//                    List<Behavior> behaviors = firstBehavior.getSuccessors(addItem);
-//                    if(behaviors == null){
-//                        behaviors = new ArrayList<Behavior>();
-//                        firstBehavior.addSuccessors(addItem, behaviors);
-//                    }
-//                    behaviors.add(secondBehavior);
-//                }
-//            }
-//        }       
-//    }//method
-//    private void buildPredecessorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-//        for(Node precondition: firstBehavior.getPreconditions()){        //iterate over preconditon of first behavior
-//            for(Node addItem: secondBehavior.getAddList()){               //iterate over addlist of second behavior
-//            	if(precondition.equals(addItem)){
-//                    List<Behavior> behaviors = firstBehavior.getPredecessors(precondition);
-//                    if(behaviors == null){
-//                        behaviors = new ArrayList<Behavior>();
-//                        firstBehavior.addPredecessors(precondition, behaviors);
-//                    }
-//                    behaviors.add(secondBehavior);
-//                }
-//            }
-//        }               
-//    }//method
-//    private void buildConflictorLinks(Behavior firstBehavior, Behavior secondBehavior){                        
-//        for(Node precondition: firstBehavior.getPreconditions()){
-//            for(Node deleteItem: secondBehavior.getDeleteList()){
-//                if(precondition.equals(deleteItem)){
-//                    List<Behavior> behaviors = firstBehavior.getConflictors(precondition);
-//                    if(behaviors == null){
-//                        behaviors = new ArrayList<Behavior>();                        
-//                        firstBehavior.addConflictors(precondition, behaviors);
-//                    }
-//                    behaviors.add(secondBehavior);
-//                    
-//                }
-//            }
-//        }
-//    }//method
 
 	@Override
 	public void triggerActionSelection() {
@@ -382,7 +294,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private void passActivationAmongBehaviors(){
     	for(Stream stream: streams){
         	for(Behavior behavior: stream.getBehaviors()){
-        		 if(behavior.isAllPreconditionsSatisfied())
+        		 if(behavior.isAllContextConditionsSatisfied())
         	         spreadSuccessorActivation(behavior);        
         	     else
         	    	 spreadPredecessorActivation(behavior);
@@ -391,21 +303,18 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }
     }
     
-    //TODO consider this
-    private double successorExcitationFactor = 0.9;
-    
     /**
      * Only excite successor if precondition is not yet satisfied
      * @param behavior
      */
     private void spreadSuccessorActivation(Behavior behavior){           
         for(Node addProposition: behavior.getAddList()){
-            List<Behavior> behaviors = behavior.getSuccessors(addProposition);
+            Set<Behavior> behaviors = behavior.getSuccessors(addProposition);
             for(Behavior successor: behaviors){
             	//Should only grant activation to a successor if its precondition
             	//has not yet been satisfied
-                if(successor.isPreconditionSatisfied(addProposition) == false){
-                	double granted = (behavior.getActivation() * successorExcitationFactor) / successor.getPreconditionCount();
+                if(successor.isContextConditionSatisfied(addProposition) == false){
+                	double granted = (behavior.getActivation() * successorExcitationFactor) / successor.getContextSize();
                    //oldway: double granted = ((behavior.getActivation() * broadcastExcitationAmount) / (goalExcitationAmount * behaviors.size() * successor.getPreconditionCount());
                     successor.excite(granted);
                     logger.info("\t:+" + behavior.getLabel() + "-->" + granted + " to " +
@@ -415,18 +324,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }        
     }//method
     
-    //TODO consider this
-    private double predecessorExcitationFactor = 0.9;
-    
     /**
      * Don't bother exciting a predecessor for a precondition that 
      * is already satisfied.
      * @param behavior
      */
     public void spreadPredecessorActivation(Behavior behavior){             
-        for(Node precondition: behavior.getPreconditions()){
-            if(behavior.isPreconditionSatisfied(precondition) == false){
-            	List<Behavior> predecessors = behavior.getPredecessors(precondition);    
+        for(Node precondition: behavior.getContextConditions()){
+            if(behavior.isContextConditionSatisfied(precondition) == false){
+            	Set<Behavior> predecessors = behavior.getPredecessors(precondition);    
             	for(Behavior predecessor: predecessors){
             		double granted = (behavior.getActivation() * predecessorExcitationFactor) / (predecessor.getAddListCount() * predecessors.size());                        
                     predecessor.excite(granted);
@@ -436,23 +342,20 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 }
             }
         }        
-    }
-
-    //TODO 
-    private double conflictorExcitationFactor = 0.9;    
+    } 
     
     //TODO Double check I converted this monster correctly
     public void spreadConflictorActivation(Behavior behavior){
         for(Node stateNode: currentState.getNodes()){
-        	List<Behavior> behaviors = behavior.getConflictors(stateNode); 
+        	Set<Behavior> behaviors = behavior.getConflictors(stateNode); 
             for(Behavior conflictor: behaviors){
             	//between conflictor and behaivor
               	boolean mutualConflict = false;
                	double inhibitionAmount = -1.0 * (behavior.getActivation() * conflictorExcitationFactor) / (conflictor.getDeleteListCount());
                 //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
 
-                for(Node conflictorPreCondition: conflictor.getPreconditions()){
-                   	if(conflictor.isPreconditionSatisfied(conflictorPreCondition) == false){
+                for(Node conflictorPreCondition: conflictor.getContextConditions()){
+                   	if(conflictor.isContextConditionSatisfied(conflictorPreCondition) == false){
                    		for(Node behaviorDeleteItem: behavior.getDeleteList()){
                    			if(conflictorPreCondition.equals(behaviorDeleteItem)){
                    				mutualConflict = true;
@@ -484,7 +387,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
  	   			b.getBaseLevelActivation() * baseLevelActivationAmplicationFactor;
     }
 
-    //TODO rework
+    //TODO rework? remove?
     public void normalizeActivations(){
         int behaviorCount = 0;
         int aggregateActivationofBehaviors = 0;
@@ -515,15 +418,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }
     }
     
+	//TODO move this inside selector?
     public void chooseBehaviorsForSelection(){
-    	for(Stream s: streams){				
-        	for(Behavior b: s.getBehaviors()){
-        		//TODO move this inside selector?
-        		if(b.isAllPreconditionsSatisfied() && getTotalActivation(b) >= behaviorActivationThreshold){
+    	for(Stream s: streams)		
+        	for(Behavior b: s.getBehaviors())
+        		if(b.isAllContextConditionsSatisfied() && 
+        		   getTotalActivation(b) >= behaviorActivationThreshold)
         			selectorStrategy.addCompetitor(b);
-        		}
-        	}
-        }
+
     }
     
     
@@ -536,13 +438,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         logger.info("ENVIRONMENT : EXCITATION");
         for(Node proposition: currentState.getNodes()){
         	if(behaviorsByPrecondition.containsKey(proposition)){
-        		List<Behavior> behaviors = behaviorsByPrecondition.get(proposition);
+        		Set<Behavior> behaviors = behaviorsByPrecondition.get(proposition);
                 double excitationAmount = broadcastExcitationAmount / behaviors.size();
                 for(Behavior b: behaviors){
-                	b.satisfyPrecondition(proposition);
+                	b.satisfyContextCondition(proposition);
                 	//TODO use excite strategy
-                    b.excite(excitationAmount / b.getPreconditionCount());       
-                    logger.info("\t-->" + b.toString() + " " + excitationAmount / b.getPreconditionCount() + " for " + proposition);
+                    b.excite(excitationAmount / b.getContextSize());       
+                    logger.info("\t-->" + b.toString() + " " + excitationAmount / b.getContextSize() + " for " + proposition);
                 }
         	}
             
@@ -585,7 +487,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	public void deactivateAllPreconditions(){
 		 for(Stream s: streams)				
 	        for(Behavior b: s.getBehaviors())
-	        	b.deactivateAllPreconditions();   
+	        	b.deactivateContext();   
 	}
 	
 	/**
@@ -599,15 +501,55 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 				behavior.decay(ticks);
 				if(behavior.getActivation() <= activationLowerBound){
 					logger.log(Level.FINER, "Removing behavior: " + behavior.getLabel(), LidaTaskManager.getActualTick());
-					removeBehavior(behavior);
+					removeBehavior(stream, behavior);
 				}
 			}
 		}
 	}
 	
-	//TODO Removing behaviors 
-	private void removeBehavior(Behavior behavior){
+	/**
+	 * Removes specified behavior from the behavior net, severing all links to other
+	 * behaviors and removing it from the specified stream which contained it.
+	 * @param containingStream
+	 * @param behavior
+	 */
+	private void removeBehavior(Stream containingStream, Behavior behavior){
 		
+		//remove behavior as a successor of other behaviors
+		for(Node precondition: behavior.getContextConditions()){
+			Set<Behavior> addersOfPrecondition = behaviorsByAddItem.get(precondition);
+			for(Behavior adder: addersOfPrecondition)
+				adder.removeSuccessor(precondition, behavior);
+			
+			Set<Behavior> behaviors = behaviorsByPrecondition.get(precondition);
+			behaviors.remove(behavior);
+		}
+		
+		//remove behavior as a predecessor of other behaviors
+		for(Node addItem: behavior.getAddList()){
+			Set<Behavior> benefactors = behaviorsByPrecondition.get(addItem);
+			for(Behavior benefactor: benefactors){
+				benefactor.removePredecessor(addItem, behavior);
+			}
+				
+			Set<Behavior> behaviors = behaviorsByAddItem.get(addItem);
+			behaviors.remove(behavior);
+		}
+		
+		
+		//remove behavior as a conflictor of other behaviors
+		for(Node deleteItem: behavior.getDeleteList()){
+			Set<Behavior> conflicteds = behaviorsByPrecondition.get(deleteItem);
+			for(Behavior conflicted: conflicteds)
+				conflicted.removeConflictor(deleteItem, behavior);
+			
+			//Remove behavior from delete item map
+			Set<Behavior> behaviors = behaviorsByDeleteItem.get(deleteItem);
+			behaviors.remove(behavior);
+		}
+		
+		//remove behavior from stream
+		containingStream.removeBehavior(behavior);
 	}
 	
     public void setReinforcementStrategy(ReinforcementStrategy reinforcer){

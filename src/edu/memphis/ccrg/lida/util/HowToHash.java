@@ -2,22 +2,21 @@ package edu.memphis.ccrg.lida.util;
 
 public class HowToHash {
 	
-
 //	public boolean equals(Object o) {
-//		if (!(o instanceof StructureBuildingCodelet)) {
+//		if (!(o instanceof Behavior))
 //			return false;
-//		}
-//		StructureBuildingCodelet temp = (StructureBuildingCodelet) o;
-//		return temp.getId() == id && temp.getType() == type;
+//		
+//		Behavior behavior = (Behavior) o;
+//		return behavior.getId() == id && behavior.getSchemeActionId() == schemeActionId;
 //	}
 //
 //	public int hashCode() {
 //		int hash = 1;
-//	    Integer v1 = new Integer(type);
-//	    Long v2 = new Long(id);
-//	    hash = hash * 31 + v2.hashCode();
-//	    hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
-//	    return hash;
+//		Long v1 = new Long(id);
+//		Long v2 = new Long(schemeActionId);
+//		hash = hash * 31 + v2.hashCode();
+//		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
+//		return hash;
 //	}
 
 }

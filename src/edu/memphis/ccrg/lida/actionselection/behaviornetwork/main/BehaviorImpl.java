@@ -34,7 +34,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     /**
      * 
      */
-    private Map<Node, Boolean> preconditions = new ConcurrentHashMap<Node, Boolean>();
+    private Map<Node, Boolean> context = new ConcurrentHashMap<Node, Boolean>();
 
     /**
      * Set of nodes that this scheme adds
@@ -50,19 +50,19 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
      * For each key, the key is in this behavior's precondition and indexes
      * all behaviors which contain that key in their add list
      */
-    private Map<Node, List<Behavior>> predecessors = new ConcurrentHashMap<Node, List<Behavior>>();
+    private Map<Node, Set<Behavior>> predecessors = new ConcurrentHashMap<Node, Set<Behavior>>();
     
     /**
      * For each key, the key is in this behavior's add list and indexes all the 
      * behaviors which have the key in their precondition
      */
-    private Map<Node, List<Behavior>> successors = new ConcurrentHashMap<Node, List<Behavior>>();
+    private Map<Node, Set<Behavior>> successors = new ConcurrentHashMap<Node, Set<Behavior>>();
     
     /**
      * Key is an element in this behavior's context.  It indexes all the behaviors which have 
      * the key element in their delete list
      */
-    private Map<Node, List<Behavior>> conflictors = new ConcurrentHashMap<Node, List<Behavior>>();
+    private Map<Node, Set<Behavior>> conflictors = new ConcurrentHashMap<Node, Set<Behavior>>();
 
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
 
@@ -82,7 +82,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	public BehaviorImpl(long id, long actionId) {
 	   	this.id = id;
 	   	this.schemeActionId = actionId;
-	   	deactivateAllPreconditions();
+	   	deactivateContext();
 	}
 	
     public BehaviorImpl(String label, long id, long actionId, double totalActivation){
@@ -94,19 +94,19 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     }
 
 	//Precondition methods
-    public void deactivateAllPreconditions(){                
-        for(Node s: preconditions.keySet())
-        	preconditions.put(s, false);       
+    public void deactivateContext(){                
+        for(Node s: context.keySet())
+        	context.put(s, false);       
     }
 
-    public boolean isPreconditionSatisfied(Node prop){
-    	if(preconditions.containsKey(prop))
-    		return preconditions.get(prop) == true;
+    public boolean isContextConditionSatisfied(Node prop){
+    	if(context.containsKey(prop))
+    		return context.get(prop) == true;
     	return false;
     }
     
-    public boolean isAllPreconditionsSatisfied(){
-        for(Boolean b: preconditions.values()){
+    public boolean isAllContextConditionsSatisfied(){
+        for(Boolean b: context.values()){
         	if(b == false)
         		return false;
         }
@@ -114,13 +114,13 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     }    
  
 	@Override
-	public void satisfyPrecondition(Node proposition) {
-		preconditions.put(proposition, true);
+	public void satisfyContextCondition(Node proposition) {
+		context.put(proposition, true);
 	}
 	
     // start add methods    
-    public boolean addPrecondition(Node precondition){
-    	return (preconditions.put(precondition, false) != null);
+    public boolean addContextCondition(Node condition){
+    	return (context.put(condition, false) != null);
     }
     
     public boolean addAddCondition(Node addCondition){
@@ -133,9 +133,9 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     
     public void addPredecessor(Node precondition, Behavior predecessor){
         if(precondition != null && predecessor != null){
-            List<Behavior> list = predecessors.get(precondition);            
+            Set<Behavior> list = predecessors.get(precondition);            
             if(list == null){
-                list = new ArrayList<Behavior>();
+                list = new HashSet<Behavior>();
                 predecessors.put(precondition, list);
             }
             list.add(predecessor);
@@ -146,9 +146,9 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     
     public void addSuccessor(Node addProposition, Behavior successor){
         if(addProposition != null && successor != null){
-            List<Behavior> list = successors.get(addProposition);
+            Set<Behavior> list = successors.get(addProposition);
             if(list == null){              
-                list = new ArrayList<Behavior>();
+                list = new HashSet<Behavior>();
                 successors.put(addProposition, list);
             }
             list.add(successor);
@@ -162,16 +162,16 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     
     public void addConflictor(Node precondition, Behavior conflictor){
         if(precondition != null && conflictor != null){
-            List<Behavior> list = conflictors.get(precondition);
+            Set<Behavior> list = conflictors.get(precondition);
             if(list == null){
-                list = new ArrayList<Behavior>();
+                list = new HashSet<Behavior>();
                 conflictors.put(precondition, list);
             }
             list.add(conflictor);            
         }
     }
     
-	public void addConflictors(Node precondition1, List<Behavior> behaviors) {
+	public void addConflictors(Node precondition1, Set<Behavior> behaviors) {
 		conflictors.put(precondition1, behaviors);
 	}
     
@@ -185,8 +185,8 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 //	}
     
     //Get methods
-    public Set<Node> getPreconditions(){
-        return preconditions.keySet();
+    public Set<Node> getContextConditions(){
+        return context.keySet();
     }
     
     public Set<Node> getAddList(){
@@ -197,19 +197,19 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
         return deleteList;
     }
     
-    public Map<Node, List<Behavior>> getPredecessors(){
+    public Map<Node, Set<Behavior>> getPredecessors(){
         return predecessors;
     }
     
-    public Map<Node, List<Behavior>> getSuccessors(){
+    public Map<Node, Set<Behavior>> getSuccessors(){
         return successors;
     } 
     
-    public Collection<List<Behavior>> getConflictors(){
+    public Collection<Set<Behavior>> getConflictors(){
         return conflictors.values();
     }
         
-	public List<Behavior> getConflictors(Node precondition1) {
+	public Set<Behavior> getConflictors(Node precondition1) {
 		return conflictors.get(precondition1);
 	}
     
@@ -218,17 +218,17 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     }
    
 	@Override
-	public int getPreconditionCount() {
-		return preconditions.size();
+	public int getContextSize() {
+		return context.size();
 	}
 
 	@Override
-	public List<Behavior> getPredecessors(Node precondition) {
+	public Set<Behavior> getPredecessors(Node precondition) {
 		return predecessors.get(precondition);
 	}
     
 	@Override
-	public List<Behavior> getSuccessors(Node addProposition) {
+	public Set<Behavior> getSuccessors(Node addProposition) {
 		return successors.get(addProposition);
 	}
 
@@ -271,8 +271,8 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	}
 	
     //Set methods       
-    public void setPreconditions(Map<Node, Boolean> preconditions){
-    	this.preconditions = preconditions;
+    public void setContextConditions(Map<Node, Boolean> conditions){
+    	this.context = conditions;
     }
     
     public void setAddList(Set<Node> addList){
@@ -283,15 +283,15 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     	this.deleteList = deleteList;
     }
     
-    public void setPredecessors(Map<Node, List<Behavior>> predecessors){
+    public void setPredecessors(Map<Node, Set<Behavior>> predecessors){
     	this.predecessors = predecessors;
     }    
     
-    public void setSuccesors(Map<Node, List<Behavior>> successors){
+    public void setSuccesors(Map<Node, Set<Behavior>> successors){
     	this.successors = successors;
     }    
     
-    public void setConflictors(Map<Node, List<Behavior>> conflictors){
+    public void setConflictors(Map<Node, Set<Behavior>> conflictors){
     	this.conflictors = conflictors;
     }    
     
@@ -305,6 +305,38 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 
 	public void setSchemeActionId(long schemeActionId) {
 		this.schemeActionId = schemeActionId;
+	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof Behavior))
+			return false;
+		
+		Behavior behavior = (Behavior) o;
+		return behavior.getId() == id && behavior.getSchemeActionId() == schemeActionId;
+	}
+
+	public int hashCode() {
+		int hash = 1;
+		Long v1 = new Long(id);
+		Long v2 = new Long(schemeActionId);
+		hash = hash * 31 + v2.hashCode();
+		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
+		return hash;
+	}
+
+	@Override
+	public void removeConflictor(Node deleteItem, Behavior behavior) {
+		conflictors.get(deleteItem).remove(behavior);
+	}
+
+	@Override
+	public void removeSuccessor(Node precondition, Behavior behavior) {
+		successors.get(precondition).remove(behavior);
+	}
+
+	@Override
+	public void removePredecessor(Node addItem, Behavior behavior) {
+		predecessors.get(addItem).remove(behavior);
 	}
 
 }//class
