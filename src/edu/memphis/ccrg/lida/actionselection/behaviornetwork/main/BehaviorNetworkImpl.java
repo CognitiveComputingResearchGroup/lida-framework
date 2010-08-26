@@ -79,6 +79,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private double broadcastExcitationAmount = 0.0;      
     
     /**
+     * TODO use in learning?  possibly remove?
      * amplification factor for base level activation (OMEGA)
      */
     private double baseLevelActivationAmplicationFactor = 0.0;        
@@ -90,13 +91,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	private double activationLowerBound = 0.0;
 	
     //TODO consider this
-    private double successorExcitationFactor = 0.9;
+    private double successorExcitationFactor = 1.0;
 
     //TODO consider this
-    private double predecessorExcitationFactor = 0.9;
+    private double predecessorExcitationFactor = 1.0;
     
     //TODO 
-    private double conflictorExcitationFactor = 0.9;   
+    private double conflictorExcitationFactor = 1.0;   
     
     /**
      * function by which the behavior activation threshold is reduced
@@ -145,6 +146,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 
 	private ConcurrentMap<Node, Set<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, Set<Behavior>>();
 	
+	/**
+	 * I expect this to be the action selection driver
+	 */
 	private TaskSpawner taskSpawner;
     
     public BehaviorNetworkImpl() {    
@@ -193,8 +197,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         newStream.addBehavior(newBehavior);
         streams.add(newStream);
 	}
-	
-	public void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, Set<Behavior>> map){
+	private void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, Set<Behavior>> map){
 		for(Node element: elements){
 			Set<Behavior> values = map.get(element);
 			if(values == null){
@@ -206,7 +209,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	public void createInterBehaviorLinks(Behavior newBehavior){
-		
 		//Go through the add items and create all predecessor/successor links 
 		//as required by behaviors whose preconditions overlap with these items
 		for(Node addItem: newBehavior.getAddList()){
@@ -251,25 +253,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		selectAction();	
 	}
           
-	/*
-	 *  
-	 *
-	 *  6.  Selection Phase
-	 *          a. Add Behaviors to the selectors if:
-	 *              i.  They are executable (active)
-	 *              ii. They meet the threshold conditions
-	 *          b. Select a winner
-	 *
-	 *  7.  Deactivation Phase:
-	 *          a. Deactivate all Behaviors except the winner.
-	 *
-	 *  8.  Decay Phase:
-	 *          a. Decay base level activation of all behaviors.
-	 *
-	 *  9.  Preparation Phase:
-	 *          a. If a winner emerged, let him prepare to fire, bind necessary 
-	 *             variables.
-	 */   
+	/**
+	 * 
+	 */
     public void selectAction(){   
         //spread activation and inhibition among behaviors        
         passActivationAmongBehaviors();
@@ -291,7 +277,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     /**
      * 
      */
-    private void passActivationAmongBehaviors(){
+    public void passActivationAmongBehaviors(){
     	for(Stream stream: streams){
         	for(Behavior behavior: stream.getBehaviors()){
         		 if(behavior.isAllContextConditionsSatisfied())
@@ -307,7 +293,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * Only excite successor if precondition is not yet satisfied
      * @param behavior
      */
-    private void spreadSuccessorActivation(Behavior behavior){           
+    public void spreadSuccessorActivation(Behavior behavior){           
         for(Node addProposition: behavior.getAddList()){
             Set<Behavior> behaviors = behavior.getSuccessors(addProposition);
             for(Behavior successor: behaviors){
@@ -381,11 +367,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             }//for each conflictor
         }//for nodes in current state    
     }//method    
-    
-    private double getTotalActivation(Behavior b){
-    	return b.getActivation() + 
- 	   			b.getBaseLevelActivation() * baseLevelActivationAmplicationFactor;
-    }
 
     //TODO rework? remove?
     public void normalizeActivations(){
@@ -423,7 +404,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	for(Stream s: streams)		
         	for(Behavior b: s.getBehaviors())
         		if(b.isAllContextConditionsSatisfied() && 
-        		   getTotalActivation(b) >= behaviorActivationThreshold)
+        		   b.getActivation() >= behaviorActivationThreshold)
         			selectorStrategy.addCompetitor(b);
 
     }
@@ -464,6 +445,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     private void prepareToFire(Behavior b){
         logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
         //TODO spawn expectation codelets looking for results
+        
+        //TODO bind necessary variables???
     }
     
     public void reduceTheta(){
@@ -513,8 +496,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 * @param containingStream
 	 * @param behavior
 	 */
-	private void removeBehavior(Stream containingStream, Behavior behavior){
-		
+	private void removeBehavior(Stream containingStream, Behavior behavior){	
 		//remove behavior as a successor of other behaviors
 		for(Node precondition: behavior.getContextConditions()){
 			Set<Behavior> addersOfPrecondition = behaviorsByAddItem.get(precondition);
