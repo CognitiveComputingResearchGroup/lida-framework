@@ -10,6 +10,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
@@ -75,6 +76,12 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 
 	@Override
 	public void selectAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTaskSpawner(TaskSpawner taskSpawner) {
 		// TODO Auto-generated method stub
 		
 	}

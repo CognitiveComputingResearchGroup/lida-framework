@@ -20,12 +20,12 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicReinforcementStrategy;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicThetaReductionStrategy;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ReinforcementStrategy;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicReinforcer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforcer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SelectorStrategy;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ThetaReductionStrategy;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -59,60 +59,57 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     
     /**
-     * Reset value for behaviorActivationThreshold
+     * Starting value for candidateBehaviorThreshold
      */
-    private final double initialActivationThreshold = 0.9;
+    private final double startingCandidateBehaviorThreshold = 0.9;
     
     /**
      * Current threshold for becoming active (THETA)
      */
-    private double behaviorActivationThreshold = initialActivationThreshold;
+    private double candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
     
     /**
      * mean level of activation allowed (PI)
      */
-    private double meanActivation = 0.0;       
+    private double meanActivationAllowed = 1.0;       
     
     /**
      * Amount of excitation by conscious broadcast (PHI)
      */
-    private double broadcastExcitationAmount = 0.0;      
+    private double broadcastExcitationAmount = 0.5;      
     
     /**
      * TODO use in learning?  possibly remove?
      * amplification factor for base level activation (OMEGA)
      */
-    private double baseLevelActivationAmplicationFactor = 0.0;        
+    private double baseLevelActivationAmplificationFactor = 0.0;        
     
     /**
 	 * If behaviors' activation falls below this threshold after they are decayed then the behavior
 	 * will be removed from the behavior network.
 	 */
-	private double activationLowerBound = 0.0;
+	private double lowerBoundForBehaviorActivation = 0.0;
 	
-    //TODO consider this
     private double successorExcitationFactor = 1.0;
 
-    //TODO consider this
     private double predecessorExcitationFactor = 1.0;
     
-    //TODO 
     private double conflictorExcitationFactor = 1.0;   
     
     /**
      * function by which the behavior activation threshold is reduced
      */
-	private ThetaReductionStrategy thetaReducer = new BasicThetaReductionStrategy();
+	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
     
 	/**
 	 * Way that a winning behavior is chosen among those over threshold 
 	 */
-    private SelectorStrategy selectorStrategy = new BasicSelector();
+    private Selector selectorStrategy = new BasicSelector();
     
     /**
      * How behavior's base-level activation are reinforced
      */
-    private ReinforcementStrategy reinforcementStrategy = new BasicReinforcementStrategy();
+    private Reinforcer reinforcementStrategy = new BasicReinforcer();
     
     /**
      * Currently selected behavior
@@ -303,8 +300,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 	double granted = (behavior.getActivation() * successorExcitationFactor) / successor.getContextSize();
                    //oldway: double granted = ((behavior.getActivation() * broadcastExcitationAmount) / (goalExcitationAmount * behaviors.size() * successor.getPreconditionCount());
                     successor.excite(granted);
-                    logger.info("\t:+" + behavior.getLabel() + "-->" + granted + " to " +
-                                    successor + " for " + addProposition);
+                    logger.log(Level.FINEST, 
+                    		behavior.getLabel() + "-->" + granted + " to " +
+                                    successor + " for " + addProposition,
+                            LidaTaskManager.getActualTick());
                 }                
             }
         }        
@@ -322,8 +321,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             	for(Behavior predecessor: predecessors){
             		double granted = (behavior.getActivation() * predecessorExcitationFactor) / (predecessor.getAddListCount() * predecessors.size());                        
                     predecessor.excite(granted);
-                    logger.info("\t:+" + behavior.getActivation() + " " + behavior.getLabel() + "<--" + granted + " to " +
-                                        predecessor + " for " + precondition);
+                    logger.log(Level.FINEST, behavior.getActivation() + " " + behavior.getLabel() + "<--" + granted + " to " +
+                                        predecessor + " for " + precondition,
+                               LidaTaskManager.getActualTick());
                     
                 }
             }
@@ -347,8 +347,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                    				mutualConflict = true;
                    				if(conflictor.getActivation() < behavior.getActivation()){
                                     conflictor.excite(inhibitionAmount);
-                                    logger.info(behavior.getLabel() + " inhibited " + conflictor + 
-                                    		" amount " + inhibitionAmount + " for " + stateNode);                                
+                                    logger.log(Level.FINEST, 
+                                    		behavior.getLabel() + " inhibited " + conflictor + 
+                                    		" amount " + inhibitionAmount + " for " + stateNode,
+                                    		LidaTaskManager.getActualTick());
+                                    		
                                 }
                    				break;
                    			}
@@ -360,8 +363,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 
                 if(!mutualConflict){
                     conflictor.excite(inhibitionAmount);
-                    logger.info(behavior.getLabel() + " inhibited " + conflictor + 
-                    		" amount " + inhibitionAmount + " for " + stateNode);                                      
+                    logger.log(Level.FINEST, 
+                    		behavior.getLabel() + " inhibited " + conflictor + " amount " + inhibitionAmount + " for " + stateNode,
+                    		LidaTaskManager.getActualTick());
                 }
                     
             }//for each conflictor
@@ -378,7 +382,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         		aggregateActivationofBehaviors += b.getActivation();
         }
         
-        double n_sum = meanActivation * behaviorCount;
+        double n_sum = meanActivationAllowed * behaviorCount;
         for(Stream s: streams){
             for(Behavior behavior: s.getBehaviors()){   
             	
@@ -404,7 +408,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	for(Stream s: streams)		
         	for(Behavior b: s.getBehaviors())
         		if(b.isAllContextConditionsSatisfied() && 
-        		   b.getActivation() >= behaviorActivationThreshold)
+        		   b.getActivation() >= candidateBehaviorThreshold)
         			selectorStrategy.addCompetitor(b);
 
     }
@@ -416,7 +420,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * (phi)/(num behaviors indexed at current proposition * # of preconditions in behavior)
 	 */
     public void grantActivationFromBroadcast(){
-        logger.info("ENVIRONMENT : EXCITATION");
         for(Node proposition: currentState.getNodes()){
         	if(behaviorsByPrecondition.containsKey(proposition)){
         		Set<Behavior> behaviors = behaviorsByPrecondition.get(proposition);
@@ -425,7 +428,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
                 	b.satisfyContextCondition(proposition);
                 	//TODO use excite strategy
                     b.excite(excitationAmount / b.getContextSize());       
-                    logger.info("\t-->" + b.toString() + " " + excitationAmount / b.getContextSize() + " for " + proposition);
+                    logger.log(Level.FINEST, b.toString() + " " + excitationAmount / b.getContextSize() + " for " + proposition,
+                    		LidaTaskManager.getActualTick());
                 }
         	}
             
@@ -436,26 +440,28 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	if(winner != null){                                                    
             prepareToFire(winner);
             sendAction();
-            restoreTheta();
-            winner.setActivation(0.0);
+            resetCandidateBehaviorThreshold();
             reinforcementStrategy.reinforce(winner, currentState, taskSpawner);
+            winner.setActivation(0.0);
         }else       
-            reduceTheta();
+            reduceCandidateBehaviorThreshold();
     }
     private void prepareToFire(Behavior b){
-        logger.info("BEHAVIOR : PREPARE TO FIRE " + b.getLabel());
+        logger.log(Level.FINEST, "BEHAVIOR : PREPARE TO FIRE " + b.getLabel(),
+        		LidaTaskManager.getActualTick());
         //TODO spawn expectation codelets looking for results
-        
         //TODO bind necessary variables???
     }
     
-    public void reduceTheta(){
-    	behaviorActivationThreshold = thetaReducer.reduce(behaviorActivationThreshold);
-        logger.info("NET : THETA REDUCED TO " + behaviorActivationThreshold);
+    public void reduceCandidateBehaviorThreshold(){
+    	candidateBehaviorThreshold = candidateThresholdReducer.reduce(candidateBehaviorThreshold);
+        logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to " + candidateBehaviorThreshold,
+        		LidaTaskManager.getActualTick());
     }
-    public void restoreTheta(){
-        behaviorActivationThreshold = initialActivationThreshold;
-        logger.info("NET : THETA RESTORED TO " + behaviorActivationThreshold);
+    public void resetCandidateBehaviorThreshold(){
+        candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
+        logger.log(Level.FINEST, "Candidate behavior threshold RESET to  " + candidateBehaviorThreshold, 
+        		LidaTaskManager.getActualTick());
     }
        
 	private void sendAction(long actionId) {
@@ -482,7 +488,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		for(Stream stream: streams){
 			for(Behavior behavior: stream.getBehaviors()){
 				behavior.decay(ticks);
-				if(behavior.getActivation() <= activationLowerBound){
+				if(behavior.getActivation() <= lowerBoundForBehaviorActivation){
 					logger.log(Level.FINER, "Removing behavior: " + behavior.getLabel(), LidaTaskManager.getActualTick());
 					removeBehavior(stream, behavior);
 				}
@@ -534,22 +540,22 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		containingStream.removeBehavior(behavior);
 	}
 	
-    public void setReinforcementStrategy(ReinforcementStrategy reinforcer){
+    public void setReinforcementStrategy(Reinforcer reinforcer){
         this.reinforcementStrategy = reinforcer;
     }
     
-	public void setBehaviorActivationThreshold(double theta){
-		this.behaviorActivationThreshold = theta;
+	public void setBehaviorActivationThreshold(double threshold){
+		this.candidateBehaviorThreshold = threshold;
 	}
-	public void setBroadcastExcitationAmount(double phi){
-		this.broadcastExcitationAmount = phi;
+	public void setBroadcastExcitationAmount(double broadcastExciation){
+		this.broadcastExcitationAmount = broadcastExciation;
 	}
                            
-	public void setMeanActivation(double pi){
-		this.meanActivation = pi;
+	public void setMeanActivation(double meanActivation){
+		this.meanActivationAllowed = meanActivation;
 	}                   
-	public void setBaseLevelActivationAmplificationFactor(double omega){
-		this.baseLevelActivationAmplicationFactor = omega;
+	public void setBaseLevelActivationAmplificationFactor(double blaAmplificationFactor){
+		this.baseLevelActivationAmplificationFactor = blaAmplificationFactor;
 	}
 	
 	//*** Gets ***
@@ -564,37 +570,37 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
     
     public double getBehaviorActivationThreshold(){
-        return behaviorActivationThreshold;
+        return candidateBehaviorThreshold;
     }
     public double getBroadcastExcitationAmount(){
         return broadcastExcitationAmount;                
     }
 
     public double getBaseLevelActivationAmplicationFactor(){
-        return baseLevelActivationAmplicationFactor;
+        return baseLevelActivationAmplificationFactor;
     }            
     
     public Queue<Stream> getStreams(){
         return streams;        
     }        
 
-	public ThetaReductionStrategy getThetaReducer() {
-		return thetaReducer;
+	public CandidateThresholdReducer getCandidateThresholdReducer() {
+		return candidateThresholdReducer;
 	}
 
-	public void setThetaReducer(ThetaReductionStrategy thetaReducer) {
-		this.thetaReducer = thetaReducer;
+	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
+		this.candidateThresholdReducer = reducer;
 	}
 
-	public SelectorStrategy getSelectorStrategy() {
+	public Selector getSelectorStrategy() {
 		return selectorStrategy;
 	}
 
-	public void setSelectorStrategy(SelectorStrategy selector) {
+	public void setSelectorStrategy(Selector selector) {
 		this.selectorStrategy = selector;
 	}
 
-	public ReinforcementStrategy getReinforcementStrategy() {
+	public Reinforcer getReinforcementStrategy() {
 		return reinforcementStrategy;
 	}
 	

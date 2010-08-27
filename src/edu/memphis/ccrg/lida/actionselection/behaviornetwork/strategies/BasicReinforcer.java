@@ -8,9 +8,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 //TODO have this implement excite strategy and use it as the LearnableActivatible's (parent of behavior) excite strategy
-public class BasicReinforcementStrategy implements ReinforcementStrategy{
+public class BasicReinforcer implements Reinforcer{
 
-	private ReinforcementCurve curve = new SigmoidCurve(0.5, 0.5);
+	private ReinforcementCurve curve = new SigmoidReinforcementCurve(0.5, 0.5);
 	
     public void reinforce(Behavior behavior, NodeStructure currentState, TaskSpawner ts){
     	List<ExpectationCodelet> expectationCodelets = behavior.getExpectationCodelets();

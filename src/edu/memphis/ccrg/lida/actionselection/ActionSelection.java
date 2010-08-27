@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * Interface for the action selection module
@@ -16,5 +17,7 @@ public interface ActionSelection extends TriggerListener{
 	public abstract void addActionSelectionListener(ActionSelectionListener listener);
 	
 	public abstract void selectAction();
+
+	public abstract void setTaskSpawner(TaskSpawner taskSpawner);
 
 }

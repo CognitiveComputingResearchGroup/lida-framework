@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
-public interface ReinforcementStrategy{
+public interface Reinforcer{
     
     public abstract void reinforce(Behavior behavior, NodeStructure currentState);
     

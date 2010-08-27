@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
  * Selector iterates and chooses competitor with max alpha
  *
  */
-public class BasicSelector implements SelectorStrategy{
+public class BasicSelector implements Selector{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
     private final double TIE_BREAKER = 0.5;

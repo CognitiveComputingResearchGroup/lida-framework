@@ -7,7 +7,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
  * @author ryanjmccall
  *
  */
-public interface SelectorStrategy {
+public interface Selector {
 
 	/**
 	 * Add a behavior to be considered

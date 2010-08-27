@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 
-public class BasicThetaReductionStrategy implements ThetaReductionStrategy {
+public class BasicCandidationThresholdReducer implements CandidateThresholdReducer {
 	
     /**
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected
