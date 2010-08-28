@@ -35,6 +35,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
@@ -108,6 +109,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     /**
      * How behavior's base-level activation are reinforced
+     * TODO Use excite strategy 
      */
     private Reinforcer reinforcementStrategy = new BasicReinforcer();
     
@@ -119,6 +121,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     /**
      * Current conscious broadcast
      */
+    //Null
     private NodeStructure currentState = new NodeStructureImpl();
     
     /**
@@ -129,6 +132,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     /**
      * All the streams currently in this behavior network
      */
+    //TODO map? 
     private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
     
     /**
@@ -163,11 +167,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     //*** Module communication methods
-    
+    //TODO check this everywhere.  s
     public void receiveBroadcast(BroadcastContent bc){
     	currentState = (NodeStructure) bc;
     	
     	//TODO make sure this method or this line runs in a separate thread
+    	//run a task
     	grantActivationFromBroadcast();
     }
 	/**
@@ -179,10 +184,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         listeners.add(listener);
    }
     
-	@Override
+    @Override
 	public void addListener(ModuleListener listener) {
+    	if (listener instanceof ActionSelectionListener)
+			addActionSelectionListener((ActionSelectionListener)listener);
 	}
 	
+	//TODO Weak reference.  Map that use weak reference
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
 		indexBehaviorByElements(newBehavior, newBehavior.getContextConditions(), behaviorsByPrecondition);      
@@ -194,14 +202,18 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         newStream.addBehavior(newBehavior);
         streams.add(newStream);
 	}
+	//TODO review making this method thread-safe
 	private void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, Set<Behavior>> map){
 		for(Node element: elements){
-			Set<Behavior> values = map.get(element);
-			if(values == null){
-				values = new HashSet<Behavior>();
-				map.put(element, values);
+			synchronized(element){
+				Set<Behavior> values = map.get(element);
+				if(values == null){
+					values = new HashSet<Behavior>();
+					map.put(element, values);
+				}
+				values.add(behavior);
 			}
-			values.add(behavior);
+			
 		}
 	}
 	

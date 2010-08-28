@@ -64,6 +64,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
      */
     private Map<Node, Set<Behavior>> conflictors = new ConcurrentHashMap<Node, Set<Behavior>>();
 
+    //TODO attention codelets
     private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
 
     /**
@@ -89,7 +90,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     	this(id, actionId);
     	this.label = label;
     	
-    	//TODO this is a problem
+    	//TODO Behaviors have no bla
     	setActivation(totalActivation);
     }
 
@@ -105,6 +106,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     	return false;
     }
     
+    //TODO optimization 
     public boolean isAllContextConditionsSatisfied(){
         for(Boolean b: context.values()){
         	if(b == false)
@@ -141,7 +143,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
             list.add(predecessor);
         }
         else
-            logger.log(Level.WARNING, "", LidaTaskManager.getActualTick());
+            logger.log(Level.WARNING, "tried to add null Precondition or predecessor as predecessor", LidaTaskManager.getActualTick());
     } 
     
     public void addSuccessor(Node addProposition, Behavior successor){
@@ -153,6 +155,8 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
             }
             list.add(successor);
         }
+        else
+            logger.log(Level.WARNING, "tried to add null Precondition or predecessor as successor", LidaTaskManager.getActualTick());
     }
     
 //	@Override
@@ -169,10 +173,14 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
             }
             list.add(conflictor);            
         }
+        //TODO
     }
+    
+    //TODO make sure these methods are threadsafe
     
 	public void addConflictors(Node precondition1, Set<Behavior> behaviors) {
 		conflictors.put(precondition1, behaviors);
+		//TODO follow previous method
 	}
     
     public void addExpectationCodelet(ExpectationCodelet expectationCodelet){
@@ -186,6 +194,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     
     //Get methods
     public Set<Node> getContextConditions(){
+    	//TODO use unmodifiable set
         return context.keySet();
     }
     
@@ -232,6 +241,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 		return successors.get(addProposition);
 	}
 
+	//TODO change to SIZE
 	@Override
 	public int getSuccessorCount() {
 		return successors.size();
@@ -271,33 +281,33 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	}
 	
     //Set methods       
-    public void setContextConditions(Map<Node, Boolean> conditions){
-    	this.context = conditions;
-    }
-    
-    public void setAddList(Set<Node> addList){
-    	this.addList = addList;
-    } 
-    
-    public void setDeleteList(Set<Node> deleteList){
-    	this.deleteList = deleteList;
-    }
-    
-    public void setPredecessors(Map<Node, Set<Behavior>> predecessors){
-    	this.predecessors = predecessors;
-    }    
-    
-    public void setSuccesors(Map<Node, Set<Behavior>> successors){
-    	this.successors = successors;
-    }    
-    
-    public void setConflictors(Map<Node, Set<Behavior>> conflictors){
-    	this.conflictors = conflictors;
-    }    
-    
-    public void setExpectationCodelets(List<ExpectationCodelet> expectationCodelets){
-    	this.expectationCodelets = expectationCodelets;
-    }
+//    public void setContextConditions(Map<Node, Boolean> conditions){
+//    	this.context = conditions;
+//    }
+//    
+//    public void setAddList(Set<Node> addList){
+//    	this.addList = addList;
+//    } 
+//    
+//    public void setDeleteList(Set<Node> deleteList){
+//    	this.deleteList = deleteList;
+//    }
+//    
+//    public void setPredecessors(Map<Node, Set<Behavior>> predecessors){
+//    	this.predecessors = predecessors;
+//    }    
+//    
+//    public void setSuccesors(Map<Node, Set<Behavior>> successors){
+//    	this.successors = successors;
+//    }    
+//    
+//    public void setConflictors(Map<Node, Set<Behavior>> conflictors){
+//    	this.conflictors = conflictors;
+//    }    
+//    
+//    public void setExpectationCodelets(List<ExpectationCodelet> expectationCodelets){
+//    	this.expectationCodelets = expectationCodelets;
+//    }
 
 	public void setId(long id) {
 		this.id = id;

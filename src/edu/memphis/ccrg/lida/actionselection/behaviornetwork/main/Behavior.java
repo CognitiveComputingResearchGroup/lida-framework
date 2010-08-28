@@ -7,6 +7,7 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
+//TODO Activatible
 public interface Behavior extends LearnableActivatible {
 	
 	//Ids
@@ -20,6 +21,7 @@ public interface Behavior extends LearnableActivatible {
 	public abstract int getContextSize();
 	
 	//Precondition satisfiability
+	//TODO: unsatisfy 1 node at a time
 	/**
 	 * marks supplied condition as present 
 	 */
@@ -71,6 +73,7 @@ public interface Behavior extends LearnableActivatible {
 	public abstract void removeConflictor(Node deleteItem, Behavior behavior);
 	
 	//Codelets
+	//TODO make attention codelet
 	public abstract List<ExpectationCodelet> getExpectationCodelets();
 	
 }//method
