@@ -75,13 +75,55 @@
             <Property name="text" type="java.lang.String" value="Panels"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="addNewPanelMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="addPanelMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add new panel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addNewPanelMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPanelMenuItemActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="areaAPanelsMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Area A"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="areaBPanelsMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Area B"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="areaCPanelsMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Area C"/>
+              </Properties>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="areaOthersPanelsMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Others"/>
+              </Properties>
+            </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="loadPanelSettingsMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Load panel settings"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadPanelSettingsMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="savePanelSettingsMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save panel settings"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="savePanelSettingsMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
           </SubComponents>
         </Menu>

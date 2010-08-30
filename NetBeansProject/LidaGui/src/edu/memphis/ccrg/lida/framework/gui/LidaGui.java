@@ -9,6 +9,7 @@
  */
 package edu.memphis.ccrg.lida.framework.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,15 +24,17 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.gui.panels.AddPanel;
-import edu.memphis.ccrg.lida.framework.gui.commands.TogglePanelCommand;
+import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
+import edu.memphis.ccrg.lida.framework.initialization.*;
 
 /**
  * 
  * @author Javier Snaider
  */
 public class LidaGui extends javax.swing.JFrame {
+
+    private static final String PANEL_PROPFILE_COMMENT = "name = real name, class name, Position [A,B,C,FLOAT, TOOL], Order at Position, Refresh after load?, Additional strings are used as general parameters for the panel's initPanel method";
 
     private static final long serialVersionUID = 100L;
     private static int PANEL_NAME = 0;
@@ -41,11 +44,12 @@ public class LidaGui extends javax.swing.JFrame {
     private static int MUST_REFRESH = 4;
     private static int FIRST_PARAM = 5;
     private List<LidaPanel> panels = new ArrayList<LidaPanel>();
+    private List<String[]> panelParameters = new ArrayList<String[]>();
     private List<java.awt.Container> panelParents = new ArrayList<java.awt.Container>();
     private Lida lida;
     private LidaGuiController controller;
     private static Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
-    private java.awt.Container previousPanelParent = null;
+    private javax.swing.JDialog addEditDialog;
 
     public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {
         initComponents();
@@ -64,7 +68,6 @@ public class LidaGui extends javax.swing.JFrame {
      * @param panelsFile
      */
     private void loadPanels(Properties panelProp) {
-
         String[][] panelsArray = new String[panelProp.size()][];
         int i = 0;
         for (Object key : panelProp.keySet()) {
@@ -111,9 +114,40 @@ public class LidaGui extends javax.swing.JFrame {
         String[] param = new String[panelParams.length - FIRST_PARAM];
         System.arraycopy(panelParams, FIRST_PARAM, param, 0, panelParams.length - FIRST_PARAM);
         panel.initPanel(param);
+        panelParameters.add(panelParams);
         addLidaPanel(panel, panelParams[PANEL_POSITION]);
         if (panelParams[MUST_REFRESH].equalsIgnoreCase("Y")) {
             panel.refresh();
+        }
+    }
+
+    private void loadPanelConfigFromFile(String path) {
+        while (panels.size() > 0) removePanelAt(0);
+        areaAPanelsMenu.removeAll();
+        areaBPanelsMenu.removeAll();
+        areaCPanelsMenu.removeAll();
+        areaOthersPanelsMenu.removeAll();
+        
+        Properties panelProperties = ConfigUtils.loadProperties(path);
+
+
+        loadPanels(panelProperties);
+        pack();
+    }
+
+    private void savePanelConfigToFile(String path) {
+        Properties prop = new Properties();
+        for (LidaPanel p : panels) {
+            String panelProperties = "";
+            String[] propArray = panelParameters.get(panels.indexOf(p));
+            for (int i = 0; i < propArray.length; i++)
+                panelProperties += propArray[i]+",";
+            prop.setProperty(p.getName(), panelProperties.substring(0, panelProperties.length() - 1));
+        }
+        try {
+            prop.store(new java.io.FileOutputStream(path), PANEL_PROPFILE_COMMENT);
+        } catch (IOException ex) {
+            logger.log(Level.WARNING, ex.getMessage(), 0L);
         }
     }
 
@@ -142,7 +176,16 @@ public class LidaGui extends javax.swing.JFrame {
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         panelsMenu = new javax.swing.JMenu();
-        addNewPanelMenuItem = new javax.swing.JMenuItem();
+        addPanelMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        areaAPanelsMenu = new javax.swing.JMenu();
+        areaBPanelsMenu = new javax.swing.JMenu();
+        areaCPanelsMenu = new javax.swing.JMenu();
+        areaOthersPanelsMenu = new javax.swing.JMenu();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        loadPanelSettingsMenuItem = new javax.swing.JMenuItem();
+        savePanelSettingsMenuItem = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -213,13 +256,44 @@ public class LidaGui extends javax.swing.JFrame {
 
         panelsMenu.setText("Panels");
 
-        addNewPanelMenuItem.setText("Add new panel");
-        addNewPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        addPanelMenuItem.setText("Add new panel");
+        addPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewPanelMenuItemActionPerformed(evt);
+                addPanelMenuItemActionPerformed(evt);
             }
         });
-        panelsMenu.add(addNewPanelMenuItem);
+        panelsMenu.add(addPanelMenuItem);
+        panelsMenu.add(jSeparator1);
+
+        areaAPanelsMenu.setText("Area A");
+        panelsMenu.add(areaAPanelsMenu);
+
+        areaBPanelsMenu.setText("Area B");
+        panelsMenu.add(areaBPanelsMenu);
+
+        areaCPanelsMenu.setText("Area C");
+        panelsMenu.add(areaCPanelsMenu);
+
+        areaOthersPanelsMenu.setText("Others");
+        panelsMenu.add(areaOthersPanelsMenu);
+        panelsMenu.add(jSeparator3);
+
+        loadPanelSettingsMenuItem.setText("Load panel settings");
+        loadPanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadPanelSettingsMenuItemActionPerformed(evt);
+            }
+        });
+        panelsMenu.add(loadPanelSettingsMenuItem);
+
+        savePanelSettingsMenuItem.setText("Save panel settings");
+        savePanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savePanelSettingsMenuItemActionPerformed(evt);
+            }
+        });
+        panelsMenu.add(savePanelSettingsMenuItem);
+        panelsMenu.add(jSeparator2);
 
         menuBar.add(panelsMenu);
 
@@ -250,38 +324,34 @@ public class LidaGui extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
-    private void addNewPanelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewPanelMenuItemActionPerformed
-    	final AddPanel panel = new AddPanel();
+    private void addPanelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPanelMenuItemActionPerformed
+    	showAddPanelDialog();
+    }//GEN-LAST:event_addPanelMenuItemActionPerformed
 
-        panel.setName("AddPanel");
-        panel.registerLida(lida);
-        panel.registrerLidaGuiController(this.controller);
-        final JDialog dialog = new javax.swing.JDialog();
-        dialog.add(panel.getPanel());
-        dialog.pack();
-        dialog.setVisible(true);
+    private void loadPanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPanelSettingsMenuItemActionPerformed
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser(new java.io.File(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH));
+        fc.showOpenDialog(this);
+        java.io.File file = fc.getSelectedFile();
+        loadPanelConfigFromFile(file.getPath());
+    }//GEN-LAST:event_loadPanelSettingsMenuItemActionPerformed
 
-        javax.swing.JPanel jpanel = panel.getPanel();
-        for (java.awt.Component c : jpanel.getComponents()) {
-        	if (c instanceof javax.swing.JButton) {
-        		((javax.swing.JButton)c).addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        createLidaPanel(panel.getPanelParams());
-                        dialog.setVisible(false);
-                    }
-                });
-        	}
-        }
-
-        panel.refresh();
-    }//GEN-LAST:event_addNewPanelMenuItemActionPerformed
+    private void savePanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePanelSettingsMenuItemActionPerformed
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser(new java.io.File(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH));
+        fc.showSaveDialog(this);
+        java.io.File file = fc.getSelectedFile();
+        savePanelConfigToFile(file.getPath());
+    }//GEN-LAST:event_savePanelSettingsMenuItemActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         //System.exit(0);
     }// GEN-LAST:event_exitMenuItemActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem addNewPanelMenuItem;
+    private javax.swing.JMenuItem addPanelMenuItem;
+    private javax.swing.JMenu areaAPanelsMenu;
+    private javax.swing.JMenu areaBPanelsMenu;
+    private javax.swing.JMenu areaCPanelsMenu;
+    private javax.swing.JMenu areaOthersPanelsMenu;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -290,9 +360,13 @@ public class LidaGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPanelR;
+    private javax.swing.JMenuItem loadPanelSettingsMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenu panelsMenu;
@@ -300,6 +374,7 @@ public class LidaGui extends javax.swing.JFrame {
     private javax.swing.JTabbedPane principalTabbedPanel;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JMenuItem savePanelSettingsMenuItem;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -321,15 +396,19 @@ public class LidaGui extends javax.swing.JFrame {
 
         panels.add(panel);
 
+        javax.swing.JMenu associatedMenu = areaOthersPanelsMenu;
         if ("A".equalsIgnoreCase(panelPosition)) {
             jSplitPane2.setTopComponent(jPanel);
             parent = jSplitPane2;
+            associatedMenu = areaAPanelsMenu;
         } else if ("B".equalsIgnoreCase(panelPosition)) {
             jTabbedPanelR.addTab(panel.getName(), jPanel);
             parent = jTabbedPanelR;
+            associatedMenu = areaBPanelsMenu;
         } else if ("C".equalsIgnoreCase(panelPosition)) {
             principalTabbedPanel.addTab(panel.getName(), jPanel);
             parent = principalTabbedPanel;
+            associatedMenu = areaCPanelsMenu;
         } else if ("FLOAT".equalsIgnoreCase(panelPosition)) {
             JDialog dialog = new JDialog(this, panel.getName());
             dialog.add(jPanel);
@@ -345,45 +424,163 @@ public class LidaGui extends javax.swing.JFrame {
 
         panelParents.add(parent);
 
-        addToPanelsMenu(panel, parent);
+        addToPanelsMenu(panel, parent, associatedMenu);
     }
 
-    private void addToPanelsMenu(LidaPanel panel, java.awt.Container parent) {
-    	final JPanel jPanel = panel.getPanel();
-        javax.swing.JCheckBoxMenuItem cMenuItem;
+    private void addToPanelsMenu(final LidaPanel panel, final java.awt.Container parent, javax.swing.JMenu associatedMenu) {
+        final JPanel jPanel = panel.getPanel();
+        javax.swing.JMenu cMenu;
         String menuItemLabel;
         int unnamedIndex = 0;
-    	//if parent changes, add separator
-        if (!parent.equals(previousPanelParent)) {
-            previousPanelParent = jPanel.getParent();
-            panelsMenu.add(new javax.swing.JPopupMenu.Separator());
-        }
 
         menuItemLabel = panel.getName();
         if (menuItemLabel.equals("")) {
             menuItemLabel = "Unnamed" + (unnamedIndex++);
         }
-        cMenuItem = new javax.swing.JCheckBoxMenuItem();
-        cMenuItem.setSelected(true);
-        cMenuItem.setText(menuItemLabel);
-        cMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        cMenu = new javax.swing.JMenu();
+        cMenu.setText(menuItemLabel);
 
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            java.awt.Container parent = null;
-            for (int i = 0; i < panels.size(); i++) {
-                if (panels.get(i).equals(jPanel)) {
-                    parent = panelParents.get(i);
+        javax.swing.JCheckBoxMenuItem showItem = new javax.swing.JCheckBoxMenuItem();
+        showItem.setText("Show Panel");
+        showItem.setSelected(true);
+        showItem.addActionListener(new java.awt.event.ActionListener() {
+            private LidaPanel cLidaPanel = panel;
+            private JPanel cjPanel = jPanel;
+            private java.awt.Container cParent = parent;
+            private String[] cParameters = panelParameters.get(panels.indexOf(panel));
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int index = -1;
+                for (java.awt.Component c : parent.getComponents()) {
+                    if (c.equals(cjPanel)) {
+                        for (int i = 0; i < panels.size(); i++) {
+                            if (panels.get(i).getPanel().equals(cjPanel)) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if (index > -1) {
+                    removePanelAt(index, false);
+                } else {
+                    cParent.add(cjPanel);
+                    panels.add(cLidaPanel);
+                    panelParents.add(cParent);
+                    panelParameters.add(cParameters);
                 }
             }
-
-            TogglePanelCommand togglePanelCommand = new TogglePanelCommand();
-            togglePanelCommand.setParameter("parent", parent);
-            togglePanelCommand.setParameter("panel", jPanel);
-            controller.executeCommand(togglePanelCommand);
-        }
         });
-        panelsMenu.add(cMenuItem);
+        cMenu.add(showItem);
+        cMenu.add(new javax.swing.JPopupMenu.Separator());
+        javax.swing.JMenuItem editItem = new javax.swing.JMenuItem();
+        editItem.setText("Edit Panel");
+        final String[] panelParams = panelParameters.get(panels.indexOf(panel));
+        editItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showEditPanelDialog(panelParams);
+            }
+        });
+        cMenu.add(editItem);
+
+        associatedMenu.add(cMenu);
     }
+
+    private void showAddPanelDialog() {
+        final AddEditPanel addEditPanel = new AddEditPanel();
+        addEditPanel.setName("AddPanel");
+        addEditPanel.registerLida(lida);
+        addEditPanel.registrerLidaGuiController(this.controller);
+        if (addEditDialog != null) addEditDialog.setVisible(false);
+        addEditDialog = new javax.swing.JDialog();
+        addEditDialog.add(addEditPanel.getPanel());
+        addEditDialog.pack();
+        addEditDialog.setVisible(true);
+
+        final javax.swing.JPanel jpanel = addEditPanel.getPanel();
+        for (java.awt.Component c : jpanel.getComponents()) {
+            if (c instanceof javax.swing.JButton) {
+                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(
+                            java.awt.event.ActionEvent evt) {
+                        createLidaPanel(addEditPanel.getPanelParams());
+                        addEditDialog.setVisible(false);
+                    }
+                });
+            }
+        }
+
+        addEditPanel.refresh();
+    }
+
+    private void showEditPanelDialog(final String[] panelParams) {
+        final AddEditPanel addEditPanel = new AddEditPanel();
+        addEditPanel.setName("EditPanel");
+        addEditPanel.registerLida(lida);
+        addEditPanel.registrerLidaGuiController(this.controller);
+        addEditPanel.setPanelParams(panelParams);
+        if (addEditDialog != null) addEditDialog.setVisible(false);
+        addEditDialog = new javax.swing.JDialog();
+        addEditDialog.add(addEditPanel.getPanel());
+        addEditDialog.pack();
+        addEditDialog.setVisible(true);
+
+        final javax.swing.JPanel jpanel = addEditPanel.getPanel();
+        for (java.awt.Component c : jpanel.getComponents()) {
+            if (c instanceof javax.swing.JButton) {
+                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(
+                            java.awt.event.ActionEvent evt) {
+                        String[] params = addEditPanel.getPanelParams();
+                        int index = -1;
+                        for (int i = 0; i < panels.size(); i++) {
+                            String className = panels.get(i).getClass().toString().replace("class ", "");
+                            if (panels.get(i).getName().equals(params[PANEL_NAME])
+                                    && className.equals(params[CLASS_NAME])) {
+                                index = i;
+                                break;
+                            }
+                        }   
+                        if (index >= 0) {
+                            removePanelAt(index);
+                        }
+
+                        createLidaPanel(addEditPanel.getPanelParams());
+                        addEditDialog.setVisible(false);
+                    }
+                });
+            }
+        }
+
+        addEditPanel.refresh();
+    }
+
+    private void removePanelAt(int panelIndex, boolean removeFromMenu) {
+        if (removeFromMenu) {
+            for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
+                if (firstLevelMenu instanceof javax.swing.JMenu) {
+                    for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu)firstLevelMenu).getMenuComponents()) {
+                        if (secondLevelMenu instanceof javax.swing.JMenu) {
+                            String menuText = ((javax.swing.JMenu)secondLevelMenu).getText();
+                            String panelName = panels.get(panelIndex).getName();
+                            if (menuText.equals(panelName))
+                                ((javax.swing.JMenu)firstLevelMenu).remove(secondLevelMenu);
+                        }
+                    }
+                }
+            }
+        }
+
+        panelParents.get(panelIndex).remove(panels.get(panelIndex).getPanel());
+        panelParents.remove(panelIndex);
+        panels.remove(panelIndex);
+        panelParameters.remove(panelIndex);
+    }
+
+    private void removePanelAt(int panelIndex) {
+        removePanelAt(panelIndex, true);
+    }
+
 
     public Collection<LidaPanel> getPanels() {
         return Collections.unmodifiableCollection(panels);
