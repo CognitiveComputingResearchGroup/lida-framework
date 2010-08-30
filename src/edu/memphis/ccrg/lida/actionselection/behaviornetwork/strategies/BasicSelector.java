@@ -25,19 +25,21 @@ public class BasicSelector implements Selector{
     public BasicSelector() {       
     }
     
-    public Behavior selectBehavior(Collection<Stream> candidates){
+    public Behavior selectBehavior(Collection<Stream> candidates, double candidateThreshold){
         double maxActivation = 0.0;
         Behavior winner = null;
         for(Stream s: candidates){
         	for(Behavior current: s.getBehaviors()){
         		double currentActivation = current.getTotalActivation();
-                if(currentActivation > maxActivation) {                    
-                    winner = current;
-                    maxActivation = currentActivation;
-                }else if(currentActivation == maxActivation){   
-                	if(Math.random() >= TIE_BREAKER)
-                		winner = current;                                    
-                }     
+        		if(currentActivation >= candidateThreshold){
+	                if(currentActivation > maxActivation) {                    
+	                    winner = current;
+	                    maxActivation = currentActivation;
+	                }else if(currentActivation == maxActivation){   
+	                	if(Math.random() >= TIE_BREAKER)
+	                		winner = current;                                    
+	                }
+        		}
         	}
         }
         if(winner != null)

@@ -9,7 +9,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
@@ -41,31 +39,15 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     /**
      * Set of nodes that this scheme adds
      */
-    private Set<Node> addList = new HashSet<Node>();
+    private Set<Node> addList = new ConcurrentHashSet<Node>();
     
     /**
      * 
      */
     private Set<Node> deleteList = new HashSet<Node>();        
     
-    /**
-     * For each key, the key is in this behavior's precondition and indexes
-     * all behaviors which contain that key in their add list
-     */
-    private Map<Node, Set<Behavior>> predecessors = new ConcurrentHashMap<Node, Set<Behavior>>();
-    
-    /**
-     * For each key, the key is in this behavior's add list and indexes all the 
-     * behaviors which have the key in their precondition
-     */
-    private Map<Node, Set<Behavior>> successors = new ConcurrentHashMap<Node, Set<Behavior>>();
-    
-    /**
-     * Key is an element in this behavior's context.  It indexes all the behaviors which have 
-     * the key element in their delete list
-     */
-    private Map<Node, Set<Behavior>> conflictors = new ConcurrentHashMap<Node, Set<Behavior>>();
-
+    //TODO do behaviors really need this?  Couldn't we just generate attention codelet from
+    //the behaviors add and delete lists when they are needed?
     private List<AttentionCodelet> attentionCodelets = new ArrayList<AttentionCodelet>();
 
     /**
@@ -145,6 +127,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
     // start add methods    
     public boolean addContextCondition(Node condition){
+    	logger.log(Level.FINEST, "Adding context condition " + condition.getLabel() + " to " + label);
     	isAllContextSatisfied = false;
     	return (context.put(condition, false) != null);
     }
@@ -156,62 +139,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     public boolean addDeleteCondition(Node deleteCondition){
     	return deleteList.add(deleteCondition);
     }    
-    
-    public void addPredecessor(Node precondition, Behavior predecessor){
-        if(precondition != null && predecessor != null){
-            Set<Behavior> list = predecessors.get(precondition);            
-            if(list == null){
-                list = new HashSet<Behavior>();
-                predecessors.put(precondition, list);
-            }
-            list.add(predecessor);
-        }
-        else
-            logger.log(Level.WARNING, "tried to add null Precondition or predecessor in addPredecessor", LidaTaskManager.getActualTick());
-    } 
-    
-    public void addSuccessor(Node addProposition, Behavior successor){
-        if(addProposition != null && successor != null){
-            Set<Behavior> list = successors.get(addProposition);
-            if(list == null){              
-                list = new HashSet<Behavior>();
-                successors.put(addProposition, list);
-            }
-            list.add(successor);
-        }
-        else
-            logger.log(Level.WARNING, "tried to add null Precondition or predecessor in addSuccessor", LidaTaskManager.getActualTick());
-    }
-    
-    public void addConflictor(Node precondition, Behavior conflictor){
-        if(precondition != null && conflictor != null){
-            Set<Behavior> list = conflictors.get(precondition);
-            if(list == null){
-                list = new HashSet<Behavior>();
-                conflictors.put(precondition, list);
-            }
-            list.add(conflictor);            
-        }
-        else
-            logger.log(Level.WARNING, "tried to add null Precondition or conflictor in addConflictor", LidaTaskManager.getActualTick());
-    }
-    
-    //TODO make sure these methods are threadsafe
-    //TODO weak hashset
-    
-	public void addConflictors(Node precondition1, Set<Behavior> behaviors) {
-		if(precondition1 != null && behaviors != null){
-	        Set<Behavior> list = conflictors.get(precondition1);
-	        if(list == null){
-                list = new HashSet<Behavior>();
-                conflictors.put(precondition1, list);
-            }
-            list.addAll(behaviors);               
-	    }
-	    else
-	    	logger.log(Level.WARNING, "tried to add null Precondition or conflictor in addConflictor", LidaTaskManager.getActualTick());
-	}
-    
+
     public void addAttentionCodelet(AttentionCodelet attentionCodelet){
     	attentionCodelets.add(attentionCodelet);
     }
@@ -228,38 +156,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     public Set<Node> getDeleteList(){
         return Collections.unmodifiableSet(deleteList);
     }
-    
-    public Map<Node, Set<Behavior>> getPredecessors(){
-        return Collections.unmodifiableMap(predecessors);
-    }
-    
-    public Map<Node, Set<Behavior>> getSuccessors(){
-        return Collections.unmodifiableMap(successors);
-    } 
-    
-    public Collection<Set<Behavior>> getConflictors(){
-        return Collections.unmodifiableCollection(conflictors.values());
-    }
-        
-	public Set<Behavior> getConflictors(Node precondition1) {
-		return Collections.unmodifiableSet(conflictors.get(precondition1));
-	}
 	
-	@Override
-	public void removeConflictor(Node deleteItem, Behavior behavior) {
-		conflictors.get(deleteItem).remove(behavior);
-	}
-
-	@Override
-	public void removeSuccessor(Node precondition, Behavior behavior) {
-		successors.get(precondition).remove(behavior);
-	}
-
-	@Override
-	public void removePredecessor(Node addItem, Behavior behavior) {
-		predecessors.get(addItem).remove(behavior);
-	}
-    
     public List<AttentionCodelet> getAttentionCodelets(){
         return Collections.unmodifiableList(attentionCodelets);
     }
@@ -267,31 +164,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public int getContextSize() {
 		return context.size();
-	}
-
-	@Override
-	public Set<Behavior> getPredecessors(Node precondition) {
-		return Collections.unmodifiableSet(predecessors.get(precondition));
-	}
-    
-	@Override
-	public Set<Behavior> getSuccessors(Node addProposition) {
-		return Collections.unmodifiableSet(successors.get(addProposition));
-	}
-
-	@Override
-	public int getSuccessorSize() {
-		return successors.size();
-	}
-
-	@Override
-	public int getPredecessorCount() {
-		return predecessors.size();
-	}
-
-	@Override
-	public int getConflictorCount() {
-		return conflictors.size();
 	}
 	
 	@Override

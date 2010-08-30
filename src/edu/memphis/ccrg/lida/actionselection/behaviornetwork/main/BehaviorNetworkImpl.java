@@ -19,7 +19,9 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicReinforcer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforcer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
@@ -43,16 +45,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     
-//    /**
-//     * Starting value for candidateBehaviorThreshold
-//     */
-//    private final double startingCandidateBehaviorThreshold = 0.9;
-//
-//    //TODO get rid of this?
-//    /**
-//     * Current threshold for becoming active (THETA)
-//     */
-//    private double candidateBehaviorThreshold = startingCandidateBehaviorThreshold;    
+    /**
+     * Starting value for candidateBehaviorThreshold
+     */
+    private final double startingCandidateBehaviorThreshold = 0.9;
+
+    /**
+     * Current threshold for becoming active (THETA)
+     */
+    private double candidateBehaviorThreshold = startingCandidateBehaviorThreshold;    
     
     /**
      * Amount of excitation by conscious broadcast (PHI)
@@ -71,10 +72,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     private double conflictorExcitationFactor = 1.0;   
     
-//    /**
-//     * function by which the behavior activation threshold is reduced
-//     */
-//	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
+    /**
+     * function by which the behavior activation threshold is reduced
+     */
+	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
     
 	/**
 	 * Way that a winning behavior is chosen among those over threshold 
@@ -83,7 +84,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     /**
      * How behavior's base-level activation are reinforced
-     * TODO Use excite strategy 
+     * TODO If we are going to keep this then it will have to reinforce the associated
+     * scheme since behaviors don't have a bla.  I say remove it can be done by procedural learning.
      */
     private Reinforcer reinforcementStrategy = new BasicReinforcer();
     
@@ -143,7 +145,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void receiveBroadcast(BroadcastContent bc){
     	currentState = (NodeStructure) bc;
  
-    	LidaTask activatingTask = new ActivateBehaviorsFromBroadcastTask(this);
+    	LidaTask activatingTask = new ActivateBehaviorsTask(this);
     	taskSpawner.addTask(activatingTask);
     }
 	/**
@@ -191,43 +193,43 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	public void createInterBehaviorLinks(Behavior newBehavior){
-		//Go through the add items and create all predecessor/successor links 
-		//as required by behaviors whose preconditions overlap with these items
-		for(Node addItem: newBehavior.getAddList()){
-			WeakHashSet<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
-			for(Behavior successorBehavior: behaviors){
-				//Create predecessor link for other behavior
-				successorBehavior.addPredecessor(addItem, newBehavior);
-				//Create successor link for this behavior
-				newBehavior.addSuccessor(addItem, successorBehavior);
-			}
-		}
-		
-		//Add this new behavior as a conflictor of whatever behaviors stopped by new behavior
-		for(Node deleteItem: newBehavior.getDeleteList()){
-			Set<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
-			for(Behavior affectedBehavior: behaviorsAffectedByDelete){
-				affectedBehavior.addConflictor(deleteItem, newBehavior);
-			}
-		}
-		
-		for(Node condition: newBehavior.getContextConditions()){
-			//Find all of the new behavior's conflictors - behaviors that 
-			//hurt its chances of activating
-			Set<Behavior> deletors = behaviorsByDeleteItem.get(condition);
-			if(deletors != null)
-				newBehavior.addConflictors(condition, deletors);
-			
-			//Create successor links for other behaviors
-			//Create predecessor links for this behavior
-			Set<Behavior> addingBehaviors = behaviorsByAddItem.get(condition);
-			if(addingBehaviors != null){
-				for(Behavior adder: addingBehaviors){
-					newBehavior.addPredecessor(condition, adder);
-					adder.addSuccessor(condition, newBehavior);
-				}
-			}
-		}//for
+//		//Go through the add items and create all predecessor/successor links 
+//		//as required by behaviors whose preconditions overlap with these items
+//		for(Node addItem: newBehavior.getAddList()){
+//			WeakHashSet<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
+//			for(Behavior successorBehavior: behaviors){
+//				//Create predecessor link for other behavior
+//				successorBehavior.addPredecessor(addItem, newBehavior);
+//				//Create successor link for this behavior
+//				newBehavior.addSuccessor(addItem, successorBehavior);
+//			}
+//		}
+//		
+//		//Add this new behavior as a conflictor of whatever behaviors stopped by new behavior
+//		for(Node deleteItem: newBehavior.getDeleteList()){
+//			Set<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
+//			for(Behavior affectedBehavior: behaviorsAffectedByDelete){
+//				affectedBehavior.addConflictor(deleteItem, newBehavior);
+//			}
+//		}
+//		
+//		for(Node condition: newBehavior.getContextConditions()){
+//			//Find all of the new behavior's conflictors - behaviors that 
+//			//hurt its chances of activating
+//			Set<Behavior> deletors = behaviorsByDeleteItem.get(condition);
+//			if(deletors != null)
+//				newBehavior.addConflictors(condition, deletors);
+//			
+//			//Create successor links for other behaviors
+//			//Create predecessor links for this behavior
+//			Set<Behavior> addingBehaviors = behaviorsByAddItem.get(condition);
+//			if(addingBehaviors != null){
+//				for(Behavior adder: addingBehaviors){
+//					newBehavior.addPredecessor(condition, adder);
+//					adder.addSuccessor(condition, newBehavior);
+//				}
+//			}
+//		}//for
 	}//method
 
 	@Override
@@ -239,17 +241,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 * 
 	 */
     public void selectAction(){   
-        //spread activation and inhibition among behaviors        
-        passActivationAmongBehaviors();
-        
         //Select winner
-        winner = selectorStrategy.selectBehavior(getStreams());
+        winner = selectorStrategy.selectBehavior(getStreams(), candidateBehaviorThreshold);
     	processWinner();
-        
-    	//Deactivate preconditions
-    	deactivateAllPreconditions();
     }//method 
-    
 
     /**
      * 
@@ -272,7 +267,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      */
     public void spreadSuccessorActivation(Behavior behavior){           
         for(Node addProposition: behavior.getAddList()){
-            Set<Behavior> behaviors = behavior.getSuccessors(addProposition);
+            Set<Behavior> behaviors = getSuccessors(addProposition);
             for(Behavior successor: behaviors){
             	//Should only grant activation to a successor if its precondition
             	//has not yet been satisfied
@@ -289,6 +284,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }        
     }//method
     
+    private Set<Behavior> getSuccessors(Node addProposition){
+    	return behaviorsByPrecondition.get(addProposition);
+    }
+    
     /**
      * Don't bother exciting a predecessor for a precondition that 
      * is already satisfied.
@@ -297,7 +296,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void spreadPredecessorActivation(Behavior behavior){             
         for(Node precondition: behavior.getContextConditions()){
             if(behavior.isContextConditionSatisfied(precondition) == false){
-            	Set<Behavior> predecessors = behavior.getPredecessors(precondition);    
+            	Set<Behavior> predecessors = getPredecessors(precondition);    
             	for(Behavior predecessor: predecessors){
             		double granted = (behavior.getActivation() * predecessorExcitationFactor) / (predecessor.getAddListCount() * predecessors.size());                        
                     predecessor.excite(granted);
@@ -310,47 +309,61 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         }        
     } 
     
-    //TODO Double check I converted this monster correctly
+    private Set<Behavior> getPredecessors(Node precondition){
+    	return behaviorsByAddItem.get(precondition);
+    }
+    
+    private Set<Behavior> getConflictors(Node condition){
+    	return behaviorsByDeleteItem.get(condition);
+    }
+    
+    //TODO This method cannot be rechecked enough
     public void spreadConflictorActivation(Behavior behavior){
-        for(Node stateNode: currentState.getNodes()){
-        	Set<Behavior> behaviors = behavior.getConflictors(stateNode); 
-            for(Behavior conflictor: behaviors){
-            	//between conflictor and behaivor
-              	boolean mutualConflict = false;
-               	double inhibitionAmount = -1.0 * (behavior.getActivation() * conflictorExcitationFactor) / (conflictor.getDeleteListCount());
-                //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
-
+    	boolean isMutualConflict = false;
+        for(Node condition: behavior.getContextConditions()){
+        	Set<Behavior> behaviors = getConflictors(condition); 
+            for(Behavior conflictor: behaviors){              
+                //for each conflictor context condition
                 for(Node conflictorPreCondition: conflictor.getContextConditions()){
+                	//if conflictor context condition is not satisfied 
                    	if(conflictor.isContextConditionSatisfied(conflictorPreCondition) == false){
-                   		for(Node behaviorDeleteItem: behavior.getDeleteList()){
-                   			if(conflictorPreCondition.equals(behaviorDeleteItem)){
-                   				mutualConflict = true;
-                   				if(conflictor.getActivation() < behavior.getActivation()){
-                                    conflictor.excite(inhibitionAmount);
-                                    logger.log(Level.FINEST, 
-                                    		behavior.getLabel() + " inhibited " + conflictor + 
-                                    		" amount " + inhibitionAmount + " for " + stateNode,
-                                    		LidaTaskManager.getActualTick());
-                                    		
-                                }
-                   				break;
-                   			}
-                   		}
-                   	}
-                    if(mutualConflict)
-                       	break;
-                }//for   
-                
-                if(!mutualConflict){
-                    conflictor.excite(inhibitionAmount);
-                    logger.log(Level.FINEST, 
-                    		behavior.getLabel() + " inhibited " + conflictor + " amount " + inhibitionAmount + " for " + stateNode,
-                    		LidaTaskManager.getActualTick());
+                   		Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
+                      	//if there is a mutual conflict
+                   		if(conflictorsConflictors.contains(behavior)){
+                   			//TODO optimize
+               				isMutualConflict = true;
+               				if(behavior.getActivation() > conflictor.getActivation())
+                                auxSpreadConflictorActivation(behavior, conflictor);
+               				//TODO I think this break should be removed.
+               				//Consider the case where there are multiple nodes conflicting i.e.
+               				//the conflictor shares multiple context nodes with the behavior's 
+               				//delete list.  
+               				//If behavior's activation is just a little less then no inhibition will happen
+               				//but concurrently that behavior could be excited by the broadcast so you will 
+               				//skip the other conflict which actually might have resulted in an inhibition
+               				//Note that removing break will allow for multiple inhibition but that may be a good thing.
+               				//break;
+               			}
+                   	}        
                 }
-                    
+                
+                //No mutual conflict then inhibit a conflictor
+                if(isMutualConflict == false)
+                	auxSpreadConflictorActivation(behavior, conflictor);
+                else    
+                	isMutualConflict = false;
             }//for each conflictor
-        }//for nodes in current state    
-    }//method    
+        }//for    
+    }//method   
+    private void auxSpreadConflictorActivation(Behavior behavior, Behavior conflictor){
+    	double inhibitionAmount = -1.0 * (behavior.getActivation() * conflictorExcitationFactor) / (conflictor.getDeleteListCount());
+        //oldway:double inhibited = (getTotalActivation(b) * fraction) / (behaviors.size() * conflictor.getDeleteList().size());
+    	
+    	conflictor.excite(inhibitionAmount);
+        logger.log(Level.FINEST, behavior.getLabel() + " inhibits " + conflictor.getLabel() + 
+        		                 " amount " + inhibitionAmount,
+        		                 LidaTaskManager.getActualTick());
+    }//method
     
     /**
      * For each proposition get the behaviors indexed by that proposition
@@ -378,12 +391,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	if(winner != null){                                                    
             prepareToFire(winner);
             sendAction();
-//            resetCandidateBehaviorThreshold();
+            resetCandidateBehaviorThreshold();
             reinforcementStrategy.reinforce(winner, currentState, taskSpawner);
             winner.setActivation(0.0);
-          }
-//        }else       
-//            reduceCandidateBehaviorThreshold();
+        }else{    
+            reduceCandidateBehaviorThreshold();
+        }
+    	//Deactivate preconditions
+    	//TODO think about this more
+    	deactivateAllPreconditions();
     }
     private void prepareToFire(Behavior b){
         logger.log(Level.FINEST, "BEHAVIOR : PREPARE TO FIRE " + b.getLabel(),
@@ -391,16 +407,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         //TODO spawn expectation codelets looking for results
     }
     
-//    public void reduceCandidateBehaviorThreshold(){
-//    	candidateBehaviorThreshold = candidateThresholdReducer.reduce(candidateBehaviorThreshold);
-//        logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to " + candidateBehaviorThreshold,
-//        		LidaTaskManager.getActualTick());
-//    }
-//    public void resetCandidateBehaviorThreshold(){
-//        candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
-//        logger.log(Level.FINEST, "Candidate behavior threshold RESET to  " + candidateBehaviorThreshold, 
-//        		LidaTaskManager.getActualTick());
-//    }
+    public void reduceCandidateBehaviorThreshold(){
+    	candidateBehaviorThreshold = candidateThresholdReducer.reduce(candidateBehaviorThreshold);
+        logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to " + candidateBehaviorThreshold,
+        		LidaTaskManager.getActualTick());
+    }
+    public void resetCandidateBehaviorThreshold(){
+        candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
+        logger.log(Level.FINEST, "Candidate behavior threshold RESET to  " + candidateBehaviorThreshold, 
+        		LidaTaskManager.getActualTick());
+    }
        
 	private void sendAction(long actionId) {
         for(ActionSelectionListener l: listeners)
@@ -440,51 +456,20 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 * @param containingStream
 	 * @param behavior
 	 */
-	private void removeBehavior(Stream containingStream, Behavior behavior){	
-		//remove behavior as a successor of other behaviors
-		for(Node precondition: behavior.getContextConditions()){
-			Set<Behavior> addersOfPrecondition = behaviorsByAddItem.get(precondition);
-			for(Behavior adder: addersOfPrecondition)
-				adder.removeSuccessor(precondition, behavior);
-			
-			Set<Behavior> behaviors = behaviorsByPrecondition.get(precondition);
-			behaviors.remove(behavior);
-		}
-		
-		//remove behavior as a predecessor of other behaviors
-		for(Node addItem: behavior.getAddList()){
-			Set<Behavior> benefactors = behaviorsByPrecondition.get(addItem);
-			for(Behavior benefactor: benefactors){
-				benefactor.removePredecessor(addItem, behavior);
-			}
-				
-			Set<Behavior> behaviors = behaviorsByAddItem.get(addItem);
-			behaviors.remove(behavior);
-		}
-		
-		
-		//remove behavior as a conflictor of other behaviors
-		for(Node deleteItem: behavior.getDeleteList()){
-			Set<Behavior> conflicteds = behaviorsByPrecondition.get(deleteItem);
-			for(Behavior conflicted: conflicteds)
-				conflicted.removeConflictor(deleteItem, behavior);
-			
-			//Remove behavior from delete item map
-			Set<Behavior> behaviors = behaviorsByDeleteItem.get(deleteItem);
-			behaviors.remove(behavior);
-		}
-		
+	private void removeBehavior(Stream containingStream, Behavior behavior){
 		//remove behavior from stream
 		containingStream.removeBehavior(behavior);
+		if(containingStream.size() == 0)
+			streams.remove(containingStream).getId();
 	}
 	
     public void setReinforcementStrategy(Reinforcer reinforcer){
         this.reinforcementStrategy = reinforcer;
     }
     
-//	public void setBehaviorActivationThreshold(double threshold){
-//		this.candidateBehaviorThreshold = threshold;
-//	}
+	public void setBehaviorActivationThreshold(double threshold){
+		this.candidateBehaviorThreshold = threshold;
+	}
 	public void setBroadcastExcitationAmount(double broadcastExciation){
 		this.broadcastExcitationAmount = broadcastExciation;
 	}
@@ -500,9 +485,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		return null;		
 	}
     
-//    public double getBehaviorActivationThreshold(){
-//        return candidateBehaviorThreshold;
-//    }
+    public double getBehaviorActivationThreshold(){
+        return candidateBehaviorThreshold;
+    }
     public double getBroadcastExcitationAmount(){
         return broadcastExcitationAmount;                
     }
@@ -511,13 +496,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         return Collections.unmodifiableCollection(streams.values());        
     }        
 
-//	public CandidateThresholdReducer getCandidateThresholdReducer() {
-//		return candidateThresholdReducer;
-//	}
-//
-//	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
-//		this.candidateThresholdReducer = reducer;
-//	}
+	public CandidateThresholdReducer getCandidateThresholdReducer() {
+		return candidateThresholdReducer;
+	}
+
+	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
+		this.candidateThresholdReducer = reducer;
+	}
 
 	public Selector getSelectorStrategy() {
 		return selectorStrategy;

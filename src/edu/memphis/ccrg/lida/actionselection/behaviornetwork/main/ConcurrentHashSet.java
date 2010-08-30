@@ -2,18 +2,17 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable{
-	
-	static final long serialVersionUID = -4148697472689300159L;
+public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable{
+
+	static final long serialVersionUID = 3313091100336870355L;
 	
 	//TODO Should it be transient?
-	private Map<E, Object> map = new WeakHashMap<E, Object>();
+	private Map<E, Object> map = new ConcurrentHashMap<E, Object>();
 	
 	private static final Object PRESENT = new Object();
 
@@ -32,10 +31,9 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * are returned in no particular order.
      *
      * @return an Iterator over the elements in this set
-     * @see ConcurrentModificationException
      */
     public Iterator<E> iterator() {
-	return map.keySet().iterator();
+    	return map.keySet().iterator();
     }
 
     /**
@@ -44,7 +42,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * @return the number of elements in this set (its cardinality)
      */
     public int size() {
-	return map.size();
+    	return map.size();
     }
 
     /**
@@ -53,7 +51,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * @return <tt>true</tt> if this set contains no elements
      */
     public boolean isEmpty() {
-	return map.isEmpty();
+    	return map.isEmpty();
     }
 
     /**
@@ -66,7 +64,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * @return <tt>true</tt> if this set contains the specified element
      */
     public boolean contains(Object o) {
-	return map.containsKey(o);
+    	return map.containsKey(o);
     }
 
     /**
@@ -82,7 +80,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * element
      */
     public boolean add(E e) {
-	return map.put(e, PRESENT)==null;
+    	return map.put(e, PRESENT)==null;
     }
 
     /**
@@ -98,7 +96,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * @return <tt>true</tt> if the set contained the specified element
      */
     public boolean remove(Object o) {
-	return map.remove(o)==PRESENT;
+    	return map.remove(o)==PRESENT;
     }
 
     /**
@@ -106,7 +104,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
      * The set will be empty after this call returns.
      */
     public void clear() {
-	map.clear();
+    	map.clear();
     }
 
 }

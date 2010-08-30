@@ -1,6 +1,5 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -55,26 +54,6 @@ public interface Behavior extends Activatible {
 	public abstract Set<Node> getDeleteList();	
     public abstract boolean addDeleteCondition(Node deleteCondition);
     public abstract double getDeleteListCount();
-	
-    //Successors
-	public abstract int getSuccessorSize();
-	public abstract Set<Behavior> getSuccessors(Node addProposition);
-	public abstract void addSuccessor(Node contextNode, Behavior behavior);
-	public abstract void removeSuccessor(Node precondition, Behavior behavior);
-	
-	//Predecessors
-	public abstract int getPredecessorCount();
-	public abstract Set<Behavior> getPredecessors(Node precondition);
-	public abstract void addPredecessor(Node addItem, Behavior behavior);
-	public abstract void removePredecessor(Node addItem, Behavior behavior);
-	
-	//Conflictors
-	public abstract int getConflictorCount();
-	public abstract Set<Behavior> getConflictors(Node precondition1);
-	public abstract Collection<Set<Behavior>> getConflictors();
-	public abstract void addConflictor(Node deleteItem, Behavior newBehavior);
-	public abstract void addConflictors(Node precondition, Set<Behavior> deletors);
-	public abstract void removeConflictor(Node deleteItem, Behavior behavior);
 	
 	//Codelets
 	public abstract List<AttentionCodelet> getAttentionCodelets();

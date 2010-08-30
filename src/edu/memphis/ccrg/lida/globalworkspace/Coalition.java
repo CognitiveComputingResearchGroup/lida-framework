@@ -12,6 +12,9 @@ package edu.memphis.ccrg.lida.globalworkspace;
  
  */
 public interface Coalition {
+	
+	//TODO field for attention codelet that created this coalition.  Likely its id. 
+	
 	/**
 	 * 
 	 * @return the total activation of the coalition.

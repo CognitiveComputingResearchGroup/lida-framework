@@ -68,5 +68,8 @@ public class Stream{
 	public long getId(){
 		return id;
 	}
+	public int size() {
+		return behaviors.size();
+	}
 	
 }//class
