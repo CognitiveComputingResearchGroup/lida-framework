@@ -4,14 +4,19 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
-public class WeakHashSet<E> extends AbstractSet<E>{
+public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable{
 	
-	private Map<E, Boolean> map = new WeakHashMap<E, Boolean>();
+	private static final long serialVersionUID = -4148697472689300159L;
+	
+	private Map<E, Object> map = new WeakHashMap<E, Object>();
+	
+	private static final Object PRESENT = new Object();
 	
 	public boolean add(E o){
-		return map.put(o, true);
+		return map.put(o, PRESENT)==null;
 	}
 	
 	public boolean addAll(Collection<? extends E> c){
@@ -33,7 +38,7 @@ public class WeakHashSet<E> extends AbstractSet<E>{
 	}
 	
 	public boolean remove(Object o){
-		return map.remove(o);
+		return map.remove(o)==PRESENT;
 	}
 	
 	public void clear(){
