@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
+import edu.memphis.ccrg.lida.attention.AttentionCodelet;
+import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
-//TODO Activatible
-public interface Behavior extends LearnableActivatible {
+public interface Behavior extends Activatible {
 	
 	//Ids
 	public abstract long getId();
-	public abstract long getSchemeActionId();
+	public abstract long getActionId();
 	public abstract String getLabel();
 
 	//Preconditions
@@ -21,7 +21,6 @@ public interface Behavior extends LearnableActivatible {
 	public abstract int getContextSize();
 	
 	//Precondition satisfiability
-	//TODO: unsatisfy 1 node at a time
 	/**
 	 * marks supplied condition as present 
 	 */
@@ -38,9 +37,14 @@ public interface Behavior extends LearnableActivatible {
 	 */
 	public abstract boolean isAllContextConditionsSatisfied();
 	/**
+	 * 
+	 */
+	public abstract void deactiveContextCondition(Node condition);
+	
+	/**
 	 * deactivates all context conditions
 	 */
-	public abstract void deactivateContext();
+	public abstract void deactivateAllContextConditions();
 	
 	//Add list
 	public abstract Set<Node> getAddList();
@@ -53,7 +57,7 @@ public interface Behavior extends LearnableActivatible {
     public abstract double getDeleteListCount();
 	
     //Successors
-	public abstract int getSuccessorCount();
+	public abstract int getSuccessorSize();
 	public abstract Set<Behavior> getSuccessors(Node addProposition);
 	public abstract void addSuccessor(Node contextNode, Behavior behavior);
 	public abstract void removeSuccessor(Node precondition, Behavior behavior);
@@ -73,7 +77,6 @@ public interface Behavior extends LearnableActivatible {
 	public abstract void removeConflictor(Node deleteItem, Behavior behavior);
 	
 	//Codelets
-	//TODO make attention codelet
-	public abstract List<ExpectationCodelet> getExpectationCodelets();
+	public abstract List<AttentionCodelet> getAttentionCodelets();
 	
 }//method

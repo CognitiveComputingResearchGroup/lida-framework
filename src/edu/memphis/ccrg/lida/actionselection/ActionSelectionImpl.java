@@ -55,14 +55,14 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		if(b.getActivation() > selectionThreshold){
 			if(coolDownCounter == selectionFrequency){
 				logger.log(Level.FINE, 
-						   "selecting behavior " + b.getLabel() + " " + b.getId() + " " + b.getSchemeActionId() + " activ. " + b.getActivation(), 
+						   "selecting behavior " + b.getLabel() + " " + b.getId() + " " + b.getActionId() + " activ. " + b.getActivation(), 
 						   LidaTaskManager.getActualTick());
-				sendAction(b.getSchemeActionId());
+				sendAction(b.getActionId());
 				coolDownCounter = 0;
 			}else
 				coolDownCounter++;
 			
-			logger.log(Level.FINE, "Selected action: " + b.getSchemeActionId(), LidaTaskManager.getActualTick());
+			logger.log(Level.FINE, "Selected action: " + b.getActionId(), LidaTaskManager.getActualTick());
 		}
 	}
 	

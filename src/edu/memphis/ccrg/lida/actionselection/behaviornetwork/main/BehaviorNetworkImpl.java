@@ -7,13 +7,12 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,36 +20,21 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicReinforcer;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Reinforcer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
- * From "How to Do the Right Thing" by Maes
- * The global algorithm performs a loop, in which at each timestep the following takes place over all
- * of the competence modules:
- * 1. The impact of the state, goals and protected goals on the activation level of behaviors is computed
- * 2. Activation and/or inhibition is spread through successor, predecessor, and conflicter links of behaviors
- * 3. Decay ensures overall activation level remains constant
- * 4. Behavior becomes active if
- * 	i. it is executable (all preconditions are satisfied)
- *  ii. its activation is over a certain threshold
- *  iii. have more activation than other behaviors fulfulling (i) and (ii)
- * - Break ties randomly
- * - If nothing fulfills i and ii then lower threshold by 10% 
  * 
  * @author Ryan J McCall, Sidney D'Mello
  *
@@ -59,31 +43,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
     
-    /**
-     * Starting value for candidateBehaviorThreshold
-     */
-    private final double startingCandidateBehaviorThreshold = 0.9;
-    
-    /**
-     * Current threshold for becoming active (THETA)
-     */
-    private double candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
-    
-    /**
-     * mean level of activation allowed (PI)
-     */
-    private double meanActivationAllowed = 1.0;       
+//    /**
+//     * Starting value for candidateBehaviorThreshold
+//     */
+//    private final double startingCandidateBehaviorThreshold = 0.9;
+//
+//    //TODO get rid of this?
+//    /**
+//     * Current threshold for becoming active (THETA)
+//     */
+//    private double candidateBehaviorThreshold = startingCandidateBehaviorThreshold;    
     
     /**
      * Amount of excitation by conscious broadcast (PHI)
      */
-    private double broadcastExcitationAmount = 0.5;      
-    
-    /**
-     * TODO use in learning?  possibly remove?
-     * amplification factor for base level activation (OMEGA)
-     */
-    private double baseLevelActivationAmplificationFactor = 0.0;        
+    private double broadcastExcitationAmount = 0.5;        
     
     /**
 	 * If behaviors' activation falls below this threshold after they are decayed then the behavior
@@ -97,10 +71,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     
     private double conflictorExcitationFactor = 1.0;   
     
-    /**
-     * function by which the behavior activation threshold is reduced
-     */
-	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
+//    /**
+//     * function by which the behavior activation threshold is reduced
+//     */
+//	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
     
 	/**
 	 * Way that a winning behavior is chosen among those over threshold 
@@ -121,8 +95,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     /**
      * Current conscious broadcast
      */
-    //Null
-    private NodeStructure currentState = new NodeStructureImpl();
+    private NodeStructure currentState = null;
     
     /**
      * Listeners of this action selection
@@ -132,8 +105,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     /**
      * All the streams currently in this behavior network
      */
-    //TODO map? 
-    private Queue<Stream> streams = new ConcurrentLinkedQueue<Stream>();  
+    private ConcurrentMap<Long, Stream> streams = new ConcurrentHashMap<Long, Stream>();  
     
     /**
      * Map of behaviors indexed by the propositions appearing in their pre conditions
@@ -141,11 +113,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
      * 
      * this is similar to our procedural memory
      */
-    private ConcurrentMap<Node, Set<Behavior>> behaviorsByPrecondition = new ConcurrentHashMap<Node, Set<Behavior>>();
+    private ConcurrentMap<Node, WeakHashSet<Behavior>> behaviorsByPrecondition = new ConcurrentHashMap<Node, WeakHashSet<Behavior>>();
     
-    private ConcurrentMap<Node, Set<Behavior>> behaviorsByDeleteItem = new ConcurrentHashMap<Node, Set<Behavior>>();
+    private ConcurrentMap<Node, WeakHashSet<Behavior>> behaviorsByDeleteItem = new ConcurrentHashMap<Node, WeakHashSet<Behavior>>();
 
-	private ConcurrentMap<Node, Set<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, Set<Behavior>>();
+	private ConcurrentMap<Node, WeakHashSet<Behavior>> behaviorsByAddItem = new ConcurrentHashMap<Node, WeakHashSet<Behavior>>();
 	
 	/**
 	 * I expect this to be the action selection driver
@@ -167,13 +139,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
     
     //*** Module communication methods
-    //TODO check this everywhere.  s
+    //TODO check this everywhere. 
     public void receiveBroadcast(BroadcastContent bc){
     	currentState = (NodeStructure) bc;
-    	
-    	//TODO make sure this method or this line runs in a separate thread
-    	//run a task
-    	grantActivationFromBroadcast();
+ 
+    	LidaTask activatingTask = new ActivateBehaviorsFromBroadcastTask(this);
+    	taskSpawner.addTask(activatingTask);
     }
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
@@ -189,8 +160,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	if (listener instanceof ActionSelectionListener)
 			addActionSelectionListener((ActionSelectionListener)listener);
 	}
-	
-	//TODO Weak reference.  Map that use weak reference
+    
 	@Override
 	public void receiveBehavior(Behavior newBehavior){
 		indexBehaviorByElements(newBehavior, newBehavior.getContextConditions(), behaviorsByPrecondition);      
@@ -198,17 +168,20 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		indexBehaviorByElements(newBehavior, newBehavior.getDeleteList(), behaviorsByDeleteItem);
         createInterBehaviorLinks(newBehavior);
         //
-        Stream newStream = new Stream();
+        Stream newStream = new Stream(streamIdGenerator++);
         newStream.addBehavior(newBehavior);
-        streams.add(newStream);
+        streams.put(newStream.getId(), newStream);
 	}
+	
+	private long streamIdGenerator = 0L;
+	
 	//TODO review making this method thread-safe
-	private void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, Set<Behavior>> map){
+	private void indexBehaviorByElements(Behavior behavior, Set<Node> elements, Map<Node, WeakHashSet<Behavior>> map){
 		for(Node element: elements){
 			synchronized(element){
-				Set<Behavior> values = map.get(element);
+				WeakHashSet<Behavior> values = map.get(element);
 				if(values == null){
-					values = new HashSet<Behavior>();
+					values = new WeakHashSet<Behavior>();
 					map.put(element, values);
 				}
 				values.add(behavior);
@@ -221,7 +194,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		//Go through the add items and create all predecessor/successor links 
 		//as required by behaviors whose preconditions overlap with these items
 		for(Node addItem: newBehavior.getAddList()){
-			Set<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
+			WeakHashSet<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
 			for(Behavior successorBehavior: behaviors){
 				//Create predecessor link for other behavior
 				successorBehavior.addPredecessor(addItem, newBehavior);
@@ -268,26 +241,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     public void selectAction(){   
         //spread activation and inhibition among behaviors        
         passActivationAmongBehaviors();
-        //Essentially readjusts the activations of all behaviors
-        normalizeActivations(); 
-        
-        //TODO add to selector whenever over threshold?
-        //TODO collapse this into the Selector!
-        chooseBehaviorsForSelection();
         
         //Select winner
-        winner = selectorStrategy.selectBehavior();
+        winner = selectorStrategy.selectBehavior(getStreams());
     	processWinner();
         
     	//Deactivate preconditions
     	deactivateAllPreconditions();
     }//method 
+    
 
     /**
      * 
      */
     public void passActivationAmongBehaviors(){
-    	for(Stream stream: streams){
+    	for(Stream stream: getStreams()){
         	for(Behavior behavior: stream.getBehaviors()){
         		 if(behavior.isAllContextConditionsSatisfied())
         	         spreadSuccessorActivation(behavior);        
@@ -383,48 +351,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
             }//for each conflictor
         }//for nodes in current state    
     }//method    
-
-    //TODO rework? remove?
-    public void normalizeActivations(){
-        int behaviorCount = 0;
-        int aggregateActivationofBehaviors = 0;
-        for(Stream s: streams){
-        	behaviorCount += s.getBehaviorCount();
-        	for(Behavior b: s.getBehaviors())
-        		aggregateActivationofBehaviors += b.getActivation();
-        }
-        
-        double n_sum = meanActivationAllowed * behaviorCount;
-        for(Stream s: streams){
-            for(Behavior behavior: s.getBehaviors()){   
-            	
-                double strength = behavior.getActivation() / aggregateActivationofBehaviors;
-                double n_activation = strength * n_sum;
-                
-                behavior.setActivation(n_activation);
-                /*
-                //appeared commented out in Sidney's original code 
-                double change = n_activation - activation;                
-                
-                if(change > 0)
-                    behavior.excite(change);
-                else if (change < 0)
-                    behavior.inhibit(change);
-                 */
-            }
-        }
-    }
-    
-	//TODO move this inside selector?
-    public void chooseBehaviorsForSelection(){
-    	for(Stream s: streams)		
-        	for(Behavior b: s.getBehaviors())
-        		if(b.isAllContextConditionsSatisfied() && 
-        		   b.getActivation() >= candidateBehaviorThreshold)
-        			selectorStrategy.addCompetitor(b);
-
-    }
-    
     
     /**
      * For each proposition get the behaviors indexed by that proposition
@@ -452,29 +378,29 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     	if(winner != null){                                                    
             prepareToFire(winner);
             sendAction();
-            resetCandidateBehaviorThreshold();
+//            resetCandidateBehaviorThreshold();
             reinforcementStrategy.reinforce(winner, currentState, taskSpawner);
             winner.setActivation(0.0);
-        }else       
-            reduceCandidateBehaviorThreshold();
+          }
+//        }else       
+//            reduceCandidateBehaviorThreshold();
     }
     private void prepareToFire(Behavior b){
         logger.log(Level.FINEST, "BEHAVIOR : PREPARE TO FIRE " + b.getLabel(),
         		LidaTaskManager.getActualTick());
         //TODO spawn expectation codelets looking for results
-        //TODO bind necessary variables???
     }
     
-    public void reduceCandidateBehaviorThreshold(){
-    	candidateBehaviorThreshold = candidateThresholdReducer.reduce(candidateBehaviorThreshold);
-        logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to " + candidateBehaviorThreshold,
-        		LidaTaskManager.getActualTick());
-    }
-    public void resetCandidateBehaviorThreshold(){
-        candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
-        logger.log(Level.FINEST, "Candidate behavior threshold RESET to  " + candidateBehaviorThreshold, 
-        		LidaTaskManager.getActualTick());
-    }
+//    public void reduceCandidateBehaviorThreshold(){
+//    	candidateBehaviorThreshold = candidateThresholdReducer.reduce(candidateBehaviorThreshold);
+//        logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to " + candidateBehaviorThreshold,
+//        		LidaTaskManager.getActualTick());
+//    }
+//    public void resetCandidateBehaviorThreshold(){
+//        candidateBehaviorThreshold = startingCandidateBehaviorThreshold;
+//        logger.log(Level.FINEST, "Candidate behavior threshold RESET to  " + candidateBehaviorThreshold, 
+//        		LidaTaskManager.getActualTick());
+//    }
        
 	private void sendAction(long actionId) {
         for(ActionSelectionListener l: listeners)
@@ -482,13 +408,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
     }
 
 	private void sendAction() {
-		sendAction(winner.getSchemeActionId());
+		sendAction(winner.getActionId());
 	}
 	
 	public void deactivateAllPreconditions(){
-		 for(Stream s: streams)				
+		 for(Stream s: getStreams())				
 	        for(Behavior b: s.getBehaviors())
-	        	b.deactivateContext();   
+	        	b.deactivateAllContextConditions();   
 	}
 	
 	/**
@@ -497,7 +423,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 	 */
 	@Override
 	public void decayModule(long ticks){
-		for(Stream stream: streams){
+		for(Stream stream: getStreams()){
 			for(Behavior behavior: stream.getBehaviors()){
 				behavior.decay(ticks);
 				if(behavior.getActivation() <= lowerBoundForBehaviorActivation){
@@ -556,53 +482,42 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
         this.reinforcementStrategy = reinforcer;
     }
     
-	public void setBehaviorActivationThreshold(double threshold){
-		this.candidateBehaviorThreshold = threshold;
-	}
+//	public void setBehaviorActivationThreshold(double threshold){
+//		this.candidateBehaviorThreshold = threshold;
+//	}
 	public void setBroadcastExcitationAmount(double broadcastExciation){
 		this.broadcastExcitationAmount = broadcastExciation;
-	}
-                           
-	public void setMeanActivation(double meanActivation){
-		this.meanActivationAllowed = meanActivation;
-	}                   
-	public void setBaseLevelActivationAmplificationFactor(double blaAmplificationFactor){
-		this.baseLevelActivationAmplificationFactor = blaAmplificationFactor;
 	}
 	
 	//*** Gets ***
 	public Behavior getBehavior(long id, long actionId) {
-		for(Stream s: streams){
+		for(Stream s: getStreams()){
 			for(Behavior b: s.getBehaviors()){
-				if(b.getId() == id && b.getSchemeActionId() == actionId)
+				if(b.getId() == id && b.getActionId() == actionId)
 					return b;
 			}
 		}
 		return null;		
 	}
     
-    public double getBehaviorActivationThreshold(){
-        return candidateBehaviorThreshold;
-    }
+//    public double getBehaviorActivationThreshold(){
+//        return candidateBehaviorThreshold;
+//    }
     public double getBroadcastExcitationAmount(){
         return broadcastExcitationAmount;                
     }
 
-    public double getBaseLevelActivationAmplicationFactor(){
-        return baseLevelActivationAmplificationFactor;
-    }            
-    
-    public Queue<Stream> getStreams(){
-        return streams;        
+    public Collection<Stream> getStreams(){
+        return Collections.unmodifiableCollection(streams.values());        
     }        
 
-	public CandidateThresholdReducer getCandidateThresholdReducer() {
-		return candidateThresholdReducer;
-	}
-
-	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
-		this.candidateThresholdReducer = reducer;
-	}
+//	public CandidateThresholdReducer getCandidateThresholdReducer() {
+//		return candidateThresholdReducer;
+//	}
+//
+//	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
+//		this.candidateThresholdReducer = reducer;
+//	}
 
 	public Selector getSelectorStrategy() {
 		return selectorStrategy;

@@ -1,13 +1,14 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork.test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;

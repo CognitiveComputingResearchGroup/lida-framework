@@ -1,15 +1,15 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
+import edu.memphis.ccrg.lida.attention.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 
 //From old code: Iterate through the add list of an expecation codelet's associated behavior.
 //If a proposition in the add list matches the current state 
 //then increment this codelets performance else decrement it.
-public class ExpectationCodelet extends LidaTaskImpl{
+public class ExpectationCodelet extends AttentionCodeletImpl{
 	
 	private NodeStructure currentState = new NodeStructureImpl();
 	

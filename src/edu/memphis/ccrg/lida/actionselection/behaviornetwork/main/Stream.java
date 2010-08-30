@@ -22,11 +22,13 @@ public class Stream{
     
     private boolean instantiated = false;
     
-    public Stream(String name){
+    private long id;
+    
+    public Stream(String name, long id){
         this.name = name;              
     }
-    public Stream(){
-    	this("no name");
+    public Stream(long id){
+    	this("no name", id);
     }
     
     public String getName(){
@@ -50,7 +52,7 @@ public class Stream{
     	return behaviors.put(behavior.getId(), behavior);
     }    
     public Collection<Behavior> getBehaviors(){
-        return behaviors.values();
+        return Collections.unmodifiableCollection(behaviors.values());
     }
     public Behavior getBehavior(long id){
         return behaviors.get(id);       
@@ -61,6 +63,10 @@ public class Stream{
 	
 	public void removeBehavior(Behavior behavior) {
 		behaviors.remove(behavior);
+	}
+	
+	public long getId(){
+		return id;
 	}
 	
 }//class

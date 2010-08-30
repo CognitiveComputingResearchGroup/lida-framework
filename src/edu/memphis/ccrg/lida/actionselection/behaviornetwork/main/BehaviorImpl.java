@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatibleImpl;
+import edu.memphis.ccrg.lida.attention.AttentionCodelet;
+import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
-public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
+public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.main.Behavior");
 	
@@ -64,41 +66,52 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
      */
     private Map<Node, Set<Behavior>> conflictors = new ConcurrentHashMap<Node, Set<Behavior>>();
 
-    //TODO attention codelets
-    private List<ExpectationCodelet> expectationCodelets = new ArrayList<ExpectationCodelet>();
+    private List<AttentionCodelet> attentionCodelets = new ArrayList<AttentionCodelet>();
 
     /**
      * Id of the action(s) in sensory-motor to be taken if this behavior executes
      */
-	private long schemeActionId;
+	private long actionId;
 	
 	/**
 	 * unique identifier
 	 */
 	private long id;
+	
+	/**
+	 * optimization for checking if context is all satisfied
+	 */
+    private boolean isAllContextSatisfied = false;
    
     //TODO why would a behavior have a stream?  To spawn additional behaviors?
-//   private Stream stream = null;
+    private Stream stream = null;
     
 	public BehaviorImpl(long id, long actionId) {
 	   	this.id = id;
-	   	this.schemeActionId = actionId;
-	   	deactivateContext();
+	   	this.actionId = actionId;
+	   	deactivateAllContextConditions();
 	}
 	
     public BehaviorImpl(String label, long id, long actionId, double totalActivation){
     	this(id, actionId);
     	this.label = label;
-    	
-    	//TODO Behaviors have no bla
     	setActivation(totalActivation);
     }
 
 	//Precondition methods
-    public void deactivateContext(){                
+    public void deactivateAllContextConditions(){      
+        isAllContextSatisfied = false;
         for(Node s: context.keySet())
-        	context.put(s, false);       
+        	context.put(s, false);    
     }
+    
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setActionId(long actionId) {
+		this.actionId = actionId;
+	}
 
     public boolean isContextConditionSatisfied(Node prop){
     	if(context.containsKey(prop))
@@ -106,8 +119,10 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
     	return false;
     }
     
-    //TODO optimization 
     public boolean isAllContextConditionsSatisfied(){
+    	if(isAllContextSatisfied)
+    		return true;
+    	
         for(Boolean b: context.values()){
         	if(b == false)
         		return false;
@@ -120,8 +135,17 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 		context.put(proposition, true);
 	}
 	
+	@Override
+	public void deactiveContextCondition(Node condition) {
+		if(context.containsKey(condition)){
+			isAllContextSatisfied = false;
+			context.put(condition, false);
+		}	
+	}
+	
     // start add methods    
     public boolean addContextCondition(Node condition){
+    	isAllContextSatisfied = false;
     	return (context.put(condition, false) != null);
     }
     
@@ -143,7 +167,7 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
             list.add(predecessor);
         }
         else
-            logger.log(Level.WARNING, "tried to add null Precondition or predecessor as predecessor", LidaTaskManager.getActualTick());
+            logger.log(Level.WARNING, "tried to add null Precondition or predecessor in addPredecessor", LidaTaskManager.getActualTick());
     } 
     
     public void addSuccessor(Node addProposition, Behavior successor){
@@ -156,13 +180,8 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
             list.add(successor);
         }
         else
-            logger.log(Level.WARNING, "tried to add null Precondition or predecessor as successor", LidaTaskManager.getActualTick());
+            logger.log(Level.WARNING, "tried to add null Precondition or predecessor in addSuccessor", LidaTaskManager.getActualTick());
     }
-    
-//	@Override
-//	public void addSuccessors(Node addProposition, List<Behavior> behaviors) {
-//		successors.put(addProposition, behaviors);
-//	}
     
     public void addConflictor(Node precondition, Behavior conflictor){
         if(precondition != null && conflictor != null){
@@ -173,57 +192,76 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
             }
             list.add(conflictor);            
         }
-        //TODO
+        else
+            logger.log(Level.WARNING, "tried to add null Precondition or conflictor in addConflictor", LidaTaskManager.getActualTick());
     }
     
     //TODO make sure these methods are threadsafe
+    //TODO weak hashset
     
 	public void addConflictors(Node precondition1, Set<Behavior> behaviors) {
-		conflictors.put(precondition1, behaviors);
-		//TODO follow previous method
+		if(precondition1 != null && behaviors != null){
+	        Set<Behavior> list = conflictors.get(precondition1);
+	        if(list == null){
+                list = new HashSet<Behavior>();
+                conflictors.put(precondition1, list);
+            }
+            list.addAll(behaviors);               
+	    }
+	    else
+	    	logger.log(Level.WARNING, "tried to add null Precondition or conflictor in addConflictor", LidaTaskManager.getActualTick());
 	}
     
-    public void addExpectationCodelet(ExpectationCodelet expectationCodelet){
-    	expectationCodelets.add(expectationCodelet);
+    public void addAttentionCodelet(AttentionCodelet attentionCodelet){
+    	attentionCodelets.add(attentionCodelet);
     }
-    
-//	@Override
-//	public void addPredecessors(Node precondition, List<Behavior> behaviors) {
-//		predecessors.put(precondition, behaviors);
-//	}
     
     //Get methods
     public Set<Node> getContextConditions(){
-    	//TODO use unmodifiable set
-        return context.keySet();
+        return Collections.unmodifiableSet(context.keySet());
     }
     
     public Set<Node> getAddList(){
-        return addList;
+        return Collections.unmodifiableSet(addList);
     }
     
     public Set<Node> getDeleteList(){
-        return deleteList;
+        return Collections.unmodifiableSet(deleteList);
     }
     
     public Map<Node, Set<Behavior>> getPredecessors(){
-        return predecessors;
+        return Collections.unmodifiableMap(predecessors);
     }
     
     public Map<Node, Set<Behavior>> getSuccessors(){
-        return successors;
+        return Collections.unmodifiableMap(successors);
     } 
     
     public Collection<Set<Behavior>> getConflictors(){
-        return conflictors.values();
+        return Collections.unmodifiableCollection(conflictors.values());
     }
         
 	public Set<Behavior> getConflictors(Node precondition1) {
-		return conflictors.get(precondition1);
+		return Collections.unmodifiableSet(conflictors.get(precondition1));
+	}
+	
+	@Override
+	public void removeConflictor(Node deleteItem, Behavior behavior) {
+		conflictors.get(deleteItem).remove(behavior);
+	}
+
+	@Override
+	public void removeSuccessor(Node precondition, Behavior behavior) {
+		successors.get(precondition).remove(behavior);
+	}
+
+	@Override
+	public void removePredecessor(Node addItem, Behavior behavior) {
+		predecessors.get(addItem).remove(behavior);
 	}
     
-    public List<ExpectationCodelet> getExpectationCodelets(){
-        return expectationCodelets;
+    public List<AttentionCodelet> getAttentionCodelets(){
+        return Collections.unmodifiableList(attentionCodelets);
     }
    
 	@Override
@@ -233,17 +271,16 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 
 	@Override
 	public Set<Behavior> getPredecessors(Node precondition) {
-		return predecessors.get(precondition);
+		return Collections.unmodifiableSet(predecessors.get(precondition));
 	}
     
 	@Override
 	public Set<Behavior> getSuccessors(Node addProposition) {
-		return successors.get(addProposition);
+		return Collections.unmodifiableSet(successors.get(addProposition));
 	}
 
-	//TODO change to SIZE
 	@Override
-	public int getSuccessorCount() {
+	public int getSuccessorSize() {
 		return successors.size();
 	}
 
@@ -268,8 +305,8 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 	}
 
 	@Override
-	public long getSchemeActionId() {
-		return schemeActionId;
+	public long getActionId() {
+		return actionId;
 	}
 
 	public long getId() {
@@ -280,73 +317,29 @@ public class BehaviorImpl extends LearnableActivatibleImpl implements Behavior{
 		return label;
 	}
 	
-    //Set methods       
-//    public void setContextConditions(Map<Node, Boolean> conditions){
-//    	this.context = conditions;
-//    }
-//    
-//    public void setAddList(Set<Node> addList){
-//    	this.addList = addList;
-//    } 
-//    
-//    public void setDeleteList(Set<Node> deleteList){
-//    	this.deleteList = deleteList;
-//    }
-//    
-//    public void setPredecessors(Map<Node, Set<Behavior>> predecessors){
-//    	this.predecessors = predecessors;
-//    }    
-//    
-//    public void setSuccesors(Map<Node, Set<Behavior>> successors){
-//    	this.successors = successors;
-//    }    
-//    
-//    public void setConflictors(Map<Node, Set<Behavior>> conflictors){
-//    	this.conflictors = conflictors;
-//    }    
-//    
-//    public void setExpectationCodelets(List<ExpectationCodelet> expectationCodelets){
-//    	this.expectationCodelets = expectationCodelets;
-//    }
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public void setSchemeActionId(long schemeActionId) {
-		this.schemeActionId = schemeActionId;
-	}
-	
 	public boolean equals(Object o) {
 		if (!(o instanceof Behavior))
 			return false;
 		
 		Behavior behavior = (Behavior) o;
-		return behavior.getId() == id && behavior.getSchemeActionId() == schemeActionId;
+		return behavior.getId() == id && behavior.getActionId() == actionId;
 	}
 
 	public int hashCode() {
 		int hash = 1;
 		Long v1 = new Long(id);
-		Long v2 = new Long(schemeActionId);
+		Long v2 = new Long(actionId);
 		hash = hash * 31 + v2.hashCode();
 		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
 		return hash;
 	}
 
-	@Override
-	public void removeConflictor(Node deleteItem, Behavior behavior) {
-		conflictors.get(deleteItem).remove(behavior);
+	public void setStream(Stream stream) {
+		this.stream = stream;
 	}
 
-	@Override
-	public void removeSuccessor(Node precondition, Behavior behavior) {
-		successors.get(precondition).remove(behavior);
-	}
-
-	@Override
-	public void removePredecessor(Node addItem, Behavior behavior) {
-		predecessors.get(addItem).remove(behavior);
+	public Stream getStream() {
+		return stream;
 	}
 
 }//class

@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationCodelet;
+import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -13,14 +14,14 @@ public class BasicReinforcer implements Reinforcer{
 	private ReinforcementCurve curve = new SigmoidReinforcementCurve(0.5, 0.5);
 	
     public void reinforce(Behavior behavior, NodeStructure currentState, TaskSpawner ts){
-    	List<ExpectationCodelet> expectationCodelets = behavior.getExpectationCodelets();
+    	List<AttentionCodelet> expectationCodelets = behavior.getAttentionCodelets();
         if(!expectationCodelets.isEmpty()){
 	        double fitness = 0;
-	        for(ExpectationCodelet codelet: expectationCodelets){
-	        	codelet.setCurrentState(currentState);
+	        for(AttentionCodelet codelet: expectationCodelets){
+	        	((ExpectationCodelet) codelet).setCurrentState(currentState);
 	        	ts.addTask(codelet);
-	            fitness += codelet.getPerformance();
-	            behavior.reinforceBaseLevelActivation(reinforcement(fitness, behavior.getBaseLevelActivation()));   
+	            fitness += ((ExpectationCodelet) codelet).getPerformance();
+	          //  behavior.reinforceBaseLevelActivation(reinforcement(fitness, behavior.getBaseLevelActivation()));   
 	        } 
         }
     }

@@ -36,8 +36,8 @@ public class BehaviorNetTest extends TestCase{
 		assertEquals("nothingA1", a.getContextSize(), 0);
 		assertEquals("nothingB1", b.getContextSize(), 0);
 		//
-		assertEquals("nothingA2", a.getSuccessorCount(), 0);
-		assertEquals("nothingB2", b.getSuccessorCount(), 0);
+		assertEquals("nothingA2", a.getSuccessorSize(), 0);
+		assertEquals("nothingB2", b.getSuccessorSize(), 0);
 		//
 		assertEquals("nothingA3", a.getPredecessorCount(), 0);
 		assertEquals("nothingB3", b.getPredecessorCount(), 0);
@@ -69,8 +69,8 @@ public class BehaviorNetTest extends TestCase{
 		assertEquals("appleA1", a.getContextSize(), 1);
 		assertEquals("appleB1", b.getContextSize(), 0);
 		//
-		assertEquals("appleA2", a.getSuccessorCount(), 0);
-		assertEquals("appleB2", b.getSuccessorCount(), 0);
+		assertEquals("appleA2", a.getSuccessorSize(), 0);
+		assertEquals("appleB2", b.getSuccessorSize(), 0);
 		//
 		assertEquals("appleA3", a.getPredecessorCount(), 0);
 		assertEquals("appleB3", b.getPredecessorCount(), 0);
@@ -100,8 +100,8 @@ public class BehaviorNetTest extends TestCase{
 		assertEquals("bananaA1", a.getContextSize(), 1);
 		assertEquals("bananaB1", b.getContextSize(), 0);
 		//
-		assertEquals("bananaA2", a.getSuccessorCount(), 0);
-		assertEquals("bananaB2", b.getSuccessorCount(), 1);
+		assertEquals("bananaA2", a.getSuccessorSize(), 0);
+		assertEquals("bananaB2", b.getSuccessorSize(), 1);
 		assertEquals("c2", b.getSuccessors(banana).remove(a), true);
 		//
 		assertEquals("bananaA3", a.getPredecessorCount(), 1);
@@ -135,8 +135,8 @@ public class BehaviorNetTest extends TestCase{
 		assertEquals("bananaA1", a.getContextSize(), 1);
 		assertEquals("bananaB1", b.getContextSize(), 0);
 		//
-		assertEquals("bananaA2", a.getSuccessorCount(), 0);
-		assertEquals("bananaB2", b.getSuccessorCount(), 1);
+		assertEquals("bananaA2", a.getSuccessorSize(), 0);
+		assertEquals("bananaB2", b.getSuccessorSize(), 1);
 		assertEquals("c2", b.getSuccessors(banana).remove(a), true);
 		//
 		assertEquals("bananaA3", a.getPredecessorCount(), 1);

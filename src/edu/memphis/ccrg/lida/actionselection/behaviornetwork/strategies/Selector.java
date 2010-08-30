@@ -1,6 +1,9 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
+import java.util.Collection;
+
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 
 /**
  * A strategy for choosing which behavior to execute
@@ -10,15 +13,9 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 public interface Selector {
 
 	/**
-	 * Add a behavior to be considered
-	 * @param b
-	 */
-	public abstract void addCompetitor(Behavior b);
-
-	/**
 	 * Select a single behavior as the current winner
 	 * @return
 	 */
-	public abstract Behavior selectBehavior();
+	public abstract Behavior selectBehavior(Collection<Stream> candidates);
 
 }
