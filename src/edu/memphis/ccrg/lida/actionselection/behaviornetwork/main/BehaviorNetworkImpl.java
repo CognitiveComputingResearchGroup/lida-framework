@@ -168,7 +168,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 		indexBehaviorByElements(newBehavior, newBehavior.getContextConditions(), behaviorsByPrecondition);      
 		indexBehaviorByElements(newBehavior, newBehavior.getAddList(), behaviorsByAddItem);
 		indexBehaviorByElements(newBehavior, newBehavior.getDeleteList(), behaviorsByDeleteItem);
-        createInterBehaviorLinks(newBehavior);
         //
         Stream newStream = new Stream(streamIdGenerator++);
         newStream.addBehavior(newBehavior);
@@ -191,46 +190,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements ActionSelecti
 			
 		}
 	}
-	
-	public void createInterBehaviorLinks(Behavior newBehavior){
-//		//Go through the add items and create all predecessor/successor links 
-//		//as required by behaviors whose preconditions overlap with these items
-//		for(Node addItem: newBehavior.getAddList()){
-//			WeakHashSet<Behavior> behaviors = behaviorsByPrecondition.get(addItem);
-//			for(Behavior successorBehavior: behaviors){
-//				//Create predecessor link for other behavior
-//				successorBehavior.addPredecessor(addItem, newBehavior);
-//				//Create successor link for this behavior
-//				newBehavior.addSuccessor(addItem, successorBehavior);
-//			}
-//		}
-//		
-//		//Add this new behavior as a conflictor of whatever behaviors stopped by new behavior
-//		for(Node deleteItem: newBehavior.getDeleteList()){
-//			Set<Behavior> behaviorsAffectedByDelete = behaviorsByPrecondition.get(deleteItem);
-//			for(Behavior affectedBehavior: behaviorsAffectedByDelete){
-//				affectedBehavior.addConflictor(deleteItem, newBehavior);
-//			}
-//		}
-//		
-//		for(Node condition: newBehavior.getContextConditions()){
-//			//Find all of the new behavior's conflictors - behaviors that 
-//			//hurt its chances of activating
-//			Set<Behavior> deletors = behaviorsByDeleteItem.get(condition);
-//			if(deletors != null)
-//				newBehavior.addConflictors(condition, deletors);
-//			
-//			//Create successor links for other behaviors
-//			//Create predecessor links for this behavior
-//			Set<Behavior> addingBehaviors = behaviorsByAddItem.get(condition);
-//			if(addingBehaviors != null){
-//				for(Behavior adder: addingBehaviors){
-//					newBehavior.addPredecessor(condition, adder);
-//					adder.addSuccessor(condition, newBehavior);
-//				}
-//			}
-//		}//for
-	}//method
 
 	@Override
 	public void triggerActionSelection() {
