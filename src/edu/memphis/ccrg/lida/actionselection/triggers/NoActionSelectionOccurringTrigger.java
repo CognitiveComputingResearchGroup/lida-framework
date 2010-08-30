@@ -8,8 +8,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
-public class NoActionSelectionOccurringTrigger implements
-		ActionSelectionTrigger {
+public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger {
 	
 	/**
 	 * How long since last broadcast before this trigger is activated
@@ -22,7 +21,7 @@ public class NoActionSelectionOccurringTrigger implements
 	private TriggerTask task;
 	private String name="";
 	private LidaTaskManager tm;
-	private ActionSelection as;
+	private ActionSelectionDriver asd;
 
 	/**
 	 * @return the lidaTaskManager
@@ -43,8 +42,8 @@ public class NoActionSelectionOccurringTrigger implements
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
-	public void setUp(Map<String, Object> parameters, ActionSelection as) {
-		this.as=as;
+	public void setUp(Map<String, Object> parameters, ActionSelectionDriver asd) {
+		this.asd=asd;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Integer)) {
 			delay= (Integer)o;
@@ -62,9 +61,9 @@ public class NoActionSelectionOccurringTrigger implements
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
 	public void start() {
-		 task=new TriggerTask(delay,as,name);	
-		//as.addTask(task);
-
+						
+		task=new TriggerTask(delay,asd,name);	
+		asd.addTask(task);
 	}
 	
 	/*
@@ -83,8 +82,14 @@ public class NoActionSelectionOccurringTrigger implements
 	public void reset() {
 	
 		if (task != null)
-			//as.cancelTask(task);
+			asd.cancelTask(task);
 		start();
+	}
+
+	@Override
+	public void setUp(Map<String, Object> parameters, ActionSelection as) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

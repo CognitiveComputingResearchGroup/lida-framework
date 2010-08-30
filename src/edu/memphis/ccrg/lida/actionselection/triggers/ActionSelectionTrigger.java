@@ -12,8 +12,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
  * Its command method is called every time a new coalition enters the AS.
  * It can implement a timer if it needed
  * See default Triggers as examples of implementation.
- * 
- * @author Javier Snaider
+ *  
  *
  */
 public interface ActionSelectionTrigger {
