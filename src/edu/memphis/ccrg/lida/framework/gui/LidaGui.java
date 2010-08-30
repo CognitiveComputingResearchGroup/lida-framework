@@ -9,6 +9,7 @@
  */
 package edu.memphis.ccrg.lida.framework.gui;
 
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +27,9 @@ import javax.swing.JPanel;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
-import edu.memphis.ccrg.lida.framework.initialization.*;
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
+import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
+import java.awt.Container;
 
 /**
  * 
@@ -50,9 +53,11 @@ public class LidaGui extends javax.swing.JFrame {
     private LidaGuiController controller;
     private static Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
     private javax.swing.JDialog addEditDialog;
+    private List<String> panelClassNames = new ArrayList<String>();
 
     public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {
         initComponents();
+        
         this.lida = lida;
         this.controller = controller;
 
@@ -95,6 +100,7 @@ public class LidaGui extends javax.swing.JFrame {
         });
 
         for (String[] vals : panelsArray) {
+            panelClassNames.add(vals[CLASS_NAME]);
             createLidaPanel(vals);
         }
     }
@@ -412,6 +418,26 @@ public class LidaGui extends javax.swing.JFrame {
             dialog.add(jPanel);
             dialog.pack();
             dialog.setVisible(true);
+            dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                int index = panels.size() - 1;
+                public void windowClosing(WindowEvent winEvt) {
+                    for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
+                        if (firstLevelMenu instanceof javax.swing.JMenu) {
+                            for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu)firstLevelMenu).getMenuComponents()) {
+                                if (secondLevelMenu instanceof javax.swing.JMenu) {
+                                    String menuText = ((javax.swing.JMenu)secondLevelMenu).getText();
+                                    String panelName = panels.get(index).getName();
+                                    if (menuText.equals(panelName))
+                                        ((javax.swing.JCheckBoxMenuItem)((javax.swing.JMenu)secondLevelMenu).getMenuComponent(0)).setSelected(false);
+                                        //((javax.swing.JMenu)firstLevelMenu).remove(secondLevelMenu);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
         } else if ("TOOL".equalsIgnoreCase(panelPosition)) {
             getContentPane().add(jPanel, java.awt.BorderLayout.PAGE_START);
             parent = getContentPane();
@@ -451,26 +477,46 @@ public class LidaGui extends javax.swing.JFrame {
             }
             private void togglePanel() {
             	int index = -1;
-                for (java.awt.Component c : parent.getComponents()) {
-                    if (c.equals(cjPanel)) {
-                        for (int i = 0; i < panels.size(); i++) {
-                            if (panels.get(i).getPanel().equals(cjPanel)) {
-                                index = i;
-                                break;
+                if (parent != null) {
+                    //normal panel (not FLOAT)
+                    for (java.awt.Component c : parent.getComponents()) {
+                        if (c.equals(cjPanel)) {
+                            for (int i = 0; i < panels.size(); i++) {
+                                if (panels.get(i).getPanel().equals(cjPanel)) {
+                                    index = i;
+                                    break;
+                                }
                             }
+                            break;
                         }
-                        break;
+                    }
+
+                    if (index > -1) {
+                        //panel found, remove it
+                        removePanelAt(index, false);
+                    } else {
+                        //panel not found, add it
+                        cParent.add(cjPanel);
+                        panels.add(cLidaPanel);
+                        panelParents.add(cParent);
+                        panelParameters.add(cParameters);
                     }
                 }
-                if (index > -1) {
-                	//panel found, remove it
-                    removePanelAt(index, false);
-                } else {
-                	//panel not found, add it
-                    cParent.add(cjPanel);
-                    panels.add(cLidaPanel);
-                    panelParents.add(cParent);
-                    panelParameters.add(cParameters);
+                else {
+                   //dialog (FLOAT)
+                   for (int i = 0; i < panels.size(); i++) {
+                        if (panels.get(i).equals(cLidaPanel)) {
+                            index = i;
+                            break;
+                        }
+                    } 
+
+                   Container c = cjPanel.getParent();
+                   while (c != null && ! (c instanceof JDialog)) c = c.getParent();
+                   if (c instanceof JDialog) {
+                       if (c.isVisible()) ((JDialog)c).setVisible(false);
+                       else ((JDialog)c).setVisible(true);
+                   }
                 }
             }
         });
@@ -494,6 +540,7 @@ public class LidaGui extends javax.swing.JFrame {
         addEditPanel.setName("AddPanel");
         addEditPanel.registerLida(lida);
         addEditPanel.registrerLidaGuiController(this.controller);
+        addEditPanel.initClassnames(panelClassNames);
         if (addEditDialog != null) addEditDialog.setVisible(false);
         addEditDialog = new javax.swing.JDialog();
         addEditDialog.add(addEditPanel.getPanel());
@@ -574,10 +621,13 @@ public class LidaGui extends javax.swing.JFrame {
             }
         }
 
-        panelParents.get(panelIndex).remove(panels.get(panelIndex).getPanel());
-        panelParents.remove(panelIndex);
-        panels.remove(panelIndex);
-        panelParameters.remove(panelIndex);
+        if (panelIndex > -1) {
+            panelParents.get(panelIndex).remove(panels.get(panelIndex).getPanel());
+            panelParents.get(panelIndex).repaint();
+            panelParents.remove(panelIndex);
+            panels.remove(panelIndex);
+            panelParameters.remove(panelIndex);
+        }
     }
 
     private void removePanelAt(int panelIndex) {
