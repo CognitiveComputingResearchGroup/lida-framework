@@ -37,15 +37,18 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * 
 	 * @param linkable
 	 * @param excitation
+	 * @param excitationTaskTicksPerRun 
 	 * @param pam
 	 * @param ts
 	 */
 	public ExcitationTask(PamLinkable linkable, double excitation,
+			              int excitationTaskTicksPerRun, 
 			              PerceptualAssociativeMemory pam, 
 			              TaskSpawner ts) {
 		super();
 		pamLinkable = linkable;
 		excitationAmount = excitation;
+		setNumberOfTicksPerRun(excitationTaskTicksPerRun);
 		this.pam = pam;
 		taskSpawner = ts;
 	}

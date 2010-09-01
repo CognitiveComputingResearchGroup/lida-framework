@@ -115,7 +115,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public void setNumberOfTicksPerStep(int ticks) {
+	public void setNumberOfTicksPerRun(int ticks) {
 		
 
 	}

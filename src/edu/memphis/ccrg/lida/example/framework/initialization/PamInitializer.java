@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
-import edu.memphis.ccrg.lida.framework.shared.LinkType;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -63,31 +63,31 @@ public class PamInitializer implements Initializer {
 				"PamNodeImpl", "bottomRight");
 		pam.addNode(bottomRight);
 		// Links
-		pam.addNewLink(gold, metal, LinkType.CHILD,1.0);
-		pam.addNewLink(metal, solid, LinkType.CHILD,1.0);
-		pam.addNewLink(iron, metal, LinkType.CHILD,1.0);
-		pam.addNewLink(wood, noMetal, LinkType.CHILD,1.0);
-		pam.addNewLink(plastic, noMetal, LinkType.CHILD,1.0);
-		pam.addNewLink(metal, noMetal, LinkType.CHILD,1.0);
-		pam.addNewLink(wood, solid, LinkType.Grounding,1.0);
+		pam.addNewLink(gold, metal, LinkCategory.Child,1.0);
+		pam.addNewLink(metal, solid, LinkCategory.Child,1.0);
+		pam.addNewLink(iron, metal, LinkCategory.Child,1.0);
+		pam.addNewLink(wood, noMetal, LinkCategory.Child,1.0);
+		pam.addNewLink(plastic, noMetal, LinkCategory.Child,1.0);
+		pam.addNewLink(metal, noMetal, LinkCategory.Child,1.0);
+		pam.addNewLink(wood, solid, LinkCategory.Grounding,1.0);
 
-		pam.addNewLink(topLeft, wood, LinkType.CHILD,1.0);
+		pam.addNewLink(topLeft, wood, LinkCategory.Child,1.0);
 
 		// Feature detectors
 		FeatureDetector fd = new BasicDetector(gold, sm, pam);
-		fd.setNumberOfTicksPerStep(5);
+		fd.setNumberOfTicksPerRun(5);
 		pam.addFeatureDetector(fd);
 		fd = new BasicDetector(iron, sm, pam);
-		fd.setNumberOfTicksPerStep(3);
+		fd.setNumberOfTicksPerRun(3);
 		pam.addFeatureDetector(fd);
 		fd = new BasicDetector(wood, sm, pam);
-		fd.setNumberOfTicksPerStep(2);
+		fd.setNumberOfTicksPerRun(2);
 		pam.addFeatureDetector(fd);
 		fd = new TopLeftDetector(topLeft, sm, pam);
-		fd.setNumberOfTicksPerStep(7);
+		fd.setNumberOfTicksPerRun(7);
 		pam.addFeatureDetector(fd);
 		fd = new BottomRightDetector(bottomRight, sm, pam);
-		fd.setNumberOfTicksPerStep(3);
+		fd.setNumberOfTicksPerRun(3);
 		pam.addFeatureDetector(fd);
 
 		PropagationBehavior b = new UpscalePropagationBehavior();

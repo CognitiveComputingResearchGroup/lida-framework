@@ -66,7 +66,7 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	 */
 	public void reset() {
 		accessibleModules.clear();
-		setNumberOfTicksPerStep(50);
+		setNumberOfTicksPerRun(50);
 		setActivation(0.0);
 		soughtContent = new NodeStructureImpl();
 		action = new BasicCodeletAction();

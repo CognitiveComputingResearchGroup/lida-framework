@@ -27,7 +27,7 @@ public class DynamicNodeStructure extends NodeStructureImpl {
 	 * @param oldGraph
 	 */
 	public DynamicNodeStructure(NodeStructure oldGraph) {
-		super(oldGraph);
+		//super(oldGraph);
 	}
 
 }

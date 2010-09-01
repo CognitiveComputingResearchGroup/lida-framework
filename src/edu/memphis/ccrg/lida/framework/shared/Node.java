@@ -28,11 +28,11 @@ public interface Node extends Linkable, Activatible{
     public long getId();
     public void setId(long id);
     
-    public NodeClass getNodeClass();
-    public void setNodeClass(NodeClass n);
-    
-    //getLabel() is in Linkable
+    public String getLabel();
     public void setLabel(String label);
+    
+	public String getFactoryName();
+	public void setFactoryName(String factoryName);
 
 }//interface Node
 

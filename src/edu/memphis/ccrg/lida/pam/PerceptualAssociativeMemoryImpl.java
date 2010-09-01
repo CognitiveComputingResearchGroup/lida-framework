@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkType;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -90,12 +90,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * 
 	 */
-	private int excitationTicksPerRun = 1;
+	private int excitationTaskTicksPerRun = 1;
 	
 	/**
 	 * 
 	 */
-	private int propagationTicksPerRun = 1;
+	private int propagationTaskTicksPerRun = 1;
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
@@ -195,8 +195,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		logger.log(Level.FINE,
 				   node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " + node.getTotalActivation(),
 				   LidaTaskManager.getActualTick());
-		ExcitationTask task = new ExcitationTask(node, amount, this, taskSpawner);
-		task.setNumberOfTicksPerStep(excitationTicksPerRun);
+		ExcitationTask task = new ExcitationTask(node, amount, excitationTaskTicksPerRun, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}
 
@@ -235,7 +234,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
 		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
 		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
-		task.setNumberOfTicksPerStep(propagationTicksPerRun);
+		task.setNumberOfTicksPerRun(propagationTaskTicksPerRun);
 		taskSpawner.addTask(task);	
 	}
 
@@ -306,11 +305,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		
 		o = parameters.get("pam.excitationTicksPerRun");
 		if(o != null)
-			excitationTicksPerRun = (Integer) o;
+			excitationTaskTicksPerRun = (Integer) o;
 		
 		o = parameters.get("pam.propagationTicksPerRun");
 		if(o != null)
-			propagationTicksPerRun = (Integer) o;
+			propagationTaskTicksPerRun = (Integer) o;
 	}// method
 
 	public Collection<FeatureDetector> getFeatureDetectors(){
@@ -338,12 +337,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		
 	}
-	public Link addNewLink(PamNode source, PamNode sink, LinkType type, double activation) {
-		return pamNodeStructure.addLink(source.getIds(),sink.getIds(),type,activation);		
+	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation) {
+		return pamNodeStructure.addLink(source.getIds(), sink.getIds(), type, activation);		
 	}
 
-	public Link addNewLink(String sourceId, String sinkId, LinkType type, double activation) {
-		return pamNodeStructure.addLink(sourceId,sinkId,type,activation);		
+	public Link addNewLink(String sourceId, String sinkId, LinkCategory type, double activation) {
+		return pamNodeStructure.addLink(sourceId, sinkId, type, activation);		
 	}
 	@Override
 	public PamNode addNewNode(String label) {

@@ -69,7 +69,7 @@ public class Printer{
 	public static void printTypes(Collection<Link> links) {
 		if(links != null){
 			for(Link l: links){
-				System.out.println(l.getType());
+				System.out.println(l.getCategory());
 			}
 			System.out.println();
 		}

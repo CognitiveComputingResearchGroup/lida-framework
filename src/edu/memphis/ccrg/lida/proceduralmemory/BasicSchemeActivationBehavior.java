@@ -30,6 +30,9 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 				LidaTaskManager.getActualTick());
 		Collection<Node> nodes = broadcast.getNodes();
 		Collection<Link> links = broadcast.getLinks();
+		
+		System.out.println("broadcast contains " + nodes.size() + " links " + links.size());
+		
 		for (Node n : nodes)
 			auxActivateSchemes(n, schemeMap);
 		for (Link l : links)

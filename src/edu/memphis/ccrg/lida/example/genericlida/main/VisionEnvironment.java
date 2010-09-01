@@ -42,7 +42,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	}
 	@Override
 	public void init(Map<String,?> params) {
-		super.setNumberOfTicksPerStep(1);
+		super.setNumberOfTicksPerRun(1);
 		lidaProperties=params;
 		imageHeight = (Integer)getParam("height",10);
 		imageWidth = (Integer)getParam("width",10);

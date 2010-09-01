@@ -159,15 +159,15 @@ public class NodeFactory {
 	public void addNodeType(LinkableDef nodeDef) {
 		nodeClasses.put(nodeDef.getName(), nodeDef);
 	}
-
-	public void addCodeletType(CodeletDef codeletDef) {
-		codelets.put(codeletDef.getName(), codeletDef);
-	}
-
+	
 	public void addNodeType(String nodeType, String className) {
 		nodeClasses.put(nodeType, new LinkableDef(className,
 				new HashMap<String, String>(), nodeType,
 				new HashMap<String, Object>()));
+	}
+
+	public void addCodeletType(CodeletDef codeletDef) {
+		codelets.put(codeletDef.getName(), codeletDef);
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class NodeFactory {
 	}
 
 	public Link getLink(Link oLink) {
-		return getLink(defaultLinkType,oLink.getSource(),oLink.getSink(),oLink.getType(),defaultDecayType,defaultExciteType,oLink.getActivation());
+		return getLink(defaultLinkType,oLink.getSource(),oLink.getSink(),oLink.getCategory(),defaultDecayType,defaultExciteType,oLink.getActivation());
 	}
 
 	public Link getLink(Link oLink, String linkT) {
@@ -234,17 +234,17 @@ public class NodeFactory {
 			exciteB=defaultExciteType;
 		}
 		
-		return getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getType(),decayB,exciteB,oLink.getActivation());
+		return getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
 	}
 
-	public Link getLink(Linkable source, Linkable sink, LinkType type,double activation) {
+	public Link getLink(Linkable source, Linkable sink, LinkCategory type,double activation) {
 		return getLink(defaultLinkType,source,sink,type,defaultDecayType,defaultExciteType,activation);
 	}
-	public Link getLink(Linkable source, Linkable sink, LinkType type) {
+	public Link getLink(Linkable source, Linkable sink, LinkCategory type) {
 		return getLink(defaultLinkType,source,sink,type,defaultDecayType,defaultExciteType,0.0);
 	}
 
-	public Link getLink(String linkT, Linkable source, Linkable sink, LinkType type){
+	public Link getLink(String linkT, Linkable source, Linkable sink, LinkCategory type){
 		LinkableDef linkDef = linkClasses.get(linkT);		
 		if (linkDef == null) {
 			logger.log(Level.WARNING, "LinkName " + linkT
@@ -262,7 +262,7 @@ public class NodeFactory {
 		
 		return getLink(linkT,source,sink,type,decayB,exciteB,0.0);		
 	}
-		public Link getLink(String linkT, Linkable source, Linkable sink, LinkType type,String decayStrategy,
+		public Link getLink(String linkT, Linkable source, Linkable sink, LinkCategory type,String decayStrategy,
 				String exciteStrategy,double activation) {
 		Link l = null;
 		try {
@@ -277,7 +277,7 @@ public class NodeFactory {
 			l = (Link) Class.forName(className).newInstance();
 			l.setSource(source);
 			l.setSink(sink);
-			l.setType(type);
+			l.setCategory(type);
 			l.setActivation(activation);
 
 //			String decayB = linkDef.getDefeaultStrategies().get("decay");
@@ -432,6 +432,7 @@ public class NodeFactory {
 
 			n.setLabel(nodeLabel);
 			n.setId(nodeIdCount++);
+			n.setFactoryName(nodeType);
 			n.setActivation(activation);
 			
 			setActivatibleStrategies(decayStrategy, exciteStrategy, n);	
@@ -528,7 +529,7 @@ public class NodeFactory {
 			String className = codeletDef.getClassName();
 			cod = (Codelet) Class.forName(className).newInstance();
 
-			cod.setNumberOfTicksPerStep(ticksPerStep);
+			cod.setNumberOfTicksPerRun(ticksPerStep);
 			cod.setActivation(activation);
 			setActivatibleStrategies(decayStrategy, exciteStrategy, cod);
 			
@@ -576,5 +577,21 @@ public class NodeFactory {
 	
 	public LidaAction getAction(long id){
 		return actionsCache.get(id);
+	}
+
+	public boolean containsNodeType(String nodeType) {
+		return nodeClasses.containsKey(nodeType);
+	}
+
+	public boolean containsLinkType(String defaultLink) {
+		return linkClasses.containsKey(defaultLink);
+	}
+
+	public Map<String, LinkableDef> getStupidLinkMap() {
+		return linkClasses;
+	}
+	
+	public Map<String, LinkableDef> getStupidNodeMap() {
+		return nodeClasses;
 	}
 }// class	

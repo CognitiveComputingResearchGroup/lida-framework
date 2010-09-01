@@ -20,7 +20,6 @@ public class NodeImplTest extends TestCase{
 
 	NodeImpl node1,node2,node3;
 	PamNodeImpl pamNode1,pamNode2;
-	NodeClass classN;
 	
 	/**
 	 * This method is called before running each test case to initialize the objects
@@ -40,7 +39,6 @@ public class NodeImplTest extends TestCase{
 		node1.setId(1);			
 		node1.setLabel("red");		
 		node1.setImportance(100);
-		node1.setNodeClass(classN);
 		node1.setReferencedNode(pamNode1);	
 						
 		node2.setId(2);			
@@ -138,23 +136,6 @@ public class NodeImplTest extends TestCase{
 		node1.setId(1);
 		node2.setId(1);
 		assertEquals("Problem with equals", node1,node2);
-	}	
-	/**
-	 * This method is used to test the NodeImpl.getNodeClass() method
-	 */
-	@Test
-	public void testGetNodeClass() {		
-		
-		assertEquals("Problem with getNodeClass", classN,node1.getNodeClass());
-	}	
-	/**
-	 * This method is used to test the NodeImpl.setNodeClass() method
-	 */
-	@Test
-	public void testSetNodeClass() {
-		
-		node2.setNodeClass(classN);	
-		assertEquals("Problem with setNodeClass", classN,node2.getNodeClass());
 	}	
 	
 	/**

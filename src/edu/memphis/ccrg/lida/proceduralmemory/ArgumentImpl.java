@@ -6,7 +6,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeClass;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -86,18 +85,6 @@ public class ArgumentImpl implements Argument {
 		return 0.0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.Node#getNodeClass()
-	 */
-	@Override
-	public NodeClass getNodeClass() {
-		if (node != null) {
-			return node.getNodeClass();
-		}
-		return null;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -138,17 +125,6 @@ public class ArgumentImpl implements Argument {
 	 */
 	@Override
 	public void setLabel(String label) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.Node#setNodeClass(edu.memphis.
-	 * ccrg.lida.framework.shared.NodeClass)
-	 */
-	@Override
-	public void setNodeClass(NodeClass n) {
 	}
 
 	/*
@@ -334,6 +310,15 @@ public class ArgumentImpl implements Argument {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public String getFactoryName() {
+		return null;
+	}
+
+	@Override
+	public void setFactoryName(String factoryName) {
 	}
 
 }

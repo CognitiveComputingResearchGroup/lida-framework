@@ -36,7 +36,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
 		taskID = nextTaskID++;
 		this.ts=ts;
-		setNumberOfTicksPerStep(ticksForCycle);
+		setNumberOfTicksPerRun(ticksForCycle);
 	}
 	
 	/**
@@ -137,9 +137,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setNumberOfTicksPerStep(int)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setNumberOfTicksPerRun(int)
 	 */
-	public void setNumberOfTicksPerStep(int ticks) {
+	public void setNumberOfTicksPerRun(int ticks) {
 		if (ticks > 0){
 			ticksPerStep = ticks;
 			setNextExcecutionTickLap(ticks);

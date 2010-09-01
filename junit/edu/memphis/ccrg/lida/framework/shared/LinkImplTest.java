@@ -18,7 +18,7 @@ public class LinkImplTest extends TestCase{
 	
 	NodeImpl node1,node2,node3,node4;
 	LinkImpl link1,link2,link3;	
-	LinkType linktype1,linktype2;		
+	LinkCategory linktype1,linktype2;		
 
 	/**
 	 * This method is called before running each test case to initialize the objects
@@ -33,19 +33,19 @@ public class LinkImplTest extends TestCase{
 		link1 = new LinkImpl();
 		link2 = new LinkImpl();
 		link3 = new LinkImpl();
-		linktype1 = LinkType.PARENT ;
-		linktype2 = LinkType.CHILD ;	
+		linktype1 = LinkCategory.Parent ;
+		linktype2 = LinkCategory.Child ;	
 
 		node1.setId(1);	
 		node2.setId(2);
 		node3.setId(3);		
 		node4.setId(4);		
 		
-		link1 = new LinkImpl(node1,node2,LinkType.CHILD);
-		link2 = new LinkImpl(node3,node4,LinkType.PARENT);
-		link3 = new LinkImpl(node3,link2,LinkType.Grounding);
-		linktype1 = LinkType.PARENT ;
-		linktype2 = LinkType.CHILD ;		
+		link1 = new LinkImpl(node1,node2,LinkCategory.Child);
+		link2 = new LinkImpl(node3,node4,LinkCategory.Parent);
+		link3 = new LinkImpl(node3,link2,LinkCategory.Grounding);
+		linktype1 = LinkCategory.Parent ;
+		linktype2 = LinkCategory.Child ;		
 	
 	}
 
@@ -67,14 +67,14 @@ public class LinkImplTest extends TestCase{
 		assertEquals("Problem with copy", link1, linkAux);
 		assertEquals("Problem with copy", link1.getSink(), linkAux.getSink());
 		assertEquals("Problem with copy", link1.getSource(), linkAux.getSource());
-		assertEquals("Problem with copy", link1.getType(), linkAux.getType());
+		assertEquals("Problem with copy", link1.getCategory(), linkAux.getCategory());
 		
 		linkAux= link3.copy();		
 
 		assertEquals("Problem with copy", link3, linkAux);
 		assertEquals("Problem with copy", link3.getSink(), linkAux.getSink());
 		assertEquals("Problem with copy", link3.getSource(), linkAux.getSource());
-		assertEquals("Problem with copy", link3.getType(), linkAux.getType());
+		assertEquals("Problem with copy", link3.getCategory(), linkAux.getCategory());
 
 	}
 
@@ -86,11 +86,11 @@ public class LinkImplTest extends TestCase{
 		
 		link1.setSource(node1);
 		link1.setSink(node2);
-		link1.setType(linktype1);
+		link1.setCategory(linktype1);
 		
 		link3.setSource(node1);
 		link3.setSink(node2);
-		link3.setType(linktype1);
+		link3.setCategory(linktype1);
 		
 		assertEquals("Problem with equals", link1, link3);
 		
@@ -121,8 +121,8 @@ public class LinkImplTest extends TestCase{
 	@Test
 	public void testGetType() {
 		
-		link1.setType(linktype1);
-		assertEquals("Problem with getType", linktype1, link1.getType());
+		link1.setCategory(linktype1);
+		assertEquals("Problem with getType", linktype1, link1.getCategory());
 	}
 
 
@@ -158,8 +158,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetType() {
-		link1.setType(linktype1);
-		assertEquals("Problem with setType", linktype1, link1.getType());
+		link1.setCategory(linktype1);
+		assertEquals("Problem with setType", linktype1, link1.getCategory());
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class LinkImplTest extends TestCase{
 				
 		assertEquals("Problem with LinkImpl constructor having parameters", node1, link5.getSource());
 		assertEquals("Problem with LinkImpl constructor having parameters", node2, link5.getSink());
-		assertEquals("Problem with LinkImpl constructor having parameters", linktype1, link5.getType());
+		assertEquals("Problem with LinkImpl constructor having parameters", linktype1, link5.getCategory());
 		assertEquals("Problem with LinkImpl constructor having parameters", "L(1:2:PARENT)", link5.getId());
 		
 	}

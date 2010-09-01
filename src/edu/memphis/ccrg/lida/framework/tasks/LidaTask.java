@@ -59,7 +59,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * Sets how many ticks need to pass before this task is run
 	 * @param ticks
 	 */
-	public abstract void setNumberOfTicksPerStep(int ticks);
+	public abstract void setNumberOfTicksPerRun(int ticks);
 
 	/**
 	 * Gets the number of ticks needed to complete a cycle or 'one run' of this task

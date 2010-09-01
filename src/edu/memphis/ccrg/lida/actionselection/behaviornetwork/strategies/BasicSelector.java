@@ -22,6 +22,10 @@ public class BasicSelector implements Selector{
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
     private final double TIE_BREAKER = 0.5;
     
+//    stochastic in behavior net + drives to explore novel things
+    // have a parameter which at 1.0 gives deterministic action selection.  
+    // If 0.0 then completely random
+    
     public BasicSelector() {       
     }
     

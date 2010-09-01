@@ -16,6 +16,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class Stream{
 	
+	//Stan suggests using an and-or graph for the structure of the Stream's behaviors
+	
     private String name = "blank stream";
     
     private ConcurrentMap<Long, Behavior> behaviors = new ConcurrentHashMap<Long, Behavior>();

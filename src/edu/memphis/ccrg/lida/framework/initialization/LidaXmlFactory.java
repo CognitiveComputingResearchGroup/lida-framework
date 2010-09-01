@@ -290,7 +290,7 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		driver.setModuleName(moduleName);
 		driver.setTaskManager(lida.getTaskManager());
-		driver.setNumberOfTicksPerStep(ticks);
+		driver.setNumberOfTicksPerRun(ticks);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		driver.init(params);
 

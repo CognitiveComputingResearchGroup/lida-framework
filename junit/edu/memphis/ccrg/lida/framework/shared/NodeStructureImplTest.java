@@ -28,7 +28,7 @@ public class NodeStructureImplTest extends TestCase{
 	NodeImpl node1,node2,node3,node4;
 	LinkImpl link1,link2,link3;	
 	Map<Long, Node> nodes;
-	LinkType linktype1,linktype2;	
+	LinkCategory linktype1,linktype2;	
 	NodeStructureImpl nodeStructure1,nodeStructure2,nodeStructure3;
 	NodeStructure ns;
 	Set<Link> links;
@@ -46,8 +46,8 @@ public class NodeStructureImplTest extends TestCase{
 		link1 = new LinkImpl();
 		link2 = new LinkImpl();
 		link3 = new LinkImpl();
-		linktype1 = LinkType.PARENT ;
-		linktype2 = LinkType.CHILD ;			 
+		linktype1 = LinkCategory.Parent ;
+		linktype2 = LinkCategory.Child ;			 
 		nodeStructure1 = new NodeStructureImpl();	
 		nodeStructure2 = new NodeStructureImpl();
 		nodeStructure3 = new NodeStructureImpl();
@@ -72,15 +72,15 @@ public class NodeStructureImplTest extends TestCase{
 		
 		link1.setSource(node1);
 		link1.setSink(node2);
-		link1.setType(linktype1);
+		link1.setCategory(linktype1);
 			
 		link2.setSource(node2);
 		link2.setSink(node3);
-		link2.setType(linktype2);
+		link2.setCategory(linktype2);
 		
 		link3.setSource(node2);
 		link3.setSink(node4);
-		link3.setType(linktype2);
+		link3.setCategory(linktype2);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class NodeStructureImplTest extends TestCase{
 	public void testGetLinksByType() {		
 		links = nodeStructure1.getLinksByType(linktype1);
 		for (Link l : links) {
-			assertEquals("Problem with GetLinksByType", l.getType(),linktype1);			
+			assertEquals("Problem with GetLinksByType", l.getCategory(),linktype1);			
 			break;				
 		}	
 	}

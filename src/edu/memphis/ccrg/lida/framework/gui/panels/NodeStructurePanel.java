@@ -135,7 +135,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 				new Transformer<Linkable, String>() {
 					public String transform(final Linkable l) {
 						if (l instanceof Link) {
-							return ((Link) l).getType().toString();
+							return ((Link) l).getCategory().toString();
 						}
 						return l.toString();
 					}

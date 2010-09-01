@@ -14,8 +14,9 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private long id;
 	private String label = "";
 	private double importance;
+	private String factoryName;
+	
 	protected PamNode refNode;
-	private NodeClass nodeClass = NodeClass.none;
 	
 	public NodeImpl(){
 		super();
@@ -79,11 +80,14 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return getLabel() + " ["+getId()+"] ";
 	}
 
-	public NodeClass getNodeClass() {
-		return nodeClass ;
+	@Override
+	public String getFactoryName() {
+		return factoryName;
 	}
 
-	public void setNodeClass(NodeClass n) {
-		nodeClass = n;
+	@Override
+	public void setFactoryName(String factoryName) {
+		this.factoryName = factoryName;
 	}
+
 }//class

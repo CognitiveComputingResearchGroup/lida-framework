@@ -75,7 +75,7 @@ public class AttentionDriver extends ModuleDriverImpl implements
 		lidaProperties=params;
 		int ticksperstep = 0;
 		ticksperstep = (Integer)getParam("AttetionSelection.ticksperstep",DEFAULT_TICKS_PER_STEP);
-		setNumberOfTicksPerStep(ticksperstep);
+		setNumberOfTicksPerRun(ticksperstep);
 	//	defaultActiv=(Double)getParam("AttetionSelection.defaultActiv",1.0);
 	}
 

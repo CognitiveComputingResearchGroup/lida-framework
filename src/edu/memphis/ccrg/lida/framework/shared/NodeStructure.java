@@ -14,11 +14,13 @@ public interface NodeStructure {
 
 	public abstract Link addLink(Link l);
 	
-	public Link addLink(String idSource, String idSink, LinkType type, double activation);
+	public Link addLink(String idSource, String idSink, LinkCategory type, double activation);
 
 	public abstract void addLinks(Collection<Link> links);
-
+	
 	public abstract Node addNode(Node n);
+
+	public abstract Node addNode(Node n, String factoryName);
 
 	public abstract void addNodes(Collection<Node> nodes);
 
@@ -36,9 +38,9 @@ public interface NodeStructure {
 
 	public abstract Set<Link> getLinks(Linkable l);
 
-	public abstract Set<Link> getLinks(Linkable NorL, LinkType type);
+	public abstract Set<Link> getLinks(Linkable NorL, LinkCategory type);
 
-	public abstract Set<Link> getLinks(LinkType type);
+	public abstract Set<Link> getLinks(LinkCategory type);
 
 	public abstract Collection<Node> getNodes();
 

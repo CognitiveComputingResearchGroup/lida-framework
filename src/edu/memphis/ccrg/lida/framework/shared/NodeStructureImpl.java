@@ -6,8 +6,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
@@ -36,29 +38,38 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
-		this.defaultNodeType = defaultNode;
-		this.defaultLinkType = defaultLink;
+		if(factory.containsNodeType(defaultNode))
+			this.defaultNodeType = defaultNode;
+		else{
+			logger.log(Level.WARNING, 
+					  "Constructor: specified node type is not registered in the node factory", 
+					  LidaTaskManager.getActualTick());
+		}
+		
+		if(factory.containsLinkType(defaultLink))
+			this.defaultLinkType = defaultLink;
+		else{
+			logger.log(Level.WARNING, 
+					  "Constructor: specified link type is not registered in the node factory ", 
+					  LidaTaskManager.getActualTick());
+		}
 	}
 
-	public NodeStructureImpl(NodeStructure oldGraph) {
-		nodes = new ConcurrentHashMap<Long, Node>();
-		links = new ConcurrentHashMap<String, Link>();
-		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
-		this.defaultNodeType = ((NodeStructureImpl) oldGraph).defaultNodeType;
-		this.defaultLinkType = ((NodeStructureImpl) oldGraph).defaultLinkType;
+	public NodeStructureImpl(NodeStructure oldGraph, String defaultNodeType, String defaultLinkType) {
+		this(defaultNodeType, defaultLinkType);
 
 		// Copy nodes
 		Collection<Node> oldNodes = oldGraph.getNodes();
 		if (oldNodes != null)
 			for (Node n : oldNodes)
-				nodes.put(n.getId(), getNewNode(n));
+				nodes.put(n.getId(), getNewNode(n, defaultNodeType));
 
 		// Copy Links but with Source and Sink pointing the old ones.
 		Collection<Link> oldLinks = oldGraph.getLinks();
 		if (oldLinks != null)
 			for (Link l : oldLinks) {
 				links.put(l.getIds(), getNewLink(l.getSource(), l.getSink(), l
-						.getType()));
+						.getCategory()));
 			}
 
 		// Fix Source and Sinks now that all new Nodes and Links have been
@@ -107,12 +118,19 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 	}// constructor
 
+	public NodeStructureImpl(NodeStructure oldGraph){
+		this(oldGraph, oldGraph.getDefaultNodeType(), oldGraph.getDefaultLinkType());
+	}
+	
 	/**
 	 * @param defaultNode
 	 *            the defaultNode to set
 	 */
 	public void setDefaultNode(String defaultNode) {
-		this.defaultNodeType = defaultNode;
+		if(factory.containsNodeType(defaultNode))
+			this.defaultNodeType = defaultNode;
+		else
+			logger.log(Level.WARNING, "Factory does not contain specified node type!  Must specify all types in factoriesData.xml", LidaTaskManager.getActualTick());
 	}
 
 	/**
@@ -120,7 +138,21 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 *            the defaultLink to set
 	 */
 	public void setDefaultLink(String defaultLink) {
-		this.defaultLinkType = defaultLink;
+//		
+//		System.out.println("Links");
+//		Map<String, LinkableDef> slm = factory.getStupidLinkMap();
+//		for(String s: slm.keySet())
+//			System.out.println(s + " " + slm.get(s));
+//		
+//		System.out.println("Nodes");
+//		Map<String, LinkableDef> snm = factory.getStupidNodeMap();
+//		for(String s: snm.keySet())
+//			System.out.println(s + " " + snm.get(s));
+		
+		if(factory.containsLinkType(defaultLink))
+			this.defaultLinkType = defaultLink;
+		else
+			logger.log(Level.WARNING, "Factory does not contain specified link type!  Must specify all types in factoriesData.xml", LidaTaskManager.getActualTick());
 	}
 	
 	/*
@@ -130,7 +162,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#addLink(edu.memphis.ccrg.lida
 	 * .shared.Link)
 	 */
-	public Link addLink(Link l) {
+	public Link addLink(Link l) {		
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getIds());
 		if (oldLink != null) { // if the link already exists in this node structure
@@ -177,16 +209,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			}
 		}
 		//System.out.println("about to generate new link with activation " + newActiv);
-		return generateNewLink(newSource, newSink, l.getType(), newActiv);
+		return generateNewLink(newSource, newSink, l.getCategory(), newActiv);
 	}
 
-	public Link addLink(String sourceId, String sinkId, LinkType type, double activation) {
+	public Link addLink(String sourceId, String sinkId, LinkCategory category, double activation) {
 		Linkable source = getLinkable(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
 			return null;
 		}
-		return generateNewLink(source, sink, type, activation);
+		return generateNewLink(source, sink, category, activation);
 	}
 
 	/**
@@ -196,7 +228,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param activation
 	 */
 	private Link generateNewLink(Linkable newSource, Linkable newSink,
-								 LinkType type, double activation) {
+								 LinkCategory type, double activation) {
 		Link newLink = getNewLink(newSource, newSink, type);
 		newLink.setActivation(activation);
 		links.put(newLink.getIds(), newLink);
@@ -229,11 +261,22 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		for (Link l : links)
 			addLink(l);
 	}
+	
+	public Node addNode(Node n){
+		return addNode(n, n.getFactoryName());
+	}
 
-	public Node addNode(Node n) {
+	public Node addNode(Node n, String factoryName) {
+		if(factory.containsNodeType(factoryName) == false){
+			logger.log(Level.WARNING, "Tried to add node of type " + factoryName + " to NodeStructure. " +
+					" the factory does not contain that node type.  Make sure the node type is defined in " +
+					" factoriesData.xml", LidaTaskManager.getActualTick());
+			return null;
+		}
+		
 		Node node = nodes.get(n.getId());
 		if (node == null) {
-			node = getNewNode(n);
+			node = getNewNode(n, factoryName);
 			nodes.put(node.getId(), node);
 			linkableMap.put(node, new HashSet<Link>());
 		} else {
@@ -251,8 +294,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
 	public void addNodes(Collection<Node> nodesToAdd) {
-		for (Node n : nodesToAdd)
-			addNode(n);
+		for (Node n : nodesToAdd){
+			addNode(n, n.getFactoryName());
+		}
 	}
 
 	/**
@@ -262,8 +306,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 *            The original Node
 	 * @return The Node to be used in this NodeStructure
 	 */
-	protected Node getNewNode(Node n) {
-		return factory.getNode(n, defaultNodeType);
+	protected Node getNewNode(Node n, String factoryName) {
+		return factory.getNode(n, factoryName);
 	}
 
 	/**
@@ -274,17 +318,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 *            The new source
 	 * @param sink
 	 *            The new sink
-	 * @param type
+	 * @param category
 	 *            the type of the link
 	 * @return The link to be used in this NodeStructure
 	 */
-	protected Link getNewLink(Linkable source, Linkable sink, LinkType type) {
-		return factory.getLink(defaultLinkType, source, sink, type);
+	protected Link getNewLink(Linkable source, Linkable sink, LinkCategory category) {
+		return factory.getLink(defaultLinkType, source, sink, category);
 	}
 
 	public NodeStructure copy() {
-		logger.finer("node strucutre copy " + this);
-		return new NodeStructureImpl(this);
+		logger.finer("Copying NodeStructure " + this);
+		return new NodeStructureImpl(this, defaultNodeType, defaultLinkType);
 	}
 
 	/*
@@ -386,23 +430,23 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#getLinks(edu.memphis.ccrg.
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
-	public Set<Link> getLinks(Linkable NorL, LinkType type) {
+	public Set<Link> getLinks(Linkable NorL, LinkCategory type) {
 		Set<Link> temp = linkableMap.get(NorL);
 		Set<Link> result = new HashSet<Link>();
 		if (temp != null) {
 			for (Link l : temp) {
-				if (l.getType() == type)// add only decired type
+				if (l.getCategory() == type)// add only decired type
 					result.add(l);
 			}// for each link
 		}// result != null
 		return result;
 	}// method
 
-	public Set<Link> getLinks(LinkType type) {
+	public Set<Link> getLinks(LinkCategory type) {
 		Set<Link> result = new HashSet<Link>();
 		if (links != null) {
 			for (Link l : links.values()) {
-				if (l.getType() == type) {
+				if (l.getCategory() == type) {
 					result.add((Link) l);
 				}
 			}
@@ -481,10 +525,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		// TODO: Must add links differently than above statement.
 	}
 
-	public Set<Link> getLinksByType(LinkType type) {
+	public Set<Link> getLinksByType(LinkCategory type) {
 		Set<Link> result = new HashSet<Link>();
 		for (Link l : links.values()) {
-			if (l.getType() == type)
+			if (l.getCategory() == type)
 				result.add(l);
 		}// for
 

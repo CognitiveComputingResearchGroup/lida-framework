@@ -11,20 +11,20 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private Linkable sink;
 	private Linkable source;
 	private String ids;
-	private LinkType type;
+	private LinkCategory category;
 	private Link referencedLink = null;
 
-	public LinkImpl(Linkable source, Linkable sink, LinkType type) {
+	public LinkImpl(Linkable source, Linkable sink, LinkCategory category) {
 		this.source = source;
 		this.sink = sink;
-		this.type = type;
+		this.category = category;
 		updateIds();
 	}
 
 	public LinkImpl(Link l) {
 		sink = l.getSink();
 		source = l.getSource();
-		type = l.getType();
+		category = l.getCategory();
 		ids = l.getIds();
 		referencedLink = l.getReferencedLink();
 		updateIds();
@@ -40,7 +40,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	/**
 	 * This method compares this LinkImp with any kind of Link. Two Links are
 	 * equals if and only if their sources and sinks are equals and are Links of
-	 * the same type.
+	 * the same category.
 	 * 
 	 */
 	@Override
@@ -50,7 +50,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		}
 		Link other = (Link) obj;
 
-		if (other.getType() != type) {
+		if (other.getCategory() != category) {
 			return false;
 		}
 
@@ -76,8 +76,8 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return source;
 	}
 
-	public LinkType getType() {
-		return type;
+	public LinkCategory getCategory() {
+		return category;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		int hash = 1;
 		hash = hash * 31 + ((source == null) ? 0 : source.hashCode())
 				+ ((sink == null) ? 0 : sink.hashCode());
-		hash = hash * 31 + (type == null ? 0 : type.hashCode());
+		hash = hash * 31 + (category == null ? 0 : category.hashCode());
 		return hash;
 	}
 
@@ -107,8 +107,8 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		updateIds();
 	}
 
-	public void setType(LinkType type) {
-		this.type = type;
+	public void setCategory(LinkCategory category) {
+		this.category = category;
 		updateIds();
 	}
 
@@ -118,7 +118,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	private void updateIds() {
-		ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + type + ")";
+		ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + category + ")";
 	}
 
 	public Link getReferencedLink() {

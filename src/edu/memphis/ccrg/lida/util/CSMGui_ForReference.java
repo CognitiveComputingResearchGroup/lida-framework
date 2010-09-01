@@ -165,7 +165,7 @@ public class CSMGui_ForReference extends javax.swing.JFrame implements Workspace
     	String linkId = linkList.getItem((Integer)evt.getItem());       	
     	LinkImpl linkInStruct = (LinkImpl)struct.getLink(linkId);
     	if(linkInStruct != null){
-    		selectedLink.setText(linkInStruct.getType() + "");
+    		selectedLink.setText(linkInStruct.getCategory() + "");
     		
 	    	Linkable source = linkInStruct.getSource();
 			Linkable sink = linkInStruct.getSink();

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkType;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -48,9 +48,9 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * @param activation
 	 * @return created link
 	 */
-	public Link addNewLink(PamNode source, PamNode sink, LinkType type, double activation);
+	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation);
 
-	public Link addNewLink(String sourceId, String sinkId, LinkType type, double activation);
+	public Link addNewLink(String sourceId, String sinkId, LinkCategory type, double activation);
 	
 	public Set<PamLink> addLinks(Set<PamLink> links);
 	
