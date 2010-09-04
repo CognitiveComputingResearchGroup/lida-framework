@@ -598,4 +598,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return Collections.unmodifiableCollection(linkableMap.keySet());
 	}
 
+	@Override
+	public String getNodeAndLinkCount() {
+		return "Nodes: " + getNodeCount() + " Links: " + getLinkCount();
+	}
+
 }// class

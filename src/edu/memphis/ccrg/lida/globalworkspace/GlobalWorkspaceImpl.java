@@ -20,11 +20,13 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of
@@ -128,8 +130,24 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 			}
 		
 		if (coal != null) {
+			NodeStructure original = (NodeStructure) coal.getContent();
+			for(Node n: original.getNodes()){
+				if(n instanceof PamNode)
+					System.out.println("origin is pamnode");
+				else if(n instanceof Node)
+					System.out.println("origin is node");
+			}
+			
 			NodeStructure copy = new NodeStructureImpl((NodeStructure) coal
 					.getContent());
+			
+			for(Node n: copy.getNodes()){
+				if(n instanceof PamNode)
+					System.out.println("copy is pamnode");
+				else if(n instanceof Node)
+					System.out.println("copy is node");
+			}
+			
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}

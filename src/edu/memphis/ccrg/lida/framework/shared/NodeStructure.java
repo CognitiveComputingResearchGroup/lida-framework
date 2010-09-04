@@ -73,5 +73,7 @@ public interface NodeStructure {
 	
 	public abstract String getDefaultNodeType();
 	public abstract String getDefaultLinkType();
+
+	public abstract String getNodeAndLinkCount();
 	
 }
