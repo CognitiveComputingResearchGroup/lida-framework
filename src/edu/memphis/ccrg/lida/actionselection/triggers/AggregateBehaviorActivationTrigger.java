@@ -16,9 +16,9 @@ public class AggregateBehaviorActivationTrigger implements
 	protected ActionSelection as;
 	protected double threshold;
 /**
- * This method is executed each time a new coalition enters the GW.
+ * This method is executed each time a new behavior enters the AS.
  * 
- * @param coalitions a Set with all the coallitions in the GW.
+ * @param behaviors a Set with all the behaviors in the AS.
  */
 	public void checkForTrigger(Queue<Scheme> behaviors) {
 		double acc=0;

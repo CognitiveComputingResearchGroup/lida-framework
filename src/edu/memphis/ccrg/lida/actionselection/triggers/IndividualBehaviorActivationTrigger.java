@@ -7,6 +7,11 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
+/**
+ * If any behavior is above threshold, this trigger will fire.
+ *
+ */
+
 public class IndividualBehaviorActivationTrigger extends AggregateBehaviorActivationTrigger {
 private Logger logger = Logger.getLogger("lida.actionselection.triggers");
 	

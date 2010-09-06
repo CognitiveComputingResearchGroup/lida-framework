@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger {
 	
 	/**
-	 * How long since last broadcast before this trigger is activated
+	 * How long since last action selection before this trigger is activated
 	 */
 	private int delay;
 	
@@ -21,6 +21,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	private TriggerTask task;
 	private String name="";
 	private LidaTaskManager tm;
+	private ActionSelection as;
 	private ActionSelectionDriver asd;
 
 	/**
@@ -42,7 +43,22 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
-	public void setUp(Map<String, Object> parameters, ActionSelectionDriver asd) {
+	public void setUp(Map<String, Object> parameters, ActionSelection as) {
+		this.as=as;
+		
+		Object o = parameters.get("delay");
+		if ((o != null)&& (o instanceof Integer)) {
+			delay= (Integer)o;
+		}
+		
+		o = parameters.get("name");
+		if ((o != null)&& (o instanceof String)) {
+			name= (String)o;
+		}		
+	}
+
+	public void setUp(Map<String, Object> parameters, ActionSelection as,ActionSelectionDriver asd) {
+		this.as=as;
 		this.asd=asd;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Integer)) {
@@ -55,6 +71,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 		}		
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -62,7 +79,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 */
 	public void start() {
 						
-		task=new TriggerTask(delay,asd,name);	
+		task=new TriggerTask(delay,as,asd,name);	
 		asd.addTask(task);
 	}
 	
@@ -79,17 +96,10 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
 	 */
-	public void reset() {
-	
+	public void reset() {	
 		if (task != null)
 			asd.cancelTask(task);
 		start();
-	}
-
-	@Override
-	public void setUp(Map<String, Object> parameters, ActionSelection as) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

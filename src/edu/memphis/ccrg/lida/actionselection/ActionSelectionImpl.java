@@ -39,6 +39,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	private Queue<Scheme> behaviors = new ConcurrentLinkedQueue<Scheme>();
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
+	private ActionSelectionDriver asd=new ActionSelectionDriver();
 	
 	public ActionSelectionImpl( ) {
 		super(ModuleName.ActionSelection);
@@ -106,7 +107,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
 
-	//resetTriggers();
+	asd.resetTriggers();
 	actionSelectionStarted.set(false);
 		
 	}
@@ -130,17 +131,14 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public boolean addBehavior(Scheme behavior) {
 		if (behaviors.add(behavior)) {
 			logger.log(Level.FINE,"New Behavior added",LidaTaskManager.getActualTick());
-			//newBehaviorEvent();
+			asd.newBehaviorEvent(behaviors);
 			return true;
 		} else {
 			return false;
 		}
 	}// method
 	
-	/*private void newBehaviorEvent() {		
-		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
-			trigger.checkForTrigger(behaviors);
-	}// method*/
+	
 
 	@Override
 	public void setTaskSpawner(TaskSpawner taskSpawner) {

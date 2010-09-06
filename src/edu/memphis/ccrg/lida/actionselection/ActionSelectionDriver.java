@@ -2,24 +2,24 @@ package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 public class ActionSelectionDriver extends ModuleDriverImpl {
 
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
-	private ActionSelection as;   
-	
-    public ActionSelectionDriver(){
+	public ActionSelectionDriver(){
     	super(DEFAULT_TICKS_PER_CYCLE, ModuleName.ActionSelectionDriver);
     }//constructor
 	
     public ActionSelectionDriver(ActionSelection as, int ticksPerCycle, LidaTaskManager tm){
 		super(ticksPerCycle, tm,ModuleName.ActionSelectionDriver);
-		this.as = as;
 	}//constructor
     
 	@Override
@@ -52,5 +52,10 @@ public class ActionSelectionDriver extends ModuleDriverImpl {
 			t.start();
 		}
 	}	
+	
+	public void newBehaviorEvent(Queue<Scheme> behaviors) {		
+		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
+			trigger.checkForTrigger(behaviors);
+	}// method
 	
 }//class
