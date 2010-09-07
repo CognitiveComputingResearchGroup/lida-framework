@@ -24,7 +24,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 	}
 
 	public void activateSchemesWithBroadcast(NodeStructure broadcast,
-			Map<Linkable, Set<Scheme>> schemeMap) {
+			Map<Object, Set<Scheme>> schemeMap) {
 		logger.log(Level.FINEST, "Scheme are tested for activation",
 				LidaTaskManager.getActualTick());
 		Collection<Node> nodes = broadcast.getNodes();
@@ -39,7 +39,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 	}
 
 	private void auxActivateSchemes(Linkable l,
-			Map<Linkable, Set<Scheme>> schemeMap) {
+			Map<Object, Set<Scheme>> schemeMap) {
 		if (schemeMap.containsKey(l)) {
 			Set<Scheme> schemes = schemeMap.get(l);
 			int cantSchemes=schemes.size();
