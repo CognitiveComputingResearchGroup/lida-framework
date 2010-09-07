@@ -314,7 +314,7 @@ public class NodeFactory {
 	 * @param oNode
 	 */
 	public Node getNode(Node oNode) {
-		return getNode(oNode, defaultNodeType,defaultDecayType, defaultExciteType);
+		return getNode(oNode, defaultNodeType, defaultDecayType, defaultExciteType);
 	}
 
 	/**
@@ -363,12 +363,10 @@ public class NodeFactory {
 	 * @param decayStrategy
 	 * @param exciteStrategy
 	 */
-	public Node getNode(Node oNode, String nodeType, String decayStrategy,
-			String exciteStrategy) {
+	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation());
 		n.setReferencedNode(oNode.getReferencedNode());
 		n.setId(oNode.getId());
-
 		return n;
 	}
 
@@ -417,7 +415,7 @@ public class NodeFactory {
 	 * @param activation
 	 */
 	public Node getNode(String nodeType, String decayStrategy,
-			String exciteStrategy, String nodeLabel, double activation) {
+						String exciteStrategy, String nodeLabel, double activation) {
 		Node n = null;
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);

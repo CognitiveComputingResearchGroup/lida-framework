@@ -24,6 +24,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
+	
 	private static Logger logger = Logger.getLogger("lida.proceduralmemory.ProceduralMemoryImpl");
 
 	/**
