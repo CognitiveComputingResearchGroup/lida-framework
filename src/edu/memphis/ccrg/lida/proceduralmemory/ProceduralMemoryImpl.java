@@ -38,16 +38,13 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 */
 	private Map<Linkable, Set<Scheme>> schemeMap = new ConcurrentHashMap<Linkable, Set<Scheme>>();
 	
-	//TODO: equals, hashcode
 	private Set<Scheme> schemeSet = new HashSet<Scheme>();
 	
-
 	/**
 	 * Determines how scheme are given activation and whether they should be
 	 * instantiated
 	 */
-	SchemeActivationBehavior schemeActivationBehavior = new BasicSchemeActivationBehavior(
-			this, 0.6);
+	SchemeActivationBehavior schemeActivationBehavior = new BasicSchemeActivationBehavior(this);
 
 	/**
 	 * Listeners of this Procedural Memory

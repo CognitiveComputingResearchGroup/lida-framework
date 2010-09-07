@@ -19,9 +19,8 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 
 	private double schemeSelectionThreshold = 0.6;
 
-	public BasicSchemeActivationBehavior(ProceduralMemory pm, double selectionThreshold) {
+	public BasicSchemeActivationBehavior(ProceduralMemory pm){
 		this.pm = pm;
-		this.schemeSelectionThreshold = selectionThreshold;
 	}
 
 	public void activateSchemesWithBroadcast(NodeStructure broadcast,
