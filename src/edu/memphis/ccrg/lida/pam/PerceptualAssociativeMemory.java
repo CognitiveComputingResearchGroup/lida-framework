@@ -6,6 +6,7 @@ import java.util.Set;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -129,7 +130,7 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 * Propagates activation from a PamNode to its parents
 	 * @param pamNode The node to propagate activation from.
 	 */
-	public void sendActivationToParentsOf(PamNode pamNode);
+	public void sendActivationToParents(PamNode pamNode);
 	
 	//*** Percept methods
 	
@@ -151,18 +152,25 @@ public interface PerceptualAssociativeMemory extends LidaModule{
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
 	
+	//Contains methods
+	
+	public boolean containsNode(PamNode node);
+	
+	public boolean containsLink(PamLink link);
+	
+	
 	//**** Get Methods
+
+	public Node getNode(long id);
 	
 	/**
-	 * Get Pam represented as a node structure
+	 * Returns an unmodifiable collection of the PAM nodes as nodes
 	 */
-	public PamNodeStructure getNodeStructure();
+	public Collection<Node> getNodes();
 	
 	/**
 	 * Get the running feature detectors
 	 */
 	public Collection<FeatureDetector> getFeatureDetectors();
-
-	public PamNode getNode(long id);
 	
 }//interface 

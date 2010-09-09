@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * To create new node and links
 	 */
-	protected NodeFactory nodeFactory = NodeFactory.getInstance();
+	protected NodeFactory factory = NodeFactory.getInstance();
 
 	/**
 	 * 
@@ -211,7 +212,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * to its parents and to the connecting links.
 	 * 
 	 */
-	public void sendActivationToParentsOf(PamNode pamNode) {
+	public void sendActivationToParents(PamNode pamNode) {
 		//Calculate the amount to propagate
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		propagateParams.put("upscale", pamNodeStructure.getUpscale());
@@ -240,15 +241,15 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 
 	public void addNodeToPercept(PamNode pamNode) {
 		for (int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receiveNode(pamNode);
+			pamListeners.get(i).receiveNode(factory.getNode(pamNode));
 	}
-	public void addLinkToPercept(PamLink l) {
+	public void addLinkToPercept(PamLink pamLink) {
 		for (int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receiveLink(l);
+			pamListeners.get(i).receiveLink(factory.getLink(pamLink));
 	}
-	public void addNodeStructureToPercept(NodeStructure ns) {
+	public void addNodeStructureToPercept(NodeStructure nodeStructure) {
 		for (int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receiveNodeStructure(ns);
+			pamListeners.get(i).receiveNodeStructure(nodeStructure.copy());
 	}
 	
 	public void setDecayStrategy(DecayStrategy b) {
@@ -311,12 +312,25 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		if(o != null)
 			propagationTaskTicksPerRun = (Integer) o;
 	}// method
+	
+	public boolean containsNode(PamNode node){
+		return pamNodeStructure.hasNode(node);
+	}
+	
+	public boolean containsLink(PamLink link){
+		return pamNodeStructure.hasLink(link);
+	}
 
 	public Collection<FeatureDetector> getFeatureDetectors(){
 		return featureDetectors;
 	}
-	public PamNodeStructure getNodeStructure(){
-		return pamNodeStructure;
+	
+	public Collection<Node> getNodes(){
+		Collection<Node> pamNodes = pamNodeStructure.getNodes();
+		Collection<Node> nodes = new ArrayList<Node>();
+		for(Node pamNode: pamNodes)
+			nodes.add(factory.getNode(pamNode));
+		return Collections.unmodifiableCollection(nodes);
 	}
 
 	public ModuleName getModuleName() {
@@ -331,8 +345,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			addPamListener((PamListener)listener);
 		}
 	}
-	public PamNode getNode(long id) {
-		return (PamNode) pamNodeStructure.getNode(id) ;
+	public Node getNode(long id) {
+		return factory.getNode(pamNodeStructure.getNode(id));
 	}
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		
@@ -346,7 +360,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 	@Override
 	public PamNode addNewNode(String label) {
-		PamNode newNode =  (PamNode) nodeFactory.getNode(pamNodeStructure.getDefaultNodeType(), label);
+		PamNode newNode =  (PamNode) factory.getNode(pamNodeStructure.getDefaultNodeType(), label);
 		newNode = (PamNode) pamNodeStructure.addNode(newNode);
 		return newNode;
 	}

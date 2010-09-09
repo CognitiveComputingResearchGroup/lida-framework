@@ -120,7 +120,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addNode(node1);	
 		pam.addNodes(nodes);
 		
-		assertTrue("Problem with AddNodes", pam.getNodeStructure().hasNode(node1) && pam.getNodeStructure().hasNode(node2) && pam.getNodeStructure().hasNode(node3));
+		assertTrue("Problem with AddNodes", pam.containsNode(node1) && pam.containsNode(node2) && pam.containsNode(node3));
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		links.add(link2);
 		pam.addLinks(links);
 		
-		assertTrue("Problem with AddLinks",pam.getNodeStructure().hasLink(link1) && pam.getNodeStructure().hasLink(link2));
+		assertTrue("Problem with AddLinks",pam.containsLink(link1) && pam.containsLink(link2));
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#sendActivationToParentsOf(edu.memphis.ccrg.lida.pam.PamNode)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#sendActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)}.
 	 */
 	@Test
 	public void testSendActivationToParentsOf() {

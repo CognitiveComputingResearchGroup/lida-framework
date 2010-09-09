@@ -7,34 +7,32 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 
 /**
  * A task to add a node to the percept.
- * @author ryanjmccall
+ * @author Ryan J McCall
  * @see ExcitationTask - AddToPerceptTask is spawned by ExcitationTask
  */
 public class AddToPerceptTask extends LidaTaskImpl {
 	
-	private NodeStructure nodeStructure;
+	private NodeStructure pamNodeStructure;
 	private PerceptualAssociativeMemory pam;
 
 	public AddToPerceptTask(PamNode node, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl();
-		nodeStructure.addNode(node);
+		pamNodeStructure = new NodeStructureImpl();
+		pamNodeStructure.addNode(node);
 	}
 	
 	public AddToPerceptTask(PamLink link, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl();
-		nodeStructure.addLink(link);
-//		System.out.println("Constructor!");
-//	//	System.out.println("constructing add to percept for link " + link.getLabel());
+		pamNodeStructure = new NodeStructureImpl();
+		pamNodeStructure.addLink(link);
 	}
 
 	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = ns;
+		pamNodeStructure = ns;
 	}
 
 	/**
@@ -42,8 +40,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * Thus it is justifiable to make this a separate thread
 	 */
 	public void runThisLidaTask() {
-		//((NodeStructureImpl)nodeStructure).print();
-		pam.addNodeStructureToPercept(nodeStructure);
+		pam.addNodeStructureToPercept(pamNodeStructure);
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	public String toString(){

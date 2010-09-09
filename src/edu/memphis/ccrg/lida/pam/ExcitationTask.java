@@ -1,6 +1,10 @@
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -12,6 +16,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  *
  */
 public class ExcitationTask extends LidaTaskImpl{
+	
+	private static Logger logger = Logger.getLogger("lida.pam.ExcitationTask");
 	
 	/**
 	 * PamNode to be excited
@@ -58,26 +64,26 @@ public class ExcitationTask extends LidaTaskImpl{
 	 */
 	protected void runThisLidaTask() {
 		pamLinkable.excite(excitationAmount); 
-		
+		//TODO create an ExcitationTask for both PamLink and PamNode?
 		if(pamLinkable.isOverThreshold()){
 			//If over threshold then spawn a new task to add the node to the percept
 			AddToPerceptTask task;
 			
 			if(pamLinkable instanceof PamNode){
-				PamNode pn = (PamNode) pamLinkable;
-				task = new AddToPerceptTask(pn, pam);
+				PamNode pamNode = (PamNode) pamLinkable;
+				task = new AddToPerceptTask(pamNode, pam);
 				taskSpawner.addTask(task);
 				//Tell PAM to propagate the activation of pamNode to its parents
-				pam.sendActivationToParentsOf(pn);
+				pam.sendActivationToParents(pamNode);
 			}else if(pamLinkable instanceof PamLink){
 				task = new AddToPerceptTask((PamLink) pamLinkable, pam);
 				taskSpawner.addTask(task);
 			}else{
-				//log an error
-				System.out.println("Error!");
+				logger.log(Level.WARNING, "pam linkable is not a PamNode or PamLink", LidaTaskManager.getActualTick());
 			}
 		}else if(pamLinkable instanceof PamNode){
-			pam.sendActivationToParentsOf((PamNode) pamLinkable);
+			//TODO what if its an instanceof PamLink?
+			pam.sendActivationToParents((PamNode) pamLinkable);
 		}
 		
 		this.setTaskStatus(LidaTaskStatus.FINISHED);

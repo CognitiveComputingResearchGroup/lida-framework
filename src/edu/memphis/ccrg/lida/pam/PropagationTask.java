@@ -44,7 +44,7 @@ public class PropagationTask extends LidaTaskImpl {
 		link.excite(excitationAmount);
 		sink.excite(excitationAmount);
 		//
-		pam.sendActivationToParentsOf(sink);
+		pam.sendActivationToParents(sink);
 		if(link.isOverThreshold() && sink.isOverThreshold()){
 			//If over threshold then spawn a new task to add the node to the percept
 			NodeStructure ns = new NodeStructureImpl();
