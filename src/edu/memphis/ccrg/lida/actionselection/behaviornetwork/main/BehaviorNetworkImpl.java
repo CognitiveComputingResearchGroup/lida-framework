@@ -152,7 +152,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	// *** Module communication methods
 	// TODO check this everywhere.
 	public void receiveBroadcast(BroadcastContent bc) {
-		currentBroadcast = (NodeStructure) bc;
+		synchronized(this){
+			currentBroadcast = (NodeStructure) bc;
+		}
 
 		LidaTask activatingTask = new ActivateBehaviorsTask(this);
 		taskSpawner.addTask(activatingTask);
@@ -365,7 +367,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}// method
 
 	/**
-	 * For each proposition get the behaviors indexed by that proposition For
+	 * For each proposition in the current broadcast 
+	 * get the behaviors indexed by that proposition For
 	 * each behavior, excite it an amount equal to (phi)/(num behaviors indexed
 	 * at current proposition * # of preconditions in behavior)
 	 */

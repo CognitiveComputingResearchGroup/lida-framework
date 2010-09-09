@@ -17,7 +17,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 /**
- * TODO move to another package 'test'
  * @author Ryan J McCall
  */
 public class BehaviorNetTest implements ActionSelectionListener{
