@@ -248,8 +248,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			pamListeners.get(i).receiveLink(factory.getLink(pamLink));
 	}
 	public void addNodeStructureToPercept(NodeStructure nodeStructure) {
-		for (int i = 0; i < pamListeners.size(); i++)
-			pamListeners.get(i).receiveNodeStructure(nodeStructure.copy());
+		for (int i = 0; i < pamListeners.size(); i++){
+			PamListener listener = pamListeners.get(i); 
+			NodeStructure copy = nodeStructure.copy();
+//			System.out.println("orig " + nodeStructure.getNodeCount() + ", " + nodeStructure.getLinkCount());
+//			System.out.println("copy " + copy.getNodeCount() + ", " + nodeStructure.getLinkCount() + "\n");
+			listener.receiveNodeStructure(copy);
+		} 
 	}
 	
 	public void setDecayStrategy(DecayStrategy b) {

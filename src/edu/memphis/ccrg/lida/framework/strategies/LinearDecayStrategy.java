@@ -7,7 +7,7 @@ public class LinearDecayStrategy implements DecayStrategy{
 
 	    
 	    /** The default slope (m = 1). */
-	    public static final double DEFAULT_M = 0.01;
+	    public static final double DEFAULT_M = 0.00599;
 	    
 	    /** The default intercept (b = 0). */
 	    public static final double DEFAULT_B = 0.0;

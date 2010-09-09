@@ -43,12 +43,12 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 */
 	public void decayModule(long ticks){
 		Collection<Linkable> linkables = buffer.getLinkableMap().keySet();
-		for(Linkable lnk: linkables){
-			Activatible a = (Activatible) lnk;
-			a.decay(ticks);
-			if (a.getActivation() <= activationLowerBound){
-				logger.log(Level.FINER, "Deleting linkable: " + lnk.getLabel(), LidaTaskManager.getActualTick());
-				buffer.deleteLinkable(lnk);
+		for(Linkable linkable: linkables){
+			Activatible activatible = (Activatible) linkable;
+			activatible.decay(ticks);
+			if (activatible.getActivation() <= activationLowerBound){
+				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getActualTick());
+				buffer.deleteLinkable(linkable);
 			}
 		}		
 	}//method

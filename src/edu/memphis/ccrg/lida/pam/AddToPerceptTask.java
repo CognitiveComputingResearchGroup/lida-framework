@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
+//import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -39,7 +40,12 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * While it looks simple, the call to 'addNodeToPercept' takes many step to execute.
 	 * Thus it is justifiable to make this a separate thread
 	 */
-	public void runThisLidaTask() {
+	public void runThisLidaTask() {	
+//		for(Node n: pamNodeStructure.getNodes()){
+//			System.out.println(n.getLabel());
+//		}
+//		System.out.println("");
+			
 		pam.addNodeStructureToPercept(pamNodeStructure);
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}

@@ -6,7 +6,6 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * PamDriver run the PAM
