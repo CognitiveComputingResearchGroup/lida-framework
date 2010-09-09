@@ -36,6 +36,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * Schemes indexed by Linkables in their context. Operations on
 	 * ConcurrentHashmap do not block but they may not reflect the true state of
 	 * the Map if multiple operations are concurrent.
+	 * 
+	 * TODO: allow STREAMS in addition to SCHEME
 	 */
 	private Map<Object, Set<Scheme>> schemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 	

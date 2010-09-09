@@ -33,7 +33,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		pamNodeStructure = ns;
+		pamNodeStructure = new NodeStructureImpl(ns);
 	}
 
 	/**

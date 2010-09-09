@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.List;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
@@ -54,8 +53,9 @@ public interface Behavior extends Activatible {
 	public abstract Set<Node> getDeleteList();	
     public abstract boolean addDeleteCondition(Node deleteCondition);
     public abstract double getDeleteListCount();
-	
-	//Codelets
-	public abstract List<AttentionCodelet> getAttentionCodelets();
+    
+    //Containing streams
+    void addContainingStream(Stream stream);
+	List<Stream> getContainingStreams();
 	
 }//method

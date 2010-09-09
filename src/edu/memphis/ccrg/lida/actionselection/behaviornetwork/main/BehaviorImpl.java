@@ -8,7 +8,6 @@
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
@@ -46,10 +44,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
      */
     private Set<Node> deleteList = new HashSet<Node>();        
     
-    //TODO do behaviors really need this?  Couldn't we just generate attention codelet from
-    //the behaviors add and delete lists when they are needed?
-    private List<AttentionCodelet> attentionCodelets = new ArrayList<AttentionCodelet>();
-
     /**
      * Id of the action(s) in sensory-motor to be taken if this behavior executes
      */
@@ -65,8 +59,10 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	 */
     private boolean isAllContextSatisfied = false;
    
-    //TODO why would a behavior have a stream?  To spawn additional behaviors?
-    private Stream stream = null;
+    /**
+     * The streams that contains this behavior
+     */
+    private List<Stream> containingStreams = null;
     
 	public BehaviorImpl(long id, long actionId) {
 	   	this.id = id;
@@ -139,10 +135,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     public boolean addDeleteCondition(Node deleteCondition){
     	return deleteList.add(deleteCondition);
     }    
-
-    public void addAttentionCodelet(AttentionCodelet attentionCodelet){
-    	attentionCodelets.add(attentionCodelet);
-    }
     
     //Get methods
     public Set<Node> getContextConditions(){
@@ -155,10 +147,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     
     public Set<Node> getDeleteList(){
         return Collections.unmodifiableSet(deleteList);
-    }
-	
-    public List<AttentionCodelet> getAttentionCodelets(){
-        return Collections.unmodifiableList(attentionCodelets);
     }
    
 	@Override
@@ -206,12 +194,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		return hash;
 	}
 
-	public void setStream(Stream stream) {
-		this.stream = stream;
+	public void addContainingStream(Stream stream) {
+		containingStreams.add(stream);
 	}
 
-	public Stream getStream() {
-		return stream;
+	public List<Stream> getContainingStreams() {
+		return containingStreams;
 	}
 
 }//class

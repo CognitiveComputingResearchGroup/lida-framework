@@ -8,7 +8,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -109,10 +108,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 
 	/**
-	 * All the streams currently in this behavior network. All behaviors are
-	 * contained in a stream.
+	 * All the behaviors currently in this behavior network.
 	 */
-	private ConcurrentMap<Long, Stream> streams = new ConcurrentHashMap<Long, Stream>();
+	private ConcurrentMap<Long, Behavior> behaviors = new ConcurrentHashMap<Long, Behavior>();
 
 	/**
 	 * Map of behaviors indexed by the elements appearing in their context
@@ -156,8 +154,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			currentBroadcast = (NodeStructure) bc;
 		}
 
-		LidaTask activatingTask = new ActivateBehaviorsTask(this);
-		taskSpawner.addTask(activatingTask);
+		LidaTask activationFromBroadcastTask = new PassActivationFromBroadcastTask(this);
+		taskSpawner.addTask(activationFromBroadcastTask);
+		LidaTask activationAmongBehaviorsTask = new PassActivationAmongBehaviorsTask(this);
+		taskSpawner.addTask(activationAmongBehaviorsTask);
 	}
 
 	/**
@@ -184,14 +184,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				behaviorsByAddItem);
 		indexBehaviorByElements(newBehavior, newBehavior.getDeleteList(),
 				behaviorsByDeleteItem);
-		//
-		Stream newStream = new Stream(streamIdGenerator++);
-		newStream.addBehavior(newBehavior);
-		streams.put(newStream.getId(), newStream);
+
+		behaviors.put(newBehavior.getId(), newBehavior);
 	}
 	
-	//TODO Review with Javier.
-	private long streamIdGenerator = 0L;
+	@Override
+	public void receiveStream(Stream s) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	/**
 	 * Utility method to index the behaviors into a map by elements 
@@ -223,7 +224,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Select one action to be executed
 	 */
 	public void selectAction() {
-		winningBehavior = selectorStrategy.selectBehavior(getStreams(), candidateBehaviorThreshold);
+		winningBehavior = selectorStrategy.selectBehavior(getBehaviors(), candidateBehaviorThreshold);
 		processWinner();
 	}// method
 
@@ -231,14 +232,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
      * Called when a new consicous broadcast arrives.  Method actually called by ActivatedBehaviorsTask on a separate thread.
      */
 	public void passActivationAmongBehaviors() {
-		for (Stream stream : getStreams()) {
-			for (Behavior behavior : stream.getBehaviors()) {
-				if (behavior.isAllContextConditionsSatisfied())
-					spreadSuccessorActivation(behavior);
-				else
-					spreadPredecessorActivation(behavior);
-				spreadConflictorActivation(behavior);
-			}
+		for (Behavior behavior : getBehaviors()) {
+			if (behavior.isAllContextConditionsSatisfied())
+				spreadSuccessorActivation(behavior);
+			else
+				spreadPredecessorActivation(behavior);
+			spreadConflictorActivation(behavior);
 		}
 	}
 
@@ -308,40 +307,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			Set<Behavior> behaviors = getConflictors(condition);
 			for (Behavior conflictor : behaviors) {
 				// for each conflictor context condition
-				for (Node conflictorPreCondition : conflictor
-						.getContextConditions()) {
+				for (Node conflictorPreCondition : conflictor.getContextConditions()) {
 					// if conflictor context condition is not satisfied
-					if (conflictor
-							.isContextConditionSatisfied(conflictorPreCondition) == false) {
+					if (conflictor.isContextConditionSatisfied(conflictorPreCondition) == false) {
 						Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
 						// if there is a mutual conflict
 						if (conflictorsConflictors.contains(behavior)) {
 							// TODO optimize
 							isMutualConflict = true;
-							if (behavior.getActivation() > conflictor
-									.getActivation())
-								auxSpreadConflictorActivation(behavior,
-										conflictor);
-							// TODO I think this break should be removed.
-							// Consider the case where there are multiple nodes
-							// conflicting i.e.
-							// the conflictor shares multiple context nodes with
-							// the behavior's
-							// delete list.
-							// If behavior's activation is just a little less
-							// then no inhibition will happen
-							// but concurrently that behavior could be excited
-							// by the broadcast so you will
-							// skip the other conflict which actually might have
-							// resulted in an inhibition
-							// Note that removing break will allow for multiple
-							// inhibition but that may be a good thing.
-							// break;
+							if (behavior.getActivation() > conflictor.getActivation())
+								auxSpreadConflictorActivation(behavior, conflictor);
 						}
 					}
 				}
 
-				// No mutual conflict then inhibit a conflictor
+				// No mutual conflict then inhibit the conflictor of behavior
 				if (isMutualConflict == false)
 					auxSpreadConflictorActivation(behavior, conflictor);
 				else
@@ -349,6 +329,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			}// for each conflictor
 		}// for
 	}// method
+	
 	private Set<Behavior> getConflictors(Node condition) {
 		return behaviorsByDeleteItem.get(condition);
 	}
@@ -372,11 +353,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * each behavior, excite it an amount equal to (phi)/(num behaviors indexed
 	 * at current proposition * # of preconditions in behavior)
 	 */
-	public void grantActivationFromBroadcast() {
+	public void passActivationFromBroadcast() {
 		for (Node proposition : currentBroadcast.getNodes()) {
 			if (behaviorsByContextCondition.containsKey(proposition)) {
-				Set<Behavior> behaviors = behaviorsByContextCondition
-						.get(proposition);
+
+				//TODO Context of behaviors should not be boolean they should be the activation of the node.
+				Set<Behavior> behaviors = behaviorsByContextCondition.get(proposition);
 				double excitationAmount = broadcastExcitationAmount
 						/ behaviors.size();
 				for (Behavior b : behaviors) {
@@ -397,8 +379,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			spawnExpectationCodelets(winningBehavior);
 			sendAction();
 			resetCandidateBehaviorThreshold();
-			// reinforcementStrategy.reinforce(winningBehavior,
-			// currentBroadcast, taskSpawner);
 			winningBehavior.setActivation(0.0);
 		} else {
 			reduceCandidateBehaviorThreshold();
@@ -411,7 +391,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private void spawnExpectationCodelets(Behavior b) {
 		logger.log(Level.FINEST, "BEHAVIOR : PREPARE TO FIRE " + b.getLabel(),
 				LidaTaskManager.getActualTick());
-		// TODO spawn expectation codelets looking for results
+		//TODO Send these: b.getAddList(), b.getDeleteList() to the attention module
+		//need new communication channel
 	}
 
 	private void reduceCandidateBehaviorThreshold() {
@@ -437,9 +418,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	private void deactivateAllPreconditions() {
-		for (Stream s : getStreams())
-			for (Behavior b : s.getBehaviors())
-				b.deactivateAllContextConditions();
+		for (Behavior b : getBehaviors())
+			b.deactivateAllContextConditions();
 	}
 
 	/**
@@ -448,17 +428,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		for (Stream stream : getStreams()) {
-			for (Behavior behavior : stream.getBehaviors()) {
-				behavior.decay(ticks);
-				if (behavior.getActivation() <= behaviorActivationLowerBound) {
-					logger.log(Level.FINER,
-							"Removing behavior: " + behavior.getLabel(),
-							LidaTaskManager.getActualTick());
-					removeBehavior(stream, behavior);
-				}
+		for (Behavior behavior : getBehaviors()) {
+			behavior.decay(ticks);
+			if (behavior.getActivation() <= behaviorActivationLowerBound) {
+				logger.log(Level.FINER,
+						"Removing behavior: " + behavior.getLabel(),
+						LidaTaskManager.getActualTick());
+				removeBehavior(behavior);
 			}
-		}
+		}			
 	}
 
 	/**
@@ -469,11 +447,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * @param containingStream
 	 * @param behavior
 	 */
-	private void removeBehavior(Stream containingStream, Behavior behavior) {
-		// remove behavior from stream
-		containingStream.removeBehavior(behavior);
-		if (containingStream.size() == 0)
-			streams.remove(containingStream).getId();
+	private void removeBehavior(Behavior behavior) {
+		behaviors.remove(behavior.getId());
+	}
+	
+	private Collection<Behavior> getBehaviors(){
+		return behaviors.values();
 	}
 
 	public void setBehaviorActivationThreshold(double threshold) {
@@ -490,10 +469,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	public double getBroadcastExcitationAmount() {
 		return broadcastExcitationAmount;
-	}
-
-	public Collection<Stream> getStreams() {
-		return Collections.unmodifiableCollection(streams.values());
 	}
 
 	public CandidateThresholdReducer getCandidateThresholdReducer() {

@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -142,6 +143,12 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 
 	@Override
 	public void setTaskSpawner(TaskSpawner taskSpawner) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveStream(Stream s) {
 		// TODO Auto-generated method stub
 		
 	}	

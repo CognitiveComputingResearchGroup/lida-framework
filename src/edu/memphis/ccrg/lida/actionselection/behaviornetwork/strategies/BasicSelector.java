@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 
 /**
  * Selector iterates and chooses competitor with max alpha
@@ -29,23 +28,21 @@ public class BasicSelector implements Selector{
     public BasicSelector() {       
     }
     
-    public Behavior selectBehavior(Collection<Stream> candidates, double candidateThreshold){
+    public Behavior selectBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
         double maxActivation = 0.0;
         Behavior winner = null;
-        for(Stream s: candidates){
-        	for(Behavior current: s.getBehaviors()){
-        		double currentActivation = current.getTotalActivation();
-        		if(currentActivation >= candidateThreshold){
-	                if(currentActivation > maxActivation) {                    
-	                    winner = current;
-	                    maxActivation = currentActivation;
-	                }else if(currentActivation == maxActivation){   
-	                	if(Math.random() >= TIE_BREAKER)
-	                		winner = current;                                    
-	                }
-        		}
-        	}
-        }
+        for(Behavior current: candidateBehaviors){
+    		double currentActivation = current.getTotalActivation();
+    		if(currentActivation >= candidateThreshold){
+                if(currentActivation > maxActivation) {                    
+                    winner = current;
+                    maxActivation = currentActivation;
+                }else if(currentActivation == maxActivation){   
+                	if(Math.random() >= TIE_BREAKER)
+                		winner = current;                                    
+                }
+    		}
+    	}
         if(winner != null)
             logger.log(Level.FINE, "Winner: " + winner.getLabel() + ", activ: " + maxActivation);
         return winner;
