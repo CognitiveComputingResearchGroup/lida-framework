@@ -91,6 +91,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 
 	@Override
 	public void selectAction() {
+		
 		Scheme coal;
 		coal = chooseBehavior();
 		if (coal != null) {
@@ -103,10 +104,10 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			bl.receiveActionId(id);
 			
 		}
-		FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.GlobalWorkspace, behaviors.size()+"");
+		FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.ActionSelection, behaviors.size()+"");
 		sendEventToGui(ge);
 	}
-	logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
+	logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getActualTick());
 
 	asd.resetTriggers();
 	actionSelectionStarted.set(false);
@@ -151,6 +152,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public void receiveStream(Stream s) {
 		// TODO Auto-generated method stub
 		
-	}	
+	}
+
 
 }//class
