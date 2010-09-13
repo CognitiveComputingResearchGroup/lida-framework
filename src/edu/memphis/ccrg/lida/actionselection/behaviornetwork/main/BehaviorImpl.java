@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 //TODO decay context as well!!!!  Override decay!
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
@@ -112,7 +113,10 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
  
 	@Override
 	public void updateContextCondition(Node condition) {
-		context.put(condition, condition.getTotalActivation());
+		if(context.containsKey(condition))
+			context.put(condition, condition.getTotalActivation());
+		else
+			logger.log(Level.WARNING, "Tried to update a context condition that wasn't in behavior " + label, LidaTaskManager.getActualTick());
 	}
 	
 	@Override

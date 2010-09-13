@@ -14,13 +14,11 @@ import java.util.*;
  */
 public class StreamImpl implements Stream{
 	
-	//TODO how can this support a stream which repeats behaviors?
-	
     private String name = "blank stream";
     
     private List<Behavior> behaviors = new ArrayList<Behavior>();
     
-   // private Map<Behavior, List<Behavior>> successorLinks = new HashMap<Behavior, List<Behavior>>();   
+    private Map<Behavior, List<Behavior>> successorLinks = new HashMap<Behavior, List<Behavior>>();   
     
     private boolean instantiated = false;
     
@@ -72,19 +70,17 @@ public class StreamImpl implements Stream{
 		return behaviors.size();
 	}
 	
-//	public void addSuccessorLink(long predecessorId, long successorId){
-//		List<Long> values = successorLinks.get(predecessorId);
-//		if(values == null){
-//			values = new ArrayList<Long>();
-//			successorLinks.put(predecessorId, values);
-//		}
-//		values.add(successorId);
-//	}
-//	
-//	public List<Behavior> getSuccessors(long id){
-//		List<Behavior> successors = new ArrayList<Behavior>();
-//		List<Long> successorsIds = successorLinks.get(id);
-//		for(Long l: successorsIds)
-//	}
-//	
+	public void addSuccessorLink(Behavior predecessor, Behavior successor){
+		List<Behavior> values = successorLinks.get(predecessor);
+		if(values == null){
+			values = new ArrayList<Behavior>();
+			successorLinks.put(predecessor, values);
+		}
+		values.add(successor);
+	}
+	
+	public List<Behavior> getSuccessors(Behavior b){
+		return successorLinks.get(b);
+	}
+	
 }//class

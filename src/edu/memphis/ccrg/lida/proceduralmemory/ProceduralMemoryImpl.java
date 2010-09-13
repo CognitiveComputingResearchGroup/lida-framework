@@ -151,6 +151,11 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		logger.log(Level.FINE, "Sending scheme from procedural memory", LidaTaskManager.getActualTick());
 		for (ProceduralMemoryListener listener : listeners){
 			Behavior b = new BehaviorImpl(s.getLabel(), s.getId(), s.getSchemeActionId(), s.getTotalActivation());
+			List<NodeStructure> contextConditions = s.getContextConditions();
+			//TODO change schemes context condition to a node structure.
+			List<NodeStructure> resultConditions = s.getResultConditions();
+			//TODO how to specifiy that a result is a delete?
+			
 			listener.receiveBehavior(b);
 		}
 	}
