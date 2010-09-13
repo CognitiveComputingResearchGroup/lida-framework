@@ -59,7 +59,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Amount of excitation by conscious broadcast (akin to PHI from Maes'
 	 * Implementation)
 	 */
-	private double broadcastExcitationAmount = 0.5;
+	private double broadcastExcitationFactor = 0.5;
 
 	/**
 	 * If behaviors' activation falls below this threshold after they are
@@ -229,7 +229,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}// method
 
 	/**
-     * Called when a new consicous broadcast arrives.  Method actually called by ActivatedBehaviorsTask on a separate thread.
+     * Called when a new conscious broadcast arrives.  Method actually called by ActivatedBehaviorsTask on a separate thread.
      */
 	public void passActivationAmongBehaviors() {
 		for (Behavior behavior : getBehaviors()) {
@@ -243,24 +243,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	/**
 	 * Only excite successor if precondition is not yet satisfied.
+	 * 
 	 * @param behavior
+	 * 
 	 */
 	private void spreadSuccessorActivation(Behavior behavior) {
-		for (Node addProposition : behavior.getAddList()) {
-			Set<Behavior> behaviors = getSuccessors(addProposition);
-			for (Behavior successor : behaviors) {
-				// Should only grant activation to a successor if its
-				// precondition
-				// has not yet been satisfied
+		for (Node addProposition: behavior.getAddList()) {
+			Set<Behavior> successors = getSuccessors(addProposition);
+			for (Behavior successor: successors) {
+				// Grant activation to a successor if its precondition has not yet been satisfied
 				if (successor.isContextConditionSatisfied(addProposition) == false) {
-					double granted = (behavior.getActivation() * successorExcitationFactor)
-							/ successor.getContextSize();
-					// oldway: double granted = ((behavior.getActivation() *
-					// broadcastExcitationAmount) / (goalExcitationAmount *
-					// behaviors.size() * successor.getPreconditionCount());
-					successor.excite(granted);
+					double amount = (behavior.getActivation() * successorExcitationFactor) /
+							         (successor.getContextSize() * successors.size());
+					successor.excite(amount);
 					logger.log(Level.FINEST, behavior.getLabel() + "-->"
-							+ granted + " to " + successor + " for "
+							+ amount + " to " + successor + " for "
 							+ addProposition, LidaTaskManager.getActualTick());
 				}
 			}
@@ -278,19 +275,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * @param behavior
 	 */
 	private void spreadPredecessorActivation(Behavior behavior) {
-		for (Node precondition : behavior.getContextConditions()) {
-			if (behavior.isContextConditionSatisfied(precondition) == false) {
-				Set<Behavior> predecessors = getPredecessors(precondition);
+		for (Node contextCondition : behavior.getContextConditions()) {
+			if (behavior.isContextConditionSatisfied(contextCondition) == false) {
+				Set<Behavior> predecessors = getPredecessors(contextCondition);
 				for (Behavior predecessor : predecessors) {
-					double granted = (behavior.getActivation() * predecessorExcitationFactor)
-							/ (predecessor.getAddListCount() * predecessors
-									.size());
+					double granted = (behavior.getActivation() * predecessorExcitationFactor) / 
+							         (predecessor.getAddListCount() * predecessors.size());
 					predecessor.excite(granted);
 					logger.log(Level.FINEST, behavior.getActivation() + " "
 							+ behavior.getLabel() + "<--" + granted + " to "
-							+ predecessor + " for " + precondition,
+							+ predecessor + " for " + contextCondition,
 							LidaTaskManager.getActualTick());
-
 				}
 			}
 		}
@@ -300,30 +295,29 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return behaviorsByAddItem.get(precondition);
 	}
 
-	// TODO This method cannot be rechecked enough
+	// TODO This method cannot be rechecked enough!
 	private void spreadConflictorActivation(Behavior behavior) {
 		boolean isMutualConflict = false;
-		for (Node condition : behavior.getContextConditions()) {
-			Set<Behavior> behaviors = getConflictors(condition);
-			for (Behavior conflictor : behaviors) {
+		for (Node contextCondition : behavior.getContextConditions()) {
+			Set<Behavior> conflictors = getConflictors(contextCondition);
+			for (Behavior conflictor : conflictors) {
 				// for each conflictor context condition
 				for (Node conflictorPreCondition : conflictor.getContextConditions()) {
 					// if conflictor context condition is not satisfied
 					if (conflictor.isContextConditionSatisfied(conflictorPreCondition) == false) {
 						Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
 						// if there is a mutual conflict
-						if (conflictorsConflictors.contains(behavior)) {
-							// TODO optimize
-							isMutualConflict = true;
+						isMutualConflict = conflictorsConflictors.contains(behavior);
+						if (isMutualConflict) {
 							if (behavior.getActivation() > conflictor.getActivation())
-								auxSpreadConflictorActivation(behavior, conflictor);
+								auxSpreadConflictorActivation(behavior, conflictor, conflictors.size());
 						}
 					}
 				}
 
 				// No mutual conflict then inhibit the conflictor of behavior
 				if (isMutualConflict == false)
-					auxSpreadConflictorActivation(behavior, conflictor);
+					auxSpreadConflictorActivation(behavior, conflictor, conflictors.size());
 				else
 					isMutualConflict = false;
 			}// for each conflictor
@@ -333,44 +327,33 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private Set<Behavior> getConflictors(Node condition) {
 		return behaviorsByDeleteItem.get(condition);
 	}
-	private void auxSpreadConflictorActivation(Behavior behavior,
-			Behavior conflictor) {
-		double inhibitionAmount = -1.0
-				* (behavior.getActivation() * conflictorExcitationFactor)
-				/ (conflictor.getDeleteListCount());
-		// oldway:double inhibited = (getTotalActivation(b) * fraction) /
-		// (behaviors.size() * conflictor.getDeleteList().size());
-
+	private void auxSpreadConflictorActivation(Behavior behavior, Behavior conflictor, int numConflictors) {
+		double inhibitionAmount = -1.0 * (behavior.getActivation() * conflictorExcitationFactor) /
+								         (conflictor.getDeleteListCount() * numConflictors);
 		conflictor.excite(inhibitionAmount);
-		logger.log(Level.FINEST, behavior.getLabel() + " inhibits "
-				+ conflictor.getLabel() + " amount " + inhibitionAmount,
-				LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST, behavior.getLabel() + " inhibits " +
+				   conflictor.getLabel() + " amount " + inhibitionAmount,
+				   LidaTaskManager.getActualTick());
 	}// method
 
 	/**
 	 * For each proposition in the current broadcast 
 	 * get the behaviors indexed by that proposition For
-	 * each behavior, excite it an amount equal to (phi)/(num behaviors indexed
-	 * at current proposition * # of preconditions in behavior)
+	 * each behavior, excite it
 	 */
 	public void passActivationFromBroadcast() {
-		for (Node proposition : currentBroadcast.getNodes()) {
-			if (behaviorsByContextCondition.containsKey(proposition)) {
-
-				//TODO Context of behaviors should not be boolean they should be the activation of the node.
-				Set<Behavior> behaviors = behaviorsByContextCondition.get(proposition);
-				double excitationAmount = broadcastExcitationAmount
-						/ behaviors.size();
-				for (Behavior b : behaviors) {
-					b.satisfyContextCondition(proposition);
-					// TODO use excite strategy
-					b.excite(excitationAmount / b.getContextSize());
-					logger.log(Level.FINEST, b.toString() + " "
-							+ excitationAmount / b.getContextSize() + " for "
-							+ proposition, LidaTaskManager.getActualTick());
+		for (Node broadcastNode : currentBroadcast.getNodes()) {
+			if (behaviorsByContextCondition.containsKey(broadcastNode)) {
+				double excitationAmount = broadcastNode.getTotalActivation() * broadcastExcitationFactor;
+				Set<Behavior> behaviors = behaviorsByContextCondition.get(broadcastNode);	
+				for (Behavior behavior : behaviors) {
+					behavior.updateContextCondition(broadcastNode);
+					behavior.excite(excitationAmount / behavior.getContextSize());
+					logger.log(Level.FINEST, behavior.toString() + " "
+							+ excitationAmount / behavior.getContextSize() + " for "
+							+ broadcastNode, LidaTaskManager.getActualTick());
 				}
 			}
-
 		}// for
 	}// method
 
@@ -383,9 +366,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		} else {
 			reduceCandidateBehaviorThreshold();
 		}
-		// Deactivate preconditions
-		// TODO think about this more
-		deactivateAllPreconditions();
 	}
 
 	private void spawnExpectationCodelets(Behavior b) {
@@ -417,11 +397,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		sendAction(winningBehavior.getActionId());
 	}
 
-	private void deactivateAllPreconditions() {
-		for (Behavior b : getBehaviors())
-			b.deactivateAllContextConditions();
-	}
-
 	/**
 	 * Decay all the behaviors in all the schemes. Remove the behavior after
 	 * decay if its activation is below the lower bound.
@@ -429,6 +404,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		for (Behavior behavior : getBehaviors()) {
+			//TODO decay context as well!!!!
 			behavior.decay(ticks);
 			if (behavior.getActivation() <= behaviorActivationLowerBound) {
 				logger.log(Level.FINER,
@@ -460,7 +436,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	public void setBroadcastExcitationAmount(double broadcastExciation) {
-		this.broadcastExcitationAmount = broadcastExciation;
+		this.broadcastExcitationFactor = broadcastExciation;
 	}
 
 	public double getBehaviorActivationThreshold() {
@@ -468,7 +444,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	public double getBroadcastExcitationAmount() {
-		return broadcastExcitationAmount;
+		return broadcastExcitationFactor;
 	}
 
 	public CandidateThresholdReducer getCandidateThresholdReducer() {

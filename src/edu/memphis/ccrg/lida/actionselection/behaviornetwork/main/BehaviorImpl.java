@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
+//TODO decay context as well!!!!  Override decay!
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.main.Behavior");
@@ -32,7 +33,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     /**
      * 
      */
-    private Map<Node, Boolean> context = new ConcurrentHashMap<Node, Boolean>();
+    private Map<Node, Double> context = new ConcurrentHashMap<Node, Double>();
 
     /**
      * Set of nodes that this scheme adds
@@ -64,6 +65,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
      */
     private List<Stream> containingStreams = null;
     
+    private double satisfiabilityThreshold = 0.0;
+    
 	public BehaviorImpl(long id, long actionId) {
 	   	this.id = id;
 	   	this.actionId = actionId;
@@ -80,7 +83,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     public void deactivateAllContextConditions(){      
         isAllContextSatisfied = false;
         for(Node s: context.keySet())
-        	context.put(s, false);    
+        	context.put(s, 0.0);    
     }
     
 	public void setId(long id) {
@@ -93,7 +96,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
     public boolean isContextConditionSatisfied(Node prop){
     	if(context.containsKey(prop))
-    		return context.get(prop) == true;
+    		return context.get(prop) > satisfiabilityThreshold;
     	return false;
     }
     
@@ -101,23 +104,22 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     	if(isAllContextSatisfied)
     		return true;
     	
-        for(Boolean b: context.values()){
-        	if(b == false)
+        for(Double d: context.values())
+        	if(d <= satisfiabilityThreshold)
         		return false;
-        }
         return true;
     }    
  
 	@Override
-	public void satisfyContextCondition(Node proposition) {
-		context.put(proposition, true);
+	public void updateContextCondition(Node condition) {
+		context.put(condition, condition.getTotalActivation());
 	}
 	
 	@Override
 	public void deactiveContextCondition(Node condition) {
 		if(context.containsKey(condition)){
 			isAllContextSatisfied = false;
-			context.put(condition, false);
+			context.put(condition, 0.0);
 		}	
 	}
 	
@@ -125,7 +127,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     public boolean addContextCondition(Node condition){
     	logger.log(Level.FINEST, "Adding context condition " + condition.getLabel() + " to " + label);
     	isAllContextSatisfied = false;
-    	return (context.put(condition, false) != null);
+    	return (context.put(condition, condition.getTotalActivation()) != null);
     }
     
     public boolean addAddCondition(Node addCondition){

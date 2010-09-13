@@ -22,7 +22,7 @@ public interface Behavior extends Activatible {
 	/**
 	 * marks supplied condition as present 
 	 */
-	public abstract void satisfyContextCondition(Node condition);
+	public abstract void updateContextCondition(Node condition);
 	/**
 	 * Returns true if supplied condition is satisfied
 	 * @param addProposition
