@@ -9,16 +9,15 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.*;
 
 /**
- * Stream is a list of behaviors that may be "instantiated"
- *  Sidney D'Mello, Ryan McCall
+ * 
  */
 public class StreamImpl implements Stream{
 	
     private String name = "blank stream";
     
-    private List<Behavior> behaviors = new ArrayList<Behavior>();
+    private Set<Behavior> behaviors = new HashSet<Behavior>();
     
-    private Map<Behavior, List<Behavior>> successorLinks = new HashMap<Behavior, List<Behavior>>();   
+    private Map<Behavior, Set<Behavior>> successorLinks = new HashMap<Behavior, Set<Behavior>>();   
     
     private boolean instantiated = false;
     
@@ -71,15 +70,20 @@ public class StreamImpl implements Stream{
 	}
 	
 	public void addSuccessorLink(Behavior predecessor, Behavior successor){
-		List<Behavior> values = successorLinks.get(predecessor);
+		Set<Behavior> values = successorLinks.get(predecessor);
 		if(values == null){
-			values = new ArrayList<Behavior>();
+			values = new HashSet<Behavior>();
 			successorLinks.put(predecessor, values);
 		}
 		values.add(successor);
 	}
 	
-	public List<Behavior> getSuccessors(Behavior b){
+	public void removeSuccessorLink(Behavior predecessor, Behavior successor){
+		if(successorLinks.containsKey(predecessor))
+			successorLinks.get(predecessor).remove(successor);
+	}
+	
+	public Set<Behavior> getSuccessors(Behavior b){
 		return successorLinks.get(b);
 	}
 	
