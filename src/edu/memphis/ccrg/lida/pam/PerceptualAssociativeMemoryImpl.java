@@ -314,11 +314,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}// method
 	
 	public boolean containsNode(PamNode node){
-		return pamNodeStructure.hasNode(node);
+		return pamNodeStructure.containsNode(node);
 	}
 	
 	public boolean containsLink(PamLink link){
-		return pamNodeStructure.hasLink(link);
+		return pamNodeStructure.containsLink(link);
 	}
 
 	public Collection<FeatureDetector> getFeatureDetectors(){

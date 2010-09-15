@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
@@ -14,7 +14,7 @@ public interface Behavior extends Activatible {
 	public abstract String getLabel();
 
 	//Preconditions
-	public abstract Set<Node> getContextConditions();
+	public abstract Collection<Node> getContextConditions();
 	public abstract boolean addContextCondition(Node condition);
 	public abstract int getContextSize();
 	
@@ -55,7 +55,7 @@ public interface Behavior extends Activatible {
     public abstract double getDeleteListCount();
     
     //Containing streams
-    void addContainingStream(Stream stream);
-	List<Stream> getContainingStreams();
+    public abstract void addContainingStream(Stream stream);
+    public abstract Set<Stream> getContainingStreams();
 	
 }//method

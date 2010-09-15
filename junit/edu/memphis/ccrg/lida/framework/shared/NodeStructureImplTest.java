@@ -98,11 +98,11 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure1.addNode(node1);	
 		nodeStructure1.addNode(node2);	
 		nodeStructure1.addLink(link1);
-		assertTrue("Problem with addLink", nodeStructure1.hasLink(link1));
+		assertTrue("Problem with addLink", nodeStructure1.containsLink(link1));
 		
 		nodeStructure1.addNode(node3);	
 		nodeStructure1.addLink(link2);
-		assertTrue("Problem with addLink", nodeStructure1.hasLink(link2));
+		assertTrue("Problem with addLink", nodeStructure1.containsLink(link2));
 	}
 
 	/**
@@ -121,17 +121,17 @@ public class NodeStructureImplTest extends TestCase{
 	@Test
 	public void testAddNode() {	
 		nodeStructure1.addNode(node1);	
-		assertTrue("Problem with addNode", nodeStructure1.hasNode(node1));
+		assertTrue("Problem with addNode", nodeStructure1.containsNode(node1));
 		
 		nodeStructure1.addNode(node2);	
-		assertTrue("Problem with addNode", nodeStructure1.hasNode(node2));
+		assertTrue("Problem with addNode", nodeStructure1.containsNode(node2));
 		
 		nodeStructure1.addNode(node3);
-		assertTrue("Problem with addNode", nodeStructure1.hasNode(node3));	
+		assertTrue("Problem with addNode", nodeStructure1.containsNode(node3));	
 
 		node2.setActivation(3);
 		nodeStructure1.addNode(node2);
-		assertTrue("Problem with addNode", (nodeStructure1.hasNode(node2) && node2.getActivation()==3));		
+		assertTrue("Problem with addNode", (nodeStructure1.containsNode(node2) && node2.getActivation()==3));		
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure1.addLink(link2);
 		
 		nodeStructure1.deleteLink(link1);
-		assertTrue("Problem with deleteLink", !nodeStructure1.hasLink(link1));		
+		assertTrue("Problem with deleteLink", !nodeStructure1.containsLink(link1));		
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure1.addNode(node3);
 		
 		nodeStructure1.deleteNode(node3);
-		assertTrue("Problem with deleteNode", !nodeStructure1.hasNode(node3));	
+		assertTrue("Problem with deleteNode", !nodeStructure1.containsNode(node3));	
 	}
 
 	/**

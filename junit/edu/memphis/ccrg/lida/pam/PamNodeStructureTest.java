@@ -139,7 +139,7 @@ public class PamNodeStructureTest extends TestCase{
 		nodeStructure2.setSelectivity(4.0);
 		nodeStructure2.setUpscale(3.0);
 		nodeStructure2.addNode(node1);
-		assertTrue("Problem with AddPamNode", nodeStructure2.hasNode(node1));
+		assertTrue("Problem with AddPamNode", nodeStructure2.containsNode(node1));
 		assertEquals("Problem with AddPamNode", 4.0,nodeStructure2.getSelectivity());
 		assertEquals("Problem with AddPamNode", 3.0,nodeStructure2.getUpscale());
 		

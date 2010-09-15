@@ -197,7 +197,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Utility method to index the behaviors into a map by elements 
 	 */
-	private void indexBehaviorByElements(Behavior behavior, Set<Node> elements,
+	private void indexBehaviorByElements(Behavior behavior, Collection<Node> elements,
 										 Map<Node, WeakHashSet<Behavior>> map) {
 		for (Node element : elements) {
 			synchronized (element) {

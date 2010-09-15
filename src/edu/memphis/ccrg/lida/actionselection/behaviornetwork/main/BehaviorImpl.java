@@ -8,20 +8,18 @@
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
-//TODO decay context as well!!!!  Override decay!
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.main.Behavior");
@@ -32,9 +30,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     private String label = "blank behavior";
  
     /**
-     * 
+     * Context for this behavior
      */
-    private Map<Node, Double> context = new ConcurrentHashMap<Node, Double>();
+    private NodeStructure context = new NodeStructureImpl();
 
     /**
      * Set of nodes that this scheme adds
@@ -44,7 +42,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     /**
      * 
      */
-    private Set<Node> deleteList = new HashSet<Node>();        
+    private Set<Node> deleteList = new ConcurrentHashSet<Node>();        
     
     /**
      * Id of the action(s) in sensory-motor to be taken if this behavior executes
@@ -64,27 +62,29 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     /**
      * The streams that contains this behavior
      */
-    private List<Stream> containingStreams = null;
+    private Set<Stream> containingStreams = null;
     
-    private double satisfiabilityThreshold = 0.0;
+    private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
+    
+    private static final double DEFAULT_CS_THRESHOLD = 0.5;
     
 	public BehaviorImpl(long id, long actionId) {
 	   	this.id = id;
 	   	this.actionId = actionId;
-	   	deactivateAllContextConditions();
 	}
 	
+	//TODO Parameter for the Node type used in this behavior's context. 
     public BehaviorImpl(String label, long id, long actionId, double totalActivation){
     	this(id, actionId);
     	this.label = label;
-    	setActivation(totalActivation);
+    	setActivation(totalActivation);   	
     }
 
 	//Precondition methods
     public void deactivateAllContextConditions(){      
         isAllContextSatisfied = false;
-        for(Node s: context.keySet())
-        	context.put(s, 0.0);    
+        for(Node s: context.getNodes())
+        	s.setActivation(0.0);    
     }
     
 	public void setId(long id) {
@@ -96,8 +96,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	}
 
     public boolean isContextConditionSatisfied(Node prop){
-    	if(context.containsKey(prop))
-    		return context.get(prop) > satisfiabilityThreshold;
+    	if(context.containsNode(prop))
+    		return context.getNode(prop.getId()).getActivation() > contextSatisfactionThreshold;
     	return false;
     }
     
@@ -105,25 +105,29 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     	if(isAllContextSatisfied)
     		return true;
     	
-        for(Double d: context.values())
-        	if(d <= satisfiabilityThreshold)
+        for(Node n: context.getNodes())
+        	if(n.getActivation() <= contextSatisfactionThreshold)
         		return false;
         return true;
     }    
  
 	@Override
 	public void updateContextCondition(Node condition) {
-		if(context.containsKey(condition))
-			context.put(condition, condition.getTotalActivation());
-		else
+		if((condition = context.getNode(condition.getId())) != null){
+			double newActivation = condition.getActivation();
+			if(newActivation < this.contextSatisfactionThreshold){
+				isAllContextSatisfied = false;
+			}
+			condition.setActivation(newActivation);
+		}else
 			logger.log(Level.WARNING, "Tried to update a context condition that wasn't in behavior " + label, LidaTaskManager.getActualTick());
 	}
 	
 	@Override
 	public void deactiveContextCondition(Node condition) {
-		if(context.containsKey(condition)){
+		if((condition = context.getNode(condition.getId())) != null){
+			condition.setActivation(0.0);
 			isAllContextSatisfied = false;
-			context.put(condition, 0.0);
 		}	
 	}
 	
@@ -131,7 +135,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     public boolean addContextCondition(Node condition){
     	logger.log(Level.FINEST, "Adding context condition " + condition.getLabel() + " to " + label);
     	isAllContextSatisfied = false;
-    	return (context.put(condition, condition.getTotalActivation()) != null);
+    	return (context.addNode(condition) != null);
     }
     
     public boolean addAddCondition(Node addCondition){
@@ -143,8 +147,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     }    
     
     //Get methods
-    public Set<Node> getContextConditions(){
-        return Collections.unmodifiableSet(context.keySet());
+    public Collection<Node> getContextConditions(){
+        return context.getNodes();
     }
     
     public Set<Node> getAddList(){
@@ -157,7 +161,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
    
 	@Override
 	public int getContextSize() {
-		return context.size();
+		return context.getNodeCount();
 	}
 	
 	@Override
@@ -204,8 +208,16 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		containingStreams.add(stream);
 	}
 
-	public List<Stream> getContainingStreams() {
+	public Set<Stream> getContainingStreams() {
 		return containingStreams;
 	}
 
+	@Override
+	public void decay(long ticks){
+		super.decay(ticks);
+		for(Node n: context.getNodes()){
+			n.decay(ticks);
+		}
+	}
+	
 }//class

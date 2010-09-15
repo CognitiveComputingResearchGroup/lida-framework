@@ -56,11 +56,11 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 		Collection<Node> nodes = desiredContent.getNodes();
 		Collection<Link> links = desiredContent.getLinks();
 		for (Node n : nodes)
-			if (!model.hasNode(n))
+			if (!model.containsNode(n))
 				return false;
 
 		for (Link l : links)
-			if (!model.hasLink(l))
+			if (!model.containsLink(l))
 				return false;
 
 		return true;

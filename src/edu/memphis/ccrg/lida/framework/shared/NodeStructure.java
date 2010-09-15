@@ -60,9 +60,9 @@ public interface NodeStructure {
 
 	public abstract Map<Linkable, Set<Link>> getLinkableMap();
 
-	public abstract boolean hasNode(Node n);
+	public abstract boolean containsNode(Node n);
 
-	public abstract boolean hasLink(Link l);
+	public abstract boolean containsLink(Link l);
 
 	public abstract int getNodeCount();
 

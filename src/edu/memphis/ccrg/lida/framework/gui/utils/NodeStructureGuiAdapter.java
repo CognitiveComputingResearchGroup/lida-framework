@@ -159,9 +159,9 @@ public class NodeStructureGuiAdapter extends
 
 	public boolean containsVertex(Linkable arg0) {
 		if (arg0 instanceof Node) {
-			return nodeStructure.hasNode((Node) arg0);
+			return nodeStructure.containsNode((Node) arg0);
 		} else {
-			return nodeStructure.hasLink((Link) arg0);
+			return nodeStructure.containsLink((Link) arg0);
 		}
 	}
 

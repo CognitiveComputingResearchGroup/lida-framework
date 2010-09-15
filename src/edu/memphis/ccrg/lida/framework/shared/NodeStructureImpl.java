@@ -539,11 +539,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		nodes = new ConcurrentHashMap<Long, Node>();
 	}
 
-	public boolean hasLink(Link l) {
+	public boolean containsLink(Link l) {
 		return links.containsKey(l.getIds());
 	}
 
-	public boolean hasNode(Node n) {
+	public boolean containsNode(Node n) {
 		return nodes.containsKey(n.getId());
 	}
 
