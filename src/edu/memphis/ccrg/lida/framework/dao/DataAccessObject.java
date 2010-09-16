@@ -14,5 +14,6 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 public interface DataAccessObject {
     public boolean save();
     public boolean load();
+    public boolean load(int lidaId);
     public boolean delete();
 }

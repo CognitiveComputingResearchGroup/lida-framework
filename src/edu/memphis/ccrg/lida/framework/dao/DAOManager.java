@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.framework.dao;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
@@ -11,6 +12,9 @@ import java.util.ArrayList;
  * @author Tom
  */
 public class DAOManager implements DataAccessObject {
+    public static final String LIDA_STORAGE_NAME = "lida";
+    public static int TEM_WORD_LENGTH = TemImpl.DEF_WORD_LENGTH;
+
     private static DAOManager instance = null;
     private ArrayList<DataAccessObject> daos;
     private boolean initialized = false;
@@ -31,8 +35,17 @@ public class DAOManager implements DataAccessObject {
         storage = DataBaseStorageImpl.getInstance();
         success = storage.open();
 
-        // TODO change to LIDA ID (e.g. autoincremented or ask user) if multiple LIDA instances should be saved/loaded
+        // TODO ask user for lida name
+        String lidaName = "LIDA";
         int cLidaId = 0;
+
+        ArrayList data = new ArrayList();
+        data.add(lidaName);
+        storage.insertData(LIDA_STORAGE_NAME, data);
+        Object[] row = storage.getDataRow(LIDA_STORAGE_NAME);
+        cLidaId = (Integer)row[0];
+
+        TEM_WORD_LENGTH = (Integer)lida.getParam("tem.wordLength",TemImpl.DEF_WORD_LENGTH);
 
         for (ModuleName name : ModuleName.values()) {
             LidaModule module = lida.getSubmodule(name);
@@ -80,6 +93,13 @@ public class DAOManager implements DataAccessObject {
         boolean success = true;
         for (DataAccessObject dao : daos) {
             if (!dao.load()) success = false;
+        }
+        return success;
+    }
+    public boolean load(int lidaId) {
+        boolean success = true;
+        for (DataAccessObject dao : daos) {
+            if (!dao.load(lidaId)) success = false;
         }
         return success;
     }
