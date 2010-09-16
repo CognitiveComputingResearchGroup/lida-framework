@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * 
  * @author Ryan J McCall
  */
-public class ScreenCaptureUtil{
+public class ScreenCaptureUtility{
 	
 	private static Logger logger = Logger.getLogger("lida.util.ScreenCaptureUtil");
 	
@@ -28,7 +28,7 @@ public class ScreenCaptureUtil{
 	 */
 	private Rectangle areaToCapture;
 	
-	public ScreenCaptureUtil(){
+	public ScreenCaptureUtility(){
 		try{
 			robot = new Robot();
 			areaToCapture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
@@ -40,7 +40,7 @@ public class ScreenCaptureUtil{
 	/**
 	 * @param r
 	 */
-	public ScreenCaptureUtil(Rectangle r){
+	public ScreenCaptureUtility(Rectangle r){
 		try {
 			robot = new Robot();
 			areaToCapture = r;
