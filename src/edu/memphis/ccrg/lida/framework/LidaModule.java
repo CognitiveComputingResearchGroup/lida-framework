@@ -31,7 +31,7 @@ public interface LidaModule extends Initializable{
 	 */
 	//TODO:public abstract Object getModuleContent(Object... params);
 	public abstract Object getModuleContent();
-	
+
 	/**
 	 * Decay the module and all the submodules. 
 	 * @param ticks number of ticks to decay.
@@ -41,4 +41,5 @@ public interface LidaModule extends Initializable{
 	public abstract void addSubModule(LidaModule lm);
 
 	public abstract void addListener(ModuleListener listener);
+
 }

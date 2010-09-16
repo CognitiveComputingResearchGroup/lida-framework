@@ -11,8 +11,9 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
-public interface ProceduralMemory extends LidaModule{
+public interface ProceduralMemory extends LidaModule, Saveable {
 
 	/**
 	 * For adding modules that listen to Procedural Memory

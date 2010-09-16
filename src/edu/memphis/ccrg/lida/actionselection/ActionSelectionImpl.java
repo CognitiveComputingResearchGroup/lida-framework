@@ -154,5 +154,27 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 
-
+        public Object getState() {
+            Object[] state = new Object[4];
+            state[0] = this.behaviors;
+            state[1] = null;
+            state[2] = null;
+            state[3] = null;
+            return state;
+        }
+        public boolean setState(Object content) {
+            if (content instanceof Object[]) {
+                Object[] state = (Object[])content;
+                if (state.length == 4) {
+                    try {
+                        this.behaviors = (Queue<Scheme>)state[0];
+                        return true;
+                    }
+                    catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+            return false;
+        }
 }//class

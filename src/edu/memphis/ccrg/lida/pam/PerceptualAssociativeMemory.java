@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -16,7 +17,7 @@ import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
 /**
  * @author Ryan McCall
  */
-public interface PerceptualAssociativeMemory extends LidaModule{
+public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 
 	//**** Adding methods
 	

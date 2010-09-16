@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.actionselection;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import java.io.Serializable;
 
 /**
  * Encapsulation of an action to be executed.
@@ -10,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * @author Ryan McCall, Javier Snaider
  * 
  */
-public interface LidaAction {
+public interface LidaAction extends Serializable {
 
 	public enum Topology {
 		BASIC, PARALLEL, SEQUENCIAL

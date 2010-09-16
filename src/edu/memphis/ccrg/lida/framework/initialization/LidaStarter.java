@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.dao.DAOManager;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiFactory;
 
 /**
@@ -96,6 +97,9 @@ public class LidaStarter {
 		// Create model, LIDA
 		Lida lida = new LidaXmlFactory().getLida(lidaProperties);
 		logger.log(Level.CONFIG, "LIDA created", 0L);
+
+                // Initialize Data Access Objects
+                if (!DAOManager.getInstance().isInitialized()) DAOManager.getInstance().initDataAccessObjects(lida);
 
 		// Use the LidaGuiFactory to start the agent
 		LidaGuiFactory.start(lida, lidaProperties);

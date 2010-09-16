@@ -510,4 +510,31 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		this.conflictorExcitationFactor = conflictorExcitationFactor;
 	}
 
+        public Object getState() {
+            Object[] state = new Object[4];
+            state[0] = this.behaviors;
+            state[1] = this.behaviorsByAddItem;
+            state[2] = this.behaviorsByContextCondition;
+            state[3] = this.behaviorsByDeleteItem;
+            return state;
+        }
+        public boolean setState(Object content) {
+            if (content instanceof Object[]) {
+                Object[] state = (Object[])content;
+                if (state.length == 4) {
+                    try {
+                        this.behaviors = (ConcurrentMap<Long, Behavior>)state[0];
+                        this.behaviorsByAddItem = (ConcurrentMap<Node, WeakHashSet<Behavior>>)state[1];
+                        this.behaviorsByContextCondition = (ConcurrentMap<Node, WeakHashSet<Behavior>>)state[2];
+                        this.behaviorsByDeleteItem = (ConcurrentMap<Node, WeakHashSet<Behavior>>)state[3];
+                        return true;
+                    }
+                    catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+            return false;
+        }
+
 }// class

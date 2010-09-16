@@ -12,12 +12,13 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
+import java.io.Serializable;
 
 /**
  * @author Javier Snaider, Ryan McCall
  *
  */
-public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent{
+public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent, Serializable {
 
 	private Map<Long, Node> nodes;
 	private Map<String, Link> links;

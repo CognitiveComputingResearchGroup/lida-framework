@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Map;
  * @author Javier Snaider
  *
  */
-public interface Linkable {
+public interface Linkable extends Serializable {
 
 	/**
 	 * Readable label

@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.framework;
 
+import edu.memphis.ccrg.lida.framework.dao.DAOManager;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -52,7 +53,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	 */
 	public void start(){
 		taskManager.setDecayingModules(getSubmodules().values());
-		taskManager.getMainTaskSpawner().setInitialTasks(drivers.values());		
+		taskManager.getMainTaskSpawner().setInitialTasks(drivers.values());
 		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
 	}
 

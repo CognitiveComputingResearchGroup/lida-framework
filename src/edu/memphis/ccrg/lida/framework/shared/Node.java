@@ -4,6 +4,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import edu.memphis.ccrg.lida.pam.PamNode;
+import java.io.Serializable;
 
 /**
  * Node represents a Concept in LIDA. It could be implemented in different ways 
@@ -15,7 +16,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * @author Javier Snaider
  * 
  */
-public interface Node extends Linkable, Activatible{
+public interface Node extends Linkable, Activatible, Serializable {
 	
 	public static final Node NULL_NODE = new NodeImpl();
 		

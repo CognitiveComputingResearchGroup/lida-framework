@@ -2,13 +2,14 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import java.io.Serializable;
 
 /**
  * An object with activation that is excitable and decayable
  * @author Ryan J McCall
  *
  */
-public interface Activatible {
+public interface Activatible extends Serializable {
 	
 	/**
 	 * @return the current activation.

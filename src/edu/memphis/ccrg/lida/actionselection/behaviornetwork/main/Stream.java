@@ -1,11 +1,12 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
-public interface Stream {
+public interface Stream extends Serializable {
 
 	//TOOD move to procedural memory package
 	

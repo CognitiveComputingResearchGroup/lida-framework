@@ -9,10 +9,11 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
+import java.util.Map;
+import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 public abstract class SensoryMemoryImpl extends LidaModuleImpl 
-										implements SensoryMemory{
+										implements SensoryMemory {
 
 	private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
 	protected Environment environment;
@@ -47,5 +48,4 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl
 	public void receiveAction(LidaAction a){
 		//TODO: What to do here is a research question.
 	}
-		
 }// class

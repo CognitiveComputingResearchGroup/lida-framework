@@ -25,6 +25,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.commands.Command;
+import edu.memphis.ccrg.lida.framework.gui.commands.DAOCommand;
 import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
@@ -317,11 +319,15 @@ public class LidaGui extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        Command command = new DAOCommand();
+        command.setParameter("action", DAOCommand.SAVE_ACTION);
+        controller.executeCommand(command);
     }                                            
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+        Command command = new DAOCommand();
+        command.setParameter("action", DAOCommand.LOAD_ACTION);
+        controller.executeCommand(command);
     }                                            
 
     private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                               

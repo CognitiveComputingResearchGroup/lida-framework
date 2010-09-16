@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
+import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
@@ -8,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * @author Ryan J McCall
  *
  */
-public interface ActionSelection extends TriggerListener{
+public interface ActionSelection extends TriggerListener, Saveable {
 	
 	/**
 	 * Those classes that should be receiving selected actions from Action Selection

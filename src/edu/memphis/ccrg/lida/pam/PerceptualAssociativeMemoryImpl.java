@@ -374,4 +374,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		pamNodeStructure.setDefaultLink(type);
 	}
 
+        public Object getState() {
+            return pamNodeStructure;
+        }
+        public boolean setState(Object content) {
+            if (content instanceof PamNodeStructure) {
+                pamNodeStructure = (PamNodeStructure)content;
+                return true;
+            }
+            return false;
+        }
 }//class
