@@ -3,23 +3,17 @@
  */
 package edu.memphis.ccrg.lida.actionselection.triggers;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.mockclasses.ActionSelectionImpl;
+import edu.memphis.ccrg.lida.framework.mockclasses.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 /**
- * @author Home
+ * @author Siminder
  *
  */
 public class IndividualBehaviorActivationTriggerTest {

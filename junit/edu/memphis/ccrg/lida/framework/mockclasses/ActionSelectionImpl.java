@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.actionselection.mockclasses;
+package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
@@ -28,6 +28,18 @@ public class ActionSelectionImpl implements ActionSelection {
 	public void triggerActionSelection() {
 		
 		selectAction();
+	}
+
+	@Override
+	public Object getState() {
+		
+		return null;
+	}
+
+	@Override
+	public boolean setState(Object content) {
+		
+		return false;
 	}
 
 }
