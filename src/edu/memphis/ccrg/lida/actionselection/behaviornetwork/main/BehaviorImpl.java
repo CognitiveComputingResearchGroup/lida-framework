@@ -1,10 +1,7 @@
 /**
  * Behavior.java
  *
- * Sidney D'Mello
- * Created on December 10, 2003, 5:35 PM
- * 
- * Modified by Ryan McCall, 2010
+ * @author ryanjmccall 
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
@@ -65,6 +62,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     private Set<Stream> containingStreams = null;
     
     private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
+
+	private String contextNodeType = null;
     
     private static final double DEFAULT_CS_THRESHOLD = 0.5;
     
@@ -138,11 +137,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     	return (context.addNode(condition) != null);
     }
     
-    public boolean addAddCondition(Node addCondition){
+    public boolean addToAddList(Node addCondition){
     	return addList.add(addCondition);
     }
     
-    public boolean addDeleteCondition(Node deleteCondition){
+    public boolean addToDeleteList(Node deleteCondition){
     	return deleteList.add(deleteCondition);
     }    
     
@@ -207,6 +206,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	public void addContainingStream(Stream stream) {
 		containingStreams.add(stream);
 	}
+	
+	@Override
+	public void removeContainingStream(Stream stream) {
+		containingStreams.remove(stream);
+	}
 
 	public Set<Stream> getContainingStreams() {
 		return containingStreams;
@@ -215,9 +219,34 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public void decay(long ticks){
 		super.decay(ticks);
-		for(Node n: context.getNodes()){
+		for(Node n: context.getNodes())
 			n.decay(ticks);
-		}
 	}
+
+	@Override
+	public void setContextNodeType(String nodeType) {
+		this.contextNodeType  = nodeType;
+	}
+
+	@Override
+	public String getContextNodeType() {
+		return contextNodeType;
+	}
+
+	@Override
+	public boolean containsContextCondition(Node contextCondition) {
+		return context.containsNode(contextCondition);
+	}
+
+	@Override
+	public boolean containsAddItem(Node addItem) {
+		return addList.contains(addItem);
+	}
+
+	@Override
+	public boolean containsDeleteItem(Node deleteItem) {
+		return deleteList.contains(deleteItem);
+	}
+
 	
 }//class

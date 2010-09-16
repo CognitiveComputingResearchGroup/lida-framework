@@ -106,6 +106,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Listeners of this action selection
 	 */
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
+	
+	private BehaviorAttentionListener behaviorAttentionListener;
 
 	/**
 	 * All the behaviors currently in this behavior network.
@@ -169,11 +171,19 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
+	
+	public void setBehaviorAttentionListener(BehaviorAttentionListener listener){
+		this.behaviorAttentionListener = listener;
+	}
 
+	//TODO add these to lida.xml
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof ActionSelectionListener)
 			addActionSelectionListener((ActionSelectionListener) listener);
+		
+		if(listener instanceof BehaviorAttentionListener)
+			setBehaviorAttentionListener((BehaviorAttentionListener) listener);
 	}
 
 	@Override
@@ -188,10 +198,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		behaviors.put(newBehavior.getId(), newBehavior);
 	}
 	
+	//TODO if behavior is going to be indexed then why does a stream even need to 
+	//keep track of it's successors?  as long as the context and add lists are correct
 	@Override
-	public void receiveStream(Stream s) {
-		// TODO Auto-generated method stub
-		
+	public void receiveStream(Stream stream) {
+		for(Behavior behavior: stream.getBehaviors())
+			receiveBehavior(behavior);
 	}
 
 	/**
@@ -368,11 +380,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		}
 	}
 
-	private void spawnExpectationCodelets(Behavior b) {
-		logger.log(Level.FINEST, "BEHAVIOR : PREPARE TO FIRE " + b.getLabel(),
-				LidaTaskManager.getActualTick());
-		//TODO Send these: b.getAddList(), b.getDeleteList() to the attention module
-		//need new communication channel
+	private void spawnExpectationCodelets(Behavior winningBehavior) {
+		logger.log(Level.FINEST, "Spawning attention codelet for " + winningBehavior.getLabel(),
+						LidaTaskManager.getActualTick());
+		behaviorAttentionListener.receiveBehaviorAttentionContent(winningBehavior.getAddList(), winningBehavior.getDeleteList());
 	}
 
 	private void reduceCandidateBehaviorThreshold() {
@@ -404,12 +415,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		for (Behavior behavior : getBehaviors()) {
-			//TODO decay context as well!!!!
 			behavior.decay(ticks);
 			if (behavior.getActivation() <= behaviorActivationLowerBound) {
-				logger.log(Level.FINER,
-						"Removing behavior: " + behavior.getLabel(),
-						LidaTaskManager.getActualTick());
+				logger.log(Level.FINER, "Removing behavior: " + behavior.getLabel(),
+						   		LidaTaskManager.getActualTick());
 				removeBehavior(behavior);
 			}
 		}			

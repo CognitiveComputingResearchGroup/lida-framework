@@ -13,12 +13,16 @@ public interface Behavior extends Activatible {
 	public abstract long getActionId();
 	public abstract String getLabel();
 
-	//Preconditions
-	public abstract Collection<Node> getContextConditions();
+	//Context node type
+	public abstract void setContextNodeType(String nodeType);
+	public abstract String getContextNodeType();
+	//
 	public abstract boolean addContextCondition(Node condition);
+	public abstract boolean containsContextCondition(Node commonNode);
+	public abstract Collection<Node> getContextConditions();
 	public abstract int getContextSize();
 	
-	//Precondition satisfiability
+	//Context activation
 	/**
 	 * marks supplied condition as present 
 	 */
@@ -46,16 +50,19 @@ public interface Behavior extends Activatible {
 	
 	//Add list
 	public abstract Set<Node> getAddList();
-	public abstract boolean addAddCondition(Node condition);
+	public abstract boolean addToAddList(Node condition);
+	public abstract boolean containsAddItem(Node commonNode);
 	public abstract double getAddListCount();
 	
 	//Delete list
 	public abstract Set<Node> getDeleteList();	
-    public abstract boolean addDeleteCondition(Node deleteCondition);
+    public abstract boolean addToDeleteList(Node deleteCondition);
+    public abstract boolean containsDeleteItem(Node commonNode);
     public abstract double getDeleteListCount();
     
     //Containing streams
     public abstract void addContainingStream(Stream stream);
     public abstract Set<Stream> getContainingStreams();
+    public abstract void removeContainingStream(Stream stream);
 	
 }//method
