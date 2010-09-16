@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -105,7 +106,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
     		return true;
     	
         for(Node n: context.getNodes())
-        	if(n.getActivation() <= contextSatisfactionThreshold)
+        	if(n.getActivation() < contextSatisfactionThreshold)
         		return false;
         return true;
     }    
@@ -114,7 +115,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	public void updateContextCondition(Node condition) {
 		if((condition = context.getNode(condition.getId())) != null){
 			double newActivation = condition.getActivation();
-			if(newActivation < this.contextSatisfactionThreshold){
+			if(newActivation < contextSatisfactionThreshold){
 				isAllContextSatisfied = false;
 			}
 			condition.setActivation(newActivation);
@@ -219,8 +220,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public void decay(long ticks){
 		super.decay(ticks);
-		for(Node n: context.getNodes())
-			n.decay(ticks);
+		for(Node contextNode: context.getNodes()){
+			contextNode.decay(ticks);
+			if(contextNode.getActivation() < contextSatisfactionThreshold)
+				isAllContextSatisfied = false;
+		}
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 public interface Stream extends Serializable {
 
 	//TOOD move to procedural memory package
-	
 	public long getId();
     public String getName();
     

@@ -33,4 +33,16 @@ public class VisionSensoryMemory extends SensoryMemoryImpl{
 		
 	}
 
+	@Override
+	public Object getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean setState(Object content) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }// class
