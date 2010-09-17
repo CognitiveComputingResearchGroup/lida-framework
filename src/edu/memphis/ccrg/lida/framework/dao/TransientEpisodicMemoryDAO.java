@@ -33,8 +33,9 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
     public boolean save() {
         boolean success = true;
 
-        //TODO proper update? (this save method deletes all old data for the current lidaId and then adds new data)
+        //TODO delete all old data for the current lidaId
         try {
+            /*
             ArrayList<Object[]> oldAddresses = storage.getData(
                     ADDRESSSTORAGE_NAME,
                     new ArrayList(Arrays.asList("lidaid")),
@@ -49,13 +50,12 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
                         COUNTERSTORAGE_NAME,
                         new ArrayList(Arrays.asList("addressid")),
                         new ArrayList(Arrays.asList(addressId)));
-            }
+            }*/
         }
         catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        ArrayList data = new ArrayList();
         Object content = ((Saveable)module).getState();
         if (content instanceof Object[]) {
             try {
@@ -66,8 +66,44 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
                 Object[] lastRow = storage.getDataRow(ADDRESSSTORAGE_NAME);
                 int lastAddressId = 0;
                 if (lastRow != null && lastRow.length > 0)
-                    lastAddressId = (Integer)lastRow[0];
-                        
+                    lastAddressId = ((Integer)lastRow[0]).intValue();
+                lastRow = storage.getDataRow(COUNTERSTORAGE_NAME);
+                int lastCounterId = 0;
+                if (lastRow != null && lastRow.length > 0)
+                    lastCounterId = ((Integer)lastRow[0]).intValue();
+
+                ArrayList<Object[]> data = new ArrayList<Object[]>();
+                int batchSize = 1000;
+                for (int i = 0; i < addresses.length; i++) {
+                    Object[] row = new Object[3];
+                    row[0] = lastAddressId + i + 1;
+                    row[1] = lidaId;
+                    row[2] = VectorConverter.toByteArray(addresses[i]);
+                    data.add(row);
+                    if (i > 0 && i % batchSize == 0) {
+                        success = success && storage.batchInsertData(ADDRESSSTORAGE_NAME, data);
+                        data = new ArrayList<Object[]>();
+                    }
+                }
+                if (data.size() > 0)
+                    success = success && storage.batchInsertData(ADDRESSSTORAGE_NAME, data);
+                data = new ArrayList<Object[]>();
+                for (int i = 0; i < counters.length; i++) {
+                    Object[] row = new Object[3];
+                    row[0] = lastCounterId + i + 1;
+                    row[1] = lastAddressId + i + 1;
+                    row[2] = counters[i];
+                    data.add(row);
+                    if (i > 0 && i % batchSize == 0) {
+                        success = success && storage.batchInsertData(COUNTERSTORAGE_NAME, data);
+                        data = new ArrayList<Object[]>();
+                    }
+                }
+                if (data.size() > 0)
+                    success = success && storage.batchInsertData(COUNTERSTORAGE_NAME, data);
+                data = new ArrayList<Object[]>();
+                /* slow single insert code
+                ArrayList data = new ArrayList();
                 for (int i = 0; i < addresses.length; i++) {
                     data = new ArrayList();
                     data.add(lastAddressId + i + 1);
@@ -79,7 +115,7 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
                     data.add(lastAddressId + i + 1);
                     data.add(counters[i]);
                     success = success && storage.insertData(COUNTERSTORAGE_NAME, data);
-                }
+                }*/
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -124,16 +160,6 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
     }
     //@override
     public boolean load() {
-        /*
-        Object[] row = storage.getDataRow(STORAGE_NAME);
-        
-        byte[] sdata = (byte[])row[SDATA_INDEX];
-        if (sdata != null && sdata.length > 0) {
-            Object obj = Deserializer.getObject(sdata);
-            ((Saveable)module).setState(obj);
-            return true;
-        }
-*/
-        return false;
+        return load(lidaId);
     }
 }

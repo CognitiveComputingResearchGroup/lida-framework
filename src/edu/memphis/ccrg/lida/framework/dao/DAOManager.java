@@ -90,6 +90,7 @@ public class DAOManager implements DataAccessObject {
         return success;
     }
     public boolean load() {
+        //TODO ask or search for lida id
         boolean success = true;
         for (DataAccessObject dao : daos) {
             if (!dao.load()) success = false;

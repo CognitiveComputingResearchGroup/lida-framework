@@ -13,7 +13,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import org.apache.derby.jdbc.ClientDriver;
 
 /**
  *
@@ -33,8 +32,8 @@ public class DataBaseStorageImpl implements Storage {
     private static final String SQL_SELECT = "SELECT * FROM APP."+TABLENAME_PLACEHOLDER+" ORDER BY "+IDS_PLACEHOLDER+" DESC";
     private static final String SQL_SELECT_WHERE = "SELECT * FROM APP."+TABLENAME_PLACEHOLDER+" WHERE "+WHERE_PLACEHOLDER+" ORDER BY "+IDS_PLACEHOLDER+" DESC";
     private static final String SQL_MAXID = "SELECT max(id) FROM APP."+TABLENAME_PLACEHOLDER;
-    private static final String SQL_INSERT = "INSERT INTO APP."+TABLENAME_PLACEHOLDER+" VALUES("+VALUES_PLACEHOLDER+")";
     private static final String SQL_DELETE = "DELETE FROM APP."+TABLENAME_PLACEHOLDER+" WHERE "+WHERE_PLACEHOLDER;
+    private static final String SQL_INSERT = "INSERT INTO APP."+TABLENAME_PLACEHOLDER+" VALUES("+VALUES_PLACEHOLDER+")";
     
     private boolean connected = false;
     private Connection dbConnection = null;
@@ -177,10 +176,10 @@ public class DataBaseStorageImpl implements Storage {
                 id = ((Integer)data.get(0)).intValue();
             }
 
-            String insertStatement = SQL_INSERT;
-            insertStatement = insertStatement.replaceFirst(TABLENAME_PLACEHOLDER, storageName);
-            insertStatement = insertStatement.replaceFirst(VALUES_PLACEHOLDER, getPlaceholders(columnCount));
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(insertStatement);
+            String insertString = SQL_INSERT;
+            insertString = insertString.replaceFirst(TABLENAME_PLACEHOLDER, storageName);
+            insertString = insertString.replaceFirst(VALUES_PLACEHOLDER, getPlaceholders(columnCount));
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(insertString);
 
             //preparedStatement.setInt(1, id);
             for (int i = 0; i < data.size(); i++) {
@@ -192,6 +191,48 @@ public class DataBaseStorageImpl implements Storage {
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean batchInsertData(String storageName, ArrayList<Object[]> data) {
+        try {
+            String insert = "", values = "";
+
+            Statement stmt = dbConnection.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL_SELECT_NOORDER.replaceFirst(TABLENAME_PLACEHOLDER, storageName));
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            dbConnection.setAutoCommit(false);
+
+            String insertString = SQL_INSERT;
+            insertString = insertString.replaceFirst(TABLENAME_PLACEHOLDER, storageName);
+            insertString = insertString.replaceFirst(VALUES_PLACEHOLDER, getPlaceholders(columnCount));
+            PreparedStatement prepStmt = dbConnection.prepareStatement(insertString);
+
+            for (int i = 0; i < data.size(); i++) {
+                for (int j = 0; j < data.get(i).length; j++) {
+                    prepStmt.setObject(j+1, data.get(i)[j]);
+                }
+                prepStmt.addBatch();
+            }
+
+            int[] result = prepStmt.executeBatch();
+            dbConnection.commit();
+            dbConnection.setAutoCommit(true);
+            boolean error = false;
+            for (int i = 0; i < result.length; i++) {
+                if (result[i] == Statement.EXECUTE_FAILED) error = true;
+            }
+            
+            return !error;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            while ((e = e.getNextException()) != null)
+                e.printStackTrace();
         }
 
         return false;
@@ -226,6 +267,17 @@ public class DataBaseStorageImpl implements Storage {
                     whereString += propertyNames.get(i)+"="+apostrophe+propertyValues.get(i)+apostrophe;
             }
             return whereString;
+    }
+
+    public String getValuesString(Object[] values) {
+        String valuesString = "";
+        for (int i = 0; i < values.length; i++) {
+            String apostrophe = "'";
+            if (values[i] instanceof Integer || values[i] instanceof Double
+                    && !Double.isNaN((Double)values[i])) apostrophe = "";
+            valuesString += apostrophe+values[i].toString()+apostrophe;
+        }
+        return valuesString;
     }
 
     private String getPlaceholders(int count) {

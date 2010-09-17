@@ -15,6 +15,7 @@ public interface Storage {
     public boolean open();
     public boolean close();
     public boolean insertData(String storageName, ArrayList<Object> data);
+    public boolean batchInsertData(String storageName, ArrayList<Object[]> data);
     public ArrayList<Object[]> getData(String storageName, int maxRows);
     public ArrayList<Object[]> getData(String storageName, ArrayList propertyNames, ArrayList propertyValues);
     public ArrayList<Object[]> getData(String storageName, ArrayList propertyNames, ArrayList propertyValues, int maxRows);
