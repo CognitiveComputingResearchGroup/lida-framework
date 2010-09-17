@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -13,15 +14,17 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	public CoalitionImpl(NodeStructure content, double attnCodeActiv){
 		struct = content;
 		attentionCodeletActivation = attnCodeActiv;
-		setActivation(calculateActivation());
-		
+		updateActivation();
 	}
 
-	public double calculateActivation() {
+	public void updateActivation() {
 		double sum = 0.0;
 		for(Node n: struct.getNodes())
 			sum += n.getActivation();
-		return (sum / struct.getNodeCount()) * attentionCodeletActivation;
+		for(Link l: struct.getLinks())
+			sum += l.getActivation();
+		
+		setActivation((sum / struct.getLinkableCount()) * attentionCodeletActivation);
 	}
 
 	public BroadcastContent getContent() {

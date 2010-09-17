@@ -39,7 +39,7 @@ public class DAOManager implements DataAccessObject {
         String lidaName = "LIDA";
         int cLidaId = 0;
 
-        ArrayList data = new ArrayList();
+        ArrayList<Object> data = new ArrayList<Object>();
         data.add(lidaName);
         storage.insertData(LIDA_STORAGE_NAME, data);
         Object[] row = storage.getDataRow(LIDA_STORAGE_NAME);

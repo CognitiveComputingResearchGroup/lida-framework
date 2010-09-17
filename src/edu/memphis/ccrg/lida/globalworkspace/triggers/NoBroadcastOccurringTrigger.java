@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
 
@@ -80,7 +81,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
-	public void checkForTrigger(Queue<Coalition> coalitions) {
+	public void checkForTrigger(Collection<Coalition> coalitions) {
 	}
 
 	/*

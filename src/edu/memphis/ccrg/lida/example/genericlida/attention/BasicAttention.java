@@ -11,8 +11,9 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public class BasicAttention extends AttentionCodeletImpl {
 
 	public BasicAttention(WorkspaceBuffer csm, GlobalWorkspace g,
-			int ticksPerStep, double activation, NodeStructure soughtContent) {
-		super(csm, g, ticksPerStep, activation, soughtContent);
+			int ticksPerStep, double activation, NodeStructure soughtContent, 
+			long id) {
+		super(csm, g, ticksPerStep, activation, soughtContent, id);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,7 +27,7 @@ public class BasicAttention extends AttentionCodeletImpl {
 			}
 		}
 		if (ns != null){
-			global.addCoalition(new CoalitionImpl(ns,
+			global.addCoalition(super.id, new CoalitionImpl(ns,
 					getActivation()));
 		}
 	}

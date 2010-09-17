@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -32,7 +33,7 @@ public interface BroadcastTrigger {
 	 * Each time a new Coalition is put in the GW, this method is called for all registered the Triggers.
 	 * @param coalitions All the coalitions in the GW.
 	 */
-	public void checkForTrigger (Queue<Coalition> coalitions);
+	public void checkForTrigger (Collection<Coalition> coalitions);
 	/**
 	 * To reset the Trigger. Its called each time a new Broadcast is Triggered.
 	 */

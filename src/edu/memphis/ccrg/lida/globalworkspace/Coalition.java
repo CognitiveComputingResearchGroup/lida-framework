@@ -11,15 +11,10 @@ package edu.memphis.ccrg.lida.globalworkspace;
  *  * @author Javier Snaider
  
  */
-public interface Coalition {
-	
-	//TODO field for attention codelet that created this coalition.  Likely its id. 
-	
-	/**
-	 * 
-	 * @return the total activation of the coalition.
-	 */
+public interface Coalition { 
+
 	public double getActivation();
+	
 	/**
 	 * 
 	 * @return The Content of the coalition.
@@ -31,4 +26,6 @@ public interface Coalition {
 	 * each broadcast by the GlobalWorkspace
 	 */
 	public void decay(long ticks);
+	
+	public void updateActivation();
 }
