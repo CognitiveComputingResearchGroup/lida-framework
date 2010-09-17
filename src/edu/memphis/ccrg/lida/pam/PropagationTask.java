@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.pam;
 
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -41,7 +42,10 @@ public class PropagationTask extends LidaTaskImpl {
 
 	@Override
 	protected void runThisLidaTask() {
+//		System.out.println("\npropag task " + link.getTotalActivation() + " current " + link.getActivation());
 		link.excite(excitationAmount);
+//		System.out.println("propag task " + link.getTotalActivation() + " current " + link.getActivation());
+		
 		sink.excite(excitationAmount);
 		//
 		pam.sendActivationToParents(sink);
@@ -51,6 +55,9 @@ public class PropagationTask extends LidaTaskImpl {
 			ns.addNode(source);
 			ns.addNode(sink);
 			ns.addLink(link);
+//			for(Link l: ns.getLinks())
+//				System.out.println("propag task " + l.getTotalActivation() + " current " + link.getActivation());
+			
 			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
 			taskSpawner.addTask(task);
 		}

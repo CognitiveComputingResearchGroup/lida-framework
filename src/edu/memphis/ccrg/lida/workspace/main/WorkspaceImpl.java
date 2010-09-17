@@ -146,8 +146,24 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * Implementation of the PamListener interface.  Send received Node Structure to the
 	 * the perceptualBuffer.
 	 */
-	public void receiveNodeStructure(NodeStructure ns) {
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).mergeWith(ns);	
+	public void receiveNodeStructure(NodeStructure newPercept) {
+		NodeStructure perceptualBuffer = (NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent();
+		
+//		System.out.println("\n" + System.currentTimeMillis());
+//		System.out.println("before merge buffer has " + perceptualBuffer.getNodeCount() + " nodes and " +
+//						perceptualBuffer.getLinkCount() + " links");
+//		
+//		for(Link l: perceptualBuffer.getLinks())
+//			System.out.println(l.getLabel() + " activ " + l.getActivation());
+//		
+//		System.out.println("\npercept has " + newPercept.getNodeCount() + " nodes " + newPercept.getLinkCount() + " links");
+		
+		perceptualBuffer.mergeWith(newPercept);
+//		System.out.println("\n" + System.currentTimeMillis());
+//		System.out.println("after merge buffer has " + perceptualBuffer.getNodeCount() + " nodes and " +
+//						perceptualBuffer.getLinkCount() + " links");
+//		for(Link l: perceptualBuffer.getLinks())
+//			System.out.println(l.getLabel() + " activ " + l.getActivation());
 	}
 
 	public Object getModuleContent() {

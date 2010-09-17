@@ -8,6 +8,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -47,6 +48,11 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 			Activatible activatible = (Activatible) linkable;
 			activatible.decay(ticks);
 			if (activatible.getActivation() <= activationLowerBound){
+//				System.out.println("Deleting linkable: " + linkable.getLabel());
+//				if(linkable instanceof Link){
+//					Link l = (Link) linkable;
+//					System.out.println("deleting link " + l.getSource().getLabel() + " -> " + l.getSink().getLabel());
+//				}
 				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getActualTick());
 				buffer.deleteLinkable(linkable);
 			}

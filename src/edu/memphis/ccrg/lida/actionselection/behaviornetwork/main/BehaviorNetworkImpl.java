@@ -188,6 +188,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	@Override
+	//TODO Important! What if the behavior is already in the network!?
 	public void receiveBehavior(Behavior newBehavior) {
 		indexBehaviorByElements(newBehavior,
 				newBehavior.getContextConditions(), behaviorsByContextCondition);

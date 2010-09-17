@@ -69,8 +69,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Collection<Link> oldLinks = oldGraph.getLinks();
 		if (oldLinks != null)
 			for (Link l : oldLinks) {
-				links.put(l.getIds(), getNewLink(l.getSource(), l.getSink(), l
-						.getCategory()));
+				links.put(l.getIds(), generateNewLink(l.getSource(), l.getSink(), l.getCategory(), l.getActivation()));
 			}
 
 		// Fix Source and Sinks now that all new Nodes and Links have been
@@ -508,21 +507,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
 		Collection<Link> cl = ns.getLinks();
-//		for(Link l: cl){
-//			System.out.println(l.getLabel() + " " + l.getIds());
-//			
-//		}
 		boolean pending = true;
 		while (pending) {
 			pending = false;
 			for (Link l : cl) {
-				//System.out.println("add link is " + addLink(l));
 				if (addLink(l) == null) {
 					pending = true;
 				}
 			}
 		}
-
 		// TODO: Must add links differently than above statement.
 	}
 

@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.pam;
 
 //import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -13,27 +14,33 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
  */
 public class AddToPerceptTask extends LidaTaskImpl {
 	
-	private NodeStructure pamNodeStructure;
+	private NodeStructure nodeStructure;
 	private PerceptualAssociativeMemory pam;
 
-	public AddToPerceptTask(PamNode node, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		pamNodeStructure = new NodeStructureImpl();
-		pamNodeStructure.addNode(node);
+		nodeStructure = new NodeStructureImpl();
+		nodeStructure.addNode(pamNode);
 	}
 	
-	public AddToPerceptTask(PamLink link, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(PamLink pamLink, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		pamNodeStructure = new NodeStructureImpl();
-		pamNodeStructure.addLink(link);
+		nodeStructure = new NodeStructureImpl();
+		nodeStructure.addLink(pamLink);
 	}
 
-	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(NodeStructure pamNodeStructure, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		pamNodeStructure = new NodeStructureImpl(ns);
+//		for(Link l: pamNodeStructure.getLinks())
+//			System.out.println("original ns " + l.getActivation() + " total " + l.getTotalActivation());
+//		System.out.println();
+		nodeStructure = new NodeStructureImpl(pamNodeStructure);
+//		for(Link l: nodeStructure.getLinks())
+//			System.out.println("copied ns " + l.getActivation() + " total " + l.getTotalActivation());
+//		System.out.println("--------");
 	}
 
 	/**
@@ -46,7 +53,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 //		}
 //		System.out.println("");
 			
-		pam.addNodeStructureToPercept(pamNodeStructure);
+		pam.addNodeStructureToPercept(nodeStructure);	
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	public String toString(){
