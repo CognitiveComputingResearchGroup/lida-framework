@@ -176,4 +176,16 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 		}
 		return buff;
 	}
+
+	@Override
+	public Object getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean setState(Object content) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

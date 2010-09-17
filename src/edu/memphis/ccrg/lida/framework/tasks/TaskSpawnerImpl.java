@@ -14,6 +14,8 @@ import java.util.logging.Logger;
  */
 public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawner {
 
+	private static final long serialVersionUID = 5214851238994032189L;
+
 	private static Logger logger = Logger.getLogger("lida.framework.TaskSpawnerImpl");
 	
 	private LidaTaskManager taskManager;
