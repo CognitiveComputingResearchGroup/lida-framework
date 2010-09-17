@@ -1,8 +1,9 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
-public interface SparseDistributedMemory {
+public interface SparseDistributedMemory extends Saveable {
 
 	/**
 	 * Stores a word in the given address in this sparse distributed memory.

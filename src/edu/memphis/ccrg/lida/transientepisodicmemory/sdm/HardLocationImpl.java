@@ -68,6 +68,12 @@ public void write(BitVector word) {
 	}
 }
 
+public void setCounters(byte[] newCounters) {
+    for (int i = 0; i < this.wordLength; i++) {
+        counters[i] = newCounters[i];
+    }
+}
+
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#read(int[])
  */

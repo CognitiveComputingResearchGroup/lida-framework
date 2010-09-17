@@ -48,4 +48,19 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl
 	public void receiveAction(LidaAction a){
 		//TODO: What to do here is a research question.
 	}
+
+        public boolean setState(Object state) {
+            try {
+                sensoryMemoryContent = state;
+                return true;
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        public Object getState() {
+            return sensoryMemoryContent;
+        }
 }// class

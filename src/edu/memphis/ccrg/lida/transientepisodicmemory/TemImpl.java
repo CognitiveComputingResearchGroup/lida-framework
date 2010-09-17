@@ -39,10 +39,10 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 
 	private static Logger logger = Logger.getLogger("lida.transientepisodicmemory.TemImpl");
 	
-	private final int DEF_HARD_LOCATIONS = 10000;
-	private final int DEF_ADDRESS_LENGTH = 1000;
-	private final int DEF_WORD_LENGTH = 1000;
-	private final int DEF_ACTIVATION_RADIOUS = 451;
+	public static final int DEF_HARD_LOCATIONS = 10000;
+	public static final int DEF_ADDRESS_LENGTH = 1000;
+	public static final int DEF_WORD_LENGTH = 1000;
+	public static final int DEF_ACTIVATION_RADIOUS = 451;
 	
     private SparseDistributedMemory sdm;
  	private Translator translator;
@@ -145,4 +145,10 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 		return addressLength;
 	}
 
+        public Object getState() {
+            return sdm.getState();
+        }
+        public boolean setState(Object content) {
+            return sdm.setState(content);
+        }
 }

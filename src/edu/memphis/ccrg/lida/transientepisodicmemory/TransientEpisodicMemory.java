@@ -14,6 +14,7 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 
 /**
@@ -28,7 +29,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * @see LocalAssociation
  * @author Rodrigo Silva L.
  */
-public interface TransientEpisodicMemory extends LidaModule{
+public interface TransientEpisodicMemory extends LidaModule, Saveable {
     
     /**
      * Cues this episodic memory. Typically the cue would be a set of nodes, and

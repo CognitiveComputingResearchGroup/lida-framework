@@ -27,12 +27,14 @@ public class DataBaseStorageImpl implements Storage {
     private static final String VALUES_PLACEHOLDER = "values_placeholder";
     private static final String IDS_PLACEHOLDER = "ids_placeholder";
     private static final String TABLENAME_PLACEHOLDER = "tablename_placeholder";
+    private static final String WHERE_PLACEHOLDER = "where_placeholder";
 
     private static final String SQL_SELECT_NOORDER = "SELECT * FROM APP."+TABLENAME_PLACEHOLDER;
     private static final String SQL_SELECT = "SELECT * FROM APP."+TABLENAME_PLACEHOLDER+" ORDER BY "+IDS_PLACEHOLDER+" DESC";
-    //private static final String SQL_LIDAIDSELECT = "SELECT * FROM APP."+TABLENAME_PLACEHOLDER+" WHERE  ORDER BY ID, LIDAID DESC";
+    private static final String SQL_SELECT_WHERE = "SELECT * FROM APP."+TABLENAME_PLACEHOLDER+" WHERE "+WHERE_PLACEHOLDER+" ORDER BY "+IDS_PLACEHOLDER+" DESC";
     private static final String SQL_MAXID = "SELECT max(id) FROM APP."+TABLENAME_PLACEHOLDER;
     private static final String SQL_INSERT = "INSERT INTO APP."+TABLENAME_PLACEHOLDER+" VALUES("+VALUES_PLACEHOLDER+")";
+    private static final String SQL_DELETE = "DELETE FROM APP."+TABLENAME_PLACEHOLDER+" WHERE "+WHERE_PLACEHOLDER;
     
     private boolean connected = false;
     private Connection dbConnection = null;
@@ -77,16 +79,24 @@ public class DataBaseStorageImpl implements Storage {
     }
 
     public Object[] getDataRow(String storageName) {
-        ArrayList<Object[]> data = getData(storageName, 1);
-        return data.get(0);
+        ArrayList<Object[]> data = getData(storageName, new ArrayList(), new ArrayList(), 1);
+        return (data.size() > 0 ? data.get(0) : null);
     }
 
     public Object[] getDataRow(String storageName, ArrayList propertyNames, ArrayList propertyValues) {
-        ArrayList<Object[]> data = getData(storageName, 1);
-        return data.get(0);
+        ArrayList<Object[]> data = getData(storageName, propertyNames, propertyValues, 1);
+        return (data.size() > 0 ? data.get(0) : null);
     }
 
-    private ArrayList<Object[]> getData(String storageName, int maxRows) {
+    public ArrayList<Object[]> getData(String storageName, int maxRows) {
+        return getData(storageName, new ArrayList(), new ArrayList(), maxRows);
+    }
+
+    public ArrayList<Object[]> getData(String storageName, ArrayList propertyNames, ArrayList propertyValues) {
+        return getData(storageName, propertyNames, propertyValues, -1);
+    }
+
+    public ArrayList<Object[]> getData(String storageName, ArrayList propertyNames, ArrayList propertyValues, int maxRows) {
         if (!connected) return null;
         ArrayList result = new ArrayList();
         try {
@@ -104,9 +114,23 @@ public class DataBaseStorageImpl implements Storage {
             }
             ids = ids.substring(0, ids.length() - 1);
 
+            String query = "";
+            if (propertyNames == null || propertyNames.isEmpty()) {
+                //simple select, no where statement
+                query = SQL_SELECT;
+                query = query.replace(TABLENAME_PLACEHOLDER, storageName).replace(IDS_PLACEHOLDER, ids);
+            }
+            else {
+                //select with where statement verifying property values
+                String whereString = getWhereString(propertyNames, propertyValues);
+                query = SQL_SELECT_WHERE;
+                query = query.replace(TABLENAME_PLACEHOLDER, storageName).replace(IDS_PLACEHOLDER, ids);
+                query = query.replace(WHERE_PLACEHOLDER, whereString);
+            }
+
+
             stmt = dbConnection.createStatement();
             if (maxRows > 0) stmt.setMaxRows(maxRows);
-            String query = SQL_SELECT.replaceFirst(TABLENAME_PLACEHOLDER, storageName).replace(IDS_PLACEHOLDER, ids);
             rs = stmt.executeQuery(query);
             rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
@@ -147,6 +171,7 @@ public class DataBaseStorageImpl implements Storage {
                     id = rs.getInt(1);
                 }
                 id++;
+                data.add(0, id);
             }
             else {
                 id = ((Integer)data.get(0)).intValue();
@@ -157,9 +182,9 @@ public class DataBaseStorageImpl implements Storage {
             insertStatement = insertStatement.replaceFirst(VALUES_PLACEHOLDER, getPlaceholders(columnCount));
             PreparedStatement preparedStatement = dbConnection.prepareStatement(insertStatement);
 
-            preparedStatement.setInt(1, id);
+            //preparedStatement.setInt(1, id);
             for (int i = 0; i < data.size(); i++) {
-                preparedStatement.setObject(i+2, data.get(i));
+                preparedStatement.setObject(i+1, data.get(i));
             }
             preparedStatement.execute();
             preparedStatement.close();
@@ -170,6 +195,37 @@ public class DataBaseStorageImpl implements Storage {
         }
 
         return false;
+    }
+
+    public boolean deleteData(String storageName, ArrayList propertyNames, ArrayList propertyValues) {
+        try {
+            String query = SQL_DELETE;
+            String whereString = getWhereString(propertyNames, propertyValues);
+            query = query.replace(TABLENAME_PLACEHOLDER, storageName);
+            query = query.replace(WHERE_PLACEHOLDER, whereString);
+
+            Statement stmt = dbConnection.createStatement();
+            stmt.executeUpdate(query);
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private String getWhereString(ArrayList propertyNames, ArrayList propertyValues) {
+            String whereString = "";
+            for (int i = 0; i < propertyNames.size(); i++) {
+                String apostrophe = "'";
+                if (propertyValues.get(i) instanceof Integer || propertyValues.get(i) instanceof Double
+                        && !Double.isNaN((Double)propertyValues.get(i))) apostrophe = "";
+                if (i < propertyNames.size() - 1)
+                    whereString += propertyNames.get(i)+"="+apostrophe+propertyValues.get(i)+apostrophe+" AND";
+                else
+                    whereString += propertyNames.get(i)+"="+apostrophe+propertyValues.get(i)+apostrophe;
+            }
+            return whereString;
     }
 
     private String getPlaceholders(int count) {

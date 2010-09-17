@@ -5,11 +5,11 @@
 
 package edu.memphis.ccrg.lida.framework.dao;
 
-import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.util.Serializer;
 import edu.memphis.ccrg.lida.util.Deserializer;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -31,6 +31,12 @@ public class DataAccessObjectImpl implements DataAccessObject {
     }
 
     public boolean save() {
+        //TODO proper update? (this save method deletes all old data for the current lidaId and then adds new data)
+        storage.deleteData(
+                storageName,
+                new ArrayList(Arrays.asList("lidaid")),
+                new ArrayList(Arrays.asList(lidaId)));
+        
         ArrayList data = new ArrayList();
         data.add(lidaId);
         data.add(Serializer.getBytes(((Saveable)module).getState()));

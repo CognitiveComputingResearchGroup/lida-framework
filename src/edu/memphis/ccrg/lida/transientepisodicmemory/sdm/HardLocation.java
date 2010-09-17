@@ -19,6 +19,8 @@ public interface HardLocation {
 	 */
 	public abstract byte[] getCounters();
 
+	public abstract void setCounters(byte[] newCounters);
+
 	/**
 	 * @return the writes
 	 */
