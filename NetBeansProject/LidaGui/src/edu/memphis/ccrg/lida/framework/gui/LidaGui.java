@@ -313,11 +313,15 @@ public class LidaGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        // TODO add your handling code here:
+        Command command = new DAOCommand();
+        command.setParameter("action", DAOCommand.SAVE_ACTION);
+        controller.executeCommand(command);
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        // TODO add your handling code here:
+        Command command = new DAOCommand();
+        command.setParameter("action", DAOCommand.LOAD_ACTION);
+        controller.executeCommand(command);
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
