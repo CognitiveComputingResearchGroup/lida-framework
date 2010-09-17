@@ -107,6 +107,7 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
             }
             catch (Exception ex) {
                 logger.log(Level.WARNING, "Save: inserting new SDM entries failed");
+                success = false;
             }
         }
 
