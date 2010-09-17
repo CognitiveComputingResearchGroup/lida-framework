@@ -8,9 +8,9 @@ package edu.memphis.ccrg.lida.framework.dao;
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.util.VectorConverter;
-import edu.memphis.ccrg.lida.util.VectorConverter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +18,8 @@ import java.util.Arrays;
  */
 
 public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
+    private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.dao.TransientEpisodicMemoryDAO");
+
     public static final String STORAGE_NAME = "transientepisodicmemory";
     public static final String ADDRESSSTORAGE_NAME = "tem_addresses";
     public static final String COUNTERSTORAGE_NAME = "tem_counters";
@@ -53,7 +55,7 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
         }
         catch (Exception ex) {
             success = false;
-            ex.printStackTrace();
+            logger.log(Level.WARNING, "Save: deleting old SDM entries failed");
         }
 
         Object content = ((Saveable)module).getState();
@@ -104,7 +106,7 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
                 data = new ArrayList<Object[]>();
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                logger.log(Level.WARNING, "Save: inserting new SDM entries failed");
             }
         }
 
@@ -137,22 +139,12 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
                     bAddresses[i] = VectorConverter.fromByteArray(cAddress);
 
                     Object[] counter = counters[i];
-                    /*
-                    int addressId = (Integer)addresses[i][0];
-                    Object[] counters = storage.getDataRow(
-                        COUNTERSTORAGE_NAME,
-                        new Object[] {"addressid"},
-                        new Object[] {addressId});*/
-
                     bCounters[i] = (byte[])counter[DB_COUNTER_INDEX];
-                }
-                else {
-                    System.out.println("shit");
                 }
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.WARNING, "Load: loading new SDM entries failed");
             return false;
         }
 
@@ -162,7 +154,7 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
 
         return ((Saveable)module).setState(state);
     }
-    //@override
+    @Override
     public boolean load() {
         return load(lidaId);
     }

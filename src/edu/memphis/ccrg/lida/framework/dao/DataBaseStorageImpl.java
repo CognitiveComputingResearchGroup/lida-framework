@@ -10,15 +10,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Tom
  */
 public class DataBaseStorageImpl implements Storage {
+    private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.dao.DataBaseStorage");
+    
     private static final String DBURL = "jdbc:derby://localhost:1527/lidadb";
     private static final String USERNAME = "lida";
     private static final String PASSWORD = "lida";
@@ -57,12 +60,8 @@ public class DataBaseStorageImpl implements Storage {
                 connected = true;
                 return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        catch (Exception ex) {
-        	
-        	ex.printStackTrace();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Failed to connect to the database.");
         }
 
         return false;
@@ -74,8 +73,7 @@ public class DataBaseStorageImpl implements Storage {
         try {
             dbConnection.close();
             return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
 
         return false;
@@ -173,8 +171,8 @@ public class DataBaseStorageImpl implements Storage {
             }
             return result;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to get data from {0}", storageName);
         }
         return null;
     }
@@ -214,8 +212,8 @@ public class DataBaseStorageImpl implements Storage {
             preparedStatement.close();
             return true;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            logger.log(Level.WARNING, "Failed to insert data into {0}", storageName);
         }
 
         return false;
@@ -252,10 +250,13 @@ public class DataBaseStorageImpl implements Storage {
             
             return !error;
         }
-        catch (SQLException e) {
+        catch (Exception e) {
+            /*
             e.printStackTrace();
             while ((e = e.getNextException()) != null)
                 e.printStackTrace();
+             */
+            logger.log(Level.WARNING, "Batch insert into {0} failed", storageName);
         }
 
         return false;
@@ -272,8 +273,8 @@ public class DataBaseStorageImpl implements Storage {
             stmt.executeUpdate(query);
             return true;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            logger.log(Level.WARNING, "Delete from {0} failed", storageName);
         }
         return false;
     }
@@ -298,8 +299,8 @@ public class DataBaseStorageImpl implements Storage {
             
             return true;
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+            logger.log(Level.WARNING, "Batch delete from {0} failed", storageName);
         }
         return false;
     }
@@ -368,7 +369,7 @@ public class DataBaseStorageImpl implements Storage {
     private String getPlaceholders(int count) {
         String result = "";
         for (int i = 0; i < count; i++) result += "?,";
-        if (result != "") return result.substring(0, result.length() - 1);
+        if (result.length() > 0) return result.substring(0, result.length() - 1);
         else return "";
     }
 }

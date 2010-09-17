@@ -6,12 +6,16 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Tom
  */
 public class DAOManager implements DataAccessObject {
+    private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.dao.DAOManager");
+
     public static final String LIDA_STORAGE_NAME = "lida";
     public static int TEM_WORD_LENGTH = TemImpl.DEF_WORD_LENGTH;
 
@@ -36,48 +40,49 @@ public class DAOManager implements DataAccessObject {
         success = storage.open();
         
         if (success) {
+            // TODO ask user for lida name
+            String lidaName = "LIDA";
+            int cLidaId = 0;
 
-	        // TODO ask user for lida name
-	        String lidaName = "LIDA";
-	        int cLidaId = 0;
-	
-	        ArrayList<Object> data = new ArrayList<Object>();
-	        data.add(lidaName);
-	        storage.insertData(LIDA_STORAGE_NAME, data);
-	        Object[] row = storage.getDataRow(LIDA_STORAGE_NAME);
-	        cLidaId = (Integer)row[0];
-	
-	        TEM_WORD_LENGTH = (Integer)lida.getParam("tem.wordLength",TemImpl.DEF_WORD_LENGTH);
-	
-	        for (ModuleName name : ModuleName.values()) {
-	            LidaModule module = lida.getSubmodule(name);
-	            if (module != null && module.getModuleName() == name) {
-	                System.out.println(module.getModuleName());
-	                Class daoClass = null;
-	                try {
-	                    String className = "edu.memphis.ccrg.lida.framework.dao."+name.toString()+"DAO";
-	                    daoClass = Class.forName(className);
-	                } catch (ClassNotFoundException e) {
-	                }
-	                if (daoClass != null) {
-	                    try {
-	                        Constructor daoConstructor = daoClass.getConstructor(
-	                                new Class[] {LidaModule.class, Storage.class, int.class}
-	                        );
-	                        DataAccessObject dao = (DataAccessObject)daoConstructor.newInstance(
-	                                new Object[] {module, storage, cLidaId}
-	                        );
-	                        daos.add(dao);
-	                    }
-	                    catch (Exception e) {
-	                        e.printStackTrace();
-	                        success = false;
-	                    }
-	                }
-	            }
-	        }
-	        if (success) initialized = true;
-	    }
+            ArrayList<Object> data = new ArrayList<Object>();
+            data.add(lidaName);
+            storage.insertData(LIDA_STORAGE_NAME, data);
+            Object[] row = storage.getDataRow(LIDA_STORAGE_NAME);
+            cLidaId = (Integer)row[0];
+
+            TEM_WORD_LENGTH = (Integer)lida.getParam("tem.wordLength",TemImpl.DEF_WORD_LENGTH);
+
+            for (ModuleName name : ModuleName.values()) {
+                LidaModule module = lida.getSubmodule(name);
+                if (module != null && module.getModuleName() == name) {
+                    Class daoClass = null;
+                    try {
+                        String className = "edu.memphis.ccrg.lida.framework.dao."+name.toString()+"DAO";
+                        daoClass = Class.forName(className);
+                    } catch (ClassNotFoundException e) {
+                    }
+                    if (daoClass != null) {
+                        try {
+                            Constructor daoConstructor = daoClass.getConstructor(
+                                    new Class[] {LidaModule.class, Storage.class, int.class}
+                            );
+                            DataAccessObject dao = (DataAccessObject)daoConstructor.newInstance(
+                                    new Object[] {module, storage, cLidaId}
+                            );
+                            daos.add(dao);
+                        }
+                        catch (Exception e) {
+                            logger.log(Level.FINEST, "Failed to construct {0}DAO ({1})", new Object[]{name.toString(), e.getMessage()});
+                            success = false;
+                        }
+                    }
+                }
+            }
+            if (success) initialized = true;
+	}
+        if (!success) {
+            logger.log(Level.SEVERE, "Failed to initialize DAOManager - saving and loading will not work. (Check if the database is running)");
+        }
         return success;
     }
 
