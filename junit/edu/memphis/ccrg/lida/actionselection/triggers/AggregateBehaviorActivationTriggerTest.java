@@ -59,8 +59,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	public void testCheckForTrigger() {
 		trigger.threshold=0.5;
 		trigger.as=as;
-		trigger.checkForTrigger(queueOfSchemes);
-		
+		trigger.checkForTrigger(queueOfSchemes);		
 	}
 
 
@@ -72,7 +71,4 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 		trigger.setUp(parameters, as);
 		assertEquals("Problem with SetUp", 0.5, trigger.threshold);
 	}
-
-	
-
 }

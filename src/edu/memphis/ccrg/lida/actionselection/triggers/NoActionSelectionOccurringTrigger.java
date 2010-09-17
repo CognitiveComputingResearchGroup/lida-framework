@@ -5,7 +5,9 @@ import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger {
@@ -13,16 +15,16 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	/**
 	 * How long since last action selection before this trigger is activated
 	 */
-	private int delay;
+	protected int delay;
 	
 	/**
 	 * Java library class used to handle the timing
 	 */
 	private TriggerTask task;
-	private String name="";
+	protected String name="";
 	private LidaTaskManager tm;
-	private ActionSelection as;
-	private ActionSelectionDriver asd;
+	protected ActionSelection as;
+	protected ActionSelectionDriver asd;
 
 	/**
 	 * @return the lidaTaskManager
@@ -77,9 +79,8 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
-	public void start() {
-						
-		task=new TriggerTask(delay,as,asd,name);	
+	public void start() {					
+		task=new TriggerTask(delay,as,asd,name);		
 		asd.addTask(task);
 	}
 	

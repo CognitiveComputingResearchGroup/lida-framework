@@ -5,6 +5,7 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger = new NoActionSelectionOccurringTrigger();
 		as = new ActionSelectionImpl();
 		asd = new ActionSelectionDriver();
-		
+		parameters = new HashMap<String, Object>();
 	}
 
 	/**
@@ -60,12 +61,14 @@ public class NoActionSelectionOccurringTriggerTest {
 	 */
 	@Test
 	public void testSetUpMapOfStringObjectActionSelection() {
+		trigger.setLidaTaskManager(tm);	
 		parameters.put("name", "abc");	
 		parameters.put("delay", 100);	
 		trigger.setUp(parameters, as);
 		
-		//assertEquals("Problem with SetUpMapOfStringObjectActionSelection", 100,trigger.delay);
-		//assertEquals("Problem with SetUpMapOfStringObjectActionSelection", "abc",trigger.name);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", 100,trigger.delay);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", "abc",trigger.name);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", as,trigger.as);
 	}
 
 	/**
@@ -73,7 +76,15 @@ public class NoActionSelectionOccurringTriggerTest {
 	 */
 	@Test
 	public void testSetUpMapOfStringObjectActionSelectionActionSelectionDriver() {
-		fail("Not yet implemented"); // TODO
+		trigger.setLidaTaskManager(tm);	
+		parameters.put("name", "abc");	
+		parameters.put("delay", 100);	
+		trigger.setUp(parameters, as,asd);
+		
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", 100,trigger.delay);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", "abc",trigger.name);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", as,trigger.as);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", asd,trigger.asd);
 	}
 
 	/**
@@ -81,23 +92,28 @@ public class NoActionSelectionOccurringTriggerTest {
 	 */
 	@Test
 	public void testStart() {
-		fail("Not yet implemented"); // TODO
+		trigger.setLidaTaskManager(tm);
+		asd.setTaskManager(tm);
+		parameters.put("name", "abc");	
+		parameters.put("delay", 100);	
+		trigger.setUp(parameters, as,asd);
+		
+		trigger.start();
+		
 	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#checkForTrigger(java.util.Queue)}.
-	 */
-	@Test
-	public void testCheckForTrigger() {
-		fail("Not yet implemented"); // TODO
-	}
-
+	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#reset()}.
 	 */
 	@Test
 	public void testReset() {
-		fail("Not yet implemented"); // TODO
+		trigger.setLidaTaskManager(tm);
+		asd.setTaskManager(tm);
+		parameters.put("name", "abc");	
+		parameters.put("delay", 100);	
+		trigger.setUp(parameters, as,asd);
+		
+		trigger.reset();
 	}
 
 }
