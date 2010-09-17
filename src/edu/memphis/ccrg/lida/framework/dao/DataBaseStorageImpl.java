@@ -60,6 +60,10 @@ public class DataBaseStorageImpl implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        catch (Exception ex) {
+        	
+        	ex.printStackTrace();
+        }
 
         return false;
     }
