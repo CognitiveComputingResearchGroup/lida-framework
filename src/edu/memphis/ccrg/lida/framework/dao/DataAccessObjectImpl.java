@@ -34,8 +34,8 @@ public class DataAccessObjectImpl implements DataAccessObject {
         //TODO proper update? (this save method deletes all old data for the current lidaId and then adds new data)
         storage.deleteData(
                 storageName,
-                new ArrayList(Arrays.asList("lidaid")),
-                new ArrayList(Arrays.asList(lidaId)));
+                new Object[] {"lidaid"},
+                new Object[] {lidaId});
         
         ArrayList data = new ArrayList();
         data.add(lidaId);
@@ -49,11 +49,12 @@ public class DataAccessObjectImpl implements DataAccessObject {
         return loadFromRow(storage.getDataRow(storageName));
     }
     public boolean load(int lidaId) {
-        ArrayList propertyNames = new ArrayList();
-        propertyNames.add("lidaid");
-        ArrayList propertyValues = new ArrayList();
-        propertyValues.add(lidaId);
-        return loadFromRow(storage.getDataRow(storageName, propertyNames, propertyValues));
+        return loadFromRow(
+                storage.getDataRow(
+                    storageName,
+                    new Object[] {"lidaid"},
+                    new Object[] {lidaId}
+                ));
     }
 
     private boolean loadFromRow(Object[] row) {

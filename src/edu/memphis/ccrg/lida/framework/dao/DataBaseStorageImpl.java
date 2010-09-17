@@ -78,26 +78,26 @@ public class DataBaseStorageImpl implements Storage {
     }
 
     public Object[] getDataRow(String storageName) {
-        ArrayList<Object[]> data = getData(storageName, new ArrayList(), new ArrayList(), 1);
-        return (data.size() > 0 ? data.get(0) : null);
+        Object[][] data = getData(storageName, new Object[0], new Object[0], 1);
+        return ((data != null && data.length > 0) ? data[0] : null);
     }
 
-    public Object[] getDataRow(String storageName, ArrayList propertyNames, ArrayList propertyValues) {
-        ArrayList<Object[]> data = getData(storageName, propertyNames, propertyValues, 1);
-        return (data.size() > 0 ? data.get(0) : null);
+    public Object[] getDataRow(String storageName, Object[] propertyNames, Object[] propertyValues) {
+        Object[][] data = getData(storageName, propertyNames, propertyValues, 1);
+        return ((data != null && data.length > 0) ? data[0] : null);
     }
 
-    public ArrayList<Object[]> getData(String storageName, int maxRows) {
-        return getData(storageName, new ArrayList(), new ArrayList(), maxRows);
+    public Object[][] getData(String storageName, int maxRows) {
+        return getData(storageName, new Object[0], new Object[0], maxRows);
     }
 
-    public ArrayList<Object[]> getData(String storageName, ArrayList propertyNames, ArrayList propertyValues) {
+    public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues) {
         return getData(storageName, propertyNames, propertyValues, -1);
     }
 
-    public ArrayList<Object[]> getData(String storageName, ArrayList propertyNames, ArrayList propertyValues, int maxRows) {
+    public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues, int maxRows) {
         if (!connected) return null;
-        ArrayList result = new ArrayList();
+        Object[][] result = null;
         try {
             Statement stmt = dbConnection.createStatement();
             stmt.setMaxRows(1);
@@ -112,9 +112,11 @@ public class DataBaseStorageImpl implements Storage {
                 }
             }
             ids = ids.substring(0, ids.length() - 1);
+            rs.close();
+            stmt.close();
 
             String query = "";
-            if (propertyNames == null || propertyNames.isEmpty()) {
+            if (propertyNames == null || propertyNames.length == 0) {
                 //simple select, no where statement
                 query = SQL_SELECT;
                 query = query.replace(TABLENAME_PLACEHOLDER, storageName).replace(IDS_PLACEHOLDER, ids);
@@ -128,23 +130,42 @@ public class DataBaseStorageImpl implements Storage {
             }
 
 
+            int rows = 1;
             stmt = dbConnection.createStatement();
-            if (maxRows > 0) stmt.setMaxRows(maxRows);
+            if (maxRows > 0) {
+                stmt.setMaxRows(maxRows);
+                rows = maxRows;
+            }
+            else {
+                String countQuery = query.substring(0, query.indexOf("*")) + "count(*)" + query.substring(query.indexOf("*")+1);
+                countQuery = countQuery.substring(0, countQuery.indexOf("ORDER BY") - 1);
+                rs = stmt.executeQuery(countQuery);
+                rs.next();
+                rows = rs.getInt(1);
+                rs.close();
+                stmt.close();
+                stmt = dbConnection.createStatement();
+            }
+            result = new Object[rows][];
+
             rs = stmt.executeQuery(query);
             rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            ArrayList row = new ArrayList();
+            int i = 0;
             while (rs.next()) {
-                for (int i = 0; i < columnCount; i++) {
-                    Object o = rs.getObject(i+1);
+                Object[] row = new Object[columnCount];
+                for (int j = 0; j < columnCount; j++) {
+                    Object o = rs.getObject(j+1);
                     if (o instanceof java.sql.Blob) {
-                        row.add(((java.sql.Blob)o).getBytes(1, (int)((java.sql.Blob)o).length()));
+                        //row.add(((java.sql.Blob)o).getBytes(1, (int)((java.sql.Blob)o).length()));
+                        row[j] = ((java.sql.Blob)o).getBytes(1, (int)((java.sql.Blob)o).length());
                     }
                     else {
-                        row.add(o);
+                        row[j] = o;
                     }
                 }
-                result.add(row.toArray());
+                result[i] = row;
+                i++;
             }
             return result;
         }
@@ -198,8 +219,6 @@ public class DataBaseStorageImpl implements Storage {
 
     public boolean batchInsertData(String storageName, ArrayList<Object[]> data) {
         try {
-            String insert = "", values = "";
-
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(SQL_SELECT_NOORDER.replaceFirst(TABLENAME_PLACEHOLDER, storageName));
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -238,7 +257,7 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    public boolean deleteData(String storageName, ArrayList propertyNames, ArrayList propertyValues) {
+    public boolean deleteData(String storageName, Object[] propertyNames, Object[] propertyValues) {
         try {
             String query = SQL_DELETE;
             String whereString = getWhereString(propertyNames, propertyValues);
@@ -255,16 +274,78 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    private String getWhereString(ArrayList propertyNames, ArrayList propertyValues) {
+    public boolean batchDeleteData(String storageName, String propertyName, ArrayList<Object> propertyValues) {
+        //new batch delete implementation checking only a single property against a list of values
+        //-> single delete statement (much faster than multiple deletes due to java derby db performance bug when deleting rows containing BLOB)
+        if (propertyValues.isEmpty()) return true;
+        try {
+            String deleteString = SQL_DELETE;
+            deleteString = deleteString.replace(TABLENAME_PLACEHOLDER, storageName);
+            String whereString = propertyName + " IN (" + getPlaceholders(propertyValues.size())+")";
+            deleteString = deleteString.replace(WHERE_PLACEHOLDER, whereString);
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(deleteString);
+
+            //preparedStatement.setInt(1, id);
+            for (int i = 0; i < propertyValues.size(); i++) {
+                preparedStatement.setObject(i+1, propertyValues.get(i));
+            }
+            preparedStatement.execute();
+            preparedStatement.close();
+            
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+/*
+    public boolean batchDeleteData(String storageName, ArrayList<Object[]> propertyNames, ArrayList<Object[]> propertyValues) {
+        try {
+            String query = "";
             String whereString = "";
+
+            Statement stmt = dbConnection.createStatement();
+
             for (int i = 0; i < propertyNames.size(); i++) {
-                String apostrophe = "'";
-                if (propertyValues.get(i) instanceof Integer || propertyValues.get(i) instanceof Double
-                        && !Double.isNaN((Double)propertyValues.get(i))) apostrophe = "";
-                if (i < propertyNames.size() - 1)
-                    whereString += propertyNames.get(i)+"="+apostrophe+propertyValues.get(i)+apostrophe+" AND";
-                else
-                    whereString += propertyNames.get(i)+"="+apostrophe+propertyValues.get(i)+apostrophe;
+                query = SQL_DELETE;
+                whereString = getWhereString(propertyNames.get(i), propertyValues.get(i));
+                query = query.replaceFirst(TABLENAME_PLACEHOLDER, storageName);
+                query = query.replaceFirst(WHERE_PLACEHOLDER, whereString);
+                stmt.addBatch(query);
+            }
+
+            int[] result = stmt.executeBatch();
+            dbConnection.commit();
+            dbConnection.setAutoCommit(true);
+            boolean error = false;
+            for (int i = 0; i < result.length; i++) {
+                if (result[i] == Statement.EXECUTE_FAILED) error = true;
+            }
+
+            return !error;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+*/
+    private String getWhereString(Object[] propertyNames, Object[] propertyValues) {
+            String whereString = "";
+            for (int i = 0; i < propertyNames.length; i++) {
+                if (!(propertyValues[i] instanceof int[])) {
+                    String apostrophe = "'";
+                    if (propertyValues[i] instanceof Integer || propertyValues[i] instanceof Double
+                            && !Double.isNaN((Double)propertyValues[i])) apostrophe = "";
+                    whereString += propertyNames[i]+"="+apostrophe+propertyValues[i]+apostrophe;
+                }
+                else if (((int[])propertyValues[i]).length == 2) {
+                    int[] boundaries = (int[])propertyValues[i];
+                    whereString += propertyNames[i] + ">=" + boundaries[0] + " AND " + propertyNames[i] + "<=" + boundaries[1];
+                }
+                if (i < propertyNames.length - 1)
+                    whereString += " AND ";
             }
             return whereString;
     }
@@ -283,6 +364,7 @@ public class DataBaseStorageImpl implements Storage {
     private String getPlaceholders(int count) {
         String result = "";
         for (int i = 0; i < count; i++) result += "?,";
-        return result.substring(0, result.length() - 1);
+        if (result != "") return result.substring(0, result.length() - 1);
+        else return "";
     }
 }

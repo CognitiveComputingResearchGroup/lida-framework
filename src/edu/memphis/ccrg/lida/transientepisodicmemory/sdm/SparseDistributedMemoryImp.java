@@ -195,6 +195,7 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
                         hardlocations[i].setAddress(addresses[i]);
                         hardlocations[i].setCounters(counters[i]);
                     }
+                    return true;
                 }
                 catch (Exception ex) {
                     ex.printStackTrace();

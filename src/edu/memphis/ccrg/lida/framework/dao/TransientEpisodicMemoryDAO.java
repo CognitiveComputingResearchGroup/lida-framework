@@ -23,36 +23,36 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
     public static final String COUNTERSTORAGE_NAME = "tem_counters";
 
     public static final int DB_ADDRESS_INDEX = 2;
-    public static final int DB_COUNTER_INDEX = 1;
+    public static final int DB_COUNTER_INDEX = 2;
 
     public TransientEpisodicMemoryDAO(LidaModule module, Storage cStorage, int cLidaId) {
         super(module, cStorage, STORAGE_NAME, cLidaId);
     }
 
-    //@override
+    @Override
     public boolean save() {
         boolean success = true;
 
-        //TODO delete all old data for the current lidaId
+        //TODO proper update? (this save method deletes all old data for the current lidaId and then adds new data)
         try {
-            /*
-            ArrayList<Object[]> oldAddresses = storage.getData(
+            Object[][] oldAddresses = storage.getData(
                     ADDRESSSTORAGE_NAME,
-                    new ArrayList(Arrays.asList("lidaid")),
-                    new ArrayList(Arrays.asList(lidaId)));
-            storage.deleteData(
+                    new Object[] {"lidaid"},
+                    new Object[] {lidaId});
+            success = success && storage.deleteData(
                     ADDRESSSTORAGE_NAME,
-                    new ArrayList(Arrays.asList("lidaid")),
-                    new ArrayList(Arrays.asList(lidaId)));
-            for (int i = 0; i < oldAddresses.size(); i++) {
-                int addressId = (Integer)oldAddresses.get(i)[0];
-                storage.deleteData(
-                        COUNTERSTORAGE_NAME,
-                        new ArrayList(Arrays.asList("addressid")),
-                        new ArrayList(Arrays.asList(addressId)));
-            }*/
+                    new Object[] {"lidaid"},
+                    new Object[] {lidaId});
+
+            ArrayList<Object> propertyValues = new ArrayList<Object>();
+            for (int i = 0; i < oldAddresses.length; i++) {
+                int addressId = (Integer)oldAddresses[i][0];
+                propertyValues.add(addressId);
+            }
+            success = success && storage.batchDeleteData(COUNTERSTORAGE_NAME, "addressid", propertyValues);
         }
         catch (Exception ex) {
+            success = false;
             ex.printStackTrace();
         }
 
@@ -102,20 +102,6 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
                 if (data.size() > 0)
                     success = success && storage.batchInsertData(COUNTERSTORAGE_NAME, data);
                 data = new ArrayList<Object[]>();
-                /* slow single insert code
-                ArrayList data = new ArrayList();
-                for (int i = 0; i < addresses.length; i++) {
-                    data = new ArrayList();
-                    data.add(lastAddressId + i + 1);
-                    data.add(lidaId);
-                    data.add(VectorConverter.toByteArray(addresses[i]));
-                    success = success && storage.insertData(ADDRESSSTORAGE_NAME, data);
-
-                    data = new ArrayList();
-                    data.add(lastAddressId + i + 1);
-                    data.add(counters[i]);
-                    success = success && storage.insertData(COUNTERSTORAGE_NAME, data);
-                }*/
             }
             catch (Exception ex) {
                 ex.printStackTrace();
@@ -125,31 +111,49 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
         return success;
     }
 
-    //@override
+    @Override
     public boolean load(int lidaId) {
         BitVector[] bAddresses;
         byte[][] bCounters;
         byte[] cAddress;
 
-        ArrayList<Object[]> addresses = storage.getData(
-                ADDRESSSTORAGE_NAME,
-                new ArrayList(Arrays.asList("lidaid")),
-                new ArrayList(Arrays.asList(lidaId)));
+        try {
+            Object[][] addresses = storage.getData(
+                    ADDRESSSTORAGE_NAME,
+                    new Object[] {"lidaid"},
+                    new Object[] {lidaId});
 
-        bAddresses = new BitVector[addresses.size()];
-        bCounters = new byte[addresses.size()][];
+            bAddresses = new BitVector[addresses.length];
+            bCounters = new byte[addresses.length][];
 
-        for (int i = 0; i < addresses.size(); i++) {
-            cAddress = (byte[])addresses.get(i)[DB_ADDRESS_INDEX];
-            bAddresses[i] = VectorConverter.fromByteArray(cAddress);
+            Object[][] counters = storage.getData(
+                        COUNTERSTORAGE_NAME,
+                        new Object[] {"addressid"},
+                        new Object[] {new int[] {0, addresses.length}});
 
-            int addressId = (Integer)addresses.get(i)[0];
-            Object[] counters = storage.getDataRow(
-                COUNTERSTORAGE_NAME,
-                new ArrayList(Arrays.asList("addressid")),
-                new ArrayList(Arrays.asList(addressId)));
+            for (int i = 0; i < addresses.length; i++) {
+                if (addresses[i] != null) {
+                    cAddress = (byte[])addresses[i][DB_ADDRESS_INDEX];
+                    bAddresses[i] = VectorConverter.fromByteArray(cAddress);
 
-            bCounters[i] = (byte[])counters[DB_COUNTER_INDEX];
+                    Object[] counter = counters[i];
+                    /*
+                    int addressId = (Integer)addresses[i][0];
+                    Object[] counters = storage.getDataRow(
+                        COUNTERSTORAGE_NAME,
+                        new Object[] {"addressid"},
+                        new Object[] {addressId});*/
+
+                    bCounters[i] = (byte[])counter[DB_COUNTER_INDEX];
+                }
+                else {
+                    System.out.println("shit");
+                }
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
         }
 
         Object[] state = new Object[2];
