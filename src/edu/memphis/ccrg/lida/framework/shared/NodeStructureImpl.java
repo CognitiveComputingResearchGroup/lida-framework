@@ -20,15 +20,33 @@ import java.io.Serializable;
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent, Serializable {
 
+	private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.shared");
+
+	/**
+	 * Nodes contained in this NodeStructure indexed by their id
+	 */
 	private Map<Long, Node> nodes;
+	
+	/**
+	 * Links contained in this NodeStructure indexed by their id String.
+	 */
 	private Map<String, Link> links;
+	
+	/**
+	 * Links that each Linkable (Node or Link) has.
+	 */
 	private Map<Linkable, Set<Link>> linkableMap;
+	
+	/**
+	 * Standard factory for new objects.  Used to create copies when adding linkables to this NodeStructure
+	 */
 	private static NodeFactory factory = NodeFactory.getInstance();
 	private String defaultNodeType;
 	private String defaultLinkType;
-	
-	private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.shared");
 
+	/**
+	 * Default constructor uses the default node and link types of the factory
+	 */
 	public NodeStructureImpl() {
 		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
 		nodes = new ConcurrentHashMap<Long, Node>();
@@ -37,25 +55,19 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		defaultLinkType = factory.getDefaultLinkType();
 	}
 
+	/**
+	 * Creates a new NodeStructureImpl with specified default Node type and link Type.
+	 * If either is not in the factory the factory's defaults are used.
+	 * @param defaultNode
+	 * @param defaultLink
+	 */
 	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
-		if(factory.containsNodeType(defaultNode))
-			this.defaultNodeType = defaultNode;
-		else{
-			logger.log(Level.WARNING, 
-					  "Constructor: specified node type is not registered in the node factory", 
-					  LidaTaskManager.getActualTick());
-		}
-		
-		if(factory.containsLinkType(defaultLink))
-			this.defaultLinkType = defaultLink;
-		else{
-			logger.log(Level.WARNING, 
-					  "Constructor: specified link type is not registered in the node factory ", 
-					  LidaTaskManager.getActualTick());
-		}
+		this.setDefaultNode(defaultNode);		
+		this.setDefaultLink(defaultLink);		
 	}
 
+	//TODO why do we need the 2nd and 3rd parameters?
 	public NodeStructureImpl(NodeStructure oldGraph, String defaultNodeType, String defaultLinkType) {
 		this(defaultNodeType, defaultLinkType);
 
@@ -137,18 +149,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param defaultLink
 	 *            the defaultLink to set
 	 */
-	public void setDefaultLink(String defaultLink) {
-//		
-//		System.out.println("Links");
-//		Map<String, LinkableDef> slm = factory.getStupidLinkMap();
-//		for(String s: slm.keySet())
-//			System.out.println(s + " " + slm.get(s));
-//		
-//		System.out.println("Nodes");
-//		Map<String, LinkableDef> snm = factory.getStupidNodeMap();
-//		for(String s: snm.keySet())
-//			System.out.println(s + " " + snm.get(s));
-		
+	public void setDefaultLink(String defaultLink) {	
 		if(factory.containsLinkType(defaultLink))
 			this.defaultLinkType = defaultLink;
 		else
@@ -441,7 +442,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}// result != null
 		return result;
 	}// method
-
+	//TODO compare these two
 	public Set<Link> getLinks(LinkCategory type) {
 		Set<Link> result = new HashSet<Link>();
 		if (links != null) {

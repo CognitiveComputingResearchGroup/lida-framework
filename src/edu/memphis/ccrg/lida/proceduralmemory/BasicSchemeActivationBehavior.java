@@ -38,21 +38,19 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 			auxActivateSchemes(l, schemeMap);
 	}
 
-	private void auxActivateSchemes(Linkable l,
-			Map<Object, Set<Scheme>> schemeMap) {
+	private void auxActivateSchemes(Linkable l, Map<Object, Set<Scheme>> schemeMap) {
 		if (schemeMap.containsKey(l)) {
 			Set<Scheme> schemes = schemeMap.get(l);
-			int cantSchemes=schemes.size();
-			for (Scheme s : schemes) {
-				for (NodeStructure ns : s.getContextConditions()) {
-					int contextCount = ns.getNodeCount();
-					s.excite(1.0 / (contextCount * cantSchemes));
-					if (s.getActivation() > schemeSelectionThreshold) {
-						// Copy?
-						pm.sendInstantiatedScheme(s);
-						logger.log(Level.FINE, "Scheme is instantiated",
+			int numSchemes=schemes.size();
+			for (Scheme scheme : schemes) {
+				NodeStructure context = scheme.getContext();
+				int contextNodeCount = context.getNodeCount();
+				scheme.excite(1.0 / (contextNodeCount * numSchemes));
+				if (scheme.getActivation() > schemeSelectionThreshold) {
+					// Copy?
+					pm.sendInstantiatedScheme(scheme);
+					logger.log(Level.FINE, "Scheme is instantiated",
 								LidaTaskManager.getActualTick());
-					}
 				}
 			}// for
 		}

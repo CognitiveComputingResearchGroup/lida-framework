@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
@@ -74,10 +75,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	}
 	
 	//TODO Parameter for the Node type used in this behavior's context. 
-    public BehaviorImpl(String label, long id, long actionId, double totalActivation){
-    	this(id, actionId);
-    	this.label = label;
-    	setActivation(totalActivation);   	
+    public BehaviorImpl(Scheme s){
+    	this(s.getId(), s.getSchemeActionId());
+    	this.label = s.getLabel();
+    	this.setActivation(s.getTotalActivation()); 
+    	this.context = s.getContext();
+    	this.contextNodeType = context.getDefaultNodeType();
     }
 
 	//Precondition methods

@@ -26,14 +26,21 @@ public interface Scheme extends LearnableActivatible{
 	public long getId();
 	
 	/**
-	 * id for the action's location in sensory-motor memory
+	 * id for the action in sensory-motor memory
 	 * @return
 	 */
 	public long getSchemeActionId();
 	public void setSchemeActionId(long actionId);	
 	
+	/**
+	 * human-readable label
+	 * @return
+	 */
 	public String getLabel();
 	public void setLabel(String label);	
+	
+	public NodeStructure getContext();
+	public void setContext(NodeStructure ns);
 	
 	public double getCuriosity();
 	public void setCuriosity(double curiosity);
@@ -71,12 +78,6 @@ public interface Scheme extends LearnableActivatible{
 	 * Decay curiosity.
 	 */
 	public void decayCuriosity();
-	
-	public List<NodeStructure> getContextConditions();
-	public List<NodeStructure>  getContextConditions(long argumentId);
-	
-	public void addContextCondition(long argumentId,NodeStructure ns);
-	public void addContextCondition(NodeStructure ns);
 	
 	public List<NodeStructure> getResultConditions();
 	public List<NodeStructure> getResultConditions(long argumentId);

@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 
@@ -18,7 +19,7 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	private int numberOfExecutions;
 	private int successExecutions;
 	private double curiosity;
-	private List<NodeStructure> contextConditions = new ArrayList<NodeStructure>();
+	private NodeStructure context = new NodeStructureImpl();
 	private List<NodeStructure> resultConditions = new ArrayList<NodeStructure>();
 	private ConcurrentMap<Long, Argument> arguments = new ConcurrentHashMap<Long, Argument>();
 	private ConcurrentMap<Long, List<NodeStructure>> argumentsCC = new ConcurrentHashMap<Long, List<NodeStructure>>();
@@ -42,27 +43,27 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 				new ArrayList<NodeStructure>());
 	}
 
-	@Override
-	public synchronized void addContextCondition(long argumentId,
-			NodeStructure ns) {
-		if (ns != null) {
-			if (argumentId == 0) {// condition without argument.
-				contextConditions.add(ns);
-			} else {
-				Argument a = arguments.get(argumentId);
-				if (a != null) {
-					contextConditions.add(ns);
-					List<NodeStructure> conditions = argumentsCC.get(argumentId);
-					conditions.add(ns);
-				}
-			}
-		}
-	}
+//	@Override
+//	public synchronized void addContextCondition(long argumentId,
+//			NodeStructure ns) {
+//		if (ns != null) {
+//			if (argumentId == 0) {// condition without argument.
+//				contextConditions.add(ns);
+//			} else {
+//				Argument a = arguments.get(argumentId);
+//				if (a != null) {
+//					contextConditions.add(ns);
+//					List<NodeStructure> conditions = argumentsCC.get(argumentId);
+//					conditions.add(ns);
+//				}
+//			}
+//		}
+//	}
 
-	@Override
-	public void addContextCondition(NodeStructure ns) {
-		addContextCondition(0L,ns);
-	}
+//	@Override
+//	public void addContextCondition(NodeStructure ns) {
+//		addContextCondition(0L,ns);
+//	}
 
 	@Override
 	public synchronized void addResultConditions(long argumentId,
@@ -108,17 +109,12 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	}
 
 	@Override
-	public List<NodeStructure> getContextConditions() {
-		return Collections.unmodifiableList(contextConditions);
+	public NodeStructure getContext() {
+		return context;
 	}
-
-	@Override
-	public List<NodeStructure> getContextConditions(long argumentId) {
-		List<NodeStructure> conditions = argumentsCC.get(argumentId);
-		if (conditions != null) {
-			return Collections.unmodifiableList(conditions);
-		}
-		return null;
+	
+	public void setContext(NodeStructure ns){
+		this.context = ns;
 	}
 
 	@Override

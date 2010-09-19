@@ -70,42 +70,21 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 
 	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
-	//	System.out.println("Add schemes called " + schemes.size());
-		for (Scheme s : schemes) {
-			schemeSet.add(s);
-			List<NodeStructure> contextConditions = s.getContextConditions();
-			//System.out.println("num contexts " + contextConditions.size());
-			for (NodeStructure ns : contextConditions) {
-				
-				for (Linkable ln : ns.getLinkableMap().keySet()) {
-					Set<Scheme> existingSchemes = schemeMap.get(ln);
-					//System.out.println("node in context " + ln.getLabel() + " exisiting? " + existingSchemes);
-					if (existingSchemes == null) {
-						existingSchemes = new HashSet<Scheme>();
-						schemeMap.put(ln, existingSchemes);
-					}
-					existingSchemes.add(s);
-				}
-			}// for schemes
-		}
+		for (Scheme scheme : schemes)
+			addScheme(scheme);
 	}
 	
-	public void addScheme(Scheme s){
-		schemeSet.add(s);
-		List<NodeStructure> contextConditions = s.getContextConditions();
-		//System.out.println("num contexts " + contextConditions.size());
-		for (NodeStructure ns : contextConditions) {
-			
-			for (Linkable ln : ns.getLinkableMap().keySet()) {
-				Set<Scheme> existingSchemes = schemeMap.get(ln);
-				//System.out.println("node in context " + ln.getLabel() + " exisiting? " + existingSchemes);
-				if (existingSchemes == null) {
-					existingSchemes = new HashSet<Scheme>();
-					schemeMap.put(ln, existingSchemes);
-				}
-				existingSchemes.add(s);
+	public void addScheme(Scheme scheme){
+		schemeSet.add(scheme);
+		NodeStructure context = scheme.getContext();
+		for (Linkable nodeOrLink : context.getLinkables()) {
+			Set<Scheme> existingSchemes = schemeMap.get(nodeOrLink);
+			if (existingSchemes == null) {
+				existingSchemes = new HashSet<Scheme>();
+				schemeMap.put(nodeOrLink, existingSchemes);
 			}
-		}// for schemes
+			existingSchemes.add(scheme);
+		}//for
 	}
 	
 	@Override
@@ -135,11 +114,11 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 */
 	@Override
 	public void activateSchemes() {
-		NodeStructure ns = null;
+		NodeStructure currentBroadcast = null;
 		synchronized (this) {
-			ns = broadcastContent.copy();
+			currentBroadcast = broadcastContent.copy();
 		}		
-		schemeActivationBehavior.activateSchemesWithBroadcast(ns, schemeMap);
+		schemeActivationBehavior.activateSchemesWithBroadcast(currentBroadcast, schemeMap);
 	}// method
 
 	/**
@@ -150,12 +129,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void sendInstantiatedScheme(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory", LidaTaskManager.getActualTick());
 		for (ProceduralMemoryListener listener : listeners){
-			Behavior b = new BehaviorImpl(s.getLabel(), s.getId(), s.getSchemeActionId(), s.getTotalActivation());
-			List<NodeStructure> contextConditions = s.getContextConditions();
-			//TODO change schemes context condition to a node structure.
-			List<NodeStructure> resultConditions = s.getResultConditions();
-			//TODO how to specifiy that a result is a delete?
-			
+			Behavior b = new BehaviorImpl(s);			
 			listener.receiveBehavior(b);
 		}
 	}

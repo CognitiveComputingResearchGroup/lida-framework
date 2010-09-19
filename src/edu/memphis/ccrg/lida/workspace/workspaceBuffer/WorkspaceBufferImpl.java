@@ -43,7 +43,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 * @param ticks
 	 */
 	public void decayModule(long ticks){
-		Collection<Linkable> linkables = buffer.getLinkableMap().keySet();
+		Collection<Linkable> linkables = buffer.getLinkables();
 		for(Linkable linkable: linkables){
 			Activatible activatible = (Activatible) linkable;
 			activatible.decay(ticks);
