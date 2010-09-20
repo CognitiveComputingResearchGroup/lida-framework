@@ -5,8 +5,6 @@
 
 package edu.memphis.ccrg.lida.framework.dao;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-
 /**
  *
  * @author Tom

@@ -321,4 +321,10 @@ public class ArgumentImpl implements Argument {
 	public void setFactoryName(String factoryName) {
 	}
 
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
 }

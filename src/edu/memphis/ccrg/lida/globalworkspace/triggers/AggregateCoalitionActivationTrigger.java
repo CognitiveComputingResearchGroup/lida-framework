@@ -2,7 +2,6 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

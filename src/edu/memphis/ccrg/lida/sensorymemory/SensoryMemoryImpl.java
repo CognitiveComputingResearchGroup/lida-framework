@@ -9,8 +9,6 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import java.util.Map;
-import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 public abstract class SensoryMemoryImpl extends LidaModuleImpl 
 										implements SensoryMemory {

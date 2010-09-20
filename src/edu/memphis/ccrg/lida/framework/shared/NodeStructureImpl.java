@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -596,6 +597,44 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public String getNodeAndLinkCount() {
 		return "Nodes: " + getNodeCount() + " Links: " + getLinkCount();
+	}
+
+	@Override
+	public int hashCode() {
+		long nodeIdSum = 0;
+		for(Node n: nodes.values()){
+			nodeIdSum += n.getId();
+		}
+		
+		long linkSum = 0;
+		long sinkId = 0;
+		long sourceId = 0;
+		for(Set<Link> links: linkableMap.values()){
+			Iterator<Link> it = ((Iterable<Link>) links).iterator();
+			while(it.hasNext()){
+				Link l = it.next();
+				Linkable sink = l.getSink();
+				if(sink instanceof Node)
+					sinkId = ((Node) sink).getId() * 37;
+				else
+					sinkId = sink.getIds().hashCode() * 37;
+				
+				Linkable source = l.getSource();
+				if(source instanceof Node)
+					sourceId = ((Node) source).getId() * 29;
+				else
+					sourceId = source.getIds().hashCode() * 29;
+				
+				linkSum += sinkId + sourceId;
+			}
+		}
+			
+		int hash = 1;
+		Long v1 = new Long(nodeIdSum);
+		Long v2 = new Long(linkSum);
+		hash = hash * 31 + v2.hashCode();
+		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
+		return hash;
 	}
 
 }// class

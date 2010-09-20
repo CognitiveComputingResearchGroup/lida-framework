@@ -1,14 +1,5 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornet;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
-
 import junit.framework.TestCase;
 
 
