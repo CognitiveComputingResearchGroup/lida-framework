@@ -25,6 +25,7 @@ public class BasicAttention extends AttentionCodeletImpl {
 				ns.addNode(n);
 			}
 		}
+		
 		if (ns != null){
 			global.addCoalition(new CoalitionImpl(ns,
 					getActivation()));

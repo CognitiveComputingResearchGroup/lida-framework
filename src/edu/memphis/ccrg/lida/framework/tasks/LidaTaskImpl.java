@@ -228,6 +228,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 		return nextExcecutionTickLap;
 	}
 	
+	/**
+	 * For just the next execution of this task, sets the number of ticks in the future when this task will be run
+	 */
 	public void setNextExcecutionTickLap(long lapTick) {
 		this.nextExcecutionTickLap=lapTick;	
 	}	
