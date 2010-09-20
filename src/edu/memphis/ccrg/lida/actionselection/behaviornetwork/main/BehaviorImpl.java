@@ -74,13 +74,16 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	   	this.actionId = actionId;
 	}
 	
-	//TODO Parameter for the Node type used in this behavior's context. 
     public BehaviorImpl(Scheme s){
     	this(s.getId(), s.getSchemeActionId());
     	this.label = s.getLabel();
     	this.setActivation(s.getTotalActivation()); 
     	this.context = s.getContext();
     	this.contextNodeType = context.getDefaultNodeType();
+    	//TODO unify the result of Scheme with add delete lists of behavior
+    	s.getResultConditions();
+    	//to initialize isAllContextSatified
+    	isAllContextConditionsSatisfied();
     }
 
 	//Precondition methods
