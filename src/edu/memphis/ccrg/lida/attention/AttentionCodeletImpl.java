@@ -25,21 +25,18 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * 
  */
 public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodelet {
-
+	
 	protected WorkspaceBuffer csm;
 	protected GlobalWorkspace global;
 	protected NodeStructure desiredContent;
 	
-	protected long id;
-	
     public AttentionCodeletImpl(WorkspaceBuffer csm, GlobalWorkspace g, int ticksPerStep,
-    							double activation, NodeStructure soughtContent, long id){
+    							double activation, NodeStructure soughtContent){
     	super(ticksPerStep);
     	setActivation(activation);
     	this.csm = csm;
     	global = g;
     	this.desiredContent=soughtContent;
-    	this.id = id;
     }
 
 	protected void runThisLidaTask() {
@@ -49,10 +46,7 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 		//	System.out.println("attention codelet finds nodes: " + csmContent.getNodeCount());
 			if (csmContent != null){
 		//		System.out.println("forming a coalition!");
-				if(global.containsCoalition(id))
-					global.updateCoalition(id);
-				else
-					global.addCoalition(id, new CoalitionImpl(csmContent, getActivation()));
+				global.addCoalition(new CoalitionImpl(csmContent, getActivation()));
 			}
 		}// if
 	}

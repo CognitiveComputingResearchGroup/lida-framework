@@ -25,7 +25,7 @@ public interface GlobalWorkspace extends LidaModule, TriggerListener,ModuleDrive
 	 * @param coalition
 	 * @return true is coalition was added
 	 */
-	public boolean addCoalition(long attentionCodeletId, Coalition coalition);
+	public boolean addCoalition(Coalition coalition);
 	/**
 	 * To register Triggers
 	 * @param t a new Trigger
@@ -44,9 +44,5 @@ public interface GlobalWorkspace extends LidaModule, TriggerListener,ModuleDrive
 	 * Triggers and BroadcastListeners.
 	 */
 	public void start();
-	
-	public boolean containsCoalition(long attentionCodeletId);
-	
-	public void updateCoalition(long attentionCodeletId);
 	
 }

@@ -106,13 +106,11 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		double activation = 1.0;
 		NodeStructure ns = new NodeStructureImpl();
 		
-		AttentionCodelet basic = new AttentionCodeletImpl(this.csm, this.global, ticksPerStep, activation, ns, idGenerator++);
+		AttentionCodelet basic = new AttentionCodeletImpl(this.csm, this.global, ticksPerStep, activation, ns);
 		//sbCodeletFactory.getCodelet(type, activation, context, actions);
 		this.addTask(basic);
 		logger.log(Level.FINER,"New attention codelet "+basic+"spawned",LidaTaskManager.getActualTick());
 	}// method
-	
-	private static long idGenerator = 0;
 
 	@Override
 	public void receiveBehaviorAttentionContent(Set<Node> addSet,

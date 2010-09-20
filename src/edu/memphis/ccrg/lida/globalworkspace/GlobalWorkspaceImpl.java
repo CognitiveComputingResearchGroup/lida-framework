@@ -6,8 +6,8 @@ package edu.memphis.ccrg.lida.globalworkspace;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +48,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		super(1,ModuleName.GlobalWorkspace);
 	}
 
-	private Map<Long, Coalition> coalitions = new ConcurrentHashMap<Long, Coalition>();
+	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
@@ -89,19 +89,19 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#putCoalition(edu.memphis
 	 * .ccrg.globalworkspace .Coalition)
 	 */
-	public boolean addCoalition(long attentionCodeletId, Coalition coalition) {
-		coalitions.put(attentionCodeletId, coalition);
-		logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getActualTick());
-		newCoalitionEvent();
-		return true;
-//		} else {
-//			return false;
-//		}
+	public boolean addCoalition(Coalition coalition) {
+		if (coalitions.add(coalition)) {
+			logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getActualTick());
+			newCoalitionEvent();
+			return true;
+		} else {
+			return false;
+		}
 	}// method
 
 	private void newCoalitionEvent() {
 		for (BroadcastTrigger trigger : broadcastTriggers)
-			trigger.checkForTrigger(coalitions.values());
+			trigger.checkForTrigger(coalitions);
 	}// method
 
 	/**
@@ -144,7 +144,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 
 	private Coalition chooseCoalition() {
 		Coalition chosenCoal = null;
-		for (Coalition c : coalitions.values()) {
+		for (Coalition c : coalitions) {
 			if (chosenCoal == null
 					|| c.getActivation() > chosenCoal.getActivation()) {
 				chosenCoal = c;
@@ -170,7 +170,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 
 
 	public void decay(long ticks){
-		for (Coalition c : coalitions.values()) {
+		for (Coalition c : coalitions) {
 			c.decay(ticks);
 			if (c.getActivation()<=0.0){
 				coalitions.remove(c);
@@ -186,7 +186,7 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	}
 
 	public Object getModuleContent() {
-		return Collections.unmodifiableCollection(coalitions.values());
+		return Collections.unmodifiableCollection(coalitions);
 	}
 
 	public LidaModule getSubmodule(ModuleName type) {
@@ -205,14 +205,6 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		if (listener instanceof BroadcastListener){
 			addBroadcastListener((BroadcastListener)listener);
 		}
-	}
-	@Override
-	public boolean containsCoalition(long attentionCodeletId) {
-		return coalitions.containsKey(attentionCodeletId);
-	}
-	@Override
-	public void updateCoalition(long attentionCodeletId) {
-		coalitions.get(attentionCodeletId).updateActivation();
 	}
 
 }// class

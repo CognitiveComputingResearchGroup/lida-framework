@@ -26,6 +26,4 @@ public interface Coalition {
 	 * each broadcast by the GlobalWorkspace
 	 */
 	public void decay(long ticks);
-	
-	public void updateActivation();
 }

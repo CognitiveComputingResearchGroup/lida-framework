@@ -17,18 +17,17 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 		updateActivation();
 	}
 
-	public void updateActivation() {
+	private void updateActivation() {
 		double sum = 0.0;
 		for(Node n: struct.getNodes())
 			sum += n.getActivation();
 		for(Link l: struct.getLinks())
 			sum += l.getActivation();
-		
-		setActivation((sum / struct.getLinkableCount()) * attentionCodeletActivation);
+		setActivation((attentionCodeletActivation * sum) / (struct.getNodeCount() + struct.getLinkCount()));
 	}
 
 	public BroadcastContent getContent() {
-		return (BroadcastContent)struct;
+		return (BroadcastContent) struct;
 	}
 	
 }//class
