@@ -17,6 +17,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger("lida.pam.PamDriver");
 	
+	@SuppressWarnings("unused")
 	private PerceptualAssociativeMemory pam;
 
 	public PamDriver() {

@@ -17,6 +17,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -38,7 +40,8 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
 public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	PerceptualAssociativeMemory,  
 																	            BroadcastListener, 
-																	            WorkspaceListener{
+																	            WorkspaceListener, 
+																	            PreafferenceListener{
 	
 	private static Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
 	
@@ -67,11 +70,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Current conscious broadcast
 	 */
 	private NodeStructure broadcastContent = new NodeStructureImpl();
-	
-	/**
-	 * From action selection
-	 */
-    private NodeStructure preafferantSignal = new NodeStructureImpl();
 	
     /**
      * Used to spawn the various tasks for PAM
@@ -168,10 +166,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	public synchronized void receivePreafferentSignal(NodeStructure ns) {
-		preafferantSignal = ns;
-		Collection<Node> nodes = preafferantSignal.getNodes();
-		for (Node n : nodes) {n.getId();}
+	public synchronized void receivePreafference(Behavior b) {
 		// TODO: Use preafferent signal
 	}
 
