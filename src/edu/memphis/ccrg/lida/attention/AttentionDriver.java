@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorAttentionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
-public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener, BehaviorAttentionListener {
+public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener, ExpectationListener {
 
 	private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
 	
@@ -113,8 +113,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	}// method
 
 	@Override
-	public void receiveBehaviorAttentionContent(Set<Node> addSet,
-												Set<Node> deleteSet) {
+	public void receiveExpectedContent(Set<Node> addSet, Set<Node> deleteSet) {
 		// TODO Auto-generated method stub
 		
 	}

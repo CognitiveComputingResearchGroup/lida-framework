@@ -2,6 +2,7 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationListener;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class ActionSelectionImpl implements ActionSelection {
@@ -40,6 +41,12 @@ public class ActionSelectionImpl implements ActionSelection {
 	public boolean setState(Object content) {
 		
 		return false;
+	}
+
+	@Override
+	public void setExpectationListener(ExpectationListener listener) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

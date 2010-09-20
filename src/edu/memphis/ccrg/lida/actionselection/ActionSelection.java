@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationListener;
 import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -16,6 +17,8 @@ public interface ActionSelection extends TriggerListener, Saveable {
 	 * @param listener
 	 */
 	public abstract void addActionSelectionListener(ActionSelectionListener listener);
+	
+	public abstract void setExpectationListener(ExpectationListener listener);
 	
 	public abstract void selectAction();
 

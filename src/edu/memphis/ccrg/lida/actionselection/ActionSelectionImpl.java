@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
@@ -162,7 +163,8 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
             state[3] = null;
             return state;
         }
-        public boolean setState(Object content) {
+        @SuppressWarnings("unchecked")
+		public boolean setState(Object content) {
             if (content instanceof Object[]) {
                 Object[] state = (Object[])content;
                 if (state.length == 4) {
@@ -177,4 +179,10 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
             }
             return false;
         }
+
+		@Override
+		public void setExpectationListener(ExpectationListener listener) {
+			// TODO Auto-generated method stub
+			
+		}
 }//class

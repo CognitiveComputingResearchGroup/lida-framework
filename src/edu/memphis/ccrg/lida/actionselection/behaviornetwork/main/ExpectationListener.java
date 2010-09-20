@@ -4,8 +4,8 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
-public interface BehaviorAttentionListener {
+public interface ExpectationListener {
 	
-	public void receiveBehaviorAttentionContent(Set<Node> addSet, Set<Node> deleteSet);
+	public void receiveExpectedContent(Set<Node> addSet, Set<Node> deleteSet);
 
 }
