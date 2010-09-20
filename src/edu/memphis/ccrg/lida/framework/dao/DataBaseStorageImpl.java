@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -177,7 +178,7 @@ public class DataBaseStorageImpl implements Storage {
         return null;
     }
 
-    public boolean insertData(String storageName, ArrayList<Object> data) {
+    public boolean insertData(String storageName, List<Object> data) {
         try {
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(SQL_SELECT_NOORDER.replaceFirst(TABLENAME_PLACEHOLDER, storageName));

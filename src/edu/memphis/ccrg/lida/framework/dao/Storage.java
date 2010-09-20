@@ -6,6 +6,7 @@
 package edu.memphis.ccrg.lida.framework.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public interface Storage {
     public boolean open();
     public boolean close();
-    public boolean insertData(String storageName, ArrayList<Object> data);
+    public boolean insertData(String storageName, List<Object> data);
     public boolean batchInsertData(String storageName, ArrayList<Object[]> data);
     public Object[][] getData(String storageName, int maxRows);
     public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues);

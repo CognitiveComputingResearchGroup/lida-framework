@@ -38,6 +38,7 @@ public class MappingTranslatorTest {
         MappingTranslator t = new MappingTranslator(NUM_NODES, pam);
         try {
             v = t.translate(ns);
+            v.size();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

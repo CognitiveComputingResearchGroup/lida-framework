@@ -9,6 +9,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.util.Serializer;
 import edu.memphis.ccrg.lida.util.Deserializer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -36,7 +37,7 @@ public class DataAccessObjectImpl implements DataAccessObject {
                 new Object[] {"lidaid"},
                 new Object[] {lidaId});
         
-        ArrayList data = new ArrayList();
+        List<Object> data = new ArrayList<Object>();
         data.add(lidaId);
         data.add(Serializer.getBytes(((Saveable)module).getState()));
         boolean success = storage.insertData(storageName, data);

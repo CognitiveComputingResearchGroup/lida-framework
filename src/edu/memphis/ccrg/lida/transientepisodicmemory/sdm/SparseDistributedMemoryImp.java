@@ -190,7 +190,7 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
                     Object[] state = (Object[])content;
                     BitVector[] addresses = (BitVector[])state[0];
                     byte[][] counters = (byte[][])state[1];
-                    BitVector bv;
+//                    BitVector bv;
                     for (int i = 0; i < addresses.length; i++) {
                         hardlocations[i].setAddress(addresses[i]);
                         hardlocations[i].setCounters(counters[i]);

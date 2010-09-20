@@ -152,7 +152,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
             state[1] = this.schemeSet;
             return state;
         }
-        public boolean setState(Object content) {
+        @SuppressWarnings("unchecked")
+		public boolean setState(Object content) {
             if (content instanceof Object[]) {
                 Object[] state = (Object[])content;
                 if (state.length == 2 && state[0] instanceof Map && state[1] instanceof Set) {
