@@ -69,7 +69,7 @@ public class ProceduralMemoryInitializer implements Initializer {
 			Scheme scheme = new SchemeImpl("test scheme", i, 1L);
 			scheme.addArgument(new ArgumentImpl(1L));
 			scheme.setContext(ctxt);
-			scheme.addResultConditions(1L, rstl);
+			scheme.setAddingResult(rstl);
 			schemes.add(scheme);
 
 			pm.addSchemes(schemes);

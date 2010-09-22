@@ -64,7 +64,7 @@ public class StreamImpl implements Stream{
     }
 	
 	public void addSuccessorLink(Behavior predecessor, Behavior successor, Node commonNode){
-		if(predecessor.containsAddItem(commonNode) && successor.containsContextCondition(commonNode)){
+		if(predecessor.containsAddingItem(commonNode) && successor.containsContextCondition(commonNode)){
 			Set<Behavior> values = successorLinks.get(predecessor);
 			if(values == null){
 				values = new HashSet<Behavior>();

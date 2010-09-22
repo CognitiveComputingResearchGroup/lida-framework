@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -52,15 +51,10 @@ public class ActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void setExpectationListener(ExpectationListener listener) {
+	public void addPreafferenceListener(PreafferenceListener listener) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void setPreafferenceListener(PreafferenceListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

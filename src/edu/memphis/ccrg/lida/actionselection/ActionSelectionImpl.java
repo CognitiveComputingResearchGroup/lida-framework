@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ExpectationListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
@@ -188,15 +187,11 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
             return false;
         }
 
+
 		@Override
-		public void setExpectationListener(ExpectationListener listener) {
+		public void addPreafferenceListener(PreafferenceListener listener) {
 			// TODO Auto-generated method stub
 			
 		}
 
-		@Override
-		public void setPreafferenceListener(PreafferenceListener listener) {
-			// TODO Auto-generated method stub
-			
-		}
 }//class

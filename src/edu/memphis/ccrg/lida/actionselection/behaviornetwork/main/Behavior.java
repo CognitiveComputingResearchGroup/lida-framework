@@ -54,16 +54,16 @@ public interface Behavior extends Activatible {
 	public abstract void deactivateAllContextConditions();
 	
 	//Add list
-	public abstract Set<Node> getAddList();
-	public abstract boolean addToAddList(Node condition);
-	public abstract boolean containsAddItem(Node commonNode);
-	public abstract double getAddListCount();
+	public abstract Set<Node> getAddingList();
+	public abstract boolean addToAddingList(Node condition);
+	public abstract boolean containsAddingItem(Node commonNode);
+	public abstract double getAddingListCount();
 	
 	//Delete list
-	public abstract Set<Node> getDeleteList();	
-    public abstract boolean addToDeleteList(Node deleteCondition);
-    public abstract boolean containsDeleteItem(Node commonNode);
-    public abstract double getDeleteListCount();
+	public abstract Set<Node> getDeletingList();	
+    public abstract boolean addToDeletingList(Node deleteCondition);
+    public abstract boolean containsDeletingItem(Node commonNode);
+    public abstract double getDeletingListCount();
     
     //Containing streams
     public abstract void addContainingStream(Stream stream);

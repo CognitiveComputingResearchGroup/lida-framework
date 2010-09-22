@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 
 public class PassActivationFromBroadcastTask extends LidaTaskImpl {
 
@@ -20,6 +21,7 @@ public class PassActivationFromBroadcastTask extends LidaTaskImpl {
 	@Override
 	protected void runThisLidaTask() {
 		bn.passActivationFromBroadcast();
+		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 
 }

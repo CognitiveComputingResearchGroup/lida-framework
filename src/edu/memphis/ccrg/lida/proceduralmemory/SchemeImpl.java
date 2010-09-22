@@ -26,19 +26,24 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	private int numberOfExecutions;
 	private int successExecutions;
 	private double curiosity;
-	private NodeStructure context = new NodeStructureImpl();
-	private List<NodeStructure> resultConditions = new ArrayList<NodeStructure>();
+	private NodeStructure context;
+	private NodeStructure addingResult;
+	private NodeStructure deletingResult;
 	private ConcurrentMap<Long, Argument> arguments = new ConcurrentHashMap<Long, Argument>();
 	private ConcurrentMap<Long, List<NodeStructure>> argumentsCC = new ConcurrentHashMap<Long, List<NodeStructure>>();
 	private ConcurrentMap<Long, List<NodeStructure>> argumentsRC = new ConcurrentHashMap<Long, List<NodeStructure>>();
 
 	private long actionId;
 	private String label;
+	
 
 	public SchemeImpl(String label, long id, long actionId) {
 		this.label = label;
 		this.id = id;
 		this.actionId = actionId;
+		context = new NodeStructureImpl();
+		addingResult = new NodeStructureImpl();
+		deletingResult = new NodeStructureImpl();
 	}
 
 	@Override
@@ -72,26 +77,26 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 //		addContextCondition(0L,ns);
 //	}
 
-	@Override
-	public synchronized void addResultConditions(long argumentId,
-			NodeStructure ns) {
-		if (ns != null) {
-			if (argumentId == 0) {// condition without argument.
-				resultConditions.add(ns);
-			} else {
-				Argument a = arguments.get(argumentId);
-				if (a != null) {
-					resultConditions.add(ns);
-					List<NodeStructure> conditions = argumentsRC.get(argumentId);
-					conditions.add(ns);
-				}
-			}
-		}
-	}
+//	@Override
+//	public synchronized void addResultConditions(long argumentId,
+//			NodeStructure ns) {
+//		if (ns != null) {
+//			if (argumentId == 0) {// condition without argument.
+//				resultConditions.add(ns);
+//			} else {
+//				Argument a = arguments.get(argumentId);
+//				if (a != null) {
+//					resultConditions.add(ns);
+//					List<NodeStructure> conditions = argumentsRC.get(argumentId);
+//					conditions.add(ns);
+//				}
+//			}
+//		}
+//	}
 
 	@Override
-	public void addResultConditions(NodeStructure ns) {
-		addResultConditions(0L,ns);		
+	public void setAddingResult(NodeStructure ns) {
+		this.addingResult = ns;	
 	}
 
 	@Override
@@ -146,18 +151,18 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	}
 
 	@Override
-	public List<NodeStructure> getResultConditions() {
-		return Collections.unmodifiableList(resultConditions);
+	public NodeStructure getAddingResult() {
+		return addingResult;
 	}
 
-	@Override
-	public List<NodeStructure> getResultConditions(long argumentId) {
-		List<NodeStructure> conditions = argumentsRC.get(argumentId);
-		if (conditions != null) {
-			return Collections.unmodifiableList(conditions);
-		}
-		return null;
-	}
+//	@Override
+//	public List<NodeStructure> getResultConditions(long argumentId) {
+//		List<NodeStructure> conditions = argumentsRC.get(argumentId);
+//		if (conditions != null) {
+//			return Collections.unmodifiableList(conditions);
+//		}
+//		return null;
+//	}
 
 	@Override
 	public long getSchemeActionId() {
@@ -221,6 +226,16 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	@Override
+	public NodeStructure getDeletingResult() {
+		return deletingResult;
+	}
+
+	@Override
+	public void setDeletingResult(NodeStructure ns) {
+		this.deletingResult = ns;
 	}
 
 }

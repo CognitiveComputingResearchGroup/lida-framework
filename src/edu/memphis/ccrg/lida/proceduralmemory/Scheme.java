@@ -39,6 +39,7 @@ public interface Scheme extends LearnableActivatible{
 	public String getLabel();
 	public void setLabel(String label);	
 	
+	//TODO Extend context to multiple node structures in a List
 	public NodeStructure getContext();
 	public void setContext(NodeStructure ns);
 	
@@ -79,10 +80,15 @@ public interface Scheme extends LearnableActivatible{
 	 */
 	public void decayCuriosity();
 	
-	public List<NodeStructure> getResultConditions();
-	public List<NodeStructure> getResultConditions(long argumentId);
-	public void addResultConditions(long argumentId,NodeStructure ns);
-	public void addResultConditions(NodeStructure ns);
+	//TODO Extend result to multiple node structures in a List
+	public NodeStructure getAddingResult();
+	public void setAddingResult(NodeStructure ns);
+//	public List<NodeStructure> getResultConditions(long argumentId);
+//	public void addResultConditions(long argumentId,NodeStructure ns);
+	
+	//TODO Extend result to multiple node structures in a List
+	public NodeStructure getDeletingResult();
+	public void setDeletingResult(NodeStructure ns);
 	
 	public void addArgument (Argument a);
 	public Argument getArgument (long argumentId);
