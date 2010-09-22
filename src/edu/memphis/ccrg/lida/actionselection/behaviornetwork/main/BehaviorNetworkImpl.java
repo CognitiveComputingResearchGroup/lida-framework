@@ -250,8 +250,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	/**
 	 * Called by action selection triggers
-	 * @Override
+	 * 
 	 */
+	@Override
 	public void triggerActionSelection() {
 		selectAction();
 	}

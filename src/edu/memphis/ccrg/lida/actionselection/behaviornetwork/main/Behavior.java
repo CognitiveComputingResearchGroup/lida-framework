@@ -36,13 +36,11 @@ public interface Behavior extends Activatible {
 	public abstract void updateContextCondition(Node condition);
 	/**
 	 * Returns true if supplied condition is satisfied
-	 * @param addProposition
-	 * @return
+	 * @param condition
 	 */
 	public abstract boolean isContextConditionSatisfied(Node condition);
 	/**
 	 * Returns true if all context conditions are satisfied
-	 * @return
 	 */
 	public abstract boolean isAllContextConditionsSatisfied();
 	/**

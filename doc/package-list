@@ -1,4 +1,9 @@
 edu.memphis.ccrg.lida.actionselection
+edu.memphis.ccrg.lida.actionselection.behaviornet
+edu.memphis.ccrg.lida.actionselection.behaviornetwork.main
+edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies
+edu.memphis.ccrg.lida.actionselection.behaviornetwork.test
+edu.memphis.ccrg.lida.actionselection.triggers
 edu.memphis.ccrg.lida.attention
 edu.memphis.ccrg.lida.declarativememory
 edu.memphis.ccrg.lida.environment
@@ -7,6 +12,7 @@ edu.memphis.ccrg.lida.example.genericlida.attention
 edu.memphis.ccrg.lida.example.genericlida.featuredetectors
 edu.memphis.ccrg.lida.example.genericlida.main
 edu.memphis.ccrg.lida.framework
+edu.memphis.ccrg.lida.framework.dao
 edu.memphis.ccrg.lida.framework.gui
 edu.memphis.ccrg.lida.framework.gui.commands
 edu.memphis.ccrg.lida.framework.gui.events
@@ -14,7 +20,6 @@ edu.memphis.ccrg.lida.framework.gui.panels
 edu.memphis.ccrg.lida.framework.gui.utils
 edu.memphis.ccrg.lida.framework.initialization
 edu.memphis.ccrg.lida.framework.mockclasses
-edu.memphis.ccrg.lida.framework.serialization
 edu.memphis.ccrg.lida.framework.shared
 edu.memphis.ccrg.lida.framework.strategies
 edu.memphis.ccrg.lida.framework.tasks
