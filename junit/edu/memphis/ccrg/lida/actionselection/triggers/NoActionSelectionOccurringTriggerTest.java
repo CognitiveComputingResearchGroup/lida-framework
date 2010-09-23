@@ -39,6 +39,7 @@ public class NoActionSelectionOccurringTriggerTest {
 	@Before
 	public void setUp() throws Exception {
 		tm = new LidaTaskManager(200,50);
+		
 		trigger = new NoActionSelectionOccurringTrigger();
 		as = new ActionSelectionImpl();
 		asd = new ActionSelectionDriver();
@@ -102,10 +103,16 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger.setLidaTaskManager(tm);
 		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
-		parameters.put("delay", 100);	
+		parameters.put("delay", 15);	
 		trigger.setUp(parameters, as,asd);
 		
 		trigger.start();
+		tm.resumeSpawnedTasks();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -120,7 +127,16 @@ public class NoActionSelectionOccurringTriggerTest {
 		parameters.put("delay", 100);	
 		trigger.setUp(parameters, as,asd);
 		
+		trigger.start();
+		
+		tm.resumeSpawnedTasks();
 		trigger.reset();
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+		
 	}
 
 }
