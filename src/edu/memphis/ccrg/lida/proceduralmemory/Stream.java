@@ -5,17 +5,17 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
+package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 public interface Stream extends Serializable {
 
-	//TOOD move to procedural memory package
 	public long getId();
     public String getName();
     

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 public interface Behavior extends Activatible {
 	

@@ -5,36 +5,34 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-/*
- * SigmoidCurve.java
- *
- * Sidney D'Mello
- * Created on June 9, 2004, 7:53 PM
- */
-
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
+package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
+/**
+ * 
+ * @author Ryan J McCall
+ *
+ */
+public class SigmoidDecayStrategy implements DecayStrategy{
 
-public class SigmoidCurve implements ExciteStrategy, DecayStrategy{
-
+	private final int DEFAULT_M = 10;
+	private final int DEFAULT_B = 0;
+	
+	private int m = DEFAULT_M;
+	private int b = DEFAULT_B;
+	
 	@Override
 	public void init(Map<String, ? extends Object> parameters) {
+		m = (Integer) parameters.get("m");
+		b = (Integer) parameters.get("b");
 	}
 
 	@Override
 	public double decay(double currentActivation, long ticks) {
-		double newActivation = currentActivation - 1 / (1 + Math.exp(-ticks));
+		double newActivation = currentActivation - 1 / (1 + Math.exp(-ticks*m + b));
 		return newActivation;
 	}
 
-	@Override
-	public double excite(double currentActivation, double excitation) {
-		double newActivation = currentActivation + 1 / (1 + Math.exp(-excitation));
-		return newActivation;
-	}    
 }

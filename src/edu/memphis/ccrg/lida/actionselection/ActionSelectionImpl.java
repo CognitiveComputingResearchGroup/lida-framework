@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -28,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * Rudimentary action selection that selects all behaviors sent to it which are

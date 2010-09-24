@@ -16,7 +16,7 @@ public class BasicCandidationThresholdReducer implements CandidateThresholdReduc
     private final double ACTIVATION_THRESHOLD_REDUCTION  = 0.10;  
 
 	@Override
-	public double reduce(double behaviorActivationThreshold) {
+	public double reduceActivationThreshold(double behaviorActivationThreshold) {
 		return behaviorActivationThreshold * (1.00 - ACTIVATION_THRESHOLD_REDUCTION);
 	}
 

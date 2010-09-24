@@ -9,7 +9,6 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Stream;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**

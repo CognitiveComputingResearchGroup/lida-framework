@@ -40,6 +40,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
+import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * 
@@ -251,7 +252,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Select one action to be executed
 	 */
 	public void selectAction() {
-		winningBehavior = selectorStrategy.selectBehavior(getBehaviors(), candidateBehaviorThreshold);
+		winningBehavior = selectorStrategy.selectSingleBehavior(getBehaviors(), candidateBehaviorThreshold);
 		processWinner();
 	}// method
 
@@ -404,7 +405,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	private void reduceCandidateBehaviorThreshold() {
 		candidateBehaviorThreshold = candidateThresholdReducer
-				.reduce(candidateBehaviorThreshold);
+				.reduceActivationThreshold(candidateBehaviorThreshold);
 		logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to "
 				+ candidateBehaviorThreshold, LidaTaskManager.getActualTick());
 	}

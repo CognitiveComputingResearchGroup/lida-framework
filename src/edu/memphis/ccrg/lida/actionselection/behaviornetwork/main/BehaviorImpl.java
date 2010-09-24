@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 

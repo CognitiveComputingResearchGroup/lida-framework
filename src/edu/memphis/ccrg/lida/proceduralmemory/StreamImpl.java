@@ -8,12 +8,13 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
+package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
@@ -22,7 +23,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class StreamImpl implements Stream{
 	
-	//TODO should nodes without any connections to other nodes be allowed?
 	private static Logger logger = Logger.getLogger("lida.actionselection.behaviornetwork.main");
 	
     private String name = "blank stream";

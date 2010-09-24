@@ -35,7 +35,7 @@ public class BasicSelector implements Selector{
     public BasicSelector() {       
     }
     
-    public Behavior selectBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
+    public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
         double maxActivation = 0.0;
         Behavior winner = null;
         for(Behavior current: candidateBehaviors){
