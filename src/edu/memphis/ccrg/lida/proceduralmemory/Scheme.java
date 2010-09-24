@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
-import java.util.List;
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 

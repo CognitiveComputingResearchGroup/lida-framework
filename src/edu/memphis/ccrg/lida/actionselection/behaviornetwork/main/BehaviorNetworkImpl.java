@@ -15,7 +15,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +34,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.WeakHashSet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -214,7 +212,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		behaviors.put(newBehavior.getId(), newBehavior);
 	}
 	
-	//TODO if behavior is going to be indexed then why does a stream even need to 
+	//If behavior is going to be indexed then why does a stream even need to 
 	//keep track of it's successors?  as long as the context and add lists are correct
 	@Override
 	public void receiveStream(Stream stream) {
@@ -283,7 +281,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				// Grant activation to a successor if its precondition has not yet been satisfied
 				if (successor.isContextConditionSatisfied(addProposition) == false) {
 					double amount = (behavior.getActivation() * successorExcitationFactor) /
-							         (successor.getContextSize() * successors.size());
+							         successor.getContextSize();
 					successor.excite(amount);
 					logger.log(Level.FINEST, behavior.getLabel() + "-->"
 							+ amount + " to " + successor + " for "
@@ -309,7 +307,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				Set<Behavior> predecessors = getPredecessors(contextCondition);
 				for (Behavior predecessor : predecessors) {
 					double granted = (behavior.getActivation() * predecessorExcitationFactor) / 
-							         (predecessor.getAddingListCount() * predecessors.size());
+							          predecessor.getAddingListCount();
 					predecessor.excite(granted);
 					logger.log(Level.FINEST, behavior.getActivation() + " "
 							+ behavior.getLabel() + "<--" + granted + " to "
@@ -339,14 +337,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 						isMutualConflict = conflictorsConflictors.contains(behavior);
 						if (isMutualConflict) {
 							if (behavior.getActivation() > conflictor.getActivation())
-								auxSpreadConflictorActivation(behavior, conflictor, conflictors.size());
+								auxSpreadConflictorActivation(behavior, conflictor);
 						}
 					}
 				}
 
 				// No mutual conflict then inhibit the conflictor of behavior
 				if (isMutualConflict == false)
-					auxSpreadConflictorActivation(behavior, conflictor, conflictors.size());
+					auxSpreadConflictorActivation(behavior, conflictor);
 				else
 					isMutualConflict = false;
 			}// for each conflictor
@@ -356,9 +354,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private Set<Behavior> getConflictors(Node condition) {
 		return behaviorsByDeletingItem.get(condition);
 	}
-	private void auxSpreadConflictorActivation(Behavior behavior, Behavior conflictor, int numConflictors) {
-		double inhibitionAmount = -1.0 * (behavior.getActivation() * conflictorExcitationFactor) /
-								         (conflictor.getDeletingListCount() * numConflictors);
+	private void auxSpreadConflictorActivation(Behavior behavior, Behavior conflictor) {
+		double inhibitionAmount = -(behavior.getActivation() * conflictorExcitationFactor) /
+								          conflictor.getDeletingListCount();
 		conflictor.excite(inhibitionAmount);
 		logger.log(Level.FINEST, behavior.getLabel() + " inhibits " +
 				   conflictor.getLabel() + " amount " + inhibitionAmount,

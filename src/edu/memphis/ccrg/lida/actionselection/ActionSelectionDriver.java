@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -64,5 +65,8 @@ public class ActionSelectionDriver extends ModuleDriverImpl {
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
 			trigger.checkForTrigger(behaviors);
 	}// method
+	
+	public void setAssociatedModule(LidaModule module) {
+	}
 	
 }//class
