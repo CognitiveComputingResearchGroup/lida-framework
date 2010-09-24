@@ -359,6 +359,18 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		newNode = (PamNode) pamNodeStructure.addNode(newNode);
 		return newNode;
 	}
+	
+	@Override
+	public PamNode addNewNode(String pamNodeType, String label){
+		PamNode newNode =  (PamNode) factory.getNode(pamNodeType, label);
+		if(newNode == null){
+			return null;
+		}else{
+			newNode = (PamNode) pamNodeStructure.addNode(newNode);
+			return newNode;
+		}
+	}
+	
 	@Override
 	public void setNewNodeType(String type) {
 		pamNodeStructure.setDefaultNode(type);

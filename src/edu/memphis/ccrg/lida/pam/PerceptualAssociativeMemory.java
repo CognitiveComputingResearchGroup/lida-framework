@@ -34,6 +34,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
      * @return the new node
      */
 	public PamNode addNewNode(String label);
+	
+	public PamNode addNewNode(String pamNodeType, String label);
 
 	/**
 	 * 
