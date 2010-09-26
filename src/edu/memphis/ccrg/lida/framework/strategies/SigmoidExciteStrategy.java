@@ -26,5 +26,15 @@ public class SigmoidExciteStrategy implements ExciteStrategy{
 	public double excite(double currentActivation, double excitation) {
 		double newActivation = currentActivation + 1 / (1 + Math.exp(-excitation * m + b));
 		return newActivation;
+	}
+
+	@Override
+	public void setSlope(int m) {
+		this.m = m;
+	}
+
+	@Override
+	public void setIntercept(int b) {
+		this.b = b;
 	} 
 }

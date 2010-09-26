@@ -48,12 +48,21 @@ public class LinearDecayStrategy implements DecayStrategy{
 	    }
 	    
 	    public double decay(double activ, long ticks){
-	    	
 	    	activ= activ - (m*ticks+b);
 	    	return (activ>0.0)?activ:0.0;
 	    }	    
 
 		public void init(Map<String, ? extends Object> params) {
 			this.params=params;
+		}
+
+		@Override
+		public void setSlope(int slope) {
+			m = slope;
+		}
+
+		@Override
+		public void setIntercept(int intercept) {
+			b = intercept;
 		}
 }

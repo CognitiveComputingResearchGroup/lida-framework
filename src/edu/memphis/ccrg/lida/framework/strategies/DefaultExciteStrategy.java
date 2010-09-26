@@ -26,5 +26,14 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 	public void init(Map<String, ? extends Object> params) {
 		this.params=params;
 	}
+	@Override
+	public void setSlope(int m) {
+
+	}
+
+	@Override
+	public void setIntercept(int b) {
+
+	} 
 
 }

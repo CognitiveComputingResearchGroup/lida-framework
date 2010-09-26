@@ -5,12 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-/**
- * BehaviorNet.java
- *
- * Sidney D'Mello
- * Created on December 10, 2003, 6:25 PM
- */
+
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;

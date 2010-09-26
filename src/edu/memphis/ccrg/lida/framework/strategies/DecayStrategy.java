@@ -16,5 +16,9 @@ public interface DecayStrategy extends Strategy{
      * 
      */
 	public abstract double decay(double currentActivation,long ticks);
+	
+	public abstract void setSlope(int m);
+	
+	public abstract void setIntercept(int b);
         
 }

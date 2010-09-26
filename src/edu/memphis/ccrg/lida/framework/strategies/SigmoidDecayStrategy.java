@@ -9,14 +9,13 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
-
 /**
  * 
  * @author Ryan J McCall
  *
  */
 public class SigmoidDecayStrategy implements DecayStrategy{
-
+	
 	private final int DEFAULT_M = 10;
 	private final int DEFAULT_B = 0;
 	
@@ -33,6 +32,14 @@ public class SigmoidDecayStrategy implements DecayStrategy{
 	public double decay(double currentActivation, long ticks) {
 		double newActivation = currentActivation - 1 / (1 + Math.exp(-ticks*m + b));
 		return newActivation;
+	}
+	
+	public void setSlope(int slope){
+		m = slope;
+	}
+	
+	public void setIntercept(int intercept){
+		b = intercept;
 	}
 
 }
