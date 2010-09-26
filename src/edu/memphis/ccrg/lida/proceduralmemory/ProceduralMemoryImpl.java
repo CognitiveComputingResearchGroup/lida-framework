@@ -54,7 +54,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * Determines how scheme are given activation and whether they should be
 	 * instantiated
 	 */
-	SchemeActivationBehavior schemeActivationBehavior = new BasicSchemeActivationBehavior(this);
+	private SchemeActivationBehavior schemeActivationBehavior = new BasicSchemeActivationBehavior(this);
 
 	/**
 	 * Listeners of this Procedural Memory

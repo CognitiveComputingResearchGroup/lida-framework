@@ -39,9 +39,10 @@ public class AttentionDriverInitializer implements Initializer {
 		WorkspaceBuffer csm = (WorkspaceBuffer)lida.getSubmodule(ModuleName.Workspace).getSubmodule(ModuleName.CurrentSituationalModel);
 		
 		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet("BasicAttention" , 20, 1.0, null);
-		ac.setGlobalWorkspace(gw);
-		ac.setWorkspaceBuffer(csm);
-		driver.addTask(ac);
+		//TODO getCodelet not working
+//		ac.setGlobalWorkspace(gw);
+//		ac.setWorkspaceBuffer(csm);
+//		driver.addTask(ac);
 	}
 
 }
