@@ -38,8 +38,6 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 		Collection<Node> nodes = broadcast.getNodes();
 		Collection<Link> links = broadcast.getLinks();
 		
-		System.out.println("broadcast contains " + nodes.size() + " links " + links.size());
-		
 		for (Node n : nodes)
 			auxActivateSchemes(n, schemeMap);
 		for (Link l : links)
