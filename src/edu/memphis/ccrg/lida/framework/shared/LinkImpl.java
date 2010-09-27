@@ -20,6 +20,9 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private String ids;
 	private LinkCategory category;
 	private Link referencedLink = null;
+	
+	public LinkImpl() {
+	}
 
 	public LinkImpl(Linkable source, Linkable sink, LinkCategory category) {
 		this.source = source;
@@ -35,9 +38,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		ids = l.getIds();
 		referencedLink = l.getReferencedLink();
 		updateIds();
-	}
-
-	public LinkImpl() {
 	}
 
 	public LinkImpl copy() {

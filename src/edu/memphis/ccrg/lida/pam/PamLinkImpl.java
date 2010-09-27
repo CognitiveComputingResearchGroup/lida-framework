@@ -27,6 +27,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
 	private static Logger logger = Logger.getLogger("lida.framework.pam.PamLinkImpl");
 
+	public PamLinkImpl() {
+		super();
+	}
+	
 	@Override
 	public double getMaxActivation() {
 		return MAX_ACTIVATION;

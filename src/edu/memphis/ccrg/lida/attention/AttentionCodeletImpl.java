@@ -29,6 +29,10 @@ public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodel
 	protected GlobalWorkspace global;
 	protected NodeStructure desiredContent;
 	
+	public AttentionCodeletImpl(){
+		super(0);
+	}
+	
     public AttentionCodeletImpl(WorkspaceBuffer csm, GlobalWorkspace g, int ticksPerStep,
     							double activation, NodeStructure soughtContent){
     	super(ticksPerStep);
