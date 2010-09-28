@@ -47,8 +47,8 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 		schemeB = new SchemeImpl("Scheme2",2,2);
 		parameters = new HashMap<String, Object>();
 		as = new ActionSelectionImpl();
-		schemeA.setActivation(0.2);
-		schemeB.setActivation(0.4);
+		schemeA.setActivation(0.3);
+		schemeB.setActivation(0.3);
 		
 		queueOfSchemes.add(schemeA);
 		queueOfSchemes.add(schemeB);

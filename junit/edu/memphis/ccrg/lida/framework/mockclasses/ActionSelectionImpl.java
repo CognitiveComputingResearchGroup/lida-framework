@@ -7,12 +7,17 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class ActionSelectionImpl implements ActionSelection {
+	private static Logger logger = Logger.getLogger("lida.actionselection.ActionSelectionImpl");
 
 	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
@@ -22,8 +27,8 @@ public class ActionSelectionImpl implements ActionSelection {
 
 	@Override
 	public void selectAction() {
-		System.out.println("action selected");
-
+		System.out.println("action selected at tick: " + LidaTaskManager.getActualTick());
+		logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getActualTick());
 	}
 
 	@Override
@@ -52,7 +57,7 @@ public class ActionSelectionImpl implements ActionSelection {
 
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

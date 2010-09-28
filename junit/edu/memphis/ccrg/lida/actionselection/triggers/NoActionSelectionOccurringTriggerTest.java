@@ -13,7 +13,9 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,8 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.mockclasses.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 /**
  * @author Siminder
@@ -33,6 +37,13 @@ public class NoActionSelectionOccurringTriggerTest {
 	Map<String, Object> parameters;
 	ActionSelection as;
 	ActionSelectionDriver asd;
+	
+	//Second trigger
+	Set<Scheme> setOfSchemes;
+	Scheme schemeA;
+	Scheme schemeB;
+	IndividualBehaviorActivationTrigger trigger2;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -44,6 +55,19 @@ public class NoActionSelectionOccurringTriggerTest {
 		as = new ActionSelectionImpl();
 		asd = new ActionSelectionDriver();
 		parameters = new HashMap<String, Object>();
+		
+		//Second trigger
+		setOfSchemes = new HashSet<Scheme>();
+		schemeA = new SchemeImpl("Scheme1",1,1);
+		schemeB = new SchemeImpl("Scheme2",2,2);
+			
+		trigger2 = new IndividualBehaviorActivationTrigger();
+		
+		schemeA.setActivation(0.8);
+		schemeB.setActivation(0.2);		
+		
+		setOfSchemes.add(schemeA);
+		setOfSchemes.add(schemeB);
 	}
 
 	/**
@@ -112,8 +136,7 @@ public class NoActionSelectionOccurringTriggerTest {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {			
 			e.printStackTrace();
-		}
-		
+		}	
 	}
 	
 	/**
@@ -124,18 +147,33 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger.setLidaTaskManager(tm);
 		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
-		parameters.put("delay", 100);	
+		parameters.put("delay", 15);	
 		trigger.setUp(parameters, as,asd);
 		
-		trigger.start();
-		
+		System.out.println("First trigger started with delay of 15 ticks.");
+		trigger.start();		
 		tm.resumeSpawnedTasks();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+				
+		//second trigger
+		System.out.println("Second trigger started");
+		trigger2.as=as;
+		trigger2.threshold=0.5;
+		trigger2.checkForTrigger(setOfSchemes);			
+		
+		System.out.println("First trigger reset");
 		trigger.reset();
+		
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {			
 			e.printStackTrace();
-		}
+		}		
 		
 	}
 

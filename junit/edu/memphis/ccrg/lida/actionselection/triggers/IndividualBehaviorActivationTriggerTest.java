@@ -42,8 +42,8 @@ public class IndividualBehaviorActivationTriggerTest {
 		trigger = new IndividualBehaviorActivationTrigger();
 		
 		as = new ActionSelectionImpl();
-		schemeA.setActivation(0.2);
-		schemeB.setActivation(0.6);		
+		schemeA.setActivation(0.8);
+		schemeB.setActivation(0.2);		
 		
 		setOfSchemes.add(schemeA);
 		setOfSchemes.add(schemeB);
