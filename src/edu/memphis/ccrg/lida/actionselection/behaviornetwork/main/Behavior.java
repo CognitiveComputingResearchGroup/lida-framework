@@ -20,6 +20,7 @@ public interface Behavior extends Activatible {
 	public abstract long getId();
 	public abstract long getActionId();
 	public abstract String getLabel();
+	public abstract void setLabel(String label);
 
 	//Context node type
 	public abstract void setContextNodeType(String nodeType);
@@ -70,5 +71,6 @@ public interface Behavior extends Activatible {
     public abstract void addContainingStream(Stream stream);
     public abstract Set<Stream> getContainingStreams();
     public abstract void removeContainingStream(Stream stream);
+	
 	
 }//method

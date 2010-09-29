@@ -26,8 +26,8 @@ public class ActionSelectionDriver extends ModuleDriverImpl {
     	super(DEFAULT_TICKS_PER_CYCLE, ModuleName.ActionSelectionDriver);
     }//constructor
 	
-    public ActionSelectionDriver(ActionSelection as, int ticksPerCycle, LidaTaskManager tm){
-		super(ticksPerCycle, tm,ModuleName.ActionSelectionDriver);
+    public ActionSelectionDriver(int ticksPerCycle, LidaTaskManager tm){
+		super(ticksPerCycle, tm, ModuleName.ActionSelectionDriver);
 	}//constructor
     
 	@Override

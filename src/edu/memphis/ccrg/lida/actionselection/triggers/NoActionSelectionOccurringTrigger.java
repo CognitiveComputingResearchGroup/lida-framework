@@ -20,7 +20,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	/**
 	 * How long since last action selection before this trigger is activated
 	 */
-	protected int delay;
+	protected int delay = 100;
 	
 	/**
 	 * Java library class used to handle the timing

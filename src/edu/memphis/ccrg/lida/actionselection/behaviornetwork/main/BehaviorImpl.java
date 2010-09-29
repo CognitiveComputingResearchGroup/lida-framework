@@ -80,6 +80,10 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	private static final double DEFAULT_CS_THRESHOLD = 0.5;
 
 	private static long idCounter = 0;
+	
+	public BehaviorImpl(long actionId){
+		this(idCounter++, actionId);
+	}
 
 	public BehaviorImpl(long id, long actionId) {
 		this.id = id;
@@ -275,6 +279,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	@Override
 	public boolean containsDeletingItem(Node deleteItem) {
 		return deletingList.contains(deleteItem);
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 }// class
