@@ -196,7 +196,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	@Override
-	//TODO Important! What if the behavior is already in the network!?
+	//TODO This way permits multiple instantiations of the same behavior because each one will
+	//have a different ID even if it was instantiated from the same Scheme.
+	//This can be resolved by either slowing the scheme activation rate or by having Behavior
+	//have a originatingScheme field.
 	public void receiveBehavior(Behavior newBehavior) {
 		indexBehaviorByElements(newBehavior,
 				newBehavior.getContextConditions(), behaviorsByContextCondition);
@@ -255,6 +258,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
      * Called when a new conscious broadcast arrives.  Method actually called by ActivatedBehaviorsTask on a separate thread.
      */
 	public void passActivationAmongBehaviors() {
+		//TODO consider alternative ways to iterate over the behaviors so that the order changes from iteration to iteration
 		for (Behavior behavior : getBehaviors()) {
 			if (behavior.isAllContextConditionsSatisfied())
 				spreadActivationToSuccessors(behavior);
@@ -370,6 +374,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				double excitationAmount = broadcastNode.getTotalActivation() * broadcastExcitationFactor;
 				Set<Behavior> behaviors = behaviorsByContextCondition.get(broadcastNode);	
 				for (Behavior behavior : behaviors) {
+					//TODO excite behaviors based on "goals" in the conscious broadcast.
+					//the result of the behaviors is what must be checked against broadcast content
 					behavior.updateContextCondition(broadcastNode);
 					behavior.excite(excitationAmount / behavior.getContextSize());
 					logger.log(Level.FINEST, behavior.toString() + " "
