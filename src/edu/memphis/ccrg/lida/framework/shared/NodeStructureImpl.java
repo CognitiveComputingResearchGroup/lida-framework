@@ -608,40 +608,30 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public int hashCode() {
-		long nodeIdSum = 0;
+		Long nodeIdSum = 0L;
 		for(Node n: nodes.values()){
-			nodeIdSum += n.getId();
-		}
+			nodeIdSum += n.getId();			
+		}//for each node
 		
-		long linkSum = 0;
-		long sinkId = 0;
-		long sourceId = 0;
-		for(Set<Link> links: linkableMap.values()){
-			Iterator<Link> it = ((Iterable<Link>) links).iterator();
-			while(it.hasNext()){
-				Link l = it.next();
-				Linkable sink = l.getSink();
+		Long linkIdSum = 0L;
+		for(Link l: links.values()){
+			Linkable source = l.getSource();
+			Linkable sink  = l.getSink();
+			if(source instanceof Node){
 				if(sink instanceof Node)
-					sinkId = ((Node) sink).getId() * 37;
+					linkIdSum += 37* ((Node) source).getId() + 41 * ((Node) sink).getId();
 				else
-					sinkId = sink.getIds().hashCode() * 37;
-				
-				Linkable source = l.getSource();
-				if(source instanceof Node)
-					sourceId = ((Node) source).getId() * 29;
+					linkIdSum += 37* ((Node) source).getId() + 41 * sink.getIds().hashCode();
+			}else{
+				if(sink instanceof Node)
+					linkIdSum += 37* ((Link) source).getIds().hashCode() + 41 * ((Node) sink).getId();
 				else
-					sourceId = source.getIds().hashCode() * 29;
-				
-				linkSum += sinkId + sourceId;
+					linkIdSum += 37* ((Link) source).getIds().hashCode() + 41 * sink.getIds().hashCode();		
 			}
-		}
+		}//for each link
 			
-		int hash = 1;
-		Long v1 = new Long(nodeIdSum);
-		Long v2 = new Long(linkSum);
-		hash = hash * 31 + v2.hashCode();
-		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
-		return hash;
+		int hash = 17 * 31 + linkIdSum.hashCode();
+		return hash * 31 + nodeIdSum.hashCode();
 	}
 
 }// class
