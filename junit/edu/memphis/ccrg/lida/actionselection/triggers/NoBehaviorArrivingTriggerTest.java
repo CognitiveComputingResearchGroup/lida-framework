@@ -50,17 +50,19 @@ public class NoBehaviorArrivingTriggerTest {
 
 	@Test
 	public void testCheckForTriggerSetOfSchemeDouble() {
-		trigger.setLidaTaskManager(tm);
+		//trigger.setLidaTaskManager(tm);
 		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
 		parameters.put("delay", 15);	
 		trigger.setUp(parameters, as,asd);
 		
+		System.out.println("Trigger started with delay of 15 ticks.");
+		
 		trigger.checkForTrigger(behaviors, 1.0);
 		tm.resumeSpawnedTasks();
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(8000);
 		} catch (InterruptedException e) {			
 			e.printStackTrace();
 		}	

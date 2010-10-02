@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -27,7 +28,7 @@ public class TriggerTask extends LidaTaskImpl{
 	private Logger logger = Logger.getLogger("lida.actionselection.triggers");
 
 	private String name;
-	private TriggerListener as;
+	private TriggerListener as;	
 	private LidaTaskImpl task;
 	
 	public TriggerTask(int ticksForCycle,TriggerListener as,LidaTaskImpl task,String name) {

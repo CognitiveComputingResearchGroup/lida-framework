@@ -26,7 +26,6 @@ private Logger logger = Logger.getLogger("lida.actionselection.triggers");
 		for(Scheme c:behaviors){
 			if(c.getActivation()>threshold){
 				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getActualTick());
-
 				as.triggerActionSelection();
 				break;
 			}
