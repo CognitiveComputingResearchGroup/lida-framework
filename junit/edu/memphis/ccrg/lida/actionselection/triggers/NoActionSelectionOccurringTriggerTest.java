@@ -88,21 +88,7 @@ public class NoActionSelectionOccurringTriggerTest {
 		assertEquals("Problem with GetLidaTaskManager", tm, trigger.getLidaTaskManager());
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setUp(java.util.Map, edu.memphis.ccrg.lida.actionselection.ActionSelection)}.
-	 */
-	@Test
-	public void testSetUpMapOfStringObjectActionSelection() {
-		trigger.setLidaTaskManager(tm);	
-		parameters.put("name", "abc");	
-		parameters.put("delay", 100);	
-		trigger.setUp(parameters, as);
-		
-		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", 100,trigger.delay);
-		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", "abc",trigger.name);
-		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", as,trigger.as);
-	}
-
+	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setUp(java.util.Map, edu.memphis.ccrg.lida.actionselection.ActionSelection, edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver)}.
 	 */
@@ -124,6 +110,9 @@ public class NoActionSelectionOccurringTriggerTest {
 	 */
 	@Test
 	public void testStart() {
+		
+		System.out.println("Testing start method");
+		
 		trigger.setLidaTaskManager(tm);
 		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
@@ -144,6 +133,9 @@ public class NoActionSelectionOccurringTriggerTest {
 	 */
 	@Test
 	public void testReset() {
+		
+		System.out.println("Testing reset method");
+		
 		trigger.setLidaTaskManager(tm);
 		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
@@ -154,15 +146,16 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger.start();		
 		tm.resumeSpawnedTasks();
 		
-		try {
+		/*try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {			
 			e.printStackTrace();
-		}
+		}*/
 				
 		//second trigger
 		System.out.println("Second trigger started");
 		trigger2.as=as;
+		trigger2.asd=asd;
 		trigger2.threshold=0.5;
 		trigger2.checkForTrigger(setOfSchemes);			
 		
@@ -170,7 +163,7 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger.reset();
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {			
 			e.printStackTrace();
 		}		

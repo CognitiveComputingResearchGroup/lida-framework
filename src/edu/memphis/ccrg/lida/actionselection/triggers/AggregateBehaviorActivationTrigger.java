@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
@@ -22,6 +23,7 @@ public class AggregateBehaviorActivationTrigger implements
 	private Logger logger = Logger.getLogger("lida.actionselection.triggers");
 	protected ActionSelection as;
 	protected double threshold;
+	protected ActionSelectionDriver asd;
 /**
  * This method is executed each time a new behavior enters the AS.
  * 
@@ -43,16 +45,20 @@ public class AggregateBehaviorActivationTrigger implements
 		// not applicable
 	}
 
-	public void setUp(Map<String, Object> parameters, ActionSelection as) {
+
+	public void start() {
+		// not applicable
+	}
+
+	@Override
+	public void setUp(Map<String, Object> parameters, ActionSelection as,ActionSelectionDriver asd) {
 		this.as=as;
+		this.asd=asd;
 		Object o = parameters.get("threshold");
 		if ((o != null)&& (o instanceof Double)) {
 			threshold= (Double)o;
 		}
-	}//method
-
-	public void start() {
-		// not applicable
+		
 	}
 
 }//class

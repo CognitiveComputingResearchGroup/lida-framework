@@ -15,6 +15,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.mockclasses.ActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
@@ -29,6 +30,7 @@ public class IndividualBehaviorActivationTriggerTest {
 	Scheme schemeB;
 	IndividualBehaviorActivationTrigger trigger;
 	ActionSelection as;
+	ActionSelectionDriver asd;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -42,6 +44,7 @@ public class IndividualBehaviorActivationTriggerTest {
 		trigger = new IndividualBehaviorActivationTrigger();
 		
 		as = new ActionSelectionImpl();
+		asd = new ActionSelectionDriver();
 		schemeA.setActivation(0.8);
 		schemeB.setActivation(0.2);		
 		
@@ -55,6 +58,7 @@ public class IndividualBehaviorActivationTriggerTest {
 	@Test
 	public void testCheckForTriggerSetOfScheme() {
 		trigger.as=as;
+		trigger.asd=asd;
 		trigger.threshold=0.5;
 		trigger.checkForTrigger(setOfSchemes);
 	}

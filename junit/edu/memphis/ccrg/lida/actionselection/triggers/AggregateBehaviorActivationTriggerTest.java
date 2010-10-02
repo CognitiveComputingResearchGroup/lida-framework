@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.mockclasses.ActionSelectionImpl;
 
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -36,6 +37,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	Scheme schemeB;
 	AggregateBehaviorActivationTrigger trigger;
 	ActionSelection as;
+	ActionSelectionDriver asd;
 	Map<String, Object> parameters;
 	/**
 	 * @throws java.lang.Exception
@@ -47,6 +49,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 		schemeB = new SchemeImpl("Scheme2",2,2);
 		parameters = new HashMap<String, Object>();
 		as = new ActionSelectionImpl();
+		asd=new ActionSelectionDriver();
 		schemeA.setActivation(0.3);
 		schemeB.setActivation(0.3);
 		
@@ -64,8 +67,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	 */
 	@Test
 	public void testCheckForTrigger() {
-		trigger.threshold=0.5;
-		trigger.as=as;
+		trigger.setUp(parameters, as, asd);		
 		trigger.checkForTrigger(queueOfSchemes);		
 	}
 
@@ -75,7 +77,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	 */
 	@Test
 	public void testSetUp() {
-		trigger.setUp(parameters, as);
+		trigger.setUp(parameters, as,asd);
 		assertEquals("Problem with SetUp", 0.5, trigger.threshold);
 	}
 }

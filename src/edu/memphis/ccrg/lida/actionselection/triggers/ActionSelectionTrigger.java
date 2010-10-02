@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
@@ -31,7 +32,10 @@ public interface ActionSelectionTrigger {
 	 * @param as A TriggerListener. Most of the cases is the same class that 
 	 * implements ActionSelection Interface.
 	 */
-	public void setUp (Map<String,Object> parameters,ActionSelection as);
+
+	
+	public void setUp (Map<String,Object> parameters,ActionSelection as,ActionSelectionDriver asd);
+	
 	/**
 	 * Each time a new behavior is put in the AS, this method is called for all registered the Triggers.
 	 * @param behaviors All the behaviors in the AS.
