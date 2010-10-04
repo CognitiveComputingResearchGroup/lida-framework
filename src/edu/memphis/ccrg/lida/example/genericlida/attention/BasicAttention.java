@@ -23,6 +23,10 @@ public class BasicAttention extends AttentionCodeletImpl {
 		// TODO Auto-generated constructor stub
 	}
 
+	public BasicAttention(){
+		
+	}
+	
 	private static final double THRESHOLD = 0.5;
 
 	protected void runThisLidaTask() {

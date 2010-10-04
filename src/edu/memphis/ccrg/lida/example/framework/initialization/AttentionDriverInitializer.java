@@ -40,9 +40,9 @@ public class AttentionDriverInitializer implements Initializer {
 		
 		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet("BasicAttention" , 20, 1.0, null);
 		//TODO getCodelet not working
-//		ac.setGlobalWorkspace(gw);
-//		ac.setWorkspaceBuffer(csm);
-//		driver.addTask(ac);
+		ac.setGlobalWorkspace(gw);
+		ac.setWorkspaceBuffer(csm);
+		driver.addTask(ac);
 	}
 
 }
