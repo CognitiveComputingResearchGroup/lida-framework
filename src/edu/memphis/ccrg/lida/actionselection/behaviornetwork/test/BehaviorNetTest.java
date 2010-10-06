@@ -42,15 +42,16 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
 		behaviorNet.addActionSelectionListener(this);
 		
-		LidaTaskManager ltm = new LidaTaskManager(0, 100);
-		ltm.resumeSpawnedTasks();
-		ActionSelectionDriver taskSpawner = new ActionSelectionDriver(1, ltm);
-		NoActionSelectionOccurringTrigger t = new NoActionSelectionOccurringTrigger();
-		t.setUp(new HashMap<String,Object>(),behaviorNet, taskSpawner);
-		taskSpawner.addActionSelectionTrigger(t);
+		//LidaTaskManager ltm = new LidaTaskManager(0, 100);
+		//ltm.resumeSpawnedTasks();
+		//ActionSelectionDriver taskSpawner = new ActionSelectionDriver(1, ltm);
+		//NoActionSelectionOccurringTrigger t = new NoActionSelectionOccurringTrigger();
+		//t.setUp(new HashMap<String,Object>(),behaviorNet, taskSpawner);
+		//taskSpawner.addActionSelectionTrigger(t);
 		
-		taskSpawner.start();		
-		behaviorNet.setTaskSpawner(taskSpawner);
+		//taskSpawner.start();		
+		TaskSpawner mockTS = new MockTaskSpawner();
+		behaviorNet.setTaskSpawner(mockTS);
 		
 		Map<String, Double> params = new HashMap<String, Double>();
 		//params.put("", value)		
@@ -88,12 +89,13 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		b.addContextCondition(far);
 		b.addToAddingList(near);
 		behaviorNet.receiveBehavior(b);
-		
-		int timesToSendBroadcast = 10;
-		for(int i = 0; i < timesToSendBroadcast; i++)
-			behaviorNet.receiveBroadcast((BroadcastContent) bc);
-	}
+		behaviorNet.receiveBroadcast((BroadcastContent) bc);
+		behaviorNet.selectAction();
+		System.out.println("1");
 
+		behaviorNet.receiveBroadcast((BroadcastContent) bc);
+		behaviorNet.selectAction();
+	}
 	@Override
 	public void receiveActionId(long id) {
 		System.out.println("Received action " + id);

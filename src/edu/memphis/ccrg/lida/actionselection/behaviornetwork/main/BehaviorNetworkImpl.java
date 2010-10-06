@@ -277,15 +277,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private void spreadActivationToSuccessors(Behavior behavior) {
 		for (Node addProposition: behavior.getAddingList()) {
 			Set<Behavior> successors = getSuccessors(addProposition);
-			for (Behavior successor: successors) {
-				// Grant activation to a successor if its precondition has not yet been satisfied
-				if (successor.isContextConditionSatisfied(addProposition) == false) {
-					double amount = (behavior.getActivation() * successorExcitationFactor) /
-							         successor.getContextSize();
-					successor.excite(amount);
-					logger.log(Level.FINEST, behavior.getLabel() + "-->"
-							+ amount + " to " + successor + " for "
-							+ addProposition, LidaTaskManager.getActualTick());
+			if(successors != null){
+				for (Behavior successor: successors) {
+					// Grant activation to a successor if its precondition has not yet been satisfied
+					if (successor.isContextConditionSatisfied(addProposition) == false) {
+						double amount = (behavior.getActivation() * successorExcitationFactor) /
+								         successor.getContextSize();
+						successor.excite(amount);
+						logger.log(Level.FINEST, behavior.getLabel() + "-->"
+								+ amount + " to " + successor + " for "
+								+ addProposition, LidaTaskManager.getActualTick());
+					}
 				}
 			}
 		}
@@ -305,14 +307,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		for (Node contextCondition : behavior.getContextConditions()) {
 			if (behavior.isContextConditionSatisfied(contextCondition) == false) {
 				Set<Behavior> predecessors = getPredecessors(contextCondition);
-				for (Behavior predecessor : predecessors) {
-					double granted = (behavior.getActivation() * predecessorExcitationFactor) / 
-							          predecessor.getAddingListCount();
-					predecessor.excite(granted);
-					logger.log(Level.FINEST, behavior.getActivation() + " "
-							+ behavior.getLabel() + "<--" + granted + " to "
-							+ predecessor + " for " + contextCondition,
-							LidaTaskManager.getActualTick());
+				if(predecessors != null){
+					for (Behavior predecessor : predecessors) {
+						double granted = (behavior.getActivation() * predecessorExcitationFactor) / 
+								          predecessor.getAddingListCount();
+						predecessor.excite(granted);
+						logger.log(Level.FINEST, behavior.getActivation() + " "
+								+ behavior.getLabel() + "<--" + granted + " to "
+								+ predecessor + " for " + contextCondition,
+								LidaTaskManager.getActualTick());
+					}
 				}
 			}
 		}
@@ -327,27 +331,31 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		boolean isMutualConflict = false;
 		for (Node contextCondition : behavior.getContextConditions()) {
 			Set<Behavior> conflictors = getConflictors(contextCondition);
-			for (Behavior conflictor : conflictors) {
-				// for each conflictor context condition
-				for (Node conflictorPreCondition : conflictor.getContextConditions()) {
-					// if conflictor context condition is not satisfied
-					if (conflictor.isContextConditionSatisfied(conflictorPreCondition) == false) {
-						Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
-						// if there is a mutual conflict
-						isMutualConflict = conflictorsConflictors.contains(behavior);
-						if (isMutualConflict) {
-							if (behavior.getActivation() > conflictor.getActivation())
-								auxSpreadConflictorActivation(behavior, conflictor);
+			if(conflictors != null){
+				for (Behavior conflictor : conflictors) {
+					// for each conflictor context condition
+					for (Node conflictorPreCondition : conflictor.getContextConditions()) {
+						// if conflictor context condition is not satisfied
+						if (conflictor.isContextConditionSatisfied(conflictorPreCondition) == false) {
+							Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
+							// if there is a mutual conflict
+							if(conflictorsConflictors != null){
+								isMutualConflict = conflictorsConflictors.contains(behavior);
+								if (isMutualConflict) {
+									if (behavior.getActivation() > conflictor.getActivation())
+										auxSpreadConflictorActivation(behavior, conflictor);
+								}
+							}
 						}
 					}
-				}
-
-				// No mutual conflict then inhibit the conflictor of behavior
-				if (isMutualConflict == false)
-					auxSpreadConflictorActivation(behavior, conflictor);
-				else
-					isMutualConflict = false;
-			}// for each conflictor
+	
+					// No mutual conflict then inhibit the conflictor of behavior
+					if (isMutualConflict == false)
+						auxSpreadConflictorActivation(behavior, conflictor);
+					else
+						isMutualConflict = false;
+				}// for each conflictor
+			}
 		}// for
 	}// method
 	
