@@ -106,6 +106,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
+		
+		//TODO spawn a task like in the behavior net
 	}
 
 	@Override
@@ -134,6 +136,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 */
 	@Override
 	public void sendInstantiatedScheme(Scheme s) {
+		//TODO create a method so that a Scheme generates a behavior
 		logger.log(Level.FINE, "Sending scheme from procedural memory", LidaTaskManager.getActualTick());
 		for (ProceduralMemoryListener listener : listeners){
 			Behavior b = new BehaviorImpl(s);			
