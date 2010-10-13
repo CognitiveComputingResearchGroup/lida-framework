@@ -20,10 +20,13 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ActivationCalculationBehavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.PredecessorActivationCalculator;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SuccessorActivationCalculator;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
@@ -144,7 +147,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		super();
 	}
 
-	// TODO make sure this is set up by initializer
 	public void setTaskSpawner(TaskSpawner ts) {
 		this.taskSpawner = ts;
 	}
@@ -154,7 +156,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		//TODO set parameters for activation passing
 	}
 	
-	// *** Module communication methods
 	// TODO check this everywhere.
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized(this){
@@ -201,12 +202,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	//This can be resolved by either slowing the scheme activation rate or by having Behavior
 	//have a originatingScheme field.
 	public void receiveBehavior(Behavior newBehavior) {
-		indexBehaviorByElements(newBehavior,
-				newBehavior.getContextConditions(), behaviorsByContextCondition);
-		indexBehaviorByElements(newBehavior, newBehavior.getAddingList(),
-				behaviorsByAddingItem);
-		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(),
-				behaviorsByDeletingItem);
+		indexBehaviorByElements(newBehavior, newBehavior.getContextConditions(), behaviorsByContextCondition);
+		indexBehaviorByElements(newBehavior, newBehavior.getAddingList(), behaviorsByAddingItem);
+		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(), behaviorsByDeletingItem);
 
 		behaviors.put(newBehavior.getId(), newBehavior);
 	}
@@ -220,7 +218,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-	 * Utility method to index the behaviors into a map by elements 
+	 * Abstractly defined utility method to index the behaviors into a map by elements 
 	 */
 	private void indexBehaviorByElements(Behavior behavior, Collection<Node> elements,
 										 Map<Node, Set<Behavior>> map) {
@@ -267,6 +265,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			spreadActivationToConflictors(behavior);
 		}
 	}
+	
+	private ActivationCalculationBehavior predecessorActivationCalculator = new PredecessorActivationCalculator();
+	private ActivationCalculationBehavior successorActivationCalculator = new SuccessorActivationCalculator();
+	private ActivationCalculationBehavior conflictorActivationCalculator;//TODO
 
 	/**
 	 * Only excite successor if precondition is not yet satisfied.
@@ -281,8 +283,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				for (Behavior successor: successors) {
 					// Grant activation to a successor if its precondition has not yet been satisfied
 					if (successor.isContextConditionSatisfied(addProposition) == false) {
-						double amount = (behavior.getActivation() * successorExcitationFactor) /
-								         successor.getContextSize();
+						double amount = predecessorActivationCalculator.calculateActivation(behavior.getActivation(), 
+																						    successor.getContextSize());
 						successor.excite(amount);
 						logger.log(Level.FINEST, behavior.getLabel() + "-->"
 								+ amount + " to " + successor + " for "
