@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 /**
- * @author Ryan J McCall
+ * @author Ryan J McCall, Javier Snaider
  */
 public class BehaviorNetTest implements ActionSelectionListener{
 
@@ -38,8 +38,11 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		new BehaviorNetTest().run();				
 	}
 
+	private NodeFactory factory = NodeFactory.getInstance();
+	private BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
+	
 	private void run() {
-		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
+		
 		behaviorNet.addActionSelectionListener(this);
 		
 		//LidaTaskManager ltm = new LidaTaskManager(0, 100);
@@ -57,45 +60,92 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		//params.put("", value)		
 		behaviorNet.init(params);
 		
-		NodeFactory factory = NodeFactory.getInstance();
-		NodeStructure bc = new NodeStructureImpl();
-		Node near = factory.getNode("NodeImpl", "near");
-		Node far = factory.getNode("NodeImpl", "far");
-		Node banana = factory.getNode("NodeImpl", "banana");
-		Node have = factory.getNode("NodeImpl", "have");
-		Node table = factory.getNode("NodeImpl", "table");
+		Node near = getNewNode("near");
+		Node far = getNewNode("far");
+		Node standing = getNewNode("standing");
+		Node sitting = getNewNode("sitting");
 		
-		far.setActivation(1.0);
-		banana.setActivation(1.0);
-		table.setActivation(1.0);
+		Node thirsty = getNewNode("thirsty");
+		Node drunk = getNewNode("drunk");
+		Node hungry = getNewNode("hungry");
+		Node full = getNewNode("full");
 		
-		bc.addNode(far);
-		bc.addNode(banana);
-		bc.addNode(table);
+		Node right = getNewNode("right");
+		Node left = getNewNode("left");
 		
-		long grab = 1L;
-		Behavior b = new BehaviorImpl(grab);
-		b.setLabel("grab");
-		b.addContextCondition(near);
-		b.addContextCondition(table);
-		b.addContextCondition(banana);
-		b.addToAddingList(banana);
-		b.addToAddingList(have);
+		Node banana = getNewNode("banana");
+		Node cerveza = getNewNode("cerveza");
+		Node table = getNewNode("table");
+		
+		
+		long grabAction = 1L;
+		long goLeftAction = 2L;
+		long goRightAction = 3L;
+		long drinkAction = 4L;
+		long eatAction = 5L;
+		long standAction = 6L;
+		
+		Behavior b = getNewBehavior(eatAction, full, hungry, banana);
 		behaviorNet.receiveBehavior(b);
 		
-		long walk = 2L;
-		b = new BehaviorImpl(walk);
-		b.setLabel("walk");
-		b.addContextCondition(far);
-		b.addToAddingList(near);
+		b = getNewBehavior(drinkAction, drunk, thirsty, cerveza);
 		behaviorNet.receiveBehavior(b);
-		behaviorNet.receiveBroadcast((BroadcastContent) bc);
-		behaviorNet.selectAction();
-		System.out.println("1");
+		
+		b = getNewBehavior(goLeftAction, banana, standing);
+		behaviorNet.receiveBehavior(b);
+		
+		b = getNewBehavior(goRightAction, cerveza, standing);
+		behaviorNet.receiveBehavior(b);
 
+		b = getNewBehavior(standAction, standing, sitting);
+		behaviorNet.receiveBehavior(b);
+		
+		//broadcasts
+		NodeStructure bc = getBroadcast(thirsty, sitting);
+		runOneStep(bc);
+		
+		bc = getBroadcast(thirsty, standing);
+		runOneStep(bc);
+		runOneStep(bc);
+		runOneStep(bc);
+//		
+//        bc = getBroadcast(thirsty, cerveza);
+//		runOneStep(bc);
+//		runOneStep(bc);
+//		runOneStep(bc);
+	}
+	
+	public NodeStructure getBroadcast(Node... broadcastNodes){
+		NodeStructure bc = new NodeStructureImpl();
+		for(Node n: broadcastNodes){
+			n.setActivation(0.9);
+			bc.addNode(n);
+		}
+		return bc;
+	}
+	
+	private int step = 0;
+	public void runOneStep(NodeStructure bc){
+		System.out.println("Running BN: " + step++);
 		behaviorNet.receiveBroadcast((BroadcastContent) bc);
 		behaviorNet.selectAction();
+		behaviorNet.decayModule(30);
 	}
+	
+	public Behavior getNewBehavior(long actionId, Node result, Node...context){
+		Behavior b = new BehaviorImpl(actionId);
+		b.addToAddingList(result);
+		for(Node n: context)
+			b.addContextCondition(n);
+		return b;
+	}
+	
+	public Node getNewNode(String label){
+		Node n = factory.getNode("NodeImpl", label);
+		n.setActivation(0.0);
+		return n;
+	}
+	
 	@Override
 	public void receiveActionId(long id) {
 		System.out.println("Received action " + id);

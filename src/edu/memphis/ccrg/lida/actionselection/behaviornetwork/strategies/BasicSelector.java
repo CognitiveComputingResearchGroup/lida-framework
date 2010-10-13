@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 public class BasicSelector implements Selector{
 	
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
-    private final double TIE_BREAKER = 0.5;
     
 //    stochastic in behavior net + drives to explore novel things
     // have a parameter which at 1.0 gives deterministic action selection.  
@@ -37,21 +36,32 @@ public class BasicSelector implements Selector{
     
     public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
         double maxActivation = 0.0;
+        List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
         for(Behavior current: candidateBehaviors){
     		double currentActivation = current.getTotalActivation();
-    		if(currentActivation >= candidateThreshold){
-                if(currentActivation > maxActivation) {                    
-                    winner = current;
-                    maxActivation = currentActivation;
-                }else if(currentActivation == maxActivation){   
-                	if(Math.random() >= TIE_BREAKER)
-                		winner = current;                                    
-                }
-    		}
+    		if(currentActivation > maxActivation) {                    
+                winners.clear();
+    			winners.add(current);
+                maxActivation = currentActivation;
+            }else if(currentActivation == maxActivation){   
+        		winners.add(current);
+            }
     	}
-        if(winner != null)
-            logger.log(Level.FINE, "Winner: " + winner.getLabel() + ", activ: " + maxActivation);
+        
+        switch(winners.size()){
+        	case 1:
+        		winner = winners.get(0);
+        		logger.log(Level.FINE, "Winner: " + winner.getLabel() + ", activ: " + maxActivation);
+        		break;
+        	case 0:
+        		winner = null;
+        		break;
+        	default:
+        		winner = winners.get((int)(Math.random()* winners.size()));
+        		logger.log(Level.FINE, "Winner: " + winner.getLabel() + ", activ: " + maxActivation);
+        }
+        
         return winner;
     }
  

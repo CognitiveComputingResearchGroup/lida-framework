@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,18 +21,16 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.ActivationCalculationBehavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.PredecessorActivationCalculator;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SuccessorActivationCalculator;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -42,7 +41,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * 
- * @author Ryan J McCall, Sidney D'Mello
+ * @author Ryan J McCall, Javier Snaider, Sidney D'Mello
  * 
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
@@ -248,9 +247,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Select one action to be executed
 	 */
 	public void selectAction() {
-		winningBehavior = selectorStrategy.selectSingleBehavior(getBehaviors(), candidateBehaviorThreshold);
+		winningBehavior = selectorStrategy.selectSingleBehavior(getSatisfiedBehaviors(), candidateBehaviorThreshold);
 		processWinner();
 	}// method
+	
+	public Set<Behavior> getSatisfiedBehaviors(){
+		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
+		for(Behavior b: getBehaviors())
+			if(b.isAllContextConditionsSatisfied())
+				satisfiedBehaviors.add(b);
+		return satisfiedBehaviors;
+	}
 
 	/**
      * Called when a new conscious broadcast arrives.  Method actually called by ActivatedBehaviorsTask on a separate thread.
@@ -266,9 +273,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		}
 	}
 	
-	private ActivationCalculationBehavior predecessorActivationCalculator = new PredecessorActivationCalculator();
-	private ActivationCalculationBehavior successorActivationCalculator = new SuccessorActivationCalculator();
-	private ActivationCalculationBehavior conflictorActivationCalculator;//TODO convert to excitestrategies
+
 
 	/**
 	 * Only excite successor if precondition is not yet satisfied.
@@ -283,8 +288,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				for (Behavior successor: successors) {
 					// Grant activation to a successor if its precondition has not yet been satisfied
 					if (successor.isContextConditionSatisfied(addProposition) == false) {
-						double amount = predecessorActivationCalculator.calculateActivation(behavior.getActivation(), 
-																						    successor.getContextSize());
+						double amount = behavior.getActivation() * successorExcitationFactor / successor.getContextSize();
 						successor.excite(amount);
 						logger.log(Level.FINEST, behavior.getLabel() + "-->"
 								+ amount + " to " + successor + " for "
@@ -298,6 +302,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private Set<Behavior> getSuccessors(Node addProposition) {
 		return behaviorsByContextCondition.get(addProposition);
 	}
+	
+	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
 
 	/**
 	 * Don't bother exciting a predecessor for a precondition that is already
@@ -403,6 +409,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			resetCandidateBehaviorThreshold();
 			winningBehavior.setActivation(0.0);
 		} else {
+			System.out.println("No action selected");
 			reduceCandidateBehaviorThreshold();
 		}
 	}
