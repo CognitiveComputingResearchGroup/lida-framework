@@ -7,9 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
+import java.util.Map;
+
 public interface ExciteStrategy  extends Strategy{
 
-	public abstract double excite(double currentActivation, double excitation);
+	public abstract double excite(double currentActivation, double excitation, Object... params);
+	public abstract double excite(double currentActivation, double excitation, Map<String,Object>params);
 	
 	public abstract void setSlope(int m);
 	

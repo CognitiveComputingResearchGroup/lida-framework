@@ -14,15 +14,6 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 	@SuppressWarnings("unused")
 	private Map<String, ? extends Object> params;
 
-	public double excite(double currentActivation, double excitation) {
-		double newActivation = currentActivation + excitation;
-		if(newActivation > 1.0)
-			return 1.0;
-		if(newActivation < 0.0)
-			return 0.0;
-		return newActivation;
-	}
-
 	public void init(Map<String, ? extends Object> params) {
 		this.params=params;
 	}
@@ -34,6 +25,22 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 	@Override
 	public void setIntercept(int b) {
 
+	}
+
+	@Override
+	public double excite(double currentActivation, double excitation,
+			Object... params) {
+		double newActivation = currentActivation + excitation;
+		if(newActivation > 1.0)
+			return 1.0;
+		if(newActivation < 0.0)
+			return 0.0;
+		return newActivation;
+	}
+
+	@Override
+	public double excite(double currentActivation, double excitation, Map<String, Object> params) {
+		return this.excite(currentActivation, excitation, params.values().toArray());
 	} 
 
 }

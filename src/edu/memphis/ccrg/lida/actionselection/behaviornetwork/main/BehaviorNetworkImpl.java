@@ -268,7 +268,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	
 	private ActivationCalculationBehavior predecessorActivationCalculator = new PredecessorActivationCalculator();
 	private ActivationCalculationBehavior successorActivationCalculator = new SuccessorActivationCalculator();
-	private ActivationCalculationBehavior conflictorActivationCalculator;//TODO
+	private ActivationCalculationBehavior conflictorActivationCalculator;//TODO convert to excitestrategies
 
 	/**
 	 * Only excite successor if precondition is not yet satisfied.
