@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
-import edu.memphis.ccrg.lida.framework.mockclasses.ActionSelectionImpl;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
@@ -42,7 +42,7 @@ public class NoBehaviorArrivingTriggerTest {
 		tm = new LidaTaskManager(200,50);
 		
 		trigger = new NoBehaviorArrivingTrigger();
-		as = new ActionSelectionImpl();
+		as = new MockActionSelectionImpl();
 		asd = new ActionSelectionDriver();
 		parameters = new HashMap<String, Object>();
 		

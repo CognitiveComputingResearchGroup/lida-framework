@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -25,16 +24,19 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
  *
  */
 public class TriggerTask extends LidaTaskImpl{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Logger logger = Logger.getLogger("lida.actionselection.triggers");
 
 	private String name;
-	private TriggerListener as;	
-	private LidaTaskImpl task;
+	private TriggerListener as;		
 	
-	public TriggerTask(int ticksForCycle,TriggerListener as,LidaTaskImpl task,String name) {
+	public TriggerTask(int ticksForCycle,TriggerListener as,String name) {
 		super(ticksForCycle);
-		this.as=as;
-		this.task=task;
+		this.as=as;		
 		this.name=name;
 	}
 
@@ -42,7 +44,7 @@ public class TriggerTask extends LidaTaskImpl{
 	protected void runThisLidaTask() {
 		logger.log(Level.FINE,name,LidaTaskManager.getActualTick());
 		as.triggerActionSelection();
-		task.setTaskStatus(LidaTaskStatus.FINISHED);
+		setTaskStatus(LidaTaskStatus.FINISHED);
 	}		
 	public String toString(){
 		return "TriggerTask "+name +" " + getTaskId();

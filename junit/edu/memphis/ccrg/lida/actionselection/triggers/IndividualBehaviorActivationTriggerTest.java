@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
-import edu.memphis.ccrg.lida.framework.mockclasses.ActionSelectionImpl;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
@@ -43,7 +43,7 @@ public class IndividualBehaviorActivationTriggerTest {
 			
 		trigger = new IndividualBehaviorActivationTrigger();
 		
-		as = new ActionSelectionImpl();
+		as = new MockActionSelectionImpl();
 		asd = new ActionSelectionDriver();
 		schemeA.setActivation(0.8);
 		schemeB.setActivation(0.2);		

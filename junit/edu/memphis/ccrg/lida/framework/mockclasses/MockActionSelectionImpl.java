@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceLi
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
-public class ActionSelectionImpl implements ActionSelection {
+public class MockActionSelectionImpl implements ActionSelection {
 	private static Logger logger = Logger.getLogger("lida.actionselection.ActionSelectionImpl");
 
 	@Override
