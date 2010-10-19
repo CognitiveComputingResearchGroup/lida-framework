@@ -26,9 +26,16 @@ public abstract class LidaActionImpl implements LidaAction {
 	private List<LidaAction> subActions;
 	private Topology topology = Topology.BASIC;
 
+	/**
+	 * 
+	 */
 	public LidaActionImpl() {
 	}
 
+	/**
+	 * 
+	 * @param label label
+	 */
 	public LidaActionImpl(String label) {
 		this.label = label;
 	}

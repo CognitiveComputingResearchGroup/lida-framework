@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
@@ -19,16 +20,28 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
+/**
+ * @author Siminder Kaur, Ryan McCall
+ *
+ */
 public class ActionSelectionDriver extends ModuleDriverImpl {
 
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
+	
+	/**
+	 * 
+	 */
 	public ActionSelectionDriver(){
     	super(DEFAULT_TICKS_PER_CYCLE, ModuleName.ActionSelectionDriver);
-    }//constructor
+    }
 	
+    /**
+     * @param ticksPerCycle - run frequency
+     * @param tm -
+     */
     public ActionSelectionDriver(int ticksPerCycle, LidaTaskManager tm){
 		super(ticksPerCycle, tm, ModuleName.ActionSelectionDriver);
-	}//constructor
+	}
     
 	@Override
 	public void runThisDriver() {
@@ -49,19 +62,28 @@ public class ActionSelectionDriver extends ModuleDriverImpl {
 		actionSelectionTriggers.add(t);
 	}
 	
+	/**
+	 * 
+	 */
 	public void resetTriggers() {
 		for (ActionSelectionTrigger t : actionSelectionTriggers) {
 			t.reset();
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void start() {
 		for (ActionSelectionTrigger t : actionSelectionTriggers) {
 			t.start();
 		}
 	}	
 	
-	public void newBehaviorEvent(Queue<Scheme> behaviors) {		
+	/**
+	 * @param behaviors
+	 */
+	public void newBehaviorEvent(Queue<Behavior> behaviors) {		
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
 			trigger.checkForTrigger(behaviors);
 	}// method

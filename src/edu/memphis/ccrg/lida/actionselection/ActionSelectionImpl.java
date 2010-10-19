@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
@@ -45,14 +44,16 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	
 	private int selectionFrequency = 100, coolDownCounter = 0;
 	
-	private Queue<Scheme> behaviors = new ConcurrentLinkedQueue<Scheme>();
+	private Queue<Behavior> behaviors = new ConcurrentLinkedQueue<Behavior>();
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private ActionSelectionDriver asd=new ActionSelectionDriver();
 	
+	/**
+	 * default
+	 */
 	public ActionSelectionImpl( ) {
-		super(ModuleName.ActionSelection);
-		
+		super(ModuleName.ActionSelection);	
 	}
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
@@ -76,6 +77,9 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		}
 	}
 	
+	/**
+	 * @param schemeActionId id of action 
+	 */
 	public void sendAction(long schemeActionId){
 		for(ActionSelectionListener l: listeners)
 			l.receiveActionId(schemeActionId);
@@ -100,7 +104,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	@Override
 	public void selectAction() {
 		
-		Scheme coal;
+		Behavior coal;
 		coal = chooseBehavior();
 		if (coal != null) {
 			behaviors.remove(coal);
@@ -122,14 +126,20 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 	
+	/**
+	 * @param evt
+	 */
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : guis)
 			fg.receiveFrameworkGuiEvent(evt);
 	}
 
-	public Scheme chooseBehavior() {
-		Scheme chosenBehav = null;
-		for (Scheme c : behaviors) {
+	/**
+	 * @return chosen behavior
+	 */
+	public Behavior chooseBehavior() {
+		Behavior chosenBehav = null;
+		for (Behavior c : behaviors) {
 			if (chosenBehav == null
 					|| c.getActivation() > chosenBehav.getActivation()) {
 				chosenBehav = c;
@@ -138,7 +148,11 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		return chosenBehav;
 	}// method
 
-	public boolean addBehavior(Scheme behavior) {
+	/**
+	 * @param behavior to add to selector
+	 * @return true if behavior added
+	 */
+	public boolean addBehavior(Behavior behavior) {
 		if (behaviors.add(behavior)) {
 			logger.log(Level.FINE,"New Behavior added",LidaTaskManager.getActualTick());
 			asd.newBehaviorEvent(behaviors);
@@ -176,7 +190,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
                 Object[] state = (Object[])content;
                 if (state.length == 4) {
                     try {
-                        this.behaviors = (Queue<Scheme>)state[0];
+                        this.behaviors = (Queue<Behavior>)state[0];
                         return true;
                     }
                     catch (Exception ex) {
