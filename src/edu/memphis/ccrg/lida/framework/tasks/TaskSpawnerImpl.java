@@ -13,6 +13,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PassActivationFromBroadcastTask;
+
 /**
  * Implements the TaskSpawner interface.
  * 
@@ -56,6 +59,11 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 * Add a task to this taskspawner to be run
 	 */
 	public void addTask(LidaTask task) {
+		if(this instanceof ActionSelectionDriver && task instanceof PassActivationFromBroadcastTask){
+			int i = 0;
+			i++;
+		}
+		
 		task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
 		task.setTaskSpawner(this);
 		runningTasks.add(task);
