@@ -142,6 +142,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	private TaskSpawner taskSpawner;
 
+	/**
+	 * Default constructor
+	 */
 	public BehaviorNetworkImpl() {
 		super();
 	}
@@ -160,7 +163,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		synchronized(this){
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
-
 		LidaTask activationFromBroadcastTask = new PassActivationFromBroadcastTask(this);
 		taskSpawner.addTask(activationFromBroadcastTask);
 		LidaTask activationAmongBehaviorsTask = new PassActivationAmongBehaviorsTask(this);
@@ -242,20 +244,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	public void triggerActionSelection() {
 		selectAction();
 	}
-
-	/**
-	 * Select one action to be executed
-	 */
-	public void selectAction() {
-		winningBehavior = selectorStrategy.selectSingleBehavior(getSatisfiedBehaviors(), candidateBehaviorThreshold);
-		processWinner();
-	}// method
+	
+	public void p(String s){System.out.println(s);}
 	
 	public Set<Behavior> getSatisfiedBehaviors(){
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
-		for(Behavior b: getBehaviors())
-			if(b.isAllContextConditionsSatisfied())
+		p("\ngetting satisfied behaviors");
+		
+		for(Behavior b: getBehaviors()){
+			p(b.getLabel());
+			
+			if(b.isAllContextConditionsSatisfied()){
+				p("satisfied");
 				satisfiedBehaviors.add(b);
+			}
+		}
 		return satisfiedBehaviors;
 	}
 
@@ -272,8 +275,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			spreadActivationToConflictors(behavior);
 		}
 	}
-	
-
 
 	/**
 	 * Only excite successor if precondition is not yet satisfied.
@@ -385,7 +386,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * each behavior, excite it
 	 */
 	public void passActivationFromBroadcast() {
+//		p("\nbroadcast passing");
 		for (Node broadcastNode : currentBroadcast.getNodes()) {
+//			p(broadcastNode.getLabel() + " activ: " + broadcastNode.getActivation());
 			if (behaviorsByContextCondition.containsKey(broadcastNode)) {
 				double excitationAmount = broadcastNode.getTotalActivation() * broadcastExcitationFactor;
 				Set<Behavior> behaviors = behaviorsByContextCondition.get(broadcastNode);	
@@ -401,6 +404,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			}
 		}// for
 	}// method
+	
+	/**
+	 * Select one action to be executed
+	 */
+	public void selectAction() {
+		winningBehavior = selectorStrategy.selectSingleBehavior(getSatisfiedBehaviors(), candidateBehaviorThreshold);
+		processWinner();
+	}// method
 
 	private void processWinner() {
 		if (winningBehavior != null) {
@@ -409,7 +420,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			resetCandidateBehaviorThreshold();
 			winningBehavior.setActivation(0.0);
 		} else {
-			System.out.println("No action selected");
 			reduceCandidateBehaviorThreshold();
 		}
 	}
@@ -521,15 +531,24 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return null;
 	}
 
+	/**
+	 * @return
+	 */
 	public double getBehaviorActivationLowerBound() {
 		return behaviorActivationLowerBound;
 	}
 
+	/**
+	 * @param behaviorActivationLowerBound
+	 */
 	public void setBehaviorActivationLowerBound(
 			double behaviorActivationLowerBound) {
 		this.behaviorActivationLowerBound = behaviorActivationLowerBound;
 	}
 
+	/**
+	 * @return
+	 */
 	public double getSuccessorExcitationFactor() {
 		return successorExcitationFactor;
 	}
@@ -554,32 +573,33 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		this.conflictorExcitationFactor = conflictorExcitationFactor;
 	}
 
-        public Object getState() {
-            Object[] state = new Object[4];
-            state[0] = this.behaviors;
-            state[1] = this.behaviorsByAddingItem;
-            state[2] = this.behaviorsByContextCondition;
-            state[3] = this.behaviorsByDeletingItem;
-            return state;
-        }
-        @SuppressWarnings("unchecked")
-		public boolean setState(Object content) {
-            if (content instanceof Object[]) {
-                Object[] state = (Object[])content;
-                if (state.length == 4) {
-                    try {
-                        this.behaviors = (ConcurrentMap<Long, Behavior>)state[0];
-                        this.behaviorsByAddingItem = (ConcurrentMap<Node, Set<Behavior>>)state[1];
-                        this.behaviorsByContextCondition = (ConcurrentMap<Node, Set<Behavior>>)state[2];
-                        this.behaviorsByDeletingItem = (ConcurrentMap<Node, Set<Behavior>>)state[3];
-                        return true;
-                    }
-                    catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+	public Object getState() {
+		Object[] state = new Object[4];
+        state[0] = this.behaviors;
+        state[1] = this.behaviorsByAddingItem;
+        state[2] = this.behaviorsByContextCondition;
+        state[3] = this.behaviorsByDeletingItem;
+        return state;
+    }
+    
+	@SuppressWarnings("unchecked")
+	public boolean setState(Object content) {
+        if (content instanceof Object[]) {
+            Object[] state = (Object[])content;
+            if (state.length == 4) {
+                try {
+                    this.behaviors = (ConcurrentMap<Long, Behavior>)state[0];
+                    this.behaviorsByAddingItem = (ConcurrentMap<Node, Set<Behavior>>)state[1];
+                    this.behaviorsByContextCondition = (ConcurrentMap<Node, Set<Behavior>>)state[2];
+                    this.behaviorsByDeletingItem = (ConcurrentMap<Node, Set<Behavior>>)state[3];
+                    return true;
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
-            return false;
         }
+        return false;
+    }   
 
 }// class

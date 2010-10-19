@@ -128,12 +128,15 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	public boolean isAllContextConditionsSatisfied() {
+	//	System.out.println("\n isAllContextConditionsSatisified? " + isAllContextSatisfied);
 		if (isAllContextSatisfied)
 			return true;
 
-		for (Node n : context.getNodes())
+		for (Node n : context.getNodes()){
+			//System.out.println(n.getActivation() + " >? " + contextSatisfactionThreshold);
 			if (n.getActivation() < contextSatisfactionThreshold)
 				return false;
+		}
 		return true;
 	}
 
