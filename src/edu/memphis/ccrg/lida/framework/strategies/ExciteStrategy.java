@@ -12,11 +12,7 @@ import java.util.Map;
 public interface ExciteStrategy  extends Strategy{
 
 	public abstract double excite(double currentActivation, double excitation, Object... params);
-	public abstract double excite(double currentActivation, double excitation, Map<String,Object>params);
-	
-	public abstract void setSlope(int m);
-	
-	public abstract void setIntercept(int b);
+	public abstract double excite(double currentActivation, double excitation, Map<String, ? extends Object>params);
 
 }
 

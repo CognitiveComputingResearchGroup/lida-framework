@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
+import java.util.Map;
+
 public interface DecayStrategy extends Strategy{
 
     /**
@@ -15,10 +17,7 @@ public interface DecayStrategy extends Strategy{
      * @param ticks The number of ticks to decay.
      * 
      */
-	public abstract double decay(double currentActivation,long ticks);
-	
-	public abstract void setSlope(int m);
-	
-	public abstract void setIntercept(int b);
+	public abstract double decay(double currentActivation, long ticks, Object... params);
+	public abstract double decay(double currentActivation, long ticks, Map<String, ? extends Object>params);
         
 }

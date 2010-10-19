@@ -22,21 +22,9 @@ public class PredecessorExciteStrategy implements ExciteStrategy {
 
 	@Override
 	public double excite(double currentActivation, double excitation,
-			Map<String, Object> params) {
+			Map<String, ? extends Object> params) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void setIntercept(int b) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setSlope(int m) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -57,12 +57,16 @@ public class LinearDecayStrategy implements DecayStrategy{
 		}
 
 		@Override
-		public void setSlope(int slope) {
-			m = slope;
+		public double decay(double currentActivation, long ticks,
+				Object... params) {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 
 		@Override
-		public void setIntercept(int intercept) {
-			b = intercept;
+		public double decay(double currentActivation, long ticks,
+				Map<String, ? extends Object> params) {
+			// TODO Auto-generated method stub
+			return 0;
 		}
 }

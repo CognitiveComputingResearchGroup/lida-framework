@@ -17,15 +17,6 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 	public void init(Map<String, ? extends Object> params) {
 		this.params=params;
 	}
-	@Override
-	public void setSlope(int m) {
-
-	}
-
-	@Override
-	public void setIntercept(int b) {
-
-	}
 
 	@Override
 	public double excite(double currentActivation, double excitation,
@@ -39,7 +30,7 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 	}
 
 	@Override
-	public double excite(double currentActivation, double excitation, Map<String, Object> params) {
+	public double excite(double currentActivation, double excitation, Map<String, ? extends Object> params) {
 		return this.excite(currentActivation, excitation, params.values().toArray());
 	} 
 

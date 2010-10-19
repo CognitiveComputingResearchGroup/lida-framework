@@ -27,19 +27,18 @@ public class SigmoidDecayStrategy implements DecayStrategy{
 		m = (Integer) parameters.get("m");
 		b = (Integer) parameters.get("b");
 	}
-
+	
 	@Override
-	public double decay(double currentActivation, long ticks) {
+	public double decay(double currentActivation, long ticks, Object... params) {
 		double newActivation = currentActivation - 1 / (1 + Math.exp(-ticks*m + b));
 		return newActivation;
 	}
-	
-	public void setSlope(int slope){
-		m = slope;
-	}
-	
-	public void setIntercept(int intercept){
-		b = intercept;
+
+	@Override
+	public double decay(double currentActivation, long ticks,
+			Map<String, ? extends Object> params) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -30,20 +30,9 @@ public class SigmoidExciteStrategy implements ExciteStrategy{
 
 	@Override
 	public double excite(double currentActivation, double excitation,
-			Map<String, Object> params) {
+			Map<String, ? extends Object> params) {
 		// TODO Auto-generated method stub
 		return 0;
 	} 
-	
-	@Override
-	public void setSlope(int m) {
-		this.m = m;
-	}
-
-	@Override
-	public void setIntercept(int b) {
-		this.b = b;
-	}
-
 	
 }
