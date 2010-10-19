@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.declarativememory;
 
-public interface DeclarativeMemory{
+import edu.memphis.ccrg.lida.framework.LidaModule;
+
+public interface DeclarativeMemory extends LidaModule{
 
 }
