@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
@@ -29,9 +30,9 @@ public class AggregateBehaviorActivationTrigger implements
  * 
  * @param behaviors a Set with all the behaviors in the AS.
  */
-	public void checkForTrigger(Queue<Scheme> behaviors) {
+	public void checkForTrigger(Queue<Behavior> behaviors) {
 		double acc=0;
-		for(Scheme c:behaviors){
+		for(Behavior c:behaviors){
 			acc=acc+c.getActivation();
 		}
 		if(acc>threshold){

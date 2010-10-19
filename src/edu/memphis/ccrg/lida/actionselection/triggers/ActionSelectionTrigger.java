@@ -12,7 +12,7 @@ import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
  * A Trigger determines when a new action selection must be triggered.
@@ -40,7 +40,7 @@ public interface ActionSelectionTrigger {
 	 * Each time a new behavior is put in the AS, this method is called for all registered the Triggers.
 	 * @param behaviors All the behaviors in the AS.
 	 */
-	public void checkForTrigger (Queue<Scheme> behaviors);
+	public void checkForTrigger (Queue<Behavior> behaviors);
 	/**
 	 * To reset the Trigger. Its called each time a new Action Selection is Triggered.
 	 */

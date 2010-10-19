@@ -12,6 +12,7 @@ import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
@@ -75,7 +76,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
-	public void checkForTrigger(Queue<Scheme> behaviors) {
+	public void checkForTrigger(Queue<Behavior> behaviors) {
 	}
 	
 	/*
