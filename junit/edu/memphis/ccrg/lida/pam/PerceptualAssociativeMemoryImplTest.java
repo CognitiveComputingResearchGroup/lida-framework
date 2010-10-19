@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
-import edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory;
+import edu.memphis.ccrg.lida.example.genericlida.main.VisualSensoryMemory;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -52,7 +52,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		link1 = new PamLinkImpl();
 		link2 = new PamLinkImpl();
 		decayStrategy = new LinearDecayStrategy();
-		sem = new VisionSensoryMemory();
+		sem = new VisualSensoryMemory();
 		pamNode = new PamNodeImpl();
 		
 				

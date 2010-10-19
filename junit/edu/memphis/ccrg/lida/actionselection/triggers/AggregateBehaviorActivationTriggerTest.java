@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -31,7 +32,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
  *
  */
 public class AggregateBehaviorActivationTriggerTest extends TestCase{
-	Queue<Scheme> queueOfSchemes;
+	Queue<Behavior> queueOfSchemes;
 	
 	Scheme schemeA;
 	Scheme schemeB;
@@ -44,7 +45,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	 */
 	@Before
 	public void setUp() throws Exception {
-		queueOfSchemes = new ConcurrentLinkedQueue<Scheme>();
+		queueOfSchemes = new ConcurrentLinkedQueue<Behavior>();
 		schemeA = new SchemeImpl("Scheme1",1,1);
 		schemeB = new SchemeImpl("Scheme2",2,2);
 		parameters = new HashMap<String, Object>();
