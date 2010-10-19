@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -240,9 +241,9 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 	}
 
 	@Override
-	public Behavior getBehavior() {
-		// TODO Auto-generated method stub
-		return null;
+	public Behavior getBehavior(NodeStructure ns) {
+		// TODO 
+		return new BehaviorImpl(this);
 	}
 
 }
