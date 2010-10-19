@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 
 import java.util.Map;

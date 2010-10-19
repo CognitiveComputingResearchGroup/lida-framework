@@ -22,6 +22,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -32,10 +33,13 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
  *
  */
 public class AggregateBehaviorActivationTriggerTest extends TestCase{
-	Queue<Behavior> queueOfSchemes;
+	Queue<Behavior> queueOfBehav;
 	
 	Scheme schemeA;
 	Scheme schemeB;
+	Behavior behavA;
+	Behavior behavB;
+	
 	AggregateBehaviorActivationTrigger trigger;
 	ActionSelection as;
 	ActionSelectionDriver asd;
@@ -45,7 +49,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	 */
 	@Before
 	public void setUp() throws Exception {
-		queueOfSchemes = new ConcurrentLinkedQueue<Behavior>();
+		queueOfBehav = new ConcurrentLinkedQueue<Behavior>();
 		schemeA = new SchemeImpl("Scheme1",1,1);
 		schemeB = new SchemeImpl("Scheme2",2,2);
 		parameters = new HashMap<String, Object>();
@@ -54,8 +58,11 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 		schemeA.setActivation(0.3);
 		schemeB.setActivation(0.3);
 		
-		queueOfSchemes.add(schemeA);
-		queueOfSchemes.add(schemeB);
+		behavA = new BehaviorImpl(schemeA);
+		behavB = new BehaviorImpl(schemeB);
+		
+		queueOfBehav.add(behavA);
+		queueOfBehav.add(behavB);
 		
 		parameters.put("threshold", 0.5);		
 		
@@ -69,7 +76,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	@Test
 	public void testCheckForTrigger() {
 		trigger.setUp(parameters, as, asd);		
-		trigger.checkForTrigger(queueOfSchemes);		
+		trigger.checkForTrigger(queueOfBehav);		
 	}
 
 

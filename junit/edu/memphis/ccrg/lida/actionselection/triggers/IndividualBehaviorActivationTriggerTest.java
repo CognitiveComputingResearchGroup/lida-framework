@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
@@ -25,9 +27,11 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
  *
  */
 public class IndividualBehaviorActivationTriggerTest {
-	Set<Scheme> setOfSchemes;
+	Set<Behavior> setOfBehav;
 	Scheme schemeA;
 	Scheme schemeB;
+	Behavior behavA;
+	Behavior behavB;
 	IndividualBehaviorActivationTrigger trigger;
 	ActionSelection as;
 	ActionSelectionDriver asd;
@@ -37,7 +41,7 @@ public class IndividualBehaviorActivationTriggerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		setOfSchemes = new HashSet<Scheme>();
+		setOfBehav = new HashSet<Behavior>();
 		schemeA = new SchemeImpl("Scheme1",1,1);
 		schemeB = new SchemeImpl("Scheme2",2,2);
 			
@@ -46,10 +50,13 @@ public class IndividualBehaviorActivationTriggerTest {
 		as = new MockActionSelectionImpl();
 		asd = new ActionSelectionDriver();
 		schemeA.setActivation(0.8);
-		schemeB.setActivation(0.2);		
+		schemeB.setActivation(0.2);	
 		
-		setOfSchemes.add(schemeA);
-		setOfSchemes.add(schemeB);
+		behavA = new BehaviorImpl(schemeA);
+		behavB = new BehaviorImpl(schemeB);
+		
+		setOfBehav.add(behavA);
+		setOfBehav.add(behavB);
 	}
 
 	/**
@@ -60,7 +67,7 @@ public class IndividualBehaviorActivationTriggerTest {
 		trigger.as=as;
 		trigger.asd=asd;
 		trigger.threshold=0.5;
-		trigger.checkForTrigger(setOfSchemes);
+		trigger.checkForTrigger(setOfBehav);
 	}
 
 }

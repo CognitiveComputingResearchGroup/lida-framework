@@ -7,12 +7,16 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -58,6 +62,66 @@ public class MockActionSelectionImpl implements ActionSelection {
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
 		
+		
+	}
+
+	@Override
+	public void addListener(ModuleListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSubModule(LidaModule lm) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void decayModule(long ticks) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getModuleContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModuleName getModuleName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LidaModule getSubmodule(ModuleName name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setModuleName(ModuleName moduleName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void init(Map<String, ?> lidaProperties) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAssociatedModule(LidaModule module) {
+		// TODO Auto-generated method stub
 		
 	}
 

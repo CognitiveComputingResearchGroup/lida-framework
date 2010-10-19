@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -17,27 +19,31 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 public class NoBehaviorArrivingTriggerTest {
 	
-	Set<Scheme> behaviors;
+	Set<Behavior> behaviors;
 	LidaTaskManager tm;
 	NoBehaviorArrivingTrigger trigger;
 	Map<String, Object> parameters;
 	ActionSelection as;
 	ActionSelectionDriver asd;
-	Scheme schemeA,schemeB;
-	
+	Scheme schemeA,schemeB;	
+	Behavior behavA;
+	Behavior behavB;	
 
 	@Before
 	public void setUp() throws Exception {		
 		
 		schemeA = new SchemeImpl("Scheme1",1,1);
 		schemeB = new SchemeImpl("Scheme2",2,2);
-		behaviors = new HashSet<Scheme>();
+		behaviors = new HashSet<Behavior>();
 		
 		schemeA.setActivation(0.8);
 		schemeB.setActivation(0.2);
 				
-		behaviors.add(schemeA);
-		behaviors.add(schemeB);
+		behavA = new BehaviorImpl(schemeA);
+		behavB = new BehaviorImpl(schemeB);
+		
+		behaviors.add(behavA);
+		behaviors.add(behavB);
 		
 		tm = new LidaTaskManager(200,50);
 		

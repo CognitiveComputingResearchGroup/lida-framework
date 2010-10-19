@@ -22,6 +22,8 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -39,9 +41,13 @@ public class NoActionSelectionOccurringTriggerTest {
 	ActionSelectionDriver asd;
 	
 	//Second trigger
-	Set<Scheme> setOfSchemes;
+	Set<Behavior> setOfBehav;
 	Scheme schemeA;
 	Scheme schemeB;
+	
+	Behavior behavA;
+	Behavior behavB;
+	
 	IndividualBehaviorActivationTrigger trigger2;
 	
 	/**
@@ -57,17 +63,20 @@ public class NoActionSelectionOccurringTriggerTest {
 		parameters = new HashMap<String, Object>();
 		
 		//Second trigger
-		setOfSchemes = new HashSet<Scheme>();
+		setOfBehav = new HashSet<Behavior>();
 		schemeA = new SchemeImpl("Scheme1",1,1);
 		schemeB = new SchemeImpl("Scheme2",2,2);
 			
 		trigger2 = new IndividualBehaviorActivationTrigger();
 		
 		schemeA.setActivation(0.8);
-		schemeB.setActivation(0.2);		
+		schemeB.setActivation(0.2);	
 		
-		setOfSchemes.add(schemeA);
-		setOfSchemes.add(schemeB);
+		behavA = new BehaviorImpl(schemeA);
+		behavB = new BehaviorImpl(schemeB);
+		
+		setOfBehav.add(behavA);
+		setOfBehav.add(behavB);
 	}
 
 	/**
@@ -157,7 +166,7 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger2.as=as;
 		trigger2.asd=asd;
 		trigger2.threshold=0.5;
-		trigger2.checkForTrigger(setOfSchemes);			
+		trigger2.checkForTrigger(setOfBehav);			
 		
 		System.out.println("First trigger reset");
 		trigger.reset();

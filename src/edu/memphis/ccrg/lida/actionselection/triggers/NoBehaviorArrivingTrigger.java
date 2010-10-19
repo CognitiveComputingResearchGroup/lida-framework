@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 public class NoBehaviorArrivingTrigger extends NoActionSelectionOccurringTrigger {
 
@@ -23,7 +23,7 @@ public class NoBehaviorArrivingTrigger extends NoActionSelectionOccurringTrigger
 	 * @param coalitions
 	 * @param maxActivation
 	 */
-	public void checkForTrigger(Set<Scheme> behaviors, double maxActivation) {
+	public void checkForTrigger(Set<Behavior> behaviors, double maxActivation) {
 		reset();
 	}
 }
