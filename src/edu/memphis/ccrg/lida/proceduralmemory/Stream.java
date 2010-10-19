@@ -9,11 +9,14 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 
+/**
+ * 
+ * @author ryanjmccall
+ *
+ */
 public interface Stream extends Serializable {
 
 	public long getId();
@@ -24,7 +27,4 @@ public interface Stream extends Serializable {
     public Collection<Behavior> getBehaviors();
 	public int getBehaviorCount();
 	
-	public void addSuccessorLink(Behavior predecessor, Behavior successor, Node commonNode);
-	public void removeSuccessorLink(Behavior predecessor, Behavior successor);
-	public Set<Behavior> getSuccessors(Behavior behavior);
 }

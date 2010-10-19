@@ -10,16 +10,16 @@
  */
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.*;
-import java.util.logging.Level;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * 
+ * TODO add to procedural memory!
  */
 public class StreamImpl implements Stream{
 	
@@ -29,16 +29,21 @@ public class StreamImpl implements Stream{
     
     private long id;
     
-    private Set<Behavior> behaviors;
-    
-    private Map<Behavior, Set<Behavior>> successorLinks;   
+    private Set<Behavior> behaviors;  
 
+    /**
+     * @param name .
+     * @param id .
+     */
     public StreamImpl(String name, long id){
         this.name = name;    
         this.id = id;
         behaviors = new HashSet<Behavior>();
-        successorLinks = new HashMap<Behavior, Set<Behavior>>();
     }
+    
+    /**
+     * @param id .
+     */
     public StreamImpl(long id){
     	this("no name", id);
     }
@@ -62,27 +67,5 @@ public class StreamImpl implements Stream{
     public String getName(){
         return name;
     }
-	
-	public void addSuccessorLink(Behavior predecessor, Behavior successor, Node commonNode){
-		if(predecessor.containsAddingItem(commonNode) && successor.containsContextCondition(commonNode)){
-			Set<Behavior> values = successorLinks.get(predecessor);
-			if(values == null){
-				values = new HashSet<Behavior>();
-				successorLinks.put(predecessor, values);
-			}
-			values.add(successor);
-		}else
-			logger.log(Level.WARNING, "Tried to add a successor link but supplied nodes don't have that relationship", 
-						LidaTaskManager.getActualTick());
-	}
-	
-	public void removeSuccessorLink(Behavior predecessor, Behavior successor){
-		if(successorLinks.containsKey(predecessor))
-			successorLinks.get(predecessor).remove(successor);
-	}
-	
-	public Set<Behavior> getSuccessors(Behavior behavior){
-		return successorLinks.get(behavior);
-	}
 	
 }//class

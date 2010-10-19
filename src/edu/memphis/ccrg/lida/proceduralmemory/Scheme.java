@@ -8,6 +8,8 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
+
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
@@ -92,5 +94,11 @@ public interface Scheme extends LearnableActivatible{
 	public void addArgument (Argument a);
 	public Argument getArgument (long argumentId);
 	public Collection<Argument> getArguments();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Behavior getBehavior();
 	
 }//interface

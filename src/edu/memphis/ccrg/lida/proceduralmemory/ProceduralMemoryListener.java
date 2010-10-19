@@ -12,16 +12,20 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
- *
- * @author Rodrigo Silva L.
+ * A procedural memory listener receives instantiated schemes which are behaviors
+ * @author Ryan McCall
  */
 public interface ProceduralMemoryListener extends ModuleListener{
 
     /**
-     * @param scheme
+     * @param behavior (instantiated scheme)
      */
-    public void receiveBehavior(Behavior b);
+    public abstract void receiveBehavior(Behavior behavior);
 
-	void receiveStream(Stream s);
+    /**
+     * 
+     * @param stream - a stream, a partial order, of behaviors
+     */
+    public abstract void receiveStream(Stream stream);
    
 }

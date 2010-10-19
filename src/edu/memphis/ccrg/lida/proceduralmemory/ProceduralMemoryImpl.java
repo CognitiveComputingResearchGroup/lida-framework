@@ -106,7 +106,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
-		
 		//TODO spawn a task like in the behavior net
 	}
 
