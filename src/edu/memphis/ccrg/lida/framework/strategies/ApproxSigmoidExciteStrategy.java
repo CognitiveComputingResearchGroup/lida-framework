@@ -48,19 +48,19 @@ public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
 	@Override
 	public double excite(double currentActivation, double excitation, Map<String, ? extends Object> parameters) {
 		double m = (Double) parameters.get("m");
-		return internalExcite(currentActivation, excitation, m);
+		return auxExcite(currentActivation, excitation, m);
 	}
 	
 	@Override
 	public double excite(double currentActivation, double excitation,
 			Object... params) {
 		double m;
-		if(params.length != 0){
-			m = (Double) params[0];
-		}else{
+		if(params.length == 0){
 			m = this.defaultM;
+		}else{
+			m = (Double) params[0];
 		}
-		return internalExcite(currentActivation, excitation, m);
+		return auxExcite(currentActivation, excitation, m);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
 	 * @param m
 	 * @return
 	 */
-	private double internalExcite(double currentActivation, double excitation, double m) {
+	private double auxExcite(double currentActivation, double excitation, double m) {
 		int indexOfArray = 0;
 		double currentActivation_tmp;
 		double currentApproxExcitation, newApproxExcitation;

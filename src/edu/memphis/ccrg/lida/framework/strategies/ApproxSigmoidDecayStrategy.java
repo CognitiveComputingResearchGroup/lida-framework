@@ -42,18 +42,37 @@ public class ApproxSigmoidDecayStrategy implements DecayStrategy{
    						0.982014, 0.983698, 0.985226, 0.986613, 0.987872, 0.989013, 0.990048, 0.990987, 0.991837, 0.992608,  /* 90 ~ 99 */
    						0.993307                                                                                             /* 100 */
    			           };
+	
+   	private double defaultM = STANDARD_M;
+	private static final double STANDARD_M = 0.5;
+	
 	@Override
 	public void init(Map<String, ? extends Object> parameters) {
-	    /* Is this function init necessary?*/
+		defaultM = (Double)parameters.get("m");
 	}
 
 	@Override
 	public double decay(double currentActivation, long ticks, Map<String,? extends Object>params){
-		int indexOfArray = 0, m;
+		double m = (Double) params.get("m");
+		return auxDecay(currentActivation, ticks, m);
+	}
+	
+	@Override
+	public double decay(double currentActivation, long ticks, Object... params) {
+		double m;
+		if(params.length == 0){
+			m = this.defaultM;
+		}else{
+			m = (Double) params[0];
+		}
+		return auxDecay(currentActivation, ticks, m);
+	}
+
+	private double auxDecay(double currentActivation, long ticks, double m) {
+		int indexOfArray = 0;
 		double currentActivation_tmp;
 		double currentApproxExcitation, newApproxExcitation;
         double newActivation = 0.0;
-        m = (Integer) params.get("m");
         currentActivation_tmp = currentActivation;
 
         /* Set scaledValue of activation is from 0.01 to 0.99*/
@@ -81,13 +100,7 @@ public class ApproxSigmoidDecayStrategy implements DecayStrategy{
         	indexOfArray = (int)(newApproxExcitation * 10 - 0.5) + 50;
         
         newActivation = activationArray[indexOfArray];
-        return newActivation;
-	}
-
-	@Override
-	public double decay(double currentActivation, long ticks, Object... params) {
-		// TODO Auto-generated method stub
-		return 0;
+		return newActivation;
 	}
 
 }
