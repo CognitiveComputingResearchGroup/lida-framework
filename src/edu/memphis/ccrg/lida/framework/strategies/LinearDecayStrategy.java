@@ -47,11 +47,6 @@ public class LinearDecayStrategy implements DecayStrategy{
 	        this.b = b;
 	    }
 	    
-	    public double decay(double activ, long ticks){
-	    	activ= activ - (m*ticks+b);
-	    	return (activ>0.0)?activ:0.0;
-	    }	    
-
 		public void init(Map<String, ? extends Object> params) {
 			this.params=params;
 		}
@@ -59,14 +54,14 @@ public class LinearDecayStrategy implements DecayStrategy{
 		@Override
 		public double decay(double currentActivation, long ticks,
 				Object... params) {
-			// TODO Auto-generated method stub
-			return 0;
+			currentActivation= currentActivation - (m*ticks+b);
+	    	return (currentActivation>0.0)?currentActivation:0.0;
 		}
 
 		@Override
 		public double decay(double currentActivation, long ticks,
 				Map<String, ? extends Object> params) {
-			// TODO Auto-generated method stub
-			return 0;
+			currentActivation= currentActivation - (m*ticks+b);
+	    	return (currentActivation>0.0)?currentActivation:0.0;
 		}
 }

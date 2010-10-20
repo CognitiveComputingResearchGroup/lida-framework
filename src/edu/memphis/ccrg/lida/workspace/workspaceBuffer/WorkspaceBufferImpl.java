@@ -34,11 +34,8 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 
 	private NodeStructure buffer = new NodeStructureImpl();
 
-	/**
-	 * @return the buffer
-	 */
-
-	public NodeStructure getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return buffer;
 	}
 		

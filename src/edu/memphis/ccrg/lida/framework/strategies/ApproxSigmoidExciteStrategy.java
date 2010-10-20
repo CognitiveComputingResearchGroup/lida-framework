@@ -37,20 +37,44 @@ public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
 						0.993307                                                                                             /* 100 */
 			           };
 	
+	private double defaultM = STANDARD_M;
+	private static final double STANDARD_M = 0.5;
+	
 	@Override
 	public void init(Map<String, ? extends Object> parameters) {
-    /* Is this function init necessary?*/
+		defaultM = (Double)parameters.get("m");
 	}
 
 	@Override
 	public double excite(double currentActivation, double excitation, Map<String, ? extends Object> parameters) {
+		double m = (Double) parameters.get("m");
+		return internalExcite(currentActivation, excitation, m);
+	}
+	
+	@Override
+	public double excite(double currentActivation, double excitation,
+			Object... params) {
+		double m;
+		if(params.length != 0){
+			m = (Double) params[0];
+		}else{
+			m = this.defaultM;
+		}
+		return internalExcite(currentActivation, excitation, m);
+	}
 
-		int indexOfArray = 0, m;
+	/**
+	 * @param currentActivation
+	 * @param excitation
+	 * @param m
+	 * @return
+	 */
+	private double internalExcite(double currentActivation, double excitation, double m) {
+		int indexOfArray = 0;
 		double currentActivation_tmp;
 		double currentApproxExcitation, newApproxExcitation;
         double newActivation = 0.0;
         
-        m = (Integer) parameters.get("m");
         currentActivation_tmp = currentActivation;
 
         /* Set scaledValue of activation is from 0.01 to 0.99*/
@@ -80,11 +104,5 @@ public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
         newActivation = activationArray[indexOfArray];
         return newActivation;
 	}
-
-	@Override
-	public double excite(double currentActivation, double excitation,
-			Object... params) {
-		// TODO Auto-generated method stub
-		return 0;
-	} 
+ 
 }

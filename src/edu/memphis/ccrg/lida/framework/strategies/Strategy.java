@@ -20,6 +20,8 @@ import java.util.Map;
 public interface Strategy extends Serializable {
 	/**
 	 * Receives a Map of init parameters for initalization.
+	 * 
+	 * 
 	 * @param parameters the Map with the parameters.
 	 */
 	public void init(Map<String, ? extends Object> parameters);

@@ -86,7 +86,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableCollection(broadcastQueue);
 	}
 

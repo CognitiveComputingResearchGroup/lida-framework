@@ -144,7 +144,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 

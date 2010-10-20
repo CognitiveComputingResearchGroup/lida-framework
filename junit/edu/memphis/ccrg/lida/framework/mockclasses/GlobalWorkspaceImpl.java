@@ -64,7 +64,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		
 		return null;
 	}

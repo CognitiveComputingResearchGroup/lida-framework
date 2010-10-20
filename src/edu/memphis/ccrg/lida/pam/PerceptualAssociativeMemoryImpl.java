@@ -327,13 +327,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		return Collections.unmodifiableCollection(nodes);
 	}
 
-	public ModuleName getModuleName() {
-		return ModuleName.PerceptualAssociativeMemory;
-	}
-
-	public Object getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return pamNodeStructure;
 	}
+
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof PamListener){
 			addPamListener((PamListener)listener);

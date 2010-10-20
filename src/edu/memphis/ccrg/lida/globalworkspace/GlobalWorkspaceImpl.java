@@ -192,7 +192,8 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 	}
 
-	public Object getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableCollection(coalitions);
 	}
 

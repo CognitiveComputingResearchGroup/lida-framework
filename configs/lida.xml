@@ -20,7 +20,7 @@
 			<isdriver>true</isdriver>			
 		</module>
 		<module name="SensoryMemory">
-			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisionSensoryMemory</class>
+			<class>edu.memphis.ccrg.lida.example.genericlida.main.VisualSensoryMemory</class>
 			<associatedmodule>Environment</associatedmodule>
 		</module>
 		<module name="SensoryMotorMemory">

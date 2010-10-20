@@ -36,8 +36,7 @@ public interface LidaModule extends Initializable{
 	/**
 	 * @return the generic content of this module.
 	 */
-	//TODO:public abstract Object getModuleContent(Object... params);
-	public abstract Object getModuleContent();
+	public abstract Object getModuleContent(Object... params);
 
 	/**
 	 * Decay the module and all the submodules. 

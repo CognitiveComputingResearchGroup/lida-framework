@@ -155,25 +155,11 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	public void receiveNodeStructure(NodeStructure newPercept) {
 		NodeStructure perceptualBuffer = (NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent();
-		
-//		System.out.println("\n" + System.currentTimeMillis());
-//		System.out.println("before merge buffer has " + perceptualBuffer.getNodeCount() + " nodes and " +
-//						perceptualBuffer.getLinkCount() + " links");
-//		
-//		for(Link l: perceptualBuffer.getLinks())
-//			System.out.println(l.getLabel() + " activ " + l.getActivation());
-//		
-//		System.out.println("\npercept has " + newPercept.getNodeCount() + " nodes " + newPercept.getLinkCount() + " links");
-		
 		perceptualBuffer.mergeWith(newPercept);
-//		System.out.println("\n" + System.currentTimeMillis());
-//		System.out.println("after merge buffer has " + perceptualBuffer.getNodeCount() + " nodes and " +
-//						perceptualBuffer.getLinkCount() + " links");
-//		for(Link l: perceptualBuffer.getLinks())
-//			System.out.println(l.getLabel() + " activ " + l.getActivation());
 	}
 
-	public Object getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 
@@ -189,8 +175,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	
 	public void addSubModule(LidaModule lm){
 		super.addSubModule(lm);
-		//System.out.println(lm.getModuleName());
-		
 	}
 	
 }//class

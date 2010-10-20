@@ -85,7 +85,8 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			l.receiveActionId(schemeActionId);
 	}
 
-	public Object getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 	public void addListener(ModuleListener listener) {

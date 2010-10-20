@@ -38,6 +38,8 @@ public abstract class LidaModuleImpl implements LidaModule {
 	public ModuleName getModuleName() {
 		return moduleName;
 	}
+	
+	public abstract Object getModuleContent(Object... params);
 
 	/*
 	 * (non-Javadoc)

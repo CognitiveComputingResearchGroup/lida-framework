@@ -105,7 +105,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 	

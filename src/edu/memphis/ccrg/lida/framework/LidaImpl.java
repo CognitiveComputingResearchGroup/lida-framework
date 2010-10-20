@@ -29,7 +29,8 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 		taskManager=tm;
 	}
 
-	public Object getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 

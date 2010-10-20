@@ -529,7 +529,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 

@@ -41,13 +41,10 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 		}
 	}
 
-	public Object getContent(String type, Object... parameters) {
-		if("sensoryScene".equalsIgnoreCase(type))
+	public Object getModuleContent(Object... parameters) {
+		if("sensoryScene".equalsIgnoreCase((String) parameters[0]))
 			return sensoryScene;
 		return null;
-	}
-	public Object getModuleContent() {
-		return getContent("sensoryScene");
 	}
 
 	@Override

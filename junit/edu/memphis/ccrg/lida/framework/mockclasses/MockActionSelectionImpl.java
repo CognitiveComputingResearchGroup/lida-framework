@@ -84,7 +84,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		// TODO Auto-generated method stub
 		return null;
 	}

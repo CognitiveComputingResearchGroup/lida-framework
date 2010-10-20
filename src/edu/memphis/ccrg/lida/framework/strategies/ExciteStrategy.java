@@ -11,7 +11,22 @@ import java.util.Map;
 
 public interface ExciteStrategy  extends Strategy{
 
+	/**
+	 * 
+	 * @param currentActivation
+	 * @param excitation
+	 * @param params
+	 * @return
+	 */
 	public abstract double excite(double currentActivation, double excitation, Object... params);
+	
+	/**
+	 * 
+	 * @param currentActivation
+	 * @param excitation
+	 * @param params
+	 * @return
+	 */
 	public abstract double excite(double currentActivation, double excitation, Map<String, ? extends Object>params);
 
 }

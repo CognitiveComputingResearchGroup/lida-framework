@@ -53,7 +53,6 @@ public class ApproxSigmoidDecayStrategy implements DecayStrategy{
 		double currentActivation_tmp;
 		double currentApproxExcitation, newApproxExcitation;
         double newActivation = 0.0;
-        
         m = (Integer) params.get("m");
         currentActivation_tmp = currentActivation;
 

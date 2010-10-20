@@ -18,6 +18,14 @@ public interface DecayStrategy extends Strategy{
      * 
      */
 	public abstract double decay(double currentActivation, long ticks, Object... params);
+	
+	/**
+	 * 
+	 * @param currentActivation
+	 * @param ticks
+	 * @param params
+	 * @return
+	 */
 	public abstract double decay(double currentActivation, long ticks, Map<String, ? extends Object>params);
         
 }

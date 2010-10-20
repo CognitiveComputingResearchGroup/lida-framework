@@ -243,7 +243,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		return "VisionEnvironment";
 	}
 
-	public Object getModuleContent() {
+	@Override
+	public Object getModuleContent(Object... params) {
 		return environContent;
 	}
 

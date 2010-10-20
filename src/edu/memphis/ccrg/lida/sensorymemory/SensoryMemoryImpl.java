@@ -17,8 +17,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
-public abstract class SensoryMemoryImpl extends LidaModuleImpl 
-										implements SensoryMemory {
+public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory {
 
 	private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
 	protected Environment environment;
@@ -50,22 +49,27 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl
 		}
 	}//
 	
+	@Override
+	public Object getModuleContent(Object... params){
+		return null;
+	}
+	
 	public void receiveAction(LidaAction a){
 		//TODO: What to do here is a research question.
 	}
 
-        public boolean setState(Object state) {
-            try {
-                sensoryMemoryContent = state;
-                return true;
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            return false;
+	public boolean setState(Object state) {
+        try {
+            sensoryMemoryContent = state;
+            return true;
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-        public Object getState() {
-            return sensoryMemoryContent;
-        }
+    public Object getState() {
+        return sensoryMemoryContent;
+    }
 }// class

@@ -34,7 +34,7 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	}
 
 	@Override
-	public Object getModuleContent() {
+	public Object getModuleContent(Object... params) {
 		return null;
 	}
 
