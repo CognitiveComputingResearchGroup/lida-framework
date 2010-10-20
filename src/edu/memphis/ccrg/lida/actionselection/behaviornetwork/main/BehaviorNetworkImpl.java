@@ -330,6 +330,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			}
 		}
 	}
+	
+	
 
 	private Set<Behavior> getPredecessors(Node precondition) {
 		return behaviorsByAddingItem.get(precondition);
