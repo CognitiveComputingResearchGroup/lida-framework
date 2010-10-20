@@ -59,11 +59,6 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 * Add a task to this taskspawner to be run
 	 */
 	public void addTask(LidaTask task) {
-		if(this instanceof ActionSelectionDriver && task instanceof PassActivationFromBroadcastTask){
-			int i = 0;
-			i++;
-		}
-		
 		task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
 		task.setTaskSpawner(this);
 		runningTasks.add(task);
