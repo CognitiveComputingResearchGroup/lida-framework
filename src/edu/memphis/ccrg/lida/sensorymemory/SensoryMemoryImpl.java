@@ -49,11 +49,6 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
 		}
 	}//
 	
-	@Override
-	public Object getModuleContent(Object... params){
-		return null;
-	}
-	
 	public void receiveAction(LidaAction a){
 		//TODO: What to do here is a research question.
 	}

@@ -242,20 +242,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void triggerActionSelection() {
+//		p("\n trigger as");
 		selectAction();
 	}
 	
-	public void p(String s){System.out.println(s);}
+//	public void p(String s){System.out.println(s);}
 	
 	public Set<Behavior> getSatisfiedBehaviors(){
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
-		p("\ngetting satisfied behaviors");
+//		p("\ngetting satisfied behaviors");
 		
 		for(Behavior b: getBehaviors()){
-			p(b.getLabel());
+//			p(b.getLabel());
 			
 			if(b.isAllContextConditionsSatisfied()){
-				p("satisfied");
+//				p("satisfied");
 				satisfiedBehaviors.add(b);
 			}
 		}

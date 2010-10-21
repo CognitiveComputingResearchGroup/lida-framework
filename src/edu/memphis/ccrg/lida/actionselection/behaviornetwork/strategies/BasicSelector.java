@@ -42,7 +42,7 @@ public class BasicSelector implements Selector{
         double maxActivation = 0.0;
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
-        p("\nStarting selector");
+        p("\nStarting selector " + candidateBehaviors.size());
       
         for(Behavior current: candidateBehaviors){
         	

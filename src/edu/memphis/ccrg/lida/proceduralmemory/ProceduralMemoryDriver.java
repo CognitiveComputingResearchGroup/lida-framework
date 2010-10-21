@@ -22,12 +22,12 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 	private static final int DEFAULT_TICKS_PER_CYCLE = 10;
 
 	public ProceduralMemoryDriver(ProceduralMemory pm, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm,ModuleName.ProceduralDriver);
+		super(ticksPerCycle, tm,ModuleName.ProceduralMemoryDriver);
 		proceduralMemory = pm;
 	}
 	
 	public ProceduralMemoryDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.ProceduralDriver);
+		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.ProceduralMemoryDriver);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class ProceduralMemoryDriver extends ModuleDriverImpl {
 
 	@Override
 	public String toString() {
-		return ModuleName.ProceduralDriver + "";
+		return ModuleName.ProceduralMemoryDriver + "";
 	}
 
 	@Override

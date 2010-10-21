@@ -99,6 +99,6 @@ public interface Scheme extends LearnableActivatible{
 	 * 
 	 * @return
 	 */
-	public Behavior getBehavior(NodeStructure broadcast);
+	public Behavior getBehavior();
 	
 }//interface

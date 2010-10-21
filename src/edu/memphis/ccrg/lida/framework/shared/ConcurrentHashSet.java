@@ -1,10 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2009, 2010 The University of Memphis.  All rights reserved. 
- * This program and the accompanying materials are made available 
- * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
- * which accompanies this distribution, and is available at
- * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
- *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.AbstractSet;
@@ -19,7 +12,7 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
 	static final long serialVersionUID = 3313091100336870355L;
 	
 	//TODO Should it be transient?
-	private Map<E, Object> map = new ConcurrentHashMap<E, Object>();
+	private  Map<E, Object> map = new ConcurrentHashMap<E, Object>();
 	
 	private static final Object PRESENT = new Object();
 
