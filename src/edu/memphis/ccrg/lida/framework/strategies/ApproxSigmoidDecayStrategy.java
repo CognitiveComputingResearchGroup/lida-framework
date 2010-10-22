@@ -80,7 +80,7 @@ public class ApproxSigmoidDecayStrategy implements DecayStrategy{
         	currentActivation_tmp = 0.01;
         if ( currentActivation_tmp > 0.99)
         	currentActivation_tmp = 0.99;
-        /*   */
+        
         /* Set granularity of activation is 0.01, and index of array is from 0 to 98*/   
         indexOfArray = (int)(currentActivation_tmp * 100 + 0.5) - 1;
         /*Get current approx value of excitation from precalculated array*/
