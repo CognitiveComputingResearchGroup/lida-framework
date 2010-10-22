@@ -106,13 +106,9 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		
 		bc = getBroadcast(thirsty, standing);
 		runOneStep(bc);
-//		runOneStep(bc);
-//		runOneStep(bc);
-//		
-//        bc = getBroadcast(thirsty, cerveza);
-//		runOneStep(bc);
-//		runOneStep(bc);
-//		runOneStep(bc);
+
+        bc = getBroadcast(thirsty, cerveza);
+		runOneStep(bc);
 	}
 	
 	public NodeStructure getBroadcast(Node... broadcastNodes){
@@ -126,7 +122,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	
 	private int step = 0;
 	public void runOneStep(NodeStructure bc){
-		System.out.println("\nRunning BN: " + step++);
+		System.out.println("\nRun: " + step++);
 		behaviorNet.receiveBroadcast((BroadcastContent) bc);
 		behaviorNet.selectAction();
 		behaviorNet.decayModule(10);

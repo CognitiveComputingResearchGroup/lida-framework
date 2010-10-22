@@ -42,12 +42,12 @@ public class BasicSelector implements Selector{
         double maxActivation = 0.0;
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
-        p("\nStarting selector " + candidateBehaviors.size());
+        p("\nStarting selection, num candidates: " + candidateBehaviors.size());
       
         for(Behavior current: candidateBehaviors){
         	
     		double currentActivation = current.getTotalActivation();
-    		p(current.getLabel() + " activ: " + currentActivation);
+    		p("action " + current.getLabel() + " has activ: " + currentActivation);
     		if(currentActivation > maxActivation) {                    
                 winners.clear();
     			winners.add(current);
