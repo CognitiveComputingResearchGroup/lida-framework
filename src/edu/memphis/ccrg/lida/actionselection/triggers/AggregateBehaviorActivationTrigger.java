@@ -30,6 +30,7 @@ public class AggregateBehaviorActivationTrigger implements
  * @param behaviors a Set with all the behaviors in the AS.
  */
 	public void checkForTrigger(Queue<Behavior> behaviors) {
+		System.out.println("aggregate");
 		double acc=0;
 		for(Behavior c:behaviors){
 			acc=acc+c.getActivation();

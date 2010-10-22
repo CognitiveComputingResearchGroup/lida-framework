@@ -85,19 +85,19 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		long eatAction = 5L;
 		long standAction = 6L;
 		
-		Behavior b = getNewBehavior(eatAction, full, hungry, banana);
+		Behavior b = getNewBehavior("eat", eatAction, full, hungry, banana);
 		behaviorNet.receiveBehavior(b);
 		
-		b = getNewBehavior(drinkAction, drunk, thirsty, cerveza);
+		b = getNewBehavior("drink", drinkAction, drunk, thirsty, cerveza);
 		behaviorNet.receiveBehavior(b);
 		
-		b = getNewBehavior(goLeftAction, banana, standing);
+		b = getNewBehavior("turn left", goLeftAction, banana, standing);
 		behaviorNet.receiveBehavior(b);
 		
-		b = getNewBehavior(goRightAction, cerveza, standing);
+		b = getNewBehavior("turn right", goRightAction, cerveza, standing);
 		behaviorNet.receiveBehavior(b);
 
-		b = getNewBehavior(standAction, standing, sitting);
+		b = getNewBehavior("stand", standAction, standing, sitting);
 		behaviorNet.receiveBehavior(b);
 		
 		//broadcasts
@@ -106,8 +106,8 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		
 		bc = getBroadcast(thirsty, standing);
 		runOneStep(bc);
-		runOneStep(bc);
-		runOneStep(bc);
+//		runOneStep(bc);
+//		runOneStep(bc);
 //		
 //        bc = getBroadcast(thirsty, cerveza);
 //		runOneStep(bc);
@@ -126,14 +126,15 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	
 	private int step = 0;
 	public void runOneStep(NodeStructure bc){
-		System.out.println("Running BN: " + step++);
+		System.out.println("\nRunning BN: " + step++);
 		behaviorNet.receiveBroadcast((BroadcastContent) bc);
 		behaviorNet.selectAction();
-		behaviorNet.decayModule(30);
+		behaviorNet.decayModule(10);
 	}
 	
-	public Behavior getNewBehavior(long actionId, Node result, Node...context){
+	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){
 		Behavior b = new BehaviorImpl(actionId);
+		b.setLabel(label);
 		b.addToAddingList(result);
 		for(Node n: context)
 			b.addContextCondition(n);
@@ -148,7 +149,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	
 	@Override
 	public void receiveActionId(long id) {
-		System.out.println("Received action " + id);
+		System.out.println("Result: Received action " + id);
 	}
 
 }

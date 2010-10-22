@@ -250,13 +250,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	
 	public Set<Behavior> getSatisfiedBehaviors(){
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
-//		p("\ngetting satisfied behaviors");
 		
-		for(Behavior b: getBehaviors()){
-//			p(b.getLabel());
-			
+		for(Behavior b: getBehaviors()){			
 			if(b.isAllContextConditionsSatisfied()){
-//				p("satisfied");
 				satisfiedBehaviors.add(b);
 			}
 		}
@@ -389,12 +385,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * each behavior, excite it
 	 */
 	public void passActivationFromBroadcast() {
-//		p("\nbroadcast passing");
 		for (Node broadcastNode : currentBroadcast.getNodes()) {
-//			p(broadcastNode.getLabel() + " activ: " + broadcastNode.getActivation());
 			if (behaviorsByContextCondition.containsKey(broadcastNode)) {
 				double excitationAmount = broadcastNode.getTotalActivation() * broadcastExcitationFactor;
-				Set<Behavior> behaviors = behaviorsByContextCondition.get(broadcastNode);	
+				Set<Behavior> behaviors = behaviorsByContextCondition.get(broadcastNode);
 				for (Behavior behavior : behaviors) {
 					//TODO excite behaviors based on "goals" in the conscious broadcast.
 					//the result of the behaviors is what must be checked against broadcast content

@@ -45,6 +45,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	 * @see edu.memphis.ccrg.lida.framework.Lida#addModuleDriver(edu.memphis.ccrg.lida.framework.ModuleDriver)
 	 */
 	public void addModuleDriver(ModuleDriver driver) {
+		System.out.println(driver);
 		drivers.put(driver.getModuleName(), driver);
 	}
 

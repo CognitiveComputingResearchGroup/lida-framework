@@ -128,30 +128,36 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	public boolean isAllContextConditionsSatisfied() {
-	//	System.out.println("\n isAllContextConditionsSatisified? " + isAllContextSatisfied);
+//		System.out.println("\n isAllContextConditionsSatisified? " + isAllContextSatisfied);
 		if (isAllContextSatisfied)
 			return true;
 
 		for (Node n : context.getNodes()){
-			//System.out.println(n.getActivation() + " >? " + contextSatisfactionThreshold);
+//			System.out.println(n.getActivation() + " >? " + contextSatisfactionThreshold);
 			if (n.getActivation() < contextSatisfactionThreshold)
 				return false;
 		}
 		return true;
 	}
 
+	/**
+	 * Update the activation of the context condition from the broadcast
+	 */
 	@Override
-	public void updateContextCondition(Node condition) {
-		if ((condition = context.getNode(condition.getId())) != null) {
-			double newActivation = condition.getActivation();
+	public void updateContextCondition(Node broadcastCondition) {
+		Node existingCondition = context.getNode(broadcastCondition.getId());
+		if (existingCondition != null) { //Check if this behavior has the condition
+			
+			double newActivation = broadcastCondition.getActivation();
+			existingCondition.setActivation(newActivation);
 			if (newActivation < contextSatisfactionThreshold) {
 				isAllContextSatisfied = false;
 			}
-			condition.setActivation(newActivation);
-		} else
-			logger.log(Level.WARNING,
-					"Tried to update a context condition that wasn't in behavior "
-							+ label, LidaTaskManager.getActualTick());
+		}else{
+			logger.log(Level.WARNING, "BN asked to update a context condition " + 
+						broadcastCondition.getLabel() + " but it wasn't in the context of behavior "
+						+ label, LidaTaskManager.getActualTick());
+		}
 	}
 
 	@Override
@@ -164,8 +170,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	// start add methods
 	public boolean addContextCondition(Node condition) {
-		logger.log(Level.FINEST, "Adding context condition "
-				+ condition.getLabel() + " to " + label);
+		logger.log(Level.FINEST, "Adding context condition " +
+								 condition.getLabel() + " to " + label);
 		isAllContextSatisfied = false;
 		return (context.addNode(condition) != null);
 	}
