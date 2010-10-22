@@ -242,7 +242,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void triggerActionSelection() {
-//		p("\n trigger as");
 		selectAction();
 	}
 	
