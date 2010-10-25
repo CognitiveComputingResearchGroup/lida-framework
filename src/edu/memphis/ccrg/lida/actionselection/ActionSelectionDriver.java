@@ -21,6 +21,13 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
+ * TODO
+ * Activation-based triggers are only triggered in ActionSelection.receiveBehavior()
+ *  or AcitonSelection.receiveBroadcast(). 
+ *  So in these methods the activation-based trigggers should be called.
+ *  Time-related should run only once, and then, whenever any trigger fires, 
+ *  all of the triggers are reset and a new task is created for each time-based trigger.
+ * 
  * @author Siminder Kaur, Ryan McCall
  *
  */

@@ -23,7 +23,6 @@ public class IndividualBehaviorActivationTrigger extends AggregateBehaviorActiva
 private Logger logger = Logger.getLogger("lida.actionselection.triggers");
 	
 	public void checkForTrigger(Set<Behavior> behaviors) {
-		System.out.println("individual");
 		for(Behavior c:behaviors){
 			if(c.getActivation()>threshold){
 				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getActualTick());
