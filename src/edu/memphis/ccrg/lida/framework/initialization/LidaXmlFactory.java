@@ -121,17 +121,22 @@ public class LidaXmlFactory implements LidaFactory {
 		try {
 			moduleName = Enum.valueOf(ModuleName.class, name);
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "ModuleName: " + name + " is not valid.",
+			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.",
 					0L);
+//			return null;
 		}
 		try {
 			module = (LidaModule) Class.forName(className).newInstance();
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Module class: " + className
-					+ " is not valid.", 0L);
+			logger.log(Level.SEVERE, "Module class name: " + className
+					+ " is not valid.  Check module class name.", 0L);
+//			return null; h
 		}
+		//TODO can throw null pointer
 		module.setModuleName(moduleName);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		
+		//TODO can throw exception
 		module.init(params);
 		for (LidaModule lm : getModules(moduleElement)) {
 			module.addSubModule(lm);
