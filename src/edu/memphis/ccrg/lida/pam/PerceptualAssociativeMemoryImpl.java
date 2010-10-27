@@ -165,7 +165,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		broadcastContent = (NodeStructure) bc;
 	}
 
-	public synchronized void receivePreafference(Set<Node> addList, Set<Node> deleteList) {
+	public synchronized void receivePreafference(Collection<Node> addList, Collection<Node> deleteList) {
 		// TODO: Use preafferent signal
 	}
 

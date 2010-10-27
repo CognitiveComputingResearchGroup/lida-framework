@@ -72,8 +72,8 @@ public class NoActionSelectionOccurringTriggerTest {
 		schemeA.setActivation(0.8);
 		schemeB.setActivation(0.2);	
 		
-		behavA = new BehaviorImpl(schemeA);
-		behavB = new BehaviorImpl(schemeB);
+		behavA = schemeA.getBehavior();
+		behavB = schemeB.getBehavior();
 		
 		setOfBehav.add(behavA);
 		setOfBehav.add(behavB);

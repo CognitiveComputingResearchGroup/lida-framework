@@ -22,6 +22,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private String label = "";
 	private double importance;
 	private String factoryName;
+	private double goalDegree;
 	
 	protected PamNode refNode;
 	
@@ -95,6 +96,16 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	@Override
 	public void setFactoryName(String factoryName) {
 		this.factoryName = factoryName;
+	}
+
+	@Override
+	public double getGoalDegree() {
+		return goalDegree;
+	}
+
+	@Override
+	public void setGoalDegree(double degree) {
+		this.goalDegree = degree;
 	}
 
 }//class

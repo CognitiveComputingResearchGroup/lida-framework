@@ -13,19 +13,14 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.test;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
-import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
-import edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger;
-import edu.memphis.ccrg.lida.actionselection.triggers.TriggerTask;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
@@ -101,13 +96,14 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		behaviorNet.receiveBehavior(b);
 		
 		//broadcasts
-		NodeStructure bc = getBroadcast(thirsty, sitting);
+		// TODO: Modify NodeStructure to copy goalDegree when we add a node see the factory, etc
+		NodeStructure bc = getBroadcast(hungry, sitting);
 		runOneStep(bc);
 		
-		bc = getBroadcast(thirsty, standing);
+		bc = getBroadcast(hungry, standing);
 		runOneStep(bc);
 
-        bc = getBroadcast(thirsty, cerveza);
+        bc = getBroadcast(hungry, cerveza);
 		runOneStep(bc);
 	}
 	

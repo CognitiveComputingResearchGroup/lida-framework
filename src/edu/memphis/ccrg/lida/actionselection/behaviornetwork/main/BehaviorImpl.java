@@ -15,6 +15,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,12 +46,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	/**
 	 * Set of nodes that this scheme adds
 	 */
-	private Set<Node> addingList = new ConcurrentHashSet<Node>();
+	private NodeStructure addingList = new NodeStructureImpl();
 
 	/**
      * 
      */
-	private Set<Node> deletingList = new ConcurrentHashSet<Node>();
+	private NodeStructure deletingList = new NodeStructureImpl();
 
 	/**
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
@@ -66,7 +67,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	/**
 	 * optimization for checking if context is all satisfied
 	 */
-	private boolean isAllContextSatisfied = false;
+	private AtomicInteger unsatisfiedContextConditionCount = new AtomicInteger(0);
 
 	/**
 	 * The streams that contains this behavior
@@ -76,6 +77,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
 
 	private String contextNodeType = null;
+
+	private Scheme generatingScheme = null;
 
 	private static final double DEFAULT_CS_THRESHOLD = 0.5;
 
@@ -90,27 +93,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		this.actionId = actionId;
 	}
 
-	public BehaviorImpl(Scheme s) {
-		this(idCounter++, s.getSchemeActionId());
-		this.label = s.getLabel();
-		this.setActivation(s.getTotalActivation());
-		this.context = s.getContext();
-		this.contextNodeType = context.getDefaultNodeType();
-		for (Node n : s.getAddingResult().getNodes()) {
-			this.addToAddingList(n);
-		}
-		for(Node n: s.getDeletingResult().getNodes()){
-			this.addToDeletingList(n);
-		}
-		// to initialize isAllContextSatified
-		isAllContextConditionsSatisfied();
-	}
-
 	// Precondition methods
 	public void deactivateAllContextConditions() {
-		isAllContextSatisfied = false;
 		for (Node s : context.getNodes())
 			s.setActivation(0.0);
+		unsatisfiedContextConditionCount.set(getContextSize());
 	}
 
 	public void setId(long id) {
@@ -128,16 +115,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	public boolean isAllContextConditionsSatisfied() {
-//		System.out.println("\n isAllContextConditionsSatisified? " + isAllContextSatisfied);
-		if (isAllContextSatisfied)
-			return true;
-
-		for (Node n : context.getNodes()){
-//			System.out.println(n.getActivation() + " >? " + contextSatisfactionThreshold);
-			if (n.getActivation() < contextSatisfactionThreshold)
-				return false;
-		}
-		return true;
+		return (unsatisfiedContextConditionCount.get() == 0);
 	}
 
 	/**
@@ -151,11 +129,35 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 			double newActivation = broadcastCondition.getActivation();
 			existingCondition.setActivation(newActivation);
 			if (newActivation < contextSatisfactionThreshold) {
-				isAllContextSatisfied = false;
+				unsatisfiedContextConditionCount.incrementAndGet();
+			}else{
+				unsatisfiedContextConditionCount.decrementAndGet();
 			}
 		}else{
 			logger.log(Level.WARNING, "BN asked to update a context condition " + 
 						broadcastCondition.getLabel() + " but it wasn't in the context of behavior "
+						+ label, LidaTaskManager.getActualTick());
+		}
+	}
+	
+	@Override
+	public void updateAddingCondition(Node broadcastNode) {
+		auxUpdateResultCondition(broadcastNode, addingList);		
+	}
+
+	@Override
+	public void updateDeletingCondition(Node broadcastNode) {
+		auxUpdateResultCondition(broadcastNode, deletingList);
+	}
+	
+	private void auxUpdateResultCondition(Node condition, NodeStructure resultList){
+		Node existingCondition = resultList.getNode(condition.getId());
+		if (existingCondition != null) { //Check if this behavior has the condition
+			double newActivation = condition.getActivation();
+			existingCondition.setActivation(newActivation);
+		}else{
+			logger.log(Level.WARNING, "BN asked to update a result condition " + 
+						condition.getLabel() + " but it wasn't in the result list of behavior "
 						+ label, LidaTaskManager.getActualTick());
 		}
 	}
@@ -164,7 +166,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	public void deactiveContextCondition(Node condition) {
 		if ((condition = context.getNode(condition.getId())) != null) {
 			condition.setActivation(0.0);
-			isAllContextSatisfied = false;
+			unsatisfiedContextConditionCount.incrementAndGet();
 		}
 	}
 
@@ -172,16 +174,22 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	public boolean addContextCondition(Node condition) {
 		logger.log(Level.FINEST, "Adding context condition " +
 								 condition.getLabel() + " to " + label);
-		isAllContextSatisfied = false;
+		if(condition.getActivation() < this.contextSatisfactionThreshold)
+			unsatisfiedContextConditionCount.incrementAndGet();
+		
 		return (context.addNode(condition) != null);
 	}
 
-	public boolean addToAddingList(Node addCondition) {
-		return addingList.add(addCondition);
+	public boolean addToAddingList(Node addResult) {
+		logger.log(Level.FINEST, "Adding add result " +
+				 addResult.getLabel() + " to " + label);
+		return addingList.addNode(addResult) != null;
 	}
 
-	public boolean addToDeletingList(Node deleteCondition) {
-		return deletingList.add(deleteCondition);
+	public boolean addToDeletingList(Node deleteResult) {
+		logger.log(Level.FINEST, "Adding delete result " +
+				 deleteResult.getLabel() + " to " + label);
+		return deletingList.addNode(deleteResult) != null;
 	}
 
 	// Get methods
@@ -189,12 +197,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return context.getNodes();
 	}
 
-	public Set<Node> getAddingList() {
-		return Collections.unmodifiableSet(addingList);
+	public Collection<Node> getAddingList() {
+		return addingList.getNodes();
 	}
 
-	public Set<Node> getDeletingList() {
-		return Collections.unmodifiableSet(deletingList);
+	public Collection<Node> getDeletingList() {
+		return deletingList.getNodes();
 	}
 
 	@Override
@@ -204,12 +212,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	@Override
 	public double getAddingListCount() {
-		return addingList.size();
+		return addingList.getNodeCount();
 	}
 
 	@Override
 	public double getDeletingListCount() {
-		return deletingList.size();
+		return deletingList.getNodeCount();
 	}
 
 	@Override
@@ -261,7 +269,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		for (Node contextNode : context.getNodes()) {
 			contextNode.decay(ticks);
 			if (contextNode.getActivation() < contextSatisfactionThreshold)
-				isAllContextSatisfied = false;
+				unsatisfiedContextConditionCount.incrementAndGet();
 		}
 	}
 
@@ -282,17 +290,39 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	@Override
 	public boolean containsAddingItem(Node addItem) {
-		return addingList.contains(addItem);
+		return addingList.containsNode(addItem);
 	}
 
 	@Override
 	public boolean containsDeletingItem(Node deleteItem) {
-		return deletingList.contains(deleteItem);
+		return deletingList.containsNode(deleteItem);
 	}
 
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
 	}
+
+	@Override
+	public Scheme getGeneratingScheme() {
+		return generatingScheme;
+	}
+
+	@Override
+	public void setGeneratingScheme(Scheme s) {
+		generatingScheme  = s;
+	}
+
+	@Override
+	public double getResultSize() {
+		return addingList.getNodeCount() + deletingList.getNodeCount();
+	}
+
+	@Override
+	public int getUnsatisfiedContextCount() {
+		return unsatisfiedContextConditionCount.get();
+	}
+
+	
 
 }// class

@@ -41,6 +41,9 @@ public interface Node extends Linkable, Activatible, Serializable {
     
 	public String getFactoryName();
 	public void setFactoryName(String factoryName);
+	
+	public double getGoalDegree();
+	public void setGoalDegree(double degree);
 
 }//interface Node
 

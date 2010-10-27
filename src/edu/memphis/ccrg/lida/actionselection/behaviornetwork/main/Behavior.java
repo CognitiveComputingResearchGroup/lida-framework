@@ -12,6 +12,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 public interface Behavior extends Activatible {
@@ -21,6 +22,9 @@ public interface Behavior extends Activatible {
 	public abstract long getActionId();
 	public abstract String getLabel();
 	public abstract void setLabel(String label);
+	
+	public abstract Scheme getGeneratingScheme();
+	public abstract void setGeneratingScheme(Scheme s);
 
 	//Context node type
 	public abstract void setContextNodeType(String nodeType);
@@ -45,6 +49,9 @@ public interface Behavior extends Activatible {
 	 * Returns true if all context conditions are satisfied
 	 */
 	public abstract boolean isAllContextConditionsSatisfied();
+	
+	public int getUnsatisfiedContextCount();
+	
 	/**
 	 * 
 	 */
@@ -56,21 +63,29 @@ public interface Behavior extends Activatible {
 	public abstract void deactivateAllContextConditions();
 	
 	//Add list
-	public abstract Set<Node> getAddingList();
+	public abstract Collection<Node> getAddingList();
 	public abstract boolean addToAddingList(Node condition);
 	public abstract boolean containsAddingItem(Node commonNode);
 	public abstract double getAddingListCount();
+	public abstract void updateAddingCondition(Node broadcastNode);
 	
 	//Delete list
-	public abstract Set<Node> getDeletingList();	
+	public abstract Collection<Node> getDeletingList();	
     public abstract boolean addToDeletingList(Node deleteCondition);
     public abstract boolean containsDeletingItem(Node commonNode);
     public abstract double getDeletingListCount();
+    public abstract void updateDeletingCondition(Node broadcastNode);
+    
+    //result
+    public abstract double getResultSize();
     
     //Containing streams
     public abstract void addContainingStream(Stream stream);
     public abstract Set<Stream> getContainingStreams();
     public abstract void removeContainingStream(Stream stream);
+	
+	
+	
 	
 	
 }//method

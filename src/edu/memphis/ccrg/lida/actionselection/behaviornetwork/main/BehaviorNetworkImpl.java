@@ -119,7 +119,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 
-	
 	private List<PreafferenceListener> preafferenceListeners = new ArrayList<PreafferenceListener>();
 
 	/**
@@ -129,7 +128,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	/**
 	 * Map of behaviors indexed by the elements appearing in their context
-	 * conditions. 
+	 * conditions.
 	 */
 	private ConcurrentMap<Node, Set<Behavior>> behaviorsByContextCondition = new ConcurrentHashMap<Node, Set<Behavior>>();
 
@@ -137,7 +136,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Map of behaviors indexed by the elements appearing in their add list.
 	 */
 	private ConcurrentMap<Node, Set<Behavior>> behaviorsByAddingItem = new ConcurrentHashMap<Node, Set<Behavior>>();
-	
+
 	/**
 	 * Map of behaviors indexed by the elements appearing in their delete list.
 	 */
@@ -146,7 +145,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Likely the action selection driver
 	 */
-	private ActionSelectionDriver actionSelectionDriver;
+	private TaskSpawner taskSpawner;
+
+	/**
+	 * Threshold to identify goals
+	 */
+	private static final double GOAL_THRESHOLD = 0.5;
+	
+	private enum ConditionSet{
+		CONTEXT, ADDING_LIST, DELETING_LIST
+	}
 
 	/**
 	 * Default constructor
@@ -156,41 +164,45 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	public void setTaskSpawner(TaskSpawner ts) {
-		if(ts instanceof ActionSelectionDriver)
-			this.actionSelectionDriver = (ActionSelectionDriver) ts;
-		else
-			logger.log(Level.SEVERE, "Expected ActionSelectionDriver as the taskSpawner but got " + ts.toString(), LidaTaskManager.getActualTick());
+		this.taskSpawner = ts;
+		// if(ts instanceof ActionSelectionDriver)
+		// this.taskSpawner = (ActionSelectionDriver) ts;
+		// else
+		// logger.log(Level.SEVERE,
+		// "Expected ActionSelectionDriver as the taskSpawner but got " +
+		// ts.toString(), LidaTaskManager.getActualTick());
 	}
 
 	@Override
 	public void init(Map<String, ?> params) {
-		//TODO set parameters for activation passing
+		// TODO set parameters for activation passing
 	}
-	
+
 	// TODO check this everywhere.
 	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized(this){
+		synchronized (this) {
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
-		LidaTask activationFromBroadcastTask = new PassActivationFromBroadcastTask(this);
-		actionSelectionDriver.addTask(activationFromBroadcastTask);
-		LidaTask activationAmongBehaviorsTask = new PassActivationAmongBehaviorsTask(this);
-		actionSelectionDriver.addTask(activationAmongBehaviorsTask);
-		
+		LidaTask activationFromBroadcastTask = new PassActivationFromBroadcastTask(
+				this);
+		taskSpawner.addTask(activationFromBroadcastTask);
+		LidaTask activationAmongBehaviorsTask = new PassActivationAmongBehaviorsTask(
+				this);
+		taskSpawner.addTask(activationAmongBehaviorsTask);
+
 		runActivationTriggers();
 	}
 
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
-	public void learn() {}
-	
-
+	public void learn() {
+	}
 
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
 		this.preafferenceListeners.add(listener);
@@ -200,41 +212,48 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof ActionSelectionListener)
 			addActionSelectionListener((ActionSelectionListener) listener);
-		else if(listener instanceof PreafferenceListener)
+		else if (listener instanceof PreafferenceListener)
 			addPreafferenceListener((PreafferenceListener) listener);
 	}
 
 	@Override
-	//TODO This way permits multiple instantiations of the same behavior because each one will
-	//have a different ID even if it was instantiated from the same Scheme.
-	//This can be resolved by either slowing the scheme activation rate or by having Behavior
-	//have a originatingScheme field.
+	// TODO This way permits multiple instantiations of the same behavior
+	// because each one will
+	// have a different ID even if it was instantiated from the same Scheme.
+	// This can be resolved by either slowing the scheme activation rate or by
+	// having Behavior
+	// have a originatingScheme field.
 	public void receiveBehavior(Behavior newBehavior) {
-		indexBehaviorByElements(newBehavior, newBehavior.getContextConditions(), behaviorsByContextCondition);
-		indexBehaviorByElements(newBehavior, newBehavior.getAddingList(), behaviorsByAddingItem);
-		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(), behaviorsByDeletingItem);
+		indexBehaviorByElements(newBehavior,
+				newBehavior.getContextConditions(), behaviorsByContextCondition);
+		indexBehaviorByElements(newBehavior, newBehavior.getAddingList(),
+				behaviorsByAddingItem);
+		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(),
+				behaviorsByDeletingItem);
 
 		behaviors.put(newBehavior.getId(), newBehavior);
 		runActivationTriggers();
 	}
-	
-	private void runActivationTriggers(){
-		actionSelectionDriver.newBehaviorEvent(this.behaviors.values());
+
+	private void runActivationTriggers() {
+		// actionSelectionDriver.newBehaviorEvent(this.behaviors.values());
 	}
-	
-	//If behavior is going to be indexed then why does a stream even need to 
-	//keep track of it's successors?  as long as the context and add lists are correct
+
+	// If behavior is going to be indexed then why does a stream even need to
+	// keep track of it's successors? as long as the context and add lists are
+	// correct
 	@Override
 	public void receiveStream(Stream stream) {
-		for(Behavior behavior: stream.getBehaviors())
+		for (Behavior behavior : stream.getBehaviors())
 			receiveBehavior(behavior);
 	}
 
 	/**
-	 * Abstractly defined utility method to index the behaviors into a map by elements 
+	 * Abstractly defined utility method to index the behaviors into a map by
+	 * elements
 	 */
-	private void indexBehaviorByElements(Behavior behavior, Collection<Node> elements,
-										 Map<Node, Set<Behavior>> map) {
+	private void indexBehaviorByElements(Behavior behavior,
+			Collection<Node> elements, Map<Node, Set<Behavior>> map) {
 		for (Node element : elements) {
 			synchronized (element) {
 				Set<Behavior> values = map.get(element);
@@ -245,7 +264,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				values.add(behavior);
 			}
 
-		}//for
+		}// for
 	}
 
 	/**
@@ -254,18 +273,18 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void triggerActionSelection() {
-		//TODO atomic boolean
-		//Call resetTriggers somewhere too
+		// TODO atomic boolean
+		// Call resetTriggers somewhere too
 		selectAction();
 	}
-	
-//	public void p(String s){System.out.println(s);}
-	
-	public Set<Behavior> getSatisfiedBehaviors(){
+
+	// public void p(String s){System.out.println(s);}
+
+	public Set<Behavior> getSatisfiedBehaviors() {
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
-		
-		for(Behavior b: getBehaviors()){			
-			if(b.isAllContextConditionsSatisfied()){
+
+		for (Behavior b : getBehaviors()) {
+			if (b.isAllContextConditionsSatisfied()) {
 				satisfiedBehaviors.add(b);
 			}
 		}
@@ -273,10 +292,12 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-     * Called when a new conscious broadcast arrives.  Method actually called by ActivatedBehaviorsTask on a separate thread.
-     */
+	 * Called when a new conscious broadcast arrives. Method actually called by
+	 * ActivatedBehaviorsTask on a separate thread.
+	 */
 	public void passActivationAmongBehaviors() {
-		//TODO consider alternative ways to iterate over the behaviors so that the order changes from iteration to iteration
+		// TODO consider alternative ways to iterate over the behaviors so that
+		// the order changes from iteration to iteration
 		for (Behavior behavior : getBehaviors()) {
 			if (behavior.isAllContextConditionsSatisfied())
 				spreadActivationToSuccessors(behavior);
@@ -293,17 +314,20 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * 
 	 */
 	private void spreadActivationToSuccessors(Behavior behavior) {
-		for (Node addProposition: behavior.getAddingList()) {
+		for (Node addProposition : behavior.getAddingList()) {
 			Set<Behavior> successors = getSuccessors(addProposition);
-			if(successors != null){
-				for (Behavior successor: successors) {
-					// Grant activation to a successor if its precondition has not yet been satisfied
+			if (successors != null) {
+				for (Behavior successor : successors) {
+					// Grant activation to a successor if its precondition has
+					// not yet been satisfied
 					if (successor.isContextConditionSatisfied(addProposition) == false) {
-						double amount = behavior.getActivation() * successorExcitationFactor / successor.getContextSize();
+						double amount = behavior.getActivation() * successorExcitationFactor
+								/ successor.getUnsatisfiedContextCount();
 						successor.excite(amount);
 						logger.log(Level.FINEST, behavior.getLabel() + "-->"
 								+ amount + " to " + successor + " for "
-								+ addProposition, LidaTaskManager.getActualTick());
+								+ addProposition, LidaTaskManager
+								.getActualTick());
 					}
 				}
 			}
@@ -313,7 +337,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private Set<Behavior> getSuccessors(Node addProposition) {
 		return behaviorsByContextCondition.get(addProposition);
 	}
-	
+
 	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
 
 	/**
@@ -326,22 +350,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		for (Node contextCondition : behavior.getContextConditions()) {
 			if (behavior.isContextConditionSatisfied(contextCondition) == false) {
 				Set<Behavior> predecessors = getPredecessors(contextCondition);
-				if(predecessors != null){
+				if (predecessors != null) {
 					for (Behavior predecessor : predecessors) {
-						double granted = (behavior.getActivation() * predecessorExcitationFactor) / 
-								          predecessor.getAddingListCount();
+						double granted = (behavior.getActivation() * predecessorExcitationFactor)
+								/ behavior.getUnsatisfiedContextCount();
 						predecessor.excite(granted);
 						logger.log(Level.FINEST, behavior.getActivation() + " "
-								+ behavior.getLabel() + "<--" + granted + " to "
-								+ predecessor + " for " + contextCondition,
-								LidaTaskManager.getActualTick());
+								+ behavior.getLabel() + "<--" + granted
+								+ " to " + predecessor + " for "
+								+ contextCondition, LidaTaskManager
+								.getActualTick());
 					}
 				}
 			}
 		}
 	}
-	
-	
 
 	private Set<Behavior> getPredecessors(Node precondition) {
 		return behaviorsByAddingItem.get(precondition);
@@ -352,74 +375,102 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		boolean isMutualConflict = false;
 		for (Node contextCondition : behavior.getContextConditions()) {
 			Set<Behavior> conflictors = getConflictors(contextCondition);
-			if(conflictors != null){
+			if (conflictors != null) {
 				for (Behavior conflictor : conflictors) {
-					// for each conflictor context condition
-					for (Node conflictorPreCondition : conflictor.getContextConditions()) {
-						// if conflictor context condition is not satisfied
-						if (conflictor.isContextConditionSatisfied(conflictorPreCondition) == false) {
+					isMutualConflict = false;
+					if(behavior.getActivation() < conflictor.getActivation()){
+						// for each conflictor context condition
+						for (Node conflictorPreCondition : conflictor.getContextConditions()) {
 							Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
 							// if there is a mutual conflict
-							if(conflictorsConflictors != null){
+							if (conflictorsConflictors != null) {
 								isMutualConflict = conflictorsConflictors.contains(behavior);
-								if (isMutualConflict) {
-									if (behavior.getActivation() > conflictor.getActivation())
-										auxSpreadConflictorActivation(behavior, conflictor);
-								}
+								if(isMutualConflict)
+									break;
 							}
-						}
+						}					
 					}
-	
 					// No mutual conflict then inhibit the conflictor of behavior
 					if (isMutualConflict == false)
 						auxSpreadConflictorActivation(behavior, conflictor);
-					else
-						isMutualConflict = false;
 				}// for each conflictor
 			}
 		}// for
 	}// method
-	
+
 	private Set<Behavior> getConflictors(Node condition) {
 		return behaviorsByDeletingItem.get(condition);
 	}
-	private void auxSpreadConflictorActivation(Behavior behavior, Behavior conflictor) {
-		double inhibitionAmount = -(behavior.getActivation() * conflictorExcitationFactor) /
-								          conflictor.getDeletingListCount();
+
+	private void auxSpreadConflictorActivation(Behavior behavior,
+			Behavior conflictor) {
+		double inhibitionAmount = -(behavior.getActivation() * conflictorExcitationFactor)
+				/ behavior.getContextSize();
 		conflictor.excite(inhibitionAmount);
-		logger.log(Level.FINEST, behavior.getLabel() + " inhibits " +
-				   conflictor.getLabel() + " amount " + inhibitionAmount,
-				   LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST, behavior.getLabel() + " inhibits "
+				+ conflictor.getLabel() + " amount " + inhibitionAmount,
+				LidaTaskManager.getActualTick());
 	}// method
 
+
 	/**
-	 * For each proposition in the current broadcast 
-	 * get the behaviors indexed by that proposition For
-	 * each behavior, excite it
+	 * For each proposition in the current broadcast get the behaviors indexed
+	 * by that proposition For each behavior, excite it
 	 */
 	public void passActivationFromBroadcast() {
 		for (Node broadcastNode : currentBroadcast.getNodes()) {
-			if (behaviorsByContextCondition.containsKey(broadcastNode)) {
-				double excitationAmount = broadcastNode.getTotalActivation() * broadcastExcitationFactor;
-				Set<Behavior> behaviors = behaviorsByContextCondition.get(broadcastNode);
-				for (Behavior behavior : behaviors) {
-					//TODO excite behaviors based on "goals" in the conscious broadcast.
-					//the result of the behaviors is what must be checked against broadcast content
-					behavior.updateContextCondition(broadcastNode);
-					behavior.excite(excitationAmount / behavior.getContextSize());
-					logger.log(Level.FINEST, behavior.toString() + " "
-							+ excitationAmount / behavior.getContextSize() + " for "
-							+ broadcastNode, LidaTaskManager.getActualTick());
+			if (broadcastNode.getGoalDegree() < GOAL_THRESHOLD) {
+				if (behaviorsByContextCondition.containsKey(broadcastNode)) {
+					passActivationToContextOrResult(broadcastNode, behaviorsByContextCondition, ConditionSet.CONTEXT);
+				}
+			} else{
+				if(behaviorsByAddingItem.containsKey(broadcastNode)){
+					passActivationToContextOrResult(broadcastNode, behaviorsByAddingItem, ConditionSet.ADDING_LIST);
+				}else if(behaviorsByDeletingItem.containsKey(broadcastNode)){
+					passActivationToContextOrResult(broadcastNode, behaviorsByDeletingItem, ConditionSet.DELETING_LIST);
 				}
 			}
 		}// for
 	}// method
-	
+
+
+	/**
+	 * @param broadcastNode
+	 * @param context 
+	 * @param map 
+	 */
+	private void passActivationToContextOrResult(Node broadcastNode, ConcurrentMap<Node, Set<Behavior>> map, ConditionSet condition) {
+		double excitationAmount = broadcastNode.getTotalActivation()
+				* broadcastExcitationFactor;
+		Set<Behavior> behaviors = map.get(broadcastNode);
+		for (Behavior behavior : behaviors) {
+			switch(condition){
+				case CONTEXT:
+					behavior.updateContextCondition(broadcastNode);
+					behavior.excite(excitationAmount / behavior.getContextSize());
+					break;
+				case ADDING_LIST:
+					behavior.updateAddingCondition(broadcastNode);
+					behavior.excite(excitationAmount / behavior.getResultSize());
+					break;
+				case DELETING_LIST:
+					behavior.updateDeletingCondition(broadcastNode);
+					behavior.excite(excitationAmount / behavior.getResultSize());
+					break;
+			}
+			
+			logger.log(Level.FINEST, behavior.toString() + " "
+					+ excitationAmount / behavior.getContextSize() + " for "
+					+ broadcastNode, LidaTaskManager.getActualTick());
+		}
+	}
+
 	/**
 	 * Select one action to be executed
 	 */
 	public void selectAction() {
-		winningBehavior = selectorStrategy.selectSingleBehavior(getSatisfiedBehaviors(), candidateBehaviorThreshold);
+		winningBehavior = selectorStrategy.selectSingleBehavior(
+				getSatisfiedBehaviors(), candidateBehaviorThreshold);
 		processWinner();
 	}// method
 
@@ -433,12 +484,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			reduceCandidateBehaviorThreshold();
 		}
 	}
-	
+
 	private void sendPreafference(Behavior winningBehavior) {
-		logger.log(Level.FINEST, "Sending preafference for " + winningBehavior.getLabel(),
-						LidaTaskManager.getActualTick());
-		for(PreafferenceListener l: preafferenceListeners)
-			l.receivePreafference(winningBehavior.getAddingList(), winningBehavior.getDeletingList());
+		logger.log(Level.FINEST, "Sending preafference for "
+				+ winningBehavior.getLabel(), LidaTaskManager.getActualTick());
+		for (PreafferenceListener l : preafferenceListeners)
+			l.receivePreafference(winningBehavior.getAddingList(),
+					winningBehavior.getDeletingList());
 	}
 
 	private void reduceCandidateBehaviorThreshold() {
@@ -472,11 +524,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		for (Behavior behavior : getBehaviors()) {
 			behavior.decay(ticks);
 			if (behavior.getActivation() <= behaviorActivationLowerBound) {
-				logger.log(Level.FINER, "Removing behavior: " + behavior.getLabel(),
-						   		LidaTaskManager.getActualTick());
+				logger.log(Level.FINER, "Removing behavior: "
+						+ behavior.getLabel(), LidaTaskManager.getActualTick());
 				removeBehavior(behavior);
 			}
-		}			
+		}
 	}
 
 	/**
@@ -488,19 +540,19 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * @param behavior
 	 */
 	private void removeBehavior(Behavior behavior) {
-		for(Node precondition: behavior.getContextConditions())
+		for (Node precondition : behavior.getContextConditions())
 			behaviorsByContextCondition.get(precondition).remove(behavior);
-	
-		for(Node addItem: behavior.getAddingList())
+
+		for (Node addItem : behavior.getAddingList())
 			behaviorsByAddingItem.get(addItem).remove(behavior);
-		
-		for(Node deleteItem: behavior.getDeletingList())
+
+		for (Node deleteItem : behavior.getDeletingList())
 			behaviorsByDeletingItem.get(deleteItem).remove(behavior);
-		
+
 		behaviors.remove(behavior.getId());
 	}
-	
-	private Collection<Behavior> getBehaviors(){
+
+	private Collection<Behavior> getBehaviors() {
 		return behaviors.values();
 	}
 
@@ -571,7 +623,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return predecessorExcitationFactor;
 	}
 
-	public void setPredecessorExcitationFactor(double predecessorExcitationFactor) {
+	public void setPredecessorExcitationFactor(
+			double predecessorExcitationFactor) {
 		this.predecessorExcitationFactor = predecessorExcitationFactor;
 	}
 
@@ -585,31 +638,30 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	public Object getState() {
 		Object[] state = new Object[4];
-        state[0] = this.behaviors;
-        state[1] = this.behaviorsByAddingItem;
-        state[2] = this.behaviorsByContextCondition;
-        state[3] = this.behaviorsByDeletingItem;
-        return state;
-    }
-    
+		state[0] = this.behaviors;
+		state[1] = this.behaviorsByAddingItem;
+		state[2] = this.behaviorsByContextCondition;
+		state[3] = this.behaviorsByDeletingItem;
+		return state;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean setState(Object content) {
-        if (content instanceof Object[]) {
-            Object[] state = (Object[])content;
-            if (state.length == 4) {
-                try {
-                    this.behaviors = (ConcurrentMap<Long, Behavior>)state[0];
-                    this.behaviorsByAddingItem = (ConcurrentMap<Node, Set<Behavior>>)state[1];
-                    this.behaviorsByContextCondition = (ConcurrentMap<Node, Set<Behavior>>)state[2];
-                    this.behaviorsByDeletingItem = (ConcurrentMap<Node, Set<Behavior>>)state[3];
-                    return true;
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }   
+		if (content instanceof Object[]) {
+			Object[] state = (Object[]) content;
+			if (state.length == 4) {
+				try {
+					this.behaviors = (ConcurrentMap<Long, Behavior>) state[0];
+					this.behaviorsByAddingItem = (ConcurrentMap<Node, Set<Behavior>>) state[1];
+					this.behaviorsByContextCondition = (ConcurrentMap<Node, Set<Behavior>>) state[2];
+					this.behaviorsByDeletingItem = (ConcurrentMap<Node, Set<Behavior>>) state[3];
+					return true;
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		return false;
+	}
 
 }// class

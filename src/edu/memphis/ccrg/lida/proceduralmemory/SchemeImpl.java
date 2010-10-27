@@ -256,6 +256,7 @@ public class SchemeImpl extends LearnableActivatibleImpl implements Scheme {
 		for(Node n: getDeletingResult().getNodes())
 			b.addToDeletingList(n);
 		b.isAllContextConditionsSatisfied();
+		b.setGeneratingScheme(this);
 		
 		return b;
 	}

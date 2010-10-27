@@ -120,7 +120,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	}// method
 
 	@Override
-	public void receivePreafference(Set<Node> addSet, Set<Node> deleteSet) {
+	public void receivePreafference(Collection<Node> addSet, Collection<Node> deleteSet) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -334,4 +334,16 @@ public class ArgumentImpl implements Argument {
 		return super.hashCode();
 	}
 
+	@Override
+	public double getGoalDegree() {
+		// TODO Auto-generated method stub
+		return node.getGoalDegree();
+	}
+
+	@Override
+	public void setGoalDegree(double degree) {
+		node.setGoalDegree(degree);
+		
+	}
+
 }
