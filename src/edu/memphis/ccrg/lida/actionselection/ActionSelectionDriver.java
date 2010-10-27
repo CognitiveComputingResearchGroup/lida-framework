@@ -8,11 +8,14 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
+import edu.memphis.ccrg.lida.actionselection.triggers.AggregateBehaviorActivationTrigger;
+import edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -22,9 +25,9 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
  * TODO
- * Activation-based triggers are only triggered in ActionSelection.receiveBehavior()
- *  or AcitonSelection.receiveBroadcast(). 
- *  So in these methods the activation-based trigggers should be called.
+ *  Activation-based triggers are only triggered in ActionSelection.receiveBehavior()
+ *  or ActionSelection.receiveBroadcast(). 
+ *  So in these methods the activation-based triggers should be called.
  *  Time-related should run only once, and then, whenever any trigger fires, 
  *  all of the triggers are reset and a new task is created for each time-based trigger.
  * 
@@ -34,7 +37,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 public class ActionSelectionDriver extends ModuleDriverImpl {
 
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
-	
+
 	/**
 	 * 
 	 */
@@ -90,12 +93,13 @@ public class ActionSelectionDriver extends ModuleDriverImpl {
 	/**
 	 * @param behaviors
 	 */
-	public void newBehaviorEvent(Queue<Behavior> behaviors) {		
+	public void newBehaviorEvent(Collection<Behavior> behaviors) {		
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
 			trigger.checkForTrigger(behaviors);
 	}// method
 	
 	public void setAssociatedModule(LidaModule module) {
 	}
+
 	
 }//class

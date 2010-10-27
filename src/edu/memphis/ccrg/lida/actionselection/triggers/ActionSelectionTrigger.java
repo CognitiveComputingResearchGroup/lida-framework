@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection.triggers;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
 
@@ -40,7 +41,7 @@ public interface ActionSelectionTrigger {
 	 * Each time a new behavior is put in the AS, this method is called for all registered the Triggers.
 	 * @param behaviors All the behaviors in the AS.
 	 */
-	public void checkForTrigger (Queue<Behavior> behaviors);
+	public void checkForTrigger (Collection<Behavior> behaviors);
 	/**
 	 * To reset the Trigger. Its called each time a new Action Selection is Triggered.
 	 */

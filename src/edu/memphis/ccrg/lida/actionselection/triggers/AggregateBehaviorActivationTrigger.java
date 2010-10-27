@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection.triggers;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
 import java.util.logging.Level;
@@ -29,7 +30,7 @@ public class AggregateBehaviorActivationTrigger implements
  * 
  * @param behaviors a Set with all the behaviors in the AS.
  */
-	public void checkForTrigger(Queue<Behavior> behaviors) {
+	public void checkForTrigger(Collection<Behavior> behaviors) {
 		double acc=0;
 		for(Behavior c:behaviors){
 			acc=acc+c.getActivation();

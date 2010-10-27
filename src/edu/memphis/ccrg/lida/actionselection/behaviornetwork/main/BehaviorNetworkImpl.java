@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
@@ -38,6 +39,11 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
+
+//TODO how to deliberate about schemes? 
+//send behaviors under deliberation to pam via preafferance. 
+//behaviors' context and result have pam groundings. 
+//actions as well but have to consider who is the actor of the action
 
 /**
  * 
@@ -140,7 +146,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Likely the action selection driver
 	 */
-	private TaskSpawner taskSpawner;
+	private ActionSelectionDriver actionSelectionDriver;
 
 	/**
 	 * Default constructor
@@ -150,7 +156,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	public void setTaskSpawner(TaskSpawner ts) {
-		this.taskSpawner = ts;
+		if(ts instanceof ActionSelectionDriver)
+			this.actionSelectionDriver = (ActionSelectionDriver) ts;
+		else
+			logger.log(Level.SEVERE, "Expected ActionSelectionDriver as the taskSpawner but got " + ts.toString(), LidaTaskManager.getActualTick());
 	}
 
 	@Override
@@ -164,21 +173,19 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
 		LidaTask activationFromBroadcastTask = new PassActivationFromBroadcastTask(this);
-		taskSpawner.addTask(activationFromBroadcastTask);
+		actionSelectionDriver.addTask(activationFromBroadcastTask);
 		LidaTask activationAmongBehaviorsTask = new PassActivationAmongBehaviorsTask(this);
-		taskSpawner.addTask(activationAmongBehaviorsTask);
+		actionSelectionDriver.addTask(activationAmongBehaviorsTask);
+		
+		runActivationTriggers();
 	}
 
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
-	public void learn() {
-	}
+	public void learn() {}
 	
-//	how to deliberate about schemes? 
-//	send behaviors under deliberation to pam via preafferance. 
-//	behaviors' context and result have pam groundings. 
-//	actions as well but have to consider who is the actor of the action
+
 
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
@@ -208,6 +215,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(), behaviorsByDeletingItem);
 
 		behaviors.put(newBehavior.getId(), newBehavior);
+		runActivationTriggers();
+	}
+	
+	private void runActivationTriggers(){
+		actionSelectionDriver.newBehaviorEvent(this.behaviors.values());
 	}
 	
 	//If behavior is going to be indexed then why does a stream even need to 
@@ -242,6 +254,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void triggerActionSelection() {
+		//TODO atomic boolean
+		//Call resetTriggers somewhere too
 		selectAction();
 	}
 	
