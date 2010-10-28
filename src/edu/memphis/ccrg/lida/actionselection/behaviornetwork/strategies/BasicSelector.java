@@ -34,20 +34,21 @@ public class BasicSelector implements Selector{
     public BasicSelector() {       
     }
     
-    public static void p(String s){
-    	System.out.println(s);
-    }
+//    public static void p(String s){
+//    	System.out.println(s);
+//    }
     
     public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
         double maxActivation = 0.0;
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
-        p("\nStarting selection, num candidates: " + candidateBehaviors.size());
+        //TODO Log this
+       // p("\nStarting selection, num candidates: " + candidateBehaviors.size());
       
         for(Behavior current: candidateBehaviors){
         	
     		double currentActivation = current.getTotalActivation();
-    		p("action " + current.getLabel() + " has activ: " + currentActivation);
+//    		p("action " + current.getLabel() + " has activ: " + currentActivation);
     		if(currentActivation > maxActivation) {                    
                 winners.clear();
     			winners.add(current);
