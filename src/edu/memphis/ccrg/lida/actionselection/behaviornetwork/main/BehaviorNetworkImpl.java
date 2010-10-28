@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -146,6 +147,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Likely the action selection driver
 	 */
 	private TaskSpawner taskSpawner;
+	
+	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 
 	/**
 	 * Threshold to identify goals
@@ -190,7 +193,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				this);
 		taskSpawner.addTask(activationAmongBehaviorsTask);
 
-		runActivationTriggers();
+		runActionSelectionTriggers();
 	}
 
 	/**
@@ -232,11 +235,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				behaviorsByDeletingItem);
 
 		behaviors.put(newBehavior.getId(), newBehavior);
-		runActivationTriggers();
+		runActionSelectionTriggers();
 	}
-
-	private void runActivationTriggers() {
-		// actionSelectionDriver.newBehaviorEvent(this.behaviors.values());
+	
+	private void runActionSelectionTriggers(){
+		((ActionSelectionDriver) taskSpawner).newBehaviorEvent(this.behaviors.values());
 	}
 
 	// If behavior is going to be indexed then why does a stream even need to
@@ -273,9 +276,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void triggerActionSelection() {
-		// TODO atomic boolean
-		// Call resetTriggers somewhere too
-		selectAction();
+		if (actionSelectionStarted.compareAndSet(false, true)){
+			selectAction();
+			
+			//triggers
+			((ActionSelectionDriver) taskSpawner).resetTriggers();
+			actionSelectionStarted.set(false);
+		}
 	}
 
 	// public void p(String s){System.out.println(s);}
