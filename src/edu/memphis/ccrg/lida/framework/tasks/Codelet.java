@@ -11,12 +11,13 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 
 /**
  * 
  * @author Javier Snaider
  */
-public interface Codelet extends LidaTask {
+public interface Codelet extends LidaTask{
 	
 	/**
 	 * 

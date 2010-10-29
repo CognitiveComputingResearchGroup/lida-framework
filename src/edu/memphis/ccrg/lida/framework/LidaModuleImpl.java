@@ -80,6 +80,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 		this.moduleName = moduleName;
 	}
 
+	//TODO make abstract
 	public void setAssociatedModule(LidaModule module) {
 	}
 

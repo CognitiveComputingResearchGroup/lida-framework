@@ -37,6 +37,10 @@ public interface AttentionCodelet extends Codelet{
 	 */
 	public void setGlobalWorkspace(GlobalWorkspace gw);
 	
+	/**
+	 * 
+	 * @param wb WorkspaceBuffer this codelet looks at
+	 */
 	public void setWorkspaceBuffer (WorkspaceBuffer wb);
 	/**
 	 * @return the WorkspaceBuffer

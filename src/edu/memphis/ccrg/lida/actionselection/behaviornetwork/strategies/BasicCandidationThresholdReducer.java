@@ -14,10 +14,16 @@ public class BasicCandidationThresholdReducer implements CandidateThresholdReduc
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected
 	 */
     private final double ACTIVATION_THRESHOLD_REDUCTION  = 0.10;  
+    
+    private final double ACTIVATION_LOWER_BOUND = 0.25;
 
 	@Override
 	public double reduceActivationThreshold(double behaviorActivationThreshold) {
-		return behaviorActivationThreshold * (1.00 - ACTIVATION_THRESHOLD_REDUCTION);
+		double result = behaviorActivationThreshold * (1.00 - ACTIVATION_THRESHOLD_REDUCTION);
+		if(result < ACTIVATION_LOWER_BOUND)
+			return ACTIVATION_LOWER_BOUND;
+		else
+			return result;
 	}
 
 }

@@ -21,6 +21,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PassActivationAmongBehaviorsTask;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PassActivationFromBroadcastTask;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -86,6 +87,20 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	
 	public void setTaskSpawner(TaskSpawner ts){
 		this.taskSpawner = ts;
+	}
+	
+	@Override
+	public void setAssociatedModule(LidaModule module) {
+		if (module != null) {
+			if (module instanceof TaskSpawner) {
+				taskSpawner = (TaskSpawner) module;
+			}else{
+				logger.log(Level.WARNING, "Module failed is-a test", 
+						LidaTaskManager.getActualTick());
+			}
+		}else{
+			logger.log(Level.WARNING, "supplied module was null", LidaTaskManager.getActualTick());
+		}
 	}
 
 	@Override
