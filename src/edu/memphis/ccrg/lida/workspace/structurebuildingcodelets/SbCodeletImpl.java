@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -120,6 +121,12 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	 */
 	public String toString(){
 		return "SBCodelet-"+ getTaskId();
+	}
+
+	@Override
+	public void setAssociatedModule(LidaModule module) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }//class 

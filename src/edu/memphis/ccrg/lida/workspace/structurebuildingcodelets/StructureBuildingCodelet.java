@@ -10,10 +10,10 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
-public interface StructureBuildingCodelet extends LidaTask{
+public interface StructureBuildingCodelet extends Codelet{
 
 	 public void setSoughtContent(NodeStructure content);
 	 public NodeStructure getSoughtContent();
