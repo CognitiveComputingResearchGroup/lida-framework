@@ -16,6 +16,8 @@ import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
 /**
  * 
  * @author Javier Snaider
+ * 
+ * TODO extend LearnableActivatible.  must copy methods =/
  */
 public interface Codelet extends LidaTask{
 	
