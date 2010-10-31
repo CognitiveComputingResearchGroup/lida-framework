@@ -13,6 +13,14 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
+/**
+ * Demon-like process operating on the workspace searching for particular content
+ * which, when found, triggers its action producing its result.  
+ * Has workspace buffers it can access.
+ * 
+ * @author ryanjmccall
+ *
+ */
 public interface StructureBuildingCodelet extends Codelet{
 
 	 public void setSoughtContent(NodeStructure content);
@@ -20,6 +28,9 @@ public interface StructureBuildingCodelet extends Codelet{
 	
 	 public void setCodeletAction(CodeletAction a);
 	 public CodeletAction getCodeletAction();
+	 
+	 public void setCodeletResult(CodeletResult cr);
+	 public CodeletResult getCodeletResult();
 
 	 public void addAccessibleModule(WorkspaceBuffer module);
 	 public Set<WorkspaceBuffer> getAccessibleModules();

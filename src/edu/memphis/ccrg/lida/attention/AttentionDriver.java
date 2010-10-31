@@ -29,55 +29,31 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
 public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener, PreafferenceListener {
 
-	private Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
+	private static Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
 	
 	private WorkspaceBuffer csm;
 	private GlobalWorkspace global;
-	//
-	//private double defaultActiv = 1.0;// TODO: move these to factory?
+	
+	// TODO: move these to factory
+	private double defaultActiv = 1.0;
 	private NodeStructure broadcastContent;
 	private static final int DEFAULT_TICKS_PER_STEP = 10;
 
+	public AttentionDriver() {
+		super(DEFAULT_TICKS_PER_STEP, ModuleName.AttentionDriver);
+	}
+	
+	//TODO use only default and set values
+	/**
+	 * 
+	 */
 	public AttentionDriver(WorkspaceBuffer csm, GlobalWorkspace gwksp,
 			int ticksPerCycle, LidaTaskManager tm) {
 		super(ticksPerCycle, tm, ModuleName.AttentionDriver);
 		this.csm = csm;
 		global = gwksp;
 	}
-
-	public AttentionDriver() {
-		super(DEFAULT_TICKS_PER_STEP, ModuleName.AttentionDriver);
-	}
-
-	@Override
-	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = (NodeStructure) bc;
-	}
-
-	@Override
-	public void runThisDriver(){
-		//activateCodelets();
-	}
-
-	public void activateCodelets() {
-		// //For testing only!!!!!!
-		// if (getSpawnedTaskCount() < 10) {
-		// addTask(new
-		// AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv
-		// ,getTaskManager() ,new NodeStructureImpl()));
-		// }
-	}
-
-	@Override
-	public void learn() {
-		Collection<Node> nodes = broadcastContent.getNodes();
-		for (Node n : nodes) {
-			// Implement learning here
-			n.getId();
-		}
-	}// method
-
-
+	
 	@Override
 	public void init(Map<String,?> params) {
 		lidaProperties=params;
@@ -86,12 +62,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		setNumberOfTicksPerRun(ticksperstep);
 	//	defaultActiv=(Double)getParam("AttetionSelection.defaultActiv",1.0);
 	}
-
-	@Override
-	public String toString() {
-		return ModuleName.AttentionDriver + "";
-	}
-
+	
 	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
@@ -105,8 +76,29 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		}
 	}
 
+	@Override
+	//TODO check other classes
+	public synchronized void receiveBroadcast(BroadcastContent bc) {
+		broadcastContent = (NodeStructure) bc;
+	}
+
+	@Override
+	public void runThisDriver(){
+		activateCodelets();
+	}
+
+	public void activateCodelets() {
+		// //For testing only!!!!!!
+		// if (getSpawnedTaskCount() < 10) {
+		// addTask(new
+		// AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv
+		// ,getTaskManager() ,new NodeStructureImpl()));
+		// }
+	}
+
+	//TODO: use factory
 	public void spawnNewCodelet() {
-		//TODO: use factory
+		
 		
 		//TODO: move vars out
 		int ticksPerStep = 5;
@@ -114,7 +106,6 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		NodeStructure ns = new NodeStructureImpl();
 		
 		AttentionCodelet basic = new AttentionCodeletImpl(this.csm, this.global, ticksPerStep, activation, ns);
-		//sbCodeletFactory.getCodelet(type, activation, context, actions);
 		this.addTask(basic);
 		logger.log(Level.FINER,"New attention codelet "+basic+"spawned",LidaTaskManager.getActualTick());
 	}// method
@@ -123,6 +114,20 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	public void receivePreafference(Collection<Node> addSet, Collection<Node> deleteSet) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void learn() {
+		Collection<Node> nodes = broadcastContent.getNodes();
+		for (Node n : nodes) {
+			// Implement learning here
+			n.getId();
+		}
+	}
+
+	@Override
+	public String toString() {
+		return ModuleName.AttentionDriver + "";
 	}
 		
 }// class

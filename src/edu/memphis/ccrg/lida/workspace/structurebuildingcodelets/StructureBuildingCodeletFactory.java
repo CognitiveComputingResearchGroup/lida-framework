@@ -27,12 +27,6 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
  */
 public class StructureBuildingCodeletFactory {
 	
-	public static final int PERCEPTUAL_TYPE = 0;
-	public static final int EPISODIC_TYPE = 1;
-	public static final int BROADCAST_TYPE = 2;
-	public static final int CSM_TYPE = 3;
-	public static final int ALL_TYPE = 4;	
-	
 	/**
 	 * Holds singleton instance
 	 */

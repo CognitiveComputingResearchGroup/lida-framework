@@ -8,7 +8,6 @@
 
 package edu.memphis.ccrg.lida.attention;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -26,11 +25,6 @@ public interface AttentionCodelet extends Codelet{
   	 * 
      */
 	public abstract boolean csmHasDesiredContent();
-
-	/**
-	 * 
-	 */
-	public abstract NodeStructure getCsmContent();
 	
 	/**
 	 * @param gw the GlobalWorkspace to set
@@ -42,9 +36,5 @@ public interface AttentionCodelet extends Codelet{
 	 * @param wb WorkspaceBuffer this codelet looks at
 	 */
 	public void setWorkspaceBuffer (WorkspaceBuffer wb);
-	/**
-	 * @return the WorkspaceBuffer
-	 */
-	public WorkspaceBuffer getWorkspaceBuffer();
 
 }

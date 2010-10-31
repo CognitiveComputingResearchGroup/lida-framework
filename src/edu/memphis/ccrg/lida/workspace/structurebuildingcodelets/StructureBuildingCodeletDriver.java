@@ -26,68 +26,31 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements GuiEventProvider {
 
 	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
-	private StructureBuildingCodeletFactory sbCodeletFactory;
+	
+	/**
+	 * factory for structure building codelets
+	 */
+	private StructureBuildingCodeletFactory sbCodeletFactory = StructureBuildingCodeletFactory.getInstance();
+	
+	/**
+	 * 
+	 */
 	private Workspace workspace;
 	
-	public StructureBuildingCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, (LidaTaskManager) tm,ModuleName.StructureBuildingCodeletDriver);
-		sbCodeletFactory = StructureBuildingCodeletFactory.getInstance();
-	}// method
-
-	public StructureBuildingCodeletDriver() {
-		super();
-	}// method
-
-	public void runThisDriver() {
-		//activateCodelets();
-		//sendEventToGui();
-	}
-	
-
-	
-	@Override
-	public void init(Map<String, ?> params) {
-		super.init(params);
-		
-	}
+	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
 	/**
-	 * if BufferContent activates a sbCodelet's context, start a new codelet
+	 * 
 	 */
-	private void activateCodelets() {
-		// CODE to determine when/what codelets to activate
-	}// method
-
-	//**************GUI***************
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
+	public StructureBuildingCodeletDriver() {
+		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.StructureBuildingCodeletDriver);
+	}
 	
+	//TODO should this be done by setAssociatedModule?
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
-	}	
-	public void sendEventToGui(FrameworkGuiEvent evt) {
-		for (FrameworkGuiEventListener gui : guis)
-			gui.receiveFrameworkGuiEvent(evt);
-	}//method
-
-	/*
-	 * @param type - See SBCodeletFactory for which integer values correspond to
-	 * which type
-	 */
-	public void spawnNewCodelet(){
-		//TODO: use factory
-		WorkspaceBuffer csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
-		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
-		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl(csm, perceptualBuffer);
-		
-		//sbCodeletFactory.getCodelet(type, activation, context, actions);
-		this.addTask(basic);
-		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getActualTick());
-	}// method
-
-	@Override
-	public String toString() {
-		return ModuleName.StructureBuildingCodelets + "";
 	}
+	
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
 			if (module instanceof Workspace
@@ -95,6 +58,46 @@ public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements 
 				workspace = (Workspace) module;
 			}
 		}
+	}
+	
+	@Override
+	public void init(Map<String, ?> params) {
+		
+	}
+	
+	public void runThisDriver() {
+		activateCodelets();
+	}
+
+	/**
+	 * TODO If BufferContent activates a sbCodelet's context, start a new codelet
+	 *  TODO code to determine when/what codelets to activate
+	 */
+	private void activateCodelets() {
+		
+	}
+	
+	public void sendEventToGui(FrameworkGuiEvent evt) {
+		for (FrameworkGuiEventListener gui : guis)
+			gui.receiveFrameworkGuiEvent(evt);
+	}
+
+	/** 
+	 *  TODO use factory
+	 *  TODO configuration for codelet that is spawned
+	 *  TODO Rename
+	 */
+	public void spawnNewCodelet(){
+		WorkspaceBuffer csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
+		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
+		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl(csm, perceptualBuffer);
+		this.addTask(basic);
+		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getActualTick());
+	}// method
+
+	@Override
+	public String toString() {
+		return ModuleName.StructureBuildingCodeletDriver + "";
 	}
 
 }// class

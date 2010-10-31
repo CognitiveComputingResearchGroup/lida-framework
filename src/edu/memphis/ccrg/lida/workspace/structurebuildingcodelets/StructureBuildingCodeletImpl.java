@@ -30,10 +30,14 @@ public class StructureBuildingCodeletImpl extends LidaTaskImpl implements Struct
 	 * Set of workspace buffers this codelet 'looks at'
 	 */
 	private Set<WorkspaceBuffer> accessibleModules = new HashSet<WorkspaceBuffer>();
-	private WorkspaceBuffer csm;
 	
 	/**
-	 * The node structure that is requisite for this codelet's action 
+	 * Holds agent's model of the current situtation
+	 */
+	private WorkspaceBuffer currentSituationalModel;
+	
+	/**
+	 * The node structure required for this codelet's action to occur
 	 */
 	private NodeStructure soughtContent = new NodeStructureImpl();
 	
@@ -52,16 +56,21 @@ public class StructureBuildingCodeletImpl extends LidaTaskImpl implements Struct
 	 */
 	private CodeletResult results = new BasicCodeletResult();
 	
+	/**
+	 * TODO Default constructor
+	 * @param csm
+	 * @param perceptualBuffer
+	 */
 	public StructureBuildingCodeletImpl(WorkspaceBuffer csm, WorkspaceBuffer perceptualBuffer){
 		super(100);
-		this.csm = csm;
+		this.currentSituationalModel = csm;
 		accessibleModules.add(perceptualBuffer);
 	}
                             
 	protected void runThisLidaTask(){	
 		logger.finest("SB codelet " + this.toString() + " being run.");
 		for(WorkspaceBuffer buffer: accessibleModules){
-			action.performAction(buffer, csm);	
+			action.performAction(buffer, currentSituationalModel);	
 		}
 		results.reportFinished();
 		logger.finest("SB codelet " + this.toString() + " finishes one run.");
@@ -95,10 +104,10 @@ public class StructureBuildingCodeletImpl extends LidaTaskImpl implements Struct
 		return action;
 	}
 	
-	public void setResults(CodeletResult r){
+	public void setCodeletResult(CodeletResult r){
 		results = r;
 	}
-	public Object getResults(){
+	public CodeletResult getCodeletResult(){
 		return results;
 	}
 

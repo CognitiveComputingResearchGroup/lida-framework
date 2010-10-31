@@ -9,14 +9,14 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 public class BasicCodeletResult implements CodeletResult {
 	
-	private boolean finishedRunningNormally = false;
-	private long id = 0;
+	private int exitStatus;
+	private long id;
 	
 	public void reportFinished(){
-		finishedRunningNormally = true;
+		exitStatus = 1;
 	}
-	public boolean getCompletionStatus(){
-		return finishedRunningNormally;
+	public int getCompletionStatus(){
+		return exitStatus;
 	}
 	
 	public void setId(long id){

@@ -31,14 +31,14 @@ public class BasicAttention extends AttentionCodeletImpl {
 
 	protected void runThisLidaTask() {
 		NodeStructure ns = new NodeStructureImpl();
-		for (Node n : ((NodeStructure) csm.getModuleContent()).getNodes()) {
+		for (Node n : ((NodeStructure) currentSituationalModel.getModuleContent()).getNodes()) {
 			if (n.getActivation()>=THRESHOLD){
 				ns.addNode(n);
 			}
 		}
 		
 		if (ns != null){
-			global.addCoalition(new CoalitionImpl(ns,
+			globalWorkspace.addCoalition(new CoalitionImpl(ns,
 					getActivation()));
 		}
 	}

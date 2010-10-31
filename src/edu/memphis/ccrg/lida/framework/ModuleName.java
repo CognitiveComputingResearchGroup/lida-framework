@@ -20,9 +20,7 @@ public enum ModuleName {
 	EpisodicBuffer,
 	BroadcastQueue,
 	CurrentSituationalModel,
-	
-	StructureBuildingCodelets,
-	AttentionCodelets,	
+
 	GlobalWorkspace,
 	
 	ProceduralMemory,
