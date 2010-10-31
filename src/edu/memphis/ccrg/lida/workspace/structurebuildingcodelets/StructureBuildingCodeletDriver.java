@@ -23,18 +23,18 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
-public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvider {
+public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements GuiEventProvider {
 
 	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
-	private SbCodeletFactory sbCodeletFactory;
+	private StructureBuildingCodeletFactory sbCodeletFactory;
 	private Workspace workspace;
 	
-	public SbCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, (LidaTaskManager) tm,ModuleName.SbCodeletDriver);
-		sbCodeletFactory = SbCodeletFactory.getInstance();
+	public StructureBuildingCodeletDriver(Workspace w, int ticksPerCycle, LidaTaskManager tm) {
+		super(ticksPerCycle, (LidaTaskManager) tm,ModuleName.StructureBuildingCodeletDriver);
+		sbCodeletFactory = StructureBuildingCodeletFactory.getInstance();
 	}// method
 
-	public SbCodeletDriver() {
+	public StructureBuildingCodeletDriver() {
 		super();
 	}// method
 
@@ -77,7 +77,7 @@ public class SbCodeletDriver extends ModuleDriverImpl implements GuiEventProvide
 		//TODO: use factory
 		WorkspaceBuffer csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
 		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
-		StructureBuildingCodelet basic = new SbCodeletImpl(csm, perceptualBuffer);
+		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl(csm, perceptualBuffer);
 		
 		//sbCodeletFactory.getCodelet(type, activation, context, actions);
 		this.addTask(basic);

@@ -36,7 +36,7 @@ public enum ModuleName {
 	PamDriver,
 	PerceptualBufferDriver,
 	AttentionDriver,
-	SbCodeletDriver, 
+	StructureBuildingCodeletDriver, 
 	TemDriver, 
 	ProceduralMemoryDriver,
 	ActionSelectionDriver,

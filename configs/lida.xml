@@ -105,12 +105,12 @@
 			<ticksperstep>8</ticksperstep>
 			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.AttentionDriverInitializer</initializerclass>
 		</driver>
-		<driver name="SbCodeletDriver">
-			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.SbCodeletDriver</class>
+		<driver name="StructureBuildingCodeletDriver">
+			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletDriver</class>
 			<associatedmodule>Workspace</associatedmodule>
 			<ticksperstep>5</ticksperstep>
 		</driver>
-		<driver name="ProceduralDriver">
+		<driver name="ProceduralMemoryDriver">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryDriver</class>
 			<associatedmodule>ProceduralMemory</associatedmodule>
 			<ticksperstep>5</ticksperstep>

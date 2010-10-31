@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
  *
  * Pattern: Factory, Singleton
  */
-public class SbCodeletFactory {
+public class StructureBuildingCodeletFactory {
 	
 	public static final int PERCEPTUAL_TYPE = 0;
 	public static final int EPISODIC_TYPE = 1;
@@ -36,7 +36,7 @@ public class SbCodeletFactory {
 	/**
 	 * Holds singleton instance
 	 */
-	private static SbCodeletFactory instance;
+	private static StructureBuildingCodeletFactory instance;
 
 	/**
 	 * Pool keeping all recycled codelets.
@@ -68,16 +68,16 @@ public class SbCodeletFactory {
 	 * 
 	 * @return the singleton instance
 	 */
-	static public SbCodeletFactory getInstance() {
+	static public StructureBuildingCodeletFactory getInstance() {
 		if(instance == null)
-			instance = new SbCodeletFactory();
+			instance = new StructureBuildingCodeletFactory();
 		return instance;
 	}//constructor
 	
 	/**
 	 * Builds a new pooling codelet factory
 	 */
-	public SbCodeletFactory() {
+	public StructureBuildingCodeletFactory() {
 		DefaultSBCodeletType = "SBCodeletImpl";
 		DefaultSBCodeletClassName = "edu.memphis.ccrg.lida.workspace.structureBuildingCodelets." + DefaultSBCodeletType;
 		sbCodeletClasses.put(DefaultSBCodeletType, DefaultSBCodeletClassName);

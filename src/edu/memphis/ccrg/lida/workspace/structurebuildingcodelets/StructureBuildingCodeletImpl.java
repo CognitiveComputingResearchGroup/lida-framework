@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  *
  */
-public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
+public class StructureBuildingCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
 	
 	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SbCodeletImpl");
 
@@ -52,7 +52,7 @@ public class SbCodeletImpl extends LidaTaskImpl implements StructureBuildingCode
 	 */
 	private CodeletResult results = new BasicCodeletResult();
 	
-	public SbCodeletImpl(WorkspaceBuffer csm, WorkspaceBuffer perceptualBuffer){
+	public StructureBuildingCodeletImpl(WorkspaceBuffer csm, WorkspaceBuffer perceptualBuffer){
 		super(100);
 		this.csm = csm;
 		accessibleModules.add(perceptualBuffer);
