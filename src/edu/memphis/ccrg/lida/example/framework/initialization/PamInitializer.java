@@ -36,7 +36,7 @@ public class PamInitializer implements Initializer {
 		SensoryMemory sm = (SensoryMemory) lida
 				.getSubmodule(ModuleName.SensoryMemory);
 		ModuleDriver driver = lida.getModuleDriver(ModuleName.PamDriver);
-		pam.setTaskSpawner(driver);
+		pam.setAssistingTaskSpawner(driver);
 
 		pam.init(params);
 

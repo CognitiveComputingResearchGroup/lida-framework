@@ -231,9 +231,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	/*
-	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setTaskSpawner(edu.memphis.ccrg.lida.framework.TaskSpawner)
+	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setControllingTaskSpawner(edu.memphis.ccrg.lida.framework.TaskSpawner)
 	 */
-	public void setTaskSpawner(TaskSpawner ts) {
+	public void setControllingTaskSpawner(TaskSpawner ts) {
 		this.ts=ts;		
 	}
 	

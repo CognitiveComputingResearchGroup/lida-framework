@@ -140,7 +140,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public void setTaskSpawner(TaskSpawner ts) {
+	public void setControllingTaskSpawner(TaskSpawner ts) {
 		
 
 	}

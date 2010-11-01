@@ -14,7 +14,5 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 public interface Environment extends SensoryMotorListener, LidaModule{
 
 	public abstract void resetEnvironment();
-	
-	public void setTaskManager(LidaTaskManager taskManager);
 
 }

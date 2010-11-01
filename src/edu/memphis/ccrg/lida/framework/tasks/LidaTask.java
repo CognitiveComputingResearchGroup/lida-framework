@@ -102,7 +102,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * Sets the TaskSpawner that controls this LidaTask.
 	 * @param ts the TaskSpawner
 	 */
-	public abstract void setTaskSpawner(TaskSpawner ts);
+	public abstract void setControllingTaskSpawner(TaskSpawner ts);
 	
 	/**
 	 * Gets the TaskSpawner that controls this LidaTask.

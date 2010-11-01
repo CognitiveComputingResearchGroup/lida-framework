@@ -37,10 +37,5 @@ public interface ActionSelection extends LidaModule, TriggerListener, Saveable {
 	 */
 	public abstract void selectAction();
 
-	/**
-	 * TODO maybe all lidamodules should have setTaskSpawner
-	 * @param taskSpawner the actionselectiondriver
-	 */
-	public abstract void setTaskSpawner(TaskSpawner taskSpawner);
 
 }

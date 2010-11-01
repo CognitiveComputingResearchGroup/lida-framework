@@ -42,14 +42,14 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		
 		//LidaTaskManager ltm = new LidaTaskManager(0, 100);
 		//ltm.resumeSpawnedTasks();
-		//ActionSelectionDriver taskSpawner = new ActionSelectionDriver(1, ltm);
+		//ActionSelectionDriver driver = new ActionSelectionDriver(1, ltm);
 		//NoActionSelectionOccurringTrigger t = new NoActionSelectionOccurringTrigger();
-		//t.setUp(new HashMap<String,Object>(),behaviorNet, taskSpawner);
-		//taskSpawner.addActionSelectionTrigger(t);
+		//t.setUp(new HashMap<String,Object>(),behaviorNet, driver);
+		//driver.addActionSelectionTrigger(t);
 		
-		//taskSpawner.start();		
+		//driver.start();		
 		TaskSpawner mockTS = new MockTaskSpawner();
-		behaviorNet.setTaskSpawner(mockTS);
+		behaviorNet.setAssistingTaskSpawner(mockTS);
 		
 		Map<String, Double> params = new HashMap<String, Double>();
 		//params.put("", value)		

@@ -36,7 +36,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void setTaskSpawner(TaskSpawner taskSpawner) {
+	public void setAssistingTaskSpawner(TaskSpawner taskSpawner) {
 		
 
 	}

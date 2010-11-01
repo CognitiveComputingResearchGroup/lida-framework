@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
-public class GlobalWorkspaceImpl implements GlobalWorkspace {
+public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public void addBroadcastListener(BroadcastListener bl) {
@@ -91,12 +91,6 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace {
 	public Object getParam(String name, Object defaultValue) {
 		
 		return null;
-	}
-
-	@Override
-	public void init(Map<String, ?> lidaProperties) {
-		
-		
 	}
 
 	@Override
@@ -240,7 +234,7 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void setTaskSpawner(TaskSpawner ts) {
+	public void setControllingTaskSpawner(TaskSpawner ts) {
 		
 		
 	}
@@ -314,6 +308,18 @@ public class GlobalWorkspaceImpl implements GlobalWorkspace {
 	@Override
 	public void setExciteStrategy(ExciteStrategy strategy) {
 		
+		
+	}
+
+	@Override
+	public void setAssistingTaskSpawner(TaskSpawner ts) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void init(Map<String, ? extends Object> parameters) {
+		// TODO Auto-generated method stub
 		
 	}
 

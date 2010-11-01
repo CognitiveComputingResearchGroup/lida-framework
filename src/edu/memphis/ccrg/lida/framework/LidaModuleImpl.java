@@ -13,6 +13,8 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+
 /**
  * @author Javier Snaider
  * 
@@ -22,24 +24,20 @@ public abstract class LidaModuleImpl implements LidaModule {
 	private ModuleName moduleName;
 	protected Map<String, ?> lidaProperties;
 	private Map<ModuleName, LidaModule> submodules = new ConcurrentHashMap<ModuleName, LidaModule>();
-
-	public LidaModuleImpl(ModuleName moduleName) {
-		this.moduleName = moduleName;
-	}
+	protected TaskSpawner taskSpawner;
 
 	public LidaModuleImpl() {
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleType()
-	 */
-	public ModuleName getModuleName() {
-		return moduleName;
+	
+	public LidaModuleImpl(ModuleName moduleName) {
+		this.moduleName = moduleName;
 	}
 	
 	public abstract Object getModuleContent(Object... params);
+	
+	public void setAssistingTaskSpawner(TaskSpawner ts){
+		taskSpawner = ts;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -49,6 +47,17 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 */
 	public void init(Map<String, ?> params) {
 		this.lidaProperties = params;
+	}
+	
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (lidaProperties != null) {
+			value = lidaProperties.get(name);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
 	}
 
 	public LidaModule getSubmodule(ModuleName type) {
@@ -79,20 +88,16 @@ public abstract class LidaModuleImpl implements LidaModule {
 	public void setModuleName(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
-
-	//TODO make abstract
-	public void setAssociatedModule(LidaModule module) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleType()
+	 */
+	public ModuleName getModuleName() {
+		return moduleName;
 	}
 
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (lidaProperties != null) {
-			value = lidaProperties.get(name);
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
+	public void setAssociatedModule(LidaModule module) {
 	}
 
 }

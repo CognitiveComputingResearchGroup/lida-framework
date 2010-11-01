@@ -49,6 +49,5 @@ public interface ProceduralMemory extends LidaModule, Saveable {
 	 * @param s
 	 */
 	public abstract void addScheme(Scheme s);
-
-	public abstract void setTaskSpawner(TaskSpawner driver);
+	
 }

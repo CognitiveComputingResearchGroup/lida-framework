@@ -68,8 +68,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * Listeners of this Procedural Memory
 	 */
 	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
-	
-	private TaskSpawner taskSpawner;
 
 	public ProceduralMemoryImpl() {
 		super(ModuleName.ProceduralMemory);
@@ -83,24 +81,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public void setSchemeActivationBehavior(SchemeActivationBehavior b) {
 		schemeActivationBehavior = b;
-	}
-	
-	public void setTaskSpawner(TaskSpawner ts){
-		this.taskSpawner = ts;
-	}
-	
-	@Override
-	public void setAssociatedModule(LidaModule module) {
-		if (module != null) {
-			if (module instanceof TaskSpawner) {
-				taskSpawner = (TaskSpawner) module;
-			}else{
-				logger.log(Level.WARNING, "Module failed is-a test", 
-						LidaTaskManager.getActualTick());
-			}
-		}else{
-			logger.log(Level.WARNING, "supplied module was null", LidaTaskManager.getActualTick());
-		}
 	}
 
 	@Override
@@ -136,7 +116,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		// TODO: Consider other ways of storing the incoming broadcast.
+		// TODO Consider other ways of storing the incoming broadcast.
 		synchronized(this){
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}

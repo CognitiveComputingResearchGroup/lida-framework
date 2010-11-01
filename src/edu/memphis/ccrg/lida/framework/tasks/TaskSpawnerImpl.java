@@ -60,7 +60,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	public void addTask(LidaTask task) {
 		task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
-		task.setTaskSpawner(this);
+		task.setControllingTaskSpawner(this);
 		runningTasks.add(task);
 		runTask(task);
 		logger.log(Level.FINEST, "Task {1} added", new Object[]{LidaTaskManager.getActualTick(),task});

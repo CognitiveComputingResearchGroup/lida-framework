@@ -81,8 +81,6 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public void setNewLinkType(String type);
 	
-	public void setTaskSpawner(TaskSpawner spawner);
-	
 	/**
 	 * Set the type of Node used in this PAM
 	 * @param type

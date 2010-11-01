@@ -24,7 +24,6 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
@@ -128,7 +127,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	
 	/**
-	 * @param evt
+	 * @param evt - gui event
 	 */
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : guis)
@@ -162,14 +161,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			return false;
 		}
 	}// method
-	
-	
-
-	@Override
-	public void setTaskSpawner(TaskSpawner taskSpawner) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void receiveStream(Stream s) {

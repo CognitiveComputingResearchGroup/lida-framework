@@ -31,6 +31,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /**
@@ -213,6 +214,10 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 		if (listener instanceof BroadcastListener){
 			addBroadcastListener((BroadcastListener)listener);
 		}
+	}
+	@Override
+	public void setAssistingTaskSpawner(TaskSpawner ts) {
+		logger.log(Level.SEVERE, "Global workspace is already a Task Spawner", LidaTaskManager.getActualTick());
 	}
 
 }// class

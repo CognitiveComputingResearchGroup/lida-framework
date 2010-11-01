@@ -8,7 +8,6 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,7 +35,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
@@ -143,11 +141,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Map of behaviors indexed by the elements appearing in their delete list.
 	 */
 	private ConcurrentMap<Node, Set<Behavior>> behaviorsByDeletingItem = new ConcurrentHashMap<Node, Set<Behavior>>();
-
-	/**
-	 * Likely the action selection driver
-	 */
-	private TaskSpawner taskSpawner;
 	
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 
@@ -165,16 +158,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	public BehaviorNetworkImpl() {
 		super();
-	}
-
-	public void setTaskSpawner(TaskSpawner ts) {
-		this.taskSpawner = ts;
-		// if(ts instanceof ActionSelectionDriver)
-		// this.taskSpawner = (ActionSelectionDriver) ts;
-		// else
-		// logger.log(Level.SEVERE,
-		// "Expected ActionSelectionDriver as the taskSpawner but got " +
-		// ts.toString(), LidaTaskManager.getActualTick());
 	}
 
 	@Override

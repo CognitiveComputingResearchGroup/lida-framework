@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * 
@@ -29,6 +30,12 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	private List<FrameworkGuiEventListener> listeners = new ArrayList<FrameworkGuiEventListener>();
 
 	private final static int defaultTicksPerRun = 10;
+	
+	/**
+	 * 
+	 */
+	private TaskSpawner taskSpawner;
+	
 	/**
 	 * 
 	 */
@@ -38,6 +45,10 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener){
 		listeners.add(listener);
+	}
+	
+	public void setAssistingTaskSpawner(TaskSpawner ts){
+		taskSpawner = ts;
 	}
 	
 	@Override

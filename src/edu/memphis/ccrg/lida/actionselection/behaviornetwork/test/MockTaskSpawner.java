@@ -31,7 +31,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	@Override
 	public void addTask(LidaTask task) {
 		try {
-			task.setTaskSpawner(this);
+			task.setControllingTaskSpawner(this);
 			task.call();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

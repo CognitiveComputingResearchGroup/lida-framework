@@ -69,12 +69,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Current conscious broadcast
 	 */
 	private NodeStructure broadcastContent = new NodeStructureImpl();
-	
-    /**
-     * Used to spawn the various tasks for PAM
-     */
-	private TaskSpawner taskSpawner;
-	
+
 	/**
 	 * How PAM calculates the amount of activation to propagate
 	 */
@@ -97,19 +92,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
-	}
-	/**
-	 * @param taskSpawner the taskSpawner to set
-	 */
-	public void setTaskSpawner(TaskSpawner taskSpawner) {
-		this.taskSpawner = taskSpawner;
-	}
-	
-	/**
-	 * Get this PAM's task spawner
-	 */
-	public TaskSpawner getTaskSpawner() {
-		return taskSpawner;
 	}
 
 	/**

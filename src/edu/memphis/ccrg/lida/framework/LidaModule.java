@@ -8,10 +8,12 @@
 package edu.memphis.ccrg.lida.framework;
 
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * Generic Module Interface in LIDA.
- * @author Javier Snaider
+ * General Module Interface in LIDA.
+ * 
+ * @author Javier Snaider, Ryan McCall
  *
  */
 public interface LidaModule extends Initializable{
@@ -20,32 +22,47 @@ public interface LidaModule extends Initializable{
 	/**
 	 * @return ModuleName
 	 */
-	public abstract ModuleName getModuleName();
+	public ModuleName getModuleName();
 	
 	/**
 	 * param ModuleName
 	 */
-	public abstract void setModuleName(ModuleName moduleName);
+	public void setModuleName(ModuleName moduleName);
 	
 	/**
 	 * @param name of the desired submodule.
 	 * @return the submodule.
 	 */
-	public abstract LidaModule getSubmodule(ModuleName name);
+	public LidaModule getSubmodule(ModuleName name);
 	
 	/**
-	 * @return the generic content of this module.
+	 * Adds submodule as a component of this LidaModule.
+	 * @param lm submodule to add
 	 */
-	public abstract Object getModuleContent(Object... params);
+	public void addSubModule(LidaModule lm);
+	
+	/**
+	 * @param params - specifies what content will be returned.
+	 * @return various kinds of content of this module.
+	 */
+	public Object getModuleContent(Object... params);
 
 	/**
-	 * Decay the module and all the submodules. 
+	 * Decay this module and all its submodules. 
 	 * @param ticks number of ticks to decay.
 	 */
-	public abstract void decayModule(long ticks);
+	public void decayModule(long ticks);
 
-	public abstract void addSubModule(LidaModule lm);
-
-	public abstract void addListener(ModuleListener listener);
+	/**
+	 * Generic way to add various kinds of listeners.  
+	 * @param listener - listener of this LidaModule
+	 */
+	public void addListener(ModuleListener listener);
+	
+	/**
+	 * Specify the TaskSpawner which this LidaModule will use to spawn tasks
+	 * @param ts - the TaskSpawner
+	 */
+	public void setAssistingTaskSpawner(TaskSpawner ts);
 
 }
