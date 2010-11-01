@@ -90,7 +90,9 @@ public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements 
 	public void spawnNewCodelet(){
 		WorkspaceBuffer csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
 		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
-		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl(csm, perceptualBuffer);
+		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl();
+		basic.addAccessibleBuffer(csm);
+		basic.addAccessibleBuffer(perceptualBuffer);
 		this.addTask(basic);
 		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getActualTick());
 	}// method

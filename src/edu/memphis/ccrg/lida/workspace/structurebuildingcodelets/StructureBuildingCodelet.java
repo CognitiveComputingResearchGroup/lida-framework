@@ -32,8 +32,7 @@ public interface StructureBuildingCodelet extends Codelet{
 	 public void setCodeletResult(CodeletResult cr);
 	 public CodeletResult getCodeletResult();
 
-	 public void addAccessibleModule(WorkspaceBuffer module);
-	 public Set<WorkspaceBuffer> getAccessibleModules();
+	 public void addAccessibleBuffer(WorkspaceBuffer buffer);
 	
 	 /**
 	  * Type is determined by what buffers are accessible to this codelet

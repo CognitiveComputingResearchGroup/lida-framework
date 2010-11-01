@@ -41,34 +41,18 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	public AttentionCodeletImpl(){
 		super();
 	}
-	
-	/**
-	 * TODO Use default constructor with factory and init
-	 * @param csm
-	 * @param g
-	 * @param ticksPerStep
-	 * @param activation
-	 * @param s
-	 */
-    public AttentionCodeletImpl(WorkspaceBuffer csm, GlobalWorkspace g, int ticksPerStep,
-    							double activation, NodeStructure soughtContent){
-    	super(ticksPerStep);
-    	setActivation(activation);
-    	this.currentSituationalModel = csm;
-    	globalWorkspace = g;
-    	this.soughtContent=soughtContent;
-    }
     
+    //TODO not working yet
 	public void init(){
-		currentSituationalModel=(WorkspaceBuffer)getParam("csm",null);
-		soughtContent=(NodeStructure)getParam("soughtContent",null);
-		globalWorkspace=(GlobalWorkspace)getParam("gw",null);
+		currentSituationalModel = (WorkspaceBuffer)getParam("csm",null);
+		soughtContent= (NodeStructure) getParam("soughtContent",null);
+		globalWorkspace = (GlobalWorkspace) getParam("gw",null);
 	}
 
 	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module instanceof GlobalWorkspace){
-		globalWorkspace = (GlobalWorkspace) module;
+			globalWorkspace = (GlobalWorkspace) module;
 		}		
 	}
 	
@@ -94,7 +78,7 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	}
 
 	protected void runThisLidaTask() {
-		if (csmHasDesiredContent()) {
+		if (hasDesiredContent(currentSituationalModel)) {
 			NodeStructure csmContent = getCsmContent();
 			if (csmContent != null)
 				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, getActivation()));
@@ -102,8 +86,8 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	}
 
 	//TODO Strategy pattern
-	public boolean csmHasDesiredContent() {
-		NodeStructure model = (NodeStructure)currentSituationalModel.getModuleContent();
+	public boolean hasDesiredContent(WorkspaceBuffer buffer) {
+		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
 		for (Node n : nodes)
@@ -118,10 +102,10 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	}
 
 	public NodeStructure getCsmContent() {
-		if (csmHasDesiredContent())
+		if (hasDesiredContent(currentSituationalModel))
 			return (NodeStructure) currentSituationalModel.getModuleContent();
 		else
-			return null;
+			return new NodeStructureImpl();
 	}
 	public String toString(){
 		return "AttentionCodelet-"+ getTaskId();
@@ -132,6 +116,11 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	 */
 	private NodeStructure getDesiredContent() {
 		return soughtContent;
+	}
+
+	@Override
+	public void setSoughtContent(NodeStructure content) {
+		soughtContent = content;
 	}	
 
 }// class

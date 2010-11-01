@@ -15,11 +15,6 @@ public abstract class CodeletImpl extends LidaTaskImpl implements Codelet {
 	public CodeletImpl() {
 		super();
 	}
-	
-	//TODO remove
-	public CodeletImpl(int ticksPerStep) {
-		super(ticksPerStep);
-	}	
 
 	@Override
 	public double getBaseLevelActivation() {

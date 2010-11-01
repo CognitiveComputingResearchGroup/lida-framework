@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
@@ -57,14 +58,10 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	private CodeletResult results = new BasicCodeletResult();
 	
 	/**
-	 * TODO Default constructor
-	 * @param csm
-	 * @param perceptualBuffer
+	 * 
 	 */
-	public StructureBuildingCodeletImpl(WorkspaceBuffer csm, WorkspaceBuffer perceptualBuffer){
-		super(100);
-		this.currentSituationalModel = csm;
-		accessibleModules.add(perceptualBuffer);
+	public StructureBuildingCodeletImpl(){
+		super();
 	}
                             
 	protected void runThisLidaTask(){	
@@ -111,8 +108,11 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		return results;
 	}
 
-	public void addAccessibleModule(WorkspaceBuffer module) {
-		accessibleModules.add(module);		
+	public void addAccessibleBuffer(WorkspaceBuffer buffer) {
+		if(buffer.getModuleName() == ModuleName.CurrentSituationalModel)
+			currentSituationalModel = buffer;
+		else
+			accessibleModules.add(buffer);		
 	}
 	public Set<WorkspaceBuffer> getAccessibleModules() {
 		return accessibleModules;

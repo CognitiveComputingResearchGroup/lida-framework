@@ -8,6 +8,7 @@
 
 package edu.memphis.ccrg.lida.attention;
 
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -24,7 +25,13 @@ public interface AttentionCodelet extends Codelet{
   	 * Returns true if the current situational model contains the content which this codelet seeks.
   	 * 
      */
-	public abstract boolean csmHasDesiredContent();
+	public abstract boolean hasDesiredContent(WorkspaceBuffer buffer);
+	
+	/**
+	 * what this codelet is looking for
+	 * @param content
+	 */
+	public void setSoughtContent(NodeStructure content);
 	
 	/**
 	 * @param gw the GlobalWorkspace to set

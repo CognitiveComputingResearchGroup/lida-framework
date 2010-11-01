@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -32,35 +33,18 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	private static Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
 	
 	private WorkspaceBuffer csm;
-	private GlobalWorkspace global;
-	
-	// TODO: move these to factory
-	private double defaultActiv = 1.0;
+	private GlobalWorkspace globalWorkspace;
 	private NodeStructure broadcastContent;
-	private static final int DEFAULT_TICKS_PER_STEP = 10;
+	
+	private NodeFactory factory = NodeFactory.getInstance();
 
 	public AttentionDriver() {
-		super(DEFAULT_TICKS_PER_STEP, ModuleName.AttentionDriver);
-	}
-	
-	//TODO use only default and set values
-	/**
-	 * 
-	 */
-	public AttentionDriver(WorkspaceBuffer csm, GlobalWorkspace gwksp,
-			int ticksPerCycle, LidaTaskManager tm) {
-		super(ticksPerCycle, tm, ModuleName.AttentionDriver);
-		this.csm = csm;
-		global = gwksp;
+		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.AttentionDriver);
 	}
 	
 	@Override
 	public void init(Map<String,?> params) {
-		lidaProperties=params;
-		int ticksperstep = 0;
-		ticksperstep = (Integer)getParam("AttetionSelection.ticksperstep",DEFAULT_TICKS_PER_STEP);
-		setNumberOfTicksPerRun(ticksperstep);
-	//	defaultActiv=(Double)getParam("AttetionSelection.defaultActiv",1.0);
+		lidaProperties = params;
 	}
 	
 	@Override
@@ -71,13 +55,12 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 				csm = (WorkspaceBuffer) module.getSubmodule(ModuleName.CurrentSituationalModel);
 			} else if (module instanceof GlobalWorkspace
 					&& module.getModuleName() == ModuleName.GlobalWorkspace) {
-				global = (GlobalWorkspace) module;
+				globalWorkspace = (GlobalWorkspace) module;
 			}
 		}
 	}
 
 	@Override
-	//TODO check other classes
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = (NodeStructure) bc;
 	}
@@ -87,28 +70,25 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		activateCodelets();
 	}
 
-	public void activateCodelets() {
-		// //For testing only!!!!!!
-		// if (getSpawnedTaskCount() < 10) {
-		// addTask(new
-		// AttentionCodeletImpl(csm,global,defaultTicksPerStep,defaultActiv
-		// ,getTaskManager() ,new NodeStructureImpl()));
-		// }
+	private void activateCodelets() {
 	}
+	
+	private String defaultCodeletName = "AttentionCodeletImpl";
+	private int defaultCodeletTicksPerStep = 5;
+	private double defaultCodeletActivation = 1.0;
+	private Map<String, Object> params = null;
 
-	//TODO: use factory
-	public void spawnNewCodelet() {
-		
-		
-		//TODO: move vars out
-		int ticksPerStep = 5;
-		double activation = 1.0;
-		NodeStructure ns = new NodeStructureImpl();
-		
-		AttentionCodelet basic = new AttentionCodeletImpl(this.csm, this.global, ticksPerStep, activation, ns);
-		this.addTask(basic);
-		logger.log(Level.FINER,"New attention codelet "+basic+"spawned",LidaTaskManager.getActualTick());
+	public AttentionCodelet getNewAttentionCodelet() {
+		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, defaultCodeletTicksPerStep, defaultCodeletActivation, params);
+		codelet.setGlobalWorkspace(globalWorkspace);
+		codelet.setWorkspaceBuffer(csm);
+		return codelet;
 	}// method
+	
+	public void addTask(AttentionCodelet codelet){
+		super.addTask(codelet);
+		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getActualTick());
+	}
 
 	@Override
 	public void receivePreafference(Collection<Node> addSet, Collection<Node> deleteSet) {
