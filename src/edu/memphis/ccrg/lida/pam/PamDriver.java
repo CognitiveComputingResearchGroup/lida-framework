@@ -28,7 +28,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 	private PerceptualAssociativeMemory pam;
 
 	public PamDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.PamDriver);
+		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.PamDriver);
 	}// constructor
 
 	@Override

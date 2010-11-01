@@ -17,10 +17,11 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
 public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements ModuleDriver {
+	
 	protected static final int DEFAULT_TICKS_PER_CYCLE = 10;
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private ModuleName moduleName;
-	protected Map<String,?> lidaProperties;
+	protected Map<String, ?> lidaProperties;
 
 	public ModuleDriverImpl(int ticksPerCycle, LidaTaskManager tm,ModuleName moduleName){
 		super(ticksPerCycle, tm);

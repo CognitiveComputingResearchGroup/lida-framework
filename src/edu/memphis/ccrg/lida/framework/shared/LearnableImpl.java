@@ -23,20 +23,20 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * @author Javier Snaider
  *
  */
-public class LearnableActivatibleImpl extends ActivatibleImpl implements LearnableActivatible {
+public class LearnableImpl extends ActivatibleImpl implements LearnableActivatible {
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
 	private static Logger logger = Logger.getLogger("lida.framework.shared.BasedActivatibleImpl");
 
-	public LearnableActivatibleImpl(double activation, ExciteStrategy exciteStrategy, 
+	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
 									DecayStrategy decayStrategy) {
 		super(activation, exciteStrategy, decayStrategy);
 		this.baseLevelExciteStrategy = exciteStrategy;
 		this.baseLevelDecayStrategy = decayStrategy;
 	}
 
-	public LearnableActivatibleImpl() {
+	public LearnableImpl() {
 		super();
 		baseLevelActivation = 0.0;
 		baseLevelDecayStrategy = new LinearDecayStrategy();
