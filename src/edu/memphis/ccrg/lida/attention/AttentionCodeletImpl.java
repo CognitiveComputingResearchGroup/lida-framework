@@ -14,7 +14,8 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
+
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -28,7 +29,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  * 
  */
-public class AttentionCodeletImpl extends LidaTaskImpl implements AttentionCodelet {
+public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodelet {
 	
 	protected NodeStructure soughtContent = new NodeStructureImpl();
 	protected WorkspaceBuffer currentSituationalModel;

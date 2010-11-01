@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  * @author Ryan J McCall, Javier Snaider
  *
  */
-public interface PamNode extends Node, LearnableActivatible, PamLinkable{
+public interface PamNode extends Node, Learnable, PamLinkable{
 
 
 }// interface

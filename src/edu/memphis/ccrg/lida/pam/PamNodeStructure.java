@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -260,7 +260,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public void decayLinkables(long ticks){
 		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getActualTick());
 		for(Linkable l: getLinkables()){
-			LearnableActivatible la = (LearnableActivatible) l;
+			Learnable la = (Learnable) l;
 			la.decay(ticks);
 			la.decayBaseLevelActivation(ticks);
 		}

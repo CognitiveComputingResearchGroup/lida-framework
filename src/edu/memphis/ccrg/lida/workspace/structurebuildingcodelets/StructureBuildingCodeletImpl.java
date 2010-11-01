@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  *
  */
-public class StructureBuildingCodeletImpl extends LidaTaskImpl implements StructureBuildingCodelet{
+public class StructureBuildingCodeletImpl extends CodeletImpl implements StructureBuildingCodelet{
 	
 	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SbCodeletImpl");
 

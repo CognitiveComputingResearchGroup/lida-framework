@@ -11,7 +11,7 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.Learnable;
 
 /**
  * 
@@ -19,11 +19,11 @@ import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
  * 
  * TODO extend LearnableActivatible.  must copy methods =/
  */
-public interface Codelet extends LidaTask{
+public interface Codelet extends LidaTask, Learnable{
 	
 	/**
-	 * 
-	 * @param module
+	 * TODO what is the exact motivation for this?
+	 * @param module - module related to this codelet
 	 */
 	public abstract void setAssociatedModule(LidaModule module);
 	

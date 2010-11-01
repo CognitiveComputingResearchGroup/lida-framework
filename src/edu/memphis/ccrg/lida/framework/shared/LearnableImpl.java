@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * @author Javier Snaider
  *
  */
-public class LearnableImpl extends ActivatibleImpl implements LearnableActivatible {
+public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;

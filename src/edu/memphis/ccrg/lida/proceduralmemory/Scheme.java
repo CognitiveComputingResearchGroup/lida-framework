@@ -10,14 +10,14 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.LearnableActivatible;
+import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  *
  * @author Ryan J. McCall
  */
-public interface Scheme extends LearnableActivatible{
+public interface Scheme extends Learnable{
 	
 	/**
 	 * unique identifier for this scheme
