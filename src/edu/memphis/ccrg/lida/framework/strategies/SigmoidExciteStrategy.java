@@ -24,6 +24,7 @@ public class SigmoidExciteStrategy implements ExciteStrategy{
 
 	@Override
 	public double excite(double currentActivation, double excitation, Object... params) {
+		//TODO Fix
 		double newActivation = currentActivation + 1 / (1 + Math.exp(-excitation * m + b));
 		return newActivation;
 	}

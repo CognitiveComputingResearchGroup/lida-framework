@@ -85,7 +85,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 		return codelet;
 	}// method
 	
-	public void addTask(AttentionCodelet codelet){
+	public void runAttentionCodelet(AttentionCodelet codelet){
 		super.addTask(codelet);
 		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getActualTick());
 	}

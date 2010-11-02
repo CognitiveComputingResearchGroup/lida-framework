@@ -42,7 +42,7 @@ public class AttentionDriverInitializer implements Initializer {
 		//TODO getCodelet not working
 		ac.setGlobalWorkspace(gw);
 		ac.setWorkspaceBuffer(csm);
-		driver.addTask(ac);
+		driver.runAttentionCodelet(ac);
 	}
 
 }

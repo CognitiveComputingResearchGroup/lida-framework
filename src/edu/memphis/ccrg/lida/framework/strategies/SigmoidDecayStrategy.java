@@ -30,6 +30,7 @@ public class SigmoidDecayStrategy implements DecayStrategy{
 	
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
+		//TODO Fix
 		double newActivation = currentActivation - 1 / (1 + Math.exp(-ticks*m + b));
 		return newActivation;
 	}
