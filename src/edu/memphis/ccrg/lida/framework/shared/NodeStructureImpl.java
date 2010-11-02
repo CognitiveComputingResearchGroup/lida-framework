@@ -558,24 +558,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return linkable;
 	}
 
-	/**
-	 * Returns true if both NodeStructures have the same Nodes and Links.
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object o) {
-		boolean result = false;
-		if ((o != null) && (o instanceof NodeStructure)) {
-			NodeStructure ns = (NodeStructure) o;
-			Set<Linkable> nsLinkables = ns.getLinkableMap().keySet();
-			Set<Linkable> thisLinkables = linkableMap.keySet();
-			if (thisLinkables.size() == nsLinkables.size()
-					&& thisLinkables.containsAll(nsLinkables)) {
-				result = true;
-			}
-		}
-		return result;
-	}
-
 	@Override
 	public String getDefaultLinkType() {
 		return defaultLinkType;
@@ -605,15 +587,62 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public String getNodeAndLinkCount() {
 		return "Nodes: " + getNodeCount() + " Links: " + getLinkCount();
 	}
+	
+	/**
+	 * Returns true if both NodeStructures have the same nodes and links
+	 * and 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if(this == o){
+			return true;
+		}
+		
+		if(!(o instanceof NodeStructureImpl)){
+			return false;
+		}
+		
+		NodeStructureImpl other = (NodeStructureImpl)o;
+		if(this.getNodeCount() != other.getNodeCount()){
+			return false;
+		}else if(this.getLinkCount() != other.getLinkCount()){
+			return false;
+		}
+		
+		//Iterate through other's nodes checking for equality
+		for(Node n: other.getNodes()){
+			if(this.containsNode(n)){
+				//Do nothing
+			}else{
+				return false;
+			}
+		}
+
+		//Iterate through other's link checking for equality
+		for(Link l: other.getLinks()){
+			if(this.containsLink(l)){
+				//Do nothing
+				//Do I have to check source and sink?
+			}else{
+				return false;
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public int hashCode() {
-		Long nodeIdSum = 0L;
+		//Generate a long value for nodes based on the number of nodes and
+		//individual node id.
+		Long nodeIdSum = (long) (getNodeCount() * 19);
 		for(Node n: nodes.values()){
 			nodeIdSum += n.getId();			
-		}//for each node
+		}
 		
-		Long linkIdSum = 0L;
+		//Generate a long value for links based on the number of links and
+		//individual link's source and sink. There are 4 cases as to the
+		//kind of object source and sink can be.
+		Long linkIdSum = (long) (getLinkCount() * 29);
 		for(Link l: links.values()){
 			Linkable source = l.getSource();
 			Linkable sink  = l.getSink();
