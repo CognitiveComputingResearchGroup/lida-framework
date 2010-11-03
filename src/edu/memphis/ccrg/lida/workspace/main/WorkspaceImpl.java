@@ -122,7 +122,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	public void receiveBroadcast(BroadcastContent bc) {
 		((BroadcastListener)getSubmodule(ModuleName.BroadcastQueue)).receiveBroadcast(bc);	
 	}
-	
+		
 	/**
 	 * Received local associations are merged into the episodic buffer.
 	 * Then they are sent to PAM.

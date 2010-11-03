@@ -144,7 +144,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = (NodeStructure) bc;
+		broadcastContent = ((NodeStructure) bc).copy();
 	}
 
 	public synchronized void receivePreafference(Collection<Node> addList, Collection<Node> deleteList) {

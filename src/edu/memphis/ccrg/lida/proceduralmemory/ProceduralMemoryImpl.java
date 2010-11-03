@@ -17,11 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PassActivationAmongBehaviorsTask;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PassActivationFromBroadcastTask;
-import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -30,8 +25,8 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
@@ -116,15 +111,18 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		// TODO Consider other ways of storing the incoming broadcast.
 		synchronized(this){
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
 
-		LidaTask activationFromBroadcastTask = new ProceduralBroadcastTask(this);
-		taskSpawner.addTask(activationFromBroadcastTask);
+		LidaTask broadcastTask = new LidaTaskImpl(){
+			protected void runThisLidaTask() {
+				activateSchemes();
+			}
+		};
+		taskSpawner.addTask(broadcastTask);
 	}
-
+	
 	@Override
 	public void learn() {
 		Collection<Node> nodes = currentBroadcast.getNodes();

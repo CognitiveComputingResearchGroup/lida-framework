@@ -1,6 +1,5 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -10,8 +9,6 @@ public abstract class CodeletImpl extends LidaTaskImpl implements Codelet {
 	
 	private final Learnable learnable = new LearnableImpl();
 	
-	private LidaModule associatedModule;
-
 	public CodeletImpl() {
 		super();
 	}
@@ -55,13 +52,5 @@ public abstract class CodeletImpl extends LidaTaskImpl implements Codelet {
 	public DecayStrategy getBaseLevelDecayStrategy() {
 		return learnable.getBaseLevelDecayStrategy();
 	}
-
-	@Override
-	public void setAssociatedModule(LidaModule module) {
-		associatedModule = module;
-	}
-
-	@Override
-	protected abstract void runThisLidaTask();
 
 }

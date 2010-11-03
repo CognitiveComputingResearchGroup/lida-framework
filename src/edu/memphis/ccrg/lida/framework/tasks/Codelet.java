@@ -21,9 +21,8 @@ import edu.memphis.ccrg.lida.framework.shared.Learnable;
 public interface Codelet extends LidaTask, Learnable{
 	
 	/**
-	 * TODO what is the exact motivation for this?
 	 * @param module - module related to this codelet
 	 */
-	public abstract void setAssociatedModule(LidaModule module);
+	public abstract void setAssociatedModule(CodeletModuleUsage usage, LidaModule module);
 	
 }

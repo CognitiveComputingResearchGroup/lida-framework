@@ -211,12 +211,13 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getParameter(java.lang.String)
 	 */
 	@Override
-	public Object getParam(String name,Object defaultValue) {
+	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
 		if (parameters != null) {
 			value = parameters.get(name);
 		}
 		if (value == null) {
+			logger.log(Level.WARNING, "Missing parameter, check factories data or first parameter: " + name, LidaTaskManager.getActualTick());
 			value = defaultValue;
 		}
 		return value;

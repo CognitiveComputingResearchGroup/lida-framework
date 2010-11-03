@@ -63,7 +63,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
     public void receiveBroadcast(BroadcastContent bc) {
         //logic for episodic learning goes here...
     }
-
+    
     /**
      * Cues this episodic memory.
      * @param cue a set of nodes used to cue this episodic memory

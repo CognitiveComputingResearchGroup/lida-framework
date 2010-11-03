@@ -32,4 +32,5 @@ public interface BroadcastListener extends ModuleListener{
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
 	public abstract void learn();
+	
 }

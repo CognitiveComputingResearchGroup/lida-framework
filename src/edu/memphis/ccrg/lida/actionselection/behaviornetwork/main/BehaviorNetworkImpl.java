@@ -34,6 +34,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -165,21 +166,35 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		// TODO set parameters for activation passing
 	}
 
-	// TODO check this everywhere.
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
-		LidaTask activationFromBroadcastTask = new PassActivationFromBroadcastTask(
-				this);
-		taskSpawner.addTask(activationFromBroadcastTask);
-		LidaTask activationAmongBehaviorsTask = new PassActivationAmongBehaviorsTask(
-				this);
-		taskSpawner.addTask(activationAmongBehaviorsTask);
-
-		runActionSelectionTriggers();
+		LidaTask broadcastTask = new LidaTaskImpl(){
+			protected void runThisLidaTask() {
+				//Look here
+				passActivationFromBroadcast();
+			}			
+		};
+		taskSpawner.addTask(broadcastTask);
+		
+		broadcastTask = new LidaTaskImpl(){
+			protected void runThisLidaTask() {
+				//Look here
+				passActivationAmongBehaviors();
+			}			
+		};
+		taskSpawner.addTask(broadcastTask);
+		
+		broadcastTask = new LidaTaskImpl(){
+			protected void runThisLidaTask() {
+				//Look here
+				runActionSelectionTriggers();
+			}			
+		};
+		taskSpawner.addTask(broadcastTask);
 	}
-
+	
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */

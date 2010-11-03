@@ -16,6 +16,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
+import edu.memphis.ccrg.lida.framework.tasks.CodeletModuleUsage;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -133,7 +134,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(CodeletModuleUsage usage, LidaModule module) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -21,6 +21,7 @@ public class PassActivationAmongBehaviorsTask extends LidaTaskImpl{
 	@Override
 	protected void runThisLidaTask() {
         bn.passActivationAmongBehaviors();
+
         this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 

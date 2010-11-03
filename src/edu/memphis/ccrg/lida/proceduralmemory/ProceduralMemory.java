@@ -12,7 +12,6 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public interface ProceduralMemory extends LidaModule, Saveable {
 
