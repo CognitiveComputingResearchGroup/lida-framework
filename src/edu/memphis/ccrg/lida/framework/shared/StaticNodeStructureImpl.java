@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-//TODO do I need to declare thrown exceptions?
 /**
- * An immutable NodeStructureImpl.  Throws Exception if modifying methods
+ * An immutable NodeStructureImpl.  Throws UnsupportedOprationException if modifying methods
  * are called.  Get, is, has, contains, methods call their inherited counterparts.
  */
 public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeStructure {
@@ -19,32 +18,50 @@ public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeSt
 		super(ns);
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public Link addLink(Link l) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public Link addLink(String idSource, String idSink, LinkCategory type,
 			double activation) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void addLinks(Collection<Link> links) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public Node addNode(Node n) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public Node addNode(Node n, String factoryName) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void addNodes(Collection<Node> nodes) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
@@ -55,26 +72,41 @@ public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeSt
 		return new StaticNodeStructureImpl(this);
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void deleteLink(Link l) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void deleteLinkable(Linkable l) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void deleteNode(Node n) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void clearNodes() {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public Collection<Link> getLinks() {
 		return super.getLinks();
@@ -99,12 +131,18 @@ public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeSt
 	public Collection<Node> getNodes() {
 		return super.getNodes();
 	}
-
+	
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void setDefaultLink(String linkClassName) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void setDefaultNode(String nodeClassName) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
@@ -130,6 +168,9 @@ public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeSt
 		return super.getLinkable(ids);
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
 	public void mergeWith(NodeStructure ns) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
