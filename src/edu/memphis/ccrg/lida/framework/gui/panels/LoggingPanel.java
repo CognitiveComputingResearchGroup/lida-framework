@@ -31,6 +31,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollBar;
 
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+
 /**
  *
  * @author Javier Snaider
@@ -234,25 +236,29 @@ public class LoggingPanel extends LidaPanelImpl {
 
         	String message = logRecord.getMessage();
         	if(message == null) //TODO: handle case where message is null
-        		System.out.println("in Logging Panel message was null");
-        	MessageFormat mf=new MessageFormat(message);
-//        	dateString=df.format(date);      
-        	Object[] param = logRecord.getParameters();
-        	if (param !=null && param[0] instanceof Long){
-        		actualTick=(Long)param[0];
-        	}
-//        	name=logRecord.getLoggerName();
-        	logMessages = String.format("%010d :%010d :%-10s :%-60s \t-> %s %n", 
-             logRecord.getSequenceNumber(), 
-                          actualTick ,
-                          logRecord.getLevel() ,
-                          logRecord.getLoggerName() ,
-                          mf.format(logRecord.getParameters()));
-        	synchronized(loggingText){
-        		loggingText.append(logMessages);
-        	}
-            JScrollBar jsb=jScrollPane1.getVerticalScrollBar();
-            jsb.setValue(jsb.getMaximum());
+        		logger.log(Level.WARNING, "in Logging Panel message was null", LidaTaskManager.getActualTick());
+        	else{
+        		MessageFormat mf=new MessageFormat(message);
+
+//            	dateString=df.format(date);  
+        		Object[] param = logRecord.getParameters();
+            	if (param !=null && param[0] instanceof Long){
+            		actualTick=(Long)param[0];
+            	}
+//            	name=logRecord.getLoggerName();
+            	logMessages = String.format("%010d :%010d :%-10s :%-60s \t-> %s %n", 
+                 logRecord.getSequenceNumber(), 
+                              actualTick ,
+                              logRecord.getLevel() ,
+                              logRecord.getLoggerName() ,
+                              mf.format(logRecord.getParameters()));
+            	synchronized(loggingText){
+            		loggingText.append(logMessages);
+            	}
+                JScrollBar jsb=jScrollPane1.getVerticalScrollBar();
+                jsb.setValue(jsb.getMaximum());
+        	}    
+        	
         }
 
         public void flush(){
