@@ -7,10 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
-import java.io.Serializable;
 
 /**
  * @author Javier Snaider, Ryan McCall
@@ -75,7 +74,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		this.setDefaultLink(defaultLink);		
 	}
 
-	//TODO why do we need the 2nd and 3rd parameters?
 	public NodeStructureImpl(NodeStructure oldGraph, String defaultNodeType, String defaultLinkType) {
 		this(defaultNodeType, defaultLinkType);
 

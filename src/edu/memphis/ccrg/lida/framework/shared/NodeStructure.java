@@ -80,7 +80,9 @@ public interface NodeStructure {
 	
 	public abstract String getDefaultNodeType();
 	public abstract String getDefaultLinkType();
-
+	
+	
+	//redundant with getLinkableCount
 	public abstract String getNodeAndLinkCount();
 	
 }
