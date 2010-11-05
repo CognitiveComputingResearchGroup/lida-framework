@@ -36,6 +36,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
@@ -174,6 +175,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			protected void runThisLidaTask() {
 				//Look here
 				passActivationFromBroadcast();
+				setTaskStatus(LidaTaskStatus.FINISHED);
 			}			
 		};
 		taskSpawner.addTask(broadcastTask);
@@ -182,6 +184,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			protected void runThisLidaTask() {
 				//Look here
 				passActivationAmongBehaviors();
+				setTaskStatus(LidaTaskStatus.FINISHED);
 			}			
 		};
 		taskSpawner.addTask(broadcastTask);
@@ -190,6 +193,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			protected void runThisLidaTask() {
 				//Look here
 				runActionSelectionTriggers();
+				setTaskStatus(LidaTaskStatus.FINISHED);
 			}			
 		};
 		taskSpawner.addTask(broadcastTask);

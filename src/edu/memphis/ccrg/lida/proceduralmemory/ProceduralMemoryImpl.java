@@ -27,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
@@ -118,6 +119,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		LidaTask broadcastTask = new LidaTaskImpl(){
 			protected void runThisLidaTask() {
 				activateSchemes();
+				setTaskStatus(LidaTaskStatus.FINISHED);
 			}
 		};
 		taskSpawner.addTask(broadcastTask);
