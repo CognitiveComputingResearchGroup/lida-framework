@@ -171,7 +171,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		synchronized (this) {
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
-		LidaTask broadcastTask = new LidaTaskImpl(){
+		LidaTask broadcastTask = new LidaTaskImpl(){			
 			protected void runThisLidaTask() {
 				//Look here
 				passActivationFromBroadcast();
@@ -189,14 +189,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		};
 		taskSpawner.addTask(broadcastTask);
 		
-		broadcastTask = new LidaTaskImpl(){
-			protected void runThisLidaTask() {
-				//Look here
-				runActionSelectionTriggers();
-				setTaskStatus(LidaTaskStatus.FINISHED);
-			}			
-		};
-		taskSpawner.addTask(broadcastTask);
+		runActionSelectionTriggers();
+		//TODO Explore this alternative and find out why it degrades performance of wumpus agent
+//		broadcastTask = new LidaTaskImpl(){
+//			protected void runThisLidaTask() {
+//				//Look here
+//				runActionSelectionTriggers();
+//				setTaskStatus(LidaTaskStatus.FINISHED);
+//			}			
+//		};
+//		taskSpawner.addTask(broadcastTask);
 	}
 	
 	/**
