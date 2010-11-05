@@ -44,29 +44,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return new LinkImpl(this);
 	}
 
-	/**
-	 * This method compares this LinkImp with any kind of Link. Two Links are
-	 * equals if and only if their sources and sinks are equals and are Links of
-	 * the same category.
-	 * 
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Link)) {
-			return false;
-		}
-		Link other = (Link) obj;
-
-		if (other.getCategory() != category) {
-			return false;
-		}
-
-		if (ids.equals(other.getIds())) {
-			return true;
-		}
-		return false;
-	}
-
 	public String getIds() {
 		return ids;
 	}
@@ -90,15 +67,36 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public int hashCode() {
 		int hash = 1;
-		hash = hash * 31 + ((source == null) ? 0 : source.hashCode())
-				+ ((sink == null) ? 0 : sink.hashCode());
+		hash = hash * 31 + ((source == null) ? 0 : source.hashCode()) * 29 +
+						   ((sink == null) ? 0 : sink.hashCode()) * 37;
 		hash = hash * 31 + (category == null ? 0 : category.hashCode());
 		return hash;
+		
+//		return (int) (id % 37);
 	}
+	
+	/**
+	 * This method compares this LinkImpl with any kind of Link.
+	 * Two Links are
+	 * equals if and only if they have the same id.
+	 * 
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Link)) {
+			return false;
+		}
+		Link other = (Link) obj;
 
-//	public void setIds(String id) {
-//		//The ids can not be set
-//	}
+		if (other.getCategory() != category) {
+			return false;
+		}
+
+		if (ids.equals(other.getIds())) {
+			return true;
+		}
+		return false;
+	}
 	
 	public String getId(){
 		return ids;

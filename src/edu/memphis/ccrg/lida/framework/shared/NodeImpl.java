@@ -82,10 +82,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return ((Node) o).getId() == id;
 	}
 	public int hashCode() {
-		return ((int) id % 31);
+		return (int) (id % 31);
 	}
 	public String toString(){
-		return getLabel() + " ["+getId()+"] ";
+		return "Node: " + getLabel() + " ["+getId()+"] ";
 	}
 
 	@Override

@@ -592,9 +592,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object o) {
-		if(this == o){
-			return true;
-		}
 		
 		if(!(o instanceof NodeStructureImpl)){
 			return false;
@@ -609,7 +606,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		
 		//Iterate through other's nodes checking for equality
 		for(Node n: other.getNodes()){
-			if(this.containsNode(n)){
+			if(this.containsNode(n)){ //this checks for the node by id
 				//Do nothing
 			}else{
 				return false;
@@ -620,7 +617,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		for(Link l: other.getLinks()){
 			if(this.containsLink(l)){
 				//Do nothing
-				//Do I have to check source and sink?
 			}else{
 				return false;
 			}
@@ -634,13 +630,18 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		//individual node id.
 		Long nodeIdSum = (long) (getNodeCount() * 19);
 		for(Node n: nodes.values()){
-			nodeIdSum += n.getId();			
+			nodeIdSum += n.getId() * 17;			
 		}
 		
 		//Generate a long value for links based on the number of links and
 		//individual link's source and sink. There are 4 cases as to the
 		//kind of object source and sink can be.
 		Long linkIdSum = (long) (getLinkCount() * 29);
+		
+//		for(Link l: links.values()){
+//			linkIdSum += l.getIds().hashCode() * 31;
+//		}
+		
 		for(Link l: links.values()){
 			Linkable source = l.getSource();
 			Linkable sink  = l.getSink();
