@@ -66,13 +66,9 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
-		hash = hash * 31 + ((source == null) ? 0 : source.hashCode()) * 29 +
-						   ((sink == null) ? 0 : sink.hashCode()) * 37;
-		hash = hash * 31 + (category == null ? 0 : category.hashCode());
+		int hash = 31 + ((source == null) ? 0 : source.hashCode()) * 29;		   
+		hash = hash * 37 + ((sink == null) ? 0 : sink.hashCode()) ;
 		return hash;
-		
-//		return (int) (id % 37);
 	}
 	
 	/**
@@ -87,15 +83,46 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 			return false;
 		}
 		Link other = (Link) obj;
-
-		if (other.getCategory() != category) {
-			return false;
+		
+		Linkable otherSource = other.getSource();
+		if(otherSource instanceof Node){
+			if(this.source instanceof Node){
+				if(((Node) source).getId() != ((Node) otherSource).getId()){
+					return false;
+				}
+			}else{ //Sources are different objects
+				return false;
+			}
+		}else{ //must be dealing with a link
+			if(this.source instanceof Link){
+				if(source.getIds() != otherSource.getIds()){
+					return false;
+				}
+			}else{ //Sources are different objects
+				return false;
+			}
 		}
-
-		if (ids.equals(other.getIds())) {
-			return true;
+		
+		Linkable otherSink = other.getSink();	
+		if(otherSink instanceof Node){
+			if(this.sink instanceof Node){
+				if(((Node) sink).getId() != ((Node) otherSink).getId()){
+					return false;
+				}
+			}else{ //Sinks are different objects
+				return false;
+			}
+		}else{
+			if(this.sink instanceof Link){
+				if(sink.getIds() != otherSink.getIds()){
+					return false;
+				}
+			}else{ //Sinks are different objects
+				return false;
+			}
 		}
-		return false;
+				
+		return true;
 	}
 	
 	public String getId(){

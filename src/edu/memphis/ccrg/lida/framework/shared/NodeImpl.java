@@ -81,8 +81,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		}
 		return ((Node) o).getId() == id;
 	}
+	/**
+	 * XOR of id and id shifted by ??
+	 */
 	public int hashCode() {
-		return (int) (id % 31);
+		return (int) (id ^ (id >>> 32));
 	}
 	public String toString(){
 		return "Node: " + getLabel() + " ["+getId()+"] ";

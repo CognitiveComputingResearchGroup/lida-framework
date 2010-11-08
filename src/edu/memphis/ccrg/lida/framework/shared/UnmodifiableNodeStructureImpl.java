@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,14 +9,84 @@ import java.util.Set;
  * An immutable NodeStructureImpl.  Throws UnsupportedOprationException if modifying methods
  * are called.  Get, is, has, contains, methods call their inherited counterparts.
  */
-public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeStructure {
+public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements NodeStructure {
 	
 	/**
-	 * Calls NodeStrucutreImpl's copy constructor
-	 * @param ns source NodeStructure
+	 * 
+	 * @param sourceNodeStructure supplied NodeStructure
 	 */
-	public StaticNodeStructureImpl(NodeStructure ns){
-		super(ns);
+	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure){
+		super(sourceNodeStructure);
+	}
+	
+//	//TODO discuss
+//	/**
+//	 * @param sourceNodeStructure source NodeStructure
+//	 */
+//	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure, boolean willBeCopied){
+//		super(sourceNodeStructure);
+//	}
+	
+	/**
+	 * Returns true if both NodeStructures have the same nodes and links
+	 * and 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object o) {
+		if(!(o instanceof NodeStructureImpl)){
+			return false;
+		}
+		NodeStructureImpl otherNS = (NodeStructureImpl) o;
+		
+		if(this.getNodeCount() != otherNS.getNodeCount()){
+			return false;
+		}else if(this.getLinkCount() != otherNS.getLinkCount()){
+			return false;
+		}
+		
+		//Iterate through other's nodes checking for equality
+		for(Node otherNode: otherNS.getNodes()){
+			if(this.containsNode(otherNode)){ //this checks for the node by id
+				Set<Link> thisLinks = this.getLinks(otherNode);
+				Set<Link> otherLinks = otherNS.getLinks(otherNode);
+				
+			}else{
+				return false;
+			}
+		}
+
+		//Iterate through other's link checking for equality
+		for(Link otherLink: otherNS.getLinks()){
+			if(this.containsLink(otherLink)){
+				Set<Link> thisLinks = this.getLinks(otherLink);
+				Set<Link> otherLinks = otherNS.getLinks(otherLink);
+			}else{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		//Generate a long value for nodes based on individual node id and
+		//the number of nodes total.
+		Long aggregateNodeHash = 0L;
+		for(Node n: super.getNodes()){
+			aggregateNodeHash += n.hashCode();			
+		}	
+		aggregateNodeHash = aggregateNodeHash * 31 + super.getNodeCount() * 37;
+		
+		//Generate a long value for links based on individual link id and
+		//the number of links total.
+		Long aggregateLinkHash = 0L;
+		for(Link l: super.getLinks()){
+			aggregateLinkHash += l.hashCode();
+		}
+		aggregateLinkHash = aggregateLinkHash * 41 + super.getLinkCount() * 43;
+			
+		int hash = 47 + aggregateNodeHash.hashCode();
+		return hash * 53 + aggregateLinkHash.hashCode();
 	}
 
 	/**
@@ -69,7 +140,7 @@ public class StaticNodeStructureImpl extends NodeStructureImpl implements NodeSt
 
 	@Override
 	public NodeStructure copy() {
-		return new StaticNodeStructureImpl(this);
+		return new UnmodifiableNodeStructureImpl(this);
 	}
 
 	/**
