@@ -101,7 +101,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public Link addLink(String idSource, String idSink, LinkCategory type,
+	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type,
 			double activation) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
@@ -220,22 +220,22 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	}
 
 	@Override
-	public Node getNode(long id) {
+	public Node getNode(int id) {
 		return super.getNode(id);
 	}
 
 	@Override
-	public Node getNode(String ids) {
+	public Node getNode(ExtendedId ids) {
 		return super.getNode(ids);
 	}
 
 	@Override
-	public Link getLink(String ids) {
+	public Link getLink(ExtendedId ids) {
 		return super.getLink(ids);
 	}
 
 	@Override
-	public Linkable getLinkable(String ids) {
+	public Linkable getLinkable(ExtendedId ids) {
 		return super.getLinkable(ids);
 	}
 

@@ -33,8 +33,8 @@ public interface Node extends Linkable, Activatible, Serializable {
     public PamNode getReferencedNode();
     public void setReferencedNode (PamNode n);
     
-    public long getId();
-    public void setId(long id);
+    public int getId();
+    public void setId(int id);
     
     public String getLabel();
     public void setLabel(String label);

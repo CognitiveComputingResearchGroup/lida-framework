@@ -21,7 +21,7 @@ public interface NodeStructure {
 
 	public abstract Link addLink(Link l);
 	
-	public Link addLink(String idSource, String idSink, LinkCategory type, double activation);
+	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type, double activation);
 
 	public abstract void addLinks(Collection<Link> links);
 	
@@ -55,13 +55,13 @@ public interface NodeStructure {
 
 	public abstract void setDefaultNode(String nodeClassName);
 
-	public abstract Node getNode(long id);
+	public abstract Node getNode(int id);
 
-	public abstract Node getNode(String ids);
+	public abstract Node getNode(ExtendedId ids);
 
-	public abstract Link getLink (String ids);
+	public abstract Link getLink (ExtendedId ids);
 
-	public abstract Linkable getLinkable (String ids);
+	public abstract Linkable getLinkable (ExtendedId ids);
 	
 	public abstract void mergeWith (NodeStructure ns);
 

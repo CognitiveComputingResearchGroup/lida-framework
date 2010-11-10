@@ -12,6 +12,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -23,7 +24,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public class ArgumentImpl implements Argument {
 
-	private long argumentId;
+	private int argumentId;
 	private Node node;
 
 	public ArgumentImpl(long argumentId) {
@@ -65,7 +66,7 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.Argument#getId()
 	 */
 	@Override
-	public long getId() {
+	public int getId() {
 		return -argumentId;
 	}
 
@@ -112,7 +113,7 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.framework.shared.Node#setId(long)
 	 */
 	@Override
-	public void setId(long id) {
+	public void setId(int id) {
 	}
 
 	/*
@@ -143,16 +144,6 @@ public class ArgumentImpl implements Argument {
 	 */
 	@Override
 	public void setReferencedNode(PamNode n) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.Linkable#getIds()
-	 */
-	@Override
-	public String getIds() {
-		return "" + getId();
 	}
 
 	/*
@@ -344,6 +335,11 @@ public class ArgumentImpl implements Argument {
 	public void setGoalDegree(double degree) {
 		node.setGoalDegree(degree);
 		
+	}
+
+	@Override
+	public ExtendedId getExtendedId() {
+		return node.getExtendedId();
 	}
 
 }

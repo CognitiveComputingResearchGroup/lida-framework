@@ -40,7 +40,7 @@
       <param name="rnd" type="double">0.03</param>
     </codelet>
     <codelet name="BasicAttention" type="AttentionCodelet">
-      <class>edu.memphis.ccrg.lida.example.genericlida.attention.BasicAttention</class>
+      <class>edu.memphis.ccrg.lida.example.genericlida.attention.BasicAttentionCodelet</class>
      </codelet>
   </codelets>
 </LidaFactories>

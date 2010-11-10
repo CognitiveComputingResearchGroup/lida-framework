@@ -25,7 +25,8 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 
 	protected void runThisLidaTask() {
 		NodeStructure ns = new NodeStructureImpl();
-		for (Node n : ((NodeStructure) currentSituationalModel.getModuleContent()).getNodes()) {
+		NodeStructure csmContent = (NodeStructure) currentSituationalModel.getModuleContent();
+		for (Node n : csmContent.getNodes()) {
 			if (n.getActivation()>=THRESHOLD){
 				ns.addNode(n);
 			}

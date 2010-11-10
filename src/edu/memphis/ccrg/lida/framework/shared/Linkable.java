@@ -25,7 +25,9 @@ public interface Linkable extends Serializable {
 	/**
 	 * Id in String form
 	 */
-	public abstract String getIds();
+	//public abstract String getIds();
+	
+	public ExtendedId getExtendedId();
 	
 	/**
 	 * 

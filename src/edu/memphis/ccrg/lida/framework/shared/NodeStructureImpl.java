@@ -32,12 +32,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	/**
 	 * Nodes contained in this NodeStructure indexed by their id
 	 */
-	private Map<Long, Node> nodes;
+	private Map<Integer, Node> nodes;
 	
 	/**
 	 * Links contained in this NodeStructure indexed by their id String.
 	 */
-	private Map<String, Link> links;
+	private Map<ExtendedId, Link> links;
 	
 	/**
 	 * Links that each Linkable (Node or Link) has.
@@ -56,8 +56,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 */
 	public NodeStructureImpl() {
 		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
-		nodes = new ConcurrentHashMap<Long, Node>();
-		links = new ConcurrentHashMap<String, Link>();
+		nodes = new ConcurrentHashMap<Integer, Node>();
+		links = new ConcurrentHashMap<ExtendedId, Link>();
 		defaultNodeType = factory.getDefaultNodeType();
 		defaultLinkType = factory.getDefaultLinkType();
 	}
@@ -87,25 +87,25 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Collection<Link> oldLinks = oldGraph.getLinks();
 		if (oldLinks != null)
 			for (Link l : oldLinks) {
-				links.put(l.getIds(), generateNewLink(l.getSource(), l.getSink(), l.getCategory(), l.getActivation()));
+				links.put(l.getExtendedId(), generateNewLink(l.getSource(), l.getSink(), l.getCategory(), l.getActivation()));
 			}
 
 		// Fix Source and Sinks now that all new Nodes and Links have been
 		// copied
-		for (String ids : links.keySet()) {
+		for (ExtendedId ids : links.keySet()) {
 			Link l = links.get(ids);
 			Linkable lso=l.getSource();
 			Linkable lsi=l.getSink();
 			if (lso instanceof Node) {
 				l.setSource(nodes.get(((Node) lso).getId()));
 			} else {
-				l.setSource(links.get(lso.getIds()));
+				l.setSource(links.get(lso.getExtendedId()));
 			}
 
 			if (lsi instanceof Node) {
 				l.setSink(nodes.get(((Node) lsi).getId()));
 			} else {
-				l.setSink(links.get(lsi.getIds()));
+				l.setSink(links.get(lsi.getExtendedId()));
 			}
 		}
 
@@ -120,13 +120,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 					if (llinks != null) {
 						newLinks = new HashSet<Link>();
 						for (Link link : llinks) {
-							newLinks.add(links.get(link.getIds()));
+							newLinks.add(links.get(link.getExtendedId()));
 						}
 					} else {
 						newLinks = null;
 					}
 					if (l instanceof Link) {
-						linkableMap.put(links.get(l.getIds()), newLinks);
+						linkableMap.put(links.get(l.getExtendedId()), newLinks);
 					} else if (l instanceof Node) {
 						this.linkableMap.put(nodes.get(((Node) l).getId()),
 								newLinks);
@@ -171,7 +171,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 */
 	public Link addLink(Link l) {		
 		double newActiv = l.getActivation();
-		Link oldLink = links.get(l.getIds());
+		Link oldLink = links.get(l.getExtendedId());
 		if (oldLink != null) { // if the link already exists in this node structure
 			//update activation
 			if (oldLink.getActivation() < newActiv) 
@@ -203,14 +203,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 
 		if (source instanceof Link) {
-			newSource = links.get(source.getIds());
+			newSource = links.get(source.getExtendedId());
 			if (newSource == null) {
 				return null;
 			}
 		}
 
 		if (sink instanceof Link) {
-			newSink = links.get(sink.getIds());
+			newSink = links.get(sink.getExtendedId());
 			if (newSink == null) {
 				return null;
 			}
@@ -219,7 +219,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return generateNewLink(newSource, newSink, l.getCategory(), newActiv);
 	}
 
-	public Link addLink(String sourceId, String sinkId, LinkCategory category, double activation) {
+	public Link addLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory category, double activation) {
 		Linkable source = getLinkable(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
@@ -238,7 +238,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 								 LinkCategory type, double activation) {
 		Link newLink = getNewLink(newSource, newSink, type);
 		newLink.setActivation(activation);
-		links.put(newLink.getIds(), newLink);
+		links.put(newLink.getExtendedId(), newLink);
 		linkableMap.put(newLink, new HashSet<Link>());
 
 		Set<Link> tempLinks = linkableMap.get(newSource);
@@ -380,8 +380,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		if (n instanceof Node) {
 			nodes.remove(((Node) n).getId());
 		} else if (n instanceof Link) {
-			Link aux = links.get(n.getIds());
-			links.remove(aux.getIds());
+			Link aux = links.get(n.getExtendedId());
+			links.remove(aux.getExtendedId());
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
 
@@ -398,7 +398,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		deleteLinkable(n);
 	}
 
-	public Link getLink(String ids) {
+	public Link getLink(ExtendedId ids) {
 		return links.get(ids);
 	}
 
@@ -486,18 +486,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return linkableMap;
 	}
 
-	public Node getNode(long id) {
+	public Node getNode(int id) {
 		return nodes.get(id);
 	}
 
-	public Node getNode(String id) {
-		Long idl = 0L;
-		try {
-			idl = new Long(id);
-		} catch (NumberFormatException e) {
+	public Node getNode(ExtendedId id) {
+		if (id == null) {
 			return null;
 		}
-		return nodes.get(idl);
+		return nodes.get(id.getSourceNodeId());
 	}
 
 	public int getLinkCount() {
@@ -537,18 +534,18 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}// method
 
 	public void clearNodes() {
-		nodes = new ConcurrentHashMap<Long, Node>();
+		nodes = new ConcurrentHashMap<Integer, Node>();
 	}
 
 	public boolean containsLink(Link l) {
-		return links.containsKey(l.getIds());
+		return links.containsKey(l.getExtendedId());
 	}
 
 	public boolean containsNode(Node n) {
 		return nodes.containsKey(n.getId());
 	}
 
-	public Linkable getLinkable(String ids) {
+	public Linkable getLinkable(ExtendedId ids) {
 		Linkable linkable = getNode(ids);
 		if (linkable == null) {
 			linkable = getLink(ids);
@@ -566,14 +563,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return defaultNodeType;
 	}
 
-	public void print() {
-		System.out.println("\nNODES");
+	public String toString() {
+		String aux = "NODES\n";
 		for(Node n: nodes.values())
-			System.out.println(n.getLabel() + "--" + n.getId());
+			aux = aux + (n.getLabel() + "--" + n.getId() + "\n");
 		
-		System.out.println("\nLINKS");
+		aux = aux + "LINKS\n";
 		for(Link l: links.values())
-			System.out.println(l.getLabel() + "--" + l.getIds());
+			aux = aux + (l.getLabel() + "--" + l.getExtendedId() + "\n");
+		return aux;
 	}
 
 	@Override

@@ -17,7 +17,8 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private Linkable sink;
 	private Linkable source;
-	private String ids;
+	private ExtendedId id;
+	
 	private LinkCategory category;
 	private Link referencedLink = null;
 	
@@ -28,6 +29,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		this.source = source;
 		this.sink = sink;
 		this.category = category;
+		
 		updateIds();
 	}
 
@@ -35,7 +37,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		sink = l.getSink();
 		source = l.getSource();
 		category = l.getCategory();
-		ids = l.getIds();
+		id = l.getExtendedId();
 		referencedLink = l.getReferencedLink();
 		updateIds();
 	}
@@ -44,12 +46,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return new LinkImpl(this);
 	}
 
-	public String getIds() {
-		return ids;
+	@Override
+	public ExtendedId getExtendedId() {
+		return id;
 	}
-
+	
 	public String getLabel() {
-		return "Link: " + ids;
+		return "Link: " + id;
 	}
 
 	public Linkable getSink() {
@@ -66,9 +69,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	@Override
 	public int hashCode() {
-		int hash = 31 + ((source == null) ? 0 : source.hashCode()) * 29;		   
-		hash = hash * 37 + ((sink == null) ? 0 : sink.hashCode()) ;
-		return hash;
+		return id.hashCode();
 	}
 	
 	/**
@@ -84,51 +85,9 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		}
 		Link other = (Link) obj;
 		
-		Linkable otherSource = other.getSource();
-		if(otherSource instanceof Node){
-			if(this.source instanceof Node){
-				if(((Node) source).getId() != ((Node) otherSource).getId()){
-					return false;
-				}
-			}else{ //Sources are different objects
-				return false;
-			}
-		}else{ //must be dealing with a link
-			if(this.source instanceof Link){
-				if(source.getIds() != otherSource.getIds()){
-					return false;
-				}
-			}else{ //Sources are different objects
-				return false;
-			}
-		}
-		
-		Linkable otherSink = other.getSink();	
-		if(otherSink instanceof Node){
-			if(this.sink instanceof Node){
-				if(((Node) sink).getId() != ((Node) otherSink).getId()){
-					return false;
-				}
-			}else{ //Sinks are different objects
-				return false;
-			}
-		}else{
-			if(this.sink instanceof Link){
-				if(sink.getIds() != otherSink.getIds()){
-					return false;
-				}
-			}else{ //Sinks are different objects
-				return false;
-			}
-		}
-				
-		return true;
+		return id.equals(other.getExtendedId());
 	}
 	
-	public String getId(){
-		return ids;
-	}
-
 	public void setSink(Linkable sink) {
 		this.sink = sink;
 		updateIds();
@@ -150,7 +109,11 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	private void updateIds() {
-		ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + category + ")";
+		//ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + category + ")";
+		//TODO Source should always be a node
+		if(category!=null && source !=null && sink != null){
+			id = new ExtendedId(category.ordinal(), ((Node) source).getId(), sink.getExtendedId());
+		}
 	}
 
 	public Link getReferencedLink() {
@@ -162,7 +125,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 	
 	public void init(Map<String, Object> params) {
-	}
-	
+	}	
 
 }

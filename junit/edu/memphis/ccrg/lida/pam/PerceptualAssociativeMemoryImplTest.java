@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.example.genericlida.main.VisualSensoryMemory;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -315,7 +316,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#getNode(long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#getNode(int)}.
 	 */
 	@Test
 	public void testGetNode() {
@@ -331,7 +332,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addLink(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.framework.shared.LinkType, double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addLink(ExtendedId, ExtendedId, edu.memphis.ccrg.lida.framework.shared.LinkType, double)}.
 	 */
 	@Test
 	public void testAddLinkPamNodePamNodeLinkTypeDouble() {
@@ -339,7 +340,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addLink(java.lang.String, java.lang.String, edu.memphis.ccrg.lida.framework.shared.LinkType, double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addLink(ExtendedId, ExtendedId, edu.memphis.ccrg.lida.framework.shared.LinkType, double)}.
 	 */
 	@Test
 	public void testAddLinkStringStringLinkTypeDouble() {

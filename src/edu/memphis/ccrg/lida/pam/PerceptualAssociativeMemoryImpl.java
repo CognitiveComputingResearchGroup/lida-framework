@@ -21,6 +21,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceLi
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -319,17 +320,17 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			addPamListener((PamListener)listener);
 		}
 	}
-	public Node getNode(long id) {
+	public Node getNode(int id) {
 		return factory.getNode(pamNodeStructure.getNode(id));
 	}
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		
 	}
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation) {
-		return pamNodeStructure.addLink(source.getIds(), sink.getIds(), type, activation);		
+		return pamNodeStructure.addLink(source.getExtendedId(), sink.getExtendedId(), type, activation);		
 	}
 
-	public Link addNewLink(String sourceId, String sinkId, LinkCategory type, double activation) {
+	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation) {
 		return pamNodeStructure.addLink(sourceId, sinkId, type, activation);		
 	}
 	@Override

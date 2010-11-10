@@ -131,7 +131,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	public int hashCode() { 
 	    int hash = 1;
-	    Long id =  getId();
+	    Integer id =  getId();
 	    hash = hash * 31 + id.hashCode();
 	    return hash;
 	}

@@ -41,7 +41,7 @@ public class NodeFactory {
 	/**
 	 * Used to assign unique IDs to nodes. 
 	 */
-	private static long nodeIdCount = 0;
+	private static int nodeIdCount = 0;
 	
 	/**
 	 * This static method returns the instance of the factory. Implements the
@@ -105,7 +105,7 @@ public class NodeFactory {
 	/**
 	 * @param nextId the next nodeId
 	 */
-	public static void setNextNodeId(long nextId) {
+	public static void setNextNodeId(int nextId) {
 		NodeFactory.nodeIdCount = nextId;
 	}
 
@@ -552,6 +552,7 @@ public class NodeFactory {
 			logger.log(Level.WARNING, "Error creating codelet.", LidaTaskManager
 					.getActualTick());
 		} catch (ClassNotFoundException e) {
+			
 			logger.log(Level.WARNING, "Error creating codelet.", LidaTaskManager
 					.getActualTick());
 		}

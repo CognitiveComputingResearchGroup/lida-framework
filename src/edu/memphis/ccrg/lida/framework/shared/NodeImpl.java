@@ -18,7 +18,8 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
 
-	private long id;
+	private int id;
+	private ExtendedId eId;
 	private String label = "";
 	private double importance;
 	private String factoryName;
@@ -33,17 +34,26 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public NodeImpl(NodeImpl n) {
 		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy());
 		this.id = n.id;
+		this.eId = n.eId;
 		this.refNode = n.refNode;
 	}
 	
 	public void init(Map<String, Object> params) {
 	}
 	
-	public long getId() {
+	@Override
+	public ExtendedId getExtendedId() {
+		return eId;
+	}
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
+		eId = new ExtendedId(0, id, 0,0,0);
+	}
+	public void setExtendedId(ExtendedId eId) {
+		this.eId = eId;
 	}
 
 	public String getLabel() {
@@ -82,10 +92,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return ((Node) o).getId() == id;
 	}
 	/**
-	 * XOR of id and id shifted by ??
+	 *
 	 */
 	public int hashCode() {
-		return (int) (id ^ (id >>> 32));
+		return (int) (id);
 	}
 	public String toString(){
 		return "Node: " + getLabel() + " ["+getId()+"] ";

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -61,7 +62,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation);
 
-	public Link addNewLink(String sourceId, String sinkId, LinkCategory type, double activation);
+	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation);
 	
 	public Set<PamLink> addLinks(Set<PamLink> links);
 	
@@ -169,7 +170,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	//**** Get Methods
 
-	public Node getNode(long id);
+	public Node getNode(int id);
 	
 	/**
 	 * Returns an unmodifiable collection of the PAM nodes as nodes
