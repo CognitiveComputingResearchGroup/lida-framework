@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,14 +18,6 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		super(sourceNodeStructure);
 	}
 	
-//	//TODO discuss
-//	/**
-//	 * @param sourceNodeStructure source NodeStructure
-//	 */
-//	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure, boolean willBeCopied){
-//		super(sourceNodeStructure);
-//	}
-	
 	/**
 	 * Returns true if both NodeStructures have the same nodes and links
 	 * and 
@@ -39,6 +30,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		NodeStructureImpl otherNS = (NodeStructureImpl) o;
 		
 		if(this.getNodeCount() != otherNS.getNodeCount()){
+//			System.out.println("This " + getNodeCount() + " other " + otherNS.getNodeCount());
 			return false;
 		}else if(this.getLinkCount() != otherNS.getLinkCount()){
 			return false;
@@ -47,9 +39,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		//Iterate through other's nodes checking for equality
 		for(Node otherNode: otherNS.getNodes()){
 			if(this.containsNode(otherNode)){ //this checks for the node by id
-				Set<Link> thisLinks = this.getLinks(otherNode);
-				Set<Link> otherLinks = otherNS.getLinks(otherNode);
-				
+				//okay
 			}else{
 				return false;
 			}
@@ -58,8 +48,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		//Iterate through other's link checking for equality
 		for(Link otherLink: otherNS.getLinks()){
 			if(this.containsLink(otherLink)){
-				Set<Link> thisLinks = this.getLinks(otherLink);
-				Set<Link> otherLinks = otherNS.getLinks(otherLink);
+				//okay
 			}else{
 				return false;
 			}
@@ -203,21 +192,22 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		return super.getNodes();
 	}
 	
-	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
-	 */
-	@Override
-	public void setDefaultLink(String linkClassName) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-	}
-
-	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
-	 */
-	@Override
-	public void setDefaultNode(String nodeClassName) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-	}
+	//TODO 
+//	/**
+//	 * @throws UnsupportedOperationException Cannot modify this object once created.
+//	 */
+//	@Override
+//	public void setDefaultLink(String linkClassName) {
+//		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+//	}
+//
+//	/**
+//	 * @throws UnsupportedOperationException Cannot modify this object once created.
+//	 */
+//	@Override
+//	public void setDefaultNode(String nodeClassName) {
+//		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+//	}
 
 	@Override
 	public Node getNode(int id) {

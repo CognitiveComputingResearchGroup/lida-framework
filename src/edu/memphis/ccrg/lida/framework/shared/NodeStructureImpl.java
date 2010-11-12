@@ -70,8 +70,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 */
 	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
-		this.setDefaultNode(defaultNode);		
-		this.setDefaultLink(defaultLink);		
+		setDefaultNode(defaultNode);		
+		setDefaultLink(defaultLink);
 	}
 
 	public NodeStructureImpl(NodeStructure oldGraph, String defaultNodeType, String defaultLinkType) {
