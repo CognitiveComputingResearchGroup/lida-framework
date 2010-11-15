@@ -32,7 +32,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 
 	@Override
 	public void activateSchemesWithBroadcast(NodeStructure broadcast,
-			Map<Object, Set<Scheme>> schemeMap) {
+			Map<? extends Object, Set<Scheme>> schemeMap) {
 		logger.log(Level.FINEST, "Scheme are tested for activation",
 				LidaTaskManager.getActualTick());
 		Collection<Node> nodes = broadcast.getNodes();
@@ -44,7 +44,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 			auxActivateSchemes(l, schemeMap);
 	}
 
-	private void auxActivateSchemes(Linkable l, Map<Object, Set<Scheme>> schemeMap) {
+	private void auxActivateSchemes(Linkable l, Map<? extends Object, Set<Scheme>> schemeMap) {
 		if (schemeMap.containsKey(l)) {
 			Set<Scheme> schemes = schemeMap.get(l);
 			int numSchemes=schemes.size();
