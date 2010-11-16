@@ -32,52 +32,53 @@ import edu.memphis.ccrg.lida.framework.shared.Activatible;
  */
  
 public interface LidaTask extends Callable<LidaTask>, Activatible{
+	
 	/**
 	 * returns the LidaTask's status code. It must be one of the static members of this interface. 
 	 * @return the status code.
 	 */
-	public abstract LidaTaskStatus getStatus();
+	public LidaTaskStatus getStatus();
 	/**
 	 * Sets the LidaTask's status code. It must be one of the static members of this interface. 
 	 * @param status - code for this tasks current status
 	 */
-	public abstract void setTaskStatus(LidaTaskStatus status);
+	public void setTaskStatus(LidaTaskStatus status);
 
 	/**
 	 * The LidaTask must stop.
 	 */
-	public abstract void stopRunning();
+	public void stopRunning();
 	
 	/**
 	 * Each LidaTask is meant to have a unique id that is set at the time of creation.
 	 * 
-	 * @param id
+	 * @param id unique task identifier
 	 */
-	public abstract void setTaskID(long id);
+	public void setTaskID(long id);
 	
 	/**
 	 * Each LidaTask is meant to have a unique id that is set at the time of creation.
 	 * 
 	 * @return  id
 	 */
-	public abstract long getTaskId();
+	public long getTaskId();
 	
 	/**
 	 * Sets how many ticks need to pass before this task is run
-	 * @param ticks
+	 * @param ticks number of ticks
 	 */
-	public abstract void setNumberOfTicksPerRun(int ticks);
+	public void setNumberOfTicksPerRun(int ticks);
 
 	/**
 	 * Gets the number of ticks needed to complete a cycle or 'one run' of this task
 	 * @return ticks 
 	 */
-	public abstract int getTicksPerStep();
+	public  int getTicksPerStep();
 	
 	/**
 	 * Resets the LidaTask.
 	 */
-	public abstract void reset();
+	public  void reset();
 	
 	
 	/**
@@ -96,20 +97,19 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 */
 	public Object getParam(String name,Object defaultValue);
 
-	public abstract String toString();
+	public String toString();
 	
 	/**
 	 * Sets the TaskSpawner that controls this LidaTask.
 	 * @param ts the TaskSpawner
 	 */
-	public abstract void setControllingTaskSpawner(TaskSpawner ts);
+	public void setControllingTaskSpawner(TaskSpawner ts);
 	
 	/**
 	 * Gets the TaskSpawner that controls this LidaTask.
 	 * @return the TaskSpawner.
 	 */
-	public abstract TaskSpawner getTaskSpawner();
-	
+	public TaskSpawner getControllingTaskSpawner();
 	
 	/**
 	 * Sets the the lap of ticks to schedule the next execution of this
@@ -118,13 +118,13 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * 
 	 * @param lapTick the number of ticks to wait until the next execution.
 	 */
-	public abstract void setNextExcecutionTickLap(long lapTick);
+	public void setNextExcecutionTickLap(long lapTick);
 	
 	/**
 	 * Gets the the lap of ticks to schedule the next execution of this
 	 * LidaTask.
 	 */
-	public abstract long getNextExcecutionTickLap();
+	public long getNextExcecutionTickLap();
 	
 	/**
 	 * @return The last ScheduledTick for this task. Could be in the future if this task is 
@@ -136,10 +136,8 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 * Sets the next scheduledTick for this task. This method is used by LidaTaskManager when
 	 * a new task is added.
 	 * 
-	 * @param scheduledTick
+	 * @param scheduledTick tick to schedule this task
 	 */
 	public void setScheduledTick(long scheduledTick);
-
-//	public LidaTaskManager getTaskManager();
 
 }

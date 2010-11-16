@@ -7,10 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
-import edu.memphis.ccrg.lida.framework.shared.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 
-public interface PamLinkable extends Linkable, Activatible{
+public interface PamLinkable extends Linkable, Learnable{
 	
 	/**
 	 * Determines if this linkable is relevant. A linkable is relevant if its total
@@ -18,29 +18,29 @@ public interface PamLinkable extends Linkable, Activatible{
 	 * 
 	 * @return <code>true</code> if this linkable is relevant
 	 */
-	public abstract boolean isOverThreshold();
+	public boolean isOverThreshold();
 
 	/**
 	 * returns selection threshold
 	 * 
 	 * @return Selection threshold
 	 */
-	public abstract double getSelectionThreshold();
+	public double getPerceptThreshold();
 	
 	/**
 	 * Set the threshold
-	 * @param threshold
+	 * @param threshold threshold
 	 */
-	public abstract void setSelectionThreshold(double threshold);
+	public void setPerceptThreshold(double threshold);
 
 	/**
 	 * Returns final min activation variable
 	 */
-	public abstract double getMinActivation();
+	public double getMinActivation();
 
 	/**
 	 * Returns final max activation variable
 	 */
-	public abstract double getMaxActivation();
+	public double getMaxActivation();
 
 }

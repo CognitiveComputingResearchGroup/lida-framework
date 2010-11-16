@@ -41,7 +41,7 @@ public class ActivatibleDriver {
 	
 	/**
 	 * this method excites all the Activatible elements with the same amount
-	 * @param amount 
+	 * @param amount amount of excitation
 	 */
 	public void excite(double amount){
 		for(Activatible a: activatibles){

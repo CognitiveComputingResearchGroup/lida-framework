@@ -23,17 +23,17 @@ public interface Workspace extends LidaModule{
 
 	/**
 	 * Add episodic memory that will listen for cues from the Workspace
-	 * @param l
+	 * @param l listener
 	 */
-	public abstract void addCueListener(CueListener l);
+	public void addCueListener(CueListener l);
 	
 	/**
 	 * Add pam that will listen for episodic memories to ground in PAM.
-	 * @param pam
+	 * @param listener listener
 	 */
-	public abstract void addWorkspaceListener(WorkspaceListener pam);
+	public void addWorkspaceListener(WorkspaceListener listener);
 
-	public abstract void cueEpisodicMemories(NodeStructure content);
+	public void cueEpisodicMemories(NodeStructure content);
 	
-	public abstract void setActivationLowerBound(double lowerBound);
+	public void setActivationLowerBound(double lowerBound);
 }

@@ -21,8 +21,9 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private int id;
 	private ExtendedId eId;
 	private String label = "";
-	private double importance;
+//	private double importance;
 	private String factoryName;
+	//TODO remove
 	private double goalDegree;
 	
 	protected PamNode refNode;
@@ -63,12 +64,12 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.label=label;
 	}
 
-	public double getImportance() {
-		return importance;
-	}
-	public void setImportance(double importance) {
-		this.importance = importance;
-	}
+//	public double getImportance() {
+//		return importance;
+//	}
+//	public void setImportance(double importance) {
+//		this.importance = importance;
+//	}
 
 	public PamNode getReferencedNode() {
 		return refNode;

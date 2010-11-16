@@ -22,6 +22,6 @@ public interface Selector {
 	 * Select a single behavior as the current winner
 	 * @return Behavior - selected behavior
 	 */
-	public abstract Behavior selectSingleBehavior(Collection<Behavior> behaviors, double candidateThreshold);
+	public Behavior selectSingleBehavior(Collection<Behavior> behaviors, double candidateThreshold);
 
 }

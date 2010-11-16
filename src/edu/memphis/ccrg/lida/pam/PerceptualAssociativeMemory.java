@@ -19,19 +19,18 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 
 /**
  * @author Ryan McCall
  */
 public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 
-	//**** Adding methods
+	//Adding methods
 	
     /**
      * Add a new node to this PAM with specified label
-     * @param label
+     * @param label label of new node
      * @return the new node
      */
 	public PamNode addNewNode(String label);
@@ -40,24 +39,24 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 
 	/**
 	 * 
-	 * @param node
-	 * @return new copy of the pam node !
+	 * @param node PamNode
+	 * @return new copy of the pam node
 	 */
 	public PamNode addNode(PamNode node);
 	
 	/**
 	 * Add a collection of nodes
-	 * @param nodes
+	 * @param nodes nodes to add
 	 * @return actual node stored in this PAM
 	 */
 	public Set<PamNode> addNodes(Set<PamNode> nodes);
 	
 	/**
 	 * Add a new link to this PAM
-	 * @param source
-	 * @param sink
-	 * @param type
-	 * @param activation
+	 * @param source source for link
+	 * @param sink sink for link
+	 * @param type type for link
+	 * @param activation initial activation for link
 	 * @return created link
 	 */
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation);
@@ -70,7 +69,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 		
 	/**
 	 * 
-	 * @param pl
+	 * @param pl listener
 	 */
 	public void addPamListener(PamListener pl);
 	
@@ -78,13 +77,13 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * Set the type of Link used in this PAM
-	 * @param type
+	 * @param type link type
 	 */
 	public void setNewLinkType(String type);
 	
 	/**
 	 * Set the type of Node used in this PAM
-	 * @param type
+	 * @param type node type
 	 */
     public void setNewNodeType(String type);
 	
@@ -93,23 +92,23 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	/**
 	 * Changes how the nodes in this PAM are excited.
 	 * 
-	 * @param behavior
+	 * @param strat ExciteStrategy
 	 */
-	public void setExciteStrategy(ExciteStrategy behavior);
+	public void setExciteStrategy(ExciteStrategy strat);
 	
 	/**
 	 * Change how nodes and links are decayed
-	 * @param c
-	 */
-	public void setDecayStrategy(DecayStrategy c);
+	 * @param strat DecayStrategy
+ 	 */
+	public void setDecayStrategy(DecayStrategy strat);
 	
 	/**
 	 * Set the behavior governing how activation is propagated
-	 * @param b
+	 * @param b PropagationBehavior
 	 */
 	public void setPropagationBehavior(PropagationBehavior b);
 	
-	//****Activation spreading methods
+	//Activation spreading methods
 	
 	/**
 	 * Send a burst of activation to a node.
@@ -120,10 +119,10 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * Amount is coming from source.  Link and sink should be excited amount
-	 * @param source
-	 * @param link
-	 * @param sink
-	 * @param amount
+	 * @param source source of activation
+	 * @param link link between source and sink
+	 * @param sink recipient of activation
+	 * @param amount activation sent
 	 */
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount);
 	
@@ -145,19 +144,19 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * Put a PamNode into the percept
-	 * @param pamNode
+	 * @param pamNode PamNode
 	 */
 	public void addNodeToPercept(PamNode pamNode);
 	
 	/**
 	 * Put a Link into the percept
-	 * @param l
-	 */
+	 * @param l Link
+ 	 */
 	public void addLinkToPercept(PamLink l);
 	
 	/**
 	 * Put a NodeStructure into the percept
-	 * @param ns
+	 * @param ns NodeStructure
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
 	
@@ -167,9 +166,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	public boolean containsLink(PamLink link);
 	
-	
 	//**** Get Methods
-
+	//TODO immutable nodes?
 	public Node getNode(int id);
 	
 	/**

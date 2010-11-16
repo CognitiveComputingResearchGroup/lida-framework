@@ -7,25 +7,30 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-
+/**
+ * A link connects two linkable objects. 
+ * 
+ * @author Javier Snaider, Ryan McCall
+ *
+ */
 public interface Link extends Linkable, Activatible{
 	
 	public static final Link NULL_LINK=new LinkImpl(null,null,LinkCategory.None);
 
-	public abstract Linkable getSource();
+	public Linkable getSource();
 
-	public abstract Linkable getSink();
-		
-	public abstract LinkCategory getCategory();
+	public Linkable getSink();
 	
-	public abstract void setSource(Linkable source);
+	public void setSource(Linkable source);
 
-	public abstract void setSink(Linkable sink);
+	public void setSink(Linkable sink);
+	
+	public LinkCategory getCategory();
 
-	public abstract void setCategory(LinkCategory type);
+	public void setCategory(LinkCategory type);
 
-	public abstract void setReferencedLink(Link l);
+	public void setReferencedLink(Link l);
 
-	public abstract Link getReferencedLink();
+	public Link getReferencedLink();
 
 }

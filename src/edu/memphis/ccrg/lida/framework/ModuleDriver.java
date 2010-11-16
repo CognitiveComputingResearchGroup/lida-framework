@@ -26,11 +26,11 @@ public interface ModuleDriver extends Initializable, GuiEventProvider, TaskSpawn
 	/**
 	 *
 	 */
-	public abstract ModuleName getModuleName();
+	public ModuleName getModuleName();
 	
 	/**
 	 * 
-	 * @param name
+	 * @param name module's name
 	 */
-	public abstract void setModuleName(ModuleName name);
+	public void setModuleName(ModuleName name);
 }

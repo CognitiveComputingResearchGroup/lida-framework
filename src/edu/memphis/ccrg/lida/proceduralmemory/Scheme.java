@@ -20,27 +20,26 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public interface Scheme extends Learnable{
 	
 	/**
-	 * unique identifier for this scheme
-	 * @param id
+	 * 
+	 * @param id unique identifier for this scheme
 	 */
 	public void setId(long id);
 	public long getId();
 	
 	/**
-	 * id for the action in sensory-motor memory
-	 * @return
+	 * 
+	 * @return id for the action in sensory-motor memory 
 	 */
 	public long getSchemeActionId();
 	public void setSchemeActionId(long actionId);	
 	
 	/**
-	 * human-readable label
-	 * @return
+	 * 
+	 * @return human-readable label
 	 */
 	public String getLabel();
 	public void setLabel(String label);	
 	
-	//TODO Extend context to multiple node structures in a List
 	public NodeStructure getContext();
 	public void setContext(NodeStructure ns);
 	
@@ -81,11 +80,8 @@ public interface Scheme extends Learnable{
 	 */
 	public void decayCuriosity();
 	
-	//TODO Extend result to multiple node structures in a List
 	public NodeStructure getAddingResult();
 	public void setAddingResult(NodeStructure ns);
-//	public List<NodeStructure> getResultConditions(long argumentId);
-//	public void addResultConditions(long argumentId,NodeStructure ns);
 	
 	//TODO Extend result to multiple node structures in a List
 	public NodeStructure getDeletingResult();
@@ -96,8 +92,7 @@ public interface Scheme extends Learnable{
 	public Collection<Argument> getArguments();
 	
 	/**
-	 * 
-	 * @return
+	 * @return an instantiation of this scheme
 	 */
 	public Behavior getBehavior();
 	

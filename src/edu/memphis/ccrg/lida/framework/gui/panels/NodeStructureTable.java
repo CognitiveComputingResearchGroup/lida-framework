@@ -209,7 +209,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 				}
 			case 3:
 				if (node instanceof PamNode){
-					return ((PamNode)node).getSelectionThreshold();
+					return ((PamNode)node).getPerceptThreshold();
 				}else{
 					return "";
 				}

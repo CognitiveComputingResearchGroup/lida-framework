@@ -29,27 +29,27 @@ public interface LidaAction extends Serializable {
 	 * The action can interact directly with any module in LIDA, specially the
 	 * SensoryMotorMemory.
 	 */
-	public abstract void performAction();
+	public void performAction();
 	
 	/**
 	 * @return the action content.
 	 */
-	public abstract Object getContent();
+	public Object getContent();
 	
 	/**
 	 * @param content the content to set.
 	 */
-	public abstract void setContent(Object content);
+	public void setContent(Object content);
 	
 	/**
 	 * @return the action label.
 	 */
-	public abstract String getLabel();
+	public String getLabel();
 	
 	/**
 	 * @param label the action label to set.
 	 */
-	public abstract void setLabel(String label);
+	public void setLabel(String label);
 
 	/**
 	 * @return the subActions
@@ -67,7 +67,7 @@ public interface LidaAction extends Serializable {
 	 * Sets an associated LidaModule.
 	 * @param module the module to be associated.
 	 */
-	public abstract void setAssociatedModule(LidaModule module);
+	public void setAssociatedModule(LidaModule module);
 
 	/**
 	 * @return the module

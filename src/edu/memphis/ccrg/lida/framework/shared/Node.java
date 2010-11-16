@@ -26,13 +26,11 @@ import java.io.Serializable;
 public interface Node extends Linkable, Activatible, Serializable {
 	
 	public static final Node NULL_NODE = new NodeImpl();
-		
-	public double getImportance();
-	public void setImportance(double importance);
-	
+
     public PamNode getReferencedNode();
     public void setReferencedNode (PamNode n);
     
+    //TODO remove?
     public int getId();
     public void setId(int id);
     

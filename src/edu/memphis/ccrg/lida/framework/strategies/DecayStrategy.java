@@ -13,19 +13,19 @@ public interface DecayStrategy extends Strategy{
 
     /**
      * Decays the current activation according to some internal decay function.
-     * @param currentActivation The activation of the entity before decay.
+     * @param currentActivation activation of the entity before decay.
      * @param ticks The number of ticks to decay.
      * 
      */
-	public abstract double decay(double currentActivation, long ticks, Object... params);
+	public double decay(double currentActivation, long ticks, Object... params);
 	
 	/**
 	 * 
-	 * @param currentActivation
-	 * @param ticks
-	 * @param params
-	 * @return
+	 * @param currentActivation activation of the entity before decay.
+	 * @param ticks how much time has passed since last decay
+	 * @param params parameters
+	 * @return new activation amount
 	 */
-	public abstract double decay(double currentActivation, long ticks, Map<String, ? extends Object>params);
+	public double decay(double currentActivation, long ticks, Map<String, ? extends Object>params);
         
 }

@@ -10,21 +10,16 @@ package edu.memphis.ccrg.lida.actionselection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
-import edu.memphis.ccrg.lida.actionselection.triggers.AggregateBehaviorActivationTrigger;
-import edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
-import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * TODO
  *  Activation-based triggers are only triggered in ActionSelection.receiveBehavior()
  *  or ActionSelection.receiveBroadcast(). 
  *  So in these methods the activation-based triggers should be called.
@@ -91,7 +86,7 @@ public class ActionSelectionDriver extends ModuleDriverImpl {
 	}	
 	
 	/**
-	 * @param behaviors
+	 * @param behaviors behaviors to check
 	 */
 	public void newBehaviorEvent(Collection<Behavior> behaviors) {		
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)

@@ -78,22 +78,22 @@ public class PamNodeImplTest extends TestCase{
 		node1.setId(1);		
 		node1.setBaseLevelActivation(0.1);
 		node1.setActivation(0.4);
-		node1.setSelectionThreshold(0.5);
+		node1.setPerceptThreshold(0.5);
 		//node1.synchronize();
 		
 		assertEquals("Problem with IsOverThreshold", true,node1.isOverThreshold());
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#setSelectionThreshold(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#setPerceptThreshold(double)}.
 	 */
 	@Test
 	public void testSetSelectionThreshold() {
 		node1.setId(1);		
 		node1.setBaseLevelActivation(0.1);
-		node1.setSelectionThreshold(0.3);
+		node1.setPerceptThreshold(0.3);
 		
-		assertEquals("Problem with SetSelectionThreshold", 0.3,node1.getSelectionThreshold());
+		assertEquals("Problem with SetSelectionThreshold", 0.3,node1.getPerceptThreshold());
 	}
 
 	/**
@@ -105,21 +105,21 @@ public class PamNodeImplTest extends TestCase{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("importance", 0.4);
 		map.put("baselevelactivation", 0.2);
-		node1.setValue(map);
+//		node1.setValue(map);
 		
-		assertEquals("Problem with SetValue", 0.4,node1.getImportance());
+//		assertEquals("Problem with SetValue", 0.4,node1.getImportance());
 		assertEquals("Problem with SetValue", 0.2,node1.getBaseLevelActivation());
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#getSelectionThreshold()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#getPerceptThreshold()}.
 	 */
 	@Test
 	public void testGetSelectionThreshold() {
 		node1.setId(1);			
-		node1.setSelectionThreshold(0.3);
+		node1.setPerceptThreshold(0.3);
 		
-		assertEquals("Problem with GetSelectionThreshold", 0.3,node1.getSelectionThreshold());
+		assertEquals("Problem with GetSelectionThreshold", 0.3,node1.getPerceptThreshold());
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class PamNodeImplTest extends TestCase{
 		node1.setId(1);			
 		node1.setBaseLevelActivation(0.3);
 		node1.setActivation(0.4);
-		node1.printActivationString();
+		System.out.println(node1);
 	}
 
 }

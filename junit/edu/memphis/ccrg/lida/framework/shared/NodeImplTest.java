@@ -45,7 +45,7 @@ public class NodeImplTest extends TestCase{
 		
 		node1.setId(1);			
 		node1.setLabel("red");		
-		node1.setImportance(100);
+//		node1.setImportance(100);
 		node1.setReferencedNode(pamNode1);	
 						
 		node2.setId(2);			
@@ -96,24 +96,24 @@ public class NodeImplTest extends TestCase{
 		assertEquals("Problem with setLabel", "purple", node2.getLabel());
 	}	
 	
-	/**
-	 * This method is used to test the NodeImpl.getImportance() method
-	 */
-	@Test
-	public void testGetImportance() {		
-							
-		assertEquals("Problem with getImportance", 100.0, node1.getImportance());
-	}
+//	/**
+//	 * This method is used to test the NodeImpl.getImportance() method
+//	 */
+//	@Test
+//	public void testGetImportance() {		
+//							
+//		assertEquals("Problem with getImportance", 100.0, node1.getImportance());
+//	}
 	
-	/**
-	 * This method is used to test the NodeImpl.setImportance() method
-	 */
-	@Test
-	public void testSetImportance() {
-		
-		node2.setImportance(200);					
-		assertEquals("Problem with setImportance", 200.0, node2.getImportance());
-	}	
+//	/**
+//	 * This method is used to test the NodeImpl.setImportance() method
+//	 */
+//	@Test
+//	public void testSetImportance() {
+//		
+//		node2.setImportance(200);					
+//		assertEquals("Problem with setImportance", 200.0, node2.getImportance());
+//	}	
 	
 	/**
 	 * This method is used to test the NodeImpl.getReferencedNode() method

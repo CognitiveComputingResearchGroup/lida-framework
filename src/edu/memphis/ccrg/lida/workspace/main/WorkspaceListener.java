@@ -19,9 +19,9 @@ public interface WorkspaceListener extends ModuleListener{
 	
 	/**
 	 * Receive NodeStructure content from ModuleType originatingBuffer 
-	 * @param originatingBuffer
-	 * @param content
+	 * @param originatingBuffer source of content
+	 * @param content sent content
 	 */
-	public abstract void receiveWorkspaceContent(ModuleName originatingBuffer, WorkspaceContent content);
+	public void receiveWorkspaceContent(ModuleName originatingBuffer, WorkspaceContent content);
 
 }

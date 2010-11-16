@@ -71,7 +71,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	/**
 	 * Sets the default number of ticks that is used in the constructor without this parameter.
-	 * @param defaultTicksPerStep
+	 * @param defaultTicksPerStep default number of ticks
 	 */
 	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
 		if (defaultTicksPerStep > 0) {
@@ -174,23 +174,6 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void stopRunning() {
 		setTaskStatus(LidaTaskStatus.CANCELED);
 	}
-
-//	/**
-//	 * @param taskManager
-//	 */
-//	public void setTaskManager(LidaTaskManager taskManager) {
-//		this.taskManager = taskManager;
-//		if (taskID == 0) {
-//			taskID = LidaTaskManager.getNextTaskID();
-//		}
-//	}
-//
-//	/**
-//	 * @return the LidaTaskManager
-//	 */
-//	public LidaTaskManager getTaskManager(){
-//		return taskManager;
-//	}
 	
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#init(java.util.Map)
@@ -227,7 +210,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/* 
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTaskSpawner()
 	 */
-	public TaskSpawner getTaskSpawner() {		
+	public TaskSpawner getControllingTaskSpawner() {		
 		return ts;
 	}
 

@@ -25,13 +25,13 @@ public interface Learnable extends Activatible{
 	/**
 	 * Returns base level activation. 
 	 */
-	public abstract double getBaseLevelActivation();
+	public double getBaseLevelActivation();
 	
 	/**
 	 * Set base level activation
-	 * @param amount
+	 * @param amount new bla amount
 	 */
-	public abstract void setBaseLevelActivation(double amount);
+	public void setBaseLevelActivation(double amount);
 	/**
 	 * The Base Level activation of this node is increased 
 	 * using the excitation value as a parameter for the ExciteStrategy.

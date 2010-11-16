@@ -5,31 +5,32 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.pam.tasks;
 
-import java.io.Serializable;
-import java.util.Map;
+import java.util.Collection;
+
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
- * A object that can have links attached to it
+ * This interface makes more sense if you look at the implementation of it
  * @author Javier Snaider
- *
+ * @see FeatureDetectorImpl
  */
-public interface Linkable extends Serializable {
-
-	/**
-	 * Readable label
-	 */
-	public String getLabel();
+public interface FeatureDetector extends LidaTask {
+	
+	public abstract double detect(); 
 	
 	/**
-	 * General Id for Linkables
+	 * Get nodes that this detector is looking for.
 	 */
-	public ExtendedId getExtendedId();
+	public abstract Collection<PamNode> getPamNodes();
 	
 	/**
 	 * 
-	 * @param params configuration parameters
+	 * @param node
 	 */
-	public void init(Map<String,Object> params);
+	public abstract void addPamNode(PamNode node);
+	
+	public abstract void excitePam(double detectionActivation);
 }

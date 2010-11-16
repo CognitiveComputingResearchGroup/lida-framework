@@ -21,25 +21,24 @@ public interface AttentionCodelet extends Codelet{
 	
 	/**
 	 * Sets the content the codelet will look for.
-	 * @param content
+	 * @param content NodeStructure
 	 */
 	public void setSoughtContent(NodeStructure content);
 	
 	/**
 	 * Get content codelet will look for.
-	 * @return
+	 * @return sought content
 	 */
 	public NodeStructure getSoughtContent();
 	
 	/**
 	 * How this codelet determines whether its sought content is present in the csm
-	 * @param strategy
+	 * @param strategy CheckForContentStrategy
 	 */
 	public void setHasSoughtContentStrategy(CheckForContentStrategy strategy);
 	
 	/**
 	 * 
-	 * @return
 	 */
 	public CheckForContentStrategy getHasSoughtContentStrategy();
 

@@ -11,7 +11,6 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceLi
 import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * Interface for the action selection module
@@ -24,18 +23,18 @@ public interface ActionSelection extends LidaModule, TriggerListener, Saveable {
 	 * Those classes that should be receiving selected actions from Action Selection
 	 * @param listener listener of this action selection
 	 */
-	public abstract void addActionSelectionListener(ActionSelectionListener listener);
+	public void addActionSelectionListener(ActionSelectionListener listener);
 	
 	/**
 	 * 
 	 * @param listener preafference listeners of this action selection
 	 */
-	public abstract void addPreafferenceListener(PreafferenceListener listener);
+	public void addPreafferenceListener(PreafferenceListener listener);
 	
 	/**
 	 * Choose a single action among those activated and whose context are satisfied to execute
 	 */
-	public abstract void selectAction();
+	public void selectAction();
 
 
 }

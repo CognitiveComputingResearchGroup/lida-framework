@@ -65,8 +65,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	/**
 	 * Creates a new NodeStructureImpl with specified default Node type and link Type.
 	 * If either is not in the factory the factory's defaults are used.
-	 * @param defaultNode
-	 * @param defaultLink
+	 * @param defaultNode kind of node used in this NodeStructure
+	 * @param defaultLink kind of link used in this NodeStructure
 	 */
 	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
@@ -343,8 +343,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#deleteLink(edu.memphis.ccrg.lida.shared.Link)
 	 */
-	public void deleteLink(Link l) {
-		deleteLinkable(l);
+	public void removeLink(Link l) {
+		removeLinkable(l);
 	}// method
 
 	/*
@@ -354,7 +354,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#deleteLinkable(edu.memphis
 	 * .ccrg.lida.shared.Linkable)
 	 */
-	public void deleteLinkable(Linkable n) {
+	public void removeLinkable(Linkable n) {
 		Set<Link> tempLinks = linkableMap.get(n);
 		Set<Link> otherLinks;
 		Linkable other;
@@ -394,8 +394,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	}// method
 
-	public void deleteNode(Node n) {
-		deleteLinkable(n);
+	public void removeNode(Node n) {
+		removeLinkable(n);
 	}
 
 	public Link getLink(ExtendedId ids) {
@@ -442,13 +442,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Set<Link> result = new HashSet<Link>();
 		if (temp != null) {
 			for (Link l : temp) {
-				if (l.getCategory() == type)// add only decired type
+				if (l.getCategory() == type)// add only desired type
 					result.add(l);
 			}// for each link
 		}// result != null
 		return result;
 	}// method
-	//TODO compare these two
+	
 	public Set<Link> getLinks(LinkCategory type) {
 		Set<Link> result = new HashSet<Link>();
 		if (links != null) {
@@ -533,9 +533,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return result;
 	}// method
 
-	public void clearNodes() {
-		nodes = new ConcurrentHashMap<Integer, Node>();
-	}
+//	public void clearNodes() {
+//		nodes = new ConcurrentHashMap<Integer, Node>();
+//	}
 
 	public boolean containsLink(Link l) {
 		return links.containsKey(l.getExtendedId());
@@ -577,11 +577,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public Collection<Linkable> getLinkables() {
 		return Collections.unmodifiableCollection(linkableMap.keySet());
-	}
-
-	@Override
-	public String getNodeAndLinkCount() {
-		return "Nodes: " + getNodeCount() + " Links: " + getLinkCount();
 	}
 
 }// class

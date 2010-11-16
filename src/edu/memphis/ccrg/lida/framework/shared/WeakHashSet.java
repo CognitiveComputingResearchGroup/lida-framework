@@ -19,8 +19,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Se
 	
 	static final long serialVersionUID = -4148697472689300159L;
 	
-	//TODO Should it be transient?
-	private Map<E, Object> map = new WeakHashMap<E, Object>();
+	private transient Map<E, Object> map = new WeakHashMap<E, Object>();
 	
 	private static final Object PRESENT = new Object();
 

@@ -21,11 +21,11 @@ public class SensoryMemoryDriver extends ModuleDriverImpl {
 	public SensoryMemoryDriver(SensoryMemory sm, int ticksPerCycle, LidaTaskManager tm){
 		super(ticksPerCycle, tm,ModuleName.SensoryMemoryDriver);
 		this.sm = sm;
-	}//constructor
+	}
 		
 	public SensoryMemoryDriver(){
 		super(DEFAULT_TICKS_PER_CYCLE,ModuleName.SensoryMemoryDriver);
-	}//constructor
+	}
 		
 	@Override
 	public void runThisDriver(){

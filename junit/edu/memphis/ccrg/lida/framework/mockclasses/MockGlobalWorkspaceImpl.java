@@ -190,7 +190,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public TaskSpawner getTaskSpawner() {
+	public TaskSpawner getControllingTaskSpawner() {
 		
 		return null;
 	}

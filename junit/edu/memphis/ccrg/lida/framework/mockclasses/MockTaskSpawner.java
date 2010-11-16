@@ -92,7 +92,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public TaskSpawner getTaskSpawner() {
+	public TaskSpawner getControllingTaskSpawner() {
 		
 		return null;
 	}

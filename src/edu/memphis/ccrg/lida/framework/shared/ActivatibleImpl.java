@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * generic Activatible Implementation. Useful to inherit from it 
+ * Generic Activatible Implementation. Useful to inherit from it 
  * Activatible classes like nodes or codelets.
  *  
  * @author Javier Snaider

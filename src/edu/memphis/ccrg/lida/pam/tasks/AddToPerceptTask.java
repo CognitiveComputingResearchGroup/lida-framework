@@ -5,13 +5,15 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam;
+package edu.memphis.ccrg.lida.pam.tasks;
 
-//import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A task to add a node to the percept.
@@ -40,25 +42,14 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(NodeStructure pamNodeStructure, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-//		for(Link l: pamNodeStructure.getLinks())
-//			System.out.println("original ns " + l.getActivation() + " total " + l.getTotalActivation());
-//		System.out.println();
 		nodeStructure = new NodeStructureImpl(pamNodeStructure);
-//		for(Link l: nodeStructure.getLinks())
-//			System.out.println("copied ns " + l.getActivation() + " total " + l.getTotalActivation());
-//		System.out.println("--------");
 	}
 
 	/**
 	 * While it looks simple, the call to 'addNodeToPercept' takes many step to execute.
 	 * Thus it is justifiable to make this a separate thread
 	 */
-	public void runThisLidaTask() {	
-//		for(Node n: pamNodeStructure.getNodes()){
-//			System.out.println(n.getLabel());
-//		}
-//		System.out.println("");
-			
+	public void runThisLidaTask() {				
 		pam.addNodeStructureToPercept(nodeStructure);	
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}

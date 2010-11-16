@@ -29,7 +29,7 @@ public class PamDriver extends ModuleDriverImpl implements GuiEventProvider {
 
 	public PamDriver() {
 		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.PamDriver);
-	}// constructor
+	}
 
 	@Override
 	protected void runThisDriver() {

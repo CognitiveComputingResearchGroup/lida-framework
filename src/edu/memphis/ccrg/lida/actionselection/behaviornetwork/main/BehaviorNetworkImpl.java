@@ -55,8 +55,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener, BroadcastListener {
 
-	private static Logger logger = Logger
-			.getLogger("lida.behaviornetwork.engine.Net");
+	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
 
 	/**
 	 * Starting value for candidateBehaviorThreshold

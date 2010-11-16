@@ -59,7 +59,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 
 	/**
 	 * Set downscale factor
-	 * @param d
+	 * @param d downscale
 	 */
 	public void setDownscale(Double d) {
 		downscaleFactor  = d;		
@@ -70,7 +70,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 
 	/**
 	 * Set selectivity threshold
-	 * @param s
+	 * @param s selectivity
 	 */
 	public void setSelectivity(Double s) {
 		selectivityThreshold = s;		
@@ -87,6 +87,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 		for(PamLink l: links)
 			returnedLinks.add((PamLink) addLink(l));
 			
+		//TODO Bug.  This method is for nodes
 		updateActivationThresholds(upscaleFactor, selectivityThreshold);
 		return returnedLinks;
 	}
@@ -129,12 +130,13 @@ public class PamNodeStructure extends NodeStructureImpl{
 	
 	/**
      * Calc selection threshold based on the selectivity and min and max activ.
+     * TODO this isn't done for link....
      */
 	private void updateSelectionThreshold(PamNode n, double selectivity){
 		double min = n.getMinActivation();
 		double max = n.getMaxActivation();
 		double threshold = selectivity*(max - min) + min;
-		n.setSelectionThreshold(threshold);
+		n.setPerceptThreshold(threshold);
 	}   
 	
 	/** 
@@ -264,14 +266,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 			la.decay(ticks);
 			la.decayBaseLevelActivation(ticks);
 		}
-	}//method
-	
-	/**
-	 * Simple utility method
-	 */
-	public void printPamNodeActivations() {
-		for(Node n: getNodes())
-			((PamNodeImpl)n).printActivationString();
 	}//method
 
 }//class

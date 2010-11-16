@@ -15,6 +15,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
+
 /**
  * @author Siminder Kaur
  *
@@ -35,7 +37,7 @@ public class AddToPerceptTaskTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.AddToPerceptTask#runThisLidaTask()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask#runThisLidaTask()}.
 	 */
 	@Test
 	public void testRunThisLidaTask() {
@@ -43,7 +45,7 @@ public class AddToPerceptTaskTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.AddToPerceptTask#AddToPerceptTask(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask#AddToPerceptTask(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory)}.
 	 */
 	@Test
 	public void testAddToPerceptTaskPamNodePerceptualAssociativeMemory() {
@@ -53,7 +55,7 @@ public class AddToPerceptTaskTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.AddToPerceptTask#AddToPerceptTask(edu.memphis.ccrg.lida.framework.shared.NodeStructure, edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask#AddToPerceptTask(edu.memphis.ccrg.lida.framework.shared.NodeStructure, edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory)}.
 	 */
 	@Test
 	public void testAddToPerceptTaskNodeStructurePerceptualAssociativeMemory() {

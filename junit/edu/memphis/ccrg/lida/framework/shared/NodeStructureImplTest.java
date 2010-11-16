@@ -55,17 +55,17 @@ public class NodeStructureImplTest extends TestCase{
 		node1.setId(1);		
 		node1.setLabel("red");
 		node1.setActivation(1);
-		node1.setImportance(1);
+//		node1.setImportance(1);
 
 		node2.setId(2);
 		node2.setLabel("blue");
 		node2.setActivation(2);
-		node2.setImportance(2);
+//		node2.setImportance(2);
 
 		node3.setId(3);
 		node2.setLabel("purple");
 		node2.setActivation(3);
-		node2.setImportance(3);
+//		node2.setImportance(3);
 		
 		node4.setId(3);
 		
@@ -154,7 +154,7 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure1.addLink(link1);					
 		nodeStructure1.addLink(link2);
 		
-		nodeStructure1.deleteLink(link1);
+		nodeStructure1.removeLink(link1);
 		assertTrue("Problem with deleteLink", !nodeStructure1.containsLink(link1));		
 	}
 
@@ -167,25 +167,25 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure1.addNode(node2);	
 		nodeStructure1.addNode(node3);
 		
-		nodeStructure1.deleteNode(node3);
+		nodeStructure1.removeNode(node3);
 		assertTrue("Problem with deleteNode", !nodeStructure1.containsNode(node3));	
 	}
 
-	/**
-	 * This method is used to test the NodeStructureImpl.clearNodes() method
-	 */
-	@Test
-	public void testClearNodes() {
-		nodeStructure1.addNode(node1);	
-		nodeStructure1.addNode(node2);	
-		nodeStructure1.addNode(node3);	
-		
-		nodeStructure1.addLink(link1);					
-		nodeStructure1.addLink(link2);
-		
-		nodeStructure1.clearNodes();
-		assertTrue("Problem with clearNodes", nodeStructure1.getNodeCount()==0);	
-	}	
+//	/**
+//	 * This method is used to test the NodeStructureImpl.clearNodes() method
+//	 */
+//	@Test
+//	public void testClearNodes() {
+//		nodeStructure1.addNode(node1);	
+//		nodeStructure1.addNode(node2);	
+//		nodeStructure1.addNode(node3);	
+//		
+//		nodeStructure1.addLink(link1);					
+//		nodeStructure1.addLink(link2);
+//		
+//		nodeStructure1.clearNodes();
+//		assertTrue("Problem with clearNodes", nodeStructure1.getNodeCount()==0);	
+//	}	
 
 	/**
 	 * This method is used to test the NodeStructureImpl.copy() method

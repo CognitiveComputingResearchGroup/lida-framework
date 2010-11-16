@@ -174,7 +174,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 					if(l instanceof PamNode){
 						PamNode pn=(PamNode)l;
 						tip ="<html><b>"+pn.toString() + "</b><br /> Activation: " + pn.getActivation()+ 
-						"<br /> BaseActivation: " + pn.getBaseLevelActivation()+ "<br /> Threshold: " + pn.getSelectionThreshold()+"</html>";
+						"<br /> BaseActivation: " + pn.getBaseLevelActivation()+ "<br /> Threshold: " + pn.getPerceptThreshold()+"</html>";
 						
 					}else{
 					Activatible n = (Activatible) l;

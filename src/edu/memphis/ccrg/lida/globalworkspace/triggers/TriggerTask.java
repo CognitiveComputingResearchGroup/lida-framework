@@ -28,10 +28,13 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
  *
  */
 public class TriggerTask extends LidaTaskImpl{
+	
 	private Logger logger = Logger.getLogger("lida.globalworkspace.triggers");
 
 	private String name;
+	
 	private TriggerListener gw;
+	
 	public TriggerTask(int ticksForCycle,TriggerListener gw,String name) {
 		super(ticksForCycle);
 		this.gw=gw;

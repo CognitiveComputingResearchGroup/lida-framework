@@ -13,8 +13,8 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
 
 public interface SensoryMemory extends LidaModule, SensoryMotorListener, Saveable {
 
-	public abstract void runSensors();
+	public void runSensors();
 	
-	public abstract void addSensoryMemoryListener(SensoryMemoryListener l);
+	public void addSensoryMemoryListener(SensoryMemoryListener l);
 
 }

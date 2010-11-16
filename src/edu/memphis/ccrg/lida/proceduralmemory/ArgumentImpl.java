@@ -83,20 +83,6 @@ public class ArgumentImpl implements Argument {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.Node#getImportance()
-	 */
-	@Override
-	public double getImportance() {
-		if (node != null) {
-			return node.getImportance();
-		}
-		return 0.0;
-	}
-
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see edu.memphis.ccrg.lida.framework.shared.Node#getReferencedNode()
 	 */
 	@Override
@@ -114,15 +100,6 @@ public class ArgumentImpl implements Argument {
 	 */
 	@Override
 	public void setId(int id) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.Node#setImportance(double)
-	 */
-	@Override
-	public void setImportance(double importance) {
 	}
 
 	/*

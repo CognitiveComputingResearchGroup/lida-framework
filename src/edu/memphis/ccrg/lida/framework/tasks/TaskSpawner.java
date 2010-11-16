@@ -21,31 +21,31 @@ public interface TaskSpawner extends LidaTask{
 	 * Gets the number of Tasks in this Spawner
 	 * @return number of tasks spawned
 	 */
-	public abstract int getSpawnedTaskCount();
+	public int getSpawnedTaskCount();
 	/**
 	 * Adds a new LidaTask to this Spawner.
 	 * @param task the task to add.
 	 */
-	public abstract void addTask(LidaTask task);
+	public void addTask(LidaTask task);
 	/**
 	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
 	 * @return collection
 	 */
-	public abstract Collection<LidaTask> getSpawnedTasks();
+	public Collection<LidaTask> getSpawnedTasks();
 	
 	/**
 	 * The supplied LidaTask will be start by the spawner right away.
 	 */
-	public abstract void setInitialTasks(Collection<? extends LidaTask> initialTasks);
+	public void setInitialTasks(Collection<? extends LidaTask> initialTasks);
 		
 	/**
 	 * This method receives the tasks that have finished. Each TaskSpawner can choose what to do 
 	 * with each LidaTask each time it finished to run one step. Generally the LidaTask's status commands this 
 	 * action.
 	 * 
-	 * @param task
+	 * @param task finished LidaTask
 	 */
-	public abstract void receiveFinishedTask(LidaTask task);
+	public void receiveFinishedTask(LidaTask task);
 	
 	/**
 	 * Cancels the task from the Task Queue. This is only possible if the tick for witch the task 
@@ -53,18 +53,18 @@ public interface TaskSpawner extends LidaTask{
 	 * 
 	 * @param task The task to cancel.
 	 */
-	public abstract void cancelTask(LidaTask task);
+	public void cancelTask(LidaTask task);
 
 	/**
 	 * Returns the task manager for the taskspawner
 	 * @return LidaTaskManager
 	 */
-	public abstract LidaTaskManager getTaskManager();
+	public LidaTaskManager getTaskManager();
 	
 	/**
-	 * Set the task manager this task spawner will use
-	 * @param taskManager
+	 * Set the LidaTaskManager this TaskSpawner will use to actually run the tasks
+	 * @param taskManager task manager
 	 */
-	public abstract void setTaskManager(LidaTaskManager taskManager);
+	public void setTaskManager(LidaTaskManager taskManager);
 
 }

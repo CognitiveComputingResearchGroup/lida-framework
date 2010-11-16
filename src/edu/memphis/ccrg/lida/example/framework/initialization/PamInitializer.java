@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PropagationBehavior;
 import edu.memphis.ccrg.lida.pam.UpscalePropagationBehavior;
-import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 public class PamInitializer implements Initializer {

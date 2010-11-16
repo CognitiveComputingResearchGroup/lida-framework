@@ -19,70 +19,80 @@ import java.util.Set;
  */
 public interface NodeStructure {
 
-	public abstract Link addLink(Link l);
+	//Add
+	
+	public Link addLink(Link l);
 	
 	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type, double activation);
 
-	public abstract void addLinks(Collection<Link> links);
+	public void addLinks(Collection<Link> links);
 	
-	public abstract Node addNode(Node n);
+	public Node addNode(Node n);
 
-	public abstract Node addNode(Node n, String factoryName);
+	public Node addNode(Node n, String factoryName);
 
-	public abstract void addNodes(Collection<Node> nodes);
-
-	public abstract NodeStructure copy();
-
-	public abstract void deleteLink(Link l);
+	public void addNodes(Collection<Node> nodes);
 	
-	public abstract void deleteLinkable(Linkable l);
-
-	public abstract void deleteNode(Node n);
+	//Delete
+	public void removeLink(Link l);
 	
-	public abstract void clearNodes();
-
-	public abstract Collection<Link> getLinks();
-
-	public abstract Set<Link> getLinks(Linkable l);
-
-	public abstract Set<Link> getLinks(Linkable NorL, LinkCategory type);
-
-	public abstract Set<Link> getLinks(LinkCategory type);
-
-	public abstract Collection<Node> getNodes();
-
-	public abstract void setDefaultLink(String linkClassName);
-
-	public abstract void setDefaultNode(String nodeClassName);
-
-	public abstract Node getNode(int id);
-
-	public abstract Node getNode(ExtendedId ids);
-
-	public abstract Link getLink (ExtendedId ids);
-
-	public abstract Linkable getLinkable (ExtendedId ids);
+	public void removeNode(Node n);
 	
-	public abstract void mergeWith (NodeStructure ns);
-
-	public abstract Map<Linkable, Set<Link>> getLinkableMap();
-
-	public abstract boolean containsNode(Node n);
-
-	public abstract boolean containsLink(Link l);
-
-	public abstract int getNodeCount();
-
-	public abstract int getLinkCount();
+	public void removeLinkable(Linkable l);
 	
-	public abstract int getLinkableCount();
-	public abstract Collection<Linkable> getLinkables();
+//	//TODO maybe a general clear but this method is not used and potentially problematic if 
+//	public void clearNodes();
 	
-	public abstract String getDefaultNodeType();
-	public abstract String getDefaultLinkType();
+	//Contains
+	public boolean containsNode(Node n);
+
+	public boolean containsLink(Link l);
 	
+	//Other methods
+	public void mergeWith(NodeStructure ns);
 	
-	//redundant with getLinkableCount
-	public abstract String getNodeAndLinkCount();
+	public NodeStructure copy();
+	
+	//Gets
+	
+	//Links
+	public Link getLink(ExtendedId ids);
+	
+	public Collection<Link> getLinks();
+
+	public Set<Link> getLinks(Linkable l);
+
+	public Set<Link> getLinks(LinkCategory type);
+	
+	public Set<Link> getLinks(Linkable NorL, LinkCategory type);
+
+	//Nodes
+	public Node getNode(int id);
+
+	public Node getNode(ExtendedId ids);
+	
+	public Collection<Node> getNodes();
+
+	//Linkables
+	public Linkable getLinkable (ExtendedId ids);
+
+	public Collection<Linkable> getLinkables();
+	
+	public Map<Linkable, Set<Link>> getLinkableMap();
+
+	public int getNodeCount();
+
+	public int getLinkCount();
+	
+	public int getLinkableCount();
+	
+	//Node & Link type
+	public String getDefaultNodeType();
+	
+	public String getDefaultLinkType();
+	
+	public void setDefaultLink(String linkClassName);
+
+	public void setDefaultNode(String nodeClassName);
 	
 }

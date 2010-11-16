@@ -28,9 +28,9 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  */
 public interface GlobalWorkspace extends LidaModule, TriggerListener,ModuleDriver{
 	/**
-	 * This method is invoked by the 
-	 * @param coalition
-	 * @return true is coalition was added
+	 * This method is invoked by the  //TODO comment
+	 * @param coalition to be added 
+	 * @return true if coalition was added
 	 */
 	public boolean addCoalition(Coalition coalition);
 	/**

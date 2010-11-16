@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +18,8 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
+	
+	private static Logger logger = Logger.getLogger("lida.framework.pam.PamNodeImpl");
 	
 	protected static final double MIN_ACTIVATION = 0.0;
 	protected static final double MAX_ACTIVATION = 1.0;
@@ -35,8 +36,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
 	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
-	private static Logger logger = Logger.getLogger("lida.framework.pam.PamNodeImpl");
-
 	
 	public PamNodeImpl() {
 		super();
@@ -48,62 +47,33 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		selectionThreshold = p.selectionThreshold;
 		baseLevelActivation = p.baseLevelActivation;
 	}
-
-//	/**
-//	 * Adds this node's current, baseLevel, and residual activation to total
-//	 * activation. Also updates activation buffers. This method should only
-//	 * be invoked when activation passing for this cycle is complete.
-//	 */
-//	public void synchronize() {		
-//		double currentActivation = getActivation();
-//		if((currentActivation + baseLevelActivation) < MAX_ACTIVATION)
-//			setActivation(currentActivation + baseLevelActivation); 
-//		else
-//			setActivation(MAX_ACTIVATION);
-//	}
 	
 	/**
 	  * Determines if this node is relevant. A node is relevant if its total
 	  * activation is greater or equal to the selection threshold.
 	  * 
 	  * @return     <code>true</code> if this node is relevant
-	  * @see        #selectionThreshold
 	  */
 	public boolean isOverThreshold() {
 	    return getTotalActivation() >= selectionThreshold;
 	}
 
 	/**
-	 * 
-	 * @param threshold
+	 * @param threshold amount needed to enter percept 
 	 */
-	public void setSelectionThreshold(double threshold) {
+	public void setPerceptThreshold(double threshold) {
 		selectionThreshold = threshold;
 	}
-
-	/**
-	 * 
-	 * @param values
-	 */
-	public void setValue(Map<String, Object> values) {
-		Object o = values.get("importance");
-		if ((o != null)&& (o instanceof Double)) 
-			setImportance((Double)o);
-			//importance = (Double)o;
-		
-		o = values.get("baselevelactivation");
-		if ((o != null)&& (o instanceof Double)) 
-			baseLevelActivation = (Double)o;		
-	}//method
 
 	/**
 	 * returns selection threshold
 	 * @return Selection threshold
 	 */
-	public double getSelectionThreshold() {
+	public double getPerceptThreshold() {
 	    return selectionThreshold;
 	}
 
+	@Override
 	public double getTotalActivation() {
 	    return getActivation() + baseLevelActivation;
 	}
@@ -116,29 +86,21 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		return MIN_ACTIVATION;
 	}
 	
-	/**
-	 * @param obj
-	 */
+	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof PamNodeImpl))
 			return false;
-		PamNodeImpl other = (PamNodeImpl)obj;
-		return getId() == other.getId();
+		return getId() == ((PamNodeImpl) obj).getId();
 	}
 
-	/**
-	 * 
-	 */
+	@Override
 	public int hashCode() { 
-	    int hash = 1;
-	    Integer id =  getId();
-	    hash = hash * 31 + id.hashCode();
-	    return hash;
+	    return getId();
 	}
 
-	public void printActivationString() {
-		System.out.println(getId() + " total activation: " + getTotalActivation());	
-	}//method
+	public String toString() {
+		return getId() + " total activation: " + getTotalActivation();	
+	}
 	
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {

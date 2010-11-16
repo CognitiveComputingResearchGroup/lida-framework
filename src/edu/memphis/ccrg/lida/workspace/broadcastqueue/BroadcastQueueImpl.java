@@ -100,7 +100,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 			for (Node n : nodes) {
 				n.decay(ticks);
 				if (n.getActivation() <= lowerActivationBound) {
-					ns.deleteNode(n);
+					ns.removeNode(n);
 				}
 			}
 		}

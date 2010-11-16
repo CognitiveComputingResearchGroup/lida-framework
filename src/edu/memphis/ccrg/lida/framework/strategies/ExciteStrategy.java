@@ -9,25 +9,25 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
-public interface ExciteStrategy  extends Strategy{
+public interface ExciteStrategy extends Strategy{
 
 	/**
-	 * 
-	 * @param currentActivation
-	 * @param excitation
-	 * @param params
-	 * @return
-	 */
-	public abstract double excite(double currentActivation, double excitation, Object... params);
+     * Excites the current activation according to some internal excite function.
+     * @param currentActivation activation of the entity before excite.
+     * @param excitation amount of activation to adds
+     * @param params parameters
+     * @return new activation amount
+     */
+	public double excite(double currentActivation, double excitation, Object... params);
 	
 	/**
 	 * 
-	 * @param currentActivation
-	 * @param excitation
-	 * @param params
-	 * @return
+	 * @param currentActivation activation of the entity before excite.
+	 * @param excitation amount of activation to adds
+	 * @param params parameters
+	 * @return new activation amount
 	 */
-	public abstract double excite(double currentActivation, double excitation, Map<String, ? extends Object>params);
+	public double excite(double currentActivation, double excitation, Map<String, ? extends Object>params);
 
 }
 

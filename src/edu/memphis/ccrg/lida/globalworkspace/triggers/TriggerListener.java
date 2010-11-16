@@ -14,6 +14,10 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
  * 
  */
 public interface TriggerListener {
+	
+	/**
+	 * Listener must be able to trigger a broadcast
+	 */
 	public void triggerBroadcast();
 
 }

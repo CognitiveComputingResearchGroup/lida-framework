@@ -10,9 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable{
 
 	static final long serialVersionUID = 3313091100336870355L;
-	
-	//TODO Should it be transient?
-	private  Map<E, Object> map = new ConcurrentHashMap<E, Object>();
+
+	private transient Map<E, Object> map = new ConcurrentHashMap<E, Object>();
 	
 	private static final Object PRESENT = new Object();
 

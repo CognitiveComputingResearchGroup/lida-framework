@@ -136,7 +136,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public void deleteLink(Link l) {
+	public void removeLink(Link l) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
@@ -144,7 +144,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public void deleteLinkable(Linkable l) {
+	public void removeLinkable(Linkable l) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
@@ -152,17 +152,17 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public void deleteNode(Node n) {
+	public void removeNode(Node n) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 
-	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
-	 */
-	@Override
-	public void clearNodes() {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-	}
+//	/**
+//	 * @throws UnsupportedOperationException Cannot modify this object once created.
+//	 */
+//	@Override
+//	public void clearNodes() {
+//		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+//	}
 
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
@@ -280,11 +280,6 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	@Override
 	public String getDefaultLinkType() {
 		return super.getDefaultLinkType();
-	}
-
-	@Override
-	public String getNodeAndLinkCount() {
-		return super.getNodeAndLinkCount();
 	}
 
 }

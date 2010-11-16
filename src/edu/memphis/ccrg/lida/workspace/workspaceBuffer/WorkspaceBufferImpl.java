@@ -57,7 +57,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 //					System.out.println("deleting link " + l.getSource().getLabel() + " -> " + l.getSink().getLabel());
 //				}
 				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getActualTick());
-				buffer.deleteLinkable(linkable);
+				buffer.removeLinkable(linkable);
 			}
 		}		
 	}//method

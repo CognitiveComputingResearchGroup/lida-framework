@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam;
+package edu.memphis.ccrg.lida.pam.tasks;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +14,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamLinkable;
+import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A task that allows PAM nodes to be excited asynchronously.
@@ -48,22 +52,19 @@ public class ExcitationTask extends LidaTaskImpl{
 
 	/**
 	 * 
-	 * @param linkable
-	 * @param excitation
-	 * @param excitationTaskTicksPerRun 
-	 * @param pam
-	 * @param ts
+	 * @param linkable to be excited
+	 * @param excitation amount to excite
+	 * @param pam PerceptualAssociativeMemory module
+	 * @param ts TaskSpawner
 	 */
-	public ExcitationTask(PamLinkable linkable, double excitation,
-			              int excitationTaskTicksPerRun, 
-			              PerceptualAssociativeMemory pam, 
-			              TaskSpawner ts) {
+	public ExcitationTask(PamLinkable linkable, double excitation, int ticksPerRun,
+			              PerceptualAssociativeMemory pam, TaskSpawner ts){
 		super();
-		pamLinkable = linkable;
-		excitationAmount = excitation;
-		setNumberOfTicksPerRun(excitationTaskTicksPerRun);
+		this.pamLinkable = linkable;
+		this.excitationAmount = excitation;
+		this.setNumberOfTicksPerRun(ticksPerRun);
 		this.pam = pam;
-		taskSpawner = ts;
+		this.taskSpawner = ts;
 	}
 
 	/**

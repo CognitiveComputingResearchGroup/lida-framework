@@ -27,7 +27,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	Properties commands;
 
 	/**
-	 * @param lida
+	 * @param lida Lida object
 	 */
 	public LidaGuiControllerImpl(Lida lida, Properties commands) {
 		super();

@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.Learnable;
 
 /**
  * 
- * @author Javier Snaider
+ * @author Javier Snaider, Ryan McCall
  * 
  */
 public interface Codelet extends LidaTask, Learnable{
@@ -23,6 +23,6 @@ public interface Codelet extends LidaTask, Learnable{
 	/**
 	 * @param module - module related to this codelet
 	 */
-	public abstract void setAssociatedModule(CodeletModuleUsage usage, LidaModule module);
+	public void setAssociatedModule(CodeletModuleUsage usage, LidaModule module);
 	
 }

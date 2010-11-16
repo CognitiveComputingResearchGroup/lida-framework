@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 /**
@@ -152,7 +152,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addFeatureDetector(edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)}.
 	 */
 	@Test
 	public void testAddFeatureDetector() {

@@ -45,7 +45,7 @@ public class ScreenCaptureUtility{
 	}
 	
 	/**
-	 * @param r
+	 * @param r rectangle
 	 */
 	public ScreenCaptureUtility(Rectangle r){
 		try {

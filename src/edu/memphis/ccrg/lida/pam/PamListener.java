@@ -28,13 +28,13 @@ public interface PamListener extends ModuleListener{
 	
 	/**
 	 * Same as above for a single node.
-	 * @param node
+	 * @param node sent node
 	 */
 	public void receiveNode(Node node);
 	
 	/**
 	 * Same as above for a single link.
-	 * @param l
+	 * @param l sent link
 	 */
 	public void receiveLink(Link l);
 }

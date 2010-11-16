@@ -15,14 +15,13 @@ import java.util.Map;
 
 /**
  * @author Javier Snaider
- *
  */
 public interface Strategy extends Serializable {
+	
 	/**
-	 * Receives a Map of init parameters for initalization.
+	 * Receives a Map of parameters for initialization.
 	 * 
-	 * 
-	 * @param parameters the Map with the parameters.
+	 * @param parameters Map containing parameters.
 	 */
 	public void init(Map<String, ? extends Object> parameters);
 

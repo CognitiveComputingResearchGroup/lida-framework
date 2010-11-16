@@ -19,7 +19,7 @@ public interface ProceduralMemory extends LidaModule, Saveable {
 	 * For adding modules that listen to Procedural Memory
 	 * @param listener
 	 */
-    public abstract void addProceduralMemoryListener(ProceduralMemoryListener listener); 
+    public void addProceduralMemoryListener(ProceduralMemoryListener listener); 
 	
     /**
      * To change how scheme are activated based on the broadcast.
@@ -30,23 +30,23 @@ public interface ProceduralMemory extends LidaModule, Saveable {
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 
 	 */
-	public abstract void activateSchemes();
+	public void activateSchemes();
 	
 	/**
 	 * Send out the active schemes to the PM listeners.
 	 */
-	public abstract void sendInstantiatedScheme(Scheme s);
+	public void sendInstantiatedScheme(Scheme s);
 	
 	/**
 	 * Add supplied schemes to this procedural memory.
 	 * @param schemes
 	 */
-	public abstract void addSchemes(Collection<Scheme> schemes);
+	public void addSchemes(Collection<Scheme> schemes);
 	
 	/**
 	 * Add supplied scheme to this procedural memory.
 	 * @param s
 	 */
-	public abstract void addScheme(Scheme s);
+	public void addScheme(Scheme s);
 	
 }

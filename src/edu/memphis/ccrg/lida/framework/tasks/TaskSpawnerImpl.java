@@ -147,7 +147,7 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 		taskManager.cancelTask(task);		
 	}
 	/**
-	 * @param taskManager
+	 * @param taskManager task manager
 	 */
 	public void setTaskManager(LidaTaskManager taskManager) {
 		this.taskManager = taskManager;

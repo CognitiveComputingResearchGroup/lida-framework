@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.Collection;
-import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 

@@ -30,10 +30,10 @@ public class CodeletDef {
 		this.params = new HashMap<String,Object>();
 	}
 	/**
-	 * @param className
-	 * @param defeaultStrategies
-	 * @param name
-	 * @param params
+	 * @param className Class name of codelet
+	 * @param defeaultStrategies map of strategies
+	 * @param name label for codelet
+	 * @param params optional parameters
 	 */
 	public CodeletDef(String className, Map<String,String> defeaultStrategies,
 			String name, Map<String,Object> params) {

@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 public interface Initializable {
 	/**
 	 * This method initializes the module using properties from LIDA Properties File
-	 * @param lidaProperties
+	 * @param lidaProperties LIDA properties
 	 */
 	public abstract void init (Map<String,?> lidaProperties);
 	/**

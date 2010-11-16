@@ -12,7 +12,9 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import java.io.Serializable;
 
 /**
- * An object with activation that is excitable and decayable
+ * An object with activation, has strategies 
+ * to both excite and decay this activation
+ * 
  * @author Ryan J McCall
  *
  */
@@ -25,7 +27,7 @@ public interface Activatible extends Serializable {
 	
 	/**
 	 * Set the current activation.
-	 * @param activation
+	 * @param activation new activation
 	 */
     public void setActivation(double activation);
     /**

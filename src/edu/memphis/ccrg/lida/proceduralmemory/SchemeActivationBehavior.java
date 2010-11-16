@@ -14,8 +14,17 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface SchemeActivationBehavior {
 	
+	/**
+	 * 
+	 * @param broadcast source NodeStructure
+	 * @param schemeMap indexed schemes
+	 */
 	public void activateSchemesWithBroadcast(NodeStructure broadcast, Map<? extends Object, Set<Scheme>> schemeMap);
 	
+	/**
+	 * set amount of activation a scheme must have for instantiation
+	 * @param d threshold
+	 */
 	public void setSchemeSelectionThreshold(double d);
 
 }

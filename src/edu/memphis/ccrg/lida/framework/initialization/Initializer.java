@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
  * An initializer performs configuration and set up on a particular module.  
- * @author ryanjmccall
+ * @author Ryan McCall
  *
  */
 public interface Initializer {
@@ -23,10 +23,10 @@ public interface Initializer {
 	 * It can use the Lida object and a map of parameters to do so.  
 	 * The variables in params are exactly those specified in Lida.xml under the module.
 	 * 
-	 * @param module
-	 * @param lida
-	 * @param params
+	 * @param module module being initialized
+	 * @param lida Lida object
+	 * @param params parameters
 	 */
-	public abstract void initModule(Initializable module, Lida lida, Map<String, ?> params); 
+	public void initModule(Initializable module, Lida lida, Map<String, ?> params); 
 
 }

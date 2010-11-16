@@ -31,10 +31,7 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 
 	private final static int defaultTicksPerRun = 10;
 	
-	/**
-	 * 
-	 */
-	private TaskSpawner taskSpawner;
+	protected TaskSpawner taskSpawner;
 	
 	/**
 	 * 
@@ -59,7 +56,7 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 	/**
 	 * A Gui Event provider may want to send different kinds of events at different
 	 * times, so the event to be sent is passed as a parameter.
-	 * @param evt
+	 * @param evt {@link FrameworkGuiEvent}
 	 */
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt){

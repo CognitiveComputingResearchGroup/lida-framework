@@ -18,7 +18,7 @@ public interface PropagationBehavior {
 	/**
 	 * Depending on the behavior different parameters can be pass in params for the 
 	 * calculation.
-	 * @param params
+	 * @param params parameters
 	 */
-	public abstract double getActivationToPropagate(Map<String, Object> params);
+	public double getActivationToPropagate(Map<String, Object> params);
 }

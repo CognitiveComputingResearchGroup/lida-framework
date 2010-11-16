@@ -31,10 +31,11 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.pam.featuredetector.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
+import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceListener;
 
@@ -52,7 +53,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	
 	/**
 	 * All of the running featureDetectors should be in this list. 
-	 * TODO: Separate featureDetectors from PAM?
 	 */
 	private List<FeatureDetector> featureDetectors = new ArrayList<FeatureDetector>();
 	
@@ -149,7 +149,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	public synchronized void receivePreafference(Collection<Node> addList, Collection<Node> deleteList) {
-		// TODO: Use preafferent signal
+		// TODO Use preafferent signal
 	}
 
 	public void learn() {

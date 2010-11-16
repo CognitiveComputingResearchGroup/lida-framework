@@ -42,7 +42,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 
 	@Override
-	public double getSelectionThreshold() {
+	public double getPerceptThreshold() {
 		return selectionThreshold;
 	}
 
@@ -56,7 +56,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 
 	@Override
-	public void setSelectionThreshold(double threshold) {
+	public void setPerceptThreshold(double threshold) {
 		this.selectionThreshold = threshold;		
 	}
 

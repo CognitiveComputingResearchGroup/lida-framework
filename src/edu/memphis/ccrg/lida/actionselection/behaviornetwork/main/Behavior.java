@@ -18,74 +18,70 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 public interface Behavior extends Activatible {
 	
 	//Ids
-	public abstract long getId();
-	public abstract long getActionId();
-	public abstract String getLabel();
-	public abstract void setLabel(String label);
+	public long getId();
+	public long getActionId();
+	public String getLabel();
+	public void setLabel(String label);
 	
-	public abstract Scheme getGeneratingScheme();
-	public abstract void setGeneratingScheme(Scheme s);
+	public Scheme getGeneratingScheme();
+	public void setGeneratingScheme(Scheme s);
 
 	//Context node type
-	public abstract void setContextNodeType(String nodeType);
-	public abstract String getContextNodeType();
+	public void setContextNodeType(String nodeType);
+	public String getContextNodeType();
 	//
-	public abstract boolean addContextCondition(Node condition);
-	public abstract boolean containsContextCondition(Node commonNode);
-	public abstract Collection<Node> getContextConditions();
-	public abstract int getContextSize();
+	public boolean addContextCondition(Node condition);
+	public boolean containsContextCondition(Node commonNode);
+	public Collection<Node> getContextConditions();
+	public int getContextSize();
 	
 	//Context activation
 	/**
 	 * marks supplied condition as present 
 	 */
-	public abstract void updateContextCondition(Node condition);
+	public void updateContextCondition(Node condition);
 	/**
 	 * Returns true if supplied condition is satisfied
-	 * @param condition
+	 * @param n Node
 	 */
-	public abstract boolean isContextConditionSatisfied(Node condition);
+	public boolean isContextConditionSatisfied(Node n);
 	/**
 	 * Returns true if all context conditions are satisfied
 	 */
-	public abstract boolean isAllContextConditionsSatisfied();
+	public boolean isAllContextConditionsSatisfied();
 	
 	public int getUnsatisfiedContextCount();
 	
 	/**
 	 * 
 	 */
-	public abstract void deactiveContextCondition(Node condition);
+	public void deactiveContextCondition(Node condition);
 	
 	/**
 	 * deactivates all context conditions
 	 */
-	public abstract void deactivateAllContextConditions();
+	public void deactivateAllContextConditions();
 	
 	//Add list
-	public abstract Collection<Node> getAddingList();
-	public abstract boolean addToAddingList(Node condition);
-	public abstract boolean containsAddingItem(Node commonNode);
-	public abstract double getAddingListCount();
-	public abstract void updateAddingCondition(Node broadcastNode);
+	public Collection<Node> getAddingList();
+	public boolean addToAddingList(Node condition);
+	public boolean containsAddingItem(Node commonNode);
+	public double getAddingListCount();
+	public void updateAddingCondition(Node broadcastNode);
 	
 	//Delete list
-	public abstract Collection<Node> getDeletingList();	
-    public abstract boolean addToDeletingList(Node deleteCondition);
-    public abstract boolean containsDeletingItem(Node commonNode);
-    public abstract double getDeletingListCount();
-    public abstract void updateDeletingCondition(Node broadcastNode);
+	public Collection<Node> getDeletingList();	
+    public boolean addToDeletingList(Node deleteCondition);
+    public boolean containsDeletingItem(Node commonNode);
+    public double getDeletingListCount();
+    public void updateDeletingCondition(Node broadcastNode);
     
     //result
-    public abstract double getResultSize();
+    public double getResultSize();
     
     //Containing streams
-    public abstract void addContainingStream(Stream stream);
-    public abstract Set<Stream> getContainingStreams();
-    public abstract void removeContainingStream(Stream stream);
-	
-	
-	
-	
+    public void addContainingStream(Stream stream);
+    public Set<Stream> getContainingStreams();
+    public void removeContainingStream(Stream stream);
 	
 }//method

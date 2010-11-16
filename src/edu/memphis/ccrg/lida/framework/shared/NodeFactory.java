@@ -178,7 +178,7 @@ public class NodeFactory {
 	}
 
 	/**
-	 * @param name
+	 * @param name decay strategy name
 	 */
 	public DecayStrategy getDecayStrategy(String name) {
 		DecayStrategy d = null;
@@ -318,7 +318,7 @@ public class NodeFactory {
 	 * Creates a copy of the supplied node with the default behaviors.  
 	 * Note that the new node is of a default type regardless
 	 * of the node passed in the parameter.
-	 * @param oNode
+	 * @param oNode supplied node
 	 */
 	public Node getNode(Node oNode) {
 		return getNode(oNode, defaultNodeType, defaultDecayType, defaultExciteType);
@@ -329,8 +329,8 @@ public class NodeFactory {
 	 * The type of the new node is based on the argument. Note that the behaviors of the new node
 	 * are based on those node passed in the argument.  if the node type does not have default behaviors
 	 * then the default behaviors are used.
-	 * @param oNode
-	 * @param nodeType
+	 * @param oNode supplied node
+	 * @param nodeType type of returned node
 	 * 
 	 */
 	public Node getNode(Node oNode, String nodeType) {
@@ -354,9 +354,9 @@ public class NodeFactory {
 	/**
 	 * Creates a copy of oNode with the specified decay and excite strategies.  The type of the new node
 	 * will be the default node type.
-	 * @param oNode
-	 * @param decayStrategy
-	 * @param exciteStrategy
+	 * @param oNode supplied node
+	 * @param decayStrategy new node's decay strategy
+	 * @param exciteStrategy new node's excite strategy
 	 */
 	public Node getNode(Node oNode, String decayStrategy, String exciteStrategy) {
 		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy);
@@ -365,10 +365,10 @@ public class NodeFactory {
 	/**
 	 * Creates a copy of oNode with specified node type, decay and excite strategies.
 	 * 
-	 * @param oNode
-	 * @param nodeType
-	 * @param decayStrategy
-	 * @param exciteStrategy
+	 * @param oNode supplied node
+	 * @param nodeType type for new node
+	 * @param decayStrategy decayStrategy new node's decay strategy
+	 * @param exciteStrategy exciteStrategy new node's excite strategy
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation());
@@ -380,7 +380,7 @@ public class NodeFactory {
 	/**
 	 * Creates new node of specified type. Uses strategies based on specified node type, or the default strategies
 	 * if the node type has no strategies defined.
-	 * @param nodeType
+	 * @param nodeType type of desired node
 	 */
 	public Node getNode(String nodeType) {
 		return getNode(nodeType, "");
@@ -389,7 +389,8 @@ public class NodeFactory {
 	/**
 	 * Creates new node of specified type with specified label.  Uses strategies based on specified node type, or the default strategies
 	 * if the node type has no strategies defined. 
-	 * @param nodeType
+	 * @param nodeType type of new node
+	 * @param nodeLabel label of new node
 	 */
 	public Node getNode(String nodeType, String nodeLabel) {
 
@@ -415,11 +416,11 @@ public class NodeFactory {
 	/**
 	 * Creates a new node of specified type, strategies, label, and initial activation.
 	 * 
-	 * @param nodeType 
-	 * @param decayStrategy
-	 * @param exciteStrategy
-	 * @param nodeLabel
-	 * @param activation
+	 * @param nodeType type of new node
+	 * @param decayStrategy decay strategy of new node
+	 * @param exciteStrategy excite strategy of new node
+	 * @param nodeLabel label of new node
+	 * @param activation activation of new node
 	 */
 	public Node getNode(String nodeType, String decayStrategy,
 						String exciteStrategy, String nodeLabel, double activation) {
