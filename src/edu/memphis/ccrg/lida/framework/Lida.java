@@ -14,19 +14,22 @@ public interface Lida extends LidaModule{
 	/**
 	 * @return the LidaTaskManager
 	 */
-	public abstract LidaTaskManager getTaskManager();
+	public LidaTaskManager getTaskManager();
 
 	/**
 	 * @param driver The ModuleDriver to add.
 	 */
-	public abstract void addModuleDriver(ModuleDriver driver);
+	public void addModuleDriver(ModuleDriver driver);
 
 	/**
 	 * @param name The module name. 
 	 * @return the ModuleDriver
 	 */
-	public abstract ModuleDriver getModuleDriver(ModuleName name);
+	public ModuleDriver getModuleDriver(ModuleName name);
 
-	public abstract void start();
+	/**
+	 * Run Lida
+	 */
+	public void start();
 
 }

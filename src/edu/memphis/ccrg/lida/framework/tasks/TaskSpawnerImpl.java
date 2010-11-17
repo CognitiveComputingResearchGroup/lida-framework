@@ -121,7 +121,8 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 * 
 	 * @param task
 	 */
-	protected void processResults(LidaTask task){}
+	protected void processResults(LidaTask task){
+	}
 
 	/**
 	 * Returns an unmodifiable collection of the running tasks spawned by this task spawner

@@ -33,6 +33,9 @@ public abstract class LidaModuleImpl implements LidaModule {
 		this.moduleName = moduleName;
 	}
 	
+	/**
+	 * Module specific
+	 */
 	public abstract Object getModuleContent(Object... params);
 	
 	public void setAssistingTaskSpawner(TaskSpawner ts){
