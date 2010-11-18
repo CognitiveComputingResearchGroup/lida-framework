@@ -14,7 +14,8 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
@@ -27,9 +28,9 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
-public class AttentionDriver extends ModuleDriverImpl implements BroadcastListener, PreafferenceListener {
+public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastListener, PreafferenceListener {
 
-	private static Logger logger = Logger.getLogger("lida.attention.AttentionDriver");
+	private static Logger logger = Logger.getLogger("lida.attention.AttentionModuleImpl");
 	
 	private WorkspaceBuffer csm;
 	private GlobalWorkspace globalWorkspace;
@@ -37,8 +38,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	
 	private NodeFactory factory = NodeFactory.getInstance();
 
-	public AttentionDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.AttentionDriver);
+	public AttentionModuleImpl() {
 	}
 	
 	@Override
@@ -58,15 +58,6 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = ((NodeStructure) bc).copy();
 	}
-
-	@Override
-	public void runThisDriver(){
-		activateCodelets();
-	}
-
-	private void activateCodelets() {
-		//TODO
-	}
 	
 	//TODO better for these to be part of this class or the factory that creates the codelets?
 	private String defaultCodeletName = "AttentionCodeletImpl";
@@ -82,7 +73,7 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 	}// method
 	
 	public void runAttentionCodelet(AttentionCodelet codelet){
-		super.addTask(codelet);
+		taskSpawner.addTask(codelet);
 		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getActualTick());
 	}
 
@@ -102,7 +93,19 @@ public class AttentionDriver extends ModuleDriverImpl implements BroadcastListen
 
 	@Override
 	public String toString() {
-		return ModuleName.AttentionDriver + "";
+		return ModuleName.AttentionModule + "";
+	}
+
+	@Override
+	public Object getModuleContent(Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addListener(ModuleListener listener) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }// class

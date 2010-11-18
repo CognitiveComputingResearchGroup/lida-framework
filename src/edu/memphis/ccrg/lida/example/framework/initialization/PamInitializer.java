@@ -8,11 +8,11 @@
 package edu.memphis.ccrg.lida.example.framework.initialization;
 
 import java.util.Map;
+
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BottomRightDetector;
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector;
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
@@ -35,8 +35,6 @@ public class PamInitializer implements Initializer {
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 		SensoryMemory sm = (SensoryMemory) lida
 				.getSubmodule(ModuleName.SensoryMemory);
-		ModuleDriver driver = lida.getModuleDriver(ModuleName.PamDriver);
-		pam.setAssistingTaskSpawner(driver);
 
 		pam.init(params);
 

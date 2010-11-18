@@ -127,7 +127,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 	}
 	
 	@Override
-	public void init(Map<String,?> params) {
+	public void init(Map<String, ?> params) {
 		this.lidaProperties=params;
 		numOfHardLoc = (Integer)getParam("tem.numOfHardLoc",DEF_HARD_LOCATIONS);
 		setAddressLength((Integer)getParam("tem.addressLength",DEF_ADDRESS_LENGTH));

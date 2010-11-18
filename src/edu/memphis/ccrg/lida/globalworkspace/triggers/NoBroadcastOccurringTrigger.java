@@ -78,7 +78,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 */
 	public void start() {
 		task=new TriggerTask(delay,gw,name);
-		gw.addTask(task);
+		gw.getAssistingTaskSpawner().addTask(task);
 	}
 
 	/*
@@ -96,7 +96,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 */
 	public void reset() {
 		if (task != null)
-			gw.cancelTask(task);
+			gw.getAssistingTaskSpawner().cancelTask(task);
 		start();
 	}
 

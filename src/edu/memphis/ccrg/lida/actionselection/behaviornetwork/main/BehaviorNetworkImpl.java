@@ -21,12 +21,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
+import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
@@ -54,6 +54,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener, BroadcastListener {
+	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
 	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
 
@@ -243,7 +244,22 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 	
 	private void runActionSelectionTriggers(){
-		((ActionSelectionDriver) taskSpawner).newBehaviorEvent(this.behaviors.values());
+		newBehaviorEvent(this.behaviors.values());
+	}
+	/**
+	 * @param behaviors behaviors to check
+	 */
+	public void newBehaviorEvent(Collection<Behavior> behaviors) {		
+		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
+			trigger.checkForTrigger(behaviors);
+	}// method
+	/**
+	 * Resets all triggers
+	 */
+	public void resetTriggers() {
+		for (ActionSelectionTrigger t : actionSelectionTriggers) {
+			t.reset();
+		}
 	}
 
 	// If behavior is going to be indexed then why does a stream even need to
@@ -284,7 +300,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			selectAction();
 			
 			//triggers
-			((ActionSelectionDriver) taskSpawner).resetTriggers();
+			resetTriggers();
 			actionSelectionStarted.set(false);
 		}
 	}

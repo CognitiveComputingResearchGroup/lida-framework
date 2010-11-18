@@ -17,7 +17,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  *
  */
 public interface LidaModule extends Initializable{
-
 	
 	/**
 	 * @return ModuleName
@@ -64,5 +63,10 @@ public interface LidaModule extends Initializable{
 	 * @param ts - the TaskSpawner
 	 */
 	public void setAssistingTaskSpawner(TaskSpawner ts);
+
+	/**
+	 * Returns the TaskSpawner which this LidaModule uses to spawn tasks
+	 */
+	public TaskSpawner getAssistingTaskSpawner();
 
 }

@@ -191,7 +191,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	}
 
 	public void refresh(){
-		display(lida.getModuleDriver(ModuleName.PamDriver).getSpawnedTasks());
+		display(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getAssistingTaskSpawner().getSpawnedTasks());
 	}
 	
 	@SuppressWarnings("unchecked")

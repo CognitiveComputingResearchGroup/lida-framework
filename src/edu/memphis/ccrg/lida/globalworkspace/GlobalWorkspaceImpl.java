@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -29,6 +29,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -44,16 +45,13 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorkspace,
+public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspace,
 											GuiEventProvider {
 	
 	private static Logger logger = Logger.getLogger("lida.globalworkspace.GlobalWorkspaceImpl");
 
-	public GlobalWorkspaceImpl(LidaTaskManager tm) {
-		super(1,tm,ModuleName.GlobalWorkspace);
-	}
 	public GlobalWorkspaceImpl() {
-		super(1,ModuleName.GlobalWorkspace);
+		super(ModuleName.GlobalWorkspace);
 	}
 
 	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
@@ -188,12 +186,6 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	}
 
 	@Override
-	protected void runThisDriver() {
-		start();
-		setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
-	}
-
-	@Override
 	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableCollection(coalitions);
 	}
@@ -218,6 +210,21 @@ public class GlobalWorkspaceImpl extends ModuleDriverImpl implements GlobalWorks
 	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts) {
 		logger.log(Level.SEVERE, "Global workspace is already a Task Spawner", LidaTaskManager.getActualTick());
+	}
+	public void init(){
+		getAssistingTaskSpawner().addTask(new BackgroundTask());
+	}
+	
+	private class BackgroundTask extends LidaTaskImpl {
+
+		public BackgroundTask() {
+			super(1);
+		}
+
+		@Override
+		protected void runThisLidaTask() {
+			start();
+		}
 	}
 
 }// class

@@ -9,12 +9,12 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.main.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
-public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements GuiEventProvider {
+public class StructureBuildingCodeletModule extends LidaModuleImpl implements GuiEventProvider {
 
 	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SBCodeletDriver");
 	
@@ -32,21 +32,14 @@ public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements 
 	 */
 	private StructureBuildingCodeletFactory sbCodeletFactory = StructureBuildingCodeletFactory.getInstance();
 	
-	/**
-	 * 
-	 */
 	private Workspace workspace;
 	
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
-	/**
-	 * 
-	 */
-	public StructureBuildingCodeletDriver() {
-		super(DEFAULT_TICKS_PER_CYCLE, ModuleName.StructureBuildingCodeletDriver);
+	public StructureBuildingCodeletModule() {
+		super(ModuleName.StructureBuildingCodeletModule);
 	}
 	
-	//TODO should this be done by setAssociatedModule?
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
@@ -59,16 +52,7 @@ public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements 
 			}
 		}
 	}
-	
-	@Override
-	public void init(Map<String, ?> params) {
 		
-	}
-	
-	public void runThisDriver() {
-		activateCodelets();
-	}
-
 	/**
 	 * TODO If BufferContent activates a sbCodelet's context, start a new codelet
 	 *  TODO code to determine when/what codelets to activate
@@ -93,13 +77,22 @@ public class StructureBuildingCodeletDriver extends ModuleDriverImpl implements 
 		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl();
 		basic.addAccessibleBuffer(csm);
 		basic.addAccessibleBuffer(perceptualBuffer);
-		this.addTask(basic);
+		taskSpawner.addTask(basic);
 		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getActualTick());
 	}// method
 
 	@Override
 	public String toString() {
-		return ModuleName.StructureBuildingCodeletDriver + "";
+		return ModuleName.StructureBuildingCodeletModule + "";
+	}
+
+	@Override
+	public Object getModuleContent(Object... params) {
+		return null;
+	}
+
+	@Override
+	public void addListener(ModuleListener listener) {
 	}
 
 }// class

@@ -80,7 +80,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		}
 	}
 	
-	public void init (Map<String,?> parameters){		
+	public void init (Map<String, ?> parameters){		
 		Object o = parameters.get("workspace.activationLowerBound");
 		if (o != null)
 			setActivationLowerBound((Double) o);

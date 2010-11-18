@@ -1,29 +1,23 @@
-/*******************************************************************************
- * Copyright (c) 2009, 2010 The University of Memphis.  All rights reserved. 
- * This program and the accompanying materials are made available 
- * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
- * which accompanies this distribution, and is available at
- * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
- *******************************************************************************/
 /**
  * 
  */
 package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * @author Javier Snaider
  * 
  */
-public class WorkspaceDriver extends ModuleDriverImpl {
+public class WSBackgroundTask extends LidaTaskImpl {
 
 	private static final double DEFAULT_ACT_THRESHOLD = 0.4;
 	private Workspace workspace;
@@ -34,22 +28,21 @@ public class WorkspaceDriver extends ModuleDriverImpl {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.ModuleDriverImpl#runThisDriver()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl#runThisLidaTask()
 	 */
 	@Override
-	protected void runThisDriver() {
+	protected void runThisLidaTask() {
 		cue();
 		moveToCSM();
-
 	}
 
 	private void moveToCSM() {
 		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
-		.getSubmodule(ModuleName.PerceptualBuffer);		
+				.getSubmodule(ModuleName.PerceptualBuffer);
 		NodeStructure ns = (NodeStructure) percepBuff.getModuleContent();
 		WorkspaceBuffer csm = (WorkspaceBuffer) workspace
-		.getSubmodule(ModuleName.CurrentSituationalModel);		
-		((NodeStructure)csm.getModuleContent()).mergeWith(ns);
+				.getSubmodule(ModuleName.CurrentSituationalModel);
+		((NodeStructure) csm.getModuleContent()).mergeWith(ns);
 	}
 
 	private void cue() {
@@ -72,24 +65,16 @@ public class WorkspaceDriver extends ModuleDriverImpl {
 	}
 
 	@Override
-	public String toString() {
-		return ModuleName.WorkspaceDriver + "";
+	public void init() {
+		actThreshold = (Double) getParam("workspace.actThreshold",
+				DEFAULT_ACT_THRESHOLD);
+		cueLap = (Integer) getParam("workspace.cueLap", 1);
 	}
 
 	public void setAssociatedModule(LidaModule module) {
-		if (module != null) {
-			if (module instanceof Workspace
-					&& module.getModuleName() == ModuleName.Workspace) {
-				workspace = (Workspace) module;
-			}
+		if (module instanceof Workspace
+				&& module.getModuleName() == ModuleName.Workspace) {
+			workspace = (Workspace) module;
 		}
 	}
-
-	@Override
-	public void init(Map<String, ?> params) {
-		this.lidaProperties = params;
-		actThreshold = (Double) getParam("workspace.actThreshold",DEFAULT_ACT_THRESHOLD);
-		cueLap = (Integer)getParam("workspace.cueLap",1);
-	}
-
 }

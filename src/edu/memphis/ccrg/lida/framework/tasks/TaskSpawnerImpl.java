@@ -9,9 +9,12 @@ package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.LidaModule;
 
 /**
  * Implements the TaskSpawner interface.
@@ -19,7 +22,7 @@ import java.util.logging.Logger;
  * @author Javier Snaider
  *
  */
-public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawner {
+public class TaskSpawnerImpl implements TaskSpawner {
 
 	private static final long serialVersionUID = 5214851238994032189L;
 
@@ -32,18 +35,13 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	private ConcurrentLinkedQueue<LidaTask> runningTasks = new ConcurrentLinkedQueue<LidaTask>();
 
+	private Map<String, ?> lidaProperties;
+
 	public TaskSpawnerImpl() {
 		super();
 	}
-	public TaskSpawnerImpl(int ticksForCycle) {
-		super(ticksForCycle);
-	}
 	public TaskSpawnerImpl(LidaTaskManager tm) {
 		super();
-		taskManager=tm;
-	}
-	public TaskSpawnerImpl(int ticksForCycle,LidaTaskManager tm) {
-		super(ticksForCycle);
 		taskManager=tm;
 	}
 
@@ -159,6 +157,43 @@ public abstract class TaskSpawnerImpl extends LidaTaskImpl implements TaskSpawne
 	 */
 	public LidaTaskManager getTaskManager(){
 		return taskManager;
+	}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 */
+	@Override
+	public void init(Map<String, ?> params) {
+		this.lidaProperties = params;
+		init();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 */
+	@Override
+	public void init() {
+	}
+	
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (lidaProperties != null) {
+			value = lidaProperties.get(name);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
+	}
+
+	@Override
+	public void setAssociatedModule(LidaModule module) {
 	}
 
 }// class

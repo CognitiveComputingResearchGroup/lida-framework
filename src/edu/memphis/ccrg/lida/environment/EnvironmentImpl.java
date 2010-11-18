@@ -9,50 +9,31 @@ package edu.memphis.ccrg.lida.environment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriverImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * 
  * @author Ryan J McCall
  *
  */
-public abstract class EnvironmentImpl extends ModuleDriverImpl implements Environment, GuiEventProvider{
+public abstract class EnvironmentImpl extends LidaModuleImpl implements Environment, GuiEventProvider{
 	
 	private List<FrameworkGuiEventListener> listeners = new ArrayList<FrameworkGuiEventListener>();
 
-	private final static int defaultTicksPerRun = 10;
-	
-	protected TaskSpawner taskSpawner;
-	
-	/**
-	 * 
-	 */
 	public EnvironmentImpl(){
-		super(defaultTicksPerRun, ModuleName.Environment);
+		super(ModuleName.Environment);
 	}
 	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener){
 		listeners.add(listener);
 	}
-	
-	public void setAssistingTaskSpawner(TaskSpawner ts){
-		taskSpawner = ts;
-	}
-	
-	@Override
-	public void init(Map<String, ?> params){
-		//You can override this method to initialize your environment with a map of parameters
-	}
-
+		
 	/**
 	 * A Gui Event provider may want to send different kinds of events at different
 	 * times, so the event to be sent is passed as a parameter.
@@ -63,32 +44,12 @@ public abstract class EnvironmentImpl extends ModuleDriverImpl implements Enviro
 		for(FrameworkGuiEventListener l: listeners)
 			l.receiveFrameworkGuiEvent(evt);
 	}
-	
 	public abstract String toString();
 	
-	/**
-	 * Does not need to be implemented.  Environment does not need to send any data.
-	 * If you want to send data to the GUI then
-	 * register instances of @FrameworkGuiEventListener to your environment
-	 * 
-	 */
-	@Override
-	public void addListener(ModuleListener listener){}
-	/**
-	 * Does not need to be implemented
-	 */
-	@Override
-	public void addSubModule(LidaModule lm) { 	}
 	
-	/**
-	 * Does not need to be implemented
-	 */
-	public LidaModule getSubmodule(ModuleName type) {
-		return null;
+	@Override
+	public void receiveAction(LidaAction a) {
+		// TODO Auto-generated method stub		
 	}
-	/**
-	 * Does not need to be implemented. Not applicable
-	 */
-	public void decayModule(long ticks){}
-	
+		
 }//class

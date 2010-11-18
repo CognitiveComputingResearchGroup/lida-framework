@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 
 /**
@@ -176,9 +177,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 	
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#init(java.util.Map)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#init(Map)
 	 */
-	public void init(Map<String, ? extends Object> parameters) {
+	public void init(Map<String, ?> parameters) {
 		this.parameters = parameters;
 		init();
 	}
@@ -187,7 +188,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
 	 * Subclasses can overwrite this method in order to initialize the LidaTask
 	 */
-	protected void init() {
+	public void init() {
 	}
 
 	/* (non-Javadoc)
@@ -230,5 +231,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 */
 	public void setNextExcecutionTickLap(long lapTick) {
 		this.nextExcecutionTickLap=lapTick;	
+	}
+	
+	@Override
+	public void setAssociatedModule(LidaModule module) {
 	}	
 }// class

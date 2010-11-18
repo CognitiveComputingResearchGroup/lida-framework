@@ -11,7 +11,6 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
@@ -26,7 +25,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  * 
  * @author Javier Snaider
  */
-public interface GlobalWorkspace extends LidaModule, TriggerListener,ModuleDriver{
+public interface GlobalWorkspace extends LidaModule, TriggerListener{
 	/**
 	 * This method is invoked by the  //TODO comment
 	 * @param coalition to be added 

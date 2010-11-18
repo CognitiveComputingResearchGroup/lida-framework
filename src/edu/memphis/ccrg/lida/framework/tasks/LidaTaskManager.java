@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.AllModuleDriver;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 //TODO: Comment!!!
@@ -97,8 +96,6 @@ public class LidaTaskManager {
 		taskQueue = new ConcurrentHashMap<Long, Queue<LidaTask>>();
 		executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, 
 												  TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-
-		mainTaskSpawner = new AllModuleDriver(this);
 
 		taskManagerThread = new Thread(new TaskManagerMainLoop());
 		taskManagerThread.start();
@@ -207,7 +204,6 @@ public class LidaTaskManager {
 	 */
 	public void stopRunning() {
 		shuttingDown = true;
-		mainTaskSpawner.stopRunning();
 		taskManagerThread.interrupt();
 		// Now that we can be sure that active tasks will no longer be executed
 		// the executor service can be shutdown.

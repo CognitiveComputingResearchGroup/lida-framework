@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Queue;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
@@ -30,7 +29,6 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	protected String name="";
 	private LidaTaskManager tm;
 	protected ActionSelection as;
-	protected ActionSelectionDriver asd;
 
 	/**
 	 * @return the lidaTaskManager
@@ -46,9 +44,8 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 		this.tm = lidaTaskManager;
 	}
 
-	public void setUp(Map<String, Object> parameters, ActionSelection as,ActionSelectionDriver asd) {
+	public void setUp(Map<String, Object> parameters, ActionSelection as) {
 		this.as=as;
-		this.asd=asd;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Integer)) {
 			delay= (Integer)o;
@@ -68,7 +65,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 */
 	public void start() {					
 		task=new TriggerTask(delay,as,name);		
-		asd.addTask(task);
+		as.getAssistingTaskSpawner().addTask(task);
 	}
 	
 	/*
@@ -86,7 +83,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 */
 	public void reset() {	
 		if (task != null)
-			asd.cancelTask(task);
+			as.getAssistingTaskSpawner().cancelTask(task);
 		start();
 	}
 	

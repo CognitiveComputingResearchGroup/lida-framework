@@ -318,7 +318,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void init(Map<String, ? extends Object> parameters) {
+	public void init(Map<String, ?> parameters) {
 		// TODO Auto-generated method stub
 		
 	}

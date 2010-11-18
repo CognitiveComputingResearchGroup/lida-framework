@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
@@ -34,7 +33,7 @@ public interface ActionSelectionTrigger {
 	 */
 
 	
-	public void setUp (Map<String,Object> parameters,ActionSelection as,ActionSelectionDriver asd);
+	public void setUp (Map<String,Object> parameters,ActionSelection as);
 	
 	/**
 	 * Each time a new behavior is put in the AS, this method is called for all registered the Triggers.

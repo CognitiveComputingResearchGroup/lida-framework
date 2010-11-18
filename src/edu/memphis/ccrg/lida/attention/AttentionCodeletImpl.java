@@ -39,7 +39,7 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	}
 	
 	@Override
-	protected void init(){
+	public void init(){
 		//"constructor" for factory-created objects
 		//this class inherits parameters from LidaTaskImpl.  already set when factory creates this object
 //		double tr = (Double)super.getParam("threshold", .5);

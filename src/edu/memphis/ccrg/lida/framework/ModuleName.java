@@ -30,16 +30,9 @@ public enum ModuleName {
 	AllModules,
 	NoModule, 
 	
-	SensoryMemoryDriver,
-	PamDriver,
-	PerceptualBufferDriver,
-	AttentionDriver,
-	StructureBuildingCodeletDriver, 
-	TemDriver, 
-	ProceduralMemoryDriver,
-	ActionSelectionDriver,
+	AttentionModule,
+	StructureBuildingCodeletModule, 
 	
 	Workspace, 
-	WorkspaceDriver,
 	LIDA
 }

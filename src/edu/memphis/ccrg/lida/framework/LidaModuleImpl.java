@@ -42,6 +42,9 @@ public abstract class LidaModuleImpl implements LidaModule {
 		taskSpawner = ts;
 	}
 
+	public TaskSpawner getAssistingTaskSpawner(){
+		return taskSpawner;
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -50,6 +53,16 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 */
 	public void init(Map<String, ?> params) {
 		this.lidaProperties = params;
+		init();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 */
+	public void init() {
 	}
 	
 	public Object getParam(String name, Object defaultValue) {

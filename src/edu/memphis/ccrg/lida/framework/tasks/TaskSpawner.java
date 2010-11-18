@@ -8,6 +8,9 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Collection;
+import java.util.Map;
+
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
  * TaskSpawners create, manage, and end new LidaTasks.  
@@ -15,7 +18,7 @@ import java.util.Collection;
  * @author Ryan J McCall
  *
  */
-public interface TaskSpawner extends LidaTask{
+public interface TaskSpawner extends Initializable{
 
 	/**
 	 * Gets the number of Tasks in this Spawner
@@ -66,5 +69,4 @@ public interface TaskSpawner extends LidaTask{
 	 * @param taskManager task manager
 	 */
 	public void setTaskManager(LidaTaskManager taskManager);
-
 }

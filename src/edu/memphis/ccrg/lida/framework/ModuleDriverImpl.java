@@ -10,39 +10,25 @@ package edu.memphis.ccrg.lida.framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
-public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements ModuleDriver {
-	private static Logger logger = Logger.getLogger("lida.framework.ModuleDriverImpl");
+public class ModuleDriverImpl extends TaskSpawnerImpl {
+	
 	protected static final int DEFAULT_TICKS_PER_CYCLE = 10;
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private ModuleName moduleName;
 	protected Map<String, ?> lidaProperties;
 
-	public ModuleDriverImpl(int ticksPerCycle, LidaTaskManager tm,ModuleName moduleName){
-		super(ticksPerCycle, tm);
-		this.moduleName= moduleName;
-	}
-	public ModuleDriverImpl(int ticksPerCycle,ModuleName moduleName){
-		super(ticksPerCycle);
+	public ModuleDriverImpl(ModuleName moduleName){
+		super();
 		this.moduleName= moduleName;
 	}
 	public ModuleDriverImpl(){
 		super();
 	}
-
-	protected void runThisLidaTask(){
-		runThisDriver();
-	}
-	
-	protected abstract void runThisDriver();
-	
 	/**
 	 * Add a gui panel
 	 */
@@ -56,17 +42,12 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)
 			gui.receiveFrameworkGuiEvent(evt);
-	}
-
-	public void setAssociatedModule(LidaModule module) {
-	}
+	}// method	
 	
-	@Override
 	public ModuleName getModuleName(){
 		return moduleName;
 	}
 
-	@Override
 	public void setModuleName(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
@@ -79,11 +60,11 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 	@Override
 	public void init(Map<String, ?> params) {
 		this.lidaProperties = params;
-//		init();
+		init();
 	}
-	
-//	protected void init() {
-//	}
+
+	public void setAssociatedModule(LidaModule module) {
+	}
 
 	@Override
 	public Object getParam(String name, Object defaultValue) {
@@ -92,11 +73,12 @@ public abstract class ModuleDriverImpl extends TaskSpawnerImpl implements Module
 			value = lidaProperties.get(name);
 			if (value == null) {
 				value = defaultValue;
-			}else{
-				logger.log(Level.WARNING, "Missing parameter, check factories data or first parameter: " + name, LidaTaskManager.getActualTick());
 			}
 		}
 		return value;
+	} 
+	@Override
+	public void init() {
 	}
 	
 }// class

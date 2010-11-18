@@ -33,13 +33,13 @@ public class TemDriver extends ModuleDriverImpl {
      * @param ticksPerCycle
      * @param tm
      */
-    public TemDriver(TransientEpisodicMemory tem, MemoryCue cue, int ticksPerCycle, LidaTaskManager tm) {
-    	super(ticksPerCycle, tm,ModuleName.TemDriver);
+    public TemDriver(TransientEpisodicMemory tem, MemoryCue cue) {
+    	super(ModuleName.TemDriver);
         this.tem = tem;
         this.cue = cue;
     }
     public TemDriver() {
-    	super(DEFAULT_TICKS_PER_CYCLE,ModuleName.TemDriver);
+    	super(ModuleName.TemDriver);
     }
 
 	public void runThisDriver() {

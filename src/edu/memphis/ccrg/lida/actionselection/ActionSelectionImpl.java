@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,12 +18,14 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
+import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
@@ -36,7 +39,10 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
  *
  */
 public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{
+//TODO: Crate a Initializer to register the triggers!!!!!
 	
+	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
+
 	private static Logger logger = Logger.getLogger("lida.actionselection.ActionSelectionImpl");
 	
 	private double selectionThreshold = 0.95;
@@ -46,7 +52,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	private Queue<Behavior> behaviors = new ConcurrentLinkedQueue<Behavior>();
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	private ActionSelectionDriver asd=new ActionSelectionDriver();
 	
 	/**
 	 * default
@@ -121,7 +126,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}
 	logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getActualTick());
 
-	asd.resetTriggers();
+	resetTriggers();
 	actionSelectionStarted.set(false);
 		
 	}
@@ -155,7 +160,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public boolean addBehavior(Behavior behavior) {
 		if (behaviors.add(behavior)) {
 			logger.log(Level.FINE,"New Behavior added",LidaTaskManager.getActualTick());
-			asd.newBehaviorEvent(behaviors);
+			newBehaviorEvent(behaviors);
 			return true;
 		} else {
 			return false;
@@ -198,6 +203,54 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		public void addPreafferenceListener(PreafferenceListener listener) {
 			// TODO Auto-generated method stub
 			
+		}
+		
+		/**
+		 * To register Triggers
+		 * @param t a new Trigger
+		 */
+		public void addActionSelectionTrigger(ActionSelectionTrigger t){
+			actionSelectionTriggers.add(t);
+		}
+		/**
+		 * Starts Triggers
+		 */
+		public void start() {
+			for (ActionSelectionTrigger t : actionSelectionTriggers) {
+				t.start();
+			}
+		}	
+		/**
+		 * @param behaviors behaviors to check
+		 */
+		public void newBehaviorEvent(Collection<Behavior> behaviors) {		
+			for (ActionSelectionTrigger trigger : actionSelectionTriggers)
+				trigger.checkForTrigger(behaviors);
+		}// method
+		
+		/**
+		 * Resets all triggers
+		 */
+		public void resetTriggers() {
+			for (ActionSelectionTrigger t : actionSelectionTriggers) {
+				t.reset();
+			}
+		}
+
+		public void init(){
+			getAssistingTaskSpawner().addTask(new BackgroundTask());
+		}
+		
+		private class BackgroundTask extends LidaTaskImpl {
+
+			public BackgroundTask() {
+				super(1);
+			}
+
+			@Override
+			protected void runThisLidaTask() {
+				start();
+			}
 		}
 
 }//class

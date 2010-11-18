@@ -113,7 +113,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	public void addListener(ModuleListener listener) {
 	}
 
-	public void init(Map<String,?> p) {
+	public void init(Map<String, ?> p) {
 		lidaProperties=p;
 		Object o = getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
 		if(o != null)

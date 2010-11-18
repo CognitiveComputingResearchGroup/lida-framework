@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.framework.initialization;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -26,10 +27,11 @@ import org.w3c.dom.NodeList;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaImpl;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleDriver;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * Creates a Lida Object from an xml file
@@ -47,6 +49,7 @@ public class LidaXmlFactory implements LidaFactory {
 	private Lida lida;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();
 	private List<Object[]> toAssociate = new ArrayList<Object[]>();
+	private Map<String,TaskSpawner> taskSpawners = new HashMap<String,TaskSpawner>();
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.LidaFactory#getLida()
@@ -85,11 +88,10 @@ public class LidaXmlFactory implements LidaFactory {
 		LidaTaskManager tm = getTaskManager(docEle);
 		lida = new LidaImpl(tm);
 		
+		getTaskSpawners(docEle);
+		
 		for (LidaModule lm : getModules(docEle)) {
 			lida.addSubModule(lm);
-		}
-		for (ModuleDriver md : getDrivers(docEle)) {
-			lida.addModuleDriver(md);
 		}
 		getListeners(docEle);
 
@@ -111,6 +113,37 @@ public class LidaXmlFactory implements LidaFactory {
 			}
 		}
 		return modules;
+	}
+	
+	private void getTaskSpawners(Element element) {
+		NodeList nl = element.getElementsByTagName("taskspawners");
+		if (nl != null && nl.getLength() > 0) {
+			Element modulesElemet = (Element) nl.item(0);
+			List<Element> list = XmlUtils.getChildren(modulesElemet,"taskspawner");
+			if (list != null && list.size() > 0) {
+				for (Element moduleElement:list) {					
+					getTaskSpawner(moduleElement);
+				}
+			}
+		}
+	}
+	private void getTaskSpawner(Element moduleElement) {
+		TaskSpawner ts = null;
+		String className = XmlUtils.getTextValue(moduleElement, "class");
+		String name = moduleElement.getAttribute("name");
+		try {
+			ts = (TaskSpawner) Class.forName(className).newInstance();
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "TaskSpawner class: " + className
+					+ " is not valid.", 0L);
+			return;
+		}
+		
+		ts.setTaskManager(lida.getTaskManager());
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		ts.init(params);
+		taskSpawners.put(name, ts);
+		logger.log(Level.INFO, "TaskSpawner: " + name + " added.", 0L);
 	}
 	
 	private LidaModule getModule(Element moduleElement) {
@@ -147,24 +180,19 @@ public class LidaXmlFactory implements LidaFactory {
 			toInitialize.add(new Object[] { module, classInit, params });
 		}
 		getAssociatedModules(moduleElement, module);
-
-		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
-
 		
-		boolean isDriver = XmlUtils.getBooleanValue(moduleElement, "isdriver");
-		if (isDriver) {
-			if (module instanceof ModuleDriver) {
-				lida.addModuleDriver((ModuleDriver) module);
-				((ModuleDriver) module).setTaskManager(lida.getTaskManager());
-				logger.log(Level.INFO, "Module: " + name
-						+ " added as Driver.", 0L);
-			}else{
-				logger.log(Level.WARNING,
-						"Module name: " + name + " is marked as driver but it is not a valid ModuleDriver.", 0L);
-				
-			}
+		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
+		TaskSpawner ts = taskSpawners.get(taskspawner);
+		
+		if (ts!=null) {
+			module.setAssistingTaskSpawner(ts);
+			List<LidaTask>initialTasks = getTasks(moduleElement);
+			ts.setInitialTasks(initialTasks);
+		}else{
+			logger.log(Level.WARNING, "Module: " + name + " illegal TaskSpawner definition.", 0L);			
 		}
 
+		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
 		return module;
 	}
 
@@ -262,58 +290,44 @@ public class LidaXmlFactory implements LidaFactory {
 		return taskManager;
 	}
 
-	private List<ModuleDriver> getDrivers(Element element) {
-		List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
-		NodeList nl = element.getElementsByTagName("drivers");
+	
+	private List<LidaTask> getTasks(Element element) {
+		List<LidaTask> tasks = new ArrayList<LidaTask>();
+		NodeList nl = element.getElementsByTagName("initialtasks");
 
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
-			nl = modulesElemet.getElementsByTagName("driver");
+			nl = modulesElemet.getElementsByTagName("task");
 			if (nl != null && nl.getLength() > 0) {
 				for (int i = 0; i < nl.getLength(); i++) {
 					Element moduleElement = (Element) nl.item(i);
-					ModuleDriver driver = getDriver(moduleElement);
-					drivers.add(driver);
+					LidaTask task = getTask(moduleElement);
+					tasks.add(task);
 				}
 			}
 		}
-		return drivers;
+		return tasks;
 	}
-
-	private ModuleDriver getDriver(Element moduleElement) {
-		ModuleDriver driver = null;
+	
+	private LidaTask getTask(Element moduleElement) {
+		LidaTask task = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
 		String name = moduleElement.getAttribute("name");
 		int ticks = XmlUtils.getIntValue(moduleElement, "ticksperstep");
-		ModuleName moduleName = ModuleName.NoModule;
 		try {
-			moduleName = Enum.valueOf(ModuleName.class, name);
+			task = (LidaTask) Class.forName(className).newInstance();
 		} catch (Exception e) {
-			logger.log(Level.WARNING,
-					"Driver name: " + name + " is not valid.", 0L);
-			return null;
-		}
-		try {
-			driver = (ModuleDriver) Class.forName(className).newInstance();
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Driver class: " + className
+			logger.log(Level.WARNING, "Task class: " + className
 					+ " is not valid.", 0L);
 			return null;
 		}
-		driver.setModuleName(moduleName);
-		driver.setTaskManager(lida.getTaskManager());
-		driver.setNumberOfTicksPerRun(ticks);
+		task.setNumberOfTicksPerRun(ticks);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
-		driver.init(params);
+		task.init(params);
+		getAssociatedModules(moduleElement, task);
 
-		String classInit = XmlUtils.getTextValue(moduleElement,
-				"initializerclass");
-		if (classInit != null) {
-			toInitialize.add(new Object[] { driver, classInit, params });
-		}
-		getAssociatedModules(moduleElement, driver);
-		logger.log(Level.INFO, "Driver: " + name + " added.", 0L);
-		return driver;
+		logger.log(Level.INFO, "Task: " + name + " added.", 0L);
+		return task;
 	}
 
 	private void getListeners(Element element) {
@@ -369,9 +383,6 @@ public class LidaXmlFactory implements LidaFactory {
 
 		try {
 			listener = (ModuleListener) lida.getSubmodule(listenerMN);
-			if (listener == null) {
-				listener = (ModuleListener) lida.getModuleDriver(listenerMN);
-			}
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Listener: " + listenername
 					+ " is not a valid ModuleListener.", 0L);

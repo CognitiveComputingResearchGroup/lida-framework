@@ -7,9 +7,9 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import java.util.Map;
 import java.util.concurrent.Callable;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 
 
@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.framework.shared.Activatible;
  *
  */
  
-public interface LidaTask extends Callable<LidaTask>, Activatible{
+public interface LidaTask extends Callable<LidaTask>, Activatible, Initializable{
 	
 	/**
 	 * returns the LidaTask's status code. It must be one of the static members of this interface. 
@@ -80,22 +80,6 @@ public interface LidaTask extends Callable<LidaTask>, Activatible{
 	 */
 	public  void reset();
 	
-	
-	/**
-	 * Receives a Map of init parameters for initalization.
-	 * @param parameters the Map with the parameters.
-	 */
-	public void init(Map<String, ? extends Object> parameters);
-
-	/**
-	 * A convenience method to get the value of one init parameter
-	 * @param name the name of the parameter
-	 * @param defaultValue the value to be used if the parameter name is not present in the parameters
-	 * @return the value of the parameter
-	 * 
-	 * @see #init(Map)
-	 */
-	public Object getParam(String name,Object defaultValue);
 
 	public String toString();
 	
