@@ -28,7 +28,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
@@ -145,9 +144,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void activateSchemes() {
-		schemeActivationBehavior.activateSchemesWithBroadcast(currentBroadcast,
-				schemeMap);
-	}// method
+		schemeActivationBehavior.activateSchemesWithBroadcast(currentBroadcast, schemeMap);
+	}
 
 	/**
 	 * Impl. of observer pattern. Send s to all registered ProceduralMemory
@@ -201,9 +199,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 
 	@Override
 	public void init() {
-		int ticksPerRun = (Integer) getParam("ticksPerRun",
-				DEFAULT_TICKS_PER_RUN);
-		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
+		int ticksPerRun = (Integer) getParam("ticksPerRun", DEFAULT_TICKS_PER_RUN);
+		super.taskSpawner.addTask(new BackgroundTask(ticksPerRun));
 	}
 
 	private class BackgroundTask extends LidaTaskImpl {
@@ -217,4 +214,5 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 			activateSchemes();
 		}
 	}
+	
 }// class

@@ -20,15 +20,15 @@ public interface GuiEventProvider {
 	/**
 	 * Must be able to register FrameworkGuiEvent listeners
 	 * 
-	 * @param listener
+	 * @param listener receiver of GuiEvents, typically a LidaPanel
 	 */
 	public abstract void addFrameworkGuiEventListener(FrameworkGuiEventListener listener);
 
 	/**
-	 * A Gui Event provider may want to send different kinds of events at different
+	 * A GuiEventProvider may want to send different kinds of events at different
 	 * times so it should implement and use this method to do so.
 	 * 
-	 * @param evt
+	 * @param evt GuiEvent
 	 */
 	public abstract void sendEventToGui(FrameworkGuiEvent evt);
 }
