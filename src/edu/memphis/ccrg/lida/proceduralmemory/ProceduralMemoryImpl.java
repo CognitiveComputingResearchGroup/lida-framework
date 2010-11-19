@@ -202,7 +202,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public void init() {
 		int ticksPerRun = (Integer) getParam("ticksPerRun", DEFAULT_TICKS_PER_RUN);
-		System.out.println("pm: tpr " + ticksPerRun);
 		super.taskSpawner.addTask(new BackgroundTask(ticksPerRun));
 	}
 

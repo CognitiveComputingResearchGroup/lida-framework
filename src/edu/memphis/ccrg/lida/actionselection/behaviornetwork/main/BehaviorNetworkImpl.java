@@ -54,6 +54,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener, BroadcastListener {
+	
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
 	private static Logger logger = Logger.getLogger("lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl");
@@ -189,7 +190,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		};
 		taskSpawner.addTask(broadcastTask);
 		
-		runActionSelectionTriggers();
+		runTriggers();
 		//TODO Explore this alternative and find out why it degrades performance of wumpus agent
 //		broadcastTask = new LidaTaskImpl(){
 //			protected void runThisLidaTask() {
@@ -240,23 +241,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				behaviorsByDeletingItem);
 
 		behaviors.put(newBehavior.getId(), newBehavior);
-		runActionSelectionTriggers();
+		runTriggers();
 	}
 	
-	private void runActionSelectionTriggers(){
-		newBehaviorEvent(this.behaviors.values());
-	}
-	/**
-	 * @param behaviors behaviors to check
-	 */
-	public void newBehaviorEvent(Collection<Behavior> behaviors) {		
+	private void runTriggers() {		
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
-			trigger.checkForTrigger(behaviors);
+			trigger.checkForTrigger(getBehaviors());
 	}// method
 	/**
 	 * Resets all triggers
 	 */
-	public void resetTriggers() {
+	private void resetTriggers() {
 		for (ActionSelectionTrigger t : actionSelectionTriggers) {
 			t.reset();
 		}
@@ -304,8 +299,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			actionSelectionStarted.set(false);
 		}
 	}
+	
 
-	// public void p(String s){System.out.println(s);}
+	@Override
+	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
+		logger.log(Level.FINE, "addes trigger " + tr.toString(), LidaTaskManager.getActualTick());
+		actionSelectionTriggers.add(tr);
+	}
 
 	public Set<Behavior> getSatisfiedBehaviors() {
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
@@ -499,13 +499,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	public void selectAction() {
 		winningBehavior = selectorStrategy.selectSingleBehavior(
 				getSatisfiedBehaviors(), candidateBehaviorThreshold);
-		processWinner();
-	}// method
 
-	private void processWinner() {
 		if (winningBehavior != null) {
 			sendPreafference(winningBehavior);
-			sendAction();
+			sendAction(winningBehavior.getActionId());
 			resetCandidateBehaviorThreshold();
 			winningBehavior.setActivation(0.0);
 		} else {
@@ -537,10 +534,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private void sendAction(long actionId) {
 		for (ActionSelectionListener l : listeners)
 			l.receiveActionId(actionId);
-	}
-
-	private void sendAction() {
-		sendAction(winningBehavior.getActionId());
 	}
 
 	/**
@@ -689,12 +682,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }// class
