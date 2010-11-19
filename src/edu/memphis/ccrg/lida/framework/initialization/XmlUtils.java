@@ -36,8 +36,6 @@ public class XmlUtils {
 	/**
 	 * Calls getTextValue and returns a int value
 	 * 
-	 * @param ele
-	 * @param tagName
 	 */
 	public static int getIntValue(Element ele, String tagName) {
 		// in production application you would catch the exception
@@ -46,9 +44,6 @@ public class XmlUtils {
 
 	/**
 	 * Calls getTextValue and returns a boolean value
-	 * 
-	 * @param ele
-	 * @param tagName
 	 */
 	public static boolean getBooleanValue(Element ele, String tagName) {
 		return Boolean.parseBoolean(getTextValue(ele, tagName));

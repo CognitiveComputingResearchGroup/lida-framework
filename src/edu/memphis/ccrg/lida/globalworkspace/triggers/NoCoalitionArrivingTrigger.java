@@ -30,8 +30,6 @@ public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	 * So this trigger fires when x ms has passed w/o a new broadcast. 
 	 * 
 	 * @param coalitions Coalitions trigger will check
-	 * TODO is this second variable a bug? 
-	 * @param maxActivation 
 	 */
 	public void checkForTrigger(Set<Coalition> coalitions, double maxActivation) {
 		reset();

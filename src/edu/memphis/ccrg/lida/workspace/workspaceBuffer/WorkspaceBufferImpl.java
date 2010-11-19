@@ -42,8 +42,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	/**
 	 * decays all the nodes in the buffer.
 	 * If a node's activation results lower than lowerActivationBound, it is removed from the buffer.
-	 * 
-	 * @param ticks
+	 * @param ticks how long since last decay
 	 */
 	public void decayModule(long ticks){
 		Collection<Linkable> linkables = buffer.getLinkables();

@@ -80,10 +80,11 @@ public class StrategyDef {
 	}
 
 	/**
-	 * @param className
-	 * @param name
-	 * @param params
-	 * @param type
+	 * @param className Qualified name
+	 * @param name Strategy name
+	 * @param params optional parameters
+	 * @param type TODO
+	 * @param flyWeight Will there be multiple copies of this strategy or just one shared?
 	 */
 	public StrategyDef(String className, String name,
 			Map<String, Object> params, String type, boolean flyWeight) {

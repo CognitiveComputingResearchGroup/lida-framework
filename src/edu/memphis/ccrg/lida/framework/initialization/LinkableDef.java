@@ -17,10 +17,10 @@ public class LinkableDef {
 	private Map<String,Object> params;
 
 	/**
-	 * @param className
-	 * @param defeaultStrategies
-	 * @param name
-	 * @param params
+	 * @param className Qualified name
+	 * @param defeaultStrategies Map of strategies this linkable will have
+	 * @param name label for object 
+	 * @param params optional parameters
 	 */
 	public LinkableDef(String className, Map<String,String> defeaultStrategies,
 			String name, Map<String,Object> params) {

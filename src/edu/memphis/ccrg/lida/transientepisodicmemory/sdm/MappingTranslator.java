@@ -27,9 +27,7 @@ public class MappingTranslator implements Translator {
     private PerceptualAssociativeMemory pam;
 
     /**
-     *
      * @param size
-     * @param pam
      */
     public MappingTranslator(int size, PerceptualAssociativeMemory pam) {
         this.size = size;
@@ -37,9 +35,7 @@ public class MappingTranslator implements Translator {
     }
 
     /**
-     * 
-     * @param data
-     * @throws Exception
+     * @throws Exception UnsupportedOperationException
      */
     public NodeStructure translate(BitVector data) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");

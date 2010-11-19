@@ -365,6 +365,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return behaviorsByContextCondition.get(addProposition);
 	}
 
+	//TODO
 	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
 
 	/**
