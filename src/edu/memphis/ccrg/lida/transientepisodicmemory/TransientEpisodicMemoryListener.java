@@ -9,6 +9,7 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  *
@@ -20,5 +21,5 @@ public interface TransientEpisodicMemoryListener extends ModuleListener{
      * 
      * @param association 
      */
-    public void receiveTEMContent(TransientEpisodicMemoryContent association);
+    public void receiveTEMContent(NodeStructure association);
 }

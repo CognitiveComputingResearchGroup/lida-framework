@@ -21,7 +21,6 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * this interface. Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
  * @see MemoryCue
- * @see LocalAssociation
  * @author Rodrigo Silva L.
  */
 public interface TransientEpisodicMemory extends LidaModule, Saveable {

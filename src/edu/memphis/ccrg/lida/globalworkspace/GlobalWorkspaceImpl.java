@@ -207,10 +207,6 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 			addBroadcastListener((BroadcastListener)listener);
 		}
 	}
-	@Override
-	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		logger.log(Level.SEVERE, "Global workspace is already a Task Spawner", LidaTaskManager.getActualTick());
-	}
 	public void init(){
 		getAssistingTaskSpawner().addTask(new BackgroundTask());
 	}
@@ -224,6 +220,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 		@Override
 		protected void runThisLidaTask() {
 			start();
+			setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 		}
 	}
 

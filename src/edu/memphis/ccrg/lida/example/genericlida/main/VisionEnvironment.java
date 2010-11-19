@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.example.genericlida.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,15 +42,6 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		environContent = new double[imageHeight][imageWidth];
 	}
 	public VisionEnvironment() {
-		iloc = imageHeight / 2;
-		jloc = imageWidth / 2;
-		environContent = new double[imageHeight][imageWidth];
-	}
-	@Override
-	public void init(Map<String, ?> params) {
-		lidaProperties=params;
-		imageHeight = (Integer)getParam("height",10);
-		imageWidth = (Integer)getParam("width",10);
 		iloc = imageHeight / 2;
 		jloc = imageWidth / 2;
 		environContent = new double[imageHeight][imageWidth];
@@ -208,7 +198,13 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	}
 
 	public void init(){
-		getAssistingTaskSpawner().addTask(new BackgroundTask());
+		imageHeight = (Integer)getParam("height",10);
+		imageWidth = (Integer)getParam("width",10);
+		iloc = imageHeight / 2;
+		jloc = imageWidth / 2;
+		environContent = new double[imageHeight][imageWidth];
+		
+		taskSpawner.addTask(new BackgroundTask());
 	}
 
 	private class BackgroundTask extends LidaTaskImpl {
@@ -216,7 +212,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		public BackgroundTask() {
 			super();
 			// TODO: make a parameter
-			setNumberOfTicksPerRun(10);
+			setNumberOfTicksPerRun(1);
 		}
 
 		@Override

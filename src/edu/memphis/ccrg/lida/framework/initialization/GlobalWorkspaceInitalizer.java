@@ -38,28 +38,28 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		
 		GlobalWorkspace globalWksp=(GlobalWorkspace)module;
 		Integer delayNoBroadcast = (Integer) params.get("globalWorkspace.delayNoBroadcast");
-		if (delayNoBroadcast==null)
+		if (delayNoBroadcast==null){
 			delayNoBroadcast=DEFAULT_DELAY_NO_BROADCAST;
-		else
 			logger.log(Level.WARNING, "Delay no broadcast could not be read, using default", LidaTaskManager.getActualTick());
+		}
 		
 		Integer delayNoNewCoalition = (Integer) params.get("globalWorkspace.delayNoNewCoalition");
-		if (delayNoNewCoalition==null)
+		if (delayNoNewCoalition==null){
 			delayNoNewCoalition=DEFAULT_DELAY_NO_NEW_COALITION;
-		else
 			logger.log(Level.WARNING, "Delay no new coalition could not be read, using default", LidaTaskManager.getActualTick());
+		}
 
 		Double aggregateActivationThreshold = (Double) params.get("globalWorkspace.aggregateActivationThreshold");
-		if (aggregateActivationThreshold==null)
+		if (aggregateActivationThreshold==null){
 			aggregateActivationThreshold=DEFAULT_AGGREGATE_ACT_THRESHOLD;
-		else
 			logger.log(Level.WARNING, "aggregate activation threshold could not be read, using default", LidaTaskManager.getActualTick());
+		}
 		
 		Double individualActivationThreshold = (Double) params.get("globalWorkspace.individualActivationThreshold");
-		if (individualActivationThreshold==null)
+		if (individualActivationThreshold==null){
 			individualActivationThreshold=DEFAULT_INDIVIDUAL_ACT_THRESHOLD;
-		else
 			logger.log(Level.WARNING, "individual activation threshold could not be read, using default", LidaTaskManager.getActualTick());
+		}
 		
 		BroadcastTrigger tr;
 		Map<String, Object> parameters;

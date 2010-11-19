@@ -167,6 +167,17 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		//TODO can throw null pointer
 		module.setModuleName(moduleName);
+		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
+		TaskSpawner ts = taskSpawners.get(taskspawner);
+		
+		if (ts!=null) {
+			module.setAssistingTaskSpawner(ts);
+			List<LidaTask>initialTasks = getTasks(moduleElement);
+			ts.setInitialTasks(initialTasks);
+		}else{
+			logger.log(Level.WARNING, "Module: " + name + " illegal TaskSpawner definition.", 0L);			
+		}
+		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		
 		//TODO can throw exception
@@ -181,17 +192,6 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		getAssociatedModules(moduleElement, module);
 		
-		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
-		TaskSpawner ts = taskSpawners.get(taskspawner);
-		
-		if (ts!=null) {
-			module.setAssistingTaskSpawner(ts);
-			List<LidaTask>initialTasks = getTasks(moduleElement);
-			ts.setInitialTasks(initialTasks);
-		}else{
-			logger.log(Level.WARNING, "Module: " + name + " illegal TaskSpawner definition.", 0L);			
-		}
-
 		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
 		return module;
 	}

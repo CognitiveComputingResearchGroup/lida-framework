@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
+import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
@@ -35,6 +36,8 @@ public interface ActionSelection extends LidaModule, TriggerListener, Saveable {
 	 * Choose a single action among those activated and whose context are satisfied to execute
 	 */
 	public void selectAction();
+
+	public void addActionSelectionTrigger(ActionSelectionTrigger tr);
 
 
 }

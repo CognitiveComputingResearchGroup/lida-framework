@@ -691,4 +691,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return false;
 	}
 
+	@Override
+	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }// class
