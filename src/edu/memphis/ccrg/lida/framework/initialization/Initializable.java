@@ -23,12 +23,12 @@ public interface Initializable {
 	 * This method initializes the module using properties from LIDA Properties File
 	 * @param lidaProperties LIDA properties
 	 */
-	public abstract void init (Map<String, ?> lidaProperties);
+	public void init (Map<String, ?> lidaProperties);
 	/**
 	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
 	 * Subclasses can overwrite this method in order to initialize the LidaTask
 	 */
-	public abstract void init();
+	public void init();
 	/**
 	 * A convenience method to read parameters from the Map of properties set 
 	 * with the init() method.
@@ -36,10 +36,10 @@ public interface Initializable {
 	 * @param defaultValue the default value to be returned if the parameter doesn't exist.
 	 * @return the value of the parameter or the default value.
 	 */
-	public abstract Object getParam(String name,Object defaultValue);
+	public Object getParam(String name,Object defaultValue);
 	/**
 	 * Sets an associated LidaModule.
 	 * @param module the module to be associated.
 	 */
-	public abstract void setAssociatedModule(LidaModule module);
+	public void setAssociatedModule(LidaModule module);
 }

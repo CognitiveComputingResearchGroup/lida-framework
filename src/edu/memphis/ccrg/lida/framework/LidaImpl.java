@@ -18,17 +18,22 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  *
  */
 public class LidaImpl extends LidaModuleImpl implements Lida {
+	
 	private static Logger logger = Logger.getLogger("lida.framework.Lida");
+	
 	private LidaTaskManager taskManager;
 
 	public LidaImpl(LidaTaskManager tm) {
 		super(ModuleName.LIDA);
 		taskManager=tm;
 	}
-
-	@Override
-	public Object getModuleContent(Object... params) {
-		return null;
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.Lida#start()
+	 */
+	public void start(){
+		taskManager.setDecayingModules(getSubmodules().values());
+		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
 	}
 
 	/* (non-Javadoc)
@@ -38,14 +43,10 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 		return taskManager;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.Lida#start()
-	 */
-	public void start(){
-		taskManager.setDecayingModules(getSubmodules().values());
-		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
+	@Override
+	public Object getModuleContent(Object... params) {
+		return null;
 	}
-
 	public void addListener(ModuleListener listener) {
 	}
 
