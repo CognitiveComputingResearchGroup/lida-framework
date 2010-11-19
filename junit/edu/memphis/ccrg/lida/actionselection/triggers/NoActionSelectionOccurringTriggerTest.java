@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.actionselection.triggers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,9 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -38,7 +36,6 @@ public class NoActionSelectionOccurringTriggerTest {
 	NoActionSelectionOccurringTrigger trigger;
 	Map<String, Object> parameters;
 	ActionSelection as;
-	ActionSelectionDriver asd;
 	
 	//Second trigger
 	Set<Behavior> setOfBehav;
@@ -51,7 +48,7 @@ public class NoActionSelectionOccurringTriggerTest {
 	IndividualBehaviorActivationTrigger trigger2;
 	
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception e
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -59,7 +56,6 @@ public class NoActionSelectionOccurringTriggerTest {
 		
 		trigger = new NoActionSelectionOccurringTrigger();
 		as = new MockActionSelectionImpl();
-		asd = new ActionSelectionDriver();
 		parameters = new HashMap<String, Object>();
 		
 		//Second trigger
@@ -99,19 +95,18 @@ public class NoActionSelectionOccurringTriggerTest {
 
 	
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setUp(java.util.Map, edu.memphis.ccrg.lida.actionselection.ActionSelection, edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setUp(java.util.Map, edu.memphis.ccrg.lida.actionselection.ActionSelection)}.
 	 */
 	@Test
 	public void testSetUpMapOfStringObjectActionSelectionActionSelectionDriver() {
 		trigger.setLidaTaskManager(tm);	
 		parameters.put("name", "abc");	
 		parameters.put("delay", 100);	
-		trigger.setUp(parameters, as,asd);
+		trigger.setUp(parameters, as);
 		
 		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", 100,trigger.delay);
 		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", "abc",trigger.name);
-		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", as,trigger.as);
-		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", asd,trigger.asd);
+		assertEquals("Problem with SetUpMapOfStringObjectActionSelection", as,trigger.as);    
 	}
 
 	/**
@@ -123,10 +118,9 @@ public class NoActionSelectionOccurringTriggerTest {
 		System.out.println("Testing start method");
 		
 		trigger.setLidaTaskManager(tm);
-		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
 		parameters.put("delay", 15);	
-		trigger.setUp(parameters, as,asd);
+		trigger.setUp(parameters, as);
 		
 		trigger.start();
 		tm.resumeSpawnedTasks();
@@ -146,10 +140,9 @@ public class NoActionSelectionOccurringTriggerTest {
 		System.out.println("Testing reset method");
 		
 		trigger.setLidaTaskManager(tm);
-		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
 		parameters.put("delay", 15);	
-		trigger.setUp(parameters, as,asd);
+		trigger.setUp(parameters, as);
 		
 		System.out.println("First trigger started with delay of 15 ticks.");
 		trigger.start();		
@@ -164,7 +157,6 @@ public class NoActionSelectionOccurringTriggerTest {
 		//second trigger
 		System.out.println("Second trigger started");
 		trigger2.as=as;
-		trigger2.asd=asd;
 		trigger2.threshold=0.5;
 		trigger2.checkForTrigger(setOfBehav);			
 		

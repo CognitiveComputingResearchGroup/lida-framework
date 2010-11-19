@@ -19,12 +19,10 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
-import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
-import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
@@ -42,10 +40,9 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	
 	AggregateBehaviorActivationTrigger trigger;
 	ActionSelection as;
-	ActionSelectionDriver asd;
 	Map<String, Object> parameters;
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception e
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -54,7 +51,6 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 		schemeB = new SchemeImpl("Scheme2",2,2);
 		parameters = new HashMap<String, Object>();
 		as = new MockActionSelectionImpl();
-		asd=new ActionSelectionDriver();
 		schemeA.setActivation(0.3);
 		schemeB.setActivation(0.3);
 		
@@ -75,7 +71,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	 */
 	@Test
 	public void testCheckForTrigger() {
-		trigger.setUp(parameters, as, asd);		
+		trigger.setUp(parameters, as);		
 		trigger.checkForTrigger(queueOfBehav);		
 	}
 
@@ -85,7 +81,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	 */
 	@Test
 	public void testSetUp() {
-		trigger.setUp(parameters, as,asd);
+		trigger.setUp(parameters, as);
 		assertEquals("Problem with SetUp", 0.5, trigger.threshold);
 	}
 }

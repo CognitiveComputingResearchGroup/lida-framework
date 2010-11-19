@@ -12,12 +12,12 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
@@ -34,10 +34,9 @@ public class IndividualBehaviorActivationTriggerTest {
 	Behavior behavB;
 	IndividualBehaviorActivationTrigger trigger;
 	ActionSelection as;
-	ActionSelectionDriver asd;
 	
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception e
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -48,7 +47,6 @@ public class IndividualBehaviorActivationTriggerTest {
 		trigger = new IndividualBehaviorActivationTrigger();
 		
 		as = new MockActionSelectionImpl();
-		asd = new ActionSelectionDriver();
 		schemeA.setActivation(0.8);
 		schemeB.setActivation(0.2);	
 		
@@ -65,7 +63,6 @@ public class IndividualBehaviorActivationTriggerTest {
 	@Test
 	public void testCheckForTriggerSetOfScheme() {
 		trigger.as=as;
-		trigger.asd=asd;
 		trigger.threshold=0.5;
 		trigger.checkForTrigger(setOfBehav);
 	}

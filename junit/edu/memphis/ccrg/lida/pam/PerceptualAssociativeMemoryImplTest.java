@@ -24,8 +24,8 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
@@ -73,7 +73,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		//pam.addNode(node1);	
 		
 		TaskSpawner taskSpawner = new MockTaskSpawner();	
-		taskSpawner.setTaskID(1);
+//		taskSpawner.setTaskID(1);
 		pam.setAssistingTaskSpawner(taskSpawner);
 	}
 
@@ -103,11 +103,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetTaskSpawner() {
-		TaskSpawner taskSpawner = new PamDriver();		
-		taskSpawner.setTaskID(1);
+		TaskSpawner taskSpawner = new TaskSpawnerImpl();
 		pam.setAssistingTaskSpawner(taskSpawner);
-//		 TODO setTaskSpawner is being abstracted into LidaModuleImpl
-		//assertEquals("Problem with SetTaskSpawner", taskSpawner, pam.getTaskSpawner());
+//		assertEquals("Problem with SetTaskSpawner", taskSpawner, pam.getTaskSpawner());
 	}
 
 	/**

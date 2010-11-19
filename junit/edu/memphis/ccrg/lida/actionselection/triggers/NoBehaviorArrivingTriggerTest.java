@@ -9,9 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.ActionSelectionDriver;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -24,7 +22,6 @@ public class NoBehaviorArrivingTriggerTest {
 	NoBehaviorArrivingTrigger trigger;
 	Map<String, Object> parameters;
 	ActionSelection as;
-	ActionSelectionDriver asd;
 	Scheme schemeA,schemeB;	
 	Behavior behavA;
 	Behavior behavB;	
@@ -49,7 +46,6 @@ public class NoBehaviorArrivingTriggerTest {
 		
 		trigger = new NoBehaviorArrivingTrigger();
 		as = new MockActionSelectionImpl();
-		asd = new ActionSelectionDriver();
 		parameters = new HashMap<String, Object>();
 		
 	}
@@ -57,10 +53,9 @@ public class NoBehaviorArrivingTriggerTest {
 	@Test
 	public void testCheckForTriggerSetOfSchemeDouble() {
 		//trigger.setLidaTaskManager(tm);
-		asd.setTaskManager(tm);
 		parameters.put("name", "abc");	
 		parameters.put("delay", 15);	
-		trigger.setUp(parameters, as,asd);
+		trigger.setUp(parameters, as);
 		
 		System.out.println("Trigger started with delay of 15 ticks.");
 		

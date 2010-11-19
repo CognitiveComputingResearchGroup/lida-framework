@@ -40,7 +40,8 @@ public class NoBroadcastOccurringTriggerTest {
 	public void testStart() {
 		System.out.println("Testing start method");
 		trigger.setLidaTaskManager(tm);
-		gw.setTaskManager(tm);
+		//TODO
+//		gw.setTaskManager(tm);
 		parameters.put("name", "abc");	
 		parameters.put("delay", 15);	
 		trigger.setUp(parameters, gw);		
