@@ -56,7 +56,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener, BroadcastListener {
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
-	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Net");
+	private static Logger logger = Logger.getLogger("lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl");
 
 	/**
 	 * Starting value for candidateBehaviorThreshold

@@ -117,6 +117,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
+		logger.log(Level.FINEST, "Procedural memory receives broadcast", LidaTaskManager.getActualTick());
 		synchronized (this) {
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
@@ -144,6 +145,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void activateSchemes() {
+		logger.log(Level.FINEST, "Procedural memory activates schemes", LidaTaskManager.getActualTick());
 		schemeActivationBehavior.activateSchemesWithBroadcast(currentBroadcast, schemeMap);
 	}
 
@@ -200,6 +202,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public void init() {
 		int ticksPerRun = (Integer) getParam("ticksPerRun", DEFAULT_TICKS_PER_RUN);
+		System.out.println("pm: tpr " + ticksPerRun);
 		super.taskSpawner.addTask(new BackgroundTask(ticksPerRun));
 	}
 

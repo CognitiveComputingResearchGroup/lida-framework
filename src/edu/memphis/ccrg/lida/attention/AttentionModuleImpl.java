@@ -56,6 +56,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
+//		System.out.println("atten " + super.taskSpawner.getSpawnedTaskCount());
 		broadcastContent = ((NodeStructure) bc).copy();
 	}
 	

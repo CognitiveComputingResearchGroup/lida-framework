@@ -169,7 +169,7 @@ public class LidaXmlFactory implements LidaFactory {
 		module.setModuleName(moduleName);
 		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
 		TaskSpawner ts = taskSpawners.get(taskspawner);
-		
+	
 		if (ts!=null) {
 			module.setAssistingTaskSpawner(ts);
 			List<LidaTask>initialTasks = getTasks(moduleElement);
@@ -293,7 +293,7 @@ public class LidaXmlFactory implements LidaFactory {
 	
 	private List<LidaTask> getTasks(Element element) {
 		List<LidaTask> tasks = new ArrayList<LidaTask>();
-		NodeList nl = element.getElementsByTagName("initialtasks");
+		NodeList nl = element.getElementsByTagName("initialTasks");
 
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
@@ -313,7 +313,7 @@ public class LidaXmlFactory implements LidaFactory {
 		LidaTask task = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
 		String name = moduleElement.getAttribute("name");
-		int ticks = XmlUtils.getIntValue(moduleElement, "ticksperstep");
+		int ticks = XmlUtils.getIntValue(moduleElement, "ticksperrun");
 		try {
 			task = (LidaTask) Class.forName(className).newInstance();
 		} catch (Exception e) {

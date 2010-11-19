@@ -120,17 +120,17 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	 * 
 	 */
 	public void triggerBroadcast() {
-			if (broadcastStarted.compareAndSet(false, true)) {
-				sendBroadcast();
-			}
+		if (broadcastStarted.compareAndSet(false, true)) {
+			sendBroadcast();
+		}
 	}// method
 
 	private void sendBroadcast() {
-		Coalition coal;
-			coal = chooseCoalition();
-			if (coal != null) {
-				coalitions.remove(coal);
-			}
+		logger.log(Level.FINE, "Triggering broadcast", LidaTaskManager.getActualTick());
+		Coalition coal = chooseCoalition();
+		if (coal != null) {
+			coalitions.remove(coal);
+		}
 		
 		if (coal != null) {
 			NodeStructure copy = new NodeStructureImpl((NodeStructure) coal

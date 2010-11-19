@@ -21,17 +21,17 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
  * Selector iterates and chooses competitor with max alpha
- *
  */
 public class BasicSelector implements Selector{
 	
-	private static Logger logger = Logger.getLogger("lida.behaviornetwork.engine.Selector");
+	private static Logger logger;
     
 //    stochastic in behavior net + drives to explore novel things
     // have a parameter which at 1.0 gives deterministic action selection.  
     // If 0.0 then completely random
     
     public BasicSelector() {       
+    	logger = Logger.getLogger(getClass().getCanonicalName());
     }
     
 //    public static void p(String s){
