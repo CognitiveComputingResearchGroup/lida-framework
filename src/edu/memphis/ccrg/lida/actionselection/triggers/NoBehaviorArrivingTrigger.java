@@ -20,9 +20,9 @@ public class NoBehaviorArrivingTrigger extends NoActionSelectionOccurringTrigger
 	 * 
 	 * So this trigger fires when x ms has passed w/o a new action selection. 
 	 * 
-	 * @param coalitions
-	 * @param maxActivation
+	 *
 	 */
+	//TODO Double check parameters
 	public void checkForTrigger(Set<Behavior> behaviors, double maxActivation) {
 		reset();
 	}

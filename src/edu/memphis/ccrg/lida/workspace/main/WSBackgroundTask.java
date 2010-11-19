@@ -3,8 +3,6 @@
  */
 package edu.memphis.ccrg.lida.workspace.main;
 
-import java.util.Map;
-
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;

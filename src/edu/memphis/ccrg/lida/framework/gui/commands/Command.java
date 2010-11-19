@@ -25,7 +25,7 @@ public interface Command {
 
     /**
      * Executes this command performing the necessary steps in the model (Lida)
-     * @param lida
+     * @param lida Lida Object
      */
     public void execute(Lida lida);
     
@@ -36,20 +36,20 @@ public interface Command {
 
     /**
      * Set multiple parameters using a map
-     * @param parameters
+     * @param parameters parameters
      */
     public void setParameters(Map<String, Object> parameters);
     
     /**
      * Set single parameter
-     * @param name
-     * @param value
+     * @param name name of parameter
+     * @param value default value to use if parameter cannot be found
      */
     public void setParameter(String name, Object value);
     
     /**
      * Get a parameter
-     * @param name
+     * @param name retrieved parameter
      */
     public Object getParameter(String name);
     

@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
@@ -23,7 +22,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
  */
 public class StreamImpl implements Stream{
 	
-	private static Logger logger = Logger.getLogger("lida.actionselection.behaviornetwork.main");
+//	private static Logger logger = Logger.getLogger("lida.actionselection.behaviornetwork.main");
 	
     private String name = "blank stream";
     

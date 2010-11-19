@@ -28,7 +28,6 @@ public interface FeatureDetector extends LidaTask {
 	
 	/**
 	 * 
-	 * @param node
 	 */
 	public abstract void addPamNode(PamNode node);
 	

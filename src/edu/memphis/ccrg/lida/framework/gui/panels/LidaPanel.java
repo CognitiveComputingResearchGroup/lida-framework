@@ -27,7 +27,7 @@ public interface LidaPanel {
 	
 	/**
 	 * Update Panel to display supplied object
-	 * @param o
+	 * @param o object
 	 */
 	public void display (Object o);
 	

@@ -53,13 +53,13 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 		}
 	}
 		
-	/**
-	 * TODO If BufferContent activates a sbCodelet's context, start a new codelet
-	 *  TODO code to determine when/what codelets to activate
-	 */
-	private void activateCodelets() {
-		
-	}
+//	/**
+//	 * TODO If BufferContent activates a sbCodelet's context, start a new codelet
+//	 *  TODO code to determine when/what codelets to activate
+//	 */
+//	private void activateCodelets() {
+//		
+//	}
 	
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)

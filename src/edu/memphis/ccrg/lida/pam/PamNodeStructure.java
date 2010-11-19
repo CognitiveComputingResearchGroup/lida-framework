@@ -105,7 +105,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	}//method
 	/**
 	 * Add a single PamNode to this pam node structure
-	 * @param node
+	 * @param node to add
 	 */
 	public Node addNode(Node node){
 		Node n=super.addNode(node);
@@ -141,7 +141,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	
 	/** 
 	 * Determines if linkable has no children.
-	 * @param n
+	 * @param n Linkable
 	 * @return true if n has no children (it is at the 'bottom' of the network)
 	 */
     public boolean hasNoChildren(Linkable n) {
@@ -159,7 +159,7 @@ public class PamNodeStructure extends NodeStructureImpl{
     
 	/** 
 	 * Determine if linkable has no parents.
-	 * @param n
+	 * @param n Linkable
 	 * @return true if n has no parent (it is at the 'top' of the network)
 	 */
 	public boolean hasNoParents(Linkable n) {
@@ -187,18 +187,18 @@ public class PamNodeStructure extends NodeStructureImpl{
 	
 	/**
 	 * Set the decay behavior for all nodes.
-	 * @param behavior
+	 * @param strategy How nodes will be decayed
 	 */
-	public void setNodesDecayStrategy(DecayStrategy behavior) {
+	public void setNodesDecayStrategy(DecayStrategy strategy) {
     	for(Node n: getNodes())
-    		n.setDecayStrategy(behavior);
+    		n.setDecayStrategy(strategy);
 	}//method
 	
 	/**
 	 * Get parents of this linkable. 
 	 * O(l) where l = number of links connected to n.
 	 * 
-	 * @param n
+	 * @param n supplied node
 	 * @return parents of n
 	 */
 	public Set<PamNode> getParents(Node n) {
@@ -217,7 +217,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	/**
 	 * When you excite the parents of a node you might want to excite the connecting links too.
 	 * Thus this method find the parents and all the links between supplied node and them
-	 * @param n
+	 * @param n supplied node
 	 * @return map of parents and links connecting node to them
 	 */
 	public Map<PamNode, PamLink> getParentsAndConnectingLinks(Node n){
@@ -239,7 +239,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	 * Get children of this linkable. 
 	 * O(l) where l = number of links connected to n.
 	 * 
-	 * @param n
+	 * @param n supplied node
 	 * @return set of child nodes
 	 */
 	public Set<PamNode> getChildren(Linkable n) {

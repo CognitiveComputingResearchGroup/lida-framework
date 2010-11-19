@@ -19,7 +19,7 @@ public interface TransientEpisodicMemoryListener extends ModuleListener{
 
     /**
      * 
-     * @param association 
-     */
+     * @param association local association
+     */ 
     public void receiveTEMContent(NodeStructure association);
 }

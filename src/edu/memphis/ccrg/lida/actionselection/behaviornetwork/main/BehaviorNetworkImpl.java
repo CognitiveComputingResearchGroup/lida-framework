@@ -621,14 +621,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-	 * @return
 	 */
 	public double getBehaviorActivationLowerBound() {
 		return behaviorActivationLowerBound;
 	}
 
 	/**
-	 * @param behaviorActivationLowerBound
+	 * @param behaviorActivationLowerBound amount of activation behavior needs to remain in the network
+	 * should be the same as the activation requirement in procedural memory
 	 */
 	public void setBehaviorActivationLowerBound(
 			double behaviorActivationLowerBound) {
@@ -636,7 +636,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-	 * @return
 	 */
 	public double getSuccessorExcitationFactor() {
 		return successorExcitationFactor;

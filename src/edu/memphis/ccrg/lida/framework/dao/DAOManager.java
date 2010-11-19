@@ -62,7 +62,7 @@ public class DAOManager implements DataAccessObject {
             for (ModuleName name : ModuleName.values()) {
                 LidaModule module = lida.getSubmodule(name);
                 if (module != null && module.getModuleName() == name) {
-                    Class daoClass = null;
+                    Class<?> daoClass = null;
                     try {
                         String className = "edu.memphis.ccrg.lida.framework.dao."+name.toString()+"DAO";
                         daoClass = Class.forName(className);
@@ -70,7 +70,7 @@ public class DAOManager implements DataAccessObject {
                     }
                     if (daoClass != null) {
                         try {
-                            Constructor daoConstructor = daoClass.getConstructor(
+                            Constructor<?> daoConstructor = daoClass.getConstructor(
                                     new Class[] {LidaModule.class, Storage.class, int.class}
                             );
                             DataAccessObject dao = (DataAccessObject)daoConstructor.newInstance(

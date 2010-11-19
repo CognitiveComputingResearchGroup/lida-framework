@@ -33,12 +33,12 @@ public class FrameworkGuiEvent {
 	private Object content;
 
 	/**
-	 * @param m
-	 * @param message
-	 * @param content
+	 * @param name ModuleName of module where event is coming from 
+	 * @param message optional message, differentiate from various events
+	 * @param content sent content
 	 */
-	public FrameworkGuiEvent(ModuleName m, String message, Object content) {
-		this.module = m;
+	public FrameworkGuiEvent(ModuleName name, String message, Object content) {
+		this.module = name;
 		this.message = message;
 		this.content = content;
 	}

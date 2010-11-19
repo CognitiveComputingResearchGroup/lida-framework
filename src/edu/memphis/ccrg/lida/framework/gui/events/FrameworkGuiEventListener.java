@@ -21,7 +21,7 @@ public interface FrameworkGuiEventListener {
 	
 	/**
 	 * Must be able to receive FrameworkGuiEvents  
-	 * @param event
+	 * @param event GuiEvent
 	 */
 	public abstract void receiveFrameworkGuiEvent(FrameworkGuiEvent event);
 	

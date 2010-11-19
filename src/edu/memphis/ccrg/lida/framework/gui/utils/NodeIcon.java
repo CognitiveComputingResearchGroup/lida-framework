@@ -28,11 +28,10 @@ public class NodeIcon implements Icon {
 	private int size;
 	private Color color;
 	
-//	private int a;
 	
 	/**
-	 * @param size
-	 * @param color
+	 * @param size NodeIcon size
+	 * @param color NodeIcon color
 	 */
 	public NodeIcon(int size,Color color) {
 		this.color = color;

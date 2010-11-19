@@ -18,8 +18,8 @@ public class GuiLink {
 	private char type;
 
 	/**
-	 * @param link
-	 * @param type
+	 * @param link Lida Framework link
+	 * @param type type
 	 */
 	public GuiLink(Link link, char type) {
 		this.link = link;
