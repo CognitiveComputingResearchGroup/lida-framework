@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  */
 public class StructureBuildingCodeletImpl extends CodeletImpl implements StructureBuildingCodelet{
 	
-	private static Logger logger=Logger.getLogger("lida.workspace.structurebuildingcodelets.SbCodeletImpl");
+	private static Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 
 	/**
 	 * Set of workspace buffers this codelet 'looks at'

@@ -18,13 +18,11 @@
 
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
-import java.util.logging.Logger;
+import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
-
-import javax.swing.JPanel;
 
 /**
  *
@@ -32,8 +30,6 @@ import javax.swing.JPanel;
  */
 public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPanel{
 
-	protected static Logger logger = Logger.getLogger("lida.framework.gui.panels.LidaPanel");
-	
 	private static final long serialVersionUID = 1L;
 	protected LidaGuiController controller;
 	protected Lida lida;

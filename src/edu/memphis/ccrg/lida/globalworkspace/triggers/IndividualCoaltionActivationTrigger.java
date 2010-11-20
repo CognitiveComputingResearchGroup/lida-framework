@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
  *
  */
 public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActivationTrigger {
-	private Logger logger = Logger.getLogger("lida.globalworkspace.triggers");
+	private Logger logger = Logger.getLogger(IndividualCoaltionActivationTrigger.class.getCanonicalName());
 	
 	public void checkForTrigger(Set<Coalition> coallitions) {
 		for(Coalition c:coallitions){

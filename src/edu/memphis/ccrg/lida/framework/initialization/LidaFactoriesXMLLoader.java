@@ -46,7 +46,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 public class LidaFactoriesXMLLoader {
 	
 	private static final String DEFAULT_FILE_NAME = "configs/factoriesData.xml";
-	private static Logger logger = Logger.getLogger("lida.framework.initialization.LidaFactoriesXMLLoader");
+	private static Logger logger = Logger.getLogger(LidaFactoriesXMLLoader.class.getCanonicalName());
 	private Document dom;
 	private NodeFactory nfactory=NodeFactory.getInstance();
 	private Map<String, StrategyDef> strategies;

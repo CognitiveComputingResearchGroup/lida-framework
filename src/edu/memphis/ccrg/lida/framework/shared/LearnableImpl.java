@@ -27,7 +27,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
-	private static Logger logger = Logger.getLogger("lida.framework.shared.BasedActivatibleImpl");
+	private static Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
 
 	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
 									DecayStrategy decayStrategy) {

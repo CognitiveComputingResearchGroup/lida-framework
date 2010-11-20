@@ -29,7 +29,7 @@ public class TriggerTask extends LidaTaskImpl{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Logger logger = Logger.getLogger("lida.actionselection.triggers");
+	private static Logger logger = Logger.getLogger(TriggerTask.class.getCanonicalName());
 
 	private String name;
 	private TriggerListener as;		

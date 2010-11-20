@@ -21,6 +21,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JSlider;
 
@@ -36,7 +37,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
  */
 public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEventListener{
   
-	private static final long serialVersionUID = 76014332645842720L;
+	private static Logger logger = Logger.getLogger(ControlToolBarPanel.class.getCanonicalName()); 
 	boolean isPaused = true;
 	private int sliderMin = 100;
 	private int sliderMax = 200;

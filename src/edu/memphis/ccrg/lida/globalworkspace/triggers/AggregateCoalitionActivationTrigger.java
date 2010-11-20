@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  */
 public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	
-	private Logger logger = Logger.getLogger("lida.globalworkspace.triggers");
+	private Logger logger = Logger.getLogger(AggregateCoalitionActivationTrigger.class.getCanonicalName());
 	protected GlobalWorkspace gw;
 	protected double threshold;
 /**

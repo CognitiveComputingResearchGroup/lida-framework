@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger
 
 public class GlobalWorkspaceInitalizer implements Initializer{
 
-	private static Logger logger = Logger.getLogger("lida.framework.initialization.GlobalWorkspaceInitializer");
+	private static Logger logger = Logger.getLogger(GlobalWorkspaceInitalizer.class.getCanonicalName());
 	
 	private static final Integer DEFAULT_DELAY_NO_BROADCAST = 100;
 	private static final Integer DEFAULT_DELAY_NO_NEW_COALITION = 50;

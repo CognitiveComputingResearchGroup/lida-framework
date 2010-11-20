@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	private static Logger logger = Logger
-			.getLogger("lida.actionselection.behaviornetwork.main.Behavior");
+			.getLogger(BehaviorImpl.class.getCanonicalName());
 
 	/**
 	 * Label for description

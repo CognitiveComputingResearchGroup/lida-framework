@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class LidaGuiControllerImpl implements LidaGuiController {
 
-	private static Logger logger = Logger.getLogger("lida.framework.gui.Controller");
+	private static Logger logger = Logger.getLogger(LidaGuiControllerImpl.class.getCanonicalName());
 	private Lida lida;
 	Properties commands;
 

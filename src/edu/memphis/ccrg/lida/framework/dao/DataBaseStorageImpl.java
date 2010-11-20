@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * @author Tom
  */
 public class DataBaseStorageImpl implements Storage {
-    private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.dao.DataBaseStorage");
+    private static Logger logger = Logger.getLogger(DataBaseStorageImpl.class.getCanonicalName());
     
     private static final String DBURL = "jdbc:derby://localhost:1527/lidadb";
     private static final String USERNAME = "lida";

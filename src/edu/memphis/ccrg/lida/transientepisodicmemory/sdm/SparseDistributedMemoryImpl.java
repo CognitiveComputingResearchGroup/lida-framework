@@ -20,9 +20,9 @@ import cern.colt.bitvector.BitVector;
  * 
  * @author Javier Snaider
  */
-public class SparseDistributedMemoryImp implements SparseDistributedMemory {
+public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 
-	private static Logger logger = Logger.getLogger("lida.transientepisodicmemory.sdm");
+	private static Logger logger = Logger.getLogger(SparseDistributedMemoryImpl.class.getCanonicalName());
 	private static final int MAX_ITERATIONS = 20;
 	private HardLocation[] hardlocations;
 	private int wordLength;
@@ -41,7 +41,7 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	 * @param wordLength
 	 *            the word size
 	 */
-	public SparseDistributedMemoryImp(int memorySize, int radious, int wordLength) {
+	public SparseDistributedMemoryImpl(int memorySize, int radious, int wordLength) {
 		// Memory's internal parameters
 		this.memorySize = memorySize;
 		activationRadius = radious;
@@ -65,7 +65,7 @@ public class SparseDistributedMemoryImp implements SparseDistributedMemory {
 	 * @param addrLength
 	 *            the address size
 	 */
-	public SparseDistributedMemoryImp(int memorySize, int radious, int wordLength, int addrLength) {
+	public SparseDistributedMemoryImpl(int memorySize, int radious, int wordLength, int addrLength) {
 		this.activationRadius = radious;
 
 		this.addrLength = addrLength;

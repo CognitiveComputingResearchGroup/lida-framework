@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class LidaImpl extends LidaModuleImpl implements Lida {
 	
-	private static Logger logger = Logger.getLogger("lida.framework.Lida");
+	private static Logger logger = Logger.getLogger(LidaImpl.class.getCanonicalName());
 	
 	private LidaTaskManager taskManager;
 

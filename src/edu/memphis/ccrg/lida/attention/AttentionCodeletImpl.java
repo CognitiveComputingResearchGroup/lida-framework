@@ -8,6 +8,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.attention;
 
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
@@ -26,6 +28,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  */
 public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodelet {
 	
+	private static Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
 	protected NodeStructure soughtContent;
 	protected WorkspaceBuffer currentSituationalModel;
 	protected GlobalWorkspace globalWorkspace;

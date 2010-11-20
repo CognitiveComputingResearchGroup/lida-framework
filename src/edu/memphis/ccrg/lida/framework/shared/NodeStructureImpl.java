@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent, Serializable {
 
-	private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.shared");
+	private static Logger logger = Logger.getLogger(NodeStructureImpl.class.getCanonicalName());
 
 	/**
 	 * Nodes contained in this NodeStructure indexed by their id

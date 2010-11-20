@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
  */
 public class TriggerTask extends LidaTaskImpl{
 	
-	private Logger logger = Logger.getLogger("lida.globalworkspace.triggers");
+	private Logger logger = Logger.getLogger(TriggerTask.class.getCanonicalName());
 
 	private String name;
 	

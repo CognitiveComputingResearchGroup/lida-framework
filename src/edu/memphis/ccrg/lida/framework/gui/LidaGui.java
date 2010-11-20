@@ -60,7 +60,7 @@ public class LidaGui extends javax.swing.JFrame {
     private List<java.awt.Container> panelParents = new ArrayList<java.awt.Container>();
     private Lida lida;
     private LidaGuiController controller;
-    private static Logger logger = Logger.getLogger("lida.framework.gui.LidaGui");
+    private static Logger logger = Logger.getLogger(LidaGui.class.getCanonicalName());
     private javax.swing.JDialog addEditDialog;
     private List<String> panelClassNames = new ArrayList<String>();
 

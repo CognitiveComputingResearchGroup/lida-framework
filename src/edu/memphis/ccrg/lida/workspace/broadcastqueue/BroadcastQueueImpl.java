@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  */
 public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue, BroadcastListener {
 
-	private static Logger logger = Logger.getLogger("lida.workspace.main.Workpace");
+	private static Logger logger = Logger.getLogger(BroadcastQueueImpl.class.getCanonicalName());
 
 	private Queue<NodeStructure> broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
 	private volatile int broadcastQueueCapacity;

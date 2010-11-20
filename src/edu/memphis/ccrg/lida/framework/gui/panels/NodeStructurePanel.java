@@ -20,6 +20,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.awt.Dimension;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
@@ -51,7 +52,7 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
  */
 public class NodeStructurePanel extends LidaPanelImpl {
 
-	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
 	private VisualizationViewer<Linkable, GuiLink> vv;
 	private LidaModule module;

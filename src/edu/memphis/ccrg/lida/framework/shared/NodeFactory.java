@@ -36,7 +36,7 @@ public class NodeFactory {
 	/**
 	 * Logger 
 	 */
-	private static Logger logger = Logger.getLogger("lida.framework.shared.NodeFactory");
+	private static Logger logger = Logger.getLogger(NodeFactory.class.getCanonicalName());
 
 	/**
 	 * Used to assign unique IDs to nodes. 

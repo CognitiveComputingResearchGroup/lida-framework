@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 
 public class IndividualBehaviorActivationTrigger extends AggregateBehaviorActivationTrigger {
-private Logger logger = Logger.getLogger("lida.actionselection.triggers");
+private Logger logger = Logger.getLogger(IndividualBehaviorActivationTrigger.class.getCanonicalName());
 	
 	public void checkForTrigger(Set<Behavior> behaviors) {
 		for(Behavior c:behaviors){

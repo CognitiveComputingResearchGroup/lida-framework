@@ -15,6 +15,10 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
  * 
  */
 public interface TriggerListener {
+	
+	/**
+	 * 
+	 */
 	public void triggerActionSelection();
 
 }

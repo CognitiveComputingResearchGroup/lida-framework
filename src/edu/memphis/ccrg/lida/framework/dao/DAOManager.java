@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author Tom
  */
 public class DAOManager implements DataAccessObject {
-    private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.dao.DAOManager");
+    private static Logger logger = Logger.getLogger(DAOManager.class.getCanonicalName());
 
     public static final String LIDA_STORAGE_NAME = "lida";
     public static int TEM_WORD_LENGTH = TemImpl.DEF_WORD_LENGTH;

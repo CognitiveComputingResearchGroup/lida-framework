@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class PamNodeStructure extends NodeStructureImpl{
 	
-	private static Logger logger = Logger.getLogger("lida.pam.PamNodeStructure");
+	private static Logger logger = Logger.getLogger(PamNodeStructure.class.getCanonicalName());
 	private Double upscaleFactor = 0.9;
 	private Double downscaleFactor = 0.5;
 	private Double selectivityThreshold = 0.8;

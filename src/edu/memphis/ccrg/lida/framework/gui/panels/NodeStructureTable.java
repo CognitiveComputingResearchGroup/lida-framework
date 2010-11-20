@@ -21,6 +21,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -37,7 +38,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public class NodeStructureTable extends LidaPanelImpl {
 
-	private static final long serialVersionUID = -2584446529055507492L;
+	private static Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
 	private NodeStructure nodeStructure;
     
 	/** Creates new form NodeStructureTable */

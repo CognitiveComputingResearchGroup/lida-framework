@@ -25,7 +25,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
 	private static final long serialVersionUID = 9005638432126098336L;
 
-	private static Logger logger= Logger.getLogger("lida.framework.tasks.LidaTask");
+	private static Logger logger= Logger.getLogger(LidaTaskImpl.class.getCanonicalName());
 
 	private static int defaultTicksPerStep = 1;
 	private long taskID;

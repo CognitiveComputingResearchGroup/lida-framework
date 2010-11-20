@@ -28,7 +28,7 @@ public class ActivatibleImpl implements Activatible {
 	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
-	private static Logger logger = Logger.getLogger("lida.framework.shared.ActivatibleImpl");
+	private static Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	public ActivatibleImpl() {
 		activation = 0.0;

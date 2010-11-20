@@ -25,7 +25,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	protected double baseLevelActivation = 0.0;
 	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
 	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
-	private static Logger logger = Logger.getLogger("lida.framework.pam.PamLinkImpl");
+	private static Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 
 	public PamLinkImpl() {
 		super();

@@ -40,11 +40,10 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
  *
  */
 public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{
-//TODO: Crate a Initializer to register the triggers!!!!!
 	
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
-	private static Logger logger = Logger.getLogger("lida.actionselection.ActionSelectionImpl");
+	private static Logger logger = Logger.getLogger(ActionSelectionImpl.class.getCanonicalName());
 	
 	private double selectionThreshold = 0.95;
 	

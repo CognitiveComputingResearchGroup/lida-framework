@@ -24,14 +24,13 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
  */
 public class BasicSelector implements Selector{
 	
-	private static Logger logger;
+	private static Logger logger = Logger.getLogger(BasicSelector.class.getCanonicalName());
     
 //    stochastic in behavior net + drives to explore novel things
     // have a parameter which at 1.0 gives deterministic action selection.  
     // If 0.0 then completely random
     
     public BasicSelector() {       
-    	logger = Logger.getLogger(getClass().getCanonicalName());
     }
     
 //    public static void p(String s){

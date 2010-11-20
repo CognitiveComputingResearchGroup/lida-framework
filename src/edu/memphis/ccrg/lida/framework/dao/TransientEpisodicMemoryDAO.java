@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 
 public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
-    private static Logger logger = Logger.getLogger("edu.memphis.ccrg.lida.framework.dao.TransientEpisodicMemoryDAO");
+    private static Logger logger = Logger.getLogger(TransientEpisodicMemoryDAO.class.getCanonicalName());
 
     public static final String STORAGE_NAME = "transientepisodicmemory";
     public static final String ADDRESSSTORAGE_NAME = "tem_addresses";

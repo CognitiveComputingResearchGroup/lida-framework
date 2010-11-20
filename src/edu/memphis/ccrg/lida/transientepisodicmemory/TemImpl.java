@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.BasicTranslator;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory;
-import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemoryImp;
+import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemoryImpl;
 import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
 
@@ -37,7 +37,7 @@ import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
  */
 public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
-	private static Logger logger = Logger.getLogger("lida.transientepisodicmemory.TemImpl");
+	private static Logger logger = Logger.getLogger(TemImpl.class.getCanonicalName());
 	
 	public static final int DEF_HARD_LOCATIONS = 10000;
 	public static final int DEF_ADDRESS_LENGTH = 1000;
@@ -134,7 +134,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 		wordLength = (Integer)getParam("tem.wordLength",DEF_WORD_LENGTH);
 		int radious = (Integer)getParam("tem.activationRadious",DEF_ACTIVATION_RADIOUS);
 		translator=new BasicTranslator(wordLength,pam);
-		sdm=new SparseDistributedMemoryImp(numOfHardLoc,radious,wordLength);
+		sdm=new SparseDistributedMemoryImpl(numOfHardLoc,radious,wordLength);
 	}
 
 	public void setAddressLength(int addressLength) {

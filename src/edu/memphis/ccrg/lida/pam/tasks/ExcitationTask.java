@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  */
 public class ExcitationTask extends LidaTaskImpl{
 	
-	private static Logger logger = Logger.getLogger("lida.pam.ExcitationTask");
+	private static Logger logger = Logger.getLogger(ExcitationTask.class.getCanonicalName());
 	
 	/**
 	 * PamNode to be excited

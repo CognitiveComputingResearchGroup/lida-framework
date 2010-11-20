@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 
 public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvider {
 
-	private Logger logger = Logger.getLogger("lida.example.genericlida.environsensorymem.VisionEnvironment");
+	private Logger logger = Logger.getLogger(VisionEnvironment.class.getCanonicalName());
 	private boolean actionHasChanged = false;
 	private LidaAction actionContent = null;
 	private int imageHeight = 5;

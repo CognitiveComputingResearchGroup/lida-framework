@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
-	private static Logger logger = Logger.getLogger("lida.framework.pam.PamNodeImpl");
+	private static Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
 	
 	protected static final double MIN_ACTIVATION = 0.0;
 	protected static final double MAX_ACTIVATION = 1.0;

@@ -44,7 +44,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 																	            WorkspaceListener, 
 																	            PreafferenceListener{
 	
-	private static Logger logger = Logger.getLogger("lida.pam.PerceptualAssociativeMemory");
+	private static Logger logger = Logger.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
 	
 	/**
 	 * Contains all of the Node, Links and their connections.

@@ -57,7 +57,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
-	private static Logger logger = Logger.getLogger("lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl");
+	private static Logger logger = Logger.getLogger(BehaviorNetworkImpl.class.getCanonicalName());
 
 	/**
 	 * Starting value for candidateBehaviorThreshold
