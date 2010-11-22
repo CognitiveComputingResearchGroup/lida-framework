@@ -27,8 +27,8 @@ public interface Node extends Linkable, Activatible, Serializable {
 	
 	public static final Node NULL_NODE = new NodeImpl();
 
-    public PamNode getReferencedNode();
-    public void setReferencedNode (PamNode n);
+    public PamNode getGroundingPamNode();
+    public void setGroundingPamNode (PamNode n);
     
     //TODO remove?
     public int getId();

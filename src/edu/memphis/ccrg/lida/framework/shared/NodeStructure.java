@@ -40,8 +40,9 @@ public interface NodeStructure {
 	
 	public void removeLinkable(Linkable l);
 	
-//	//TODO maybe a general clear but this method is not used and potentially problematic if 
-//	public void clearNodes();
+	public void clearLinks();
+	
+	public void clearNodeStructure();
 	
 	//Contains
 	public boolean containsNode(Node n);

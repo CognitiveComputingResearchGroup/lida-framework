@@ -372,7 +372,7 @@ public class NodeFactory {
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation());
-		n.setReferencedNode(oNode.getReferencedNode());
+		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId());
 		return n;
 	}

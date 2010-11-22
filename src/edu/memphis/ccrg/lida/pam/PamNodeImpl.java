@@ -39,7 +39,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	public PamNodeImpl() {
 		super();
-		refNode = this;
+		groundingPamNode = this;
 	}
 
 	public PamNodeImpl(PamNodeImpl p) {

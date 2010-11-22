@@ -19,16 +19,20 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamLinkImpl extends LinkImpl implements PamLink {
 	
+	private static Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
+	
 	protected static final double MIN_ACTIVATION = 0.0;
 	protected static final double MAX_ACTIVATION = 1.0;
 	protected double selectionThreshold = 0.5;
 	protected double baseLevelActivation = 0.0;
+	
 	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
 	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
-	private static Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 
 	public PamLinkImpl() {
 		super();
+		//TODO make this field private?
+		super.groundingPamLink = this;
 	}
 	
 	@Override

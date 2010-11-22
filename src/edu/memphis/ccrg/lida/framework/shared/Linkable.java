@@ -11,9 +11,9 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * A object that can have links attached to it
+ * A object that can have links attached to it.
+ * 
  * @author Javier Snaider
- *
  */
 public interface Linkable extends Serializable {
 

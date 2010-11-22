@@ -191,23 +191,6 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	public Collection<Node> getNodes() {
 		return super.getNodes();
 	}
-	
-	//TODO 
-//	/**
-//	 * @throws UnsupportedOperationException Cannot modify this object once created.
-//	 */
-//	@Override
-//	public void setDefaultLink(String linkClassName) {
-//		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-//	}
-//
-//	/**
-//	 * @throws UnsupportedOperationException Cannot modify this object once created.
-//	 */
-//	@Override
-//	public void setDefaultNode(String nodeClassName) {
-//		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-//	}
 
 	@Override
 	public Node getNode(int id) {

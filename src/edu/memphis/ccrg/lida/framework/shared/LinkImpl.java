@@ -9,6 +9,8 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.pam.PamLink;
+
 /**
  * 
  * @author Ryan McCall, Javier Snaider
@@ -20,7 +22,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private ExtendedId id;
 	
 	private LinkCategory category;
-	private Link referencedLink = null;
+	protected PamLink groundingPamLink;
 	
 	public LinkImpl() {
 	}
@@ -38,7 +40,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		source = l.getSource();
 		category = l.getCategory();
 		id = l.getExtendedId();
-		referencedLink = l.getReferencedLink();
+		groundingPamLink = l.getGroundingPamLink();
 		updateIds();
 	}
 
@@ -116,12 +118,12 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		}
 	}
 
-	public Link getReferencedLink() {
-		return referencedLink;
+	public PamLink getGroundingPamLink() {
+		return groundingPamLink;
 	}
 
-	public void setReferencedLink(Link l) {
-		referencedLink = l;
+	public void setGroundingPamLink(PamLink l) {
+		groundingPamLink = l;
 	}
 	
 	public void init(Map<String, Object> params) {

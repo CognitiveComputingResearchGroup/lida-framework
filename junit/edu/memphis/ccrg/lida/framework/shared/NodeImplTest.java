@@ -46,7 +46,7 @@ public class NodeImplTest extends TestCase{
 		node1.setId(1);			
 		node1.setLabel("red");		
 //		node1.setImportance(100);
-		node1.setReferencedNode(pamNode1);	
+		node1.setGroundingPamNode(pamNode1);	
 						
 		node2.setId(2);			
 	}
@@ -121,7 +121,7 @@ public class NodeImplTest extends TestCase{
 	@Test
 	public void testGetReferencedNode() {		
 							
-		assertEquals("Problem with getReferencedNode", pamNode1, node1.getReferencedNode());
+		assertEquals("Problem with getReferencedNode", pamNode1, node1.getGroundingPamNode());
 	}
 	
 	/**
@@ -130,8 +130,8 @@ public class NodeImplTest extends TestCase{
 	@Test
 	public void testSetReferencedNode() {
 		
-		node2.setReferencedNode(pamNode2);					
-		assertEquals("Problem with setReferencedNode", pamNode2, node2.getReferencedNode());
+		node2.setGroundingPamNode(pamNode2);					
+		assertEquals("Problem with setReferencedNode", pamNode2, node2.getGroundingPamNode());
 	}	
 	
 	/**

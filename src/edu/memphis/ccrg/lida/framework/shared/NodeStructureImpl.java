@@ -533,9 +533,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return result;
 	}// method
 
-//	public void clearNodes() {
-//		nodes = new ConcurrentHashMap<Integer, Node>();
-//	}
+	public void clearLinks(){
+		for(Link l: links.values())
+			removeLink(l);
+	}
+	
+	public void clearNodeStructure(){
+		for(Linkable l: linkableMap.keySet())
+			removeLinkable(l);		
+	}
 
 	public boolean containsLink(Link l) {
 		return links.containsKey(l.getExtendedId());

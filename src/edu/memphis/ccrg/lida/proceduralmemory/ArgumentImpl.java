@@ -86,9 +86,9 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.framework.shared.Node#getReferencedNode()
 	 */
 	@Override
-	public PamNode getReferencedNode() {
+	public PamNode getGroundingPamNode() {
 		if (node != null) {
-			return node.getReferencedNode();
+			return node.getGroundingPamNode();
 		}
 		return null;
 	}
@@ -120,7 +120,7 @@ public class ArgumentImpl implements Argument {
 	 * .ccrg.lida.pam.PamNode)
 	 */
 	@Override
-	public void setReferencedNode(PamNode n) {
+	public void setGroundingPamNode(PamNode n) {
 	}
 
 	/*

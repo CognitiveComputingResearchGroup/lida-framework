@@ -16,7 +16,7 @@ import java.util.Collection;
  * @author Javier Snaider
  *
  */
-public class ActivatibleDriver {
+public class ActivatibleUtility {
 	private Collection<? extends Activatible> activatibles;
 	
 	public void setActivatibles (Collection<? extends Activatible> activatibles){

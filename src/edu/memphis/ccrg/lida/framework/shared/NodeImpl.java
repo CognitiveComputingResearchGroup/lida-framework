@@ -21,12 +21,12 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private int id;
 	private ExtendedId eId;
 	private String label = "";
-//	private double importance;
 	private String factoryName;
-	//TODO remove
+	
+	//TODO change to set of attribute nodes
 	private double goalDegree;
 	
-	protected PamNode refNode;
+	protected PamNode groundingPamNode;
 	
 	public NodeImpl(){
 		super();
@@ -36,7 +36,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy());
 		this.id = n.id;
 		this.eId = n.eId;
-		this.refNode = n.refNode;
+		this.groundingPamNode = n.groundingPamNode;
 	}
 	
 	public void init(Map<String, Object> params) {
@@ -64,22 +64,15 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.label=label;
 	}
 
-//	public double getImportance() {
-//		return importance;
-//	}
-//	public void setImportance(double importance) {
-//		this.importance = importance;
-//	}
-
-	public PamNode getReferencedNode() {
-		return refNode;
+	public PamNode getGroundingPamNode() {
+		return groundingPamNode;
 	}
-	public void setReferencedNode(PamNode n) {
-		refNode = n;
+	public void setGroundingPamNode(PamNode n) {
+		groundingPamNode = n;
 	}
 
 	public String getIds() {
-		return "" + getId();
+		return getId() + "";
 	}
 
 	/**

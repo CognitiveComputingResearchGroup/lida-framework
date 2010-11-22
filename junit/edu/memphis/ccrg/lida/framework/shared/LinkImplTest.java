@@ -16,6 +16,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.pam.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+
 /**
  * This is a JUnit class which can be used to test methods of the LinkImpl class
  * @author Siminder Kaur
@@ -25,6 +28,8 @@ public class LinkImplTest extends TestCase{
 	
 	NodeImpl node1,node2,node3,node4;
 	LinkImpl link1,link2,link3;	
+	PamLinkImpl pamLink1;
+	PamNodeImpl pamNode1;
 	LinkCategory linktype1,linktype2;		
 
 	/**
@@ -36,6 +41,9 @@ public class LinkImplTest extends TestCase{
 		node2 = new NodeImpl();
 		node3 = new NodeImpl();
 		node4 = new NodeImpl();
+		
+		pamLink1 = new PamLinkImpl();
+		pamNode1 = new PamNodeImpl();
 		
 		link1 = new LinkImpl();
 		link2 = new LinkImpl();
@@ -175,8 +183,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetReferencedLink() {
-		link1.setReferencedLink(link2);
-		assertEquals("Problem with getReferencedLink", link2, link1.getReferencedLink());
+		link1.setGroundingPamLink(pamLink1);
+		assertEquals("Problem with getReferencedLink", pamLink1, link1.getGroundingPamLink());
 	}
 
 	/**
@@ -184,8 +192,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetReferencedLink() {
-		link1.setReferencedLink(link2);
-		assertEquals("Problem with setReferencedLink", link2, link1.getReferencedLink());
+		link1.setGroundingPamLink(pamLink1);
+		assertEquals("Problem with setReferencedLink", pamLink1, link1.getGroundingPamLink());
 	}
 	
 	/**
