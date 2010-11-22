@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 public abstract class LidaModuleImpl implements LidaModule {
 
 	private ModuleName moduleName;
-	protected Map<String, ?> lidaProperties;
+	protected Map<String, ?> parameters;
 	private Map<ModuleName, LidaModule> submodules = new ConcurrentHashMap<ModuleName, LidaModule>();
 	protected TaskSpawner taskSpawner;
 
@@ -52,7 +52,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
 	 */
 	public void init(Map<String, ?> params) {
-		this.lidaProperties = params;
+		this.parameters = params;
 		init();
 	}
 	
@@ -67,8 +67,8 @@ public abstract class LidaModuleImpl implements LidaModule {
 	
 	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
-		if (lidaProperties != null) {
-			value = lidaProperties.get(name);
+		if (parameters != null) {
+			value = parameters.get(name);
 		}
 		if (value == null) {
 			value = defaultValue;

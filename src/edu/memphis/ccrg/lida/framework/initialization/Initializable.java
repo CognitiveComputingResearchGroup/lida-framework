@@ -20,10 +20,9 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  */
 public interface Initializable {
 	/**
-	 * This method initializes the module using properties from LIDA Properties File
-	 * @param lidaProperties LIDA properties
+	 * This method initializes the module with parameters specified in LIDA.xml
 	 */
-	public void init (Map<String, ?> lidaProperties);
+	public void init (Map<String, ?> parameters);
 	/**
 	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
 	 * Subclasses can overwrite this method in order to initialize the LidaTask
@@ -37,9 +36,11 @@ public interface Initializable {
 	 * @return the value of the parameter or the default value.
 	 */
 	public Object getParam(String name,Object defaultValue);
+	
 	/**
 	 * Sets an associated LidaModule.
 	 * @param module the module to be associated.
 	 */
 	public void setAssociatedModule(LidaModule module);
+	
 }

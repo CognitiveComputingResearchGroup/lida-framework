@@ -35,7 +35,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 */
 	private ConcurrentLinkedQueue<LidaTask> runningTasks = new ConcurrentLinkedQueue<LidaTask>();
 
-	private Map<String, ?> lidaProperties;
+	private Map<String, ?> parameters;
 
 	public TaskSpawnerImpl() {
 		super();
@@ -166,7 +166,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 */
 	@Override
 	public void init(Map<String, ?> params) {
-		this.lidaProperties = params;
+		this.parameters = params;
 		init();
 	}
 	
@@ -183,8 +183,8 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	@Override
 	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
-		if (lidaProperties != null) {
-			value = lidaProperties.get(name);
+		if (parameters != null) {
+			value = parameters.get(name);
 		}
 		if (value == null) {
 			value = defaultValue;

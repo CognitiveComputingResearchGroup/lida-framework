@@ -80,7 +80,9 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, Initializable
 	 */
 	public  void reset();
 	
-
+	/**
+	 * It is useful to override toString for Tasks for comprehension in the GUI.
+	 */
 	public String toString();
 	
 	/**
