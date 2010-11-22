@@ -145,6 +145,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	private ConcurrentMap<Node, Set<Behavior>> behaviorsByDeletingItem = new ConcurrentHashMap<Node, Set<Behavior>>();
 	
+	/**
+	 * 
+	 */
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 
 	/**
@@ -181,6 +184,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		};
 		taskSpawner.addTask(broadcastTask);
 		
+		//TODO make background task
 		broadcastTask = new LidaTaskImpl(){
 			protected void runThisLidaTask() {
 				//Look here

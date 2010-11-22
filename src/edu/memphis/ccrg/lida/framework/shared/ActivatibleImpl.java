@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class ActivatibleImpl implements Activatible {
 	
+	//TODO Another value for current excitation
 	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
