@@ -21,13 +21,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	private static Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
 	
-	protected static final double MIN_ACTIVATION = 0.0;
-	protected static final double MAX_ACTIVATION = 1.0;
-	
-	/** Activation required for node to be part of the percept.
-	 *  Bounded by minActivation and maxActivation
-	 */
-	protected double selectionThreshold = 0.9;
+//	protected static final double MIN_ACTIVATION = 0.0;
+//	protected static final double MAX_ACTIVATION = 1.0;
+//	
+//	/** Activation required for node to be part of the percept.
+//	 *  Bounded by minActivation and maxActivation
+//	 */
+//	protected double selectionThreshold = 0.9;
 	
 	/**
 	 * 
@@ -44,47 +44,47 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 
 	public PamNodeImpl(PamNodeImpl p) {
 		super(p);
-		selectionThreshold = p.selectionThreshold;
+//		selectionThreshold = p.selectionThreshold;
 		baseLevelActivation = p.baseLevelActivation;
 	}
 	
-	/**
-	  * Determines if this node is relevant. A node is relevant if its total
-	  * activation is greater or equal to the selection threshold.
-	  * 
-	  * @return     <code>true</code> if this node is relevant
-	  */
-	public boolean isOverThreshold() {
-	    return getTotalActivation() >= selectionThreshold;
-	}
-
-	/**
-	 * @param threshold amount needed to enter percept 
-	 */
-	public void setPerceptThreshold(double threshold) {
-		selectionThreshold = threshold;
-	}
-
-	/**
-	 * returns selection threshold
-	 * @return Selection threshold
-	 */
-	public double getPerceptThreshold() {
-	    return selectionThreshold;
-	}
+//	/**
+//	  * Determines if this node is relevant. A node is relevant if its total
+//	  * activation is greater or equal to the selection threshold.
+//	  * 
+//	  * @return     <code>true</code> if this node is relevant
+//	  */
+//	public boolean isOverThreshold() {
+//	    return getTotalActivation() >= selectionThreshold;
+//	}
+//
+//	/**
+//	 * @param threshold amount needed to enter percept 
+//	 */
+//	public void setPerceptThreshold(double threshold) {
+//		selectionThreshold = threshold;
+//	}
+//
+//	/**
+//	 * returns selection threshold
+//	 * @return Selection threshold
+//	 */
+//	public double getPerceptThreshold() {
+//	    return selectionThreshold;
+//	}
 
 	@Override
 	public double getTotalActivation() {
 	    return getActivation() + baseLevelActivation;
 	}
 
-	public double getMaxActivation() {
-		return MAX_ACTIVATION;
-	}
-
-	public double getMinActivation() {
-		return MIN_ACTIVATION;
-	}
+//	public double getMaxActivation() {
+//		return MAX_ACTIVATION;
+//	}
+//
+//	public double getMinActivation() {
+//		return MIN_ACTIVATION;
+//	}
 	
 	@Override
 	public boolean equals(Object obj) {

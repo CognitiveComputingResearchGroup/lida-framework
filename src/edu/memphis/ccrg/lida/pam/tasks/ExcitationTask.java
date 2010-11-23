@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * A task that allows PAM nodes to be excited asynchronously.
@@ -55,7 +56,6 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * @param linkable to be excited
 	 * @param excitation amount to excite
 	 * @param pam PerceptualAssociativeMemory module
-	 * @param ts TaskSpawner
 	 */
 	public ExcitationTask(PamLinkable linkable, double excitation, int ticksPerRun,
 			              PerceptualAssociativeMemory pam, TaskSpawner ts){
@@ -72,8 +72,7 @@ public class ExcitationTask extends LidaTaskImpl{
 	 */
 	protected void runThisLidaTask() {
 		pamLinkable.excite(excitationAmount); 
-		//TODO create an ExcitationTask for both PamLink and PamNode?
-		if(pamLinkable.isOverThreshold()){
+		if(pam.isOverPerceptThreshold(pamLinkable)){
 			//If over threshold then spawn a new task to add the node to the percept
 			AddToPerceptTask task;
 			

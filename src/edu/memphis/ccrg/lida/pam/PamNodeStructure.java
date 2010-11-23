@@ -32,9 +32,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class PamNodeStructure extends NodeStructureImpl{
 	
 	private static Logger logger = Logger.getLogger(PamNodeStructure.class.getCanonicalName());
-	private Double upscaleFactor = 0.9;
-	private Double downscaleFactor = 0.5;
-	private Double selectivityThreshold = 0.8;
 
 	/**
 	 * If a node is below this threshold after being decayed it is deleted
@@ -49,35 +46,6 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public PamNodeStructure(String defaultPamNode, String defaultLink) {
 		super(defaultPamNode, defaultLink);
 	}
-
-	public void setUpscale(Double d) {
-		upscaleFactor  = d;		
-	}
-	public double getUpscale(){
-		return upscaleFactor;
-	}
-
-	/**
-	 * Set downscale factor
-	 * @param d downscale
-	 */
-	public void setDownscale(Double d) {
-		downscaleFactor  = d;		
-	}
-	public double getDownscale(){
-		return downscaleFactor;
-	}
-
-	/**
-	 * Set selectivity threshold
-	 * @param s selectivity
-	 */
-	public void setSelectivity(Double s) {
-		selectivityThreshold = s;		
-	}
-	public double getSelectivity() {
-		return selectivityThreshold;
-	}
 	
 	/**
 	 * Add a collection of PamLinks to this pam node structure
@@ -85,10 +53,7 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public Set<PamLink> addPamLinks(Collection<PamLink> links){
 		Set<PamLink> returnedLinks = new HashSet<PamLink>();
 		for(PamLink l: links)
-			returnedLinks.add((PamLink) addLink(l));
-			
-		//TODO Bug.  This method is for nodes
-		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+			returnedLinks.add((PamLink) super.addLink(l));
 		return returnedLinks;
 	}
  	
@@ -98,82 +63,81 @@ public class PamNodeStructure extends NodeStructureImpl{
 	public Set<PamNode> addPamNodes(Collection<PamNode> nodes){
 		Set<PamNode> returnedNodes = new HashSet<PamNode>();
 		for(Node n: nodes)
-			returnedNodes.add((PamNode) addNode(n));
+			returnedNodes.add((PamNode) super.addNode(n));
 
-		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+//		updateActivationThresholds(upscaleFactor, selectivityThreshold);
 		return returnedNodes;
 	}//method
-	/**
-	 * Add a single PamNode to this pam node structure
-	 * @param node to add
-	 */
-	public Node addNode(Node node){
-		Node n=super.addNode(node);
-		updateActivationThresholds(upscaleFactor, selectivityThreshold);
-		return n;
-	}
+//	/**
+//	 * Add a single PamNode to this pam node structure
+//	 * @param node to add
+//	 */
+//	public Node addNode(Node node){
+//		Node n=super.addNode(node);
+//		updateActivationThresholds(upscaleFactor, selectivityThreshold);
+//		return n;
+//	}
 	
-	/**
-	 * Update the min and max activations and selection threshold
-	 * of the Linkables in the layermap
-	 * 
-	 * @param upscale
-	 * @param selectivity
-	 */
-	private void updateActivationThresholds(double upscale, double selectivity){
-		Collection<Node> nodes = getNodes();
-        for(Node n: nodes){
-        	PamNode pamNode = (PamNode)n;
-        	updateSelectionThreshold(pamNode, selectivity);
-        }//for	
-    }//method
+//	/**
+//	 * Update the min and max activations and selection threshold
+//	 * of the Linkables in the layermap
+//	 * 
+//	 * @param upscale
+//	 * @param selectivity
+//	 */
+//	private void updateActivationThresholds(double upscale, double selectivity){
+//		Collection<Node> nodes = getNodes();
+//        for(Node n: nodes){
+//        	PamNode pamNode = (PamNode)n;
+////        	updateSelectionThreshold(pamNode, selectivity);
+//        }//for	
+//    }//method
 	
-	/**
-     * Calc selection threshold based on the selectivity and min and max activ.
-     * TODO this isn't done for link....
-     */
-	private void updateSelectionThreshold(PamNode n, double selectivity){
-		double min = n.getMinActivation();
-		double max = n.getMaxActivation();
-		double threshold = selectivity*(max - min) + min;
-		n.setPerceptThreshold(threshold);
-	}   
+//	/**
+//     * Calc selection threshold based on the selectivity and min and max activ.
+//     */
+//	private void updateSelectionThreshold(PamNode n, double selectivity){
+//		double min = n.getMinActivation();
+//		double max = n.getMaxActivation();
+//		double threshold = selectivity*(max - min) + min;
+//		n.setPerceptThreshold(threshold);
+//	}   
 	
-	/** 
-	 * Determines if linkable has no children.
-	 * @param n Linkable
-	 * @return true if n has no children (it is at the 'bottom' of the network)
-	 */
-    public boolean hasNoChildren(Linkable n) {
-		Set<Link> links = getLinkableMap().get(n);
-		if(links != null){
-			for(Link link: links){
-				Linkable source = link.getSource();
-				//if source is a child of n
-				if(source instanceof PamNode && !source.equals(n))
-					return false;
-			}//for
-		}//
-		return true;
-	}//method
+//	/** 
+//	 * Determines if linkable has no children.
+//	 * @param n Linkable
+//	 * @return true if n has no children (it is at the 'bottom' of the network)
+//	 */
+//    public boolean hasNoChildren(Linkable n) {
+//		Set<Link> links = getLinkableMap().get(n);
+//		if(links != null){
+//			for(Link link: links){
+//				Linkable source = link.getSource();
+//				//if source is a child of n
+//				if(source instanceof PamNode && !source.equals(n))
+//					return false;
+//			}//for
+//		}//
+//		return true;
+//	}//method
     
-	/** 
-	 * Determine if linkable has no parents.
-	 * @param n Linkable
-	 * @return true if n has no parent (it is at the 'top' of the network)
-	 */
-	public boolean hasNoParents(Linkable n) {
-		Set<Link> links = getLinkableMap().get(n);
-		if(links != null){
-			for(Link l: links){
-				Linkable sink = l.getSink();
-				//if sink is a parent of n
-				if(sink instanceof PamNode && !sink.equals(n))
-					return false;
-			}//for
-		}
-		return true;
-	}//method
+//	/** 
+//	 * Determine if linkable has no parents.
+//	 * @param n Linkable
+//	 * @return true if n has no parent (it is at the 'top' of the network)
+//	 */
+//	public boolean hasNoParents(Linkable n) {
+//		Set<Link> links = getLinkableMap().get(n);
+//		if(links != null){
+//			for(Link l: links){
+//				Linkable sink = l.getSink();
+//				//if sink is a parent of n
+//				if(sink instanceof PamNode && !sink.equals(n))
+//					return false;
+//			}//for
+//		}
+//		return true;
+//	}//method
 	
 	//************END OF METHODS RELATED TO NODE ADDING*************	
 
@@ -194,25 +158,25 @@ public class PamNodeStructure extends NodeStructureImpl{
     		n.setDecayStrategy(strategy);
 	}//method
 	
-	/**
-	 * Get parents of this linkable. 
-	 * O(l) where l = number of links connected to n.
-	 * 
-	 * @param n supplied node
-	 * @return parents of n
-	 */
-	public Set<PamNode> getParents(Node n) {
-		Set<PamNode> parents = new HashSet<PamNode>();
-		Set<Link> links = getLinkableMap().get(n);
-		if(links != null){
-			for(Link l: links){
-				Linkable sink = l.getSink();//Sinks are 'above' this node. 
-				if(sink instanceof PamNode && !sink.equals(n))
-					parents.add((PamNode) sink);
-			}
-		}
-		return parents;
-	}//method 
+//	/**
+//	 * Get parents of this linkable. 
+//	 * O(l) where l = number of links connected to n.
+//	 * 
+//	 * @param n supplied node
+//	 * @return parents of n
+//	 */
+//	public Set<PamNode> getParents(Node n) {
+//		Set<PamNode> parents = new HashSet<PamNode>();
+//		Set<Link> links = getLinkableMap().get(n);
+//		if(links != null){
+//			for(Link l: links){
+//				Linkable sink = l.getSink();//Sinks are 'above' this node. 
+//				if(sink instanceof PamNode && !sink.equals(n))
+//					parents.add((PamNode) sink);
+//			}
+//		}
+//		return parents;
+//	}//method 
 	
 	/**
 	 * When you excite the parents of a node you might want to excite the connecting links too.
@@ -235,25 +199,25 @@ public class PamNodeStructure extends NodeStructureImpl{
 		return results;
 	}
 	
-	/**
-	 * Get children of this linkable. 
-	 * O(l) where l = number of links connected to n.
-	 * 
-	 * @param n supplied node
-	 * @return set of child nodes
-	 */
-	public Set<PamNode> getChildren(Linkable n) {
-		Set<PamNode> children = new HashSet<PamNode>();
-		Set<Link> links = getLinkableMap().get(n);
-		if(links != null){
-			for(Link l: links){
-				Linkable source = l.getSource();//Sources are 'below' this node.
-				if(source instanceof PamNode && !source.equals(n))
-					children.add((PamNode)source);			
-			}
-		}
-		return children;
-	}//method
+//	/**
+//	 * Get children of this linkable. 
+//	 * O(l) where l = number of links connected to n.
+//	 * 
+//	 * @param n supplied node
+//	 * @return set of child nodes
+//	 */
+//	public Set<PamNode> getChildren(Linkable n) {
+//		Set<PamNode> children = new HashSet<PamNode>();
+//		Set<Link> links = getLinkableMap().get(n);
+//		if(links != null){
+//			for(Link l: links){
+//				Linkable source = l.getSource();//Sources are 'below' this node.
+//				if(source instanceof PamNode && !source.equals(n))
+//					children.add((PamNode)source);			
+//			}
+//		}
+//		return children;
+//	}//method
 
 	/**
 	 * Decay the nodes of this pam node structure

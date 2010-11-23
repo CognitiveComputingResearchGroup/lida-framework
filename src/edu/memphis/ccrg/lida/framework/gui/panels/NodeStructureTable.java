@@ -31,6 +31,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  *
@@ -210,7 +211,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 				}
 			case 3:
 				if (node instanceof PamNode){
-					return ((PamNode)node).getPerceptThreshold();
+					return PerceptualAssociativeMemoryImpl.getPerceptThreshold();
 				}else{
 					return "";
 				}

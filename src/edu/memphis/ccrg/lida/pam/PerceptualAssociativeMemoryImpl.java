@@ -24,6 +24,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -91,6 +92,15 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 */
 	private int propagationTaskTicksPerRun = 1;
 	
+	private static final double DEFAULT_PERCEPT_THRESHOLD = 0.7; 
+	private static double perceptThreshold;
+	
+	private static final double DEFAULT_UPSCALE_FACTOR = 0.9;
+	private static double upscaleFactor;
+	
+	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
+	private static double downscaleFactor;
+	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
 	}
@@ -149,7 +159,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	public synchronized void receivePreafference(Collection<Node> addList, Collection<Node> deleteList) {
-		// TODO Use preafferent signal
+		// Use preafferent signal
 	}
 
 	public void learn() {
@@ -192,7 +202,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void sendActivationToParents(PamNode pamNode) {
 		//Calculate the amount to propagate
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
-		propagateParams.put("upscale", pamNodeStructure.getUpscale());
+		propagateParams.put("upscale", upscaleFactor);
 		propagateParams.put("totalActivation", pamNode.getTotalActivation());
 		double amountToPropagate = propagationBehavior.getActivationToPropagate(propagateParams);
 		
@@ -236,58 +246,15 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		pamNodeStructure.setNodesExciteStrategy(behavior);
 	}// method
 	
-	/**
-     * 
-     */
-	public void init (Map<String, ?> parameters){
-		Object o = parameters.get("pam.Upscale");
-		if (o != null && o instanceof Double){ 
-				synchronized (this) {
-					pamNodeStructure.setUpscale((Double) o);
-				}
-		}else{
-			logger.warning("Unable to set UPSCALE parameter, using the default in PamNodeStructure");
-		}
-		
-		o = parameters.get("pam.Downscale");
-		if (o != null && o instanceof Double){ 
-			synchronized (this) {
-				pamNodeStructure.setDownscale((Double) o);
-			}
-		}else{
-			logger.warning("Unable to set DOWNSCALE parameter, using the default in PamNodeStructure");
-		}
-				
-		o = parameters.get("pam.Selectivity");
-		if (o != null && o instanceof Double){ 
-			synchronized (this) {
-				pamNodeStructure.setSelectivity((Double) o);
-			}
-		}else{
-			logger.warning("Unable to set Selectivity parameter, using the default in PamNodeStructure");
-		} 
-		
-		o = parameters.get("pam.newNodeType");
-		if(o != null && o instanceof String){
-			this.setNewNodeType((String) o);
-		}else{
-			logger.warning("Unable to set new Node type, using the default in PamNodeStructure");
-		}
-		
-		o = parameters.get("pam.newLinkType");
-		if(o != null && o instanceof String){
-			this.setNewLinkType((String) o);
-		}else{
-			logger.warning("Unable to set new Link type, using the default in PamNodeStructure");
-		}
-		
-		o = parameters.get("pam.excitationTicksPerRun");
-		if(o != null)
-			excitationTaskTicksPerRun = (Integer) o;
-		
-		o = parameters.get("pam.propagationTicksPerRun");
-		if(o != null)
-			propagationTaskTicksPerRun = (Integer) o;
+	@Override
+	public void init (){
+		upscaleFactor = (Double) getParam("pam.Upscale", DEFAULT_UPSCALE_FACTOR);
+		downscaleFactor = (Double) getParam("pam.Downscale", DEFAULT_DOWNSCALE_FACTOR);
+		perceptThreshold = (Double) getParam("pam.Selectivity", DEFAULT_PERCEPT_THRESHOLD);				
+		setNewNodeType((String) getParam("pam.newNodeType", "PamNodeImpl"));
+		setNewLinkType((String) getParam("pam.newLinkType", "PamLinkImpl"));
+		excitationTaskTicksPerRun = (Integer) getParam("pam.excitationTicksPerRun", 1);
+		propagationTaskTicksPerRun = (Integer) getParam("pam.propagationTicksPerRun", 1);
 	}// method
 	
 	public boolean containsNode(PamNode node){
@@ -360,15 +327,31 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void setNewLinkType(String type) {
 		pamNodeStructure.setDefaultLink(type);
 	}
+	
+	public static double getPerceptThreshold(){
+		return perceptThreshold;
+	}
+	
+	public static double getUpscaleFactor(){
+		return upscaleFactor;
+	}
+	
+	public static double getDownscaleFactory(){
+		return downscaleFactor;
+	}
+	
+	public boolean isOverPerceptThreshold(PamLinkable l){
+		return l.getTotalActivation() > perceptThreshold;
+	}
 
-        public Object getState() {
-            return pamNodeStructure;
+	public Object getState() {
+        return pamNodeStructure;
+    }
+    public boolean setState(Object content) {
+        if (content instanceof PamNodeStructure) {
+            pamNodeStructure = (PamNodeStructure)content;
+            return true;
         }
-        public boolean setState(Object content) {
-            if (content instanceof PamNodeStructure) {
-                pamNodeStructure = (PamNodeStructure)content;
-                return true;
-            }
-            return false;
-        }
+        return false;
+    }
 }//class

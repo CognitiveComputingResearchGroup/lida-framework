@@ -180,4 +180,6 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public Collection<FeatureDetector> getFeatureDetectors();
 	
+	public boolean isOverPerceptThreshold(PamLinkable l);
+	
 }//interface 

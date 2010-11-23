@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * A propagation task excites a node and a link.  
@@ -39,14 +40,14 @@ public class PropagationTask extends LidaTaskImpl {
 	private TaskSpawner taskSpawner;
 
 	public PropagationTask(PamNode source, PamLink link, PamNode sink, double amount,
-						   PerceptualAssociativeMemory pam, TaskSpawner taskSpawner) {
+						   PerceptualAssociativeMemory pam, TaskSpawner ts) {
 		super();
 		this.source = source;
 		this.link = link;
 		this.sink = sink;
 		this.excitationAmount = amount;
 		this.pam = pam;
-		this.taskSpawner = taskSpawner;		
+		this.taskSpawner = ts;		
 	}
 
 	@Override
@@ -54,7 +55,8 @@ public class PropagationTask extends LidaTaskImpl {
 		link.excite(excitationAmount);
 		sink.excite(excitationAmount);
 		pam.sendActivationToParents(sink);
-		if(link.isOverThreshold() && sink.isOverThreshold()){
+		if(pam.isOverPerceptThreshold(link) && 
+		   pam.isOverPerceptThreshold(sink)){
 			//If over threshold then spawn a new task to add the node to the percept
 			NodeStructure ns = new NodeStructureImpl();
 			ns.addNode(source);

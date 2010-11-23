@@ -39,6 +39,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.util.Relaxer;
@@ -175,7 +176,8 @@ public class NodeStructurePanel extends LidaPanelImpl {
 					if(l instanceof PamNode){
 						PamNode pn=(PamNode)l;
 						tip ="<html><b>"+pn.toString() + "</b><br /> Activation: " + pn.getActivation()+ 
-						"<br /> BaseActivation: " + pn.getBaseLevelActivation()+ "<br /> Threshold: " + pn.getPerceptThreshold()+"</html>";
+						"<br /> BaseActivation: " + pn.getBaseLevelActivation()+ "<br /> Threshold: " + 
+						PerceptualAssociativeMemoryImpl.getPerceptThreshold()+"</html>";
 						
 					}else{
 					Activatible n = (Activatible) l;
