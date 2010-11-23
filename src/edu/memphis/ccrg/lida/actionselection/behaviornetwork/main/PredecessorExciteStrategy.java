@@ -28,7 +28,7 @@ public class PredecessorExciteStrategy implements ExciteStrategy {
 	}
 
 	@Override
-	public void init(Map<String, ? extends Object> parameters) {
+	public void initStrategy(Map<String, ? extends Object> parameters) {
 		// TODO Auto-generated method stub
 
 	}

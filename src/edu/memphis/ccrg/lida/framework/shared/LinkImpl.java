@@ -126,7 +126,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		groundingPamLink = l;
 	}
 	
-	public void init(Map<String, Object> params) {
+	public void initLinkable(Map<String, Object> params) {
 	}	
 
 }

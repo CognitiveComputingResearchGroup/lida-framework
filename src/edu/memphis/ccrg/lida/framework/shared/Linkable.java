@@ -28,9 +28,9 @@ public interface Linkable extends Serializable {
 	public ExtendedId getExtendedId();
 	
 	/**
-	 * 
+	 * Called when Linkable is created
+	 * @See NodeFactory
 	 * @param params configuration parameters
-	 * TODO RENAME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
-	public void init(Map<String,Object> params);
+	public void initLinkable(Map<String,Object> params);
 }

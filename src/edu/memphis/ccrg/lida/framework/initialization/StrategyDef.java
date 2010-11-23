@@ -49,7 +49,7 @@ public class StrategyDef {
 		Strategy st = null;
 		try {
 			st = (Strategy) Class.forName(className).newInstance();
-			st.init(params);
+			st.initStrategy(params);
 
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",

@@ -41,7 +41,7 @@ public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
 	private static final double STANDARD_M = 0.5;
 	
 	@Override
-	public void init(Map<String, ? extends Object> parameters) {
+	public void initStrategy(Map<String, ? extends Object> parameters) {
 		defaultM = (Double)parameters.get("m");
 	}
 

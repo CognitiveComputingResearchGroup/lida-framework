@@ -142,7 +142,7 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.framework.shared.Linkable#init(java.util.Map)
 	 */
 	@Override
-	public void init(Map<String, Object> params) {
+	public void initLinkable(Map<String, Object> params) {
 	}
 
 	/*

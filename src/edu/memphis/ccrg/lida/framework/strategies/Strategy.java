@@ -13,6 +13,8 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import java.io.Serializable;
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
+
 /**
  * @author Javier Snaider
  */
@@ -22,7 +24,8 @@ public interface Strategy extends Serializable {
 	 * Receives a Map of parameters for initialization.
 	 * 
 	 * @param parameters Map containing parameters.
+	 * @see StrategyDef
 	 */
-	public void init(Map<String, ? extends Object> parameters);
+	public void initStrategy(Map<String, ? extends Object> parameters);
 
 }

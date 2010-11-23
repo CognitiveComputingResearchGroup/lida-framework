@@ -39,7 +39,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.groundingPamNode = n.groundingPamNode;
 	}
 	
-	public void init(Map<String, Object> params) {
+	public void initLinkable(Map<String, Object> params) {
 	}
 	
 	@Override

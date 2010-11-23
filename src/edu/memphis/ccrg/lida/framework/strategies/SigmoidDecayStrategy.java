@@ -23,7 +23,7 @@ public class SigmoidDecayStrategy implements DecayStrategy{
 	private int b = DEFAULT_B;
 	
 	@Override
-	public void init(Map<String, ? extends Object> parameters) {
+	public void initStrategy(Map<String, ? extends Object> parameters) {
 		m = (Integer) parameters.get("m");
 		b = (Integer) parameters.get("b");
 	}
