@@ -34,7 +34,7 @@ public class ActionSelectionInitalizer implements Initializer{
 	}//method
 
 	@Override
-	public void initModule(Initializable module,Lida lida,Map<String,?> params){		
+	public void initModule(Initializable module,Lida lida, Map<String, ?> params){		
 		
 		ActionSelection actionSelection=(ActionSelection)module;
 		Integer delayNoActionSelection = (Integer) params.get("actionSelection.delayNoBroadcast");

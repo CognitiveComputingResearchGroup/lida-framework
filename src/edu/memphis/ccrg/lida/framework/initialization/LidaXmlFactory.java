@@ -108,7 +108,9 @@ public class LidaXmlFactory implements LidaFactory {
 			if (list != null && list.size() > 0) {
 				for (Element moduleElement:list) {					
 					LidaModule module = getModule(moduleElement);
-					modules.add(module);
+					if(module != null){
+						modules.add(module);
+					}
 				}
 			}
 		}
@@ -156,16 +158,15 @@ public class LidaXmlFactory implements LidaFactory {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.",
 					0L);
-//			return null;
+			return null;
 		}
 		try {
 			module = (LidaModule) Class.forName(className).newInstance();
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Module class name: " + className
 					+ " is not valid.  Check module class name.", 0L);
-//			return null; h
+			return null; 
 		}
-		//TODO can throw null pointer
 		module.setModuleName(moduleName);
 		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
 		TaskSpawner ts = taskSpawners.get(taskspawner);
@@ -179,16 +180,20 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
-		
-		//TODO can throw exception
-		module.init(params);
+		try{
+			module.init(params);
+		}catch(Exception e){
+			logger.log(Level.WARNING, "Module: " + name + " threw exception " + e + " during call to init()", 
+							LidaTaskManager.getActualTick());
+			e.printStackTrace();
+		}
 		for (LidaModule lm : getModules(moduleElement)) {
 			module.addSubModule(lm);
 		}
 		String classInit = XmlUtils.getTextValue(moduleElement,
 				"initializerclass");
 		if (classInit != null) {
-			toInitialize.add(new Object[] { module, classInit, params });
+			toInitialize.add(new Object[] { module, classInit, params});
 		}
 		getAssociatedModules(moduleElement, module);
 		
@@ -233,7 +238,6 @@ public class LidaXmlFactory implements LidaFactory {
 		}//for
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void initializeModules() {
 		for (Object[] vals : toInitialize) {
 			Initializable ini = (Initializable) vals[0];

@@ -10,6 +10,7 @@
  */
 package edu.memphis.ccrg.lida.example.framework.initialization;
 
+
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.attention.AttentionCodelet;
@@ -33,7 +34,7 @@ public class AttentionModuleInitializer implements Initializer {
 	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializer#initModule(edu.memphis.ccrg.lida.framework.initialization.Initializable, edu.memphis.ccrg.lida.framework.Lida, java.util.Properties)
 	 */
 	@Override
-	public void initModule(Initializable module, Lida lida, Map<String,?> params) {
+	public void initModule(Initializable module, Lida lida, Map<String, ?> params) {
 		AttentionModuleImpl driver = (AttentionModuleImpl)module;
 		NodeFactory factory = NodeFactory.getInstance();
 		GlobalWorkspace gw = (GlobalWorkspace)lida.getSubmodule(ModuleName.GlobalWorkspace);

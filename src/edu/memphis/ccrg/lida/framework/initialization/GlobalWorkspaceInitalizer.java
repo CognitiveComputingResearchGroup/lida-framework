@@ -34,7 +34,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 	}//method
 
 	@Override
-	public void initModule(Initializable module,Lida lida,Map<String,?> params){		
+	public void initModule(Initializable module,Lida lida, Map<String, ?> params){		
 		
 		GlobalWorkspace globalWksp=(GlobalWorkspace)module;
 		Integer delayNoBroadcast = (Integer) params.get("globalWorkspace.delayNoBroadcast");

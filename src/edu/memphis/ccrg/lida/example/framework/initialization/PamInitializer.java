@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.example.framework.initialization;
 
+
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
@@ -30,13 +31,10 @@ public class PamInitializer implements Initializer {
 	public PamInitializer() {
 	}
 
-	public void initModule(Initializable module, Lida lida,
-			Map<String,?> params) {		
+	public void initModule(Initializable module, Lida lida, Map<String, ?> params) {		
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 		SensoryMemory sm = (SensoryMemory) lida
 				.getSubmodule(ModuleName.SensoryMemory);
-
-		pam.init(params);
 
 		// Nodes
 		NodeFactory factory = NodeFactory.getInstance();
