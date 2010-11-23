@@ -30,6 +30,7 @@ public interface Linkable extends Serializable {
 	/**
 	 * 
 	 * @param params configuration parameters
+	 * TODO RENAME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
 	public void init(Map<String,Object> params);
 }

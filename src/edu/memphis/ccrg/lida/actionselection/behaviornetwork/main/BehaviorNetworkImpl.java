@@ -167,8 +167,14 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	@Override
-	public void init(Map<String, ?> params) {
+	public void init() {
 		// TODO set parameters for activation passing
+		LidaTask backgroundTask = new LidaTaskImpl(){
+			protected void runThisLidaTask() {
+				passActivationAmongBehaviors();
+			}			
+		};
+		taskSpawner.addTask(backgroundTask);
 	}
 
 	public void receiveBroadcast(BroadcastContent bc) {
@@ -179,16 +185,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			protected void runThisLidaTask() {
 				//Look here
 				passActivationFromBroadcast();
-				setTaskStatus(LidaTaskStatus.FINISHED);
-			}			
-		};
-		taskSpawner.addTask(broadcastTask);
-		
-		//TODO make background task
-		broadcastTask = new LidaTaskImpl(){
-			protected void runThisLidaTask() {
-				//Look here
-				passActivationAmongBehaviors();
 				setTaskStatus(LidaTaskStatus.FINISHED);
 			}			
 		};
