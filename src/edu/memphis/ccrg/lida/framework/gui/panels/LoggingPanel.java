@@ -235,9 +235,9 @@ public class LoggingPanel extends LidaPanelImpl {
 //            String name;
 
         	String message = logRecord.getMessage();
-        	if(message == null) //TODO: handle case where message is null
+        	if(message == null) {
         		logger.log(Level.WARNING, "in Logging Panel message was null", LidaTaskManager.getActualTick());
-        	else{
+        	}else{
         		MessageFormat mf=new MessageFormat(message);
 
 //            	dateString=df.format(date);  

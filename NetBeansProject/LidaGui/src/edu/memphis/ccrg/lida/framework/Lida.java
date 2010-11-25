@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class Lida {
 	
-	private Logger logger = Logger.getLogger("lida.framework.Lida");
+	private Logger logger = Logger.getLogger(Lida.class.getCanonicalName());
 	// Perception
 //	private EnvironmentImpl environment;
 //	private SensoryMotorMemory sensoryMotorMemory;
@@ -152,9 +152,9 @@ public class Lida {
 //		logger.info("Lida submodules Started\n");
 	}
 
-	/**
-	 * @return the environment
-	 */
+		/**
+		 * @return the environment
+		 */
 //	public Environment getEnvironment() {
 //		return null;
 //	}

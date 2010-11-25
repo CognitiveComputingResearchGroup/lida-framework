@@ -22,7 +22,8 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class MockActionSelectionImpl implements ActionSelection {
-	private static Logger logger = Logger.getLogger("lida.actionselection.ActionSelectionImpl");
+	
+	private static Logger logger = Logger.getLogger(MockActionSelectionImpl.class.getCanonicalName());
 
 	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {

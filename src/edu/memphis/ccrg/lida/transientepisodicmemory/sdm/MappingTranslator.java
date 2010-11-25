@@ -27,7 +27,7 @@ public class MappingTranslator implements Translator {
     private PerceptualAssociativeMemory pam;
 
     /**
-     * @param size
+     * @param size TODO
      */
     public MappingTranslator(int size, PerceptualAssociativeMemory pam) {
         this.size = size;

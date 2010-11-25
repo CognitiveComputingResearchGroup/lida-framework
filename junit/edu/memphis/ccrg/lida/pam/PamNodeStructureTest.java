@@ -33,14 +33,14 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
  */
 public class PamNodeStructureTest extends TestCase{
 	
-	PamNodeStructure nodeStructure1,nodeStructure2;
+	PamNodeStructureImpl nodeStructure1,nodeStructure2;
 	PamNodeImpl node1,node2,node3;
 	LinkImpl link1,link2;
 	
 	@Before
 	public void setUp() throws Exception {
-		 nodeStructure1 =  new PamNodeStructure();
-		 nodeStructure2 =  new PamNodeStructure();	 
+		 nodeStructure1 =  new PamNodeStructureImpl();
+		 nodeStructure2 =  new PamNodeStructureImpl();	 
 		 
 		 node1 = new PamNodeImpl();
 		 node2 = new PamNodeImpl();
@@ -125,14 +125,15 @@ public class PamNodeStructureTest extends TestCase{
 //	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#addPamNodes(java.util.Collection)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#addPamNodes(java.util.Collection)}.
 	 */
 	@Test
 	public void testAddPamNodes() {
 		List<PamNode> nodes = new ArrayList<PamNode>();
 		nodes.add(node1);
 		nodes.add(node2);
-		nodeStructure2.addPamNodes(nodes);
+		nodeStructure2.addNode(node1);
+		nodeStructure2.addNode(node2);
 		assertTrue("Problem with AddPamNodes", nodeStructure2.getNodes().containsAll(nodes));	
 		
 	}
@@ -153,7 +154,7 @@ public class PamNodeStructureTest extends TestCase{
 //	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#hasNoChildren(edu.memphis.ccrg.lida.framework.shared.Linkable)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#hasNoChildren(edu.memphis.ccrg.lida.framework.shared.Linkable)}.
 	 */
 	@Test
 	public void testHasNoChildren() {
@@ -162,7 +163,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#hasNoParents(edu.memphis.ccrg.lida.framework.shared.Linkable)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#hasNoParents(edu.memphis.ccrg.lida.framework.shared.Linkable)}.
 	 */
 	@Test
 	public void testHasNoParents() {
@@ -171,7 +172,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#setNodesExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#setNodesExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
 	 */
 	@Test
 	public void testSetNodesExciteStrategy() {
@@ -184,7 +185,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#setNodesDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#setNodesDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
 	 */
 	@Test
 	public void testSetNodesDecayStrategy() {
@@ -199,7 +200,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#getParents(edu.memphis.ccrg.lida.framework.shared.Node)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#getParents(edu.memphis.ccrg.lida.framework.shared.Node)}.
 	 */
 	@Test
 	public void testGetParents() {
@@ -218,7 +219,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#getChildren(edu.memphis.ccrg.lida.framework.shared.Linkable)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#getChildren(edu.memphis.ccrg.lida.framework.shared.Linkable)}.
 	 */
 	@Test
 	public void testGetChildren() {
@@ -242,7 +243,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructure#decayLinkables(long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#decayLinkables(long)}.
 	 */
 	@Test
 	public void testDecayNodes() {

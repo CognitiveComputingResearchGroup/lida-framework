@@ -36,7 +36,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	PerceptualAssociativeMemoryImpl pam;
-	PamNodeStructure nodeStructure;
+	PamNodeStructureImpl nodeStructure;
 	PamNodeImpl node1,node2,node3;
 	LinearDecayStrategy decayStrategy ;
 	PamLinkImpl link1,link2;
@@ -47,7 +47,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		pam = new PerceptualAssociativeMemoryImpl();
-		nodeStructure = new PamNodeStructure();
+		nodeStructure = new PamNodeStructureImpl();
 		node1 = new PamNodeImpl();
 		node2 = new PamNodeImpl();
 		node3 = new PamNodeImpl();

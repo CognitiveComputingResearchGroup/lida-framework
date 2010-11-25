@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -22,21 +21,22 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
-	private double activationLowerBound = 0.01;
+	private final double DEFAULT_ACTIVATION_LOWER_BOUND = 0.01;
+
+	private double activationLowerBound;
 	
 	private static Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
-	public WorkspaceBufferImpl(ModuleName lidaModule) {
-		super(lidaModule);
-	}
+	private NodeStructure bufferContent;
+	
 	public WorkspaceBufferImpl() {
+		bufferContent = new NodeStructureImpl();
+		activationLowerBound = DEFAULT_ACTIVATION_LOWER_BOUND;
 	}
-
-	private NodeStructure buffer = new NodeStructureImpl();
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		return buffer;
+		return bufferContent;
 	}
 		
 	/**
@@ -45,24 +45,19 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 * @param ticks how long since last decay
 	 */
 	public void decayModule(long ticks){
-		Collection<Linkable> linkables = buffer.getLinkables();
+		Collection<Linkable> linkables = bufferContent.getLinkables();
 		for(Linkable linkable: linkables){
 			Activatible activatible = (Activatible) linkable;
 			activatible.decay(ticks);
 			if (activatible.getActivation() <= activationLowerBound){
-//				System.out.println("Deleting linkable: " + linkable.getLabel());
-//				if(linkable instanceof Link){
-//					Link l = (Link) linkable;
-//					System.out.println("deleting link " + l.getSource().getLabel() + " -> " + l.getSink().getLabel());
-//				}
 				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getActualTick());
-				buffer.removeLinkable(linkable);
+				bufferContent.removeLinkable(linkable);
 			}
 		}		
-	}//method
+	}
 
-	public void setLowerActivationBound(double lowerActivationBound) {
-		this.activationLowerBound=lowerActivationBound;		
+	public void setLowerActivationBound(double activationLowerBound) {
+		this.activationLowerBound = activationLowerBound;		
 	}
 	public void addListener(ModuleListener listener) {
 	}

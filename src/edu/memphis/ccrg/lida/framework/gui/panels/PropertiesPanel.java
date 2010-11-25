@@ -39,7 +39,7 @@ public class PropertiesPanel extends LidaPanelImpl {
 	 */
 	private static final long serialVersionUID = -3135377683820863184L;
 	private static Logger logger = Logger
-			.getLogger("lida.framework.gui.PropertiesPanel");
+			.getLogger(PropertiesPanel.class.getCanonicalName());
 	Properties properties;
 
 	/** Creates new form PropertiesPanel */

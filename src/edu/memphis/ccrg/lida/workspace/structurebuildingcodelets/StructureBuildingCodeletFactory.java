@@ -87,8 +87,8 @@ public class StructureBuildingCodeletFactory {
 	
 	/**
 	 * Decay Behavior
-	 * @param name
-	 * @param decay
+	 * @param name decay strategy name 
+	 * @param decay DecayStrategy
 	 */
 	public void addDecayStrategy(String name, DecayStrategy decay) {
 		decays.put(name, decay);
@@ -98,7 +98,7 @@ public class StructureBuildingCodeletFactory {
 	}
 	
 	/**
-	 * @param name
+	 * @param name decay strategy name
 	 * @return d
 	 */
 	public DecayStrategy getDecayStrategy(String name) {
@@ -116,7 +116,7 @@ public class StructureBuildingCodeletFactory {
 		}
 		return d;
 	}	
-	//************************
+
 	public void addSBCodeletType(String type, String className) {
 		sbCodeletClasses.put(type, className);
 	}

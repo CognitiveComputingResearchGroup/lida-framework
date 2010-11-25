@@ -14,7 +14,6 @@ import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- *
  * @author Ryan J. McCall
  */
 public interface Scheme extends Learnable{
@@ -83,7 +82,6 @@ public interface Scheme extends Learnable{
 	public NodeStructure getAddingResult();
 	public void setAddingResult(NodeStructure ns);
 	
-	//TODO Extend result to multiple node structures in a List
 	public NodeStructure getDeletingResult();
 	public void setDeletingResult(NodeStructure ns);
 	

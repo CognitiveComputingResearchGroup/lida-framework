@@ -38,7 +38,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 
 	private static final long serialVersionUID = 3129545758505110771L;
 	private static Logger logger = Logger
-			.getLogger("lida.framework.gui.TaskQueuePanel");
+			.getLogger(TaskQueuePanel.class.getCanonicalName());
 	private Map<Long, Queue<LidaTask>> tasks= new HashMap<Long, Queue<LidaTask>>();
 
 	// private LidaTask[] taskArray;

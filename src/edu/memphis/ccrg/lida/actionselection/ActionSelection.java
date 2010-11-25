@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  */
 public interface ActionSelection extends LidaModule, TriggerListener, Saveable {
 	
+	//TODO remove??
 	/**
 	 * Those classes that should be receiving selected actions from Action Selection
 	 * @param listener listener of this action selection
@@ -37,7 +38,7 @@ public interface ActionSelection extends LidaModule, TriggerListener, Saveable {
 	 */
 	public void selectAction();
 
+	//TODO remove
 	public void addActionSelectionTrigger(ActionSelectionTrigger tr);
-
 
 }

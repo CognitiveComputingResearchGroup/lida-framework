@@ -298,13 +298,11 @@ public class ArgumentImpl implements Argument {
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return super.hashCode();
 	}
 
 	@Override
 	public double getGoalDegree() {
-		// TODO Auto-generated method stub
 		return node.getGoalDegree();
 	}
 

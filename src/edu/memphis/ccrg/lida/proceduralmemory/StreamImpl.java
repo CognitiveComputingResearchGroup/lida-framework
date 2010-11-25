@@ -14,9 +14,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * TODO add to procedural memory!
@@ -52,6 +54,8 @@ public class StreamImpl implements Stream{
     	return behaviors.add(behavior);
     }
 	public void removeBehavior(Behavior behavior) {
+		logger.log(Level.FINER, "Removing " + behavior + " from " + this, 
+					LidaTaskManager.getActualTick());
 		behaviors.remove(behavior);
 	}
     public Collection<Behavior> getBehaviors(){
@@ -64,7 +68,7 @@ public class StreamImpl implements Stream{
 	public long getId(){
 		return id;
 	}
-    public String getName(){
+    public String getLabel(){
         return name;
     }
 	

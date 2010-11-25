@@ -14,9 +14,9 @@ public interface Lida extends LidaModule{
 	/**
 	 * @return the LidaTaskManager
 	 */
-	public abstract LidaTaskManager getTaskManager();
+	public LidaTaskManager getTaskManager();
 
 	//TODO Remove
-	public abstract void start();
+	public void start();
 
 }

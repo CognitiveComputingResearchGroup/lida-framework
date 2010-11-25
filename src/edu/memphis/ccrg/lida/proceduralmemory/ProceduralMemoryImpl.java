@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -31,18 +32,19 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
-public class ProceduralMemoryImpl extends LidaModuleImpl implements
-		ProceduralMemory, BroadcastListener {
+public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
 
-	private static final int DEFAULT_TICKS_PER_RUN = 10;
-
-	private static Logger logger = Logger
-			.getLogger("lida.proceduralmemory.ProceduralMemoryImpl");
+	private static Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
+	
+	/**
+	 * Default ticks per run of tasks spawned from this Module
+	 */
+	private static final int DEFAULT_TICKS_PER_RUN = 1;
 
 	/**
 	 * Shared variable to store the asynchronously arriving broadcast
 	 */
-	private NodeStructure currentBroadcast = new NodeStructureImpl();
+	private NodeStructure currentBroadcast;
 
 	/**
 	 * Schemes indexed by Linkables in their context. Operations on
@@ -51,12 +53,14 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	 * 
 	 * TODO: allow STREAMS in addition to SCHEME
 	 */
-	private Map<Object, Set<Scheme>> schemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+	private Map<Object, Set<Scheme>> contextSchemeMap;
+	
+	private Map<Object, Set<Scheme>> resultSchemeMap;
 
 	/**
 	 * Convenient for decaying the schemes
 	 */
-	private Set<Scheme> schemeSet = new HashSet<Scheme>();
+	private Set<Scheme> schemeSet;
 
 	/**
 	 * Determines how scheme are given activation and whether they should be
@@ -68,15 +72,44 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	/**
 	 * Listeners of this Procedural Memory
 	 */
-	private List<ProceduralMemoryListener> listeners = new ArrayList<ProceduralMemoryListener>();
+	private List<ProceduralMemoryListener> proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 
 	public ProceduralMemoryImpl() {
 		super(ModuleName.ProceduralMemory);
+		currentBroadcast = new NodeStructureImpl();
+		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+		schemeSet = new HashSet<Scheme>();
+	}
+	
+	@Override
+	public void init() {
+		int ticksPerRun = (Integer) getParam("ticksPerRun", DEFAULT_TICKS_PER_RUN);
+		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
+	}
+	private class BackgroundTask extends LidaTaskImpl {
+		public BackgroundTask(int ticksForCycle) {
+			setNumberOfTicksPerRun(ticksForCycle);
+		}
+		@Override
+		protected void runThisLidaTask() {
+			activateSchemes();
+		}
+	}
+	@Override
+	public void activateSchemes() {
+		logger.log(Level.FINEST, "Procedural memory activates schemes", LidaTaskManager.getActualTick());
+		schemeActivationBehavior.activateSchemesWithBroadcast(currentBroadcast, contextSchemeMap);
 	}
 
 	@Override
-	public void addProceduralMemoryListener(ProceduralMemoryListener listener) {
-		listeners.add(listener);
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof ProceduralMemoryListener) {
+			proceduralMemoryListeners.add((ProceduralMemoryListener) listener);
+		}else{
+			logger.log(Level.WARNING, "Try to add wrong listener type", 
+					LidaTaskManager.getActualTick());
+		}
 	}
 
 	@Override
@@ -95,23 +128,33 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	 */
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);
-		NodeStructure context = scheme.getContext();
-		for (Linkable nodeOrLink : context.getLinkables()) {
-			Set<Scheme> existingSchemes = schemeMap.get(nodeOrLink);
-			if (existingSchemes == null) {
-				existingSchemes = new HashSet<Scheme>();
-				schemeMap.put(nodeOrLink, existingSchemes);
+//		for (Linkable nodeOrLink : scheme.getContext().getLinkables()) {
+//			Set<Scheme> existingSchemes = contextSchemeMap.get(nodeOrLink);
+//			if (existingSchemes == null) {
+//				existingSchemes = new HashSet<Scheme>();
+//				contextSchemeMap.put(nodeOrLink, existingSchemes);
+//			}
+//			existingSchemes.add(scheme);
+//		}
+		indexSchemeByElements(scheme, scheme.getContext().getLinkables(), contextSchemeMap);
+		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
+		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
+	}
+	
+	private void indexSchemeByElements(Scheme scheme, Collection<Linkable> elements, 
+									   Map<Object, Set<Scheme>> map) {
+		for (Linkable element : elements) {
+			synchronized (element) {
+				Set<Scheme> values = map.get(element);
+				if (values == null) {
+					values = new ConcurrentHashSet<Scheme>();
+					map.put(element, values);
+				}
+				values.add(scheme);
 			}
-			existingSchemes.add(scheme);
-		}// for
+		}
 	}
-
-	@Override
-	public void decayModule(long ticks) {
-		for (Scheme s : schemeSet)
-			s.decay(ticks);
-	}
-
+	
 	/**
 	 * 
 	 */
@@ -140,13 +183,10 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 		}
 	}
 
-	/**
-	 * 
-	 */
 	@Override
-	public void activateSchemes() {
-		logger.log(Level.FINEST, "Procedural memory activates schemes", LidaTaskManager.getActualTick());
-		schemeActivationBehavior.activateSchemesWithBroadcast(currentBroadcast, schemeMap);
+	public void decayModule(long ticks) {
+		for (Scheme s : schemeSet)
+			s.decay(ticks);
 	}
 
 	/**
@@ -157,7 +197,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 	public void sendInstantiatedScheme(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				LidaTaskManager.getActualTick());
-		for (ProceduralMemoryListener listener : listeners) {
+		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(s.getBehavior());
 		}
 	}
@@ -167,16 +207,9 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 		return null;
 	}
 
-	@Override
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof ProceduralMemoryListener) {
-			addProceduralMemoryListener((ProceduralMemoryListener) listener);
-		}
-	}
-
 	public Object getState() {
 		Object[] state = new Object[2];
-		state[0] = this.schemeMap;
+		state[0] = this.contextSchemeMap;
 		state[1] = this.schemeSet;
 		return state;
 	}
@@ -188,7 +221,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 			if (state.length == 2 && state[0] instanceof Map
 					&& state[1] instanceof Set) {
 				try {
-					this.schemeMap = (Map<Object, Set<Scheme>>) state[0];
+					this.contextSchemeMap = (Map<Object, Set<Scheme>>) state[0];
 					this.schemeSet = (Set<Scheme>) state[1];
 					return true;
 				} catch (Exception ex) {
@@ -197,24 +230,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void init() {
-		int ticksPerRun = (Integer) getParam("ticksPerRun", DEFAULT_TICKS_PER_RUN);
-		super.taskSpawner.addTask(new BackgroundTask(ticksPerRun));
-	}
-
-	private class BackgroundTask extends LidaTaskImpl {
-
-		public BackgroundTask(int ticksForCycle) {
-			setNumberOfTicksPerRun(ticksForCycle);
-		}
-
-		@Override
-		protected void runThisLidaTask() {
-			activateSchemes();
-		}
 	}
 	
 }// class

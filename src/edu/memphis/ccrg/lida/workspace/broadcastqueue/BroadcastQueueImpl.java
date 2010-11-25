@@ -9,9 +9,9 @@ package edu.memphis.ccrg.lida.workspace.broadcastqueue;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
@@ -21,6 +21,7 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
@@ -95,6 +96,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 
 	@Override
 	public void decayModule(long ticks) {
+		logger.log(Level.WARNING, "Decaying Broadcast Queue", LidaTaskManager.getActualTick());
 		for (NodeStructure ns : broadcastQueue) {
 			Collection<Node> nodes = ns.getNodes();
 			for (Node n : nodes) {

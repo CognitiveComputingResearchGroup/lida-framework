@@ -144,7 +144,7 @@ public class LogPanel extends LidaPanelImpl {
         Level level=Level.parse(levelComboBox.getSelectedItem().toString());
 
         Logger.getLogger("").setLevel(level);
-}//GEN-LAST:event_levelComboBoxActionPerformed
+    }//GEN-LAST:event_levelComboBoxActionPerformed
 
     private void loggerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loggerComboBoxActionPerformed
         // TODO add your handling code here:

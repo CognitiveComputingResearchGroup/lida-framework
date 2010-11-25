@@ -30,8 +30,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
 public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastListener, PreafferenceListener {
 
-	private static Logger logger = Logger.getLogger("lida.attention.AttentionModuleImpl");
-	
+	private static Logger logger = Logger.getLogger(AttentionModuleImpl.class.getCanonicalName());
 	
 	private WorkspaceBuffer csm;
 	private GlobalWorkspace globalWorkspace;

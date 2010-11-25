@@ -44,7 +44,7 @@ public class LidaXmlFactory implements LidaFactory {
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	private static Logger logger = Logger
-			.getLogger("initialization.LidaXmlFactory");
+			.getLogger(LidaXmlFactory.class.getCanonicalName());
 	private Document dom;
 	private Lida lida;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();
@@ -242,6 +242,7 @@ public class LidaXmlFactory implements LidaFactory {
 		for (Object[] vals : toInitialize) {
 			Initializable ini = (Initializable) vals[0];
 			String classInit = (String) vals[1];
+			@SuppressWarnings("unchecked")
 			Map<String,?> p = (Map<String,Object>) vals[2];
 			Initializer initializer = null;
 			try {

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Contains all of the Node, Links and their connections.
 	 */
-	private PamNodeStructure pamNodeStructure = new PamNodeStructure();
+	private PamNodeStructureImpl pamNodeStructure = new PamNodeStructureImpl();
 	
 	/**
 	 * All of the running featureDetectors should be in this list. 
@@ -122,13 +123,19 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Adds set of PamNodes to this PAM
 	 */
 	public Set<PamNode> addNodes(Set<PamNode> nodes) {
-		return pamNodeStructure.addPamNodes(nodes);
+		Set<PamNode> returnedLinks = new HashSet<PamNode>();
+		for(PamNode l: nodes)
+			returnedLinks.add((PamNode) pamNodeStructure.addNode(l));
+		return returnedLinks;
 	}
 	/**
 	 * Adds set of PamLinks to this PAM
 	 */
 	public Set<PamLink> addLinks(Set<PamLink> links) {
-		return pamNodeStructure.addPamLinks(links);
+		Set<PamLink> returnedLinks = new HashSet<PamLink>();
+		for(PamLink l: links)
+			returnedLinks.add((PamLink) pamNodeStructure.addLink(l));
+		return returnedLinks;
 	}
 
 	/**
@@ -206,7 +213,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		double amountToPropagate = propagationBehavior.getActivationToPropagate(propagateParams);
 		
 		//Get parents of pamNode and the connecting link
-		Map<PamNode, PamLink> parentsAndConnectingLink = pamNodeStructure.getParentsAndConnectingLinks(pamNode);
+		Map<PamNode, PamLink> parentsAndConnectingLink = pamNodeStructure.getParentsAndConnectingLinksOf(pamNode);
 		for(PamNode parent: parentsAndConnectingLink.keySet()){
 			PamLink connectingLink = parentsAndConnectingLink.get(parent);
 			//Excite the connecting link and the parent
@@ -347,8 +354,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
         return pamNodeStructure;
     }
     public boolean setState(Object content) {
-        if (content instanceof PamNodeStructure) {
-            pamNodeStructure = (PamNodeStructure)content;
+        if (content instanceof PamNodeStructureImpl) {
+            pamNodeStructure = (PamNodeStructureImpl)content;
             return true;
         }
         return false;

@@ -13,12 +13,7 @@ import java.util.Collection;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
-public interface ProceduralMemory extends LidaModule, Saveable {
-
-	/**
-	 * For adding modules that listen to Procedural Memory
-	 */
-    public void addProceduralMemoryListener(ProceduralMemoryListener listener); 
+public interface ProceduralMemory extends LidaModule, Saveable{
 	
     /**
      * To change how scheme are activated based on the broadcast.

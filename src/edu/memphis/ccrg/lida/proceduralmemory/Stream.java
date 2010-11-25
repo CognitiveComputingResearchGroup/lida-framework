@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 public interface Stream extends Serializable {
 
 	public long getId();
-    public String getName();
+    public String getLabel();
     
     public boolean addBehavior(Behavior behavior);
 	public void removeBehavior(Behavior behavior);

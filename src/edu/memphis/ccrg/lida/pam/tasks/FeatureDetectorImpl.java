@@ -36,7 +36,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		FeatureDetector {
 
 	private static Logger logger = Logger
-			.getLogger("lida.pam.featuredetector.FeatureDetectorImpl");
+			.getLogger(FeatureDetectorImpl.class.getCanonicalName());
 	protected List<PamNode> pamNodes = new ArrayList<PamNode>();
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;

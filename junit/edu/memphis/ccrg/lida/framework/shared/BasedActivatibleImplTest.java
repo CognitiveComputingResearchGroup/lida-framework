@@ -26,7 +26,7 @@ public class BasedActivatibleImplTest extends TestCase{
 
 	LearnableImpl node1;
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception e
 	 */
 	@Before
 	public void setUp() throws Exception {

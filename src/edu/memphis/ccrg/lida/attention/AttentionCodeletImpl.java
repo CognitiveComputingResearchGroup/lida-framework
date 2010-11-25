@@ -8,13 +8,14 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.attention;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletModuleUsage;
-
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -68,8 +69,10 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = getCsmContent();
-			if (csmContent != null)
+			if (csmContent != null){
 				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, getActivation()));
+				logger.log(Level.FINE, this + " adds coalition", LidaTaskManager.getActualTick());
+			}
 		}
 	}
 	

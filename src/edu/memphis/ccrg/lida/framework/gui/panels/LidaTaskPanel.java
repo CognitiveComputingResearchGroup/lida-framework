@@ -19,12 +19,14 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * 
@@ -191,6 +193,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
+		logger.log(Level.FINE, "Refreshing display", LidaTaskManager.getActualTick());
 		if (o instanceof Collection) {
 			tasks = (Collection<LidaTask>) o;
 			
