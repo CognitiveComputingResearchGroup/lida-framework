@@ -99,7 +99,8 @@ public class LoggingPanel extends LidaPanelImpl {
 
         clearButton.setText("Clear log");
         clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
             }
         });
@@ -107,7 +108,8 @@ public class LoggingPanel extends LidaPanelImpl {
         levelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<Parent Level>" ,"SEVERE", "WARNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST", "ALL", "OFF" }));
         levelComboBox.setSelectedItem("INFO");
         levelComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 levelComboBoxActionPerformed(evt);
             }
         });
@@ -118,7 +120,8 @@ public class LoggingPanel extends LidaPanelImpl {
         loggerComboBox.setModel(new DefaultComboBoxModel());
         loggerComboBox.setSelectedItem("INFO");
         loggerComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loggerComboBoxActionPerformed(evt);
             }
         });
@@ -222,7 +225,8 @@ public class LoggingPanel extends LidaPanelImpl {
         public GuiLogHandler() {
         }
 
-        public void publish(LogRecord logRecord){
+        @Override
+		public void publish(LogRecord logRecord){
 //        	Formatter f = getFormatter();
 //        	if(f == null){
 //        		f=new SimpleFormatter();     		
@@ -261,10 +265,12 @@ public class LoggingPanel extends LidaPanelImpl {
         	
         }
 
-        public void flush(){
+        @Override
+		public void flush(){
         }
         
-        public void close(){
+        @Override
+		public void close(){
             //logMessages = null;
         }
     }//inner class

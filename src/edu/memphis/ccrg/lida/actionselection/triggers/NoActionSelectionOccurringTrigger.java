@@ -43,6 +43,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 		this.tm = lidaTaskManager;
 	}
 
+	@Override
 	public void setUp(Map<String, Object> parameters, ActionSelection as) {
 		this.as=as;
 		Object o = parameters.get("delay");
@@ -62,6 +63,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
+	@Override
 	public void start() {					
 		task=new TriggerTask(delay,as,name);		
 		as.getAssistingTaskSpawner().addTask(task);
@@ -72,6 +74,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
+	@Override
 	public void checkForTrigger(Collection<Behavior> behaviors) {
 	}
 	
@@ -80,6 +83,7 @@ public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
 	 */
+	@Override
 	public void reset() {	
 		if (task != null)
 			as.getAssistingTaskSpawner().cancelTask(task);

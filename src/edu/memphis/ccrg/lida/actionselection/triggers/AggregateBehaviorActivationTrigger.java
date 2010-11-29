@@ -27,6 +27,7 @@ public class AggregateBehaviorActivationTrigger implements
  * 
  * @param behaviors a Set with all the behaviors in the AS.
  */
+	@Override
 	public void checkForTrigger(Collection<Behavior> behaviors) {
 		double acc=0;
 		for(Behavior c:behaviors){
@@ -39,11 +40,13 @@ public class AggregateBehaviorActivationTrigger implements
 		}
 	}//method
 
+	@Override
 	public void reset() {
 		// not applicable
 	}
 
 
+	@Override
 	public void start() {
 		// not applicable
 	}

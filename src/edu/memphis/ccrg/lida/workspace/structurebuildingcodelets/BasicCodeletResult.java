@@ -12,16 +12,20 @@ public class BasicCodeletResult implements CodeletResult {
 	private int exitStatus;
 	private long id;
 	
+	@Override
 	public void reportFinished(){
 		exitStatus = 1;
 	}
+	@Override
 	public int getCompletionStatus(){
 		return exitStatus;
 	}
 	
+	@Override
 	public void setId(long id){
 		this.id = id;
 	}
+	@Override
 	public long getId(){
 		return id;
 	}

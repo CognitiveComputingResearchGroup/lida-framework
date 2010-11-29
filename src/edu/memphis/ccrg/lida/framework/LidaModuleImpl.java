@@ -36,12 +36,15 @@ public abstract class LidaModuleImpl implements LidaModule {
 	/**
 	 * Module specific
 	 */
+	@Override
 	public abstract Object getModuleContent(Object... params);
 	
+	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts){
 		taskSpawner = ts;
 	}
 
+	@Override
 	public TaskSpawner getAssistingTaskSpawner(){
 		return taskSpawner;
 	}
@@ -51,6 +54,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * @see
 	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
 	 */
+	@Override
 	public void init(Map<String, ?> params) {
 		this.parameters = params;
 		init();
@@ -62,9 +66,11 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * @see
 	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
 	 */
+	@Override
 	public void init() {
 	}
 	
+	@Override
 	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
 		if (parameters != null) {
@@ -76,10 +82,12 @@ public abstract class LidaModuleImpl implements LidaModule {
 		return value;
 	}
 
+	@Override
 	public LidaModule getSubmodule(ModuleName type) {
 		return submodules.get(type);
 	}
 
+	@Override
 	public void addSubModule(LidaModule lm) {
 		submodules.put(lm.getModuleName(), lm);
 	}
@@ -95,12 +103,14 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * @param ticks
 	 *            number of ticks to decay.
 	 */
+	@Override
 	public void decayModule(long ticks) {
 		for (LidaModule lm : submodules.values()) {
 			lm.decayModule(ticks);
 		}
 	}
 
+	@Override
 	public void setModuleName(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
@@ -109,10 +119,12 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * 
 	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleType()
 	 */
+	@Override
 	public ModuleName getModuleName() {
 		return moduleName;
 	}
 
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 	}
 

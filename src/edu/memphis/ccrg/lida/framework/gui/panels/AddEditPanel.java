@@ -81,7 +81,8 @@ public class AddEditPanel extends LidaPanelImpl {
 
         btnAddPanel.setText("OK");
         btnAddPanel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddPanelActionPerformed(evt);
             }
         });

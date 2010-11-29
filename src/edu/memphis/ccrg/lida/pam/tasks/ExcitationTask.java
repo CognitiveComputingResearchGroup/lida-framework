@@ -69,6 +69,7 @@ public class ExcitationTask extends LidaTaskImpl{
 	/**
 	 * 
 	 */
+	@Override
 	protected void runThisLidaTask() {
 		pamLinkable.excite(excitationAmount); 
 		if(pam.isOverPerceptThreshold(pamLinkable)){
@@ -98,6 +99,7 @@ public class ExcitationTask extends LidaTaskImpl{
 	/**
 	 * 
 	 */
+	@Override
 	public String toString(){
 		return "Excitation " + getTaskId();
 	}

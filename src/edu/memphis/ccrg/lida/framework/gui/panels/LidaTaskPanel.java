@@ -70,6 +70,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 				.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		ApplyButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		ApplyButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ApplyButtonActionPerformed(evt);
 			}
@@ -122,14 +123,17 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 		private static final long serialVersionUID = 1L;
 		private int columnCnt=5;
+		@Override
 		public int getColumnCount() {
 			return columnCnt;
 		}
 
+		@Override
 		public int getRowCount() {
 			return taskArray.length;
 		}
 
+		@Override
 		public String getColumnName(int column) {
 			String cName = "";
 			switch (column) {
@@ -154,6 +158,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 			return cName;
 		}
 
+		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			LidaTask task= taskArray[rowIndex];
 			Object o=null;
@@ -179,18 +184,22 @@ public class LidaTaskPanel extends LidaPanelImpl {
 			return o;
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int column) {
 		}
 
+		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
 	}
 
+	@Override
 	public void refresh(){
 		display(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getAssistingTaskSpawner().getSpawnedTasks());
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		logger.log(Level.FINE, "Refreshing display", LidaTaskManager.getActualTick());

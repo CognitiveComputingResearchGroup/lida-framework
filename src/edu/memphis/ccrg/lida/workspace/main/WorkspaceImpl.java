@@ -73,6 +73,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	/**
 	 * @param lowerActivationBound the lowerActivationBound to set
 	 */
+	@Override
 	public void setActivationLowerBound(double lowerActivationBound) {
 		this.lowerActivationBound = lowerActivationBound;
 		for (LidaModule lm:getSubmodules().values()){
@@ -80,6 +81,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		}
 	}
 	
+	@Override
 	public void init (Map<String, ?> parameters){		
 		Object o = parameters.get("workspace.activationLowerBound");
 		if (o != null)
@@ -88,6 +90,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 			logger.warning("Unable to set Activation lower bound parameter, using the default instead");
 	}
 	
+	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof WorkspaceListener){
 			addWorkspaceListener((WorkspaceListener)listener);
@@ -97,14 +100,17 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	}
 
 	//Implementations for Workspace interface
+	@Override
 	public void addCueListener(CueListener l){
 		cueListeners.add(l);
 	}
 
+	@Override
 	public void addWorkspaceListener(WorkspaceListener listener){
 		wsListeners.add(listener);
 	}
 	
+	@Override
 	public void cueEpisodicMemories(NodeStructure content){
 		for(CueListener c: cueListeners)
 			c.receiveCue(content);
@@ -119,6 +125,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	/**
 	 * Received broadcasts are sent to the broadcast queue.
 	 */
+	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		((BroadcastListener)getSubmodule(ModuleName.BroadcastQueue)).receiveBroadcast(bc);	
 	}
@@ -127,6 +134,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * Received local associations are merged into the episodic buffer.
 	 * Then they are sent to PAM.
 	 */
+	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
 		WorkspaceContent ns = (WorkspaceContent) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent(); 
 		ns.mergeWith(association);
@@ -136,6 +144,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * Implementation of the PamListener interface. Send received node to the
 	 * the perceptualBuffer.
 	 */
+	@Override
 	public void receiveNode(Node node) {
 		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addNode(node);
 	}
@@ -144,6 +153,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * Implementation of the PamListener interface.  Send received link to the
 	 * the perceptualBuffer.
 	 */
+	@Override
 	public void receiveLink(Link l) {
 		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addLink(l);
 	}	
@@ -153,6 +163,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * Implementation of the PamListener interface.  Send received Node Structure to the
 	 * the perceptualBuffer.
 	 */
+	@Override
 	public void receiveNodeStructure(NodeStructure newPercept) {
 		NodeStructure perceptualBuffer = (NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent();
 		perceptualBuffer.mergeWith(newPercept);
@@ -171,8 +182,10 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	/**
 	 * Not applicable for WorkspaceImpl
 	 */
+	@Override
 	public void learn() {}
 	
+	@Override
 	public void addSubModule(LidaModule lm){
 		super.addSubModule(lm);
 	}

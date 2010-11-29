@@ -62,6 +62,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 		}
 	}// method
 
+	@Override
 	public void setSchemeSelectionThreshold(double d) {
 		schemeSelectionThreshold = d;
 	}

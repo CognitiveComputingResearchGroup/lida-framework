@@ -31,6 +31,7 @@ public class PamInitializer implements Initializer {
 	public PamInitializer() {
 	}
 
+	@Override
 	public void initModule(Initializable module, Lida lida, Map<String, ?> params) {		
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
 		SensoryMemory sm = (SensoryMemory) lida

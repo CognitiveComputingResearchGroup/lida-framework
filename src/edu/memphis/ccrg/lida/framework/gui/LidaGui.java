@@ -16,6 +16,7 @@
  */
 package edu.memphis.ccrg.lida.framework.gui;
 
+import java.awt.Container;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
-import java.awt.Container;
 
 /**
  * 
@@ -95,7 +95,8 @@ public class LidaGui extends javax.swing.JFrame {
         }
         Arrays.sort(panelsArray, new Comparator<String[]>() { //sort panel by position and tab order
 
-            public int compare(String[] arg0, String[] arg1) {
+            @Override
+			public int compare(String[] arg0, String[] arg1) {
                 String s1 = arg0[PANEL_POSITION];
                 String s2 = arg1[PANEL_POSITION];
                 int pos = s1.compareToIgnoreCase(s2);
@@ -219,7 +220,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         openMenuItem.setText("Open");
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMenuItemActionPerformed(evt);
             }
         });
@@ -227,7 +229,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         saveMenuItem.setText("Save");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
             }
         });
@@ -235,7 +238,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         saveAsMenuItem.setText("Save As ...");
         saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsMenuItemActionPerformed(evt);
             }
         });
@@ -243,7 +247,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -271,7 +276,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         addPanelMenuItem.setText("Add new panel");
         addPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPanelMenuItemActionPerformed(evt);
             }
         });
@@ -293,7 +299,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         loadPanelSettingsMenuItem.setText("Load panel settings");
         loadPanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadPanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -301,7 +308,8 @@ public class LidaGui extends javax.swing.JFrame {
 
         savePanelSettingsMenuItem.setText("Save panel settings");
         savePanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -434,7 +442,8 @@ public class LidaGui extends javax.swing.JFrame {
             dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 int index = panels.size() - 1;
-                public void windowClosing(WindowEvent winEvt) {
+                @Override
+				public void windowClosing(WindowEvent winEvt) {
                     for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
                         if (firstLevelMenu instanceof javax.swing.JMenu) {
                             for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu)firstLevelMenu).getMenuComponents()) {
@@ -485,7 +494,8 @@ public class LidaGui extends javax.swing.JFrame {
             private JPanel cjPanel = jPanel;
             private java.awt.Container cParent = parent;
             private String[] cParameters = panelParameters.get(panels.indexOf(panel));
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togglePanel();
             }
             private void togglePanel() {
@@ -539,7 +549,8 @@ public class LidaGui extends javax.swing.JFrame {
         editItem.setText("Edit Panel");
         final String[] panelParams = panelParameters.get(panels.indexOf(panel));
         editItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showEditPanelDialog(panelParams);
             }
         });
@@ -564,7 +575,8 @@ public class LidaGui extends javax.swing.JFrame {
         for (java.awt.Component c : jpanel.getComponents()) {
             if (c instanceof javax.swing.JButton) {
                 ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(
+                    @Override
+					public void actionPerformed(
                             java.awt.event.ActionEvent evt) {
                         createLidaPanel(addEditPanel.getPanelParams());
                         addEditDialog.setVisible(false);
@@ -592,7 +604,8 @@ public class LidaGui extends javax.swing.JFrame {
         for (java.awt.Component c : jpanel.getComponents()) {
             if (c instanceof javax.swing.JButton) {
                 ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(
+                    @Override
+					public void actionPerformed(
                             java.awt.event.ActionEvent evt) {
                         String[] params = addEditPanel.getPanelParams();
                         int index = -1;

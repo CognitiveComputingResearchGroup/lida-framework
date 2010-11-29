@@ -27,6 +27,7 @@ public class ExtendedId {
 		this.sinkNode2Id = sinkNode2Id;
 	}
 	
+	@Override
 	public boolean equals(Object o){
 		if(o instanceof ExtendedId){
 			ExtendedId id = (ExtendedId) o;
@@ -37,10 +38,12 @@ public class ExtendedId {
 		return false;
 	}
 	
+	@Override
 	public int hashCode(){
-		return (int)(typeOfLink ^ sourceNodeId ^ typeOfSink ^ sinkNode1Id ^ sinkNode2Id);
+		return (typeOfLink ^ sourceNodeId ^ typeOfSink ^ sinkNode1Id ^ sinkNode2Id);
 	}
 	
+	@Override
 	public String toString(){
 		return "[" + typeOfLink + "," + sourceNodeId + "," + typeOfSink + "," +
 				sinkNode1Id + "," + sinkNode2Id + "]";

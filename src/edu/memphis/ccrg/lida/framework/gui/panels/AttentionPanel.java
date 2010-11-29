@@ -51,7 +51,8 @@ public class AttentionPanel extends LidaPanelImpl {
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
             }
         });
@@ -69,7 +70,8 @@ public class AttentionPanel extends LidaPanelImpl {
                 java.lang.String.class, java.lang.Double.class
             };
 
-            public Class<?> getColumnClass(int columnIndex) {
+            @Override
+			public Class<?> getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });

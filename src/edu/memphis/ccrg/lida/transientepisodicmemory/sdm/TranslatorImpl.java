@@ -8,12 +8,12 @@
 
 package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-
-import java.util.Collection;
-import java.util.HashMap;
 
 /**
  * This is the class that translates from nodes to boolean vectors and vice-

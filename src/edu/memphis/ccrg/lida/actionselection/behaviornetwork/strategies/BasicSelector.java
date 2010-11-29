@@ -13,7 +13,9 @@
 
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +39,8 @@ public class BasicSelector implements Selector{
 //    	System.out.println(s);
 //    }
     
-    public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
+    @Override
+	public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
         double maxActivation = 0.0;
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;

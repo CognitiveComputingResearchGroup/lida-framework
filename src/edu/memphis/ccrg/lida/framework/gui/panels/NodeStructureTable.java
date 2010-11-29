@@ -66,7 +66,8 @@ public class NodeStructureTable extends LidaPanelImpl {
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
             }
         });
@@ -120,6 +121,7 @@ public class NodeStructureTable extends LidaPanelImpl {
     }//GEN-LAST:event_refreshButtonActionPerformed
     
     
+	@Override
 	public void initPanel(String[]param){
 		ModuleName moduleType=null;
 		if (param==null || param.length==0){
@@ -157,11 +159,13 @@ public class NodeStructureTable extends LidaPanelImpl {
 		//draw();
 	}
 
-    public void refresh(){
+    @Override
+	public void refresh(){
     	display(module.getModuleContent());
     }
     
-    public void registerLida(Lida lida){
+    @Override
+	public void registerLida(Lida lida){
 		super.registerLida(lida);
 		
 	}
@@ -172,14 +176,17 @@ public class NodeStructureTable extends LidaPanelImpl {
 		 */
 		private static final long serialVersionUID = 3902918248689475445L;
 		private String[] columNames ={"Node","Activation","Base Activation","Threshold"};
+		@Override
 		public int getColumnCount() {
 			return columNames.length;
 		}
 
+		@Override
 		public int getRowCount() {
 			return nodeStructure.getNodeCount();
 		}
 
+		@Override
 		public String getColumnName(int column){
 			if(column<columNames.length){
 				return columNames[column];
@@ -187,6 +194,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 			return "";
 		}
 
+		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Node node=null;
 			if (rowIndex>nodeStructure.getNodeCount() || columnIndex > columNames.length
@@ -221,6 +229,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 		}
 	}
 	
+	@Override
 	public void display(Object o) {
 		if (o instanceof NodeStructure) {
 			nodeStructure = (NodeStructure) o;

@@ -35,6 +35,7 @@ public class BasicTranslator implements Translator {
          * since the getQuick method doesn't check any preconditions, and
          * therefore doesn't throw an exception
          */
+	@Override
 	public NodeStructure translate(BitVector data) throws Exception {
 		NodeStructure ns = new NodeStructureImpl();
 		for (int i = 0;i<size;i++){
@@ -55,10 +56,11 @@ public class BasicTranslator implements Translator {
          * @throws Exception this hould be an IndexOutOfBoundsException instead
          * of an Exception
          */
+	@Override
 	public BitVector translate(NodeStructure structure) throws Exception {
 		BitVector v = new BitVector (size);
 		for (Node n : structure.getNodes()){
-                        v.put((int)n.getId(), true);
+                        v.put(n.getId(), true);
 		}
 		return v;
 	}

@@ -17,8 +17,10 @@ public abstract class GenericCommandImpl implements Command {
 	private Map<String,Object> parameters=new HashMap<String,Object>();
 	protected Object result;
 
+	@Override
 	public abstract void execute(Lida lida);
 
+	@Override
 	public Object getParameter(String name) {
 		Object res=null;
 		if (parameters!=null){
@@ -27,10 +29,12 @@ public abstract class GenericCommandImpl implements Command {
 		return res;
 	}
 
+	@Override
 	public Object getResult() {
 		return result;
 	}
 
+	@Override
 	public void setParameter(String name, Object value) {
 		parameters.put(name, value);
 	}
@@ -38,6 +42,7 @@ public abstract class GenericCommandImpl implements Command {
 	/**
 	 * @param parameters the parameters to set
 	 */
+	@Override
 	public void setParameters(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}

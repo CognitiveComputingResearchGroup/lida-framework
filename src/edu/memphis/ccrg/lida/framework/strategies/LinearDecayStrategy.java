@@ -47,6 +47,7 @@ public class LinearDecayStrategy implements DecayStrategy{
 	        this.b = b;
 	    }
 	    
+		@Override
 		public void initStrategy(Map<String, ? extends Object> params) {
 			this.params=params;
 		}

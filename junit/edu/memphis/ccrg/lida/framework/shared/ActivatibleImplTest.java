@@ -31,6 +31,7 @@ public class ActivatibleImplTest extends TestCase{
 	/**
 	 * @throws java.lang.Exception e
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = new ActivatibleImpl();		

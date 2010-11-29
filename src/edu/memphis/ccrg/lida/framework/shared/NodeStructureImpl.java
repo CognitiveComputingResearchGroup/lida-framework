@@ -144,6 +144,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param defaultNode
 	 *            the defaultNode to set
 	 */
+	@Override
 	public void setDefaultNode(String defaultNode) {
 		if(factory.containsNodeType(defaultNode))
 			this.defaultNodeType = defaultNode;
@@ -155,6 +156,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param defaultLink
 	 *            the defaultLink to set
 	 */
+	@Override
 	public void setDefaultLink(String defaultLink) {	
 		if(factory.containsLinkType(defaultLink))
 			this.defaultLinkType = defaultLink;
@@ -169,6 +171,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#addLink(edu.memphis.ccrg.lida
 	 * .shared.Link)
 	 */
+	@Override
 	public Link addLink(Link l) {		
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getExtendedId());
@@ -219,6 +222,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return generateNewLink(newSource, newSink, l.getCategory(), newActiv);
 	}
 
+	@Override
 	public Link addLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory category, double activation) {
 		Linkable source = getLinkable(sourceId);
 		Linkable sink = getLinkable(sinkId);
@@ -264,15 +268,18 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
+	@Override
 	public void addLinks(Collection<Link> links) {
 		for (Link l : links)
 			addLink(l);
 	}
 	
+	@Override
 	public Node addNode(Node n){
 		return addNode(n, n.getFactoryName());
 	}
 
+	@Override
 	public Node addNode(Node n, String factoryName) {
 		if(factory.containsNodeType(factoryName) == false){
 			logger.log(Level.WARNING, "Tried to add node of type " + factoryName + " to NodeStructure. " +
@@ -300,6 +307,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
+	@Override
 	public void addNodes(Collection<Node> nodesToAdd) {
 		for (Node n : nodesToAdd){
 			addNode(n, n.getFactoryName());
@@ -333,6 +341,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return factory.getLink(defaultLinkType, source, sink, category);
 	}
 
+	@Override
 	public NodeStructure copy() {
 		logger.finer("Copying NodeStructure " + this);
 		return new NodeStructureImpl(this, defaultNodeType, defaultLinkType);
@@ -343,6 +352,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#deleteLink(edu.memphis.ccrg.lida.shared.Link)
 	 */
+	@Override
 	public void removeLink(Link l) {
 		removeLinkable(l);
 	}// method
@@ -354,6 +364,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#deleteLinkable(edu.memphis
 	 * .ccrg.lida.shared.Linkable)
 	 */
+	@Override
 	public void removeLinkable(Linkable n) {
 		Set<Link> tempLinks = linkableMap.get(n);
 		Set<Link> otherLinks;
@@ -394,14 +405,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	}// method
 
+	@Override
 	public void removeNode(Node n) {
 		removeLinkable(n);
 	}
 
+	@Override
 	public Link getLink(ExtendedId ids) {
 		return links.get(ids);
 	}
 
+	@Override
 	public Collection<Link> getLinks() {
 		Collection<Link> aux = links.values();
 		if (aux == null) {
@@ -418,6 +432,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#getLinks(edu.memphis.ccrg.
 	 * lida.shared.Linkable)
 	 */
+	@Override
 	public Set<Link> getLinks(Linkable l) {
 		if (l == null) 
 			return null;
@@ -437,6 +452,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * edu.memphis.ccrg.lida.shared.NodeStructure#getLinks(edu.memphis.ccrg.
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
+	@Override
 	public Set<Link> getLinks(Linkable NorL, LinkCategory type) {
 		Set<Link> temp = linkableMap.get(NorL);
 		Set<Link> result = new HashSet<Link>();
@@ -449,12 +465,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return result;
 	}// method
 	
+	@Override
 	public Set<Link> getLinks(LinkCategory type) {
 		Set<Link> result = new HashSet<Link>();
 		if (links != null) {
 			for (Link l : links.values()) {
 				if (l.getCategory() == type) {
-					result.add((Link) l);
+					result.add(l);
 				}
 			}
 		}
@@ -466,6 +483,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * 
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#getNodes()
 	 */
+	@Override
 	public Collection<Node> getNodes() {
 		Collection<Node> aux = nodes.values();
 		if (aux == null)
@@ -482,14 +500,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	/**
 	 * 
 	 */
+	@Override
 	public Map<Linkable, Set<Link>> getLinkableMap() {
 		return linkableMap;
 	}
 
+	@Override
 	public Node getNode(int id) {
 		return nodes.get(id);
 	}
 
+	@Override
 	public Node getNode(ExtendedId id) {
 		if (id == null) {
 			return null;
@@ -497,17 +518,21 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return nodes.get(id.getSourceNodeId());
 	}
 
+	@Override
 	public int getLinkCount() {
 		return links.size();
 	}
 
+	@Override
 	public int getNodeCount() {
 		return nodes.size();
 	}
+	@Override
 	public int getLinkableCount() {
 		return linkableMap.size();
 	}
 
+	@Override
 	public void mergeWith(NodeStructure ns) {
 		addNodes(ns.getNodes());
 		Collection<Link> cl = ns.getLinks();
@@ -533,24 +558,29 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return result;
 	}// method
 
+	@Override
 	public void clearLinks(){
 		for(Link l: links.values())
 			removeLink(l);
 	}
 	
+	@Override
 	public void clearNodeStructure(){
 		for(Linkable l: linkableMap.keySet())
 			removeLinkable(l);		
 	}
 
+	@Override
 	public boolean containsLink(Link l) {
 		return links.containsKey(l.getExtendedId());
 	}
 
+	@Override
 	public boolean containsNode(Node n) {
 		return nodes.containsKey(n.getId());
 	}
 
+	@Override
 	public Linkable getLinkable(ExtendedId ids) {
 		Linkable linkable = getNode(ids);
 		if (linkable == null) {
@@ -569,6 +599,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return defaultNodeType;
 	}
 
+	@Override
 	public String toString() {
 		String aux = "NODES\n";
 		for(Node n: nodes.values())

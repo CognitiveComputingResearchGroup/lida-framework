@@ -23,6 +23,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * and 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof NodeStructureImpl)){
 			return false;

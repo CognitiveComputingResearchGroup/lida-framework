@@ -26,6 +26,7 @@ public class TopLeftDetector extends FeatureDetectorImpl {
 		super(n, sm, pam);
 	}
 
+	@Override
 	public double detect() {
 		double[][] data = (double[][]) sm.getModuleContent();
 

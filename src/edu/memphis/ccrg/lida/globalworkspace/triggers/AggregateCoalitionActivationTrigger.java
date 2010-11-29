@@ -33,6 +33,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
  * 
  * @param coalitions a Set with all the coallitions in the GW.
  */
+	@Override
 	public void checkForTrigger(Collection<Coalition> coalitions) {
 		double acc=0;
 		for(Coalition c:coalitions){
@@ -45,10 +46,12 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		}
 	}//method
 
+	@Override
 	public void reset() {
 		// not applicable
 	}
 
+	@Override
 	public void setUp(Map<String, Object> parameters, GlobalWorkspace gw) {
 		this.gw=gw;
 		Object o = parameters.get("threshold");
@@ -57,6 +60,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		}
 	}//method
 
+	@Override
 	public void start() {
 		// not applicable
 	}

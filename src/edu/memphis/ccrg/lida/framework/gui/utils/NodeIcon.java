@@ -41,6 +41,7 @@ public class NodeIcon implements Icon {
 	/* (non-Javadoc)
 	 * @see javax.swing.Icon#getIconHeight()
 	 */
+	@Override
 	public int getIconHeight() {
 		return size;
 	}
@@ -48,6 +49,7 @@ public class NodeIcon implements Icon {
 	/* (non-Javadoc)
 	 * @see javax.swing.Icon#getIconWidth()
 	 */
+	@Override
 	public int getIconWidth() {
 		return size;
 	}
@@ -55,6 +57,7 @@ public class NodeIcon implements Icon {
 	/* (non-Javadoc)
 	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
 	 */
+	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		g.setColor(color);
 		g.fillOval(x, y, size, size);

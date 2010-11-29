@@ -37,6 +37,7 @@ public class PamNodeStructureTest extends TestCase{
 	PamNodeImpl node1,node2,node3;
 	LinkImpl link1,link2;
 	
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		 nodeStructure1 =  new PamNodeStructureImpl();
@@ -64,6 +65,7 @@ public class PamNodeStructureTest extends TestCase{
 		 
 	}
 	
+	@Override
 	@After
 	public void tearDown() throws Exception {
 	}

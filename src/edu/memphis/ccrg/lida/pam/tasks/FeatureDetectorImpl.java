@@ -49,6 +49,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		this.pamNodes.add(n);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void init() {
 		pam = (PerceptualAssociativeMemory) getParam("PAM", null);
@@ -63,14 +64,17 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		}
 	}
 
+	@Override
 	public void addPamNode(PamNode node) {
 		pamNodes.add(node);
 	}
 
+	@Override
 	public Collection<PamNode> getPamNodes() {
 		return Collections.unmodifiableCollection(pamNodes);
 	}
 
+	@Override
 	protected void runThisLidaTask() {
 		double amount = detect();
 		logger.log(Level.FINE, "detection performed " + toString() + ": "
@@ -85,14 +89,17 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	/**
 	 * Override this method for domain-specific feature detection
 	 */
+	@Override
 	public abstract double detect();
 
+	@Override
 	public void excitePam(double amount) {
 		for (PamNode pn : pamNodes) {
 			pam.receiveActivationBurst(pn, amount);
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "Feature Detector [" + getTaskId() + "] ";
 	}

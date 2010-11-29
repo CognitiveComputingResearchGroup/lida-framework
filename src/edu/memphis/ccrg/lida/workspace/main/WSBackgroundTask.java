@@ -69,6 +69,7 @@ public class WSBackgroundTask extends LidaTaskImpl {
 		cueLap = (Integer) getParam("workspace.cueLap", 1);
 	}
 
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module instanceof Workspace
 				&& module.getModuleName() == ModuleName.Workspace) {

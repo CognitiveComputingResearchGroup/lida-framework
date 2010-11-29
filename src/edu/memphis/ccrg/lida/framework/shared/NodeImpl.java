@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Map;
+
 import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
@@ -39,6 +40,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.groundingPamNode = n.groundingPamNode;
 	}
 	
+	@Override
 	public void initLinkable(Map<String, Object> params) {
 	}
 	
@@ -46,9 +48,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public ExtendedId getExtendedId() {
 		return eId;
 	}
+	@Override
 	public int getId() {
 		return id;
 	}
+	@Override
 	public void setId(int id) {
 		this.id = id;
 		eId = new ExtendedId(0, id, 0,0,0);
@@ -57,16 +61,20 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.eId = eId;
 	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}
+	@Override
 	public void setLabel(String label) {
 		this.label=label;
 	}
 
+	@Override
 	public PamNode getGroundingPamNode() {
 		return groundingPamNode;
 	}
+	@Override
 	public void setGroundingPamNode(PamNode n) {
 		groundingPamNode = n;
 	}
@@ -79,6 +87,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * This method compares this object with any kind of Node. returns true if
 	 * the id of both are the same.
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Node)) {
 			return false;
@@ -88,9 +97,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	/**
 	 *
 	 */
+	@Override
 	public int hashCode() {
-		return (int) (id);
+		return (id);
 	}
+	@Override
 	public String toString(){
 		return "Node: " + getLabel() + " ["+getId()+"] ";
 	}

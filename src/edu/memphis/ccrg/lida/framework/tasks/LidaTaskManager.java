@@ -326,6 +326,7 @@ public class LidaTaskManager {
 	 */
 	private class TaskManagerMainLoop implements Runnable {
 
+		@Override
 		public void run() {
 			while (!shuttingDown) {
 				synchronized (lock) {
@@ -398,6 +399,7 @@ public class LidaTaskManager {
 			this.ticks=ticks;
 		}
 
+		@Override
 		public Void call() throws Exception {
 			if (module!=null){
 				module.decayModule(ticks);

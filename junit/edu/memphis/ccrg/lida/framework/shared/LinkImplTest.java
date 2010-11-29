@@ -35,6 +35,7 @@ public class LinkImplTest extends TestCase{
 	/**
 	 * This method is called before running each test case to initialize the objects
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = new NodeImpl();
@@ -67,6 +68,7 @@ public class LinkImplTest extends TestCase{
 	/**
 	 * This method is called after running each test case
 	 */
+	@Override
 	@After
 	public void tearDown() throws Exception {
 	}

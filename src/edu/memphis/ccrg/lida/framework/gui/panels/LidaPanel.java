@@ -11,6 +11,7 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import javax.swing.JPanel;
+
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;

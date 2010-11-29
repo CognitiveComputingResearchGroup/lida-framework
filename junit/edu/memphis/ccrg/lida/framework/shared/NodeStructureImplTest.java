@@ -36,6 +36,7 @@ public class NodeStructureImplTest extends TestCase{
 	 * This method is called before running each test case to initialize the objects
 	 * 
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {	
 		node1 = new NodeImpl();
@@ -85,6 +86,7 @@ public class NodeStructureImplTest extends TestCase{
 	/**
 	 * This method is called after running each test case
 	 */
+	@Override
 	@After
 	public void tearDown() throws Exception {
 	}
@@ -197,7 +199,7 @@ public class NodeStructureImplTest extends TestCase{
 		nodeStructure3.addNode(node2);
 		nodeStructure3.addLink(link1);		
 		
-		ns = (NodeStructureImpl) nodeStructure3.copy();		
+		ns = nodeStructure3.copy();		
 			
 		assertEquals("Problem with copy", ns, nodeStructure3);	
 		

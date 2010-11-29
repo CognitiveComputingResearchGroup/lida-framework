@@ -54,6 +54,7 @@ public class LidaXmlFactory implements LidaFactory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.LidaFactory#getLida()
 	 */
+	@Override
 	public Lida getLida(Properties properties) { //Properties not used in this Factory
 		
 		String fileName = properties.getProperty("lida.factory.data",DEFAULT_FILE_NAME);

@@ -12,6 +12,7 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Collection;
 import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -58,6 +59,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
+	@Override
 	public void setUp(Map<String, Object> parameters, GlobalWorkspace gw) {
 		this.gw=gw;
 		Object o = parameters.get("delay");
@@ -76,6 +78,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
 	 */
+	@Override
 	public void start() {
 		task=new TriggerTask(delay,gw,name);
 		gw.getAssistingTaskSpawner().addTask(task);
@@ -86,6 +89,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
+	@Override
 	public void checkForTrigger(Collection<Coalition> coalitions) {
 	}
 
@@ -94,6 +98,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
 	 */
+	@Override
 	public void reset() {
 		if (task != null)
 			gw.getAssistingTaskSpawner().cancelTask(task);

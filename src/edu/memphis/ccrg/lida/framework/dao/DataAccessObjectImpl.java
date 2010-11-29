@@ -12,11 +12,12 @@
 
 package edu.memphis.ccrg.lida.framework.dao;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.util.Serializer;
-import edu.memphis.ccrg.lida.util.Deserializer;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.util.Deserializer;
+import edu.memphis.ccrg.lida.util.Serializer;
 
 /**
  *
@@ -37,7 +38,8 @@ public class DataAccessObjectImpl implements DataAccessObject {
         storageName = cStorageName;
     }
 
-    public boolean save() {
+    @Override
+	public boolean save() {
         //TODO proper update? (this save method deletes all old data for the current lidaId and then adds new data)
         storage.deleteData(
                 storageName,
@@ -52,10 +54,12 @@ public class DataAccessObjectImpl implements DataAccessObject {
         return success;
     }
 
-    public boolean load() {
+    @Override
+	public boolean load() {
         return loadFromRow(storage.getDataRow(storageName));
     }
-    public boolean load(int lidaId) {
+    @Override
+	public boolean load(int lidaId) {
         return loadFromRow(
                 storage.getDataRow(
                     storageName,
@@ -75,5 +79,6 @@ public class DataAccessObjectImpl implements DataAccessObject {
         return false;
     }
 
-    public boolean delete() {return false;}
+    @Override
+	public boolean delete() {return false;}
 }

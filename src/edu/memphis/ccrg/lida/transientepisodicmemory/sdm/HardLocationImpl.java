@@ -30,24 +30,28 @@ public HardLocationImpl (BitVector address){
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#getAddress()
  */
+@Override
 public BitVector getAddress() {
 	return address;
 }
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#setAddress(cern.colt.bitvector.BitVector)
  */
+@Override
 public void setAddress(BitVector address) {
 	this.address = address;
 }
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#getCounters()
  */
+@Override
 public byte[] getCounters() {
 	return counters;
 }
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#getWrites()
  */
+@Override
 public int getWrites() {
 	return writes;
 }
@@ -55,6 +59,7 @@ public int getWrites() {
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#write(cern.colt.bitvector.BitVector)
  */
+@Override
 public void write(BitVector word) {
 	writes++;
 	int size=word.size();
@@ -75,6 +80,7 @@ public void write(BitVector word) {
 	}
 }
 
+@Override
 public void setCounters(byte[] newCounters) {
     for (int i = 0; i < this.wordLength; i++) {
         counters[i] = newCounters[i];
@@ -84,6 +90,7 @@ public void setCounters(byte[] newCounters) {
 /* (non-Javadoc)
  * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#read(int[])
  */
+@Override
 public int[] read(int[] buff) {
 
 //	if (buff.length<wordLength){
@@ -101,6 +108,7 @@ public int[] read(int[] buff) {
  * 
  * @return the Hamming distances
  */
+@Override
 public int hamming(BitVector vector) {
 	BitVector aux = vector.copy();
 	aux.xor(address);

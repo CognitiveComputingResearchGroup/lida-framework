@@ -11,11 +11,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class MockTaskSpawner implements TaskSpawner {

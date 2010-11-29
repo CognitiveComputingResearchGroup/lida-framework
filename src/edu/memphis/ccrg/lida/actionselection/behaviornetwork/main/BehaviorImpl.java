@@ -92,6 +92,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	// Precondition methods
+	@Override
 	public void deactivateAllContextConditions() {
 		for (Node s : context.getNodes())
 			s.setActivation(0.0);
@@ -106,12 +107,14 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		this.actionId = actionId;
 	}
 
+	@Override
 	public boolean isContextConditionSatisfied(Node prop) {
 		if (context.containsNode(prop))
 			return context.getNode(prop.getId()).getActivation() > contextSatisfactionThreshold;
 		return false;
 	}
 
+	@Override
 	public boolean isAllContextConditionsSatisfied() {
 		return (unsatisfiedContextConditionCount.get() == 0);
 	}
@@ -169,6 +172,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	// start add methods
+	@Override
 	public boolean addContextCondition(Node condition) {
 		logger.log(Level.FINEST, "Adding context condition " +
 								 condition.getLabel() + " to " + label);
@@ -178,12 +182,14 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return (context.addNode(condition) != null);
 	}
 
+	@Override
 	public boolean addToAddingList(Node addResult) {
 		logger.log(Level.FINEST, "Adding add result " +
 				 addResult.getLabel() + " to " + label);
 		return addingList.addNode(addResult) != null;
 	}
 
+	@Override
 	public boolean addToDeletingList(Node deleteResult) {
 		logger.log(Level.FINEST, "Adding delete result " +
 				 deleteResult.getLabel() + " to " + label);
@@ -191,14 +197,17 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	// Get methods
+	@Override
 	public Collection<Node> getContextConditions() {
 		return context.getNodes();
 	}
 
+	@Override
 	public Collection<Node> getAddingList() {
 		return addingList.getNodes();
 	}
 
+	@Override
 	public Collection<Node> getDeletingList() {
 		return deletingList.getNodes();
 	}
@@ -223,14 +232,17 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return actionId;
 	}
 
+	@Override
 	public long getId() {
 		return id;
 	}
 
+	@Override
 	public String getLabel() {
 		return label;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Behavior))
 			return false;
@@ -239,6 +251,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return behavior.getId() == id && behavior.getActionId() == actionId;
 	}
 
+	@Override
 	public int hashCode() {
 		int hash = 1;
 		Long v1 = new Long(id);
@@ -248,6 +261,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return hash;
 	}
 
+	@Override
 	public void addContainingStream(Stream stream) {
 		containingStreams.add(stream);
 	}
@@ -257,6 +271,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		containingStreams.remove(stream);
 	}
 
+	@Override
 	public Set<Stream> getContainingStreams() {
 		return containingStreams;
 	}

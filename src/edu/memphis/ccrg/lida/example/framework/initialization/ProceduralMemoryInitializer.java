@@ -50,7 +50,7 @@ public class ProceduralMemoryInitializer implements Initializer {
 
 		ProceduralMemory pm = (ProceduralMemory) module;
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) lida.getSubmodule(ModuleName.PerceptualAssociativeMemory);
-		Node[] nodes = (Node[]) pam.getNodes().toArray(new Node[0]);
+		Node[] nodes = pam.getNodes().toArray(new Node[0]);
 		List<Scheme> schemes = new ArrayList<Scheme>();
 		for (int i = 0; i < 20; i++) {
 			NodeStructure ctxt = new NodeStructureImpl();

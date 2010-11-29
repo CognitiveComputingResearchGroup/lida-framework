@@ -59,7 +59,8 @@ public class DataBaseStorageImpl implements Storage {
         return instance;
     }
 
-    public boolean open() {
+    @Override
+	public boolean open() {
         if (connected) return false;
         
         try {
@@ -75,7 +76,8 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    public boolean close() {
+    @Override
+	public boolean close() {
         if (!connected) return false;
 
         try {
@@ -87,25 +89,30 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    public Object[] getDataRow(String storageName) {
+    @Override
+	public Object[] getDataRow(String storageName) {
         Object[][] data = getData(storageName, new Object[0], new Object[0], 1);
         return ((data != null && data.length > 0) ? data[0] : null);
     }
 
-    public Object[] getDataRow(String storageName, Object[] propertyNames, Object[] propertyValues) {
+    @Override
+	public Object[] getDataRow(String storageName, Object[] propertyNames, Object[] propertyValues) {
         Object[][] data = getData(storageName, propertyNames, propertyValues, 1);
         return ((data != null && data.length > 0) ? data[0] : null);
     }
 
-    public Object[][] getData(String storageName, int maxRows) {
+    @Override
+	public Object[][] getData(String storageName, int maxRows) {
         return getData(storageName, new Object[0], new Object[0], maxRows);
     }
 
-    public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues) {
+    @Override
+	public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues) {
         return getData(storageName, propertyNames, propertyValues, -1);
     }
 
-    public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues, int maxRows) {
+    @Override
+	public Object[][] getData(String storageName, Object[] propertyNames, Object[] propertyValues, int maxRows) {
         if (!connected) return null;
         Object[][] result = null;
         try {
@@ -185,7 +192,8 @@ public class DataBaseStorageImpl implements Storage {
         return null;
     }
 
-    public boolean insertData(String storageName, List<Object> data) {
+    @Override
+	public boolean insertData(String storageName, List<Object> data) {
         try {
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(SQL_SELECT_NOORDER.replaceFirst(TABLENAME_PLACEHOLDER, storageName));
@@ -227,7 +235,8 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    public boolean batchInsertData(String storageName, ArrayList<Object[]> data) {
+    @Override
+	public boolean batchInsertData(String storageName, ArrayList<Object[]> data) {
         try {
             Statement stmt = dbConnection.createStatement();
             ResultSet rs = stmt.executeQuery(SQL_SELECT_NOORDER.replaceFirst(TABLENAME_PLACEHOLDER, storageName));
@@ -270,7 +279,8 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    public boolean deleteData(String storageName, Object[] propertyNames, Object[] propertyValues) {
+    @Override
+	public boolean deleteData(String storageName, Object[] propertyNames, Object[] propertyValues) {
         try {
             String query = SQL_DELETE;
             String whereString = getWhereString(propertyNames, propertyValues);
@@ -287,7 +297,8 @@ public class DataBaseStorageImpl implements Storage {
         return false;
     }
 
-    public boolean batchDeleteData(String storageName, String propertyName, ArrayList<Object> propertyValues) {
+    @Override
+	public boolean batchDeleteData(String storageName, String propertyName, ArrayList<Object> propertyValues) {
         //new batch delete implementation checking only a single property against a list of values
         //-> single delete statement (much faster than multiple deletes due to java derby db performance bug when deleting rows containing BLOB)
         if (propertyValues.isEmpty()) return true;

@@ -7,9 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.io.Serializable;
+
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import java.io.Serializable;
 
 /**
  * An object with activation, has strategies 

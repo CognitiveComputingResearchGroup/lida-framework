@@ -53,18 +53,22 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return id;
 	}
 	
+	@Override
 	public String getLabel() {
 		return "Link: " + id;
 	}
 
+	@Override
 	public Linkable getSink() {
 		return sink;
 	}
 
+	@Override
 	public Linkable getSource() {
 		return source;
 	}
 
+	@Override
 	public LinkCategory getCategory() {
 		return category;
 	}
@@ -90,16 +94,19 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return id.equals(other.getExtendedId());
 	}
 	
+	@Override
 	public void setSink(Linkable sink) {
 		this.sink = sink;
 		updateIds();
 	}
 
+	@Override
 	public void setSource(Linkable source) {
 		this.source = source;
 		updateIds();
 	}
 
+	@Override
 	public void setCategory(LinkCategory category) {
 		this.category = category;
 		updateIds();
@@ -118,14 +125,17 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		}
 	}
 
+	@Override
 	public PamLink getGroundingPamLink() {
 		return groundingPamLink;
 	}
 
+	@Override
 	public void setGroundingPamLink(PamLink l) {
 		groundingPamLink = l;
 	}
 	
+	@Override
 	public void initLinkable(Map<String, Object> params) {
 	}	
 

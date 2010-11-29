@@ -26,6 +26,7 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 		super(n, sm, pam);
 	}
 
+	@Override
 	public double detect() {
 		double[][] data = (double[][]) sm.getModuleContent();
 		
@@ -36,6 +37,7 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 		return 0.0;
 	}
 	
+	@Override
 	public String toString(){
 		return "BottomRightDetector " + getTaskId();
 	}

@@ -66,6 +66,7 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 		}
 	}
 	
+	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = getCsmContent();

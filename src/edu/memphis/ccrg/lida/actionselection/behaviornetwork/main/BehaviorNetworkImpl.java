@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
@@ -170,6 +170,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	public void init() {
 		// TODO set parameters for activation passing
 		LidaTask backgroundTask = new LidaTaskImpl(){
+			@Override
 			protected void runThisLidaTask() {
 				passActivationAmongBehaviors();
 			}			
@@ -177,11 +178,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		taskSpawner.addTask(backgroundTask);
 	}
 
+	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
 			currentBroadcast = ((NodeStructure) bc).copy();
 		}
 		LidaTask broadcastTask = new LidaTaskImpl(){			
+			@Override
 			protected void runThisLidaTask() {
 				//Look here
 				passActivationFromBroadcast();
@@ -205,9 +208,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
+	@Override
 	public void learn() {
 	}
 
+	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
@@ -496,6 +501,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Select one action to be executed
 	 */
+	@Override
 	public void selectAction() {
 		winningBehavior = selectorStrategy.selectSingleBehavior(
 				getSatisfiedBehaviors(), candidateBehaviorThreshold);
@@ -656,6 +662,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		this.conflictorExcitationFactor = conflictorExcitationFactor;
 	}
 
+	@Override
 	public Object getState() {
 		Object[] state = new Object[4];
 		state[0] = this.behaviors;
@@ -665,6 +672,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return state;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public boolean setState(Object content) {
 		if (content instanceof Object[]) {

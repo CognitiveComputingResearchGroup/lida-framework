@@ -105,7 +105,8 @@ public void initPanel(String[] params){
         startPauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         startPauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         startPauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startPauseButtonActionPerformed(evt);
             }
         });
@@ -121,7 +122,8 @@ public void initPanel(String[] params){
         quitButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         quitButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         quitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quitButtonActionPerformed(evt);
             }
         });
@@ -134,7 +136,8 @@ public void initPanel(String[] params){
         ticksModeTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ticksModeTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         ticksModeTB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ticksModeTBActionPerformed(evt);
             }
         });
@@ -146,7 +149,8 @@ public void initPanel(String[] params){
         addTicksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addTicksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         addTicksButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addTicksButtonActionPerformed(evt);
             }
         });
@@ -161,7 +165,8 @@ public void initPanel(String[] params){
         toolbar.add(jLabel2);
 
         speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            @Override
+			public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 speedSliderStateChanged(evt);
             }
         });
@@ -188,7 +193,7 @@ public void initPanel(String[] params){
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {                                         
         JSlider source = (JSlider)evt.getSource();
         if(!source.getValueIsAdjusting()){
-			int sleepTime = (int) source.getValue();
+			int sleepTime = source.getValue();
 			sleepTimeTextField.setText(sleepTime + "");
 			// Another way to execute commands
 			Command command = new SetTimeScaleCommand();
@@ -237,6 +242,7 @@ public void initPanel(String[] params){
     private javax.swing.JToolBar toolbar;
     // End of variables declaration
     
+	@Override
 	public void refresh() {
 		isPaused = lida.getTaskManager().isTasksPaused();
 		if (isPaused)
@@ -245,6 +251,7 @@ public void initPanel(String[] params){
 			statusLabel.setText("RUNNING");
 	}
 
+	@Override
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
 	}
 }

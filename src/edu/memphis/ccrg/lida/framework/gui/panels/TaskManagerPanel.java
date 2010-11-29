@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.table.AbstractTableModel;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
@@ -68,6 +69,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 				.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		ApplyButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		ApplyButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ApplyButtonActionPerformed(evt);
 			}
@@ -116,14 +118,17 @@ public class TaskManagerPanel extends LidaPanelImpl {
 
 		private static final long serialVersionUID = 1L;
 		private int columnCnt=6;
+		@Override
 		public int getColumnCount() {
 			return columnCnt;
 		}
 
+		@Override
 		public int getRowCount() {
 			return taskArray.length;
 		}
 
+		@Override
 		public String getColumnName(int column) {
 			String cName = "";
 			switch (column) {
@@ -152,6 +157,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 			return cName;
 		}
 
+		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			LidaTask task= taskArray[rowIndex];
 			Object o=null;
@@ -180,19 +186,23 @@ public class TaskManagerPanel extends LidaPanelImpl {
 			return o;
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int column) {
 		}
 
+		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
 	}
 
+	@Override
 	public void refresh(){
 		logger.log(Level.FINEST, "Refreshing TaskManager Panel",LidaTaskManager.getActualTick());
 
 		display(lida.getTaskManager().getSpawnedTasks());
 	}
+	@Override
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Collection) {

@@ -29,10 +29,12 @@ public class BasicDetector extends FeatureDetectorImpl {
 		super(pNode, sm, pam);
 	}
 
+	@Override
 	public double detect() {
 		return (Math.random())<.03?Math.random():0.0;
 	}//method
 	
+	@Override
 	public String toString(){
 		return "BasicDetector " + getTaskId();
 	}

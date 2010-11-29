@@ -24,6 +24,7 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 	// can be modified by changing the 'ticksPerCycle' parameter of PerceptualBufferDriver.
 	// This is set in the Lida Class.  The higher the value for 'tickPerCycle' the slower
 	// the rate of cueing will be.
+	@Override
 	public synchronized void receiveCue(NodeStructure cue) {
 	
 	}
@@ -32,6 +33,7 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
+	@Override
 	public void addListener(ModuleListener listener) {
 	}
 

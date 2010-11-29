@@ -26,6 +26,7 @@ public class UpscalePropagationBehavior implements PropagationBehavior{
 	/**
 	 * Calculate and return an activation to propagate.
 	 */
+	@Override
 	public double getActivationToPropagate(Map<String, Object> params) {
 		Double totalActiv = (Double) params.get("totalActivation");
 		Double upscale = (Double) params.get("upscale");

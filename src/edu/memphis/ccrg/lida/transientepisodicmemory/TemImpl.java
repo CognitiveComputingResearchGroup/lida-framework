@@ -59,7 +59,8 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
      * Receives the conscious broadcast and store its information in this TEM.
      * @param bc the content of the conscious broadcast
      */
-    public void receiveBroadcast(BroadcastContent bc) {
+    @Override
+	public void receiveBroadcast(BroadcastContent bc) {
         //logic for episodic learning goes here...
     }
     
@@ -143,10 +144,12 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 		return addressLength;
 	}
 
-        public Object getState() {
+        @Override
+		public Object getState() {
             return sdm.getState();
         }
-        public boolean setState(Object content) {
+        @Override
+		public boolean setState(Object content) {
             return sdm.setState(content);
         }
 }

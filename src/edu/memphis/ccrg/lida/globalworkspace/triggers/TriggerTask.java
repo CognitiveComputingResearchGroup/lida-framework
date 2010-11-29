@@ -47,6 +47,7 @@ public class TriggerTask extends LidaTaskImpl{
 		gw.triggerBroadcast();
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}		
+	@Override
 	public String toString(){
 		return "TriggerTask "+name +" " + getTaskId();
 	}

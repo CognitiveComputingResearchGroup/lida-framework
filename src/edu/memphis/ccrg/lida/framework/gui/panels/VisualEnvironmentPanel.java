@@ -72,6 +72,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 
 	// End of variables declaration//GEN-END:variables
 
+	@Override
 	public void registerLida(Lida lida) {
 		super.registerLida(lida);
 		Environment e = (Environment)lida.getSubmodule(ModuleName.Environment);
@@ -80,6 +81,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 		}
 	}
 
+	@Override
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
 		if(event.getModule() == ModuleName.Environment){
 			double[][] smc = (double[][]) event.getContent();
@@ -88,6 +90,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 		}
 	}
 	
+	@Override
 	public void initPanel(String[] params){
 		Environment e = (Environment)lida.getSubmodule(ModuleName.Environment);
 		if (e instanceof GuiEventProvider){

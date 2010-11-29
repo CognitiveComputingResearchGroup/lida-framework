@@ -44,6 +44,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	PamNodeImpl pamNode;
 	
 	
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		pam = new PerceptualAssociativeMemoryImpl();

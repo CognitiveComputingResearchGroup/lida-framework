@@ -33,6 +33,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 		setActivation((attentionCodeletActivation * sum) / (struct.getNodeCount() + struct.getLinkCount()));
 	}
 
+	@Override
 	public BroadcastContent getContent() {
 		return (BroadcastContent) struct;
 	}

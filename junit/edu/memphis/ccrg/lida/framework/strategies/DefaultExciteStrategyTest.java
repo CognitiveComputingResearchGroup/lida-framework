@@ -26,6 +26,7 @@ public class DefaultExciteStrategyTest extends TestCase{
 	DefaultExciteStrategy exciteStrategy;
 	NodeImpl node1;
 	
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		exciteStrategy = new DefaultExciteStrategy();

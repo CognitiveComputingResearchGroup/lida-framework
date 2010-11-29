@@ -83,6 +83,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, Initializable
 	/**
 	 * It is useful to override toString for Tasks for comprehension in the GUI.
 	 */
+	@Override
 	public String toString();
 	
 	/**

@@ -85,6 +85,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		refreshButton
 				.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		refreshButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				refreshButtonActionPerformed(evt);
 			}
@@ -142,6 +143,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		// Show vertex and edge labels
 		vv.getRenderContext().setVertexLabelTransformer(
 				new Transformer<Linkable, String>() {
+					@Override
 					public String transform(final Linkable l) {
 						if (l instanceof Link) {
 							return ((Link) l).getCategory().toString();
@@ -161,6 +163,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 					 * Implements the Icon interface to draw an Icon with
 					 * background color
 					 */
+					@Override
 					public Icon transform(final Linkable v) {
 						if (v instanceof Node) {
 							return NodeIcon.NODEICON;
@@ -170,6 +173,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 					}
 				});
 		vv.setVertexToolTipTransformer(new Transformer<Linkable, String>() {
+			@Override
 			public String transform(final Linkable l) {
 				String tip = null;
 				if (l instanceof Activatible) {
@@ -188,9 +192,10 @@ public class NodeStructurePanel extends LidaPanelImpl {
 			}
 		});
 		vv.setEdgeToolTipTransformer(new Transformer<GuiLink, String>() {
+			@Override
 			public String transform(final GuiLink l) {
 				String tip = null;
-				GuiLink gl = (GuiLink) l;
+				GuiLink gl = l;
 				Link n = gl.getLink();
 				tip ="<html><b>"+n.toString() + "</b><br /> Activation: " + n.getActivation()+"</html>";
 				return tip;
@@ -225,6 +230,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 //	}
 
 	
+	@Override
 	public void initPanel(String[]param){
 		ModuleName moduleType=null;
 		if (param==null || param.length==0){
@@ -262,6 +268,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		draw();
 	}
 	
+	@Override
 	public void refresh(){
 		display(module.getModuleContent());
 		Layout<Linkable, GuiLink> layout = vv.getGraphLayout();
@@ -274,12 +281,14 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		}
 	}
 
+	@Override
 	public void display(Object o) {
 		if(o instanceof NodeStructure){
 			guiGraph.setNodeStructure((NodeStructure) o);
 		}
     }
 
+	@Override
 	public void registerLida(Lida lida) {
 		super.registerLida(lida);
 	}

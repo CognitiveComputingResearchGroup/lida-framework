@@ -64,6 +64,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * @param addr
 	 *            the address where the word is to be stored
 	 */
+	@Override
 	public void store(BitVector wrd, BitVector addr) {
 
 		for (int i = 0; i < addressMatrix.length; i++) {
@@ -79,6 +80,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * @param wrd
 	 *            the word to be stored
 	 */
+	@Override
 	public void store(BitVector wrd) {
 		store(wrd,wrd);
 			}
@@ -92,6 +94,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * @param mapping
 	 *            the mapping address.
 	 */
+	@Override
 	public void mappedStore(BitVector wrd, BitVector mapping) {
 		BitVector mapped = wrd.copy();
 		mapped.xor(mapping);
@@ -106,6 +109,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * @param mapping
 	 *            the mapping address.
 	 */
+	@Override
 	public void mappedStore(BitVector wrd,BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
@@ -121,6 +125,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address
 	 */
+	@Override
 	public BitVector retrieve(BitVector addr) {
 		int[] buff = new int[wordLength];
 		for (int i = 0; i < addressMatrix.length; i++) {
@@ -135,6 +140,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 		return res;
 	}
 
+	@Override
 	public BitVector retrieveIterating(BitVector addr) {
 
 		BitVector res=null;
@@ -151,6 +157,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 		return res;
 	}
 
+	@Override
 	public BitVector retrieveIterating(BitVector addr,BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);

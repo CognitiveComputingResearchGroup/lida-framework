@@ -47,6 +47,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	 * edu.memphis.ccrg.lida.actionselection.LidaAction#setContent(java.lang
 	 * .Object)
 	 */
+	@Override
 	public void setContent(Object content) {
 		this.content = content;
 	}
@@ -56,6 +57,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	 * 
 	 * @see edu.memphis.ccrg.lida.actionselection.LidaAction#getContent()
 	 */
+	@Override
 	public Object getContent() {
 		return content;
 	}
@@ -97,6 +99,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	/**
 	 * @return the associated module
 	 */
+	@Override
 	public LidaModule getModule() {
 		return module;
 	}
@@ -104,6 +107,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	/**
 	 * @return the subActions
 	 */
+	@Override
 	public List<LidaAction> getSubActions() {
 		return Collections.unmodifiableList(subActions);
 	}
@@ -111,6 +115,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	/**
 	 * @return the topology of the subActions.
 	 */
+	@Override
 	public Topology getTopology() {
 		return topology;
 	}
@@ -118,6 +123,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	/**
 	 * @return the id
 	 */
+	@Override
 	public long getId() {
 		return id;
 	}
@@ -125,10 +131,12 @@ public abstract class LidaActionImpl implements LidaAction {
 	/**
 	 * @param id the id to set
 	 */
+	@Override
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	@Override
 	public void addSubAction(LidaAction action, Topology topology) {
 		switch (topology) {
 		case BASIC:

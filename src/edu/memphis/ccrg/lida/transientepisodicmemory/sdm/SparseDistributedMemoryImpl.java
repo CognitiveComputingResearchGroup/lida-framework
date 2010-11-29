@@ -81,6 +81,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#store(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public void store(BitVector wrd, BitVector addr) {
 
 		for (int i = 0; i < memorySize; i++) {
@@ -93,6 +94,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#store(cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public void store(BitVector wrd) {
 		store(wrd,wrd);
 			}
@@ -100,6 +102,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public void mappedStore(BitVector wrd, BitVector mapping) {
 		if(wrd.size()==addrLength){
 		BitVector mapped = wrd.copy();
@@ -117,6 +120,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector,cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public void mappedStore(BitVector wrd, BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
@@ -126,6 +130,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieve(cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public BitVector retrieve(BitVector addr) {
 		int[] buff = new int[wordLength];
 		for (int i = 0; i < memorySize; i++) {
@@ -143,6 +148,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieveIterating(cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public BitVector retrieveIterating(BitVector addr) {
 
 		BitVector res=null;
@@ -161,6 +167,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieveIterating(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
+	@Override
 	public BitVector retrieveIterating(BitVector addr,BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
@@ -176,7 +183,8 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		return res;
 	}
 
-        public Object getState() {
+        @Override
+		public Object getState() {
             BitVector[] addresses = new BitVector[memorySize];
             byte[][] counters = new byte[memorySize][];
 
@@ -191,7 +199,8 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 
             return state;
         }
-        public boolean setState(Object content) {
+        @Override
+		public boolean setState(Object content) {
             if (content instanceof Object[]) {
                 try {
                     Object[] state = (Object[])content;

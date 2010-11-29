@@ -31,6 +31,7 @@ public class LidaGuiFactory {
 
 	public static void start(final Lida lida, final Properties lidaProperties) {
 		java.awt.EventQueue.invokeLater(new Runnable(){
+			@Override
 			public void run(){					
 	        	//Create the controller
 				String filename=lidaProperties.getProperty("lida.gui.commands",DEFAULT_COMMANDS_FILENAME);

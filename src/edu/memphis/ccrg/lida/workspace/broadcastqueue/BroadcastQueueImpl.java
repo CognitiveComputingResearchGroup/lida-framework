@@ -108,13 +108,16 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 		}
 	}
 
+	@Override
 	public void setLowerActivationBound(double lowerActivationBound) {
 		this.lowerActivationBound = lowerActivationBound;
 	}
 
+	@Override
 	public void addListener(ModuleListener listener) {
 	}
 
+	@Override
 	public void init() {
 		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
 	}

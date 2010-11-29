@@ -108,6 +108,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Set the propagation behavior for this PAM
 	 */
+	@Override
 	public void setPropagationBehavior(PropagationBehavior b){
 		propagationBehavior = b;
 	}
@@ -122,6 +123,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Adds set of PamNodes to this PAM
 	 */
+	@Override
 	public Set<PamNode> addNodes(Set<PamNode> nodes) {
 		Set<PamNode> returnedLinks = new HashSet<PamNode>();
 		for(PamNode l: nodes)
@@ -131,6 +133,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Adds set of PamLinks to this PAM
 	 */
+	@Override
 	public Set<PamLink> addLinks(Set<PamLink> links) {
 		Set<PamLink> returnedLinks = new HashSet<PamLink>();
 		for(PamLink l: links)
@@ -141,6 +144,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Adds a feature detector to this PAM
 	 */
+	@Override
 	public void addFeatureDetector(FeatureDetector detector) {
 		featureDetectors.add(detector);
 		taskSpawner.addTask(detector);
@@ -148,10 +152,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	// ******INTERMODULE COMMUNICATION******
+	@Override
 	public void addPamListener(PamListener pl) {
 		pamListeners.add(pl);
 	}
 
+	@Override
 	public synchronized void receiveWorkspaceContent(ModuleName originatingBuffer,
 													 WorkspaceContent content) {
 		topDownContent = content;
@@ -160,14 +166,17 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		//  handle workspace content
 	}
 
+	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		broadcastContent = ((NodeStructure) bc).copy();
 	}
 
+	@Override
 	public synchronized void receivePreafference(Collection<Node> addList, Collection<Node> deleteList) {
 		// Use preafferent signal
 	}
 
+	@Override
 	public void learn() {
 		// learning algorithm 
 		Collection<Node> nodes = broadcastContent.getNodes();
@@ -177,6 +186,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Called by the task manager every tick
 	 */
+	@Override
 	public void decayModule(long ticks) {
 		pamNodeStructure.decayLinkables(ticks);
 	}// method
@@ -185,6 +195,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Receive activation from feature detectors or other codelets to excite a
 	 * PamNode
 	 */
+	@Override
 	public void receiveActivationBurst(PamNode node, double amount) {
 		logger.log(Level.FINE,
 				   node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " + node.getTotalActivation(),
@@ -193,6 +204,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		taskSpawner.addTask(task);	
 	}
 
+	@Override
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
 		for(PamNode n: nodes)
 			receiveActivationBurst(n, amount);
@@ -205,6 +217,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * to its parents and to the connecting links.
 	 * 
 	 */
+	@Override
 	public void sendActivationToParents(PamNode pamNode) {
 		//Calculate the amount to propagate
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
@@ -225,6 +238,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Propagates activation 'amount', which originates from 'source', to node 'sink'.  
 	 * Also give activation to 'link' which connects 'source' to 'sink'.
 	 */
+	@Override
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
 		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
 		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
@@ -232,22 +246,27 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		taskSpawner.addTask(task);	
 	}
 
+	@Override
 	public void addNodeToPercept(PamNode pamNode) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNode(pamNode);
 	}
+	@Override
 	public void addLinkToPercept(PamLink pamLink) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveLink(pamLink);
 	}
+	@Override
 	public void addNodeStructureToPercept(NodeStructure nodeStructure) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNodeStructure(nodeStructure);
 	}
 	
+	@Override
 	public void setDecayStrategy(DecayStrategy b) {
 		pamNodeStructure.setNodesDecayStrategy(b);
 	}
+	@Override
 	public void setExciteStrategy(ExciteStrategy behavior) {
 		pamNodeStructure.setNodesExciteStrategy(behavior);
 	}// method
@@ -263,18 +282,22 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		propagationTaskTicksPerRun = (Integer) getParam("pam.propagationTicksPerRun", 1);
 	}// method
 	
+	@Override
 	public boolean containsNode(PamNode node){
 		return pamNodeStructure.containsNode(node);
 	}
 	
+	@Override
 	public boolean containsLink(PamLink link){
 		return pamNodeStructure.containsLink(link);
 	}
 
+	@Override
 	public Collection<FeatureDetector> getFeatureDetectors(){
 		return featureDetectors;
 	}
 	
+	@Override
 	public Collection<Node> getNodes(){
 		Collection<Node> pamNodes = pamNodeStructure.getNodes();
 		Collection<Node> nodes = new ArrayList<Node>();
@@ -288,21 +311,26 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		return pamNodeStructure;
 	}
 
+	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof PamListener){
 			addPamListener((PamListener)listener);
 		}
 	}
+	@Override
 	public Node getNode(int id) {
 		return factory.getNode(pamNodeStructure.getNode(id));
 	}
+	@Override
 	public PamNode addNode(PamNode node) {
 		return (PamNode) pamNodeStructure.addNode(node);		
 	}
+	@Override
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation) {
 		return pamNodeStructure.addLink(source.getExtendedId(), sink.getExtendedId(), type, activation);		
 	}
 
+	@Override
 	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation) {
 		return pamNodeStructure.addLink(sourceId, sinkId, type, activation);		
 	}
@@ -346,14 +374,17 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		return downscaleFactor;
 	}
 	
+	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l){
 		return l.getTotalActivation() > perceptThreshold;
 	}
 
+	@Override
 	public Object getState() {
         return pamNodeStructure;
     }
-    public boolean setState(Object content) {
+    @Override
+	public boolean setState(Object content) {
         if (content instanceof PamNodeStructureImpl) {
             pamNodeStructure = (PamNodeStructureImpl)content;
             return true;

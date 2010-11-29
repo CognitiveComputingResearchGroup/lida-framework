@@ -31,6 +31,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.Lida#start()
 	 */
+	@Override
 	public void start(){
 		taskManager.setDecayingModules(getSubmodules().values());
 		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
@@ -39,6 +40,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.Lida#getTaskManager()
 	 */
+	@Override
 	public LidaTaskManager getTaskManager() {
 		return taskManager;
 	}
@@ -47,6 +49,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
+	@Override
 	public void addListener(ModuleListener listener) {
 	}
 

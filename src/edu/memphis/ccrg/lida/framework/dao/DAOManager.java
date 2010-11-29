@@ -7,14 +7,15 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.dao;
 
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 
 /**
  *
@@ -97,14 +98,16 @@ public class DAOManager implements DataAccessObject {
         return initialized;
     }
 
-    public boolean save() {
+    @Override
+	public boolean save() {
         boolean success = true;
         for (DataAccessObject dao : daos) {
             if (!dao.save()) success = false;
         }
         return success;
     }
-    public boolean load() {
+    @Override
+	public boolean load() {
         //TODO ask or search for lida id
         boolean success = true;
         for (DataAccessObject dao : daos) {
@@ -112,14 +115,16 @@ public class DAOManager implements DataAccessObject {
         }
         return success;
     }
-    public boolean load(int lidaId) {
+    @Override
+	public boolean load(int lidaId) {
         boolean success = true;
         for (DataAccessObject dao : daos) {
             if (!dao.load(lidaId)) success = false;
         }
         return success;
     }
-    public boolean delete() {
+    @Override
+	public boolean delete() {
         boolean success = true;
         for (DataAccessObject dao : daos) {
             if (!dao.delete()) success = false;

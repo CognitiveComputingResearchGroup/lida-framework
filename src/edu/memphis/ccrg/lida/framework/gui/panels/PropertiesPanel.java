@@ -84,6 +84,7 @@ public class PropertiesPanel extends LidaPanelImpl {
 		LoadButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		LoadButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		LoadButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				LoadButtonActionPerformed(evt);
 			}
@@ -95,6 +96,7 @@ public class PropertiesPanel extends LidaPanelImpl {
 		SaveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		SaveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		SaveButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SaveButtonActionPerformed(evt);
 			}
@@ -107,6 +109,7 @@ public class PropertiesPanel extends LidaPanelImpl {
 				.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		ApplyButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		ApplyButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ApplyButtonActionPerformed(evt);
 			}
@@ -178,14 +181,17 @@ public class PropertiesPanel extends LidaPanelImpl {
 
 		private static final long serialVersionUID = 1L;
 
+		@Override
 		public int getColumnCount() {
 			return 2;
 		}
 
+		@Override
 		public int getRowCount() {
 			return properties.size();
 		}
 
+		@Override
 		public String getColumnName(int column) {
 			if (column == 0) {
 				return "Key";
@@ -194,6 +200,7 @@ public class PropertiesPanel extends LidaPanelImpl {
 			}
 		}
 
+		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			if (columnIndex == 0) {
 				return getKey(rowIndex);
@@ -213,17 +220,20 @@ public class PropertiesPanel extends LidaPanelImpl {
 			return retval;
 		}
 
+		@Override
 		public void setValueAt(Object value, int row, int column) {
 			if (column == 1) {
 				properties.setProperty(getKey(row), (String) value);
 			}
 		}
 
+		@Override
 		public boolean isCellEditable(int row, int column) {
 			return (column == 1);
 		}
 	}//inner class
 
+	@Override
 	public void display(Object o) {
 		if (o instanceof Properties)
 			properties = (Properties) o;

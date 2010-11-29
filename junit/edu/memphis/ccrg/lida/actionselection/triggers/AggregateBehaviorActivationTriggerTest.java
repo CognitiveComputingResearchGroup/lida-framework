@@ -44,6 +44,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	/**
 	 * @throws java.lang.Exception e
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		queueOfBehav = new ConcurrentLinkedQueue<Behavior>();

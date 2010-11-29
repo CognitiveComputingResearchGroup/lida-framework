@@ -42,6 +42,7 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 	}
 
 	//TODO think about
+	@Override
 	public Object getModuleContent(Object... parameters) {
 		if(parameters.length == 0)
 			return sensoryScene;

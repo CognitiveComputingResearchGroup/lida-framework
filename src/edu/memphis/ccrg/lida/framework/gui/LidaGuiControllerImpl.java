@@ -41,6 +41,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.gui.LidaGuiController#executeCommand(java.lang.String, java.util.Map)
 	 */
+	@Override
 	public Object executeCommand (String commandName, Map<String,Object> parameters){
 		String commandClass = commands.getProperty(commandName);
 		Command command=null;
@@ -67,6 +68,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	 * @param command the command to execute. 
 	 * @return  The result of the command.
 	 */
+	@Override
 	public Object executeCommand (Command command){
 		command.execute(lida);
 		logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getActualTick());
@@ -76,6 +78,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		return lida.getTaskManager().isTasksPaused();
 	}
 
+	@Override
 	public void registrerLida(Lida lida) {
 		this.lida = lida;
 	}

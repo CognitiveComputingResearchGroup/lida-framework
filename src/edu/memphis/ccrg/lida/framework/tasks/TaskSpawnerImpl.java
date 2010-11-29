@@ -45,6 +45,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		taskManager=tm;
 	}
 
+	@Override
 	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
 		for (LidaTask r : initialTasks)
 			addTask(r);
@@ -53,6 +54,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/**
 	 * Add a task to this taskspawner to be run
 	 */
+	@Override
 	public void addTask(LidaTask task) {
 		task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
 		task.setControllingTaskSpawner(this);
@@ -76,6 +78,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 * Finished tasks from the FrameworkExecutorService are sent to this method.
 	 * If it is overridden then is should still be called first using super.
 	 */
+	@Override
 	public void receiveFinishedTask(LidaTask task) {
 		switch (task.getStatus()) {
 		case FINISHED_WITH_RESULTS:
@@ -125,6 +128,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/**
 	 * Returns an unmodifiable collection of the running tasks spawned by this task spawner
 	 */
+	@Override
 	public Collection<LidaTask> getSpawnedTasks() {
 		logger.log(Level.FINEST, "Getting all tasks", LidaTaskManager.getActualTick());
 		return Collections.unmodifiableCollection(runningTasks);
@@ -133,6 +137,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/**
 	 * 
 	 */
+	@Override
 	public int getSpawnedTaskCount() {
 		logger.log(Level.FINEST, "Getting spawned count", LidaTaskManager.getActualTick());
 		return runningTasks.size();
@@ -141,6 +146,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/**
 	 * Removes task from running task queue and tells task manager to cancel the task 
 	 */
+	@Override
 	public void cancelTask(LidaTask task) {
 		removeTask(task);
 		taskManager.cancelTask(task);		
@@ -148,6 +154,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/**
 	 * @param taskManager task manager
 	 */
+	@Override
 	public void setTaskManager(LidaTaskManager taskManager) {
 		this.taskManager = taskManager;
 	}
@@ -155,6 +162,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/**
 	 * @return the LidaTaskManager
 	 */
+	@Override
 	public LidaTaskManager getTaskManager(){
 		return taskManager;
 	}

@@ -77,14 +77,16 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 
         startPauseButton.setText("Start/Pause LIDA");
         startPauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startPauseButtonActionPerformed(evt);
             }
         });
 
         quitButton.setText("Quit");
         quitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quitButtonActionPerformed(evt);
             }
         });
@@ -97,7 +99,8 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
         sleepTimeTextField.setText("--");
 
         speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            @Override
+			public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 speedSliderStateChanged(evt);
             }
         });
@@ -106,7 +109,8 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 
         addTicksButton.setText("add ticks");
         addTicksButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addTicksButtonActionPerformed(evt);
             }
         });
@@ -117,7 +121,8 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 
         TicksEnabledCheckBox.setText("Ticks Mode Enabled");
         TicksEnabledCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TicksEnabledCheckBoxActionPerformed(evt);
             }
         });
@@ -248,7 +253,7 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 	private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {
 		JSlider source = (JSlider) evt.getSource();
 		if (!source.getValueIsAdjusting()) {
-			int sleepTime = (int) source.getValue();
+			int sleepTime = source.getValue();
 			sleepTimeTextField.setText(sleepTime + "");
 
 			// Another way to execute commands
@@ -297,6 +302,7 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
     // End of variables declaration
 
     
+	@Override
 	public void refresh() {
 		isPaused = lida.getTaskManager().isTasksPaused();
 		if (isPaused)
@@ -305,6 +311,7 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 			statusLabel.setText("RUNNING");
 	}
 
+	@Override
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
 	}
 

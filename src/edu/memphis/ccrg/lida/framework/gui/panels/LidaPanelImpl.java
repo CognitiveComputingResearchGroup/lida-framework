@@ -63,32 +63,40 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    public void registrerLidaGuiController(LidaGuiController lgc) {
+    @Override
+	public void registrerLidaGuiController(LidaGuiController lgc) {
         controller = lgc;
     }
 
-    public void display(Object o) {
+    @Override
+	public void display(Object o) {
 
     }
 
-    public void refresh() {
+    @Override
+	public void refresh() {
     }
 
-    public JPanel getPanel() {
+    @Override
+	public JPanel getPanel() {
         return this;
     }
 
-    public void registerLida(Lida lida) {
+    @Override
+	public void registerLida(Lida lida) {
 		this.lida=lida;
 	}
 
-    public ModuleName getSupportedModule() {
+    @Override
+	public ModuleName getSupportedModule() {
         return supportedModule;
     }
-    public void setSupportedModule(ModuleName module) {
+    @Override
+	public void setSupportedModule(ModuleName module) {
          this.supportedModule=module;
     }
 	
+	@Override
 	public void initPanel(String[] param){
 	}
 }

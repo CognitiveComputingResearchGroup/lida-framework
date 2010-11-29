@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
  */
 public class PauseRunningThreadsCommand extends GenericCommandImpl {
 
+	@Override
 	public void execute(Lida lida) {
 		lida.getTaskManager().pauseSpawnedTasks();
 	}

@@ -40,10 +40,12 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 		super(ModuleName.StructureBuildingCodeletModule);
 	}
 	
+	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
 	
+	@Override
 	public void setAssociatedModule(LidaModule module) {
 		if (module != null) {
 			if (module instanceof Workspace
@@ -61,6 +63,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 //		
 //	}
 	
+	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener gui : guis)
 			gui.receiveFrameworkGuiEvent(evt);

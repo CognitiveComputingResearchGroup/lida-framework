@@ -10,8 +10,9 @@
  */
 package edu.memphis.ccrg.lida.framework.shared;
 
-import edu.memphis.ccrg.lida.pam.PamNode;
 import java.io.Serializable;
+
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * Node represents a Concept in LIDA. It could be implemented in different ways 
@@ -34,7 +35,8 @@ public interface Node extends Linkable, Activatible, Serializable {
     public int getId();
     public void setId(int id);
     
-    public String getLabel();
+    @Override
+	public String getLabel();
     public void setLabel(String label);
     
 	public String getFactoryName();

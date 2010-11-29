@@ -12,12 +12,13 @@
 
 package edu.memphis.ccrg.lida.framework.dao;
 
-import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.util.VectorConverter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.util.VectorConverter;
 
 /**
  *

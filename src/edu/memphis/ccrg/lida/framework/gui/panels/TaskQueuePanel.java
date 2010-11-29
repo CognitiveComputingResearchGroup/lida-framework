@@ -75,6 +75,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 				.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		ApplyButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		ApplyButton.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ApplyButtonActionPerformed(evt);
 			}
@@ -124,6 +125,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 
 		private static final long serialVersionUID = 1L;
 
+		@Override
 		public int getColumnCount() {
 			int total = 0;
 			for (Queue<LidaTask> qt : tasks.values()) {
@@ -133,12 +135,14 @@ public class TaskQueuePanel extends LidaPanelImpl {
 			return total+1; //the first one is the tick number
 		}
 
+		@Override
 		public int getRowCount() {
 			int rows = (int) (lida.getTaskManager().getMaxTick() - LidaTaskManager
 					.getActualTick())+1;
 			return rows;
 		}
 
+		@Override
 		public String getColumnName(int column) {
 			String cName;
 			if (column == 0) {
@@ -149,6 +153,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 			return cName;
 		}
 
+		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object o = null;
 			if (columnIndex==0){
@@ -172,11 +177,13 @@ public class TaskQueuePanel extends LidaPanelImpl {
 			return o;
 		}
 
+		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
 		}
 	}
 
+	@Override
 	public void refresh() {
 		logger.log(Level.FINEST, "Refreshing TaskQueue Panel",
 				LidaTaskManager.getActualTick());
@@ -184,6 +191,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		display(lida.getTaskManager().getTaskQueue());
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Map) {

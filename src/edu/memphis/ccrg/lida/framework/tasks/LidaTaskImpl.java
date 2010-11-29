@@ -52,12 +52,14 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @return the scheduledTick
 	 */
+	@Override
 	public long getScheduledTick() {
 		return scheduledTick;
 	}
 	/**
 	 * @param scheduledTick the scheduledTick to set
 	 */
+	@Override
 	public void setScheduledTick(long scheduledTick) {
 		this.scheduledTick = scheduledTick;
 	}
@@ -85,6 +87,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * Overwrite the runThisLidaTask method.
 	 * @see java.util.concurrent.Callable#call()
 	 */
+	@Override
 	public LidaTask call() {
 		nextExcecutionTickLap=ticksPerStep;
 		
@@ -119,6 +122,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
      *  
 	 * @param status - the status to set
 	 */
+	@Override
 	public void setTaskStatus(LidaTaskStatus status) {
 		if (this.status != LidaTaskStatus.CANCELED)
 			this.status = status;
@@ -127,6 +131,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @return the status
 	 */
+	@Override
 	public LidaTaskStatus getStatus() {
 		return status;
 	}
@@ -134,6 +139,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#getTaskId()
 	 */
+	@Override
 	public long getTaskId() {
 		return taskID;
 	}
@@ -141,6 +147,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setTaskID(long)
 	 */
+	@Override
 	public void setTaskID(long id) {
 		taskID = id;
 	}
@@ -148,6 +155,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#getTicksPerStep()
 	 */
+	@Override
 	public int getTicksPerStep() {
 		return ticksPerStep;
 	}
@@ -155,6 +163,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setNumberOfTicksPerRun(int)
 	 */
+	@Override
 	public void setNumberOfTicksPerRun(int ticks) {
 		if (ticks > 0){
 			ticksPerStep = ticks;
@@ -165,6 +174,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#reset()
 	 */
+	@Override
 	public void reset() {
 
 	}
@@ -172,6 +182,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#stopRunning()
 	 */
+	@Override
 	public void stopRunning() {
 		setTaskStatus(LidaTaskStatus.CANCELED);
 	}
@@ -179,6 +190,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#init(Map)
 	 */
+	@Override
 	public void init(Map<String, ?> parameters) {
 		this.parameters = parameters;
 		init();
@@ -188,6 +200,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
 	 * Subclasses can overwrite this method in order to initialize the LidaTask
 	 */
+	@Override
 	public void init() {
 	}
 
@@ -211,6 +224,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/* 
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#getTaskSpawner()
 	 */
+	@Override
 	public TaskSpawner getControllingTaskSpawner() {		
 		return ts;
 	}
@@ -218,10 +232,12 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/*
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setControllingTaskSpawner(edu.memphis.ccrg.lida.framework.TaskSpawner)
 	 */
+	@Override
 	public void setControllingTaskSpawner(TaskSpawner ts) {
 		this.ts=ts;		
 	}
 	
+	@Override
 	public long getNextExcecutionTickLap() {		
 		return nextExcecutionTickLap;
 	}
@@ -229,6 +245,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	/**
 	 * For just the next execution of this task, sets the number of ticks in the future when this task will be run
 	 */
+	@Override
 	public void setNextExcecutionTickLap(long lapTick) {
 		this.nextExcecutionTickLap=lapTick;	
 	}

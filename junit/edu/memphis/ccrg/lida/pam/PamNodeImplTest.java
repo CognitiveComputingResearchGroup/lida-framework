@@ -27,12 +27,14 @@ public class PamNodeImplTest extends TestCase{
 	
 	PamNodeImpl node1,node2;
 	
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = new PamNodeImpl();
 		node2 = new PamNodeImpl();				
 	}
 	
+	@Override
 	@After
 	public void tearDown() throws Exception {
 	}

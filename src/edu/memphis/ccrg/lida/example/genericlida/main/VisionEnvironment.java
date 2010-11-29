@@ -47,6 +47,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		environContent = new double[imageHeight][imageWidth];
 	}
 
+	@Override
 	public synchronized void receiveAction(LidaAction action) {
 		actionContent = action;
 		actionHasChanged = true;
@@ -56,6 +57,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	private int counter = 0;
 
 
+	@Override
 	public void resetEnvironment() {
 		iloc = -1;
 		jloc = -1;
@@ -171,9 +173,11 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 				l.receiveFrameworkGuiEvent(evt);
 	}
 	
+	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		frameworkGuis.add(listener);
 	}
+	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : frameworkGuis)
 			fg.receiveFrameworkGuiEvent(evt);
@@ -197,6 +201,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	public void addListener(ModuleListener listener) {
 	}
 
+	@Override
 	public void init(){
 		imageHeight = (Integer)getParam("height",10);
 		imageWidth = (Integer)getParam("width",10);

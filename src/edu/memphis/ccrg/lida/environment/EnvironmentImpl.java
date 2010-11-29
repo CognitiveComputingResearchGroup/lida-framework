@@ -45,6 +45,7 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 			l.receiveFrameworkGuiEvent(evt);
 	}
 	
+	@Override
 	public abstract String toString();
 	
 	

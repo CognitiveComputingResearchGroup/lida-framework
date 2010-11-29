@@ -106,6 +106,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	public void decayCuriosity() {
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Scheme)) {
 			return false;
@@ -128,6 +129,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return context;
 	}
 	
+	@Override
 	public void setContext(NodeStructure ns){
 		this.context = ns;
 	}
@@ -172,6 +174,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return actionId;
 	}
 
+	@Override
 	public int hashCode() {
 		return ((int) id % 31);
 	}

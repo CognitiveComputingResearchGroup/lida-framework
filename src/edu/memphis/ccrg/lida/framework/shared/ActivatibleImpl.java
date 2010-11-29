@@ -43,6 +43,7 @@ public class ActivatibleImpl implements Activatible {
 		this.decayStrategy = db;
 	}
 
+	@Override
 	public void decay(long ticks) {	
 		if (decayStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getActualTick());
@@ -53,6 +54,7 @@ public class ActivatibleImpl implements Activatible {
 		}
 	}
 
+	@Override
 	public void excite(double excitation) {	
 		if (exciteStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getActualTick());
@@ -63,26 +65,32 @@ public class ActivatibleImpl implements Activatible {
 		}
 	}
 
+	@Override
 	public double getActivation() {
 		return activation;
 	}
 
+	@Override
 	public DecayStrategy getDecayStrategy() {
 		return decayStrategy;
 	}
 
+	@Override
 	public ExciteStrategy getExciteStrategy() {
 		return exciteStrategy;
 	}
 
+	@Override
 	public synchronized void setActivation(double d) {
 		this.activation = d;
 	}
 
+	@Override
 	public synchronized void setDecayStrategy(DecayStrategy db) {
 		this.decayStrategy = db;
 	}
 
+	@Override
 	public synchronized void setExciteStrategy(ExciteStrategy eb) {
 		this.exciteStrategy = eb;
 	}

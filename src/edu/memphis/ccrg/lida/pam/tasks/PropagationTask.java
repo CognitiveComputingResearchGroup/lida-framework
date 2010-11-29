@@ -71,6 +71,7 @@ public class PropagationTask extends LidaTaskImpl {
 	/**
 	 * 
 	 */
+	@Override
 	public String toString(){
 		return "Propagation task " + getTaskId();
 	}

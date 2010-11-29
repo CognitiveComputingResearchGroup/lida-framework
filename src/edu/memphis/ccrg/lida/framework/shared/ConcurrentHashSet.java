@@ -15,6 +15,7 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
 	
 	private static final Object PRESENT = new Object();
 
+	@Override
 	public boolean addAll(Collection<? extends E> c){
 		boolean modified = false;
 		Iterator<? extends E> e = c.iterator();
@@ -31,7 +32,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      *
      * @return an Iterator over the elements in this set
      */
-    public Iterator<E> iterator() {
+    @Override
+	public Iterator<E> iterator() {
     	return map.keySet().iterator();
     }
 
@@ -40,7 +42,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      *
      * @return the number of elements in this set (its cardinality)
      */
-    public int size() {
+    @Override
+	public int size() {
     	return map.size();
     }
 
@@ -49,7 +52,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      *
      * @return <tt>true</tt> if this set contains no elements
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
     	return map.isEmpty();
     }
 
@@ -62,7 +66,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      * @param o element whose presence in this set is to be tested
      * @return <tt>true</tt> if this set contains the specified element
      */
-    public boolean contains(Object o) {
+    @Override
+	public boolean contains(Object o) {
     	return map.containsKey(o);
     }
 
@@ -78,7 +83,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      * @return <tt>true</tt> if this set did not already contain the specified
      * element
      */
-    public boolean add(E e) {
+    @Override
+	public boolean add(E e) {
     	return map.put(e, PRESENT)==null;
     }
 
@@ -94,7 +100,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      * @param o object to be removed from this set, if present
      * @return <tt>true</tt> if the set contained the specified element
      */
-    public boolean remove(Object o) {
+    @Override
+	public boolean remove(Object o) {
     	return map.remove(o)==PRESENT;
     }
 
@@ -102,7 +109,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java
      * Removes all of the elements from this set.
      * The set will be empty after this call returns.
      */
-    public void clear() {
+    @Override
+	public void clear() {
     	map.clear();
     }
 

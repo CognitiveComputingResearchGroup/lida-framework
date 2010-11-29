@@ -37,7 +37,8 @@ public class MappingTranslator implements Translator {
     /**
      * @throws Exception UnsupportedOperationException
      */
-    public NodeStructure translate(BitVector data) throws Exception {
+    @Override
+	public NodeStructure translate(BitVector data) throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -51,14 +52,15 @@ public class MappingTranslator implements Translator {
      * the structure
      * @throws Exception when the node structure is the wrong size
      */
-    public BitVector translate(NodeStructure structure) throws Exception {
+    @Override
+	public BitVector translate(NodeStructure structure) throws Exception {
 
         //throw new UnsupportedOperationException("Not supported yet.");
         int[] sum = new int[size];
         BitVector v = new BitVector(size);
         for (Node n : structure.getNodes()) {
             v = new BitVector(size);
-            v.put((int)n.getId(), true);
+            v.put(n.getId(), true);
             sum = BitVectorUtils.sumVectors(sum, v);
         }
 

@@ -65,6 +65,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	 * @seelida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
 	 * ccrg. globalworkspace.BroadcastListener)
 	 */
+	@Override
 	public void addBroadcastListener(BroadcastListener bl) {
 		broadcastListeners.add(bl);
 	}
@@ -76,10 +77,12 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#addTrigger(edu.memphis
 	 * .ccrg.globalworkspace. Trigger)
 	 */
+	@Override
 	public void addBroadcastTrigger(BroadcastTrigger t) {
 		broadcastTriggers.add(t);
 	}
 
+	@Override
 	public void start() {
 		for (BroadcastTrigger t : broadcastTriggers) {
 			t.start();
@@ -94,6 +97,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	 * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#putCoalition(edu.memphis
 	 * .ccrg.globalworkspace .Coalition)
 	 */
+	@Override
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
 			logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getActualTick());
@@ -119,6 +123,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	 * cleared.
 	 * 
 	 */
+	@Override
 	public void triggerBroadcast() {
 		if (broadcastStarted.compareAndSet(false, true)) {
 			sendBroadcast();
@@ -164,10 +169,12 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 		}
 	}
 
+	@Override
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
 
+	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : guis)
 			fg.receiveFrameworkGuiEvent(evt);
@@ -189,23 +196,28 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 		return Collections.unmodifiableCollection(coalitions);
 	}
 
+	@Override
 	public LidaModule getSubmodule(ModuleName type) {
 		return null;
 	}
 
+	@Override
 	public void decayModule(long ticks){
 		decay(ticks);
 		logger.log(Level.FINEST,"Coallitions Decayed",LidaTaskManager.getActualTick());
 	}
 
+	@Override
 	public void addSubModule(LidaModule lm) {
 	}
 
+	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof BroadcastListener){
 			addBroadcastListener((BroadcastListener)listener);
 		}
 	}
+	@Override
 	public void init(){
 		getAssistingTaskSpawner().addTask(new BackgroundTask());
 	}

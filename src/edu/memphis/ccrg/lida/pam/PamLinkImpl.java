@@ -34,10 +34,12 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		super.groundingPamLink = this;
 	}
 	
+	@Override
 	public double getTotalActivation(){
 		return getActivation() + baseLevelActivation;
 	}
 
+	@Override
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());

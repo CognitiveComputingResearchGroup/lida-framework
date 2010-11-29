@@ -56,6 +56,7 @@ public class GuiLink {
 		this.type = type;
 	}
 
+	@Override
 	public boolean equals (Object o){
 		if (!(o instanceof GuiLink)){
 			return false;
@@ -65,9 +66,11 @@ public class GuiLink {
 	}
 	
 	
+	@Override
 	public int hashCode(){
 		return link.hashCode() + type;
 	}
+	@Override
 	public String toString(){
 		return type+"";
 	}

@@ -44,6 +44,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 * If a node's activation results lower than lowerActivationBound, it is removed from the buffer.
 	 * @param ticks how long since last decay
 	 */
+	@Override
 	public void decayModule(long ticks){
 		Collection<Linkable> linkables = bufferContent.getLinkables();
 		for(Linkable linkable: linkables){
@@ -56,9 +57,11 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 		}		
 	}
 
+	@Override
 	public void setLowerActivationBound(double activationLowerBound) {
 		this.activationLowerBound = activationLowerBound;		
 	}
+	@Override
 	public void addListener(ModuleListener listener) {
 	}
 }

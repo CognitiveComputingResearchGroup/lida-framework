@@ -65,6 +65,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		super();
 	}
                             
+	@Override
 	protected void runThisLidaTask(){	
 		logger.finest("SB codelet " + this.toString() + " being run.");
 		for(WorkspaceBuffer buffer: accessibleModules){
@@ -79,6 +80,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	 * Idea is that the same codelet object is reconfigured at runtime
 	 * after it finishes to be run as a different altogether codelet. 
 	 */
+	@Override
 	public void reset() {
 		accessibleModules.clear();
 		setNumberOfTicksPerRun(50);
@@ -88,27 +90,34 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		type = 0;		
 	}
 	
+	@Override
 	public void setSoughtContent(NodeStructure content){
 		soughtContent = content;
 	}
+	@Override
 	public NodeStructure getSoughtContent(){
 		return soughtContent;
 	}
 	
+	@Override
 	public void setCodeletAction(CodeletAction a){
 		action = a;
 	}	
+	@Override
 	public CodeletAction getCodeletAction(){
 		return action;
 	}
 	
+	@Override
 	public void setCodeletResult(CodeletResult r){
 		results = r;
 	}
+	@Override
 	public CodeletResult getCodeletResult(){
 		return results;
 	}
 
+	@Override
 	public void addAccessibleBuffer(WorkspaceBuffer buffer) {
 		if(buffer.getModuleName() == ModuleName.CurrentSituationalModel)
 			currentSituationalModel = buffer;
@@ -122,6 +131,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	public void setType(int t){
 		type = t;
 	}
+	@Override
 	public int getType() {
 		return type;
 	}
@@ -129,6 +139,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	/**
 	 * Returns a String represetation of this codelet
 	 */
+	@Override
 	public String toString(){
 		return "SBCodelet-"+ getTaskId();
 	}

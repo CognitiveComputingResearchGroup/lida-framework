@@ -21,6 +21,7 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	
 	private static final double THRESHOLD = 0.5;
 
+	@Override
 	protected void runThisLidaTask() {
 		NodeStructure ns = new NodeStructureImpl();
 		NodeStructure csmContent = (NodeStructure) currentSituationalModel.getModuleContent();

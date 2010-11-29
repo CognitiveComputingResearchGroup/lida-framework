@@ -46,6 +46,7 @@ public class TriggerTask extends LidaTaskImpl{
 		as.triggerActionSelection();
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}		
+	@Override
 	public String toString(){
 		return "TriggerTask "+name +" " + getTaskId();
 	}

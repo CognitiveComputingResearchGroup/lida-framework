@@ -8,12 +8,14 @@
 
 package edu.memphis.ccrg.lida.framework.gui.utils;
 
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.uci.ics.jung.algorithms.layout.GraphElementAccessor;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 
 /**
  * A GraphMousePlugin that brings up distinct popup menus when an edge or vertex
@@ -30,7 +32,7 @@ public class PopupVertexFormMousePlugin<V, E> extends
 
 	/** Creates a new instance of PopupVertexEdgeMenuMousePlugin */
 	public PopupVertexFormMousePlugin() {
-		this(MouseEvent.BUTTON3_MASK);
+		this(InputEvent.BUTTON3_MASK);
 	}
 
 	/**
@@ -50,6 +52,7 @@ public class PopupVertexFormMousePlugin<V, E> extends
 	 * 
 	 * @param e
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	protected void handlePopup(MouseEvent e) {
 		final VisualizationViewer<V, E> vv = (VisualizationViewer<V, E>) e

@@ -62,10 +62,12 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 
+	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
 	
+	@Override
 	public void receiveBehavior(Behavior b) {
 		if(b.getActivation() > selectionThreshold){
 			if(coolDownCounter == selectionFrequency){
@@ -93,6 +95,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
+	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof ActionSelectionListener){
 			addActionSelectionListener((ActionSelectionListener)listener);
@@ -173,7 +176,8 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		
 	}
 
-        public Object getState() {
+        @Override
+		public Object getState() {
             Object[] state = new Object[4];
             state[0] = this.behaviors;
             state[1] = null;
@@ -181,7 +185,8 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
             state[3] = null;
             return state;
         }
-        @SuppressWarnings("unchecked")
+        @Override
+		@SuppressWarnings("unchecked")
 		public boolean setState(Object content) {
             if (content instanceof Object[]) {
                 Object[] state = (Object[])content;
@@ -209,6 +214,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		 * To register Triggers
 		 * @param t a new Trigger
 		 */
+		@Override
 		public void addActionSelectionTrigger(ActionSelectionTrigger t){
 			actionSelectionTriggers.add(t);
 		}
@@ -237,6 +243,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			}
 		}
 
+		@Override
 		public void init(){
 			getAssistingTaskSpawner().addTask(new BackgroundTask());
 		}

@@ -50,25 +50,31 @@ public class StreamImpl implements Stream{
     	this("no name", id);
     }
     
-    public boolean addBehavior(Behavior behavior){
+    @Override
+	public boolean addBehavior(Behavior behavior){
     	return behaviors.add(behavior);
     }
+	@Override
 	public void removeBehavior(Behavior behavior) {
 		logger.log(Level.FINER, "Removing " + behavior + " from " + this, 
 					LidaTaskManager.getActualTick());
 		behaviors.remove(behavior);
 	}
-    public Collection<Behavior> getBehaviors(){
+    @Override
+	public Collection<Behavior> getBehaviors(){
         return Collections.unmodifiableCollection(behaviors);
     }
+	@Override
 	public int getBehaviorCount(){
 		return behaviors.size();
 	}
 	
+	@Override
 	public long getId(){
 		return id;
 	}
-    public String getLabel(){
+    @Override
+	public String getLabel(){
         return name;
     }
 	

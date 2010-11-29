@@ -49,10 +49,12 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
 		}
 	}//
 	
+	@Override
 	public void receiveAction(LidaAction a){
 		//What to do here is a research question.
 	}
 
+	@Override
 	public boolean setState(Object state) {
         try {
             sensoryMemoryContent = state;
@@ -64,7 +66,8 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
         return false;
     }
 
-    public Object getState() {
+    @Override
+	public Object getState() {
         return sensoryMemoryContent;
     }
 }// class

@@ -26,6 +26,7 @@ public class LinearDecayStrategyTest extends TestCase{
 	LinearDecayStrategy decayStrategy;
 	NodeImpl node1;
 	
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		decayStrategy = new LinearDecayStrategy();		

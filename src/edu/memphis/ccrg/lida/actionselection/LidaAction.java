@@ -7,10 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
+import java.io.Serializable;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import java.io.Serializable;
 
 /**
  * Encapsulation of an action to be executed.

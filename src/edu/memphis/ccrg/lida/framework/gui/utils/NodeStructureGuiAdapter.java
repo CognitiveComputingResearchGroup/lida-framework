@@ -57,6 +57,7 @@ public class NodeStructureGuiAdapter extends
 		return false;
 	}
 
+	@Override
 	public Linkable getDest(GuiLink arg0) {
 		if (arg0.getType() == 'S') // If the GuiLink is type Source
 			return arg0.getLink();
@@ -64,6 +65,7 @@ public class NodeStructureGuiAdapter extends
 			return arg0.getLink().getSink();
 	}
 
+	@Override
 	public Pair<Linkable> getEndpoints(GuiLink arg0) {
 		if (arg0.getType() == 'S') // If the GuiLink is type Source
 			return new Pair<Linkable>(arg0.getLink().getSource(), arg0
@@ -72,6 +74,7 @@ public class NodeStructureGuiAdapter extends
 			return new Pair<Linkable>(arg0.getLink(), arg0.getLink().getSink());
 	}
 
+	@Override
 	public Collection<GuiLink> getInEdges(Linkable arg0) {
 		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<GuiLink> ret = new HashSet<GuiLink>();
@@ -88,6 +91,7 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
+	@Override
 	public Collection<GuiLink> getOutEdges(Linkable arg0) {
 		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<GuiLink> ret = new HashSet<GuiLink>();
@@ -103,6 +107,7 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
+	@Override
 	public Collection<Linkable> getPredecessors(Linkable arg0) {
 		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
@@ -118,6 +123,7 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
+	@Override
 	public Linkable getSource(GuiLink arg0) {
 		if (arg0.getType() == 'S') // If the GuiLink is type Source
 			return arg0.getLink().getSource();
@@ -125,6 +131,7 @@ public class NodeStructureGuiAdapter extends
 			return arg0.getLink();
 	}
 
+	@Override
 	public Collection<Linkable> getSuccessors(Linkable arg0) {
 		Set<Link> links = nodeStructure.getLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
@@ -140,6 +147,7 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
+	@Override
 	public boolean isDest(Linkable arg0, GuiLink arg1) {
 		if (arg1.getType() == 'S') {
 			return arg1.getLink().equals(arg0);
@@ -148,6 +156,7 @@ public class NodeStructureGuiAdapter extends
 		}
 	}
 
+	@Override
 	public boolean isSource(Linkable arg0, GuiLink arg1) {
 		if (arg1.getType() == 'D') {
 			return arg1.getLink().equals(arg0);
@@ -156,14 +165,17 @@ public class NodeStructureGuiAdapter extends
 		}
 	}
 
+	@Override
 	public boolean addVertex(Linkable arg0) {
 		return false;
 	}
 
+	@Override
 	public boolean containsEdge(GuiLink arg0) {
 		return getEdges().contains(arg0);
 	}
 
+	@Override
 	public boolean containsVertex(Linkable arg0) {
 		if (arg0 instanceof Node) {
 			return nodeStructure.containsNode((Node) arg0);
@@ -172,10 +184,12 @@ public class NodeStructureGuiAdapter extends
 		}
 	}
 
+	@Override
 	public int getEdgeCount() {
 		return nodeStructure.getLinkCount() * 2;
 	}
 
+	@Override
 	public Collection<GuiLink> getEdges() {
 		Collection<Link> links = nodeStructure.getLinks();
 		Set<GuiLink> ret = new HashSet<GuiLink>();
@@ -186,6 +200,7 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
+	@Override
 	public Collection<GuiLink> getIncidentEdges(Linkable arg0) {
 		Collection<GuiLink> ret = getInEdges(arg0);
 		if (ret == null)
@@ -197,6 +212,7 @@ public class NodeStructureGuiAdapter extends
 
 	}
 
+	@Override
 	public Collection<Linkable> getNeighbors(Linkable arg0) {
 		Collection<Linkable> res = getPredecessors(arg0);
 		if (res != null)
@@ -210,18 +226,22 @@ public class NodeStructureGuiAdapter extends
 		return res;
 	}
 
+	@Override
 	public int getVertexCount() {
 		return nodeStructure.getLinkableMap().size();
 	}
 
+	@Override
 	public Collection<Linkable> getVertices() {
 		return nodeStructure.getLinkableMap().keySet();
 	}
 
+	@Override
 	public boolean removeEdge(GuiLink arg0) {
 		return false;
 	}
 
+	@Override
 	public boolean removeVertex(Linkable arg0) {
 		return false;
 	}

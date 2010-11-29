@@ -14,6 +14,7 @@ public class DefaultExciteStrategy implements ExciteStrategy {
 	@SuppressWarnings("unused")
 	private Map<String, ? extends Object> params;
 
+	@Override
 	public void initStrategy(Map<String, ? extends Object> params) {
 		this.params=params;
 	}
