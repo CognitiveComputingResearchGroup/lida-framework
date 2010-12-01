@@ -46,7 +46,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module != null) {
 			if (module instanceof Workspace
 					&& module.getModuleName() == ModuleName.Workspace) {

@@ -38,7 +38,7 @@ public interface AttentionCodelet extends Codelet{
 	public void setHasSoughtContentStrategy(CheckForContentStrategy strategy);
 	
 	/**
-	 * 
+	 * Gets the strategy this attention codelet uses to check for the presence of its sought content.
 	 */
 	public CheckForContentStrategy getHasSoughtContentStrategy();
 

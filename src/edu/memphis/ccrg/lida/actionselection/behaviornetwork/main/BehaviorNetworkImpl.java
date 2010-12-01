@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidationThresholdReducer;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
@@ -53,7 +53,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
  * 
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
-		ActionSelection, ProceduralMemoryListener, BroadcastListener {
+		ActionSelection, ProceduralMemoryListener {
 	
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
@@ -100,7 +100,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Function by which the behavior activation threshold is reduced
 	 */
-	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
+	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidateThresholdReducer();
 
 	/**
 	 * Strategy to specify the way a winning behavior is chosen.
@@ -240,9 +240,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	public void receiveBehavior(Behavior newBehavior) {
 		indexBehaviorByElements(newBehavior,
 				newBehavior.getContextConditions(), behaviorsByContextCondition);
-		indexBehaviorByElements(newBehavior, newBehavior.getAddingList(),
+		indexBehaviorByElements(newBehavior, newBehavior.getAddingList().getNodes(),
 				behaviorsByAddingItem);
-		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(),
+		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList().getNodes(),
 				behaviorsByDeletingItem);
 
 		behaviors.put(newBehavior.getId(), newBehavior);
@@ -346,7 +346,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * 
 	 */
 	private void spreadActivationToSuccessors(Behavior behavior) {
-		for (Node addProposition : behavior.getAddingList()) {
+		for (Node addProposition : behavior.getAddingList().getNodes()) {
 			Set<Behavior> successors = getSuccessors(addProposition);
 			if (successors != null) {
 				for (Behavior successor : successors) {
@@ -452,7 +452,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	public void passActivationFromBroadcast() {
 		for (Node broadcastNode : currentBroadcast.getNodes()) {
-			if (broadcastNode.getGoalDegree() < GOAL_THRESHOLD) {
+			if (broadcastNode.getDesirability() < GOAL_THRESHOLD) {
 				if (behaviorsByContextCondition.containsKey(broadcastNode)) {
 					passActivationToContextOrResult(broadcastNode, behaviorsByContextCondition, ConditionSet.CONTEXT);
 				}
@@ -570,10 +570,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		for (Node precondition : behavior.getContextConditions())
 			behaviorsByContextCondition.get(precondition).remove(behavior);
 
-		for (Node addItem : behavior.getAddingList())
+		for (Node addItem : behavior.getAddingList().getNodes())
 			behaviorsByAddingItem.get(addItem).remove(behavior);
 
-		for (Node deleteItem : behavior.getDeletingList())
+		for (Node deleteItem : behavior.getDeletingList().getNodes())
 			behaviorsByDeletingItem.get(deleteItem).remove(behavior);
 
 		behaviors.remove(behavior.getId());

@@ -172,7 +172,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 
 	@Override
-	public synchronized void receivePreafference(Collection<Node> addList, Collection<Node> deleteList) {
+	public synchronized void receivePreafference(NodeStructure addList, NodeStructure deleteList) {
 		// Use preafferent signal
 	}
 

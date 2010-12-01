@@ -24,6 +24,8 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private LinkCategory category;
 	protected PamLink groundingPamLink;
 	
+	protected Map<String, ?> parameters;
+	
 	public LinkImpl() {
 	}
 
@@ -135,8 +137,38 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		groundingPamLink = l;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 */
 	@Override
-	public void initLinkable(Map<String, Object> params) {
-	}	
+	public void init(Map<String, ?> params) {
+		this.parameters = params;
+		init();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 */
+	@Override
+	public void init() {
+	}
+	
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (parameters != null) {
+			value = parameters.get(name);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
+	}
 
 }

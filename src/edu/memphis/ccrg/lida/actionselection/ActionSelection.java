@@ -12,15 +12,15 @@ import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
  * Interface for the action selection module
  * @author Ryan J McCall
  *
  */
-public interface ActionSelection extends LidaModule, TriggerListener, Saveable {
+public interface ActionSelection extends LidaModule,BroadcastListener, TriggerListener, Saveable {
 	
-	//TODO remove??
 	/**
 	 * Those classes that should be receiving selected actions from Action Selection
 	 * @param listener listener of this action selection

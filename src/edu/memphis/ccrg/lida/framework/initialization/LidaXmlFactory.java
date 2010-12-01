@@ -31,6 +31,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
@@ -223,7 +224,7 @@ public class LidaXmlFactory implements LidaFactory {
 	private void associateModules() {
 		ModuleName moduleName = ModuleName.NoModule;
 		for (Object[] vals : toAssociate) {
-			Initializable ini = (Initializable) vals[0];
+			FullyInitializable ini = (FullyInitializable) vals[0];
 			String assocModule = (String) vals[1];
 			try {
 				moduleName = Enum.valueOf(ModuleName.class, assocModule);
@@ -234,7 +235,7 @@ public class LidaXmlFactory implements LidaFactory {
 			}
 			LidaModule module=lida.getSubmodule(moduleName);
 		
-			ini.setAssociatedModule(module);
+			ini.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
 			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
 		}//for
 	}

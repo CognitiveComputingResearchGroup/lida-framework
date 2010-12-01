@@ -10,7 +10,6 @@
  */
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.Learnable;
 
 /**
@@ -20,9 +19,5 @@ import edu.memphis.ccrg.lida.framework.shared.Learnable;
  */
 public interface Codelet extends LidaTask, Learnable{
 	
-	/**
-	 * @param module - module related to this codelet
-	 */
-	public void setAssociatedModule(CodeletModuleUsage usage, LidaModule module);
 	
 }

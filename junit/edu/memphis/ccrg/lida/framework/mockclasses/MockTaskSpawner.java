@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 import java.util.Collection;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -67,12 +66,6 @@ public class MockTaskSpawner implements TaskSpawner {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setAssociatedModule(LidaModule module) {
 		// TODO Auto-generated method stub
 		
 	}

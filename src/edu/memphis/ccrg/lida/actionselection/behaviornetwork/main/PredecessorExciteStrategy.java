@@ -3,8 +3,9 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 
-public class PredecessorExciteStrategy implements ExciteStrategy {
+public class PredecessorExciteStrategy extends StrategyImpl implements ExciteStrategy {
 
 	@Override
 	public double excite(double currentActivation, double excitation, Object... params) {
@@ -28,7 +29,7 @@ public class PredecessorExciteStrategy implements ExciteStrategy {
 	}
 
 	@Override
-	public void initStrategy(Map<String, ? extends Object> parameters) {
+	public void init(Map<String, ?> parameters) {
 		// TODO Auto-generated method stub
 
 	}

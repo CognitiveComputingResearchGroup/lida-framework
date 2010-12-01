@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 public class MockActionSelectionImpl implements ActionSelection {
 	
@@ -122,7 +123,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -141,6 +142,18 @@ public class MockActionSelectionImpl implements ActionSelection {
 
 	@Override
 	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void learn() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveBroadcast(BroadcastContent bc) {
 		// TODO Auto-generated method stub
 		
 	}

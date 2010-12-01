@@ -10,12 +10,14 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.io.Serializable;
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+
 /**
  * A object that can have links attached to it.
  * 
  * @author Javier Snaider
  */
-public interface Linkable extends Serializable {
+public interface Linkable extends Initializable, Serializable {
 
 	/**
 	 * Readable label
@@ -27,10 +29,5 @@ public interface Linkable extends Serializable {
 	 */
 	public ExtendedId getExtendedId();
 	
-	/**
-	 * Called when Linkable is created
-	 * @See NodeFactory
-	 * @param params configuration parameters
-	 */
-	public void initLinkable(Map<String,Object> params);
+
 }

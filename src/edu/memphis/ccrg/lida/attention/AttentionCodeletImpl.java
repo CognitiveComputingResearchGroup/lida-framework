@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
-import edu.memphis.ccrg.lida.framework.tasks.CodeletModuleUsage;
+import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -34,6 +34,7 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	protected WorkspaceBuffer currentSituationalModel;
 	protected GlobalWorkspace globalWorkspace;
 	private CheckForContentStrategy checkForContentStrategy = new BasicCheckForContentStrategy();
+	private GetContentStrategy getStrategy = new BasicGetContentStrategy();
 	
 	/**
 	 * 
@@ -50,15 +51,15 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	}
     
 	@Override
-	public void setAssociatedModule(CodeletModuleUsage usage, LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int usage) {
 		switch(usage){
-			case TO_READ_FROM:
+			case ModuleUsage.TO_READ_FROM:
 				if(module instanceof WorkspaceBuffer){
 					currentSituationalModel = (WorkspaceBuffer) module;
 				}
 				break;
 				
-			case TO_WRITE_TO:
+			case ModuleUsage.TO_WRITE_TO:
 				if (module instanceof GlobalWorkspace){
 					globalWorkspace = (GlobalWorkspace) module;
 				}
@@ -69,7 +70,7 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
-			NodeStructure csmContent = getCsmContent();
+			NodeStructure csmContent = getWorkspaceContent();
 			if (csmContent != null){
 				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, getActivation()));
 				logger.log(Level.FINE, this + " adds coalition", LidaTaskManager.getActualTick());
@@ -84,11 +85,10 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	private boolean hasSoughtContent(WorkspaceBuffer buffer) {
 		return checkForContentStrategy.hasSoughtContent(buffer, soughtContent);
 	}
-	
-	private GetContentStrategy getStrategy = new BasicGetContentStrategy();
 
-	private NodeStructure getCsmContent() {
-		return getStrategy.getCsmContent(currentSituationalModel, soughtContent);
+	//TODO make abstract and include in interface
+	private NodeStructure getWorkspaceContent() {
+		return getStrategy.getWorkspaceContent(currentSituationalModel, soughtContent);
 	}
 
 	/**

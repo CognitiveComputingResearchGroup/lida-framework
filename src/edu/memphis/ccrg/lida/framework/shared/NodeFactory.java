@@ -292,7 +292,7 @@ public class NodeFactory {
 			
 			setActivatibleStrategies(decayStrategy, exciteStrategy, l);	
 
-			l.initLinkable(linkDef.getParams());
+			l.init(linkDef.getParams());
 			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
@@ -442,7 +442,7 @@ public class NodeFactory {
 			n.setActivation(activation);
 			
 			setActivatibleStrategies(decayStrategy, exciteStrategy, n);	
-			n.initLinkable(nodeDef.getParams());
+			n.init(nodeDef.getParams());
 			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager

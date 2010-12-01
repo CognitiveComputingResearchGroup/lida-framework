@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import java.util.Map;
 
 
-public class LinearDecayStrategy implements DecayStrategy{
+public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy{
 
 	    
 	    /** The default slope (m = 1). */
@@ -25,8 +25,6 @@ public class LinearDecayStrategy implements DecayStrategy{
 	    /** The y intercept of this linear curve. */
 	    private double b;
 
-		@SuppressWarnings("unused")
-		private Map<String, ? extends Object> params;
 	    
 	    /** Creates a new instance of LinearCurve. Values for slope and intercept
 	     * are set to the default ones.
@@ -48,8 +46,9 @@ public class LinearDecayStrategy implements DecayStrategy{
 	    }
 	    
 		@Override
-		public void initStrategy(Map<String, ? extends Object> params) {
-			this.params=params;
+		public void init() {
+			m = (Integer) getParam("m",DEFAULT_M);
+			b = (Integer) getParam("b",DEFAULT_B);
 		}
 
 		@Override

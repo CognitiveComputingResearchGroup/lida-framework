@@ -24,10 +24,9 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private String label = "";
 	private String factoryName;
 	
-	//TODO change to set of attribute nodes
-	private double goalDegree;
-	
+	private double desirability;
 	protected PamNode groundingPamNode;
+	protected Map<String, ?> parameters;
 	
 	public NodeImpl(){
 		super();
@@ -38,10 +37,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.id = n.id;
 		this.eId = n.eId;
 		this.groundingPamNode = n.groundingPamNode;
-	}
-	
-	@Override
-	public void initLinkable(Map<String, Object> params) {
 	}
 	
 	@Override
@@ -117,13 +112,47 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	@Override
-	public double getGoalDegree() {
-		return goalDegree;
+	public double getDesirability() {
+		return desirability;
 	}
 
 	@Override
-	public void setGoalDegree(double degree) {
-		this.goalDegree = degree;
+	public void setDesirability(double degree) {
+		this.desirability = degree;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 */
+	@Override
+	public void init(Map<String, ?> params) {
+		this.parameters = params;
+		init();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 */
+	@Override
+	public void init() {
+	}
+	
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (parameters != null) {
+			value = parameters.get(name);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
 	}
 
 }//class

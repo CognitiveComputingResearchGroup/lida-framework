@@ -7,12 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.util.Collection;
 
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface PreafferenceListener {
 	
-	public void receivePreafference(Collection<Node> addSet, Collection<Node> deleteSet);
+	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet);
 
 }

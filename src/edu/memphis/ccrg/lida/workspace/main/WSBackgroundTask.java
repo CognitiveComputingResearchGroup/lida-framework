@@ -70,7 +70,7 @@ public class WSBackgroundTask extends LidaTaskImpl {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module instanceof Workspace
 				&& module.getModuleName() == ModuleName.Workspace) {
 			workspace = (Workspace) module;

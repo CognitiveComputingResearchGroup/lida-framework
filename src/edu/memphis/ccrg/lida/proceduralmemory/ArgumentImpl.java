@@ -26,6 +26,7 @@ public class ArgumentImpl implements Argument {
 
 	private int argumentId;
 	private Node node;
+	protected Map<String, ?> parameters;
 
 	public ArgumentImpl(long argumentId) {
 		if (argumentId <= 0) {
@@ -135,15 +136,6 @@ public class ArgumentImpl implements Argument {
 			return node.getLabel();
 		}
 		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.Linkable#init(java.util.Map)
-	 */
-	@Override
-	public void initLinkable(Map<String, Object> params) {
 	}
 
 	/*
@@ -303,19 +295,53 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public double getGoalDegree() {
-		return node.getGoalDegree();
+	public double getDesirability() {
+		return node.getDesirability();
 	}
 
 	@Override
-	public void setGoalDegree(double degree) {
-		node.setGoalDegree(degree);
+	public void setDesirability(double degree) {
+		node.setDesirability(degree);
 		
 	}
 
 	@Override
 	public ExtendedId getExtendedId() {
 		return node.getExtendedId();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 */
+	@Override
+	public void init(Map<String, ?> params) {
+		this.parameters = params;
+		init();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 */
+	@Override
+	public void init() {
+	}
+	
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (parameters != null) {
+			value = parameters.get(name);
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
 	}
 
 }

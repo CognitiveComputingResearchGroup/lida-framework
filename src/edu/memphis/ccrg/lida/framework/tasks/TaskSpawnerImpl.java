@@ -200,8 +200,4 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		return value;
 	}
 
-	@Override
-	public void setAssociatedModule(LidaModule module) {
-	}
-
 }// class

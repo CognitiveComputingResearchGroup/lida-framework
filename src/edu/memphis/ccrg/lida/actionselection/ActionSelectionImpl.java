@@ -28,6 +28,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
@@ -259,6 +260,18 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 				start();
 				setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 			}
+		}
+
+		@Override
+		public void learn() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void receiveBroadcast(BroadcastContent bc) {
+			// TODO Auto-generated method stub
+			
 		}
 
 }//class

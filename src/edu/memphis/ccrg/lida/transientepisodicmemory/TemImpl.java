@@ -117,7 +117,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module != null) {
 			if (module instanceof PerceptualAssociativeMemory
 					&& module.getModuleName() == ModuleName.PerceptualAssociativeMemory) {

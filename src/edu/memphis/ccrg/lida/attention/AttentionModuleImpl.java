@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.CodeletModuleUsage;
+import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -42,7 +42,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module != null) {
 			if (module instanceof Workspace
 					&& module.getModuleName() == ModuleName.Workspace) {
@@ -68,8 +68,8 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	public AttentionCodelet getNewAttentionCodelet() {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, defaultCodeletTicksPerStep, defaultCodeletActivation, params);
-		codelet.setAssociatedModule(CodeletModuleUsage.TO_WRITE_TO, globalWorkspace);
-		codelet.setAssociatedModule(CodeletModuleUsage.TO_READ_FROM, csm);
+		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
+		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		return codelet;
 	}// method
 	
@@ -79,8 +79,9 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	}
 
 	@Override
-	public void receivePreafference(Collection<Node> addSet, Collection<Node> deleteSet) {
-		// TODO Auto-generated method stub
+	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet) {
+		// TODO Recive results from Action Selection and create Attention Codelets. We need
+		// to figure out how to create coalitions and detect that somsething was "deleted"
 	}
 	
 	@Override
@@ -99,14 +100,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }// class

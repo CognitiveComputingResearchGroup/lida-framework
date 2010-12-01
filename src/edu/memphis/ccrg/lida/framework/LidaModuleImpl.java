@@ -125,7 +125,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 	}
 
 }

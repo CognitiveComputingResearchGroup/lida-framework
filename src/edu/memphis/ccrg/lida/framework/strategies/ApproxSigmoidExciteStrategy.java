@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Daqi Dong
  *
  */
-public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
+public class ApproxSigmoidExciteStrategy extends StrategyImpl implements ExciteStrategy{
 
 	private double[] excitationArray = new double[] /* Fomula is T= ln(y/(1-y)); Size is 99; Granularity is 0.1^3 */
 	                   {-4.595, -3.892, -3.476, -3.178, -2.944, -2.752, -2.587, -2.442, -2.314, -2.197,  /* 00 ~ 09 */
@@ -41,8 +41,8 @@ public class ApproxSigmoidExciteStrategy implements ExciteStrategy{
 	private static final double STANDARD_M = 0.5;
 	
 	@Override
-	public void initStrategy(Map<String, ? extends Object> parameters) {
-		defaultM = (Double)parameters.get("m");
+	public void init() {
+		defaultM = (Integer) getParam("m",STANDARD_M);
 	}
 
 	@Override

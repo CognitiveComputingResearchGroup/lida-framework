@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.concurrent.Callable;
 
-import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 
 
@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.framework.shared.Activatible;
  *
  */
  
-public interface LidaTask extends Callable<LidaTask>, Activatible, Initializable{
+public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitializable{
 	
 	/**
 	 * returns the LidaTask's status code. It must be one of the static members of this interface. 

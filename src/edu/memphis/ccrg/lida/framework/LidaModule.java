@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework;
 
-import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * @author Javier Snaider, Ryan McCall
  *
  */
-public interface LidaModule extends Initializable{
+public interface LidaModule extends FullyInitializable{
 	
 	/**
 	 * @return ModuleName

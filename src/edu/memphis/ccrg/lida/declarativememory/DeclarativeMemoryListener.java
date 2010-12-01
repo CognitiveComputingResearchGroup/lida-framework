@@ -8,9 +8,10 @@
 package edu.memphis.ccrg.lida.declarativememory;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface DeclarativeMemoryListener extends ModuleListener{
 	
-	public void receivenDMContent(DeclarativeMemoryContent association);
+	public void receivenDMContent(NodeStructure association);
 
 }

@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * Selector iterates and chooses competitor with max alpha
@@ -44,8 +45,8 @@ public class BasicSelector implements Selector{
         double maxActivation = 0.0;
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
-        //TODO Log this
-       // p("\nStarting selection, num candidates: " + candidateBehaviors.size());
+        
+       logger.log(Level.FINEST,"\nStarting selection, num candidates: " + candidateBehaviors.size(),LidaTaskManager.getActualTick());
       
         for(Behavior current: candidateBehaviors){
         	

@@ -203,13 +203,13 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	@Override
-	public Collection<Node> getAddingList() {
-		return addingList.getNodes();
+	public NodeStructure getAddingList() {
+		return addingList;
 	}
 
 	@Override
-	public Collection<Node> getDeletingList() {
-		return deletingList.getNodes();
+	public NodeStructure getDeletingList() {
+		return deletingList;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
-import edu.memphis.ccrg.lida.framework.tasks.CodeletModuleUsage;
+import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
@@ -43,8 +43,8 @@ public class AttentionModuleInitializer implements Initializer {
 //		AttentionCodelet ac = driver.getNewAttentionCodelet();
 		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet("BasicAttention" , 20, 1.0, null);
 		//TODO getCodelet not working
-		ac.setAssociatedModule(CodeletModuleUsage.TO_WRITE_TO, gw);
-		ac.setAssociatedModule(CodeletModuleUsage.TO_READ_FROM, csm);
+		ac.setAssociatedModule(gw, ModuleUsage.TO_WRITE_TO);
+		ac.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		driver.runAttentionCodelet(ac);
 	}
 

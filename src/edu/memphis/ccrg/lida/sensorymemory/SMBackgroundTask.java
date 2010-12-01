@@ -25,7 +25,7 @@ public class SMBackgroundTask extends LidaTaskImpl {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module) {
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module instanceof SensoryMemory) {
 			sm = (SensoryMemory) module;
 		}

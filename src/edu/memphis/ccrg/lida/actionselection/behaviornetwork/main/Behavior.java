@@ -12,6 +12,7 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
@@ -63,14 +64,14 @@ public interface Behavior extends Activatible {
 	public void deactivateAllContextConditions();
 	
 	//Add list
-	public Collection<Node> getAddingList();
+	public NodeStructure getAddingList();
 	public boolean addToAddingList(Node condition);
 	public boolean containsAddingItem(Node commonNode);
 	public double getAddingListCount();
 	public void updateAddingCondition(Node broadcastNode);
 	
 	//Delete list
-	public Collection<Node> getDeletingList();	
+	public NodeStructure getDeletingList();	
     public boolean addToDeletingList(Node deleteCondition);
     public boolean containsDeletingItem(Node commonNode);
     public double getDeletingListCount();

@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Ryan J McCall
  *
  */
-public class SigmoidExciteStrategy implements ExciteStrategy{
+public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrategy{
 
 	private final int DEFAULT_M = 10;
 	private final int DEFAULT_B = 0;
@@ -17,9 +17,9 @@ public class SigmoidExciteStrategy implements ExciteStrategy{
 	private int b = DEFAULT_B;
 	
 	@Override
-	public void initStrategy(Map<String, ? extends Object> parameters) {
-		m = (Integer) parameters.get("m");
-		b = (Integer) parameters.get("b");
+	public void init() {
+		m = (Integer) getParam("m",DEFAULT_M);
+		b = (Integer) getParam("b",DEFAULT_B);
 	}
 
 	@Override

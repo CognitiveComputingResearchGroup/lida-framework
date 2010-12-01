@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public class BasicGetContentStrategy implements GetContentStrategy {
 
 	@Override
-	public NodeStructure getCsmContent(WorkspaceBuffer buffer, NodeStructure soughtContent) {
+	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer, NodeStructure soughtContent) {
 		return (NodeStructure) buffer.getModuleContent();
 	}
 
