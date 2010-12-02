@@ -47,8 +47,8 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy{
 	    
 		@Override
 		public void init() {
-			m = (Integer) getParam("m",DEFAULT_M);
-			b = (Integer) getParam("b",DEFAULT_B);
+			m = (Double) getParam("m",DEFAULT_M);
+			b = (Double) getParam("b",DEFAULT_B);
 		}
 
 		@Override

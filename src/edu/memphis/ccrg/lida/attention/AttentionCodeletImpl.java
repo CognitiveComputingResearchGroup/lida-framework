@@ -35,6 +35,10 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 	
 	protected NodeStructure soughtContent;
 	
+	public AttentionCodeletImpl(){
+		super();
+	}
+	
 	@Override
 	public void init(){
 	}

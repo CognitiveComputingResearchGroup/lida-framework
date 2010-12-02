@@ -9,6 +9,10 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	
+	public BasicAttentionCodeletImpl(){
+		super();
+	}
+	
 	@Override
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();

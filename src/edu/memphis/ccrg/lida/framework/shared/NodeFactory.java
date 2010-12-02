@@ -547,14 +547,14 @@ public class NodeFactory {
 			
 			
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating codelet.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
 					.getActualTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating codelet.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
 					.getActualTick());
 		} catch (ClassNotFoundException e) {
 			
-			logger.log(Level.WARNING, "Error creating codelet.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
 					.getActualTick());
 		}
 		return cod;
