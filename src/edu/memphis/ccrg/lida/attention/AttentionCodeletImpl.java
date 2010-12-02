@@ -27,27 +27,16 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  * 
  */
-public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodelet {
+public abstract class AttentionCodeletImpl extends CodeletImpl implements AttentionCodelet {
 	
 	private static Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
-	protected NodeStructure soughtContent;
 	protected WorkspaceBuffer currentSituationalModel;
 	protected GlobalWorkspace globalWorkspace;
-	private CheckForContentStrategy checkForContentStrategy = new BasicCheckForContentStrategy();
-	private GetContentStrategy getStrategy = new BasicGetContentStrategy();
 	
-	/**
-	 * 
-	 */
-	public AttentionCodeletImpl(){
-		super();
-	}
+	protected NodeStructure soughtContent;
 	
 	@Override
 	public void init(){
-		//"constructor" for factory-created objects
-		//this class inherits parameters from LidaTaskImpl.  already set when factory creates this object
-//		double tr = (Double)super.getParam("threshold", .5);
 	}
     
 	@Override
@@ -70,26 +59,19 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
-			NodeStructure csmContent = getWorkspaceContent();
-			if (csmContent != null){
+			NodeStructure csmContent = getWorkspaceContent(currentSituationalModel);
+			if (csmContent.getLinkableCount() > 0){
 				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, getActivation()));
 				logger.log(Level.FINE, this + " adds coalition", LidaTaskManager.getActualTick());
 			}
 		}
 	}
 	
-	/**
-  	 * Returns true if specified WorkspaceBuffer contains the content which the codelet seeks.
-  	 * @param buffer the WorkspaceBuffer to be checked for content
-     */
-	private boolean hasSoughtContent(WorkspaceBuffer buffer) {
-		return checkForContentStrategy.hasSoughtContent(buffer, soughtContent);
-	}
+	@Override
+	public abstract boolean hasSoughtContent(WorkspaceBuffer buffer);
 
-	//TODO make abstract and include in interface
-	private NodeStructure getWorkspaceContent() {
-		return getStrategy.getWorkspaceContent(currentSituationalModel, soughtContent);
-	}
+	@Override
+	public abstract NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
 
 	/**
 	 * @return the sought content
@@ -109,14 +91,4 @@ public class AttentionCodeletImpl extends CodeletImpl implements AttentionCodele
 		return "AttentionCodelet-"+ getTaskId();
 	}
 
-	@Override
-	public CheckForContentStrategy getHasSoughtContentStrategy() {
-		return checkForContentStrategy;
-	}
-
-	@Override
-	public void setHasSoughtContentStrategy(CheckForContentStrategy strategy) {
-		checkForContentStrategy = strategy;
-	}
-
-}// class
+}

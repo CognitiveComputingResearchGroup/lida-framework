@@ -7,10 +7,10 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
-public class BasicCheckForContentStrategy implements CheckForContentStrategy {
-
+public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
+	
 	@Override
-	public boolean hasSoughtContent(WorkspaceBuffer buffer,	NodeStructure soughtContent) {
+	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
@@ -23,6 +23,11 @@ public class BasicCheckForContentStrategy implements CheckForContentStrategy {
 				return false;
 
 		return true;
+	}
+	
+	@Override
+	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer) {
+		return ((NodeStructure) buffer.getModuleContent()).copy();
 	}
 
 }

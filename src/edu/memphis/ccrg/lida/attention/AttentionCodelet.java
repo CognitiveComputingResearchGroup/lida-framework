@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.attention;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * The interface for LIDA's AttentionCodelet.
@@ -32,14 +33,15 @@ public interface AttentionCodelet extends Codelet{
 	public NodeStructure getSoughtContent();
 	
 	/**
-	 * How this codelet determines whether its sought content is present in the csm
-	 * @param strategy CheckForContentStrategy
-	 */
-	public void setHasSoughtContentStrategy(CheckForContentStrategy strategy);
-	
+  	 * Returns true if specified WorkspaceBuffer contains the content which the codelet seeks.
+  	 * @param buffer the WorkspaceBuffer to be checked for content
+     */
+	public boolean hasSoughtContent(WorkspaceBuffer buffer);
+
 	/**
-	 * Gets the strategy this attention codelet uses to check for the presence of its sought content.
+	 * Returns sought content and related content from specified WorkspaceBuffer
+	 * @return
 	 */
-	public CheckForContentStrategy getHasSoughtContentStrategy();
+	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
 
 }
