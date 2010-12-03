@@ -18,10 +18,11 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  *
  */
 public interface FullyInitializable extends Initializable {
+	
 	/**
 	 * Sets an associated LidaModule.
 	 * @param module the module to be associated.
-    * @param moduleUsage how module will be used @see ModuleUsage
+     * @param moduleUsage how module will be used @see ModuleUsage
 	 */
 	public void setAssociatedModule(LidaModule module, int moduleUsage);
 	
