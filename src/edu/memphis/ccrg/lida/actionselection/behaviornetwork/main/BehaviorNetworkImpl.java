@@ -38,7 +38,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
