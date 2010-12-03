@@ -224,6 +224,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public Link addLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory category, double activation) {
+		//TODO: one must be a node
 		Linkable source = getLinkable(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
