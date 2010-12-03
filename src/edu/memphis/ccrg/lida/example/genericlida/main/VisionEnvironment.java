@@ -48,7 +48,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	}
 
 	@Override
-	public synchronized void receiveAction(LidaAction action) {
+	public synchronized void processAction(LidaAction action) {
+		//TODO 
 		actionContent = action;
 		actionHasChanged = true;
 	}

@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.environment;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -48,10 +47,4 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 	@Override
 	public abstract String toString();
 	
-	
-	@Override
-	public void receiveAction(LidaAction a) {
-		// TODO Auto-generated method stub		
-	}
-		
 }//class

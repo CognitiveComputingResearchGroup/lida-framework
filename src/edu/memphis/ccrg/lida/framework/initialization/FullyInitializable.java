@@ -21,7 +21,7 @@ public interface FullyInitializable extends Initializable {
 	/**
 	 * Sets an associated LidaModule.
 	 * @param module the module to be associated.
-	 * @param moduleUsage TODO
+    * @param moduleUsage how module will be used @see ModuleUsage
 	 */
 	public void setAssociatedModule(LidaModule module, int moduleUsage);
 	

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -21,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
 
 	private Map<Long, LidaAction> actionMap = new HashMap<Long, LidaAction>();
+	private Environment environment;
 	
 	public SensoryMotorMemoryImpl() {
 		super(ModuleName.SensoryMotorMemory);
@@ -31,6 +34,14 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	@Override
 	public void addSensoryMotorListener(SensoryMotorListener l) {
 		listeners.add(l);		
+	}
+	
+	@Override
+	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+		if(module instanceof Environment){
+			environment = (Environment) module;
+		}
+			
 	}
 
 	@Override
@@ -58,6 +69,7 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 
 	@Override
 	public void executeAction(LidaAction action) {
+		environment.processAction(action);
 		for(SensoryMotorListener l: listeners)
 			l.receiveAction(action);		
 	}
