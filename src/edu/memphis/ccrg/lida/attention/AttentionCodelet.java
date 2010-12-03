@@ -40,7 +40,6 @@ public interface AttentionCodelet extends Codelet{
 
 	/**
 	 * Returns sought content and related content from specified WorkspaceBuffer
-	 * @return
 	 */
 	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
 

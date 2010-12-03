@@ -13,9 +13,10 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
-import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -37,6 +38,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 	
 	public AttentionCodeletImpl(){
 		super();
+		soughtContent =new NodeStructureImpl();
 	}
 	
 	@Override
