@@ -8,7 +8,7 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

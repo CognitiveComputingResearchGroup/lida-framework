@@ -97,8 +97,9 @@ public abstract class LidaModuleImpl implements LidaModule {
 	}
 
 	/**
-	 * Do not call this method. Decay the module and all the submodules. Subclasses must call this
-	 * implementation in order to have all submodules decayed.
+	 * Framework users should not call this method. It will be called by the task manager.
+	 * Decays this module and all its submodules. Subclasses overriding this method should
+	 *  call this implementation in order to have all submodules decayed.
 	 * 
 	 * @param ticks
 	 *            number of ticks to decay.
@@ -114,11 +115,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	public void setModuleName(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleType()
-	 */
+
 	@Override
 	public ModuleName getModuleName() {
 		return moduleName;

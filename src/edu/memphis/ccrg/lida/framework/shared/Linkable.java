@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 

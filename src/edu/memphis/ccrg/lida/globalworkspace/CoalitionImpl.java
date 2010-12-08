@@ -7,11 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
 public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	

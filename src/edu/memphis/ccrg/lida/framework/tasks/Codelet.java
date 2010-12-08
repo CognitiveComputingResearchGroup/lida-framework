@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.shared.Learnable;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 /**
  * 

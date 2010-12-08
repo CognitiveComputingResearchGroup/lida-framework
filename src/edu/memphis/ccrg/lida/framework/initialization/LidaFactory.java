@@ -18,6 +18,6 @@ import edu.memphis.ccrg.lida.framework.Lida;
  */
 public interface LidaFactory {
 
-	public abstract Lida getLida(Properties properties);
+	public Lida getLida(Properties properties);
 
 }

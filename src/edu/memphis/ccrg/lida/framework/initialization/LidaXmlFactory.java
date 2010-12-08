@@ -61,7 +61,7 @@ public class LidaXmlFactory implements LidaFactory {
 		String fileName = properties.getProperty("lida.factory.data",DEFAULT_FILE_NAME);
 		parseXmlFile(fileName);
 		parseDocument();
-		lida.start();
+		lida.init();
 		return lida;
 	}
 

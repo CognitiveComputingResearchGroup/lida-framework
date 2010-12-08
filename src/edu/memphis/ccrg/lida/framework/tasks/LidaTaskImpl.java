@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
 /**
  * This class implements the LidaTask Interface. This class should be used as the base class for all LidaTasks.

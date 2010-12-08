@@ -1,7 +1,7 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.shared.Learnable;
-import edu.memphis.ccrg.lida.framework.shared.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 

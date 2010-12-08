@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import java.util.concurrent.Callable;
 
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
-import edu.memphis.ccrg.lida.framework.shared.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 
 /**

@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -35,7 +36,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#getTotalActivation()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivation()}.
 	 */
 	@Test
 	public void testGetTotalActivation() {
@@ -46,7 +47,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#decayBaseLevelActivation(long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decayBaseLevelActivation(long)}.
 	 */
 	@Test
 	public void testDecayBaseLevelActivation() {
@@ -60,7 +61,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#getBaseLevelExciteStrategy()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getBaseLevelExciteStrategy()}.
 	 */
 	@Test
 	public void testGetBaseLevelExciteStrategy() {
@@ -71,7 +72,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
 	 */
 	@Test
 	public void testSetBaseLevelExciteStrategy() {
@@ -82,7 +83,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#getBaseLevelDecayStrategy()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getBaseLevelDecayStrategy()}.
 	 */
 	@Test
 	public void testGetBaseLevelDecayStrategy() {
@@ -93,7 +94,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
 	 */
 	@Test
 	public void testSetBaseLevelDecayStrategy() {
@@ -104,7 +105,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#getBaseLevelActivation()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getBaseLevelActivation()}.
 	 */
 	@Test
 	public void testGetBaseLevelActivation() {
@@ -114,7 +115,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#reinforceBaseLevelActivation(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#reinforceBaseLevelActivation(double)}.
 	 */
 	@Test
 	public void testReinforceBaseLevelActivation() {
@@ -127,7 +128,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.LearnableImpl#setBaseLevelActivation(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelActivation(double)}.
 	 */
 	@Test
 	public void testSetBaseLevelActivation() {

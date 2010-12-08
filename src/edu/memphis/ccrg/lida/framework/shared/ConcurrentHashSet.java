@@ -7,6 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Thread-safe HashSet based on a ConcurrentHashMap
+ * @author Ryan
+ *
+ * @param <E> The generic type to use in this HashSet
+ */
 public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, java.io.Serializable{
 
 	static final long serialVersionUID = 3313091100336870355L;

@@ -32,7 +32,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	 * @see edu.memphis.ccrg.lida.framework.Lida#start()
 	 */
 	@Override
-	public void start(){
+	public void init(){
 		taskManager.setDecayingModules(getSubmodules().values());
 		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
 	}

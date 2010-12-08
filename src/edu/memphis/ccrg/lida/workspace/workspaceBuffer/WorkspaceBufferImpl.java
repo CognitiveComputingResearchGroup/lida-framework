@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
@@ -46,6 +46,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	 */
 	@Override
 	public void decayModule(long ticks){
+		super.decayModule(ticks);
 		Collection<Linkable> linkables = bufferContent.getLinkables();
 		for(Linkable linkable: linkables){
 			Activatible activatible = (Activatible) linkable;

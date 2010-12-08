@@ -83,7 +83,7 @@ public class StrategyDef {
 	 * @param className Qualified name
 	 * @param name Strategy name
 	 * @param params optional parameters
-	 * @param type TODO
+	 * @param type kind of strategy, e.g. decay, excite
 	 * @param flyWeight Will there be multiple copies of this strategy or just one shared?
 	 */
 	public StrategyDef(String className, String name,

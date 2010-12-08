@@ -10,9 +10,9 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.Collection;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.shared.Activatible;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 

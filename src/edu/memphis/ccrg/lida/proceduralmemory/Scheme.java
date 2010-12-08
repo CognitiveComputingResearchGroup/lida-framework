@@ -10,8 +10,8 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 /**
  * @author Ryan J. McCall

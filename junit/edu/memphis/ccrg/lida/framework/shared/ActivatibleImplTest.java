@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -38,7 +39,7 @@ public class ActivatibleImplTest extends TestCase{
 	}	
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#ActivatibleImpl(double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#ActivatibleImpl(double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
 	 */
 	@Test
 	public void testActivatibleImplDoubleExciteStrategyDecayStrategy() {
@@ -53,7 +54,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#decay(long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#decay(long)}.
 	 */
 	@Test
 	public void testDecay() {
@@ -66,7 +67,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#excite(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#excite(double)}.
 	 */
 	@Test
 	public void testExcite() {
@@ -79,7 +80,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#getActivation()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getActivation()}.
 	 */
 	@Test
 	public void testGetActivation() {
@@ -88,7 +89,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#getDecayStrategy()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getDecayStrategy()}.
 	 */
 	@Test
 	public void testGetDecayStrategy() {
@@ -100,7 +101,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#getExciteStrategy()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getExciteStrategy()}.
 	 */
 	@Test
 	public void testGetExciteStrategy() {
@@ -112,7 +113,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#setActivation(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#setActivation(double)}.
 	 */
 	@Test
 	public void testSetActivation() {
@@ -121,7 +122,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#setDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#setDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
 	 */
 	@Test
 	public void testSetDecayStrategy() {
@@ -133,7 +134,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#setExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#setExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
 	 */
 	@Test
 	public void testSetExciteStrategy() {
@@ -145,7 +146,7 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.ActivatibleImpl#getTotalActivation()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getTotalActivation()}.
 	 */
 	@Test
 	public void testGetTotalActivation() {
