@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.workspace.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,7 +54,9 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private List<WorkspaceListener> wsListeners = new ArrayList<WorkspaceListener>();
 
-	private double lowerActivationBound = 0.0;
+	private double lowerActivationBound;
+	
+	private final double DEFAULT_LOWER_ACTIVATION_BOUND = 0.01;
 	
 	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
 		super (ModuleName.Workspace);
@@ -82,12 +83,8 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	}
 	
 	@Override
-	public void init (Map<String, ?> parameters){		
-		Object o = parameters.get("workspace.activationLowerBound");
-		if (o != null)
-			setActivationLowerBound((Double) o);
-		else
-			logger.warning("Unable to set Activation lower bound parameter, using the default instead");
+	public void init (){		
+		lowerActivationBound = (Double) getParam("workspace.activationLowerBound", DEFAULT_LOWER_ACTIVATION_BOUND);
 	}
 	
 	@Override

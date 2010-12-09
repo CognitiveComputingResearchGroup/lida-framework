@@ -63,7 +63,7 @@
 					<class>edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueueImpl</class>
 					<param name="workspace.broadcastQueueCapacity" type="int">20 </param>
 					<taskspawner>defaultTS</taskspawner>				</module>
-			</submodules>
+			</submodules>			<param name="workspace.activationLowerBound" type="double">0.01</param>
 			<taskspawner>defaultTS</taskspawner>			<!--  background tasks need to manage themselves.  the can check the module's state -->			<initialTasks>			<task name="background">				<class>edu.memphis.ccrg.lida.workspace.main.WSBackgroundTask</class>				<ticksperrun>9</ticksperrun>				<associatedmodule>Workspace</associatedmodule>				<param name="workspace.actThreshold"  type="double">0.4</param>				<param name="workspace.cueLap"  type="int">3</param>			</task>			</initialTasks>		</module>
 		<module name="AttentionModule">			<class>edu.memphis.ccrg.lida.attention.AttentionModuleImpl</class>			<associatedmodule>Workspace</associatedmodule>			<associatedmodule>GlobalWorkspace</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.AttentionModuleInitializer</initializerclass>		</module>		<module name="StructureBuildingCodeletModule">			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletModule</class>			<associatedmodule>Workspace</associatedmodule>			<taskspawner>defaultTS</taskspawner>		</module>		<module name="GlobalWorkspace">
 			<class>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl</class>
