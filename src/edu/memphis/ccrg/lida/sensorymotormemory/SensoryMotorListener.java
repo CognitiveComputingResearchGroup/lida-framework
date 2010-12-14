@@ -12,6 +12,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 public interface SensoryMotorListener extends ModuleListener{
 	
-	public abstract void receiveAction(LidaAction a);
+	public void receiveAction(LidaAction a);
 
 }

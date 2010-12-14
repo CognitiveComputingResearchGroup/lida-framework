@@ -26,11 +26,11 @@ public interface BroadcastListener extends ModuleListener{
 	 * A good implementation should just store the content in a buffer and return.
 	 * @param bc the Content of the Broadcast
 	 */
-	public abstract void receiveBroadcast(BroadcastContent bc);
+	public void receiveBroadcast(BroadcastContent bc);
 	
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
-	public abstract void learn();
+	public void learn();
 	
 }

@@ -14,28 +14,28 @@ public interface HardLocation {
 	/**
 	 * @return the address
 	 */
-	public abstract BitVector getAddress();
+	public BitVector getAddress();
 
 	/**
 	 * @param address the address to set
 	 */
-	public abstract void setAddress(BitVector address);
+	public void setAddress(BitVector address);
 
 	/**
 	 * @return the counters
 	 */
-	public abstract byte[] getCounters();
+	public byte[] getCounters();
 
-	public abstract void setCounters(byte[] newCounters);
+	public void setCounters(byte[] newCounters);
 
 	/**
 	 * @return the writes
 	 */
-	public abstract int getWrites();
+	public int getWrites();
 
-	public abstract void write(BitVector word);
+	public void write(BitVector word);
 
-	public abstract int[] read(int[] buff);
+	public int[] read(int[] buff);
 	
 	public int hamming(BitVector vector);
 

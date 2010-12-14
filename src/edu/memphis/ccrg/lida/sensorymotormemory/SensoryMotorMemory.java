@@ -16,11 +16,11 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
 public interface SensoryMotorMemory extends LidaModule, SensoryMemoryListener, ActionSelectionListener{
 
-	public abstract void addSensoryMotorListener(SensoryMotorListener l);
+	public void addSensoryMotorListener(SensoryMotorListener l);
 	
-	public abstract void executeAction(LidaAction a);
+	public void executeAction(LidaAction a);
 
-	public abstract void setActionMap(Map<Long, LidaAction> actionMap);
+	public void setActionMap(Map<Long, LidaAction> actionMap);
 	
-	public abstract void addAction(long actionId, LidaAction action);
+	public void addAction(long actionId, LidaAction action);
 }

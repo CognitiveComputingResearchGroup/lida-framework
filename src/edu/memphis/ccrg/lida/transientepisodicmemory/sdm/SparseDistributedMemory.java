@@ -20,7 +20,7 @@ public interface SparseDistributedMemory extends Saveable {
 	 * @param addr
 	 *            the address where the word is to be stored
 	 */
-	public abstract void store(BitVector wrd, BitVector addr);
+	public void store(BitVector wrd, BitVector addr);
 
 	/**
 	 * Stores a word in this sparse distributed memory using the word as address.
@@ -28,7 +28,7 @@ public interface SparseDistributedMemory extends Saveable {
 	 * @param wrd
 	 *            the word to be stored
 	 */
-	public abstract void store(BitVector wrd);
+	public void store(BitVector wrd);
 
 	/**
 	 * Stores a word in this sparse distributed memory using the word as address.
@@ -39,7 +39,7 @@ public interface SparseDistributedMemory extends Saveable {
 	 * @param mapping
 	 *            the mapping address.
 	 */
-	public abstract void mappedStore(BitVector wrd, BitVector mapping);
+	public void mappedStore(BitVector wrd, BitVector mapping);
 
 	/**
 	 * Stores a word in this sparse distributed memory using the word as address.
@@ -52,7 +52,7 @@ public interface SparseDistributedMemory extends Saveable {
 	 * @param mapping
 	 *            the mapping address.
 	 */
-	public abstract void mappedStore(BitVector wrd,BitVector addr, BitVector mapping);
+	public void mappedStore(BitVector wrd,BitVector addr, BitVector mapping);
 
 	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
@@ -63,7 +63,7 @@ public interface SparseDistributedMemory extends Saveable {
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address
 	 */
-	public abstract BitVector retrieve(BitVector addr);
+	public BitVector retrieve(BitVector addr);
 
 	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
@@ -74,9 +74,9 @@ public interface SparseDistributedMemory extends Saveable {
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address
 	 */
-	public abstract BitVector retrieveIterating(BitVector addr);
+	public BitVector retrieveIterating(BitVector addr);
 
-	public abstract BitVector retrieveIterating(BitVector addr,
+	public BitVector retrieveIterating(BitVector addr,
 			BitVector mapping);
 
 }

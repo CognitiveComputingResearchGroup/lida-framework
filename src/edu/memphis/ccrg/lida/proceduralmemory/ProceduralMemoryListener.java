@@ -20,12 +20,12 @@ public interface ProceduralMemoryListener extends ModuleListener{
     /**
      * @param behavior (instantiated scheme)
      */
-    public abstract void receiveBehavior(Behavior behavior);
+    public void receiveBehavior(Behavior behavior);
 
     /**
      * 
      * @param stream - a stream, a partial order, of behaviors
      */
-    public abstract void receiveStream(Stream stream);
+    public void receiveStream(Stream stream);
    
 }

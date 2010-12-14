@@ -22,7 +22,7 @@ public interface GuiEventProvider {
 	 * 
 	 * @param listener receiver of GuiEvents, typically a LidaPanel
 	 */
-	public abstract void addFrameworkGuiEventListener(FrameworkGuiEventListener listener);
+	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener);
 
 	/**
 	 * A GuiEventProvider may want to send different kinds of events at different
@@ -30,5 +30,5 @@ public interface GuiEventProvider {
 	 * 
 	 * @param evt GuiEvent
 	 */
-	public abstract void sendEventToGui(FrameworkGuiEvent evt);
+	public void sendEventToGui(FrameworkGuiEvent evt);
 }

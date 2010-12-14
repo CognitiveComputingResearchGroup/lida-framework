@@ -20,6 +20,6 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  */
 public interface WorkspaceBufferListener extends ModuleListener{
 
-	public abstract void receiveBufferContent(ModuleName originatingBuffer, WorkspaceContent ns);
+	public void receiveBufferContent(ModuleName originatingBuffer, WorkspaceContent ns);
 
 }

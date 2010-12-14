@@ -17,6 +17,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  */
 public interface LocalAssociationListener extends ModuleListener{
 	
-	public abstract void receiveLocalAssociation(NodeStructure association);
+	public void receiveLocalAssociation(NodeStructure association);
 
 }

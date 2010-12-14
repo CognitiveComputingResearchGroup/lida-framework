@@ -19,17 +19,17 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public interface FeatureDetector extends LidaTask {
 	
-	public abstract double detect(); 
+	public double detect(); 
 	
 	/**
 	 * Get nodes that this detector is looking for.
 	 */
-	public abstract Collection<PamNode> getPamNodes();
+	public Collection<PamNode> getPamNodes();
 	
 	/**
 	 * 
 	 */
-	public abstract void addPamNode(PamNode node);
+	public void addPamNode(PamNode node);
 	
-	public abstract void excitePam(double detectionActivation);
+	public void excitePam(double detectionActivation);
 }

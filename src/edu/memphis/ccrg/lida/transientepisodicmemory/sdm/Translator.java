@@ -24,7 +24,7 @@ public interface Translator {
 	 * @return the node structure associated with the address
      * @throws Exception when the boolean vector is the wrong size
 	 */
-	public abstract NodeStructure translate(BitVector data) throws Exception;
+	public NodeStructure translate(BitVector data) throws Exception;
 
 	/**
 	 * Translates a node structure into a boolean vector.
@@ -33,7 +33,7 @@ public interface Translator {
          * the structure
          * @throws Exception when the node structure is the wrong size
 	 */
-	public abstract BitVector translate(NodeStructure structure)
+	public BitVector translate(NodeStructure structure)
                 throws Exception;
 
 }
