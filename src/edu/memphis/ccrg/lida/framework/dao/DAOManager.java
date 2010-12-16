@@ -89,7 +89,7 @@ public class DAOManager implements DataAccessObject {
             if (success) initialized = true;
 	}
         if (!success) {
-            logger.log(Level.SEVERE, "Failed to initialize DAOManager - saving and loading will not work. (Check if the database is running)");
+            logger.log(Level.WARNING, "Failed to initialize DAOManager - saving and loading will not work. (Check if the database is running)");
         }
         return success;
     }

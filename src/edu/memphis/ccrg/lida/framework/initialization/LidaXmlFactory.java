@@ -76,10 +76,11 @@ public class LidaXmlFactory implements LidaFactory {
 			dom = db.parse(fileName);
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();
+			logger.log(Level.WARNING, sw.getBuffer().toString(), 0L);
+			
 			PrintWriter pw = new PrintWriter(sw);
 			e.printStackTrace(pw);
 			pw.close();
-			logger.log(Level.WARNING, sw.getBuffer().toString(), 0L);
 		}
 	}
 
@@ -170,15 +171,15 @@ public class LidaXmlFactory implements LidaFactory {
 			return null; 
 		}
 		module.setModuleName(moduleName);
+		
 		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
 		TaskSpawner ts = taskSpawners.get(taskspawner);
-	
-		if (ts!=null) {
+		if (ts != null) {
 			module.setAssistingTaskSpawner(ts);
 			List<LidaTask>initialTasks = getTasks(moduleElement);
 			ts.setInitialTasks(initialTasks);
 		}else{
-			logger.log(Level.WARNING, "Module: " + name + " illegal TaskSpawner definition.", 0L);			
+			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
 		}
 		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
@@ -242,17 +243,26 @@ public class LidaXmlFactory implements LidaFactory {
 	
 	private void initializeModules() {
 		for (Object[] vals : toInitialize) {
-			Initializable ini = (Initializable) vals[0];
-			String classInit = (String) vals[1];
+			Initializable moduleToInitialize = (Initializable) vals[0];
+			String initializerClassName = (String) vals[1];
 			@SuppressWarnings("unchecked")
-			Map<String,?> p = (Map<String,Object>) vals[2];
+			Map<String,?> params = (Map<String,?>) vals[2];
 			Initializer initializer = null;
 			try {
-				initializer = (Initializer) Class.forName(classInit).newInstance();
+				initializer = (Initializer) Class.forName(initializerClassName).newInstance();
 			} catch (Exception e) {
+				logger.log(Level.SEVERE, "Initializer class name: " + initializerClassName +
+							" is invalid.", LidaTaskManager.getActualTick());
 				e.printStackTrace();
 			}
-			initializer.initModule(ini, lida, p);
+			if(initializer != null){
+				try{
+					initializer.initModule(moduleToInitialize, lida, params);
+				}catch (Exception e){
+					logger.log(Level.SEVERE, "Exception occurred running " + initializerClassName , LidaTaskManager.getActualTick());
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

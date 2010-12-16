@@ -70,7 +70,7 @@ public class DataBaseStorageImpl implements Storage {
                 return true;
             }
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Failed to connect to the database.");
+            logger.log(Level.WARNING, "Failed to connect to the database.");
         }
 
         return false;
