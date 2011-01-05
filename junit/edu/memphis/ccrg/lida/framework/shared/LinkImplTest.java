@@ -49,19 +49,19 @@ public class LinkImplTest extends TestCase{
 		link1 = new LinkImpl();
 		link2 = new LinkImpl();
 		link3 = new LinkImpl();
-		linktype1 = LinkCategory.Parent ;
-		linktype2 = LinkCategory.Child ;	
+		linktype1 = LinkCategoryNode.PARENT ;
+		linktype2 = LinkCategoryNode.CHILD ;	
 
 		node1.setId(1);	
 		node2.setId(2);
 		node3.setId(3);		
 		node4.setId(4);		
 		
-		link1 = new LinkImpl(node1,node2,LinkCategory.Child);
-		link2 = new LinkImpl(node3,node4,LinkCategory.Parent);
-		link3 = new LinkImpl(node3,link2,LinkCategory.Grounding);
-		linktype1 = LinkCategory.Parent ;
-		linktype2 = LinkCategory.Child ;		
+		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
+		link2 = new LinkImpl(node3,node4,LinkCategoryNode.PARENT);
+		link3 = new LinkImpl(node3,link2,LinkCategoryNode.GROUNDING);
+		linktype1 = LinkCategoryNode.PARENT ;
+		linktype2 = LinkCategoryNode.CHILD;		
 	
 	}
 
@@ -71,28 +71,6 @@ public class LinkImplTest extends TestCase{
 	@Override
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * This method is used to test the LinkImpl.copy() method
-	 */
-	@Test
-	public void testCopy() {
-		LinkImpl linkAux;
-		linkAux= link1.copy();		
-		
-		assertEquals("Problem with copy", link1, linkAux);
-		assertEquals("Problem with copy", link1.getSink(), linkAux.getSink());
-		assertEquals("Problem with copy", link1.getSource(), linkAux.getSource());
-		assertEquals("Problem with copy", link1.getCategory(), linkAux.getCategory());
-		
-		linkAux= link3.copy();		
-
-		assertEquals("Problem with copy", link3, linkAux);
-		assertEquals("Problem with copy", link3.getSink(), linkAux.getSink());
-		assertEquals("Problem with copy", link3.getSource(), linkAux.getSource());
-		assertEquals("Problem with copy", link3.getCategory(), linkAux.getCategory());
-
 	}
 
 	/**

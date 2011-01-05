@@ -46,8 +46,8 @@ public class NodeStructureImplTest extends TestCase{
 		link1 = new LinkImpl();
 		link2 = new LinkImpl();
 		link3 = new LinkImpl();
-		linktype1 = LinkCategory.Parent ;
-		linktype2 = LinkCategory.Child ;			 
+		linktype1 = LinkCategoryNode.PARENT ;
+		linktype2 = LinkCategoryNode.CHILD ;			 
 		nodeStructure1 = new NodeStructureImpl();	
 		nodeStructure2 = new NodeStructureImpl();
 		nodeStructure3 = new NodeStructureImpl();

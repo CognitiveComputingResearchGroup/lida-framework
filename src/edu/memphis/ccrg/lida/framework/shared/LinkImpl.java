@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.pam.PamLink;
@@ -18,8 +19,9 @@ import edu.memphis.ccrg.lida.pam.PamLink;
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 
+	private static Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
 	private Linkable sink;
-	private Linkable source;
+	private Node source;
 	private ExtendedId id;
 	
 	private LinkCategory category;
@@ -30,7 +32,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	public LinkImpl() {
 	}
 
-	public LinkImpl(Linkable source, Linkable sink, LinkCategory category) {
+	public LinkImpl(Node source, Linkable sink, LinkCategory category) {
 		this.source = source;
 		this.sink = sink;
 		this.category = category;
@@ -47,10 +49,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		updateIds();
 	}
 
-	public LinkImpl copy() {
-		return new LinkImpl(this);
-	}
-
 	@Override
 	public ExtendedId getExtendedId() {
 		return id;
@@ -58,7 +56,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	
 	@Override
 	public String getLabel() {
-		return "Link: " + id;
+		return "Link: "+category.getLabel()+" " + id;
 	}
 
 	@Override
@@ -67,7 +65,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public Linkable getSource() {
+	public Node getSource() {
 		return source;
 	}
 
@@ -104,7 +102,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void setSource(Linkable source) {
+	public void setSource(Node source) {
 		this.source = source;
 		updateIds();
 	}
@@ -124,7 +122,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		//ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + category + ")";
 		//TODO Source should always be a node
 		if(category!=null && source !=null && sink != null){
-			id = new ExtendedId(category.ordinal(), ((Node) source).getId(), sink.getExtendedId());
+			id = new ExtendedId(category.getId(), ((Node) source).getId(), sink.getExtendedId());
 		}
 	}
 

@@ -128,6 +128,10 @@ public class NodeFactory {
 				"edu.memphis.ccrg.lida.pam.PamNodeImpl",
 				new HashMap<String, String>(), "PamNodeImpl",
 				new HashMap<String, Object>()));
+		nodeClasses.put("LinkCategoryNode", new LinkableDef(
+				"edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode",
+				new HashMap<String, String>(), "LinkCategoryNode",
+				new HashMap<String, Object>()));
 		linkClasses.put("PamLinkImpl", new LinkableDef(
 				"edu.memphis.ccrg.lida.pam.PamLinkImpl",
 				new HashMap<String, String>(), "PamLinkImpl",
@@ -245,14 +249,14 @@ public class NodeFactory {
 		return getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
 	}
 
-	public Link getLink(Linkable source, Linkable sink, LinkCategory type,double activation) {
+	public Link getLink(Node source, Linkable sink, LinkCategory type,double activation) {
 		return getLink(defaultLinkType,source,sink,type,defaultDecayType,defaultExciteType,activation);
 	}
-	public Link getLink(Linkable source, Linkable sink, LinkCategory type) {
+	public Link getLink(Node source, Linkable sink, LinkCategory type) {
 		return getLink(defaultLinkType,source,sink,type,defaultDecayType,defaultExciteType,0.0);
 	}
 
-	public Link getLink(String linkT, Linkable source, Linkable sink, LinkCategory type){
+	public Link getLink(String linkT, Node source, Linkable sink, LinkCategory type){
 		LinkableDef linkDef = linkClasses.get(linkT);		
 		if (linkDef == null) {
 			logger.log(Level.WARNING, "LinkName " + linkT
@@ -270,7 +274,7 @@ public class NodeFactory {
 		
 		return getLink(linkT,source,sink,type,decayB,exciteB,0.0);		
 	}
-		public Link getLink(String linkT, Linkable source, Linkable sink, LinkCategory type,String decayStrategy,
+		public Link getLink(String linkT, Node source, Linkable sink, LinkCategory type,String decayStrategy,
 				String exciteStrategy,double activation) {
 		Link l = null;
 		try {

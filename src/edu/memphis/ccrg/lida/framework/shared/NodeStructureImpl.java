@@ -94,13 +94,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		// copied
 		for (ExtendedId ids : links.keySet()) {
 			Link l = links.get(ids);
-			Linkable lso=l.getSource();
+			Node lso=l.getSource();
 			Linkable lsi=l.getSink();
-			if (lso instanceof Node) {
-				l.setSource(nodes.get(((Node) lso).getId()));
-			} else {
-				l.setSource(links.get(lso.getExtendedId()));
-			}
+			
+			l.setSource(nodes.get(lso.getId()));
 
 			if (lsi instanceof Node) {
 				l.setSink(nodes.get(((Node) lsi).getId()));
@@ -181,21 +178,19 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 				oldLink.setActivation(newActiv);
 			return oldLink;
 		}
-		Linkable source = l.getSource();
+		Node source = l.getSource();
 		Linkable sink = l.getSink();
 
-		Linkable newSource = null;
+		Node newSource = null;
 		Linkable newSink = null;
 
 		//If link's source is a node, but that node
 		//in not in this nodestructure, return null
-		if (source instanceof Node) {
-			Node snode = (Node) source;
-			newSource = nodes.get(snode.getId());
+			newSource = nodes.get(source.getId());
 			if (newSource == null) {
 				return null;
 			}
-		}
+		
 
 		if (sink instanceof Node) {
 			Node snode = (Node) sink;
@@ -203,16 +198,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			if (newSink == null) {
 				return null;
 			}
-		}
-
-		if (source instanceof Link) {
-			newSource = links.get(source.getExtendedId());
-			if (newSource == null) {
-				return null;
-			}
-		}
-
-		if (sink instanceof Link) {
+		}else{
 			newSink = links.get(sink.getExtendedId());
 			if (newSink == null) {
 				return null;
@@ -224,8 +210,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public Link addLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory category, double activation) {
-		//TODO: one must be a node
-		Linkable source = getLinkable(sourceId);
+		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
 			return null;
@@ -239,7 +224,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param type
 	 * @param activation
 	 */
-	private Link generateNewLink(Linkable newSource, Linkable newSink,
+	private Link generateNewLink(Node newSource, Linkable newSink,
 								 LinkCategory type, double activation) {
 		Link newLink = getNewLink(newSource, newSink, type);
 		newLink.setActivation(activation);
@@ -338,7 +323,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 *            the type of the link
 	 * @return The link to be used in this NodeStructure
 	 */
-	protected Link getNewLink(Linkable source, Linkable sink, LinkCategory category) {
+	protected Link getNewLink(Node source, Linkable sink, LinkCategory category) {
 		return factory.getLink(defaultLinkType, source, sink, category);
 	}
 

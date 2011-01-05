@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -67,15 +67,15 @@ public class PamInitializer implements Initializer {
 				"PamNodeImpl", "bottomRight");
 		pam.addNode(bottomRight);
 		// Links
-		pam.addNewLink(gold, metal, LinkCategory.Child,1.0);
-		pam.addNewLink(metal, solid, LinkCategory.Child,1.0);
-		pam.addNewLink(iron, metal, LinkCategory.Child,1.0);
-		pam.addNewLink(wood, noMetal, LinkCategory.Child,1.0);
-		pam.addNewLink(plastic, noMetal, LinkCategory.Child,1.0);
-		pam.addNewLink(metal, noMetal, LinkCategory.Child,1.0);
-		pam.addNewLink(wood, solid, LinkCategory.Grounding,1.0);
+		pam.addNewLink(gold, metal, LinkCategoryNode.CHILD,1.0);
+		pam.addNewLink(metal, solid, LinkCategoryNode.CHILD,1.0);
+		pam.addNewLink(iron, metal, LinkCategoryNode.CHILD,1.0);
+		pam.addNewLink(wood, noMetal, LinkCategoryNode.CHILD,1.0);
+		pam.addNewLink(plastic, noMetal, LinkCategoryNode.CHILD,1.0);
+		pam.addNewLink(metal, noMetal, LinkCategoryNode.CHILD,1.0);
+		pam.addNewLink(wood, solid, LinkCategoryNode.GROUNDING,1.0);
 
-		pam.addNewLink(topLeft, wood, LinkCategory.Child,1.0);
+		pam.addNewLink(topLeft, wood, LinkCategoryNode.CHILD,1.0);
 
 		// Feature detectors
 		FeatureDetector fd = new BasicDetector(gold, sm, pam);

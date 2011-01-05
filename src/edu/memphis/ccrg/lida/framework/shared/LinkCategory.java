@@ -11,13 +11,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 /**
  * 
  */
-//TODO: Change from enum
-public enum LinkCategory {
-	
-	None,
-	Grounding,
-	Child,
-	Parent,
-	Lateral	
-
+public interface LinkCategory {
+	public String getLabel();
+	public int getId();
 }

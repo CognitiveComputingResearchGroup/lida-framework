@@ -11,20 +11,18 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.pam.PamLink;
 
 /**
- * A link connects two linkable objects. 
+ * A link connects two Linkable objects. 
  * 
  * @author Javier Snaider, Ryan McCall
  *
  */
 public interface Link extends Linkable, Activatible{
 	
-	public static final Link NULL_LINK=new LinkImpl(null,null,LinkCategory.None);
-
 	/**
 	 * One end of the link which provides activation to the sink.  
 	 * @return source linkable
 	 */
-	public Linkable getSource();
+	public Node getSource();
 
 	/**
 	 * One end of the link which receives activation from the source.
@@ -35,7 +33,7 @@ public interface Link extends Linkable, Activatible{
 	/**
 	 * Set source linkable
 	 */
-	public void setSource(Linkable source);
+	public void setSource(Node source);
 
 	/**
 	 * Set sink linkable

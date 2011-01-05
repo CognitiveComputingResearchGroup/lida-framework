@@ -27,6 +27,5 @@ public interface Linkable extends Initializable, Serializable {
 	 * General Id for Linkables
 	 */
 	public ExtendedId getExtendedId();
-	
 
 }

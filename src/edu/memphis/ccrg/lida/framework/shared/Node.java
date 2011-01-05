@@ -27,8 +27,6 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public interface Node extends Linkable, Activatible, Serializable {
 	
-	public static final Node NULL_NODE = new NodeImpl();
-
     public PamNode getGroundingPamNode();
     public void setGroundingPamNode (PamNode n);
     
