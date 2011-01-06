@@ -23,7 +23,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private int id;
 	private ExtendedId eId;
 	private String label = "";
-	private String factoryName;
+	private String factoryNodeType;
 	
 	private double desirability;
 	protected PamNode groundingPamNode;
@@ -55,6 +55,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	public void setExtendedId(ExtendedId eId) {
 		this.eId = eId;
+		this.id = eId.getSourceNodeId();
 	}
 
 	@Override
@@ -73,10 +74,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	@Override
 	public void setGroundingPamNode(PamNode n) {
 		groundingPamNode = n;
-	}
-
-	public String getIds() {
-		return getId() + "";
 	}
 
 	/**
@@ -103,13 +100,13 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	@Override
-	public String getFactoryName() {
-		return factoryName;
+	public String getFactoryNodeType() {
+		return factoryNodeType;
 	}
 
 	@Override
-	public void setFactoryName(String factoryName) {
-		this.factoryName = factoryName;
+	public void setFactoryNodeType(String factoryNodeType) {
+		this.factoryNodeType = factoryNodeType;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.pam.PamLink;
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
 	private Linkable sink;
 	private Node source;
@@ -37,7 +38,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		this.sink = sink;
 		this.category = category;
 		
-		updateIds();
+		updateExtendedId();
 	}
 
 	public LinkImpl(Link l) {
@@ -46,7 +47,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		category = l.getCategory();
 		id = l.getExtendedId();
 		groundingPamLink = l.getGroundingPamLink();
-		updateIds();
+		updateExtendedId();
 	}
 
 	@Override
@@ -98,19 +99,19 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public void setSink(Linkable sink) {
 		this.sink = sink;
-		updateIds();
+		updateExtendedId();
 	}
 
 	@Override
 	public void setSource(Node source) {
 		this.source = source;
-		updateIds();
+		updateExtendedId();
 	}
 
 	@Override
 	public void setCategory(LinkCategory category) {
 		this.category = category;
-		updateIds();
+		updateExtendedId();
 	}
 
 	@Override
@@ -118,10 +119,8 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return getLabel();
 	}
 
-	private void updateIds() {
-		//ids = "L(" + ((source!=null)?source.getIds():"") + ":" + ((sink!=null)?sink.getIds():"") + ":" + category + ")";
-		//TODO Source should always be a node
-		if(category!=null && source !=null && sink != null){
+	private void updateExtendedId() {
+		if(category != null && source != null && sink != null){
 			id = new ExtendedId(category.getId(), ((Node) source).getId(), sink.getExtendedId());
 		}
 	}

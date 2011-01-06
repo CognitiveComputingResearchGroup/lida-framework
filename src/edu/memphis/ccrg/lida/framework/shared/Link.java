@@ -49,6 +49,10 @@ public interface Link extends Linkable, Activatible{
 	 * Set LinkCategory
 	 */
 	public void setCategory(LinkCategory type);
+	
+	//?
+//	public String getFactoryLinkType();
+//	public void setFactoryLinkType(String factoryLinkType);
 
 	/**
 	 * Set the grounding PamLink for this link.

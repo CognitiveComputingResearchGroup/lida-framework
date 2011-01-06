@@ -27,10 +27,19 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public interface Node extends Linkable, Activatible, Serializable {
 	
+	/**
+	 * Returns the underlying PamNode that grounds this node 
+	 * @return
+	 */
     public PamNode getGroundingPamNode();
+    
+    /**
+     * Used by factory to set the underlying PamNode for this node
+     * @param n PamNode
+     */
     public void setGroundingPamNode (PamNode n);
     
-    //TODO remove?
+    //TODO remove since redundant with getExtendedId?
     public int getId();
     public void setId(int id);
     
@@ -38,11 +47,20 @@ public interface Node extends Linkable, Activatible, Serializable {
 	public String getLabel();
     public void setLabel(String label);
     
-	public String getFactoryName();
-	public void setFactoryName(String factoryName);
+	public String getFactoryNodeType();
+	public void setFactoryNodeType(String factoryNodeType);
 	
+	/**
+	 * Returns a double signifying the degree to which this node is a goal of the agent
+	 * @return
+	 */
 	public double getDesirability();
+	
+	/**
+	 * Set desirability
+	 * @param degree  degree to which this node is a goal of the agent
+	 */
 	public void setDesirability(double degree);
 
-}//interface Node
+}//interface
 

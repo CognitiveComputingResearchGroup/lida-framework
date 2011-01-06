@@ -12,88 +12,114 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A NodeStructure holds a collection of Nodes an Links. An implementation of this interface
- * could be used as the "Common Currency" between the Modules of LIDA
- *
+ * A NodeStructure holds a collection of Nodes an Links. An implementation of
+ * this interface could be used as the "Common Currency" between the Modules of
+ * LIDA
+ * 
  * @author Javier Snaider
  */
 public interface NodeStructure {
 
-	//Add
-	
+	// Add
+
 	public Link addLink(Link l);
-	
-	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type, double activation);
+
+	public Link addLink(ExtendedId idSource, ExtendedId idSink,
+			LinkCategory type, double activation);
+
+	public Link addLink(int idSource, ExtendedId idSink,
+			LinkCategory type, double activation);
+
+	public Link addLink(int idSource, int idSink,
+			LinkCategory type, double activation);
 
 	public void addLinks(Collection<Link> links);
-	
+
 	public Node addNode(Node n);
 
-	public Node addNode(Node n, String factoryName);
+	/**
+	 * Add a Node of a specified type to this NodeStructure
+	 * @param n Node
+	 * @param factoryNodeType name of node's type in the factory
+	 * @return copy of supplied node with specified NodeType
+	 */
+	public Node addNode(Node n, String factoryNodeType);
 
 	public void addNodes(Collection<Node> nodes);
-	
-	//Delete
+
+	// Delete
 	public void removeLink(Link l);
-	
+
 	public void removeNode(Node n);
-	
+
 	public void removeLinkable(Linkable l);
-	
+
+	public void removeLinkable(ExtendedId id);
+
 	public void clearLinks();
-	
+
 	public void clearNodeStructure();
-	
-	//Contains
+
+	// Contains
 	public boolean containsNode(Node n);
+
+	public boolean containsNode(int id);
+
+	public boolean containsNode(ExtendedId id);
 
 	public boolean containsLink(Link l);
 	
-	//Other methods
+	public boolean containsLink(ExtendedId id);
+
+	public boolean containsLinkable(Linkable l);
+	
+	public boolean containsLinkable(ExtendedId id);
+	
+	// Other methods
 	public void mergeWith(NodeStructure ns);
-	
+
 	public NodeStructure copy();
-	
-	//Gets
-	
-	//Links
+
+	// Gets
+
+	// Links
 	public Link getLink(ExtendedId ids);
-	
+
 	public Collection<Link> getLinks();
 
 	public Set<Link> getLinks(Linkable l);
 
 	public Set<Link> getLinks(LinkCategory type);
-	
+
 	public Set<Link> getLinks(Linkable NorL, LinkCategory type);
 
-	//Nodes
+	// Nodes
 	public Node getNode(int id);
 
 	public Node getNode(ExtendedId ids);
-	
+
 	public Collection<Node> getNodes();
 
-	//Linkables
-	public Linkable getLinkable (ExtendedId ids);
+	// Linkables
+	public Linkable getLinkable(ExtendedId ids);
 
 	public Collection<Linkable> getLinkables();
-	
+
 	public Map<Linkable, Set<Link>> getLinkableMap();
 
 	public int getNodeCount();
 
 	public int getLinkCount();
-	
+
 	public int getLinkableCount();
-	
-	//Node & Link type
+
+	// Node & Link type
 	public String getDefaultNodeType();
-	
+
 	public String getDefaultLinkType();
-	
+
 	public void setDefaultLink(String linkClassName);
 
 	public void setDefaultNode(String nodeClassName);
-	
+
 }

@@ -281,12 +281,12 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public String getFactoryName() {
+	public String getFactoryNodeType() {
 		return null;
 	}
 
 	@Override
-	public void setFactoryName(String factoryName) {
+	public void setFactoryNodeType(String factoryName) {
 	}
 
 	@Override

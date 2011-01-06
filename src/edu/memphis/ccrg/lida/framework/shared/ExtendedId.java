@@ -52,4 +52,8 @@ public class ExtendedId {
 	public int getSourceNodeId(){
 		return sourceNodeId;
 	}
+	
+	public boolean isNode(){
+		return (typeOfLink==0);
+	}
 }

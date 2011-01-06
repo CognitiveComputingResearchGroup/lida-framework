@@ -74,17 +74,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		setDefaultLink(defaultLink);
 	}
 
-	public NodeStructureImpl(NodeStructure oldGraph, String defaultNodeType, String defaultLinkType) {
+	public NodeStructureImpl(NodeStructure oldNS, String defaultNodeType, String defaultLinkType) {
 		this(defaultNodeType, defaultLinkType);
 
 		// Copy nodes
-		Collection<Node> oldNodes = oldGraph.getNodes();
+		Collection<Node> oldNodes = oldNS.getNodes();
 		if (oldNodes != null)
 			for (Node n : oldNodes)
 				nodes.put(n.getId(), getNewNode(n, defaultNodeType));
 
 		// Copy Links but with Source and Sink pointing the old ones.
-		Collection<Link> oldLinks = oldGraph.getLinks();
+		Collection<Link> oldLinks = oldNS.getLinks();
 		if (oldLinks != null)
 			for (Link l : oldLinks) {
 				links.put(l.getExtendedId(), generateNewLink(l.getSource(), l.getSink(), l.getCategory(), l.getActivation()));
@@ -107,7 +107,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 
 		// Generate LinkableMap
-		Map<Linkable, Set<Link>> oldlinkableMap = oldGraph.getLinkableMap();
+		Map<Linkable, Set<Link>> oldlinkableMap = oldNS.getLinkableMap();
 		if (oldlinkableMap != null) {
 			Set<Linkable> oldKeys = oldlinkableMap.keySet();
 			if (oldKeys != null) {
@@ -186,25 +186,26 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 		//If link's source is a node, but that node
 		//in not in this nodestructure, return null
-			newSource = nodes.get(source.getId());
-			if (newSource == null) {
-				return null;
-			}
+		newSource = nodes.get(source.getId());
+		if (newSource == null) {
+			logger.log(Level.WARNING, "Source node is not present in this NodeStructure", LidaTaskManager.getActualTick());
+			return null;
+		}
 		
-
 		if (sink instanceof Node) {
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
 			if (newSink == null) {
+				logger.log(Level.WARNING, "Sink is not present in this NodeStructure", LidaTaskManager.getActualTick());
 				return null;
 			}
 		}else{
 			newSink = links.get(sink.getExtendedId());
 			if (newSink == null) {
+				logger.log(Level.WARNING, "Sink is not present in this NodeStructure", LidaTaskManager.getActualTick());
 				return null;
 			}
 		}
-		//System.out.println("about to generate new link with activation " + newActiv);
 		return generateNewLink(newSource, newSink, l.getCategory(), newActiv);
 	}
 
@@ -213,6 +214,31 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
+			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getActualTick());
+			return null;
+		}
+		return generateNewLink(source, sink, category, activation);
+	}
+
+	@Override
+	public Link addLink(int sourceId, ExtendedId sinkId, LinkCategory category,
+			double activation) {
+		Node source = getNode(sourceId);
+		Linkable sink = getLinkable(sinkId);
+		if (source == null || sink == null) {
+			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getActualTick());
+			return null;
+		}
+		return generateNewLink(source, sink, category, activation);
+	}
+
+	@Override
+	public Link addLink(int sourceId, int sinkId, LinkCategory category,
+			double activation) {
+		Node source = getNode(sourceId);
+		Linkable sink = getNode(sinkId);
+		if (source == null || sink == null) {
+			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getActualTick());
 			return null;
 		}
 		return generateNewLink(source, sink, category, activation);
@@ -262,13 +288,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	
 	@Override
 	public Node addNode(Node n){
-		return addNode(n, n.getFactoryName());
+		return addNode(n, n.getFactoryNodeType());
 	}
 
 	@Override
-	public Node addNode(Node n, String factoryName) {
-		if(factory.containsNodeType(factoryName) == false){
-			logger.log(Level.WARNING, "Tried to add node of type " + factoryName + " to NodeStructure. " +
+	public Node addNode(Node n, String factoryNodeType) {
+		if(factory.containsNodeType(factoryNodeType) == false){
+			logger.log(Level.WARNING, "Tried to add node of type " + factoryNodeType + " to NodeStructure. " +
 					" the factory does not contain that node type.  Make sure the node type is defined in " +
 					" factoriesData.xml", LidaTaskManager.getActualTick());
 			return null;
@@ -276,7 +302,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		
 		Node node = nodes.get(n.getId());
 		if (node == null) {
-			node = getNewNode(n, factoryName);
+			node = getNewNode(n, factoryNodeType);
 			nodes.put(node.getId(), node);
 			linkableMap.put(node, new HashSet<Link>());
 		} else {
@@ -296,7 +322,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public void addNodes(Collection<Node> nodesToAdd) {
 		for (Node n : nodesToAdd){
-			addNode(n, n.getFactoryName());
+			addNode(n, n.getFactoryNodeType());
 		}
 	}
 
@@ -329,7 +355,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public NodeStructure copy() {
-		logger.finer("Copying NodeStructure " + this);
+		logger.log(Level.FINER, "Copying NodeStructure " + this, LidaTaskManager.getActualTick());
 		return new NodeStructureImpl(this, defaultNodeType, defaultLinkType);
 	}
 
@@ -357,20 +383,27 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Linkable other;
 
 		if (tempLinks != null) {
-			for (Link l : tempLinks) {
+			for (Link l : tempLinks) {// for all of the links connected to n
 				other = l.getSink();
 				if (!other.equals(n)) {
 					otherLinks = linkableMap.get(other);
-					if (otherLinks != null)
+					if (otherLinks != null){
 						otherLinks.remove(l);
-				}
-				other = l.getSource();
-				if (!other.equals(n)) {
+					}else{
+						logger.log(Level.WARNING, "Expected other end of link " + other.getLabel() + 
+								" to have link " + l.toString(), LidaTaskManager.getActualTick());						
+					}
+				}else{
+					other = l.getSource();
 					otherLinks = linkableMap.get(other);
-					if (otherLinks != null)
+					if (otherLinks != null){
 						otherLinks.remove(l);
+					}else{
+						logger.log(Level.WARNING, "Expected other end of link " + other.getLabel() + 
+								" to have link " + l.toString(), LidaTaskManager.getActualTick());
+					}
 				}
-			}// for all of the links connected to n
+			}
 		}
 
 		linkableMap.remove(n);// finally remove the linkable and its links
@@ -378,9 +411,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			nodes.remove(((Node) n).getId());
 		} else if (n instanceof Link) {
 			Link aux = links.get(n.getExtendedId());
-			links.remove(aux.getExtendedId());
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
+			links.remove(n.getExtendedId());
 
 			if (sourceLinks != null)
 				sourceLinks.remove(aux);
@@ -390,6 +423,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 
 	}// method
+	@Override
+	public void removeLinkable(ExtendedId id) {
+		if(id.isNode()){
+			removeLinkable(nodes.get(id.getSourceNodeId()));
+		}else{
+			removeLinkable(links.get(id));
+		}
+	}
 
 	@Override
 	public void removeNode(Node n) {
@@ -439,12 +480,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
 	@Override
-	public Set<Link> getLinks(Linkable NorL, LinkCategory type) {
+	public Set<Link> getLinks(Linkable NorL, LinkCategory category) {
 		Set<Link> temp = linkableMap.get(NorL);
 		Set<Link> result = new HashSet<Link>();
 		if (temp != null) {
 			for (Link l : temp) {
-				if (l.getCategory() == type)// add only desired type
+				if (l.getCategory() == category)// add only desired category
 					result.add(l);
 			}// for each link
 		}// result != null
@@ -452,11 +493,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}// method
 	
 	@Override
-	public Set<Link> getLinks(LinkCategory type) {
+	public Set<Link> getLinks(LinkCategory category) {
 		Set<Link> result = new HashSet<Link>();
 		if (links != null) {
 			for (Link l : links.values()) {
-				if (l.getCategory() == type) {
+				if (l.getCategory() == category) {
 					result.add(l);
 				}
 			}
@@ -479,16 +520,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	}// method
 
-	public Object getContent() {
-		return this;
-	}
-
 	/**
 	 * 
 	 */
 	@Override
 	public Map<Linkable, Set<Link>> getLinkableMap() {
-		return linkableMap;
+		return Collections.unmodifiableMap(linkableMap);
 	}
 
 	@Override
@@ -534,7 +571,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		// TODO: Must add links differently than above statement.
 	}
 
-	public Set<Link> getLinksByType(LinkCategory type) {
+	public Set<Link> getLinksByCategory(LinkCategory type) {
 		Set<Link> result = new HashSet<Link>();
 		for (Link l : links.values()) {
 			if (l.getCategory() == type)
@@ -566,6 +603,31 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return nodes.containsKey(n.getId());
 	}
 
+	@Override
+	public boolean containsLink(ExtendedId id) {
+		return links.containsKey(id);
+	}
+
+	@Override
+	public boolean containsLinkable(Linkable l) {
+		return linkableMap.containsKey(l);
+	}
+
+	@Override
+	public boolean containsLinkable(ExtendedId id) {
+		return (containsLink(id)||containsNode(id));
+	}
+
+	@Override
+	public boolean containsNode(int id) {
+		return nodes.containsKey(id);
+	}
+
+	@Override
+	public boolean containsNode(ExtendedId id) {
+		return id.isNode() && nodes.containsKey(id.getSourceNodeId());
+	}
+	
 	@Override
 	public Linkable getLinkable(ExtendedId ids) {
 		Linkable linkable = getNode(ids);

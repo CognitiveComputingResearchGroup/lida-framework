@@ -116,7 +116,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public Node addNode(Node n, String factoryName) {
+	public Node addNode(Node n, String factoryNodeType) {
 		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
 	}
 

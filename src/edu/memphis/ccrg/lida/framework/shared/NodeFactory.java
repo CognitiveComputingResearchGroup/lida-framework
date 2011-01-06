@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.initialization.CodeletDef;
 import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
@@ -88,11 +87,12 @@ public class NodeFactory {
 	private String defaultNodeType;
 	
 	/**
-	 * Map of excite behaviors available to this factory
+	 * Map of excite strategies available to this factory
 	 */
 	private Map<String, StrategyDef> exciteStrategies = new HashMap<String, StrategyDef>();
+	
 	/**
-	 * Map of excite behaviors available to this factory
+	 * Map of excite strategies available to this factory
 	 */
 	private Map<String, StrategyDef> decayStrategies = new HashMap<String, StrategyDef>();
 	private Map<String, StrategyDef> strategies = new HashMap<String, StrategyDef>();
@@ -101,8 +101,6 @@ public class NodeFactory {
 	private Map<String, LinkableDef> nodeClasses = new HashMap<String, LinkableDef>();
 	private Map<String, CodeletDef> codelets = new HashMap<String, CodeletDef>();
 
-	private Map<Long, LidaAction> actionsCache = new HashMap<Long, LidaAction>();
-
 	/**
 	 * @param nextId the next nodeId
 	 */
@@ -110,6 +108,9 @@ public class NodeFactory {
 		NodeFactory.nodeIdCount = nextId;
 	}
 
+	/**
+	 * Creates the Factory and adds default Node, Link and Strategies to the Maps in the Factory.
+	 */
 	private NodeFactory() {
 		defaultNodeClassName = "edu.memphis.ccrg.lida.framework.shared.NodeImpl";
 		defaultLinkClassName = "edu.memphis.ccrg.lida.framework.shared.LinkImpl";
@@ -295,7 +296,7 @@ public class NodeFactory {
 //			String decayB = linkDef.getDefeaultStrategies().get("decay");
 //			String exciteB = linkDef.getDefeaultStrategies().get("excite");
 			
-			setActivatibleStrategies(decayStrategy, exciteStrategy, l);	
+			setActivatibleStrategies(l, decayStrategy, exciteStrategy);	
 
 			l.init(linkDef.getParams());
 			
@@ -330,10 +331,10 @@ public class NodeFactory {
 	}
 
 	/**
-	 * Creates a copy of the supplied node with the default behaviors.  
-	 * The type of the new node is based on the argument. Note that the behaviors of the new node
-	 * are based on those node passed in the argument.  if the node type does not have default behaviors
-	 * then the default behaviors are used.
+	 * Creates a copy of the supplied node with the default strategies.  
+	 * The type of the new node is based on the argument. Note that the strategies of the new node
+	 * are based on those node passed in the argument.  if the node type does not have default strategies
+	 * then the default strategies are used.
 	 * @param oNode supplied node
 	 * @param nodeType type of returned node
 	 * 
@@ -443,10 +444,10 @@ public class NodeFactory {
 
 			n.setLabel(nodeLabel);
 			n.setId(nodeIdCount++);
-			n.setFactoryName(nodeType);
+			n.setFactoryNodeType(nodeType);
 			n.setActivation(activation);
 			
-			setActivatibleStrategies(decayStrategy, exciteStrategy, n);	
+			setActivatibleStrategies(n, decayStrategy, exciteStrategy);	
 			n.init(nodeDef.getParams());
 			
 		} catch (InstantiationException e) {
@@ -463,12 +464,12 @@ public class NodeFactory {
 	}
 
 	/**
+	 * @param activatible
 	 * @param decayStrategy
 	 * @param exciteStrategy
-	 * @param activatible
 	 */
-	private void setActivatibleStrategies(String decayStrategy,
-			String exciteStrategy, Activatible activatible) {
+	private void setActivatibleStrategies(Activatible activatible,
+			String decayStrategy, String exciteStrategy) {
 		DecayStrategy decayB = getDecayStrategy(decayStrategy);
 		activatible.setDecayStrategy(decayB);
 		ExciteStrategy exciteB = getExciteStrategy(exciteStrategy);
@@ -542,7 +543,7 @@ public class NodeFactory {
 
 			cod.setNumberOfTicksPerRun(ticksPerStep);
 			cod.setActivation(activation);
-			setActivatibleStrategies(decayStrategy, exciteStrategy, cod);
+			setActivatibleStrategies(cod, decayStrategy, exciteStrategy);
 			
 			if (params != null){
 				cod.init(params);
@@ -583,27 +584,11 @@ public class NodeFactory {
 		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
 	}
 	
-	public void addAction(LidaAction action){
-		actionsCache.put(action.getId(),action);
-	}
-	
-	public LidaAction getAction(long id){
-		return actionsCache.get(id);
-	}
-
 	public boolean containsNodeType(String nodeType) {
 		return nodeClasses.containsKey(nodeType);
 	}
 
 	public boolean containsLinkType(String defaultLink) {
 		return linkClasses.containsKey(defaultLink);
-	}
-
-	public Map<String, LinkableDef> getStupidLinkMap() {
-		return linkClasses;
-	}
-	
-	public Map<String, LinkableDef> getStupidNodeMap() {
-		return nodeClasses;
 	}
 }// class	

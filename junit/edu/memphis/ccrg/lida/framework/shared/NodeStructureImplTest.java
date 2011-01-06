@@ -210,7 +210,7 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetLinksByType() {		
-		links = nodeStructure1.getLinksByType(linktype1);
+		links = nodeStructure1.getLinksByCategory(linktype1);
 		for (Link l : links) {
 			assertEquals("Problem with GetLinksByType", l.getCategory(),linktype1);			
 			break;				
