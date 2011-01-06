@@ -166,8 +166,13 @@ public class LidaXmlFactory implements LidaFactory {
 		try {
 			module = (LidaModule) Class.forName(className).newInstance();
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Module class name: " + className
-					+ " is not valid.  Check module class name.", 0L);
+			if(e instanceof ClassNotFoundException){
+				logger.log(Level.SEVERE, "Module class name: " + className + 
+							" is not valid.  Check module class name.\n", 0L);
+			}else{
+				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+						"\" occurred during creation of object of class " + className + "\n", 0L);
+			}
 			return null; 
 		}
 		module.setModuleName(moduleName);
