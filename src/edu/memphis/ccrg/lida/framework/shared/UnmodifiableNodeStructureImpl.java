@@ -1,8 +1,6 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * An immutable NodeStructureImpl.  Throws UnsupportedOprationException if modifying methods
@@ -79,12 +77,17 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		return hash * 53 + aggregateLinkHash.hashCode();
 	}
 
+	@Override
+	public NodeStructure copy(){
+		return new UnmodifiableNodeStructureImpl(this);
+	}
+	
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
 	public Link addLink(Link l) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -93,7 +96,25 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	@Override
 	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type,
 			double activation) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+	
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Link addLink(int idSource, ExtendedId idSink,
+			LinkCategory type, double activation){
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Link addLink(int idSource, int idSink,
+			LinkCategory type, double activation){
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -101,7 +122,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public void addLinks(Collection<Link> links) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -109,7 +130,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public Node addNode(Node n) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -117,7 +138,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public Node addNode(Node n, String factoryNodeType) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -125,12 +146,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public void addNodes(Collection<Node> nodes) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-	}
-
-	@Override
-	public NodeStructure copy() {
-		return new UnmodifiableNodeStructureImpl(this);
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -138,7 +154,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public void removeLink(Link l) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -146,7 +162,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public void removeLinkable(Linkable l) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -154,63 +170,32 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public void removeNode(Node n) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
-
-//	/**
-//	 * @throws UnsupportedOperationException Cannot modify this object once created.
-//	 */
-//	@Override
-//	public void clearNodes() {
-//		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
-//	}
 
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public Collection<Link> getLinks() {
-		return super.getLinks();
+	public void removeLinkable(ExtendedId id){
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+		
+	}
+	
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public void clearLinks(){
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
 	@Override
-	public Set<Link> getLinks(Linkable l) {
-		return super.getLinks(l);
-	}
-
-	@Override
-	public Set<Link> getLinks(Linkable NorL, LinkCategory type) {
-		return super.getLinks(NorL, type);
-	}
-
-	@Override
-	public Set<Link> getLinks(LinkCategory type) {
-		return super.getLinks(type);
-	}
-
-	@Override
-	public Collection<Node> getNodes() {
-		return super.getNodes();
-	}
-
-	@Override
-	public Node getNode(int id) {
-		return super.getNode(id);
-	}
-
-	@Override
-	public Node getNode(ExtendedId ids) {
-		return super.getNode(ids);
-	}
-
-	@Override
-	public Link getLink(ExtendedId ids) {
-		return super.getLink(ids);
-	}
-
-	@Override
-	public Linkable getLinkable(ExtendedId ids) {
-		return super.getLinkable(ids);
+	public void clearNodeStructure(){
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
 	/**
@@ -218,52 +203,6 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public void mergeWith(NodeStructure ns) {
-		throw new UnsupportedOperationException("StaticNodeStructure cannot be modified");
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
-
-	@Override
-	public Map<Linkable, Set<Link>> getLinkableMap() {
-		return super.getLinkableMap();
-	}
-
-	@Override
-	public boolean containsNode(Node n) {
-		return super.containsNode(n);
-	}
-
-	@Override
-	public boolean containsLink(Link l) {
-		return super.containsLink(l);
-	}
-
-	@Override
-	public int getNodeCount() {
-		return super.getNodeCount();
-	}
-
-	@Override
-	public int getLinkCount() {
-		return super.getLinkCount();
-	}
-
-	@Override
-	public int getLinkableCount() {
-		return super.getLinkableCount();
-	}
-
-	@Override
-	public Collection<Linkable> getLinkables() {
-		return super.getLinkables();
-	}
-
-	@Override
-	public String getDefaultNodeType() {
-		return super.getDefaultNodeType();
-	}
-
-	@Override
-	public String getDefaultLinkType() {
-		return super.getDefaultLinkType();
-	}
-
 }
