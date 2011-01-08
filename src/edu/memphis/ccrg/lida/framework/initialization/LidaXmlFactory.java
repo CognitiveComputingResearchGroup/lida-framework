@@ -89,16 +89,23 @@ public class LidaXmlFactory implements LidaFactory {
 		Element docEle = dom.getDocumentElement();
 
 		LidaTaskManager tm = getTaskManager(docEle);
+		logger.log(Level.INFO, "Finished obtaining TaskManager\n", 0L);
 		lida = new LidaImpl(tm);
 		
 		getTaskSpawners(docEle);
+		logger.log(Level.INFO, "Finished creating TaskSpawners\n", 0L);
 		
 		for (LidaModule lm : getModules(docEle)) {
 			lida.addSubModule(lm);
 		}
+		logger.log(Level.INFO, "Finished creating modules and submodules\n", 0L);
+		
 		getListeners(docEle);
+		logger.log(Level.INFO, "Finished setting up listeners\n", 0L);
 
 		associateModules();
+		logger.log(Level.INFO, "Finished associating modules\n", 0L);
+		
 		initializeModules();
 	}
 	

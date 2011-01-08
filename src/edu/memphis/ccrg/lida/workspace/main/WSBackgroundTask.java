@@ -76,4 +76,8 @@ public class WSBackgroundTask extends LidaTaskImpl {
 			workspace = (Workspace) module;
 		}
 	}
+	
+	public String toString(){
+		return WSBackgroundTask.class.getSimpleName();
+	}
 }

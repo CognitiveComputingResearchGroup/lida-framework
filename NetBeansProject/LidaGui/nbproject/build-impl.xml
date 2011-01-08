@@ -1,24 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?<!--
-    Copyright (c) 2009, 2010 IBM Corporation and others.
-    All rights reserved. This program and the accompanying materials
-    are made available under the terms of the Eclipse Public License v1.0
-    which accompanies this distribution, and is available at
-    http://www.eclipse.org/legal/epl-v10.html
-   
-    Contributors:
-        IBM Corporation - initial API and implementation
- -->
-><!--
-    Copyright (c) 2009, 2010 IBM Corporation and others.
-    All rights reserved. This program and the accompanying materials
-    are made available under the terms of the Eclipse Public License v1.0
-    which accompanies this distribution, and is available at
-    http://www.eclipse.org/legal/epl-v10.html
-   
-    Contributors:
-        IBM Corporation - initial API and implementation
- -->
-
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 *** GENERATED FROM project.xml - DO NOT EDIT  ***
 ***         EDIT ../build.xml INSTEAD         ***
@@ -521,6 +501,13 @@ is divided into following sections:
         <propertyfile file="${built-jar.properties}">
             <entry key="${basedir}" value=""/>
         </propertyfile>
+        <antcall target="-maybe-call-dep">
+            <param name="call.built.properties" value="${built-jar.properties}"/>
+            <param location="${project.framework}" name="call.subproject"/>
+            <param location="${project.framework}/build.xml" name="call.script"/>
+            <param name="call.target" value="jar"/>
+            <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
+        </antcall>
     </target>
     <target depends="init,-check-automatic-build,-clean-after-automatic-build" name="-verify-automatic-build"/>
     <target depends="init" name="-check-automatic-build">
@@ -882,6 +869,13 @@ is divided into following sections:
         <propertyfile file="${built-clean.properties}">
             <entry key="${basedir}" value=""/>
         </propertyfile>
+        <antcall target="-maybe-call-dep">
+            <param name="call.built.properties" value="${built-clean.properties}"/>
+            <param location="${project.framework}" name="call.subproject"/>
+            <param location="${project.framework}/build.xml" name="call.script"/>
+            <param name="call.target" value="clean"/>
+            <param name="transfer.built-clean.properties" value="${built-clean.properties}"/>
+        </antcall>
     </target>
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
@@ -908,21 +902,4 @@ is divided into following sections:
             </propertyset>
         </ant>
     </target>
-</project><!--
-    Copyright (c) 2009, 2010 The University of Memphis.
-    All rights reserved. This program and the accompanying materials
-    are made available under the terms of the LIDA Software Framework 
-    Non-Commercial License v1.0 which accompanies this distribution, 
-    and is available at http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
-   
-    Contributors:
-        
- -->
-<!--
-    Copyright (c) 2009, 2010 The University of Memphis.  All rights reserved. 
-    This program and the accompanying materials are made available 
-    under the terms of the LIDA Software Framework Non-Commercial License v1.0 
-    which accompanies this distribution, and is available at
-    http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
- -->
-
+</project>

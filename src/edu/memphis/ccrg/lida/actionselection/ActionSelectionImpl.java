@@ -260,6 +260,9 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 				start();
 				setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 			}
+			public String toString(){
+				return ActionSelectionImpl.class.getSimpleName() + " background task";
+			}
 		}
 
 		@Override

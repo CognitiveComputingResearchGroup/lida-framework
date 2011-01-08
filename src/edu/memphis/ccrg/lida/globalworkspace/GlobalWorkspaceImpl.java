@@ -223,7 +223,6 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	}
 	
 	private class BackgroundTask extends LidaTaskImpl {
-
 		public BackgroundTask() {
 			super(1);
 		}
@@ -233,6 +232,10 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 			start();
 			setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
 		}
+		public String toString(){
+			return GlobalWorkspaceImpl.class.getSimpleName() + " background task";
+		}
+		
 	}
 
 }// class

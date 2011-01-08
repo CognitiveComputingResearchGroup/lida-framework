@@ -172,7 +172,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			@Override
 			protected void runThisLidaTask() {
 				passActivationAmongBehaviors();
-			}			
+			}	
+			public String toString(){
+				return "BN pass activation background task";
+			}
 		};
 		taskSpawner.addTask(backgroundTask);
 	}

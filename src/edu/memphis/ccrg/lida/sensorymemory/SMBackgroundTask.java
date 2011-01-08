@@ -30,4 +30,8 @@ public class SMBackgroundTask extends LidaTaskImpl {
 			sm = (SensoryMemory) module;
 		}
 	}
+	
+	public String toString(){
+		return SMBackgroundTask.class.getSimpleName() + " background task";
+	}
 }

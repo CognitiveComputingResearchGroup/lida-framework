@@ -31,9 +31,12 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.gui.commands.Command;
+import edu.memphis.ccrg.lida.framework.gui.commands.DAOCommand;
 import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanel;
-import edu.memphis.ccrg.lida.framework.initialization.*;
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
+import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
 
 /**
  * 
@@ -55,7 +58,7 @@ public class LidaGui extends javax.swing.JFrame {
     private List<java.awt.Container> panelParents = new ArrayList<java.awt.Container>();
     private Lida lida;
     private LidaGuiController controller;
-    private static Logger logger = Logger.getLogger(LidaGui.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(LidaGui.class.getCanonicalName());
     private javax.swing.JDialog addEditDialog;
 
     public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {

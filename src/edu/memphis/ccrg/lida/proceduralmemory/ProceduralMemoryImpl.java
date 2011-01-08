@@ -95,6 +95,9 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		protected void runThisLidaTask() {
 			activateSchemes();
 		}
+		public String toString(){
+			return ProceduralMemoryImpl.class.getSimpleName() + " background task";
+		}
 	}
 	@Override
 	public void activateSchemes() {
