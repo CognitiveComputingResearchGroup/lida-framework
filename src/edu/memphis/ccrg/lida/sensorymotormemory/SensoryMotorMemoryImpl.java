@@ -11,16 +11,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 
 public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
 
+	private static Logger logger = Logger.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
 	private Map<Long, Object> actionMap = new HashMap<Long, Object>();
 	private Environment environment;
 	
@@ -32,7 +36,11 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 
 	@Override
 	public void addSensoryMotorListener(SensoryMotorListener l) {
-		listeners.add(l);		
+		if(l instanceof Environment){
+			logger.log(Level.SEVERE, "Cannot Add Environment as SensoryMotorListener.  Add it as an associated module.", LidaTaskManager.getActualTick());			
+		}else{
+			listeners.add(l);
+		}
 	}
 	
 	@Override
@@ -62,7 +70,6 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 
 	@Override
 	public void receiveActionId(long id) {
-		//System.out.println("Sensory motor memory receiving " + id);
 		executeAction(actionMap.get(id));
 	}
 

@@ -21,7 +21,7 @@
 			<associatedmodule>Environment</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initialTasks>			<task name="start">				<class>edu.memphis.ccrg.lida.sensorymemory.SMBackgroundTask</class>				<ticksperrun>5</ticksperrun>				<associatedmodule>SensoryMemory</associatedmodule>			</task>			</initialTasks>
 		</module>
 		<module name="SensoryMotorMemory">
-			<class>edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl</class>
+			<class>edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl</class>			<associatedmodule>Environment</associatedmodule>
 			<taskspawner>defaultTS</taskspawner>		</module>
 		<module name="PerceptualAssociativeMemory">
 			<class>edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl</class>
@@ -174,11 +174,6 @@
 			<listenertype>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener</listenertype>
 			<modulename>ProceduralMemory</modulename>
 			<listenername>ActionSelection</listenername>
-		</listener>
-		<listener>
-			<listenertype>edu.memphis.ccrg.lida.actionselection.ActionSelectionListener</listenertype>
-			<modulename>ActionSelection</modulename>
-			<listenername>Environment</listenername>
 		</listener>
 		<listener>
 			<listenertype>edu.memphis.ccrg.lida.actionselection.ActionSelectionListener</listenertype>

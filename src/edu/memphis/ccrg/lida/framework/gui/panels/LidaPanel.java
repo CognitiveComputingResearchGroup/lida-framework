@@ -17,32 +17,68 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 
 /**
- *  Lida Gui Panel
+ * A GUI Panel for the LidaGui.
  * @author Javier Snaider
- *
  */
 public interface LidaPanel {
 	
+	/**
+	 * Registers the LidaGuiController
+	 * @param lgc GuiController for this panel
+	 */
 	public void registrerLidaGuiController(LidaGuiController lgc);
+	
+	/**
+	 * Set Lida object for this panel.
+	 * @param lida Lida object
+	 */
 	public void registerLida(Lida lida);
 	
 	/**
 	 * Update Panel to display supplied object
-	 * @param o object
+	 * @param o Object to display
 	 */
 	public void display (Object o);
 	
 	/**
-	 * Update the panel's display of contents
+	 * Refresh the content this panel displays.
 	 */
 	public void refresh();
+	
+	/**
+	 * Returns associated JPanel
+	 * @return a JPanel
+	 */
 	public JPanel getPanel();
 	
+	/**
+	 * Returns supported Module.
+	 * @return ModuleName of Module supported by this LidaPanel
+	 */
     public ModuleName getSupportedModule();
+    
+    /**
+     * Sets supported module
+     * @param module ModuleName of supported Module
+     */
     public void setSupportedModule(ModuleName module);
     
+    /**
+     * Sets name of panel
+     * @param name label for panel
+     */
     public void setName(String name);
+    
+    /**
+     * 
+     * @return name of panel
+     */
     public String getName();
+    
+    /**
+     * initializes panel
+     * @param param Paramters to initialize 
+     */
     public void initPanel(String[] param);
 }
 

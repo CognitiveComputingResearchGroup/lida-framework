@@ -13,19 +13,19 @@ import java.util.Map;
 public class LinkableDef {
 	private String name;
 	private String className;
-	private Map<String,String>defeaultStrategies;
+	private Map<String,String> defaultStrategies;
 	private Map<String,Object> params;
 
 	/**
 	 * @param className Qualified name
-	 * @param defeaultStrategies Map of strategies this linkable will have
+	 * @param defaultStrategies Map of strategies this linkable will have
 	 * @param name label for object 
 	 * @param params optional parameters
 	 */
-	public LinkableDef(String className, Map<String,String> defeaultStrategies,
+	public LinkableDef(String className, Map<String,String> defaultStrategies,
 			String name, Map<String,Object> params) {
 		this.className = className;
-		this.defeaultStrategies = defeaultStrategies;
+		this.defaultStrategies = defaultStrategies;
 		this.name = name;
 		this.params = params;
 	}
@@ -34,7 +34,7 @@ public class LinkableDef {
 	 * 
 	 */
 	public LinkableDef() {
-		this.params = new HashMap<String,Object>();;
+		this.params = new HashMap<String,Object>();
 	}
 	
 	/**
@@ -62,16 +62,16 @@ public class LinkableDef {
 		this.className = className;
 	}
 	/**
-	 * @return the defeaultBehaviors
+	 * @return the defaultBehaviors
 	 */
-	public Map<String,String> getDefeaultStrategies() {
-		return defeaultStrategies;
+	public Map<String,String> getDefaultStrategies() {
+		return defaultStrategies;
 	}
 	/**
-	 * @param defeaultStrategies the defeaultBehaviors to set
+	 * @param defaultStrategies the defaultBehaviors to set
 	 */
-	public void setDefeaultStrategies(Map<String,String> defeaultStrategies) {
-		this.defeaultStrategies = defeaultStrategies;
+	public void setDefaultStrategies(Map<String,String> defaultStrategies) {
+		this.defaultStrategies = defaultStrategies;
 	}
 	/**
 	 * @return the params

@@ -216,7 +216,7 @@ public class LidaFactoriesXMLLoader {
 		node.setClassName(className);
 		node.setName(name);
 		node.setParams(params);
-		node.setDefeaultStrategies(strat);
+		node.setDefaultStrategies(strat);
 		return node;
 	}
 
@@ -257,7 +257,7 @@ public class LidaFactoriesXMLLoader {
 			codelet.setName(name);
 			codelet.setType(codeletType);
 			codelet.setParams(params);
-			codelet.setDefeaultStrategies(behav);
+			codelet.setDefaultStrategies(behav);
 		}else{
 			logger.log(Level.WARNING,name+ " has an invalid type. It is not loaded.");
 		}

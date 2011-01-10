@@ -14,7 +14,6 @@ import edu.memphis.ccrg.lida.pam.PamLink;
  * A link connects two Linkable objects. 
  * 
  * @author Javier Snaider, Ryan McCall
- *
  */
 public interface Link extends Linkable, Activatible{
 	
@@ -50,9 +49,17 @@ public interface Link extends Linkable, Activatible{
 	 */
 	public void setCategory(LinkCategory type);
 	
-	//?
-//	public String getFactoryLinkType();
-//	public void setFactoryLinkType(String factoryLinkType);
+	/**
+	 * Returns factoryLinkType
+	 * @return name of the Link type in the NodeFactory
+	 */
+	public String getFactoryLinkType();
+	
+	/**
+	 * Sets the factoryLinkType
+	 * @param factoryLinkType name of this Link in the NodeFactory
+	 */
+	public void setFactoryLinkType(String factoryLinkType);
 
 	/**
 	 * Set the grounding PamLink for this link.

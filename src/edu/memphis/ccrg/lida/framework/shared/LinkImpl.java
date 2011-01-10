@@ -8,25 +8,50 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamLink;
 
 /**
- * 
+ * A Link that connects a Node to a Linkable (Node or Link).
  * @author Ryan McCall, Javier Snaider
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 
-	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
-	private Linkable sink;
+	
+	/**
+	 * Source of this link, always a node.
+	 */
 	private Node source;
+	
+	/**
+	 * Sink of this link, a Linkable.
+	 */
+	private Linkable sink;
+	
+	/**
+	 * A custom id dependent on the source's and the sink's ids.
+	 */
 	private ExtendedId id;
 	
+	/**
+	 * Category of this Link.
+	 */
 	private LinkCategory category;
+	
+	/**
+	 * PamLink in PAM that grounds this Link.
+	 */
 	protected PamLink groundingPamLink;
+	
+	/**
+	 * Name of this Link type in the NodeFactory
+	 */
+	private String factoryLinkType;
 	
 	protected Map<String, ?> parameters;
 	
@@ -48,91 +73,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		id = l.getExtendedId();
 		groundingPamLink = l.getGroundingPamLink();
 		updateExtendedId();
-	}
-
-	@Override
-	public ExtendedId getExtendedId() {
-		return id;
-	}
-	
-	@Override
-	public String getLabel() {
-		return "Link: "+category.getLabel()+" " + id;
-	}
-
-	@Override
-	public Linkable getSink() {
-		return sink;
-	}
-
-	@Override
-	public Node getSource() {
-		return source;
-	}
-
-	@Override
-	public LinkCategory getCategory() {
-		return category;
-	}
-
-	@Override
-	public int hashCode() {
-		return id.hashCode();
-	}
-	
-	/**
-	 * This method compares this LinkImpl with any kind of Link.
-	 * Two Links are
-	 * equals if and only if they have the same id.
-	 * 
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Link)) {
-			return false;
-		}
-		Link other = (Link) obj;
-		
-		return id.equals(other.getExtendedId());
-	}
-	
-	@Override
-	public void setSink(Linkable sink) {
-		this.sink = sink;
-		updateExtendedId();
-	}
-
-	@Override
-	public void setSource(Node source) {
-		this.source = source;
-		updateExtendedId();
-	}
-
-	@Override
-	public void setCategory(LinkCategory category) {
-		this.category = category;
-		updateExtendedId();
-	}
-
-	@Override
-	public String toString() {
-		return getLabel();
-	}
-
-	private void updateExtendedId() {
-		if(category != null && source != null && sink != null){
-			id = new ExtendedId(category.getId(), ((Node) source).getId(), sink.getExtendedId());
-		}
-	}
-
-	@Override
-	public PamLink getGroundingPamLink() {
-		return groundingPamLink;
-	}
-
-	@Override
-	public void setGroundingPamLink(PamLink l) {
-		groundingPamLink = l;
 	}
 	
 	/*
@@ -167,6 +107,104 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 			value = defaultValue;
 		}
 		return value;
+	}
+
+	/*
+	 * Refreshes this Link's ExtendedId based on its category, source, and sink.
+	 */
+	private void updateExtendedId() {
+		if(category != null && source != null && sink != null){
+			id = new ExtendedId(category.getId(), ((Node) source).getId(), sink.getExtendedId());
+		}
+	}
+
+	@Override
+	public ExtendedId getExtendedId() {
+		return id;
+	}
+
+	@Override
+	public Linkable getSink() {
+		return sink;
+	}
+
+	@Override
+	public Node getSource() {
+		return source;
+	}
+
+	@Override
+	public LinkCategory getCategory() {
+		return category;
+	}
+
+	@Override
+	public void setSink(Linkable sink) {
+		this.sink = sink;
+		updateExtendedId();
+	}
+
+	@Override
+	public void setSource(Node source) {
+		this.source = source;
+		updateExtendedId();
+	}
+
+	@Override
+	public void setCategory(LinkCategory category) {
+		this.category = category;
+		updateExtendedId();
+	}
+
+	@Override
+	public PamLink getGroundingPamLink() {
+		return groundingPamLink;
+	}
+
+	@Override
+	public void setGroundingPamLink(PamLink l) {
+		groundingPamLink = l;
+	}
+	
+	@Override
+	public String getFactoryLinkType() {
+		return factoryLinkType;
+	}
+
+	@Override
+	public void setFactoryLinkType(String linkType) {
+		logger.log(Level.FINEST, "Factory link type set to " + factoryLinkType, LidaTaskManager.getActualTick());
+		this.factoryLinkType = linkType;
+	}
+	
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+	
+	/**
+	 * This method compares this LinkImpl with any kind of Link.
+	 * Two Links are equal if and only if they have the same id.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Link)) {
+			return false;
+		}
+		Link other = (Link) obj;
+		
+		return id.equals(other.getExtendedId());
+	}
+	
+	
+	@Override
+	public String getLabel() {
+		return "Link: "+category.getLabel()+" " + id;
+	}
+	
+	@Override
+	public String toString() {
+		return getLabel();
 	}
 
 }

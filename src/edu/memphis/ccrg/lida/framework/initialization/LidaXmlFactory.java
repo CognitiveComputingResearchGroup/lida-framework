@@ -41,11 +41,12 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  */ 
 public class LidaXmlFactory implements LidaFactory {
 
+	private static Logger logger = Logger.getLogger(LidaXmlFactory.class.getCanonicalName());
+	
 	private static final String DEFAULT_FILE_NAME = "configs/lida.xml";
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
-	private static Logger logger = Logger
-			.getLogger(LidaXmlFactory.class.getCanonicalName());
+	
 	private Document dom;
 	private Lida lida;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();

@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class CodeletDef {
 	private String className;
-	private Map<String,String>defeaultStrategies;
+	private Map<String,String>defaultStrategies;
 	private String name;
 	private Map<String,Object> params;
 	private char type;
@@ -31,14 +31,14 @@ public class CodeletDef {
 	}
 	/**
 	 * @param className Class name of codelet
-	 * @param defeaultStrategies map of strategies
+	 * @param defaultStrategies map of strategies
 	 * @param name label for codelet
 	 * @param params optional parameters
 	 */
-	public CodeletDef(String className, Map<String,String> defeaultStrategies,
+	public CodeletDef(String className, Map<String,String> defaultStrategies,
 			String name, Map<String,Object> params) {
 		this.className = className;
-		this.defeaultStrategies = defeaultStrategies;
+		this.defaultStrategies = defaultStrategies;
 		this.name = name;
 		this.params = params;
 	}
@@ -54,8 +54,8 @@ public class CodeletDef {
 	/**
 	 * @return the defeaultBehaviors
 	 */
-	public Map<String,String> getDefeaultStrategies() {
-		return defeaultStrategies;
+	public Map<String,String> getDefaultStrategies() {
+		return defaultStrategies;
 	}
 
 	/**
@@ -83,10 +83,10 @@ public class CodeletDef {
 		this.className = className;
 	}
 	/**
-	 * @param defeaultStrategies the defeaultBehaviors to set
+	 * @param defaultStrategies the defeaultBehaviors to set
 	 */
-	public void setDefeaultStrategies(Map<String,String> defeaultStrategies) {
-		this.defeaultStrategies = defeaultStrategies;
+	public void setDefaultStrategies(Map<String,String> defaultStrategies) {
+		this.defaultStrategies = defaultStrategies;
 	}
 	/**
 	 * @param name the name to set
