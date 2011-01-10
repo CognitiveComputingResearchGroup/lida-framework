@@ -7,11 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 public interface SensoryMotorListener extends ModuleListener{
 	
-	public void receiveAction(LidaAction a);
+	public void receiveExecutingAlgorithm(Object algorithm);
 
 }

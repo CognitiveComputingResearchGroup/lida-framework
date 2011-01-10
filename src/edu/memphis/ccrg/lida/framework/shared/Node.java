@@ -22,14 +22,14 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * Nodes with the same id represents the same concept so equals have to return true even if the objects are
  * of different classes.
  * 
- * @author Javier Snaider
+ * @author Javier Snaider, Ryan McCall
  * 
  */
 public interface Node extends Linkable, Activatible, Serializable {
 	
 	/**
-	 * Returns the underlying PamNode that grounds this node 
-	 * @return
+	 * Returns the grounding PamNode.
+	 * @return PamNode, in PAM, underlying this node.
 	 */
     public PamNode getGroundingPamNode();
     
@@ -39,7 +39,10 @@ public interface Node extends Linkable, Activatible, Serializable {
      */
     public void setGroundingPamNode (PamNode n);
     
-    //TODO remove since redundant with getExtendedId?
+    /**
+     * Returns Node's id
+     * @return unique id
+     */
     public int getId();
     public void setId(int id);
     
@@ -47,17 +50,22 @@ public interface Node extends Linkable, Activatible, Serializable {
 	public String getLabel();
     public void setLabel(String label);
     
+    /**
+     * Returns the name of this node in the NodeFactory
+     * @return factory name of this node
+     * @see NodeFactory 
+     */
 	public String getFactoryNodeType();
 	public void setFactoryNodeType(String factoryNodeType);
 	
 	/**
-	 * Returns a double signifying the degree to which this node is a goal of the agent
-	 * @return
+	 * Returns desirability of this node.
+	 * @return a double signifying the degree to which this node is a goal of the agent
 	 */
 	public double getDesirability();
 	
 	/**
-	 * Set desirability
+	 * Set node desirability.
 	 * @param degree  degree to which this node is a goal of the agent
 	 */
 	public void setDesirability(double degree);

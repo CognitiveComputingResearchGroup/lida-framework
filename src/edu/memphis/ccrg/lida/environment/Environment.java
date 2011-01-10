@@ -7,13 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.environment;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 public interface Environment extends LidaModule{
 
 	public void resetEnvironment();
 	
-	public void processAction(LidaAction a);
+	public void processAction(Object algorithm);
 	
 }

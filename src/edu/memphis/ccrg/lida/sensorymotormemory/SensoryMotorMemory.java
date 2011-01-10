@@ -10,17 +10,40 @@ package edu.memphis.ccrg.lida.sensorymotormemory;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
+/**
+ * Sensory Motor Memory is a module which receives selected actions from ActionSelection and
+ * content from SensoryMemory.  It contains the algorithm for a selected action.  When it executes an algorithm it
+ * directly calls a method in the environment (doesn't use a listener).  
+ * @author Ryan J McCall, Javier Snaider
+ *
+ */
 public interface SensoryMotorMemory extends LidaModule, SensoryMemoryListener, ActionSelectionListener{
 
+	/**
+	 * Any non-environment communication should use listeners.
+	 * @param l SensoryMotorListener
+	 */
 	public void addSensoryMotorListener(SensoryMotorListener l);
 	
-	public void executeAction(LidaAction a);
+	/**
+	 * Executes an algorithm in the Environment
+	 */
+	public void executeAction(Object algorithm);
 
-	public void setActionMap(Map<Long, LidaAction> actionMap);
+	/**
+	 * Specify the algorithms in SensoryMotorMemory 
+	 * @param actionMap Algorithms indexed by LidaAction id
+	 */
+	public void setActionMap(Map<Long, Object> actionMap);
 	
-	public void addAction(long actionId, LidaAction action);
+	/**
+	 * Adds action with associated actionId
+	 * @param actionId id by which action is referenced
+	 * @param action an algorithm 
+	 */
+	public void addAction(long actionId, Object action);
+	
 }

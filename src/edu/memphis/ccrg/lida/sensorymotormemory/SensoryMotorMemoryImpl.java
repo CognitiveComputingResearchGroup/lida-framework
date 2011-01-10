@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
@@ -22,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 
 public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
 
-	private Map<Long, LidaAction> actionMap = new HashMap<Long, LidaAction>();
+	private Map<Long, Object> actionMap = new HashMap<Long, Object>();
 	private Environment environment;
 	
 	public SensoryMotorMemoryImpl() {
@@ -68,19 +67,19 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	}
 
 	@Override
-	public void executeAction(LidaAction action) {
+	public void executeAction(Object action) {
 		environment.processAction(action);
 		for(SensoryMotorListener l: listeners)
-			l.receiveAction(action);		
+			l.receiveExecutingAlgorithm(action);		
 	}
 
 	@Override
-	public void setActionMap(Map<Long, LidaAction> actionMap) {
+	public void setActionMap(Map<Long, Object> actionMap) {
 		this.actionMap = actionMap;		
 	}
 
 	@Override
-	public void addAction(long actionId, LidaAction action) {
+	public void addAction(long actionId, Object action) {
 		actionMap.put(actionId, action);
 	}
 

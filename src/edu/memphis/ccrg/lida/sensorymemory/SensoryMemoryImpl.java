@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.sensorymemory;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
@@ -50,7 +49,7 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
 	}//
 	
 	@Override
-	public void receiveAction(LidaAction a){
+	public void receiveExecutingAlgorithm(Object alg){
 		//What to do here is a research question.
 	}
 

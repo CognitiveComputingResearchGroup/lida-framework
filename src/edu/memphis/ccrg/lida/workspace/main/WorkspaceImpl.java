@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
@@ -172,7 +171,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	}
 
 	@Override
-	public void receiveAction(LidaAction a) {
+	public void receiveExecutingAlgorithm(Object a) {
 		// Maybe just pam receives this and not the workspace		
 	}
 	

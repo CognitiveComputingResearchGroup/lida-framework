@@ -14,8 +14,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-
 /**
  * Implements the TaskSpawner interface.
  * 

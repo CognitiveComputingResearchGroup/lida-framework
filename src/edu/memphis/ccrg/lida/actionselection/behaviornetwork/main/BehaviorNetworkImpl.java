@@ -32,7 +32,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -373,7 +372,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	//TODO
-	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
+//	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
 
 	/**
 	 * Don't bother exciting a predecessor for a precondition that is already

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.EnvironmentImpl;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
@@ -26,13 +25,11 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvider {
 
 	private Logger logger = Logger.getLogger(VisionEnvironment.class.getCanonicalName());
-	private boolean actionHasChanged = false;
-	private LidaAction actionContent = null;
 	private int imageHeight = 5;
 	private int imageWidth = 5;
 	private volatile double[][] environContent = new double[imageHeight][imageWidth];
 	//
-	FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(ModuleName.Environment, "matrix", environContent);
+	private FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(ModuleName.Environment, "matrix", environContent);
 
 	public VisionEnvironment(int height, int width) {
 		imageHeight = height;
@@ -48,10 +45,8 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	}
 
 	@Override
-	public synchronized void processAction(LidaAction action) {
+	public synchronized void processAction(Object action) {
 		//TODO 
-		actionContent = action;
-		actionHasChanged = true;
 	}
 	
 	private int arrow = 0;
@@ -224,8 +219,6 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		@Override
 		protected void runThisLidaTask() {
 
-			Integer latestAction = null;
-
 			if(arrow == 0)
 				getNextMoveDown();
 			else if(arrow == 1)
@@ -245,16 +238,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 				else 
 					arrow = (int) Math.floor(Math.random() * 4);
 			}
-			
-			if (actionHasChanged) {
-				latestAction = (Integer) actionContent.getContent();
-				synchronized (this) {
-					actionHasChanged = false;
-				}
-				if (!latestAction.equals(null)) {
-					// handleAction(currentAction);
-				}
-			}// if actionHasChanged
-				}
-	}	
+		}
+	}//background task
+	
 }// class

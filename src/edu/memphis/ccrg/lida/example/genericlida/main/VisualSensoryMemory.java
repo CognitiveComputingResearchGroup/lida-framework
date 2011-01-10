@@ -1,6 +1,5 @@
 package edu.memphis.ccrg.lida.example.genericlida.main;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 /**
@@ -52,7 +51,7 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 	}
 
 	@Override
-	public void receiveAction(LidaAction a) {
+	public void receiveExecutingAlgorithm(Object algorithm) {
 		
 	}
 

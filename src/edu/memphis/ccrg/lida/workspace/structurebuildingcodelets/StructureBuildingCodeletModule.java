@@ -27,11 +27,6 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 
 	private static Logger logger=Logger.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
 	
-	/**
-	 * factory for structure building codelets
-	 */
-	private StructureBuildingCodeletFactory sbCodeletFactory = StructureBuildingCodeletFactory.getInstance();
-	
 	private Workspace workspace;
 	
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();

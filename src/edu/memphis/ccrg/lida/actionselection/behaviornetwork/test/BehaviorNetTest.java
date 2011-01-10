@@ -36,6 +36,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	private NodeFactory factory = NodeFactory.getInstance();
 	private BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
 	
+	@SuppressWarnings("unused")
 	private void run() {
 		
 		behaviorNet.addActionSelectionListener(this);
