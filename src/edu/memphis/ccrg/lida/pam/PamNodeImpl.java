@@ -149,5 +149,9 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		baseLevelExciteStrategy = strategy;		
 	}
 
+	@Override
+	public String getFactoryNodeType() {
+		return PamNodeImpl.class.getSimpleName();
+	}
 	
 }//class

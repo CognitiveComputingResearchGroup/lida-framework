@@ -17,10 +17,14 @@ import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.pam.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * Standard factory for the framework
@@ -126,24 +130,25 @@ public class NodeFactory {
 	 * Creates the Factory and adds default Node, Link and Strategies to the Maps in the Factory.
 	 */
 	private NodeFactory() {
-		defaultNodeType = "NodeImpl";
-		defaultNodeClassName = "edu.memphis.ccrg.lida.framework.shared.NodeImpl";
+		defaultNodeType = NodeImpl.class.getSimpleName();
+		defaultNodeClassName =  NodeImpl.class.getCanonicalName();
 		addNodeType(defaultNodeType, defaultNodeClassName);
+		//
+		addNodeType(PamNodeImpl.class.getSimpleName(), PamNodeImpl.class.getCanonicalName());
+		addNodeType(LinkCategoryNode.class.getSimpleName(), LinkCategoryNode.class.getCanonicalName());
 		
-		defaultLinkType = "LinkImpl";
-		defaultLinkClassName = "edu.memphis.ccrg.lida.framework.shared.LinkImpl";
+		defaultLinkType = LinkImpl.class.getSimpleName();
+		defaultLinkClassName = LinkImpl.class.getCanonicalName();
 		addLinkType(defaultLinkType, defaultLinkClassName);
-		
-		addNodeType("PamNodeImpl", "edu.memphis.ccrg.lida.pam.PamNodeImpl");
-		addNodeType("LinkCategoryNode", "edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode");
-		addLinkType("PamLinkImpl", "edu.memphis.ccrg.lida.pam.PamLinkImpl");
+		//		
+		addLinkType(PamLinkImpl.class.getSimpleName(), PamLinkImpl.class.getCanonicalName());
 
 		defaultDecayType="defaultDecay";
-		addDecayStrategy(defaultDecayType, new StrategyDef("edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy",
+		addDecayStrategy(defaultDecayType, new StrategyDef(LinearDecayStrategy.class.getCanonicalName(),
 				defaultDecayType,new HashMap<String, Object>(),"decay",true));
 		
 		defaultExciteType="defaultExcite";
-		addExciteStrategy(defaultExciteType, new StrategyDef("edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy",
+		addExciteStrategy(defaultExciteType, new StrategyDef(DefaultExciteStrategy.class.getCanonicalName(),
 				defaultExciteType,new HashMap<String, Object>(),"excite",true));
 	}
 
@@ -509,7 +514,6 @@ public class NodeFactory {
 
 			n.setLabel(nodeLabel);
 			n.setId(nodeIdCount++);
-			n.setFactoryNodeType(nodeType);
 			n.setActivation(activation);
 			
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);	

@@ -54,12 +54,6 @@ public interface Link extends Linkable, Activatible{
 	 * @return name of the Link type in the NodeFactory
 	 */
 	public String getFactoryLinkType();
-	
-	/**
-	 * Sets the factoryLinkType
-	 * @param factoryLinkType name of this Link in the NodeFactory
-	 */
-	public void setFactoryLinkType(String factoryLinkType);
 
 	/**
 	 * Set the grounding PamLink for this link.

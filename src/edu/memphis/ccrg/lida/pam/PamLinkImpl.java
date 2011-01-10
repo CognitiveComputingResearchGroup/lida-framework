@@ -84,4 +84,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
 		baseLevelExciteStrategy = strategy;		
 	}	
+	
+	@Override
+	public String getFactoryLinkType() {
+		return PamLinkImpl.class.getSimpleName();
+	}
+	
 }

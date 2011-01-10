@@ -48,11 +48,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	protected PamLink groundingPamLink;
 	
-	/**
-	 * Name of this Link type in the NodeFactory
-	 */
-	private String factoryLinkType;
-	
 	protected Map<String, ?> parameters;
 	
 	public LinkImpl() {
@@ -163,18 +158,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	@Override
 	public void setGroundingPamLink(PamLink l) {
+		logger.log(Level.FINEST, "Set grounding pam link " + l.toString(), LidaTaskManager.getActualTick());
 		groundingPamLink = l;
 	}
 	
 	@Override
 	public String getFactoryLinkType() {
-		return factoryLinkType;
-	}
-
-	@Override
-	public void setFactoryLinkType(String linkType) {
-		logger.log(Level.FINEST, "Factory link type set to " + factoryLinkType, LidaTaskManager.getActualTick());
-		this.factoryLinkType = linkType;
+		return LinkImpl.class.getSimpleName();
 	}
 	
 	@Override

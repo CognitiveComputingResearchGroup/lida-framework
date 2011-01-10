@@ -41,6 +41,13 @@ import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
 
 /**
+ * Panels that extend LidaPanel inherit the 'initPanel()' mehtod.  
+ * This method is called for every LidaPanel this created in LidaGui.  
+ * Since all LidaPanels have a reference to the Lida object, 
+ * the LidaPanel can register itself as a FrameworkGuiListener of 
+ * whatever module it wants (provided that module implements FrameworkGuiProvider).  
+ * This means that the module has a reference to the panel, and 
+ * it can use this reference to send data to the panel for display in that GuiPanel. 
  * 
  * @author Javier Snaider
  */

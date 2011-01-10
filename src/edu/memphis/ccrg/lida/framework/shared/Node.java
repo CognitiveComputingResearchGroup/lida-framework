@@ -56,7 +56,6 @@ public interface Node extends Linkable, Activatible, Serializable {
      * @see NodeFactory 
      */
 	public String getFactoryNodeType();
-	public void setFactoryNodeType(String factoryNodeType);
 	
 	/**
 	 * Returns desirability of this node.
