@@ -1,37 +1,36 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
-public class PredecessorExciteStrategy extends StrategyImpl implements ExciteStrategy {
-
-	@Override
-	public double excite(double currentActivation, double excitation, Object... params) {
-		double initialActivation = (Double) params[0];
-		double predecessorFactor = (Double) params[1];
-		double normalizationFactor = (Double) params[2];
-		
-		double newActivation = currentActivation + (initialActivation * predecessorFactor) / normalizationFactor;
-		if(newActivation > 1.0)
-			return 1.0;
-		if(newActivation < 0.0)
-			return 0.0;
-		return newActivation;
-	}
-
-	@Override
-	public double excite(double currentActivation, double excitation,
-			Map<String, ? extends Object> params) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+public class PredecessorExciteStrategy extends StrategyImpl implements BehaviorExciteStrategy {
+	
+	private static Logger logger = Logger.getLogger(PredecessorExciteStrategy.class.getCanonicalName());
+	
+	private final double DEFAULT_EXCITATION_FACTOR = 0.6;
+	
+	private double predecessorExcitationFactor = DEFAULT_EXCITATION_FACTOR;
 
 	@Override
 	public void init(Map<String, ?> parameters) {
-		// TODO Auto-generated method stub
-
+		predecessorExcitationFactor = (Double) parameters.get("factor");
+	}
+	
+	public void exciteBehavior(Behavior sourceBehavior, Behavior recipientBehavior){
+		double amount = (sourceBehavior.getActivation() * predecessorExcitationFactor)
+						/ sourceBehavior.getUnsatisfiedContextCount();
+		recipientBehavior.excite(amount);
+		logger.log(Level.FINEST, sourceBehavior.getActivation() + " "
+				+ sourceBehavior.getLabel() + "<--" + amount
+				+ " to " + recipientBehavior, LidaTaskManager
+				.getActualTick());
+//		double granted = (behavior.getActivation() * predecessorExcitationFactor)
+//		/ behavior.getUnsatisfiedContextCount();
+//predecessor.excite(granted);
 	}
 
 }

@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,14 +41,13 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 //TODO how to deliberate about schemes? 
-//send behaviors under deliberation to pam via preafferance. 
-//behaviors' context and result have pam groundings. 
-//actions as well but have to consider who is the actor of the action
+// Send behaviors under deliberation to pam via preafferance. 
+// behaviors' context and result have pam groundings. 
+// actions as well but have to consider who is the actor of the action
 
 /**
  * 
- * @author Ryan J McCall, Javier Snaider, Sidney D'Mello
- * 
+ * @author Ryan J McCall, Javier Snaider
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener {
@@ -147,7 +146,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * 
 	 */
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
+	
+	private BehaviorExciteStrategy successorExciteStrategy = new SuccessorExciteStrategy();
+	
+	private BehaviorExciteStrategy predecessorExciteStrategy = new PredecessorExciteStrategy();
 
+	private BehaviorExciteStrategy conflictorExciteStrategy = new ConflictorExciteStrategy();
+	
 	/**
 	 * Threshold to identify goals
 	 */
@@ -166,6 +171,17 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	@Override
 	public void init() {
+		//I think I've done this slightly incorrectly again.
+		Map<String, Object> exciteParameters = new HashMap<String, Object>();
+		exciteParameters.put("factor", predecessorExcitationFactor);
+		predecessorExciteStrategy.init(exciteParameters);
+		
+		exciteParameters.put("factor", successorExcitationFactor);
+		successorExciteStrategy.init(exciteParameters);
+		
+		exciteParameters.put("factor", conflictorExcitationFactor);
+		conflictorExciteStrategy.init(exciteParameters);
+		
 		// TODO set parameters for activation passing
 		LidaTask backgroundTask = new LidaTaskImpl(){
 			@Override
@@ -254,6 +270,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
 			trigger.checkForTrigger(getBehaviors());
 	}// method
+	
 	/**
 	 * Resets all triggers
 	 */
@@ -305,7 +322,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			actionSelectionStarted.set(false);
 		}
 	}
-	
 
 	@Override
 	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
@@ -344,7 +360,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Only excite successor if precondition is not yet satisfied.
 	 * 
 	 * @param behavior
-	 * 
 	 */
 	private void spreadActivationToSuccessors(Behavior behavior) {
 		for (Node addProposition : behavior.getAddingList().getNodes()) {
@@ -354,13 +369,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 					// Grant activation to a successor if its precondition has
 					// not yet been satisfied
 					if (successor.isContextConditionSatisfied(addProposition) == false) {
-						double amount = behavior.getActivation() * successorExcitationFactor
-								/ successor.getUnsatisfiedContextCount();
-						successor.excite(amount);
-						logger.log(Level.FINEST, behavior.getLabel() + "-->"
-								+ amount + " to " + successor + " for "
-								+ addProposition, LidaTaskManager
-								.getActualTick());
+						successorExciteStrategy.exciteBehavior(behavior, successor);
 					}
 				}
 			}
@@ -370,10 +379,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private Set<Behavior> getSuccessors(Node addProposition) {
 		return behaviorsByContextCondition.get(addProposition);
 	}
-
-	//TODO
-//	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
-
+	
 	/**
 	 * Don't bother exciting a predecessor for a precondition that is already
 	 * satisfied.
@@ -386,14 +392,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				Set<Behavior> predecessors = getPredecessors(contextCondition);
 				if (predecessors != null) {
 					for (Behavior predecessor : predecessors) {
-						double granted = (behavior.getActivation() * predecessorExcitationFactor)
-								/ behavior.getUnsatisfiedContextCount();
-						predecessor.excite(granted);
-						logger.log(Level.FINEST, behavior.getActivation() + " "
-								+ behavior.getLabel() + "<--" + granted
-								+ " to " + predecessor + " for "
-								+ contextCondition, LidaTaskManager
-								.getActualTick());
+						predecessorExciteStrategy.exciteBehavior(behavior, predecessor);
 					}
 				}
 			}
@@ -436,14 +435,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return behaviorsByDeletingItem.get(condition);
 	}
 
-	private void auxSpreadConflictorActivation(Behavior behavior,
-			Behavior conflictor) {
-		double inhibitionAmount = -(behavior.getActivation() * conflictorExcitationFactor)
-				/ behavior.getContextSize();
-		conflictor.excite(inhibitionAmount);
-		logger.log(Level.FINEST, behavior.getLabel() + " inhibits "
-				+ conflictor.getLabel() + " amount " + inhibitionAmount,
-				LidaTaskManager.getActualTick());
+	private void auxSpreadConflictorActivation(Behavior behavior, Behavior conflictor) {
+		conflictorExciteStrategy.exciteBehavior(behavior, conflictor);
 	}// method
 
 
@@ -631,8 +624,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * @param behaviorActivationLowerBound amount of activation behavior needs to remain in the network
 	 * should be the same as the activation requirement in procedural memory
 	 */
-	public void setBehaviorActivationLowerBound(
-			double behaviorActivationLowerBound) {
+	public void setBehaviorActivationLowerBound(double behaviorActivationLowerBound) {
 		this.behaviorActivationLowerBound = behaviorActivationLowerBound;
 	}
 
