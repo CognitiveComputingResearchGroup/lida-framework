@@ -70,7 +70,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * Current conscious broadcast
 	 */
-	private NodeStructure broadcastContent = new NodeStructureImpl();
+	private NodeStructure broadcastContent;
 
 	/**
 	 * How PAM calculates the amount of activation to propagate
@@ -103,6 +103,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
+		broadcastContent = new NodeStructureImpl();
 	}
 
 	/**

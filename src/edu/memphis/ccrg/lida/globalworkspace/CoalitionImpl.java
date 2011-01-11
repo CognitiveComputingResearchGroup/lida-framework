@@ -10,12 +10,11 @@ package edu.memphis.ccrg.lida.globalworkspace;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
 public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	
-	private NodeStructure struct = new NodeStructureImpl();	
+	private NodeStructure struct;	
 	private double attentionCodeletActivation;
 
 	public CoalitionImpl(NodeStructure content, double attnCodeActiv){

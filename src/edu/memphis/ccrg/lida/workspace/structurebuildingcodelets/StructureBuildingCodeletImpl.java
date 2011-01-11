@@ -40,7 +40,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	/**
 	 * The node structure required for this codelet's action to occur
 	 */
-	private NodeStructure soughtContent = new NodeStructureImpl();
+	private NodeStructure soughtContent;
 	
 	/**
 	 * This codelet's action

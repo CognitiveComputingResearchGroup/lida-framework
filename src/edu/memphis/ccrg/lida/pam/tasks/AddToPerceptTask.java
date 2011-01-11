@@ -42,7 +42,9 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(NodeStructure pamNodeStructure, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl(pamNodeStructure);
+		//TODO this may cause an error?
+//		nodeStructure = new NodeStructureImpl(pamNodeStructure);
+		nodeStructure = pamNodeStructure.copy();
 	}
 
 	/**

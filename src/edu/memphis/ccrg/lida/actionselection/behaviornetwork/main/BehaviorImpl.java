@@ -39,17 +39,17 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	/**
 	 * Context for this behavior
 	 */
-	private NodeStructure context = new NodeStructureImpl();
+	private NodeStructure context;
 
 	/**
 	 * Set of nodes that this scheme adds
 	 */
-	private NodeStructure addingList = new NodeStructureImpl();
+	private NodeStructure addingList;
 
 	/**
      * 
      */
-	private NodeStructure deletingList = new NodeStructureImpl();
+	private NodeStructure deletingList;
 
 	/**
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
@@ -70,25 +70,32 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	/**
 	 * The streams that contains this behavior
 	 */
-	private Set<Stream> containingStreams = null;
+	private Set<Stream> containingStreams;
 
 	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
 
-	private String contextNodeType = null;
+	private String contextNodeType;
 
-	private Scheme generatingScheme = null;
+	private Scheme generatingScheme;
 
 	private static final double DEFAULT_CS_THRESHOLD = 0.5;
 
 	private static long idCounter = 0;
 	
-	public BehaviorImpl(long actionId){
-		this(idCounter++, actionId);
+	public BehaviorImpl(){
+		context = new NodeStructureImpl();
+		addingList = new NodeStructureImpl();
+		deletingList = new NodeStructureImpl();
 	}
-
+	
 	public BehaviorImpl(long id, long actionId) {
+		this();
 		this.id = id;
 		this.actionId = actionId;
+	}
+	
+	public BehaviorImpl(long actionId){
+		this(idCounter++, actionId);
 	}
 
 	// Precondition methods

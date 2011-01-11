@@ -28,7 +28,6 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -138,8 +137,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 		}
 		
 		if (coal != null) {
-			NodeStructure copy = new NodeStructureImpl((NodeStructure) coal
-					.getContent());
+			NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}

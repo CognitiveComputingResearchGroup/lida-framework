@@ -24,14 +24,13 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class MappingTranslator implements Translator {
 
     private int size;
-    private PerceptualAssociativeMemory pam;
+//    private PerceptualAssociativeMemory pam;
 
     /**
-     * @param size TODO
      */
     public MappingTranslator(int size, PerceptualAssociativeMemory pam) {
         this.size = size;
-        this.pam = pam;
+//        this.pam = pam;
     }
 
     /**

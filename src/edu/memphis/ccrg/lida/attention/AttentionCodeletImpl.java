@@ -31,7 +31,12 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public abstract class AttentionCodeletImpl extends CodeletImpl implements AttentionCodelet {
 	
 	private static Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
+	
+	/**
+	 * Where codelet will look for and retreive content from
+	 */
 	protected WorkspaceBuffer currentSituationalModel;
+	
 	protected GlobalWorkspace globalWorkspace;
 	
 	protected NodeStructure soughtContent;

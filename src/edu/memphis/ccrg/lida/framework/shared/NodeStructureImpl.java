@@ -68,13 +68,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param defaultNode kind of node used in this NodeStructure
 	 * @param defaultLink kind of link used in this NodeStructure
 	 */
-	public NodeStructureImpl(String defaultNode, String defaultLink) {
+	protected NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
 		setDefaultNode(defaultNode);		
 		setDefaultLink(defaultLink);
 	}
 
-	public NodeStructureImpl(NodeStructure oldNS, String defaultNodeType, String defaultLinkType) {
+	protected NodeStructureImpl(NodeStructure oldNS, String defaultNodeType, String defaultLinkType) {
 		this(defaultNodeType, defaultLinkType);
 
 		// Copy nodes
@@ -133,7 +133,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 	}// constructor
 
-	public NodeStructureImpl(NodeStructure oldGraph){
+	protected NodeStructureImpl(NodeStructure oldGraph){
 		this(oldGraph, oldGraph.getDefaultNodeType(), oldGraph.getDefaultLinkType());
 	}
 	

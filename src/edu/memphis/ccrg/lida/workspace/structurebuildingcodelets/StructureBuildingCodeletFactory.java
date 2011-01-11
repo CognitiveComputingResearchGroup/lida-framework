@@ -129,6 +129,7 @@ public class StructureBuildingCodeletFactory {
 	 * @param type the class name of the desired codelet type
 	 * @return A new empty codelet of the specified type
 	 */
+	@SuppressWarnings("unused")
 	private StructureBuildingCodelet getGenericCodelet(int type) {
 		StructureBuildingCodelet codelet = null;
 		if(pool.containsKey(type)){
