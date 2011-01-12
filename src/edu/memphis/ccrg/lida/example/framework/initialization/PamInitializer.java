@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PropagationBehavior;
@@ -38,7 +38,7 @@ public class PamInitializer implements Initializer {
 				.getSubmodule(ModuleName.SensoryMemory);
 
 		// Nodes
-		NodeFactory factory = NodeFactory.getInstance();
+		LidaElementFactory factory = LidaElementFactory.getInstance();
 		PamNodeImpl wood = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"wood");
 		pam.addNode(wood);

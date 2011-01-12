@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 public class MockActionSelectionImpl implements ActionSelection {
 	
-	private static Logger logger = Logger.getLogger(MockActionSelectionImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(MockActionSelectionImpl.class.getCanonicalName());
 
 	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
@@ -147,7 +147,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void learn() {
+	public void learn(BroadcastContent content) {
 		// TODO Auto-generated method stub
 		
 	}

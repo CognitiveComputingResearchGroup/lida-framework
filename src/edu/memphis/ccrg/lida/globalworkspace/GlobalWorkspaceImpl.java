@@ -46,7 +46,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspace,
 											GuiEventProvider {
 	
-	private static Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
 
 	public GlobalWorkspaceImpl() {
 		super(ModuleName.GlobalWorkspace);

@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamLinkImpl extends LinkImpl implements PamLink {
 	
-	private static Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 	
 //	protected static final double MIN_ACTIVATION = 0.0;
 //	protected static final double MAX_ACTIVATION = 1.0;
@@ -88,6 +88,18 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public String getFactoryLinkType() {
 		return PamLinkImpl.class.getSimpleName();
+	}
+
+	private double baseLevelExcitation;
+	
+	@Override
+	public double getBaseLevelExcitation() {
+		return baseLevelExcitation;
+	}
+
+	@Override
+	public void setBaseLevelExcitation(double excitation) {
+		baseLevelExcitation = excitation;
 	}
 	
 }

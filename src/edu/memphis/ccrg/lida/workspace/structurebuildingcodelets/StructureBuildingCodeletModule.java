@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class StructureBuildingCodeletModule extends LidaModuleImpl implements GuiEventProvider {
 
-	private static Logger logger=Logger.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
+	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
 	
 	private Workspace workspace;
 	

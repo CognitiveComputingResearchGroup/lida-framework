@@ -69,5 +69,4 @@ public class ActivatibleUtility {
 		return agregate;
 	}
 
-
 }

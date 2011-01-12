@@ -18,8 +18,10 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -30,13 +32,12 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  
 public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastListener, PreafferenceListener {
 
-	private static Logger logger = Logger.getLogger(AttentionModuleImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(AttentionModuleImpl.class.getCanonicalName());
 	
 	private WorkspaceBuffer csm;
 	private GlobalWorkspace globalWorkspace;
-	private NodeStructure broadcastContent;
 	
-	private NodeFactory factory = NodeFactory.getInstance();
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	public AttentionModuleImpl() {
 	}
@@ -54,10 +55,25 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		}
 	}
 
+	private class ProcessBroadcastTask extends LidaTaskImpl{		
+		private NodeStructure broadcast;
+		public ProcessBroadcastTask(NodeStructure broadcast) {
+			super();
+			this.broadcast = broadcast;
+		}
+		@Override
+		protected void runThisLidaTask() {
+			learn((BroadcastContent) broadcast);
+			setTaskStatus(LidaTaskStatus.FINISHED);
+		}	
+	}
+
 	@Override
-	public synchronized void receiveBroadcast(BroadcastContent bc) {
-//		System.out.println("atten " + super.taskSpawner.getSpawnedTaskCount());
-		broadcastContent = ((NodeStructure) bc).copy();
+	public void receiveBroadcast(BroadcastContent bc) {
+		synchronized (this) {
+			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			taskSpawner.addTask(task);
+		}
 	}
 	
 	//TODO better for these to be part of this class or the factory that creates the codelets?
@@ -85,8 +101,9 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	}
 	
 	@Override
-	public void learn() {
-		Collection<Node> nodes = broadcastContent.getNodes();
+	public void learn(BroadcastContent content) {
+		NodeStructure ns = (NodeStructure) content;
+		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
 			// Implement learning here
 			n.getId();

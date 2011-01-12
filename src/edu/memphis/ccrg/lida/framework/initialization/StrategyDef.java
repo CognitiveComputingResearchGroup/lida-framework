@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class StrategyDef {
 
-	private static Logger logger = Logger.getLogger(StrategyDef.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(StrategyDef.class.getCanonicalName());
 	private String name;
 	private String className;
 	private String type;

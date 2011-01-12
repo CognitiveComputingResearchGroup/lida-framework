@@ -37,7 +37,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
  */
 public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEventListener{
   
-	private static Logger logger = Logger.getLogger(ControlToolBarPanel.class.getCanonicalName()); 
+	private static final Logger logger = Logger.getLogger(ControlToolBarPanel.class.getCanonicalName()); 
 	boolean isPaused = true;
 	private int sliderMin = 100;
 	private int sliderMax = 200;

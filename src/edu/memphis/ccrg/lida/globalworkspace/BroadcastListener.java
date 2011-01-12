@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 public interface BroadcastListener extends ModuleListener{
 	/**
 	 * This method should return as possible in order to no delay the rest of the broadcasting.
-	 * A good implementation should just store the content in a buffer and return.
+	 * A good implementation should copy the broadcast content and create a task to process it.
 	 * @param bc the Content of the Broadcast
 	 */
 	public void receiveBroadcast(BroadcastContent bc);
@@ -31,6 +31,6 @@ public interface BroadcastListener extends ModuleListener{
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
-	public void learn();
+	public void learn(BroadcastContent bc);
 	
 }

@@ -53,7 +53,7 @@ public interface Node extends Linkable, Activatible, Serializable {
     /**
      * Returns the name of this node in the NodeFactory
      * @return factory name of this node
-     * @see NodeFactory 
+     * @see LidaElementFactory 
      */
 	public String getFactoryNodeType();
 	

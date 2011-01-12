@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PredecessorExciteStrategy extends StrategyImpl implements BehaviorExciteStrategy {
 	
-	private static Logger logger = Logger.getLogger(PredecessorExciteStrategy.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(PredecessorExciteStrategy.class.getCanonicalName());
 	
 	private final double DEFAULT_EXCITATION_FACTOR = 0.6;
 	

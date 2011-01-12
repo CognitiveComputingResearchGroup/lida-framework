@@ -22,7 +22,7 @@ import cern.colt.bitvector.BitVector;
  */
 public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 
-	private static Logger logger = Logger.getLogger(SparseDistributedMemoryImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(SparseDistributedMemoryImpl.class.getCanonicalName());
 	private static final int MAX_ITERATIONS = 20;
 	private HardLocation[] hardlocations;
 	private int wordLength;

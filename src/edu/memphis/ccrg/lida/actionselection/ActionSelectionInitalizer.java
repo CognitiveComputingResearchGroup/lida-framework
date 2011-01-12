@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class ActionSelectionInitalizer implements Initializer{
 
-	private static Logger logger = Logger.getLogger(ActionSelectionInitalizer.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ActionSelectionInitalizer.class.getCanonicalName());
 	
 	private static final Integer DEFAULT_DELAY_NO_ACTION_SELECTION = 100;
 	private static final Integer DEFAULT_DELAY_NO_NEW_BEHAVIOR = 50;

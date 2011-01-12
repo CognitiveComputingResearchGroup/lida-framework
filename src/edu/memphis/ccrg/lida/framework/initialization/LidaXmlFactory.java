@@ -41,7 +41,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  */ 
 public class LidaXmlFactory implements LidaFactory {
 
-	private static Logger logger = Logger.getLogger(LidaXmlFactory.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaXmlFactory.class.getCanonicalName());
 	
 	private static final String DEFAULT_FILE_NAME = "configs/lida.xml";
 	private static final int DEFAULT_TICK_DURATION = 10;

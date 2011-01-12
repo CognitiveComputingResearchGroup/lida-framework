@@ -54,7 +54,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
-	private static Logger logger = Logger.getLogger(BehaviorNetworkImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(BehaviorNetworkImpl.class.getCanonicalName());
 
 	/**
 	 * Starting value for candidateBehaviorThreshold
@@ -108,11 +108,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * Currently selected behavior
 	 */
 	private Behavior winningBehavior = null;
-
-	/**
-	 * Current conscious broadcast
-	 */
-	private NodeStructure currentBroadcast = null;
 
 	/**
 	 * Listeners of this action selection
@@ -194,39 +189,35 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		};
 		taskSpawner.addTask(backgroundTask);
 	}
+	
+	private class ProcessBroadcastTask extends LidaTaskImpl{		
+		private NodeStructure broadcast;
+		public ProcessBroadcastTask(NodeStructure broadcast) {
+			super();
+			this.broadcast = broadcast;
+		}
+		@Override
+		protected void runThisLidaTask() {
+			passActivationFromBroadcast(broadcast);
+			setTaskStatus(LidaTaskStatus.FINISHED);
+		}	
+	}
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
-			currentBroadcast = ((NodeStructure) bc).copy();
+			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			taskSpawner.addTask(task);
 		}
-		LidaTask broadcastTask = new LidaTaskImpl(){			
-			@Override
-			protected void runThisLidaTask() {
-				//Look here
-				passActivationFromBroadcast();
-				setTaskStatus(LidaTaskStatus.FINISHED);
-			}			
-		};
-		taskSpawner.addTask(broadcastTask);
-		
+		//TODO delete triggers
 		runTriggers();
-		//TODO Explore this alternative and find out why it degrades performance of wumpus agent
-//		broadcastTask = new LidaTaskImpl(){
-//			protected void runThisLidaTask() {
-//				//Look here
-//				runActionSelectionTriggers();
-//				setTaskStatus(LidaTaskStatus.FINISHED);
-//			}			
-//		};
-//		taskSpawner.addTask(broadcastTask);
 	}
 	
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
 	 */
 	@Override
-	public void learn() {
+	public void learn(BroadcastContent content) {
 	}
 
 	@Override
@@ -444,7 +435,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * For each proposition in the current broadcast get the behaviors indexed
 	 * by that proposition For each behavior, excite it
 	 */
-	public void passActivationFromBroadcast() {
+	public void passActivationFromBroadcast(NodeStructure currentBroadcast) {
 		for (Node broadcastNode : currentBroadcast.getNodes()) {
 			if (broadcastNode.getDesirability() < GOAL_THRESHOLD) {
 				if (behaviorsByContextCondition.containsKey(broadcastNode)) {

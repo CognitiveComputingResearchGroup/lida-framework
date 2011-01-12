@@ -22,14 +22,27 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  *
  */
 public interface Learnable extends Activatible{
+	
+	/**
+	 * Returns baseLevelExcitation
+	 * @return returns the amount of excitation needed to achieve this Learnable's baseLevelActivation
+	 */
+	public double getBaseLevelExcitation();
+	
+	/**
+	 * sets baseLevelExcitation. Used for initialization, not during regular execution, use excite instead.
+	 * @param excitation amount of excitation needed to achieve this Learnable's baseLevelActivation
+	 */
+	public void setBaseLevelExcitation(double excitation);
+	
 	/**
 	 * Returns base level activation. 
 	 */
 	public double getBaseLevelActivation();
 	
 	/**
-	 * Set base level activation
-	 * @param amount new bla amount
+	 * Set base level activation. Used for initialization, not during regular execution, use excite instead.
+	 * @param amount new base level activation amount
 	 */
 	public void setBaseLevelActivation(double amount);
 	/**

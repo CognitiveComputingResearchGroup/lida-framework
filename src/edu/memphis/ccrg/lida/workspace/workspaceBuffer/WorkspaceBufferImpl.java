@@ -25,7 +25,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 
 	private double activationLowerBound;
 	
-	private static Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
 	private NodeStructure bufferContent;
 	

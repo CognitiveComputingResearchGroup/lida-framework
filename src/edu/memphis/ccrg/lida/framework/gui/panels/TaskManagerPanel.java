@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class TaskManagerPanel extends LidaPanelImpl {
 
-	private static Logger logger = Logger.getLogger(TaskManagerPanel.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(TaskManagerPanel.class.getCanonicalName());
 	private Collection<LidaTask> tasks;
 	private LidaTask[] taskArray;
 

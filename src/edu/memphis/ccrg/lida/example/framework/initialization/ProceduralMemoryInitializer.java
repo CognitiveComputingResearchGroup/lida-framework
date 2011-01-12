@@ -35,7 +35,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
  */
 public class ProceduralMemoryInitializer implements Initializer {
 
-	private static Logger logger = Logger.getLogger(ProceduralMemoryInitializer.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ProceduralMemoryInitializer.class.getCanonicalName());
 
 	/*
 	 * (non-Javadoc)

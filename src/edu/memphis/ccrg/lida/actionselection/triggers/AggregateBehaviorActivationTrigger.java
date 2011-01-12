@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class AggregateBehaviorActivationTrigger implements
 		ActionSelectionTrigger {
 
-	private static Logger logger = Logger.getLogger(AggregateBehaviorActivationTrigger.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(AggregateBehaviorActivationTrigger.class.getCanonicalName());
 	protected ActionSelection as;
 	protected double threshold;
 /**

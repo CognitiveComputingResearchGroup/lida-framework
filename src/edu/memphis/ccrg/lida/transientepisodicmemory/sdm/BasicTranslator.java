@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.transientepisodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -41,7 +41,7 @@ public class BasicTranslator implements Translator {
 		for (int i = 0;i<size;i++){
 			if(data.getQuick(i)){
                                 Node n= pam.getNode(i);
-				ns.addNode(NodeFactory.getInstance().getNode(n));
+				ns.addNode(LidaElementFactory.getInstance().getNode(n));
 			}
 		}
 		return ns;

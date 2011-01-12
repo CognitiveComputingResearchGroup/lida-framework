@@ -44,7 +44,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
-	private static Logger logger = Logger.getLogger(ActionSelectionImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ActionSelectionImpl.class.getCanonicalName());
 	
 	private double selectionThreshold = 0.95;
 	
@@ -266,7 +266,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		}
 
 		@Override
-		public void learn() {
+		public void learn(BroadcastContent content) {
 			// TODO Auto-generated method stub
 			
 		}

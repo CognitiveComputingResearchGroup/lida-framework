@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
  * @author Tom
  */
 public class DAOManager implements DataAccessObject {
-    private static Logger logger = Logger.getLogger(DAOManager.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(DAOManager.class.getCanonicalName());
 
     public static final String LIDA_STORAGE_NAME = "lida";
     public static int TEM_WORD_LENGTH = TemImpl.DEF_WORD_LENGTH;

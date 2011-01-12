@@ -39,7 +39,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  */
 public class NodeStructureTable extends LidaPanelImpl {
 
-	private static Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
 	private NodeStructure nodeStructure;
     
 	/** Creates new form NodeStructureTable */

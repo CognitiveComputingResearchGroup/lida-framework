@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
-	private static Logger logger = Logger
+	private static final Logger logger = Logger
 			.getLogger(BehaviorImpl.class.getCanonicalName());
 
 	/**

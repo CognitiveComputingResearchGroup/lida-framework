@@ -30,14 +30,14 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  * Standard factory for the framework
  * @author Javier Snaider
  */
-public class NodeFactory {
+public class LidaElementFactory {
 	
-	private static Logger logger = Logger.getLogger(NodeFactory.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaElementFactory.class.getCanonicalName());
 
 	/**
-	 * Used to assign unique IDs to nodes. 
+	 * Used to assign unique IDs to elements. 
 	 */
-	private static int nodeIdCount = 0;
+	private static int elementIdCount = 0;
 
 	/**
 	 * Used to retrieve default decay strategy from 'decayStrategies' map.
@@ -107,29 +107,41 @@ public class NodeFactory {
 	/**
 	 * Sole instance of this class that will be used. 
 	 */
-	private static NodeFactory instance = new NodeFactory();
+	private static LidaElementFactory instance = new LidaElementFactory();
+	
+	/**
+	 * Name of decay strategy type
+	 * @see LidaFactories.xsd
+	 */
+	private static final String decayStrategyType = "decay";
+	
+	/**
+	 * Name of excite strategy type
+	 * @see LidaFactories.xsd
+	 */
+	private static final String exciteStrategyType = "excite";
+	
+	/**
+	 * Name of transmit strategy type
+	 * @see LidaFactories.xsd
+	 */
+	@SuppressWarnings("unused")
+	private static final String transmitStrategyType = "transmit";
+	
 	
 	/**
 	 * Returns the sole instance of this factory. Implements the
 	 * Singleton pattern.
 	 * @return NodeFactory sole instance of this class
 	 */
-	public static NodeFactory getInstance() {
+	public static LidaElementFactory getInstance() {
 		return instance;
 	}
-
-	//Not being used and potential to reset the node id count!!
-//	/**
-//	 * @param nextId the next nodeId
-//	 */
-//	public static void setNextNodeId(int nextId) {
-//		NodeFactory.nodeIdCount = nextId;
-//	}
 
 	/**
 	 * Creates the Factory and adds default Node, Link and Strategies to the Maps in the Factory.
 	 */
-	private NodeFactory() {
+	private LidaElementFactory() {
 		defaultNodeType = NodeImpl.class.getSimpleName();
 		defaultNodeClassName =  NodeImpl.class.getCanonicalName();
 		addNodeType(defaultNodeType, defaultNodeClassName);
@@ -145,11 +157,11 @@ public class NodeFactory {
 
 		defaultDecayType="defaultDecay";
 		addDecayStrategy(defaultDecayType, new StrategyDef(LinearDecayStrategy.class.getCanonicalName(),
-				defaultDecayType,new HashMap<String, Object>(),"decay",true));
+				defaultDecayType,new HashMap<String, Object>(),decayStrategyType,true));
 		
 		defaultExciteType="defaultExcite";
 		addExciteStrategy(defaultExciteType, new StrategyDef(DefaultExciteStrategy.class.getCanonicalName(),
-				defaultExciteType,new HashMap<String, Object>(),"excite",true));
+				defaultExciteType,new HashMap<String, Object>(),exciteStrategyType,true));
 	}
 
 	public void addDecayStrategy(String name, StrategyDef decay) {
@@ -278,8 +290,8 @@ public class NodeFactory {
 						LidaTaskManager.getActualTick());
 			return null;
 		}
-		String decayB = linkDef.getDefaultStrategies().get("decay");
-		String exciteB = linkDef.getDefaultStrategies().get("excite");
+		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
+		String exciteB = linkDef.getDefaultStrategies().get(exciteStrategyType);
 		if(decayB == null){
 			decayB=defaultDecayType;
 		}
@@ -327,11 +339,11 @@ public class NodeFactory {
 					+ " does not exist.", LidaTaskManager.getActualTick());
 			return null;
 		}
-		String decayB = linkDef.getDefaultStrategies().get("decay");
+		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
 		if(decayB == null){
 			decayB=defaultDecayType;
 		}
-		String exciteB = linkDef.getDefaultStrategies().get("excite");
+		String exciteB = linkDef.getDefaultStrategies().get(exciteStrategyType);
 		if(exciteB == null){
 			exciteB=defaultExciteType;
 		}
@@ -417,8 +429,8 @@ public class NodeFactory {
 					+ " does not exist.", LidaTaskManager.getActualTick());
 			return null;
 		}
-		String decayB = nodeDef.getDefaultStrategies().get("decay");
-		String exciteB = nodeDef.getDefaultStrategies().get("excite");
+		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
+		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
 		if(decayB == null){
 			decayB=defaultDecayType;
 		}
@@ -476,8 +488,8 @@ public class NodeFactory {
 					+ " does not exist.", LidaTaskManager.getActualTick());
 			return null;
 		}
-		String decayB = nodeDef.getDefaultStrategies().get("decay");
-		String exciteB = nodeDef.getDefaultStrategies().get("excite");
+		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
+		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
 		if(decayB == null){
 			decayB=defaultDecayType;
 		}
@@ -513,7 +525,7 @@ public class NodeFactory {
 			n = (Node) Class.forName(className).newInstance();
 
 			n.setLabel(nodeLabel);
-			n.setId(nodeIdCount++);
+			n.setId(elementIdCount++);
 			n.setActivation(activation);
 			
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);	
@@ -657,8 +669,8 @@ public class NodeFactory {
 					+ " does not exist.", LidaTaskManager.getActualTick());
 			return null;
 		}
-		String decayB = codeletDef.getDefaultStrategies().get("decay");
-		String exciteB = codeletDef.getDefaultStrategies().get("excite");
+		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
+		String exciteB = codeletDef.getDefaultStrategies().get(exciteStrategyType);
 		if(decayB == null){
 			decayB=defaultDecayType;
 		}

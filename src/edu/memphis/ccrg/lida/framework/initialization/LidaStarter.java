@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGuiFactory;
  */
 public class LidaStarter {
 
-	private static Logger logger = Logger.getLogger(LidaStarter.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaStarter.class.getCanonicalName());
 
 	/**
 	 * Default lida configuation

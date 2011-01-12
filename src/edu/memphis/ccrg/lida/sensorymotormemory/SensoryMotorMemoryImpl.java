@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
 
-	private static Logger logger = Logger.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
 	private Map<Long, Object> actionMap = new HashMap<Long, Object>();
 	private Environment environment;
 	

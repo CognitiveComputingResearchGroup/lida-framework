@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class ConfigUtils {
 	
-	private static Logger logger=Logger.getLogger(ConfigUtils.class.getCanonicalName());
+	private static final Logger logger=Logger.getLogger(ConfigUtils.class.getCanonicalName());
 	
 	public static Properties loadProperties(String filename){
 		Properties properties = new Properties();

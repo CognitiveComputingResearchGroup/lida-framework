@@ -37,7 +37,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class TaskQueuePanel extends LidaPanelImpl {
 
 	private static final long serialVersionUID = 3129545758505110771L;
-	private static Logger logger = Logger
+	private static final Logger logger = Logger
 			.getLogger(TaskQueuePanel.class.getCanonicalName());
 	private Map<Long, Queue<LidaTask>> tasks= new HashMap<Long, Queue<LidaTask>>();
 

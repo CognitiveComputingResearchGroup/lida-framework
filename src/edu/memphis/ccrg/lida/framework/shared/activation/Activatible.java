@@ -22,12 +22,24 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 public interface Activatible extends Serializable {
 	
 	/**
+	 * Returns excitation.  
+	 * @return amount of excitation needed to achieve this Activatible's current activation 
+	 */
+	public double getExcitation();
+	
+	/**
+	 * Sets excitation. Used for initialization, not during regular execution, use excite instead.
+	 * @param excitation amount of excitation needed to achieve this Activatible's current activation
+	 */
+	public void setExcitation(double excitation);
+	
+	/**
 	 * @return the current activation.
 	 */
 	public double getActivation();
 	
 	/**
-	 * Set the current activation.
+	 * Set the current activation. Used for initialization, not during regular execution, use excite instead.
 	 * @param activation new activation
 	 */
     public void setActivation(double activation);

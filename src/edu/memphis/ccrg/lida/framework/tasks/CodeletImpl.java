@@ -52,5 +52,15 @@ public abstract class CodeletImpl extends LidaTaskImpl implements Codelet {
 	public DecayStrategy getBaseLevelDecayStrategy() {
 		return learnable.getBaseLevelDecayStrategy();
 	}
+	
+	@Override
+	public double getBaseLevelExcitation() {
+		return learnable.getBaseLevelExcitation();
+	}
+
+	@Override
+	public void setBaseLevelExcitation(double excitation) {
+		learnable.setBaseLevelExcitation(excitation);
+	}
 
 }

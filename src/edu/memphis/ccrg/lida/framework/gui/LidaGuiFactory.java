@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
  */
 public class LidaGuiFactory {
 	
-	private static Logger logger = Logger.getLogger(LidaGuiFactory.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaGuiFactory.class.getCanonicalName());
 	private static String DEFAULT_COMMANDS_FILENAME = "configs/guiCommands.properties";
 	private static final String DEFAULT_PANELS_FILENAME = "configs/guiPanels.properties";
 

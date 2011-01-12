@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
-	private static Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
 	
 //	protected static final double MIN_ACTIVATION = 0.0;
 //	protected static final double MAX_ACTIVATION = 1.0;
@@ -152,6 +152,18 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	@Override
 	public String getFactoryNodeType() {
 		return PamNodeImpl.class.getSimpleName();
+	}
+	
+	private double baseLevelExcitation;
+	
+	@Override
+	public double getBaseLevelExcitation() {
+		return baseLevelExcitation;
+	}
+
+	@Override
+	public void setBaseLevelExcitation(double excitation) {
+		baseLevelExcitation = excitation;
 	}
 	
 }//class

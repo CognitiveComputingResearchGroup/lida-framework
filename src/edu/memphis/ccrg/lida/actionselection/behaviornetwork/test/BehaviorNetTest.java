@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorNetworkImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -33,7 +33,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		new BehaviorNetTest().run();				
 	}
 
-	private NodeFactory factory = NodeFactory.getInstance();
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	private BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
 	
 	@SuppressWarnings("unused")

@@ -21,7 +21,9 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
@@ -34,7 +36,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  */
 public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue, BroadcastListener {
 
-	private static Logger logger = Logger.getLogger(BroadcastQueueImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(BroadcastQueueImpl.class.getCanonicalName());
 
 	private Queue<NodeStructure> broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
 	private volatile int broadcastQueueCapacity;
@@ -50,19 +52,34 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	public BroadcastQueueImpl() {
 		this(DEFAULT_QUEUE_CAPACITY);
 	}
+	
+	private class ProcessBroadcastTask extends LidaTaskImpl{		
+		private NodeStructure broadcast;
+		public ProcessBroadcastTask(NodeStructure broadcast) {
+			super();
+			this.broadcast = broadcast;
+		}
+		@Override
+		protected void runThisLidaTask() {
+			broadcastQueue.offer(broadcast);
+			// Keep the buffer at a fixed size
+			while (broadcastQueue.size() > broadcastQueueCapacity){
+				broadcastQueue.poll();// remove oldest
+			}
+			setTaskStatus(LidaTaskStatus.FINISHED);
+		}	
+	}
 
 	@Override
-	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		NodeStructure ns=((NodeStructure) bc).copy();
-		broadcastQueue.offer(ns);
-		// Keep the buffer at a fixed size
-		while (broadcastQueue.size() > broadcastQueueCapacity){
-			broadcastQueue.poll();// remove oldest
+	public void receiveBroadcast(BroadcastContent bc) {
+		synchronized (this) {
+			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			taskSpawner.addTask(task);
 		}
 	}
 
 	@Override
-	public void learn() {
+	public void learn(BroadcastContent content) {
 		// Not applicable
 	}
 

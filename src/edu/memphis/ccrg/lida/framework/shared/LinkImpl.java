@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.pam.PamLink;
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 
-	private static Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
 	
 	/**
 	 * Source of this link, always a node.

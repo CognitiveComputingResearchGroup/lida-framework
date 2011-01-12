@@ -53,7 +53,7 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
  */
 public class NodeStructurePanel extends LidaPanelImpl {
 
-	private static Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
 	private VisualizationViewer<Linkable, GuiLink> vv;
 	private LidaModule module;

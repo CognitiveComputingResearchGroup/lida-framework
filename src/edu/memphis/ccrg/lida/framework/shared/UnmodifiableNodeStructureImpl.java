@@ -23,13 +23,11 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if(!(o instanceof NodeStructureImpl)){
+		if(!(o instanceof NodeStructure)){
 			return false;
 		}
-		NodeStructureImpl otherNS = (NodeStructureImpl) o;
-		
+		NodeStructure otherNS = (NodeStructure) o;
 		if(this.getNodeCount() != otherNS.getNodeCount()){
-//			System.out.println("This " + getNodeCount() + " other " + otherNS.getNodeCount());
 			return false;
 		}else if(this.getLinkCount() != otherNS.getLinkCount()){
 			return false;

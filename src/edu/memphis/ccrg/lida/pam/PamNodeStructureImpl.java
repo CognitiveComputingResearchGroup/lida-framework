@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeStructure{
 	
-	private static Logger logger = Logger.getLogger(PamNodeStructureImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(PamNodeStructureImpl.class.getCanonicalName());
 
 	/**
 	 * If a node is below this threshold after being decayed it is deleted

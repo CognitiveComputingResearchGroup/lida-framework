@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.util.VectorConverter;
  */
 
 public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
-    private static Logger logger = Logger.getLogger(TransientEpisodicMemoryDAO.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(TransientEpisodicMemoryDAO.class.getCanonicalName());
 
     public static final String STORAGE_NAME = "transientepisodicmemory";
     public static final String ADDRESSSTORAGE_NAME = "tem_addresses";

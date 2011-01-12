@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class StreamImpl implements Stream{
 	
-	private static Logger logger = Logger.getLogger(StreamImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(StreamImpl.class.getCanonicalName());
 	
     private String name = "blank stream";
     

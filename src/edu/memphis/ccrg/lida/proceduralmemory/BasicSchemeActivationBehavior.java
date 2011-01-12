@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
-	private static Logger logger = Logger.getLogger(BasicSchemeActivationBehavior.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(BasicSchemeActivationBehavior.class.getCanonicalName());
 
 	private ProceduralMemory pm;
 

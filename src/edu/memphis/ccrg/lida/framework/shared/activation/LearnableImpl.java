@@ -24,10 +24,14 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  *
  */
 public class LearnableImpl extends ActivatibleImpl implements Learnable {
+	
+	//TODO
+	private double baseLevelDecayRate = 0.01;
+	private double baseLevelExcitation;
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
-	private static Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
 
 	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
 									DecayStrategy decayStrategy) {
@@ -48,6 +52,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		if (baseLevelDecayStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
 			synchronized(this){
+				baseLevelExcitation -= baseLevelDecayRate * ticks;
+//				baseLevelExcitation = curveStrategy.getY(baseLevelExcitation);
 				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
 			}
 			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
@@ -83,6 +89,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		if (baseLevelExciteStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
 			synchronized(this){
+				baseLevelExcitation += amount;
+				//baseLevelActivation = curveStrategy.getY(baseLevelExcitation);
 				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
 			}
 			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
@@ -95,8 +103,20 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public double getTotalActivation() { //TODO: Normalization is needed!!!!!
+	public double getTotalActivation() { 
+	//  TODO: Normalization is needed!!!!!
+//		return curveStrategy.getY(baseLevelExcitation + super.getExcitation());
 	    return getActivation() + baseLevelActivation;
+	}
+
+	@Override
+	public double getBaseLevelExcitation() {
+		return baseLevelExcitation;
+	}
+
+	@Override
+	public void setBaseLevelExcitation(double excitation) {
+		this.baseLevelExcitation= excitation;
 	}
 
 

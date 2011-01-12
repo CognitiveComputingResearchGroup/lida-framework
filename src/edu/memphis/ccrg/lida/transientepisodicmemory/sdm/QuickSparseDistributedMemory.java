@@ -22,7 +22,7 @@ import cern.colt.bitvector.BitVector;
  */
 public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 
-	private static Logger logger = Logger.getLogger(QuickSparseDistributedMemory.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(QuickSparseDistributedMemory.class.getCanonicalName());
 	private static final int MAX_ITERATIONS = 20;
 	private BitVector[] addressMatrix;
 	private byte[][] contentsMatrix;

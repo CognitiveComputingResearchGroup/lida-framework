@@ -340,4 +340,16 @@ public class ArgumentImpl implements Argument {
 		return value;
 	}
 
+	@Override
+	public double getExcitation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setExcitation(double excitation) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

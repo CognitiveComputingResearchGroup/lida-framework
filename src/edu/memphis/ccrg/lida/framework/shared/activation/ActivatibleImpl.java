@@ -25,11 +25,13 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class ActivatibleImpl implements Activatible {
 	
-	//TODO Another value for current excitation
+	//TODO set decayRate
+	private double decayRate = 0.1;
+	private double currentExcitation;
 	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
-	private static Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	public ActivatibleImpl() {
 		activation = 0.0;
@@ -48,6 +50,8 @@ public class ActivatibleImpl implements Activatible {
 		if (decayStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getActualTick());
 			synchronized(this){
+				currentExcitation -= decayRate*ticks;
+				//activation = curveStrategy.getY(currentExcitation);
 				activation = decayStrategy.decay(activation,ticks);
 			}
 			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getActualTick());
@@ -59,6 +63,8 @@ public class ActivatibleImpl implements Activatible {
 		if (exciteStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getActualTick());
 			synchronized(this){
+				currentExcitation += excitation;
+				//activation = curveStrategy.getY(currentExcitation);
 				activation = exciteStrategy.excite(activation, excitation);
 			}
 			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getActualTick());
@@ -98,6 +104,16 @@ public class ActivatibleImpl implements Activatible {
 	@Override
 	public double getTotalActivation() {
 		return activation;
+	}
+
+	@Override
+	public double getExcitation() {
+		return currentExcitation;
+	}
+
+	@Override
+	public void setExcitation(double excitation) {
+		currentExcitation = excitation;
 	}
 
 }//

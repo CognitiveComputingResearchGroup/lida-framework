@@ -45,7 +45,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 									  	BroadcastListener, 
 									  	SensoryMotorListener{
 	
-	private static Logger logger = Logger.getLogger(WorkspaceImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(WorkspaceImpl.class.getCanonicalName());
 
 	/**
 	 * TEM and DM are cue listeners
@@ -179,7 +179,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 * Not applicable for WorkspaceImpl
 	 */
 	@Override
-	public void learn() {}
+	public void learn(BroadcastContent content) {}
 	
 	@Override
 	public void addSubModule(LidaModule lm){

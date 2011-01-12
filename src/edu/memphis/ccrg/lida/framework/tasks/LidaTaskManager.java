@@ -36,7 +36,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  */
 public class LidaTaskManager {
 
-	private static Logger logger = Logger.getLogger(LidaTaskManager.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaTaskManager.class.getCanonicalName());
 
 	/**
 	 * Determines whether or not spawned tasks should run

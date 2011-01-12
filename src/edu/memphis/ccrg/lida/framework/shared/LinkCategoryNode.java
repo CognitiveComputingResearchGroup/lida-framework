@@ -11,10 +11,10 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  */
 public class LinkCategoryNode extends PamNodeImpl implements LinkCategory {
 
-	public static LinkCategory NONE = (LinkCategory) NodeFactory.getInstance().getNode("LinkCategoryNode", "None");
-	public static LinkCategory CHILD = (LinkCategory) NodeFactory.getInstance().getNode("LinkCategoryNode", "Child");
-	public static LinkCategory GROUNDING = (LinkCategory) NodeFactory.getInstance().getNode("LinkCategoryNode", "Grounding");
-	public static LinkCategory PARENT = (LinkCategory) NodeFactory.getInstance().getNode("LinkCategoryNode", "Parent");
-	public static LinkCategory LATERAL = (LinkCategory) NodeFactory.getInstance().getNode("LinkCategoryNode", "Lateral");
+	public static LinkCategory NONE = (LinkCategory) LidaElementFactory.getInstance().getNode("LinkCategoryNode", "None");
+	public static LinkCategory CHILD = (LinkCategory) LidaElementFactory.getInstance().getNode("LinkCategoryNode", "Child");
+	public static LinkCategory GROUNDING = (LinkCategory) LidaElementFactory.getInstance().getNode("LinkCategoryNode", "Grounding");
+	public static LinkCategory PARENT = (LinkCategory) LidaElementFactory.getInstance().getNode("LinkCategoryNode", "Parent");
+	public static LinkCategory LATERAL = (LinkCategory) LidaElementFactory.getInstance().getNode("LinkCategoryNode", "Lateral");
 
 }

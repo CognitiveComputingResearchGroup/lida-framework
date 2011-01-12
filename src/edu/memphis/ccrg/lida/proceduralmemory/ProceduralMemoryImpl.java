@@ -25,7 +25,6 @@ import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -34,7 +33,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
 
-	private static Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
 	
 	/**
 	 * Default ticks per run of tasks spawned from this Module
@@ -159,29 +158,33 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		}
 	}
 	
-	/**
-	 * 
-	 */
+	private class ProcessBroadcastTask extends LidaTaskImpl{		
+		private NodeStructure broadcast;
+		public ProcessBroadcastTask(NodeStructure broadcast) {
+			super();
+			this.broadcast = broadcast;
+		}
+		@Override
+		protected void runThisLidaTask() {
+			activateSchemes();
+			//new task for this
+			learn((BroadcastContent) broadcast);
+			setTaskStatus(LidaTaskStatus.FINISHED);
+		}	
+	}
+
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		logger.log(Level.FINEST, "Procedural memory receives broadcast", LidaTaskManager.getActualTick());
 		synchronized (this) {
-			currentBroadcast = ((NodeStructure) bc).copy();
+			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			taskSpawner.addTask(task);
 		}
-
-		LidaTask broadcastTask = new LidaTaskImpl() {
-			@Override
-			protected void runThisLidaTask() {
-				activateSchemes();
-				setTaskStatus(LidaTaskStatus.FINISHED);
-			}
-		};
-		taskSpawner.addTask(broadcastTask);
 	}
 
 	@Override
-	public void learn() {
-		Collection<Node> nodes = currentBroadcast.getNodes();
+	public void learn(BroadcastContent content) {
+		Collection<Node> nodes = ((NodeStructure) content).getNodes();
 		for (Node n : nodes) {
 			// TODO
 			n.getId();

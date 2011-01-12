@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent, Serializable {
 
-	private static Logger logger = Logger.getLogger(NodeStructureImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(NodeStructureImpl.class.getCanonicalName());
 
 	/**
 	 * Nodes contained in this NodeStructure indexed by their id
@@ -47,7 +47,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	/**
 	 * Standard factory for new objects.  Used to create copies when adding linkables to this NodeStructure
 	 */
-	private static NodeFactory factory = NodeFactory.getInstance();
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 	private String defaultNodeType;
 	private String defaultLinkType;
 
@@ -133,7 +133,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 	}// constructor
 
-	protected NodeStructureImpl(NodeStructure oldGraph){
+	public NodeStructureImpl(NodeStructure oldGraph){
 		this(oldGraph, oldGraph.getDefaultNodeType(), oldGraph.getDefaultLinkType());
 	}
 	

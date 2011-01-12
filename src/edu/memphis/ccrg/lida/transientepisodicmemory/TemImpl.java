@@ -36,7 +36,7 @@ import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
  */
 public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, BroadcastListener, CueListener {
 
-	private static Logger logger = Logger.getLogger(TemImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(TemImpl.class.getCanonicalName());
 	
 	public static final int DEF_HARD_LOCATIONS = 10000;
 	public static final int DEF_ADDRESS_LENGTH = 1000;
@@ -100,7 +100,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 	}
 
 	@Override
-	public void learn() {
+	public void learn(BroadcastContent content) {
 		
 	}
 

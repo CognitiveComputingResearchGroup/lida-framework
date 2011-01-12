@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class ScreenCaptureUtility{
 	
-	private static Logger logger = Logger.getLogger(ScreenCaptureUtility.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(ScreenCaptureUtility.class.getCanonicalName());
 	
 	/**
 	 * Java utility

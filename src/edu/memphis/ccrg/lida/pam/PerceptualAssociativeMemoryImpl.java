@@ -23,15 +23,17 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
@@ -45,7 +47,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 																	            WorkspaceListener, 
 																	            PreafferenceListener{
 	
-	private static Logger logger = Logger.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
 	
 	/**
 	 * Contains all of the Node, Links and their connections.
@@ -66,11 +68,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 * Workspace content
 	 */
 	private NodeStructure topDownContent = new NodeStructureImpl();
-	
-	/**
-	 * Current conscious broadcast
-	 */
-	private NodeStructure broadcastContent;
 
 	/**
 	 * How PAM calculates the amount of activation to propagate
@@ -80,7 +77,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	/**
 	 * To create new node and links
 	 */
-	protected NodeFactory factory = NodeFactory.getInstance();
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	/**
 	 * 
@@ -103,7 +100,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	
 	public PerceptualAssociativeMemoryImpl(){
 		super(ModuleName.PerceptualAssociativeMemory);
-		broadcastContent = new NodeStructureImpl();
 	}
 
 	/**
@@ -167,20 +163,37 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		//  handle workspace content
 	}
 
-	@Override
-	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = ((NodeStructure) bc).copy();
+	private class ProcessBroadcastTask extends LidaTaskImpl{		
+		private NodeStructure broadcast;
+		public ProcessBroadcastTask(NodeStructure broadcast) {
+			super();
+			this.broadcast = broadcast;
+		}
+		@Override
+		protected void runThisLidaTask() {
+			learn((BroadcastContent) broadcast);
+			setTaskStatus(LidaTaskStatus.FINISHED);
+		}	
 	}
 
+	@Override
+	public void receiveBroadcast(BroadcastContent bc) {
+		synchronized (this) {
+			NodeStructure ns = (NodeStructure) bc;
+			taskSpawner.addTask(new ProcessBroadcastTask(ns.copy()));
+		}
+	}
+	
 	@Override
 	public synchronized void receivePreafference(NodeStructure addList, NodeStructure deleteList) {
 		// Use preafferent signal
 	}
 
 	@Override
-	public void learn() {
+	public void learn(BroadcastContent content) {
+		NodeStructure ns = (NodeStructure) content;
 		// learning algorithm 
-		Collection<Node> nodes = broadcastContent.getNodes();
+		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {n.getId();}
 	}//method
 

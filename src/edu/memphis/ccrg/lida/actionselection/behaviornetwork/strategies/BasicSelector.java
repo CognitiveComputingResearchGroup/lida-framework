@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class BasicSelector implements Selector{
 	
-	private static Logger logger = Logger.getLogger(BasicSelector.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(BasicSelector.class.getCanonicalName());
     
 //    stochastic in behavior net + drives to explore novel things
     // have a parameter which at 1.0 gives deterministic action selection.  

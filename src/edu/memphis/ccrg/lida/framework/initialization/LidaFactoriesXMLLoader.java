@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 
 /**
  * 
@@ -46,9 +46,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeFactory;
 public class LidaFactoriesXMLLoader {
 	
 	private static final String DEFAULT_FILE_NAME = "configs/factoriesData.xml";
-	private static Logger logger = Logger.getLogger(LidaFactoriesXMLLoader.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaFactoriesXMLLoader.class.getCanonicalName());
 	private Document dom;
-	private NodeFactory nfactory=NodeFactory.getInstance();
+	private LidaElementFactory nfactory = LidaElementFactory.getInstance();
 	private Map<String, StrategyDef> strategies;
 	private Map<String, LinkableDef> nodes;
 	private Map<String, LinkableDef> links;

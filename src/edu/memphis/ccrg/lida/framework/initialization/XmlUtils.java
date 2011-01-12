@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class XmlUtils {
 	
-	private static Logger logger = Logger.getLogger(XmlUtils.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(XmlUtils.class.getCanonicalName());
 	
 	public static String getTextValue(Element ele, String tagName) {
 		String textVal = null;
