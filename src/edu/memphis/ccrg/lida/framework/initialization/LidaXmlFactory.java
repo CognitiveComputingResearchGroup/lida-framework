@@ -146,9 +146,13 @@ public class LidaXmlFactory implements LidaFactory {
 		String name = moduleElement.getAttribute("name");
 		try {
 			ts = (TaskSpawner) Class.forName(className).newInstance();
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "TaskSpawner class: " + className
-					+ " is not valid.", 0L);
+		}
+		catch(ClassNotFoundException e){
+			logger.log(Level.SEVERE, "Module class name: " + className + 
+						" is not found.  Check TaskSpawner class name.\n", 0L);
+		}catch (Exception e) {
+			logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+					"\" occurred during creation of object of class " + className + "\n", 0L);
 			return;
 		}
 		
@@ -206,8 +210,7 @@ public class LidaXmlFactory implements LidaFactory {
 		for (LidaModule lm : getModules(moduleElement)) {
 			module.addSubModule(lm);
 		}
-		String classInit = XmlUtils.getTextValue(moduleElement,
-				"initializerclass");
+		String classInit = XmlUtils.getTextValue(moduleElement,	"initializerclass");
 		if (classInit != null) {
 			toInitialize.add(new Object[] { module, classInit, params});
 		}
@@ -263,11 +266,15 @@ public class LidaXmlFactory implements LidaFactory {
 			Initializer initializer = null;
 			try {
 				initializer = (Initializer) Class.forName(initializerClassName).newInstance();
-			} catch (Exception e) {
-				logger.log(Level.SEVERE, "Initializer class name: " + initializerClassName +
-							" is invalid.", LidaTaskManager.getActualTick());
-				e.printStackTrace();
+			}catch(ClassNotFoundException e){
+				logger.log(Level.SEVERE, "Initializer class name: " + initializerClassName + 
+							" not found.  Check class name.\n", 0L);
+			}catch (Exception e) {
+				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+						"\" occurred during creation of object of class " + initializerClassName + "\n", 0L);
+				return;
 			}
+			
 			if(initializer != null){
 				try{
 					initializer.initModule(moduleToInitialize, lida, params);
@@ -346,11 +353,16 @@ public class LidaXmlFactory implements LidaFactory {
 		int ticks = XmlUtils.getIntValue(moduleElement, "ticksperrun");
 		try {
 			task = (LidaTask) Class.forName(className).newInstance();
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Task class: " + className
-					+ " is not valid.", 0L);
+		} catch(ClassNotFoundException e){
+			logger.log(Level.SEVERE, "Lida Task class name: " + className + 
+					" not found.  Check class name.\n", 0L);
+			return null;
+		}catch (Exception e) {
+			logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+				"\" occurred during creation of object of class " + className + "\n", 0L);
 			return null;
 		}
+
 		task.setNumberOfTicksPerRun(ticks);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		task.init(params);
