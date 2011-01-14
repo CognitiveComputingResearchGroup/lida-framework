@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -46,5 +47,10 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 	
 	@Override
 	public abstract String toString();
+	
+	@Override
+	public void addListener(ModuleListener listener) {
+		//Not applicable for environment
+	}
 	
 }//class
