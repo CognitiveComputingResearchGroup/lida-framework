@@ -192,9 +192,9 @@ public class LidaElementFactory {
 		nodeClasses.put(nodeDef.getName(), nodeDef);
 	}
 	
-	public void addNodeType(String nodeType, String className) {
-		nodeClasses.put(nodeType, new LinkableDef(className,
-				new HashMap<String, String>(), nodeType,
+	public void addNodeType(String simpleNodeName, String canonicalNodeName) {
+		nodeClasses.put(simpleNodeName, new LinkableDef(canonicalNodeName,
+				new HashMap<String, String>(), simpleNodeName,
 				new HashMap<String, Object>()));
 	}
 
@@ -202,9 +202,9 @@ public class LidaElementFactory {
 		codelets.put(codeletDef.getName(), codeletDef);
 	}
 	
-	public void addCodeletType(String codeletType, String className){
-		codelets.put(codeletType, new CodeletDef(className, 
-				new HashMap<String, String>(), codeletType, 
+	public void addCodeletType(String simpleCodeletName, String canonicalCodeletName){
+		codelets.put(simpleCodeletName, new CodeletDef(canonicalCodeletName, 
+				new HashMap<String, String>(), simpleCodeletName, 
 				new HashMap<String, Object>()));
 	}
 	
