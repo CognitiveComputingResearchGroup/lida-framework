@@ -27,7 +27,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 	private Logger logger = Logger.getLogger(VisionEnvironment.class.getCanonicalName());
 	private int imageHeight = 5;
 	private int imageWidth = 5;
-	private volatile double[][] environContent = new double[imageHeight][imageWidth];
+	private double[][] environContent = new double[imageHeight][imageWidth];
 	//
 	private FrameworkGuiEvent contentEvent = new FrameworkGuiEvent(ModuleName.Environment, "matrix", environContent);
 
