@@ -93,4 +93,10 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 	public void addListener(ModuleListener listener) {
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }// class

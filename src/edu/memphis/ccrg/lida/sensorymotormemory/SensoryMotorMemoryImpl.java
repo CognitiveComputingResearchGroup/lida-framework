@@ -90,4 +90,10 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 		actionMap.put(actionId, action);
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

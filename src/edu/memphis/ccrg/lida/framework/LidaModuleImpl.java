@@ -67,8 +67,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
 	 */
 	@Override
-	public void init() {
-	}
+	public abstract void init();
 	
 	@Override
 	public Object getParam(String name, Object defaultValue) {

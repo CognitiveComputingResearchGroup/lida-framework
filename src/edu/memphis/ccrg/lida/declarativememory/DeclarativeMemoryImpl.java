@@ -37,4 +37,10 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 	public void addListener(ModuleListener listener) {
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -124,4 +124,10 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	public void addListener(ModuleListener listener) {
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }// class

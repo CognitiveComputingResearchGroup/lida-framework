@@ -67,4 +67,10 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 		return false;
 	}
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }//class

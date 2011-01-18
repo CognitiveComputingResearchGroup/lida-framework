@@ -65,4 +65,10 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	@Override
 	public void addListener(ModuleListener listener) {
 	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }
