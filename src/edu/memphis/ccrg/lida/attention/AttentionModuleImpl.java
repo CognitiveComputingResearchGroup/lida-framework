@@ -77,7 +77,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	}
 	
 	//TODO better for these to be part of this class or the factory that creates the codelets?
-	private String defaultCodeletName = "AttentionCodeletImpl";
+	private String defaultCodeletName = BasicAttentionCodeletImpl.class.getSimpleName();
 	private int defaultCodeletTicksPerStep = 5;
 	private double defaultCodeletActivation = 1.0;
 	private Map<String, Object> params = null;

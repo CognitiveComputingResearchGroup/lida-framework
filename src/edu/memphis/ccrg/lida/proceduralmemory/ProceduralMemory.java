@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface ProceduralMemory extends LidaModule, Saveable{
 	
@@ -24,7 +25,7 @@ public interface ProceduralMemory extends LidaModule, Saveable{
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 
 	 */
-	public void activateSchemes();
+	public void activateSchemes(NodeStructure broadcastContent);
 	
 	/**
 	 * Send out the active schemes to the PM listeners.
