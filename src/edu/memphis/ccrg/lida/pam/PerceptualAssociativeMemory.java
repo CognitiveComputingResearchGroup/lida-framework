@@ -175,6 +175,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public Collection<Node> getNodes();
 	
+	public NodeStructure getPamNodeStructure();
+	
 	/**
 	 * Get the running feature detectors
 	 */

@@ -663,10 +663,10 @@ public class LidaElementFactory {
 	 * @return new Codelet
 	 */
 	public Codelet getCodelet(String codeletName, int ticksPerStep, double activation, Map<String,?extends Object> params){
-		CodeletDef codeletDef = codelets.get(codeletName);
+		CodeletDef codeletDef = codelets.get(codeletName);		
 		if (codeletDef == null) {
-			logger.log(Level.WARNING, "CodeletName " + codeletName
-					+ " does not exist.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Asked for codelet " + codeletName + 
+					" but factory does not have such a codelet. Check factoriesData.xml", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
@@ -681,4 +681,4 @@ public class LidaElementFactory {
 		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
 	}
 	
-}// class	
+}

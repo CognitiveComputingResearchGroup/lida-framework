@@ -136,7 +136,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		System.out.println("rec broadcast " + ((NodeStructure) bc).getLinkableCount());
 		logger.log(Level.FINEST, "Procedural memory receives broadcast", LidaTaskManager.getCurrentTick());
 		synchronized (this) {
 			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
@@ -163,7 +162,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void learn(BroadcastContent content) {
 		Collection<Node> nodes = ((NodeStructure) content).getNodes();
 		for (Node n : nodes) {
-			// TODO
+			// TODO learning algorithm
 			n.getId();
 		}
 	}

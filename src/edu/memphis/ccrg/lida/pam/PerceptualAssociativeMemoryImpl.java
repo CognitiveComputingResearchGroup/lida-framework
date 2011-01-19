@@ -29,6 +29,7 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -318,6 +319,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		for(Node pamNode: pamNodes)
 			nodes.add(factory.getNode(pamNode));
 		return Collections.unmodifiableCollection(nodes);
+	}
+	
+	@Override
+	public NodeStructure getPamNodeStructure(){
+		return new UnmodifiableNodeStructureImpl(pamNodeStructure);
 	}
 
 	@Override

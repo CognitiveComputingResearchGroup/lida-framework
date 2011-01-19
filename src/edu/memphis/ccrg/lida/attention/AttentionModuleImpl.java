@@ -84,6 +84,10 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	public AttentionCodelet getNewAttentionCodelet() {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, defaultCodeletTicksPerStep, defaultCodeletActivation, params);
+		if(codelet == null){
+			logger.log(Level.WARNING, "Factory returned a null codelet, attention codelet not created.", LidaTaskManager.getCurrentTick());
+			return null;
+		}
 		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		return codelet;

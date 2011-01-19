@@ -15,4 +15,5 @@ public interface Lida extends LidaModule{
 	 * @return the LidaTaskManager
 	 */
 	public LidaTaskManager getTaskManager();
+	
 }

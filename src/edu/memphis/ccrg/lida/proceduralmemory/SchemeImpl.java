@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 public class SchemeImpl extends LearnableImpl implements Scheme {
 
-	private static final double RELIABLE_TRESHOLD = 0.5;
+	private static final double RELIABILITY_THRESHOLD = 0.5;
 	private long id;
 	private boolean intrinsicBehavior;
 	private int numberOfExecutions;
@@ -40,6 +40,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private String label;
 	
 
+	//TODO Fix
 	public SchemeImpl(String label, long id, long actionId) {
 		this.label = label;
 		this.id = id;
@@ -192,7 +193,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public boolean isReliable() {
 		return (numberOfExecutions > 0)
-				&& ((((double) successExecutions) / numberOfExecutions) > RELIABLE_TRESHOLD);
+				&& ((((double) successExecutions) / numberOfExecutions) > RELIABILITY_THRESHOLD);
 	}
 
 	@Override

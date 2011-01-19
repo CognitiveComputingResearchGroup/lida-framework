@@ -38,13 +38,13 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public LidaTaskImpl() {
 		this(defaultTicksPerStep,null);
 	}
-	public LidaTaskImpl(int ticksForCycle) {
-		this(ticksForCycle,null);
+	public LidaTaskImpl(int ticksPerStep) {
+		this(ticksPerStep,null);
 	}
-	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
+	public LidaTaskImpl(int ticksPerStep,TaskSpawner ts) {
 		taskID = nextTaskID++;
 		this.ts=ts;
-		setTicksPerStep(ticksForCycle);
+		setTicksPerStep(ticksPerStep);
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	protected abstract void runThisLidaTask();
 
 	/**
-	 * Sets the task status. Intended to be called by {@link #runThisLidaTask()} 
+	 * Sets the task status. Intended to be called by #runThisLidaTask() 
 	 * Cannot use this method to cancel the task, instead use {@link #stopRunning()} to 
 	 * cancel the task.       
 	 * @param status the new task status 
