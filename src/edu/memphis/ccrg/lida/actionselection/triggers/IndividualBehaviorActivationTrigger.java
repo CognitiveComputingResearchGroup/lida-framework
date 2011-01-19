@@ -25,7 +25,7 @@ private Logger logger = Logger.getLogger(IndividualBehaviorActivationTrigger.cla
 	public void checkForTrigger(Set<Behavior> behaviors) {
 		for(Behavior c:behaviors){
 			if(c.getActivation()>threshold){
-				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getActualTick());
+				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getCurrentTick());
 				as.triggerActionSelection();
 				break;
 			}

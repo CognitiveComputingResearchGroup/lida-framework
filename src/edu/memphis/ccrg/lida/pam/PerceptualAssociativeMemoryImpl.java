@@ -145,7 +145,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void addFeatureDetector(FeatureDetector detector) {
 		featureDetectors.add(detector);
 		taskSpawner.addTask(detector);
-		logger.log(Level.FINE, "Added feature detector to PAM", LidaTaskManager.getActualTick());	
+		logger.log(Level.FINE, "Added feature detector to PAM", LidaTaskManager.getCurrentTick());	
 	}
 
 	// ******INTERMODULE COMMUNICATION******
@@ -213,7 +213,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	public void receiveActivationBurst(PamNode node, double amount) {
 		logger.log(Level.FINE,
 				   node.getLabel() + " gets activation burst. Amount: " + amount + ", total activation: " + node.getTotalActivation(),
-				   LidaTaskManager.getActualTick());
+				   LidaTaskManager.getCurrentTick());
 		ExcitationTask task = new ExcitationTask(node, amount, excitationTaskTicksPerRun, this, taskSpawner);
 		taskSpawner.addTask(task);	
 	}
@@ -254,9 +254,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	 */
 	@Override
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount){
-		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getActualTick());
+		logger.log(Level.FINE, "exciting parent: " + sink.getLabel() + " and connecting link " + link.getLabel() + " amount: " + amount, LidaTaskManager.getCurrentTick());
 		PropagationTask task = new PropagationTask(source, link, sink, amount, this, taskSpawner);
-		task.setNumberOfTicksPerRun(propagationTaskTicksPerRun);
+		task.setTicksPerStep(propagationTaskTicksPerRun);
 		taskSpawner.addTask(task);	
 	}
 

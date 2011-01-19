@@ -31,7 +31,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
@@ -194,7 +193,7 @@ public class LidaXmlFactory implements LidaFactory {
 		if (ts != null) {
 			module.setAssistingTaskSpawner(ts);
 			List<LidaTask>initialTasks = getTasks(moduleElement);
-			ts.setInitialTasks(initialTasks);
+			ts.addTasks(initialTasks);
 		}else{
 			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
 		}
@@ -204,7 +203,7 @@ public class LidaXmlFactory implements LidaFactory {
 			module.init(params);
 		}catch(Exception e){
 			logger.log(Level.WARNING, "Module: " + name + " threw exception " + e + " during call to init()", 
-							LidaTaskManager.getActualTick());
+							LidaTaskManager.getCurrentTick());
 			e.printStackTrace();
 		}
 		for (LidaModule lm : getModules(moduleElement)) {
@@ -279,7 +278,7 @@ public class LidaXmlFactory implements LidaFactory {
 				try{
 					initializer.initModule(moduleToInitialize, lida, params);
 				}catch (Exception e){
-					logger.log(Level.SEVERE, "Exception occurred running " + initializerClassName , LidaTaskManager.getActualTick());
+					logger.log(Level.SEVERE, "Exception occurred running " + initializerClassName , LidaTaskManager.getCurrentTick());
 					e.printStackTrace();
 				}
 			}
@@ -363,7 +362,7 @@ public class LidaXmlFactory implements LidaFactory {
 			return null;
 		}
 
-		task.setNumberOfTicksPerRun(ticks);
+		task.setTicksPerStep(ticks);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		task.init(params);
 		getAssociatedModules(moduleElement, task);

@@ -34,8 +34,8 @@ public class MockActionSelectionImpl implements ActionSelection {
 
 	@Override
 	public void selectAction() {
-		System.out.println("action selected at tick: " + LidaTaskManager.getActualTick());
-		logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getActualTick());
+		System.out.println("action selected at tick: " + LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getCurrentTick());
 	}
 
 	@Override

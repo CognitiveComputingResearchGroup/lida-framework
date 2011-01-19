@@ -59,7 +59,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 			command.setParameters(parameters);
 		}
 		command.execute(lida);
-		logger.log(Level.FINE, "Command "+ commandName + " executed",LidaTaskManager.getActualTick());
+		logger.log(Level.FINE, "Command "+ commandName + " executed",LidaTaskManager.getCurrentTick());
 		return command.getResult();
 	}
 
@@ -71,7 +71,7 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	@Override
 	public Object executeCommand (Command command){
 		command.execute(lida);
-		logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getActualTick());
+		logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getCurrentTick());
 		return command.getResult();
 	}
 	public boolean isSystemPaused() {

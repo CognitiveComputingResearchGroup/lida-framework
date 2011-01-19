@@ -23,14 +23,12 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  */
 public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 
-	private static final long serialVersionUID = 9005638432126098336L;
-
 	private static final Logger logger= Logger.getLogger(LidaTaskImpl.class.getCanonicalName());
 
 	private static int defaultTicksPerStep = 1;
 	private long taskID;
 	private int ticksPerStep = defaultTicksPerStep;
-	private long nextExcecutionTickLap = defaultTicksPerStep;
+	private long nextExcecutionTicksPerStep = defaultTicksPerStep;
 	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner ts;
@@ -46,7 +44,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public LidaTaskImpl(int ticksForCycle,TaskSpawner ts) {
 		taskID = nextTaskID++;
 		this.ts=ts;
-		setNumberOfTicksPerRun(ticksForCycle);
+		setTicksPerStep(ticksForCycle);
 	}
 	
 	/**
@@ -79,6 +77,9 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
 		if (defaultTicksPerStep > 0) {
 			LidaTaskImpl.defaultTicksPerStep = defaultTicksPerStep;
+		}else{
+			logger.log(Level.WARNING, 
+					"Cannot set default ticks per step to a negative value or 0. Default ticks per step was not changed.", LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -89,26 +90,26 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	 */
 	@Override
 	public LidaTask call() {
-		nextExcecutionTickLap=ticksPerStep;
+		nextExcecutionTicksPerStep=ticksPerStep;
 		
 		try{
 			runThisLidaTask();
 		}catch(Exception e){
 			e.printStackTrace();
-			logger.log(Level.WARNING, "Exception " + e.toString() + " encountered in task " + this.toString(), LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Exception " + e.toString() + " encountered in task " + this.toString(), LidaTaskManager.getCurrentTick());
 		}
 		
 		if (ts != null) 
 			ts.receiveFinishedTask(this);
 		else 
-			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] { LidaTaskManager.getActualTick(), this });
+			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] { LidaTaskManager.getCurrentTick(), this });
 		
 		return this;
 	}
 
 
 	/**
-	 * To be overridden by child classes. Overriding method should execute a
+	 * To be overridden by extending classes. Overriding method should execute a
 	 * handful of statements considered to constitute a single iteration of the
 	 * task. For example, a codelet might look in a buffer for some
 	 * representation and make a change to it in a single iteration.
@@ -117,19 +118,22 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	protected abstract void runThisLidaTask();
 
 	/**
-	 *  If a task is canceled it cannot be restarted.
-     *  So only set the status if the status is not CANCELED.
-     *  
-	 * @param status - the status to set
+	 * Sets the task status. Intended to be called by {@link #runThisLidaTask()} 
+	 * Cannot use this method to cancel the task, instead use {@link #stopRunning()} to 
+	 * cancel the task.       
+	 * @param status the new task status 
 	 */
 	@Override
 	public void setTaskStatus(LidaTaskStatus status) {
 		if (this.status != LidaTaskStatus.CANCELED)
 			this.status = status;
+		else
+			logger.log(Level.WARNING, "Cannot set task status to CANCELED", LidaTaskManager.getCurrentTick());
 	}
 
 	/**
-	 * @return the status
+	 * Returns status
+	 * @return current LidaTask status
 	 */
 	@Override
 	public LidaTaskStatus getStatus() {
@@ -161,22 +165,14 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 
 	/**
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setNumberOfTicksPerRun(int)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#setTicksPerStep(int)
 	 */
 	@Override
-	public void setNumberOfTicksPerRun(int ticks) {
+	public void setTicksPerStep(int ticks) {
 		if (ticks > 0){
 			ticksPerStep = ticks;
-			setNextExcecutionTickLap(ticks);
+			setNextTicksPerStep(ticks);
 		}
-	}
-
-	/**
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#reset()
-	 */
-	@Override
-	public void reset() {
-
 	}
 
 	/**
@@ -214,7 +210,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 			value = parameters.get(name);
 		}
 		if (value == null) {
-			logger.log(Level.WARNING, "Missing parameter, check factories data or first parameter: " + name, LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Missing parameter, check factories data or first parameter: " + name, LidaTaskManager.getCurrentTick());
 			value = defaultValue;
 		}
 		return value;
@@ -238,19 +234,25 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 	
 	@Override
-	public long getNextExcecutionTickLap() {		
-		return nextExcecutionTickLap;
+	public long getNextTicksPerStep() {		
+		return nextExcecutionTicksPerStep;
 	}
 	
 	/**
 	 * For just the next execution of this task, sets the number of ticks in the future when this task will be run
 	 */
 	@Override
-	public void setNextExcecutionTickLap(long lapTick) {
-		this.nextExcecutionTickLap=lapTick;	
+	public void setNextTicksPerStep(long lapTick) {
+		this.nextExcecutionTicksPerStep=lapTick;	
 	}
 	
+	/**
+	 * Sets an associated LidaModule. Each extending class can implement its own version.
+	 * @param module the module to be associated.
+     * @param moduleUsage how module will be used @see ModuleUsage
+	 */
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 	}	
-}// class
+	
+}

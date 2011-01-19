@@ -76,7 +76,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 		basic.addAccessibleBuffer(csm);
 		basic.addAccessibleBuffer(perceptualBuffer);
 		taskSpawner.addTask(basic);
-		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getActualTick());
+		logger.log(Level.FINER,"New codelet "+basic+"spawned",LidaTaskManager.getCurrentTick());
 	}// method
 
 	@Override

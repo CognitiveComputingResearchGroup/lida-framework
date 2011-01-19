@@ -46,7 +46,7 @@ public class BasicSelector implements Selector{
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
         
-       logger.log(Level.FINEST,"\nStarting selection, num candidates: " + candidateBehaviors.size(),LidaTaskManager.getActualTick());
+       logger.log(Level.FINEST,"\nStarting selection, num candidates: " + candidateBehaviors.size(),LidaTaskManager.getCurrentTick());
       
         for(Behavior current: candidateBehaviors){
         	

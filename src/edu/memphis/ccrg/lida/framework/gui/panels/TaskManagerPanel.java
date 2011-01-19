@@ -178,7 +178,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 				o=task.getScheduledTick();
 				break;
 			case 5:
-				o=task.getNextExcecutionTickLap();
+				o=task.getNextTicksPerStep();
 				break;
 			default:
 				o="";
@@ -198,9 +198,9 @@ public class TaskManagerPanel extends LidaPanelImpl {
 
 	@Override
 	public void refresh(){
-		logger.log(Level.FINEST, "Refreshing TaskManager Panel",LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST, "Refreshing TaskManager Panel",LidaTaskManager.getCurrentTick());
 
-		display(lida.getTaskManager().getSpawnedTasks());
+//		display(lida.getTaskManager().getSpawnedTasks());
 	}
 	@Override
 	@SuppressWarnings("unchecked")

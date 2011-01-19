@@ -241,7 +241,7 @@ public class LoggingPanel extends LidaPanelImpl {
 
         	String message = logRecord.getMessage();
         	if(message == null) {
-        		logger.log(Level.WARNING, "in Logging Panel message was null", LidaTaskManager.getActualTick());
+        		logger.log(Level.WARNING, "in Logging Panel message was null", LidaTaskManager.getCurrentTick());
         	}else{
         		MessageFormat mf=new MessageFormat(message);
 

@@ -13,7 +13,7 @@ public class ResumeRunningThreadsCommand extends GenericCommandImpl {
 
 	@Override
 	public void execute(Lida lida) {
-		lida.getTaskManager().resumeSpawnedTasks();
+		lida.getTaskManager().resumeTasks();
 	}
 
 }

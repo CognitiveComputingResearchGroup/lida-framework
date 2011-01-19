@@ -34,7 +34,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 	public void activateSchemesWithBroadcast(NodeStructure broadcast,
 			Map<? extends Object, Set<Scheme>> schemeMap) {
 		logger.log(Level.FINEST, "Scheme are tested for activation",
-				LidaTaskManager.getActualTick());
+				LidaTaskManager.getCurrentTick());
 		Collection<Node> nodes = broadcast.getNodes();
 		Collection<Link> links = broadcast.getLinks();
 		
@@ -56,7 +56,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 					// Copy?
 					pm.sendInstantiatedScheme(scheme);
 					logger.log(Level.FINE, "Scheme is instantiated",
-								LidaTaskManager.getActualTick());
+								LidaTaskManager.getCurrentTick());
 				}
 			}// for
 		}

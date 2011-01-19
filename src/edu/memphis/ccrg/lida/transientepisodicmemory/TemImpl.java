@@ -94,7 +94,7 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
        
         for(LocalAssociationListener l : localAssocListeners){
         	l.receiveLocalAssociation(result);
-    		logger.log(Level.FINER,"Local Association sent.",LidaTaskManager.getActualTick());
+    		logger.log(Level.FINER,"Local Association sent.",LidaTaskManager.getCurrentTick());
         }
    return;
 	}

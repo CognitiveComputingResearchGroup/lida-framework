@@ -27,7 +27,7 @@ public class ConflictorExciteStrategy extends StrategyImpl implements BehaviorEx
 		recipientBehavior.excite(inhibitionAmount);
 		logger.log(Level.FINEST, sourceBehavior.getLabel() + " inhibits " + 
 					recipientBehavior.getLabel() + " amount " + inhibitionAmount,
-					LidaTaskManager.getActualTick());
+					LidaTaskManager.getCurrentTick());
 
 	}
 

@@ -94,7 +94,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public void triggerBroadcast() {
-		System.out.println("Boradcast started at tick: "+LidaTaskManager.getActualTick());
+		System.out.println("Boradcast started at tick: "+LidaTaskManager.getCurrentTick());
 		System.out.println();
 	}
 

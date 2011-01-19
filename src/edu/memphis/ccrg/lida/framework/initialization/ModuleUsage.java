@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework.tasks;
+package edu.memphis.ccrg.lida.framework.initialization;
 
 public class ModuleUsage {
 

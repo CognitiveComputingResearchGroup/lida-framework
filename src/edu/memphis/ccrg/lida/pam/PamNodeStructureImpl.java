@@ -85,7 +85,7 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	 */
 	@Override
 	public void decayLinkables(long ticks){
-		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getActualTick());
+		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getCurrentTick());
 		for(Linkable l: getLinkables()){
 			Learnable la = (Learnable) l;
 			la.decay(ticks);

@@ -40,25 +40,25 @@ public class ActionSelectionInitalizer implements Initializer{
 		Integer delayNoActionSelection = (Integer) params.get("actionSelection.delayNoBroadcast");
 		if (delayNoActionSelection==null){
 			delayNoActionSelection=DEFAULT_DELAY_NO_ACTION_SELECTION;
-			logger.log(Level.WARNING, "Delay no Action Selection could not be read, using default", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Delay no Action Selection could not be read, using default", LidaTaskManager.getCurrentTick());
 		}
 		
 		Integer delayNoNewBehavior = (Integer) params.get("actionSelection.delayNoNewBehavior");
 		if (delayNoNewBehavior==null){
 			delayNoNewBehavior=DEFAULT_DELAY_NO_NEW_BEHAVIOR;
-			logger.log(Level.WARNING, "Delay no new Behavior could not be read, using default", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Delay no new Behavior could not be read, using default", LidaTaskManager.getCurrentTick());
 		}
 
 		Double aggregateActivationThreshold = (Double) params.get("actionSelection.aggregateActivationThreshold");
 		if (aggregateActivationThreshold==null){
 			aggregateActivationThreshold=DEFAULT_AGGREGATE_ACT_THRESHOLD;
-			logger.log(Level.WARNING, "aggregate activation threshold could not be read, using default", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "aggregate activation threshold could not be read, using default", LidaTaskManager.getCurrentTick());
 		}
 		
 		Double individualActivationThreshold = (Double) params.get("actionSelection.individualActivationThreshold");
 		if (individualActivationThreshold==null){
 			individualActivationThreshold=DEFAULT_INDIVIDUAL_ACT_THRESHOLD;
-			logger.log(Level.WARNING, "individual activation threshold could not be read, using default", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "individual activation threshold could not be read, using default", LidaTaskManager.getCurrentTick());
 		}
 		
 		ActionSelectionTrigger tr;

@@ -60,7 +60,7 @@ public class NoBehaviorArrivingTriggerTest {
 		System.out.println("Trigger started with delay of 15 ticks.");
 		
 		trigger.checkForTrigger(behaviors, 1.0);
-		tm.resumeSpawnedTasks();
+		tm.resumeTasks();
 		
 		try {
 			Thread.sleep(8000);

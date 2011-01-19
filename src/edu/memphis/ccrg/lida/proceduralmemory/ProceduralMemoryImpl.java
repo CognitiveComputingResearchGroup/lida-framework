@@ -80,7 +80,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 			proceduralMemoryListeners.add((ProceduralMemoryListener) listener);
 		}else{
 			logger.log(Level.WARNING, "Try to add wrong listener type", 
-					LidaTaskManager.getActualTick());
+					LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -130,14 +130,14 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	
 	@Override
 	public void activateSchemes(NodeStructure broadcast) {
-		logger.log(Level.FINEST, "Procedural memory activates schemes", LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST, "Procedural memory activates schemes", LidaTaskManager.getCurrentTick());
 		schemeActivationBehavior.activateSchemesWithBroadcast(broadcast, contextSchemeMap);
 	}
 	
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		System.out.println("rec broadcast " + ((NodeStructure) bc).getLinkableCount());
-		logger.log(Level.FINEST, "Procedural memory receives broadcast", LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST, "Procedural memory receives broadcast", LidaTaskManager.getCurrentTick());
 		synchronized (this) {
 			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
 			taskSpawner.addTask(task);
@@ -175,7 +175,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public void sendInstantiatedScheme(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
-				LidaTaskManager.getActualTick());
+				LidaTaskManager.getCurrentTick());
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(s.getBehavior());
 		}

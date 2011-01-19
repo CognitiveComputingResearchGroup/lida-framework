@@ -9,6 +9,11 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+/**
+ * A strategy pattern for decaying Activatibles or Learnables 
+ *  
+ * @author Javier Snaider, Ryan McCall
+ */
 public interface DecayStrategy extends Strategy{
 
     /**

@@ -20,6 +20,6 @@ public class PauseRunningThreadsCommand extends GenericCommandImpl {
 
 	@Override
 	public void execute(Lida lida) {
-		lida.getTaskManager().pauseSpawnedTasks();
+		lida.getTaskManager().pauseTasks();
 	}
 }

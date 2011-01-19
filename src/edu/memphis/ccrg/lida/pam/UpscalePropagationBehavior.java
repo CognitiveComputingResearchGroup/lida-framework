@@ -32,7 +32,7 @@ public class UpscalePropagationBehavior implements PropagationBehavior{
 		Double upscale = (Double) params.get("upscale");
 		
 		if(totalActiv == null || upscale == null){
-			logger.log(Level.WARNING,"Unable to obtain parameters",LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING,"Unable to obtain parameters",LidaTaskManager.getCurrentTick());
 			return 0;
 		}else
 			return totalActiv * upscale;

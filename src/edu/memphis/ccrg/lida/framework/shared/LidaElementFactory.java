@@ -233,7 +233,7 @@ public class LidaElementFactory {
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
 			logger.log(Level.WARNING, "Strategy " + defaultExciteType
-					+ " does not exist. Default used instead.", LidaTaskManager.getActualTick());
+					+ " does not exist. Default used instead.", LidaTaskManager.getCurrentTick());
 		}
 		d = (DecayStrategy) sd.getInstance();
 		return d;
@@ -245,7 +245,7 @@ public class LidaElementFactory {
 		if (sd == null) {
 			sd = exciteStrategies.get(defaultExciteType);
 			logger.log(Level.WARNING, "Strategy " + name
-					+ " does not exist. Default used instead.", LidaTaskManager.getActualTick());
+					+ " does not exist. Default used instead.", LidaTaskManager.getCurrentTick());
 		}
 		d = (ExciteStrategy) sd.getInstance();
 		return d;
@@ -287,7 +287,7 @@ public class LidaElementFactory {
 		LinkableDef linkDef = linkClasses.get(linkT);		
 		if (linkDef == null) {
 			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.", 
-						LidaTaskManager.getActualTick());
+						LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
@@ -336,7 +336,7 @@ public class LidaElementFactory {
 		LinkableDef linkDef = linkClasses.get(linkT);		
 		if (linkDef == null) {
 			logger.log(Level.WARNING, "LinkName " + linkT
-					+ " does not exist.", LidaTaskManager.getActualTick());
+					+ " does not exist.", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
@@ -370,7 +370,7 @@ public class LidaElementFactory {
 			LinkableDef linkDef = linkClasses.get(linkT);
 			if (linkDef == null) {
 				logger.log(Level.WARNING, "LinkName " + linkT
-						+ " does not exist.", LidaTaskManager.getActualTick());
+						+ " does not exist.", LidaTaskManager.getCurrentTick());
 				return null;
 			}
 
@@ -385,13 +385,13 @@ public class LidaElementFactory {
 			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		} catch (IllegalAccessException e) {
 			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		}
 		return link;
 	}
@@ -426,7 +426,7 @@ public class LidaElementFactory {
 		LinkableDef nodeDef = nodeClasses.get(nodeType);		
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
-					+ " does not exist.", LidaTaskManager.getActualTick());
+					+ " does not exist.", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -485,7 +485,7 @@ public class LidaElementFactory {
 		LinkableDef nodeDef = nodeClasses.get(nodeType);		
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
-					+ " does not exist.", LidaTaskManager.getActualTick());
+					+ " does not exist.", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -517,7 +517,7 @@ public class LidaElementFactory {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
 			if (nodeDef == null) {
 				logger.log(Level.WARNING, "NodeName " + nodeType
-						+ " does not exist.", LidaTaskManager.getActualTick());
+						+ " does not exist.", LidaTaskManager.getCurrentTick());
 				return null;
 			}
 
@@ -533,13 +533,13 @@ public class LidaElementFactory {
 			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		} catch (IllegalAccessException e) {
 			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		}
 		return n;
 	}
@@ -625,13 +625,13 @@ public class LidaElementFactory {
 			CodeletDef codeletDef = codelets.get(codeletName);
 			if (codeletDef == null) {
 				logger.log(Level.WARNING, "CodeletName " + codeletName
-						+ " does not exist.", LidaTaskManager.getActualTick());
+						+ " does not exist.", LidaTaskManager.getCurrentTick());
 			}
 
 			String className = codeletDef.getClassName();
 			codelet = (Codelet) Class.forName(className).newInstance();
 
-			codelet.setNumberOfTicksPerRun(ticksPerStep);
+			codelet.setTicksPerStep(ticksPerStep);
 			codelet.setActivation(activation);
 			setActivatibleStrategies(codelet, decayStrategy, exciteStrategy);
 			
@@ -643,13 +643,13 @@ public class LidaElementFactory {
 			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		} catch (IllegalAccessException e) {
 			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
-					.getActualTick());
+					.getCurrentTick());
 		}
 		return codelet;
 	}
@@ -666,7 +666,7 @@ public class LidaElementFactory {
 		CodeletDef codeletDef = codelets.get(codeletName);
 		if (codeletDef == null) {
 			logger.log(Level.WARNING, "CodeletName " + codeletName
-					+ " does not exist.", LidaTaskManager.getActualTick());
+					+ " does not exist.", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);

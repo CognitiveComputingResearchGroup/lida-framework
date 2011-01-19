@@ -57,7 +57,7 @@ public class StreamImpl implements Stream{
 	@Override
 	public void removeBehavior(Behavior behavior) {
 		logger.log(Level.FINER, "Removing " + behavior + " from " + this, 
-					LidaTaskManager.getActualTick());
+					LidaTaskManager.getCurrentTick());
 		behaviors.remove(behavior);
 	}
     @Override

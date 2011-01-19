@@ -19,8 +19,8 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
-import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 

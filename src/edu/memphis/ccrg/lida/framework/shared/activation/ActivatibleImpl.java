@@ -48,26 +48,26 @@ public class ActivatibleImpl implements Activatible {
 	@Override
 	public void decay(long ticks) {	
 		if (decayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
 				currentExcitation -= decayRate*ticks;
 				//activation = curveStrategy.getY(currentExcitation);
 				activation = decayStrategy.decay(activation,ticks);
 			}
-			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getCurrentTick());
 		}
 	}
 
 	@Override
 	public void excite(double excitation) {	
 		if (exciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
 				currentExcitation += excitation;
 				//activation = curveStrategy.getY(currentExcitation);
 				activation = exciteStrategy.excite(activation, excitation);
 			}
-			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getCurrentTick());
 		}
 	}
 

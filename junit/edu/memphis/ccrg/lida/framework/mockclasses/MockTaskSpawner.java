@@ -27,17 +27,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public int getSpawnedTaskCount() {
-		return 0;
-	}
-
-	@Override
-	public Collection<LidaTask> getSpawnedTasks() {
-		return null;
-	}
-
-	@Override
-	public LidaTaskManager getTaskManager() {
+	public Collection<LidaTask> getRunningTasks() {
 		return null;
 	}
 
@@ -47,7 +37,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
+	public void addTasks(Collection<? extends LidaTask> initialTasks) {
 		
 
 	}

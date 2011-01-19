@@ -196,13 +196,13 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 	@Override
 	public void refresh(){
-		display(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getAssistingTaskSpawner().getSpawnedTasks());
+		display(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getAssistingTaskSpawner().getRunningTasks());
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
-		logger.log(Level.FINE, "Refreshing display", LidaTaskManager.getActualTick());
+		logger.log(Level.FINE, "Refreshing display", LidaTaskManager.getCurrentTick());
 		if (o instanceof Collection) {
 			tasks = (Collection<LidaTask>) o;
 			

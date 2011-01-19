@@ -74,13 +74,13 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			if(coolDownCounter == selectionFrequency){
 				logger.log(Level.FINE, 
 						   "selecting behavior " + b.getLabel() + " " + b.getId() + " " + b.getActionId() + " activ. " + b.getActivation(), 
-						   LidaTaskManager.getActualTick());
+						   LidaTaskManager.getCurrentTick());
 				sendAction(b.getActionId());
 				coolDownCounter = 0;
 			}else
 				coolDownCounter++;
 			
-			logger.log(Level.FINE, "Selected action: " + b.getActionId(), LidaTaskManager.getActualTick());
+			logger.log(Level.FINE, "Selected action: " + b.getActionId(), LidaTaskManager.getCurrentTick());
 		}
 	}
 	
@@ -128,7 +128,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 		FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.ActionSelection, behaviors.size()+"");
 		sendEventToGui(ge);
 	}
-	logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getActualTick());
+	logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getCurrentTick());
 
 	resetTriggers();
 	actionSelectionStarted.set(false);
@@ -163,7 +163,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	 */
 	public boolean addBehavior(Behavior behavior) {
 		if (behaviors.add(behavior)) {
-			logger.log(Level.FINE,"New Behavior added",LidaTaskManager.getActualTick());
+			logger.log(Level.FINE,"New Behavior added",LidaTaskManager.getCurrentTick());
 			newBehaviorEvent(behaviors);
 			return true;
 		} else {

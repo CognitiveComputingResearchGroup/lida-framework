@@ -34,7 +34,7 @@ public class AggregateBehaviorActivationTrigger implements
 			acc=acc+c.getActivation();
 		}
 		if(acc>threshold){
-			logger.log(Level.FINE,"Aggregate Activation trigger ",LidaTaskManager.getActualTick());
+			logger.log(Level.FINE,"Aggregate Activation trigger ",LidaTaskManager.getCurrentTick());
 			//System.out.println("aggregate ");
 			as.triggerActionSelection();
 		}

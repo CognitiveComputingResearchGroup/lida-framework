@@ -106,11 +106,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
 				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
 			}
-			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 		}		
 	}
 

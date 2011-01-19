@@ -46,7 +46,7 @@ public class NoBroadcastOccurringTriggerTest {
 		trigger.setUp(parameters, gw);		
 		
 		trigger.start();
-		tm.resumeSpawnedTasks();
+		tm.resumeTasks();
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {			

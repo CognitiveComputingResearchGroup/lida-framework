@@ -9,6 +9,12 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+/**
+ * A strategy pattern for exciting Activatibles or Learnables 
+ *  
+ * @author Javier Snaider, Ryan McCall
+ *
+ */
 public interface ExciteStrategy extends Strategy{
 
 	/**

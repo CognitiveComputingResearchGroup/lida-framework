@@ -158,7 +158,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	@Override
 	public void setGroundingPamLink(PamLink l) {
-		logger.log(Level.FINEST, "Set grounding pam link " + l.toString(), LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST, "Set grounding pam link " + l.toString(), LidaTaskManager.getCurrentTick());
 		groundingPamLink = l;
 	}
 	

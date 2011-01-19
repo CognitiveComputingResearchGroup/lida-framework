@@ -146,7 +146,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		if(factory.containsNodeType(defaultNode))
 			this.defaultNodeType = defaultNode;
 		else
-			logger.log(Level.WARNING, "Factory does not contain specified node type!  Must specify all types in factoriesData.xml", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Factory does not contain specified node type!  Must specify all types in factoriesData.xml", LidaTaskManager.getCurrentTick());
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		if(factory.containsLinkType(defaultLink))
 			this.defaultLinkType = defaultLink;
 		else
-			logger.log(Level.WARNING, "Factory does not contain specified link type!  Must specify all types in factoriesData.xml", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Factory does not contain specified link type!  Must specify all types in factoriesData.xml", LidaTaskManager.getCurrentTick());
 	}
 	
 	/*
@@ -188,7 +188,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		//in not in this nodestructure, return null
 		newSource = nodes.get(source.getId());
 		if (newSource == null) {
-			logger.log(Level.WARNING, "Source node is not present in this NodeStructure", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Source node is not present in this NodeStructure", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -196,13 +196,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
 			if (newSink == null) {
-				logger.log(Level.WARNING, "Sink is not present in this NodeStructure", LidaTaskManager.getActualTick());
+				logger.log(Level.WARNING, "Sink is not present in this NodeStructure", LidaTaskManager.getCurrentTick());
 				return null;
 			}
 		}else{
 			newSink = links.get(sink.getExtendedId());
 			if (newSink == null) {
-				logger.log(Level.WARNING, "Sink is not present in this NodeStructure", LidaTaskManager.getActualTick());
+				logger.log(Level.WARNING, "Sink is not present in this NodeStructure", LidaTaskManager.getCurrentTick());
 				return null;
 			}
 		}
@@ -214,7 +214,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
-			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		return generateNewLink(source, sink, category, activation);
@@ -226,7 +226,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
-			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		return generateNewLink(source, sink, category, activation);
@@ -238,7 +238,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Node source = getNode(sourceId);
 		Linkable sink = getNode(sinkId);
 		if (source == null || sink == null) {
-			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getActualTick());
+			logger.log(Level.WARNING, "Source and/or Sink are not present in this NodeStructure", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		return generateNewLink(source, sink, category, activation);
@@ -296,7 +296,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		if(factory.containsNodeType(factoryNodeType) == false){
 			logger.log(Level.WARNING, "Tried to add node of type " + factoryNodeType + " to NodeStructure. " +
 					" the factory does not contain that node type.  Make sure the node type is defined in " +
-					" factoriesData.xml", LidaTaskManager.getActualTick());
+					" factoriesData.xml", LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -355,7 +355,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public NodeStructure copy() {
-		logger.log(Level.FINER, "Copying NodeStructure " + this, LidaTaskManager.getActualTick());
+		logger.log(Level.FINER, "Copying NodeStructure " + this, LidaTaskManager.getCurrentTick());
 		return new NodeStructureImpl(this, defaultNodeType, defaultLinkType);
 	}
 
@@ -391,7 +391,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 						otherLinks.remove(l);
 					}else{
 						logger.log(Level.WARNING, "Expected other end of link " + other.getLabel() + 
-								" to have link " + l.toString(), LidaTaskManager.getActualTick());						
+								" to have link " + l.toString(), LidaTaskManager.getCurrentTick());						
 					}
 				}else{
 					other = l.getSource();
@@ -400,7 +400,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 						otherLinks.remove(l);
 					}else{
 						logger.log(Level.WARNING, "Expected other end of link " + other.getLabel() + 
-								" to have link " + l.toString(), LidaTaskManager.getActualTick());
+								" to have link " + l.toString(), LidaTaskManager.getCurrentTick());
 					}
 				}
 			}

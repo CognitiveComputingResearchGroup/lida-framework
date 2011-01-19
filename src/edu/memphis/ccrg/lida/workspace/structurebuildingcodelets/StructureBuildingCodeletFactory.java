@@ -194,7 +194,7 @@ public class StructureBuildingCodeletFactory {
 	 * @param sbCode The codelet to be recycled
 	 */
 	public void recycle(StructureBuildingCodelet sbCode) {
-		sbCode.reset();
+//		sbCode.reset();
 		String type = sbCode.getClass().getName();
 		if (!pool.containsKey(type))
 			pool.put(type, new ArrayList<StructureBuildingCodelet>());

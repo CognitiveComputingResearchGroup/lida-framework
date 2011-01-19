@@ -110,7 +110,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	public void cueEpisodicMemories(NodeStructure content){
 		for(CueListener c: cueListeners)
 			c.receiveCue(content);
-		logger.log(Level.FINER,"Cue Performed ",LidaTaskManager.getActualTick());
+		logger.log(Level.FINER,"Cue Performed ",LidaTaskManager.getCurrentTick());
 	}
 	private void sendToListeners(NodeStructure content){
 		for(WorkspaceListener listener: wsListeners){

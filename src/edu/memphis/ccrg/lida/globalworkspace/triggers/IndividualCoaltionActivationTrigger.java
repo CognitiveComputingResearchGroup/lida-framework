@@ -26,7 +26,7 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 	public void checkForTrigger(Set<Coalition> coallitions) {
 		for(Coalition c:coallitions){
 			if(c.getActivation()>threshold){
-				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getActualTick());
+				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getCurrentTick());
 
 				gw.triggerBroadcast();
 				break;

@@ -43,7 +43,7 @@ public class TriggerTask extends LidaTaskImpl{
 
 	@Override
 	protected void runThisLidaTask() {
-		logger.log(Level.FINE,name,LidaTaskManager.getActualTick());
+		logger.log(Level.FINE,name,LidaTaskManager.getCurrentTick());
 		gw.triggerBroadcast();
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}		

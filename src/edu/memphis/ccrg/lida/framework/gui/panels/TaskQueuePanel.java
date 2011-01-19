@@ -138,7 +138,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		@Override
 		public int getRowCount() {
 			int rows = (int) (lida.getTaskManager().getMaxTick() - LidaTaskManager
-					.getActualTick())+1;
+					.getCurrentTick())+1;
 			return rows;
 		}
 
@@ -157,10 +157,10 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object o = null;
 			if (columnIndex==0){
-				return LidaTaskManager.getActualTick()+ rowIndex;
+				return LidaTaskManager.getCurrentTick()+ rowIndex;
 			}
 			
-			Queue<LidaTask> qt = tasks.get(LidaTaskManager.getActualTick()
+			Queue<LidaTask> qt = tasks.get(LidaTaskManager.getCurrentTick()
 					+ rowIndex);
 			if (qt == null) {
 				return "";
@@ -186,7 +186,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	@Override
 	public void refresh() {
 		logger.log(Level.FINEST, "Refreshing TaskQueue Panel",
-				LidaTaskManager.getActualTick());
+				LidaTaskManager.getCurrentTick());
 
 		display(lida.getTaskManager().getTaskQueue());
 	}

@@ -99,7 +99,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	@Override
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
-			logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getActualTick());
+			logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getCurrentTick());
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -130,7 +130,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	}// method
 
 	private void sendBroadcast() {
-		logger.log(Level.FINE, "Triggering broadcast", LidaTaskManager.getActualTick());
+		logger.log(Level.FINE, "Triggering broadcast", LidaTaskManager.getCurrentTick());
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
 			coalitions.remove(coal);
@@ -144,7 +144,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 			FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.GlobalWorkspace, coalitions.size()+"");
 			sendEventToGui(ge);
 		} 
-		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getActualTick());
+		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getCurrentTick());
 
 		resetTriggers();
 		broadcastStarted.set(false);
@@ -184,7 +184,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 			c.decay(ticks);
 			if (c.getActivation()<=0.0){
 				coalitions.remove(c);
-				logger.log(Level.FINE,"Coallition removed",LidaTaskManager.getActualTick());
+				logger.log(Level.FINE,"Coallition removed",LidaTaskManager.getCurrentTick());
 			}
 	}
 	}
@@ -202,7 +202,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	@Override
 	public void decayModule(long ticks){
 		decay(ticks);
-		logger.log(Level.FINEST,"Coallitions Decayed",LidaTaskManager.getActualTick());
+		logger.log(Level.FINEST,"Coallitions Decayed",LidaTaskManager.getCurrentTick());
 	}
 
 	@Override

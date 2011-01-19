@@ -27,7 +27,7 @@ public class PredecessorExciteStrategy extends StrategyImpl implements BehaviorE
 		logger.log(Level.FINEST, sourceBehavior.getActivation() + " "
 				+ sourceBehavior.getLabel() + "<--" + amount
 				+ " to " + recipientBehavior, LidaTaskManager
-				.getActualTick());
+				.getCurrentTick());
 //		double granted = (behavior.getActivation() * predecessorExcitationFactor)
 //		/ behavior.getUnsatisfiedContextCount();
 //predecessor.excite(granted);

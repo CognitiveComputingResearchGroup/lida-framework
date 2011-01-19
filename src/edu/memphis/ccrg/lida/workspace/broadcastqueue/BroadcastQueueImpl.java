@@ -113,7 +113,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 
 	@Override
 	public void decayModule(long ticks) {
-		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getActualTick());
+		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getCurrentTick());
 		super.decayModule(ticks);
 		for (NodeStructure ns : broadcastQueue) {
 			Collection<Node> nodes = ns.getNodes();

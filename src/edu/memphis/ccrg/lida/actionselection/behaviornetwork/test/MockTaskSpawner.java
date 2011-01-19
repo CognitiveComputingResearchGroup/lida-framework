@@ -50,31 +50,14 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#getSpawnedTaskCount()
-	 */
-	@Override
-	public int getSpawnedTaskCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#getSpawnedTasks()
 	 */
 	@Override
-	public Collection<LidaTask> getSpawnedTasks() {
+	public Collection<LidaTask> getRunningTasks() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#getTaskManager()
-	 */
-	@Override
-	public LidaTaskManager getTaskManager() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#receiveFinishedTask(edu.memphis.ccrg.lida.framework.tasks.LidaTask)
@@ -89,7 +72,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#setInitialTasks(java.util.Collection)
 	 */
 	@Override
-	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
+	public void addTasks(Collection<? extends LidaTask> initialTasks) {
 		// TODO Auto-generated method stub
 
 	}

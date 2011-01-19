@@ -15,21 +15,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Implements the TaskSpawner interface.
- * 
- * @author Javier Snaider
+ * Maintains a queue of running tasks and their task status.  Methods to add and cancel tasks.
+ * This implementation actually uses {@link LidaTaskManager} to execute the tasks. 
  *
+ * @author Javier Snaider
  */
 public class TaskSpawnerImpl implements TaskSpawner {
-
-	private static final long serialVersionUID = 5214851238994032189L;
 
 	private static final Logger logger = Logger.getLogger(TaskSpawnerImpl.class.getCanonicalName());
 	
 	private LidaTaskManager taskManager;
 
 	/**
-	 * The task currently being run
+	 * The tasks currently being run
 	 */
 	private ConcurrentLinkedQueue<LidaTask> runningTasks = new ConcurrentLinkedQueue<LidaTask>();
 
@@ -42,9 +40,17 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		super();
 		taskManager=tm;
 	}
+	
+	/**
+	 * @param taskManager task manager
+	 */
+	@Override
+	public void setTaskManager(LidaTaskManager taskManager) {
+		this.taskManager = taskManager;
+	}
 
 	@Override
-	public void setInitialTasks(Collection<? extends LidaTask> initialTasks) {
+	public void addTasks(Collection<? extends LidaTask> initialTasks) {
 		for (LidaTask r : initialTasks)
 			addTask(r);
 	}
@@ -58,23 +64,23 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		task.setControllingTaskSpawner(this);
 		runningTasks.add(task);
 		runTask(task);
-		logger.log(Level.FINEST, "Task {1} added", new Object[]{LidaTaskManager.getActualTick(),task});
+		logger.log(Level.FINEST, "Task {1} added", new Object[]{LidaTaskManager.getCurrentTick(),task});
 	}
 
 	/**
-	 * Schedule the LidaTask to be excecuted.
+	 * Schedule the LidaTask to be executed.
 	 * Sets the task status to RUNNING.
 	 * @param task
 	 */
 	protected void runTask(LidaTask task) {
-		logger.log(Level.FINEST, "Running task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
+		logger.log(Level.FINEST, "Running task {1}", new Object[]{LidaTaskManager.getCurrentTick(),task});
 		task.setTaskStatus(LidaTaskStatus.RUNNING);
-		taskManager.scheduleTask(task, task.getNextExcecutionTickLap());
+		taskManager.scheduleTask(task, task.getNextTicksPerStep());
 	}
 
 	/**
-	 * Finished tasks from the FrameworkExecutorService are sent to this method.
-	 * If it is overridden then is should still be called first using super.
+	 * Finished tasks call this method. 
+	 * @see LidaTaskImpl
 	 */
 	@Override
 	public void receiveFinishedTask(LidaTask task) {
@@ -82,27 +88,24 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		case FINISHED_WITH_RESULTS:
 			processResults(task);
 			removeTask(task);
-			logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[]{LidaTaskManager.getActualTick(),task});
+			logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[]{LidaTaskManager.getCurrentTick(),task});
 			break;
 		case FINISHED:
 			removeTask(task);
-			logger.log(Level.FINEST, "FINISHED {1}", new Object[]{LidaTaskManager.getActualTick(),task});
+			logger.log(Level.FINEST, "FINISHED {1}", new Object[]{LidaTaskManager.getCurrentTick(),task});
 			break;
 		case CANCELED:
 			removeTask(task);
-			logger.log(Level.FINEST, "CANCELLED {1}", new Object[]{LidaTaskManager.getActualTick(),task});
+			logger.log(Level.FINEST, "CANCELLED {1}", new Object[]{LidaTaskManager.getCurrentTick(),task});
 			break;
-		case TO_RESET:
-			logger.log(Level.FINEST, "TO_RESET {1}", new Object[]{LidaTaskManager.getActualTick(),task});
-			task.reset();
 		case WAITING_TO_RUN:
 		case RUNNING:
-			logger.log(Level.FINEST, "RUNNING", new Object[]{LidaTaskManager.getActualTick(),task});
+			logger.log(Level.FINEST, "RUNNING", new Object[]{LidaTaskManager.getCurrentTick(),task});
 			task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
 			runTask(task);
 			break;
 		}
-	}// method
+	}
 
 	/**
 	 * When a finished task is received and its status is FINISHED_WITH_RESULTS or FINISHED or CANCELLED
@@ -110,7 +113,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 * @param task the LidaTask to remove.
 	 */
 	protected void removeTask(LidaTask task) {
-		logger.log(Level.FINEST, "Cancelling task {1}", new Object[]{LidaTaskManager.getActualTick(),task});
+		logger.log(Level.FINEST, "Cancelling task {1}", new Object[]{LidaTaskManager.getCurrentTick(),task});
 		runningTasks.remove(task);
 	}
 
@@ -124,46 +127,23 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	}
 
 	/**
-	 * Returns an unmodifiable collection of the running tasks spawned by this task spawner
+	 * Returns an unmodifiable collection of the running tasks managed by this TaskSpawner
 	 */
 	@Override
-	public Collection<LidaTask> getSpawnedTasks() {
-		logger.log(Level.FINEST, "Getting all tasks", LidaTaskManager.getActualTick());
+	public Collection<LidaTask> getRunningTasks() {
+		logger.log(Level.FINEST, "Getting all tasks", LidaTaskManager.getCurrentTick());
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 
 	/**
-	 * 
-	 */
-	@Override
-	public int getSpawnedTaskCount() {
-		logger.log(Level.FINEST, "Getting spawned count", LidaTaskManager.getActualTick());
-		return runningTasks.size();
-	}
-
-	/**
-	 * Removes task from running task queue and tells task manager to cancel the task 
+	 * Removes LidaTask from task queue and tells LidaTaskManager to cancel the task 
 	 */
 	@Override
 	public void cancelTask(LidaTask task) {
 		removeTask(task);
 		taskManager.cancelTask(task);		
 	}
-	/**
-	 * @param taskManager task manager
-	 */
-	@Override
-	public void setTaskManager(LidaTaskManager taskManager) {
-		this.taskManager = taskManager;
-	}
 
-	/**
-	 * @return the LidaTaskManager
-	 */
-	@Override
-	public LidaTaskManager getTaskManager(){
-		return taskManager;
-	}
 	/*
 	 * (non-Javadoc)
 	 * 

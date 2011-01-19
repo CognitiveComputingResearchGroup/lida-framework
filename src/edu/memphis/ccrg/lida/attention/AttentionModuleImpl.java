@@ -17,12 +17,12 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
-import edu.memphis.ccrg.lida.framework.tasks.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -91,7 +91,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	
 	public void runAttentionCodelet(AttentionCodelet codelet){
 		taskSpawner.addTask(codelet);
-		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getActualTick());
+		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getCurrentTick());
 	}
 
 	@Override

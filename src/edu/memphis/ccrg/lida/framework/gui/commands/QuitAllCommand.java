@@ -15,7 +15,7 @@ public class QuitAllCommand extends GenericCommandImpl {
 	@Override
 	public void execute(Lida lida) {
 		LidaTaskManager tm = lida.getTaskManager();
-		tm.pauseSpawnedTasks();
+		tm.pauseTasks();
 		try {
 			Thread.sleep(100);
 		}catch(InterruptedException e){

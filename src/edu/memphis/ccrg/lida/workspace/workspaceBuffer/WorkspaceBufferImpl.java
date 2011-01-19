@@ -52,7 +52,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 			Activatible activatible = (Activatible) linkable;
 			activatible.decay(ticks);
 			if (activatible.getActivation() <= activationLowerBound){
-				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getActualTick());
+				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getCurrentTick());
 				bufferContent.removeLinkable(linkable);
 			}
 		}		

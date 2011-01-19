@@ -79,19 +79,19 @@ public class PamInitializer implements Initializer {
 
 		// Feature detectors
 		FeatureDetector fd = new BasicDetector(gold, sm, pam);
-		fd.setNumberOfTicksPerRun(5);
+		fd.setTicksPerStep(5);
 		pam.addFeatureDetector(fd);
 		fd = new BasicDetector(iron, sm, pam);
-		fd.setNumberOfTicksPerRun(3);
+		fd.setTicksPerStep(3);
 		pam.addFeatureDetector(fd);
 		fd = new BasicDetector(wood, sm, pam);
-		fd.setNumberOfTicksPerRun(2);
+		fd.setTicksPerStep(2);
 		pam.addFeatureDetector(fd);
 		fd = new TopLeftDetector(topLeft, sm, pam);
-		fd.setNumberOfTicksPerRun(7);
+		fd.setTicksPerStep(7);
 		pam.addFeatureDetector(fd);
 		fd = new BottomRightDetector(bottomRight, sm, pam);
-		fd.setNumberOfTicksPerRun(3);
+		fd.setTicksPerStep(3);
 		pam.addFeatureDetector(fd);
 
 		PropagationBehavior b = new UpscalePropagationBehavior();

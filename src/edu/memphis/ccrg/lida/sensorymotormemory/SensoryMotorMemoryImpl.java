@@ -37,7 +37,7 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	@Override
 	public void addSensoryMotorListener(SensoryMotorListener l) {
 		if(l instanceof Environment){
-			logger.log(Level.SEVERE, "Cannot Add Environment as SensoryMotorListener.  Add it as an associated module.", LidaTaskManager.getActualTick());			
+			logger.log(Level.SEVERE, "Cannot Add Environment as SensoryMotorListener.  Add it as an associated module.", LidaTaskManager.getCurrentTick());			
 		}else{
 			listeners.add(l);
 		}

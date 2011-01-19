@@ -53,13 +53,13 @@ public class StrategyDef {
 
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",
-					LidaTaskManager.getActualTick());
+					LidaTaskManager.getCurrentTick());
 		} catch (IllegalAccessException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",
-					LidaTaskManager.getActualTick());
+					LidaTaskManager.getCurrentTick());
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",
-					LidaTaskManager.getActualTick());
+					LidaTaskManager.getCurrentTick());
 		}
 		return st;
 	}

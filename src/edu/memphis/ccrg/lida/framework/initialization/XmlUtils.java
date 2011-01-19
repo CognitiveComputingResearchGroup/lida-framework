@@ -88,14 +88,14 @@ public class XmlUtils {
 					value=Integer.parseInt(sValue);
 					}catch(NumberFormatException e){
 						value=sValue;
-						logger.log(Level.FINE, e.toString(), LidaTaskManager.getActualTick());
+						logger.log(Level.FINE, e.toString(), LidaTaskManager.getCurrentTick());
 					}
 				}else if("double".equalsIgnoreCase(type)){
 					try{
 					value=Double.parseDouble(sValue);
 					}catch(NumberFormatException e){
 						value = sValue;
-						logger.log(Level.FINE, e.toString(), LidaTaskManager.getActualTick());
+						logger.log(Level.FINE, e.toString(), LidaTaskManager.getCurrentTick());
 					}
 				}else if("boolean".equalsIgnoreCase(type)){
 						value=Boolean.parseBoolean(sValue);

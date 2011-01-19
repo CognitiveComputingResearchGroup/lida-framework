@@ -25,7 +25,7 @@ public class SuccessorExciteStrategy extends StrategyImpl implements BehaviorExc
 						/ recipientBehavior.getUnsatisfiedContextCount();
 		recipientBehavior.excite(amount);
 		logger.log(Level.FINEST, sourceBehavior.getLabel() + " sends " + amount + 
-				" to " + recipientBehavior.getLabel(), LidaTaskManager.getActualTick());
+				" to " + recipientBehavior.getLabel(), LidaTaskManager.getCurrentTick());
 //		double amount = behavior.getActivation() * successorExcitationFactor
 //		/ successor.getUnsatisfiedContextCount();
 //successor.excite(amount);

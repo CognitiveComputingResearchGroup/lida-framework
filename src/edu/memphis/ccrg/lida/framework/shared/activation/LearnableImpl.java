@@ -50,13 +50,13 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
 				baseLevelExcitation -= baseLevelDecayRate * ticks;
 //				baseLevelExcitation = curveStrategy.getY(baseLevelExcitation);
 				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
 			}
-			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 		}		
 	}
 
@@ -87,13 +87,13 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
 		if (baseLevelExciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
 				baseLevelExcitation += amount;
 				//baseLevelActivation = curveStrategy.getY(baseLevelExcitation);
 				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
 			}
-			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getActualTick());
+			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 		}		
 	}
 

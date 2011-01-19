@@ -61,7 +61,7 @@ public class ExcitationTask extends LidaTaskImpl{
 		super();
 		this.pamLinkable = linkable;
 		this.excitationAmount = excitation;
-		this.setNumberOfTicksPerRun(ticksPerRun);
+		this.setTicksPerStep(ticksPerRun);
 		this.pam = pam;
 		this.taskSpawner = ts;
 	}
@@ -86,7 +86,7 @@ public class ExcitationTask extends LidaTaskImpl{
 				task = new AddToPerceptTask((PamLink) pamLinkable, pam);
 				taskSpawner.addTask(task);
 			}else{
-				logger.log(Level.WARNING, "pam linkable is not a PamNode or PamLink", LidaTaskManager.getActualTick());
+				logger.log(Level.WARNING, "pam linkable is not a PamNode or PamLink", LidaTaskManager.getCurrentTick());
 			}
 		}else if(pamLinkable instanceof PamNode){
 			//TODO what if its an instanceof PamLink?

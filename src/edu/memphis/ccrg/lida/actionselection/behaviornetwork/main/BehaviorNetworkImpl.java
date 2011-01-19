@@ -316,7 +316,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	@Override
 	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
-		logger.log(Level.FINE, "addes trigger " + tr.toString(), LidaTaskManager.getActualTick());
+		logger.log(Level.FINE, "addes trigger " + tr.toString(), LidaTaskManager.getCurrentTick());
 		actionSelectionTriggers.add(tr);
 	}
 
@@ -479,7 +479,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			
 			logger.log(Level.FINEST, behavior.toString() + " "
 					+ excitationAmount / behavior.getContextSize() + " for "
-					+ broadcastNode, LidaTaskManager.getActualTick());
+					+ broadcastNode, LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -503,7 +503,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	private void sendPreafference(Behavior winningBehavior) {
 		logger.log(Level.FINEST, "Sending preafference for "
-				+ winningBehavior.getLabel(), LidaTaskManager.getActualTick());
+				+ winningBehavior.getLabel(), LidaTaskManager.getCurrentTick());
 		for (PreafferenceListener l : preafferenceListeners)
 			l.receivePreafference(winningBehavior.getAddingList(),
 					winningBehavior.getDeletingList());
@@ -513,13 +513,13 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		candidateBehaviorThreshold = candidateThresholdReducer
 				.reduceActivationThreshold(candidateBehaviorThreshold);
 		logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to "
-				+ candidateBehaviorThreshold, LidaTaskManager.getActualTick());
+				+ candidateBehaviorThreshold, LidaTaskManager.getCurrentTick());
 	}
 
 	private void resetCandidateBehaviorThreshold() {
 		candidateBehaviorThreshold = INITIAL_CANDIDATE_BEHAVIOR_THRESHOLD;
 		logger.log(Level.FINEST, "Candidate behavior threshold RESET to  "
-				+ candidateBehaviorThreshold, LidaTaskManager.getActualTick());
+				+ candidateBehaviorThreshold, LidaTaskManager.getCurrentTick());
 	}
 
 	private void sendAction(long actionId) {
@@ -537,7 +537,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			behavior.decay(ticks);
 			if (behavior.getActivation() <= behaviorActivationLowerBound) {
 				logger.log(Level.FINER, "Removing behavior: "
-						+ behavior.getLabel(), LidaTaskManager.getActualTick());
+						+ behavior.getLabel(), LidaTaskManager.getCurrentTick());
 				removeBehavior(behavior);
 			}
 		}

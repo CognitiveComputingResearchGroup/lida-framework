@@ -144,7 +144,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		}else{
 			logger.log(Level.WARNING, "BN asked to update a context condition " + 
 						broadcastCondition.getLabel() + " but it wasn't in the context of behavior "
-						+ label, LidaTaskManager.getActualTick());
+						+ label, LidaTaskManager.getCurrentTick());
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		}else{
 			logger.log(Level.WARNING, "BN asked to update a result condition " + 
 						condition.getLabel() + " but it wasn't in the result list of behavior "
-						+ label, LidaTaskManager.getActualTick());
+						+ label, LidaTaskManager.getCurrentTick());
 		}
 	}
 

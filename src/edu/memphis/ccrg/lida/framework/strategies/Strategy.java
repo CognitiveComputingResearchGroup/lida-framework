@@ -15,6 +15,7 @@ import java.io.Serializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
+ * Generic designation for all types of strategies such as decay, excite, etc.
  * @author Javier Snaider
  */
 public interface Strategy extends Initializable, Serializable {

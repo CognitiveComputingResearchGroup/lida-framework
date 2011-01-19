@@ -213,7 +213,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		public BackgroundTask() {
 			super();
 			// TODO: make a parameter
-			setNumberOfTicksPerRun(1);
+			setTicksPerStep(1);
 		}
 
 		@Override

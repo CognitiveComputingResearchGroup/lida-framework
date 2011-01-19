@@ -12,33 +12,28 @@ import java.util.Collection;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
- * TaskSpawners create, manage, and end new LidaTasks.  
+ * TaskSpawners create, manage, and end LidaTasks.  
  * 
  * @author Ryan J McCall
- *
  */
-public interface TaskSpawner extends Initializable{
-
+public interface TaskSpawner extends Initializable {
+	
 	/**
-	 * Gets the number of Tasks in this Spawner
-	 * @return number of tasks spawned
+	 * Set the LidaTaskManager this TaskSpawner will use to actually run the tasks
+	 * @param taskManager task manager
 	 */
-	public int getSpawnedTaskCount();
+	public void setTaskManager(LidaTaskManager taskManager);
+	
 	/**
-	 * Adds a new LidaTask to this Spawner.
+	 * Adds and runs supplied LidaTask.
 	 * @param task the task to add.
 	 */
 	public void addTask(LidaTask task);
+
 	/**
-	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
-	 * @return collection
+	 * Adds and runs supplied LidaTasks.
 	 */
-	public Collection<LidaTask> getSpawnedTasks();
-	
-	/**
-	 * The supplied LidaTask will be start by the spawner right away.
-	 */
-	public void setInitialTasks(Collection<? extends LidaTask> initialTasks);
+	public void addTasks(Collection<? extends LidaTask> initialTasks);
 		
 	/**
 	 * This method receives the tasks that have finished. Each TaskSpawner can choose what to do 
@@ -56,16 +51,11 @@ public interface TaskSpawner extends Initializable{
 	 * @param task The task to cancel.
 	 */
 	public void cancelTask(LidaTask task);
-
-	/**
-	 * Returns the task manager for the taskspawner
-	 * @return LidaTaskManager
-	 */
-	public LidaTaskManager getTaskManager();
 	
 	/**
-	 * Set the LidaTaskManager this TaskSpawner will use to actually run the tasks
-	 * @param taskManager task manager
+	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
+	 * @return collection
 	 */
-	public void setTaskManager(LidaTaskManager taskManager);
+	public Collection<LidaTask> getRunningTasks();
+	
 }

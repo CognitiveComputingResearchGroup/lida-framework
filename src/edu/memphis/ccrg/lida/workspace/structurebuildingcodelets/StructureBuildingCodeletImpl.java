@@ -74,20 +74,20 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		logger.finest("SB codelet " + this.toString() + " finishes one run.");
 	}
 	
-	/**
-	 * Clears this codelet's fields in preparation for reuse. 
-	 * Idea is that the same codelet object is reconfigured at runtime
-	 * after it finishes to be run as a different altogether codelet. 
-	 */
-	@Override
-	public void reset() {
-		accessibleModules.clear();
-		setNumberOfTicksPerRun(50);
-		setActivation(0.0);
-		soughtContent = new NodeStructureImpl();
-		action = new BasicCodeletAction();
-		type = 0;		
-	}
+//	/**
+//	 * Clears this codelet's fields in preparation for reuse. 
+//	 * Idea is that the same codelet object is reconfigured at runtime
+//	 * after it finishes to be run as a different altogether codelet. 
+//	 */
+//	@Override
+//	public void reset() {
+//		accessibleModules.clear();
+//		setTicksPerStep(50);
+//		setActivation(0.0);
+//		soughtContent = new NodeStructureImpl();
+//		action = new BasicCodeletAction();
+//		type = 0;		
+//	}
 	
 	@Override
 	public void setSoughtContent(NodeStructure content){

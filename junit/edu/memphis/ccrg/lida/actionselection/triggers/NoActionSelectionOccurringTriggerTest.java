@@ -123,7 +123,7 @@ public class NoActionSelectionOccurringTriggerTest {
 		trigger.setUp(parameters, as);
 		
 		trigger.start();
-		tm.resumeSpawnedTasks();
+		tm.resumeTasks();
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {			
@@ -146,7 +146,7 @@ public class NoActionSelectionOccurringTriggerTest {
 		
 		System.out.println("First trigger started with delay of 15 ticks.");
 		trigger.start();		
-		tm.resumeSpawnedTasks();
+		tm.resumeTasks();
 		
 		/*try {
 			Thread.sleep(1000);
