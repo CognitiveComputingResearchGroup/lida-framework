@@ -57,9 +57,10 @@ public class LoggingPanel extends LidaPanelImpl {
         List<String> names = new ArrayList<String>();
         while (el.hasMoreElements()) {
             String logN = el.nextElement();
-            if (logN.length() >= 4 && "lida".equals(logN.substring(0, 4))) {
+            //TODO filter out 'sun.', 'javax.' and 'java.' packages
+ //           if (logN.length() >= 4 && "lida".equals(logN.substring(0, 4))) {
                 names.add(logN);
-            }
+ //           }
         }
         Collections.sort(names);
         for (String n:names){
