@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * Utility to capture the screen. 
  * Drawbacks: Does not capture the mouse cursor.  However mouse coordinates can be obtained from MouseInfo
- * 
+ *  
  * @author Ryan J McCall
  */
 public class ScreenCaptureUtility{

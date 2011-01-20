@@ -101,14 +101,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);
-//		for (Linkable nodeOrLink : scheme.getContext().getLinkables()) {
-//			Set<Scheme> existingSchemes = contextSchemeMap.get(nodeOrLink);
-//			if (existingSchemes == null) {
-//				existingSchemes = new HashSet<Scheme>();
-//				contextSchemeMap.put(nodeOrLink, existingSchemes);
-//			}
-//			existingSchemes.add(scheme);
-//		}
 		indexSchemeByElements(scheme, scheme.getContext().getLinkables(), contextSchemeMap);
 		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
 		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
@@ -151,9 +143,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		}
 		@Override
 		protected void runThisLidaTask() {
-			activateSchemes(broadcast);
-			//new task for this
-			learn((BroadcastContent) broadcast);
+			activateSchemes(broadcast);			
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}	
 	}
