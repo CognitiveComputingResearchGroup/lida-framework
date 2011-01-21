@@ -97,12 +97,11 @@ public abstract class LidaModuleImpl implements LidaModule {
 	}
 
 	/**
-	 * Framework users should not call this method. It will be called by the task manager.
-	 * Decays this module and all its submodules. Subclasses overriding this method should
-	 *  call this implementation in order to have all submodules decayed.
+	 * Framework users should not call this method. It will be called by the LidaTaskManager.
+	 * Decays this module and all its submodules. Subclasses overriding this method must
+	 * call this method first in order to have all submodules decayed.
 	 * 
-	 * @param ticks
-	 *            number of ticks to decay.
+	 * @param ticks number of ticks to decay.
 	 */
 	@Override
 	public void decayModule(long ticks) {

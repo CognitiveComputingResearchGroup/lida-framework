@@ -93,5 +93,11 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	@Override
 	public void init() {
 	}
+	
+	@Override
+	public void decayModule(long ticks){
+		super.decayModule(ticks);
+		//TODO 
+	}
 
 }

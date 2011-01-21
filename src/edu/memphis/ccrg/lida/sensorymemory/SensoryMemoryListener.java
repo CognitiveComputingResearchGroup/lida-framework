@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
  * Listener of {@link SensoryMemory}
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface SensoryMemoryListener extends ModuleListener{

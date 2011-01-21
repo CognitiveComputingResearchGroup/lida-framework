@@ -13,7 +13,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 /**
  *
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public class MatbPanel extends javax.swing.JPanel {
 

@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.transientepisodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener;
 
 /**
- * This is the cannonical implementation of TEM. It uses a sparse distributed
+ * This is the canonical implementation of TEM. It uses a sparse distributed
  * memory to store the information.
  * @author Javier Snaider
  */
@@ -142,6 +142,12 @@ public class TemImpl extends LidaModuleImpl implements TransientEpisodicMemory, 
 
 	public int getAddressLength() {
 		return addressLength;
+	}
+	
+	@Override
+	public void decayModule(long ticks){
+		super.decayModule(ticks);
+		//TODO 
 	}
 
         @Override

@@ -98,5 +98,10 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void decayModule(long ticks) {
+		//TODO 
+	}
 
 }// class
