@@ -78,4 +78,4 @@ public class StreamImpl implements Stream{
         return name;
     }
 	
-}//class
+}

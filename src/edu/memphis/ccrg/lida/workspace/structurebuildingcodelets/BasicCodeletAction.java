@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class BasicCodeletAction implements CodeletAction {
@@ -27,4 +27,4 @@ public class BasicCodeletAction implements CodeletAction {
 		csmContent.mergeWith(bufferContent);
 	} 
 
-}//class
+}

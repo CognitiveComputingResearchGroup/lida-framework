@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  *
  * @author Rodrigo Silva L.
  */
+//TODO not being used
 public interface TransientEpisodicMemoryListener extends ModuleListener{
 
     /**

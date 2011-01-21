@@ -8,18 +8,21 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet;
 
 /**
- * This interface defines how codelets can access data from Workspace sub modules.
- * Modules that need to be accessible to codelets should implement this interface.
+ * A submodule of the Workspace.  Managed by {@link WorkspaceImpl}.  
+ * {@link StructureBuildingCodelet} read and write from them.
  * 
  * @author Ryan J McCall, Javier Snaider
- *
  */
 public interface WorkspaceBuffer extends LidaModule{
 	
 	/**
-	 * Lower bound for a node or link to remain in the buffer
+	 * Sets lowerActivationBound
+	 * @param lowerActivationBound lower bound for the amount of activation
+	 * a node or link must have to remain in the buffer.
 	 */
 	public void setLowerActivationBound (double lowerActivationBound);
 }

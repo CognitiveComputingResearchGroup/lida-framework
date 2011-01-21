@@ -38,7 +38,7 @@ public class DefaultExciteStrategyTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy#excite(double, double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy#excite(double, double, Object...)}.
 	 */
 	@Test
 	public void testExcite() {

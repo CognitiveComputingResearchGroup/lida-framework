@@ -238,6 +238,6 @@ public class PropertiesPanel extends LidaPanelImpl {
 		if (o instanceof Properties)
 			properties = (Properties) o;
 
-	}//method
+	}
 
 }

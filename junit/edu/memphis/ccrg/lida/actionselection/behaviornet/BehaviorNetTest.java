@@ -42,7 +42,7 @@ public class BehaviorNetTest extends TestCase{
 //		//
 //		assertEquals("nothingA4", a.getConflictorCount(), 0);
 //		assertEquals("nothingB4", b.getConflictorCount(), 0);
-//	}//method
+//	}
 //	
 //	public Node gimmeNode(String label){
 //		return factory.getNode("NodeImpl", label);
@@ -77,7 +77,7 @@ public class BehaviorNetTest extends TestCase{
 //		assertEquals("appleC4", a.getConflictors(apple).remove(b), true);
 //		assertEquals("appleB4", b.getConflictorCount(), 0);
 //		
-//	}//method
+//	}
 //	
 //	@Test
 //	public void test3(){
@@ -109,7 +109,7 @@ public class BehaviorNetTest extends TestCase{
 //		assertEquals("bananaA4", a.getConflictorCount(), 0);
 //		assertEquals("bananaB4", b.getConflictorCount(), 0);
 //		
-//	}//method
+//	}
 //	
 //	@Test
 //	public void test4(){
@@ -144,6 +144,6 @@ public class BehaviorNetTest extends TestCase{
 //		assertEquals("bananaA4", a.getConflictorCount(), 0);
 //		assertEquals("bananaB4", b.getConflictorCount(), 0);
 //		
-//	}//method
+//	}
 
-}//class
+}

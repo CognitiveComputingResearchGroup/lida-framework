@@ -9,12 +9,24 @@ package edu.memphis.ccrg.lida.sensorymemory;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
-public interface SensoryMemory extends LidaModule, SensoryMotorListener, Saveable {
+/**
+ * Module which senses the environment, stores that data and begins processing it.
+ * @author ryanjmccall
+ */
+//TODO move SensoryMotorMemoryListener to implementation?
+public interface SensoryMemory extends LidaModule, SensoryMotorMemoryListener, Saveable {
 
+	/**
+	 * Module should sense the environment.. 
+	 */
 	public void runSensors();
 	
+	/**
+	 * Add {@link SensoryMemoryListener}
+	 * @param l Listener
+	 */
 	public void addSensoryMemoryListener(SensoryMemoryListener l);
 
 }

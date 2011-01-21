@@ -8,9 +8,19 @@
 package edu.memphis.ccrg.lida.transientepisodicmemory;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
+/**
+ * Listens to cues from the {@link Workspace}
+ * @author Ryan J. McCall
+ *
+ */
 public interface CueListener {
 	
+	/**
+	 * Receive a cue
+	 * @param cue NodeStructure to recall
+	 */
 	public void receiveCue(NodeStructure cue);
 
 }

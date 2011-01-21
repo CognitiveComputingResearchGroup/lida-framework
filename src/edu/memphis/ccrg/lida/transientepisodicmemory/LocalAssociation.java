@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * memory.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */
+//TODO Remove
 public interface LocalAssociation {
 
     /**

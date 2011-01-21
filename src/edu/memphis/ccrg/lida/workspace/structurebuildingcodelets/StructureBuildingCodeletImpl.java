@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
@@ -149,4 +148,4 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		
 	}
 	
-}//class 
+} 

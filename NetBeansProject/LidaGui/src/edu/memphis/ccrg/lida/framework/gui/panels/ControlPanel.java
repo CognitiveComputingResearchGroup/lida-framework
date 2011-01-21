@@ -300,4 +300,4 @@ public class ControlPanel extends LidaPanelImpl implements FrameworkGuiEventList
     }
     
     
-}//class
+}

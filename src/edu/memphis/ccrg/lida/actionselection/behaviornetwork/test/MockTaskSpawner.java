@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * @author UofM
+ * @author Javier Snaider, Ryan J. McCall
  *
  */
 public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {

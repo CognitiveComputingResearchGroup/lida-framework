@@ -50,7 +50,7 @@ public class PamNodeImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#synchronize()}.
+	 * Test method for 
 	 */
 	@Test
 	public void testSynchronize() {
@@ -73,7 +73,7 @@ public class PamNodeImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#isOverThreshold()}.
+	 * Test method for 
 	 */
 	@Test
 	public void testIsOverThreshold() {
@@ -99,7 +99,7 @@ public class PamNodeImplTest extends TestCase{
 //	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#setValue(java.util.Map)}.
+	 * Test method for 
 	 */
 	@Test
 	public void testSetValue() {
@@ -125,7 +125,7 @@ public class PamNodeImplTest extends TestCase{
 //	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#getBaselevelActivation()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#getBaseLevelActivation()}
 	 */
 	@Test
 	public void testGetBaselevelActivation() {
@@ -136,7 +136,7 @@ public class PamNodeImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#setBaselevelActivation(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#setBaseLevelActivation(double)}
 	 */
 	@Test
 	public void testSetBaselevelActivation() {
@@ -179,7 +179,7 @@ public class PamNodeImplTest extends TestCase{
 //	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#printActivationString()}.
+	 * Test method for 
 	 */
 	@Test
 	public void testPrintActivationString() {

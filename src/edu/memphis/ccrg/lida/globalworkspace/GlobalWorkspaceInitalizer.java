@@ -32,7 +32,7 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 	private static final Double DEFAULT_INDIVIDUAL_ACT_THRESHOLD = 0.5;
 
 	public GlobalWorkspaceInitalizer() {
-	}//method
+	}
 
 	@Override
 	public void initModule(Initializable module,Lida lida, Map<String, ?> params){		
@@ -92,4 +92,4 @@ public class GlobalWorkspaceInitalizer implements Initializer{
 		globalWksp.addBroadcastTrigger(tr);
 		}
 
-}//class
+}

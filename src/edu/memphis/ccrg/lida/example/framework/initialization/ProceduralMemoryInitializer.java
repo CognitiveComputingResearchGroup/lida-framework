@@ -76,5 +76,5 @@ public class ProceduralMemoryInitializer implements Initializer {
 			logger.log(Level.INFO, "Random Schemes Loaded");
 
 		}//for
-	}//method
+	}
 }

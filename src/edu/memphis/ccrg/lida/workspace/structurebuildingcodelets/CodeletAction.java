@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 /**
  * An encapsulation of the action of a codelet.
  *
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface CodeletAction {

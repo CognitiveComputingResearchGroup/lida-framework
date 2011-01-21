@@ -147,4 +147,4 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return value;
 	}
 
-}//class
+}

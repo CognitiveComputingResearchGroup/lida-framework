@@ -9,8 +9,13 @@ package edu.memphis.ccrg.lida.sensorymotormemory;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
-public interface SensoryMotorListener extends ModuleListener{
+/**
+ * Listener of {@link SensoryMotorMemory}
+ * @author Ryan J. McCall
+ */
+public interface SensoryMotorMemoryListener extends ModuleListener{
 	
+	//TODO Discuss
 	public void receiveExecutingAlgorithm(Object algorithm);
 
 }

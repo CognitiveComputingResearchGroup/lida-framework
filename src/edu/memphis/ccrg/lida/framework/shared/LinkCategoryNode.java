@@ -6,7 +6,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * @author Javier Snaider and Ryan McCall
+ * @author Javier Snaider and Ryan J. McCall
  *
  */
 public class LinkCategoryNode extends PamNodeImpl implements LinkCategory {

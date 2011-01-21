@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * from there. The generic method getContent(String type,Object... parameters) 
  * of SensoryMemory can be used too.  
  * 
- * @author Ryan McCall - Javier Snaider
+ * @author Ryan J. McCall - Javier Snaider
  *
  */
 public class BasicDetector extends FeatureDetectorImpl {
@@ -32,11 +32,11 @@ public class BasicDetector extends FeatureDetectorImpl {
 	@Override
 	public double detect() {
 		return (Math.random())<.03?Math.random():0.0;
-	}//method
+	}
 	
 	@Override
 	public String toString(){
 		return "BasicDetector " + getTaskId();
 	}
  
-}//class
+}

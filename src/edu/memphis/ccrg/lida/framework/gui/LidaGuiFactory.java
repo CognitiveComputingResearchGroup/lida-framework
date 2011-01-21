@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
  * Lida instance and a Properties.
  * Creates a MVC for LIDA
  * 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class LidaGuiFactory {
@@ -48,6 +48,6 @@ public class LidaGuiFactory {
 	        }//run
 		});//invokeLater
 		
-	}//method
+	}
 
-}//class
+}

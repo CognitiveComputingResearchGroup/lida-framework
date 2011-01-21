@@ -213,6 +213,6 @@ public class TaskManagerPanel extends LidaPanelImpl {
 			taskArray = tasks.toArray(new LidaTask[0]);
 			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
-	}//method
+	}
 
-}//class
+}

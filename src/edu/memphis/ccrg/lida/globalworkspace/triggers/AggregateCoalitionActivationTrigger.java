@@ -44,7 +44,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 			//System.out.println("aggregate ");
 			gw.triggerBroadcast();
 		}
-	}//method
+	}
 
 	@Override
 	public void reset() {
@@ -58,11 +58,11 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		if ((o != null)&& (o instanceof Double)) {
 			threshold= (Double)o;
 		}
-	}//method
+	}
 
 	@Override
 	public void start() {
 		// not applicable
 	}
 
-}//class
+}

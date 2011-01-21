@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  * An Initializable module will be initialized automatically by the LidaXmlFactory
  * 
  * @see LidaXmlFactory
- * @author ryanjmccall, Javier Snaider
+ * @author Ryan J. McCall, Javier Snaider
  *
  */
 public interface FullyInitializable extends Initializable {

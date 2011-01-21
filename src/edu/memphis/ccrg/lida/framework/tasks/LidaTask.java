@@ -41,7 +41,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public LidaTaskStatus getStatus();
 	
 	/**
-	 * Sets the task status. Intended to be called by {@link #runThisLidaTask()} 
+	 * Sets the task status. Intended to be called by runThisLidaTask() 
 	 * Cannot use this method to cancel the task, instead use {@link #stopRunning()} to 
 	 * cancel the task.       
 	 * @param status the new task status 

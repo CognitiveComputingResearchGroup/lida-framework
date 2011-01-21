@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * Nodes with the same id represents the same concept so equals have to return true even if the objects are
  * of different classes.
  * 
- * @author Javier Snaider, Ryan McCall
+ * @author Javier Snaider, Ryan J. McCall
  * 
  */
 public interface Node extends Linkable, Activatible, Serializable {
@@ -69,5 +69,5 @@ public interface Node extends Linkable, Activatible, Serializable {
 	 */
 	public void setDesirability(double degree);
 
-}//interface
+}
 

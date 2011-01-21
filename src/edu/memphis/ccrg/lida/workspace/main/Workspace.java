@@ -12,12 +12,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 
 /**
- * The workspace collection of submodules where episodic memories, recent contents
- * of conscious, and the current situational model is stored.  A workspace should be
- * interfaceable with codelets which operate on the contents of these submodules.  
+ * The workspace collection of submodules where Cues from episodic memories, the recent contents
+ * of conscious, the perceptual buffer, and the current situational model are stored. 
+ * A workspace should be interfaceable with codelets whose job is to
+ *  operate on the contents of these submodules.  
  * 
- * @author ryanjmccall
- *
+ * @author Ryan J. McCall
  */
 public interface Workspace extends LidaModule{
 
@@ -28,12 +28,22 @@ public interface Workspace extends LidaModule{
 	public void addCueListener(CueListener l);
 	
 	/**
-	 * Add pam that will listen for episodic memories to ground in PAM.
-	 * @param listener listener
+	 * Adds specified {@link WorkspaceListener}
+	 * @param l listener of this Workspace
 	 */
-	public void addWorkspaceListener(WorkspaceListener listener);
+	public void addWorkspaceListener(WorkspaceListener l);
 
-	public void cueEpisodicMemories(NodeStructure content);
+	/**
+	 * Prompts this Workspace to cue episodic memories with content.
+	 * 
+	 * @param ns NodeStructure to cue with.
+	 */
+	public void cueEpisodicMemories(NodeStructure ns);
 	
+	/**
+	 * Sets lowerActivationBound
+	 * @param lowerBound lower bound for the amount of activation
+	 * a node or link must have to remain in Workspace buffer.
+	 */
 	public void setActivationLowerBound(double lowerBound);
 }

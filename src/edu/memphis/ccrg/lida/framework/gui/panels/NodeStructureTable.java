@@ -35,7 +35,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  *
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public class NodeStructureTable extends LidaPanelImpl {
 

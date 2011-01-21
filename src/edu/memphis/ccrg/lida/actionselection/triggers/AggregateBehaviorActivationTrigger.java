@@ -38,7 +38,7 @@ public class AggregateBehaviorActivationTrigger implements
 			//System.out.println("aggregate ");
 			as.triggerActionSelection();
 		}
-	}//method
+	}
 
 	@Override
 	public void reset() {
@@ -61,4 +61,4 @@ public class AggregateBehaviorActivationTrigger implements
 		
 	}
 
-}//class
+}

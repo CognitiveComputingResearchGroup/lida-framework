@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
  * A strategy for choosing which behavior to execute
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface Selector {

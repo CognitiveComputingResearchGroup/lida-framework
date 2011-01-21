@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
  * An initializer performs configuration and set up on a particular module.  
- * @author Ryan McCall
+ * @author Ryan J. McCall
  *
  */
 public interface Initializer {

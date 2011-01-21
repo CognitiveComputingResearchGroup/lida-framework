@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * The BroadcastQueue is the data structure storing the recent contents of consciousness.
- * It is a part of the Workspace.
+ * It is a submodule of the Workspace.
  * 
  * @author Ryan J McCall
  *

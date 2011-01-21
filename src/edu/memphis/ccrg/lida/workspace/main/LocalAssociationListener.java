@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * A listener of local associations must be able to receive a NodeStructure association.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface LocalAssociationListener extends ModuleListener{

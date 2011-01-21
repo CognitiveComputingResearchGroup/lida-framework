@@ -19,9 +19,10 @@ public class WSBackgroundTask extends LidaTaskImpl {
 
 	private static final double DEFAULT_ACT_THRESHOLD = 0.4;
 	private Workspace workspace;
+	//TODO Remove this parameter.  Too much.
 	private double actThreshold;
-	private int cueLap;
-	private int cueLapCounter;
+	private int cueFrequency;
+	private int cueFrequencyCounter;
 
 	/*
 	 * (non-Javadoc)
@@ -44,20 +45,21 @@ public class WSBackgroundTask extends LidaTaskImpl {
 	}
 
 	private void cue() {
-		if (cueLapCounter++ >= cueLap) {
-			cueLapCounter = 0;
-			WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
+		if (cueFrequencyCounter++ >= cueFrequency) {
+			cueFrequencyCounter = 0;
+			WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace
 					.getSubmodule(ModuleName.PerceptualBuffer);
-			NodeStructure ns = (NodeStructure) percepBuff.getModuleContent();
-			NodeStructure cueNs = new NodeStructureImpl();
+			NodeStructure ns = (NodeStructure) perceptualBuffer.getModuleContent();
+			NodeStructure cueNodeStrucutre = new NodeStructureImpl();
 
+			//TODO What about adding the links?
 			for (Node n : ns.getNodes()) {
 				if (n.getActivation() >= actThreshold) {
-					cueNs.addNode(n);
+					cueNodeStrucutre.addNode(n);
 				}
 			}
-			if (cueNs.getNodeCount() > 0) {
-				workspace.cueEpisodicMemories(cueNs);
+			if (cueNodeStrucutre.getNodeCount() > 0) {
+				workspace.cueEpisodicMemories(cueNodeStrucutre);
 			}
 		}
 	}
@@ -66,7 +68,7 @@ public class WSBackgroundTask extends LidaTaskImpl {
 	public void init() {
 		actThreshold = (Double) getParam("workspace.actThreshold",
 				DEFAULT_ACT_THRESHOLD);
-		cueLap = (Integer) getParam("workspace.cueLap", 1);
+		cueFrequency = (Integer) getParam("workspace.cueFrequency", 1);
 	}
 
 	@Override

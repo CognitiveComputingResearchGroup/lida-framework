@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 
 /**
  * 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface Stream extends Serializable {

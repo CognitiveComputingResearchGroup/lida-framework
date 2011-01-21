@@ -20,7 +20,7 @@ package oldGuis;
 
 /**
  *
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public class WWenvironment extends javax.swing.JFrame {
 

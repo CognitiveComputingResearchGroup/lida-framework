@@ -37,7 +37,7 @@ public class Serializer{
 		//Print results
 		for(Object o: res)
 			System.out.println(o.toString());
-	}//method
+	}
 	
 	/**
 	 * @param objectList - Objects to be serialized to xml
@@ -63,7 +63,7 @@ public class Serializer{
 			}//for
 	        out.close();
 	    }catch(Exception e){}
-	}//method
+	}
 
 	/**
 	 * Deserializes an xml file and returns the objects in a list. 
@@ -93,6 +93,6 @@ public class Serializer{
 			e.printStackTrace();
 		}
 		return result;
-	}//method
+	}
 
-}//class
+}

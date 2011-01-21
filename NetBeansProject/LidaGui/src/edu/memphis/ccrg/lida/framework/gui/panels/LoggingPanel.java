@@ -263,5 +263,5 @@ public class LoggingPanel extends LidaPanelImpl {
             //logMessages = null;
         }
     }//inner class
-}//class
+}
 

@@ -98,8 +98,8 @@ public class Lida {
 //	}
 //
 //	private void initListeners() {
-//		if (sensoryMemory instanceof SensoryMotorListener)
-//			sensoryMotorMemory.addSensoryMotorListener((SensoryMotorListener) sensoryMemory);
+//		if (sensoryMemory instanceof SensoryMotorMemoryListener)
+//			sensoryMotorMemory.addSensoryMotorMemoryListener((SensoryMotorMemoryListener) sensoryMemory);
 //		else
 //			logger.warning("Cannot add SM as a listener");
 //

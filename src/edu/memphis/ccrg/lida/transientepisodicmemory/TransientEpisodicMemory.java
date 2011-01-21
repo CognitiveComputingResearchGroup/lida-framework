@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  */
 public interface TransientEpisodicMemory extends LidaModule, Saveable {
     
+	//TODO remove
     /**
      * Cues this episodic memory. Typically the cue would be a set of nodes, and
      * in the future links.

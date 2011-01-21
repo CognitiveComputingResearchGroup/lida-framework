@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 
 /**
  * An excite strategy for behaviors in the behavior network.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public interface BehaviorExciteStrategy extends Strategy{
 	

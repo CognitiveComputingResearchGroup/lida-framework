@@ -85,4 +85,4 @@ public interface Behavior extends Activatible {
     public Set<Stream> getContainingStreams();
     public void removeContainingStream(Stream stream);
 	
-}//method
+}

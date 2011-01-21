@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 /**
  * Encapsulation of an action to be executed.
  * 
- * @author Ryan McCall, Javier Snaider
+ * @author Ryan J. McCall, Javier Snaider
  * 
  */
 public interface LidaAction extends Serializable {

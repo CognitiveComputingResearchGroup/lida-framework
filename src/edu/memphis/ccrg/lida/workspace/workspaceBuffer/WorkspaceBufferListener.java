@@ -11,12 +11,12 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
 
+//TODO not used, remove.
 /**
  * A WorkspaceBuffer listener must receive buffer content.
  * The WorkspaceImpl class is an example of a WorkspaceBufferListener
  * 
  * @author Ryan J McCall
- *
  */
 public interface WorkspaceBufferListener extends ModuleListener{
 

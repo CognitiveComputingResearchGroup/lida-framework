@@ -31,7 +31,7 @@ public class ActionSelectionInitalizer implements Initializer{
 	private static final Double DEFAULT_INDIVIDUAL_ACT_THRESHOLD = 0.5;
 
 	public ActionSelectionInitalizer() {
-	}//method
+	}
 
 	@Override
 	public void initModule(Initializable module,Lida lida, Map<String, ?> params){		
@@ -91,4 +91,4 @@ public class ActionSelectionInitalizer implements Initializer{
 		actionSelection.addActionSelectionTrigger(tr);
 		}
 
-}//class
+}

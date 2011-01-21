@@ -20,7 +20,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 /**
  *
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public class ThreadPanel extends javax.swing.JPanel {
 

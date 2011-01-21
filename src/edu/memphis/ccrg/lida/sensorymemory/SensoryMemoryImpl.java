@@ -53,6 +53,7 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
 		//What to do here is a research question.
 	}
 
+	//TODO what is this set state garbage? can we delete it all?
 	@Override
 	public boolean setState(Object state) {
         try {

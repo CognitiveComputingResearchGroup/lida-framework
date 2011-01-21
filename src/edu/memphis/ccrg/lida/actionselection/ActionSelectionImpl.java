@@ -277,4 +277,4 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 			
 		}
 
-}//class
+}

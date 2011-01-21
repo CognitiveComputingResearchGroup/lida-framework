@@ -94,4 +94,4 @@ public interface Scheme extends Learnable{
 	 */
 	public Behavior getBehavior();
 	
-}//interface
+}

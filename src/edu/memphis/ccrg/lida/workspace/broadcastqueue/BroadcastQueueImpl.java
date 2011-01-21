@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -39,18 +38,30 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	private static final Logger logger = Logger.getLogger(BroadcastQueueImpl.class.getCanonicalName());
 
 	private Queue<NodeStructure> broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
-	private volatile int broadcastQueueCapacity;
+	
 	private double lowerActivationBound;
+	
+	private int broadcastQueueCapacity;
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 
-	public BroadcastQueueImpl(int capacity) {
+	public BroadcastQueueImpl() {
 		super(ModuleName.BroadcastQueue);
-		broadcastQueueCapacity = capacity;
+		broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
 		broadcastQueue.add(new NodeStructureImpl());
 	}
+	
+	@Override
+	public void setLowerActivationBound(double lowerActivationBound) {
+		this.lowerActivationBound = lowerActivationBound;
+	}
 
-	public BroadcastQueueImpl() {
-		this(DEFAULT_QUEUE_CAPACITY);
+	@Override
+	public void addListener(ModuleListener listener) {
+	}
+
+	@Override
+	public void init() {
+		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
 	}
 	
 	private class ProcessBroadcastTask extends LidaTaskImpl{		
@@ -83,32 +94,9 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 		// Not applicable
 	}
 
-	public Collection<NodeStructure> getModuleContentCollection() {
-		return Collections.unmodifiableCollection(broadcastQueue);
-	}
-
-	public boolean addLink(Link l) {
-		return false;
-	}
-
-	public boolean addNode(Node n) {
-		return false;
-	}
-
-	public boolean deleteLink(Link l) {
-		return false;
-	}
-
-	public boolean deleteNode(Node n) {
-		return false;
-	}
-
 	@Override
 	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableCollection(broadcastQueue);
-	}
-
-	public void mergeIn(NodeStructure ns) {
 	}
 
 	@Override
@@ -126,17 +114,4 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 		}
 	}
 
-	@Override
-	public void setLowerActivationBound(double lowerActivationBound) {
-		this.lowerActivationBound = lowerActivationBound;
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
-	}
-
-	@Override
-	public void init() {
-		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
-	}
 }// class

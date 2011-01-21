@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * A behavior that calculates a new activation to pass.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface PropagationBehavior {

@@ -37,4 +37,4 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 		return (BroadcastContent) struct;
 	}
 	
-}//class
+}

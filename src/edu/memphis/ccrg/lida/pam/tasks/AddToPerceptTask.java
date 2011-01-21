@@ -59,5 +59,5 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		return "AddToPerceptTask " + getTaskId();
 	}
 
-}//class
+}
 

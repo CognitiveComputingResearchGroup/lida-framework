@@ -32,6 +32,6 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 				break;
 			}
 		}
-	}//method
+	}
 
-}//class
+}

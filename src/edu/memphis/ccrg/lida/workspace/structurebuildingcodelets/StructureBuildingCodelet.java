@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * which, when found, triggers its action producing its result.  
  * Has workspace buffers it can access.
  * 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface StructureBuildingCodelet extends Codelet{
@@ -38,4 +38,4 @@ public interface StructureBuildingCodelet extends Codelet{
 	  */
 	 public int getType();
 
-}//interface
+}

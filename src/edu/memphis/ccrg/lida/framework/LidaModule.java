@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 /**
  * General Module Interface in LIDA.
  * 
- * @author Javier Snaider, Ryan McCall
+ * @author Javier Snaider, Ryan J. McCall
  *
  */
 public interface LidaModule extends FullyInitializable{

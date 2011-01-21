@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 /**
  * A link connects two Linkable objects. 
  * 
- * @author Javier Snaider, Ryan McCall
+ * @author Javier Snaider, Ryan J. McCall
  */
 public interface Link extends Linkable, Activatible{
 	

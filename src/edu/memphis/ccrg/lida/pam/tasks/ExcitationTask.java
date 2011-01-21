@@ -94,7 +94,7 @@ public class ExcitationTask extends LidaTaskImpl{
 		}
 		
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
-	}//method
+	}
 
 	/**
 	 * 
@@ -104,4 +104,4 @@ public class ExcitationTask extends LidaTaskImpl{
 		return "Excitation " + getTaskId();
 	}
 
-}//class
+}

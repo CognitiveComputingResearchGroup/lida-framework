@@ -166,4 +166,4 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		baseLevelExcitation = excitation;
 	}
 	
-}//class
+}

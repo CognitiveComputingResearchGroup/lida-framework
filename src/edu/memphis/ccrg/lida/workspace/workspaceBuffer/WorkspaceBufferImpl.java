@@ -60,15 +60,20 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 
 	@Override
 	public void setLowerActivationBound(double activationLowerBound) {
-		this.activationLowerBound = activationLowerBound;		
+		if(activationLowerBound < 0){
+			logger.log(Level.WARNING, "Lower bound must be non-negative.  Parameter not set.", 
+					LidaTaskManager.getCurrentTick());
+		}else{
+			this.activationLowerBound = activationLowerBound;
+		}
 	}
+	
 	@Override
 	public void addListener(ModuleListener listener) {
+		//N/A
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-		
 	}
 }

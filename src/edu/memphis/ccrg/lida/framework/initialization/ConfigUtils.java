@@ -36,4 +36,4 @@ public class ConfigUtils {
 			}
 		return properties;
 	}
-}//class
+}

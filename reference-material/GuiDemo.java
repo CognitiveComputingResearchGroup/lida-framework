@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  
 /**
  * Basic Gui test for reference.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class GuiDemo extends JFrame implements ActionListener{
@@ -89,4 +89,4 @@ public class GuiDemo extends JFrame implements ActionListener{
 		}
 	}
    
-}//class GuiTest
+} GuiTest

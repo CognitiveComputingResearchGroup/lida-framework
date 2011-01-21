@@ -212,6 +212,6 @@ public class LidaTaskPanel extends LidaPanelImpl {
 
 			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
-	}//method
+	}
 
-}//class
+}

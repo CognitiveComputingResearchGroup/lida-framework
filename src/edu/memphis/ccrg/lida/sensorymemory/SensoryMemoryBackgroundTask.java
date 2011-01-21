@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
  * @author Javier Snaider
  * 
  */
-public class SMBackgroundTask extends LidaTaskImpl {
+public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 
 	private SensoryMemory sm;
 
@@ -32,6 +32,6 @@ public class SMBackgroundTask extends LidaTaskImpl {
 	}
 	
 	public String toString(){
-		return SMBackgroundTask.class.getSimpleName() + " background task";
+		return SensoryMemoryBackgroundTask.class.getSimpleName() + " background task";
 	}
 }

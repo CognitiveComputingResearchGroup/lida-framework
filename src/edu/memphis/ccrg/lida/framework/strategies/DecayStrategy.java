@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * A strategy pattern for decaying Activatibles or Learnables 
  *  
- * @author Javier Snaider, Ryan McCall
+ * @author Javier Snaider, Ryan J. McCall
  */
 public interface DecayStrategy extends Strategy{
 

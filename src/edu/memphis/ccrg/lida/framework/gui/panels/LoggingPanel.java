@@ -276,4 +276,4 @@ public class LoggingPanel extends LidaPanelImpl {
         }
     }//inner class
 
-}//class
+}

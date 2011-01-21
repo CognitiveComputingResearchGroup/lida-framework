@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 
 /**
- * @author Ryan McCall
+ * @author Ryan J. McCall
  */
 public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 
@@ -184,4 +184,4 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	public boolean isOverPerceptThreshold(PamLinkable l);
 	
-}//interface 
+} 

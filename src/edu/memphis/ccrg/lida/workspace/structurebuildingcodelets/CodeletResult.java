@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 /**
  * An encapsulation of result of a run of a codelet.  
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface CodeletResult {

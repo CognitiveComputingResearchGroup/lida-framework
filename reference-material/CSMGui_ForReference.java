@@ -184,7 +184,7 @@ public class CSMGui_ForReference extends javax.swing.JFrame implements Workspace
     		sinkTextField.setText("NA");
     		System.out.println("couldnt get link by id!!");
     	}
-    }//method
+    }
     
     /**
      * When a new struct comes from the CSM, clear the node and link lists
@@ -215,7 +215,7 @@ public class CSMGui_ForReference extends javax.swing.JFrame implements Workspace
 			nodeList.add(n.getLabel() + " ID: " + n.getId(), i);
 			i++;
 		}
-	}//method
+	}
 	
 	 private NodeStructureImpl struct = new NodeStructureImpl(); 
 	 // Variables declaration - do not modify
@@ -234,4 +234,4 @@ public class CSMGui_ForReference extends javax.swing.JFrame implements Workspace
 	 private javax.swing.JTextField sourceTextField;
 	 // End of variables declaration
 
-}//class
+}

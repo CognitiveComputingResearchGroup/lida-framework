@@ -196,7 +196,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		// learning algorithm 
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {n.getId();}
-	}//method
+	}
 
 	/**
 	 * Called by the task manager every tick
@@ -247,7 +247,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 			//Excite the connecting link and the parent
 			propagateActivation(pamNode, connectingLink, parent, amountToPropagate);
 		}
-	}//method
+	}
 	
 	/**
 	 * Propagates activation 'amount', which originates from 'source', to node 'sink'.  
@@ -411,4 +411,4 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
         }
         return false;
     }
-}//class
+}

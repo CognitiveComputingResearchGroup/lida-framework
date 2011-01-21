@@ -68,7 +68,7 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.AggregateBehaviorActivationTrigger#checkForTrigger(java.util.Queue)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.AggregateBehaviorActivationTrigger#checkForTrigger(java.util.Collection)}.
 	 */
 	@Test
 	public void testCheckForTrigger() {

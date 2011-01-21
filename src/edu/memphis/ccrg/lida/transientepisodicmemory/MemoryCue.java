@@ -11,6 +11,8 @@ package edu.memphis.ccrg.lida.transientepisodicmemory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
+ * TODO extend NodeStructure or remove
+ *
  * This interface represents the memory cue for LIDA's transient episodic memory.
  * @author Rodrigo Silva L. <rsilval@acm.org>
  */

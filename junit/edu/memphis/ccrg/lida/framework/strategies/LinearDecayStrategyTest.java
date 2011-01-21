@@ -38,7 +38,7 @@ public class LinearDecayStrategyTest extends TestCase{
 	}	
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy#decay(double, long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy#decay(double, long, Object...)}.
 	 */
 	@Test
 	public void testDecay() {

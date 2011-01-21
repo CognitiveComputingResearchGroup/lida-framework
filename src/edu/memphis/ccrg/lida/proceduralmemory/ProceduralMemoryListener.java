@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
  * A procedural memory listener receives instantiated schemes which are behaviors
- * @author Ryan McCall
+ * @author Ryan J. McCall
  */
 public interface ProceduralMemoryListener extends ModuleListener{
 

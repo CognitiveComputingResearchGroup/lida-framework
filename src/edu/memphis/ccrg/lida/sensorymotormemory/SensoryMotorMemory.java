@@ -24,9 +24,9 @@ public interface SensoryMotorMemory extends LidaModule, SensoryMemoryListener, A
 
 	/**
 	 * Any non-environment communication should use listeners.
-	 * @param l SensoryMotorListener
+	 * @param l SensoryMotorMemoryListener
 	 */
-	public void addSensoryMotorListener(SensoryMotorListener l);
+	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l);
 	
 	/**
 	 * Executes an algorithm in the Environment

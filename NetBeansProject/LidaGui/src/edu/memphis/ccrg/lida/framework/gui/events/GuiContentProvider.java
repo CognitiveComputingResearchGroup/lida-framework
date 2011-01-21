@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
  * for FrameworkGui's.   GUIs listen to providers using Observer pattern.
  * Examples include PAMImpl.java and PerceptualBufferImpl.java
  *
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface GuiContentProvider {

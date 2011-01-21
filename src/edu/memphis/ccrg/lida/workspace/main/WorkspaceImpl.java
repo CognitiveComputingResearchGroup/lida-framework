@@ -23,62 +23,72 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorListener;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 import edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * 
- * This class implements the Facade pattern.  The Workspace contains the Perceptual and 
- * Episodic Buffers as well as the Broadcast Queue and Current Situational Model.
- * Any outside module that wishes to access and/or modify these Workspace components must do 
- * so through this class.  Thus this class defines the methods to access the 
- * data of these submodules.
+ * The Workspace contains the Perceptual and 
+ * Episodic Buffers as well as the Broadcast Queue and Current Situational Model. 
+ * This class implements the Facade pattern.  Any outside module that wishes to access and/or 
+ * modify these Workspace components must do so through this class. 
+ * Thus this class defines the methods to access the data of these submodules.
  * 
- * @author Ryan J. McCall
+ * @author Javier Snaider, Ryan J. McCall
  *
  */
 
 public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListener, 
 									  	LocalAssociationListener,
 									  	BroadcastListener, 
-									  	SensoryMotorListener{
+									  	SensoryMotorMemoryListener{
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceImpl.class.getCanonicalName());
 
-	/**
-	 * TEM and DM are cue listeners
-	 */
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private List<WorkspaceListener> wsListeners = new ArrayList<WorkspaceListener>();
 
+	private final double DEFAULT_LOWER_ACTIVATION_BOUND = 0.01;
 	private double lowerActivationBound;
 	
-	private final double DEFAULT_LOWER_ACTIVATION_BOUND = 0.01;
-	
-	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
+	public WorkspaceImpl(){
 		super (ModuleName.Workspace);
+		lowerActivationBound = DEFAULT_LOWER_ACTIVATION_BOUND;
+		setActivationLowerBound(lowerActivationBound);
+	}
+	
+	//TODO not used. remove?
+	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
+		this ();
 		getSubmodules().put(ModuleName.EpisodicBuffer,episodicBuffer);
 		getSubmodules().put(ModuleName.BroadcastQueue,broadcastQueue);
 		getSubmodules().put(ModuleName.PerceptualBuffer,perceptualBuffer);
 		getSubmodules().put(ModuleName.CurrentSituationalModel,csm);
-		
-		setActivationLowerBound(lowerActivationBound);
 	}
-	public WorkspaceImpl(){
-		super (ModuleName.Workspace);
+	
+	
+	@Override
+	public void addSubModule(LidaModule lm){
+		super.addSubModule(lm);
 	}
 	
 	/**
-	 * @param lowerActivationBound the lowerActivationBound to set
+	 * @param activationLowerBound the lowerActivationBound to set
 	 */
 	@Override
-	public void setActivationLowerBound(double lowerActivationBound) {
-		this.lowerActivationBound = lowerActivationBound;
-		for (LidaModule lm:getSubmodules().values()){
-			((WorkspaceBuffer)lm).setLowerActivationBound(lowerActivationBound);
+	public void setActivationLowerBound(double activationLowerBound) {
+		if(activationLowerBound < 0){
+			logger.log(Level.WARNING, "Lower bound must be non-negative.  Parameter not set.", 
+					LidaTaskManager.getCurrentTick());
+		}else{
+			this.lowerActivationBound = activationLowerBound;
+			for (LidaModule lm: getSubmodules().values()){
+				((WorkspaceBuffer)lm).setLowerActivationBound(lowerActivationBound);
+			}
 		}
+		
 	}
 	
 	@Override
@@ -92,10 +102,12 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 			addWorkspaceListener((WorkspaceListener)listener);
 		}else if (listener instanceof CueListener){
 			addCueListener((CueListener)listener);
+		}else{
+			logger.log(Level.WARNING, "Listener " + listener + " was not added, wrong type.", 
+					LidaTaskManager.getCurrentTick());
 		}
 	}
 
-	//Implementations for Workspace interface
 	@Override
 	public void addCueListener(CueListener l){
 		cueListeners.add(l);
@@ -110,7 +122,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	public void cueEpisodicMemories(NodeStructure content){
 		for(CueListener c: cueListeners)
 			c.receiveCue(content);
-		logger.log(Level.FINER,"Cue Performed ",LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINER, "Cue performed.", LidaTaskManager.getCurrentTick());
 	}
 	private void sendToListeners(NodeStructure content){
 		for(WorkspaceListener listener: wsListeners){
@@ -132,7 +144,8 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
-		WorkspaceContent ns = (WorkspaceContent) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent(); 
+		WorkspaceContent ns = (WorkspaceContent) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent();
+		//TODO is our merge operation thread-safe?
 		ns.mergeWith(association);
 		sendToListeners(ns);
 	}
@@ -174,16 +187,10 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	public void receiveExecutingAlgorithm(Object a) {
 		// Maybe just pam receives this and not the workspace		
 	}
-	
-	/**
-	 * Not applicable for WorkspaceImpl
-	 */
+
 	@Override
-	public void learn(BroadcastContent content) {}
-	
-	@Override
-	public void addSubModule(LidaModule lm){
-		super.addSubModule(lm);
+	public void learn(BroadcastContent content) {
+		// Not applicable for WorkspaceImpl
 	}
 	
-}//class
+}

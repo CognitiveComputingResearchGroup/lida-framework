@@ -105,4 +105,4 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 		start();
 	}
 
-}//class
+}

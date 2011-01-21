@@ -4,7 +4,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 /**
  * 
- * @author Ryan McCall
+ * @author Ryan J. McCall
  *
  */
 public class VisualSensoryMemory extends SensoryMemoryImpl {
@@ -73,4 +73,4 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 		
 	}
 
-}//class
+}

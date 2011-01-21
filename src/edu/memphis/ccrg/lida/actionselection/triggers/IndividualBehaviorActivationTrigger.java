@@ -30,7 +30,7 @@ private Logger logger = Logger.getLogger(IndividualBehaviorActivationTrigger.cla
 				break;
 			}
 		}
-	}//method
+	}
 
 
 }

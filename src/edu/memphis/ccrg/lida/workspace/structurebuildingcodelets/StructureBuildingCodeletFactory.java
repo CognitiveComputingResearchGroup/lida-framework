@@ -170,10 +170,10 @@ public class StructureBuildingCodeletFactory {
 			}			
 		}//if
 		return codelet;
-	}//method
+	}
 	
 	//TODO: outstanding issues with whether there should be an Id and how to use
-	//class for name if the object, here an SBC requires a paramter, in this case the TaskManager
+// class for name if the object, here an SBC requires a paramter, in this case the TaskManager
 //	public StructureBuildingCodelet getCodelet(int type){
 //		return getGenericCodelet(type);
 //	}
@@ -201,4 +201,4 @@ public class StructureBuildingCodeletFactory {
 		pool.get(type).add(sbCode);
 	}
 	
-}//class
+}

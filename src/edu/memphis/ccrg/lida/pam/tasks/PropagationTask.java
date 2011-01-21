@@ -76,4 +76,4 @@ public class PropagationTask extends LidaTaskImpl {
 		return "Propagation task " + getTaskId();
 	}
 
-}//class
+}
