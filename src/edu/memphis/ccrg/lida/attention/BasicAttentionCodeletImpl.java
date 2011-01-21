@@ -7,6 +7,10 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
+/**
+ * WARNING:	Renaming this class requires renaming values in
+ * 	  configs/factoriesData.xml
+ */
 public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	
 	public BasicAttentionCodeletImpl(){

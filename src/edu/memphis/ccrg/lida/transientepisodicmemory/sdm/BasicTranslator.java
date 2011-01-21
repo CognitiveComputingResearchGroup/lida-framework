@@ -40,7 +40,7 @@ public class BasicTranslator implements Translator {
 		NodeStructure ns = new NodeStructureImpl();
 		for (int i = 0;i<size;i++){
 			if(data.getQuick(i)){
-                                Node n= pam.getNode(i);
+                                Node n= pam.getPamNode(i);
 				ns.addNode(LidaElementFactory.getInstance().getNode(n));
 			}
 		}

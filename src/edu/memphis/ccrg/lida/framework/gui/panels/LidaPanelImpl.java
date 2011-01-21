@@ -25,7 +25,8 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 
 /**
- *
+ * Implementations should be added by canoncial name to the guiPanels.properties file. 
+ * Be careful renaming classes after adding them to this config file.
  * @author Javier Snaider
  */
 public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPanel{

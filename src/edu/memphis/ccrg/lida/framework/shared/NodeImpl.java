@@ -14,9 +14,11 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * Default Node Implementation
- * 
+ *  
+ * WARNING:	Renaming this class requires renaming values in
+ * 	  configs/factoriesData.xml
+ *
  * @author Javier Snaider
- * 
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
 

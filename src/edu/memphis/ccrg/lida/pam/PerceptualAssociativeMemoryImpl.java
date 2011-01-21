@@ -29,7 +29,6 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -303,8 +302,18 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 	
 	@Override
+	public boolean containsNode(ExtendedId id) {
+		return pamNodeStructure.containsNode(id);
+	}
+	
+	@Override
 	public boolean containsLink(PamLink link){
 		return pamNodeStructure.containsLink(link);
+	}
+	
+	@Override
+	public boolean containsLink(ExtendedId id) {
+		return pamNodeStructure.containsLink(id);
 	}
 
 	@Override
@@ -313,7 +322,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 	}
 	
 	@Override
-	public Collection<Node> getNodes(){
+	public Collection<Node> getPamNodes(){
 		Collection<Node> pamNodes = pamNodeStructure.getNodes();
 		Collection<Node> nodes = new ArrayList<Node>();
 		for(Node pamNode: pamNodes)
@@ -321,11 +330,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		return Collections.unmodifiableCollection(nodes);
 	}
 	
-	@Override
-	public NodeStructure getPamNodeStructure(){
-		return new UnmodifiableNodeStructureImpl(pamNodeStructure);
-	}
-
 	@Override
 	public Object getModuleContent(Object... params) {
 		return pamNodeStructure;
@@ -338,7 +342,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
 		}
 	}
 	@Override
-	public Node getNode(int id) {
+	public Node getPamNode(int id) {
 		return factory.getNode(pamNodeStructure.getNode(id));
 	}
 	@Override
@@ -411,4 +415,5 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements	P
         }
         return false;
     }
+
 }

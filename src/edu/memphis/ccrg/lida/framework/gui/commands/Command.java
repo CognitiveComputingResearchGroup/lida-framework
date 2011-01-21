@@ -19,6 +19,9 @@ import edu.memphis.ccrg.lida.framework.Lida;
 /**
  * A command is an encapsulation of an event from the Gui such as a button press or a 
  * slider state change.  
+ * 
+ * Implementations should add themselves to guiCommands.properties.  Be careful renaming classes
+ * after adding them to this config file.
  * @author Javier Snaider
  */
 public interface Command {

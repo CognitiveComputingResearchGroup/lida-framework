@@ -2,11 +2,14 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 public interface PamNodeStructure {
+	
+	//TODO set excite strategies for links too?
 
 	/**
 	 * Set the excite behavior for all nodes
@@ -28,7 +31,7 @@ public interface PamNodeStructure {
 	public Map<PamNode, PamLink> getParentsAndConnectingLinksOf(Node n);
 
 	/**
-	 * Decay the linkables of this pam node structure
+	 * Decay the {@link Linkable}s of this {@link PamNodeStructure}
 	 */
 	public void decayLinkables(long ticks);
 

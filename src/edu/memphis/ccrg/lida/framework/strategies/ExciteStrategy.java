@@ -9,8 +9,14 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+
 /**
  * A strategy pattern for exciting Activatibles or Learnables 
+ *  
+ * Implementations should add themselves to {@link LidaElementFactory} via the
+ * factoriesData.xml configuration file.
+ * 
  *  
  * @author Javier Snaider, Ryan J. McCall
  *

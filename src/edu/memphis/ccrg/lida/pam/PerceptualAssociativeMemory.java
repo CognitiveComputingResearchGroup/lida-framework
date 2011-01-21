@@ -22,37 +22,45 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 
 /**
+ * A main LIDA module which contains feature detectors, nodes, and links.
  * @author Ryan J. McCall
  */
 public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
-
-	//Adding methods
 	
     /**
-     * Add a new node to this PAM with specified label
+     * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label.
+     * New node is returned.  Default PamNode type is used.
      * @param label label of new node
      * @return the new node
      */
 	public PamNode addNewNode(String label);
 	
+	/**
+	 * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label and 
+	 * PamNode type.  New node is returned.
+	 * 
+	 * @param pamNodeType type of PamNode used.
+	 * @param label label of new node
+	 * @return the new node
+	 */
 	public PamNode addNewNode(String pamNodeType, String label);
 
 	/**
-	 * 
+	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
 	 * @param node PamNode
-	 * @return new copy of the pam node
+	 * @return Copied PamNode actually stored in this PAM.
 	 */
 	public PamNode addNode(PamNode node);
 	
 	/**
-	 * Add a collection of nodes
+	 * Adds a COPY of a collection of PamNodes to this PAM
 	 * @param nodes nodes to add
-	 * @return actual node stored in this PAM
+	 * @return Copied PamNodes actually stored in this PAM
 	 */
 	public Set<PamNode> addNodes(Set<PamNode> nodes);
 	
 	/**
-	 * Add a new link to this PAM
+	 * Creates and adds a new link to this PAM
 	 * @param source source for link
 	 * @param sink sink for link
 	 * @param type type for link
@@ -61,64 +69,78 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation);
 
+	/**
+	 * Creates and adds a new link to this PAM
+	 * @param sourceId Source's {@link ExtendedId}
+	 * @param sinkId Sink's {@link ExtendedId}
+	 * @param type Link's LinkCategory
+	 * @param activation initial activation
+	 * @return created Link
+	 */
 	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation);
 	
+	/**
+	 * Adds a COPY of a collection of PamLinks to this PAM
+	 * @param links  PamLinks to add
+	 * @return Copied PamLinks actually stored in this PAM
+	 */
 	public Set<PamLink> addLinks(Set<PamLink> links);
 	
+	/**
+	 * Adds and runs specified FeatureDetector.
+	 * @param fd {@link FeatureDetector}
+	 */
 	public void addFeatureDetector(FeatureDetector fd);
 		
 	/**
-	 * 
+	 * Adds {@link PamListener}
 	 * @param pl listener
 	 */
 	public void addPamListener(PamListener pl);
 	
-	//*** Setting parameters	
 	
 	/**
-	 * Set the type of Link used in this PAM
-	 * @param type link type
+	 * Set the default type of {@link PamLink}Link used in this PAM
+	 * @param type new default PamLink type
 	 */
 	public void setNewLinkType(String type);
 	
 	/**
-	 * Set the type of Node used in this PAM
-	 * @param type node type
+	 * Set the type of {@link PamNode} used in this PAM
+	 * @param type new default {@link PamNode} type
 	 */
     public void setNewNodeType(String type);
-	
-    //*** Set strategies
     
 	/**
-	 * Changes how the nodes in this PAM are excited.
-	 * 
+	 * Changes the {@link ExciteStrategy} used for {@link PamLinkable}s 
+	 * in this PAM.
 	 * @param strat ExciteStrategy
 	 */
 	public void setExciteStrategy(ExciteStrategy strat);
 	
 	/**
-	 * Change how nodes and links are decayed
+	 * Change the {@link DecayStrategy} used for {@link PamLinkable}s 
+	 * in this PAM.
 	 * @param strat DecayStrategy
  	 */
 	public void setDecayStrategy(DecayStrategy strat);
 	
 	/**
-	 * Set the behavior governing how activation is propagated
+	 * Sets {@link PropagationBehavior} governing how activation is propagated in this PAM
 	 * @param b PropagationBehavior
 	 */
 	public void setPropagationBehavior(PropagationBehavior b);
 	
-	//Activation spreading methods
-	
 	/**
-	 * Send a burst of activation to a node.
+	 * Excites specified {@link PamNode} an amount of activation.
 	 * @param node The node to receiving the activation
-	 * @param amount The amount of activation
+	 * @param amount amount of activation to excite
 	 */
 	public void receiveActivationBurst(PamNode node, double amount);
 	
 	/**
-	 * Amount is coming from source.  Link and sink should be excited amount
+	 * Propagate activation from a PamNode to another PamNode along a PamLink.
+	 * Excites both link and sink
 	 * @param source source of activation
 	 * @param link link between source and sink
 	 * @param sink recipient of activation
@@ -127,61 +149,79 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount);
 	
 	/**
-	 * Send a burst of activation to a Set of node.
-	 * @param nodes Nodes to receive activation
-	 * @param amount Amount of activation
+	 * Excites PamNodes with an amount of activation.
+	 * @param nodes PamNodes to be excited
+	 * @param amount amount of activation
 	 */
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
 
-	
 	/**
 	 * Propagates activation from a PamNode to its parents
-	 * @param pamNode The node to propagate activation from.
+	 * @param pamNode The PamNode to propagate activation from.
 	 */
 	public void sendActivationToParents(PamNode pamNode);
 	
-	//*** Percept methods
-	
 	/**
-	 * Put a PamNode into the percept
-	 * @param pamNode PamNode
+	 * Add a PamNode to the percept
+	 * @param pamNode PamNode to add.
 	 */
 	public void addNodeToPercept(PamNode pamNode);
 	
 	/**
-	 * Put a Link into the percept
-	 * @param l Link
+	 * Add a PamLink to the percept
+	 * @param l Link to add.
  	 */
 	public void addLinkToPercept(PamLink l);
 	
 	/**
-	 * Put a NodeStructure into the percept
+	 * Add a NodeStructure to the percept
 	 * @param ns NodeStructure
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
 	
-	//Contains methods
-	
+	/**
+	 * Returns true if this PAM contains specified PamNode
+	 */
 	public boolean containsNode(PamNode node);
 	
+	/**
+	 * @param id ExtendedId of sought node
+	 * @return true if PAM contains the node with this id.
+	 */
+	public boolean containsNode(ExtendedId id);
+	
+	/**
+	 * Returns true if this PAM contains specified PamLink
+	 */
 	public boolean containsLink(PamLink link);
 	
-	//**** Get Methods
-	//TODO immutable nodes?
-	public Node getNode(int id);
-	
 	/**
-	 * Returns an unmodifiable collection of the PAM nodes as nodes
+	 * @param id ExtendedId of sought link
+	 * @return true if PAM contains the link with this id.
 	 */
-	public Collection<Node> getNodes();
-	
-	public NodeStructure getPamNodeStructure();
+	public boolean containsLink(ExtendedId id);
 	
 	/**
-	 * Get the running feature detectors
+	 * Returns whether PamLinkable is above percept threshold.
+	 * @param l a PamLinkable
+	 * @return true if PamLinkable's total activation is above percept threshold 
+	 */
+	public boolean isOverPerceptThreshold(PamLinkable l);
+	
+	//TODO immutable nodes?
+	/**
+	 * Returns {@link Node} from this Pam with specified id. 
+	 */
+	public Node getPamNode(int id);
+	
+	/**
+	 * Returns an unmodifiable collection of the {@link PamNode}s in this PAM as {@link Node}s.
+	 */
+	public Collection<Node> getPamNodes();
+	
+	/**
+	 * Get {@link FeatureDetector}s running for this PAM.
 	 */
 	public Collection<FeatureDetector> getFeatureDetectors();
-	
-	public boolean isOverPerceptThreshold(PamLinkable l);
 	
 } 

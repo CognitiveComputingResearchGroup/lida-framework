@@ -14,10 +14,9 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * Calculates a new activation using the upscale parameter.
+ * Calculates a new activation using an upscale parameter.
  * 
  * @author Ryan J. McCall
- *
  */
 public class UpscalePropagationBehavior implements PropagationBehavior{
 	

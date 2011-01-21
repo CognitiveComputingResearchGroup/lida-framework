@@ -95,7 +95,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addNode(node1);	
 		pam.decayModule(100);
 		
-		assertTrue("Problem with DecayModule",pam.getNode(1).getTotalActivation()<0.8);		
+		assertTrue("Problem with DecayModule",pam.getPamNode(1).getTotalActivation()<0.8);		
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#getNode(int)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#getPamNode(int)}.
 	 */
 	@Test
 	public void testGetNode() {

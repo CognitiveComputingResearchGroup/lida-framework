@@ -11,13 +11,14 @@ import java.util.Map;
 
 /**
  * A behavior that calculates a new activation to pass.
+ * 
  * @author Ryan J. McCall
- *
  */
 public interface PropagationBehavior {
+	
 	/**
-	 * Depending on the behavior different parameters can be pass in params for the 
-	 * calculation.
+	 * Depending on the behavior different parameters can be passed to this method for the 
+	 * calculation of the amount to propagate.
 	 * @param params parameters
 	 */
 	public double getActivationToPropagate(Map<String, Object> params);
