@@ -9,11 +9,11 @@ package edu.memphis.ccrg.lida.framework;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
-public interface Lida extends LidaModule{
+public interface Lida extends LidaModule {
 
 	/**
 	 * @return the LidaTaskManager
 	 */
 	public LidaTaskManager getTaskManager();
-	
+
 }

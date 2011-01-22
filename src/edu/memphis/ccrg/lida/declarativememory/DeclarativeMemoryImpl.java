@@ -42,5 +42,11 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
+		//TODO
+	}
 
 }

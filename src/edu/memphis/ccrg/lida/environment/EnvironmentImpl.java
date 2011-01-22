@@ -53,4 +53,10 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 		//Not applicable for environment
 	}
 	
+	@Override
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
+		//Decay module appropriately
+	}
+	
 }

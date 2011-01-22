@@ -34,31 +34,33 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * Rudimentary action selection that selects all behaviors sent to it which are
- * above the selectionThreshold.  Only selects an action every 'selectionFrequency' number of 
- * cycles it is run
+ * above the selectionThreshold. Only selects an action every
+ * 'selectionFrequency' number of cycles it is run
  * 
  * @author Ryan J McCall
- *
+ * 
  */
-public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelection, ProceduralMemoryListener{
-	
+public class ActionSelectionImpl extends LidaModuleImpl implements
+		ActionSelection, ProceduralMemoryListener {
+
 	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
-	private static final Logger logger = Logger.getLogger(ActionSelectionImpl.class.getCanonicalName());
-	
+	private static final Logger logger = Logger
+			.getLogger(ActionSelectionImpl.class.getCanonicalName());
+
 	private double selectionThreshold = 0.95;
-	
+
 	private int selectionFrequency = 100, coolDownCounter = 0;
-	
+
 	private Queue<Behavior> behaviors = new ConcurrentLinkedQueue<Behavior>();
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
-	
+
 	/**
 	 * default
 	 */
-	public ActionSelectionImpl( ) {
-		super(ModuleName.ActionSelection);	
+	public ActionSelectionImpl() {
+		super(ModuleName.ActionSelection);
 	}
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
@@ -67,28 +69,30 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	@Override
 	public void receiveBehavior(Behavior b) {
-		if(b.getActivation() > selectionThreshold){
-			if(coolDownCounter == selectionFrequency){
-				logger.log(Level.FINE, 
-						   "selecting behavior " + b.getLabel() + " " + b.getId() + " " + b.getActionId() + " activ. " + b.getActivation(), 
-						   LidaTaskManager.getCurrentTick());
+		if (b.getActivation() > selectionThreshold) {
+			if (coolDownCounter == selectionFrequency) {
+				logger.log(Level.FINE, "selecting behavior " + b.getLabel()
+						+ " " + b.getId() + " " + b.getActionId() + " activ. "
+						+ b.getActivation(), LidaTaskManager.getCurrentTick());
 				sendAction(b.getActionId());
 				coolDownCounter = 0;
-			}else
+			} else
 				coolDownCounter++;
-			
-			logger.log(Level.FINE, "Selected action: " + b.getActionId(), LidaTaskManager.getCurrentTick());
+
+			logger.log(Level.FINE, "Selected action: " + b.getActionId(),
+					LidaTaskManager.getCurrentTick());
 		}
 	}
-	
+
 	/**
-	 * @param schemeActionId id of action 
+	 * @param schemeActionId
+	 *            id of action
 	 */
-	public void sendAction(long schemeActionId){
-		for(ActionSelectionListener l: listeners)
+	public void sendAction(long schemeActionId) {
+		for (ActionSelectionListener l : listeners)
 			l.receiveActionId(schemeActionId);
 	}
 
@@ -96,10 +100,11 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
+
 	@Override
 	public void addListener(ModuleListener listener) {
-		if (listener instanceof ActionSelectionListener){
-			addActionSelectionListener((ActionSelectionListener)listener);
+		if (listener instanceof ActionSelectionListener) {
+			addActionSelectionListener((ActionSelectionListener) listener);
 		}
 	}
 
@@ -112,31 +117,34 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 
 	@Override
 	public void selectAction() {
-		
+
 		Behavior coal;
 		coal = chooseBehavior();
 		if (coal != null) {
 			behaviors.remove(coal);
 		}
-	
-	if (coal != null) {
-		long id = coal.getId();
-		for (ActionSelectionListener bl : listeners) {
-			bl.receiveActionId(id);
-			
-		}
-		FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.ActionSelection, behaviors.size()+"");
-		sendEventToGui(ge);
-	}
-	logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getCurrentTick());
 
-	resetTriggers();
-	actionSelectionStarted.set(false);
-		
+		if (coal != null) {
+			long id = coal.getId();
+			for (ActionSelectionListener bl : listeners) {
+				bl.receiveActionId(id);
+
+			}
+			FrameworkGuiEvent ge = new TaskCountEvent(
+					ModuleName.ActionSelection, behaviors.size() + "");
+			sendEventToGui(ge);
+		}
+		logger.log(Level.FINE, "Action Selection Performed at tick: {0}",
+				LidaTaskManager.getCurrentTick());
+
+		resetTriggers();
+		actionSelectionStarted.set(false);
+
 	}
-	
+
 	/**
-	 * @param evt - gui event
+	 * @param evt
+	 *            - gui event
 	 */
 	public void sendEventToGui(FrameworkGuiEvent evt) {
 		for (FrameworkGuiEventListener fg : guis)
@@ -158,12 +166,14 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	}// method
 
 	/**
-	 * @param behavior to add to selector
+	 * @param behavior
+	 *            to add to selector
 	 * @return true if behavior added
 	 */
 	public boolean addBehavior(Behavior behavior) {
 		if (behaviors.add(behavior)) {
-			logger.log(Level.FINE,"New Behavior added",LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINE, "New Behavior added",
+					LidaTaskManager.getCurrentTick());
 			newBehaviorEvent(behaviors);
 			return true;
 		} else {
@@ -174,107 +184,119 @@ public class ActionSelectionImpl extends LidaModuleImpl implements ActionSelecti
 	@Override
 	public void receiveStream(Stream s) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-        @Override
-		public Object getState() {
-            Object[] state = new Object[4];
-            state[0] = this.behaviors;
-            state[1] = null;
-            state[2] = null;
-            state[3] = null;
-            return state;
-        }
-        @Override
-		@SuppressWarnings("unchecked")
-		public boolean setState(Object content) {
-            if (content instanceof Object[]) {
-                Object[] state = (Object[])content;
-                if (state.length == 4) {
-                    try {
-                        this.behaviors = (Queue<Behavior>)state[0];
-                        return true;
-                    }
-                    catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-            return false;
-        }
+	@Override
+	public Object getState() {
+		Object[] state = new Object[4];
+		state[0] = this.behaviors;
+		state[1] = null;
+		state[2] = null;
+		state[3] = null;
+		return state;
+	}
 
-
-		@Override
-		public void addPreafferenceListener(PreafferenceListener listener) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		/**
-		 * To register Triggers
-		 * @param t a new Trigger
-		 */
-		@Override
-		public void addActionSelectionTrigger(ActionSelectionTrigger t){
-			actionSelectionTriggers.add(t);
-		}
-		/**
-		 * Starts Triggers
-		 */
-		public void start() {
-			for (ActionSelectionTrigger t : actionSelectionTriggers) {
-				t.start();
-			}
-		}	
-		/**
-		 * @param behaviors behaviors to check
-		 */
-		public void newBehaviorEvent(Collection<Behavior> behaviors) {		
-			for (ActionSelectionTrigger trigger : actionSelectionTriggers)
-				trigger.checkForTrigger(behaviors);
-		}// method
-		
-		/**
-		 * Resets all triggers
-		 */
-		public void resetTriggers() {
-			for (ActionSelectionTrigger t : actionSelectionTriggers) {
-				t.reset();
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean setState(Object content) {
+		if (content instanceof Object[]) {
+			Object[] state = (Object[]) content;
+			if (state.length == 4) {
+				try {
+					this.behaviors = (Queue<Behavior>) state[0];
+					return true;
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
+		return false;
+	}
 
-		@Override
-		public void init(){
-			getAssistingTaskSpawner().addTask(new BackgroundTask());
+	@Override
+	public void addPreafferenceListener(PreafferenceListener listener) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * To register Triggers
+	 * 
+	 * @param t
+	 *            a new Trigger
+	 */
+	@Override
+	public void addActionSelectionTrigger(ActionSelectionTrigger t) {
+		actionSelectionTriggers.add(t);
+	}
+
+	/**
+	 * Starts Triggers
+	 */
+	public void start() {
+		for (ActionSelectionTrigger t : actionSelectionTriggers) {
+			t.start();
 		}
-		
-		private class BackgroundTask extends LidaTaskImpl {
+	}
 
-			public BackgroundTask() {
-				super(1);
-			}
+	/**
+	 * @param behaviors
+	 *            behaviors to check
+	 */
+	public void newBehaviorEvent(Collection<Behavior> behaviors) {
+		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
+			trigger.checkForTrigger(behaviors);
+	}// method
 
-			@Override
-			protected void runThisLidaTask() {
-				start();
-				setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
-			}
-			public String toString(){
-				return ActionSelectionImpl.class.getSimpleName() + " background task";
-			}
+	/**
+	 * Resets all triggers
+	 */
+	public void resetTriggers() {
+		for (ActionSelectionTrigger t : actionSelectionTriggers) {
+			t.reset();
+		}
+	}
+
+	@Override
+	public void init() {
+		getAssistingTaskSpawner().addTask(new BackgroundTask());
+	}
+
+	private class BackgroundTask extends LidaTaskImpl {
+
+		public BackgroundTask() {
+			super(1);
 		}
 
 		@Override
-		public void learn(BroadcastContent content) {
-			// TODO Auto-generated method stub
-			
+		protected void runThisLidaTask() {
+			start();
+			setTaskStatus(LidaTaskStatus.FINISHED); // Runs only once
 		}
 
-		@Override
-		public void receiveBroadcast(BroadcastContent bc) {
-			// TODO Auto-generated method stub
-			
+		public String toString() {
+			return ActionSelectionImpl.class.getSimpleName()
+					+ " background task";
 		}
+	}
+
+	@Override
+	public void learn(BroadcastContent content) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void receiveBroadcast(BroadcastContent bc) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
+		//TODO
+	}
 
 }

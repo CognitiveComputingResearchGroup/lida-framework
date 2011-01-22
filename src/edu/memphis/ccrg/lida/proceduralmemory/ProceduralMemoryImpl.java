@@ -172,6 +172,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 
 	@Override
 	public void decayModule(long ticks) {
+		super.decayModule(ticks);
 		for (Scheme s : schemeSet)
 			s.decay(ticks);
 	}

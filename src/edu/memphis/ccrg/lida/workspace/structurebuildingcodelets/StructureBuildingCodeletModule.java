@@ -101,7 +101,8 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 	
 	@Override
 	public void decayModule(long ticks) {
-		//TODO 
+		super.decayModule(ticks);
+		//TODO
 	}
 
 }// class

@@ -43,10 +43,11 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspace,
-											GuiEventProvider {
-	
-	private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
+public class GlobalWorkspaceImpl extends LidaModuleImpl implements
+		GlobalWorkspace, GuiEventProvider {
+
+	private static final Logger logger = Logger
+			.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
 
 	public GlobalWorkspaceImpl() {
 		super(ModuleName.GlobalWorkspace);
@@ -99,7 +100,8 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	@Override
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
-			logger.log(Level.FINE,"New Coalition added",LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINE, "New Coalition added",
+					LidaTaskManager.getCurrentTick());
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -130,21 +132,24 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	}// method
 
 	private void sendBroadcast() {
-		logger.log(Level.FINE, "Triggering broadcast", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Triggering broadcast",
+				LidaTaskManager.getCurrentTick());
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
 			coalitions.remove(coal);
 		}
-		
+
 		if (coal != null) {
 			NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
-			FrameworkGuiEvent ge = new TaskCountEvent(ModuleName.GlobalWorkspace, coalitions.size()+"");
+			FrameworkGuiEvent ge = new TaskCountEvent(
+					ModuleName.GlobalWorkspace, coalitions.size() + "");
 			sendEventToGui(ge);
-		} 
-		logger.log(Level.FINE,"Broadcast Performed at tick: {0}",LidaTaskManager.getCurrentTick());
+		}
+		logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
+				LidaTaskManager.getCurrentTick());
 
 		resetTriggers();
 		broadcastStarted.set(false);
@@ -178,15 +183,15 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 			fg.receiveFrameworkGuiEvent(evt);
 	}
 
-
-	public void decay(long ticks){
+	private void decay(long ticks) {
 		for (Coalition c : coalitions) {
 			c.decay(ticks);
-			if (c.getActivation()<=0.0){
+			if (c.getActivation() <= 0.0) {
 				coalitions.remove(c);
-				logger.log(Level.FINE,"Coallition removed",LidaTaskManager.getCurrentTick());
+				logger.log(Level.FINE, "Coallition removed",
+						LidaTaskManager.getCurrentTick());
 			}
-	}
+		}
 	}
 
 	@Override
@@ -200,9 +205,10 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 	}
 
 	@Override
-	public void decayModule(long ticks){
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
 		decay(ticks);
-		logger.log(Level.FINEST,"Coallitions Decayed",LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Coallitions Decayed", LidaTaskManager.getCurrentTick());
 	}
 
 	@Override
@@ -211,15 +217,16 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		if (listener instanceof BroadcastListener){
-			addBroadcastListener((BroadcastListener)listener);
+		if (listener instanceof BroadcastListener) {
+			addBroadcastListener((BroadcastListener) listener);
 		}
 	}
+
 	@Override
-	public void init(){
+	public void init() {
 		getAssistingTaskSpawner().addTask(new BackgroundTask());
 	}
-	
+
 	private class BackgroundTask extends LidaTaskImpl {
 		public BackgroundTask() {
 			super(1);
@@ -228,12 +235,14 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements GlobalWorkspa
 		@Override
 		protected void runThisLidaTask() {
 			start();
-			setTaskStatus(LidaTaskStatus.FINISHED); //Runs only once
+			setTaskStatus(LidaTaskStatus.FINISHED); // Runs only once
 		}
-		public String toString(){
-			return GlobalWorkspaceImpl.class.getSimpleName() + " background task";
+
+		public String toString() {
+			return GlobalWorkspaceImpl.class.getSimpleName()
+					+ " background task";
 		}
-		
+
 	}
 
 }// class

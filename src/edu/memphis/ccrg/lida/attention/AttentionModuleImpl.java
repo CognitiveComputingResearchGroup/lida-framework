@@ -133,5 +133,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
+		//TODO
+	}
 
 }// class

@@ -52,6 +52,12 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
 	public void receiveExecutingAlgorithm(Object alg){
 		//What to do here is a research question.
 	}
+	
+	@Override
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
+		//TODO
+	}
 
 	//TODO what is this set state garbage? can we delete it all?
 	@Override

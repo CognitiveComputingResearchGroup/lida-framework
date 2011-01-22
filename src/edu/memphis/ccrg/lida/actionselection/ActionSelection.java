@@ -16,29 +16,36 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
  * Interface for the action selection module
+ * 
  * @author Ryan J McCall
- *
+ * 
  */
-public interface ActionSelection extends LidaModule,BroadcastListener, TriggerListener, Saveable {
-	
+public interface ActionSelection extends LidaModule, BroadcastListener,
+		TriggerListener, Saveable {
+
 	/**
-	 * Those classes that should be receiving selected actions from Action Selection
-	 * @param listener listener of this action selection
+	 * Those classes that should be receiving selected actions from Action
+	 * Selection
+	 * 
+	 * @param listener
+	 *            listener of this action selection
 	 */
 	public void addActionSelectionListener(ActionSelectionListener listener);
-	
+
 	/**
 	 * 
-	 * @param listener preafference listeners of this action selection
+	 * @param listener
+	 *            preafference listeners of this action selection
 	 */
 	public void addPreafferenceListener(PreafferenceListener listener);
-	
+
 	/**
-	 * Choose a single action among those activated and whose context are satisfied to execute
+	 * Choose a single action among those activated and whose context are
+	 * satisfied to execute
 	 */
 	public void selectAction();
 
-	//TODO remove
+	// TODO remove
 	public void addActionSelectionTrigger(ActionSelectionTrigger tr);
 
 }
