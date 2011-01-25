@@ -26,7 +26,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	
 	private LidaTaskManager taskManager;
 
-	/**
+	/*
 	 * The tasks currently being run
 	 */
 	private ConcurrentLinkedQueue<LidaTask> runningTasks = new ConcurrentLinkedQueue<LidaTask>();

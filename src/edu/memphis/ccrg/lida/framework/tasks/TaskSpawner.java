@@ -45,7 +45,7 @@ public interface TaskSpawner extends Initializable {
 	public void receiveFinishedTask(LidaTask task);
 	
 	/**
-	 * Cancels the task from the Task Queue. This is only possible if the tick for witch the task 
+	 * Cancels the task from the task queue. This is only possible if the tick for witch the task 
 	 * is scheduled has not been reached.
 	 * 
 	 * @param task The task to cancel.
