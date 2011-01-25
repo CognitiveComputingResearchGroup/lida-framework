@@ -1,10 +1,13 @@
 package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -13,12 +16,15 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  */
 public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	
+	private static final Logger logger = Logger.getLogger(BasicAttentionCodeletImpl.class.getCanonicalName());
+	
 	public BasicAttentionCodeletImpl(){
 		super();
 	}
 	
 	@Override
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
+//		System.out.println("Attn codelet " + toString());
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
@@ -30,6 +36,8 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 			if (!model.containsLink(l))
 				return false;
 
+		System.out.println("Attn codelet " + this.toString() + " found sought content");
+		logger.log(Level.FINE, "Attn codelet " + this.toString() + " found sought content", LidaTaskManager.getCurrentTick());
 		return true;
 	}
 	
