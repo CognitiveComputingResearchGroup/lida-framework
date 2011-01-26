@@ -7,9 +7,9 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.main;
 
+import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 
 /**
  * The workspace collection of submodules where Cues from episodic memories, the recent contents
