@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl;
 
 /**
  *
@@ -25,7 +25,7 @@ public class DAOManager implements DataAccessObject {
     private static final Logger logger = Logger.getLogger(DAOManager.class.getCanonicalName());
 
     public static final String LIDA_STORAGE_NAME = "lida";
-    public static int TEM_WORD_LENGTH = TemImpl.DEF_WORD_LENGTH;
+    public static int TEM_WORD_LENGTH = EpisodicMemoryImpl.DEF_WORD_LENGTH;
 
     private static DAOManager instance = null;
     private ArrayList<DataAccessObject> daos;
@@ -58,7 +58,7 @@ public class DAOManager implements DataAccessObject {
             Object[] row = storage.getDataRow(LIDA_STORAGE_NAME);
             cLidaId = (Integer)row[0];
 
-            TEM_WORD_LENGTH = (Integer)lida.getParam("tem.wordLength",TemImpl.DEF_WORD_LENGTH);
+            TEM_WORD_LENGTH = (Integer)lida.getParam("tem.wordLength",EpisodicMemoryImpl.DEF_WORD_LENGTH);
 
             for (ModuleName name : ModuleName.values()) {
                 LidaModule module = lida.getSubmodule(name);
