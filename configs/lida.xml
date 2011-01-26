@@ -33,7 +33,7 @@
 			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer</initializerclass>
 		</module>
 		<module name="TransientEpisodicMemory">
-			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
+			<class>edu.memphis.ccrg.lida.episodicmemory.TemImpl</class>
 			<associatedmodule>PerceptualAssociativeMemory</associatedmodule>
 			<param name="tem.numOfHardLoc" type="int">10000</param>			
 			<param name="tem.addressLength" type="int">1000</param>			
@@ -41,7 +41,7 @@
 			<param name="tem.activationRadious" type="int">451</param>			
 			<taskspawner>defaultTS</taskspawner>		</module>
 		<module name="DeclarativeMemory">
-			<class>edu.memphis.ccrg.lida.transientepisodicmemory.TemImpl</class>
+			<class>edu.memphis.ccrg.lida.episodicmemory.TemImpl</class>
 			<param name="tem.numOfHardLoc" type="int">10000</param>			
 			<param name="tem.addressLength" type="int">1000</param>			
 			<param name="tem.wordLength" type="int">1000</param>			
@@ -136,12 +136,12 @@
 			<listenername>Workspace</listenername>
 		</listener>
 		<listener>
-			<listenertype>edu.memphis.ccrg.lida.transientepisodicmemory.CueListener</listenertype>
+			<listenertype>edu.memphis.ccrg.lida.episodicmemory.CueListener</listenertype>
 			<modulename>Workspace</modulename>
 			<listenername>DeclarativeMemory</listenername>
 		</listener>
 		<listener>
-			<listenertype>edu.memphis.ccrg.lida.transientepisodicmemory.CueListener</listenertype>
+			<listenertype>edu.memphis.ccrg.lida.episodicmemory.CueListener</listenertype>
 			<modulename>Workspace</modulename>
 			<listenername>TransientEpisodicMemory</listenername>
 		</listener>
@@ -181,7 +181,7 @@
 			<listenername>Workspace</listenername>
 		</listener>
 		<listener>
-			<listenertype>edu.memphis.ccrg.lida.workspace.main.LocalAssociationListener</listenertype>
+			<listenertype>edu.memphis.ccrg.lida.episodicmemory.LocalAssociationListener</listenertype>
 			<modulename>TransientEpisodicMemory</modulename>
 			<listenername>Workspace</listenername>
 		</listener>
