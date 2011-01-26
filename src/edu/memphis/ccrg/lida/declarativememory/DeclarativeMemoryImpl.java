@@ -7,11 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.declarativememory;
 
+import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.transientepisodicmemory.CueListener;
 
 public class DeclarativeMemoryImpl extends LidaModuleImpl implements DeclarativeMemory, CueListener{
 
@@ -43,10 +43,4 @@ public class DeclarativeMemoryImpl extends LidaModuleImpl implements Declarative
 		
 	}
 	
-	@Override
-	public void decayModule(long ticks) {
-		super.decayModule(ticks);
-		//TODO
-	}
-
 }
