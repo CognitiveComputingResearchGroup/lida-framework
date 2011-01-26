@@ -12,10 +12,9 @@ import edu.memphis.ccrg.lida.workspace.main.Workspace;
 
 /**
  * Listens to cues from the {@link Workspace}. 
- * This interface should be implemented by Episodic Memory modules.
+ * This interface should be implemented by EpisodicMemory modules.
  * 
  * @author Ryan J. McCall
- *
  */
 public interface CueListener {
 	

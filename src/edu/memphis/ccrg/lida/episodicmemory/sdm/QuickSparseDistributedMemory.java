@@ -13,16 +13,18 @@ import java.util.logging.Logger;
 import cern.colt.bitvector.BitVector;
 
 /**
- * Implementation of Kanerva's sparse distributed memory. This implementation is
- * based on the model described in P. Kanerva, "Sparse Distributed Memory and
- * Related Models" in <i>Associative Neural Memories: Theory and Implementation
- * </i>, pp. 50-76, Oxford University Press, 1993.
+ * Uses 2d byte array instead of hard locations. Implementation of Kanerva's
+ * sparse distributed memory. This implementation is based on the model
+ * described in P. Kanerva, "Sparse Distributed Memory and Related Models" in
+ * <i>Associative Neural Memories: Theory and Implementation </i>, pp. 50-76,
+ * Oxford University Press, 1993.
  * 
  * @author Javier Snaider
  */
-public class QuickSparseDistributedMemory implements SparseDistributedMemory{
+public class QuickSparseDistributedMemory implements SparseDistributedMemory {
 
-	private static final Logger logger = Logger.getLogger(QuickSparseDistributedMemory.class.getCanonicalName());
+	private static final Logger logger = Logger
+			.getLogger(QuickSparseDistributedMemory.class.getCanonicalName());
 	private static final int MAX_ITERATIONS = 20;
 	private BitVector[] addressMatrix;
 	private byte[][] contentsMatrix;
@@ -37,7 +39,7 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * 
 	 * @param a
 	 *            the address (hard locations) matrix
-	 *            
+	 * 
 	 * @param h
 	 *            the activation radius
 	 * @param counterMax
@@ -45,7 +47,8 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 * @param u
 	 *            the word size
 	 */
-	public QuickSparseDistributedMemory(BitVector[] a, int h, int counterMax, int u) {
+	public QuickSparseDistributedMemory(BitVector[] a, int h, int counterMax,
+			int u) {
 		// Memory's internal parameters
 		memorySize = a.length;
 		addressMatrix = a;
@@ -75,19 +78,20 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	}
 
 	/**
-	 * Stores a word in this sparse distributed memory using the word as address.
+	 * Stores a word in this sparse distributed memory using the word as
+	 * address.
 	 * 
 	 * @param wrd
 	 *            the word to be stored
 	 */
 	@Override
 	public void store(BitVector wrd) {
-		store(wrd,wrd);
-			}
+		store(wrd, wrd);
+	}
 
 	/**
-	 * Stores a word in this sparse distributed memory using the word as address.
-	 * The word is mapped (xor) with the mapping address.
+	 * Stores a word in this sparse distributed memory using the word as
+	 * address. The word is mapped (xor) with the mapping address.
 	 * 
 	 * @param wrd
 	 *            the word to be stored.
@@ -99,10 +103,11 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 		BitVector mapped = wrd.copy();
 		mapped.xor(mapping);
 		store(mapped);
-			}
+	}
+
 	/**
-	 * Stores a word in this sparse distributed memory using the word as address.
-	 * The word is mapped (xor) with the mapping address.
+	 * Stores a word in this sparse distributed memory using the word as
+	 * address. The word is mapped (xor) with the mapping address.
 	 * 
 	 * @param wrd
 	 *            the word to be stored.
@@ -110,11 +115,11 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	 *            the mapping address.
 	 */
 	@Override
-	public void mappedStore(BitVector wrd,BitVector addr, BitVector mapping) {
+	public void mappedStore(BitVector wrd, BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
-		store(wrd,mapped);
-			}
+		store(wrd, mapped);
+	}
 
 	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
@@ -143,12 +148,12 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	@Override
 	public BitVector retrieveIterating(BitVector addr) {
 
-		BitVector res=null;
+		BitVector res = null;
 		if (wordLength == addr.size()) {
 			for (int i = 1; i < MAX_ITERATIONS; i++) {
 				res = retrieve(addr);
 				if (res.equals(addr)) {
-					logger.log(Level.INFO,"number of iterations: "+i);
+					logger.log(Level.INFO, "number of iterations: " + i);
 					return res;
 				}
 				addr = res;
@@ -158,17 +163,15 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory{
 	}
 
 	@Override
-	public BitVector retrieveIterating(BitVector addr,BitVector mapping) {
+	public BitVector retrieveIterating(BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
 
-		BitVector res= retrieveIterating(mapped);
+		BitVector res = retrieveIterating(mapped);
 		res.xor(mapping);
 		return res;
 	}
 
-	
-	
 	private void actualizeCounters(int row, BitVector word) {
 		for (int j = 0; j != word.size(); j++) {
 			if (word.getQuick(j)) {

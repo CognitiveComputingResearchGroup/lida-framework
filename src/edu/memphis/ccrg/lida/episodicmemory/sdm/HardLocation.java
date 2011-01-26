@@ -12,31 +12,58 @@ import cern.colt.bitvector.BitVector;
 public interface HardLocation {
 
 	/**
-	 * @return the address
+	 * @return the address of this HardLocation
 	 */
 	public BitVector getAddress();
 
 	/**
+	 * Sets the address of this HardLocation in the vector Space
 	 * @param address the address to set
 	 */
 	public void setAddress(BitVector address);
 
 	/**
-	 * @return the counters
+	 * Returns the counters of this HardLocation 
+	 * Each HardLocation has wordSize counters. Each counter is byte size.
+	 * Couters are incremented or decremented when the memory is written.
+	 * @return the counters of this HardLocation 
 	 */
 	public byte[] getCounters();
 
+	/**
+	 * Sets the counters of this HardLocation 
+	 * Each HardLocation has wordSize counters. Each counter is byte size.
+	 * Couters are incremented or decremented when the memory is written.
+	 * @param newCounters
+	 */
 	public void setCounters(byte[] newCounters);
 
 	/**
-	 * @return the writes
+	 * @return the number of times that this HardLocation was written.
 	 */
-	public int getWrites();
+	public int getWriteCount();
 
+	/**
+	 * Writes BitVector word to this HardLocation.
+	 * For each bit in word, the corresponding counter is incremented if the bit is 1 or decremented if
+	 * the bit is 0.
+	 *  
+	 * @param word
+	 */
 	public void write(BitVector word);
 
-	public int[] read(int[] buff);
+	/**
+	 * This method reads this HardLocation and sums the reading vector to int[] buffer.
+	 * @param buffer
+	 * @return buffer
+	 */
+	public int[] read(int[] buffer);
 	
-	public int hamming(BitVector vector);
+	/**
+	 * Retuns the Hamming distance between vector and the address of this HardLocation
+	 * @param vector
+	 * @return the Hamming distance.
+	 */
+	public int hammingDistance(BitVector vector);
 
 }

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.util.VectorConverter;
 
 /**
  *

@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+//TODO consider having multiple NodeStructures as content
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
 	private final double DEFAULT_ACTIVATION_LOWER_BOUND = 0.01;

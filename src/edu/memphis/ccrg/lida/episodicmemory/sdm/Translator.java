@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 /**
  * Interface for the translator between boolean vectors in sparse distributed
  * memory, and node structures in the LIDA cognitive architecture.
- * @author Rodrigo Silva-Lugo <rsilval@acm.org>
+ * @author Rodrigo Silva-Lugo
  */
 public interface Translator {
 
@@ -22,18 +22,15 @@ public interface Translator {
 	 * Translates a boolean vector into a node structure.
 	 * @param data a byte vector with the boolean vector to be translated
 	 * @return the node structure associated with the address
-     * @throws Exception when the boolean vector is the wrong size
-	 */
-	public NodeStructure translate(BitVector data) throws Exception;
+ 	 */
+	public NodeStructure translate(BitVector data);
 
 	/**
 	 * Translates a node structure into a boolean vector.
 	 * @param structure the node structure to be translated
 	 * @return a byte vector with the boolean address associated with
-         * the structure
-         * @throws Exception when the node structure is the wrong size
+     * the structure
 	 */
-	public BitVector translate(NodeStructure structure)
-                throws Exception;
+	public BitVector translate(NodeStructure structure);
 
 }

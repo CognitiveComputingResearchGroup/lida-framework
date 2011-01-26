@@ -9,11 +9,17 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
 
+
+//TODO getRandomVector and Hamming are the only used methods
 public class BitVectorUtils {
 
-	public static BitVector getRandomVector(int size) {
-		BitVector v = new BitVector(size);
-		for (int i = 0; i < size; i++) {
+	/**
+	 * @param s The size of the new vector
+	 * @return a new random vector of size s.
+	 */
+	public static BitVector getRandomVector(int s) {
+		BitVector v = new BitVector(s);
+		for (int i = 0; i < s; i++) {
 			v.putQuick(i, Math.random() > .5);
 		}
 		return v;
@@ -31,8 +37,14 @@ public class BitVectorUtils {
 		return aux.cardinality();
 	}
 
-	public static BitVector noisyVector(BitVector orig, int noise) {
-		BitVector v = orig.copy();
+	/**
+	 * Returns a new vector based in the original with at most noise bits changed
+	 * @param original
+	 * @param noise
+	 * @return
+	 */
+	public static BitVector noisyVector(BitVector original, int noise) {
+		BitVector v = original.copy();
 		int size = v.size();
 		for (int i = 0; i < noise; i++) {
 			int pos = (int) (Math.random() * size);
@@ -41,6 +53,13 @@ public class BitVectorUtils {
 		return v;
 	}
 
+	/**
+	 * Adds BitVector v to int[] accum, first converting the bits of v with value 0 to -1.  
+	 * BitVector v is not modified.
+	 * @param accum the accumulation array.
+	 * @param v the vector to add
+	 * @return accum
+	 */
 	public static int[] sumVectors(int[] accum, BitVector v) {
 
 		for (int i = 0; i < v.size(); i++) {
@@ -61,6 +80,11 @@ public class BitVectorUtils {
 		return res;
 	}
 
+	/**
+	 * @param a
+	 * @param v
+	 * @return
+	 */
 	public static int[] substractVectors(int[] a, BitVector v) {
 		int[] res = new int[a.length];
 		for (int i = 0; i < a.length; i++) {

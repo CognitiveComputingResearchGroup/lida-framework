@@ -10,49 +10,58 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
+/**
+ * Implementation of Kanerva's sparse distributed memory. This implementation is
+ * based on the model described in P. Kanerva, "Sparse Distributed Memory and
+ * Related Models" in <i>Associative Neural Memories: Theory and Implementation
+ * </i>, pp. 50-76, Oxford University Press, 1993.
+ * 
+ * @author Javier Snaider
+ *
+ */
 public interface SparseDistributedMemory extends Saveable {
 
 	/**
-	 * Stores a word in the given address in this sparse distributed memory.
+	 * Stores word in the given address in this sparse distributed memory.
 	 * 
-	 * @param wrd
+	 * @param word
 	 *            the word to be stored
 	 * @param addr
 	 *            the address where the word is to be stored
 	 */
-	public void store(BitVector wrd, BitVector addr);
+	public void store(BitVector word, BitVector addr);
 
 	/**
-	 * Stores a word in this sparse distributed memory using the word as address.
+	 * Stores word in this sparse distributed memory using the word as address.
 	 * 
-	 * @param wrd
+	 * @param word
 	 *            the word to be stored
 	 */
-	public void store(BitVector wrd);
+	public void store(BitVector word);
 
 	/**
-	 * Stores a word in this sparse distributed memory using the word as address.
-	 * The word is mapped (xor) with the mapping address.
+	 * Stores word in this sparse distributed memory using the word as address.
+	 * The word is mapped (using XOR) with the mapping address.
 	 * 
-	 * @param wrd
+	 * @param word
 	 *            the word to be stored.
 	 * @param mapping
 	 *            the mapping address.
 	 */
-	public void mappedStore(BitVector wrd, BitVector mapping);
+	public void mappedStore(BitVector word, BitVector mapping);
 
 	/**
-	 * Stores a word in this sparse distributed memory using the word as address.
-	 * The word is mapped (xor) with the mapping address.
+	 * Stores word in this sparse distributed memory using the word as address.
+	 * The word is mapped (using XOR) with the mapping address.
 	 * 
-	 * @param wrd
+	 * @param word
 	 *            the word to be stored.
 	 * @param addr
 	 *            the address.
 	 * @param mapping
 	 *            the mapping address.
 	 */
-	public void mappedStore(BitVector wrd,BitVector addr, BitVector mapping);
+	public void mappedStore(BitVector word,BitVector addr, BitVector mapping);
 
 	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
@@ -67,15 +76,26 @@ public interface SparseDistributedMemory extends Saveable {
 
 	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
-	 * address. Iterates 
+	 * address iterating this process until result is equal to the address. 
+	 * 
 	 * 
 	 * @param addr
 	 *            the address of the contents to be retrieved
 	 * @return the contents of this sparse distributed memory associated with
-	 *         the given address
+	 *         the given address or null if the iteration did not converge
 	 */
 	public BitVector retrieveIterating(BitVector addr);
 
+	/**
+	 * 
+	 * Retrieves the contents of this SDM at addr.  addr is first mapped using mapping.  then
+	 * retrieve contents of this SDM with mapped address until result of retrieval is 
+	 * equal to address.  
+	 * @param addr
+	 * @param mapping
+	 * @return the contents of this sparse distributed memory associated with
+	 *         the given address or null if the iteration did not converge
+	 */
 	public BitVector retrieveIterating(BitVector addr,
 			BitVector mapping);
 

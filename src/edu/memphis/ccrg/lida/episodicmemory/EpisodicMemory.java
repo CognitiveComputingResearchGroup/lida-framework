@@ -20,7 +20,6 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * Specific implementations of episodic memories must implement
  * this interface. Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
- * @see MemoryCue
  * @author Rodrigo Silva L.
  */
 public interface EpisodicMemory extends LidaModule, Saveable {

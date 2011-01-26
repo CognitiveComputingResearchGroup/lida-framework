@@ -18,11 +18,14 @@ import cern.colt.bitvector.BitVector;
  * Related Models" in <i>Associative Neural Memories: Theory and Implementation
  * </i>, pp. 50-76, Oxford University Press, 1993.
  * 
+ * TODO Logging
+ * 
  * @author Javier Snaider
  */
 public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 
-	private static final Logger logger = Logger.getLogger(SparseDistributedMemoryImpl.class.getCanonicalName());
+	private static final Logger logger = Logger
+			.getLogger(SparseDistributedMemoryImpl.class.getCanonicalName());
 	private static final int MAX_ITERATIONS = 20;
 	private HardLocation[] hardlocations;
 	private int wordLength;
@@ -36,22 +39,25 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	 * 
 	 * @param memorySize
 	 *            the size of the memory
-	 * @param radious
+	 * @param radius
 	 *            the activation radius
 	 * @param wordLength
 	 *            the word size
 	 */
-	public SparseDistributedMemoryImpl(int memorySize, int radious, int wordLength) {
+	public SparseDistributedMemoryImpl(int memorySize, int radius,
+			int wordLength) {
 		// Memory's internal parameters
 		this.memorySize = memorySize;
-		activationRadius = radious;
+		activationRadius = radius;
 
 		this.wordLength = wordLength;
 		hardlocations = new HardLocation[memorySize];
-		for (int i =0; i<memorySize;i++){
-			hardlocations[i]=new HardLocationImpl(BitVectorUtils.getRandomVector(wordLength));
+		for (int i = 0; i < memorySize; i++) {
+			hardlocations[i] = new HardLocationImpl(BitVectorUtils
+					.getRandomVector(wordLength));
 		}
 	}
+
 	/**
 	 * Constructor of the class that receives all the parameters necessary for
 	 * this sparse distributed memory.
@@ -65,76 +71,98 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	 * @param addrLength
 	 *            the address size
 	 */
-	public SparseDistributedMemoryImpl(int memorySize, int radious, int wordLength, int addrLength) {
+	public SparseDistributedMemoryImpl(int memorySize, int radious,
+			int wordLength, int addrLength) {
 		this.activationRadius = radious;
 
 		this.addrLength = addrLength;
 		this.memorySize = memorySize;
 		this.wordLength = wordLength;
 		hardlocations = new HardLocation[memorySize];
-		for (int i =0; i<memorySize;i++){
-			hardlocations[i]=new HardLocationImpl(BitVectorUtils.getRandomVector(addrLength),wordLength);
+		for (int i = 0; i < memorySize; i++) {
+			hardlocations[i] = new HardLocationImpl(BitVectorUtils
+					.getRandomVector(addrLength), wordLength);
 		}
 	}
 
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#store(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #store(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
 	 */
 	@Override
 	public void store(BitVector wrd, BitVector addr) {
-
 		for (int i = 0; i < memorySize; i++) {
-			if (hardlocations[i].hamming(addr) <= activationRadius) {
+			if (hardlocations[i].hammingDistance(addr) <= activationRadius) {
 				hardlocations[i].write(wrd);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#store(cern.colt.bitvector.BitVector)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #store(cern.colt.bitvector.BitVector)
 	 */
 	@Override
 	public void store(BitVector wrd) {
-		store(wrd,wrd);
-			}
+		store(wrd, wrd);
+	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #mappedStore(cern.colt.bitvector.BitVector,
+	 * cern.colt.bitvector.BitVector)
 	 */
 	@Override
 	public void mappedStore(BitVector wrd, BitVector mapping) {
-		if(wrd.size()==addrLength){
-		BitVector mapped = wrd.copy();
-		mapped.xor(mapping);
-		store(mapped);
-		}else{
-			BitVector mapped = wrd.partFromTo(0, addrLength-1);
+		if (wrd.size() == addrLength) {
+			BitVector mapped = wrd.copy();
 			mapped.xor(mapping);
-			BitVector aux=wrd.copy();
-			aux.replaceFromToWith(0, addrLength-1, mapped, 0);
-			store(aux,mapped);
+			store(mapped);
+		} else {
+			BitVector mapped = wrd.partFromTo(0, addrLength - 1);
+			mapped.xor(mapping);
+			BitVector aux = wrd.copy();
+			aux.replaceFromToWith(0, addrLength - 1, mapped, 0);
+			store(aux, mapped);
 		}
-			}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#mappedStore(cern.colt.bitvector.BitVector,cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #mappedStore(cern.colt.bitvector.BitVector,cern.colt.bitvector.BitVector,
+	 * cern.colt.bitvector.BitVector)
 	 */
 	@Override
 	public void mappedStore(BitVector wrd, BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
-		store(wrd,mapped);
+		store(wrd, mapped);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieve(cern.colt.bitvector.BitVector)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #retrieve(cern.colt.bitvector.BitVector)
 	 */
 	@Override
 	public BitVector retrieve(BitVector addr) {
 		int[] buff = new int[wordLength];
 		for (int i = 0; i < memorySize; i++) {
-			if (hardlocations[i].hamming(addr) <= activationRadius) {
+			if (hardlocations[i].hammingDistance(addr) <= activationRadius) {
 				hardlocations[i].read(buff);
 			}
 		}
@@ -145,78 +173,87 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		return res;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieveIterating(cern.colt.bitvector.BitVector)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #retrieveIterating(cern.colt.bitvector.BitVector)
 	 */
 	@Override
 	public BitVector retrieveIterating(BitVector addr) {
-
-		BitVector res=null;
-			for (int i = 1; i < MAX_ITERATIONS; i++) {
-				res = retrieve(addr);
-				BitVector aux =res.partFromTo(0, addr.size()-1);
-				if (aux.equals(addr)) {
-					logger.log(Level.FINER,"number of iterations: "+i);
-					return res;
-				}
-				addr = aux;
+		BitVector res = null;
+		for (int i = 1; i < MAX_ITERATIONS; i++) {
+			res = retrieve(addr);
+			BitVector aux = res.partFromTo(0, addr.size() - 1);
+			//TODO hamming distance tolerance instead of strict equality
+			if (aux.equals(addr)) {
+				logger.log(Level.FINER, "number of iterations: " + i);
+				return res;
+			}
+			addr = aux;
 		}
-		return res;
+		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory#retrieveIterating(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
+	 * #retrieveIterating(cern.colt.bitvector.BitVector,
+	 * cern.colt.bitvector.BitVector)
 	 */
 	@Override
-	public BitVector retrieveIterating(BitVector addr,BitVector mapping) {
+	public BitVector retrieveIterating(BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();
 		mapped.xor(mapping);
 
-		BitVector res= retrieveIterating(mapped);
-		if (res.size()==addrLength){
-			res.xor(mapping);			
-		}else{
-		BitVector aux = res.partFromTo(0, addrLength-1);
-		aux.xor(mapping);
-		res.replaceFromToWith(0, addrLength-1, aux, 0);
+		BitVector res = retrieveIterating(mapped);
+		if (res.size() == addrLength) {
+			res.xor(mapping);
+		} else {
+			BitVector aux = res.partFromTo(0, addrLength - 1);
+			aux.xor(mapping);
+			res.replaceFromToWith(0, addrLength - 1, aux, 0);
 		}
 		return res;
 	}
 
-        @Override
-		public Object getState() {
-            BitVector[] addresses = new BitVector[memorySize];
-            byte[][] counters = new byte[memorySize][];
+	@Override
+	public Object getState() {
+		BitVector[] addresses = new BitVector[memorySize];
+		byte[][] counters = new byte[memorySize][];
 
-            for (int i = 0; i < memorySize; i++) {
-                addresses[i] = hardlocations[i].getAddress();
-                counters[i] = hardlocations[i].getCounters();
-            }
+		for (int i = 0; i < memorySize; i++) {
+			addresses[i] = hardlocations[i].getAddress();
+			counters[i] = hardlocations[i].getCounters();
+		}
 
-            Object[] state = new Object[2];
-            state[0] = addresses;
-            state[1] = counters;
+		Object[] state = new Object[2];
+		state[0] = addresses;
+		state[1] = counters;
 
-            return state;
-        }
-        @Override
-		public boolean setState(Object content) {
-            if (content instanceof Object[]) {
-                try {
-                    Object[] state = (Object[])content;
-                    BitVector[] addresses = (BitVector[])state[0];
-                    byte[][] counters = (byte[][])state[1];
-//                    BitVector bv;
-                    for (int i = 0; i < addresses.length; i++) {
-                        hardlocations[i].setAddress(addresses[i]);
-                        hardlocations[i].setCounters(counters[i]);
-                    }
-                    return true;
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-            return false;
-        }
+		return state;
+	}
+
+	@Override
+	public boolean setState(Object content) {
+		if (content instanceof Object[]) {
+			try {
+				Object[] state = (Object[]) content;
+				BitVector[] addresses = (BitVector[]) state[0];
+				byte[][] counters = (byte[][]) state[1];
+				// BitVector bv;
+				for (int i = 0; i < addresses.length; i++) {
+					hardlocations[i].setAddress(addresses[i]);
+					hardlocations[i].setCounters(counters[i]);
+				}
+				return true;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return false;
+	}
 }
