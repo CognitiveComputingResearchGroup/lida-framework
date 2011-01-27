@@ -55,7 +55,7 @@ public class LidaStarter {
 
 		Properties properties = ConfigUtils.loadProperties(propertiesPath);
 		start(properties);
-	}// method
+	}
 
 	/**
 	 * Load supplied properties

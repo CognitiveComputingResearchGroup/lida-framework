@@ -11,25 +11,38 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
- * This interface makes more sense if you look at the implementation of it
+ * A process which detects a pattern (feature) in {@link SensoryMemory} content and excites {@link PamNode}s 
+ * representing that pattern.
  * @author Javier Snaider
  * @see FeatureDetectorImpl
  */
 public interface FeatureDetector extends LidaTask {
 	
+	//TODO I think that this interface and implementation is confused.  
+	//it seems to both deal with only one node and also with multiple nodes.
+	
+	/**
+	 * Detects a feature.
+	 * @return value from 0.0 to 1.0 representing the degree to which the feature occurs.
+	 */
 	public double detect(); 
 	
 	/**
-	 * Get nodes that this detector is looking for.
+	 * Returns PamNodes this feature detector can access.
 	 */
 	public Collection<PamNode> getPamNodes();
 	
 	/**
-	 * 
+	 * Provides this feature detector with access to specified PamNode.
 	 */
 	public void addPamNode(PamNode node);
 	
+	/**
+	 * Excitate PAM some amount.
+	 * @param detectionActivation Amount ot excite.
+	 */
 	public void excitePam(double detectionActivation);
 }

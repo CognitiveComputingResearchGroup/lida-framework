@@ -163,7 +163,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements
 			}
 		}// for
 		return chosenBehav;
-	}// method
+	}
 
 	/**
 	 * @param behavior
@@ -179,7 +179,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements
 		} else {
 			return false;
 		}
-	}// method
+	}
 
 	@Override
 	public void receiveStream(Stream s) {
@@ -247,7 +247,7 @@ public class ActionSelectionImpl extends LidaModuleImpl implements
 	public void newBehaviorEvent(Collection<Behavior> behaviors) {
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
 			trigger.checkForTrigger(behaviors);
-	}// method
+	}
 
 	/**
 	 * Resets all triggers

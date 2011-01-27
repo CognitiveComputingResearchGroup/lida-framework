@@ -118,6 +118,7 @@ public interface NodeStructure {
 
 	public String getDefaultLinkType();
 
+	//TODO class??
 	public void setDefaultLink(String linkClassName);
 
 	public void setDefaultNode(String nodeClassName);

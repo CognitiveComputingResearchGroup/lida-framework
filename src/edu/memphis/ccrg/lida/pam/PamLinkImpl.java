@@ -7,99 +7,102 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamLinkImpl extends LinkImpl implements PamLink {
 	
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 	
-//	protected static final double MIN_ACTIVATION = 0.0;
-//	protected static final double MAX_ACTIVATION = 1.0;
-//	protected double selectionThreshold = 0.5;
-	protected double baseLevelActivation = 0.0;
+	private final Learnable learnable = new LearnableImpl();
 	
-	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
-	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
-
 	public PamLinkImpl() {
 		super();
-		super.groundingPamLink = this;
+		groundingPamLink = this;
 	}
 	
 	@Override
 	public double getTotalActivation(){
-		return getActivation() + baseLevelActivation;
+		return learnable.getTotalActivation();
 	}
 
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
-		if (baseLevelDecayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
-			synchronized(this){
-				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
-			}
-			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
-		}		
+		learnable.decayBaseLevelActivation(ticks);	
 	}
 
 	@Override
 	public double getBaseLevelActivation() {
-		return this.baseLevelActivation;
+		return learnable.getBaseLevelActivation();
 	}
 
 	@Override
 	public DecayStrategy getBaseLevelDecayStrategy() {
-		return this.baseLevelDecayStrategy;
+		return learnable.getBaseLevelDecayStrategy();
 	}
 
 	@Override
 	public ExciteStrategy getBaseLevelExciteStrategy() {
-		return this.baseLevelExciteStrategy;
+		return learnable.getBaseLevelExciteStrategy();
 	}
 
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
-		baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
+		learnable.reinforceBaseLevelActivation(amount);
 	}
 
 	@Override
 	public void setBaseLevelActivation(double amount) {
-		baseLevelActivation = amount;
+		learnable.setBaseLevelActivation(amount);
 	}
 
 	@Override
 	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
-		baseLevelDecayStrategy = strategy;
+		learnable.setBaseLevelDecayStrategy(strategy);
 	}
 
 	@Override
 	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
-		baseLevelExciteStrategy = strategy;		
+		learnable.setBaseLevelExciteStrategy(strategy);		
 	}	
 	
 	@Override
-	public String getFactoryLinkType() {
-		return PamLinkImpl.class.getSimpleName();
-	}
-
-	private double baseLevelExcitation;
-	
-	@Override
 	public double getBaseLevelExcitation() {
-		return baseLevelExcitation;
+		return learnable.getBaseLevelExcitation();
 	}
 
 	@Override
 	public void setBaseLevelExcitation(double excitation) {
-		baseLevelExcitation = excitation;
+		learnable.setBaseLevelExcitation(excitation);
+	}
+	
+	//TODO double check
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof PamLinkImpl))
+			return false;
+		PamLinkImpl l = (PamLinkImpl) obj;
+		return getExtendedId().equals(l.getExtendedId());
+	}
+	@Override
+	public int hashCode() { 
+	    return getExtendedId().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return PamLinkImpl.class.getSimpleName() +  " " + getSource().getLabel() + " " + getSink().getLabel();
+	}
+	
+	@Override
+	public String getFactoryLinkType() {
+		return PamLinkImpl.class.getSimpleName();
 	}
 	
 }

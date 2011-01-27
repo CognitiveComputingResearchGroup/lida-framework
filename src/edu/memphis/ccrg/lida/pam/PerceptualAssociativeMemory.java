@@ -15,6 +15,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -159,7 +160,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Propagates activation from a PamNode to its parents
 	 * @param pamNode The PamNode to propagate activation from.
 	 */
-	public void sendActivationToParents(PamNode pamNode);
+	public void propagateActivationToParents(PamNode pamNode);
 	
 	/**
 	 * Add a PamNode to the percept
@@ -202,26 +203,63 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public boolean containsLink(ExtendedId id);
 	
 	/**
+	 * Sets perceptThreshold
+	 * @param t threshold for a {@link Linkable} to become part of the percept
+	 */
+	public void setPerceptThreshold(double t);
+	
+	/**
+	 * Gets perceptThreshold
+	 * @return threshold for a {@link Linkable} to become part of the percept
+	 */
+	public double getPerceptThreshold();
+	
+	/**
+	 * Sets upscaleFactor
+	 * @param f scale factor for feed-forward activation propagation
+	 */
+	public void setUpscaleFactor(double f);
+	
+	/**
+	 * Gets upscaleFactor
+	 * @return scale factor for feed-forward activation propagation
+	 */
+	public double getUpscaleFactor();
+	
+	/**
+	 * Sets downscaleFactor 
+	 * @param f scale factor for top-down activation propagation
+	 */
+	public void setDownscaleFactor(double f);
+
+	/**
+	 * Gets downscaleFactor
+	 * @return scale factor for top-down activation propagation
+	 */
+	public double getDownscaleFactor();
+	
+	/**
 	 * Returns whether PamLinkable is above percept threshold.
 	 * @param l a PamLinkable
 	 * @return true if PamLinkable's total activation is above percept threshold 
 	 */
 	public boolean isOverPerceptThreshold(PamLinkable l);
 	
-	//TODO immutable nodes?
 	/**
-	 * Returns {@link Node} from this Pam with specified id. 
+	 * Returns a copy of {@link PamNode} with specified id from this PAM or null. 
 	 */
 	public Node getPamNode(int id);
+	
+	/**
+	 * 
+	 * @param id
+	 * @return Copy of {@link PamLink} with specified id from this PAM or null. 
+	 */
+	public Link getPamLink(ExtendedId id);
 	
 	/**
 	 * Returns an unmodifiable collection of the {@link PamNode}s in this PAM as {@link Node}s.
 	 */
 	public Collection<Node> getPamNodes();
-	
-	/**
-	 * Get {@link FeatureDetector}s running for this PAM.
-	 */
-	public Collection<FeatureDetector> getFeatureDetectors();
-	
+		
 } 

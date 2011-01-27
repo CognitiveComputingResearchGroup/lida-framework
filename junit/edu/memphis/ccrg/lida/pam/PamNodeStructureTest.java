@@ -245,7 +245,7 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#decayLinkables(long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#decayNodeStructure(long)}.
 	 */
 	@Test
 	public void testDecayNodes() {
@@ -257,7 +257,7 @@ public class PamNodeStructureTest extends TestCase{
 		Node nodeB= nodeStructure2.addNode(node2);		
 		nodeStructure2.setNodesDecayStrategy(ds);
 		
-		nodeStructure2.decayLinkables(100);
+		nodeStructure2.decayNodeStructure(100);
 		
 		assertTrue("Problem with DecayNodes "+ nodeA,(nodeA.getActivation()<0.7));
 		assertTrue("Problem with DecayNodes "+ nodeB,(nodeB.getActivation()<0.6));

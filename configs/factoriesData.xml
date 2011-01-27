@@ -27,7 +27,7 @@
   <links>
     <link name="link">
       <class>edu.memphis.ccrg.lida.framework.shared.LinkImpl</class>
-      <defaultstrategy>defaultExcite</defaultstrategy>
+      <defaultstrategy>defaultExcite</defaultstrategy>      <!--  ???? -->
     </link>
   </links>
   <codelets>

@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Map;
 
 /**
- * A behavior that calculates a new activation to pass.
+ * A behavior that calculates the amount of activation to propagate.
  * 
  * @author Ryan J. McCall
  */

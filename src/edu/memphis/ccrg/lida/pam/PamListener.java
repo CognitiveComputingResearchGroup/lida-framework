@@ -13,28 +13,30 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * A PamListener receives percepts from Pam asynchronously
- * @author Ryan J. McCall
+ * A PamListener receives content (percepts) from PAM asynchronously.
  * 
+ * Should return as possible in order to not delay transmitting module.
+ * A good implementation of this would be to spawn a new task to process the received content.
+ * @author Ryan J. McCall
  */
 public interface PamListener extends ModuleListener{
+	
 	/**
-	 * This method should return as possible in order to 
-	 * no delay the rest of the broadcasting.
-	 * A good implementation should just store the content in a buffer and return.
+	 * Receive a {@link NodeStructure}
 	 * @param ns a NodeStructure
 	 */
 	public void receiveNodeStructure(NodeStructure ns);
 	
 	/**
-	 * Same as above for a single node.
-	 * @param node sent node
+	 * Receive a {@link Node}
+	 * @param n a Node
 	 */
-	public void receiveNode(Node node);
+	public void receiveNode(Node n);
 	
 	/**
-	 * Same as above for a single link.
-	 * @param l sent link
+	 * Receive a {@link Link}
+	 * @param l a Link
 	 */
 	public void receiveLink(Link l);
+	
 }

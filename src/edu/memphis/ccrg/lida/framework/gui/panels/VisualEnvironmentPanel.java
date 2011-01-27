@@ -113,6 +113,6 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 			}
 		}
 		return res;
-	}// method
+	}
  
 }

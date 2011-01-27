@@ -19,20 +19,33 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
-//TODO consider having multiple NodeStructures as content
+/**
+ * {@link WorkspaceBuffer} implementation. Uses a single NodeStructure for the content.
+ * @author Ryan J. McCall
+ */
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
+	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
+		
 	private final double DEFAULT_ACTIVATION_LOWER_BOUND = 0.01;
 
-	private double activationLowerBound;
+	private double activationLowerBound = DEFAULT_ACTIVATION_LOWER_BOUND;
 	
-	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
-	
+	//TODO consider having multiple NodeStructures as content
 	private NodeStructure bufferContent;
 	
 	public WorkspaceBufferImpl() {
 		bufferContent = new NodeStructureImpl();
-		activationLowerBound = DEFAULT_ACTIVATION_LOWER_BOUND;
+	}
+	
+	@Override
+	public void setLowerActivationBound(double activationLowerBound) {
+		if(activationLowerBound < 0){
+			logger.log(Level.WARNING, "Lower bound must be non-negative.  Parameter not set.", 
+					LidaTaskManager.getCurrentTick());
+		}else{
+			this.activationLowerBound = activationLowerBound;
+		}
 	}
 
 	@Override
@@ -58,16 +71,6 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 			}
 		}		
 	}
-
-	@Override
-	public void setLowerActivationBound(double activationLowerBound) {
-		if(activationLowerBound < 0){
-			logger.log(Level.WARNING, "Lower bound must be non-negative.  Parameter not set.", 
-					LidaTaskManager.getCurrentTick());
-		}else{
-			this.activationLowerBound = activationLowerBound;
-		}
-	}
 	
 	@Override
 	public void addListener(ModuleListener listener) {
@@ -76,5 +79,6 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 
 	@Override
 	public void init() {
+		//Not used
 	}
 }

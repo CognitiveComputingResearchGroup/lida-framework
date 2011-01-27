@@ -201,6 +201,6 @@ public class TaskQueuePanel extends LidaPanelImpl {
 			// Iterating over a shared Collection during the call to 'toArray'
 			((AbstractTableModel) tasksTable.getModel()).fireTableStructureChanged();
 		}
-	}// method
+	}
 
 }// class

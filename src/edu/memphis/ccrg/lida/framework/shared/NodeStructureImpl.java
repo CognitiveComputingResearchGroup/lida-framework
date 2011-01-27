@@ -367,7 +367,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public void removeLink(Link l) {
 		removeLinkable(l);
-	}// method
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -422,7 +422,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 				sinkLinks.remove(aux);
 		}
 
-	}// method
+	}
 	@Override
 	public void removeLinkable(ExtendedId id) {
 		if(id.isNode()){
@@ -470,7 +470,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		else
 			return Collections.unmodifiableSet(aux); // This returns the
 		// set of Links but it prevents to be modified
-	}// method
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -490,7 +490,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 			}// for each link
 		}// result != null
 		return result;
-	}// method
+	}
 	
 	@Override
 	public Set<Link> getLinks(LinkCategory category) {
@@ -518,7 +518,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		else
 			return Collections.unmodifiableCollection(aux);
 
-	}// method
+	}
 
 	/**
 	 * 
@@ -579,7 +579,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}// for
 
 		return result;
-	}// method
+	}
 
 	@Override
 	public void clearLinks(){

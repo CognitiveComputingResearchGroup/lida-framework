@@ -160,7 +160,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		FeatureDetector detector = new BasicDetector(pamNode,sem,pam);
 		
 		pam.addFeatureDetector(detector);
-		assertTrue("Problem with AddFeatureDetector",pam.getFeatureDetectors().contains(detector));
+		assertTrue("Problem with AddFeatureDetector",pam.getAssistingTaskSpawner().containsTask(detector));
 	}
 
 	
@@ -227,7 +227,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#sendActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)}.
 	 */
 	@Test
 	public void testSendActivationToParentsOf() {

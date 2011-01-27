@@ -265,7 +265,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private void runTriggers() {
 		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
 			trigger.checkForTrigger(getBehaviors());
-	}// method
+	}
 
 	/**
 	 * Resets all triggers
@@ -372,7 +372,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				}
 			}
 		}
-	}// method
+	}
 
 	private Set<Behavior> getSuccessors(Node addProposition) {
 		return behaviorsByContextCondition.get(addProposition);
@@ -431,7 +431,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				}// for each conflictor
 			}
 		}// for
-	}// method
+	}
 
 	private Set<Behavior> getConflictors(Node condition) {
 		return behaviorsByDeletingItem.get(condition);
@@ -440,7 +440,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private void auxSpreadConflictorActivation(Behavior behavior,
 			Behavior conflictor) {
 		conflictorExciteStrategy.exciteBehavior(behavior, conflictor);
-	}// method
+	}
 
 	/**
 	 * For each proposition in the current broadcast get the behaviors indexed
@@ -463,7 +463,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				}
 			}
 		}// for
-	}// method
+	}
 
 	/**
 	 * @param broadcastNode

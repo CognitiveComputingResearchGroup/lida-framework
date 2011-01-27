@@ -62,7 +62,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		 contentEvent.setContent(environContent);
 		 sendContentEvent(contentEvent);
 		 logger.log(Level.FINE, "Environment Reseted",0L);
-	}// method
+	}
 
 	// ************Specific methods**************
 	private final double MIN_VALUE = 0.0;
@@ -76,28 +76,28 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 			jloc = resetLocation;
 		createFrame(iloc, jloc);
 		jloc++;
-	}// method
+	}
 
 	private void getNextMoveLeft() {
 		if (jloc == imageWidth + 2)
 			jloc = resetLocation;
 		createFrame(iloc, imageWidth - 1 - jloc);
 		jloc++;
-	}// method
+	}
 
 	private void getNextMoveUp() {
 		if (iloc == imageWidth + 2)
 			iloc = resetLocation;
 		createFrame(imageHeight - 1 - iloc, jloc);
 		iloc++;
-	}// method
+	}
 
 	private void getNextMoveDown() {
 		if (iloc == imageWidth + 2)
 			iloc = resetLocation;
 		createFrame(iloc, jloc);
 		iloc++;
-	}// method
+	}
 
 	private void createFrame(int i, int j) {
 		environContent = new double[imageHeight][imageWidth];
@@ -159,7 +159,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 			res += "\n";
 		}
 		return res;
-	}// method
+	}
 	
 	private List<FrameworkGuiEventListener> frameworkGuis = new ArrayList<FrameworkGuiEventListener>();
 

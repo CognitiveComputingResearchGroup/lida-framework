@@ -36,11 +36,15 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	private double nodeRemovalThreshold = 0.01;
 	
 	public PamNodeStructureImpl(){
-		super("PamNodeImpl", "PamLinkImpl");
+		super(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 	}
 
 	public PamNodeStructureImpl(String defaultPamNode, String defaultLink) {
 		super(defaultPamNode, defaultLink);
+	}
+	
+	public PamNodeStructureImpl(PamNodeStructure pns){
+		super(pns);
 	}
 
 	/* (non-Javadoc)
@@ -66,7 +70,7 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	 * @see edu.memphis.ccrg.lida.pam.PamNodeStructure#getParentsAndConnectingLinksOf(edu.memphis.ccrg.lida.framework.shared.Node)
 	 */
 	@Override
-	public Map<PamNode, PamLink> getParentsAndConnectingLinksOf(Node n){
+	public Map<PamNode, PamLink> getParentsWithLinks(PamNode n){
 		Map<PamNode, PamLink> results = new HashMap<PamNode, PamLink>();
 		Set<Link> candidateLinks = getLinkableMap().get(n);
 		if(candidateLinks != null){
@@ -84,7 +88,7 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	 * @see edu.memphis.ccrg.lida.pam.PamNodeStructure#decayLinkables(long)
 	 */
 	@Override
-	public void decayLinkables(long ticks){
+	public void decayNodeStructure(long ticks){
 		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getCurrentTick());
 		for(Linkable l: getLinkables()){
 			Learnable la = (Learnable) l;

@@ -2,15 +2,14 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
-public interface PamNodeStructure {
+public interface PamNodeStructure extends NodeStructure{
 	
-	//TODO set excite strategies for links too?
-
+	//TODO is there a better way to manage the strategies of the PamNodeStructure?
+	//If yes then create 2 for links and move into NodeStructure
 	/**
 	 * Set the excite behavior for all nodes
 	 */
@@ -24,15 +23,20 @@ public interface PamNodeStructure {
 
 	/**
 	 * When you excite the parents of a node you might want to excite the connecting links too.
-	 * Thus this method find the parents and all the links between supplied node and them
+	 * Thus this method Finds and returns the parents of specified Node with all of 
+	 * the links between them.
 	 * @param n supplied node
 	 * @return map of parents and links connecting node to them
 	 */
-	public Map<PamNode, PamLink> getParentsAndConnectingLinksOf(Node n);
+	public Map<PamNode, PamLink> getParentsWithLinks(PamNode n);
 
 	/**
-	 * Decay the {@link Linkable}s of this {@link PamNodeStructure}
+	 * TODO abstract to NodeStructure?
+	 *then workspace buffer doesn't need to do it.
+	 *both of these classes have nodeRemovalThreshold so this would simplify
+	 *
+	 * Decay this {@link PamNodeStructure}
 	 */
-	public void decayLinkables(long ticks);
+	public void decayNodeStructure(long ticks);
 
 }

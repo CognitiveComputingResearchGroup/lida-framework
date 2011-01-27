@@ -88,7 +88,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			t.start();
 		}
 
-	}// method
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -107,12 +107,12 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		} else {
 			return false;
 		}
-	}// method
+	}
 
 	private void newCoalitionEvent() {
 		for (BroadcastTrigger trigger : broadcastTriggers)
 			trigger.checkForTrigger(coalitions);
-	}// method
+	}
 
 	/**
 	 * This method realizes the broadcast. First it chooses the winner
@@ -129,7 +129,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		if (broadcastStarted.compareAndSet(false, true)) {
 			sendBroadcast();
 		}
-	}// method
+	}
 
 	private void sendBroadcast() {
 		logger.log(Level.FINE, "Triggering broadcast",
@@ -164,7 +164,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			}
 		}// for
 		return chosenCoal;
-	}// method
+	}
 
 	private void resetTriggers() {
 		for (BroadcastTrigger t : broadcastTriggers) {

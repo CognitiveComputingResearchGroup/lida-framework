@@ -177,5 +177,9 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		}
 		return value;
 	}
+	@Override
+	public boolean containsTask(LidaTask t) {
+		return runningTasks.contains(t);
+	}
 
 }// class

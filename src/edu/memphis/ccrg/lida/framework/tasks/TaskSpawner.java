@@ -57,5 +57,12 @@ public interface TaskSpawner extends Initializable {
 	 * @return collection
 	 */
 	public Collection<LidaTask> getRunningTasks();
+
+	/**
+	 * Returns whether this TaskSpawner manages this task
+	 * @param t a LidaTask
+	 * @return True if this taskspawner contains a task with t's id
+	 */
+	public boolean containsTask(LidaTask t);
 	
 }

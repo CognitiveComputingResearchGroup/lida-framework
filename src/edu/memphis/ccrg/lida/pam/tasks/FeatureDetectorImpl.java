@@ -84,9 +84,9 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 					.getCurrentTick());
 			excitePam(amount);
 		}
-	}// method
+	}
 
-	/**
+	/*
 	 * Override this method for domain-specific feature detection
 	 */
 	@Override
@@ -104,4 +104,4 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		return "Feature Detector [" + getTaskId() + "] ";
 	}
 
-}// class
+}

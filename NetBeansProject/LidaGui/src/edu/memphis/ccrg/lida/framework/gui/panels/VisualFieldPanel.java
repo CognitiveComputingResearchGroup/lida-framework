@@ -94,6 +94,6 @@ public class VisualFieldPanel extends  LidaPanelImpl implements FrameworkGuiEven
 			}
 		}
 		return res;
-	}// method
+	}
 
 }

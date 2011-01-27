@@ -7,35 +7,20 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
 	
-//	protected static final double MIN_ACTIVATION = 0.0;
-//	protected static final double MAX_ACTIVATION = 1.0;
-//	
-//	/** Activation required for node to be part of the percept.
-//	 *  Bounded by minActivation and maxActivation
-//	 */
-//	protected double selectionThreshold = 0.9;
-	
-	/**
-	 * 
-	 */
-	protected double baseLevelActivation = 0.0;
-	
-	private DecayStrategy baseLevelDecayStrategy = new LinearDecayStrategy();
-	private ExciteStrategy baseLevelExciteStrategy = new DefaultExciteStrategy();
+	private final Learnable learnable = new LearnableImpl();
 	
 	public PamNodeImpl() {
 		super();
@@ -44,48 +29,63 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 
 	public PamNodeImpl(PamNodeImpl p) {
 		super(p);
-//		selectionThreshold = p.selectionThreshold;
-		baseLevelActivation = p.baseLevelActivation;
 	}
 	
-//	/**
-//	  * Determines if this node is relevant. A node is relevant if its total
-//	  * activation is greater or equal to the selection threshold.
-//	  * 
-//	  * @return     <code>true</code> if this node is relevant
-//	  */
-//	public boolean isOverThreshold() {
-//	    return getTotalActivation() >= selectionThreshold;
-//	}
-//
-//	/**
-//	 * @param threshold amount needed to enter percept 
-//	 */
-//	public void setPerceptThreshold(double threshold) {
-//		selectionThreshold = threshold;
-//	}
-//
-//	/**
-//	 * returns selection threshold
-//	 * @return Selection threshold
-//	 */
-//	public double getPerceptThreshold() {
-//	    return selectionThreshold;
-//	}
+	@Override
+	public double getTotalActivation(){
+		return learnable.getTotalActivation();
+	}
 
 	@Override
-	public double getTotalActivation() {
-	    return getActivation() + baseLevelActivation;
+	public void decayBaseLevelActivation(long ticks) {
+		learnable.decayBaseLevelActivation(ticks);	
 	}
 
-//	public double getMaxActivation() {
-//		return MAX_ACTIVATION;
-//	}
-//
-//	public double getMinActivation() {
-//		return MIN_ACTIVATION;
-//	}
+	@Override
+	public double getBaseLevelActivation() {
+		return learnable.getBaseLevelActivation();
+	}
+
+	@Override
+	public DecayStrategy getBaseLevelDecayStrategy() {
+		return learnable.getBaseLevelDecayStrategy();
+	}
+
+	@Override
+	public ExciteStrategy getBaseLevelExciteStrategy() {
+		return learnable.getBaseLevelExciteStrategy();
+	}
+
+	@Override
+	public void reinforceBaseLevelActivation(double amount) {
+		learnable.reinforceBaseLevelActivation(amount);
+	}
+
+	@Override
+	public void setBaseLevelActivation(double amount) {
+		learnable.setBaseLevelActivation(amount);
+	}
+
+	@Override
+	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
+		learnable.setBaseLevelDecayStrategy(strategy);
+	}
+
+	@Override
+	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
+		learnable.setBaseLevelExciteStrategy(strategy);		
+	}	
 	
+	@Override
+	public double getBaseLevelExcitation() {
+		return learnable.getBaseLevelExcitation();
+	}
+
+	@Override
+	public void setBaseLevelExcitation(double excitation) {
+		learnable.setBaseLevelExcitation(excitation);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof PamNodeImpl))
@@ -100,70 +100,11 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 
 	@Override
 	public String toString() {
-		return getId() + " total activation: " + getTotalActivation();	
+		return PamNodeImpl.class.getSimpleName() +  " " + getLabel() + " " + getId();
 	}
 	
-	@Override
-	public void decayBaseLevelActivation(long ticks) {
-		if (baseLevelDecayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
-			synchronized(this){
-				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
-			}
-			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
-		}		
-	}
-
-	@Override
-	public double getBaseLevelActivation() {
-		return this.baseLevelActivation;
-	}
-
-	@Override
-	public DecayStrategy getBaseLevelDecayStrategy() {
-		return this.baseLevelDecayStrategy;
-	}
-
-	@Override
-	public ExciteStrategy getBaseLevelExciteStrategy() {
-		return this.baseLevelExciteStrategy;
-	}
-
-	@Override
-	public void reinforceBaseLevelActivation(double amount) {
-		baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
-	}
-
-	@Override
-	public void setBaseLevelActivation(double amount) {
-		baseLevelActivation = amount;
-	}
-
-	@Override
-	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
-		baseLevelDecayStrategy = strategy;
-	}
-
-	@Override
-	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
-		baseLevelExciteStrategy = strategy;		
-	}
-
 	@Override
 	public String getFactoryNodeType() {
 		return PamNodeImpl.class.getSimpleName();
 	}
-	
-	private double baseLevelExcitation;
-	
-	@Override
-	public double getBaseLevelExcitation() {
-		return baseLevelExcitation;
-	}
-
-	@Override
-	public void setBaseLevelExcitation(double excitation) {
-		baseLevelExcitation = excitation;
-	}
-	
 }

@@ -24,5 +24,5 @@ public interface WorkspaceBuffer extends LidaModule{
 	 * @param lowerActivationBound lower bound for the amount of activation
 	 * a node or link must have to remain in the buffer.
 	 */
-	public void setLowerActivationBound (double lowerActivationBound);
+	public void setLowerActivationBound(double lowerActivationBound);
 }

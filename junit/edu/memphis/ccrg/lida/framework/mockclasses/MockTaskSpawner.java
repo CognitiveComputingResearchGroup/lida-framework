@@ -65,5 +65,11 @@ public class MockTaskSpawner implements TaskSpawner {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean containsTask(LidaTask t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

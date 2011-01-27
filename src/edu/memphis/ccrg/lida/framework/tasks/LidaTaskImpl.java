@@ -255,4 +255,14 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 	}	
 	
+	public boolean equals(Object o){
+		if(o instanceof LidaTaskImpl){
+			return taskID == ((LidaTaskImpl) o).getTaskId();
+		}
+		return false;
+	}
+	public int hashCode(){
+		return (int) taskID;
+	}
+	
 }

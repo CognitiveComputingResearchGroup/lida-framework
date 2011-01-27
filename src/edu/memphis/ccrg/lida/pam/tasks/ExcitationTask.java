@@ -75,13 +75,12 @@ public class ExcitationTask extends LidaTaskImpl{
 		if(pam.isOverPerceptThreshold(pamLinkable)){
 			//If over threshold then spawn a new task to add the node to the percept
 			AddToPerceptTask task;
-			
 			if(pamLinkable instanceof PamNode){
 				PamNode pamNode = (PamNode) pamLinkable;
 				task = new AddToPerceptTask(pamNode, pam);
 				taskSpawner.addTask(task);
 				//Tell PAM to propagate the activation of pamNode to its parents
-				pam.sendActivationToParents(pamNode);
+				pam.propagateActivationToParents(pamNode);
 			}else if(pamLinkable instanceof PamLink){
 				task = new AddToPerceptTask((PamLink) pamLinkable, pam);
 				taskSpawner.addTask(task);
@@ -90,7 +89,7 @@ public class ExcitationTask extends LidaTaskImpl{
 			}
 		}else if(pamLinkable instanceof PamNode){
 			//TODO what if its an instanceof PamLink?
-			pam.sendActivationToParents((PamNode) pamLinkable);
+			pam.propagateActivationToParents((PamNode) pamLinkable);
 		}
 		
 		this.setTaskStatus(LidaTaskStatus.FINISHED);

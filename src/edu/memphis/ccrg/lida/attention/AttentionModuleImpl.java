@@ -92,7 +92,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		return codelet;
-	}// method
+	}
 	
 	public void runAttentionCodelet(AttentionCodelet codelet){
 		taskSpawner.addTask(codelet);
