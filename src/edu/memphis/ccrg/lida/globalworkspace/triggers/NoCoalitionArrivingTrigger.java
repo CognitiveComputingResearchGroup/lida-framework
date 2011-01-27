@@ -8,13 +8,15 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import java.util.Set;
+import java.util.TimerTask;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 
 /**
  * 
- * This trigger fires when x ms has passed w/o a new broadcast.
+ * This trigger fires when 'delay' ms has passed without a new broadcast.
  * Check the parent class NoBroadcastTrigger for full understanding.
  * 
  * @author Javier Snaider
@@ -23,13 +25,14 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	
 	/**
-	 * Every time a new coalition is added 'checkForTrigger' is called for each trigger.
-	 * In the case of this trigger the 'reset()' method inherited from NoBroadcastTrigger
-	 * is called which resets the timer task object.  
+	 * Called each time a new coalition is added to the {@link GlobalWorkspace} each {@link BroadcastTrigger}'s 
+	 * 'checkForTrigger' method is called.
+	 * In the case of this trigger the 'reset()' method inherited from {@link NoBroadcastOccurringTrigger}
+	 * is called which resets the {@link TimerTask} object.  
 	 * 
-	 * So this trigger fires when x ms has passed w/o a new broadcast. 
+	 * Thus this trigger fires when 'delay' ms has passed w/o a new broadcast. 
 	 * 
-	 * @param coalitions Coalitions trigger will check
+	 * @param coalitions {@link Coalition}s that will be checked.
 	 */
 	public void checkForTrigger(Set<Coalition> coalitions, double maxActivation) {
 		reset();

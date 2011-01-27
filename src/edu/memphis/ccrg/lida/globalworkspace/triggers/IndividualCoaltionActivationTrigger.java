@@ -23,6 +23,10 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActivationTrigger {
 	private Logger logger = Logger.getLogger(IndividualCoaltionActivationTrigger.class.getCanonicalName());
 	
+	/**
+	 * Triggers a broadcast if any {@link Coalition} has activation over threshold.
+	 * @param coallitions
+	 */
 	public void checkForTrigger(Set<Coalition> coallitions) {
 		for(Coalition c:coallitions){
 			if(c.getActivation()>threshold){

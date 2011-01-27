@@ -15,21 +15,25 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
  * Modules that need to receive Broadcast must implement this interface. It will receive each 
- * Broadcast Content that will be sent by the GlobalWrokspace.
+ * BroadcastContent that will be sent by the GlobalWrokspace.
  * 
  * @author Javier Snaider
  * 
  */
 public interface BroadcastListener extends ModuleListener{
 	/**
-	 * This method should return as possible in order to no delay the rest of the broadcasting.
+	 * This method should return as possible in order to not delay the rest of the broadcasting.
 	 * A good implementation should copy the broadcast content and create a task to process it.
 	 * @param bc the Content of the Broadcast
 	 */
 	public void receiveBroadcast(BroadcastContent bc);
 	
 	/**
-	 * Theory says receivers of the broadcast should learn from it.
+	 * This is a placeholder method to remind implementing classes that 
+	 * they should implement learning. LIDA theory says receivers of the broadcast 
+	 * should learn from it.
+	 * This method will not be called directly by {@link GlobalWorkspace} 
+	 * but should be managed by the receiving module.
 	 */
 	public void learn(BroadcastContent bc);
 	

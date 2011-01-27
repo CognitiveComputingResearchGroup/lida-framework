@@ -19,14 +19,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
-import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -35,9 +33,9 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of
- * Coalitions. It supports triggers that are in charge to trigger the new
- * broadcast. Triggers should implement Trigger interface. This class maintains
- * a list of broadcastListeners. These are the modules (classes) that need to
+ * {@link Coalition}s. It supports {@link BroadcastTrigger}s that are in charge of triggering
+ *  the new broadcast. Triggers should implement {@link BroadcastTrigger} interface. This class maintains
+ * a list of {@link BroadcastListener}s. These are the modules that need to
  * receive broadcast content.
  * 
  * @author Javier Snaider
@@ -48,6 +46,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 
 	private static final Logger logger = Logger
 			.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
+	private static final double LOWER_ACTIVATION_BOUND = 0.0;
 
 	public GlobalWorkspaceImpl() {
 		super(ModuleName.GlobalWorkspace);
@@ -82,14 +81,6 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		broadcastTriggers.add(t);
 	}
 
-	@Override
-	public void start() {
-		for (BroadcastTrigger t : broadcastTriggers) {
-			t.start();
-		}
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -111,17 +102,19 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 
 	private void newCoalitionEvent() {
 		for (BroadcastTrigger trigger : broadcastTriggers)
-			trigger.checkForTrigger(coalitions);
+			trigger.checkForTriggerCondition(coalitions);
 	}
 
 	/**
 	 * This method realizes the broadcast. First it chooses the winner
-	 * coalition. Then, all registered BroadcastListeners receive a reference
-	 * SEEEEE to the coalition content.
-	 * 
-	 * this method is supposed to be called from Triggers. All triggers are
-	 * reseted, reset() method is invoked on each of them. The coalition pool is
-	 * cleared.
+	 * coalition. Then, all registered {@link BroadcastListener}s receive a reference
+	 * to the coalition content.
+	 * The winning Coalition is removed from the pool.
+	 * Broadcast recipients must return as soon as possible in order to not 
+	 * delay the rest of the broadcasting. A good implementation should copy the broadcast 
+	 * content and create a task to process it.
+	 * This method is supposed to be called from {@link BroadcastTrigger}s. 
+	 * The reset() method is invoked on each trigger at the end of this method.
 	 * 
 	 */
 	@Override
@@ -137,16 +130,14 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
 			coalitions.remove(coal);
-		}
-
-		if (coal != null) {
 			NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
+			//TODO Create LidaTask for parallel processing 
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
-			FrameworkGuiEvent ge = new TaskCountEvent(
-					ModuleName.GlobalWorkspace, coalitions.size() + "");
-			sendEventToGui(ge);
+//			FrameworkGuiEvent ge = new TaskCountEvent(
+//					ModuleName.GlobalWorkspace, coalitions.size() + "");
+//			sendEventToGui(ge);
 		}
 		logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
 				LidaTaskManager.getCurrentTick());
@@ -186,7 +177,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	private void decay(long ticks) {
 		for (Coalition c : coalitions) {
 			c.decay(ticks);
-			if (c.getActivation() <= 0.0) {
+			if (c.getActivation() <= LOWER_ACTIVATION_BOUND) {
 				coalitions.remove(c);
 				logger.log(Level.FINE, "Coallition removed",
 						LidaTaskManager.getCurrentTick());
@@ -200,19 +191,10 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	}
 
 	@Override
-	public LidaModule getSubmodule(ModuleName type) {
-		return null;
-	}
-
-	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
 		decay(ticks);
 		logger.log(Level.FINEST, "Coallitions Decayed", LidaTaskManager.getCurrentTick());
-	}
-
-	@Override
-	public void addSubModule(LidaModule lm) {
 	}
 
 	@Override
@@ -234,7 +216,9 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 
 		@Override
 		protected void runThisLidaTask() {
-			start();
+			for (BroadcastTrigger t : broadcastTriggers) {
+				t.start();
+			}
 			setTaskStatus(LidaTaskStatus.FINISHED); // Runs only once
 		}
 
@@ -242,7 +226,6 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			return GlobalWorkspaceImpl.class.getSimpleName()
 					+ " background task";
 		}
-
 	}
 
 }// class

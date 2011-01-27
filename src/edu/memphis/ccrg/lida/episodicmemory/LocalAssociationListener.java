@@ -20,8 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public interface LocalAssociationListener extends ModuleListener{
 	
 	/**
-	 * @param association The response generated from the Episodic Memory to a previous cue. 
-	 * 
+	 * @param association The response generated from the Episodic Memory to a previous cue.
 	 */
 	public void receiveLocalAssociation(NodeStructure association);
 

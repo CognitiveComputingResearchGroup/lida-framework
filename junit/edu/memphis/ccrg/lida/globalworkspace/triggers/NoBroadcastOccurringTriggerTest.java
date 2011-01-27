@@ -43,7 +43,7 @@ public class NoBroadcastOccurringTriggerTest {
 //		gw.setTaskManager(tm);
 		parameters.put("name", "abc");	
 		parameters.put("delay", 15);	
-		trigger.setUp(parameters, gw);		
+		trigger.init(parameters, gw);		
 		
 		trigger.start();
 		tm.resumeTasks();

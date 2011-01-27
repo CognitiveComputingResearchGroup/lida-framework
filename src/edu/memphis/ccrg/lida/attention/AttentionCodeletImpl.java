@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -33,7 +34,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 	private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
 	
 	/**
-	 * Where codelet will look for and retreive content from
+	 * Where codelet will look for and retrieve content from
 	 */
 	protected WorkspaceBuffer currentSituationalModel;
 	
@@ -72,7 +73,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 		if (hasSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = getWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0){
-				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, getActivation()));
+				globalWorkspace.addCoalition(new CoalitionImpl((BroadcastContent)csmContent, getActivation()));
 				logger.log(Level.FINE, this + " adds coalition", LidaTaskManager.getCurrentTick());
 			}
 		}

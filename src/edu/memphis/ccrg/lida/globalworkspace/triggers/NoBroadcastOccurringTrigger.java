@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 
 /**
- * This triggers activates if 'delay' milliseconds has passed without
+ * This triggers activates if 'delay' ticks has passed without
  * a broadcast.
  * 
  * @author Javier Snaider
@@ -54,13 +54,14 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 		this.tm = lidaTaskManager;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * This init expects an Integer with name "delay" standing for trigger delay.
+	 * Also a String, "name" of the trigger for logging purposes.
 	 * 
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
 	 */
 	@Override
-	public void setUp(Map<String, Object> parameters, GlobalWorkspace gw) {
+	public void init(Map<String, Object> parameters, GlobalWorkspace gw) {
 		this.gw=gw;
 		Object o = parameters.get("delay");
 		if ((o != null)&& (o instanceof Integer)) {
@@ -90,7 +91,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
 	 */
 	@Override
-	public void checkForTrigger(Collection<Coalition> coalitions) {
+	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 	}
 
 	/*

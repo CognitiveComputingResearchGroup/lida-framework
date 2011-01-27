@@ -33,12 +33,6 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void start() {
-		
-		
-	}
-
-	@Override
 	public void addListener(ModuleListener listener) {
 		
 		

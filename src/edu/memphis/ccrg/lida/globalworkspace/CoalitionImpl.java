@@ -7,17 +7,30 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
+//TODO Make Coalition a Factory element.  then we can change the way a coalition calculates its activation
+// and the type of content that it has.
+/**
+ * 
+ */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	
-	private NodeStructure struct;	
+	private BroadcastContent struct;	
 	private double attentionCodeletActivation;
 
-	public CoalitionImpl(NodeStructure content, double attnCodeActiv){
+	/**
+	 * Constructs a coalition with content and sets activation to be equal to 
+	 * the normalized sum of the activation of the linkables in the NodeStructure
+	 * times the activation of the creating {@link AttentionCodelet}
+	 * @param content
+	 * @param attnCodeActiv
+	 */
+	public CoalitionImpl(BroadcastContent content, double attnCodeActiv){
 		struct = content;
 		attentionCodeletActivation = attnCodeActiv;
 		updateActivation();
@@ -25,16 +38,17 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 
 	private void updateActivation() {
 		double sum = 0.0;
-		for(Node n: struct.getNodes())
+		NodeStructure ns = (NodeStructure)struct;
+		for(Node n: ns.getNodes())
 			sum += n.getActivation();
-		for(Link l: struct.getLinks())
+		for(Link l: ns.getLinks())
 			sum += l.getActivation();
-		setActivation((attentionCodeletActivation * sum) / (struct.getNodeCount() + struct.getLinkCount()));
+		setActivation((attentionCodeletActivation * sum) / (ns.getNodeCount() + ns.getLinkCount()));
 	}
 
 	@Override
 	public BroadcastContent getContent() {
-		return (BroadcastContent) struct;
+		return struct;
 	}
 	
 }

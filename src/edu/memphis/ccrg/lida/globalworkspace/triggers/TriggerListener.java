@@ -6,9 +6,12 @@
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
+
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+
 /**
- * This interface should be implemented by the class that should receive a trigger
- * notification. In general, it is the same class that implements GlobalWorkspace interface.
+ * This interface should be implemented by the class that wants to receive a trigger
+ * notification. In general, it is the same class that implements {@link GlobalWorkspace} interface.
  *  
  * @author Javier Snaider
  * 

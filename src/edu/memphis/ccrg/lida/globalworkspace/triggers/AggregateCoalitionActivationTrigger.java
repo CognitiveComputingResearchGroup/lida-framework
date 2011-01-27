@@ -17,31 +17,36 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
- * Implements a trigger that is activated when the sum of all coalitions in GW 
- * is greater than the threshold.
+ * Implements a trigger that is activated when the sum of all {@link Coalition}s
+ * in {@link GlobalWorkspace} is greater than the threshold.
  * 
  * @author Javier Snaider
- *
+ * 
  */
 public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
-	
-	private Logger logger = Logger.getLogger(AggregateCoalitionActivationTrigger.class.getCanonicalName());
+
+	private Logger logger = Logger
+			.getLogger(AggregateCoalitionActivationTrigger.class
+					.getCanonicalName());
 	protected GlobalWorkspace gw;
 	protected double threshold;
-/**
- * This method is executed each time a new coalition enters the GW.
- * 
- * @param coalitions a Set with all the coallitions in the GW.
- */
+
+	/**
+	 * This method is executed each time a new {@link Coalition} enters the {@link GlobalWorkspace} and
+	 * calculates the total activation.  If it is over threshold then the broadcast is triggered.
+	 * 
+	 * @param coalitions
+	 *            a Collection of all the {@link Coalition}s in the {@link GlobalWorkspace}.
+	 */
 	@Override
-	public void checkForTrigger(Collection<Coalition> coalitions) {
-		double acc=0;
-		for(Coalition c:coalitions){
-			acc=acc+c.getActivation();
+	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
+		double acc = 0;
+		for (Coalition c : coalitions) {
+			acc = acc + c.getActivation();
 		}
-		if(acc>threshold){
-			logger.log(Level.FINE,"Aggregate Activation trigger ",LidaTaskManager.getCurrentTick());
-			//System.out.println("aggregate ");
+		if (acc > threshold) {
+			logger.log(Level.FINE, "Aggregate Activation trigger ",
+					LidaTaskManager.getCurrentTick());
 			gw.triggerBroadcast();
 		}
 	}
@@ -52,11 +57,11 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	}
 
 	@Override
-	public void setUp(Map<String, Object> parameters, GlobalWorkspace gw) {
-		this.gw=gw;
+	public void init(Map<String, Object> parameters, GlobalWorkspace gw) {
+		this.gw = gw;
 		Object o = parameters.get("threshold");
-		if ((o != null)&& (o instanceof Double)) {
-			threshold= (Double)o;
+		if ((o != null) && (o instanceof Double)) {
+			threshold = (Double) o;
 		}
 	}
 
