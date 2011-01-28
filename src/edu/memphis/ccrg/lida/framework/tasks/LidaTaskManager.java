@@ -184,7 +184,6 @@ public class LidaTaskManager {
 		logger.log(Level.INFO, "All threads and tasks told to stop",
 				getCurrentTick());
 		try {
-//			Thread.sleep(400);
 			executorService.awaitTermination(800, TimeUnit.MILLISECONDS);			
 			executorService.shutdownNow();
 			Thread.sleep(400);
@@ -260,7 +259,7 @@ public class LidaTaskManager {
 	}
 
 	private long goNextTick() {
-		//TODO Change to check the next tick with scheduled tasks
+		//TODO optimize this method to skip ticks until the next tick with scheduled tasks is found
 		Queue<LidaTask> queue = taskQueue.get(++currentTick);
 		taskQueue.remove(currentTick);
 		logger.log(Level.FINER, "Tick {0} executed", currentTick);
@@ -269,7 +268,15 @@ public class LidaTaskManager {
 				decayModules();
 				executorService.invokeAll(queue); // Execute all tasks scheduled for this tick
 			} catch (InterruptedException e) {
-				logger.log(Level.WARNING, e.getMessage(), currentTick);
+				if(!shuttingDown){
+					logger.log(Level.WARNING, 
+						    "Current tick " + currentTick + " was interrupted because of " + e.toString(), 
+						    currentTick);
+				}else{
+					logger.log(Level.INFO, 
+							"Current tick " + currentTick + " interrupted for application shutdown.", 
+							currentTick);
+				}
 			}
 		}
 		return currentTick;
@@ -293,7 +300,6 @@ public class LidaTaskManager {
 
 	/**
 	 * This inner class implements the main loop of the system.
-	 * 
 	 */
 	private class TaskManagerMainLoop implements Runnable {
 
@@ -328,7 +334,7 @@ public class LidaTaskManager {
 			}//while
 		}
 		
-	}//private sclass
+	}//class
 
 	/**
 	 * Cancels the task from the Task Queue. This is only possible if the tick
@@ -389,4 +395,4 @@ public class LidaTaskManager {
 		this.modules.addAll(modules);
 	}
 
-}// class LIDA_TASK_MANAGER
+}

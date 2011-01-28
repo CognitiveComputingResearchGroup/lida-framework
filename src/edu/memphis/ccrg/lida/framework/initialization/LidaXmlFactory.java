@@ -338,7 +338,9 @@ public class LidaXmlFactory implements LidaFactory {
 				for (int i = 0; i < nl.getLength(); i++) {
 					Element moduleElement = (Element) nl.item(i);
 					LidaTask task = getTask(moduleElement);
-					tasks.add(task);
+					if(task != null){
+						tasks.add(task);
+					}
 				}
 			}
 		}
