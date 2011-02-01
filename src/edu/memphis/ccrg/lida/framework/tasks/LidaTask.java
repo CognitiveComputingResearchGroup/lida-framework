@@ -63,7 +63,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	/**
 	 * Each LidaTask is meant to have a unique id that is set at the time of creation.
 	 * 
-	 * @return  id
+	 * @return  id unique task identifier
 	 */
 	public long getTaskId();
 	
