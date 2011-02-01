@@ -32,7 +32,9 @@ public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	 * 
 	 * Thus this trigger fires when 'delay' ms has passed w/o a new broadcast. 
 	 * 
-	 * @param coalitions {@link Coalition}s that will be checked.
+	 * @param coalitions Coalitions trigger will check
+	 * @param maxActivation 
+
 	 */
 	public void checkForTrigger(Set<Coalition> coalitions, double maxActivation) {
 		reset();
