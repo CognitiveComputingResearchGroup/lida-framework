@@ -13,16 +13,9 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
-<<<<<<< .mine
  * A PamListener receives percepts from {@link PerceptualAssociativeMemory}
  * asynchronously.
  * 
-=======
- * A PamListener receives content (percepts) from PAM asynchronously.
- * 
- * Should return as possible in order to not delay transmitting module.
- * A good implementation of this would be to spawn a new task to process the received content.
->>>>>>> .r2104
  * @author Ryan J. McCall
  */
 public interface PamListener extends ModuleListener{

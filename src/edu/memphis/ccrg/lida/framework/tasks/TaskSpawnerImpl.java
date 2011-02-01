@@ -182,4 +182,4 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		return runningTasks.contains(t);
 	}
 
-}// class
+}

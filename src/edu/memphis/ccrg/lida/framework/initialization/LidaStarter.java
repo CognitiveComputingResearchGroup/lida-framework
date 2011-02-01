@@ -113,4 +113,4 @@ public class LidaStarter {
 		LidaGuiFactory.start(lida, lidaProperties);
 	}
 
-}// class
+}

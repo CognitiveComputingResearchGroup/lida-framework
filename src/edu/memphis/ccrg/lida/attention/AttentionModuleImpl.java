@@ -172,4 +172,4 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		//TODO
 	}
 
-}// class
+}

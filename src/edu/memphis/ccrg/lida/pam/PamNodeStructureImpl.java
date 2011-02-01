@@ -31,20 +31,20 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	
 	private static final Logger logger = Logger.getLogger(PamNodeStructureImpl.class.getCanonicalName());
 
-	/**
+	/*
 	 * If a node is below this threshold after being decayed it is deleted
 	 */
 	private double nodeRemovalThreshold = 0.01;
 	
 	/**
-	 * Instantiates a new pam node structure impl.
+	 * Instantiates a new {@link PamNodeStructureImpl} using {@link PamNodeImpl} and {@link PamLinkImpl}
 	 */
 	public PamNodeStructureImpl(){
 		super(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 	}
 
 	/**
-	 * Instantiates a new pam node structure impl.
+	 * Instantiates a new {@link PamNodeStructureImpl} with specified Node and Link type. 
 	 * 
 	 * @param defaultPamNode
 	 *            the default pam node
@@ -56,7 +56,8 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	}
 	
 	/**
-	 * @param pns
+	 * Copy constructor
+	 * @param pns source {@link PamNodeStructure}
 	 */
 	public PamNodeStructureImpl(PamNodeStructure pns){
 		super(pns);

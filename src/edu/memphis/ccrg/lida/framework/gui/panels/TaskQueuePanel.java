@@ -203,4 +203,4 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		}
 	}
 
-}// class
+}

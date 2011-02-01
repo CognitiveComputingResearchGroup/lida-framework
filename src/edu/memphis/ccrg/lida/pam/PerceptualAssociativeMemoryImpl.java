@@ -188,7 +188,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		}
 	}
 	
-
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#receiveBroadcast(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
 	 */
@@ -515,7 +514,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		return l.getTotalActivation() > perceptThreshold;
 	}
 
-
 	@Override
 	public double getUpscaleFactor() {
 		return upscaleFactor;
@@ -555,6 +553,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		return pamNodeStructure;
 	}
 
+	//TODO REMOVE???????????????????????????????????????????
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
 	 */
@@ -565,5 +564,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Node getPamNode(ExtendedId id) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

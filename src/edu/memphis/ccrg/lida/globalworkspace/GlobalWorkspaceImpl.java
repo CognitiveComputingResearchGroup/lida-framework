@@ -229,4 +229,4 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		}
 	}
 
-}// class
+}

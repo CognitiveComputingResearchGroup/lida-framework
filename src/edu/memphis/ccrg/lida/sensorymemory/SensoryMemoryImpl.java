@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
  * sensing the environment, storing the sensed data ,and processing it. This
  * module sends information to perceptual associative memory, and sensory motor
  * memory.
- * @author unascribed
+ * @author Ryan J. McCall
  */
 public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory {
 
@@ -47,6 +47,9 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
         super(ModuleName.SensoryMemory);
     }
 
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
+     */
     @Override
     public void addListener(ModuleListener listener) {
         if (listener instanceof SensoryMemoryListener) {
@@ -59,10 +62,8 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
         listeners.add(l);
     }
 
-    /**
-     * Associates this memory with its respective environment.
-     * @param module the environment associated with this memory
-     * @param moduleUsage not used
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)
      */
     @Override
     public void setAssociatedModule(LidaModule module, int moduleUsage) {
@@ -74,15 +75,17 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
         }
     }
 
-    /**
-     * The function of this method is still an open question.
-     * @param alg not used
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener#receiveExecutingAlgorithm(java.lang.Object)
      */
     @Override
     public void receiveExecutingAlgorithm(Object alg) {
         //TODO What to do here is a research question.
     }
 
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#decayModule(long)
+     */
     @Override
     public void decayModule(long ticks) {
         super.decayModule(ticks);
@@ -90,11 +93,8 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
     }
 
     //TODO what are these 2 set/get methods? can we delete them?
-    //Ask Tamas, he implemented the interface.
-    /**
-     * 
-     * @param state
-     * @return
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
      */
     @Override
     public boolean setState(Object state) {
@@ -107,9 +107,8 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
         return false;
     }
 
-    /**
-     * 
-     * @return 
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
      */
     @Override
     public Object getState() {

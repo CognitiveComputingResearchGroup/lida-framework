@@ -105,4 +105,4 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 		//TODO
 	}
 
-}// class
+}

@@ -27,7 +27,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	private PerceptualAssociativeMemory pam;
 
 	/**
-	 * Instantiates a new adds to percept task.
+	 * Creates a new instance to add a single {@link PamNode}
 	 * 
 	 * @param pamNode
 	 *            the pam node
@@ -42,7 +42,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	}
 	
 	/**
-	 * Instantiates a new adds to percept task.
+	 * Creates a new instance to add a single {@link PamLink}
 	 * 
 	 * @param pamLink
 	 *            the pam link
@@ -57,7 +57,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	}
 
 	/**
-	 * Instantiates a new adds to percept task.
+	 * Creates a new instance to add a {@link PamNodeStructure}
 	 * 
 	 * @param pamNodeStructure
 	 *            the pam node structure

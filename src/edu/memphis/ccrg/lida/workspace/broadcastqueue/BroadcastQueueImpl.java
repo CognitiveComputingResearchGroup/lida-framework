@@ -114,4 +114,4 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 		}
 	}
 
-}// class
+}

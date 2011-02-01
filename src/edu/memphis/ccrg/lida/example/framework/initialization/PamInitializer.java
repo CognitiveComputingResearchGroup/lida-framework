@@ -99,4 +99,4 @@ public class PamInitializer implements Initializer {
 		//driver.setInitialTasks(pam.getFeatureDetectors());
 	}
 
-}// class
+}

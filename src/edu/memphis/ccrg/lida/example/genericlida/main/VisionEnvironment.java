@@ -241,4 +241,4 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 		}
 	}//background task
 	
-}// class
+}

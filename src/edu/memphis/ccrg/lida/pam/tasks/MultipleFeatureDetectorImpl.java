@@ -30,9 +30,9 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 	protected SensoryMemory sm;
 	
 	/**
-	 * @param nodeMap .
-	 * @param sm .
-	 * @param pam .
+	 * @param nodeMap Nodes indexed by their label
+	 * @param sm {@link SensoryMemory}
+	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
 	public MultipleFeatureDetectorImpl(Map<String, PamNode> nodeMap, SensoryMemory sm,
 	   		   						   PerceptualAssociativeMemory pam) {
@@ -58,4 +58,4 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 		return "Feature Detector ["+getTaskId()+"] ";
 	}
 
-}// class
+}

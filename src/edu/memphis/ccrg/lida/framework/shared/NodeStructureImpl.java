@@ -664,4 +664,4 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		return Collections.unmodifiableCollection(linkableMap.keySet());
 	}
 
-}// class
+}

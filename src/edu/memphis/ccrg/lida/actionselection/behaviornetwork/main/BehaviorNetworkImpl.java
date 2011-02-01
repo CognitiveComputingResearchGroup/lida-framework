@@ -824,4 +824,4 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return false;
 	}
 
-}// class
+}

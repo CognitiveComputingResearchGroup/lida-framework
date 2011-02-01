@@ -23,17 +23,19 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  *
  */
 public class PropagationTask extends LidaTaskImpl {
-	
+		
+	private PamNode source;
+	private PamNode sink;
 	private PamLink link;
-	private PamNode source, sink;
+	
 	private double excitationAmount;
 	
-	/**
+	/*
 	 * Used to make another excitation call
 	 */
 	private PerceptualAssociativeMemory pam;
 	
-	/**
+	/*
 	 * For threshold task creation
 	 */
 	private TaskSpawner taskSpawner;
@@ -42,13 +44,13 @@ public class PropagationTask extends LidaTaskImpl {
 	 * Instantiates a new propagation task.
 	 * 
 	 * @param source
-	 *            the source
+	 *            the source of activation
 	 * @param link
-	 *            the link
+	 *            the link from the source to the parent
 	 * @param sink
-	 *            the sink
+	 *            the sink and the parent of the source
 	 * @param amount
-	 *            the amount
+	 *            the amount to excite
 	 * @param pam
 	 *            the pam
 	 * @param ts
@@ -81,12 +83,9 @@ public class PropagationTask extends LidaTaskImpl {
 			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
 			taskSpawner.addTask(task);
 		}
-		this.setTaskStatus(LidaTaskStatus.FINISHED);
+		setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
 		return "Propagation task " + getTaskId();

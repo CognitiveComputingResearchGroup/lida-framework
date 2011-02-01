@@ -315,4 +315,4 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
 	}
 
-}// class
+}

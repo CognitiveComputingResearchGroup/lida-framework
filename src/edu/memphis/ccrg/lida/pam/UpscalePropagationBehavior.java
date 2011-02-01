@@ -22,7 +22,7 @@ public class UpscalePropagationBehavior implements PropagationBehavior{
 	
 	private Logger logger = Logger.getLogger(UpscalePropagationBehavior.class.getCanonicalName());
 
-	/**
+	/*
 	 * Calculate and return an activation to propagate.
 	 * 
 	 * @param params

@@ -173,7 +173,7 @@ public class StructureBuildingCodeletFactory {
 	}
 	
 	//TODO: outstanding issues with whether there should be an Id and how to use
-// class for name if the object, here an SBC requires a paramter, in this case the TaskManager
+ //ZZ class for name if the object, here an SBC requires a paramter, in this case the TaskManager
 //	public StructureBuildingCodelet getCodelet(int type){
 //		return getGenericCodelet(type);
 //	}

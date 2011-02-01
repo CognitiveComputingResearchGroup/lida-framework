@@ -28,16 +28,15 @@ public class HardLocationImpl implements HardLocation {
 		counters = new byte[wordLength];
 	}
 
+	/**
+	 * @param address
+	 */
 	public HardLocationImpl(BitVector address) {
 		this(address, address.size());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.HardLocation#getAddress
-	 * ()
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.episodicmemory.sdm.HardLocation#getAddress()
 	 */
 	@Override
 	public BitVector getAddress() {

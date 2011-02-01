@@ -110,6 +110,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 *
 	 * @param type new default PamLink type
 	 */
+	//TODO force class?
 	public void setNewLinkType(String type);
 	
 	/**
@@ -148,6 +149,13 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public void receiveActivationBurst(PamNode node, double amount);
 	
 	/**
+	 * Excites PamNodes with an amount of activation.
+	 * @param nodes PamNodes to be excited
+	 * @param amount amount of activation
+	 */
+	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
+	
+	/**
 	 * Propagate activation from a PamNode to another PamNode along a PamLink.
 	 * Excites both link and sink
 	 * @param source source of activation
@@ -156,13 +164,6 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param amount activation sent
 	 */
 	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount);
-	
-	/**
-	 * Excites PamNodes with an amount of activation.
-	 * @param nodes PamNodes to be excited
-	 * @param amount amount of activation
-	 */
-	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
 
 	/**
 	 * Propagates activation from a PamNode to its parents.
@@ -274,6 +275,13 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @return the pam node
 	 */
 	public Node getPamNode(int id);
+	
+	/**
+	 * Returns {@link PamNode} with specified {@link ExtendedId} or null
+	 * @param id sought {@link ExtendedId}
+	 * @return PamNode
+	 */
+	public Node getPamNode(ExtendedId id);
 	
 	/**
 	 * 

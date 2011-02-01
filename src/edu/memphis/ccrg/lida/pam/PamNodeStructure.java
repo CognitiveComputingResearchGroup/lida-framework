@@ -38,18 +38,13 @@ public interface PamNodeStructure extends NodeStructure {
 	public Map<PamNode, PamLink> getParentsWithLinks(PamNode n);
 
 	/**
-<<<<<<< .mine
+	 * TODO abstract to NodeStructure?
+	 * then workspace buffer doesn't need to do it.
+	 * both of these classes have nodeRemovalThreshold so this would simplify
 	 * Decay the {@link Linkable}s of this {@link PamNodeStructure}.
 	 * 
 	 * @param ticks
 	 *            the ticks
-=======
-	 * TODO abstract to NodeStructure?
-	 *then workspace buffer doesn't need to do it.
-	 *both of these classes have nodeRemovalThreshold so this would simplify
-	 *
-	 * Decay this {@link PamNodeStructure}
->>>>>>> .r2104
 	 */
 	public void decayNodeStructure(long ticks);
 

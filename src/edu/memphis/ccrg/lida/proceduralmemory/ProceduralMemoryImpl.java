@@ -209,4 +209,4 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		return false;
 	}
 	
-}// class
+}
