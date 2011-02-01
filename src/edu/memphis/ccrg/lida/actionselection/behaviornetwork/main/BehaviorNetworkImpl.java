@@ -46,6 +46,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 // actions as well but have to consider who is the actor of the action
 
 /**
+ * The Class BehaviorNetworkImpl.
  * 
  * @author Ryan J McCall, Javier Snaider
  */
@@ -159,12 +160,15 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 */
 	public BehaviorNetworkImpl() {
 		super();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#init()
+	 */
 	@Override
 	public void init() {
 		// I think I've done this slightly incorrectly again.
@@ -207,6 +211,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#receiveBroadcast(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
+	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
@@ -220,21 +227,34 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	/**
 	 * Theory says receivers of the broadcast should learn from it.
+	 * 
+	 * @param content
+	 *            the content
 	 */
 	@Override
 	public void learn(BroadcastContent content) {
+		//not implemented yet.
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.actionselection.ActionSelection#addActionSelectionListener(edu.memphis.ccrg.lida.actionselection.ActionSelectionListener)
+	 */
 	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
 		listeners.add(listener);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.actionselection.ActionSelection#addPreafferenceListener(edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener)
+	 */
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
 		this.preafferenceListeners.add(listener);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
+	 */
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof ActionSelectionListener)
@@ -243,6 +263,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			addPreafferenceListener((PreafferenceListener) listener);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener#receiveBehavior(edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior)
+	 */
 	@Override
 	// TODO This way permits multiple instantiations of the same behavior
 	// because each one will
@@ -279,6 +302,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	// If behavior is going to be indexed then why does a stream even need to
 	// keep track of it's successors? as long as the context and add lists are
 	// correct
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener#receiveStream(edu.memphis.ccrg.lida.proceduralmemory.Stream)
+	 */
 	@Override
 	public void receiveStream(Stream stream) {
 		for (Behavior behavior : stream.getBehaviors())
@@ -305,8 +331,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-	 * Called by action selection triggers
-	 * 
+	 * Called by action selection triggers.
 	 */
 	@Override
 	public void triggerActionSelection() {
@@ -319,6 +344,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.actionselection.ActionSelection#addActionSelectionTrigger(edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger)
+	 */
 	@Override
 	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
 		logger.log(Level.FINE, "addes trigger " + tr.toString(),
@@ -326,6 +354,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		actionSelectionTriggers.add(tr);
 	}
 
+	/**
+	 * Gets satisfied behaviors.
+	 * 
+	 * @return the satisfied behaviors
+	 */
 	public Set<Behavior> getSatisfiedBehaviors() {
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
 
@@ -444,7 +477,10 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 	/**
 	 * For each proposition in the current broadcast get the behaviors indexed
-	 * by that proposition For each behavior, excite it
+	 * by that proposition For each behavior, excite it.
+	 * 
+	 * @param currentBroadcast
+	 *            the current broadcast
 	 */
 	public void passActivationFromBroadcast(NodeStructure currentBroadcast) {
 		for (Node broadcastNode : currentBroadcast.getNodes()) {
@@ -498,7 +534,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
-	 * Select one action to be executed
+	 * Select one action to be executed.
 	 */
 	@Override
 	public void selectAction() {
@@ -545,6 +581,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/**
 	 * Decay all the behaviors in all the schemes. Remove the behavior after
 	 * decay if its activation is below the lower bound.
+	 * 
+	 * @param ticks
+	 *            the ticks
 	 */
 	@Override
 	public void decayModule(long ticks) {
@@ -585,50 +624,102 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return behaviors.values();
 	}
 
+	/**
+	 * Sets behavior activation threshold.
+	 * 
+	 * @param threshold
+	 *            the new behavior activation threshold
+	 */
 	public void setBehaviorActivationThreshold(double threshold) {
 		this.candidateBehaviorThreshold = threshold;
 	}
 
+	/**
+	 * Sets broadcast excitation amount.
+	 * 
+	 * @param broadcastExciation
+	 *            the new broadcast excitation amount
+	 */
 	public void setBroadcastExcitationAmount(double broadcastExciation) {
 		this.broadcastExcitationFactor = broadcastExciation;
 	}
 
+	/**
+	 * Gets behavior activation threshold.
+	 * 
+	 * @return the behavior activation threshold
+	 */
 	public double getBehaviorActivationThreshold() {
 		return candidateBehaviorThreshold;
 	}
 
+	/**
+	 * Gets broadcast excitation amount.
+	 * 
+	 * @return the broadcast excitation amount
+	 */
 	public double getBroadcastExcitationAmount() {
 		return broadcastExcitationFactor;
 	}
 
+	/**
+	 * Gets candidate threshold reducer.
+	 * 
+	 * @return the candidate threshold reducer
+	 */
 	public CandidateThresholdReducer getCandidateThresholdReducer() {
 		return candidateThresholdReducer;
 	}
 
+	/**
+	 * Sets candidate threshold reducer.
+	 * 
+	 * @param reducer
+	 *            the new candidate threshold reducer
+	 */
 	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
 		this.candidateThresholdReducer = reducer;
 	}
 
+	/**
+	 * Gets selector strategy.
+	 * 
+	 * @return the selector strategy
+	 */
 	public Selector getSelectorStrategy() {
 		return selectorStrategy;
 	}
 
+	/**
+	 * Sets selector strategy.
+	 * 
+	 * @param selector
+	 *            the new selector strategy
+	 */
 	public void setSelectorStrategy(Selector selector) {
 		this.selectorStrategy = selector;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#getModuleContent(java.lang.Object[])
+	 */
 	@Override
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
 
 	/**
+	 * Gets behavior activation lower bound.
+	 * 
+	 * @return the behavior activation lower bound
 	 */
 	public double getBehaviorActivationLowerBound() {
 		return behaviorActivationLowerBound;
 	}
 
 	/**
+	 * Sets behavior activation lower bound.
+	 * 
 	 * @param behaviorActivationLowerBound
 	 *            amount of activation behavior needs to remain in the network
 	 *            should be the same as the activation requirement in procedural
@@ -640,32 +731,66 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/**
+	 * Gets successor excitation factor.
+	 * 
+	 * @return the successor excitation factor
 	 */
 	public double getSuccessorExcitationFactor() {
 		return successorExcitationFactor;
 	}
 
+	/**
+	 * Sets successor excitation factor.
+	 * 
+	 * @param successorExcitationFactor
+	 *            the new successor excitation factor
+	 */
 	public void setSuccessorExcitationFactor(double successorExcitationFactor) {
 		this.successorExcitationFactor = successorExcitationFactor;
 	}
 
+	/**
+	 * Gets predecessor excitation factor.
+	 * 
+	 * @return the predecessor excitation factor
+	 */
 	public double getPredecessorExcitationFactor() {
 		return predecessorExcitationFactor;
 	}
 
+	/**
+	 * Sets predecessor excitation factor.
+	 * 
+	 * @param predecessorExcitationFactor
+	 *            the new predecessor excitation factor
+	 */
 	public void setPredecessorExcitationFactor(
 			double predecessorExcitationFactor) {
 		this.predecessorExcitationFactor = predecessorExcitationFactor;
 	}
 
+	/**
+	 * Gets conflictor excitation factor.
+	 * 
+	 * @return the conflictor excitation factor
+	 */
 	public double getConflictorExcitationFactor() {
 		return conflictorExcitationFactor;
 	}
 
+	/**
+	 * Sets conflictor excitation factor.
+	 * 
+	 * @param conflictorExcitationFactor
+	 *            the new conflictor excitation factor
+	 */
 	public void setConflictorExcitationFactor(double conflictorExcitationFactor) {
 		this.conflictorExcitationFactor = conflictorExcitationFactor;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
+	 */
 	@Override
 	public Object getState() {
 		Object[] state = new Object[4];
@@ -676,6 +801,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		return state;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean setState(Object content) {

@@ -26,6 +26,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
+/**
+ * @author ryanjmccall
+ *
+ */
 public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	private static final Logger logger = Logger
