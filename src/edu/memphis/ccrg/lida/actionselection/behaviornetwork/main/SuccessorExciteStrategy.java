@@ -15,6 +15,7 @@ public class SuccessorExciteStrategy extends StrategyImpl implements BehaviorExc
 	
 	private double successorExcitationFactor = DEFAULT_EXCITATION_FACTOR;
 	
+	@Override
 	public void init(Map<String, ?> parameters) {
 		successorExcitationFactor = (Double) parameters.get("factor");
 	}

@@ -15,6 +15,7 @@ public class ConflictorExciteStrategy extends StrategyImpl implements BehaviorEx
 	
 	private double conflictorExcitationFactor = DEFAULT_EXCITATION_FACTOR;
 	
+	@Override
 	public void init(Map<String, ?> parameters) {
 		conflictorExcitationFactor = (Double) parameters.get("factor");
 	}

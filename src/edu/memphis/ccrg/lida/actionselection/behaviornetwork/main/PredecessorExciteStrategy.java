@@ -20,6 +20,7 @@ public class PredecessorExciteStrategy extends StrategyImpl implements BehaviorE
 		predecessorExcitationFactor = (Double) parameters.get("factor");
 	}
 	
+	@Override
 	public void exciteBehavior(Behavior sourceBehavior, Behavior recipientBehavior){
 		double amount = (sourceBehavior.getActivation() * predecessorExcitationFactor)
 						/ sourceBehavior.getUnsatisfiedContextCount();
