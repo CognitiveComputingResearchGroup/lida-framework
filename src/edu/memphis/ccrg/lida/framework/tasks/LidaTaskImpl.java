@@ -71,7 +71,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	
 	
 	/**
-	 * Sets the default number of ticks that is used in the constructor without this parameter.
+	 * Sets default number of ticks that is used in the constructor without this parameter.
 	 * @param defaultTicksPerStep default number of ticks
 	 */
 	public static void setDefaultTicksPerStep(int defaultTicksPerStep) {
@@ -118,7 +118,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	protected abstract void runThisLidaTask();
 
 	/**
-	 * Sets the task status. Intended to be called by #runThisLidaTask() 
+	 * Sets task status. Intended to be called by #runThisLidaTask() 
 	 * Cannot use this method to cancel the task, instead use {@link #stopRunning()} to 
 	 * cancel the task.       
 	 * @param status the new task status 
@@ -239,7 +239,7 @@ public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
 	}
 	
 	/**
-	 * For just the next execution of this task, sets the number of ticks in the future when this task will be run
+	 * For just the next execution of this task, Sets number of ticks in the future when this task will be run
 	 */
 	@Override
 	public void setNextTicksPerStep(long lapTick) {

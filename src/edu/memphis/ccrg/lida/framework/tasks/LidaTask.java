@@ -41,7 +41,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public LidaTaskStatus getStatus();
 	
 	/**
-	 * Sets the task status. Intended to be called by runThisLidaTask() 
+	 * Sets task status. Intended to be called by runThisLidaTask() 
 	 * Cannot use this method to cancel the task, instead use {@link #stopRunning()} to 
 	 * cancel the task.       
 	 * @param status the new task status 
@@ -68,7 +68,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public long getTaskId();
 	
 	/**
-	 * Sets the default number of ticks between consecutive executions of this task.
+	 * Sets default number of ticks between consecutive executions of this task.
 	 * To change ticksPerStep for only the next run, use {@link #setNextTicksPerStep(long)}
 	 * 
 	 * @param ticks number of ticks
@@ -76,7 +76,7 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public void setTicksPerStep(int ticks);
 
 	/**
-	 * Gets the default number of ticks needed to complete a cycle or 'one run' of this task
+	 * Gets default number of ticks needed to complete a cycle or 'one run' of this task
 	 * @return ticks 
 	 */
 	public  int getTicksPerStep();
@@ -88,19 +88,19 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public String toString();
 	
 	/**
-	 * Sets the TaskSpawner that controls this LidaTask.
+	 * Sets TaskSpawner that controls this LidaTask.
 	 * @param ts the TaskSpawner
 	 */
 	public void setControllingTaskSpawner(TaskSpawner ts);
 	
 	/**
-	 * Gets the TaskSpawner that controls this LidaTask.
+	 * Gets TaskSpawner that controls this LidaTask.
 	 * @return the TaskSpawner.
 	 */
 	public TaskSpawner getControllingTaskSpawner();
 	
 	/**
-	 * Sets the number of ticks for the next, and only the next, execution of this
+	 * Sets number of ticks for the next, and only the next, execution of this
 	 * LidaTask.  It should be set by the LidaTask.  To set the permanent (default) number
 	 * of ticks per step use instead {@link #setTicksPerStep(int)} 
 	 * 
@@ -109,14 +109,15 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public void setNextTicksPerStep(long ticks);
 	
 	/**
-	 * Gets the number of ticks per step for the next scheduled execution of this
+	 * Gets number of ticks per step for the next scheduled execution of this
 	 * LidaTask.
+	 * @return 
 	 * 
 	 */
 	public long getNextTicksPerStep();
 	
 	/**
-	 * Sets the tick when this task will be run next. This method is used by LidaTaskManager when
+	 * Sets tick when this task will be run next. This method is used by LidaTaskManager when
 	 * a new task is added.
 	 * 
 	 * @see LidaTaskManager

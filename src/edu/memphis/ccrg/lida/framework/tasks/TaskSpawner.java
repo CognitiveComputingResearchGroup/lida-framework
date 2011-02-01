@@ -19,8 +19,11 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 public interface TaskSpawner extends Initializable {
 	
 	/**
-	 * Set the LidaTaskManager this TaskSpawner will use to actually run the tasks
-	 * @param taskManager task manager
+	 * Set the LidaTaskManager this TaskSpawner will use to actually run the
+	 * tasks.
+	 * 
+	 * @param taskManager
+	 *            task manager
 	 */
 	public void setTaskManager(LidaTaskManager taskManager);
 	
@@ -32,6 +35,9 @@ public interface TaskSpawner extends Initializable {
 
 	/**
 	 * Adds and runs supplied LidaTasks.
+	 * 
+	 * @param initialTasks
+	 *            the initial tasks
 	 */
 	public void addTasks(Collection<? extends LidaTask> initialTasks);
 		
@@ -53,7 +59,9 @@ public interface TaskSpawner extends Initializable {
 	public void cancelTask(LidaTask task);
 	
 	/**
-	 * returns a unmodifiable Collection that contains the LidaTasks in this Spawner
+	 * returns a unmodifiable Collection that contains the LidaTasks in this
+	 * Spawner.
+	 * 
 	 * @return collection
 	 */
 	public Collection<LidaTask> getRunningTasks();

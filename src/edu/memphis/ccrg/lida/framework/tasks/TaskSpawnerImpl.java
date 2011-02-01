@@ -69,7 +69,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 
 	/**
 	 * Schedule the LidaTask to be executed.
-	 * Sets the task status to RUNNING.
+	 * Sets task status to RUNNING.
 	 * @param task
 	 */
 	protected void runTask(LidaTask task) {
