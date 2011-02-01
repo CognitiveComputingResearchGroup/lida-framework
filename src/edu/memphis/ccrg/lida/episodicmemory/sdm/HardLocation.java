@@ -33,7 +33,7 @@ public interface HardLocation {
 	/**
 	 * Sets the counters of this HardLocation 
 	 * Each HardLocation has wordSize counters. Each counter is byte size.
-	 * Couters are incremented or decremented when the memory is written.
+	 * Counters are incremented or decremented when the memory is written.
 	 * @param newCounters
 	 */
 	public void setCounters(byte[] newCounters);
