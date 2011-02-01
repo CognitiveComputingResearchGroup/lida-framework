@@ -18,7 +18,7 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 
 	private SensoryMemory sm;
 
-	/**
+	/*
 	 * This method overrides runThisLidaTask() from class LidaTaskImpl
 	 * It executes method runSensors()of SensoryMemory sm
 	 * 
@@ -29,7 +29,7 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 		sm.runSensors();		
 	}
 
-	/**
+	/*
 	 * This method overrides setAssociatedModule() from class LidaTaskImpl
 	 * It sets a module passing parameter to SensoryMemory sm
 	 * 
@@ -43,11 +43,7 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 		}
 	}
 	
-	/**
-	 * Return a string representation of class SensoryMemoryBackgroundTask
-	 * 
-	 * @return String Returning the string
-	 */
+	@Override
 	public String toString(){
 		return SensoryMemoryBackgroundTask.class.getSimpleName() + " background task";
 	}
