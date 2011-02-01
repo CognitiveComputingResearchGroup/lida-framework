@@ -117,6 +117,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	
 	/**
 	 * Schedule the attention codelet in the task manager
+	 * @param codelet 
 	 * @param AttentionCodelet - the new attention codelet to be run
 	 *  
 	 */
