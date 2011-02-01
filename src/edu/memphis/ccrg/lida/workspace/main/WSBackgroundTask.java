@@ -79,6 +79,7 @@ public class WSBackgroundTask extends LidaTaskImpl {
 		}
 	}
 	
+	@Override
 	public String toString(){
 		return WSBackgroundTask.class.getSimpleName();
 	}
