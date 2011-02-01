@@ -515,11 +515,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		return l.getTotalActivation() > perceptThreshold;
 	}
 
-	/**
-	 * Gets upscale factor.
-	 *
-	 * @return the upscale factor
-	 */
+
+	@Override
 	public double getUpscaleFactor() {
 		return upscaleFactor;
 	}
@@ -528,11 +525,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		upscaleFactor = f;		
 	}
 
-	/**
-	 * Gets downscale factor.
-	 *
-	 * @return the downscale factor
-	 */
 	@Override
 	public double getDownscaleFactor() {
 		return downscaleFactor;
