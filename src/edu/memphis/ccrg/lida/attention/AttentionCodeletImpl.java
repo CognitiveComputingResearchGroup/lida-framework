@@ -53,7 +53,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
     
 	/**
 	 * Sets associated Module
-	 * @param LidaModule - the module to be associated with
+	 * @param module the module to be associated with
 	 * @param usage - way of associating the module
 	 */
 	@Override
@@ -119,7 +119,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 	}
 
 	/**
-	 * @param the sought content
+	 * @param content sought content
 	 */
 	@Override
 	public void setSoughtContent(NodeStructure content) {

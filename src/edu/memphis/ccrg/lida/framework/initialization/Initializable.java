@@ -6,7 +6,7 @@ public interface Initializable {
 
 	/**
 	 * This method initializes the module with parameters specified in LIDA.xml
-	 * @param parameters 
+	 * @param parameters Map of parameters indexed by String names
 	 */
 	public void init(Map<String, ?> parameters);
 

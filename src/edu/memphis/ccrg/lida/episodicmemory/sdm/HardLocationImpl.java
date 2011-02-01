@@ -29,7 +29,7 @@ public class HardLocationImpl implements HardLocation {
 	}
 
 	/**
-	 * @param address
+	 * @param address BitVector address of this HardLocation
 	 */
 	public HardLocationImpl(BitVector address) {
 		this(address, address.size());

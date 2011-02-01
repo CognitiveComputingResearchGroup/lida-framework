@@ -285,10 +285,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * 
-	 * @param id
+	 * @param id link's eid
 	 * @return Copy of {@link PamLink} with specified id from this PAM or null. 
-	 *
-	 * @return the pam nodes
 	 */
 	public Link getPamLink(ExtendedId id);
 	

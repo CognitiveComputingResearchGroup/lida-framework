@@ -25,10 +25,10 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 	
 	/**
 	 * Triggers a broadcast if any {@link Coalition} has activation over threshold.
-	 * @param coallitions
+	 * @param coalitions Coalitions
 	 */
-	public void checkForTrigger(Set<Coalition> coallitions) {
-		for(Coalition c:coallitions){
+	public void checkForTrigger(Set<Coalition> coalitions) {
+		for(Coalition c:coalitions){
 			if(c.getActivation()>threshold){
 				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getCurrentTick());
 

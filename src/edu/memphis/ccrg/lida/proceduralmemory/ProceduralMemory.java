@@ -24,25 +24,25 @@ public interface ProceduralMemory extends LidaModule, Saveable{
     
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 
-	 * @param broadcastContent 
+	 * @param broadcastContent conscious contents
 	 */
 	public void activateSchemes(NodeStructure broadcastContent);
 	
 	/**
-	 * Send out the active schemes to the PM listeners.
-	 * @param s 
+	 * Instantiate scheme and send it to listeners.
+	 * @param s a scheme over threshold
 	 */
 	public void sendInstantiatedScheme(Scheme s);
 	
 	/**
 	 * Add supplied schemes to this procedural memory.
-	 * @param schemes 
+	 * @param schemes set of Schemes
 	 */
 	public void addSchemes(Collection<Scheme> schemes);
 	
 	/**
 	 * Add supplied scheme to this procedural memory.
-	 * @param s 
+	 * @param s Scheme
 	 */
 	public void addScheme(Scheme s);
 	

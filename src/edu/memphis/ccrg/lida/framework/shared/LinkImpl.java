@@ -113,7 +113,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
-			id = new ExtendedId(category.getId(), ((Node) source).getId(), sink.getExtendedId());
+			id = new ExtendedId(category.getId(), source.getId(), sink.getExtendedId());
 		}
 	}
 

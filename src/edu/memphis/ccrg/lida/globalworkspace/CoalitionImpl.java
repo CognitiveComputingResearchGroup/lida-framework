@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
@@ -25,14 +26,14 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 
 	/**
 	 * Constructs a coalition with content and sets activation to be equal to 
-	 * the normalized sum of the activation of the linkables in the NodeStructure
+	 * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
 	 * times the activation of the creating {@link AttentionCodelet}
-	 * @param content
-	 * @param attnCodeActiv
+	 * @param content conscious content
+	 * @param activation activation of creating attention codelet
 	 */
-	public CoalitionImpl(BroadcastContent content, double attnCodeActiv){
+	public CoalitionImpl(BroadcastContent content, double activation){
 		struct = content;
-		attentionCodeletActivation = attnCodeActiv;
+		attentionCodeletActivation = activation;
 		updateActivation();
 	}
 

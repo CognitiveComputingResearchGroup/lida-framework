@@ -123,7 +123,7 @@ public class LidaGui extends javax.swing.JFrame {
     }
 
     /**
-     * @param panelParams
+     * @param panelParams Parameters specified in 'configs.guiPanels.properties'
      */
     public void createLidaPanel(String[] panelParams) {
     	LidaPanel panel;

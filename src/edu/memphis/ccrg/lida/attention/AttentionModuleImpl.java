@@ -45,8 +45,8 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	
 	/**
 	 * Sets associated Module
-	 * @param LidaModule - the module to be associated with
-	 * @param moduleUsage - way of associating the module
+	 * @param module the module to be associated with
+	 * @param moduleUsage way of associating the module
 	 */
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
@@ -81,7 +81,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	/**
 	 * Schedules a task that receives broadcast from global workspace
-	 * @param BroadcastContent - the content of broadcast
+	 * @param bc the content of broadcast
 	 *  
 	 */
 	@Override
@@ -117,8 +117,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	
 	/**
 	 * Schedule the attention codelet in the task manager
-	 * @param codelet 
-	 * @param AttentionCodelet - the new attention codelet to be run
+	 * @param codelet the new attention codelet to be run
 	 *  
 	 */
 	public void runAttentionCodelet(AttentionCodelet codelet){
@@ -134,7 +133,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	
 	/**
 	 * Implements learning in Attention Module
-	 * @param BroadcastContent - the broadcast that needs to be learned
+	 * @param content the broadcast that needs to be learned
 	 *  
 	 */
 	@Override

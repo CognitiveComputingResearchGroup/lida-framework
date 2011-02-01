@@ -34,7 +34,7 @@ public interface HardLocation {
 	 * Sets the counters of this HardLocation 
 	 * Each HardLocation has wordSize counters. Each counter is byte size.
 	 * Counters are incremented or decremented when the memory is written.
-	 * @param newCounters
+	 * @param newCounters new counters
 	 */
 	public void setCounters(byte[] newCounters);
 
@@ -48,20 +48,20 @@ public interface HardLocation {
 	 * For each bit in word, the corresponding counter is incremented if the bit is 1 or decremented if
 	 * the bit is 0.
 	 *  
-	 * @param word
+	 * @param word word to be written
 	 */
 	public void write(BitVector word);
 
 	/**
 	 * This method reads this HardLocation and sums the reading vector to int[] buffer.
-	 * @param buffer
-	 * @return buffer
+	 * @param buffer buffer to be added to this hardlocation 
+	 * @return summed vector
 	 */
 	public int[] read(int[] buffer);
 	
 	/**
-	 * Retuns the Hamming distance between vector and the address of this HardLocation
-	 * @param vector
+	 * Returns the Hamming distance between vector and the address of this HardLocation
+	 * @param vector vector to compare with this hardlocation
 	 * @return the Hamming distance.
 	 */
 	public int hammingDistance(BitVector vector);

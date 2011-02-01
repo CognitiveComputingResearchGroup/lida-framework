@@ -47,10 +47,10 @@ public class BitVectorUtils {
 
 
 	/**
-	 * Returns a new vector based in the original with at most noise bits changed
-	 * @param original
-	 * @param noise
-	 * @return
+	 * Returns a noisyVector
+	 * @param original original vector
+	 * @param noise number of noisy bits to introduce
+	 * @return new vector based in the original with at most noise bits changed
 	 */
 	public static BitVector noisyVector(BitVector original, int noise) {
 		BitVector v = original.copy();

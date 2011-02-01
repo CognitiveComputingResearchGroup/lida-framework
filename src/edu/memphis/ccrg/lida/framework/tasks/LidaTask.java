@@ -109,10 +109,9 @@ public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitiali
 	public void setNextTicksPerStep(long ticks);
 	
 	/**
-	 * Gets number of ticks per step for the next scheduled execution of this
+	 * Gets nextTicksPerStep
+	 * @return number of ticks per step for the next scheduled execution of this
 	 * LidaTask.
-	 * @return 
-	 * 
 	 */
 	public long getNextTicksPerStep();
 	

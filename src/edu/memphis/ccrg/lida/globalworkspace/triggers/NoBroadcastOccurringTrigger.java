@@ -58,7 +58,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 * This init expects an Integer with name "delay" standing for trigger delay.
 	 * Also a String, "name" of the trigger for logging purposes.
 	 * 
-	 * @see edu.memphis.ccrg.globalworkspace.Trigger#setUp(java.util.Map)
+	 * @see BroadcastTrigger#init(Map, GlobalWorkspace)
 	 */
 	@Override
 	public void init(Map<String, Object> parameters, GlobalWorkspace gw) {
