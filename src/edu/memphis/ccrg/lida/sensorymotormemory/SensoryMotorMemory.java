@@ -30,6 +30,7 @@ public interface SensoryMotorMemory extends LidaModule, SensoryMemoryListener, A
 	
 	/**
 	 * Executes an algorithm in the Environment
+	 * @param algorithm 
 	 */
 	public void executeAction(Object algorithm);
 

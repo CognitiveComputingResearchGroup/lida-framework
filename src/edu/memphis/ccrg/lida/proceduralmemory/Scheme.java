@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
  * @author Ryan J. McCall
  */
 public interface Scheme extends Learnable{
-	
+	 
 	/**
 	 * 
 	 * @param id unique identifier for this scheme
@@ -61,7 +61,7 @@ public interface Scheme extends Learnable{
 	
 	/**
 	 * Standard getter for numberOfExecutions.
-	 * return the int value of numberOfExecutions
+	 * @return the int value of numberOfExecutions
 	 */
 	public int getNumberOfExecutions();
 	/**

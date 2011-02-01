@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public interface AttentionCodelet extends Codelet{
 	
 	/**
-	 * Sets the content this codelet will look for.
+	 * Sets content this codelet will look for.
 	 * @param content NodeStructure
 	 */
 	public void setSoughtContent(NodeStructure content);
@@ -33,13 +33,22 @@ public interface AttentionCodelet extends Codelet{
 	public NodeStructure getSoughtContent();
 	
 	/**
-  	 * Returns true if specified WorkspaceBuffer contains this codelet's sought content.
-  	 * @param buffer the WorkspaceBuffer to be checked for content
-     */
+	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
+	 * content.
+	 * 
+	 * @param buffer
+	 *            the WorkspaceBuffer to be checked for content
+	 * @return true, if successful
+	 */
 	public boolean hasSoughtContent(WorkspaceBuffer buffer);
 
 	/**
-	 * Returns sought content and related content from specified WorkspaceBuffer
+	 * Returns sought content and related content from specified
+	 * WorkspaceBuffer.
+	 * 
+	 * @param buffer
+	 *            the buffer
+	 * @return the workspace content
 	 */
 	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
 
