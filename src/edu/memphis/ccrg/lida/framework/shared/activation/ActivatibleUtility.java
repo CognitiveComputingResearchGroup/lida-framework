@@ -32,6 +32,7 @@ public class ActivatibleUtility {
 	
 	/**
 	 * this method decays all the Activatible elements
+	 * @param ticks length of time to decay
 	 */
 	public void decay(long ticks) {
 		for(Activatible a: activatibles){

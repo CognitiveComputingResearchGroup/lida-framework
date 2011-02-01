@@ -30,38 +30,55 @@ public interface Link extends Linkable, Activatible{
 	public Linkable getSink();
 	
 	/**
-	 * Set source linkable
+	 * Set source linkable.
+	 * 
+	 * @param source
+	 *            the new source
 	 */
 	public void setSource(Node source);
 
 	/**
-	 * Set sink linkable
+	 * Set sink linkable.
+	 * 
+	 * @param sink
+	 *            the new sink
 	 */
 	public void setSink(Linkable sink);
 	
 	/**
-	 * Get LinkCategory of this link
+	 * Get LinkCategory of this link.
+	 * 
+	 * @return the category
 	 */
 	public LinkCategory getCategory();
 
 	/**
-	 * Set LinkCategory
+	 * Set LinkCategory.
+	 * 
+	 * @param type
+	 *            the new category
 	 */
 	public void setCategory(LinkCategory type);
 	
 	/**
-	 * Returns factoryLinkType
+	 * Returns factoryLinkType.
+	 * 
 	 * @return name of the Link type in the NodeFactory
 	 */
 	public String getFactoryLinkType();
 
 	/**
 	 * Set the grounding PamLink for this link.
+	 * 
+	 * @param l
+	 *            the new grounding pam link
 	 */
 	public void setGroundingPamLink(PamLink l);
 
 	/**
 	 * Get the grounding PamLink for this link.
+	 * 
+	 * @return the grounding pam link
 	 */
 	public PamLink getGroundingPamLink();
 

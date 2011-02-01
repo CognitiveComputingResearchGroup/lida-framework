@@ -37,6 +37,7 @@ public interface Learnable extends Activatible{
 	
 	/**
 	 * Returns base level activation. 
+	 * @return activation representing the degree this Learnable has been learned.
 	 */
 	public double getBaseLevelActivation();
 	

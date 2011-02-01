@@ -122,6 +122,9 @@ public class LidaGui extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * @param panelParams
+     */
     public void createLidaPanel(String[] panelParams) {
     	LidaPanel panel;
 

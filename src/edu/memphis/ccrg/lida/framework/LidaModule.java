@@ -19,17 +19,25 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 public interface LidaModule extends FullyInitializable{
 	
 	/**
+	 * Gets module name.
+	 * 
 	 * @return ModuleName
 	 */
 	public ModuleName getModuleName();
 	
 	/**
-	 * param ModuleName
+	 * param ModuleName.
+	 * 
+	 * @param moduleName
+	 *            the new module name
 	 */
 	public void setModuleName(ModuleName moduleName);
 	
 	/**
-	 * @param name of the desired submodule.
+	 * Gets submodule.
+	 * 
+	 * @param name
+	 *            of the desired submodule.
 	 * @return the submodule.
 	 */
 	public LidaModule getSubmodule(ModuleName name);
@@ -41,7 +49,10 @@ public interface LidaModule extends FullyInitializable{
 	public void addSubModule(LidaModule lm);
 	
 	/**
-	 * @param params - specifies what content will be returned.
+	 * Gets module content.
+	 * 
+	 * @param params
+	 *            - specifies what content will be returned.
 	 * @return various kinds of content of this module.
 	 */
 	public Object getModuleContent(Object... params);
@@ -59,13 +70,17 @@ public interface LidaModule extends FullyInitializable{
 	public void addListener(ModuleListener listener);
 	
 	/**
-	 * Specify the TaskSpawner which this LidaModule will use to spawn tasks
-	 * @param ts - the TaskSpawner
+	 * Specify the TaskSpawner which this LidaModule will use to spawn tasks.
+	 * 
+	 * @param ts
+	 *            - the TaskSpawner
 	 */
 	public void setAssistingTaskSpawner(TaskSpawner ts);
 
 	/**
-	 * Returns the TaskSpawner which this LidaModule uses to spawn tasks
+	 * Returns the TaskSpawner which this LidaModule uses to spawn tasks.
+	 * 
+	 * @return the assisting task spawner
 	 */
 	public TaskSpawner getAssistingTaskSpawner();
 

@@ -27,33 +27,45 @@ import edu.memphis.ccrg.lida.framework.Lida;
 public interface Command {
 
     /**
-     * Executes this command performing the necessary steps in the model (Lida)
-     * @param lida Lida Object
-     */
+	 * Executes this command performing the necessary steps in the model (Lida).
+	 * 
+	 * @param lida
+	 *            Lida Object
+	 */
     public void execute(Lida lida);
     
     /**
-     * Expected result of the command
-     */
+	 * Expected result of the command.
+	 * 
+	 * @return the result
+	 */
     public Object getResult();    
 
     /**
-     * Set multiple parameters using a map
-     * @param parameters parameters
-     */
+	 * Set multiple parameters using a map.
+	 * 
+	 * @param parameters
+	 *            parameters
+	 */
     public void setParameters(Map<String, Object> parameters);
     
     /**
-     * Set single parameter
-     * @param name name of parameter
-     * @param value default value to use if parameter cannot be found
-     */
+	 * Set single parameter.
+	 * 
+	 * @param name
+	 *            name of parameter
+	 * @param value
+	 *            default value to use if parameter cannot be found
+	 */
     public void setParameter(String name, Object value);
     
     /**
-     * Get a parameter
-     * @param name retrieved parameter
-     */
+	 * Get a parameter.
+	 * 
+	 * @param name
+	 *            retrieved parameter
+	 * @return the parameter
+	 */
     public Object getParameter(String name);
     
     

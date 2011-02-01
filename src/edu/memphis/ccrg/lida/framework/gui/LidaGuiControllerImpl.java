@@ -17,8 +17,9 @@ import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * @author Javier Snaider
+ * The Class LidaGuiControllerImpl.
  * 
+ * @author Javier Snaider
  */
 public class LidaGuiControllerImpl implements LidaGuiController {
 
@@ -27,13 +28,25 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	Properties commands;
 
 	/**
-	 * @param lida Lida object
+	 * Instantiates a new lida gui controller impl.
+	 * 
+	 * @param lida
+	 *            Lida object
+	 * @param commands
+	 *            the commands
 	 */
 	public LidaGuiControllerImpl(Lida lida, Properties commands) {
 		super();
 		this.lida = lida;
  		this.commands = commands;
 	}
+	
+	/**
+	 * Instantiates a new lida gui controller impl.
+	 * 
+	 * @param lida
+	 *            the lida
+	 */
 	public LidaGuiControllerImpl(Lida lida) {
 		this(lida,null);
 	}
@@ -64,9 +77,11 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 	}
 
 	/**
-	 * Executes a command sent by the GUI
-	 * @param command the command to execute. 
-	 * @return  The result of the command.
+	 * Executes a command sent by the GUI.
+	 * 
+	 * @param command
+	 *            the command to execute.
+	 * @return The result of the command.
 	 */
 	@Override
 	public Object executeCommand (Command command){
@@ -74,10 +89,19 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getCurrentTick());
 		return command.getResult();
 	}
+	
+	/**
+	 * Checks if is system paused.
+	 * 
+	 * @return true, if is system paused
+	 */
 	public boolean isSystemPaused() {
 		return lida.getTaskManager().isTasksPaused();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.gui.LidaGuiController#registrerLida(edu.memphis.ccrg.lida.framework.Lida)
+	 */
 	@Override
 	public void registrerLida(Lida lida) {
 		this.lida = lida;
