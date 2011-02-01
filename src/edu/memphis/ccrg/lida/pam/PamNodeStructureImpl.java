@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
+ * Default implmentation of {@link PamNodeStructure}.
  * A node structure that supports activation passing between linkables.
  * @author Ryan J McCall
  */
@@ -35,14 +36,28 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	 */
 	private double nodeRemovalThreshold = 0.01;
 	
+	/**
+	 * Instantiates a new pam node structure impl.
+	 */
 	public PamNodeStructureImpl(){
 		super(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 	}
 
+	/**
+	 * Instantiates a new pam node structure impl.
+	 * 
+	 * @param defaultPamNode
+	 *            the default pam node
+	 * @param defaultLink
+	 *            the default link
+	 */
 	public PamNodeStructureImpl(String defaultPamNode, String defaultLink) {
 		super(defaultPamNode, defaultLink);
 	}
 	
+	/**
+	 * @param pns
+	 */
 	public PamNodeStructureImpl(PamNodeStructure pns){
 		super(pns);
 	}

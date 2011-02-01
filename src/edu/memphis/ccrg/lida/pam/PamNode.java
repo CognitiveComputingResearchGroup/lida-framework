@@ -17,4 +17,5 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  */
 public interface PamNode extends Node, PamLinkable{
 
+	//
 }

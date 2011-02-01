@@ -19,13 +19,21 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 /**
  * A task to add a {@link PamNode}, {@link PamLink}, or {@link NodeStructure} to the percept.
  * @author Ryan J McCall
- * @see ExcitationTask - AddToPerceptTask is spawned by ExcitationTask
+ * @see ExcitationTask AddToPerceptTask is spawned by ExcitationTask
  */
 public class AddToPerceptTask extends LidaTaskImpl {
 	
 	private NodeStructure nodeStructure;
 	private PerceptualAssociativeMemory pam;
 
+	/**
+	 * Instantiates a new adds to percept task.
+	 * 
+	 * @param pamNode
+	 *            the pam node
+	 * @param pam
+	 *            the pam
+	 */
 	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
@@ -33,6 +41,14 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		nodeStructure.addNode(pamNode);
 	}
 	
+	/**
+	 * Instantiates a new adds to percept task.
+	 * 
+	 * @param pamLink
+	 *            the pam link
+	 * @param pam
+	 *            the pam
+	 */
 	public AddToPerceptTask(PamLink pamLink, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
@@ -40,7 +56,16 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		nodeStructure.addLink(pamLink);
 	}
 
+	/**
+	 * Instantiates a new adds to percept task.
+	 * 
+	 * @param pamNodeStructure
+	 *            the pam node structure
+	 * @param pam
+	 *            the pam
+	 */
 	public AddToPerceptTask(PamNodeStructure pamNodeStructure, PerceptualAssociativeMemory pam) {
+
 		super();
 		this.pam = pam;
 		nodeStructure = new PamNodeStructureImpl(pamNodeStructure);
@@ -55,6 +80,10 @@ public class AddToPerceptTask extends LidaTaskImpl {
 		pam.addNodeStructureToPercept(nodeStructure);	
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		return "AddToPerceptTask " + getTaskId();

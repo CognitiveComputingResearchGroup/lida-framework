@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A propagation task excites a node and a link.  
- * The link connects the source of the activation (not accessible) to the node.
+ * The link connects the source of the activation to the node.
  * @author Ryan J McCall
  *
  */
@@ -38,6 +38,22 @@ public class PropagationTask extends LidaTaskImpl {
 	 */
 	private TaskSpawner taskSpawner;
 
+	/**
+	 * Instantiates a new propagation task.
+	 * 
+	 * @param source
+	 *            the source
+	 * @param link
+	 *            the link
+	 * @param sink
+	 *            the sink
+	 * @param amount
+	 *            the amount
+	 * @param pam
+	 *            the pam
+	 * @param ts
+	 *            the ts
+	 */
 	public PropagationTask(PamNode source, PamLink link, PamNode sink, double amount,
 						   PerceptualAssociativeMemory pam, TaskSpawner ts) {
 		super();
@@ -68,8 +84,8 @@ public class PropagationTask extends LidaTaskImpl {
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString(){

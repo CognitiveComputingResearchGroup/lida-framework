@@ -54,14 +54,16 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public PamNode addNode(PamNode node);
 	
 	/**
-	 * Adds a COPY of a collection of PamNodes to this PAM
+	 * Adds a COPY of a collection of PamNodes to this PAM.
+	 *
 	 * @param nodes nodes to add
 	 * @return Copied PamNodes actually stored in this PAM
 	 */
 	public Set<PamNode> addNodes(Set<PamNode> nodes);
 	
 	/**
-	 * Creates and adds a new link to this PAM
+	 * Creates and adds a new link to this PAM.
+	 *
 	 * @param source source for link
 	 * @param sink sink for link
 	 * @param type type for link
@@ -71,7 +73,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type, double activation);
 
 	/**
-	 * Creates and adds a new link to this PAM
+	 * Creates and adds a new link to this PAM.
+	 *
 	 * @param sourceId Source's {@link ExtendedId}
 	 * @param sinkId Sink's {@link ExtendedId}
 	 * @param type Link's LinkCategory
@@ -81,7 +84,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation);
 	
 	/**
-	 * Adds a COPY of a collection of PamLinks to this PAM
+	 * Adds a COPY of a collection of PamLinks to this PAM.
+	 *
 	 * @param links  PamLinks to add
 	 * @return Copied PamLinks actually stored in this PAM
 	 */
@@ -94,20 +98,23 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public void addFeatureDetector(FeatureDetector fd);
 		
 	/**
-	 * Adds {@link PamListener}
+	 * Adds {@link PamListener}.
+	 *
 	 * @param pl listener
 	 */
 	public void addPamListener(PamListener pl);
 	
 	
 	/**
-	 * Set the default type of {@link PamLink}Link used in this PAM
+	 * Set the default type of {@link PamLink}Link used in this PAM.
+	 *
 	 * @param type new default PamLink type
 	 */
 	public void setNewLinkType(String type);
 	
 	/**
-	 * Set the type of {@link PamNode} used in this PAM
+	 * Set the type of {@link PamNode} used in this PAM.
+	 *
 	 * @param type new default {@link PamNode} type
 	 */
     public void setNewNodeType(String type);
@@ -127,7 +134,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public void setDecayStrategy(DecayStrategy strat);
 	
 	/**
-	 * Sets {@link PropagationBehavior} governing how activation is propagated in this PAM
+	 * Sets {@link PropagationBehavior} governing how activation is propagated in this PAM.
+	 *
 	 * @param b PropagationBehavior
 	 */
 	public void setPropagationBehavior(PropagationBehavior b);
@@ -157,46 +165,60 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
 
 	/**
-	 * Propagates activation from a PamNode to its parents
+	 * Propagates activation from a PamNode to its parents.
+	 *
 	 * @param pamNode The PamNode to propagate activation from.
 	 */
 	public void propagateActivationToParents(PamNode pamNode);
 	
 	/**
-	 * Add a PamNode to the percept
+	 * Add a PamNode to the percept.
+	 *
 	 * @param pamNode PamNode to add.
 	 */
 	public void addNodeToPercept(PamNode pamNode);
 	
 	/**
-	 * Add a PamLink to the percept
+	 * Add a PamLink to the percept.
+	 *
 	 * @param l Link to add.
- 	 */
+	 */
 	public void addLinkToPercept(PamLink l);
 	
 	/**
-	 * Add a NodeStructure to the percept
+	 * Add a NodeStructure to the percept.
+	 *
 	 * @param ns NodeStructure
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
 	
 	/**
-	 * Returns true if this PAM contains specified PamNode
+	 * Returns true if this PAM contains specified PamNode.
+	 *
+	 * @param node the node
+	 * @return true, if successful
 	 */
 	public boolean containsNode(PamNode node);
 	
 	/**
+	 * Contains node.
+	 *
 	 * @param id ExtendedId of sought node
 	 * @return true if PAM contains the node with this id.
 	 */
 	public boolean containsNode(ExtendedId id);
 	
 	/**
-	 * Returns true if this PAM contains specified PamLink
+	 * Returns true if this PAM contains specified PamLink.
+	 *
+	 * @param link the link
+	 * @return true, if successful
 	 */
 	public boolean containsLink(PamLink link);
 	
 	/**
+	 * Contains link.
+	 *
 	 * @param id ExtendedId of sought link
 	 * @return true if PAM contains the link with this id.
 	 */
@@ -246,7 +268,10 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public boolean isOverPerceptThreshold(PamLinkable l);
 	
 	/**
-	 * Returns a copy of {@link PamNode} with specified id from this PAM or null. 
+	 * Returns a copy of {@link PamNode} with specified id from this PAM or null.
+	 *
+	 * @param id the id
+	 * @return the pam node
 	 */
 	public Node getPamNode(int id);
 	
@@ -254,11 +279,15 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * 
 	 * @param id
 	 * @return Copy of {@link PamLink} with specified id from this PAM or null. 
+	 *
+	 * @return the pam nodes
 	 */
 	public Link getPamLink(ExtendedId id);
 	
 	/**
 	 * Returns an unmodifiable collection of the {@link PamNode}s in this PAM as {@link Node}s.
+	 *
+	 * @return the feature detectors
 	 */
 	public Collection<Node> getPamNodes();
 		

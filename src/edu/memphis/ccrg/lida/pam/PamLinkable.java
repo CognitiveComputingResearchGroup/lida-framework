@@ -8,5 +8,6 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
  * @author Ryan J. McCall
  */
 public interface PamLinkable extends Linkable, Learnable{
+	//
 
 }

@@ -41,6 +41,16 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
 
+	/**
+	 * Instantiates a new feature detector impl.
+	 * 
+	 * @param n
+	 *            the n
+	 * @param sm
+	 *            the sm
+	 * @param pam
+	 *            the pam
+	 */
 	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super();
@@ -49,6 +59,9 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		this.pamNodes.add(n);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl#init()
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void init() {
@@ -64,11 +77,17 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#addPamNode(edu.memphis.ccrg.lida.pam.PamNode)
+	 */
 	@Override
 	public void addPamNode(PamNode node) {
 		pamNodes.add(node);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#getPamNodes()
+	 */
 	@Override
 	public Collection<PamNode> getPamNodes() {
 		return Collections.unmodifiableCollection(pamNodes);
@@ -87,11 +106,16 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	}
 
 	/*
-	 * Override this method for domain-specific feature detection
+	 * Override this method for domain-specific feature detection.
+	 * 
+	 * @return the double
 	 */
 	@Override
 	public abstract double detect();
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#excitePam(double)
+	 */
 	@Override
 	public void excitePam(double amount) {
 		for (PamNode pn : pamNodes) {
@@ -99,6 +123,9 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "Feature Detector [" + getTaskId() + "] ";

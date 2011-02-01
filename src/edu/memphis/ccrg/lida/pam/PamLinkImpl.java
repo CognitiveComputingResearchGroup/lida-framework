@@ -15,6 +15,11 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
+/**
+ * Default implementation of PamLink.
+ * 
+ * @author ryanjmccall
+ */
 public class PamLinkImpl extends LinkImpl implements PamLink {
 	
 	@SuppressWarnings("unused")
@@ -22,56 +27,89 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	
 	private final Learnable learnable = new LearnableImpl();
 	
+	/**
+	 * Instantiates a new pam link impl.
+	 */
 	public PamLinkImpl() {
 		super();
 		groundingPamLink = this;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getTotalActivation()
+	 */
 	@Override
 	public double getTotalActivation(){
 		return learnable.getTotalActivation();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#decayBaseLevelActivation(long)
+	 */
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
 		learnable.decayBaseLevelActivation(ticks);	
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#getBaseLevelActivation()
+	 */
 	@Override
 	public double getBaseLevelActivation() {
 		return learnable.getBaseLevelActivation();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#getBaseLevelDecayStrategy()
+	 */
 	@Override
 	public DecayStrategy getBaseLevelDecayStrategy() {
 		return learnable.getBaseLevelDecayStrategy();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#getBaseLevelExciteStrategy()
+	 */
 	@Override
 	public ExciteStrategy getBaseLevelExciteStrategy() {
 		return learnable.getBaseLevelExciteStrategy();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#reinforceBaseLevelActivation(double)
+	 */
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
 		learnable.reinforceBaseLevelActivation(amount);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#setBaseLevelActivation(double)
+	 */
 	@Override
 	public void setBaseLevelActivation(double amount) {
 		learnable.setBaseLevelActivation(amount);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)
+	 */
 	@Override
 	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
 		learnable.setBaseLevelDecayStrategy(strategy);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)
+	 */
 	@Override
 	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
 		learnable.setBaseLevelExciteStrategy(strategy);		
 	}	
 	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.LinkImpl#getFactoryLinkType()
+	 */
 	@Override
 	public double getBaseLevelExcitation() {
 		return learnable.getBaseLevelExcitation();
@@ -95,6 +133,9 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	    return getExtendedId().hashCode();
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.Learnable#setBaseLevelExcitation(double)
+	 */
 	@Override
 	public String toString() {
 		return PamLinkImpl.class.getSimpleName() +  " " + getSource().getLabel() + " " + getSink().getLabel();

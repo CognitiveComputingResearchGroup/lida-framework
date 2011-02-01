@@ -21,8 +21,9 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A task that allows PAM nodes to be excited asynchronously.
- * Created in PAM method 'receiveActivationBurst'
+ * Created in PAM method 'receiveActivationBurst' 
  * 
+ * @see PerceptualAssociativeMemory#receiveActivationBurst(PamNode, double)
  * @author Ryan J McCall
  *
  */
@@ -51,10 +52,18 @@ public class ExcitationTask extends LidaTaskImpl{
 	private TaskSpawner taskSpawner;
 
 	/**
+	 * Instantiates a new excitation task.
 	 * 
-	 * @param linkable to be excited
-	 * @param excitation amount to excite
-	 * @param pam PerceptualAssociativeMemory module
+	 * @param linkable
+	 *            to be excited
+	 * @param excitation
+	 *            amount to excite
+	 * @param ticksPerRun
+	 *            the ticks per run
+	 * @param pam
+	 *            PerceptualAssociativeMemory module
+	 * @param ts
+	 *            the ts
 	 */
 	public ExcitationTask(PamLinkable linkable, double excitation, int ticksPerRun,
 			              PerceptualAssociativeMemory pam, TaskSpawner ts){
@@ -95,8 +104,8 @@ public class ExcitationTask extends LidaTaskImpl{
 		this.setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString(){

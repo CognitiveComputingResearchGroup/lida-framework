@@ -21,6 +21,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  */
 public interface FeatureDetector extends LidaTask {
 	
+
 	//TODO I think that this interface and implementation is confused.  
 	//it seems to both deal with only one node and also with multiple nodes.
 	
@@ -32,17 +33,22 @@ public interface FeatureDetector extends LidaTask {
 	
 	/**
 	 * Returns PamNodes this feature detector can access.
+	 * 
+	 * @return the pam nodes
 	 */
 	public Collection<PamNode> getPamNodes();
 	
 	/**
+	 * 
 	 * Provides this feature detector with access to specified PamNode.
+	 * @param node
+	 *            the node
 	 */
 	public void addPamNode(PamNode node);
 	
 	/**
-	 * Excitate PAM some amount.
-	 * @param detectionActivation Amount ot excite.
+	 * Excites PAM some amount.
+	 * @param detectionActivation Amount to excite.
 	 */
 	public void excitePam(double detectionActivation);
 }
