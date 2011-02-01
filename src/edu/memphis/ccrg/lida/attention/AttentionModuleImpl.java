@@ -43,6 +43,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	public AttentionModuleImpl() {
 	}
 	
+	/**
+	 * Sets associated Module
+	 * @param LidaModule - the module to be associated with
+	 * @param moduleUsage - way of associating the module
+	 */
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module != null) {
@@ -56,6 +61,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		}
 	}
 
+	/**
+	 * Class that receives the broadcast and the broadcast 
+	 * will then be used for learning
+	 *  
+	 */
 	private class ProcessBroadcastTask extends LidaTaskImpl{		
 		private NodeStructure broadcast;
 		public ProcessBroadcastTask(NodeStructure broadcast) {
@@ -69,6 +79,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		}	
 	}
 
+	/**
+	 * Schedules a task that receives broadcast from global workspace
+	 * @param BroadcastContent - the content of broadcast
+	 *  
+	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
@@ -83,6 +98,12 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	private double defaultCodeletActivation = 1.0;
 	private Map<String, Object> params = null;
 
+	/**
+	 * Creates an attention codelet from the factory 
+	 * and associates it with global workspace and CSM 
+	 * @return AttentionCodelet - the new attention codelet
+	 *  
+	 */
 	public AttentionCodelet getNewAttentionCodelet() {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, defaultCodeletTicksPerStep, defaultCodeletActivation, params);
 		if(codelet == null){
@@ -94,6 +115,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		return codelet;
 	}
 	
+	/**
+	 * Schedule the attention codelet in the task manager
+	 * @param AttentionCodelet - the new attention codelet to be run
+	 *  
+	 */
 	public void runAttentionCodelet(AttentionCodelet codelet){
 		taskSpawner.addTask(codelet);
 		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getCurrentTick());
@@ -105,6 +131,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		// to figure out how to create coalitions and detect that somsething was "deleted"
 	}
 	
+	/**
+	 * Implements learning in Attention Module
+	 * @param BroadcastContent - the broadcast that needs to be learned
+	 *  
+	 */
 	@Override
 	public void learn(BroadcastContent content) {
 		NodeStructure ns = (NodeStructure) content;

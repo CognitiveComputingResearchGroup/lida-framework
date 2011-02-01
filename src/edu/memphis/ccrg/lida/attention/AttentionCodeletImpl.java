@@ -51,6 +51,11 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 	public void init(){
 	}
     
+	/**
+	 * Sets associated Module
+	 * @param LidaModule - the module to be associated with
+	 * @param usage - way of associating the module
+	 */
 	@Override
 	public void setAssociatedModule(LidaModule module, int usage) {
 		switch(usage){
@@ -68,6 +73,10 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 		}
 	}
 	
+	/**
+	 * On finding sought content in CSM, create a coalition
+     * and put it in the global workspace 
+	 */
 	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
@@ -79,9 +88,25 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 		}
 	}
 	
+	/**
+	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
+	 * content.
+	 * 
+	 * @param buffer
+	 *            the WorkspaceBuffer to be checked for content
+	 * @return true, if successful
+	 */
 	@Override
 	public abstract boolean hasSoughtContent(WorkspaceBuffer buffer);
 
+	/**
+	 * Returns sought content and related content from specified
+	 * WorkspaceBuffer.
+	 * 
+	 * @param buffer
+	 *            the buffer
+	 * @return the workspace content
+	 */
 	@Override
 	public abstract NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
 
@@ -93,6 +118,9 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 		return soughtContent;
 	}
 
+	/**
+	 * @param the sought content
+	 */
 	@Override
 	public void setSoughtContent(NodeStructure content) {
 		soughtContent = content;
