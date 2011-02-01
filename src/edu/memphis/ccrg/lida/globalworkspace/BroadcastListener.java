@@ -34,6 +34,7 @@ public interface BroadcastListener extends ModuleListener{
 	 * should learn from it.
 	 * This method will not be called directly by {@link GlobalWorkspace} 
 	 * but should be managed by the receiving module.
+	 * @param bc content
 	 */
 	public void learn(BroadcastContent bc);
 	
