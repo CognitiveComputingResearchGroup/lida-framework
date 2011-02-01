@@ -11,7 +11,11 @@ import cern.colt.bitvector.BitVector;
 
 
 //TODO getRandomVector and Hamming are the only used methods
+/**
+ * The Class BitVectorUtils.
+ */
 public class BitVectorUtils {
+
 
 	/**
 	 * @param s The size of the new vector
@@ -28,6 +32,10 @@ public class BitVectorUtils {
 	/**
 	 * Calculates the Hamming distances between two address.
 	 * 
+	 * @param addr
+	 *            the addr
+	 * @param hardLoc
+	 *            the hard loc
 	 * @return the Hamming distances
 	 */
 	public static int hamming(BitVector addr, BitVector hardLoc) {
@@ -36,6 +44,7 @@ public class BitVectorUtils {
 
 		return aux.cardinality();
 	}
+
 
 	/**
 	 * Returns a new vector based in the original with at most noise bits changed
@@ -68,6 +77,15 @@ public class BitVectorUtils {
 		return accum;
 	}
 
+	/**
+	 * Substract vectors.
+	 * 
+	 * @param a
+	 *            the a
+	 * @param b
+	 *            the b
+	 * @return the bit vector
+	 */
 	public static BitVector substractVectors(BitVector a, BitVector b) {
 		BitVector r = b.copy();
 		r.not();
@@ -79,13 +97,17 @@ public class BitVectorUtils {
 		}
 		return res;
 	}
-
+ 
 	/**
+	 * Subtracts vectors.
+	 * 
 	 * @param a
+	 *            the a
 	 * @param v
-	 * @return
+	 *            the v
+	 * @return the int[]
 	 */
-	public static int[] substractVectors(int[] a, BitVector v) {
+	public static int[] subtractVectors(int[] a, BitVector v) {
 		int[] res = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
 			res[i] = a[i]-((v.getQuick(i))?1:-1);
@@ -93,6 +115,15 @@ public class BitVectorUtils {
 		return res;
 	}
 
+	/**
+	 * Sum vectors.
+	 * 
+	 * @param accum
+	 *            the accum
+	 * @param vector
+	 *            the vector
+	 * @return the int[]
+	 */
 	public static int[] sumVectors(int[] accum, int[] vector) {
 
 		for (int i = 0; i < vector.length; i++) {
@@ -101,6 +132,15 @@ public class BitVectorUtils {
 		return accum;
 	}
 
+	/**
+	 * Vector to bipolar.
+	 * 
+	 * @param accum
+	 *            the accum
+	 * @param v
+	 *            the v
+	 * @return the int[]
+	 */
 	public static int[] vectorToBipolar(int[] accum, BitVector v) {
 
 		for (int i = 0; i < v.size(); i++) {
@@ -109,6 +149,13 @@ public class BitVectorUtils {
 		return accum;
 	}
 
+	/**
+	 * Vector to bipolar.
+	 * 
+	 * @param v
+	 *            the v
+	 * @return the int[]
+	 */
 	public static int[] vectorToBipolar(BitVector v) {
 		int[] accum = new int[v.size()];
 		for (int i = 0; i < v.size(); i++) {
@@ -117,6 +164,13 @@ public class BitVectorUtils {
 		return accum;
 	}
 
+	/**
+	 * Normalize vector.
+	 * 
+	 * @param buff
+	 *            the buff
+	 * @return the bit vector
+	 */
 	public static BitVector normalizeVector(int[] buff) {
 		BitVector res = new BitVector(buff.length);
 		for (int i = 0; i < buff.length; i++) {
@@ -128,16 +182,37 @@ public class BitVectorUtils {
 		return res;
 	}
 
+	/**
+	 * Multiply vectors.
+	 * 
+	 * @param a
+	 *            the a
+	 * @param b
+	 *            the b
+	 * @return the bit vector
+	 */
 	public static BitVector multiplyVectors(BitVector a, BitVector b) {
 		BitVector res = a.copy();
 		res.xor(b);
 		return res;
 	}
 
+	/**
+	 * Instantiates a new bit vector utils.
+	 */
 	public BitVectorUtils() {
 		super();
 	}
 
+	/**
+	 * Discretize int vector.
+	 * 
+	 * @param buff
+	 *            the buff
+	 * @param bitSteps
+	 *            the bit steps
+	 * @return the bit vector[]
+	 */
 	public static BitVector[] discretizeIntVector(int[] buff, int bitSteps) {
 		BitVector[] weights = new BitVector[bitSteps];
 		int maxUnsignedValue=(1<<bitSteps);
@@ -169,6 +244,13 @@ public class BitVectorUtils {
 		return weights;
 	}
 
+	/**
+	 * Denormalize vector.
+	 * 
+	 * @param weights
+	 *            the weights
+	 * @return the int[]
+	 */
 	public static int[] denormalizeVector(BitVector[] weights) {
 
 		int bitSteps=weights.length;
