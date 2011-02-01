@@ -133,11 +133,11 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		// The Layout<V, E> is parameterized by the vertex and edge types
 
 		Layout<Linkable, GuiLink> layout = new FRLayout<Linkable, GuiLink>(guiGraph);
-		layout.setSize(new Dimension(300, 300)); // sets the initial size of the
+		layout.setSize(new Dimension(300, 300)); // Sets initial size of the
 		// The BasicVisualizationServer<V,E> is parameterized by the edge types
 		vv = new VisualizationViewer<Linkable, GuiLink>(
 				layout);
-		vv.setPreferredSize(new Dimension(350, 350)); // Sets the viewing area
+		vv.setPreferredSize(new Dimension(350, 350)); // Sets viewing area
 														// size
 		// Show vertex and edge labels
 		vv.getRenderContext().setVertexLabelTransformer(

@@ -26,6 +26,8 @@ import edu.uci.ics.jung.visualization.control.AbstractPopupGraphMousePlugin;
  * vertex).
  * 
  * @author Dr. Greg M. Bernstein
+ * @param <V> vertex
+ * @param <E> edge
  */
 public class PopupVertexFormMousePlugin<V, E> extends
 		AbstractPopupGraphMousePlugin {
