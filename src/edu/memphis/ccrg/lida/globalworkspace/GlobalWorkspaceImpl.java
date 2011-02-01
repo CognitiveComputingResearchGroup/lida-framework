@@ -222,6 +222,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			setTaskStatus(LidaTaskStatus.FINISHED); // Runs only once
 		}
 
+		@Override
 		public String toString() {
 			return GlobalWorkspaceImpl.class.getSimpleName()
 					+ " background task";
