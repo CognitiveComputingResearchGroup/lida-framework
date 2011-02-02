@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * It is a submodule of the Workspace.
  * 
  * @author Ryan J McCall
- *
+ * TODO MOVE to workspace buffer package
  */
 public interface BroadcastQueue extends WorkspaceBuffer{
 
