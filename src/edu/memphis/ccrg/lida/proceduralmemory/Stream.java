@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.io.Serializable;
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 
 /**
  * 
