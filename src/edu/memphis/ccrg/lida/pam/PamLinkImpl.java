@@ -119,7 +119,84 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public void setBaseLevelExcitation(double excitation) {
 		learnable.setBaseLevelExcitation(excitation);
 	}
+
+	@Override
+	public double getLearnableRemovalThreshold() {
+		return learnable.getLearnableRemovalThreshold();
+	}
+
+	@Override
+	public void setLearnableRemovalThreshold(double threshold) {
+		learnable.setLearnableRemovalThreshold(threshold);
+	}
 	
+	//ACTIVATIBLE
+	
+	@Override
+	public boolean isRemovable() {
+		return learnable.isRemovable();
+	}
+
+	@Override
+	public double getExcitation(){
+		return learnable.getExcitation();
+	}
+	
+	@Override
+	public void setExcitation(double excitation){
+		learnable.setExcitation(excitation);
+	}
+	
+	@Override
+	public double getActivation(){
+		return learnable.getActivation();
+	}
+	
+	@Override
+    public void setActivation(double activation){
+		learnable.setActivation(activation);
+	}
+    
+	@Override
+    public void excite(double amount){
+		learnable.excite(amount);
+	}
+	
+	@Override
+	public void setExciteStrategy(ExciteStrategy strategy){
+		learnable.setExciteStrategy(strategy);
+	}
+	
+	@Override
+	public ExciteStrategy getExciteStrategy(){
+		return learnable.getExciteStrategy();
+	}
+	
+	@Override
+	public void decay(long ticks){
+		learnable.decay(ticks);
+	}
+
+	@Override
+	public void setDecayStrategy(DecayStrategy strategy){
+		learnable.setDecayStrategy(strategy);
+	}
+	
+	@Override
+	public DecayStrategy getDecayStrategy(){
+		return learnable.getDecayStrategy();
+	}
+	
+	@Override
+	public void setActivatibleRemovalThreshold(double threshold){
+		learnable.setActivatibleRemovalThreshold(threshold);
+	}
+	
+	@Override
+	public double getActivatibleRemovalThreshold(){
+		return learnable.getActivatibleRemovalThreshold();
+	}
+	        
 	//TODO double check
 	@Override
 	public boolean equals(Object obj) {

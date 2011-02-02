@@ -31,6 +31,10 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
+	
+	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
+	private double learnableRemovableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
+	
 	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
 
 	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
@@ -119,5 +123,18 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.baseLevelExcitation= excitation;
 	}
 
+	@Override
+	public double getLearnableRemovalThreshold() {
+		return learnableRemovableThreshold;
+	}
 
+	@Override
+	public void setLearnableRemovalThreshold(double threshold) {
+		this.learnableRemovableThreshold = threshold;
+	}
+	
+	@Override
+	public boolean isRemovable() {
+		return baseLevelActivation < learnableRemovableThreshold;
+	}
 }

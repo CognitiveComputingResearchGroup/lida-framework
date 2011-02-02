@@ -28,8 +28,6 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -329,24 +327,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public void addNodeStructureToPercept(NodeStructure nodeStructure) {
 		for (int i = 0; i < pamListeners.size(); i++)
 			pamListeners.get(i).receiveNodeStructure(nodeStructure);
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)
-	 */
-	@Override
-	public void setDecayStrategy(DecayStrategy b) {
-		pamNodeStructure.setNodesDecayStrategy(b);
-		//TODO
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)
-	 */
-	@Override
-	public void setExciteStrategy(ExciteStrategy behavior) {
-		pamNodeStructure.setNodesExciteStrategy(behavior);
-		//TODO
 	}
 
 	/* (non-Javadoc)

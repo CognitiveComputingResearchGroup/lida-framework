@@ -18,8 +18,6 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 
 /**
@@ -119,21 +117,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param type new default {@link PamNode} type
 	 */
     public void setNewNodeType(String type);
-    
-	/**
-	 * Changes the {@link ExciteStrategy} used for {@link PamLinkable}s 
-	 * in this PAM.
-	 * @param strat ExciteStrategy
-	 */
-	public void setExciteStrategy(ExciteStrategy strat);
-	
-	/**
-	 * Change the {@link DecayStrategy} used for {@link PamLinkable}s 
-	 * in this PAM.
-	 * @param strat DecayStrategy
- 	 */
-	public void setDecayStrategy(DecayStrategy strat);
-	
+   
+
 	/**
 	 * Sets {@link PropagationBehavior} governing how activation is propagated in this PAM.
 	 *

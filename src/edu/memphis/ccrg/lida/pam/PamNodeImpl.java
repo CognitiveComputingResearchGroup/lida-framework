@@ -85,6 +85,21 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void setBaseLevelExcitation(double excitation) {
 		learnable.setBaseLevelExcitation(excitation);
 	}
+	
+	@Override
+	public double getLearnableRemovalThreshold() {
+		return learnable.getLearnableRemovalThreshold();
+	}
+
+	@Override
+	public void setLearnableRemovalThreshold(double threshold) {
+		learnable.setLearnableRemovalThreshold(threshold);
+	}
+	
+	@Override
+	public boolean isRemovable() {
+		return learnable.isRemovable();
+	}
 
 	@Override
 	public boolean equals(Object obj) {

@@ -85,4 +85,16 @@ public interface Learnable extends Activatible{
 	 */
 	public DecayStrategy getBaseLevelDecayStrategy();
 	
+	/**
+	 * Sets learnableRemovalThreshold
+	 * @param threshold threshold for removal of this Learnable
+	 */
+	public void setLearnableRemovalThreshold(double threshold);
+	
+	/**
+	 * Gets learnableRemovalThreshold
+	 * @return threshold for removal of this learnable
+	 */
+	public double getLearnableRemovalThreshold();
+	
 }

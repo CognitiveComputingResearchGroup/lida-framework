@@ -15,24 +15,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 /**
  * This class implements the LidaTask Interface. This class should be used as the base class for all LidaTasks.
  * @author Javier Snaider
  */
-public abstract class LidaTaskImpl extends ActivatibleImpl implements LidaTask {
+public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 
 	private static final Logger logger= Logger.getLogger(LidaTaskImpl.class.getCanonicalName());
 
 	private final static int defaultTicksPerStep = 1;
-	private long taskID;
 	private int ticksPerStep = defaultTicksPerStep;
+	private long taskID;
 	private long nextExcecutionTicksPerStep = defaultTicksPerStep;
 	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner ts;
 	private long scheduledTick;
+	
+	/**
+	 * Source of unique Ids for LidaTaskImpls
+	 */
 	private static long nextTaskID;
 	
 	/**

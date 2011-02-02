@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.main.WorkspaceContent;
@@ -43,6 +44,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * Links that each Linkable (Node or Link) has.
 	 */
 	private Map<Linkable, Set<Link>> linkableMap;
+	
+	private static final double DEFAULT_LOWER_ACTIVATION_BOUND = -1.0;
+	private double lowerActivationBound= DEFAULT_LOWER_ACTIVATION_BOUND;
 	
 	/**
 	 * Standard factory for new objects.  Used to create copies when adding linkables to this NodeStructure
@@ -662,6 +666,26 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public Collection<Linkable> getLinkables() {
 		return Collections.unmodifiableCollection(linkableMap.keySet());
+	}
+
+	@Override
+	public void decayNodeStructure(long ticks) {
+		for(Linkable linkable: linkableMap.keySet()){
+			Activatible activatible = (Activatible) linkable;
+			activatible.decay(ticks);
+			if (activatible.getActivation() <= lowerActivationBound){
+				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getCurrentTick());
+				removeLinkable(linkable);
+			}
+		}	
+	}
+
+	public double getLowerActivationBound() {
+		return lowerActivationBound;
+	}
+
+	public void setLowerActivationBound(double lowerActivationBound) {
+		this.lowerActivationBound = lowerActivationBound;
 	}
 
 }

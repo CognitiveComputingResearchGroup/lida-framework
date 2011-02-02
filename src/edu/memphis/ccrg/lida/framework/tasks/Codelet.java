@@ -10,13 +10,12 @@
  */
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 /**
  * A task that represents a demon-like processor.
  * @author Javier Snaider, Ryan J. McCall
  */
-public interface Codelet extends LidaTask, Learnable{
+public interface Codelet extends LidaTask{
 	
 	
 }

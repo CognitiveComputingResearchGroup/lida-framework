@@ -39,11 +39,5 @@ public interface Workspace extends LidaModule{
 	 * @param ns NodeStructure to cue with.
 	 */
 	public void cueEpisodicMemories(NodeStructure ns);
-	
-	/**
-	 * Sets lowerActivationBound
-	 * @param lowerBound lower bound for the amount of activation
-	 * a node or link must have to remain in Workspace buffer.
-	 */
-	public void setActivationLowerBound(double lowerBound);
+
 }

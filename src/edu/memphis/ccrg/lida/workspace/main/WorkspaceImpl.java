@@ -50,14 +50,9 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private List<WorkspaceListener> wsListeners = new ArrayList<WorkspaceListener>();
-
-	private final double DEFAULT_LOWER_ACTIVATION_BOUND = 0.01;
-	private double lowerActivationBound;
 	
 	public WorkspaceImpl(){
 		super (ModuleName.Workspace);
-		lowerActivationBound = DEFAULT_LOWER_ACTIVATION_BOUND;
-		setActivationLowerBound(lowerActivationBound);
 	}
 	
 	//TODO not used. remove?
@@ -73,28 +68,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	@Override
 	public void addSubModule(LidaModule lm){
 		super.addSubModule(lm);
-	}
-	
-	/**
-	 * @param activationLowerBound the lowerActivationBound to set
-	 */
-	@Override
-	public void setActivationLowerBound(double activationLowerBound) {
-		if(activationLowerBound < 0){
-			logger.log(Level.WARNING, "Lower bound must be non-negative.  Parameter not set.", 
-					LidaTaskManager.getCurrentTick());
-		}else{
-			this.lowerActivationBound = activationLowerBound;
-			for (LidaModule lm: getSubmodules().values()){
-				((WorkspaceBuffer)lm).setLowerActivationBound(lowerActivationBound);
-			}
-		}
-		
-	}
-	
-	@Override
-	public void init (){		
-		lowerActivationBound = (Double) getParam("workspace.activationLowerBound", DEFAULT_LOWER_ACTIVATION_BOUND);
 	}
 	
 	@Override
@@ -121,8 +94,9 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	
 	@Override
 	public void cueEpisodicMemories(NodeStructure content){
-		for(CueListener c: cueListeners)
+		for(CueListener c: cueListeners){
 			c.receiveCue(content);
+		}
 		logger.log(Level.FINER, "Cue performed.", LidaTaskManager.getCurrentTick());
 	}
 	private void sendToListeners(NodeStructure content){
@@ -192,6 +166,11 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	@Override
 	public void learn(BroadcastContent content) {
 		// Not applicable for WorkspaceImpl
+	}
+
+	@Override
+	public void init() {
+		// Not used		
 	}
 	
 }

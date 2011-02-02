@@ -7,16 +7,13 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
@@ -26,59 +23,42 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
-		
-	private final double DEFAULT_ACTIVATION_LOWER_BOUND = 0.01;
-
-	private double activationLowerBound = DEFAULT_ACTIVATION_LOWER_BOUND;
 	
-	//TODO consider having multiple NodeStructures as content
-	private NodeStructure bufferContent;
+	//TODO Consider having multiple NodeStructures as content
+	private NodeStructure nodeStructureBuffer;
+	
+	private final double DEFAULT_REMOVABLE_THRESHOLD = 0.01;
 	
 	public WorkspaceBufferImpl() {
-		bufferContent = new NodeStructureImpl();
+		nodeStructureBuffer = new NodeStructureImpl();
+	}
+	
+	@Override
+	public void init() {
+		Double d = (Double) getParam("removableThreshold", DEFAULT_REMOVABLE_THRESHOLD);
+		setLowerActivationBound(d);
 	}
 	
 	@Override
 	public void setLowerActivationBound(double activationLowerBound) {
-		if(activationLowerBound < 0){
-			logger.log(Level.WARNING, "Lower bound must be non-negative.  Parameter not set.", 
-					LidaTaskManager.getCurrentTick());
-		}else{
-			this.activationLowerBound = activationLowerBound;
-		}
+		logger.log(Level.FINE, "Activation lower bound for buffer " + getModuleName() + 
+					" set to " + activationLowerBound, LidaTaskManager.getCurrentTick());
+		nodeStructureBuffer.setLowerActivationBound(activationLowerBound);
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		return bufferContent;
+		return nodeStructureBuffer;
 	}
-		
-	/**
-	 * decays all the nodes in the buffer.
-	 * If a node's activation results lower than lowerActivationBound, it is removed from the buffer.
-	 * @param ticks how long since last decay
-	 */
+
 	@Override
 	public void decayModule(long ticks){
 		super.decayModule(ticks);
-		Collection<Linkable> linkables = bufferContent.getLinkables();
-		for(Linkable linkable: linkables){
-			Activatible activatible = (Activatible) linkable;
-			activatible.decay(ticks);
-			if (activatible.getActivation() <= activationLowerBound){
-				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getCurrentTick());
-				bufferContent.removeLinkable(linkable);
-			}
-		}		
+		nodeStructureBuffer.decayNodeStructure(ticks);	
 	}
 	
 	@Override
 	public void addListener(ModuleListener listener) {
 		//N/A
-	}
-
-	@Override
-	public void init() {
-		//Not used
 	}
 }

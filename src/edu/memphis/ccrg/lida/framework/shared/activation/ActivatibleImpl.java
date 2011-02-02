@@ -31,6 +31,10 @@ public class ActivatibleImpl implements Activatible {
 	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
+	
+	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
+	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
+	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	public ActivatibleImpl() {
@@ -114,6 +118,21 @@ public class ActivatibleImpl implements Activatible {
 	@Override
 	public void setExcitation(double excitation) {
 		currentExcitation = excitation;
+	}
+
+	@Override
+	public double getActivatibleRemovalThreshold() {
+		return removableThreshold;
+	}
+
+	@Override
+	public boolean isRemovable() {
+		return activation < removableThreshold;
+	}
+
+	@Override
+	public void setActivatibleRemovalThreshold(double threshold) {
+		this.removableThreshold = threshold;
 	}
 
 }//

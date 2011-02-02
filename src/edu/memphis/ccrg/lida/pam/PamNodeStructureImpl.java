@@ -15,26 +15,18 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * Default implmentation of {@link PamNodeStructure}.
+ * Default implementation of {@link PamNodeStructure}.
  * A node structure that supports activation passing between linkables.
  * @author Ryan J McCall
  */
 public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeStructure{
 	
 	private static final Logger logger = Logger.getLogger(PamNodeStructureImpl.class.getCanonicalName());
-
-	/*
-	 * If a node is below this threshold after being decayed it is deleted
-	 */
-	private double nodeRemovalThreshold = 0.01;
 	
 	/**
 	 * Instantiates a new {@link PamNodeStructureImpl} using {@link PamNodeImpl} and {@link PamLinkImpl}
@@ -62,25 +54,6 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	public PamNodeStructureImpl(PamNodeStructure pns){
 		super(pns);
 	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PamNodeStructure#setNodesExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)
-	 */
-	@Override
-	public void setNodesExciteStrategy(ExciteStrategy behavior) {
-    	for(Node n: getNodes()){
-    		n.setExciteStrategy(behavior);
-    	}
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PamNodeStructure#setNodesDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)
-	 */
-	@Override
-	public void setNodesDecayStrategy(DecayStrategy strategy) {
-    	for(Node n: getNodes())
-    		n.setDecayStrategy(strategy);
-	}
 	
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PamNodeStructure#getParentsAndConnectingLinksOf(edu.memphis.ccrg.lida.framework.shared.Node)
@@ -106,14 +79,13 @@ public class PamNodeStructureImpl extends NodeStructureImpl implements PamNodeSt
 	@Override
 	public void decayNodeStructure(long ticks){
 		logger.log(Level.FINE,"Decaying the Pam NodeStructure",LidaTaskManager.getCurrentTick());
-		for(Linkable l: getLinkables()){
-			Learnable la = (Learnable) l;
-			la.decay(ticks);
-			la.decayBaseLevelActivation(ticks);
-			if(la.getTotalActivation() < nodeRemovalThreshold){
-				removeLinkable(l);
+		for(Linkable linkable: getLinkables()){
+			Learnable learnable = (Learnable) linkable;
+			learnable.decay(ticks);
+			learnable.decayBaseLevelActivation(ticks);
+			if(learnable.isRemovable()){
+				removeLinkable(linkable);
 			}
 		}
 	}
-
 }

@@ -352,4 +352,22 @@ public class ArgumentImpl implements Argument {
 		
 	}
 
+	@Override
+	public double getActivatibleRemovalThreshold() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isRemovable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setActivatibleRemovalThreshold(double threshold) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

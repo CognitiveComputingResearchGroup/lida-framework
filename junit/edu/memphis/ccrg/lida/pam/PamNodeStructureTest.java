@@ -174,34 +174,6 @@ public class PamNodeStructureTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#setNodesExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
-	 */
-	@Test
-	public void testSetNodesExciteStrategy() {
-		DefaultExciteStrategy behavior = new DefaultExciteStrategy();
-				
-		nodeStructure1.setNodesExciteStrategy(behavior);		
-		for (Node n : nodeStructure1.getNodes()){
-			assertEquals("Problem with SetNodesExciteStrategy in Node: " + n, behavior, n.getExciteStrategy());
-		}
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#setNodesDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
-	 */
-	@Test
-	public void testSetNodesDecayStrategy() {
-				
-		DecayStrategy behavior = new LinearDecayStrategy();
-		
-		nodeStructure1.setNodesDecayStrategy(behavior);
-		for (Node n : nodeStructure1.getNodes()){
-			assertEquals("Problem with SetNodesDecayStrategy in Node: " + n, behavior, n.getDecayStrategy());
-		}
-
-	}
-
-	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeStructureImpl#getParents(edu.memphis.ccrg.lida.framework.shared.Node)}.
 	 */
 	@Test
@@ -254,8 +226,7 @@ public class PamNodeStructureTest extends TestCase{
 		node1.setActivation(0.7);
 		node2.setActivation(0.6);		
 		Node nodeA= nodeStructure2.addNode(node1);
-		Node nodeB= nodeStructure2.addNode(node2);		
-		nodeStructure2.setNodesDecayStrategy(ds);
+		Node nodeB= nodeStructure2.addNode(node2);
 		
 		nodeStructure2.decayNodeStructure(100);
 		

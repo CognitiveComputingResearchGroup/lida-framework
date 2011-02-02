@@ -79,6 +79,17 @@ public interface NodeStructure {
 	public void mergeWith(NodeStructure ns);
 
 	public NodeStructure copy();
+	
+	/**
+	 * Decay the {@link Linkable}s of this {@link NodeStructure}.
+	 * 
+	 * @param ticks
+	 *            the ticks
+	 */
+	public void decayNodeStructure(long ticks);
+	
+	public double getLowerActivationBound();
+	public void setLowerActivationBound(double lowerActivationBound);
 
 	// Gets
 
@@ -119,8 +130,8 @@ public interface NodeStructure {
 	public String getDefaultLinkType();
 
 	//TODO class??
-	public void setDefaultLink(String linkClassName);
+	public void setDefaultLink(String linkName);
 
-	public void setDefaultNode(String nodeClassName);
+	public void setDefaultNode(String nodeName);
 
 }

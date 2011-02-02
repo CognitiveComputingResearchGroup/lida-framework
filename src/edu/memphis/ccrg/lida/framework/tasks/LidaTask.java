@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import java.util.concurrent.Callable;
 
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 
 /**
@@ -32,7 +32,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
  *
  */
  
-public interface LidaTask extends Callable<LidaTask>, Activatible, FullyInitializable{
+public interface LidaTask extends Callable<LidaTask>, Learnable, FullyInitializable{
 	
 	/**
 	 * Returns status

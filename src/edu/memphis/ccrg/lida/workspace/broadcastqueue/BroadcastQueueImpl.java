@@ -31,22 +31,23 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * the queue's capacity.
  * 
  * @author Ryan J McCall
- * 
+ * TODO Extend WorkspaceBufferImpl since BroadcastQueue extends workspace buffer?
  */
 public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(BroadcastQueueImpl.class.getCanonicalName());
 
-	private Queue<NodeStructure> broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
+	private Queue<NodeStructure> broadcastQueue;
 	
 	private double lowerActivationBound;
 	
-	private int broadcastQueueCapacity;
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
+	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
+	
 
 	public BroadcastQueueImpl() {
 		super(ModuleName.BroadcastQueue);
-		broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
+		broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
 		broadcastQueue.add(new NodeStructureImpl());
 	}
 	
@@ -61,7 +62,17 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 
 	@Override
 	public void init() {
+		Double d = (Double) getParam("removableThreshold", 0.0);
+		setLowerActivationBound(d);
 		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
+	}
+	
+	@Override
+	public void receiveBroadcast(BroadcastContent bc) {
+		synchronized (this) {
+			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			taskSpawner.addTask(task);
+		}
 	}
 	
 	private class ProcessBroadcastTask extends LidaTaskImpl{		
@@ -82,14 +93,6 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	}
 
 	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
-			taskSpawner.addTask(task);
-		}
-	}
-
-	@Override
 	public void learn(BroadcastContent content) {
 		// Not applicable
 	}
@@ -101,8 +104,8 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 
 	@Override
 	public void decayModule(long ticks) {
-		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getCurrentTick());
 		super.decayModule(ticks);
+		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getCurrentTick());
 		for (NodeStructure ns : broadcastQueue) {
 			Collection<Node> nodes = ns.getNodes();
 			for (Node n : nodes) {

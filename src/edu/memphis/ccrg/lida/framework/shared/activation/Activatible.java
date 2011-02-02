@@ -87,5 +87,23 @@ public interface Activatible extends Serializable {
 	 * @return the decay strategy.
 	 */
 	public DecayStrategy getDecayStrategy();
+	
+	/**
+	 * Sets activatibleRemovalThreshold
+	 * @param threshold threshold for removal of this activatible
+	 */
+	public void setActivatibleRemovalThreshold(double threshold);
+	
+	/**
+	 * Gets activatibleRemovalThreshold
+	 * @return threshold for removal of this activatible
+	 */
+	public double getActivatibleRemovalThreshold();
+	
+	/**
+	 * Returns if this Activatible is removable
+	 * @return true if activation is less than activatibleRemovalThreshold
+	 */
+	public boolean isRemovable();
 
 }
