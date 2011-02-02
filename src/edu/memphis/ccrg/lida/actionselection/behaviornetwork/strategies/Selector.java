@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 
 /**
  * A strategy for choosing which behavior to execute.
