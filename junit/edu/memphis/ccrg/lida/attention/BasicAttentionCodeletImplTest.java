@@ -69,6 +69,7 @@ public class BasicAttentionCodeletImplTest {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		model.mergeWith(nodeStructure);
 		
+		
 		assertEquals("Problem with HasSoughtContent",true,attnCodelet.hasSoughtContent(buffer));
 	}
 
@@ -77,7 +78,13 @@ public class BasicAttentionCodeletImplTest {
 	 */
 	@Test
 	public void testGetWorkspaceContent() {
-		fail("Not yet implemented"); // TODO
+		NodeStructure model = (NodeStructure) buffer.getModuleContent();
+		model.mergeWith(nodeStructure);
+		
+		//NodeStructure model2 = (NodeStructure) attnCodelet.getWorkspaceContent(buffer);
+		//model2.mergeWith(nodeStructure);
+		
+		assertEquals("Problem with HasSoughtContent",nodeStructure,attnCodelet.getWorkspaceContent(buffer));
 	}
 
 	/**
