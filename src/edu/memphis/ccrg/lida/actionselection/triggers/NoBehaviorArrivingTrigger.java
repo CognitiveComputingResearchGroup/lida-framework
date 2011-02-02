@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.triggers;
 
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 
 /**
  * The Class NoBehaviorArrivingTrigger.

@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class NoActionSelectionOccurringTrigger implements ActionSelectionTrigger {

@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 
 /**
  * A Trigger determines when a new action selection must be triggered.
