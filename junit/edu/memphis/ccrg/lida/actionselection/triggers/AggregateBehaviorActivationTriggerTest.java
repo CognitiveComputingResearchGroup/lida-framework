@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockActionSelectionImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;

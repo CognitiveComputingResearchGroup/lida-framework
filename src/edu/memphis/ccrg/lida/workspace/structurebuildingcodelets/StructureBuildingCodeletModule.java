@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.workspace.main.Workspace;
+import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class StructureBuildingCodeletModule extends LidaModuleImpl implements GuiEventProvider {

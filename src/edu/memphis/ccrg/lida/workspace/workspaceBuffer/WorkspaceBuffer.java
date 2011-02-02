@@ -8,7 +8,7 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.workspace.main.WorkspaceImpl;
+import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet;
 
 /**

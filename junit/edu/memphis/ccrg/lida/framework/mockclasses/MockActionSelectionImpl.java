@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
 import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
