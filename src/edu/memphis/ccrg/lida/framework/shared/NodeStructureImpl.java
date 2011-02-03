@@ -680,10 +680,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}	
 	}
 
+	@Override
 	public double getLowerActivationBound() {
 		return lowerActivationBound;
 	}
 
+	@Override
 	public void setLowerActivationBound(double lowerActivationBound) {
 		this.lowerActivationBound = lowerActivationBound;
 	}

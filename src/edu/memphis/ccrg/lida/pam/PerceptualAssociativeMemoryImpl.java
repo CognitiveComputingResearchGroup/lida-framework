@@ -448,8 +448,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if(newNode != null){
 			newNode = (PamNode) pamNodeStructure.addNode(newNode);
 			return newNode;
+		}else{
+			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + pamNodeStructure.getDefaultNodeType(), LidaTaskManager.getCurrentTick());
+			return null;
 		}
-		return null;
 	}
 
 	/* (non-Javadoc)
@@ -461,8 +463,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (newNode != null) {
 			newNode = (PamNode) pamNodeStructure.addNode(newNode);
 			return newNode;
+		}else{
+			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + pamNodeType, LidaTaskManager.getCurrentTick());
+			return null;
 		}
-		return null;
 	}
 
 	/* (non-Javadoc)
@@ -482,7 +486,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 
 	@Override
 	public double getPerceptThreshold() {
-
 		return perceptThreshold;
 	}
 	@Override

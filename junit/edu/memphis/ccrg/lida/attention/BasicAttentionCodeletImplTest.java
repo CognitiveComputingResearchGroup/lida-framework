@@ -32,7 +32,7 @@ public class BasicAttentionCodeletImplTest {
 	BasicAttentionCodeletImpl attnCodelet;
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception e
 	 */
 	@Before
 	public void setUp() throws Exception {
