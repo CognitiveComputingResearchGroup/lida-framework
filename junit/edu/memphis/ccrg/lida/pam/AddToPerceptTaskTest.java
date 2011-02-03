@@ -55,7 +55,7 @@ public class AddToPerceptTaskTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask#AddToPerceptTask(edu.memphis.ccrg.lida.framework.shared.NodeStructure, edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory)}.
+	 * 
 	 */
 	@Test
 	public void testAddToPerceptTaskNodeStructurePerceptualAssociativeMemory() {

@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  *
- * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class NodeStructureTable extends LidaPanelImpl {
 
@@ -218,7 +218,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 				}
 			case 3:
 				if (node instanceof PamNode){
-					return 666;
+					return "undefined";
 				}else{
 					return "";
 				}
