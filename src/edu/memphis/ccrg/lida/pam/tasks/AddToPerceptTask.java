@@ -58,9 +58,9 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	}
 
 	/**
-	 * Creates a new instance to add a {@link PamNodeStructure}
+	 * Creates a new instance to add a {@link NodeStructure}
 	 * 
-	 * @param pamNodeStructure
+	 * @param nodeStructure
 	 *            the pam node structure
 	 * @param pam
 	 *            the pam
