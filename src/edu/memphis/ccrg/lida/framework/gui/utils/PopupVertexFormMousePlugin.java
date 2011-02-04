@@ -66,7 +66,6 @@ public class PopupVertexFormMousePlugin<V, E> extends
 			final V v = pickSupport.getVertex(vv.getGraphLayout(), p.getX(), p
 					.getY());
 			if (v != null) {
-				// System.out.println("Vertex " + v + " was right clicked");
 				if (v instanceof Node) {
 					//vertexPopup.show(vv, e.getX(), e.getY());
 				} 

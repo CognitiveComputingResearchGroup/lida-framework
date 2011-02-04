@@ -119,7 +119,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public void addLinks(Collection<Link> links) {
+	public Collection<Link> addLinks(Collection<Link> links) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
@@ -143,7 +143,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public void addNodes(Collection<Node> nodes) {
+	public Collection<Node> addNodes(Collection<Node> nodes) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 

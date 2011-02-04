@@ -217,12 +217,6 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public void setPerceptThreshold(double t);
 	
 	/**
-	 * Gets perceptThreshold
-	 * @return threshold for a {@link Linkable} to become part of the percept
-	 */
-	public double getPerceptThreshold();
-	
-	/**
 	 * Sets upscaleFactor
 	 * @param f scale factor for feed-forward activation propagation
 	 */

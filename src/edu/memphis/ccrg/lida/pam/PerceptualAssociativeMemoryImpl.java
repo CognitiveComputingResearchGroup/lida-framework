@@ -79,7 +79,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	private int propagationTaskTicksPerRun = DEFAULT_PROPAGATION_TASK_TICKS;
 
 	private static final double DEFAULT_PERCEPT_THRESHOLD = 0.7;
-	private double perceptThreshold = DEFAULT_PERCEPT_THRESHOLD;
+	private static double perceptThreshold = DEFAULT_PERCEPT_THRESHOLD;
 
 	private static final double DEFAULT_UPSCALE_FACTOR = 0.9;
 	private double upscaleFactor = DEFAULT_UPSCALE_FACTOR;
@@ -484,13 +484,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		pamNodeStructure.setDefaultLink(type);
 	}
 
-	@Override
-	public double getPerceptThreshold() {
+	public static double getPerceptThreshold() {
 		return perceptThreshold;
 	}
 	@Override
 	public void setPerceptThreshold(double t) {
-		perceptThreshold = t;		
+		if(t >= 1.0){
+			logger.log(Level.WARNING, "Cannot set percept threshold to 1.0 or higher.  Percept threshold will not be modified.", LidaTaskManager.getCurrentTick());
+		}else{
+			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
+		}
 	}
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {

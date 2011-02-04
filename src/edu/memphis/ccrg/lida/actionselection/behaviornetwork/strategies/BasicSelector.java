@@ -36,10 +36,6 @@ public class BasicSelector implements Selector{
     public BasicSelector() {       
     }
     
-//    public static void p(String s){
-//    	System.out.println(s);
-//    }
-    
     @Override
 	public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
         double maxActivation = 0.0;

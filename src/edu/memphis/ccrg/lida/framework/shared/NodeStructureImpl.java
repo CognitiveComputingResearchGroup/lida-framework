@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -285,9 +286,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
 	@Override
-	public void addLinks(Collection<Link> links) {
-		for (Link l : links)
-			addLink(l);
+	public Collection<Link> addLinks(Collection<Link> links) {
+		Collection<Link> copiedLinks = new ArrayList<Link>();
+		for (Link l : links){
+			copiedLinks.add(addLink(l));
+		}
+		return copiedLinks;
 	}
 	
 	@Override
@@ -324,10 +328,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
 	@Override
-	public void addNodes(Collection<Node> nodesToAdd) {
+	public Collection<Node> addNodes(Collection<Node> nodesToAdd) {
+		Collection<Node> copiedNodes = new ArrayList<Node>();
 		for (Node n : nodesToAdd){
-			addNode(n, n.getFactoryNodeType());
+			copiedNodes.add(addNode(n, n.getFactoryNodeType()));
 		}
+		return copiedNodes;
 	}
 
 	/**
@@ -464,7 +470,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable)
 	 */
 	@Override
-	public Set<Link> getLinks(Linkable l) {
+	public Set<Link> getConnectedLinks(Linkable l) {
 		if (l == null) 
 			return null;
 
@@ -484,7 +490,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
 	@Override
-	public Set<Link> getLinks(Linkable NorL, LinkCategory category) {
+	public Set<Link> getConnectedLinks(Linkable NorL, LinkCategory category) {
 		Set<Link> temp = linkableMap.get(NorL);
 		Set<Link> result = new HashSet<Link>();
 		if (temp != null) {
