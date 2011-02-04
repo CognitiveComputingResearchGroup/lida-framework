@@ -12,19 +12,23 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
+/**
+ * A behavior to activation schemes whose context and/or result intersects with the conscious broaadcast.
+ * @author Ryan J. McCall
+ */
 public interface SchemeActivationBehavior {
 	
 	/**
-	 * 
-	 * @param broadcast source NodeStructure
-	 * @param schemeMap indexed schemes
+	 * Activate schemes which intersect with the broadcast.
+	 * @param broadcast NodeStructure
+	 * @param schemeMap schemes indexed in some way
 	 */
 	public void activateSchemesWithBroadcast(NodeStructure broadcast, Map<? extends Object, Set<Scheme>> schemeMap);
 	
 	/**
-	 * set amount of activation a scheme must have for instantiation
-	 * @param d threshold
+	 * Set amount of activation a {@link Scheme} must have for instantiation
+	 * @param threshold threshold
 	 */
-	public void setSchemeSelectionThreshold(double d);
+	public void setSchemeSelectionThreshold(double threshold);
 
 }

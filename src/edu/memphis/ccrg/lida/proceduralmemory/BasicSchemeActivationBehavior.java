@@ -20,11 +20,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
+	
 	private static final Logger logger = Logger.getLogger(BasicSchemeActivationBehavior.class.getCanonicalName());
 
 	private ProceduralMemory pm;
-
-	private double schemeSelectionThreshold = 0.6;
+	private static final double DEFAULT_SELECTION_THRESHOLD = 0.6;
+	private double schemeSelectionThreshold = DEFAULT_SELECTION_THRESHOLD;
 
 	public BasicSchemeActivationBehavior(ProceduralMemory pm){
 		this.pm = pm;

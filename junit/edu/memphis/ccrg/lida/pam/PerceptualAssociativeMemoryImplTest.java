@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
@@ -36,7 +37,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	PerceptualAssociativeMemoryImpl pam;
-	PamNodeStructureImpl nodeStructure;
+	NodeStructureImpl nodeStructure;
 	PamNodeImpl node1,node2,node3;
 	LinearDecayStrategy decayStrategy ;
 	PamLinkImpl link1,link2;
@@ -48,7 +49,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		pam = new PerceptualAssociativeMemoryImpl();
-		nodeStructure = new PamNodeStructureImpl();
+		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+		
 		node1 = new PamNodeImpl();
 		node2 = new PamNodeImpl();
 		node3 = new PamNodeImpl();
@@ -363,7 +365,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setNewNodeType(java.lang.String)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setDefaultNodeType(java.lang.String)}.
 	 */
 	@Test
 	public void testSetNewNodeType() {

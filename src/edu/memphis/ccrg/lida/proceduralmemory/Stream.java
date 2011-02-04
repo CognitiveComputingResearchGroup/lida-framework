@@ -7,17 +7,18 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 /**
  * 
+ * A Stream is a partial order of {@link Behavior}s. 
  * @author Ryan J. McCall
  *
  */
-public interface Stream extends Serializable {
+public interface Stream extends Learnable {
 
 	public long getId();
     public String getLabel();

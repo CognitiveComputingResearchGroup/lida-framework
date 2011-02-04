@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 /**
  * Default implementation of PamLink.
  * 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public class PamLinkImpl extends LinkImpl implements PamLink {
 	

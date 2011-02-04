@@ -38,7 +38,6 @@ public interface NodeStructure {
 	public Collection<Link> addLinks(Collection<Link> links);
 
 	/**
-	 * TODO could we add the same link multiple times?
 	 * Creates and adds a new Link with specified attributes.  Source and sink must
 	 * already be in this NodeStructure.
 	 * @param idSource {@link ExtendedId} of link's source
@@ -240,7 +239,7 @@ public interface NodeStructure {
 	 * @param l Linkable to find Links to and from.
 	 * @return an unmodifiable Set of all Links connected to specified Linkable.
 	 */
-	public Set<Link> getConnectedLinks(Linkable l);
+	public Set<Link> getAttachedLinks(Linkable l);
 
 	/**
 	 * Gets all {@link Link}s connected to specified Linkable with specified {@link LinkCategory}
@@ -248,7 +247,7 @@ public interface NodeStructure {
 	 * @param cat LinkCategory
 	 * @return Links
 	 */
-	public Set<Link> getConnectedLinks(Linkable lnk, LinkCategory cat);
+	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory cat);
 
 	/**
 	 * Returns node with specified id
@@ -265,13 +264,13 @@ public interface NodeStructure {
 	public Node getNode(ExtendedId eid);
 
 	/**
-	 * Returns all Nodes
-	 * @return All nodes of this nodestructures
+	 * Returns all {@link Node}s
+	 * @return All {@link Node}s in this NodeStructure.
 	 */
 	public Collection<Node> getNodes();
 
 	/**
-	 * Gets linkable with specified {@link ExtendedId}
+	 * Gets {@link Linkable} with specified {@link ExtendedId}
 	 * @param eid {@link ExtendedId}
 	 * @return a Linkable
 	 */
@@ -302,22 +301,43 @@ public interface NodeStructure {
 	public int getLinkCount();
 
 	/**
-	 * Returns count of linkables
-	 * @return number of linkables
+	 * Returns count of {@link Linkable}s
+	 * @return number of {@link Linkable}s
 	 */
 	public int getLinkableCount();
 
-//TODO what is the point of the attribute again?  It is only being used in the impl then the ndoestucture is being copied
-	// shouldn't it be used when adding new nodes? creating new ndoes?
+	/**
+	 * Gets defaultNodeType
+	 * @return node type used when creating new nodes that are being added to this NodeStructure.
+	 */
 	public String getDefaultNodeType();
 	
-	public void setDefaultNode(String nodeName);
+	/**
+	 * Sets defaultNodeType
+	 * @param type node type used when creating new nodes that are being added to this NodeStructure.
+	 */
+	public void setDefaultNode(String type);
 
+	/**
+	 * Gets defaultLinkType
+	 * @return link type used when creating new link copies that are being added to this NodeStructure.
+	 */
 	public String getDefaultLinkType();
 
-	//TODO class??
-	public void setDefaultLink(String linkName);
-
+	/**
+	 * Sets defaultLinkType
+	 * @param type link type used when creating new link copies that are being added to this NodeStructure.
+	 */
+	public void setDefaultLink(String type);	
 	
+
+	/**
+	 * When you excite the parents of a node you might want to excite the connecting links too.
+	 * Thus this method Finds and returns the parents of specified Node with all of 
+	 * the links between them.
+	 * @param n supplied node
+	 * @return map of parents and links connecting node to them
+	 */
+	public Map<Node,Link> getParentLinkMap(Node n);
 
 }

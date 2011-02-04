@@ -16,6 +16,18 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public interface ProceduralMemory extends LidaModule, Saveable{
 	
+	/**
+	 * Add supplied scheme to this procedural memory.
+	 * @param s Scheme
+	 */
+	public void addScheme(Scheme s);
+		
+	/**
+	 * Add supplied schemes to this procedural memory.
+	 * @param schemes set of Schemes
+	 */
+	public void addSchemes(Collection<Scheme> schemes);
+	
     /**
      * To change how scheme are activated based on the broadcast.
      * @param b behavior
@@ -33,17 +45,5 @@ public interface ProceduralMemory extends LidaModule, Saveable{
 	 * @param s a scheme over threshold
 	 */
 	public void sendInstantiatedScheme(Scheme s);
-	
-	/**
-	 * Add supplied schemes to this procedural memory.
-	 * @param schemes set of Schemes
-	 */
-	public void addSchemes(Collection<Scheme> schemes);
-	
-	/**
-	 * Add supplied scheme to this procedural memory.
-	 * @param s Scheme
-	 */
-	public void addScheme(Scheme s);
-	
+		
 }

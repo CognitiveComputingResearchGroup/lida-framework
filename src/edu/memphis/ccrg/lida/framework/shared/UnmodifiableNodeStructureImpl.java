@@ -3,13 +3,13 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.util.Collection;
 
 /**
- * An immutable NodeStructureImpl.  Throws UnsupportedOprationException if modifying methods
- * are called.  Get, is, has, contains, methods call their inherited counterparts.
+ * An immutable NodeStructureImpl.  Throws {@link UnsupportedOperationException} if any methods
+ * which modify {@link NodeStructureImpl} are called.  
  */
 public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements NodeStructure {
 	
 	/**
-	 * 
+	 * Default Constructor.
 	 * @param sourceNodeStructure supplied NodeStructure
 	 */
 	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure){

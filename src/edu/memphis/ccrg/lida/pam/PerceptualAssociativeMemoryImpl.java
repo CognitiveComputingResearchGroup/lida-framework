@@ -28,6 +28,8 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -55,7 +57,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * Contains all of the Node, Links and their connections.
 	 */
-	private PamNodeStructure pamNodeStructure;
+	private NodeStructure nodeStructure;
 
 	/*
 	 * Modules listening for the current percept
@@ -92,7 +94,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		super(ModuleName.PerceptualAssociativeMemory);
-		pamNodeStructure = new PamNodeStructureImpl();
+		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 		pamListeners = new ArrayList<PamListener>();
 		propagationBehavior = new UpscalePropagationBehavior();
 	}
@@ -107,7 +109,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		propagationBehavior = b;
 	}
 
-	/**
+	/*
 	 * Get the propagation behavior for this PAM.
 	 *
 	 * @return the propagation behavior
@@ -127,7 +129,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Set<PamNode> addNodes(Set<PamNode> nodes) {
 		Set<PamNode> copiedNodes = new HashSet<PamNode>();
 		for (PamNode l : nodes)
-			copiedNodes.add((PamNode) pamNodeStructure.addNode(l));
+			copiedNodes.add((PamNode) nodeStructure.addNode(l));
 		return copiedNodes;
 	}
 
@@ -141,11 +143,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Set<PamLink> addLinks(Set<PamLink> links) {
 		Set<PamLink> copiedLinks = new HashSet<PamLink>();
 		for (PamLink l : links)
-			copiedLinks.add((PamLink) pamNodeStructure.addLink(l));
+			copiedLinks.add((PamLink) nodeStructure.addLink(l));
 		return copiedLinks;
 	}
 
-	/**
+	/*
 	 * Adds a feature detector to this PAM.
 	 *
 	 * @param detector the detector
@@ -226,10 +228,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		pamNodeStructure.decayNodeStructure(ticks);
+		nodeStructure.decayNodeStructure(ticks);
 	}
 
-	/**
+	/*
 	 * Receive activation from feature detectors or other codelets to excite a
 	 * PamNode.
 	 *
@@ -256,12 +258,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			receiveActivationBurst(n, amount);
 	}
 
-	/**
-	 * Called by Excitation tasks after their node has been excited. Based on
-	 * PAM's propagation behavior, propagate activation from 'pamNode' to its
-	 * parents and to the connecting links.
-	 *
-	 * @param pamNode the pam node
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
 	public void propagateActivationToParents(PamNode pamNode) {
@@ -273,24 +271,18 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				.getActivationToPropagate(propagateParams);
 
 		// Get parents of pamNode and the connecting link
-		Map<PamNode, PamLink> parentLinkMap = pamNodeStructure.getParentsWithLinks(pamNode);
-		for (PamNode parent : parentLinkMap.keySet()) {
+		Map<Node, Link> parentLinkMap = nodeStructure.getParentLinkMap(pamNode);
+		for (Node parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
-			propagateActivation(pamNode, parentLinkMap.get(parent), parent, amountToPropagate);
+			propagateActivation(pamNode, (PamNode)parent, (PamLink)parentLinkMap.get(parent), amountToPropagate);
 		}
 	}
 
-	/**
-	 * Propagates activation 'amount', which originates from 'source', to node
-	 * 'sink'. Also give activation to 'link' which connects 'source' to 'sink'.
-	 *
-	 * @param source the source
-	 * @param link the link
-	 * @param sink the sink
-	 * @param amount the amount
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivation(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamLink, double)
 	 */
 	@Override
-	public void propagateActivation(PamNode source, PamLink link, PamNode sink,
+	public void propagateActivation(PamNode source, PamNode sink, PamLink link,
 			double amount) {
 		logger.log(Level.FINE, "exciting parent: " + sink.getLabel()
 				+ " and connecting link " + link.getLabel() + " amount: "
@@ -333,9 +325,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void init() {
-		//TODO ACK
-		setNewNodeType((String) getParam("pam.newNodeType", PamNodeImpl.class.getSimpleName()));
-		setNewLinkType((String) getParam("pam.newLinkType", PamLinkImpl.class.getSimpleName()));
+		setDefaultNodeType((String) getParam("pam.newNodeType", PamNodeImpl.class.getSimpleName()));
+		setDefaultLinkType((String) getParam("pam.newLinkType", PamLinkImpl.class.getSimpleName()));
 		
 		upscaleFactor=(Double)getParam("pam.Upscale",DEFAULT_UPSCALE_FACTOR);
 		downscaleFactor=(Double)getParam("pam.Downscale",DEFAULT_DOWNSCALE_FACTOR);
@@ -352,7 +343,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsNode(PamNode node) {
-		return pamNodeStructure.containsNode(node);
+		return nodeStructure.containsNode(node);
 	}
 
 	/* (non-Javadoc)
@@ -360,7 +351,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsNode(ExtendedId id) {
-		return pamNodeStructure.containsNode(id);
+		return nodeStructure.containsNode(id);
 	}
 
 	/* (non-Javadoc)
@@ -368,7 +359,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsLink(PamLink link) {
-		return pamNodeStructure.containsLink(link);
+		return nodeStructure.containsLink(link);
 	}
 
 	/* (non-Javadoc)
@@ -376,7 +367,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsLink(ExtendedId id) {
-		return pamNodeStructure.containsLink(id);
+		return nodeStructure.containsLink(id);
 	}
 
 	/* (non-Javadoc)
@@ -384,7 +375,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Collection<Node> getPamNodes() {
-		Collection<Node> pamNodes = pamNodeStructure.getNodes();
+		Collection<Node> pamNodes = nodeStructure.getNodes();
 		Collection<Node> copiedNodes = new ArrayList<Node>();
 		for (Node pamNode : pamNodes)
 			copiedNodes.add(factory.getNode(pamNode));
@@ -396,8 +387,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {
-		//TODO unmodifiable node structure once we delete pam nodestructure
-		return pamNodeStructure;
+		return new UnmodifiableNodeStructureImpl(nodeStructure);
 	}
 
 	/* (non-Javadoc)
@@ -417,7 +407,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addNode(PamNode node) {
-		return (PamNode) pamNodeStructure.addNode(node);
+		return (PamNode) nodeStructure.addNode(node);
 	}
 
 	/* (non-Javadoc)
@@ -426,7 +416,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Link addNewLink(PamNode source, PamNode sink, LinkCategory type,
 			double activation) {
-		return pamNodeStructure.addLink(source.getExtendedId(),
+		return nodeStructure.addLink(source.getExtendedId(),
 				sink.getExtendedId(), type, activation);
 	}
 
@@ -436,7 +426,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId,
 			LinkCategory type, double activation) {
-		return pamNodeStructure.addLink(sourceId, sinkId, type, activation);
+		return nodeStructure.addLink(sourceId, sinkId, type, activation);
 	}
 
 	/* (non-Javadoc)
@@ -444,12 +434,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addNewNode(String label) {
-		PamNode newNode = (PamNode) factory.getNode(pamNodeStructure.getDefaultNodeType(), label);
+		PamNode newNode = (PamNode) factory.getNode(nodeStructure.getDefaultNodeType(), label);
 		if(newNode != null){
-			newNode = (PamNode) pamNodeStructure.addNode(newNode);
+			newNode = (PamNode) nodeStructure.addNode(newNode);
 			return newNode;
 		}else{
-			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + pamNodeStructure.getDefaultNodeType(), LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + nodeStructure.getDefaultNodeType(), LidaTaskManager.getCurrentTick());
 			return null;
 		}
 	}
@@ -461,7 +451,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public PamNode addNewNode(String pamNodeType, String label) {
 		PamNode newNode = (PamNode) factory.getNode(pamNodeType, label);
 		if (newNode != null) {
-			newNode = (PamNode) pamNodeStructure.addNode(newNode);
+			newNode = (PamNode) nodeStructure.addNode(newNode);
 			return newNode;
 		}else{
 			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + pamNodeType, LidaTaskManager.getCurrentTick());
@@ -473,16 +463,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setNewNodeType(java.lang.String)
 	 */
 	@Override
-	public void setNewNodeType(String type) {
-		pamNodeStructure.setDefaultNode(type);
+	public void setDefaultNodeType(String type) {
+		nodeStructure.setDefaultNode(type);
 	}
 	
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setNewLinkType(java.lang.String)
 	 */
 	@Override
-	public void setNewLinkType(String type) {
-		pamNodeStructure.setDefaultLink(type);
+	public void setDefaultLinkType(String type) {
+		nodeStructure.setDefaultLink(type);
 	}
 
 	public static double getPerceptThreshold() {
@@ -501,6 +491,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			logger.log(Level.WARNING, "Cannot set percept threshold to 1.0 or higher.  Percept threshold will not be modified.", LidaTaskManager.getCurrentTick());
 		}
 	}
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#isOverPerceptThreshold(edu.memphis.ccrg.lida.pam.PamLinkable)
+	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
 		return l.getTotalActivation() > perceptThreshold;
@@ -525,11 +518,11 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#isOverPerceptThreshold(edu.memphis.ccrg.lida.pam.PamLinkable)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
 	public Link getPamLink(ExtendedId id) {
-		return factory.getLink(pamNodeStructure.getLink(id));
+		return factory.getLink(nodeStructure.getLink(id));
 	}
 	
 
@@ -538,33 +531,24 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Node getPamNode(ExtendedId eid) {
-		return factory.getNode(pamNodeStructure.getNode(eid));
+		return factory.getNode(nodeStructure.getNode(eid));
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(int)
 	 */
 	@Override
 	public Node getPamNode(int id) {
-		return factory.getNode(pamNodeStructure.getNode(id));
-	}
-	
-	//TODO REMOVE?
-	@Override
-	public Object getState() {
-		return pamNodeStructure;
+		return factory.getNode(nodeStructure.getNode(id));
 	}
 
-	//TODO REMOVE?
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
-	 */
+	@Override
+	public Object getState() {
+		return null;
+	}
+
 	@Override
 	public boolean setState(Object content) {
-		if (content instanceof PamNodeStructureImpl) {
-			pamNodeStructure = (PamNodeStructureImpl) content;
-			return true;
-		}
 		return false;
 	}
 	

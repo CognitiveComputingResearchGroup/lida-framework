@@ -76,7 +76,7 @@ public class NodeStructureGuiAdapter extends
 
 	@Override
 	public Collection<GuiLink> getInEdges(Linkable arg0) {
-		Set<Link> links = nodeStructure.getConnectedLinks(arg0);
+		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
 		Set<GuiLink> ret = new HashSet<GuiLink>();
 		if (links != null) {
 			for (Link l : links) {
@@ -93,7 +93,7 @@ public class NodeStructureGuiAdapter extends
 
 	@Override
 	public Collection<GuiLink> getOutEdges(Linkable arg0) {
-		Set<Link> links = nodeStructure.getConnectedLinks(arg0);
+		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
 		Set<GuiLink> ret = new HashSet<GuiLink>();
 		if (links != null) {
 			for (Link l : links) {
@@ -109,7 +109,7 @@ public class NodeStructureGuiAdapter extends
 
 	@Override
 	public Collection<Linkable> getPredecessors(Linkable arg0) {
-		Set<Link> links = nodeStructure.getConnectedLinks(arg0);
+		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
 		if (links != null) {
 			for (Link l : links) {
@@ -133,7 +133,7 @@ public class NodeStructureGuiAdapter extends
 
 	@Override
 	public Collection<Linkable> getSuccessors(Linkable arg0) {
-		Set<Link> links = nodeStructure.getConnectedLinks(arg0);
+		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
 		Set<Linkable> ret = new HashSet<Linkable>();
 		if (links != null) {
 			for (Link l : links) {

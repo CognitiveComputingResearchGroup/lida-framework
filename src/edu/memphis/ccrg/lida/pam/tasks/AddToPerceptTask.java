@@ -8,12 +8,13 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeStructure;
-import edu.memphis.ccrg.lida.pam.PamNodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
@@ -37,7 +38,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new PamNodeStructureImpl();
+		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 		nodeStructure.addNode(pamNode);
 	}
 	
@@ -52,7 +53,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(PamLink pamLink, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new PamNodeStructureImpl();
+		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 		nodeStructure.addLink(pamLink);
 	}
 
@@ -64,11 +65,10 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * @param pam
 	 *            the pam
 	 */
-	public AddToPerceptTask(PamNodeStructure pamNodeStructure, PerceptualAssociativeMemory pam) {
-
+	public AddToPerceptTask(NodeStructure nodeStructure, PerceptualAssociativeMemory pam){
 		super();
 		this.pam = pam;
-		nodeStructure = new PamNodeStructureImpl(pamNodeStructure);
+		nodeStructure = new NodeStructureImpl(nodeStructure);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 */
 	@Override
 	public String toString(){
-		return "AddToPerceptTask " + getTaskId();
+		return AddToPerceptTask.class.getSimpleName() + " " + getTaskId();
 	}
 
 }

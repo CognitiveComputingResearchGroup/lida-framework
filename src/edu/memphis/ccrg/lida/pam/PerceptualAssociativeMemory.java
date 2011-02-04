@@ -18,7 +18,10 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
 /**
  * A main LIDA module which contains feature detectors, nodes, and links.
@@ -104,19 +107,20 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	
 	/**
-	 * Set the default type of {@link PamLink}Link used in this PAM.
+	 * Set the default type of {@link PamLink}Link used in this PAM's {@link PamNodeStructure}.
 	 *
 	 * @param type new default PamLink type
+	 * @see NodeStructure#setDefaultLink(String)
 	 */
-	//TODO review this method in nodestucture
-	public void setNewLinkType(String type);
+	public void setDefaultLinkType(String type);
 	
 	/**
-	 * Set the type of {@link PamNode} used in this PAM.
+	 * Set the default type of {@link PamNode} used in this PAM's {@link PamNodeStructure}.
 	 *
 	 * @param type new default {@link PamNode} type
+	 * @see NodeStructure#setDefaultNode(String)
 	 */
-    public void setNewNodeType(String type);
+    public void setDefaultNodeType(String type);
    
 
 	/**
@@ -130,6 +134,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Excites specified {@link PamNode} an amount of activation.
 	 * @param node The node to receiving the activation
 	 * @param amount amount of activation to excite
+	 * @see ExcitationTask, {@link FeatureDetectorImpl}
 	 */
 	public void receiveActivationBurst(PamNode node, double amount);
 	
@@ -144,16 +149,19 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Propagate activation from a PamNode to another PamNode along a PamLink.
 	 * Excites both link and sink
 	 * @param source source of activation
-	 * @param link link between source and sink
 	 * @param sink recipient of activation
+	 * @param link link between source and sink
 	 * @param amount activation sent
+	 * @see #propagateActivationToParents(PamNode)
 	 */
-	public void propagateActivation(PamNode source, PamLink link, PamNode sink, double amount);
+	public void propagateActivation(PamNode source, PamNode sink, PamLink link, double amount);
 
 	/**
 	 * Propagates activation from a PamNode to its parents.
 	 *
 	 * @param pamNode The PamNode to propagate activation from.
+	 * @see ExcitationTask
+	 * @see PropagationTask
 	 */
 	public void propagateActivationToParents(PamNode pamNode);
 	
@@ -161,6 +169,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Add a PamNode to the percept.
 	 *
 	 * @param pamNode PamNode to add.
+	 * @see AddToPerceptTask
 	 */
 	public void addNodeToPercept(PamNode pamNode);
 	
@@ -168,6 +177,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Add a PamLink to the percept.
 	 *
 	 * @param l Link to add.
+	 * @see AddToPerceptTask
 	 */
 	public void addLinkToPercept(PamLink l);
 	
@@ -175,6 +185,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Add a NodeStructure to the percept.
 	 *
 	 * @param ns NodeStructure
+	 * @see AddToPerceptTask
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
 	

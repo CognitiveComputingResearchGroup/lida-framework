@@ -18,12 +18,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * TODO add to procedural memory!
  */
-public class StreamImpl implements Stream{
+public class StreamImpl extends LearnableImpl implements Stream{
 	
 	private static final Logger logger = Logger.getLogger(StreamImpl.class.getCanonicalName());
 	
@@ -34,8 +35,8 @@ public class StreamImpl implements Stream{
     private Set<Behavior> behaviors;  
 
     /**
-     * @param name .
-     * @param id .
+     * @param name Stream's name
+     * @param id Stream's id
      */
     public StreamImpl(String name, long id){
         this.name = name;    
@@ -44,7 +45,7 @@ public class StreamImpl implements Stream{
     }
     
     /**
-     * @param id .
+     * @param id Stream's id
      */
     public StreamImpl(long id){
     	this("no name", id);

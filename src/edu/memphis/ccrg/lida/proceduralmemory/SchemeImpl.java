@@ -212,11 +212,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public void setNumberOfExecutions(int numberOfExecutions) {
-		this.numberOfExecutions = numberOfExecutions;
-	}
-
-	@Override
 	public void setSchemeActionId(long actionId) {
 		this.actionId = actionId;
 	}

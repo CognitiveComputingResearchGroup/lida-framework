@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -73,23 +74,30 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @param defaultNode kind of node used in this NodeStructure
 	 * @param defaultLink kind of link used in this NodeStructure
 	 */
-	protected NodeStructureImpl(String defaultNode, String defaultLink) {
+	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
 		setDefaultNode(defaultNode);		
 		setDefaultLink(defaultLink);
 	}
 
-	protected NodeStructureImpl(NodeStructure oldNS, String defaultNodeType, String defaultLinkType) {
+	/**
+	 * Copy constructor except specified Node and Link types are used to copy Node and Links for new NodeStructure.
+	 * Specified types are the default types for the copy.
+	 * @param originalNS original NodeStructure
+	 * @param defaultNodeType copy's default node type
+	 * @param defaultLinkType copy's default node type
+	 */
+	public NodeStructureImpl(NodeStructure originalNS, String defaultNodeType, String defaultLinkType) {
 		this(defaultNodeType, defaultLinkType);
 
 		// Copy nodes
-		Collection<Node> oldNodes = oldNS.getNodes();
+		Collection<Node> oldNodes = originalNS.getNodes();
 		if (oldNodes != null)
 			for (Node n : oldNodes)
 				nodes.put(n.getId(), getNewNode(n, defaultNodeType));
 
 		// Copy Links but with Source and Sink pointing the old ones.
-		Collection<Link> oldLinks = oldNS.getLinks();
+		Collection<Link> oldLinks = originalNS.getLinks();
 		if (oldLinks != null)
 			for (Link l : oldLinks) {
 				links.put(l.getExtendedId(), generateNewLink(l.getSource(), l.getSink(), l.getCategory(), l.getActivation()));
@@ -112,7 +120,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		}
 
 		// Generate LinkableMap
-		Map<Linkable, Set<Link>> oldlinkableMap = oldNS.getLinkableMap();
+		Map<Linkable, Set<Link>> oldlinkableMap = originalNS.getLinkableMap();
 		if (oldlinkableMap != null) {
 			Set<Linkable> oldKeys = oldlinkableMap.keySet();
 			if (oldKeys != null) {
@@ -136,10 +144,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 				}
 			}
 		}
-	}// constructor
+	}
 
-	public NodeStructureImpl(NodeStructure oldGraph){
-		this(oldGraph, oldGraph.getDefaultNodeType(), oldGraph.getDefaultLinkType());
+	/**
+	 * Copy Constructor.
+	 * @param originalNS NodeStructure to copy
+	 */
+	public NodeStructureImpl(NodeStructure originalNS){
+		this(originalNS, originalNS.getDefaultNodeType(), originalNS.getDefaultLinkType());
 	}
 	
 	/**
@@ -470,11 +482,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable)
 	 */
 	@Override
-	public Set<Link> getConnectedLinks(Linkable l) {
-		if (l == null) 
+	public Set<Link> getAttachedLinks(Linkable lnk) {
+		if (lnk == null) 
 			return null;
 
-		Set<Link> aux = linkableMap.get(l);
+		Set<Link> aux = linkableMap.get(lnk);
 		if (aux == null)
 			return null;
 		else
@@ -490,8 +502,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
 	@Override
-	public Set<Link> getConnectedLinks(Linkable NorL, LinkCategory category) {
-		Set<Link> temp = linkableMap.get(NorL);
+	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory category) {
+		Set<Link> temp = linkableMap.get(lnk);
 		Set<Link> result = new HashSet<Link>();
 		if (temp != null) {
 			for (Link l : temp) {
@@ -676,12 +688,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public void decayNodeStructure(long ticks) {
-		for(Linkable linkable: linkableMap.keySet()){
-			Activatible activatible = (Activatible) linkable;
-			activatible.decay(ticks);
-			if (activatible.getActivation() <= lowerActivationBound){
-				logger.log(Level.FINER, "Deleting linkable: " + linkable.getLabel(), LidaTaskManager.getCurrentTick());
-				removeLinkable(linkable);
+		for(Linkable lnk: linkableMap.keySet()){
+			Activatible a = (Activatible) lnk;
+			a.decay(ticks);
+			if (a.isRemovable()){
+				removeLinkable(lnk);
 			}
 		}	
 	}
@@ -694,6 +705,25 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	@Override
 	public void setLowerActivationBound(double lowerActivationBound) {
 		this.lowerActivationBound = lowerActivationBound;
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getParentLinkMap(edu.memphis.ccrg.lida.framework.shared.Node)
+	 */
+	@Override
+	public Map<Node,Link> getParentLinkMap(Node child){
+		Map<Node, Link> results = new HashMap<Node, Link>();
+		Set<Link> candidateLinks = getLinkableMap().get(child);
+		if(candidateLinks != null){
+			for(Link link: candidateLinks){
+				//Sinks receive activation and are "higher than" node n, i.e. sink are the parents of this node.
+				Linkable sink = link.getSink(); 
+				if(!sink.equals(child)){
+					results.put((Node) sink, link);	
+				}
+			}
+		}
+		return results;
 	}
 
 }
