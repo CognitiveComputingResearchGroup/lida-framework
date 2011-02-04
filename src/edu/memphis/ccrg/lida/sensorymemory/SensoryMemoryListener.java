@@ -10,14 +10,15 @@ package edu.memphis.ccrg.lida.sensorymemory;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
- * Listener of {@link SensoryMemory}
+ * This interface should be implemented for receiving and using information coming from sensory memory.
  * @author Ryan J. McCall
  *
  */
 public interface SensoryMemoryListener extends ModuleListener{
 
 	/**
-	 * Receives object content from SensoryMemory
+	 * This method is used to receive information from sensory memory.
+	 * Sensory-Motor Memory calls this method and receives the information of sensory memory. 
 	 * @param content An Object
 	 */
 	public void receiveSensoryMemoryContent(Object content);
