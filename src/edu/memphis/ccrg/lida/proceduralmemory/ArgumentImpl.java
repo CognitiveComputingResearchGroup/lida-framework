@@ -341,18 +341,6 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public double getExcitation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setExcitation(double excitation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public double getActivatibleRemovalThreshold() {
 		// TODO Auto-generated method stub
 		return 0;

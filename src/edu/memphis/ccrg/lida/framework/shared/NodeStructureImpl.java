@@ -174,7 +174,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * .shared.Link)
 	 */
 	@Override
-	public Link addLink(Link l) {		
+	public synchronized Link addLink(Link l) {		
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getExtendedId());
 		if (oldLink != null) { // if the link already exists in this node structure
@@ -215,7 +215,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	@Override
-	public Link addLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory category, double activation) {
+	public synchronized Link addLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory category, double activation) {
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
 		if (source == null || sink == null) {
@@ -226,7 +226,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	@Override
-	public Link addLink(int sourceId, ExtendedId sinkId, LinkCategory category,
+	public synchronized Link addLink(int sourceId, ExtendedId sinkId, LinkCategory category,
 			double activation) {
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
@@ -238,7 +238,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 
 	@Override
-	public Link addLink(int sourceId, int sinkId, LinkCategory category,
+	public synchronized Link addLink(int sourceId, int sinkId, LinkCategory category,
 			double activation) {
 		Node source = getNode(sourceId);
 		Linkable sink = getNode(sinkId);
@@ -260,7 +260,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		Link newLink = getNewLink(newSource, newSink, type);
 		newLink.setActivation(activation);
 		links.put(newLink.getExtendedId(), newLink);
-		linkableMap.put(newLink, new HashSet<Link>());
+		if(!linkableMap.containsKey(newLink))
+			linkableMap.put(newLink, new HashSet<Link>());
 
 		Set<Link> tempLinks = linkableMap.get(newSource);
 		if (tempLinks == null) {
@@ -273,7 +274,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
 			linkableMap.put(newLink, tempLinks);
-			tempLinks.add(newLink);
 		}
 		tempLinks.add(newLink);
 
@@ -296,11 +296,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	
 	@Override
 	public Node addNode(Node n){
-		return addNode(n, n.getFactoryNodeType());
+		return addNode(n, defaultNodeType);
 	}
 
 	@Override
-	public Node addNode(Node n, String factoryNodeType) {
+	public synchronized Node addNode(Node n, String factoryNodeType) {
 		if(factory.containsNodeType(factoryNodeType) == false){
 			logger.log(Level.WARNING, "Tried to add node of type " + factoryNodeType + " to NodeStructure. " +
 					" the factory does not contain that node type.  Make sure the node type is defined in " +
@@ -331,7 +331,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public Collection<Node> addNodes(Collection<Node> nodesToAdd) {
 		Collection<Node> copiedNodes = new ArrayList<Node>();
 		for (Node n : nodesToAdd){
-			copiedNodes.add(addNode(n, n.getFactoryNodeType()));
+			copiedNodes.add(addNode(n, defaultNodeType ));
 		}
 		return copiedNodes;
 	}
@@ -387,7 +387,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * .ccrg.lida.shared.Linkable)
 	 */
 	@Override
-	public void removeLinkable(Linkable n) {
+	public synchronized void removeLinkable(Linkable n) {
 		Set<Link> tempLinks = linkableMap.get(n);
 		Set<Link> otherLinks;
 		Linkable other;

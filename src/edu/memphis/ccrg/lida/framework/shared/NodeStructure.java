@@ -228,7 +228,6 @@ public interface NodeStructure {
 	 */
 	public Collection<Link> getLinks();
 	
-	//TODO Set or Collection?
 	/**
 	 * Returns all Links of this NodeStructure with specified {@link LinkCategory}
 	 * @param cat LinkCategory to search for. 

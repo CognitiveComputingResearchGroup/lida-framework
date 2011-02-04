@@ -20,28 +20,29 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * @author Javier Snaider
+ * 
+ * Default implementation of Learnable.
+ * @author Javier Snaider, Ryan J. McCall
  *
  */
 public class LearnableImpl extends ActivatibleImpl implements Learnable {
+
+	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
 	
-	//TODO
-	private double baseLevelDecayRate = 0.01;
-	private double baseLevelExcitation;
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
-	
+	private TotalActivationStrategy totalActivationStrategy;
+
 	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
 	private double learnableRemovableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
-	
-	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
 
 	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
-									DecayStrategy decayStrategy) {
+									DecayStrategy decayStrategy, TotalActivationStrategy taStrategy) {
 		super(activation, exciteStrategy, decayStrategy);
 		this.baseLevelExciteStrategy = exciteStrategy;
 		this.baseLevelDecayStrategy = decayStrategy;
+		this.totalActivationStrategy = taStrategy;
 	}
 
 	public LearnableImpl() {
@@ -49,18 +50,25 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		baseLevelActivation = 0.0;
 		baseLevelDecayStrategy = new LinearDecayStrategy();
 		baseLevelExciteStrategy = new DefaultExciteStrategy();
+		totalActivationStrategy = new DefaultTotalActivationStrategy();
+	}
+	
+	@Override
+	public void decay(long ticks){
+		decayBaseLevelActivation(ticks);
+		super.decay(ticks);
 	}
 
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST, toString() + " before decay has a BaseLevelAct: " +
+						baseLevelActivation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
-				baseLevelExcitation -= baseLevelDecayRate * ticks;
-//				baseLevelExcitation = curveStrategy.getY(baseLevelExcitation);
 				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
 			}
-			logger.log(Level.FINEST,this.toString() + " after decay has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST, toString() + " after decay has a BaseLevelAct: " + 
+					baseLevelActivation,LidaTaskManager.getCurrentTick());
 		}		
 	}
 
@@ -85,16 +93,10 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public double getBaseLevelActivation() {
-		return baseLevelActivation;
-	}
-	@Override
 	public void reinforceBaseLevelActivation(double amount) {
 		if (baseLevelExciteStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
-				baseLevelExcitation += amount;
-				//baseLevelActivation = curveStrategy.getY(baseLevelExcitation);
 				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
 			}
 			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
@@ -103,24 +105,12 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	@Override
 	public void setBaseLevelActivation(double activation) {
-			this.baseLevelActivation=activation;		
+		this.baseLevelActivation=activation;		
 	}
-
+	
 	@Override
-	public double getTotalActivation() { 
-	//  TODO: Normalization is needed!!!!!
-//		return curveStrategy.getY(baseLevelExcitation + super.getExcitation());
-	    return getActivation() + baseLevelActivation;
-	}
-
-	@Override
-	public double getBaseLevelExcitation() {
-		return baseLevelExcitation;
-	}
-
-	@Override
-	public void setBaseLevelExcitation(double excitation) {
-		this.baseLevelExcitation= excitation;
+	public double getBaseLevelActivation() {
+		return baseLevelActivation;
 	}
 
 	@Override
@@ -133,8 +123,29 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.learnableRemovableThreshold = threshold;
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#isRemovable()
+	 */
 	@Override
 	public boolean isRemovable() {
 		return baseLevelActivation < learnableRemovableThreshold;
+	}
+	
+	@Override
+	public TotalActivationStrategy getTotalActivationStrategy() {
+		return totalActivationStrategy;
+	}
+
+	@Override
+	public void setTotalActivationStrategy(
+			TotalActivationStrategy totalActivationStrategy) {
+		this.totalActivationStrategy = totalActivationStrategy;
+	}
+	
+
+	@Override
+	public double getTotalActivation() { 
+	    return totalActivationStrategy.calculateTotalActivation(baseLevelActivation, getActivation());
 	}
 }

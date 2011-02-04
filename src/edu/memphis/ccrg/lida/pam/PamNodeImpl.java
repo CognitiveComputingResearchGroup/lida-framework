@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
@@ -34,6 +35,16 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	@Override
 	public double getTotalActivation(){
 		return learnable.getTotalActivation();
+	}
+	
+	@Override
+	public TotalActivationStrategy getTotalActivationStrategy() {
+		return learnable.getTotalActivationStrategy();
+	}
+
+	@Override
+	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
+		learnable.setTotalActivationStrategy(strategy);
 	}
 
 	@Override
@@ -75,16 +86,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
 		learnable.setBaseLevelExciteStrategy(strategy);		
 	}	
-	
-	@Override
-	public double getBaseLevelExcitation() {
-		return learnable.getBaseLevelExcitation();
-	}
-
-	@Override
-	public void setBaseLevelExcitation(double excitation) {
-		learnable.setBaseLevelExcitation(excitation);
-	}
 	
 	@Override
 	public double getLearnableRemovalThreshold() {

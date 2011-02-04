@@ -10,61 +10,64 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import java.util.Map;
 
 /**
- * WARNING:	Renaming this class requires renaming values in
- * 	  configs/factoriesData.xml
+ * WARNING: Renaming this class requires renaming values in
+ * configs/factoriesData.xml
  */
-public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy{
+public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 
-	    
-	    /** The default slope (m = 1). */
-	    public static final double DEFAULT_M = 0.01;
-	    
-	    /** The default intercept (b = 0). */
-	    public static final double DEFAULT_B = 0.0;
-	    
-	    /** The slope of this linear curve. */
-	    private double m;
-	    
-	    /** The y intercept of this linear curve. */
-	    private double b;
+	// TODO Use curves
 
-	    
-	    /** Creates a new instance of LinearCurve. Values for slope and intercept
-	     * are set to the default ones.
-	     */
-	    public LinearDecayStrategy() {
-	        m = DEFAULT_M;
-	        b = DEFAULT_B;
-	    }
-	    
-	    /**
-	     * Creates a new instance of LinearCurve, with specific values for the slope
-	     * and the intercept.
-	     * @param m     The value of the slope.
-	     * @param b     The value of the intercept.
-	     */
-	    public LinearDecayStrategy(double m, double b) {
-	        this.m = m;
-	        this.b = b;
-	    }
-	    
-		@Override
-		public void init() {
-			m = (Double) getParam("m",DEFAULT_M);
-			b = (Double) getParam("b",DEFAULT_B);
-		}
+	/** The default slope (m = 1). */
+	public static final double DEFAULT_M = 0.01;
 
-		@Override
-		public double decay(double currentActivation, long ticks,
-				Object... params) {
-			currentActivation= currentActivation - (m*ticks+b);
-	    	return (currentActivation>0.0)?currentActivation:0.0;
-		}
+	/** The default intercept (b = 0). */
+	public static final double DEFAULT_B = 0.0;
 
-		@Override
-		public double decay(double currentActivation, long ticks,
-				Map<String, ? extends Object> params) {
-			currentActivation= currentActivation - (m*ticks+b);
-	    	return (currentActivation>0.0)?currentActivation:0.0;
-		}
+	/** The slope of this linear curve. */
+	private double m;
+
+	/** The y intercept of this linear curve. */
+	private double b;
+
+	/**
+	 * Creates a new instance of LinearCurve. Values for slope and intercept are
+	 * set to the default ones.
+	 */
+	public LinearDecayStrategy() {
+		m = DEFAULT_M;
+		b = DEFAULT_B;
+	}
+
+	/**
+	 * Creates a new instance of LinearCurve, with specific values for the slope
+	 * and the intercept.
+	 * 
+	 * @param m
+	 *            The value of the slope.
+	 * @param b
+	 *            The value of the intercept.
+	 */
+	public LinearDecayStrategy(double m, double b) {
+		this.m = m;
+		this.b = b;
+	}
+
+	@Override
+	public void init() {
+		m = (Double) getParam("m", DEFAULT_M);
+		b = (Double) getParam("b", DEFAULT_B);
+	}
+
+	@Override
+	public double decay(double currentActivation, long ticks, Object... params) {
+		currentActivation = currentActivation - (m * ticks + b);
+		return (currentActivation > 0.0) ? currentActivation : 0.0;
+	}
+
+	@Override
+	public double decay(double currentActivation, long ticks,
+			Map<String, ? extends Object> params) {
+		currentActivation = currentActivation - (m * ticks + b);
+		return (currentActivation > 0.0) ? currentActivation : 0.0;
+	}
 }

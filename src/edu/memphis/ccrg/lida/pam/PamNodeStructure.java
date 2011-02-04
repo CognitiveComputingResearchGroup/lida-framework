@@ -17,5 +17,6 @@ public interface PamNodeStructure extends NodeStructure {
 	 * @return map of parents and links connecting node to them
 	 */
 	public Map<PamNode, PamLink> getParentsWithLinks(PamNode n);
+	//TODO public Set<Link> getConnectedLinks(Linkable lnk, LinkCategory cat);?
 
 }

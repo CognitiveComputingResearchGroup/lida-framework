@@ -25,13 +25,11 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class ActivatibleImpl implements Activatible {
 	
-	//TODO set decayRate
-	private double decayRate = 0.1;
-	private double currentExcitation;
 	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
 	
+	//this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
 	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
 	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 	
@@ -54,8 +52,6 @@ public class ActivatibleImpl implements Activatible {
 		if (decayStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
-				currentExcitation -= decayRate*ticks;
-				//activation = curveStrategy.getY(currentExcitation);
 				activation = decayStrategy.decay(activation,ticks);
 			}
 			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getCurrentTick());
@@ -67,8 +63,6 @@ public class ActivatibleImpl implements Activatible {
 		if (exciteStrategy != null) {
 			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getCurrentTick());
 			synchronized(this){
-				currentExcitation += excitation;
-				//activation = curveStrategy.getY(currentExcitation);
 				activation = exciteStrategy.excite(activation, excitation);
 			}
 			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getCurrentTick());
@@ -96,28 +90,18 @@ public class ActivatibleImpl implements Activatible {
 	}
 
 	@Override
-	public synchronized void setDecayStrategy(DecayStrategy db) {
+	public void setDecayStrategy(DecayStrategy db) {
 		this.decayStrategy = db;
 	}
 
 	@Override
-	public synchronized void setExciteStrategy(ExciteStrategy eb) {
+	public void setExciteStrategy(ExciteStrategy eb) {
 		this.exciteStrategy = eb;
 	}
 
 	@Override
 	public double getTotalActivation() {
 		return activation;
-	}
-
-	@Override
-	public double getExcitation() {
-		return currentExcitation;
-	}
-
-	@Override
-	public void setExcitation(double excitation) {
-		currentExcitation = excitation;
 	}
 
 	@Override

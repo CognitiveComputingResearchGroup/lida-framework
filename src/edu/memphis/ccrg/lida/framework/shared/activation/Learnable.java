@@ -22,19 +22,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  *
  */
 public interface Learnable extends Activatible{
-	
-	/**
-	 * Returns baseLevelExcitation
-	 * @return returns the amount of excitation needed to achieve this Learnable's baseLevelActivation
-	 */
-	public double getBaseLevelExcitation();
-	
-	/**
-	 * sets baseLevelExcitation. Used for initialization, not during regular execution, use excite instead.
-	 * @param excitation amount of excitation needed to achieve this Learnable's baseLevelActivation
-	 */
-	public void setBaseLevelExcitation(double excitation);
-	
+		
 	/**
 	 * Returns base level activation. 
 	 * @return activation representing the degree this Learnable has been learned.
@@ -42,10 +30,11 @@ public interface Learnable extends Activatible{
 	public double getBaseLevelActivation();
 	
 	/**
-	 * Set base level activation. Used for initialization, not during regular execution, use excite instead.
+	 * Set base level activation. Used for initialization, not during regular execution, use {@link #reinforceBaseLevelActivation(double)} instead.
 	 * @param amount new base level activation amount
 	 */
 	public void setBaseLevelActivation(double amount);
+	
 	/**
 	 * The Base Level activation of this node is increased 
 	 * using the excitation value as a parameter for the ExciteStrategy.
@@ -55,13 +44,15 @@ public interface Learnable extends Activatible{
 	 *          this node
 	 */
     public void reinforceBaseLevelActivation(double amount); 
+    
     /**
-     * 
+     * Sets BaseLevelExciteStrategy
      * @param strategy the Excite strategy for the current activation.
      */
 	public void setBaseLevelExciteStrategy(ExciteStrategy strategy);
+	
 	/**
-	 * 
+	 * Gets BaseLevelExciteStrategy
 	 * @return the excite strategy
 	 */
 	public ExciteStrategy getBaseLevelExciteStrategy();
@@ -96,5 +87,18 @@ public interface Learnable extends Activatible{
 	 * @return threshold for removal of this learnable
 	 */
 	public double getLearnableRemovalThreshold();
+	
+	/**
+	 * Returns {@link TotalActivationStrategy}
+	 * @return Strategy this Learnable uses to calculate total activation.
+	 */
+	public TotalActivationStrategy getTotalActivationStrategy();
+	
+	
+	/**
+	 * Sets {@link TotalActivationStrategy}
+	 * @param strategy Strategy this Learnable uses to calculate total activation.
+	 */
+	public void setTotalActivationStrategy(TotalActivationStrategy strategy);
 	
 }
