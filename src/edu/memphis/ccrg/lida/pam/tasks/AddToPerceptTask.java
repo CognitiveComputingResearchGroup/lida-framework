@@ -76,7 +76,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * Thus it is justifiable to make this a separate thread
 	 */
 	@Override
-	public void runThisLidaTask() {				
+	public void runThisLidaTask() {		
 		pam.addNodeStructureToPercept(nodeStructure);	
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}

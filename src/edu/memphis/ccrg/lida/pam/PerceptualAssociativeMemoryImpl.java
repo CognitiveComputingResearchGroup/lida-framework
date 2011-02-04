@@ -237,7 +237,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @param amount the amount
 	 */
 	@Override
-	//TODO synchronize?????
 	public void receiveActivationBurst(PamNode node, double amount) {
 		logger.log(Level.FINE, node.getLabel()
 				+ " gets activation burst. Amount: " + amount
@@ -338,10 +337,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		setNewNodeType((String) getParam("pam.newNodeType", PamNodeImpl.class.getSimpleName()));
 		setNewLinkType((String) getParam("pam.newLinkType", PamLinkImpl.class.getSimpleName()));
 		
-		upscaleFactor = (Double) getParam("pam.Upscale", DEFAULT_UPSCALE_FACTOR);
-		downscaleFactor = (Double) getParam("pam.Downscale",
-				DEFAULT_DOWNSCALE_FACTOR);
-		perceptThreshold = (Double) getParam("pam.Selectivity",
+		upscaleFactor=(Double)getParam("pam.Upscale",DEFAULT_UPSCALE_FACTOR);
+		downscaleFactor=(Double)getParam("pam.Downscale",DEFAULT_DOWNSCALE_FACTOR);
+		perceptThreshold=(Double)getParam("pam.Selectivity",
 				DEFAULT_PERCEPT_THRESHOLD);
 		excitationTaskTicksPerRun = (Integer) getParam(
 				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);
@@ -398,7 +396,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {
-		//TODO is this bad?
+		//TODO unmodifiable node structure once we delete pam nodestructure
 		return pamNodeStructure;
 	}
 
@@ -409,6 +407,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof PamListener) {
 			addPamListener((PamListener) listener);
+		}else{
+			logger.log(Level.WARNING, "Cannot add listener type " + listener.toString() + " to this module.", LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -476,6 +476,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public void setNewNodeType(String type) {
 		pamNodeStructure.setDefaultNode(type);
 	}
+	
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setNewLinkType(java.lang.String)
 	 */
@@ -487,12 +488,17 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public static double getPerceptThreshold() {
 		return perceptThreshold;
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPerceptThreshold(double)
+	 */
 	@Override
 	public void setPerceptThreshold(double t) {
-		if(t >= 1.0){
-			logger.log(Level.WARNING, "Cannot set percept threshold to 1.0 or higher.  Percept threshold will not be modified.", LidaTaskManager.getCurrentTick());
-		}else{
+		if(t < 1.0){
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
+		}else{
+			logger.log(Level.WARNING, "Cannot set percept threshold to 1.0 or higher.  Percept threshold will not be modified.", LidaTaskManager.getCurrentTick());
 		}
 	}
 	@Override
@@ -525,6 +531,15 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Link getPamLink(ExtendedId id) {
 		return factory.getLink(pamNodeStructure.getLink(id));
 	}
+	
+
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
+	 */
+	@Override
+	public Node getPamNode(ExtendedId eid) {
+		return factory.getNode(pamNodeStructure.getNode(eid));
+	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
@@ -534,12 +549,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		return factory.getNode(pamNodeStructure.getNode(id));
 	}
 	
+	//TODO REMOVE?
 	@Override
 	public Object getState() {
 		return pamNodeStructure;
 	}
 
-	//TODO REMOVE???????????????????????????????????????????
+	//TODO REMOVE?
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
 	 */
@@ -551,10 +567,5 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		}
 		return false;
 	}
-
-	@Override
-	public Node getPamNode(ExtendedId id) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+	
 }

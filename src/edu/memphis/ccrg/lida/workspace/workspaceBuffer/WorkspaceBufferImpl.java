@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -24,13 +25,13 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
-	//TODO Consider having multiple NodeStructures as content
-	private NodeStructure nodeStructureBuffer;
+	//TODO Consider having multiple NodeStructures 
+	private NodeStructure buffer;
 	
 	private final double DEFAULT_REMOVABLE_THRESHOLD = 0.01;
 	
 	public WorkspaceBufferImpl() {
-		nodeStructureBuffer = new NodeStructureImpl();
+		buffer = new NodeStructureImpl();
 	}
 	
 	@Override
@@ -43,18 +44,18 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	public void setLowerActivationBound(double activationLowerBound) {
 		logger.log(Level.FINE, "Activation lower bound for buffer " + getModuleName() + 
 					" set to " + activationLowerBound, LidaTaskManager.getCurrentTick());
-		nodeStructureBuffer.setLowerActivationBound(activationLowerBound);
+		buffer.setLowerActivationBound(activationLowerBound);
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		return nodeStructureBuffer;
+		return buffer;
 	}
 
 	@Override
 	public void decayModule(long ticks){
 		super.decayModule(ticks);
-		nodeStructureBuffer.decayNodeStructure(ticks);	
+		buffer.decayNodeStructure(ticks);	
 	}
 	
 	@Override

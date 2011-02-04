@@ -108,7 +108,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 *
 	 * @param type new default PamLink type
 	 */
-	//TODO force class?
+	//TODO review this method in nodestucture
 	public void setNewLinkType(String type);
 	
 	/**
