@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 public interface SensoryMemoryListener extends ModuleListener{
 
 	/**
-	 * Receive object content from SensoryMemory
+	 * Receives object content from SensoryMemory
 	 * @param content An Object
 	 */
 	public void receiveSensoryMemoryContent(Object content);
