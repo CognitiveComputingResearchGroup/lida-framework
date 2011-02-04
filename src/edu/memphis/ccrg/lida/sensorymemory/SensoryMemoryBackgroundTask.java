@@ -11,7 +11,8 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 
 /**
- * Task which operates a Sensory Memory
+ * Task which operates a Sensory Memory. This class provides a general way to control various type of
+ * sensory memory -- It is the meaning of "background" here.
  * @author Javier Snaider
  */
 public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
