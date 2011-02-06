@@ -66,9 +66,8 @@ public class MockAttentionCodeletImplTest {
 		csmContent.addLink(link1);
 		csmContent.addLink(link2);
 		
-		double activation;
 		
-		coalition = new CoalitionImpl ((BroadcastContent)csmContent, activation);
+		coalition = new CoalitionImpl ((BroadcastContent)csmContent, 1.5);
 		
 		
 		
