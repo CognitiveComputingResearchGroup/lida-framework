@@ -126,10 +126,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @return the Sets
 	 */
 	@Override
-	public Set<PamNode> addNodes(Set<PamNode> nodes) {
+	public Set<PamNode> addDefaultNodes(Set<PamNode> nodes) {
 		Set<PamNode> copiedNodes = new HashSet<PamNode>();
 		for (PamNode l : nodes)
-			copiedNodes.add((PamNode) nodeStructure.addNode(l));
+			copiedNodes.add((PamNode) nodeStructure.addDefaultNode(l));
 		return copiedNodes;
 	}
 
@@ -140,10 +140,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @return the Sets
 	 */
 	@Override
-	public Set<PamLink> addLinks(Set<PamLink> links) {
+	public Set<PamLink> addDefaultLinks(Set<PamLink> links) {
 		Set<PamLink> copiedLinks = new HashSet<PamLink>();
 		for (PamLink l : links)
-			copiedLinks.add((PamLink) nodeStructure.addLink(l));
+			copiedLinks.add((PamLink) nodeStructure.addDefaultLink(l));
 		return copiedLinks;
 	}
 
@@ -406,8 +406,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNode(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
-	public PamNode addNode(PamNode node) {
-		return (PamNode) nodeStructure.addNode(node);
+	public PamNode addDefaultNode(PamNode node) {
+		return (PamNode) nodeStructure.addDefaultNode(node);
 	}
 
 	/* (non-Javadoc)
@@ -436,7 +436,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public PamNode addNewNode(String label) {
 		PamNode newNode = (PamNode) factory.getNode(nodeStructure.getDefaultNodeType(), label);
 		if(newNode != null){
-			newNode = (PamNode) nodeStructure.addNode(newNode);
+			newNode = (PamNode) nodeStructure.addDefaultNode(newNode);
 			return newNode;
 		}else{
 			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + nodeStructure.getDefaultNodeType(), LidaTaskManager.getCurrentTick());
@@ -448,13 +448,17 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public PamNode addNewNode(String pamNodeType, String label) {
-		PamNode newNode = (PamNode) factory.getNode(pamNodeType, label);
+	public PamNode addNewNode(String nodeType, String label) {
+		Node newNode = factory.getNode(nodeType, label);
 		if (newNode != null) {
-			newNode = (PamNode) nodeStructure.addNode(newNode);
-			return newNode;
+			if(newNode instanceof PamNode){
+				return (PamNode) nodeStructure.addNode(newNode, nodeType);
+			}else{
+				logger.log(Level.WARNING, "Cannot add non-PamNode nodes to PAM.  Node " + label + " not added", LidaTaskManager.getCurrentTick());
+				return null;
+			}
 		}else{
-			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + pamNodeType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Was unable to create node " + label + " of type " + nodeType, LidaTaskManager.getCurrentTick());
 			return null;
 		}
 	}
@@ -496,6 +500,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
+		logger.log(Level.FINEST, l.getTotalActivation() +" >? " + perceptThreshold, LidaTaskManager.getCurrentTick());		
 		return l.getTotalActivation() > perceptThreshold;
 	}
 

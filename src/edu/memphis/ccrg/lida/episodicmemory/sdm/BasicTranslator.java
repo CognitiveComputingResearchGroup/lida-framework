@@ -43,7 +43,7 @@ public class BasicTranslator implements Translator {
 		for (int i = 0; i < size; i++) {
 			if (data.getQuick(i)) {
 				Node n = pam.getPamNode(i);
-				ns.addNode(factory.getNode(n));
+				ns.addDefaultNode(factory.getNode(n));
 			}
 		}
 		return ns;

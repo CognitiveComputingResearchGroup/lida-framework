@@ -59,12 +59,12 @@ public class ProceduralMemoryInitializer implements Initializer {
 			for (int j = 0; j < 2; j++) {
 				int idx = (int) (Math.random() * nodes.length);
 				Node n = nodes[idx];
-				ctxt.addNode(n);
+				ctxt.addDefaultNode(n);
 			}
 			for (int j = 0; j < 2; j++) {
 				int idx = (int) (Math.random() * nodes.length);
 				Node n = nodes[idx];
-				rstl.addNode(n);
+				rstl.addDefaultNode(n);
 			}
 			Scheme scheme = new SchemeImpl("test scheme", i, 1L);
 			scheme.addArgument(new ArgumentImpl(1L));

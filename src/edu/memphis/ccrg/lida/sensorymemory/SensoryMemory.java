@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
  * modules sense the environment, store the sensed data ,and process it.
  * @author Ryan J. McCall
  */
-//TODO move SensoryMotorMemoryListener to implementation?
+//TODO have implementers implement SensoryMotorMemoryListener?
 public interface SensoryMemory extends LidaModule, SensoryMotorMemoryListener, Saveable {
 
 	/**

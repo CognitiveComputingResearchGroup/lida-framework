@@ -41,31 +41,31 @@ public class PamInitializer implements Initializer {
 		LidaElementFactory factory = LidaElementFactory.getInstance();
 		PamNodeImpl wood = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"wood");
-		pam.addNode(wood);
+		pam.addDefaultNode(wood);
 		PamNodeImpl gold = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"gold");
-		pam.addNode(gold);
+		pam.addDefaultNode(gold);
 		PamNodeImpl metal = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"metal");
-		pam.addNode(metal);
+		pam.addDefaultNode(metal);
 		PamNodeImpl solid = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"solid");
-		pam.addNode(solid);
+		pam.addDefaultNode(solid);
 		PamNodeImpl iron = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"iron");
-		pam.addNode(iron);
+		pam.addDefaultNode(iron);
 		PamNodeImpl plastic = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"plastic");
-		pam.addNode(plastic);
+		pam.addDefaultNode(plastic);
 		PamNodeImpl noMetal = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"noMetal");
-		pam.addNode(noMetal);
+		pam.addDefaultNode(noMetal);
 		PamNodeImpl topLeft = (PamNodeImpl) factory.getNode("PamNodeImpl",
 				"topLeft");
-		pam.addNode(topLeft);
+		pam.addDefaultNode(topLeft);
 		PamNodeImpl bottomRight = (PamNodeImpl) factory.getNode(
 				"PamNodeImpl", "bottomRight");
-		pam.addNode(bottomRight);
+		pam.addDefaultNode(bottomRight);
 		// Links
 		pam.addNewLink(gold, metal, LinkCategoryNode.CHILD,1.0);
 		pam.addNewLink(metal, solid, LinkCategoryNode.CHILD,1.0);

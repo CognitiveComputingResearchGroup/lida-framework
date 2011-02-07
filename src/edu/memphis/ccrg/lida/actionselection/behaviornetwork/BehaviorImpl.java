@@ -190,21 +190,21 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		if(condition.getActivation() < this.contextSatisfactionThreshold)
 			unsatisfiedContextConditionCount.incrementAndGet();
 		
-		return (context.addNode(condition) != null);
+		return (context.addDefaultNode(condition) != null);
 	}
 
 	@Override
 	public boolean addToAddingList(Node addResult) {
 		logger.log(Level.FINEST, "Adding add result " +
 				 addResult.getLabel() + " to " + label);
-		return addingList.addNode(addResult) != null;
+		return addingList.addDefaultNode(addResult) != null;
 	}
 
 	@Override
 	public boolean addToDeletingList(Node deleteResult) {
 		logger.log(Level.FINEST, "Adding delete result " +
 				 deleteResult.getLabel() + " to " + label);
-		return deletingList.addNode(deleteResult) != null;
+		return deletingList.addDefaultNode(deleteResult) != null;
 	}
 
 	// Get methods

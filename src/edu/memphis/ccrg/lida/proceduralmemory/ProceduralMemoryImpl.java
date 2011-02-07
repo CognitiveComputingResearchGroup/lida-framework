@@ -157,8 +157,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		}
 	}
 
-	/**
-	 * Impl. of observer pattern. Send s to all registered ProceduralMemory
+	/*
+	 * Impl. of observer pattern. Sends scheme to all registered ProceduralMemory
 	 * Listeners
 	 */
 	@Override

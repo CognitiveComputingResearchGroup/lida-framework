@@ -16,24 +16,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConfigUtils {
-	
-	private static final Logger logger=Logger.getLogger(ConfigUtils.class.getCanonicalName());
-	
-	public static Properties loadProperties(String filename){
+
+	private static final Logger logger = Logger.getLogger(ConfigUtils.class
+			.getCanonicalName());
+
+	/**
+	 * Loads specified {@link Properties} file.
+	 * 
+	 * @param filename file name
+	 * @return {@link Properties}
+	 */
+	public static Properties loadProperties(String filename) {
 		Properties properties = new Properties();
-		if(filename!=null){
+		if (filename != null) {
 			try {
 				properties.load(new BufferedReader(new FileReader(filename)));
 			} catch (FileNotFoundException e) {
 				throw new IllegalArgumentException();
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error reading properties {0}", filename);
-				properties=null;
+				logger.log(Level.SEVERE, "Error reading properties {0}",
+						filename);
+				properties = null;
 			}
-			}else{
-				logger.log(Level.WARNING, "Properties File not specified");			
-				properties=null;
-			}
+		} else {
+			logger.log(Level.WARNING, "Properties File not specified");
+			properties = null;
+		}
 		return properties;
 	}
 }

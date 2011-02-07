@@ -12,20 +12,19 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
- * An initializer performs configuration and set up on a particular module.  
+ * An initializer configures the parameters and objects of a particular module.  
  * @author Ryan J. McCall
  *
  */
 public interface Initializer {
 	
 	/**
-	 * Initializer is passed a particular module to configure.
-	 * It can use the Lida object and a map of parameters to do so.  
-	 * The variables in params are exactly those specified in Lida.xml under the module.
+	 * Receives a particular module to configure. The Lida object and a map of parameters can be used.  
+	 * The variables in params are those specified in Lida.xml for the module being initialized.
 	 * 
 	 * @param module module being initialized
 	 * @param lida Lida object
-	 * @param params parameters
+	 * @param params module parameters
 	 */
 	public void initModule(Initializable module, Lida lida, Map<String, ?> params); 
 

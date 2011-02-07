@@ -130,7 +130,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	@Override
 	public void receiveNode(Node node) {
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addNode(node);
+		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addDefaultNode(node);
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	@Override
 	public void receiveLink(Link l) {
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addLink(l);
+		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addDefaultLink(l);
 	}	
 
 	

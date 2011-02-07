@@ -186,7 +186,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * .shared.Link)
 	 */
 	@Override
-	public synchronized Link addLink(Link l) {		
+	public synchronized Link addDefaultLink(Link l) {		
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getExtendedId());
 		if (oldLink != null) { // if the link already exists in this node structure
@@ -298,16 +298,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
 	 */
 	@Override
-	public Collection<Link> addLinks(Collection<Link> links) {
+	public Collection<Link> addDefaultLinks(Collection<Link> links) {
 		Collection<Link> copiedLinks = new ArrayList<Link>();
 		for (Link l : links){
-			copiedLinks.add(addLink(l));
+			copiedLinks.add(addDefaultLink(l));
 		}
 		return copiedLinks;
 	}
 	
 	@Override
-	public Node addNode(Node n){
+	public Node addDefaultNode(Node n){
 		return addNode(n, defaultNodeType);
 	}
 
@@ -340,7 +340,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
 	 */
 	@Override
-	public Collection<Node> addNodes(Collection<Node> nodesToAdd) {
+	public Collection<Node> addDefaultNodes(Collection<Node> nodesToAdd) {
 		Collection<Node> copiedNodes = new ArrayList<Node>();
 		for (Node n : nodesToAdd){
 			copiedNodes.add(addNode(n, defaultNodeType ));
@@ -579,13 +579,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public void mergeWith(NodeStructure ns) {
-		addNodes(ns.getNodes());
+		addDefaultNodes(ns.getNodes());
 		Collection<Link> cl = ns.getLinks();
 		boolean pending = true;
 		while (pending) {
 			pending = false;
 			for (Link l : cl) {
-				if (addLink(l) == null) {
+				if (addDefaultLink(l) == null) {
 					pending = true;
 				}
 			}
@@ -711,19 +711,19 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getParentLinkMap(edu.memphis.ccrg.lida.framework.shared.Node)
 	 */
 	@Override
-	public Map<Node,Link> getParentLinkMap(Node child){
-		Map<Node, Link> results = new HashMap<Node, Link>();
+	public Map<Node, Link> getParentLinkMap(Node child){
+		Map<Node, Link> parentLinkMap = new HashMap<Node, Link>();
 		Set<Link> candidateLinks = getLinkableMap().get(child);
 		if(candidateLinks != null){
 			for(Link link: candidateLinks){
 				//Sinks receive activation and are "higher than" node n, i.e. sink are the parents of this node.
 				Linkable sink = link.getSink(); 
 				if(!sink.equals(child)){
-					results.put((Node) sink, link);	
+					parentLinkMap.put((Node) sink, link);	
 				}
 			}
 		}
-		return results;
+		return parentLinkMap;
 	}
 
 }

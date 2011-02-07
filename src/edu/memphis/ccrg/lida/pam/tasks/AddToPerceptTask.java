@@ -28,47 +28,47 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	private PerceptualAssociativeMemory pam;
 
 	/**
-	 * Creates a new instance to add a single {@link PamNode}
+	 * Creates a new AddToPerceptTask to add a single {@link PamNode}
 	 * 
-	 * @param pamNode
-	 *            the pam node
+	 * @param pn
+	 *            a {@link PamNode}
 	 * @param pam
-	 *            the pam
+	 *            the {@link PerceptualAssociativeMemory}
 	 */
-	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(PamNode pn, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
 		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
-		nodeStructure.addNode(pamNode);
+		nodeStructure.addDefaultNode(pn);
 	}
 	
 	/**
-	 * Creates a new instance to add a single {@link PamLink}
+	 * Creates a new AddToPerceptTask to add a single {@link PamLink}
 	 * 
-	 * @param pamLink
-	 *            the pam link
+	 * @param pl
+	 *            a {@link PamLink}
 	 * @param pam
-	 *            the pam
+	 *            the {@link PerceptualAssociativeMemory}
 	 */
-	public AddToPerceptTask(PamLink pamLink, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(PamLink pl, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
 		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
-		nodeStructure.addLink(pamLink);
+		nodeStructure.addDefaultLink(pl);
 	}
 
 	/**
-	 * Creates a new instance to add a {@link NodeStructure}
+	 * Creates a new AddToPerceptTask to add a {@link NodeStructure}
 	 * 
-	 * @param nodeStructure
-	 *            the pam node structure
+	 * @param ns
+	 *            a {@link NodeStructure}
 	 * @param pam
-	 *            the pam
+	 *            the {@link PerceptualAssociativeMemory}
 	 */
-	public AddToPerceptTask(NodeStructure nodeStructure, PerceptualAssociativeMemory pam){
+	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam){
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl(nodeStructure);
+		this.nodeStructure = new NodeStructureImpl(ns);
 	}
 
 	/**

@@ -99,15 +99,17 @@ public class LidaStarter {
 	private static void run() {
 		//Load factories data
 		LidaFactoriesXMLLoader lidaFactoriesLoader=new LidaFactoriesXMLLoader();
-		lidaFactoriesLoader.loadData(lidaProperties);
+		lidaFactoriesLoader.loadFactoriesData(lidaProperties);
 		
 		// Create model, LIDA
 		Lida lida = new LidaXmlFactory().getLida(lidaProperties);
 		logger.log(Level.CONFIG, "LIDA created", 0L);
 
         // Initialize Data Access Objects
-        if (!DAOManager.getInstance().isInitialized())
-        	DAOManager.getInstance().initDataAccessObjects(lida);
+		DAOManager manager = DAOManager.getInstance();
+        if (!manager.isInitialized())
+//        	manager.initDataAccessObjects(lida);
+        //TODO Uncomment when DAO is operational
 
 		// Use the LidaGuiFactory to start the agent
 		LidaGuiFactory.start(lida, lidaProperties);

@@ -44,10 +44,21 @@ public interface Node extends Linkable, Activatible, Serializable {
      * @return unique id
      */
     public int getId();
+    
+    
+    /**
+     * Sets Node's id
+     * @param id unique id
+     */
     public void setId(int id);
     
     @Override
 	public String getLabel();
+    
+    /**
+     * Sets label
+     * @param label readable label
+     */
     public void setLabel(String label);
     
     /**

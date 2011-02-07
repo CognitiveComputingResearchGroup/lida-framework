@@ -19,16 +19,16 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 public interface Linkable extends Initializable, Serializable {
 
 	/**
-	 * Readable label.
+	 * Gets label.
 	 * 
-	 * @return the label
+	 * @return readable label
 	 */
 	public String getLabel();
 	
 	/**
-	 * General Id for Linkables.
+	 * Gets extendedId.
 	 * 
-	 * @return the extended id
+	 * @return a general id for Linkables.
 	 */
 	public ExtendedId getExtendedId();
 

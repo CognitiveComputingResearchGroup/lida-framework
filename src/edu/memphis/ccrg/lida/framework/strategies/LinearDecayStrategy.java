@@ -15,8 +15,6 @@ import java.util.Map;
  */
 public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 
-	// TODO Use curves
-
 	/** The default slope (m = 1). */
 	public static final double DEFAULT_M = 0.01;
 

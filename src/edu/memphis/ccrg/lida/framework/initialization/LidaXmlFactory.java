@@ -42,7 +42,8 @@ public class LidaXmlFactory implements LidaFactory {
 
 	private static final Logger logger = Logger.getLogger(LidaXmlFactory.class.getCanonicalName());
 	
-	private static final String DEFAULT_FILE_NAME = "configs/lida.xml";
+	private static final String DEFAULT_XML_FILE_PATH = "configs/lida.xml";
+	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaXMLSchema.xsd";
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	
@@ -58,7 +59,7 @@ public class LidaXmlFactory implements LidaFactory {
 	@Override
 	public Lida getLida(Properties properties) { //Properties not used in this Factory
 		
-		String fileName = properties.getProperty("lida.factory.data",DEFAULT_FILE_NAME);
+		String fileName = properties.getProperty("lida.factory.data",DEFAULT_XML_FILE_PATH);
 		parseXmlFile(fileName);
 		parseDocument();
 		lida.init();
@@ -73,7 +74,11 @@ public class LidaXmlFactory implements LidaFactory {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 
 			// parse using builder to get DOM representation of the XML file
-			dom = db.parse(fileName);
+			if(XmlUtils.validateXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH)){
+				dom = db.parse(fileName);
+			}else{
+				logger.log(Level.SEVERE, "Lida XML file is invalid.", LidaTaskManager.getCurrentTick());
+			}
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();
 			logger.log(Level.WARNING, sw.getBuffer().toString(), 0L);

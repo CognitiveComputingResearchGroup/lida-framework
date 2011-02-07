@@ -8,16 +8,16 @@
 package edu.memphis.ccrg.lida.declarativememory;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-public class DeclarativeMemoryImpl extends LidaModuleImpl implements DeclarativeMemory, CueListener{
+public class DeclarativeMemoryImpl extends EpisodicMemoryImpl implements DeclarativeMemory, CueListener{
 
     public DeclarativeMemoryImpl() {
-		super(ModuleName.DeclarativeMemory);
-		
+    	super();
+		setModuleName(ModuleName.DeclarativeMemory);		
 	}
 
 	// This method is called continually.  The rate at which is called 

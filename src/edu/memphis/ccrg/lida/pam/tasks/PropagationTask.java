@@ -78,9 +78,9 @@ public class PropagationTask extends LidaTaskImpl {
 		   pam.isOverPerceptThreshold(sink)){
 			//If over threshold then spawn a new task to add the node to the percept
 			NodeStructure ns = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
-			ns.addNode(source);
-			ns.addNode(sink);
-			ns.addLink(link);
+			ns.addDefaultNode(source);
+			ns.addDefaultNode(sink);
+			ns.addDefaultLink(link);
 
 			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
 			taskSpawner.addTask(task);

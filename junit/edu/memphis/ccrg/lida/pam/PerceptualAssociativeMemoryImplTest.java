@@ -94,7 +94,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testDecayModule() {		
-		pam.addNode(node1);	
+		pam.addDefaultNode(node1);	
 		pam.decayModule(100);
 		
 		assertTrue("Problem with DecayModule",pam.getPamNode(1).getTotalActivation()<0.8);		
@@ -122,32 +122,32 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addNodes(java.util.Set)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNodes(java.util.Set)}.
 	 */
 	@Test
 	public void testAddNodes() {
 		Set<PamNode> nodes = new HashSet<PamNode>();
 		nodes.add(node2);
 		nodes.add(node3);
-		pam.addNode(node1);	
-		pam.addNodes(nodes);
+		pam.addDefaultNode(node1);	
+		pam.addDefaultNodes(nodes);
 		
 		assertTrue("Problem with AddNodes", pam.containsNode(node1) && pam.containsNode(node2) && pam.containsNode(node3));
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addLinks(java.util.Set)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultLinks(java.util.Set)}.
 	 */
 	@Test
 	public void testAddLinks() {
 		Set<PamLink> links = new HashSet<PamLink>();
 		
-		pam.addNode(node1);	
-		pam.addNode(node2);
-		pam.addNode(node3);
+		pam.addDefaultNode(node1);	
+		pam.addDefaultNode(node2);
+		pam.addDefaultNode(node3);
 		links.add(link1);
 		links.add(link2);
-		pam.addLinks(links);
+		pam.addDefaultLinks(links);
 		
 		assertTrue("Problem with AddLinks",pam.containsLink(link1) && pam.containsLink(link2));
 	}
@@ -171,8 +171,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testReceiveWorkspaceContent() {
-		nodeStructure.addNode(node1);
-		nodeStructure.addNode(node2);
+		nodeStructure.addDefaultNode(node1);
+		nodeStructure.addDefaultNode(node2);
 		pam.receiveWorkspaceContent(ModuleName.Workspace, nodeStructure);
 		
 		//Workspace content not handled in pam
@@ -185,8 +185,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testReceiveBroadcast() {
-		nodeStructure.addNode(node1);
-		nodeStructure.addNode(node2);
+		nodeStructure.addDefaultNode(node1);
+		nodeStructure.addDefaultNode(node2);
 		pam.receiveBroadcast(nodeStructure);		
 			
 		//Broadcast content not handled in pam
@@ -202,7 +202,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testReceiveActivationBurstPamNodeDouble() {
 		
 		node1.setActivation(0.2);
-		pam.addNode(node1);
+		pam.addDefaultNode(node1);
 		pam.receiveActivationBurst(node1, 0.5);
 		
 		assertEquals("Problem with ReceiveActivationBurst",0.7,node1.getTotalActivation());
@@ -221,7 +221,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		nodes.add(node1);
 		nodes.add(node2);
 		
-		pam.addNodes(nodes);
+		pam.addDefaultNodes(nodes);
 		pam.receiveActivationBurst(nodes, 0.5);
 		
 		assertEquals("Problem with ReceiveActivationBurst",0.7,node1.getTotalActivation());
@@ -325,7 +325,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addNode(edu.memphis.ccrg.lida.pam.PamNode)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNode(edu.memphis.ccrg.lida.pam.PamNode)}.
 	 */
 	@Test
 	public void testAddNode() {

@@ -10,6 +10,8 @@
  */
 package edu.memphis.ccrg.lida.framework.initialization;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,17 +20,78 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * @author Javier Snaider, Ryan J. McCall
+ *
+ */
 public class XmlUtils {
 	
 	private static final Logger logger = Logger.getLogger(XmlUtils.class.getCanonicalName());
+
+	/**
+	 * Validates specified XML file with specified XML schema file
+	 * @param xmlFile name of xml file
+	 * @param schemaFile name of schema file
+	 * @return true if the xml is valid under specified schema.
+	 */
+	public static boolean validateXmlFile(String xmlFile, String schemaFile){
+		boolean result = false;
+        // 1. Lookup a factory for the W3C XML Schema language
+        SchemaFactory factory = 
+            SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+        
+        // 2. Compile the schema. 
+        // Here the schema is loaded from a java.io.File, but you could use 
+        // a java.net.URL or a javax.xml.transform.Source instead.
+        File schemaLocation = new File(schemaFile);
+        Schema schema;
+		try {
+			schema = factory.newSchema(schemaLocation);
+		} catch (SAXException ex) {
+        	logger.log(Level.WARNING, "The Schema file is not valid. " +ex.getMessage());
+        	return false;
+		}
+    
+        // 3. Get a validator from the schema.
+        Validator validator = schema.newValidator();
+        
+        // 4. Parse the document you want to check.
+        Source source = new StreamSource(xmlFile);
+        
+        // 5. Check the document
+        try {
+            validator.validate(source);
+            logger.log(Level.INFO, xmlFile + " is valid.");
+            result= true;
+        }
+        catch (SAXException ex) {
+        	logger.log(Level.WARNING,xmlFile + " is not valid because " + ex.getMessage());
+        } catch (IOException ex) {
+        	logger.log(Level.WARNING,xmlFile + " is not a valid file." + ex.getMessage());
+		}  
+        return result;
+	}
 	
+	/**
+	 * Returns text value of first element in specified element with specified tag.
+	 * @param ele Dom element
+	 * @param tagName name of xml tag
+	 * @return text value of element with specified xml tag
+	 */
 	public static String getTextValue(Element ele, String tagName) {
 		String textVal = null;
 		NodeList nl = ele.getElementsByTagName(tagName);
@@ -41,10 +104,10 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Calls getTextValue and returns a int value
-	 * @param ele 
-	 * @param tagName 
-	 * @return 
+	 * Returns int value of first element inside specified element with specified tag.
+	 * @param ele Dom element
+	 * @param tagName name of xml tag
+	 * @return int value of element with specified xml tag
 	 */
 	public static int getIntValue(Element ele, String tagName) {
 		// in production application you would catch the exception
@@ -52,15 +115,20 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Calls getTextValue and returns a boolean value
-	 * @param ele 
-	 * @param tagName 
-	 * @return 
+	 * Returns boolean value of first element inside specified element with specified tag.
+	 * @param ele Dom element
+	 * @param tagName name of xml tag
+	 * @return boolean value of element with specified xml tag
 	 */
 	public static boolean getBooleanValue(Element ele, String tagName) {
 		return Boolean.parseBoolean(getTextValue(ele, tagName));
 	}
 
+	/**
+	 * Reads and creates a Properties from specified Element
+	 * @param moduleElement Dom element
+	 * @return Properties 
+	 */
 	public static Properties getParams(Element moduleElement) {
 		Properties prop = new Properties();
 		NodeList nl = moduleElement.getElementsByTagName("param");
@@ -75,6 +143,11 @@ public class XmlUtils {
 		return prop;
 	}
 
+	/**
+	 * Reads typed params from Xml element and returns them in a map.
+	 * @param moduleElement Dom {@link Element}
+	 * @return parameters indexed by name.
+	 */
 	public static Map<String,Object> getTypedParams(Element moduleElement) {
 		Map<String,Object> prop = new HashMap<String,Object>();
 		NodeList nl = moduleElement.getElementsByTagName("param");
@@ -112,6 +185,12 @@ public class XmlUtils {
 		return prop;
 	}
 
+	/**
+	 * Returns child of specified Element with specified name.
+	 * @param parent an {@link Element}
+	 * @param name name of child specified
+	 * @return child or null
+	 */
 	public static Element getChild(Element parent, String name) {
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
@@ -122,6 +201,11 @@ public class XmlUtils {
 		return null;
 	}
 	
+	/**
+	 * Returns NodeValue of first child found that is a Text.
+	 * @param parent Element
+	 * @return child's string value.
+	 */
 	public static String getValue(Element parent) {
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
@@ -131,6 +215,13 @@ public class XmlUtils {
 		}
 		return null;
 	}
+	
+	/**
+	 * Gets the children values of specified element with specified tag name.
+	 * @param element Parent {@link Element}
+	 * @param name specified tag name
+	 * @return values of children 
+	 */
 	public static List<String> getChildrenValues(Element element, String name) {
 		List<String> vals = new ArrayList<String>();
 		NodeList nl = element.getElementsByTagName(name);
@@ -143,6 +234,12 @@ public class XmlUtils {
 		}
 		return vals;
 	}
+	/**
+	 * Returns all children with specified name.
+	 * @param parent {@link Element}
+	 * @param name name of sought children
+	 * @return list of all children found.
+	 */
 	public static List<Element> getChildren(Element parent, String name) {
 		List<Element> nl = new ArrayList<Element>();
 		for (Node child = parent.getFirstChild(); child != null; child = child

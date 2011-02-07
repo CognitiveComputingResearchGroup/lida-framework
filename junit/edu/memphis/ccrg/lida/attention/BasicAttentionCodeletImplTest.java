@@ -47,11 +47,11 @@ public class BasicAttentionCodeletImplTest {
 		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
 		link2 = new LinkImpl(node2,node3,LinkCategoryNode.CHILD);
 		
-		nodeStructure.addNode(node1);
-		nodeStructure.addNode(node2);
-		nodeStructure.addNode(node3);
-		nodeStructure.addLink(link1);
-		nodeStructure.addLink(link2);
+		nodeStructure.addDefaultNode(node1);
+		nodeStructure.addDefaultNode(node2);
+		nodeStructure.addDefaultNode(node3);
+		nodeStructure.addDefaultLink(link1);
+		nodeStructure.addDefaultLink(link2);
 		
 		attnCodelet = new BasicAttentionCodeletImpl();
 	}

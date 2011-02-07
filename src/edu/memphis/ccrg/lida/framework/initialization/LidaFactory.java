@@ -12,12 +12,16 @@ import java.util.Properties;
 import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
- * Factory for Lida objects
+ * Factory for Lida objects.
  * @author Javier Snaider
- *
  */
 public interface LidaFactory {
 
+	/**
+	 * Creates and returns a Lida from specified {@link Properties}
+	 * @param properties Lida properties
+	 * @return Constructed Lida object
+	 */
 	public Lida getLida(Properties properties);
 
 }

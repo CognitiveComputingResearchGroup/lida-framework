@@ -112,7 +112,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		NodeStructure bc = new NodeStructureImpl();
 		for(Node n: broadcastNodes){
 			n.setActivation(0.9);
-			bc.addNode(n);
+			bc.addDefaultNode(n);
 		}
 		return bc;
 	}

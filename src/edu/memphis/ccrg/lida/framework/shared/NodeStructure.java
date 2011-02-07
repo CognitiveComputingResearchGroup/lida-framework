@@ -23,19 +23,26 @@ public interface NodeStructure {
 	/**
 	 * Copies specified Link and then adds the copy to this NodeStructure. If Link with the same 
 	 * id already exists then the old Link's activation is updated.
+	 * Copied link will have the default link type of this {@link NodeStructure} when
+	 * it is added.
 	 * @param l Link to copy and add.
 	 * @return the copied Link that is actually stored in this NodeStructure, or the existing link.
 	 */
-	public Link addLink(Link l);
+	public Link addDefaultLink(Link l);
 	
 	/**
 	 * Copies specified Links and then adds the copies to this NodeStructure.
 	 * If any Link with the same 
 	 * id already exists then the old Link's activation is updated.
+	 * Copied links will have the default link type of this {@link NodeStructure} when
+	 * they are added.
 	 * @param links Links to copy and add.
 	 * @return the copied Links that are actually stored in this NodeStructure, or any existing links.
 	 */
-	public Collection<Link> addLinks(Collection<Link> links);
+	public Collection<Link> addDefaultLinks(Collection<Link> links);
+	
+	//TODO 
+//	public Link addLink(Link l, String linkType);
 
 	/**
 	 * Creates and adds a new Link with specified attributes.  Source and sink must
@@ -74,12 +81,13 @@ public interface NodeStructure {
 			LinkCategory type, double activation);
 
 	/**
-	 * Copies specified Node and adds the copy to this NodeStructure.  If Node with the same
+	 * Adds a COPY of specified Node to this NodeStructure. The copy will be of the default
+	 * type of this NodeStructure, not of the send node. If Node with the same
 	 * id already exists the the old node's activation is update.
 	 * @param n Node to add.
 	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
 	 */
-	public Node addNode(Node n);
+	public Node addDefaultNode(Node n);
 
 	/**
 	 * Add a Node of a specified factory type to this NodeStructure
@@ -91,10 +99,10 @@ public interface NodeStructure {
 
 	/**
 	 * @return copied and/or updated nodes that are now present in this nodestructure
-	 * @see #addNode(Node)
+	 * @see #addDefaultNode(Node)
 	 * @param nodes Node to be added.
 	 */
-	public Collection<Node> addNodes(Collection<Node> nodes);
+	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
 
 	/**
 	 * Removes specified {@link Link} if present.

@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -21,18 +19,13 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * 
@@ -45,7 +38,8 @@ import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
  */
 public class LidaFactoriesXMLLoader {
 	
-	private static final String DEFAULT_FILE_NAME = "configs/factoriesData.xml";
+	private static final String DEFAULT_XML_FILE_PATH = "configs/factoriesData.xml";
+	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaFactories.xsd";
 	private static final Logger logger = Logger.getLogger(LidaFactoriesXMLLoader.class.getCanonicalName());
 	private Document dom;
 	private LidaElementFactory nfactory = LidaElementFactory.getInstance();
@@ -54,9 +48,13 @@ public class LidaFactoriesXMLLoader {
 	private Map<String, LinkableDef> links;
 	private Map<String, CodeletDef> codelets;
 
-	public void loadData(Properties properties) {
+	/**
+	 * Loads {@link LidaElementFactory} with object types specified in {@link Properties}
+	 * @param properties {@link Properties}
+	 */
+	public void loadFactoriesData(Properties properties) {
 		String fileName = properties.getProperty("lida.factories",
-				DEFAULT_FILE_NAME);
+				DEFAULT_XML_FILE_PATH);
 		parseXmlFile(fileName);
 		parseDocument();
 		fillFactories();
@@ -85,19 +83,17 @@ public class LidaFactoriesXMLLoader {
 	}
 
 	private void parseXmlFile(String fileName) {
-		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
+		DocumentBuilder db;
 		try {
-
-			// Using factory get an instance of document builder
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			//Validate xml
-			if (validateFile(fileName)){
-			// parse using builder to get DOM representation of the XML file
-			dom = db.parse(fileName);
+			db = dbf.newDocumentBuilder();
+			if (XmlUtils.validateXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH)){
+				// parse using builder to get DOM representation of the XML file
+				dom = db.parse(fileName);
+			}else{
+				logger.log(Level.WARNING, "Xml file invalid, no factories data was loaded.", LidaTaskManager.getCurrentTick());
 			}
-		} catch (Exception e) {
+		}catch (Exception e) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
 			e.printStackTrace(pw);
@@ -106,43 +102,7 @@ public class LidaFactoriesXMLLoader {
 		}
 	}
 
-	private boolean validateFile(String xmlFile){
-		boolean result=false;
-        // 1. Lookup a factory for the W3C XML Schema language
-        SchemaFactory factory = 
-            SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-        
-        // 2. Compile the schema. 
-        // Here the schema is loaded from a java.io.File, but you could use 
-        // a java.net.URL or a javax.xml.transform.Source instead.
-        File schemaLocation = new File("configs/LidaFactories.xsd");
-        Schema schema;
-		try {
-			schema = factory.newSchema(schemaLocation);
-		} catch (SAXException ex) {
-        	logger.log(Level.WARNING,"The Schema file is not valid. " +ex.getMessage());
-        	return false;
-		}
-    
-        // 3. Get a validator from the schema.
-        Validator validator = schema.newValidator();
-        
-        // 4. Parse the document you want to check.
-        Source source = new StreamSource(xmlFile);
-        
-        // 5. Check the document
-        try {
-            validator.validate(source);
-            logger.log(Level.INFO,xmlFile + " is valid.");
-            result= true;
-        }
-        catch (SAXException ex) {
-        	logger.log(Level.WARNING,xmlFile + " is not valid because " + ex.getMessage());
-        } catch (IOException ex) {
-        	logger.log(Level.WARNING,xmlFile + " is not a valid file." + ex.getMessage());
-		}  
-        return result;
-	}
+	
 	private void parseDocument() {
 		// get the root element
 		Element docEle = dom.getDocumentElement();

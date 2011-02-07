@@ -60,11 +60,11 @@ public class MockAttentionCodeletImplTest {
 		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
 		link2 = new LinkImpl(node2,node3,LinkCategoryNode.CHILD);
 		
-		csmContent.addNode(node1);
-		csmContent.addNode(node2);
-		csmContent.addNode(node3);
-		csmContent.addLink(link1);
-		csmContent.addLink(link2);
+		csmContent.addDefaultNode(node1);
+		csmContent.addDefaultNode(node2);
+		csmContent.addDefaultNode(node3);
+		csmContent.addDefaultLink(link1);
+		csmContent.addDefaultLink(link2);
 		
 		
 		coalition = new CoalitionImpl ((BroadcastContent)csmContent, 1.5);

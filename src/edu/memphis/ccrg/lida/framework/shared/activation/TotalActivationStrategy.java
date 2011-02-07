@@ -8,10 +8,10 @@ public interface TotalActivationStrategy {
 
 	/**
 	 * Calculates and returns total activation.
-	 * @param baseLevelActivation
-	 * @param currentActivation
-	 * @return
+	 * @param bla Base-level activation
+	 * @param ca current activation
+	 * @return calculated total activation
 	 */
-	public double calculateTotalActivation(double baseLevelActivation, double currentActivation);
+	public double calculateTotalActivation(double bla, double ca);
 	
 }
