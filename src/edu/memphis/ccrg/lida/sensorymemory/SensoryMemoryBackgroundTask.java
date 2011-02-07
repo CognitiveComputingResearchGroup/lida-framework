@@ -27,7 +27,6 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 	 */
 	@Override
 	protected void runThisLidaTask() {
-		//FIXME for NullPointerException
 		sm.runSensors();		
 	}
 
