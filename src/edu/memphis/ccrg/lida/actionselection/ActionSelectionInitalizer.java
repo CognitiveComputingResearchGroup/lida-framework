@@ -21,6 +21,10 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * @author ryanjmccall
+ *
+ */
 public class ActionSelectionInitalizer implements Initializer{
 
 	private static final Logger logger = Logger.getLogger(ActionSelectionInitalizer.class.getCanonicalName());
@@ -30,6 +34,9 @@ public class ActionSelectionInitalizer implements Initializer{
 	private static final Double DEFAULT_AGGREGATE_ACT_THRESHOLD = 0.8;
 	private static final Double DEFAULT_INDIVIDUAL_ACT_THRESHOLD = 0.5;
 
+	/**
+	 * 
+	 */
 	public ActionSelectionInitalizer() {
 	}
 

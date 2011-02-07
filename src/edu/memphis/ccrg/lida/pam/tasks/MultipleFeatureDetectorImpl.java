@@ -27,7 +27,7 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 	private static final Logger logger = Logger.getLogger(MultipleFeatureDetectorImpl.class.getCanonicalName());
 	protected Map<String, PamNode> pamNodeMap;
 	protected PerceptualAssociativeMemory pam;
-	protected SensoryMemory sm;
+	protected SensoryMemory sensoryMemory;
 	
 	/**
 	 * @param nodeMap Nodes indexed by their label
@@ -38,7 +38,7 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 	   		   						   PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		this.sm = sm;
+		this.sensoryMemory = sm;
 		this.pamNodeMap = nodeMap;
 	}
 	
