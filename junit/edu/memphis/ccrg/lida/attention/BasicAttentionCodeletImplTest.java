@@ -10,18 +10,15 @@ import org.junit.Test;
 
 
 
-import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
- * @author Home
+ * @author Siminder Kaur
  *
  */
 public class BasicAttentionCodeletImplTest {
@@ -60,39 +57,27 @@ public class BasicAttentionCodeletImplTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.attention.BasicAttentionCodeletImpl#hasSoughtContent(edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer)}.
+	 * Test method for HasSoughtContent().
 	 */
 	@Test
 	public void testHasSoughtContent() {
 		
 		attnCodelet.setSoughtContent(nodeStructure);
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
-		model.mergeWith(nodeStructure);
-		
+		model.mergeWith(nodeStructure);		
 		
 		assertEquals("Problem with HasSoughtContent",true,attnCodelet.hasSoughtContent(buffer));
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.attention.BasicAttentionCodeletImpl#getWorkspaceContent(edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer)}.
+	 * Test method for GetWorkspaceContent().
 	 */
 	@Test
 	public void testGetWorkspaceContent() {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		model.mergeWith(nodeStructure);
 		
-		//NodeStructure model2 = (NodeStructure) attnCodelet.getWorkspaceContent(buffer);
-		//model2.mergeWith(nodeStructure);
-		
 		assertEquals("Problem with HasSoughtContent",nodeStructure,attnCodelet.getWorkspaceContent(buffer));
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.attention.BasicAttentionCodeletImpl#BasicAttentionCodeletImpl()}.
-	 */
-	@Test
-	public void testBasicAttentionCodeletImpl() {
-		fail("Not yet implemented"); // TODO
 	}
 
 }
