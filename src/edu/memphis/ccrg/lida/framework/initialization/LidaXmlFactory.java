@@ -34,8 +34,8 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * Creates a Lida Object from an xml file
- * @author Javier Snaider
+ * Creates and returns a Lida Object based on an XML file.
+ * @author Javier Snaider, Ryan J. McCall
  * 
  */ 
 public class LidaXmlFactory implements LidaFactory {
@@ -57,8 +57,7 @@ public class LidaXmlFactory implements LidaFactory {
 	 * @see edu.memphis.ccrg.lida.framework.LidaFactory#getLida()
 	 */
 	@Override
-	public Lida getLida(Properties properties) { //Properties not used in this Factory
-		
+	public Lida getLida(Properties properties) { 
 		String fileName = properties.getProperty("lida.factory.data",DEFAULT_XML_FILE_PATH);
 		parseXmlFile(fileName);
 		parseDocument();
@@ -66,6 +65,10 @@ public class LidaXmlFactory implements LidaFactory {
 		return lida;
 	}
 
+	/**
+	 * Verifies and parses specified xml file into a {@link Document}.
+	 * @param fileName
+	 */
 	private void parseXmlFile(String fileName) {
 		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -89,6 +92,10 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 	}
 
+	/**
+	 * Parses the xml document creating the TaskManager, TaskSpawners, Modules, submodules.  Sets up listeners
+	 * and associates modules.
+	 */
 	private void parseDocument() {
 		// get the root element
 		Element docEle = dom.getDocumentElement();
@@ -114,182 +121,10 @@ public class LidaXmlFactory implements LidaFactory {
 		initializeModules();
 	}
 	
-	private List<LidaModule> getModules(Element element) {
-		List<LidaModule> modules = new ArrayList<LidaModule>();
-		NodeList nl = element.getElementsByTagName("submodules");
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
-			if (list != null && list.size() > 0) {
-				for (Element moduleElement:list) {					
-					LidaModule module = getModule(moduleElement);
-					if(module != null){
-						modules.add(module);
-					}
-				}
-			}
-		}
-		return modules;
-	}
-	
-	private void getTaskSpawners(Element element) {
-		NodeList nl = element.getElementsByTagName("taskspawners");
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChildren(modulesElemet,"taskspawner");
-			if (list != null && list.size() > 0) {
-				for (Element moduleElement:list) {					
-					getTaskSpawner(moduleElement);
-				}
-			}
-		}
-	}
-	private void getTaskSpawner(Element moduleElement) {
-		TaskSpawner ts = null;
-		String className = XmlUtils.getTextValue(moduleElement, "class");
-		String name = moduleElement.getAttribute("name");
-		try {
-			ts = (TaskSpawner) Class.forName(className).newInstance();
-		}
-		catch(ClassNotFoundException e){
-			logger.log(Level.SEVERE, "Module class name: " + className + 
-						" is not found.  Check TaskSpawner class name.\n", 0L);
-		}catch (Exception e) {
-			logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
-					"\" occurred during creation of object of class " + className + "\n", 0L);
-			return;
-		}
-		
-		ts.setTaskManager(lida.getTaskManager());
-		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
-		ts.init(params);
-		taskSpawners.put(name, ts);
-		logger.log(Level.INFO, "TaskSpawner: " + name + " added.", 0L);
-	}
-	
-	private LidaModule getModule(Element moduleElement) {
-		LidaModule module = null;
-		String className = XmlUtils.getTextValue(moduleElement, "class");
-		String name = moduleElement.getAttribute("name");
-		ModuleName moduleName = ModuleName.NoModule;
-		try {
-			moduleName = Enum.valueOf(ModuleName.class, name);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.",
-					0L);
-			return null;
-		}
-		try {
-			module = (LidaModule) Class.forName(className).newInstance();
-		} catch (Exception e) {
-			if(e instanceof ClassNotFoundException){
-				logger.log(Level.SEVERE, "Module class name: " + className + 
-							" is not valid.  Check module class name.\n", 0L);
-			}else{
-				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
-						"\" occurred during creation of object of class " + className + "\n", 0L);
-			}
-			return null; 
-		}
-		module.setModuleName(moduleName);
-		
-		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
-		TaskSpawner ts = taskSpawners.get(taskspawner);
-		if (ts != null) {
-			module.setAssistingTaskSpawner(ts);
-			List<LidaTask>initialTasks = getTasks(moduleElement);
-			ts.addTasks(initialTasks);
-		}else{
-			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
-		}
-		
-		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
-		try{
-			module.init(params);
-		}catch(Exception e){
-			logger.log(Level.WARNING, "Module: " + name + " threw exception " + e + " during call to init()", 
-							LidaTaskManager.getCurrentTick());
-			e.printStackTrace();
-		}
-		for (LidaModule lm : getModules(moduleElement)) {
-			module.addSubModule(lm);
-		}
-		String classInit = XmlUtils.getTextValue(moduleElement,	"initializerclass");
-		if (classInit != null) {
-			toInitialize.add(new Object[] { module, classInit, params});
-		}
-		getAssociatedModules(moduleElement, module);
-		
-		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
-		return module;
-	}
-
 	/**
-	 * @param moduleElement
-	 * @param initializable
+	 * @param element Element containing the task manager
+	 * @return {@link LidaTaskManager}
 	 */
-	private void getAssociatedModules(Element moduleElement, Initializable initializable) {
-		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
-		if (nl != null && nl.getLength() > 0) {
-			
-			for (int i = 0; i < nl.getLength(); i++) {
-				String assocMod=XmlUtils.getValue((Element) nl.item(i));
-				toAssociate.add(new Object[]{initializable,assocMod});
-			}
-		}
-	}
-	
-	/**
-	 * Iterates through the module associated module pairs and associates them
-	 */
-	private void associateModules() {
-		ModuleName moduleName = ModuleName.NoModule;
-		for (Object[] vals : toAssociate) {
-			FullyInitializable ini = (FullyInitializable) vals[0];
-			String assocModule = (String) vals[1];
-			try {
-				moduleName = Enum.valueOf(ModuleName.class, assocModule);
-			} catch (Exception e) {
-				logger.log(Level.WARNING,
-					"Module associated module name: " + assocModule + " is not valid.", 0L);
-				break;
-			}
-			LidaModule module=lida.getSubmodule(moduleName);
-		
-			ini.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
-			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
-		}//for
-	}
-	
-	private void initializeModules() {
-		for (Object[] vals : toInitialize) {
-			Initializable moduleToInitialize = (Initializable) vals[0];
-			String initializerClassName = (String) vals[1];
-			@SuppressWarnings("unchecked")
-			Map<String,?> params = (Map<String,?>) vals[2];
-			Initializer initializer = null;
-			try {
-				initializer = (Initializer) Class.forName(initializerClassName).newInstance();
-			}catch(ClassNotFoundException e){
-				logger.log(Level.SEVERE, "Initializer class name: " + initializerClassName + 
-							" not found.  Check class name.\n", 0L);
-			}catch (Exception e) {
-				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
-						"\" occurred during creation of object of class " + initializerClassName + "\n", 0L);
-				return;
-			}
-			
-			if(initializer != null){
-				try{
-					initializer.initModule(moduleToInitialize, lida, params);
-				}catch (Exception e){
-					logger.log(Level.SEVERE, "Exception occurred running " + initializerClassName , LidaTaskManager.getCurrentTick());
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	private LidaTaskManager getTaskManager(Element element) {
 		NodeList nl = element.getElementsByTagName("taskmanager");
 		Element moduleElement=null;
@@ -330,8 +165,143 @@ public class LidaXmlFactory implements LidaFactory {
 
 		return taskManager;
 	}
-
 	
+	/**
+	 * Reads in and creates all task spawners specified in {@link Element}
+	 * @param element
+	 */
+	private void getTaskSpawners(Element element) {
+		NodeList nl = element.getElementsByTagName("taskspawners");
+		if (nl != null && nl.getLength() > 0) {
+			Element modulesElemet = (Element) nl.item(0);
+			List<Element> list = XmlUtils.getChildren(modulesElemet,"taskspawner");
+			if (list != null && list.size() > 0) {
+				for (Element moduleElement:list) {					
+					getTaskSpawner(moduleElement);
+				}
+			}
+		}
+	}
+	private void getTaskSpawner(Element moduleElement) {
+		TaskSpawner ts = null;
+		String className = XmlUtils.getTextValue(moduleElement, "class");
+		String name = moduleElement.getAttribute("name");
+		try {
+			ts = (TaskSpawner) Class.forName(className).newInstance();
+		}
+		catch(ClassNotFoundException e){
+			logger.log(Level.SEVERE, "Module class name: " + className + 
+						" is not found.  Check TaskSpawner class name.\n", 0L);
+		}catch (Exception e) {
+			logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+					"\" occurred during creation of object of class " + className + "\n", 0L);
+			return;
+		}
+		
+		ts.setTaskManager(lida.getTaskManager());
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		try{
+			ts.init(params);
+		}catch(Exception e){
+			logger.log(Level.SEVERE, "Error initializing  task spawner: " + ts.toString(), 0L);
+			e.printStackTrace();
+		}
+		taskSpawners.put(name, ts);
+		logger.log(Level.INFO, "TaskSpawner: " + name + " added.", 0L);
+	}
+	
+	/**
+	 * Reads and creates all {@link LidaModule}s in specified element
+	 * @param element dom element
+	 * @return {@link LidaModule}s
+	 */
+	private List<LidaModule> getModules(Element element) {
+		List<LidaModule> modules = new ArrayList<LidaModule>();
+		NodeList nl = element.getElementsByTagName("submodules");
+		if (nl != null && nl.getLength() > 0) {
+			Element modulesElemet = (Element) nl.item(0);
+			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
+			if (list != null && list.size() > 0) {
+				for (Element moduleElement:list) {					
+					LidaModule module = getModule(moduleElement);
+					if(module != null){
+						modules.add(module);
+					}
+				}
+			}
+		}
+		return modules;
+	}
+	private LidaModule getModule(Element moduleElement) {
+		//Get module name and class name
+		LidaModule module = null;
+		String className = XmlUtils.getTextValue(moduleElement, "class");
+		String name = moduleElement.getAttribute("name");
+		ModuleName moduleName = ModuleName.NoModule;
+		try {
+			moduleName = Enum.valueOf(ModuleName.class, name);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.",
+					0L);
+			return null;
+		}
+		//Create module.
+		try {
+			module = (LidaModule) Class.forName(className).newInstance();
+		} catch (Exception e) {
+			if(e instanceof ClassNotFoundException){
+				logger.log(Level.SEVERE, "Module class name: " + className + 
+							" is not valid.  Check module class name.\n", 0L);
+			}else{
+				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+						"\" occurred during creation of object of class " + className + "\n", 0L);
+			}
+			return null; 
+		}
+		module.setModuleName(moduleName);
+		
+		//Set up module's taskspawner and initial tasks.
+		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
+		TaskSpawner ts = taskSpawners.get(taskspawner);
+		if (ts != null) {
+			module.setAssistingTaskSpawner(ts);
+			List<LidaTask>initialTasks = getTasks(moduleElement);
+			ts.addTasks(initialTasks);
+		}else{
+			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
+		}
+		
+		//Initializes module with its specified parameters.
+		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		try{
+			module.init(params);
+		}catch(Exception e){
+			logger.log(Level.WARNING, "Module: " + name + " threw exception " + e + " during call to init()", 
+							LidaTaskManager.getCurrentTick());
+			e.printStackTrace();
+		}
+		
+		//Get and add all submodules.
+		for (LidaModule lm : getModules(moduleElement)) {
+			module.addSubModule(lm);
+		}
+		String classInit = XmlUtils.getTextValue(moduleElement,	"initializerclass");
+		if (classInit != null) {
+			toInitialize.add(new Object[] { module, classInit, params});
+		}
+		
+		//Store all modules to associate.
+		getAssociatedModules(moduleElement, module);
+		
+		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
+		return module;
+	}
+	
+	/**
+	 * Reads and creates {@link LidaTask}s specified in element
+	 * @param element
+	 * @return
+	 */
 	private List<LidaTask> getTasks(Element element) {
 		List<LidaTask> tasks = new ArrayList<LidaTask>();
 		NodeList nl = element.getElementsByTagName("initialTasks");
@@ -351,7 +321,6 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		return tasks;
 	}
-	
 	private LidaTask getTask(Element moduleElement) {
 		LidaTask task = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
@@ -378,6 +347,26 @@ public class LidaXmlFactory implements LidaFactory {
 		return task;
 	}
 
+	/**
+	 * Gets associated modules of the specified {@link Initializable}
+	 * @param moduleElement
+	 * @param initializable
+	 */
+	private void getAssociatedModules(Element moduleElement, Initializable initializable) {
+		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
+		if (nl != null && nl.getLength() > 0) {
+			for (int i = 0; i < nl.getLength(); i++) {
+				String assocMod=XmlUtils.getValue((Element) nl.item(i));
+				toAssociate.add(new Object[]{initializable,assocMod});
+			}
+		}
+	}
+	
+	/**
+	 * Reads and creates all listeners specified in element.
+	 * @param element
+	 * 
+	 */
 	private void getListeners(Element element) {
 		NodeList nl = element.getElementsByTagName("listeners");
 		if (nl != null && nl.getLength() > 0) {
@@ -392,7 +381,6 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		return;
 	}
-
 	private void getListener(Element moduleElement) {
 		Class<?> listenerClass = null;
 		String listenerType = XmlUtils.getTextValue(moduleElement,
@@ -445,6 +433,60 @@ public class LidaXmlFactory implements LidaFactory {
 			logger.log(Level.WARNING, "Listener: " + listenername
 					+ " is not a valid " + listenerType + " listener.", 0L);
 			return;
+		}
+	}
+
+	/**
+	 * Iterates through the module/associated-module pairs and associates them
+	 */
+	private void associateModules() {
+		ModuleName moduleName = ModuleName.NoModule;
+		for (Object[] vals : toAssociate) {
+			FullyInitializable ini = (FullyInitializable) vals[0];
+			String assocModule = (String) vals[1];
+			try {
+				moduleName = Enum.valueOf(ModuleName.class, assocModule);
+			} catch (Exception e) {
+				logger.log(Level.WARNING,
+					"Module associated module name: " + assocModule + " is not valid.", 0L);
+				break;
+			}
+			LidaModule module=lida.getSubmodule(moduleName);
+		
+			ini.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
+			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
+		}
+	}
+	
+	/**
+	 * For all modules with an initializer, run the initializer passing in the specific module.
+	 */
+	private void initializeModules() {
+		for (Object[] vals : toInitialize) {
+			Initializable moduleToInitialize = (Initializable) vals[0];
+			String initializerClassName = (String) vals[1];
+			@SuppressWarnings("unchecked")
+			Map<String,?> params = (Map<String,?>) vals[2];
+			Initializer initializer = null;
+			try {
+				initializer = (Initializer) Class.forName(initializerClassName).newInstance();
+			}catch(ClassNotFoundException e){
+				logger.log(Level.SEVERE, "Initializer class name: " + initializerClassName + 
+							" not found.  Check class name.\n", 0L);
+			}catch (Exception e) {
+				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
+						"\" occurred during creation of object of class " + initializerClassName + "\n", 0L);
+				return;
+			}
+			
+			if(initializer != null){
+				try{
+					initializer.initModule(moduleToInitialize, lida, params);
+				}catch (Exception e){
+					logger.log(Level.SEVERE, "Exception occurred running initializer: " + initializerClassName , LidaTaskManager.getCurrentTick());
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
