@@ -357,5 +357,4 @@ public interface NodeStructure {
 	 * @return map of parents and links connecting node to them
 	 */
 	public Map<Node,Link> getParentLinkMap(Node n);
-
 }

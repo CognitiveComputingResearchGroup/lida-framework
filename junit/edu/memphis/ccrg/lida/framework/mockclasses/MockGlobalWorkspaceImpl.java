@@ -28,8 +28,9 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public boolean addCoalition(Coalition coalition) {
-		
-		return false;
+		System.out.println("New coalition added: "+coalition.getContent());
+		System.out.println();
+		return true;
 	}
 
 	@Override
