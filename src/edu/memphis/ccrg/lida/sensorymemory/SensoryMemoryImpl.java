@@ -89,7 +89,7 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
     @Override
     public void decayModule(long ticks) {
         super.decayModule(ticks);
-        //TODO
+        //your implementation specific decaying 
     }
 
     //TODO what are these 2 set/get methods? can we delete them?

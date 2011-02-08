@@ -25,6 +25,9 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
+ * Default implementation of {@link NodeStructure}. The source and sink of a link must be present before
+ * it can be added. Links can connect two nodes or a node and a link.   
+ * Nodes and links are copied when added.  This prevents having the same node (object) in two different NS.
  * @author Javier Snaider, Ryan J. McCall
  *
  */
