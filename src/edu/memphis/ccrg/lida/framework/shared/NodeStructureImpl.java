@@ -310,6 +310,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public Node addDefaultNode(Node n){
 		return addNode(n, defaultNodeType);
 	}
+	
+	@Override
+	public Node addNode(Node n){
+		return addNode(n, n.getFactoryNodeType());
+	}
 
 	@Override
 	public synchronized Node addNode(Node n, String factoryNodeType) {
