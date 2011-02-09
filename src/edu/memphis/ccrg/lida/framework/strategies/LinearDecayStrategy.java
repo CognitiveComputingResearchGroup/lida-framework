@@ -15,17 +15,13 @@ import java.util.Map;
  */
 public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 
-	/** The default slope (m = 1). */
+	/* The default slope (m = 1). */
 	public static final double DEFAULT_M = 0.01;
 
-	/** The default intercept (b = 0). */
-	public static final double DEFAULT_B = 0.0;
-
-	/** The slope of this linear curve. */
+	/*
+	 * The slope of this linear curve.
+	 */
 	private double m;
-
-	/** The y intercept of this linear curve. */
-	private double b;
 
 	/**
 	 * Creates a new instance of LinearCurve. Values for slope and intercept are
@@ -33,7 +29,6 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	 */
 	public LinearDecayStrategy() {
 		m = DEFAULT_M;
-		b = DEFAULT_B;
 	}
 
 	/**
@@ -45,27 +40,33 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	 * @param b
 	 *            The value of the intercept.
 	 */
-	public LinearDecayStrategy(double m, double b) {
+	public LinearDecayStrategy(double m) {
 		this.m = m;
-		this.b = b;
 	}
 
 	@Override
 	public void init() {
 		m = (Double) getParam("m", DEFAULT_M);
-		b = (Double) getParam("b", DEFAULT_B);
 	}
 
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
-		currentActivation = currentActivation - (m * ticks + b);
+		double mm = m;
+		if (params != null) {
+			mm = (Double) params[0];
+		}
+		currentActivation = currentActivation - mm * ticks;
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
 	}
 
 	@Override
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
-		currentActivation = currentActivation - (m * ticks + b);
+		double mm = m;
+		if (params != null) {
+			mm = (Double) params.get("m");
+		}
+		currentActivation = currentActivation - mm * ticks;
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
 	}
 }

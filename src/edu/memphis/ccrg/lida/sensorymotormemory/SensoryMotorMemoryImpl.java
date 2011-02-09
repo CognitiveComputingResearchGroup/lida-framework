@@ -22,18 +22,28 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 
-public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
+/**
+ * Default implementation of a Map-based SensoryMotorMemory
+ * @author Ryan J. McCall
+ *
+ */
+public abstract class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
 
 	private static final Logger logger = Logger.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
 	private Map<Long, Object> algorithmMap = new HashMap<Long, Object>();
 	private Environment environment;
+	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
 	
 	public SensoryMotorMemoryImpl() {
 		super(ModuleName.SensoryMotorMemory);
 	}
-
-	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
-
+	
+	@Override
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof SensoryMotorMemoryListener){
+			addSensoryMotorMemoryListener((SensoryMotorMemoryListener)listener);
+		}
+	}
 	@Override
 	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l) {
 		if(l instanceof Environment){
@@ -48,24 +58,15 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 		if(module instanceof Environment){
 			environment = (Environment) module;
 		}
-			
 	}
 
 	@Override
-	public Object getModuleContent(Object... params) {
-		return null;
+	public Object getModuleContent(Object... params){
+		return algorithmMap;
 	}
 
 	@Override
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof SensoryMotorMemoryListener){
-			addSensoryMotorMemoryListener((SensoryMotorMemoryListener)listener);
-		}
-	}
-
-	@Override
-	public void receiveSensoryMemoryContent(Object content) {
-		
+	public void receiveSensoryMemoryContent(Object content){
 	}
 
 	@Override
@@ -76,8 +77,9 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	@Override
 	public void executeAction(Object action) {
 		environment.processAction(action);
-		for(SensoryMotorMemoryListener l: listeners)
-			l.receiveExecutingAlgorithm(action);		
+		for(SensoryMotorMemoryListener l: listeners){
+			l.receiveExecutingAlgorithm(action);	
+		}
 	}
 
 	@Override
@@ -97,7 +99,7 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	@Override
 	public void decayModule(long ticks){
 		super.decayModule(ticks);
-		//TODO 
+		//Your module specific decay code. should call super first.
 	}
 
 }

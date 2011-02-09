@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.pam;
 
+import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
+import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy;
@@ -8,10 +10,9 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 /**
  * This class is just used to generate the Learnable methods which must be
- * copied to {@link PamNodeImpl} and
- * {@link PamLinkImpl}
+ * copied to {@link PamNodeImpl} and {@link PamLinkImpl} since those classes 
+ * already extend {@link NodeImpl} and {@link LinkImpl} respectively.
  * @author Ryan J. McCall
- *
  */
 final class AllLearnableImpl implements Learnable {
 	

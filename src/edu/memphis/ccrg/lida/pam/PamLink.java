@@ -16,5 +16,5 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
  *
  */
 public interface PamLink extends Link, PamLinkable{
-	//
+
 }

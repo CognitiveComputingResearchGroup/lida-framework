@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
@@ -16,6 +17,13 @@ import edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
+/**
+ * Default implementation of PamNode.  Basically a {@link Learnable} {@link Node}.
+ * Overrides hashCode and equals.  Has a private {@link LearnableImpl} to help 
+ * implement all {@link Learnable} methods.
+ * @author Ryan J. McCall
+ *
+ */
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	@SuppressWarnings("unused")

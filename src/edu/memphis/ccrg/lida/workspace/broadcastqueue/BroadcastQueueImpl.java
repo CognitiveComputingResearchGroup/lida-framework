@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.broadcastqueue;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,7 +16,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -52,7 +50,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	}
 	
 	@Override
-	public void setLowerActivationBound(double lowerActivationBound) {
+	public synchronized void setLowerActivationBound(double lowerActivationBound) {
 		this.lowerActivationBound = lowerActivationBound;
 	}
 
@@ -95,6 +93,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 	@Override
 	public void learn(BroadcastContent content) {
 		// Not applicable
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -107,13 +106,9 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements BroadcastQueue
 		super.decayModule(ticks);
 		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getCurrentTick());
 		for (NodeStructure ns : broadcastQueue) {
-			Collection<Node> nodes = ns.getNodes();
-			for (Node n : nodes) {
-				n.decay(ticks);
-				if (n.getActivation() <= lowerActivationBound) {
-					ns.removeNode(n);
-				}
-			}
+			ns.setLowerActivationBound(lowerActivationBound);
+			ns.decayNodeStructure(ticks);
+			//TODO lowerActivationBound parameter for decayNodeStructure??
 		}
 	}
 

@@ -21,8 +21,8 @@ public interface SensoryMemory extends LidaModule, SensoryMotorMemoryListener, S
 
 	/**
 	 * Runs all the sensors associated with this memory. The sensors get the
-         * information from the environment and store in this memory for later
-         * processing and passing to the perceptual memory module. 
+     * information from the environment and store in this memory for later
+     * processing and passing to the perceptual memory module. 
 	 */
 	public void runSensors();
 	

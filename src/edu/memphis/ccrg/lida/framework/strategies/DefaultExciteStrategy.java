@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class DefaultExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	
-	//TODO Use curves
+	//TODO follow linear decay
 	
 	@Override
 	public double excite(double currentActivation, double excitation,

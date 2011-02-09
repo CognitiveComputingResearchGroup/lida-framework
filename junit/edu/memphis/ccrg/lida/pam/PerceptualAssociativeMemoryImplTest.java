@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -136,7 +137,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultLinks(java.util.Set)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultLinks(Set)}.
 	 */
 	@Test
 	public void testAddLinks() {
@@ -325,7 +326,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNode(edu.memphis.ccrg.lida.pam.PamNode)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNode(Node)}.
 	 */
 	@Test
 	public void testAddNode() {

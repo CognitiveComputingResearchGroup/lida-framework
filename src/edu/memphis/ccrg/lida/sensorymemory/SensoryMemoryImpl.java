@@ -15,33 +15,35 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
 /**
- * This class implements the sensory memory module. This memory's tasks include
- * sensing the environment, storing the sensed data ,and processing it. This
- * module sends information to perceptual associative memory, and sensory motor
- * memory.
+ * Default implementation of the {@link SensoryMemory} module. This module should
+ * sense the environment, store the sensed data and processing it. It should expect access 
+ * to its content from {@link FeatureDetector}s and it should transmit content to
+ * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */
 public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory {
 
-    /**
-     * The list of listeners associated with this memory, initially PAM & SMM.
+    /*
+     * The listeners associated with this memory.
      */
     private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
     
-    /**
+    /*
      * The environment associated with this memory.
      */
     protected Environment environment;
     
-    /**
+    /*
      * The content of this memory. 
      */
     protected Object sensoryMemoryContent;
 
     /**
-     * Constructor of the class.
+     * Default Constructor.
      */
     public SensoryMemoryImpl() {
         super(ModuleName.SensoryMemory);
@@ -56,7 +58,6 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
             addSensoryMemoryListener((SensoryMemoryListener) listener);
         }
     }
-
     @Override
     public void addSensoryMemoryListener(SensoryMemoryListener l) {
         listeners.add(l);
@@ -67,20 +68,22 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
      */
     @Override
     public void setAssociatedModule(LidaModule module, int moduleUsage) {
-        if (module != null) {
-            if (module instanceof Environment
-                    && module.getModuleName() == ModuleName.Environment) {
-                environment = (Environment) module;
-            }
+        if (module instanceof Environment){
+             environment = (Environment) module;
         }
     }
+    
+    /* (non-Javadoc)
+     * @see edu.memphis.ccrg.lida.sensorymemory.SensoryMemory#runSensors()
+     */
+    public abstract void runSensors();
 
     /* (non-Javadoc)
      * @see edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener#receiveExecutingAlgorithm(java.lang.Object)
      */
     @Override
     public void receiveExecutingAlgorithm(Object alg) {
-        //TODO What to do here is a research question.
+        //What to do here is a research question.
     }
 
     /* (non-Javadoc)
@@ -89,10 +92,9 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
     @Override
     public void decayModule(long ticks) {
         super.decayModule(ticks);
-        //your implementation specific decaying 
+        //your implementation specific decay method should call super first. 
     }
 
-    //TODO what are these 2 set/get methods? can we delete them?
     /* (non-Javadoc)
      * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
      */

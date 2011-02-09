@@ -18,14 +18,11 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 import edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueue;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
@@ -42,14 +39,12 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  */
 
 public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListener, 
-									  	LocalAssociationListener,
-									  	BroadcastListener, 
-									  	SensoryMotorMemoryListener{
+									  	LocalAssociationListener, BroadcastListener{
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceImpl.class.getCanonicalName());
 
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
-	private List<WorkspaceListener> wsListeners = new ArrayList<WorkspaceListener>();
+	private List<WorkspaceListener> workspaceListeners = new ArrayList<WorkspaceListener>();
 	
 	public WorkspaceImpl(){
 		super (ModuleName.Workspace);
@@ -89,7 +84,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 
 	@Override
 	public void addWorkspaceListener(WorkspaceListener listener){
-		wsListeners.add(listener);
+		workspaceListeners.add(listener);
 	}
 	
 	@Override
@@ -100,20 +95,20 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		logger.log(Level.FINER, "Cue performed.", LidaTaskManager.getCurrentTick());
 	}
 	private void sendToListeners(NodeStructure content){
-		for(WorkspaceListener listener: wsListeners){
+		for(WorkspaceListener listener: workspaceListeners){
 			listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent)content);
 		}
 	}
 	
-	/**
-	 * Received broadcasts are sent to the broadcast queue.
+	/*
+	 * Received broadcasts are sent to the BroadcastQueue
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		((BroadcastListener)getSubmodule(ModuleName.BroadcastQueue)).receiveBroadcast(bc);	
 	}
-		
-	/**
+	
+	/*
 	 * Received local associations are merged into the episodic buffer.
 	 * Then they are sent to PAM.
 	 */
@@ -124,53 +119,31 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		ns.mergeWith(association);
 		sendToListeners(ns);
 	}
-	/**
-	 * Implementation of the PamListener interface. Send received node to the
-	 * the perceptualBuffer.
-	 */
-	@Override
-	public void receiveNode(Node node) {
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addDefaultNode(node);
-	}
 	
-	/**
-	 * Implementation of the PamListener interface.  Send received link to the
-	 * the perceptualBuffer.
-	 */
-	@Override
-	public void receiveLink(Link l) {
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).addDefaultLink(l);
-	}	
-
-	
-	/**
+	/*
 	 * Implementation of the PamListener interface.  Send received Node Structure to the
 	 * the perceptualBuffer.
 	 */
 	@Override
-	public void receiveNodeStructure(NodeStructure newPercept) {
-		NodeStructure perceptualBuffer = (NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent();
-		perceptualBuffer.mergeWith(newPercept);
+	public void receivePercept(NodeStructure newPercept) {
+		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).mergeWith(newPercept);
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		return null;
-	}
-
-	@Override
-	public void receiveExecutingAlgorithm(Object a) {
-		// Maybe just pam receives this and not the workspace		
+		// Not applicable
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void learn(BroadcastContent content) {
-		// Not applicable for WorkspaceImpl
+		// Not applicable
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void init() {
-		// Not used		
+		// Not applicable		
 	}
 	
 }

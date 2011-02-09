@@ -8,8 +8,6 @@
 package edu.memphis.ccrg.lida.pam;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
@@ -21,21 +19,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 public interface PamListener extends ModuleListener{
 	
 	/**
-	 * Receive a {@link NodeStructure}
+	 * Receive a {@link NodeStructure} percept.
 	 * @param ns a NodeStructure
 	 */
-	public void receiveNodeStructure(NodeStructure ns);
-	
-	/**
-	 * Receive a {@link Node}
-	 * @param n a Node
-	 */
-	public void receiveNode(Node n);
-	
-	/**
-	 * Receive a {@link Link}
-	 * @param l a Link
-	 */
-	public void receiveLink(Link l);
+	public void receivePercept(NodeStructure ns);
 	
 }

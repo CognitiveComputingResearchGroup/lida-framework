@@ -19,10 +19,10 @@ public interface CodeletAction {
 
 	/**
 	 * An action from specified ordered buffer to a destination buffer 
-	 * @param buffer - source buffer
-	 * @param currentSitutationalModel - buffer receiving result of action  
+	 * @param srcBuffer buffer from which codelet reads
+	 * @param resultBuffer buffer to which the result of action is written.  
 	 */	
-	public void performAction(WorkspaceBuffer buffer, WorkspaceBuffer currentSitutationalModel);
+	public void performAction(WorkspaceBuffer b, WorkspaceBuffer resultBuffer);
 	
 }
   
