@@ -38,11 +38,11 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	@Override
 	public void init() {
 		Double d = (Double) getParam("removableThreshold", DEFAULT_REMOVABLE_THRESHOLD);
-		setLowerActivationBound(d);
+		setRemovalThreshold(d);
 	}
 	
 	@Override
-	public void setLowerActivationBound(double activationLowerBound) {
+	public void setRemovalThreshold(double activationLowerBound) {
 		logger.log(Level.FINE, "Activation lower bound for buffer " + getModuleName() + 
 					" set to " + activationLowerBound, LidaTaskManager.getCurrentTick());
 		buffer.setLowerActivationBound(activationLowerBound);
