@@ -76,7 +76,8 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
     /* (non-Javadoc)
      * @see edu.memphis.ccrg.lida.sensorymemory.SensoryMemory#runSensors()
      */
-    public abstract void runSensors();
+    @Override
+	public abstract void runSensors();
 
     /* (non-Javadoc)
      * @see edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener#receiveExecutingAlgorithm(java.lang.Object)

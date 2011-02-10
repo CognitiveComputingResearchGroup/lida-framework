@@ -17,8 +17,8 @@ public interface SensoryMotorMemoryListener extends ModuleListener{
 	
 	//TODO Discuss
 	/**
-	 * @param algorithm
+	 * @param alg Algorithm to execute.
 	 */
-	public void receiveExecutingAlgorithm(Object algorithm);
+	public void receiveExecutingAlgorithm(Object alg);
 
 }

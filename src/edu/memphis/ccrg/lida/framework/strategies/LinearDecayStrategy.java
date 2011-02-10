@@ -37,8 +37,6 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	 * 
 	 * @param m
 	 *            The value of the slope.
-	 * @param b
-	 *            The value of the intercept.
 	 */
 	public LinearDecayStrategy(double m) {
 		this.m = m;
