@@ -23,8 +23,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
-import edu.memphis.ccrg.lida.workspace.broadcastqueue.BroadcastQueue;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * 
@@ -48,17 +46,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	
 	public WorkspaceImpl(){
 		super (ModuleName.Workspace);
-	}
-	
-	//TODO not used. remove?
-	public WorkspaceImpl(WorkspaceBuffer episodicBuffer, WorkspaceBuffer perceptualBuffer,WorkspaceBuffer csm, BroadcastQueue broadcastQueue ){
-		this ();
-		getSubmodules().put(ModuleName.EpisodicBuffer,episodicBuffer);
-		getSubmodules().put(ModuleName.BroadcastQueue,broadcastQueue);
-		getSubmodules().put(ModuleName.PerceptualBuffer,perceptualBuffer);
-		getSubmodules().put(ModuleName.CurrentSituationalModel,csm);
-	}
-	
+	}	
 	
 	@Override
 	public void addSubModule(LidaModule lm){
@@ -115,7 +103,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
 		WorkspaceContent ns = (WorkspaceContent) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent();
-		//TODO is our merge operation thread-safe?
 		ns.mergeWith(association);
 		sendToListeners(ns);
 	}
