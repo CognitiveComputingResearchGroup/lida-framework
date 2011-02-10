@@ -737,8 +737,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	/**
 	 * Returns true if two NodeStructures are equal, else returns false
 	 * Two NodeStructures are equal if they have the same nodes and links
-	 * @param NodeStructure ns1 - first nodestructure
-	 * @param NodeStructure ns2 - second nodestructure
+	 * @param ns1 first nodestructure
+	 * @param ns2 second nodestructure
 	 * @return boolean
 	 */
 	public static boolean compareNodeStructures(NodeStructure ns1,NodeStructure ns2) {
