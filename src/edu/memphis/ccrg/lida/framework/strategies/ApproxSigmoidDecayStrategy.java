@@ -3,10 +3,11 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import java.util.Map;
 
 /**
- * Default implementation of sigmoid decay.  Uses one parameters in activation calculation.
+ * Approx implementation of sigmoid decay. Uses one parameters in activation calculation.
  * Can pass these parameters when the strategy is initialized. (see factoriesData.xml).
  * Alternatively, parameters can be passed in the decay method call.  
  * Formula used: Divides the curve into 3 parts: quadratic, linear, quadratic. 
+ *
  * @author Javier Snaider & Ryan & Daqi
  *
  */
