@@ -115,7 +115,7 @@ public class NoActionSelectionOccurringTriggerTest {
 	@Test
 	public void testStart() {
 		
-		System.out.println("Testing start method");
+		System.out.println("Testing start() method. See console...");
 		
 		trigger.setLidaTaskManager(tm);
 		parameters.put("name", "abc");	
@@ -137,7 +137,7 @@ public class NoActionSelectionOccurringTriggerTest {
 	@Test
 	public void testReset() {
 		
-		System.out.println("Testing reset method");
+		System.out.println("Testing reset() method. See console...");
 		
 		trigger.setLidaTaskManager(tm);
 		parameters.put("name", "abc");	

@@ -34,9 +34,9 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	private static final Logger logger = Logger.getLogger(AttentionModuleImpl.class.getCanonicalName());
 	
-	private WorkspaceBuffer csm;
+	protected WorkspaceBuffer csm;
 
-	private GlobalWorkspace globalWorkspace;
+	protected GlobalWorkspace globalWorkspace;
 	
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
 

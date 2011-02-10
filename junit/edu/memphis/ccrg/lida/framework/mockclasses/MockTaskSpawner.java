@@ -18,7 +18,10 @@ public class MockTaskSpawner implements TaskSpawner {
 
 	@Override
 	public void addTask(LidaTask task) {
-
+		if (task.toString().contains("ProcessBroadcastTask"))
+			System.out.println("Process Broadcast task added.");
+		else if (task.toString().contains("AttentionCodelet"))
+			System.out.println("Run Attention Codelet task added.");
 	}
 
 	@Override

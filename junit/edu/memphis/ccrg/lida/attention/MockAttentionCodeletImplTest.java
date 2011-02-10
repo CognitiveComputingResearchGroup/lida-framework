@@ -60,7 +60,7 @@ public class MockAttentionCodeletImplTest {
 		codelet.setAssociatedModule(buffer, ModuleUsage.TO_READ_FROM);
 		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		
-		System.out.println("Testing method runThisLidaTask()");
+		System.out.println("Testing method runThisLidaTask() See console...");
 		codelet.runThisLidaTask();
 		
 	}

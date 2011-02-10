@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -30,6 +31,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	private final double DEFAULT_REMOVABLE_THRESHOLD = 0.01;
 	
 	public WorkspaceBufferImpl() {
+		super(ModuleName.CurrentSituationalModel);//TODO Do we need to set name? - sk
 		buffer = new NodeStructureImpl();
 	}
 	
