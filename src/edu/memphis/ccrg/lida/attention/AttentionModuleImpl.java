@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.attention;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +17,12 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -39,8 +38,23 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	protected GlobalWorkspace globalWorkspace;
 	
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	
+	private String defaultCodeletName;
+	
+	private static final int defaultCodeletTicksPerStep = 5;
+	private int codeletTicksPerStep = defaultCodeletTicksPerStep;
+	
+	private static final double defaultCodeletActivation = 1.0;
+	private double codeletActivation = defaultCodeletActivation;
 
 	public AttentionModuleImpl() {
+		Class<BasicAttentionCodeletImpl> cl = BasicAttentionCodeletImpl.class;
+		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
+		defaultCodeletName = cl.getSimpleName();
+	}
+	
+	@Override
+	public void init() {		
 	}
 	
 	/**
@@ -91,12 +105,6 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 			taskSpawner.addTask(task);
 		}
 	}
-	
-	//TODO better for these to be part of this class or the factory that creates the codelets?
-	private String defaultCodeletName = BasicAttentionCodeletImpl.class.getSimpleName();
-	private int defaultCodeletTicksPerStep = 5;
-	private double defaultCodeletActivation = 1.0;
-	private Map<String, Object> params = null;
 
 	/**
 	 * Creates an attention codelet from the factory 
@@ -105,7 +113,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	 *  
 	 */
 	public AttentionCodelet getNewAttentionCodelet() {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, defaultCodeletTicksPerStep, defaultCodeletActivation, params);
+		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, codeletTicksPerStep, codeletActivation, null);
 		if(codelet == null){
 			logger.log(Level.WARNING, "Factory returned a null codelet, attention codelet not created.", LidaTaskManager.getCurrentTick());
 			return null;
@@ -158,12 +166,6 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 
 	@Override
 	public void addListener(ModuleListener listener) {
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
