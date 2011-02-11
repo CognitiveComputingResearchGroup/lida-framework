@@ -231,7 +231,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 
 	
 	@Override
-	public void initPanel(String[]param){
+	public void initPanel(String[]param){		
 		ModuleName moduleType=null;
 		if (param==null || param.length==0){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
@@ -259,7 +259,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 			
 			module=module.getSubmodule(moduleType);
 			if (module==null){
-				logger.log(Level.WARNING,"Error initializing NodeStructure Panel, SubModule "+moduleType+ " does not exist.",0L);
+				logger.log(Level.WARNING,"Error initializing NodeStructure Panel, SubModule "+moduleType+ " was not found.",0L);
 				return;			
 			}
 		}

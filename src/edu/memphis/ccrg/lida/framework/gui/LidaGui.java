@@ -127,7 +127,6 @@ public class LidaGui extends javax.swing.JFrame {
      */
     public void createLidaPanel(String[] panelParams) {
     	LidaPanel panel;
-
         try {
             panel = (LidaPanel) (Class.forName(panelParams[CLASS_NAME])).newInstance();
         } catch (Exception e) {
@@ -139,11 +138,21 @@ public class LidaGui extends javax.swing.JFrame {
         panel.registrerLidaGuiController(controller);
         String[] param = new String[panelParams.length - FIRST_PARAM];
         System.arraycopy(panelParams, FIRST_PARAM, param, 0, panelParams.length - FIRST_PARAM);
-        panel.initPanel(param);
+        try{
+        	panel.initPanel(param);
+        }catch(Exception e){
+        	logger.log(Level.SEVERE, "Exception encountered in " + panel.toString() + ": " + e.toString(), 0L);
+        	e.printStackTrace();
+        }
         panelParameters.add(panelParams);
         addLidaPanel(panel, panelParams[PANEL_POSITION]);
         if (panelParams[MUST_REFRESH].equalsIgnoreCase("Y")) {
-            panel.refresh();
+        	try{
+        		panel.refresh();
+        	}catch(Exception e){
+        		logger.log(Level.SEVERE, "Exception " + e.toString() + " encountered when refreshing " + panel.toString(), 0L);
+        		e.printStackTrace();
+        	}
         }
     }
 

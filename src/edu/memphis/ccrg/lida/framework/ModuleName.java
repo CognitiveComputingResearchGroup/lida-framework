@@ -10,16 +10,21 @@ package edu.memphis.ccrg.lida.framework;
 public enum ModuleName {
 	
 	Environment, 
+	
 	SensoryMemory,
 	PerceptualAssociativeMemory,
 	
 	TransientEpisodicMemory,
 	DeclarativeMemory,
 	
+	Workspace, 
 	PerceptualBuffer,
 	EpisodicBuffer,
 	BroadcastQueue,
 	CurrentSituationalModel,
+	
+	AttentionModule,
+	StructureBuildingCodeletModule, 
 
 	GlobalWorkspace,
 	
@@ -29,10 +34,5 @@ public enum ModuleName {
 	
 	AllModules,
 	NoModule, 
-	
-	AttentionModule,
-	StructureBuildingCodeletModule, 
-	
-	Workspace, 
 	LIDA
 }
