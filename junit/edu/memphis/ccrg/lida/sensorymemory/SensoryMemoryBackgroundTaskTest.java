@@ -35,7 +35,7 @@ public class SensoryMemoryBackgroundTaskTest {
 	    //If initialized sm
 		Field field1 = st.getClass().getDeclaredField("sm");
 		field1.setAccessible(true);
-		tmpClass tc = new tmpClass();
+		TmpClass tc = new TmpClass();
 		field1.set(st, tc);
 		st.runThisLidaTask();
 		
@@ -54,8 +54,8 @@ public class SensoryMemoryBackgroundTaskTest {
 	@Test
 	public final void testSetAssociatedModule() throws Exception {
 		
-		SensoryMemory sModule = new tmpClass();
-		LidaModule lModule = new tmpClass2();
+		SensoryMemory sModule = new TmpClass();
+		LidaModule lModule = new TmpClass2();
 		SensoryMemoryBackgroundTask st = new SensoryMemoryBackgroundTask();
 		
 		Field field1 = st.getClass().getDeclaredField("sm");
@@ -97,7 +97,7 @@ public class SensoryMemoryBackgroundTaskTest {
 }
 
 // Define a temporal class of implementing Class sensoryMemory for test
-class tmpClass implements SensoryMemory {
+class TmpClass implements SensoryMemory {
 
 	@Override
 	public ModuleName getModuleName() {
@@ -210,7 +210,7 @@ class tmpClass implements SensoryMemory {
 }
 
 //Define a temporal class of implementing Class LidaModule for test
-class tmpClass2 implements LidaModule {
+class TmpClass2 implements LidaModule {
 
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
