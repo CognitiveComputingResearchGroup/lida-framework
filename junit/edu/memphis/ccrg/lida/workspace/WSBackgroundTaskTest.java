@@ -12,6 +12,12 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
+import edu.memphis.ccrg.lida.workspace.*;
+
+import java.lang.reflect.*;
+import java.util.HashMap;
+import java.util.Map;
+
 public class WSBackgroundTaskTest {
 
 	@Test
@@ -35,7 +41,6 @@ public class WSBackgroundTaskTest {
 
 	@Test
 	public final void testInit() throws Exception {
-		Workspace wModule = new TmpClass();
 		
 		WSBackgroundTask wst = new WSBackgroundTask();
 		
@@ -46,8 +51,20 @@ public class WSBackgroundTaskTest {
 		field2.setAccessible(true);
 		field3.setAccessible(true);
 
+		// Initialize with default value
 		wst.init();
 		
+		System.out.println("Step 4-2: testInitis reusult is: ");
+		System.out.println("The actThreshold is " + field2.get(wst));
+		System.out.println("The cueFrequency is " + field3.get(wst));
+
+		// Initialize with assigned vale
+		Map<String, Object> mapParas = new HashMap();
+		mapParas.put("workspace.actThreshold", 0.5);
+		mapParas.put("workspace.cueFrequency", 2);
+		wst.init(mapParas);
+		
+		wst.init();
 		System.out.println("Step 4-2: testInitis reusult is: ");
 		System.out.println("The actThreshold is " + field2.get(wst));
 		System.out.println("The cueFrequency is " + field3.get(wst));
