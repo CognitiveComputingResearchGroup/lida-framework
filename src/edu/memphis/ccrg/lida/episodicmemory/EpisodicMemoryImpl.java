@@ -85,7 +85,7 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 			e.printStackTrace();
 		}
 
-		//TODO make sure this method is thread-safe
+		// TODO make sure this method is thread-safe
 		BitVector out = sdm.retrieveIterating(address);
 
 		NodeStructure result = null;
@@ -101,13 +101,15 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 
 	/**
 	 * Sends local association to all listeners
-	 * @param localAssociation NodeStructure to send
+	 * 
+	 * @param localAssociation
+	 *            NodeStructure to send
 	 */
 	private void sendLocalAssociation(NodeStructure localAssociation) {
 		for (LocalAssociationListener l : localAssocListeners) {
 			l.receiveLocalAssociation(localAssociation);
-			logger.log(Level.FINER, "Local Association sent.", LidaTaskManager
-					.getCurrentTick());
+			logger.log(Level.FINER, "Local Association sent.",
+					LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -130,11 +132,8 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
-		if (module != null) {
-			if (module instanceof PerceptualAssociativeMemory
-					&& module.getModuleName() == ModuleName.PerceptualAssociativeMemory) {
-				pam = (PerceptualAssociativeMemory) module;
-			}
+		if (module instanceof PerceptualAssociativeMemory) {
+			pam = (PerceptualAssociativeMemory) module;
 		}
 	}
 
@@ -153,7 +152,9 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 
 	/**
 	 * Sets the addressLength of the SDM
-	 * @param addressLength the length (in number of bits) of SDM's the address space.
+	 * 
+	 * @param addressLength
+	 *            the length (in number of bits) of SDM's the address space.
 	 */
 	public void setAddressLength(int addressLength) {
 		this.addressLength = addressLength;

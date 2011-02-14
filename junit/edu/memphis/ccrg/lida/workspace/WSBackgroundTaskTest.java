@@ -1,20 +1,16 @@
 package edu.memphis.ccrg.lida.workspace;
 
-import static org.junit.Assert.*;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.workspace.*;
-
-import java.lang.reflect.*;
-import java.util.Map;
 
 public class WSBackgroundTaskTest {
 

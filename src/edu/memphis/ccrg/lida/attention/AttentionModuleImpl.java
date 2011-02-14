@@ -28,22 +28,24 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
- 
-public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastListener, PreafferenceListener {
 
-	private static final Logger logger = Logger.getLogger(AttentionModuleImpl.class.getCanonicalName());
-	
+public class AttentionModuleImpl extends LidaModuleImpl implements
+		BroadcastListener, PreafferenceListener {
+
+	private static final Logger logger = Logger
+			.getLogger(AttentionModuleImpl.class.getCanonicalName());
+
 	protected WorkspaceBuffer csm;
 
 	protected GlobalWorkspace globalWorkspace;
-	
+
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
-	
+
 	private String defaultCodeletName;
-	
+
 	private static final int defaultCodeletTicksPerStep = 5;
 	private int codeletTicksPerStep = defaultCodeletTicksPerStep;
-	
+
 	private static final double defaultCodeletActivation = 1.0;
 	private double codeletActivation = defaultCodeletActivation;
 
@@ -52,97 +54,116 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 	}
-	
+
 	@Override
-	public void init() {		
+	public void init() {
 	}
-	
+
 	/**
 	 * Sets associated Module
-	 * @param module the module to be associated with
-	 * @param moduleUsage way of associating the module
+	 * 
+	 * @param module
+	 *            the module to be associated with
+	 * @param moduleUsage
+	 *            way of associating the module
 	 */
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
-		if (module != null) {
-			if (module instanceof Workspace
-					&& module.getModuleName() == ModuleName.Workspace) {
-				csm = (WorkspaceBuffer) module.getSubmodule(ModuleName.CurrentSituationalModel);
-			} else if (module instanceof GlobalWorkspace
-					&& module.getModuleName() == ModuleName.GlobalWorkspace) {
-				globalWorkspace = (GlobalWorkspace) module;
-			}
+		if (module instanceof Workspace) {
+			csm = (WorkspaceBuffer) module
+					.getSubmodule(ModuleName.CurrentSituationalModel);
+		} else if (module instanceof GlobalWorkspace) {
+			globalWorkspace = (GlobalWorkspace) module;
 		}
 	}
 
 	/**
-	 * Class that receives the broadcast and the broadcast 
-	 * will then be used for learning
-	 *  
+	 * Class that receives the broadcast and the broadcast will then be used for
+	 * learning
+	 * 
 	 */
-	private class ProcessBroadcastTask extends LidaTaskImpl{		
+	private class ProcessBroadcastTask extends LidaTaskImpl {
 		private NodeStructure broadcast;
+
 		public ProcessBroadcastTask(NodeStructure broadcast) {
 			super();
 			this.broadcast = broadcast;
 		}
+
 		@Override
 		protected void runThisLidaTask() {
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(LidaTaskStatus.FINISHED);
-		}	
+		}
 	}
 
 	/**
 	 * Schedules a task that receives broadcast from global workspace
-	 * @param bc the content of broadcast
-	 *  
+	 * 
+	 * @param bc
+	 *            the content of broadcast
+	 * 
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			ProcessBroadcastTask task = new ProcessBroadcastTask(
+					((NodeStructure) bc).copy());
 			taskSpawner.addTask(task);
 		}
 	}
 
 	/**
-	 * Creates an attention codelet from the factory 
-	 * and associates it with global workspace and CSM 
+	 * Creates an attention codelet from the factory and associates it with
+	 * global workspace and CSM
+	 * 
 	 * @return AttentionCodelet - the new attention codelet
-	 *  
+	 * 
 	 */
 	public AttentionCodelet getNewAttentionCodelet() {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(defaultCodeletName, codeletTicksPerStep, codeletActivation, null);
-		if(codelet == null){
-			logger.log(Level.WARNING, "Factory returned a null codelet, attention codelet not created.", LidaTaskManager.getCurrentTick());
+		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(
+				defaultCodeletName, codeletTicksPerStep, codeletActivation,
+				null);
+		if (codelet == null) {
+			logger.log(
+					Level.WARNING,
+					"Factory returned a null codelet, attention codelet not created.",
+					LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		return codelet;
 	}
-	
+
 	/**
 	 * Schedule the attention codelet in the task manager
-	 * @param codelet the new attention codelet to be run
-	 *  
+	 * 
+	 * @param codelet
+	 *            the new attention codelet to be run
+	 * 
 	 */
-	public void runAttentionCodelet(AttentionCodelet codelet){
+	public void runAttentionCodelet(AttentionCodelet codelet) {
 		taskSpawner.addTask(codelet);
-		logger.log(Level.FINER,"New attention codelet "+codelet.toString()+" spawned.",LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINER, "New attention codelet " + codelet.toString()
+				+ " spawned.", LidaTaskManager.getCurrentTick());
 	}
 
 	@Override
-	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet) {
-		// TODO Recive results from Action Selection and create Attention Codelets. We need
-		// to figure out how to create coalitions and detect that somsething was "deleted"
+	public void receivePreafference(NodeStructure addSet,
+			NodeStructure deleteSet) {
+		// TODO Recive results from Action Selection and create Attention
+		// Codelets. We need
+		// to figure out how to create coalitions and detect that somsething was
+		// "deleted"
 	}
-	
+
 	/**
 	 * Implements learning in Attention Module
-	 * @param content the broadcast that needs to be learned
-	 *  
+	 * 
+	 * @param content
+	 *            the broadcast that needs to be learned
+	 * 
 	 */
 	@Override
 	public void learn(BroadcastContent content) {
@@ -167,11 +188,11 @@ public class AttentionModuleImpl extends LidaModuleImpl implements BroadcastList
 	@Override
 	public void addListener(ModuleListener listener) {
 	}
-	
+
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		//TODO
+		// TODO
 	}
 
 }

@@ -3,18 +3,15 @@
  */
 package edu.memphis.ccrg.lida.sensorymemory;
 
-import static org.junit.Assert.*;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-
-import java.lang.reflect.*;
-import java.util.Map;
 
 /**
  * @author Daqi
@@ -23,8 +20,9 @@ import java.util.Map;
 
 public class SensoryMemoryBackgroundTaskTest {
 
-	/**
+	/*
 	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#runThisLidaTask()}.
+	 * @throws Exception e
 	 */
 	@Test
 	public final void testRunThisLidaTask() throws Exception {
@@ -50,6 +48,7 @@ public class SensoryMemoryBackgroundTaskTest {
 	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)}.
+	 * @throws Exception e
 	 */
 	@Test
 	public final void testSetAssociatedModule() throws Exception {

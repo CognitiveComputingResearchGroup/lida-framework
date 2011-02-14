@@ -442,7 +442,7 @@ public class LidaXmlFactory implements LidaFactory {
 	private void associateModules() {
 		ModuleName moduleName = ModuleName.NoModule;
 		for (Object[] vals : toAssociate) {
-			FullyInitializable ini = (FullyInitializable) vals[0];
+			FullyInitializable initializable = (FullyInitializable) vals[0];
 			String assocModule = (String) vals[1];
 			try {
 				moduleName = Enum.valueOf(ModuleName.class, assocModule);
@@ -452,8 +452,13 @@ public class LidaXmlFactory implements LidaFactory {
 				break;
 			}
 			LidaModule module=lida.getSubmodule(moduleName);
-		
-			ini.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
+			if(module != null){
+				initializable.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
+			}else{
+				logger.log(Level.SEVERE, 
+						"Could not obtain " + module + ".  Module will NOT be associated to " + initializable, 
+						0L);
+			}
 			logger.log(Level.INFO, "Module: " + assocModule + " associated.", 0L);
 		}
 	}
