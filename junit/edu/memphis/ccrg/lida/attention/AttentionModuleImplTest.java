@@ -9,6 +9,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
@@ -37,6 +38,7 @@ public class AttentionModuleImplTest {
 	NodeStructure ns;
 	TaskSpawner taskSpawner;
 	MockAttentionCodeletImpl codelet;
+	LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	@Before
 	public void setUp() throws Exception {
@@ -48,6 +50,7 @@ public class AttentionModuleImplTest {
 		TaskSpawner taskSpawner = new MockTaskSpawner();
 		codelet = new MockAttentionCodeletImpl();
 		
+		csm.setModuleName(ModuleName.CurrentSituationalModel);
 		workspace.addSubModule(csm);
 		attnModule.setAssistingTaskSpawner(taskSpawner);
 		
@@ -67,12 +70,20 @@ public class AttentionModuleImplTest {
 		ns.addDefaultNode(node3);
 		ns.addDefaultLink(link1);
 		ns.addDefaultLink(link2);	
+		
+		codelet.setSoughtContent(ns);	
+		NodeStructure model = (NodeStructure) csm.getModuleContent();
+		model.mergeWith(ns);
+		
+		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
+		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
+		
 	}
 	
 	@Test
 	public void testSetAssociatedModule() {
 		attnModule.setAssociatedModule(globalWorkspace,ModuleUsage.TO_WRITE_TO);
-		assertEquals("Problem with setAssociatedModule",globalWorkspace,attnModule.globalWorkspace);
+		assertEquals("Problem with setAssociatedModule",globalWorkspace,attnModule.getModuleContent("GlobalWorkspace"));
 		
 		attnModule.setAssociatedModule(workspace,ModuleUsage.TO_READ_FROM);
 		assertEquals("Problem with setAssociatedModule",csm,workspace.getSubmodule(ModuleName.CurrentSituationalModel));
@@ -87,6 +98,7 @@ public class AttentionModuleImplTest {
 
 	@Test
 	public void testGetNewAttentionCodelet() {
+		
 		AttentionCodelet codelet = attnModule.getNewAttentionCodelet();		
 		assertNotNull("Problem with getNewAttentionCodelet()", codelet);		
 	}
@@ -94,15 +106,7 @@ public class AttentionModuleImplTest {
 	@Test
 	public void testRunAttentionCodelet() {
 		
-		System.out.println("Testing runAttentionCodelet() method. See console...");
-		
-		codelet.setSoughtContent(ns);	
-		NodeStructure model = (NodeStructure) csm.getModuleContent();
-		model.mergeWith(ns);
-		
-		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
-		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
-		
+		System.out.println("Testing runAttentionCodelet() method. See console...");		
 		attnModule.runAttentionCodelet(codelet);
 	}	
 }

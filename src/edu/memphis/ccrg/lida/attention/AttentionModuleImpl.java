@@ -28,16 +28,16 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
-
+	
 public class AttentionModuleImpl extends LidaModuleImpl implements
 		BroadcastListener, PreafferenceListener {
 
 	private static final Logger logger = Logger
 			.getLogger(AttentionModuleImpl.class.getCanonicalName());
 
-	protected WorkspaceBuffer csm;
-
-	protected GlobalWorkspace globalWorkspace;
+	private WorkspaceBuffer csm;
+	
+	private GlobalWorkspace globalWorkspace;
 
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
 
@@ -182,6 +182,12 @@ public class AttentionModuleImpl extends LidaModuleImpl implements
 
 	@Override
 	public Object getModuleContent(Object... params) {
+		if(params.length>0){
+			for(int i=0;i<params.length;i++){
+				if(params[i]=="GlobalWorkspace")
+					return globalWorkspace;
+			}			
+		}
 		return null;
 	}
 

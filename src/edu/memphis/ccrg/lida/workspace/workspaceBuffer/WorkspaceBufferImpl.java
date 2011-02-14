@@ -31,7 +31,6 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	private final double DEFAULT_REMOVABLE_THRESHOLD = 0.01;
 	
 	public WorkspaceBufferImpl() {
-		super(ModuleName.CurrentSituationalModel);//TODO Do we need to set name? - sk
 		buffer = new NodeStructureImpl();
 	}
 	
