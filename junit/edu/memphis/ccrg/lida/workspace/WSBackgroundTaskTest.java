@@ -84,28 +84,19 @@ public class WSBackgroundTaskTest {
 		// Variable workspace will be assigned cause of passing a parameter that is type of Workspace
 		field1.set(wst, null);
 		wst.setAssociatedModule(wModule, 0);
-		if (field1.get(wst) == null) 
-			System.out.println("Step 4-3: testSetAssociatedModule() is OK (1/3)");
-		else 
-			System.out.println("Step 4-3: testSetAssociatedModule() is NG (1/3)");
-		
-		// Variable workspace will be assigned cause of passing a parameter that is type of Workspace
-		// and set module name to Workspace
-		field1.set(wst, null);
-		wModule.setModuleName(ModuleName.Workspace);
-		wst.setAssociatedModule(wModule, 0);
 		if (field1.get(wst) instanceof Workspace) 
-			System.out.println("Step 4-3: testSetAssociatedModule() is OK (2/3)");
+			System.out.println("Step 4-3: testSetAssociatedModule() is OK (1/2)");
 		else 
-			System.out.println("Step 4-3: testSetAssociatedModule() is NG (2/3)");
-
+			System.out.println("Step 4-3: testSetAssociatedModule() is NG (1/2)");
+		
+		
 		// Variable workspace will not be assigned cause of doing not pass a parameter that is type of SensoryMemory
 		field1.set(wst, null);
 		wst.setAssociatedModule(lModule, 0);
 		if (field1.get(wst) == null) 
-			System.out.println("Step 4-3: testSetAssociatedModule() is OK (3/3)");
+			System.out.println("Step 4-3: testSetAssociatedModule() is OK (2/2)");
 		else 
-			System.out.println("Step 4-3: testSetAssociatedModule() is NG (3/3)");
+			System.out.println("Step 4-3: testSetAssociatedModule() is NG (2/2)");
 
 	}
 
