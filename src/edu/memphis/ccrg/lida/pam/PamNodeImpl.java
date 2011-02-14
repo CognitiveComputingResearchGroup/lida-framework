@@ -28,16 +28,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
+	public static final String factoryName = PamNodeImpl.class.getSimpleName();
 	
 	public PamNodeImpl() {
 		super();
 		groundingPamNode = this;
 	}
 
-	public PamNodeImpl(PamNodeImpl p) {
-		super(p);
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof PamNodeImpl))
@@ -52,10 +49,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	@Override
 	public String toString() {
 		return PamNodeImpl.class.getSimpleName() +  " " + getLabel() + " " + getId();
-	}
-	
-	public static String getFactoryNodeType() {
-		return PamNodeImpl.class.getSimpleName();
 	}
 	
 	//LEARNABLE METHODS

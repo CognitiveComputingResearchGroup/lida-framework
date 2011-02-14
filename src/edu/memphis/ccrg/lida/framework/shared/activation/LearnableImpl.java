@@ -129,7 +129,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 */
 	@Override
 	public boolean isRemovable() {
-		return baseLevelActivation < learnableRemovableThreshold;
+		return baseLevelActivation <= learnableRemovableThreshold;
 	}
 	
 	@Override

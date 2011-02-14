@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
 
+	public static final String factoryName = NodeImpl.class.getSimpleName();
 	private int id;
 	private ExtendedId eId;
 	private String label;
@@ -98,11 +99,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	@Override
 	public String toString(){
 		return "Node: " + getLabel() + " ["+getId()+"] ";
-	}
-
-	//TODO static or not?
-	public static String getFactoryNodeType() {
-		return NodeImpl.class.getSimpleName();
 	}
 
 	@Override

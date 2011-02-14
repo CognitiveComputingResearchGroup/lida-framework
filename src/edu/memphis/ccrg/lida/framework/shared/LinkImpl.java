@@ -26,6 +26,8 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private static final Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
+
+	public static final String factoryName = NodeImpl.class.getSimpleName();
 	
 	/**
 	 * Source of this link, always a node.
@@ -164,10 +166,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	public void setGroundingPamLink(PamLink l) {
 		logger.log(Level.FINEST, "Set grounding pam link " + l.toString(), LidaTaskManager.getCurrentTick());
 		groundingPamLink = l;
-	}
-	
-	public static String getFactoryLinkType() {
-		return LinkImpl.class.getSimpleName();
 	}
 	
 	@Override

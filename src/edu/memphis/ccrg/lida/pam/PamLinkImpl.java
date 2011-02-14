@@ -27,6 +27,8 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 	
+	public static final String factoryName = PamLinkImpl.class.getSimpleName();
+	
 	/**
 	 * Only {@link LidaElementFactory} should be creating this Object.
 	 */
@@ -51,11 +53,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public String toString() {
 		return PamLinkImpl.class.getSimpleName() +  " " + getSource().getLabel() + " " + getSink().getLabel();
 	}
-	
-	public static String getFactoryLinkType() {
-		return PamLinkImpl.class.getSimpleName();
-	}
-	
+
 	//LEARNABLE METHODS
 	
 	/*
