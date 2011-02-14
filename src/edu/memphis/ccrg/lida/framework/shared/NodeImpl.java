@@ -52,7 +52,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	@Override
 	public void setId(int id) {
 		this.id = id;
-		eId = new ExtendedId(0, id, 0,0,0);
+		eId = new ExtendedId(id);
 	}
 	public void setExtendedId(ExtendedId eId) {
 		this.eId = eId;
@@ -100,8 +100,8 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return "Node: " + getLabel() + " ["+getId()+"] ";
 	}
 
-	@Override
-	public String getFactoryNodeType() {
+	//TODO static or not?
+	public static String getFactoryNodeType() {
 		return NodeImpl.class.getSimpleName();
 	}
 

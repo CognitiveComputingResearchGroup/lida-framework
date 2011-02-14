@@ -54,8 +54,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		return PamNodeImpl.class.getSimpleName() +  " " + getLabel() + " " + getId();
 	}
 	
-	@Override
-	public String getFactoryNodeType() {
+	public static String getFactoryNodeType() {
 		return PamNodeImpl.class.getSimpleName();
 	}
 	

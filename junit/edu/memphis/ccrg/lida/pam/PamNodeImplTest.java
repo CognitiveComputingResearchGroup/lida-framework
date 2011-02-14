@@ -16,20 +16,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+
 /**
  * @author Siminder Kaur, Ryan McCall
  */
 public class PamNodeImplTest extends TestCase{
 	
-	PamNodeImpl node1,node2;
-	PerceptualAssociativeMemoryImpl pam;
+	private PamNodeImpl node1;
+	private PamNodeImpl node2;
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		node1 = new PamNodeImpl();
-		node2 = new PamNodeImpl();
-		pam = new PerceptualAssociativeMemoryImpl();				
+		node1 = (PamNodeImpl) factory.getNode(PamNodeImpl.class.getSimpleName());
+		node2 = (PamNodeImpl) factory.getNode(PamNodeImpl.class.getSimpleName());		
 	}
 	
 	@Override
@@ -56,13 +58,6 @@ public class PamNodeImplTest extends TestCase{
 		node1.setId(id);
 		node2.setId(id);
 		assertEquals(node1.hashCode() + " " + node2.hashCode(), node1.hashCode(), node2.hashCode());
-	}
-	
-	/**
-	 * {@link PamNodeImpl#getFactoryNodeType()} 
-	 */
-	public void testGetFactoryNodeType(){
-		assertEquals(PamNodeImpl.class.getSimpleName(), node1.getFactoryNodeType());
 	}
 
 }

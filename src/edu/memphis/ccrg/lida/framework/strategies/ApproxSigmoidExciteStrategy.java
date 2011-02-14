@@ -27,7 +27,7 @@ public class ApproxSigmoidExciteStrategy extends StrategyImpl implements ExciteS
 			Object... params) {
 		double aa = a;
 
-		if(params != null){
+		if (params.length != 0) {
 			aa = (Double) params[0];
 		}
 		return calcExcitation(curActiv, excitation, aa);

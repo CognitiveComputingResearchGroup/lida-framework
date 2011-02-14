@@ -50,7 +50,7 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double mm = m;
-		if (params != null) {
+		if (params.length != 0) {
 			mm = (Double) params[0];
 		}
 		currentActivation = currentActivation - mm * ticks;

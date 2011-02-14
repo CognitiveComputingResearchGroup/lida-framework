@@ -313,11 +313,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	public Node addDefaultNode(Node n){
 		return addNode(n, defaultNodeType);
 	}
-	
-	@Override
-	public Node addNode(Node n){
-		return addNode(n, n.getFactoryNodeType());
-	}
 
 	@Override
 	public synchronized Node addNode(Node n, String factoryNodeType) {
@@ -455,7 +450,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 	@Override
 	public void removeLinkable(ExtendedId id) {
-		if(id.isNode()){
+		if(id.isForNode()){
 			removeLinkable(nodes.get(id.getSourceNodeId()));
 		}else{
 			removeLinkable(links.get(id));
@@ -655,7 +650,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public boolean containsNode(ExtendedId id) {
-		return id.isNode() && nodes.containsKey(id.getSourceNodeId());
+		return id.isForNode() && nodes.containsKey(id.getSourceNodeId());
 	}
 	
 	@Override

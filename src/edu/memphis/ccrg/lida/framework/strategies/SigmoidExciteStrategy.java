@@ -31,7 +31,7 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 			Object... params) {
 		double aa = a;
 		double cc = c;
-		if(params != null){
+		if(params.length != 0){
 			aa = (Double) params[0];
 			cc = (Double) params[1];
 		}

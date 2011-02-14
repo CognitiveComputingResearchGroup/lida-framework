@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
@@ -27,7 +28,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 	
 	/**
-	 * Instantiates a new pam link impl.
+	 * Only {@link LidaElementFactory} should be creating this Object.
 	 */
 	public PamLinkImpl() {
 		super();
@@ -51,8 +52,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		return PamLinkImpl.class.getSimpleName() +  " " + getSource().getLabel() + " " + getSink().getLabel();
 	}
 	
-	@Override
-	public String getFactoryLinkType() {
+	public static String getFactoryLinkType() {
 		return PamLinkImpl.class.getSimpleName();
 	}
 	

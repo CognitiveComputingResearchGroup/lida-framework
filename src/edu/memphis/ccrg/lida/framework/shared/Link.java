@@ -59,13 +59,6 @@ public interface Link extends Linkable, Activatible{
 	 *            the new category
 	 */
 	public void setCategory(LinkCategory type);
-	
-	/**
-	 * Returns factoryLinkType.
-	 * 
-	 * @return name of the Link type in the NodeFactory
-	 */
-	public String getFactoryLinkType();
 
 	/**
 	 * Set the grounding PamLink for this link.

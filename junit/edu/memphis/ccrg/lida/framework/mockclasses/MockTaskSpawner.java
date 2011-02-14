@@ -7,7 +7,9 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
@@ -15,13 +17,12 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class MockTaskSpawner implements TaskSpawner {
+	
+	private List<LidaTask> tasks = new ArrayList<LidaTask>(); 
 
 	@Override
 	public void addTask(LidaTask task) {
-		if (task.toString().contains("ProcessBroadcastTask"))
-			System.out.println("Process Broadcast task added.");
-		else if (task.toString().contains("AttentionCodelet"))
-			System.out.println("Run Attention Codelet task added.");
+		tasks.add(task);
 	}
 
 	@Override
@@ -71,8 +72,7 @@ public class MockTaskSpawner implements TaskSpawner {
 
 	@Override
 	public boolean containsTask(LidaTask t) {
-		// TODO Auto-generated method stub
-		return false;
+		return tasks.contains(t);
 	}
 	
 }

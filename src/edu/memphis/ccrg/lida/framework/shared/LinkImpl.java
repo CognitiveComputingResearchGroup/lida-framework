@@ -166,8 +166,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		groundingPamLink = l;
 	}
 	
-	@Override
-	public String getFactoryLinkType() {
+	public static String getFactoryLinkType() {
 		return LinkImpl.class.getSimpleName();
 	}
 	

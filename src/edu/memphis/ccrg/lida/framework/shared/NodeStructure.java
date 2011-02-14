@@ -88,16 +88,6 @@ public interface NodeStructure {
 	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
 	 */
 	public Node addDefaultNode(Node n);
-	
-	/**
-	 * Adds a COPY of specified Node to this NodeStructure. The copy will be of the same
-	 * type as the specified Node.
-	 *  If Node with the same
-	 * id already exists the the old node's activation is update.
-	 * @param n Node to add.
-	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
-	 */
-	public Node addNode(Node n);
 
 	/**
 	 * Add a Node of a specified factory type to this NodeStructure

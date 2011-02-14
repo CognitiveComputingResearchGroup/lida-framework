@@ -78,7 +78,7 @@ public class WSBackgroundTask extends LidaTaskImpl {
 			//TODO What about adding the links?
 			for (Node n : ns.getNodes()) {
 				if (n.getActivation() >= actThreshold) {
-					cueNodeStrucutre.addNode(n);
+					cueNodeStrucutre.addDefaultNode(n);
 				}
 			}
 			if (cueNodeStrucutre.getNodeCount() > 0) {

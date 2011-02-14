@@ -24,8 +24,7 @@ public class ApproxSigmoidDecayStrategy extends StrategyImpl implements DecayStr
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double aa = a;
-
-		if(params != null){
+		if(params.length != 0){
 			aa = (Double) params[0];
 		}
 		return calcActivation(currentActivation, ticks, aa);

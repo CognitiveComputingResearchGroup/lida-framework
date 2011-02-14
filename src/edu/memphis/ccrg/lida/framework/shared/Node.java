@@ -60,13 +60,7 @@ public interface Node extends Linkable, Activatible, Serializable {
      * @param label readable label
      */
     public void setLabel(String label);
-    
-    /**
-     * Returns the name of this node in the NodeFactory
-     * @return factory name of this node
-     * @see LidaElementFactory 
-     */
-	public String getFactoryNodeType();
+
 	
 	/**
 	 * Returns desirability of this node.

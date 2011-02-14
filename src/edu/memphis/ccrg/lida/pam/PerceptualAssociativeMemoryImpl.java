@@ -55,14 +55,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
 
 	/*
-	 * Contains all of the Node, Links and their connections.
-	 */
-	private NodeStructure nodeStructure;
-
-	/*
 	 * Modules listening for the current percept
 	 */
 	private List<PamListener> pamListeners;
+	
+	/*
+	 * Contains all of the Node, Links and their connections.
+	 */
+	private NodeStructure nodeStructure;
 
 	/*
 	 * How PAM calculates the amount of activation to propagate

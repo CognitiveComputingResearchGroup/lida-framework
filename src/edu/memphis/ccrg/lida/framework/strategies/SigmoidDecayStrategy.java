@@ -28,7 +28,7 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double aa = a;
 		double cc = c;
-		if(params != null){
+		if(params.length != 0){
 			aa = (Double) params[0];
 			cc = (Double) params[1];
 		}

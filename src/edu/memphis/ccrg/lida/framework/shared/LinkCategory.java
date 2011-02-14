@@ -9,9 +9,13 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 
 /**
- * 
+ * Specifies the category of a Link
+ * @see LinkCategoryNode
+ * @see LinkImpl
  */
 public interface LinkCategory {
+	
 	public String getLabel();
+	
 	public int getId();
 }

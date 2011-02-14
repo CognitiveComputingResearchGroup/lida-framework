@@ -23,6 +23,8 @@ import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -45,6 +47,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	SensoryMemoryImpl sem;
 	PamNodeImpl pamNode;
 	
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	
 	
 	@Override
 	@Before
@@ -55,8 +59,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		node1 = new PamNodeImpl();
 		node2 = new PamNodeImpl();
 		node3 = new PamNodeImpl();
-		link1 = new PamLinkImpl();
-		link2 = new PamLinkImpl();
 		decayStrategy = new LinearDecayStrategy();
 		sem = new VisualSensoryMemory();
 		pamNode = new PamNodeImpl();
@@ -68,6 +70,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 			
 		node1.setActivation(0.8);
 		node1.setDecayStrategy(decayStrategy);
+		
+		link1 = (PamLinkImpl) factory.getLink(PamLinkImpl.getFactoryLinkType(), node1, node2, LinkCategoryNode.CHILD);
+		link2 = (PamLinkImpl) factory.getLink(PamLinkImpl.getFactoryLinkType(), node2, node3, LinkCategoryNode.CHILD);
 		
 		link1.setSource(node1);
 		link1.setSink(node2);
@@ -87,7 +92,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	@Test
 	public void testGetModuleName() {
 		ModuleName name = pam.getModuleName();
-		assertEquals("Problem with GetModuleName", "PerceptualAssociativeMemory", name.toString());
+		assertEquals("Problem with GetModuleName", ModuleName.PerceptualAssociativeMemory, name);
 	}
 
 	/**
@@ -97,8 +102,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testDecayModule() {		
 		pam.addDefaultNode(node1);	
 		pam.decayModule(100);
-		
-		assertTrue("Problem with DecayModule",pam.getPamNode(1).getTotalActivation()<0.8);		
+		assertTrue("Problem with DecayModule",pam.getPamNode(node1.getId()).getTotalActivation()<0.8);		
 	}
 
 	/**
@@ -109,7 +113,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testSetTaskSpawner() {
 		TaskSpawner taskSpawner = new TaskSpawnerImpl();
 		pam.setAssistingTaskSpawner(taskSpawner);
-//		assertEquals("Problem with SetTaskSpawner", taskSpawner, pam.getTaskSpawner());
+		assertEquals("Problem with SetTaskSpawner", taskSpawner, pam.getAssistingTaskSpawner());
 	}
 
 	/**
@@ -193,40 +197,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		//Broadcast content not handled in pam
 		//assertEquals("Problem with ReceiveBroadcast",nodeStructure,pam.getModuleContent());
 		
-	}
-
-	
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#receiveActivationBurst(edu.memphis.ccrg.lida.pam.PamNode, double)}.
-	 */
-	@Test
-	public void testReceiveActivationBurstPamNodeDouble() {
-		
-		node1.setActivation(0.2);
-		pam.addDefaultNode(node1);
-		pam.receiveActivationBurst(node1, 0.5);
-		
-		assertEquals("Problem with ReceiveActivationBurst",0.7,node1.getTotalActivation());
-		
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#receiveActivationBurst(java.util.Set, double)}.
-	 */
-	@Test
-	public void testReceiveActivationBurstSetOfPamNodeDouble() {
-		Set<PamNode> nodes = new HashSet<PamNode>();
-		
-		node1.setActivation(0.2);
-		node2.setActivation(0.2);
-		nodes.add(node1);
-		nodes.add(node2);
-		
-		pam.addDefaultNodes(nodes);
-		pam.receiveActivationBurst(nodes, 0.5);
-		
-		assertEquals("Problem with ReceiveActivationBurst",0.7,node1.getTotalActivation());
-		assertEquals("Problem with ReceiveActivationBurst",0.7,node2.getTotalActivation());
 	}
 
 	/**
@@ -354,43 +324,21 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddNewNode() {
-		fail("Not yet implemented"); 
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#getNewNodeType()}.
-	 */
-	@Test
-	public void testGetNewNodeType() {
-		fail("Not yet implemented"); 
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setDefaultNodeType(java.lang.String)}.
-	 */
-	@Test
-	public void testSetNewNodeType() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#exciteAndConnect(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, double)}.
-	 */
-	@Test
-	public void testExciteAndConnect() {
-		fail("Not yet implemented"); 
+		pam.addNewNode("BOB");
+		boolean hasIt = false;
+		for(Node n: pam.getPamNodes()){
+			if(n.getLabel().equals("BOB"))
+				hasIt = true;
+		}
+		assertTrue(hasIt);		
 	}
 	
-	
-//	//TODO move to PAMtest
-//
-//	@Test
-//	public void testIsOverPerceptThreshold() {
-//		node1.setId(1);		
-//		node1.setBaseLevelActivation(0.4);
-//		node1.setActivation(0.5);
-//
-//		assertEquals("Problem with IsOverThreshold", true, pam.isOverPerceptThreshold(node1));
-//	}
+	@Test
+	public void testIsOverPerceptThreshold() {
+		pam.setPerceptThreshold(0.5);
+		node1.setBaseLevelActivation(0.4);
+		node1.setActivation(0.2);
+		assertTrue(pam.isOverPerceptThreshold(node1));
+	}
 
 }

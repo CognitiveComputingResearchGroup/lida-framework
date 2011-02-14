@@ -280,8 +280,7 @@ public class ArgumentImpl implements Argument {
 		return false;
 	}
 
-	@Override
-	public String getFactoryNodeType() {
+	public static String getFactoryNodeType() {
 		return ArgumentImpl.class.getSimpleName();
 	}
 
