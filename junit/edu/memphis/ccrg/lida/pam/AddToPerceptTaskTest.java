@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
-import static org.junit.Assert.fail;
+import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
  * @author Siminder Kaur
  *
  */
-public class AddToPerceptTaskTest {
+public class AddToPerceptTaskTest extends TestCase{
 	
 	PamNode pamNode;
 	PerceptualAssociativeMemory pam;
@@ -30,6 +30,7 @@ public class AddToPerceptTaskTest {
 	/**
 	 * @throws java.lang.Exception e
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		pamNode = new PamNodeImpl();

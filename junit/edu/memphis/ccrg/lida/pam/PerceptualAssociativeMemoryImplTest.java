@@ -380,5 +380,17 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testExciteAndConnect() {
 		fail("Not yet implemented"); 
 	}
+	
+	
+//	//TODO move to PAMtest
+//
+//	@Test
+//	public void testIsOverPerceptThreshold() {
+//		node1.setId(1);		
+//		node1.setBaseLevelActivation(0.4);
+//		node1.setActivation(0.5);
+//
+//		assertEquals("Problem with IsOverThreshold", true, pam.isOverPerceptThreshold(node1));
+//	}
 
 }

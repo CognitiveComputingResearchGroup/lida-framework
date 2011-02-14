@@ -31,12 +31,11 @@ public class UpscalePropagationBehavior implements PropagationBehavior{
 	 */
 	@Override
 	public double getActivationToPropagate(Map<String, Object> params) {
-		Double totalActiv = (Double) params.get("totalActivation");
-		Double upscale = (Double) params.get("upscale");
-		if(totalActiv == null || upscale == null){
+		if(params.containsKey("totalActivation") && params.containsKey("upscale")){
+			return (Double)params.get("totalActivation") * (Double)params.get("upscale");
+		}else{
 			logger.log(Level.WARNING,"Unable to obtain parameters",LidaTaskManager.getCurrentTick());
 			return 0;
-		}else
-			return totalActiv * upscale;
+		}
 	}
 }
