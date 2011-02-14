@@ -16,6 +16,11 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * This class provides a general way to control various type of workspace.
  * And it mainly responds for transferring content of nodes coming from PAM 
  * to episodic memory and attentional codelets.
+=======
+ * Task which operates workspace. 
+ * This class provides a general way to control various type of workspace.
+ * And it mainly responds for transferring content of nodes coming from PAM 
+ * to episodic memory and attentional codelets.
  * 
  * TODO I don't like how it moves to CSM AND cues.  I prefer one task for each.
  * @author Javier Snaider
