@@ -5,145 +5,151 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
+/**
+ * 
+ */
 package edu.memphis.ccrg.lida.actionselection.behaviornet;
 
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetworkImpl;
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
-public class BehaviorNetTest extends TestCase{
+/**
+ * @author Ryan J McCall, Javier Snaider
+ */
+public class BehaviorNetTest implements ActionSelectionListener{
+
+	public static void main(String[] args) {
+		new BehaviorNetTest().run();				
+	}
+
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
 	
-//	NodeFactory factory = NodeFactory.getInstance();
-//	
-//	@Before
-//	public void setUp(){
-//		
-//	}
-//	
-//	@Test
-//	public void test1(){
-//		Behavior a = new BehaviorImpl(1, 10);
-//		Behavior b = new BehaviorImpl(2, 20);
-//		
-//		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
-//		behaviorNet.receiveBehavior(a);
-//		behaviorNet.receiveBehavior(b);
-//		
-//		a = behaviorNet.getBehavior(1, 10);
-//		b = behaviorNet.getBehavior(2, 20);
-//		
-//		assertEquals("nothingA1", a.getContextSize(), 0);
-//		assertEquals("nothingB1", b.getContextSize(), 0);
-//		//
-//		assertEquals("nothingA2", a.getSuccessorSize(), 0);
-//		assertEquals("nothingB2", b.getSuccessorSize(), 0);
-//		//
-//		assertEquals("nothingA3", a.getPredecessorCount(), 0);
-//		assertEquals("nothingB3", b.getPredecessorCount(), 0);
-//		//
-//		assertEquals("nothingA4", a.getConflictorCount(), 0);
-//		assertEquals("nothingB4", b.getConflictorCount(), 0);
-//	}
-//	
-//	public Node gimmeNode(String label){
-//		return factory.getNode("NodeImpl", label);
-//	}
-//	
-//	@Test
-//	public void test2(){
-//		Behavior a = new BehaviorImpl(1, 10);
-//		Behavior b = new BehaviorImpl(2, 20);
-//		
-//		Node apple = gimmeNode("apple");
-//		a.addContextCondition(apple);
-//		b.addDeleteCondition(apple);
-//		
-//		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
-//		behaviorNet.receiveBehavior(a);
-//		behaviorNet.receiveBehavior(b);
-//		
-//		a = behaviorNet.getBehavior(1, 10);
-//		b = behaviorNet.getBehavior(2, 20);
-//		
-//		assertEquals("appleA1", a.getContextSize(), 1);
-//		assertEquals("appleB1", b.getContextSize(), 0);
-//		//
-//		assertEquals("appleA2", a.getSuccessorSize(), 0);
-//		assertEquals("appleB2", b.getSuccessorSize(), 0);
-//		//
-//		assertEquals("appleA3", a.getPredecessorCount(), 0);
-//		assertEquals("appleB3", b.getPredecessorCount(), 0);
-//		//
-//		assertEquals("appleA4", a.getConflictorCount(), 1);
-//		assertEquals("appleC4", a.getConflictors(apple).remove(b), true);
-//		assertEquals("appleB4", b.getConflictorCount(), 0);
-//		
-//	}
-//	
-//	@Test
-//	public void test3(){
-//		Behavior a = new BehaviorImpl(1, 10);
-//		Behavior b = new BehaviorImpl(2, 20);
-//		
-//		Node banana = gimmeNode("banana");
-//		a.addContextCondition(banana);
-//		b.addAddCondition(banana);
-//		
-//		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
-//		behaviorNet.receiveBehavior(a);
-//		behaviorNet.receiveBehavior(b);
-//		
-//		a = behaviorNet.getBehavior(1, 10);
-//		b = behaviorNet.getBehavior(2, 20);
-//		
-//		assertEquals("bananaA1", a.getContextSize(), 1);
-//		assertEquals("bananaB1", b.getContextSize(), 0);
-//		//
-//		assertEquals("bananaA2", a.getSuccessorSize(), 0);
-//		assertEquals("bananaB2", b.getSuccessorSize(), 1);
-//		assertEquals("c2", b.getSuccessors(banana).remove(a), true);
-//		//
-//		assertEquals("bananaA3", a.getPredecessorCount(), 1);
-//		assertEquals("c3", a.getPredecessors(banana).remove(b), true);
-//		assertEquals("bananaB3", b.getPredecessorCount(), 0);
-//		//
-//		assertEquals("bananaA4", a.getConflictorCount(), 0);
-//		assertEquals("bananaB4", b.getConflictorCount(), 0);
-//		
-//	}
-//	
-//	@Test
-//	public void test4(){
-//		Behavior a = new BehaviorImpl(1, 10);
-//		Behavior b = new BehaviorImpl(2, 20);
-//		
-//		Node banana = gimmeNode("banana");
-//		a.addContextCondition(banana);
-//		b.addAddCondition(banana);
-//		
-//		Node apple = gimmeNode("apple");
-//		//TODO
-//		
-//		BehaviorNetworkImpl behaviorNet = new BehaviorNetworkImpl();
-//		behaviorNet.receiveBehavior(a);
-//		behaviorNet.receiveBehavior(b);
-//		
-//		a = behaviorNet.getBehavior(1, 10);
-//		b = behaviorNet.getBehavior(2, 20);
-//		
-//		assertEquals("bananaA1", a.getContextSize(), 1);
-//		assertEquals("bananaB1", b.getContextSize(), 0);
-//		//
-//		assertEquals("bananaA2", a.getSuccessorSize(), 0);
-//		assertEquals("bananaB2", b.getSuccessorSize(), 1);
-//		assertEquals("c2", b.getSuccessors(banana).remove(a), true);
-//		//
-//		assertEquals("bananaA3", a.getPredecessorCount(), 1);
-//		assertEquals("c3", a.getPredecessors(banana).remove(b), true);
-//		assertEquals("bananaB3", b.getPredecessorCount(), 0);
-//		//
-//		assertEquals("bananaA4", a.getConflictorCount(), 0);
-//		assertEquals("bananaB4", b.getConflictorCount(), 0);
-//		
-//	}
+	@SuppressWarnings("unused")
+	private void run() {
+		
+		behaviorNet.addActionSelectionListener(this);
+		
+		//LidaTaskManager ltm = new LidaTaskManager(0, 100);
+		//ltm.resumeSpawnedTasks();
+		//ActionSelectionDriver driver = new ActionSelectionDriver(1, ltm);
+		//NoActionSelectionOccurringTrigger t = new NoActionSelectionOccurringTrigger();
+		//t.setUp(new HashMap<String,Object>(),behaviorNet, driver);
+		//driver.addActionSelectionTrigger(t);
+		
+		//driver.start();		
+		TaskSpawner mockTS = new MockTaskSpawner();
+		behaviorNet.setAssistingTaskSpawner(mockTS);
+		
+		Map<String, Double> params = new HashMap<String, Double>();
+		//params.put("", value)		
+		behaviorNet.init(params);
+		
+		Node near = getNewNode("near");
+		Node far = getNewNode("far");
+		Node standing = getNewNode("standing");
+		Node sitting = getNewNode("sitting");
+		
+		Node thirsty = getNewNode("thirsty");
+		Node drunk = getNewNode("drunk");
+		Node hungry = getNewNode("hungry");
+		Node full = getNewNode("full");
+		
+		Node right = getNewNode("right");
+		Node left = getNewNode("left");
+		
+		Node banana = getNewNode("banana");
+		Node cerveza = getNewNode("cerveza");
+		Node table = getNewNode("table");
+		
+		
+		long grabAction = 1L;
+		long goLeftAction = 2L;
+		long goRightAction = 3L;
+		long drinkAction = 4L;
+		long eatAction = 5L;
+		long standAction = 6L;
+		
+		List<Behavior> l = new ArrayList<Behavior>();
+		l.add(getNewBehavior("eat", eatAction, full, hungry, banana));
+		behaviorNet.receiveStream(l);
+		
+		l.clear();
+		l.add(getNewBehavior("drink", drinkAction, drunk, thirsty, cerveza));
+		behaviorNet.receiveStream(l);
+		
+		l.clear();
+		l.add(getNewBehavior("turn left", goLeftAction, banana, standing));
+		behaviorNet.receiveStream(l);
+		
+		l.clear();
+		l.add(getNewBehavior("turn right", goRightAction, cerveza, standing));
+		behaviorNet.receiveStream(l);
+
+		l.clear();
+		l.add(getNewBehavior("stand", standAction, standing, sitting));
+		behaviorNet.receiveStream(l);
+		
+		//broadcasts
+		// TODO: Modify NodeStructure to copy goalDegree when we add a node see the factory, etc
+		NodeStructure bc = getBroadcast(hungry, sitting);
+		runOneStep(bc);
+		
+		bc = getBroadcast(hungry, standing);
+		runOneStep(bc);
+
+        bc = getBroadcast(hungry, cerveza);
+		runOneStep(bc);
+	}
+	
+	public NodeStructure getBroadcast(Node... broadcastNodes){
+		NodeStructure bc = new NodeStructureImpl();
+		for(Node n: broadcastNodes){
+			n.setActivation(0.9);
+			bc.addDefaultNode(n);
+		}
+		return bc;
+	}
+	
+	private int step = 0;
+	public void runOneStep(NodeStructure bc){
+		System.out.println("\nRun: " + step++);
+		behaviorNet.receiveBroadcast((BroadcastContent) bc);
+		behaviorNet.selectAction();
+		behaviorNet.decayModule(10);
+	}
+	
+	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){
+		Behavior b = new BehaviorImpl(actionId);
+		b.setLabel(label);
+		b.addToAddingList(result);
+		for(Node n: context)
+			b.addContextCondition(n);
+		return b;
+	}
+	
+	public Node getNewNode(String label){
+		Node n = factory.getNode("NodeImpl", label);
+		n.setActivation(0.0);
+		return n;
+	}
+	
+	@Override
+	public void receiveActionId(long id) {
+		System.out.println("Result: Received action " + id);
+	}
 
 }
