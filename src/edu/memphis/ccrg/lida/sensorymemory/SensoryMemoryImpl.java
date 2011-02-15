@@ -25,19 +25,21 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */
-public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory {
+public abstract class SensoryMemoryImpl
+        extends LidaModuleImpl implements SensoryMemory {
 
-    /*
+    /**
      * The listeners associated with this memory.
      */
-    private List<SensoryMemoryListener> listeners = new ArrayList<SensoryMemoryListener>();
+    protected List<SensoryMemoryListener> listeners
+            = new ArrayList<SensoryMemoryListener>();
     
-    /*
+    /**
      * The environment associated with this memory.
      */
     protected Environment environment;
     
-    /*
+    /**
      * The content of this memory. 
      */
     protected Object sensoryMemoryContent;
