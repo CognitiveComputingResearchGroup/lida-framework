@@ -14,7 +14,7 @@ public class DefaultTotalActivationStrategy implements TotalActivationStrategy {
 	public double calculateTotalActivation(double baseLevelActivation,
 			double currentActivation) {
 		double sum = baseLevelActivation + currentActivation;
-		return (sum > 1.0)? 1.0 : sum;
+		return (sum > 1.0) ? 1.0 : sum;
 	}
 
 }

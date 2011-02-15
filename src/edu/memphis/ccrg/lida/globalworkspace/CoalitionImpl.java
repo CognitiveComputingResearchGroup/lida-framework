@@ -21,25 +21,28 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	
-	private BroadcastContent struct;	
+	private BroadcastContent content;	
 	private double attentionCodeletActivation;
 
 	/**
 	 * Constructs a coalition with content and sets activation to be equal to 
 	 * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
 	 * times the activation of the creating {@link AttentionCodelet}
-	 * @param content conscious content
+	 * @param bc conscious content
 	 * @param activation activation of creating attention codelet
 	 */
-	public CoalitionImpl(BroadcastContent content, double activation){
-		struct = content;
+	public CoalitionImpl(BroadcastContent bc, double activation){
+		content = bc;
 		attentionCodeletActivation = activation;
 		updateActivation();
 	}
 
+	/*
+	 * 
+	 */
 	private void updateActivation() {
 		double sum = 0.0;
-		NodeStructure ns = (NodeStructure)struct;
+		NodeStructure ns = (NodeStructure)content;
 		for(Node n: ns.getNodes())
 			sum += n.getActivation();
 		for(Link l: ns.getLinks())
@@ -49,7 +52,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 
 	@Override
 	public BroadcastContent getContent() {
-		return struct;
+		return content;
 	}
 	
 }

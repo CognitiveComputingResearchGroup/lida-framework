@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 /**
  * Coaltions are created and added to the {@link GlobalWorkspace}.
  * by {@link AttentionCodelet} objects.
- * Coalitions must overwrite correctly equals() and hashcode() methods
+ * {@link Coalition} must overwrite correctly {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
  * 
  * @author Javier Snaider
  */

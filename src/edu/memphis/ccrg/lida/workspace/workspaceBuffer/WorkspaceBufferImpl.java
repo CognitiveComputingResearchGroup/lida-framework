@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;

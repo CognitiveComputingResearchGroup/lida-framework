@@ -53,7 +53,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(PamLink pl, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+		nodeStructure = new NodeStructureImpl(PamNodeImpl.factoryName, PamLinkImpl.factoryName);
 		nodeStructure.addDefaultLink(pl);
 	}
 

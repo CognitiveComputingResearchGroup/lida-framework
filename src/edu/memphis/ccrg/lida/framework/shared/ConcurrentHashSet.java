@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Thread-safe HashSet based on a ConcurrentHashMap
- * @author Ryan
+ * @author Ryan McCall
  *
  * @param <E> The generic type to use in this HashSet
  */

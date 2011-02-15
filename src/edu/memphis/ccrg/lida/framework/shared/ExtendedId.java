@@ -2,7 +2,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 /**
  * Generalized Id for Both {@link Node}s and {@link Link}s.
- * Link's Source must be a {@link Node}
+ * Link's source must be a {@link Node}. Link's sink can be a Node or a Link.
  * 
  * @author Javier, Ryan
  *
@@ -14,12 +14,11 @@ public class ExtendedId {
 	private int sinkCategory;
 	private int sinkNode1Id;
 	private int sinkNode2Id;
-
-	/**
-	 * Constructs an ExtendedId for a {@link Link}.
-	 * There are 2 cases.
+	
+	/*
+	 * For the Link constructor there are 2 cases.
 	 * 
-	 * Case 1: The sink is a {@link Node}.  
+	 * Case 1: The sink is a Node.  
 	 * Then {@link #sinkCategory} and {@link #sinkNode2Id} are 0.
 	 *{@link #sinkNode1Id} is the id of the Node.
 	 *
@@ -29,10 +28,14 @@ public class ExtendedId {
 	 * 
 	 * In either case {@link #linkCategory} is set using the first argument
 	 * and {@link #sourceNodeId} is set using the second.
+	 */
+
+	/**
+	 * Constructs an ExtendedId for a {@link Link}.
 	 * 
-	 * @param category
-	 * @param sourceNodeId
-	 * @param sinkId
+	 * @param category Link's category
+	 * @param sourceNodeId Node's id
+	 * @param sinkId Sink's id
 	 */
 	public ExtendedId(int category, int sourceNodeId, ExtendedId sinkId) {
 		super();
@@ -46,11 +49,7 @@ public class ExtendedId {
 	/**
 	 * Constructs an ExtendedId for a {@link Node}
 	 * 
-	 * @param category
-	 * @param nodeId
-	 * @param lnkCategory
-	 * @param sinkNode1Id
-	 * @param sinkNode2Id
+	 * @param nodeId Node's id
 	 */
 	public ExtendedId(int nodeId) {
 		super();
@@ -74,17 +73,6 @@ public class ExtendedId {
 		return false;
 	}
 
-	@Override
-	public int hashCode() {
-		return (linkCategory ^ sourceNodeId ^ sinkCategory ^ sinkNode1Id ^ sinkNode2Id);
-	}
-
-	@Override
-	public String toString() {
-		return "[" + linkCategory + "," + sourceNodeId + "," + sinkCategory
-				+ "," + sinkNode1Id + "," + sinkNode2Id + "]";
-	}
-
 	/**
 	 * Returns source Node id
 	 * 
@@ -99,7 +87,19 @@ public class ExtendedId {
 	 * 
 	 * @return true if this ExtendedId is for a Node.
 	 */
-	public boolean isForNode() {
+	public boolean isNodeId() {
 		return (linkCategory == Integer.MIN_VALUE);
 	}
+	
+	@Override
+	public int hashCode() {
+		return (linkCategory ^ sourceNodeId ^ sinkCategory ^ sinkNode1Id ^ sinkNode2Id);
+	}
+
+	@Override
+	public String toString() {
+		return "[" + linkCategory + "," + sourceNodeId + "," + sinkCategory
+				+ "," + sinkNode1Id + "," + sinkNode2Id + "]";
+	}
+	
 }

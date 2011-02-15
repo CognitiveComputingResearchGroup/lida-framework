@@ -450,7 +450,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 	@Override
 	public void removeLinkable(ExtendedId id) {
-		if(id.isForNode()){
+		if(id.isNodeId()){
 			removeLinkable(nodes.get(id.getSourceNodeId()));
 		}else{
 			removeLinkable(links.get(id));
@@ -650,7 +650,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 
 	@Override
 	public boolean containsNode(ExtendedId id) {
-		return id.isForNode() && nodes.containsKey(id.getSourceNodeId());
+		return id.isNodeId() && nodes.containsKey(id.getSourceNodeId());
 	}
 	
 	@Override

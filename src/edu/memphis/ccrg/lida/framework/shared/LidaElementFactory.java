@@ -28,6 +28,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * Standard factory for the framework.
+ * TODO support for NodeStructure.
  * 
  * @author Javier Snaider
  */
