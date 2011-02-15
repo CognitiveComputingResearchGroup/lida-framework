@@ -58,7 +58,7 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.Argument#getBindedNode()
 	 */
 	@Override
-	public Node getBindedNode() {
+	public Node getBoundNode() {
 		return node;
 	}
 
@@ -78,7 +78,7 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.Argument#isBinded()
 	 */
 	@Override
-	public boolean isBinded() {
+	public boolean isBound() {
 		return (node != null);
 	}
 

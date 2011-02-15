@@ -30,7 +30,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
-import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * Rudimentary action selection that selects all behaviors sent to it which are
@@ -71,19 +70,21 @@ public class ActionSelectionImpl extends LidaModuleImpl implements
 	}
 
 	@Override
-	public void receiveBehavior(Behavior b) {
-		if (b.getActivation() > selectionThreshold) {
-			if (coolDownCounter == selectionFrequency) {
-				logger.log(Level.FINE, "selecting behavior " + b.getLabel()
-						+ " " + b.getId() + " " + b.getActionId() + " activ. "
-						+ b.getActivation(), LidaTaskManager.getCurrentTick());
-				sendAction(b.getActionId());
-				coolDownCounter = 0;
-			} else
-				coolDownCounter++;
-
-			logger.log(Level.FINE, "Selected action: " + b.getActionId(),
-					LidaTaskManager.getCurrentTick());
+	public void receiveStream(List<Behavior> stream) {
+		for(Behavior b: stream){
+			if (b.getActivation() > selectionThreshold) {
+				if (coolDownCounter == selectionFrequency) {
+					logger.log(Level.FINE, "selecting behavior " + b.getLabel()
+							+ " " + b.getId() + " " + b.getActionId() + " activ. "
+							+ b.getActivation(), LidaTaskManager.getCurrentTick());
+					sendAction(b.getActionId());
+					coolDownCounter = 0;
+				} else
+					coolDownCounter++;
+	
+				logger.log(Level.FINE, "Selected action: " + b.getActionId(),
+						LidaTaskManager.getCurrentTick());
+			}
 		}
 	}
 
@@ -179,12 +180,6 @@ public class ActionSelectionImpl extends LidaModuleImpl implements
 		} else {
 			return false;
 		}
-	}
-
-	@Override
-	public void receiveStream(Stream s) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

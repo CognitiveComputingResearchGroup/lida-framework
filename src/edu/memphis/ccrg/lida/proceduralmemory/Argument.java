@@ -23,6 +23,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 public interface Argument extends Node {
 	public long getArgumentId();
 	public void bindNode(Node n);
-	public Node getBindedNode();
-	public boolean isBinded();
+	public Node getBoundNode();
+	public boolean isBound();
 }

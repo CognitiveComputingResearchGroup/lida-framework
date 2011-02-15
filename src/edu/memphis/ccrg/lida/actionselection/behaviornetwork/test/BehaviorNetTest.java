@@ -10,15 +10,17 @@
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetworkImpl;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -81,20 +83,25 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		long eatAction = 5L;
 		long standAction = 6L;
 		
-		Behavior b = getNewBehavior("eat", eatAction, full, hungry, banana);
-		behaviorNet.receiveBehavior(b);
+		List<Behavior> l = new ArrayList<Behavior>();
+		l.add(getNewBehavior("eat", eatAction, full, hungry, banana));
+		behaviorNet.receiveStream(l);
 		
-		b = getNewBehavior("drink", drinkAction, drunk, thirsty, cerveza);
-		behaviorNet.receiveBehavior(b);
+		l.clear();
+		l.add(getNewBehavior("drink", drinkAction, drunk, thirsty, cerveza));
+		behaviorNet.receiveStream(l);
 		
-		b = getNewBehavior("turn left", goLeftAction, banana, standing);
-		behaviorNet.receiveBehavior(b);
+		l.clear();
+		l.add(getNewBehavior("turn left", goLeftAction, banana, standing));
+		behaviorNet.receiveStream(l);
 		
-		b = getNewBehavior("turn right", goRightAction, cerveza, standing);
-		behaviorNet.receiveBehavior(b);
+		l.clear();
+		l.add(getNewBehavior("turn right", goRightAction, cerveza, standing));
+		behaviorNet.receiveStream(l);
 
-		b = getNewBehavior("stand", standAction, standing, sitting);
-		behaviorNet.receiveBehavior(b);
+		l.clear();
+		l.add(getNewBehavior("stand", standAction, standing, sitting));
+		behaviorNet.receiveStream(l);
 		
 		//broadcasts
 		// TODO: Modify NodeStructure to copy goalDegree when we add a node see the factory, etc

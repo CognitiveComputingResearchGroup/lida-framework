@@ -39,11 +39,10 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * ConcurrentHashmap do not block but they may not reflect the true state of
 	 * the Map if multiple operations are concurrent.
 	 * 
-	 * TODO: allow STREAMS in addition to SCHEME
 	 */
-	private Map<Object, Set<Scheme>> contextSchemeMap;
+	private Map<? super Object, Set<Scheme>> contextSchemeMap;
 	
-	private Map<Object, Set<Scheme>> resultSchemeMap;
+	private Map<? super Object, Set<Scheme>> resultSchemeMap;
 
 	/**
 	 * Convenient for decaying the schemes
@@ -88,6 +87,10 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void setSchemeActivationBehavior(SchemeActivationBehavior b) {
 		schemeActivationBehavior = b;
 	}
+	@Override
+	public SchemeActivationBehavior getSchemeActivationBehavior() {
+		return schemeActivationBehavior;
+	}
 
 	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
@@ -95,9 +98,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 			addScheme(scheme);
 	}
 
-	/**
-	 * Adds scheme
-	 */
 	@Override
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);
@@ -107,7 +107,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	}
 	
 	private void indexSchemeByElements(Scheme scheme, Collection<Linkable> elements, 
-									   Map<Object, Set<Scheme>> map) {
+									   Map<? super Object, Set<Scheme>> map) {
 		for (Linkable element : elements) {
 			synchronized (element) {
 				Set<Scheme> values = map.get(element);
@@ -166,15 +166,16 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				LidaTaskManager.getCurrentTick());
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
-			listener.receiveBehavior(s.getBehavior());
+			listener.receiveStream(s.getInstantiation());
 		}
 	}
 
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		for (Scheme s : schemeSet)
+		for (Scheme s : schemeSet){
 			s.decay(ticks);
+		}
 	}
 
 	@Override

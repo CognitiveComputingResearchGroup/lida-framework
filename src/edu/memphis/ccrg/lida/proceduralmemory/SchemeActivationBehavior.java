@@ -23,7 +23,7 @@ public interface SchemeActivationBehavior {
 	 * @param broadcast NodeStructure
 	 * @param schemeMap schemes indexed in some way
 	 */
-	public void activateSchemesWithBroadcast(NodeStructure broadcast, Map<? extends Object, Set<Scheme>> schemeMap);
+	public void activateSchemesWithBroadcast(NodeStructure broadcast, Map<?, Set<Scheme>> schemeMap);
 	
 	/**
 	 * Set amount of activation a {@link Scheme} must have for instantiation

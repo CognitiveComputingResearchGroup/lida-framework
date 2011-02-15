@@ -13,7 +13,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +23,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
-import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * @author ryanjmccall
@@ -70,11 +68,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	 * optimization for checking if context is all satisfied
 	 */
 	private AtomicInteger unsatisfiedContextConditionCount = new AtomicInteger(0);
-
-	/**
-	 * The streams that contains this behavior
-	 */
-	private Set<Stream> containingStreams;
 
 	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
 
@@ -270,21 +263,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		hash = hash * 31 + v2.hashCode();
 		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
 		return hash;
-	}
-
-	@Override
-	public void addContainingStream(Stream stream) {
-		containingStreams.add(stream);
-	}
-
-	@Override
-	public void removeContainingStream(Stream stream) {
-		containingStreams.remove(stream);
-	}
-
-	@Override
-	public Set<Stream> getContainingStreams() {
-		return containingStreams;
 	}
 
 	@Override

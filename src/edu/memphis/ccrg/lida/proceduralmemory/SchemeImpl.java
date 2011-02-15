@@ -32,9 +32,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private NodeStructure context;
 	private NodeStructure addingResult;
 	private NodeStructure deletingResult;
-	private ConcurrentMap<Long, Argument> arguments = new ConcurrentHashMap<Long, Argument>();
-	private ConcurrentMap<Long, List<NodeStructure>> argumentsCC = new ConcurrentHashMap<Long, List<NodeStructure>>();
-	private ConcurrentMap<Long, List<NodeStructure>> argumentsRC = new ConcurrentHashMap<Long, List<NodeStructure>>();
+	private ConcurrentMap<Long, Argument> arguments;
+	private ConcurrentMap<Long, List<NodeStructure>> argumentsCC;
+	private ConcurrentMap<Long, List<NodeStructure>> argumentsRC;
+	private List<Scheme> stream;
 
 	private long actionId;
 	private String label;
@@ -48,6 +49,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		context = new NodeStructureImpl();
 		addingResult = new NodeStructureImpl();
 		deletingResult = new NodeStructureImpl();
+		arguments = new ConcurrentHashMap<Long, Argument>();
+		argumentsCC = new ConcurrentHashMap<Long, List<NodeStructure>>();
+		argumentsRC = new ConcurrentHashMap<Long, List<NodeStructure>>();
+		stream = new ArrayList<Scheme>();
 	}
 
 	@Override
@@ -241,23 +246,58 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public Behavior getBehavior() {
+	public List<Behavior> getInstantiation() {
 		//TODO review
-		
-		Behavior b = new BehaviorImpl(this.actionId);
-		b.setLabel("scheme: " + this.label +  " behavior id: " + b.getId());
-		b.setActivation(getTotalActivation());
-		for(Node n: context.getNodes())
-			b.addContextCondition(n);
-		b.setContextNodeType(context.getDefaultNodeType());
-		for (Node n : getAddingResult().getNodes()) 
-			b.addToAddingList(n);
-		for(Node n: getDeletingResult().getNodes())
-			b.addToDeletingList(n);
-		b.isAllContextConditionsSatisfied();
-		b.setGeneratingScheme(this);
-		
-		return b;
+		List<Behavior> instantiation = new ArrayList<Behavior>();
+		for(Scheme s: stream){
+			Behavior b = new BehaviorImpl(s.getSchemeActionId());
+			b.setLabel("scheme: " + s.getLabel() +  " behavior id: " + b.getId());
+			b.setActivation(s.getTotalActivation());
+			for(Node n: s.getContext().getNodes()){
+				b.addContextCondition(n);
+			}
+			//TODO check
+			b.setContextNodeType(s.getContext().getDefaultNodeType());
+			for (Node n : s.getAddingResult().getNodes()) {
+				b.addToAddingList(n);
+			}
+			for(Node n: s.getDeletingResult().getNodes()){
+				b.addToDeletingList(n);
+			}
+			b.setGeneratingScheme(this);
+			instantiation.add(b);
+		}
+		return instantiation;
+	}
+
+	@Override
+	public synchronized void addToStream(Scheme s) {
+		stream.add(s);
+		this.addingResult = s.getAddingResult();
+		this.deletingResult = s.getDeletingResult();
+	}
+
+	@Override
+	public Collection<Scheme> getStream() {
+		return Collections.unmodifiableCollection(stream);
+	}
+	@Override
+	public synchronized void setStream(Collection<Scheme> s) {
+		stream = new ArrayList<Scheme>(s);
+		this.context = stream.get(0).getContext();
+		Scheme last = stream.get(stream.size() - 1);
+		this.addingResult = last.getAddingResult();
+		this.deletingResult = last.getDeletingResult();
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)
+	 */
+	@Override
+	public void decay(long ticks){
+		super.decay(ticks);
+		for(Scheme s: stream)
+			s.decay(ticks);
 	}
 
 }

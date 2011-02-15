@@ -55,8 +55,8 @@ public class AggregateBehaviorActivationTriggerTest extends TestCase{
 		schemeA.setActivation(0.3);
 		schemeB.setActivation(0.3);
 		
-		behavA = schemeA.getBehavior();
-		behavB = schemeB.getBehavior();
+		behavA = schemeA.getInstantiation();
+		behavB = schemeB.getInstantiation();
 		
 		queueOfBehav.add(behavA);
 		queueOfBehav.add(behavB);

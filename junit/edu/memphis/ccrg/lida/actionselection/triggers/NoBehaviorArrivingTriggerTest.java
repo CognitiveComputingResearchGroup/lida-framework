@@ -36,8 +36,8 @@ public class NoBehaviorArrivingTriggerTest {
 		schemeA.setActivation(0.8);
 		schemeB.setActivation(0.2);
 				
-		behavA = schemeA.getBehavior();
-		behavB = schemeB.getBehavior();
+		behavA = schemeA.getInstantiation();
+		behavB = schemeB.getInstantiation();
 		
 		behaviors.add(behavA);
 		behaviors.add(behavB);

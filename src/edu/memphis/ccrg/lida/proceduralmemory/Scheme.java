@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
+import java.util.List;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -20,9 +21,17 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * then its result is more likely to be true. 
  * It can be instantiated in which case
  * the instantiation is called a behavior.  
+ * 
+ * 
  * @author Ryan J. McCall
  */
 public interface Scheme extends Learnable{
+	
+	public void setStream(Collection<Scheme> stream);
+	
+	public Collection<Scheme> getStream();
+	
+	public void addToStream(Scheme s);
 	 
 	/**
 	 * Sets scheme's id.
@@ -133,6 +142,6 @@ public interface Scheme extends Learnable{
 	 * Instantiates and returns a {@link Behavior} based on this Scheme
 	 * @return an instantiation of this scheme
 	 */
-	public Behavior getBehavior();
+	public List<Behavior> getInstantiation();
 	
 }

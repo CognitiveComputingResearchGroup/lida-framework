@@ -34,6 +34,12 @@ public interface ProceduralMemory extends LidaModule, Saveable{
      */
     public void setSchemeActivationBehavior(SchemeActivationBehavior b);
     
+    /**
+     * Returns SchemeActivationBehavior.
+     * @return Behavior used to Activate schemes
+     */
+    public SchemeActivationBehavior getSchemeActivationBehavior();
+    
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 
 	 * @param broadcastContent conscious contents

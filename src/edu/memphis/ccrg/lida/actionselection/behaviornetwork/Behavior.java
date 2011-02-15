@@ -8,13 +8,11 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
 import java.util.Collection;
-import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
-import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 /**
  * The Interface Behavior.
@@ -242,29 +240,6 @@ public interface Behavior extends Activatible {
 	 * 
 	 * @return the result size
 	 */
-    public double getResultSize();
-    
-    /**
-	 * Adds the containing stream.
-	 * 
-	 * @param stream
-	 *            the stream
-	 */
-    public void addContainingStream(Stream stream);
-    
-    /**
-	 * Gets containing streams.
-	 * 
-	 * @return the containing streams
-	 */
-    public Set<Stream> getContainingStreams();
-    
-    /**
-	 * Removes the containing stream.
-	 * 
-	 * @param stream
-	 *            the stream
-	 */
-    public void removeContainingStream(Stream stream);
-	
+    public double getResultSize();   
+
 }

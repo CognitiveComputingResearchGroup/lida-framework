@@ -42,7 +42,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
-import edu.memphis.ccrg.lida.proceduralmemory.Stream;
 
 //TODO how to deliberate about schemes? 
 // Send behaviors under deliberation to pam via preafferance. 
@@ -270,22 +269,21 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener#receiveBehavior(edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior)
 	 */
-	@Override
 	// TODO This way permits multiple instantiations of the same behavior
 	// because each one will
 	// have a different ID even if it was instantiated from the same Scheme.
 	// This can be resolved by either slowing the scheme activation rate or by
 	// having Behavior
 	// have a originatingScheme field.
-	public void receiveBehavior(Behavior newBehavior) {
-		indexBehaviorByElements(newBehavior,
-				newBehavior.getContextConditions(), behaviorsByContextCondition);
-		indexBehaviorByElements(newBehavior, newBehavior.getAddingList()
+	private void receiveBehavior(Behavior b) {
+		indexBehaviorByElements(b,
+				b.getContextConditions(), behaviorsByContextCondition);
+		indexBehaviorByElements(b, b.getAddingList()
 				.getNodes(), behaviorsByAddingItem);
-		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList()
+		indexBehaviorByElements(b, b.getDeletingList()
 				.getNodes(), behaviorsByDeletingItem);
 
-		behaviors.put(newBehavior.getId(), newBehavior);
+		behaviors.put(b.getId(), b);
 		runTriggers();
 	}
 
@@ -310,8 +308,8 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener#receiveStream(edu.memphis.ccrg.lida.proceduralmemory.Stream)
 	 */
 	@Override
-	public void receiveStream(Stream stream) {
-		for (Behavior behavior : stream.getBehaviors())
+	public void receiveStream(List<Behavior> stream) {
+		for (Behavior behavior : stream)
 			receiveBehavior(behavior);
 	}
 
