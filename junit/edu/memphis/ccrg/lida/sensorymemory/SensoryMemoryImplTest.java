@@ -274,5 +274,11 @@ public class SensoryMemoryImplTest {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+		@Override
+		public Object getState(Map<String, ?> params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
     }
 }

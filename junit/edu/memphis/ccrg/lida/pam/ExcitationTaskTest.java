@@ -1,11 +1,8 @@
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.HashSet;
-import java.util.Set;
+import junit.framework.TestCase;
 
 import org.junit.Test;
-
-import junit.framework.TestCase;
 
 public class ExcitationTaskTest extends TestCase {
 	
