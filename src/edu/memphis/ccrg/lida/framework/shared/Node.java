@@ -60,7 +60,6 @@ public interface Node extends Linkable, Activatible, Serializable {
      * @param label readable label
      */
     public void setLabel(String label);
-
 	
 	/**
 	 * Returns desirability of this node.
