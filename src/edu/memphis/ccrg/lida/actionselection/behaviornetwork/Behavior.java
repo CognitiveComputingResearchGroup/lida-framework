@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
@@ -31,7 +32,7 @@ public interface Behavior extends Activatible {
 	 * 
 	 * @return the action id
 	 */
-	public long getActionId();
+	public LidaAction getAction();
 	
 	/**
 	 * Gets label.

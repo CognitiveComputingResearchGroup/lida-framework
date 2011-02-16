@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BehaviorExciteStrategy;
@@ -275,7 +276,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	// This can be resolved by either slowing the scheme activation rate or by
 	// having Behavior
 	// have a originatingScheme field.
-	private void receiveBehavior(Behavior b) {
+	public void receiveBehavior(Behavior b) {
 		indexBehaviorByElements(b,
 				b.getContextConditions(), behaviorsByContextCondition);
 		indexBehaviorByElements(b, b.getAddingList()
@@ -301,17 +302,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		}
 	}
 
-	// If behavior is going to be indexed then why does a stream even need to
-	// keep track of it's successors? as long as the context and add lists are
-	// correct
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener#receiveStream(edu.memphis.ccrg.lida.proceduralmemory.Stream)
-	 */
-	@Override
-	public void receiveStream(List<Behavior> stream) {
-		for (Behavior behavior : stream)
-			receiveBehavior(behavior);
-	}
 
 	/**
 	 * Abstractly defined utility method to index the behaviors into a map by
@@ -545,7 +535,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 		if (winningBehavior != null) {
 			sendPreafference(winningBehavior);
-			sendAction(winningBehavior.getActionId());
+			sendAction(winningBehavior.getAction());
 			resetCandidateBehaviorThreshold();
 			winningBehavior.setActivation(0.0);
 		} else {
@@ -575,9 +565,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				+ candidateBehaviorThreshold, LidaTaskManager.getCurrentTick());
 	}
 
-	private void sendAction(long actionId) {
+	private void sendAction(LidaAction action) {
 		for (ActionSelectionListener l : listeners)
-			l.receiveActionId(actionId);
+			l.receiveAction(action);
 	}
 
 	/**

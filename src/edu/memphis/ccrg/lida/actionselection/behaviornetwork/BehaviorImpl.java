@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -57,7 +58,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
 	 * executes
 	 */
-	private long actionId;
+	private LidaAction action;
 
 	/**
 	 * unique identifier
@@ -85,14 +86,14 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		deletingList = new NodeStructureImpl();
 	}
 	
-	public BehaviorImpl(long id, long actionId) {
+	public BehaviorImpl(long id, LidaAction action) {
 		this();
 		this.id = id;
-		this.actionId = actionId;
+		this.action = action;
 	}
 	
-	public BehaviorImpl(long actionId){
-		this(idCounter++, actionId);
+	public BehaviorImpl(LidaAction action){
+		this(idCounter++, action);
 	}
 
 	// Precondition methods
@@ -107,8 +108,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		this.id = id;
 	}
 
-	public void setActionId(long actionId) {
-		this.actionId = actionId;
+	public void setAction(LidaAction action) {
+		this.action = action;
 	}
 
 	@Override
@@ -232,8 +233,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	@Override
-	public long getActionId() {
-		return actionId;
+	public LidaAction getAction() {
+		return action;
 	}
 
 	@Override
@@ -252,14 +253,14 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 			return false;
 
 		Behavior behavior = (Behavior) o;
-		return behavior.getId() == id && behavior.getActionId() == actionId;
+		return behavior.getId() == id && behavior.getAction() == action;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 1;
 		Long v1 = new Long(id);
-		Long v2 = new Long(actionId);
+		Long v2 = (long) action.hashCode();
 		hash = hash * 31 + v2.hashCode();
 		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
 		return hash;
