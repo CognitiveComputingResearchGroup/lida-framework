@@ -18,8 +18,8 @@ public interface ActionSelectionListener extends ModuleListener{
 	
 	/**
 	 * Listener must receive actions.  Will be called for each action selected by the behavior network.
-	 * @param id - Id of the action stored in sensory motor memory
+	 * @param action - Id of the action stored in sensory motor memory
 	 */
-	public void receiveActionId(long id);
+	public void receiveAction(LidaAction action);
 
 }
