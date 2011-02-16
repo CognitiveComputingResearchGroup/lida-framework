@@ -7,9 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.Collection;
-import java.util.List;
-
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
@@ -26,12 +24,6 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * @author Ryan J. McCall
  */
 public interface Scheme extends Learnable{
-	
-	public void setStream(Collection<Scheme> stream);
-	
-	public Collection<Scheme> getStream();
-	
-	public void addToStream(Scheme s);
 	 
 	/**
 	 * Sets scheme's id.
@@ -46,16 +38,16 @@ public interface Scheme extends Learnable{
 	public long getId();
 	
 	/**
-	 * Gets schemeActionId.
-	 * @return id of the scheme's action in {@link SensoryMotorMemory}
+	 * Gets schemeAction.
+	 * @return scheme's action in {@link SensoryMotorMemory}
 	 */
-	public long getSchemeActionId();
+	public LidaAction getSchemeAction();
 	
 	/**
-	 * Sets schemeActionId.
-	 * @param actionId id of the scheme's action in {@link SensoryMotorMemory}
+	 * Sets schemeAction.
+	 * @param scheme's action in {@link SensoryMotorMemory}
 	 */
-	public void setSchemeActionId(long actionId);	
+	public void setSchemeAction(LidaAction action);	
 	
 	/**
 	 * Gets label.
@@ -82,32 +74,33 @@ public interface Scheme extends Learnable{
 	 * @param ns context in which this scheme is activated.
 	 */
 	public void setContext(NodeStructure ns);
-		
-	//TODO How serious are we about this attributes?
-	public double getCuriosity();
-	public void setCuriosity(double curiosity);
-	public double getReliability();
-	public boolean isReliable();
-	public void decayCuriosity();
-	/**
-	 * Standard getter for intrinsicBehavior.
-	 * @return the boolean value of intrinsicBehavior
-	 */
-	public boolean isIntrinsicBehavior();
-	/**
-	 * Standard setter for intrinsicBehavior.
-	 * @param intrinsicBehavior the boolean value of intrinsicBehavior
-	 */
-	public void setIntrinsicBehavior(boolean intrinsicBehavior);
-	//TODO maybe this should be number of instantiations? schemes can't be executed.
-	//behaviors can be selected and that is like an execution.
 	
-	public void incrementNumberOfExecutions();
 	/**
-	 * Standard getter for numberOfExecutions.
-	 * @return the int value of numberOfExecutions
+	 * Returns reliability
+	 * @return frequency that result is observed after scheme's {@link LidaAction} is taken.
 	 */
-	public int getNumberOfExecutions();
+	public double getReliability();
+	
+	/**
+	 * @return true if reliability is over threshold
+	 */
+	public boolean isReliable();
+	
+	/**
+	 * Scheme should update the number of times its action has been executed in order to calculate
+	 * reliability.
+	 */
+	public void actionWasExecuted();
+
+	/**
+	 * @return true if this scheme should not be decayed.
+	 */
+	public boolean isInnate();
+	/**
+	 * Sets innate
+	 * @param innate whether this behavior is hard-wired and cannot be decayed.
+	 */
+	public void setInnate(boolean innate);
 	
 	/**
 	 * Returns addingResult.
@@ -133,15 +126,10 @@ public interface Scheme extends Learnable{
 	 */
 	public void setDeletingResult(NodeStructure ns);
 	
-	//TODO remove 
-	public void addArgument (Argument a);
-	public Argument getArgument (long argumentId);
-	public Collection<Argument> getArguments();
-	
 	/**
 	 * Instantiates and returns a {@link Behavior} based on this Scheme
 	 * @return an instantiation of this scheme
 	 */
-	public List<Behavior> getInstantiation();
+	public Behavior getInstantiation();
 	
 }

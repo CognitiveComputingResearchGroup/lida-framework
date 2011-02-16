@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.example.genericlida.environment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -240,5 +241,11 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 			}
 		}
 	}//background task
+
+	@Override
+	public Object getState(Map<String, ?> params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

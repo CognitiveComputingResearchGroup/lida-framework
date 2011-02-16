@@ -8,7 +8,6 @@
 
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.List;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
@@ -21,8 +20,8 @@ public interface ProceduralMemoryListener extends ModuleListener{
 
     /**
      * 
-     * @param stream - a stream, a partial order, of behaviors
+     * @param behavior - a stream, a partial order, of behaviors
      */
-    public void receiveStream(List<Behavior> stream);
+    public void receiveBehavior(Behavior behavior);
    
 }

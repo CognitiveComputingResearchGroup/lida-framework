@@ -7,9 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import java.util.Map;
-import java.util.Set;
-
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
@@ -21,9 +18,9 @@ public interface SchemeActivationBehavior {
 	/**
 	 * Activate schemes which intersect with the broadcast.
 	 * @param broadcast NodeStructure
-	 * @param schemeMap schemes indexed in some way
+	 * @param params Parameters which allow the behavior to access to the schemes of {@link ProceduralMemory}
 	 */
-	public void activateSchemesWithBroadcast(NodeStructure broadcast, Map<?, Set<Scheme>> schemeMap);
+	public void activateSchemesWithBroadcast(NodeStructure broadcast, Object... params);
 	
 	/**
 	 * Set amount of activation a {@link Scheme} must have for instantiation

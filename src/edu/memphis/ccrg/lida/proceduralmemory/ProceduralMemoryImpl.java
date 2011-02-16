@@ -30,6 +30,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
+/**
+ * TODO support for Node desirability
+ *
+ */
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
@@ -40,9 +44,9 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 * the Map if multiple operations are concurrent.
 	 * 
 	 */
-	private Map<? super Object, Set<Scheme>> contextSchemeMap;
+	private Map<Object, Set<Scheme>> contextSchemeMap;
 	
-	private Map<? super Object, Set<Scheme>> resultSchemeMap;
+	private Map<Object, Set<Scheme>> resultSchemeMap;
 
 	/**
 	 * Convenient for decaying the schemes
@@ -94,20 +98,28 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 
 	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
-		for (Scheme scheme : schemes)
+		for (Scheme scheme : schemes){
 			addScheme(scheme);
+		}
 	}
 
 	@Override
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);
 		indexSchemeByElements(scheme, scheme.getContext().getLinkables(), contextSchemeMap);
-		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
-		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
+//		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
+//		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
 	}
 	
+	/**
+	 * For every element in elements, adds an entry to map where the key is an element
+	 * and the value is scheme.
+	 * @param scheme
+	 * @param elements
+	 * @param map
+	 */
 	private void indexSchemeByElements(Scheme scheme, Collection<Linkable> elements, 
-									   Map<? super Object, Set<Scheme>> map) {
+									   Map<Object, Set<Scheme>> map) {
 		for (Linkable element : elements) {
 			synchronized (element) {
 				Set<Scheme> values = map.get(element);
@@ -166,7 +178,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				LidaTaskManager.getCurrentTick());
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
-			listener.receiveStream(s.getInstantiation());
+			listener.receiveBehavior(s.getInstantiation());
 		}
 	}
 

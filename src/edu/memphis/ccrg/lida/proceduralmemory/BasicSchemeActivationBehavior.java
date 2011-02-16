@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -31,35 +30,38 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 		this.pm = pm;
 	}
 
+	/**
+	 * params[0] must contain Map<? extends Object, Set<Scheme>> with all the Schemes of {@link ProceduralMemory}
+	 * 
+	 * @see edu.memphis.ccrg.lida.proceduralmemory.SchemeActivationBehavior#activateSchemesWithBroadcast(edu.memphis.ccrg.lida.framework.shared.NodeStructure, java.lang.Object[])
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void activateSchemesWithBroadcast(NodeStructure broadcast,
-											 Map<?, Set<Scheme>> schemeMap) {
+	public void activateSchemesWithBroadcast(NodeStructure broadcast,Object... params) {
 		logger.log(Level.FINEST, "Scheme are tested for activation",
 				LidaTaskManager.getCurrentTick());
-		Collection<Node> nodes = broadcast.getNodes();
-		Collection<Link> links = broadcast.getLinks();
 		
-		for (Node n : nodes)
+		Map<? extends Object, Set<Scheme>> schemeMap = (Map<? extends Object, Set<Scheme>>) params[0];
+		Collection<Node> nodes = broadcast.getNodes();
+		for (Node n : nodes){
 			auxActivateSchemes(n, schemeMap);
-		for (Link l : links)
-			auxActivateSchemes(l, schemeMap);
+		}
 	}
 
 	private void auxActivateSchemes(Linkable l, Map<? extends Object, Set<Scheme>> schemeMap) {
 		if (schemeMap.containsKey(l)) {
 			Set<Scheme> schemes = schemeMap.get(l);
-			int numSchemes=schemes.size();
+			int numSchemes = schemes.size();
 			for (Scheme scheme : schemes) {
 				NodeStructure context = scheme.getContext();
 				int contextNodeCount = context.getNodeCount();
 				scheme.excite(1.0 / (contextNodeCount * numSchemes));
 				if (scheme.getActivation() > schemeSelectionThreshold) {
-					// Copy?
 					pm.sendInstantiatedScheme(scheme);
 					logger.log(Level.FINE, "Scheme is instantiated",
 								LidaTaskManager.getCurrentTick());
 				}
-			}// for
+			}
 		}
 	}
 

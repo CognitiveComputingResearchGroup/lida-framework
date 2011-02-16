@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
@@ -70,8 +71,8 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMot
 	}
 
 	@Override
-	public void receiveActionId(long id) {
-		executeAction(algorithmMap.get(id));
+	public void receiveAction(LidaAction action) {
+		executeAction(algorithmMap.get(action));
 	}
 
 	@Override

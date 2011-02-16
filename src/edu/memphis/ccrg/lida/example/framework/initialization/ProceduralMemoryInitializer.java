@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
@@ -66,8 +67,13 @@ public class ProceduralMemoryInitializer implements Initializer {
 				Node n = nodes[idx];
 				rstl.addDefaultNode(n);
 			}
-			Scheme scheme = new SchemeImpl("test scheme", i, 1L);
-			scheme.addArgument(new ArgumentImpl(1L));
+			Scheme scheme = new SchemeImpl("test scheme", i, new LidaActionImpl("test") {
+				
+				@Override
+				public void performAction() {
+					// TODO Auto-generated method stub					
+				}
+			});
 			scheme.setContext(ctxt);
 			scheme.setAddingResult(rstl);
 			schemes.add(scheme);

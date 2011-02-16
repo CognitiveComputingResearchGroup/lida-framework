@@ -7,12 +7,15 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.environment;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 public interface Environment extends LidaModule{
 
 	public void resetEnvironment();
 	
-	public void processAction(Object algorithm);
+	public void processAction(Object action);
 	
+	public Object getState(Map<String, ?> params);
 }
