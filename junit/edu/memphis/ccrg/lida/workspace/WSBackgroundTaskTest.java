@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.workspace;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -11,12 +12,6 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-
-import edu.memphis.ccrg.lida.workspace.*;
-
-import java.lang.reflect.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WSBackgroundTaskTest {
 
@@ -59,7 +54,7 @@ public class WSBackgroundTaskTest {
 		System.out.println("The cueFrequency is " + field3.get(wst));
 
 		// Initialize with assigned vale
-		Map<String, Object> mapParas = new HashMap();
+		Map<String, Object> mapParas = new HashMap<String, Object>();
 		mapParas.put("workspace.actThreshold", 0.5);
 		mapParas.put("workspace.cueFrequency", 2);
 		wst.init(mapParas);

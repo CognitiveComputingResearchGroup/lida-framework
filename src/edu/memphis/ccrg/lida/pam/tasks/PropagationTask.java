@@ -7,15 +7,13 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
@@ -77,7 +75,7 @@ public class PropagationTask extends LidaTaskImpl {
 		if(pam.isOverPerceptThreshold(link) && 
 		   pam.isOverPerceptThreshold(sink)){
 			//If over threshold then spawn a new task to add the node to the percept
-			NodeStructure ns = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+			NodeStructure ns = LidaElementFactory.getInstance().getPamNodeStructure();
 			ns.addDefaultNode(source);
 			ns.addDefaultNode(sink);
 			ns.addDefaultLink(link);

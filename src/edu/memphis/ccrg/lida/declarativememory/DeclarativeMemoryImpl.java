@@ -39,7 +39,6 @@ public class DeclarativeMemoryImpl extends EpisodicMemoryImpl implements Declara
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		
 	}
 	

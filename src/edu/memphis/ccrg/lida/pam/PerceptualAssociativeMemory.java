@@ -113,7 +113,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Set the default type of {@link PamLink}Link used in this PAM's {@link NodeStructure}.
 	 *
 	 * @param type new default PamLink type
-	 * @see NodeStructure#setDefaultLink(String)
+	 * @see NodeStructure#setDefaultLinkType(String)
 	 */
 	public void setDefaultLinkType(String type);
 	
@@ -121,7 +121,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Set the default type of {@link PamNode} used in this PAM's {@link NodeStructure}.
 	 *
 	 * @param type new default {@link PamNode} type
-	 * @see NodeStructure#setDefaultNode(String)
+	 * @see NodeStructure#setDefaultNodeType(String)
 	 */
     public void setDefaultNodeType(String type);
    

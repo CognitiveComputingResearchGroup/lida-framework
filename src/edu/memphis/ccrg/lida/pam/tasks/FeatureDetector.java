@@ -20,11 +20,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @see FeatureDetectorImpl
  */
 public interface FeatureDetector extends LidaTask {
-	
-
-	//TODO I think that this interface and implementation is confused.  
-	//it seems to both deal with only one node and also with multiple nodes.
-	
+		
 	/**
 	 * Detects a feature.
 	 * @return value from 0.0 to 1.0 representing the degree to which the feature occurs.

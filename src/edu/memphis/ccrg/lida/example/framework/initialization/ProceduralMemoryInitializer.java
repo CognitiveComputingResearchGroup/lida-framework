@@ -25,7 +25,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.proceduralmemory.ArgumentImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
@@ -68,10 +67,8 @@ public class ProceduralMemoryInitializer implements Initializer {
 				rstl.addDefaultNode(n);
 			}
 			Scheme scheme = new SchemeImpl("test scheme", i, new LidaActionImpl("test") {
-				
 				@Override
-				public void performAction() {
-					// TODO Auto-generated method stub					
+				public void performAction() {				
 				}
 			});
 			scheme.setContext(ctxt);

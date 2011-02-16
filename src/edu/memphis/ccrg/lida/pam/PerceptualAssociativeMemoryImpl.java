@@ -28,7 +28,6 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -94,7 +93,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		super(ModuleName.PerceptualAssociativeMemory);
-		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+		nodeStructure = factory.getNodeStructure(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
 		pamListeners = new ArrayList<PamListener>();
 		propagationBehavior = new UpscalePropagationBehavior();
 	}
@@ -451,7 +450,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void setDefaultNodeType(String type) {
-		nodeStructure.setDefaultNode(type);
+		nodeStructure.setDefaultNodeType(type);
 	}
 	
 	/* (non-Javadoc)
@@ -459,7 +458,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void setDefaultLinkType(String type) {
-		nodeStructure.setDefaultLink(type);
+		nodeStructure.setDefaultLinkType(type);
 	}
 
 	public static double getPerceptThreshold() {

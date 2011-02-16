@@ -15,7 +15,10 @@ import java.util.Map;
  */
 public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 
-	/* The default slope (m = 1). */
+	/* 
+	 * The default slope
+	 * 
+	 */
 	public static final double DEFAULT_M = 0.01;
 
 	/*
@@ -53,7 +56,7 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		if (params.length != 0) {
 			mm = (Double) params[0];
 		}
-		currentActivation = currentActivation - mm * ticks;
+		currentActivation -= (mm * ticks);
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
 	}
 
@@ -64,7 +67,7 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		if (params != null) {
 			mm = (Double) params.get("m");
 		}
-		currentActivation = currentActivation - mm * ticks;
+		currentActivation -= (mm * ticks);
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
 	}
 }

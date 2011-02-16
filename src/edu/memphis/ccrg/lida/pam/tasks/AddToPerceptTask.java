@@ -7,14 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
@@ -38,7 +36,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(PamNode pn, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+		nodeStructure = LidaElementFactory.getInstance().getPamNodeStructure();
 		nodeStructure.addDefaultNode(pn);
 	}
 	
@@ -53,7 +51,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(PamLink pl, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = new NodeStructureImpl(PamNodeImpl.factoryName, PamLinkImpl.factoryName);
+		nodeStructure = LidaElementFactory.getInstance().getPamNodeStructure();
 		nodeStructure.addDefaultLink(pl);
 	}
 
@@ -68,7 +66,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam){
 		super();
 		this.pam = pam;
-		this.nodeStructure = new NodeStructureImpl(ns);
+		this.nodeStructure = ns.copy();
 	}
 
 	/**

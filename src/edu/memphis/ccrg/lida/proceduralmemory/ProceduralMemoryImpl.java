@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
- * TODO support for Node desirability
+ * 
  *
  */
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
@@ -46,7 +46,8 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap;
 	
-	private Map<Object, Set<Scheme>> resultSchemeMap;
+//	TODO support for Node desirability
+//	private Map<Object, Set<Scheme>> resultSchemeMap;
 
 	/**
 	 * Convenient for decaying the schemes
@@ -67,7 +68,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public ProceduralMemoryImpl() {
 		super(ModuleName.ProceduralMemory);
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
-		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+//		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 		schemeSet = new HashSet<Scheme>();
 		schemeActivationBehavior = new BasicSchemeActivationBehavior(this);
 		proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
@@ -164,7 +165,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	public void learn(BroadcastContent content) {
 		Collection<Node> nodes = ((NodeStructure) content).getNodes();
 		for (Node n : nodes) {
-			// TODO learning algorithm
+			// learning algorithm
 			n.getId();
 		}
 	}

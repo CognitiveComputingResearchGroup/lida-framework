@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
-import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -44,10 +43,23 @@ public class MockActionSelectionImpl implements ActionSelection {
 
 	}
 
+
 	@Override
-	public void triggerActionSelection() {
-		
-		selectAction();
+	public void init() {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true){
+					selectAction();
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		t.start();
 	}
 
 	@Override
@@ -132,18 +144,6 @@ public class MockActionSelectionImpl implements ActionSelection {
 	public TaskSpawner getAssistingTaskSpawner() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

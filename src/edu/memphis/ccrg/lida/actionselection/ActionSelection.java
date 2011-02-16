@@ -8,8 +8,6 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
-import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
-import edu.memphis.ccrg.lida.actionselection.triggers.TriggerListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -20,8 +18,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * @author Ryan J McCall
  * 
  */
-public interface ActionSelection extends LidaModule, BroadcastListener,
-		TriggerListener, Saveable {
+public interface ActionSelection extends LidaModule, BroadcastListener, Saveable {
 
 	/**
 	 * Those classes that should be receiving selected actions from Action
@@ -44,8 +41,5 @@ public interface ActionSelection extends LidaModule, BroadcastListener,
 	 * satisfied to execute
 	 */
 	public void selectAction();
-
-	// TODO remove
-	public void addActionSelectionTrigger(ActionSelectionTrigger tr);
 
 }

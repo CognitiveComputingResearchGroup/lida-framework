@@ -15,22 +15,48 @@ import java.util.Map;
  */
 public class DefaultExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	
-	//TODO follow linear decay
+	/* 
+	 * The default slope
+	 * 
+	 */
+	public static final double DEFAULT_M = 0.01;
+
+	/*
+	 * The slope of this linear curve.
+	 */
+	private double m;
+
+	/**
+	 * Creates a new instance of LinearCurve. Values for slope and intercept are
+	 * set to the default ones.
+	 */
+	public DefaultExciteStrategy() {
+		m = DEFAULT_M;
+	}
 	
 	@Override
-	public double excite(double currentActivation, double excitation,
-			Object... params) {
-		double newActivation = currentActivation + excitation;
-		if(newActivation > 1.0)
+	public void init() {
+		m = (Double) getParam("m", DEFAULT_M);
+	}
+	
+	@Override
+	public double excite(double currentActivation, double excitation, Object... params) {
+		double mm = m;
+		if (params.length != 0) {
+			mm = (Double) params[0];
+		}
+		
+		currentActivation += mm * excitation;
+		if(currentActivation >= 1.0)
 			return 1.0;
-		if(newActivation < 0.0)
+		if(currentActivation <= 0.0)
 			return 0.0;
-		return newActivation;
+		return currentActivation;
 	}
 
 	@Override
-	public double excite(double currentActivation, double excitation, Map<String, ? extends Object> params) {
-		return this.excite(currentActivation, excitation, params.values().toArray());
+	public double excite(double currentActivation, double excitation, Map<String, ?> params) {
+		return excite(currentActivation, excitation, params.values().toArray());
 	} 
 
 }

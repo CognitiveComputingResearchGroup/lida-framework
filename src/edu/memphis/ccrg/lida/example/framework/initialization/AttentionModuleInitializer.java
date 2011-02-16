@@ -15,6 +15,7 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.attention.AttentionCodelet;
 import edu.memphis.ccrg.lida.attention.AttentionModuleImpl;
+import edu.memphis.ccrg.lida.attention.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
@@ -41,8 +42,7 @@ public class AttentionModuleInitializer implements Initializer {
 		WorkspaceBuffer csm = (WorkspaceBuffer)lida.getSubmodule(ModuleName.Workspace).getSubmodule(ModuleName.CurrentSituationalModel);
 		
 //		AttentionCodelet ac = driver.getNewAttentionCodelet();
-		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet("BasicAttention" , 20, 1.0, null);
-		//TODO getCodelet not working
+		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet(BasicAttentionCodeletImpl.class.getSimpleName() , 20, 1.0, null);
 		ac.setAssociatedModule(gw, ModuleUsage.TO_WRITE_TO);
 		ac.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		driver.runAttentionCodelet(ac);

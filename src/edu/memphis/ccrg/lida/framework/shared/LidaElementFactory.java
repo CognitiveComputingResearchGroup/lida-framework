@@ -27,10 +27,10 @@ import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * Standard factory for the framework.
- * TODO support for NodeStructure.
+ * Standard factory for the basic element of the framework.  
+ * Support for {@link Node}s, {@link Link}s, {@link Codelet}s, and {@link NodeStructure}s
  * 
- * @author Javier Snaider
+ * @author Javier Snaider, Ryan McCall
  */
 public class LidaElementFactory {
 	
@@ -846,6 +846,40 @@ public class LidaElementFactory {
 		}
 	
 		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
+	}
+	
+	/**
+	 * Gets a default NodeStructure
+	 * @return a new NodeStructure with default {@link Node} type and default {@link Link} type.
+	 */
+	public NodeStructure getNodeStructure(){
+		return getNodeStructure(defaultNodeType, defaultLinkType);
+	}
+	
+	/**
+	 * Gets a PAM NodeStructure
+	 * @return a new NodeStructure with Node type {@link PamNodeImpl} and link type {@link PamLinkImpl}
+	 */
+	public NodeStructure getPamNodeStructure(){
+		return getNodeStructure(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+	}
+	
+	/**
+	 * Gets a NodeStructure having specified types.
+	 * @param nodeType type of node in returned {@link NodeStructure}
+	 * @param linkType type of Link in returned {@link NodeStructure}
+	 * @return a new NodeStructure with specified node type and specified link type or null if types
+	 * do not exist in this factory.
+	 */
+	public NodeStructure getNodeStructure(String nodeType, String linkType){
+		if(containsNodeType(nodeType)){
+			if(containsLinkType(linkType)){
+				return new NodeStructureImpl(nodeType, linkType);
+			}
+			logger.log(Level.WARNING, "Factory does not have linkType: " + linkType, LidaTaskManager.getCurrentTick());
+		}
+		logger.log(Level.WARNING, "Factory does not have nodeType: " + nodeType, LidaTaskManager.getCurrentTick());
+		return null;
 	}
 	
 }

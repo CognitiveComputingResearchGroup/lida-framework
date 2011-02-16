@@ -41,7 +41,6 @@ public interface NodeStructure {
 	 */
 	public Collection<Link> addDefaultLinks(Collection<Link> links);
 	
-	//TODO 
 //	public Link addLink(Link l, String linkType);
 
 	/**
@@ -324,7 +323,7 @@ public interface NodeStructure {
 	 * Sets defaultNodeType
 	 * @param type node type used when creating new nodes that are being added to this NodeStructure.
 	 */
-	public void setDefaultNode(String type);
+	public void setDefaultNodeType(String type);
 
 	/**
 	 * Gets defaultLinkType
@@ -336,7 +335,7 @@ public interface NodeStructure {
 	 * Sets defaultLinkType
 	 * @param type link type used when creating new link copies that are being added to this NodeStructure.
 	 */
-	public void setDefaultLink(String type);	
+	public void setDefaultLinkType(String type);	
 	
 
 	/**

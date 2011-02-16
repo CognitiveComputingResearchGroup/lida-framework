@@ -111,7 +111,7 @@ public class AttentionPanel extends LidaPanelImpl {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        // TODO add your handling code here:
+ 
     }//GEN-LAST:event_refreshButtonActionPerformed
 
 

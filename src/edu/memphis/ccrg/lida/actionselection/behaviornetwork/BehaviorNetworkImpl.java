@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +30,6 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Conflict
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.PredecessorExciteStrategy;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SuccessorExciteStrategy;
-import edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
@@ -56,8 +54,6 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  */
 public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener {
-
-	private List<ActionSelectionTrigger> actionSelectionTriggers = new ArrayList<ActionSelectionTrigger>();
 
 	private static final Logger logger = Logger
 			.getLogger(BehaviorNetworkImpl.class.getCanonicalName());
@@ -143,11 +139,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	 */
 	private ConcurrentMap<Node, Set<Behavior>> behaviorsByDeletingItem = new ConcurrentHashMap<Node, Set<Behavior>>();
 
-	/**
-	 * 
-	 */
-	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
-
 	private BehaviorExciteStrategy successorExciteStrategy = new SuccessorExciteStrategy();
 
 	private BehaviorExciteStrategy predecessorExciteStrategy = new PredecessorExciteStrategy();
@@ -194,12 +185,36 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			}
 			@Override
 			public String toString() {
-				return "BN pass activation background task";
+				return BehaviorNetworkImpl.class.getSimpleName() + " pass activation task";
 			}
 		};
 		taskSpawner.addTask(backgroundTask);
+		
+		LidaTask selectionTask = new LidaTaskImpl() {
+			@Override
+			protected void runThisLidaTask() {
+				selectAction();
+			}
+			@Override
+			public String toString() {
+				return BehaviorNetworkImpl.class.getSimpleName()
+						+ " selection task";
+			}
+		};
+		taskSpawner.addTask(selectionTask);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#receiveBroadcast(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
+	 */
+	@Override
+	public void receiveBroadcast(BroadcastContent bc) {
+		synchronized (this) {
+			ProcessBroadcastTask task = new ProcessBroadcastTask(
+					((NodeStructure) bc).copy());
+			taskSpawner.addTask(task);
+		}
+	}
 	private class ProcessBroadcastTask extends LidaTaskImpl {
 		private NodeStructure broadcast;
 
@@ -213,20 +228,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			passActivationFromBroadcast(broadcast);
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#receiveBroadcast(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
-	 */
-	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(
-					((NodeStructure) bc).copy());
-			taskSpawner.addTask(task);
-		}
-		// TODO delete triggers
-		runTriggers();
 	}
 
 	/**
@@ -285,23 +286,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 				.getNodes(), behaviorsByDeletingItem);
 
 		behaviors.put(b.getId(), b);
-		runTriggers();
 	}
-
-	private void runTriggers() {
-		for (ActionSelectionTrigger trigger : actionSelectionTriggers)
-			trigger.checkForTrigger(getBehaviors());
-	}
-
-	/**
-	 * Resets all triggers
-	 */
-	private void resetTriggers() {
-		for (ActionSelectionTrigger t : actionSelectionTriggers) {
-			t.reset();
-		}
-	}
-
 
 	/**
 	 * Abstractly defined utility method to index the behaviors into a map by
@@ -320,30 +305,6 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			}
 
 		}// for
-	}
-
-	/**
-	 * Called by action selection triggers.
-	 */
-	@Override
-	public void triggerActionSelection() {
-		if (actionSelectionStarted.compareAndSet(false, true)) {
-			selectAction();
-
-			// triggers
-			resetTriggers();
-			actionSelectionStarted.set(false);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.actionselection.ActionSelection#addActionSelectionTrigger(edu.memphis.ccrg.lida.actionselection.triggers.ActionSelectionTrigger)
-	 */
-	@Override
-	public void addActionSelectionTrigger(ActionSelectionTrigger tr) {
-		logger.log(Level.FINE, "addes trigger " + tr.toString(),
-				LidaTaskManager.getCurrentTick());
-		actionSelectionTriggers.add(tr);
 	}
 
 	/**
