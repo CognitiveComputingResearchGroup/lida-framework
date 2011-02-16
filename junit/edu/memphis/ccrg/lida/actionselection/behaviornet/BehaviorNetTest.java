@@ -10,12 +10,12 @@
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornet;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
+import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetworkImpl;
@@ -83,25 +83,21 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		long eatAction = 5L;
 		long standAction = 6L;
 		
-		List<Behavior> l = new ArrayList<Behavior>();
-		l.add(getNewBehavior("eat", eatAction, full, hungry, banana));
-		behaviorNet.receiveStream(l);
+		Behavior b = getNewBehavior("eat", eatAction, full, hungry, banana);
+		behaviorNet.receiveBehavior(b);
 		
-		l.clear();
-		l.add(getNewBehavior("drink", drinkAction, drunk, thirsty, cerveza));
-		behaviorNet.receiveStream(l);
-		
-		l.clear();
-		l.add(getNewBehavior("turn left", goLeftAction, banana, standing));
-		behaviorNet.receiveStream(l);
-		
-		l.clear();
-		l.add(getNewBehavior("turn right", goRightAction, cerveza, standing));
-		behaviorNet.receiveStream(l);
 
-		l.clear();
-		l.add(getNewBehavior("stand", standAction, standing, sitting));
-		behaviorNet.receiveStream(l);
+		b = getNewBehavior("drink", drinkAction, drunk, thirsty, cerveza);
+		behaviorNet.receiveBehavior(b);
+		
+		b = getNewBehavior("turn left", goLeftAction, banana, standing);
+		behaviorNet.receiveBehavior(b);
+		
+		b = getNewBehavior("turn right", goRightAction, cerveza, standing);
+		behaviorNet.receiveBehavior(b);
+
+		b = getNewBehavior("stand", standAction, standing, sitting);
+		behaviorNet.receiveBehavior(b);
 		
 		//broadcasts
 		// TODO: Modify NodeStructure to copy goalDegree when we add a node see the factory, etc
@@ -133,7 +129,13 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){
-		Behavior b = new BehaviorImpl(actionId);
+		LidaActionImpl action = new LidaActionImpl("action_"+label) {			
+			@Override
+			public void performAction() {
+			}
+		};
+		action.setId(actionId);
+		Behavior b = new BehaviorImpl(action);
 		b.setLabel(label);
 		b.addToAddingList(result);
 		for(Node n: context)
@@ -148,8 +150,8 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	@Override
-	public void receiveActionId(long id) {
-		System.out.println("Result: Received action " + id);
+	public void receiveAction(LidaAction action) {
+		System.out.println("Result: Received action " + action);
 	}
 
 }
