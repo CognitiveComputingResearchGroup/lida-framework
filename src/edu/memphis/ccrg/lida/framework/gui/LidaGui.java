@@ -130,7 +130,8 @@ public class LidaGui extends javax.swing.JFrame {
         try {
             panel = (LidaPanel) (Class.forName(panelParams[CLASS_NAME])).newInstance();
         } catch (Exception e) {
-            logger.log(Level.WARNING, e.getMessage(), 0L);
+            logger.log(Level.WARNING, "trouble creating panel " + CLASS_NAME, 0L);
+            e.printStackTrace();
             return;
         }
         panel.setName(panelParams[PANEL_NAME]);

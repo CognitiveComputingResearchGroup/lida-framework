@@ -41,15 +41,26 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	@Override
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
+		
+//		System.out.println("BUFFER HAS");
+//		System.out.println(model.toString());
+//		
+//		System.out.println("\nSEEKING");
+//		System.out.println(soughtContent.toString());
+		
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();
-		for (Node n : nodes)
-			if (!model.containsNode(n))
+		for (Node n : nodes){
+			if (!model.containsNode(n)){
 				return false;
+			}
+		}
 
-		for (Link l : links)
-			if (!model.containsLink(l))
+		for (Link l : links){
+			if (!model.containsLink(l)){
 				return false;
+			}
+		}
 
 		logger.log(Level.FINE, "Attn codelet " + this.toString() + " found sought content", LidaTaskManager.getCurrentTick());
 		return true;
