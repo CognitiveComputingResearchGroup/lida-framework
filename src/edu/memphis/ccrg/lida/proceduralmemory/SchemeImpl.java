@@ -82,7 +82,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public LidaAction getSchemeAction() {
+	public LidaAction getAction() {
 		return action;
 	}
 
@@ -144,7 +144,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public Behavior getInstantiation() {
-		Behavior b = new BehaviorImpl(getSchemeAction());
+		Behavior b = new BehaviorImpl(getAction());
 		b.setLabel("scheme: " + getLabel() + " behavior id: " + b.getId());
 		b.setActivation(getTotalActivation());
 		for (Node n : getContext().getNodes()) {

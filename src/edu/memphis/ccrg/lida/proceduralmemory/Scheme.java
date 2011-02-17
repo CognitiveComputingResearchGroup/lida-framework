@@ -38,10 +38,10 @@ public interface Scheme extends Learnable{
 	public long getId();
 	
 	/**
-	 * Gets schemeAction.
+	 * Gets action.
 	 * @return scheme's action in {@link SensoryMotorMemory}
 	 */
-	public LidaAction getSchemeAction();
+	public LidaAction getAction();
 	
 	/**
 	 * Sets schemeAction.

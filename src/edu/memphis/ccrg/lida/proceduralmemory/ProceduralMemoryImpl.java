@@ -148,6 +148,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		}
 	}
 	
+	//inner class
 	private class ProcessBroadcastTask extends LidaTaskImpl{		
 		private NodeStructure broadcast;
 		public ProcessBroadcastTask(NodeStructure broadcast) {
