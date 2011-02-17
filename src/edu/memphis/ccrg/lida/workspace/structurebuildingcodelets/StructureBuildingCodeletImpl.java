@@ -9,12 +9,15 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -26,67 +29,82 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 
-	/**
+	/*
 	 * Set of workspace buffers this codelet 'looks at'
 	 */
-	private Set<WorkspaceBuffer> accessibleModules = new HashSet<WorkspaceBuffer>();
+	private Set<WorkspaceBuffer> readableBuffers;
 	
-	/**
-	 * Holds agent's model of the current situtation
+	/*
+	 *  Buffer written to.
 	 */
-	private WorkspaceBuffer currentSituationalModel;
+	private WorkspaceBuffer writableBuffer;
 	
-	/**
+	/*
 	 * The node structure required for this codelet's action to occur
 	 */
 	private NodeStructure soughtContent;
 	
-	/**
+	/*
 	 * This codelet's action
 	 */
-	private CodeletAction action = new BasicCodeletAction();
+	private CodeletAction action;
 	
-	/**
+	/*
 	 * This codelet's type
 	 */
-	private int type = 0;
+	private CodeletType type;
 	
-	/**
+	/*
 	 * Expected results of this codelets
 	 */
-	private CodeletResult results = new BasicCodeletResult();
+	private CodeletRunResult results;
 	
 	/**
 	 * 
 	 */
 	public StructureBuildingCodeletImpl(){
 		super();
+		readableBuffers = new HashSet<WorkspaceBuffer>();
+		soughtContent = new NodeStructureImpl();
+		action = new BasicCodeletAction();
+	}
+	
+	@Override
+	public void reset() {
+		setTicksPerStep(1);
+		setActivation(0.0);
+		
+		readableBuffers.clear();
+		writableBuffer = null;
+		soughtContent = null;
+		action = null;
+		type = CodeletType.ALL_TYPE;		
+	}
+	
+	@Override
+	public void setAssociatedModule(LidaModule module, int usage) {
+		if(module instanceof WorkspaceBuffer){
+			if(usage == ModuleUsage.TO_READ_FROM){
+				readableBuffers.add((WorkspaceBuffer) module);		
+			}else if(usage == ModuleUsage.TO_WRITE_TO){
+				writableBuffer = (WorkspaceBuffer) module;
+			}else{
+				logger.log(Level.WARNING, "Specified usage is not supported.  See ModuleUsage", LidaTaskManager.getCurrentTick());
+			}
+		}else{
+			logger.log(Level.WARNING, "Expected module to be a WorkspaceBuffer but it was not.  Module not added.", LidaTaskManager.getCurrentTick());
+		}
 	}
                             
 	@Override
 	protected void runThisLidaTask(){	
 		logger.finest("SB codelet " + this.toString() + " being run.");
-		for(WorkspaceBuffer buffer: accessibleModules){
-			action.performAction(buffer, currentSituationalModel);	
+		for(WorkspaceBuffer buffer: readableBuffers){
+			action.performAction(buffer, writableBuffer);	
 		}
 		results.reportFinished();
 		logger.finest("SB codelet " + this.toString() + " finishes one run.");
 	}
-	
-//	/**
-//	 * Clears this codelet's fields in preparation for reuse. 
-//	 * Idea is that the same codelet object is reconfigured at runtime
-//	 * after it finishes to be run as a different altogether codelet. 
-//	 */
-//	@Override
-//	public void reset() {
-//		accessibleModules.clear();
-//		setTicksPerStep(50);
-//		setActivation(0.0);
-//		soughtContent = new NodeStructureImpl();
-//		action = new BasicCodeletAction();
-//		type = 0;		
-//	}
 	
 	@Override
 	public void setSoughtContent(NodeStructure content){
@@ -105,47 +123,24 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	public CodeletAction getCodeletAction(){
 		return action;
 	}
-	
+
 	@Override
-	public void setCodeletResult(CodeletResult r){
-		results = r;
-	}
-	@Override
-	public CodeletResult getCodeletResult(){
+	public CodeletRunResult getCodeletRunResult(){
 		return results;
 	}
 
 	@Override
-	public void addAccessibleBuffer(WorkspaceBuffer buffer) {
-		if(buffer.getModuleName() == ModuleName.CurrentSituationalModel)
-			currentSituationalModel = buffer;
-		else
-			accessibleModules.add(buffer);		
-	}
-	public Set<WorkspaceBuffer> getAccessibleModules() {
-		return accessibleModules;
-	}
-
-	public void setType(int t){
+	public void setType(CodeletType t){
 		type = t;
 	}
 	@Override
-	public int getType() {
+	public CodeletType getCodeletType() {
 		return type;
 	}
 
-	/**
-	 * Returns a String represetation of this codelet
-	 */
 	@Override
 	public String toString(){
-		return "SBCodelet-"+ getTaskId();
+		return type + " SBCodelet-"+ getTaskId();
 	}
 
-	@Override
-	public void setAssociatedModule(LidaModule module, int usage) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 } 

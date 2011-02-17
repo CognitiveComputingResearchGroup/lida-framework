@@ -12,12 +12,15 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
  * @author Ryan J. McCall
  *
  */
-public interface CodeletResult {
+public interface CodeletRunResult {
 
 	public void reportFinished();
-	public int getCompletionStatus();
 	
-	public void setId(long id);
-	public long getId();
+	
+	/**
+	 * Returns completion status
+	 * @return
+	 */
+	public int getCompletionStatus();
 	
 }

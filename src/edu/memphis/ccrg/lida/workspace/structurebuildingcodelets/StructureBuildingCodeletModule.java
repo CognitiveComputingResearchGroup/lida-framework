@@ -19,17 +19,19 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
-public class StructureBuildingCodeletModule extends LidaModuleImpl implements
-		GuiEventProvider {
+public class StructureBuildingCodeletModule extends LidaModuleImpl implements GuiEventProvider {
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
 
 	private Workspace workspace;
+	private WorkspaceBuffer csm;
+	private WorkspaceBuffer perceptualBuffer;
 
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 
@@ -46,17 +48,13 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
+			csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
+			perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
+		}else {
+			logger.log(Level.WARNING, "Cannot add module "
+					+ module.getModuleName(), LidaTaskManager.getCurrentTick());
 		}
 	}
-
-	// /**
-	// * TODO If BufferContent activates a sbCodelet's context, start a new
-	// codelet
-	// * TODO code to determine when/what codelets to activate
-	// */
-	// private void activateCodelets() {
-	//
-	// }
 
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
@@ -65,21 +63,25 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 	}
 
 	/**
-	 * TODO use factory TODO configuration for codelet that is spawned TODO
-	 * Rename
+	 * Model attention module
 	 */
 	public void spawnNewCodelet() {
-		WorkspaceBuffer csm = (WorkspaceBuffer) workspace
-				.getSubmodule(ModuleName.CurrentSituationalModel);
-		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace
-				.getSubmodule(ModuleName.PerceptualBuffer);
 		StructureBuildingCodelet basic = new StructureBuildingCodeletImpl();
-		basic.addAccessibleBuffer(csm);
-		basic.addAccessibleBuffer(perceptualBuffer);
+		basic.setAssociatedModule(csm, ModuleUsage.TO_WRITE_TO);
+		basic.setAssociatedModule(perceptualBuffer, ModuleUsage.TO_READ_FROM);
 		taskSpawner.addTask(basic);
 		logger.log(Level.FINER, "New codelet " + basic + "spawned",
 				LidaTaskManager.getCurrentTick());
 	}
+	
+
+	// /**
+	// *  code to determine when/what codelets to activate. e.g., if BufferContent activates a sbCodelet's context, start a new
+	// codelet.
+	// */
+	// private void activateCodelets() {
+	//
+	// }
 
 	@Override
 	public String toString() {
@@ -97,14 +99,12 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		// TODO
+		// TODO decay codelets?
 	}
 
 }

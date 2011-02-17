@@ -15,9 +15,8 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
  */
 public interface SensoryMotorMemoryListener extends ModuleListener{
 	
-	//TODO Discuss
 	/**
-	 * @param alg Algorithm to execute.
+	 * @param alg Current algorithm being executed by {@link SensoryMotorMemory} 
 	 */
 	public void receiveExecutingAlgorithm(Object alg);
 

@@ -167,7 +167,7 @@ public class SensoryMemoryImplTest {
         @Override
         public Object getModuleContent(Object... params) {
             //throw new UnsupportedOperationException("Not supported yet.");
-            return sensoryMemoryContent;
+            return content;
         }
 
         @Override

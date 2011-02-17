@@ -12,6 +12,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
 /**
  * @author Daqi
@@ -96,7 +97,7 @@ public class SensoryMemoryBackgroundTaskTest {
 }
 
 // Define a temporal class of implementing Class sensoryMemory for test
-class TmpClass implements SensoryMemory {
+class TmpClass implements SensoryMemory, SensoryMotorMemoryListener {
 
 	@Override
 	public ModuleName getModuleName() {

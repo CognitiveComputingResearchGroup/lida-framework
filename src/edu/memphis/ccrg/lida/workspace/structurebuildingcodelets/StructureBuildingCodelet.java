@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * Demon-like process operating on the workspace searching for particular content
@@ -27,15 +26,30 @@ public interface StructureBuildingCodelet extends Codelet{
 	 public void setCodeletAction(CodeletAction a);
 	 public CodeletAction getCodeletAction();
 	 
-	 public void setCodeletResult(CodeletResult cr);
-	 public CodeletResult getCodeletResult();
-
-	 public void addAccessibleBuffer(WorkspaceBuffer buffer);
+	 /** 
+	  * Returns current {@link CodeletRunResult}
+	 * @return Current information about the codelet's progress
+	 */
+	public CodeletRunResult getCodeletRunResult();
 	
 	 /**
-	  * Type is determined by what buffers are accessible to this codelet
-	  * @return type
+	  * Returns {@link CodeletType}
+	  * @return type which buffers this codelet accesses.
 	  */
-	 public int getType();
+	 public CodeletType getCodeletType();
+	 
+	 
+	 /**
+	  * Sets {@link CodeletType}
+	 * @param t type of buffers this codelet accesses.
+	 */
+	public void setType(CodeletType t);
+	
+	/**
+	 * Clears this codelet's fields in preparation for reuse. 
+	 * Idea is that the same codelet object is reconfigured at runtime
+	 * after it finishes to be run as a different altogether codelet. 
+	 */
+	public void reset();
 
 }

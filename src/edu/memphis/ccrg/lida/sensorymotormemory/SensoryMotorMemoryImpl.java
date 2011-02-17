@@ -14,93 +14,138 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
 /**
  * Default implementation of a Map-based SensoryMotorMemory
+ * 
  * @author Ryan J. McCall
- *
+ * 
  */
-public class SensoryMotorMemoryImpl extends LidaModuleImpl implements SensoryMotorMemory{
+public class SensoryMotorMemoryImpl extends LidaModuleImpl implements
+		SensoryMotorMemory, SensoryMemoryListener, ActionSelectionListener {
 
-	private static final Logger logger = Logger.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
-	private Map<Long, Object> algorithmMap = new HashMap<Long, Object>();
-	private Environment environment;
+	private static final Logger logger = Logger
+			.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
+
 	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
-	
+	private Map<Long, Object> actionAlgorithmMap = new HashMap<Long, Object>();
+	private Environment environment;
+
 	public SensoryMotorMemoryImpl() {
 		super(ModuleName.SensoryMotorMemory);
 	}
-	
+
 	@Override
 	public void addListener(ModuleListener listener) {
-		if (listener instanceof SensoryMotorMemoryListener){
-			addSensoryMotorMemoryListener((SensoryMotorMemoryListener)listener);
+		if (listener instanceof SensoryMotorMemoryListener) {
+			addSensoryMotorMemoryListener((SensoryMotorMemoryListener) listener);
+		} else {
+			logger.log(Level.WARNING, "Cannot add listener "
+					+ listener.toString(), LidaTaskManager.getCurrentTick());
 		}
 	}
+
 	@Override
 	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l) {
-		if(l instanceof Environment){
-			logger.log(Level.SEVERE, "Cannot Add Environment as SensoryMotorMemoryListener.  Add it as an associated module.", LidaTaskManager.getCurrentTick());			
-		}else{
+		if (l instanceof Environment) {
+			logger
+					.log(
+							Level.SEVERE,
+							"Cannot add Environment as SensoryMotorMemoryListener.  Add it as an associated module.",
+							LidaTaskManager.getCurrentTick());
+		} else {
 			listeners.add(l);
 		}
 	}
-	
+
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
-		if(module instanceof Environment){
+		if (module instanceof Environment) {
 			environment = (Environment) module;
+		} else {
+			logger.log(Level.WARNING, "Cannot add module "
+					+ module.getModuleName(), LidaTaskManager.getCurrentTick());
+		}
+	}
+	
+	@Override
+	public void setLidaActionAlgorithmMap(Map<Long, Object> actionMap) {
+		this.actionAlgorithmMap = actionMap;
+	}
+
+	@Override
+	public void addActionAlgorithm(long actionId, Object action) {
+		actionAlgorithmMap.put(actionId, action);
+	}
+
+	@Override
+	public synchronized void receiveAction(LidaAction action) {
+		ProcessActionTask t = new ProcessActionTask(action);
+		taskSpawner.addTask(t);
+	}
+	private class ProcessActionTask extends LidaTaskImpl {
+		private LidaAction action;
+		public ProcessActionTask(LidaAction a) {
+			action = a;
+		}
+		@Override
+		protected void runThisLidaTask() {
+			Long id = (Long) action.getContent();
+			Object alg = actionAlgorithmMap.get(id);
+			executeAction(alg);
 		}
 	}
 
 	@Override
-	public Object getModuleContent(Object... params){
-		return algorithmMap;
-	}
-
-	@Override
-	public void receiveSensoryMemoryContent(Object content){
-	}
-
-	@Override
-	public void receiveAction(LidaAction action) {
-		executeAction(algorithmMap.get(action));
-	}
-
-	@Override
-	public void executeAction(Object action) {
-		environment.processAction(action);
-		for(SensoryMotorMemoryListener l: listeners){
-			l.receiveExecutingAlgorithm(action);	
+	public void executeAction(Object algorithm) {
+		environment.processAction(algorithm);
+		for (SensoryMotorMemoryListener l : listeners) {
+			l.receiveExecutingAlgorithm(algorithm);
 		}
 	}
 
 	@Override
-	public void setActionMap(Map<Long, Object> actionMap) {
-		this.algorithmMap = actionMap;		
+	public void decayModule(long ticks) {
+		super.decayModule(ticks);
+		// Your module specific decay code. should call super first.
+	}
+	
+
+	@Override
+	public Object getModuleContent(Object... params) {
+		return null;
 	}
 
 	@Override
-	public void addAction(long actionId, Object action) {
-		algorithmMap.put(actionId, action);
+	public void receiveSensoryMemoryContent(Object content) {
+		// Research problem
 	}
 
 	@Override
 	public void init() {
+		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
-	public void decayModule(long ticks){
-		super.decayModule(ticks);
-		//Your module specific decay code. should call super first.
+	public Object getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean setState(Object content) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

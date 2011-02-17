@@ -34,8 +34,8 @@ public abstract class LidaModuleImpl implements LidaModule {
 		this.moduleName = moduleName;
 	}
 	
-	/**
-	 * Module specific
+	/*
+	 * @see LidaModule#getModuleContent(Object...)
 	 */
 	@Override
 	public abstract Object getModuleContent(Object... params);

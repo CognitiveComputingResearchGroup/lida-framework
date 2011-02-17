@@ -9,14 +9,18 @@ package edu.memphis.ccrg.lida.sensorymemory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
 /**
  * Default implementation of the {@link SensoryMemory} module. This module should
@@ -25,9 +29,10 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */
-public abstract class SensoryMemoryImpl
-        extends LidaModuleImpl implements SensoryMemory {
+public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory, SensoryMotorMemoryListener {
 
+	private static Logger logger = Logger.getLogger(SensoryMemoryImpl.class.getCanonicalName());
+	
     /**
      * The listeners associated with this memory.
      */
@@ -42,7 +47,7 @@ public abstract class SensoryMemoryImpl
     /**
      * The content of this memory. 
      */
-    protected Object sensoryMemoryContent;
+    protected Object content;
 
     /**
      * Default Constructor.
@@ -58,6 +63,8 @@ public abstract class SensoryMemoryImpl
     public void addListener(ModuleListener listener) {
         if (listener instanceof SensoryMemoryListener) {
             addSensoryMemoryListener((SensoryMemoryListener) listener);
+        }else{
+        	logger.log(Level.WARNING, "Cannot add listener " + listener.toString(), LidaTaskManager.getCurrentTick());
         }
     }
     @Override
@@ -72,6 +79,8 @@ public abstract class SensoryMemoryImpl
     public void setAssociatedModule(LidaModule module, int moduleUsage) {
         if (module instanceof Environment){
              environment = (Environment) module;
+        }else{
+        	logger.log(Level.WARNING, "Cannot add module " + module.getModuleName(), LidaTaskManager.getCurrentTick());
         }
     }
     
@@ -104,7 +113,7 @@ public abstract class SensoryMemoryImpl
     @Override
     public boolean setState(Object state) {
         try {
-            sensoryMemoryContent = state;
+            content = state;
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,6 +126,6 @@ public abstract class SensoryMemoryImpl
      */
     @Override
     public Object getState() {
-        return sensoryMemoryContent;
+        return content;
     }
 }

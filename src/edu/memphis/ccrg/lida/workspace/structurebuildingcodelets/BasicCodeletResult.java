@@ -7,10 +7,14 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-public class BasicCodeletResult implements CodeletResult {
+public class BasicCodeletResult implements CodeletRunResult {
 	
+	//TODO enum
 	private int exitStatus;
-	private long id;
+	
+	public BasicCodeletResult(){
+		exitStatus = -1;
+	}
 	
 	@Override
 	public void reportFinished(){
@@ -20,15 +24,4 @@ public class BasicCodeletResult implements CodeletResult {
 	public int getCompletionStatus(){
 		return exitStatus;
 	}
-	
-	@Override
-	public void setId(long id){
-		this.id = id;
-	}
-	@Override
-	public long getId(){
-		return id;
-	}
-	
-
 }

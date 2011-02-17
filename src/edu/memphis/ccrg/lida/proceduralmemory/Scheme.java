@@ -37,17 +37,6 @@ public interface Scheme extends Learnable{
 	 */
 	public long getId();
 	
-	/**
-	 * Gets action.
-	 * @return scheme's action in {@link SensoryMotorMemory}
-	 */
-	public LidaAction getAction();
-	
-	/**
-	 * Sets schemeAction.
-	 * @param action LidaAction
-	 */
-	public void setAction(LidaAction action);	
 	
 	/**
 	 * Gets label.
@@ -62,7 +51,6 @@ public interface Scheme extends Learnable{
 	 */
 	public void setLabel(String label);	
 	
-	
 	/**
 	 * Gets context.
 	 * @return context in which this scheme is activated.
@@ -74,6 +62,42 @@ public interface Scheme extends Learnable{
 	 * @param ns context in which this scheme is activated.
 	 */
 	public void setContext(NodeStructure ns);
+	
+	/**
+	 * Gets action.
+	 * @return scheme's action in {@link SensoryMotorMemory}
+	 */
+	public LidaAction getAction();
+	
+	/**
+	 * Sets schemeAction.
+	 * @param action LidaAction
+	 */
+	public void setAction(LidaAction action);	
+	
+	/**
+	 * Returns addingResult.
+	 * @return NodeStructure representing what this scheme's action should add if executed. 
+	 */
+	public NodeStructure getAddingResult();
+	
+	/**
+	 * Sets addingResult.
+	 * @param ns NodeStructure representing what this scheme's action should add if executed. 
+	 */
+	public void setAddingResult(NodeStructure ns);
+	
+	/**
+	 * Returns deletingResult.
+	 * @return NodeStructure representing what this scheme's action should delete if executed. 
+	 */
+	public NodeStructure getDeletingResult();
+	
+	/**
+	 * Sets deletingResult.
+	 * @param ns NodeStructure representing what this scheme's action should delete if executed. 
+	 */
+	public void setDeletingResult(NodeStructure ns);
 	
 	/**
 	 * Returns reliability
@@ -101,30 +125,6 @@ public interface Scheme extends Learnable{
 	 * @param innate whether this behavior is hard-wired and cannot be decayed.
 	 */
 	public void setInnate(boolean innate);
-	
-	/**
-	 * Returns addingResult.
-	 * @return NodeStructure representing what this scheme's action should add if executed. 
-	 */
-	public NodeStructure getAddingResult();
-	
-	/**
-	 * Sets addingResult.
-	 * @param ns NodeStructure representing what this scheme's action should add if executed. 
-	 */
-	public void setAddingResult(NodeStructure ns);
-	
-	/**
-	 * Returns deletingResult.
-	 * @return NodeStructure representing what this scheme's action should delete if executed. 
-	 */
-	public NodeStructure getDeletingResult();
-	
-	/**
-	 * Sets deletingResult.
-	 * @param ns NodeStructure representing what this scheme's action should delete if executed. 
-	 */
-	public void setDeletingResult(NodeStructure ns);
 	
 	/**
 	 * Instantiates and returns a {@link Behavior} based on this Scheme

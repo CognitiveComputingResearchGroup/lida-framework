@@ -18,18 +18,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 
 	private SensoryMemory sm;
-
-	/*
-	 * This method overrides runThisLidaTask() from class LidaTaskImpl
-	 * It executes method runSensors()of SensoryMemory sm
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl#runThisLidaTask()
-	 */
-	@Override
-	protected void runThisLidaTask() {
-		sm.runSensors();		
-	}
-
+	
 	/*
 	 * This method overrides setAssociatedModule() from class LidaTaskImpl
 	 * It sets a module passing parameter to SensoryMemory sm
@@ -42,6 +31,17 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 		if (module instanceof SensoryMemory) {
 			sm = (SensoryMemory) module;
 		}
+	}
+
+	/*
+	 * This method overrides runThisLidaTask() from class LidaTaskImpl
+	 * It executes method runSensors()of SensoryMemory sm
+	 * 
+	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl#runThisLidaTask()
+	 */
+	@Override
+	protected void runThisLidaTask() {
+		sm.runSensors();		
 	}
 	
 	@Override
