@@ -277,6 +277,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	// This can be resolved by either slowing the scheme activation rate or by
 	// having Behavior
 	// have a originatingScheme field.
+	@Override
 	public void receiveBehavior(Behavior b) {
 		indexBehaviorByElements(b,
 				b.getContextConditions(), behaviorsByContextCondition);

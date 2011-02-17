@@ -45,9 +45,9 @@ public interface Scheme extends Learnable{
 	
 	/**
 	 * Sets schemeAction.
-	 * @param scheme's action in {@link SensoryMotorMemory}
+	 * @param action LidaAction
 	 */
-	public void setSchemeAction(LidaAction action);	
+	public void setAction(LidaAction action);	
 	
 	/**
 	 * Gets label.

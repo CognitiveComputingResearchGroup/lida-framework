@@ -118,7 +118,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public void setSchemeAction(LidaAction action) {
+	public void setAction(LidaAction action) {
 		this.action = action;
 	}
 
