@@ -172,6 +172,13 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		}
 		return res;
 	}
+	
+	@Override
+	public BitVector retrieve(BitVector addr,BitVector mapping) {
+		BitVector mapped = addr.copy();
+		mapped.xor(mapping);
+		return retrieve (mapped);
+	}
 
 	/*
 	 * (non-Javadoc)

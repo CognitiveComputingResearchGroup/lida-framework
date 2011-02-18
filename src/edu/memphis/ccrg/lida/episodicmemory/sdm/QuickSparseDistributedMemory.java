@@ -205,4 +205,10 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public BitVector retrieve(BitVector addr, BitVector mapping) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

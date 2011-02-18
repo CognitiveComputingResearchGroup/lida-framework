@@ -99,4 +99,14 @@ public interface SparseDistributedMemory extends Saveable {
 	public BitVector retrieveIterating(BitVector addr,
 			BitVector mapping);
 
+	/**
+	 * Retrieves the contents of this SDM at addr.  addr is first mapped using mapping.  then
+	 * retrieve contents of this SDM with mapped address.
+	 * @param addr
+	 * @param mapping
+	 * @return the contents of this sparse distributed memory associated with
+	 *         the given address or null if the iteration did not converge
+	 */
+	BitVector retrieve(BitVector addr, BitVector mapping);
+
 }

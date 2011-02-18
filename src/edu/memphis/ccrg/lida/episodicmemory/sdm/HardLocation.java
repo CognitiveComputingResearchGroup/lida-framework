@@ -9,6 +9,15 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
 
+/**
+ * Implementers of this interface are basic components of SDM.
+ * A HardLocation has a unique address that consists of a BitVector of the size of the space.
+ * It is composed of multiple counters (one for each dimension of the space). A HardLocation can 
+ * be written to or read from. 
+ * 
+ * @author Javier Snaider
+ *
+ */
 public interface HardLocation {
 
 	/**

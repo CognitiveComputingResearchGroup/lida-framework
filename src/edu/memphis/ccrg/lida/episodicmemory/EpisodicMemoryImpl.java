@@ -65,8 +65,15 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		// TODO logic for episodic learning goes here...
+		NodeStructure ns =(NodeStructure) bc;
+		BitVector address = null;
+		try {
+			address = translator.translate(ns);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
+		sdm.store(address);
 	}
 
 	@Override
@@ -85,7 +92,7 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 			e.printStackTrace();
 		}
 
-		// TODO make sure this method is thread-safe
+		//TODO make sure this method is thread-safe
 		BitVector out = sdm.retrieveIterating(address);
 
 		NodeStructure result = null;
@@ -132,8 +139,11 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
-		if (module instanceof PerceptualAssociativeMemory) {
-			pam = (PerceptualAssociativeMemory) module;
+		if (module != null) {
+			if (module instanceof PerceptualAssociativeMemory
+					&& module.getModuleName() == ModuleName.PerceptualAssociativeMemory) {
+				pam = (PerceptualAssociativeMemory) module;
+			}
 		}
 	}
 
@@ -141,30 +151,13 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 	public void init() {
 		numOfHardLoc = (Integer) getParam("tem.numOfHardLoc",
 				DEF_HARD_LOCATIONS);
-		setAddressLength((Integer) getParam("tem.addressLength",
-				DEF_ADDRESS_LENGTH));
+		addressLength=(Integer) getParam("tem.addressLength",
+				DEF_ADDRESS_LENGTH);
 		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
-		int radious = (Integer) getParam("tem.activationRadious",
+		int radius = (Integer) getParam("tem.activationRadius",
 				DEF_ACTIVATION_RADIUS);
 		translator = new BasicTranslator(wordLength, pam);
-		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radious, wordLength);
-	}
-
-	/**
-	 * Sets the addressLength of the SDM
-	 * 
-	 * @param addressLength
-	 *            the length (in number of bits) of SDM's the address space.
-	 */
-	public void setAddressLength(int addressLength) {
-		this.addressLength = addressLength;
-	}
-
-	/**
-	 * @return the length (in number of bits) of SDM's the address space.
-	 */
-	public int getAddressLength() {
-		return addressLength;
+		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,addressLength);
 	}
 
 	@Override

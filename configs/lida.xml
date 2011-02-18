@@ -38,14 +38,14 @@
 			<param name="tem.numOfHardLoc" type="int">10000</param>			
 			<param name="tem.addressLength" type="int">1000</param>			
 			<param name="tem.wordLength" type="int">1000</param>			
-			<param name="tem.activationRadious" type="int">451</param>			
+			<param name="tem.activationRadius" type="int">451</param>			
 			<taskspawner>defaultTS</taskspawner>		</module>
 		<module name="DeclarativeMemory">
 			<class>edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl</class>
-			<param name="tem.numOfHardLoc" type="int">10000</param>			
+			<associatedmodule>PerceptualAssociativeMemory</associatedmodule>			<param name="tem.numOfHardLoc" type="int">10000</param>			
 			<param name="tem.addressLength" type="int">1000</param>			
 			<param name="tem.wordLength" type="int">1000</param>			
-			<param name="tem.activationRadious" type="int">451</param>						
+			<param name="tem.activationRadius" type="int">451</param>						
 			<taskspawner>defaultTS</taskspawner>		</module>
 		<module name="Workspace">
 			<class>edu.memphis.ccrg.lida.workspace.WorkspaceImpl</class>

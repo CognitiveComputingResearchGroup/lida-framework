@@ -10,9 +10,9 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 import cern.colt.bitvector.BitVector;
 
 /**
- * Default implementation of HardLocation
+ * Default implementation of HardLocation.
+ * 
  * @author Javier Snaider
- *
  */
 public class HardLocationImpl implements HardLocation {
 	private static final byte DEFAULT_COUNTER_MAX = 40;
