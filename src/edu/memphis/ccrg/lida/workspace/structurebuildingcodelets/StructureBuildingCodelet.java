@@ -51,5 +51,6 @@ public interface StructureBuildingCodelet extends Codelet{
 	 * after it finishes to be run as a different altogether codelet. 
 	 */
 	public void reset();
+	public Long getId();
 
 }

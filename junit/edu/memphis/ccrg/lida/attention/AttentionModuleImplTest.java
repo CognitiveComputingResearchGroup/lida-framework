@@ -99,7 +99,7 @@ public class AttentionModuleImplTest {
 	@Test
 	public void testGetNewAttentionCodelet() {
 		
-		AttentionCodelet codelet = attnModule.getNewAttentionCodelet();		
+		AttentionCodelet codelet = attnModule.getNewCodelet();		
 		assertNotNull("Problem with getNewAttentionCodelet()", codelet);		
 	}
 
@@ -107,6 +107,6 @@ public class AttentionModuleImplTest {
 	public void testRunAttentionCodelet() {
 		
 		System.out.println("Testing runAttentionCodelet() method. See console...");		
-		attnModule.runAttentionCodelet(codelet);
+		attnModule.runCodelet(codelet);
 	}	
 }

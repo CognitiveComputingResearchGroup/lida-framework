@@ -120,7 +120,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements
 	 * @return AttentionCodelet - the new attention codelet
 	 * 
 	 */
-	public AttentionCodelet getNewAttentionCodelet() {
+	public AttentionCodelet getNewCodelet() {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(
 				defaultCodeletName, codeletTicksPerStep, codeletActivation,
 				null);
@@ -131,8 +131,8 @@ public class AttentionModuleImpl extends LidaModuleImpl implements
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
+		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		return codelet;
 	}
 
@@ -143,7 +143,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements
 	 *            the new attention codelet to be run
 	 * 
 	 */
-	public void runAttentionCodelet(AttentionCodelet codelet) {
+	public void runCodelet(AttentionCodelet codelet) {
 		taskSpawner.addTask(codelet);
 		logger.log(Level.FINER, "New attention codelet " + codelet.toString()
 				+ " spawned.", LidaTaskManager.getCurrentTick());

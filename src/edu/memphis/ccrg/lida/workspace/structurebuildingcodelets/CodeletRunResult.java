@@ -18,8 +18,8 @@ public interface CodeletRunResult {
 	
 	
 	/**
-	 * Returns completion status
-	 * @return
+	 * Returns completionStatus
+	 * @return int representing completion
 	 */
 	public int getCompletionStatus();
 	

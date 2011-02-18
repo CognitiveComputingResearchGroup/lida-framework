@@ -29,6 +29,10 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 
+	private static Long idGenerator = 0L;
+	
+	private Long id;
+	
 	/*
 	 * Set of workspace buffers this codelet 'looks at'
 	 */
@@ -64,6 +68,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	 */
 	public StructureBuildingCodeletImpl(){
 		super();
+		id = idGenerator++;
 		readableBuffers = new HashSet<WorkspaceBuffer>();
 		soughtContent = new NodeStructureImpl();
 		action = new BasicCodeletAction();
@@ -141,6 +146,11 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	@Override
 	public String toString(){
 		return type + " SBCodelet-"+ getTaskId();
+	}
+
+	@Override
+	public Long getId() {
+		return id;
 	}
 
 } 

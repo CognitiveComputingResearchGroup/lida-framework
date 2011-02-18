@@ -45,7 +45,7 @@ public class AttentionModuleInitializer implements Initializer {
 		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet(BasicAttentionCodeletImpl.class.getSimpleName() , 20, 1.0, null);
 		ac.setAssociatedModule(gw, ModuleUsage.TO_WRITE_TO);
 		ac.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
-		driver.runAttentionCodelet(ac);
+		driver.runCodelet(ac);
 	}
 
 }
