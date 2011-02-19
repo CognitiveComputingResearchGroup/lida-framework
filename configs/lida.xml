@@ -18,7 +18,7 @@
 			<param name="width" type="int">10 </param>			<taskspawner>defaultTS</taskspawner>		</module>
 		<module name="SensoryMemory">
 			<class>edu.memphis.ccrg.lida.example.genericlida.environment.VisualSensoryMemory</class>
-			<associatedmodule>Environment</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initialTasks>			<task name="start">				<class>edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask</class>				<ticksperrun>5</ticksperrun>				<associatedmodule>SensoryMemory</associatedmodule>			</task>			</initialTasks>
+			<associatedmodule>Environment</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="start">					<class>edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask</class>					<ticksperrun>5</ticksperrun>					<associatedmodule>SensoryMemory</associatedmodule>				</task>			</initialTasks>
 		</module>
 		<module name="SensoryMotorMemory">
 			<class>edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryImpl</class>			<associatedmodule>Environment</associatedmodule>
