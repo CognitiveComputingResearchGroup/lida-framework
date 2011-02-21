@@ -14,12 +14,12 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 
+import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.mocks.MockPAM;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 
 /**

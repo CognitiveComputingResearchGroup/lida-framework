@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,12 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
-
+import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.mocks.MockPAM;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 public class BasicTranslatorTest {

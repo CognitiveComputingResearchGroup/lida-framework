@@ -328,8 +328,13 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		// TODO Auto-generated method stub
+		percept = ns;
+	}
 
+	private NodeStructure percept;
+	
+	public NodeStructure getCurrentTestPercept(){
+		return percept;
 	}
 
 	/* (non-Javadoc)

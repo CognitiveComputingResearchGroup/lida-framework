@@ -3,15 +3,11 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-
-import org.junit.Test;
-
-import edu.memphis.ccrg.lida.episodicmemory.mocks.MockPAM;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 
