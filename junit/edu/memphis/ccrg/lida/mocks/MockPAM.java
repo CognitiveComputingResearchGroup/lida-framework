@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.episodicmemory.mocks;
+package edu.memphis.ccrg.lida.mocks;
 
 import java.util.Collection;
 import java.util.Map;
@@ -318,10 +318,16 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		// TODO Auto-generated method stub
-
+		percept = ns;
 	}
 
+	private NodeStructure percept;
+	
+	//just for testing
+	public NodeStructure getCurrentTestPercept(){
+		return percept;
+	}
+	
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.framework.shared.Node)
 	 */

@@ -678,11 +678,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	
 	@Override
 	public Linkable getLinkable(ExtendedId ids) {
-		Linkable linkable = getNode(ids);
-		if (linkable == null) {
-			linkable = getLink(ids);
+		if(ids.isNodeId()){
+			return getNode(ids);
+		}else{
+			return getLink(ids);
 		}
-		return linkable;
 	}
 
 	@Override

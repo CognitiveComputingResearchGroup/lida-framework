@@ -19,7 +19,7 @@ public class DefaultExciteStrategy extends StrategyImpl implements ExciteStrateg
 	 * The default slope
 	 * 
 	 */
-	public static final double DEFAULT_M = 0.01;
+	public static final double DEFAULT_M = 1.0;
 
 	/*
 	 * The slope of this linear curve.

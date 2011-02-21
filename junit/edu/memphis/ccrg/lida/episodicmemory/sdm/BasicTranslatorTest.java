@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
 
-import edu.memphis.ccrg.lida.episodicmemory.mocks.MockPAM;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.mocks.MockPAM;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 public class BasicTranslatorTest {

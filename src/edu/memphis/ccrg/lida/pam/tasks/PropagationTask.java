@@ -41,7 +41,7 @@ public class PropagationTask extends LidaTaskImpl {
 	private TaskSpawner taskSpawner;
 
 	/**
-	 * Instantiates a new propagation task.
+	 * Propagates specified activation amount from source to sink along link.
 	 * 
 	 * @param source
 	 *            the source of activation
@@ -71,7 +71,6 @@ public class PropagationTask extends LidaTaskImpl {
 	protected void runThisLidaTask() {
 		link.excite(excitationAmount);
 		sink.excite(excitationAmount);
-		pam.propagateActivationToParents(sink);
 		if(pam.isOverPerceptThreshold(link) && 
 		   pam.isOverPerceptThreshold(sink)){
 			//If over threshold then spawn a new task to add the node to the percept
@@ -83,6 +82,7 @@ public class PropagationTask extends LidaTaskImpl {
 			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
 			taskSpawner.addTask(task);
 		}
+		pam.propagateActivationToParents(sink);
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 	

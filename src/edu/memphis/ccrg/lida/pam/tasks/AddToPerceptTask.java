@@ -7,7 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import java.util.Collection;
+
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -33,7 +36,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * @param pam
 	 *            the {@link PerceptualAssociativeMemory}
 	 */
-	public AddToPerceptTask(PamNode pn, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(Node pn, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
 		nodeStructure = LidaElementFactory.getInstance().getPamNodeStructure();
@@ -41,18 +44,15 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	}
 	
 	/**
-	 * Creates a new AddToPerceptTask to add a single {@link PamLink}
-	 * 
-	 * @param pl
-	 *            a {@link PamLink}
-	 * @param pam
-	 *            the {@link PerceptualAssociativeMemory}
+	 * Creates a new AddToPerceptTask to add a collection of {@link PamNode}
+	 * @param nodes to be added
+	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
-	public AddToPerceptTask(PamLink pl, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(Collection<Node> nodes, PerceptualAssociativeMemory pam){
 		super();
 		this.pam = pam;
 		nodeStructure = LidaElementFactory.getInstance().getPamNodeStructure();
-		nodeStructure.addDefaultLink(pl);
+		nodeStructure.addDefaultNodes(nodes);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * Thus it is justifiable to make this a separate thread
 	 */
 	@Override
-	public void runThisLidaTask() {		
+	protected void runThisLidaTask() {		
 		pam.addNodeStructureToPercept(nodeStructure);	
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}

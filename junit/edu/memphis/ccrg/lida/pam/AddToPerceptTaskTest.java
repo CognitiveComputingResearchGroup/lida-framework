@@ -13,19 +13,25 @@ package edu.memphis.ccrg.lida.pam;
 import junit.framework.TestCase;
 
 import org.junit.Before;
-import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.mocks.MockPAM;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 
 /**
- * @author Siminder Kaur
+ * @author Ryan McCall, Usef Faghihi
  *
  */
 public class AddToPerceptTaskTest extends TestCase{
 	
-	PamNode pamNode;
-	PerceptualAssociativeMemory pam;
-	AddToPerceptTask addToTask;
+	private PamNode nodeA, nodeB;
+	private MockPAM pam;
+	
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	/**
 	 * @throws java.lang.Exception e
@@ -33,34 +39,62 @@ public class AddToPerceptTaskTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		pamNode = new PamNodeImpl();
-		pam = new PerceptualAssociativeMemoryImpl();
+		nodeA = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+		nodeB = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+		pam = new MockPAM();
 	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask#runThisLidaTask()}.
-	 */
-	@Test
-	public void testRunThisLidaTask() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask#AddToPerceptTask(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory)}.
-	 */
-	@Test
-	public void testAddToPerceptTaskPamNodePerceptualAssociativeMemory() {
-		addToTask = new AddToPerceptTask(pamNode, pam);
-		fail("Not yet implemented"); // TODO
+	
+	//test adding a single node
+	public void test1(){
+		AddToPerceptTask t = new AddToPerceptTask(nodeA, pam);
+		t.call();
 		
+		NodeStructure result = pam.getCurrentTestPercept();
+		Node actual = result.getNode(nodeA.getId());
+		assertEquals(nodeA, actual);
+		assertEquals(nodeA.getId(), actual.getId());
+		assertEquals(nodeA.getClass().getSimpleName(), actual.getClass().getSimpleName());
 	}
+	
+	public void test2(){
+		//Setup
+		NodeStructure expectedNS = factory.getPamNodeStructure();
+		expectedNS.addDefaultNode(nodeA);
+		Node expectedNodeB = expectedNS.addDefaultNode(nodeB);
+		Link expectedLink = expectedNS.addLink(nodeA.getId(), nodeB.getId(), LinkCategoryNode.NONE, 1.0);
+			
+		//Code being tested
+		AddToPerceptTask t = new AddToPerceptTask(expectedNS, pam);
+		t.call();
+		
+		//Check results
+		NodeStructure actualNS = pam.getCurrentTestPercept();
+		assertEquals(2, actualNS.getNodeCount());
+		assertEquals(1, actualNS.getLinkCount());
+		assertEquals(3, actualNS.getLinkableCount());
+				
+		Node resultNodeA = actualNS.getNode(nodeA.getId());
+		assertEquals(nodeA, resultNodeA);
+		assertEquals(nodeA.getId(), resultNodeA.getId());
+		assertTrue(resultNodeA instanceof PamNodeImpl);
+		
+		Node resultNodeB = actualNS.getNode(nodeB.getId());
+		assertEquals("" + resultNodeB , nodeB, resultNodeB);
+		assertEquals(nodeB.getId(), resultNodeB.getId());
+		assertTrue(resultNodeB instanceof PamNodeImpl);
 
-	/**
-	 * 
-	 */
-	@Test
-	public void testAddToPerceptTaskNodeStructurePerceptualAssociativeMemory() {
-		fail("Not yet implemented"); // TODO
+		Link resultLink = (Link) actualNS.getLink(expectedLink.getExtendedId());
+		assertEquals(expectedLink, resultLink);
+		assertEquals(expectedLink.getExtendedId(), resultLink.getExtendedId());
+		assertTrue(resultLink instanceof PamLinkImpl);
 	}
+//	
+//	private void assertSimpleName(Object expected, Object result){
+//		assertEquals(expected.getClass().getSimpleName(), result.getClass().getSimpleName());
+//	}
+//	private void assertCanonicalName(Object expected, Object result){
+//		assertEquals(expected.getClass().getCanonicalName(), result.getClass().getCanonicalName());
+//	}
+
 
 }
