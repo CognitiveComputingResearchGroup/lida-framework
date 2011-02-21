@@ -255,6 +255,7 @@ public class LidaXmlFactory implements LidaFactory {
 			}else{
 				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
 						"\" occurred during creation of object of class " + className + "\n", 0L);
+				e.printStackTrace();
 			}
 			return null; 
 		}

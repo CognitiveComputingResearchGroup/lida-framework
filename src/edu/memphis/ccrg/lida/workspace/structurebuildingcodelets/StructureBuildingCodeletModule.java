@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -30,10 +31,12 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
-
-	private Workspace workspace;
-	private WorkspaceBuffer csm;
-	private WorkspaceBuffer perceptualBuffer;
+	
+	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
+	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
+	
+	private static final int DEFAULT_TICKS = 1;
+	private int codeletTicksPerRun = DEFAULT_TICKS;
 	
 	/*
 	 * Pool keeping all recycled codelets.
@@ -42,21 +45,22 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 	 */
 	private Map<CodeletType, List<StructureBuildingCodelet>> codeletPool;
 
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
+	private List<FrameworkGuiEventListener> guis;
 	
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	
 	private String defaultCodeletName;
-	
-	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
-	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
-	
-	private static final int DEFAULT_TICKS = 1;
-	private int codeletTicksPerRun = DEFAULT_TICKS;
+
+	private Workspace workspace;
+	private WorkspaceBuffer csm;
+	private WorkspaceBuffer perceptualBuffer;
 
 	public StructureBuildingCodeletModule() {
 		super(ModuleName.StructureBuildingCodeletModule);
+		codeletPool = new HashMap<CodeletType, List<StructureBuildingCodelet>>();
 		codeletPool.put(CodeletType.PERCEPTUAL_BUFFER_TYPE, new ArrayList<StructureBuildingCodelet>());
+		
+		guis = new ArrayList<FrameworkGuiEventListener>();		
 		
 		Class<StructureBuildingCodeletImpl> cl = StructureBuildingCodeletImpl.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
