@@ -423,8 +423,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		// TODO Auto-generated method stub
-		return l.getTotalActivation()== this.perceptThreshold;
+		return l.getTotalActivation()== MockPAM.perceptThreshold;
 	}
 
 	/* (non-Javadoc)

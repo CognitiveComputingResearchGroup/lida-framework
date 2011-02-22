@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -13,12 +13,7 @@ import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 
 public class ExcitationTaskTest extends TestCase {
 	
-private PamNode pamNode;
-	
-	/*
-	 * Amount to excite
-	 */
-	private double excitationAmount;
+	private PamNode pamNode;
 	
 	/*
 	 * Used to make another excitation call
