@@ -139,11 +139,11 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 
 	@Override
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
-		if (module != null) {
-			if (module instanceof PerceptualAssociativeMemory
-					&& module.getModuleName() == ModuleName.PerceptualAssociativeMemory) {
-				pam = (PerceptualAssociativeMemory) module;
-			}
+		if (module instanceof PerceptualAssociativeMemory) {
+			pam = (PerceptualAssociativeMemory) module;
+			translator = new BasicTranslator(wordLength, pam);
+		}else{
+			logger.log(Level.WARNING, "Cannot associate " + module + " to this module.", 0L);
 		}
 	}
 
@@ -156,7 +156,6 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
 		int radius = (Integer) getParam("tem.activationRadius",
 				DEF_ACTIVATION_RADIUS);
-		translator = new BasicTranslator(wordLength, pam);
 		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,addressLength);
 	}
 

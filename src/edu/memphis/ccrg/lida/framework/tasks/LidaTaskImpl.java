@@ -76,8 +76,8 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 		try{
 			runThisLidaTask();
 		}catch(Exception e){
-			e.printStackTrace();
 			logger.log(Level.WARNING, "Exception " + e.toString() + " encountered in task " + this.toString(), LidaTaskManager.getCurrentTick());
+			e.printStackTrace();
 		}
 		
 		if (ts != null) 

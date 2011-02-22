@@ -59,8 +59,11 @@ public abstract class LidaModuleImpl implements LidaModule {
 	}
 	
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializable#init()
+	/** 
+	 * Implementations should only perform initialization of variables or
+	 * objects that depend on parameters in the parameter map specified in {@link #init(Map)}.
+	 * Furthermore they should not try to access modules added via {@link #setAssociatedModule(LidaModule, int)}
+	 * as this method will not have run yet at the time this method is called.
 	 */
 	@Override
 	public abstract void init();

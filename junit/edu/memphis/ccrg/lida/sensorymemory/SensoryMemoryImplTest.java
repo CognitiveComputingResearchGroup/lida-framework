@@ -200,7 +200,7 @@ public class SensoryMemoryImplTest {
     public class MockEnvironmentImpl implements Environment {
 
         @Override
-        public void resetEnvironment() {
+        public void resetState() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

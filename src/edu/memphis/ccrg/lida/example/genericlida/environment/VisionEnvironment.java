@@ -55,7 +55,7 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 
 
 	@Override
-	public void resetEnvironment() {
+	public void resetState() {
 		iloc = -1;
 		jloc = -1;
 		environContent = new double[imageHeight][imageWidth];

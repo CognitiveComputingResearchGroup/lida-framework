@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 /**
  * Environments should not be a listener of anything besides GUIs.  Rather, SensoryMemory and SensoryMotorMemory should
  * add environments as associated modules in the XML configuration file. 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  */
 public abstract class EnvironmentImpl extends LidaModuleImpl implements Environment, GuiEventProvider{
 	
@@ -34,7 +34,7 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 		listeners.add(listener);
 	}
 		
-	/**
+	/*
 	 * A Gui Event provider may want to send different kinds of events at different
 	 * times, so the event to be sent is passed as a parameter.
 	 * @param evt {@link FrameworkGuiEvent}

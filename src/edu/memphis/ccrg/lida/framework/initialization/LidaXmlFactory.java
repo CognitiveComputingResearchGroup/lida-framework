@@ -241,8 +241,7 @@ public class LidaXmlFactory implements LidaFactory {
 		try {
 			moduleName = Enum.valueOf(ModuleName.class, name);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.",
-					0L);
+			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.", 0L);
 			return null;
 		}
 		//Create module.
@@ -261,7 +260,7 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		module.setModuleName(moduleName);
 		
-		//Set up module's taskspawner and initial tasks.
+		//Set up module's Taskspawner and initial tasks.
 		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
 		TaskSpawner ts = taskSpawners.get(taskspawner);
 		if (ts != null) {
@@ -272,8 +271,14 @@ public class LidaXmlFactory implements LidaFactory {
 			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
 		}
 		
-		//Initializes module with its specified parameters.
-		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		//Get and add all submodules.
+		for (LidaModule lm : getModules(moduleElement)) {
+			module.addSubModule(lm);
+		}
+		
+		//Get parameters specified for this module
+		Map<String, Object> params = XmlUtils.getTypedParams(moduleElement);
+		//Initialize module's parameters.
 		try{
 			module.init(params);
 		}catch(Exception e){
@@ -282,16 +287,14 @@ public class LidaXmlFactory implements LidaFactory {
 			e.printStackTrace();
 		}
 		
-		//Get and add all submodules.
-		for (LidaModule lm : getModules(moduleElement)) {
-			module.addSubModule(lm);
-		}
+		//Setup the user-specified Initializer that will run later to perform
+		// custom initialization of the module. 
 		String classInit = XmlUtils.getTextValue(moduleElement,	"initializerclass");
 		if (classInit != null) {
 			toInitialize.add(new Object[] { module, classInit, params});
 		}
 		
-		//Store all modules to associate.
+		//Gathers all 'associatedmodules' for this module.  To be added later.
 		getAssociatedModules(moduleElement, module);
 		
 		logger.log(Level.INFO, "Module: " + name + " added.", 0L);

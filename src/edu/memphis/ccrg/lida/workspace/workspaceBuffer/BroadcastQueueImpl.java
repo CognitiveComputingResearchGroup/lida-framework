@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 /**
  * The BroadcastQueue is the data structure storing the recent contents of consciousness.
  * It is a submodule of the Workspace. There is a limit on the queue's capacity and on the amount
- * of activation {@link Linkable}s must have to remain in the cue.  
+ * of activation {@link Linkable}s must have to remain in the queue.  
  * 
  * @author Ryan J McCall
  */

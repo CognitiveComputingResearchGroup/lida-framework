@@ -112,7 +112,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 //		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
 	}
 	
-	/**
+	/*
 	 * For every element in elements, adds an entry to map where the key is an element
 	 * and the value is scheme.
 	 * @param scheme

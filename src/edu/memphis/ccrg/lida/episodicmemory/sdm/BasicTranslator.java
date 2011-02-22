@@ -26,6 +26,22 @@ public class BasicTranslator implements Translator {
 	private int size;
 	private PerceptualAssociativeMemory pam;
 	private LidaElementFactory factory;
+	
+
+	/**
+	 * Constructor of the class.
+	 * 
+	 * @param size
+	 *            the number of positions of the bit vector
+	 * @param pam
+	 *            the PAM associated with this translator
+	 */
+	public BasicTranslator(int size, PerceptualAssociativeMemory pam) {
+		super();
+		this.size = size;
+		this.pam = pam;
+		this.factory=LidaElementFactory.getInstance();
+	}
 
 	/**
 	 * Translates a bit vector into a node structure. Since the getQuick method
@@ -67,18 +83,4 @@ public class BasicTranslator implements Translator {
 		return v;
 	}
 
-	/**
-	 * Constructor of the class.
-	 * 
-	 * @param size
-	 *            the number of positions of the bit vector
-	 * @param pam
-	 *            the PAM associated with this translator
-	 */
-	public BasicTranslator(int size, PerceptualAssociativeMemory pam) {
-		super();
-		this.size = size;
-		this.pam = pam;
-		this.factory=LidaElementFactory.getInstance();
-	}
 }
