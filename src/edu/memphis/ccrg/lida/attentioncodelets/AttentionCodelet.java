@@ -6,7 +6,7 @@
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
 
-package edu.memphis.ccrg.lida.attention;
+package edu.memphis.ccrg.lida.attentioncodelets;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;

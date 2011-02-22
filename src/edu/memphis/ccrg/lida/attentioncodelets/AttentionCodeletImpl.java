@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.attention;
+package edu.memphis.ccrg.lida.attentioncodelets;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

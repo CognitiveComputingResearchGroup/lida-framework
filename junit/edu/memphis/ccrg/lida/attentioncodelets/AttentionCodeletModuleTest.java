@@ -1,10 +1,12 @@
-package edu.memphis.ccrg.lida.attention;
+package edu.memphis.ccrg.lida.attentioncodelets;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
@@ -25,9 +27,9 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
-public class AttentionModuleImplTest {
+public class AttentionCodeletModuleTest {
 	
-	AttentionModuleImpl attnModule;
+	AttentionCodeletModule attnModule;
 	Workspace workspace;
 	WorkspaceBuffer csm;
 	GlobalWorkspace globalWorkspace;
@@ -42,7 +44,7 @@ public class AttentionModuleImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		attnModule = new AttentionModuleImpl();
+		attnModule = new AttentionCodeletModule();
 		globalWorkspace= new GlobalWorkspaceImpl();
 		workspace = new WorkspaceImpl();
 		csm = new WorkspaceBufferImpl();

@@ -13,9 +13,9 @@ package edu.memphis.ccrg.lida.example.framework.initialization;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.attention.AttentionCodelet;
-import edu.memphis.ccrg.lida.attention.AttentionModuleImpl;
-import edu.memphis.ccrg.lida.attention.BasicAttentionCodeletImpl;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
@@ -36,7 +36,7 @@ public class AttentionModuleInitializer implements Initializer {
 	 */
 	@Override
 	public void initModule(Initializable module, Lida lida, Map<String, ?> params) {
-		AttentionModuleImpl driver = (AttentionModuleImpl)module;
+		AttentionCodeletModule driver = (AttentionCodeletModule)module;
 		LidaElementFactory factory = LidaElementFactory.getInstance();
 		GlobalWorkspace gw = (GlobalWorkspace)lida.getSubmodule(ModuleName.GlobalWorkspace);
 		WorkspaceBuffer csm = (WorkspaceBuffer)lida.getSubmodule(ModuleName.Workspace).getSubmodule(ModuleName.CurrentSituationalModel);

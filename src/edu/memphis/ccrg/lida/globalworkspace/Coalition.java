@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import edu.memphis.ccrg.lida.attention.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**

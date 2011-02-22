@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.attention;
+package edu.memphis.ccrg.lida.attentioncodelets;
 
 import java.util.Collection;
 import java.util.logging.Level;
@@ -29,11 +29,11 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 	
-public class AttentionModuleImpl extends LidaModuleImpl implements
+public class AttentionCodeletModule extends LidaModuleImpl implements
 		BroadcastListener, PreafferenceListener {
 
 	private static final Logger logger = Logger
-			.getLogger(AttentionModuleImpl.class.getCanonicalName());
+			.getLogger(AttentionCodeletModule.class.getCanonicalName());
 
 	private WorkspaceBuffer csm;
 	
@@ -49,7 +49,7 @@ public class AttentionModuleImpl extends LidaModuleImpl implements
 	private static final double defaultCodeletActivation = 1.0;
 	private double codeletActivation = defaultCodeletActivation;
 
-	public AttentionModuleImpl() {
+	public AttentionCodeletModule() {
 		Class<BasicAttentionCodeletImpl> cl = BasicAttentionCodeletImpl.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();

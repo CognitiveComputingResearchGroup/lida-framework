@@ -1,7 +1,8 @@
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import java.util.Collection;
-import edu.memphis.ccrg.lida.attention.AttentionCodeletImpl;
+
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
