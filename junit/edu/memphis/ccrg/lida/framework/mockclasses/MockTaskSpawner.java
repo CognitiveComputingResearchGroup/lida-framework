@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class MockTaskSpawner implements TaskSpawner {
 
 	@Override
 	public Collection<LidaTask> getRunningTasks() {
-		return null;
+		return Collections.unmodifiableCollection(tasks);
 	}
 
 	@Override
