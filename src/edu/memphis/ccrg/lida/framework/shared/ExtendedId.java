@@ -11,7 +11,7 @@ public class ExtendedId {
 
 	private int linkCategory;
 	private int sourceNodeId;
-	private int sinkCategory;
+	private int sinkLinkCategory;
 	private int sinkNode1Id;
 	private int sinkNode2Id;
 	
@@ -41,7 +41,7 @@ public class ExtendedId {
 		super();
 		this.linkCategory = category;
 		this.sourceNodeId = sourceNodeId;
-		this.sinkCategory = sinkId.linkCategory;
+		this.sinkLinkCategory = sinkId.linkCategory;
 		this.sinkNode1Id = sinkId.sourceNodeId;
 		this.sinkNode2Id = sinkId.sinkNode1Id;
 	}
@@ -55,7 +55,7 @@ public class ExtendedId {
 		super();
 		this.linkCategory = Integer.MIN_VALUE;
 		this.sourceNodeId = nodeId;
-		this.sinkCategory = Integer.MIN_VALUE;
+		this.sinkLinkCategory = Integer.MIN_VALUE;
 		this.sinkNode1Id = Integer.MIN_VALUE;
 		this.sinkNode2Id = Integer.MIN_VALUE;
 	}
@@ -84,7 +84,7 @@ public class ExtendedId {
 			ExtendedId otherId = (ExtendedId) o;
 			return (linkCategory == otherId.linkCategory && 
 					sourceNodeId == otherId.sourceNodeId && 
-					sinkCategory == otherId.sinkCategory && 
+					sinkLinkCategory == otherId.sinkLinkCategory && 
 					sinkNode1Id == otherId.sinkNode1Id   && 
 					sinkNode2Id == otherId.sinkNode2Id);
 		}
@@ -93,12 +93,12 @@ public class ExtendedId {
 	
 	@Override
 	public int hashCode() {
-		return (linkCategory ^ sourceNodeId ^ sinkCategory ^ sinkNode1Id ^ sinkNode2Id);
+		return (linkCategory ^ sourceNodeId ^ sinkLinkCategory ^ sinkNode1Id ^ sinkNode2Id);
 	}
 
 	@Override
 	public String toString() {
-		return "[Cat: " + linkCategory + ", SrcId: " + sourceNodeId + "," + sinkCategory
+		return "[Cat: " + linkCategory + ", SrcId: " + sourceNodeId + "," + sinkLinkCategory
 				+ "," + sinkNode1Id + "," + sinkNode2Id + "]";
 	}
 	

@@ -24,10 +24,10 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
-	//TODO Consider having multiple NodeStructures 
-	private NodeStructure buffer;
-	
 	private final double DEFAULT_REMOVABLE_THRESHOLD = 0.01;
+	
+	//TODO Consider having multiple NodeStructures 
+	private NodeStructure buffer;	
 	
 	public WorkspaceBufferImpl() {
 		buffer = new NodeStructureImpl();
