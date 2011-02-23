@@ -7,7 +7,7 @@ public class MockBroadcastListener implements BroadcastListener {
 	
 	@Override
 	public void receiveBroadcast(BroadcastContent bc){
-		System.out.println ("Listener received broadcast: "+ bc);
+		System.out.println ("Mock Broadcast Listener received broadcast: "+ bc );
 		
 	}
 
