@@ -3,16 +3,13 @@ package edu.memphis.ccrg.lida.globalworkspace;
 import static org.junit.Assert.*;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.attention.AttentionModuleImpl;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -30,7 +27,7 @@ public class GlobalWorkspaceImplTest {
 	NodeStructureImpl ns2 = new NodeStructureImpl();
 	NodeImpl n1, n2, n3;
 	LinkImpl l;
-	AttentionModuleImpl attnModule = new AttentionModuleImpl();
+	AttentionCodeletModule attnModule = new AttentionCodeletModule();
 	MockTaskSpawner ts;
 	MockBroadcastListener listener;
 
