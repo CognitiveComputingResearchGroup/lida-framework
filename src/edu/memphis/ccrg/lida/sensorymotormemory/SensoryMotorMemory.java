@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
-import java.util.Map;
-
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
@@ -26,24 +24,11 @@ public interface SensoryMotorMemory extends LidaModule, Saveable{
 	 * @param l SensoryMotorMemoryListener
 	 */
 	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l);
-	
-	/**
-	 * Adds action with associated actionId
-	 * @param lidaActionId id by which action is referenced
-	 * @param actionAlgorithm an algorithm 
-	 */
-	public void addActionAlgorithm(long lidaActionId, Object actionAlgorithm);
-	
-	/**
-	 * Specify the algorithms in SensoryMotorMemory 
-	 * @param actionMap Algorithms indexed by LidaAction id
-	 */
-	public void setLidaActionAlgorithmMap(Map<Long, Object> actionMap);
-	
+		
 	/**
 	 * Executes specified action algorithm 
-	 * @param algorithm algorithm to execute in the Environment
+	 * @param command algorithm to execute in the agent's actuators or directly in the environment.
 	 */
-	public void executeAction(Object algorithm);
+	public void sendActuatorCommand(Object command);
 
 }

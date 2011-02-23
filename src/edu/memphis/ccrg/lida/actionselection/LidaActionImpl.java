@@ -100,7 +100,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	 * @return the associated module
 	 */
 	@Override
-	public LidaModule getModule() {
+	public LidaModule getAssociatedModule() {
 		return module;
 	}
 

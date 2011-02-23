@@ -72,7 +72,7 @@ public interface LidaAction extends Serializable {
 	/**
 	 * @return the module
 	 */
-	public LidaModule getModule();
+	public LidaModule getAssociatedModule();
 
 	/**
 	 * @return the LidaAction id

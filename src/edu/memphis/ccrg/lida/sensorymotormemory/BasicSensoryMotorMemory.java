@@ -31,17 +31,17 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
  * @author Ryan J. McCall
  * 
  */
-public class SensoryMotorMemoryImpl extends LidaModuleImpl implements
+public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 		SensoryMotorMemory, SensoryMemoryListener, ActionSelectionListener {
 
 	private static final Logger logger = Logger
-			.getLogger(SensoryMotorMemoryImpl.class.getCanonicalName());
+			.getLogger(BasicSensoryMotorMemory.class.getCanonicalName());
 
 	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
 	private Map<Long, Object> actionAlgorithmMap = new HashMap<Long, Object>();
 	private Environment environment;
 
-	public SensoryMotorMemoryImpl() {
+	public BasicSensoryMotorMemory() {
 		super(ModuleName.SensoryMotorMemory);
 	}
 
@@ -78,12 +78,10 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements
 		}
 	}
 	
-	@Override
 	public void setLidaActionAlgorithmMap(Map<Long, Object> actionMap) {
 		this.actionAlgorithmMap = actionMap;
 	}
 
-	@Override
 	public void addActionAlgorithm(long actionId, Object action) {
 		actionAlgorithmMap.put(actionId, action);
 	}
@@ -102,15 +100,15 @@ public class SensoryMotorMemoryImpl extends LidaModuleImpl implements
 		protected void runThisLidaTask() {
 			Long id = (Long) action.getContent();
 			Object alg = actionAlgorithmMap.get(id);
-			executeAction(alg);
+			sendActuatorCommand(alg);
 		}
 	}
 
 	@Override
-	public void executeAction(Object algorithm) {
-		environment.processAction(algorithm);
+	public void sendActuatorCommand(Object command) {
+		environment.processAction(command);
 		for (SensoryMotorMemoryListener l : listeners) {
-			l.receiveExecutingAlgorithm(algorithm);
+			l.receiveActuatorCommand(command);
 		}
 	}
 

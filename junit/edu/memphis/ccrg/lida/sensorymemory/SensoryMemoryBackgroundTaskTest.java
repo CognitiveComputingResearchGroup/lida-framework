@@ -159,7 +159,7 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public void receiveExecutingAlgorithm(Object algorithm) {
+	public void receiveActuatorCommand(Object algorithm) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -180,6 +180,12 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Object getSensoryContent(String modality, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

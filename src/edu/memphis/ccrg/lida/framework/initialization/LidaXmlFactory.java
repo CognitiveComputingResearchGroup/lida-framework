@@ -35,6 +35,14 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * Creates and returns a Lida Object based on an XML file.
+ * 
+ * Each module that is created is instantiated using {@link Class#forName(String)}. 
+ * Next its {@link LidaModule#init()} method is run.  After all modules have been 
+ * created in this way, all associated modules are added for each module {@link LidaModule#setAssociatedModule(LidaModule, int)
+ * } Finally each module's initializer is run if it has one.  Thus associated modules should not be used by the init method of modules, 
+ * only constants and other variables should be set.
+ * TODO consider 'postInit' method that runs after initializers run.  
+ * 
  * @author Javier Snaider, Ryan J. McCall
  * 
  */ 

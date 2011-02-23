@@ -60,19 +60,6 @@ public class ExtendedId {
 		this.sinkNode2Id = Integer.MIN_VALUE;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof ExtendedId) {
-			ExtendedId id = (ExtendedId) o;
-			return (linkCategory == id.linkCategory	&& 
-					sourceNodeId == id.sourceNodeId && 
-					sinkCategory == id.sinkCategory && 
-					sinkNode1Id == id.sinkNode1Id && 
-					sinkNode2Id == id.sinkNode2Id);
-		}
-		return false;
-	}
-
 	/**
 	 * Returns source Node id
 	 * 
@@ -90,6 +77,19 @@ public class ExtendedId {
 	public boolean isNodeId() {
 		return (linkCategory == Integer.MIN_VALUE);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ExtendedId) {
+			ExtendedId otherId = (ExtendedId) o;
+			return (linkCategory == otherId.linkCategory && 
+					sourceNodeId == otherId.sourceNodeId && 
+					sinkCategory == otherId.sinkCategory && 
+					sinkNode1Id == otherId.sinkNode1Id   && 
+					sinkNode2Id == otherId.sinkNode2Id);
+		}
+		return false;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -98,7 +98,7 @@ public class ExtendedId {
 
 	@Override
 	public String toString() {
-		return "[" + linkCategory + "," + sourceNodeId + "," + sinkCategory
+		return "[Cat: " + linkCategory + ", SrcId: " + sourceNodeId + "," + sinkCategory
 				+ "," + sinkNode1Id + "," + sinkNode2Id + "]";
 	}
 	

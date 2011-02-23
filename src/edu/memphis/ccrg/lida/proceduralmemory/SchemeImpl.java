@@ -21,7 +21,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private long id;
 	private boolean innate;
 	private int numberOfExecutions;
-	private int successExecutions;
+	private int successfulExecutions;
 	private NodeStructure context;
 	private NodeStructure addingResult;
 	private NodeStructure deletingResult;
@@ -72,7 +72,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public double getReliability() {
-		return (numberOfExecutions > 0) ? ((double) successExecutions)
+		return (numberOfExecutions > 0) ? ((double) successfulExecutions)
 				/ numberOfExecutions : 0.0;
 	}
 
@@ -104,7 +104,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public boolean isReliable() {
 		return (numberOfExecutions > 0)
-				&& ((((double) successExecutions) / numberOfExecutions) > RELIABILITY_THRESHOLD);
+				&& ((((double) successfulExecutions) / numberOfExecutions) > RELIABILITY_THRESHOLD);
 	}
 
 	@Override

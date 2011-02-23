@@ -127,20 +127,6 @@ public class SensoryMemoryImplTest {
     }
 
     /**
-     * Test of receiveExecutingAlgorithm method, of class SensoryMemoryImpl.
-     */
-    @Test
-    public void testReceiveExecutingAlgorithm() {
-        // Pre: instance has 0 associated modules.
-        // Pos: instance has 2 associated modules, same as added.
-        System.out.println("receiveExecutingAlgorithm");
-        Object alg = null;
-        MockSensoryMemoryImpl instance = new MockSensoryMemoryImpl();
-        instance.receiveExecutingAlgorithm(alg);
-        // TODO review the generated test code and remove the default call to fail.
-    }
-
-    /**
      * Test of decayModule method, of class SensoryMemoryImpl.
      */
     @Test
@@ -165,12 +151,6 @@ public class SensoryMemoryImplTest {
         }
 
         @Override
-        public Object getModuleContent(Object... params) {
-            //throw new UnsupportedOperationException("Not supported yet.");
-            return content;
-        }
-
-        @Override
         public void init() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
@@ -179,6 +159,30 @@ public class SensoryMemoryImplTest {
         public void runSensors() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+
+		@Override
+		public Object getSensoryContent(String modality, Object... params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Object getState() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public boolean setState(Object content) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public Object getModuleContent(Object... params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 
     /**

@@ -35,5 +35,14 @@ public interface SensoryMemory extends LidaModule, Saveable {
 	 * processing and passing to the perceptual memory module.
 	 */
 	public void runSensors();
+	
+	/**
+	 * Returns content from this SensoryMemory.
+	 * Intended to be used by feature detectors to get specific parts of the sensory memory.
+	 * @param modality user may optionally use this parameter to specify modality.
+	 * @param params optional parameters
+	 * @return content
+	 */
+	public Object getSensoryContent(String modality, Object... params);
 
 }

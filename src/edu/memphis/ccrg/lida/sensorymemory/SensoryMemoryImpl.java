@@ -20,7 +20,6 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
 /**
  * Default implementation of the {@link SensoryMemory} module. This module should
@@ -29,7 +28,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
  * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */
-public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory, SensoryMotorMemoryListener {
+public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory {
 
 	private static Logger logger = Logger.getLogger(SensoryMemoryImpl.class.getCanonicalName());
 	
@@ -43,11 +42,6 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
      * The environment associated with this memory.
      */
     protected Environment environment;
-    
-    /**
-     * The content of this memory. 
-     */
-    protected Object content;
 
     /**
      * Default Constructor.
@@ -84,48 +78,4 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
         }
     }
     
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.sensorymemory.SensoryMemory#runSensors()
-     */
-    @Override
-	public abstract void runSensors();
-
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener#receiveExecutingAlgorithm(java.lang.Object)
-     */
-    @Override
-    public void receiveExecutingAlgorithm(Object alg) {
-        //What to do here is a research question.
-    }
-
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#decayModule(long)
-     */
-    @Override
-    public void decayModule(long ticks) {
-        super.decayModule(ticks);
-        //your implementation specific decay method should call super first. 
-    }
-
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
-     */
-    @Override
-    public boolean setState(Object state) {
-        try {
-            content = state;
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
-     */
-    @Override
-    public Object getState() {
-        return content;
-    }
 }

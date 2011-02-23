@@ -7,8 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.sensorymemory;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * Task which operates a Sensory Memory. This class provides a general way to control various type of
@@ -17,9 +21,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
  */
 public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 
+	private static final Logger logger = Logger.getLogger(SensoryMemoryBackgroundTask.class.getCanonicalName());
 	private SensoryMemory sm;
 	
-	/*
+	/**
 	 * This method overrides setAssociatedModule() from class LidaTaskImpl
 	 * It sets a module passing parameter to SensoryMemory sm
 	 * 
@@ -30,10 +35,12 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 	public void setAssociatedModule(LidaModule module, int moduleUsage) {
 		if (module instanceof SensoryMemory) {
 			sm = (SensoryMemory) module;
+		}else{
+			logger.log(Level.WARNING, "Cannot add module "+module, LidaTaskManager.getCurrentTick());
 		}
 	}
 
-	/*
+	/**
 	 * This method overrides runThisLidaTask() from class LidaTaskImpl
 	 * It executes method runSensors()of SensoryMemory sm
 	 * 

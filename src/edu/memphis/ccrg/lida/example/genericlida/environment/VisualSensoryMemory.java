@@ -40,7 +40,7 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 		}
 	}
 
-	//TODO think about
+	
 	@Override
 	public Object getModuleContent(Object... parameters) {
 		if(parameters.length == 0)
@@ -49,10 +49,11 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 			return sensoryScene;
 		return null;
 	}
-
+	
 	@Override
-	public void receiveExecutingAlgorithm(Object algorithm) {
-		
+	public Object getSensoryContent(String modality, Object... params) {
+		//TODO feature detector should use this instead
+		return null;
 	}
 
 	@Override
@@ -72,5 +73,7 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }
