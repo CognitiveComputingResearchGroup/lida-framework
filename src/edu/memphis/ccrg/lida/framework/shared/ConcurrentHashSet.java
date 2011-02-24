@@ -26,21 +26,21 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 	private static final Object PRESENT = new Object();
 
 	public ConcurrentHashSet() {
-		this.map = new ConcurrentHashMap();
+		this.map = new ConcurrentHashMap<E, Object>();
 	}
 
 	public ConcurrentHashSet(Collection<? extends E> paramCollection) {
-		this.map = new ConcurrentHashMap(Math.max(
+		this.map = new ConcurrentHashMap<E, Object>(Math.max(
 				(int) (paramCollection.size() / 0.75F) + 1, 16));
 		addAll(paramCollection);
 	}
 
 	public ConcurrentHashSet(int paramInt, float paramFloat) {
-		this.map = new ConcurrentHashMap(paramInt, paramFloat);
+		this.map = new ConcurrentHashMap<E, Object>(paramInt, paramFloat);
 	}
 
 	public ConcurrentHashSet(int paramInt) {
-		this.map = new ConcurrentHashMap(paramInt);
+		this.map = new ConcurrentHashMap<E, Object>(paramInt);
 	}
 
 	@Override

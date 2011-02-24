@@ -15,19 +15,28 @@ public class ExtendedId {
 	private int sinkNode1Id;
 	private int sinkNode2Id;
 	
+	private static final int UNDEFINED = Integer.MIN_VALUE;
+	
 	/*
-	 * For the Link constructor there are 2 cases.
+	 * For the Link constructor there are 3 categories of possible input.
+	 * 
+	 * In each case linkCategory is set using the first argument
+	 * and sourceNodeId is set using the second.
 	 * 
 	 * Case 1: The sink is a Node.  
-	 * Then {@link #sinkCategory} and {@link #sinkNode2Id} are 0.
-	 *{@link #sinkNode1Id} is the id of the Node.
+	 * Then sinkCategory and sinkNode2Id are UNDEFINED.
+	 * while sinkNode1Id is the id of the Node.
 	 *
-	 * Case 2: The sink is a {@link Link}, call it BOB.
-	 * Then {@link #sinkCategory} is the {@link LinkCategory} of BOB. 
-	 * Then {@link #sinkNode1Id} is BOB's {@link #sourceNodeId} and {@link #sinkNode2Id} is BOB's {@link #sinkNode1Id}
+	 * Case 2: The sink is a Link, call it BOB.
+	 * Then sinkLinkCategory is the LinkCategory of BOB. 
+	 * Then sinkNode1Id is BOB's sourceNodeId.
 	 * 
-	 * In either case {@link #linkCategory} is set using the first argument
-	 * and {@link #sourceNodeId} is set using the second.
+	 * 	Subcase 2a:  BOB's sink is a node.
+	 * 	Then sinkNode2Id is BOB's sinkNode1Id
+	 * 
+	 * 	Subcase 2b: BOB's sink is a link. Call this other link ROB.
+	 * 	Then sinkNode2Id is set to the sinkNode1Id of BOB which is ROB's sourceNodeId.
+	 * 
 	 */
 
 	/**
@@ -53,11 +62,11 @@ public class ExtendedId {
 	 */
 	public ExtendedId(int nodeId) {
 		super();
-		this.linkCategory = Integer.MIN_VALUE;
+		this.linkCategory = UNDEFINED;
 		this.sourceNodeId = nodeId;
-		this.sinkLinkCategory = Integer.MIN_VALUE;
-		this.sinkNode1Id = Integer.MIN_VALUE;
-		this.sinkNode2Id = Integer.MIN_VALUE;
+		this.sinkLinkCategory = UNDEFINED;
+		this.sinkNode1Id = UNDEFINED;
+		this.sinkNode2Id = UNDEFINED;
 	}
 
 	/**
@@ -75,7 +84,7 @@ public class ExtendedId {
 	 * @return true if this ExtendedId is for a Node.
 	 */
 	public boolean isNodeId() {
-		return (linkCategory == Integer.MIN_VALUE);
+		return linkCategory == UNDEFINED;
 	}
 
 	@Override

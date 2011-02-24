@@ -13,7 +13,6 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,8 +24,10 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  */
 public class NodeImplTest extends TestCase{
 
-	NodeImpl node1,node2,node3;
-	PamNodeImpl pamNode1,pamNode2;
+	private NodeImpl node1,node2;
+	private PamNodeImpl pamNode1,pamNode2;
+	
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	
 	/**
 	 * This method is called before running each test case to initialize the objects
@@ -35,29 +36,13 @@ public class NodeImplTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		node1 = new NodeImpl();
+		node1 = (NodeImpl) factory.getNode(NodeImpl.factoryName);
 		node2 = new NodeImpl();
-		node3 = new NodeImpl();	
-		pamNode1 = new PamNodeImpl();
-		pamNode2 = new PamNodeImpl();
-		
-		pamNode1.setId(11);
-		pamNode2.setId(20);
-		
-		node1.setId(1);			
+		pamNode1 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);	
+		pamNode2 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);
+					
 		node1.setLabel("red");		
-//		node1.setImportance(100);
-		node1.setGroundingPamNode(pamNode1);	
-						
-		node2.setId(2);			
-	}
-
-	/**
-	 * This method is called after running each test case
-	 */
-	@Override
-	@After
-	public void tearDown() throws Exception {
+		node1.setGroundingPamNode(pamNode1);		
 	}
 	
 	/**
@@ -65,7 +50,7 @@ public class NodeImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetId() {		
-		
+		node1.setId(1);
 		assertEquals("Problem with getId", 1, node1.getId());
 	}	
 	
@@ -74,7 +59,6 @@ public class NodeImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetId() {
-		
 		node2.setId(22);					
 		assertEquals("Problem with setId", 22, node2.getId());
 	}	
@@ -83,8 +67,7 @@ public class NodeImplTest extends TestCase{
 	 * This method is used to test the NodeImpl.getLabel() method
 	 */
 	@Test
-	public void testGetLabel() {		
-							
+	public void testGetLabel() {	
 		assertEquals("Problem with getLabel", "red", node1.getLabel());
 	}
 	
@@ -93,36 +76,15 @@ public class NodeImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetLabel() {
-		
 		node2.setLabel("purple");					
 		assertEquals("Problem with setLabel", "purple", node2.getLabel());
 	}	
-	
-//	/**
-//	 * This method is used to test the NodeImpl.getImportance() method
-//	 */
-//	@Test
-//	public void testGetImportance() {		
-//							
-//		assertEquals("Problem with getImportance", 100.0, node1.getImportance());
-//	}
-	
-//	/**
-//	 * This method is used to test the NodeImpl.setImportance() method
-//	 */
-//	@Test
-//	public void testSetImportance() {
-//		
-//		node2.setImportance(200);					
-//		assertEquals("Problem with setImportance", 200.0, node2.getImportance());
-//	}	
 	
 	/**
 	 * This method is used to test the NodeImpl.getReferencedNode() method
 	 */
 	@Test
 	public void testGetReferencedNode() {		
-							
 		assertEquals("Problem with getReferencedNode", pamNode1, node1.getGroundingPamNode());
 	}
 	
@@ -131,7 +93,6 @@ public class NodeImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetReferencedNode() {
-		
 		node2.setGroundingPamNode(pamNode2);					
 		assertEquals("Problem with setReferencedNode", pamNode2, node2.getGroundingPamNode());
 	}	
@@ -141,7 +102,6 @@ public class NodeImplTest extends TestCase{
 	 */
 	@Test
 	public void testEquals() {
-		
 		node1.setId(1);
 		node2.setId(1);
 		assertEquals("Problem with equals", node1,node2);
@@ -152,8 +112,26 @@ public class NodeImplTest extends TestCase{
 	 */
 	@Test
 	public void testHashCode() {
-		
-		int code = node1.hashCode();	
-		assertEquals("Problem with setNodeClass", 1 % 31 ,code);
+		node1.setId(1);
+		node2.setId(1);	
+		assertEquals("Problem with setNodeClass",node1.hashCode(), node2.hashCode());
 	}	
+	
+	public void testDesirability(){
+		node1.setDesirability(5.0);
+		assertEquals(1.0, node1.getDesirability());
+		
+		node1.setDesirability(-14534545);
+		assertEquals(0.0, node1.getDesirability());
+		
+		node1.setDesirability(0.4);
+		assertEquals(0.4, node1.getDesirability());
+		
+		node1.setDesirability(0.0);
+		assertEquals(0.0, node1.getDesirability());
+		
+		node1.setDesirability(1.0);
+		assertEquals(1.0, node1.getDesirability());
+	}
+	
 }

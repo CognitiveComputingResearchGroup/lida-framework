@@ -753,23 +753,29 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 	}
 	
 	/**
-	 * Returns true if two NodeStructures are equal, else returns false
-	 * Two NodeStructures are equal if they have the same nodes and links
-	 * @param ns1 first nodestructure
-	 * @param ns2 second nodestructure
-	 * @return boolean
+	 * Returns true if two NodeStructures are meaningfully equal, else false.
+	 * Two NodeStructures are equal if they have the same exact nodes and links
+	 * @param ns1 first {@link NodeStructure}
+	 * @param ns2 second {@link NodeStructure}
+	 * @return boolean if the {@link NodeStructure}s are equal
 	 */
-	public static boolean compareNodeStructures(NodeStructure ns1,NodeStructure ns2) {
-		Collection<Node> nodes = ns1.getNodes();
-		Collection<Link> links = ns1.getLinks();
-		
-		for (Node n : nodes)
-			if (!ns2.containsNode(n))
+	public static boolean compareNodeStructures(NodeStructure ns1, NodeStructure ns2) {
+		if(ns1.getNodeCount() != ns2.getNodeCount()){
+			return false;
+		}else if(ns1.getLinkCount() != ns2.getLinkCount()){
+			return false;
+		}
+			
+		for (Node n : ns1.getNodes()){
+			if (!ns2.containsNode(n)){
 				return false;
-
-		for (Link l : links)
-			if (!ns2.containsLink(l))
+			}
+		}
+		for (Link l : ns1.getLinks()){
+			if (!ns2.containsLink(l)){
 				return false;
+			}
+		}
 			
 		return true;		
 	}

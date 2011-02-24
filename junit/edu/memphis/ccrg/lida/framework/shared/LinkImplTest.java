@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the LinkImpl class
@@ -26,11 +25,12 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  */
 public class LinkImplTest extends TestCase{
 	
-	NodeImpl node1,node2,node3,node4;
-	LinkImpl link1,link2,link3;	
-	PamLinkImpl pamLink1;
-	PamNodeImpl pamNode1;
-	LinkCategory linktype1,linktype2;		
+	private Node node1,node2,node3,node4;
+	private LinkImpl link1,link2,link3;	
+	private	PamLinkImpl pamLink1;
+	private LinkCategory linktype1;	
+	
+	private LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	/**
 	 * This method is called before running each test case to initialize the objects
@@ -38,31 +38,18 @@ public class LinkImplTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		node1 = new NodeImpl();
-		node2 = new NodeImpl();
-		node3 = new NodeImpl();
-		node4 = new NodeImpl();
+		node1 = factory.getNode();
+		node2 = factory.getNode();
+		node3 = factory.getNode();
+		node4 = factory.getNode();	
 		
-		pamLink1 = new PamLinkImpl();
-		pamNode1 = new PamNodeImpl();
+		linktype1 = LinkCategoryNode.PARENT;
 		
-		link1 = new LinkImpl();
-		link2 = new LinkImpl();
-		link3 = new LinkImpl();
-		linktype1 = LinkCategoryNode.PARENT ;
-		linktype2 = LinkCategoryNode.CHILD ;	
-
-		node1.setId(1);	
-		node2.setId(2);
-		node3.setId(3);		
-		node4.setId(4);		
+		pamLink1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node3, node4, LinkCategoryNode.NONE);
 		
 		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
 		link2 = new LinkImpl(node3,node4,LinkCategoryNode.PARENT);
 		link3 = new LinkImpl(node3,link2,LinkCategoryNode.GROUNDING);
-		linktype1 = LinkCategoryNode.PARENT ;
-		linktype2 = LinkCategoryNode.CHILD;		
-	
 	}
 
 	/**
@@ -87,7 +74,7 @@ public class LinkImplTest extends TestCase{
 		link3.setSink(node2);
 		link3.setCategory(linktype1);
 		
-		assertEquals("Problem with equals", link1, link3);
+		assertHashCodeEquals(link1, link3);
 		
 	}
 
@@ -96,7 +83,6 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetSink() {
-		
 		link1.setSink(node1);
 		assertEquals("Problem with getSink", node1, link1.getSink());
 	}
@@ -115,20 +101,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetType() {
-		
 		link1.setCategory(linktype1);
 		assertEquals("Problem with getType", linktype1, link1.getCategory());
-	}
-
-
-	/**
-	 * This method is used to test the LinkImpl.GetId() method
-	 */
-	@Test
-	public void testGetId() {
-		//TODO FIXXXXXXXX
-//		assertEquals("Problem with getId:"+link1.getId(), "L(1:2:CHILD)", link1.getId());
-//		assertEquals("Problem with getId:"+link3.getId(), "L(3:L(3:4:PARENT):GROUNDING)", link3.getId());
 	}
 
 	/**
@@ -182,12 +156,19 @@ public class LinkImplTest extends TestCase{
 	@Test
 	public void testLinkImpl() {
 		LinkImpl link5= new LinkImpl(node1,node2,linktype1);
-				
-		assertEquals("Problem with LinkImpl constructor having parameters", node1, link5.getSource());
-		assertEquals("Problem with LinkImpl constructor having parameters", node2, link5.getSink());
-		assertEquals("Problem with LinkImpl constructor having parameters", linktype1, link5.getCategory());
-//		assertEquals("Problem with LinkImpl constructor having parameters", "L(1:2:PARENT)", link5.getId());
-//TODO: FIXXXXXXX		
+		assertEquals(node1, link5.getSource());
+		assertEquals(node2, link5.getSink());
+		assertEquals(linktype1, link5.getCategory());
+		assertTrue( !link5.getExtendedId().isNodeId());
+		ExtendedId eid = new ExtendedId(linktype1.getId(), node1.getId(), node2.getExtendedId());
+		assertHashCodeEquals(eid, link5.getExtendedId());
+	
+	}
+	
+	private void assertHashCodeEquals(Object o1, Object o2){
+		assertTrue(o1.equals(o2));
+		assertTrue(o2.equals(o1));
+		assertTrue(o1.hashCode() == o2.hashCode());
 	}
 
 }

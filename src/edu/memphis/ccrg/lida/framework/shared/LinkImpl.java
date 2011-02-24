@@ -115,6 +115,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
+			logger.log(Level.FINEST, "updated extended id", LidaTaskManager.getCurrentTick());
 			id = new ExtendedId(category.getId(), source.getId(), sink.getExtendedId());
 		}
 	}
@@ -164,7 +165,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	@Override
 	public void setGroundingPamLink(PamLink l) {
-		logger.log(Level.FINEST, "Set grounding pam link " + l.toString(), LidaTaskManager.getCurrentTick());
 		groundingPamLink = l;
 	}
 	

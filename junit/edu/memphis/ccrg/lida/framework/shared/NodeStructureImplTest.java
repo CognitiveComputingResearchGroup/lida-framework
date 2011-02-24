@@ -28,7 +28,7 @@ public class NodeStructureImplTest extends TestCase{
 	LinkImpl link1,link2,link3;	
 	Map<Long, Node> nodes;
 	LinkCategory linktype1,linktype2;	
-	NodeStructureImpl nodeStructure1,nodeStructure2,nodeStructure3;
+	NodeStructureImpl ns1,ns2,nodeStructure3;
 	NodeStructure ns;
 	Set<Link> links;
 
@@ -48,8 +48,8 @@ public class NodeStructureImplTest extends TestCase{
 		link3 = new LinkImpl();
 		linktype1 = LinkCategoryNode.PARENT ;
 		linktype2 = LinkCategoryNode.CHILD ;			 
-		nodeStructure1 = new NodeStructureImpl();	
-		nodeStructure2 = new NodeStructureImpl();
+		ns1 = new NodeStructureImpl();	
+		ns2 = new NodeStructureImpl();
 		nodeStructure3 = new NodeStructureImpl();
 		links = new HashSet<Link>();
 
@@ -96,14 +96,14 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddLink() {	
-		nodeStructure1.addDefaultNode(node1);	
-		nodeStructure1.addDefaultNode(node2);	
-		nodeStructure1.addDefaultLink(link1);
-		assertTrue("Problem with addLink", nodeStructure1.containsLink(link1));
+		ns1.addDefaultNode(node1);	
+		ns1.addDefaultNode(node2);	
+		ns1.addDefaultLink(link1);
+		assertTrue("Problem with addLink", ns1.containsLink(link1));
 		
-		nodeStructure1.addDefaultNode(node3);	
-		nodeStructure1.addDefaultLink(link2);
-		assertTrue("Problem with addLink", nodeStructure1.containsLink(link2));
+		ns1.addDefaultNode(node3);	
+		ns1.addDefaultLink(link2);
+		assertTrue("Problem with addLink", ns1.containsLink(link2));
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddLinks() {
-		nodeStructure2.addDefaultNodes(nodeStructure1.getNodes());		
-		nodeStructure2.addDefaultLinks(nodeStructure1.getLinks());		
-		assertTrue("Problem with addLinks", nodeStructure2.getLinks().containsAll(nodeStructure1.getLinks()));		
+		ns2.addDefaultNodes(ns1.getNodes());		
+		ns2.addDefaultLinks(ns1.getLinks());		
+		assertTrue("Problem with addLinks", ns2.getLinks().containsAll(ns1.getLinks()));		
 	}
 
 	/**
@@ -121,18 +121,18 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddNode() {	
-		nodeStructure1.addDefaultNode(node1);	
-		assertTrue("Problem with addNode", nodeStructure1.containsNode(node1));
+		ns1.addDefaultNode(node1);	
+		assertTrue("Problem with addNode", ns1.containsNode(node1));
 		
-		nodeStructure1.addDefaultNode(node2);	
-		assertTrue("Problem with addNode", nodeStructure1.containsNode(node2));
+		ns1.addDefaultNode(node2);	
+		assertTrue("Problem with addNode", ns1.containsNode(node2));
 		
-		nodeStructure1.addDefaultNode(node3);
-		assertTrue("Problem with addNode", nodeStructure1.containsNode(node3));	
+		ns1.addDefaultNode(node3);
+		assertTrue("Problem with addNode", ns1.containsNode(node3));	
 
 		node2.setActivation(3);
-		nodeStructure1.addDefaultNode(node2);
-		assertTrue("Problem with addNode", (nodeStructure1.containsNode(node2) && node2.getActivation()==3));		
+		ns1.addDefaultNode(node2);
+		assertTrue("Problem with addNode", (ns1.containsNode(node2) && node2.getActivation()==3));		
 	}
 
 	/**
@@ -140,8 +140,8 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddNodes() {	
-		nodeStructure2.addDefaultNodes(nodeStructure1.getNodes());
-		assertTrue("Problem with addNodes", nodeStructure2.getNodes().containsAll(nodeStructure1.getNodes()));				
+		ns2.addDefaultNodes(ns1.getNodes());
+		assertTrue("Problem with addNodes", ns2.getNodes().containsAll(ns1.getNodes()));				
 	}
 
 	/**
@@ -149,15 +149,15 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testDeleteLink() {
-		nodeStructure1.addDefaultNode(node1);	
-		nodeStructure1.addDefaultNode(node2);	
-		nodeStructure1.addDefaultNode(node3);	
+		ns1.addDefaultNode(node1);	
+		ns1.addDefaultNode(node2);	
+		ns1.addDefaultNode(node3);	
 		
-		nodeStructure1.addDefaultLink(link1);					
-		nodeStructure1.addDefaultLink(link2);
+		ns1.addDefaultLink(link1);					
+		ns1.addDefaultLink(link2);
 		
-		nodeStructure1.removeLink(link1);
-		assertTrue("Problem with deleteLink", !nodeStructure1.containsLink(link1));		
+		ns1.removeLink(link1);
+		assertTrue("Problem with deleteLink", !ns1.containsLink(link1));		
 	}
 
 	/**
@@ -165,43 +165,27 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testDeleteNode() {
-		nodeStructure1.addDefaultNode(node1);	
-		nodeStructure1.addDefaultNode(node2);	
-		nodeStructure1.addDefaultNode(node3);
+		ns1.addDefaultNode(node1);	
+		ns1.addDefaultNode(node2);	
+		ns1.addDefaultNode(node3);
 		
-		nodeStructure1.removeNode(node3);
-		assertTrue("Problem with deleteNode", !nodeStructure1.containsNode(node3));	
+		ns1.removeNode(node3);
+		assertTrue("Problem with deleteNode", !ns1.containsNode(node3));	
 	}
-
-//	/**
-//	 * This method is used to test the NodeStructureImpl.clearNodes() method
-//	 */
-//	@Test
-//	public void testClearNodes() {
-//		nodeStructure1.addNode(node1);	
-//		nodeStructure1.addNode(node2);	
-//		nodeStructure1.addNode(node3);	
-//		
-//		nodeStructure1.addLink(link1);					
-//		nodeStructure1.addLink(link2);
-//		
-//		nodeStructure1.clearNodes();
-//		assertTrue("Problem with clearNodes", nodeStructure1.getNodeCount()==0);	
-//	}	
 
 	/**
 	 * This method is used to test the NodeStructureImpl.copy() method
 	 */
 	@Test
 	public void testCopy() {
-		ns = null;		
 		nodeStructure3.addDefaultNode(node1);
 		nodeStructure3.addDefaultNode(node2);
 		nodeStructure3.addDefaultLink(link1);		
 		
 		ns = nodeStructure3.copy();		
-			
-		assertEquals("Problem with copy", ns, nodeStructure3);	
+		
+		
+		assertTrue("Problem with copy", NodeStructureImpl.compareNodeStructures(nodeStructure3, ns));	
 		
 	}	
 
@@ -210,7 +194,7 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetLinksByType() {		
-		links = nodeStructure1.getLinksByCategory(linktype1);
+		links = ns1.getLinksByCategory(linktype1);
 		for (Link l : links) {
 			assertEquals("Problem with GetLinksByType", l.getCategory(),linktype1);			
 			break;				
@@ -223,18 +207,18 @@ public class NodeStructureImplTest extends TestCase{
 	@Test
 	public void testEquals() {
 		
-		nodeStructure1.addDefaultNode(node1);
-		nodeStructure1.addDefaultNode(node2);
-		nodeStructure1.addDefaultNode(node3);
-		nodeStructure1.addDefaultLink(link1);
-		nodeStructure1.addDefaultLink(link2);
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		ns1.addDefaultLink(link1);
+		ns1.addDefaultLink(link2);
 		
-		nodeStructure2.addDefaultNode(node1);
-		nodeStructure2.addDefaultNode(node2);
-		nodeStructure2.addDefaultNode(node3);
-		nodeStructure2.addDefaultLink(link1);
-		nodeStructure2.addDefaultLink(link2);
+		ns2.addDefaultNode(node1);
+		ns2.addDefaultNode(node2);
+		ns2.addDefaultNode(node3);
+		ns2.addDefaultLink(link1);
+		ns2.addDefaultLink(link2);
 					
-		assertEquals("Problem with equals", nodeStructure1, nodeStructure2);			
+		assertTrue(NodeStructureImpl.compareNodeStructures(ns1, ns2));			
 	}	
 }

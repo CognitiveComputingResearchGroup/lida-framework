@@ -471,10 +471,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void setPerceptThreshold(double t) {
-		if(t < 1.0){
+		if(t >= 0.0 && t <= 1.0){
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		}else{
-			logger.log(Level.WARNING, "Cannot set percept threshold to 1.0 or higher.  Percept threshold will not be modified.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Percept threshold must in [0.0, 1.0] threshold will not be modified.", LidaTaskManager.getCurrentTick());
 		}
 	}
 	/* (non-Javadoc)

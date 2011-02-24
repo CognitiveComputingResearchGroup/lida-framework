@@ -8,8 +8,11 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
@@ -22,9 +25,10 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  */
 public class NodeImpl extends ActivatibleImpl implements Node {
 
+	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
 	public static final String factoryName = NodeImpl.class.getSimpleName();
 	private int id;
-	private ExtendedId eId;
+	private ExtendedId extendedId;
 	private String label;
 	
 	private double desirability;
@@ -38,13 +42,13 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public NodeImpl(NodeImpl n) {
 		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy());
 		this.id = n.id;
-		this.eId = n.eId;
+		this.extendedId = n.extendedId;
 		this.groundingPamNode = n.groundingPamNode;
 	}
 	
 	@Override
 	public ExtendedId getExtendedId() {
-		return eId;
+		return extendedId;
 	}
 	@Override
 	public int getId() {
@@ -53,11 +57,15 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	@Override
 	public void setId(int id) {
 		this.id = id;
-		eId = new ExtendedId(id);
+		extendedId = new ExtendedId(id);
 	}
-	public void setExtendedId(ExtendedId eId) {
-		this.eId = eId;
-		this.id = eId.getSourceNodeId();
+	public void setExtendedId(ExtendedId eid) {
+		if(eid.isNodeId()){
+			this.extendedId = eid;
+			this.id = eid.getSourceNodeId();
+		}else{
+			logger.log(Level.WARNING, "Cannot give a node a Link's extended id", LidaTaskManager.getCurrentTick());
+		}
 	}
 
 	@Override
@@ -107,8 +115,14 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	@Override
-	public void setDesirability(double degree) {
-		this.desirability = degree;
+	public void setDesirability(double d) {
+		if(d <= 0.0){
+			desirability = 0.0;
+		}else if (d >= 1.0){
+			desirability = 1.0;
+		}else{
+			desirability = d;
+		}
 	}
 	
 	/*
