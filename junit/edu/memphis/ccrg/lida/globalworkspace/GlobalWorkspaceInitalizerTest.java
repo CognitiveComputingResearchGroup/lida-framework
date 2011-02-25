@@ -1,7 +1,5 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -14,7 +12,6 @@ import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
-import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
