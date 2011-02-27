@@ -419,21 +419,26 @@ public class LidaXmlFactory implements LidaFactory {
 		}
 		LidaModule module = lida.getSubmodule(moduleName);
 
-		ModuleName listenerMN = ModuleName.NoModule;
-		ModuleListener listener = null;
+		ModuleName listenerModuleName = ModuleName.NoModule;
 		try {
-			listenerMN = Enum.valueOf(ModuleName.class, listenername);
+			listenerModuleName = Enum.valueOf(ModuleName.class, listenername);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Listener name: " + listenername
 					+ " is not valid.", 0L);
 			return;
 		}
 
-		try {
-			listener = (ModuleListener) lida.getSubmodule(listenerMN);
-		} catch (Exception e) {
-			logger.log(Level.WARNING, "Listener: " + listenername
-					+ " is not a valid ModuleListener.", 0L);
+		ModuleListener listener = null;
+		LidaModule listenerModule = lida.getSubmodule(listenerModuleName);
+		if(listenerModule == null){
+			logger.log(Level.WARNING, "Could not find listener module " + listenerModuleName + 
+						" listener will not be set up", 0L);
+			return;
+		}else if(listenerModule instanceof ModuleListener){
+			listener = (ModuleListener) listenerModule; 
+		}else{
+			logger.log(Level.WARNING, "Listener: " + listenerModule.toString()
+					+ " is not a ModuleListener i.e. doesn't implement any listeners. Listener will not be set up.", 0L);
 			return;
 		}
 
