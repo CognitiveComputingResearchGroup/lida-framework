@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -44,7 +45,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	
-	
 	@Override
 	@Before
 	public void setUp() throws Exception {
@@ -59,6 +59,115 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		link1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, LinkCategoryNode.CHILD);
 		link2 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node2, node3, LinkCategoryNode.CHILD);
 
+	}
+
+	@Test
+	public void testAddNewNode() {
+		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode("BOB");
+		assertTrue(pn != null);
+		assertTrue(pn.getLabel().equals("BOB"));
+		assertTrue(pam.containsNode(pn));
+		assertTrue(pam.getPamNodes().size() == 1);
+		Node other = pam.getPamNode(pn.getId());
+		assertTrue(other.equals(pn));
+	}
+	
+	public void testAddNullString(){
+		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode(null);
+		assertTrue(pn != null);
+		assertTrue(pam.containsNode(pn));
+		assertTrue(pam.getPamNodes().size() == 1);
+		Node other = pam.getPamNode(pn.getId());
+		assertTrue(other.equals(pn));
+	}
+	
+	public void testAddNewNode2(){
+		PamNode pn = pam.addNewNode(PamNodeImpl.factoryName, "BOB");
+		assertTrue(pn != null);
+		assertTrue(pn instanceof PamNodeImpl);
+		assertTrue(pn.getLabel().equals("BOB"));	
+		assertTrue(pam.getPamNodes().size() == 1);
+		Node other = pam.getPamNode(pn.getId());
+		assertTrue(other.equals(pn));
+	}
+	
+	public void testAddNewNode3(){
+		PamNode pn = pam.addNewNode("BAD5TYPE#T$", "BOB");
+		assertTrue(pn == null);	
+		assertTrue(pam.getPamNodes().size() == 0);
+	}
+	
+	/**
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNodes(java.util.Set)}.
+	 */
+	@Test
+	public void testAddDefaultNodes() {
+		Set<PamNode> nodes = new HashSet<PamNode>();
+		nodes.add(node2);
+		nodes.add(node3);
+		Set<PamNode> results = pam.addDefaultNodes(nodes);
+		for(PamNode res: results){
+			assertTrue(nodes.contains(res));
+		}
+		assertTrue("Problem with AddNodes", pam.containsNode(node2) && pam.containsNode(node3));
+		assertTrue(pam.getPamNodes().size() == 2);
+	}
+	
+	public void testAddNullNodes(){
+		Set<PamNode> results = pam.addDefaultNodes(null);
+		assertTrue(results == null);
+		assertTrue(pam.getPamNodes().size() == 0);
+	}
+	
+	public void testAddNodeNodeType(){
+		Set<Node> nodes = new HashSet<Node>();
+		nodes.add(factory.getNode());
+		nodes.add(factory.getNode());
+		pam.addDefaultNodes(nodes);
+		assertTrue(pam.getPamNodes().size() == 2);
+ 	}
+	
+	public void testAddDefNode(){
+		PamNode res = pam.addDefaultNode(null);
+		assertTrue(res == null);
+		assertTrue(pam.getPamNodes().size() == 0);
+	}
+	
+	public void testAddDefNode2(){
+		pam.addDefaultNode(node1);
+		pam.addDefaultNode(node1);
+		assertTrue(pam.getPamNodes().size() == 1);
+	}
+	
+	public void testAddDefNode1(){
+		pam.addDefaultNode(node1);
+		assertTrue(pam.containsNode(node1));
+		assertTrue(pam.getPamNodes().size() == 1);
+	}
+	
+	public void testAddNewLink(){
+		Link l = pam.addNewLink(node1, node2, null, 0.0);
+		Link l2 = pam.addNewLink(node3.getExtendedId(), node2.getExtendedId(), null, 0.0);
+		assertEquals(l, null);
+		assertEquals(l2, null);
+		assertEquals(0, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+	}
+	
+	public void testAddNewLink2(){
+		pam.addDefaultNode(node1);
+		pam.addDefaultNode(node2);
+		pam.addDefaultNode(node3);
+		Link l = pam.addNewLink(node1, node2, LinkCategoryNode.CHILD, 0.0);
+		assertEquals(pam.getPamLink(l.getExtendedId()), l);
+		assertEquals(1, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		
+		Link l2 = pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0);
+		assertEquals(pam.getPamLink(l2.getExtendedId()), l2);
+		assertEquals(2, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		
+		pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0);
+		assertEquals(2, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		
 	}
 
 	/**
@@ -104,18 +213,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		assertEquals("Problem with SetPropagationBehavior", pb, pam.getPropagationBehavior());
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNodes(java.util.Set)}.
-	 */
-	@Test
-	public void testAddDefaultNodes() {
-		Set<PamNode> nodes = new HashSet<PamNode>();
-		nodes.add(node2);
-		nodes.add(node3);
-		pam.addDefaultNode(node1);	
-		pam.addDefaultNodes(nodes);
-		assertTrue("Problem with AddNodes", pam.containsNode(node1) && pam.containsNode(node2) && pam.containsNode(node3));
-	}
 
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultLinks(Set)}.
@@ -143,29 +240,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addFeatureDetector(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addNewNode(java.lang.String)}.
-	 */
-	@Test
-	public void testAddNewNode() {
-		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode("BOB");
-		assertTrue(pn != null);
-		assertTrue(pn.getLabel().equals("BOB"));
-		assertTrue(pam.containsNode(pn));
-		Node other = pam.getPamNode(pn.getId());
-		assertTrue(other.equals(pn));
-	}
-	
-	public void testAddNewNode2(){
-		PamNode pn = pam.addNewNode(PamNodeImpl.factoryName, "BOB");
-		assertTrue(pn != null);
-		assertTrue(pn instanceof PamNodeImpl);
-		assertTrue(pn.getLabel().equals("BOB"));	
-		
-		Node other = pam.getPamNode(pn.getId());
-		assertTrue(other.equals(pn));
 	}
 	
 	@Test

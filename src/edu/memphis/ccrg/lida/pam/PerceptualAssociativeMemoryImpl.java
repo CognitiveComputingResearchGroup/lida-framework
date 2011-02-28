@@ -144,10 +144,25 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
-		Set<PamNode> copiedNodes = new HashSet<PamNode>();
-		for (Node l : nodes)
-			copiedNodes.add((PamNode) nodeStructure.addDefaultNode(l));
-		return copiedNodes;
+		if(nodes == null){
+			return null;
+		}
+		Set<PamNode> storedNodes = new HashSet<PamNode>();
+		for (Node n : nodes){
+			storedNodes.add(addDefaultNode(n));
+		}
+		return storedNodes;
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNode(edu.memphis.ccrg.lida.pam.PamNode)
+	 */
+	@Override
+	public PamNode addDefaultNode(Node n) {
+		if(n == null){
+			return null;
+		}		
+		return (PamNode) nodeStructure.addDefaultNode(n);
 	}
 
 	/*
@@ -387,18 +402,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNode(edu.memphis.ccrg.lida.pam.PamNode)
-	 */
-	@Override
-	public PamNode addDefaultNode(Node n) {
-		return (PamNode) nodeStructure.addDefaultNode(n);
-	}
-
-	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
 	 */
 	@Override
 	public Link addNewLink(Node src, Node snk, LinkCategory cat, double activ) {
+		if(src == null || snk == null || cat == null){
+			//log
+			return null;
+		}
 		return nodeStructure.addLink(src.getExtendedId(), snk.getExtendedId(), cat, activ);
 	}
 
@@ -408,6 +419,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Link addNewLink(ExtendedId srcId, ExtendedId sinkId,
 			LinkCategory cat, double activ) {
+		if(srcId == null || sinkId == null || cat == null){
+			//log
+			return null;
+		}
 		return nodeStructure.addLink(srcId, sinkId, cat, activ);
 	}
 

@@ -338,7 +338,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent, Works
 //	}
 	
 	@Override
-	public synchronized Node addNode(Node n, String nodeType) {
+	public synchronized Node addNode(Node n, String nodeType) {		
 		if(factory.containsNodeType(nodeType) == false){
 			logger.log(Level.WARNING, "Tried to add node of type " + nodeType +
 					" but factory does not contain that node type.  Make sure the node type is defined in " +
