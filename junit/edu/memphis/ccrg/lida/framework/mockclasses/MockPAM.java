@@ -311,7 +311,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	private PamNode pmNode;
 	
-	public PamNode testGetPamNode(){
+	public PamNode testGetSink(){
 		return pmNode;
 	}
 	/* (non-Javadoc)
@@ -423,7 +423,9 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		return l.getTotalActivation()== MockPAM.perceptThreshold;
+		// TODO Auto-generated method stub
+		return l.getTotalActivation()>= this.perceptThreshold;
+
 	}
 
 	/* (non-Javadoc)
