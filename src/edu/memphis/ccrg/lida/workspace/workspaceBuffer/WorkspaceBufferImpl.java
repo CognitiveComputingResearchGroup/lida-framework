@@ -17,6 +17,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
+ * This class implements module of WorkspaceBuffer. WorkspaceBuffer is a submodule of workspace and 
+ * it contains nodeStructures. Also this class maintains activation lower bound of its nodeStructures.
  * {@link WorkspaceBuffer} implementation. Uses a single NodeStructure for the content.
  * @author Ryan J. McCall
  */
@@ -29,6 +31,9 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	//TODO Consider having multiple NodeStructures 
 	private NodeStructure buffer;	
 	
+	/**
+	 * Construction method. This method initializes nodeStructures that belong to the workspaceBuffer.
+	 */
 	public WorkspaceBufferImpl() {
 		buffer = new NodeStructureImpl();
 	}
