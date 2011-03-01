@@ -26,6 +26,7 @@ import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
@@ -331,8 +332,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		for (int i = 0; i < pamListeners.size(); i++){
-			pamListeners.get(i).receivePercept(ns);
+		for(PamListener pl: pamListeners){
+			pl.receivePercept(ns);
 		}
 	}
 
@@ -379,6 +380,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			copiedNodes.add(factory.getNode(pamNode));
 		}
 		return Collections.unmodifiableCollection(copiedNodes);
+	}
+	
+	@Override
+	public Collection<Link> getPamLinks(){
+		Collection<Link> pamLinks = nodeStructure.getLinks();
+		Collection<Link> copiedLinks = new ArrayList<Link>();
+		for (Link pamLink : pamLinks){
+			copiedLinks.add(factory.getLink(pamLink));
+		}
+		return Collections.unmodifiableCollection(copiedLinks);
 	}
 
 	/* (non-Javadoc)
@@ -460,26 +471,26 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setNewNodeType(java.lang.String)
-	 */
-	@Override
-	public void setDefaultNodeType(String type) {
-		nodeStructure.setDefaultNodeType(type);
+	private void setDefaultNodeType(String type) {
+		if(!(factory.getNode(type) instanceof PamNode)){
+			logger.log(Level.WARNING, "Cannot set default node type to: " + type, LidaTaskManager.getCurrentTick());
+		}else{
+			nodeStructure.setDefaultNodeType(type);
+		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setNewLinkType(java.lang.String)
-	 */
-	@Override
-	public void setDefaultLinkType(String type) {
-		nodeStructure.setDefaultLinkType(type);
+	private void setDefaultLinkType(String type) {
+		Link dummy = factory.getLink(type, factory.getNode(), factory.getNode(), LinkCategoryNode.NONE);
+		if(!(dummy instanceof PamLink)){
+			logger.log(Level.WARNING, "Cannot set default link type to: " + type, LidaTaskManager.getCurrentTick());
+		}else{
+			nodeStructure.setDefaultLinkType(type);
+		}
 	}
 
 	public static double getPerceptThreshold() {
 		return perceptThreshold;
 	}
-	
 	
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPerceptThreshold(double)

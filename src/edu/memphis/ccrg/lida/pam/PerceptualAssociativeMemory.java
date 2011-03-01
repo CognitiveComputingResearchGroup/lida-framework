@@ -108,24 +108,6 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public void addPamListener(PamListener pl);
 	
-	
-	/**
-	 * Set the default type of {@link PamLink}Link used in this PAM's {@link NodeStructure}.
-	 *
-	 * @param type new default PamLink type
-	 * @see NodeStructure#setDefaultLinkType(String)
-	 */
-	public void setDefaultLinkType(String type);
-	
-	/**
-	 * Set the default type of {@link PamNode} used in this PAM's {@link NodeStructure}.
-	 *
-	 * @param type new default {@link PamNode} type
-	 * @see NodeStructure#setDefaultNodeType(String)
-	 */
-    public void setDefaultNodeType(String type);
-   
-
 	/**
 	 * Sets {@link PropagationBehavior} governing how activation is propagated in this PAM.
 	 *
@@ -167,7 +149,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @see PropagationTask
 	 */
 	public void propagateActivationToParents(PamNode pamNode);
-		
+
 	/**
 	 * Adds a NodeStructure to the percept.
 	 *
@@ -270,8 +252,15 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	/**
 	 * Returns an unmodifiable collection of the {@link PamNode}s in this PAM as {@link Node}s.
 	 *
-	 * @return the feature detectors
+	 * @return the PamNodes of this PAM
 	 */
 	public Collection<Node> getPamNodes();
+	
+	/**
+	 * Returns an unmodifiable collection of the {@link PamLink}s in this PAM as {@link Link}s.
+	 *
+	 * @return the PamLink of this PAM
+	 */
+	public Collection<Link> getPamLinks();
 		
 } 

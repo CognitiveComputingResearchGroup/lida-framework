@@ -251,23 +251,6 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setDefaultLinkType(java.lang.String)
-	 */
-	@Override
-	public void setDefaultLinkType(String type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setDefaultNodeType(java.lang.String)
-	 */
-	@Override
-	public void setDefaultNodeType(String type) {
-		// TODO Auto-generated method stub
-
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationBehavior)
@@ -464,5 +447,12 @@ public class MockPAM implements PerceptualAssociativeMemory {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Collection<Link> getPamLinks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

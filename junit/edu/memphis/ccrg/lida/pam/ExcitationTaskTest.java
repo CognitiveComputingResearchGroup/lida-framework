@@ -40,7 +40,7 @@ public class ExcitationTaskTest extends TestCase {
 		
 		excite.call();
 		assertTrue(pamNode.getActivation() == 0.5);
-		assertTrue(pam.testGetPamNode().getActivation() == 0.5);
+		assertTrue(pam.testGetSink().getActivation() == 0.5);
 		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
 	 
 	}
@@ -52,7 +52,7 @@ public class ExcitationTaskTest extends TestCase {
 		
 		excite.call();
 		assertTrue(pamNode.getActivation() == 0.5);
-		assertTrue(pam.testGetPamNode().getActivation() == 0.5);
+		assertTrue(pam.testGetSink().getActivation() == 0.5);
 		
 		Collection<LidaTask> tasks= taskSpawner.getRunningTasks(); 
 		for(LidaTask tsk: tasks){

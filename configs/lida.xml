@@ -9,7 +9,7 @@
 <lida xmlns="http://ccrg.cs.memphis.edu/LidaXMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaXMLSchema LidaXMLSchema.xsd ">
 	<taskmanager>
-		<param name="taskManager.tickDuration" type="int">1 </param>
+		<param name="taskManager.tickDuration" type="int">50 </param>
 		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
 	</taskmanager>	<submodules> 
 		<module name="Environment">

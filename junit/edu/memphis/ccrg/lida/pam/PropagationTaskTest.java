@@ -1,19 +1,12 @@
 package edu.memphis.ccrg.lida.pam;
 
-import java.util.Collection;
 import junit.framework.TestCase;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
-import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
-import org.junit.Test;
 
 /**
  * A propagation task excites a node and a link.  
@@ -60,7 +53,7 @@ public class PropagationTaskTest extends TestCase{
 		link.setActivation(linkActivation);
 		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
-		System.out.println(link.getActivation() + " " +link.getTotalActivation());
+//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
 		PropagationTask excite= new PropagationTask(source, link, sink, 0.1, pam, taskSpawner );
 		excite.call();
 	 
@@ -70,7 +63,7 @@ public class PropagationTaskTest extends TestCase{
 		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
 	 
 		assertEquals(sink, pam.testGetSink());
-		System.out.println(link.getActivation() + " " +link.getTotalActivation());
+//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
 		assertFalse(pam.isOverPerceptThreshold(link));
 		assertFalse(pam.isOverPerceptThreshold(sink));
 		 
@@ -86,7 +79,7 @@ public class PropagationTaskTest extends TestCase{
 		link.setActivation(linkActivation);
 		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
-		System.out.println(link.getActivation() + " " +link.getTotalActivation());
+//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
 		PropagationTask excite= new PropagationTask(source, link, sink, 0.5, pam, taskSpawner );
 		excite.call();
 	 
@@ -96,7 +89,7 @@ public class PropagationTaskTest extends TestCase{
 		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
 	 
 		assertEquals(sink, pam.testGetSink());
-		System.out.println(link.getActivation() + " " +link.getTotalActivation());
+//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
 		assertTrue(pam.isOverPerceptThreshold(link));
 		assertTrue(pam.isOverPerceptThreshold(sink));
 		assertTrue(taskSpawner.getRunningTasks().size() != 0);

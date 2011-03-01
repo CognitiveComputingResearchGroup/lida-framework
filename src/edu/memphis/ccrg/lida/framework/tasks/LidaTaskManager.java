@@ -149,6 +149,10 @@ public class LidaTaskManager {
 	public synchronized void setTickDuration(int newTickDuration) {
 		tickDuration = newTickDuration;
 	}
+	
+	public int getTickDuration(){
+		return tickDuration;
+	}
 
 	/**
 	 * @return true if system is in interval mode

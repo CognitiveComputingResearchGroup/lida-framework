@@ -26,6 +26,7 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
@@ -58,7 +59,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		
 		link1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, LinkCategoryNode.CHILD);
 		link2 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node2, node3, LinkCategoryNode.CHILD);
-
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		Link l2 = pam.addNewLink(node3.getExtendedId(), node2.getExtendedId(), null, 0.0);
 		assertEquals(l, null);
 		assertEquals(l2, null);
-		assertEquals(0, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		assertEquals(0, pam.getPamLinks().size());
 	}
 	
 	public void testAddNewLink2(){
@@ -159,26 +159,87 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addDefaultNode(node3);
 		Link l = pam.addNewLink(node1, node2, LinkCategoryNode.CHILD, 0.0);
 		assertEquals(pam.getPamLink(l.getExtendedId()), l);
-		assertEquals(1, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		assertEquals(1, pam.getPamLinks().size());
 		
 		Link l2 = pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0);
 		assertEquals(pam.getPamLink(l2.getExtendedId()), l2);
-		assertEquals(2, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		assertEquals(2, pam.getPamLinks().size());
 		
 		pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0);
-		assertEquals(2, ((NodeStructure) pam.getModuleContent(0)).getLinkCount());
+		assertEquals(2, pam.getPamLinks().size());
 		
+	}
+
+	public void testAddDefaultLinks(){
+		pam.addDefaultNode(node1);	
+		pam.addDefaultNode(node2);
+		pam.addDefaultNode(node3);
+		
+		Set<PamLink> links = new HashSet<PamLink>();
+		links.add(link1);
+		links.add(link2);
+		Set<PamLink> storedLinks = pam.addDefaultLinks(links);
+		for(PamLink lnk: storedLinks){
+			assertTrue(links.contains(lnk));
+		}
+		assertTrue(pam.containsLink(link1));
+		assertTrue(pam.containsLink(link2));
+		assertTrue(pam.getPamLinks().size() == 2);
+	}
+	
+	/**
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)}.
+	 */
+	@Test
+	public void testAddFeatureDetector() {	
+		FeatureDetector detector = new BasicDetector(node1, null, pam);
+		pam.setAssistingTaskSpawner(new MockTaskSpawner());
+		pam.addFeatureDetector(detector);
+		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
+		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 1);
+	}
+	
+	public void testAddFeatureDetector1() {	
+		FeatureDetector detector = new BasicDetector(node1, null, pam);
+		pam.setAssistingTaskSpawner(new MockTaskSpawner());
+		pam.addFeatureDetector(detector);
+		pam.addFeatureDetector(detector);
+		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
+		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 2);
+	}
+
+	public void testAddPamListener(){
+		PamListener pl = new PamListener() {
+			@Override
+			public void receivePercept(NodeStructure ns) {
+				assertTrue(ns.getNodeCount() == 0);
+				assertTrue(ns.getLinkCount() == 0);
+			}
+		};
+		pam.addPamListener(pl);
+		pam.addNodeStructureToPercept(new NodeStructureImpl());
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#getModuleName()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationBehavior)}.
 	 */
 	@Test
-	public void testGetModuleName() {
-		ModuleName name = pam.getModuleName();
-		assertEquals("Problem with GetModuleName", ModuleName.PerceptualAssociativeMemory, name);
+	public void testSetPropagationBehavior() {
+		PropagationBehavior pb = new UpscalePropagationBehavior();
+		pam.setPropagationBehavior(pb);		
+		assertEquals("Problem with SetPropagationBehavior", pb, pam.getPropagationBehavior());
 	}
-
+	
+	
+	public void testPropagateActivationToParents(){
+		//TODO
+		//TODO
+	}
+	
+	public void testAddNodeStructureToPercept(){
+		
+	}
+	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#decayModule(long)}.
 	 * @see LinearDecayStrategy
@@ -192,56 +253,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		assertTrue("Problem with DecayModule",pam.getPamNode(node1.getId()).getTotalActivation() == 0.0);		
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setAssistingTaskSpawner(edu.memphis.ccrg.lida.framework.tasks.TaskSpawner)}.
-	 *
-	 */
-	@Test
-	public void testSetTaskSpawner() {
-		TaskSpawner taskSpawner = new TaskSpawnerImpl();
-		pam.setAssistingTaskSpawner(taskSpawner);
-		assertEquals("Problem with SetTaskSpawner", taskSpawner, pam.getAssistingTaskSpawner());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationBehavior)}.
-	 */
-	@Test
-	public void testSetPropagationBehavior() {
-		PropagationBehavior pb = new UpscalePropagationBehavior();
-		pam.setPropagationBehavior(pb);		
-		assertEquals("Problem with SetPropagationBehavior", pb, pam.getPropagationBehavior());
-	}
-
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultLinks(Set)}.
-	 */
-	@Test
-	public void testAddDefaultLinks() {
-		Set<PamLink> links = new HashSet<PamLink>();
-		
-		pam.addDefaultNode(node1);	
-		pam.addDefaultNode(node2);
-		pam.addDefaultNode(node3);
-		links.add(link1);
-		links.add(link2);
-		pam.addDefaultLinks(links);
-		
-		assertTrue("Problem with AddLinks",pam.containsLink(link1) && pam.containsLink(link2));
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)}.
-	 */
-	@Test
-	public void testAddFeatureDetector() {	
-		FeatureDetector detector = new BasicDetector(node1, null, pam);
-		pam.setAssistingTaskSpawner(new MockTaskSpawner());
-		pam.addFeatureDetector(detector);
-		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
-	}
-	
 	@Test
 	public void testIsOverPerceptThreshold() {
 		pam.setPerceptThreshold(0.5);

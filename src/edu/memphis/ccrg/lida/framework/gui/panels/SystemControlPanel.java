@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 
 /**
- * 
+ * TODO Delete
  * @author Javier Snaider
  */
 public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEventListener {
@@ -58,7 +58,6 @@ public class SystemControlPanel extends LidaPanelImpl implements FrameworkGuiEve
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
-
         startPauseButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();

@@ -31,7 +31,11 @@ public class PamNodeImplTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		node1 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);
-		node2 = (PamNodeImpl) factory.getNode(PamNodeImpl.class.getSimpleName());		
+		node2 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);	
+		
+		node1.getActivation();
+		
+		
 	}
 	
 	@Override
