@@ -52,10 +52,14 @@ public class PropagationTaskTest extends TestCase{
 	}
 	
 	public void test(){
-		pam.setPerceptThreshold(1.0);
-		link.setActivation(0.1);
-		source.setActivation(0.1);
-		sink.setActivation(0.1);
+		double perceptThreshold = 1.0;
+		double linkActivation = 0.1;
+		double sourceActivation = 0.1;
+		double sinkActivation = 0.1;
+		pam.setPerceptThreshold(perceptThreshold);
+		link.setActivation(linkActivation);
+		source.setActivation(sourceActivation);
+		sink.setActivation(sinkActivation);
 		System.out.println(link.getActivation() + " " +link.getTotalActivation());
 		PropagationTask excite= new PropagationTask(source, link, sink, 0.1, pam, taskSpawner );
 		excite.call();
@@ -74,10 +78,14 @@ public class PropagationTaskTest extends TestCase{
 	}
 	
 	public void test2(){
-		pam.setPerceptThreshold(0.15);
-		link.setActivation(0.1);
-		source.setActivation(0.1);
-		sink.setActivation(0.1);
+		double perceptThreshold = 0.15;
+		double linkActivation = 0.1;
+		double sourceActivation = 0.1;
+		double sinkActivation = 0.1;
+		pam.setPerceptThreshold(perceptThreshold);
+		link.setActivation(linkActivation);
+		source.setActivation(sourceActivation);
+		sink.setActivation(sinkActivation);
 		System.out.println(link.getActivation() + " " +link.getTotalActivation());
 		PropagationTask excite= new PropagationTask(source, link, sink, 0.5, pam, taskSpawner );
 		excite.call();
@@ -95,24 +103,5 @@ public class PropagationTaskTest extends TestCase{
 		 
 	 
 	}
-//	public void testTaskSpawner(){
-//		pam.setPerceptThreshold(1.0);
-//		link.setActivation(0.5);
-//		source.setActivation(0.5);
-//		sink.setActivation(0.5);
-//		pamNode.setExciteStrategy(new DefaultExciteStrategy());
-//		PropagationTask excite= new PropagationTask(source, link, sink, 1.0, pam, taskSpawner );
-//		
-//		excite.call();
-//		assertTrue(pamNode.getActivation() == 0.5);
-//		assertTrue(pam.testGetPamNode().getActivation() == 0.5);
-//		
-//		Collection<LidaTask> tasks= taskSpawner.getRunningTasks(); 
-//		for(LidaTask tsk: tasks){
-//			assertTrue(tsk instanceof AddToPerceptTask);
-//		}
-//		 
-//		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
-//	 
-//	}
+ 
 }
