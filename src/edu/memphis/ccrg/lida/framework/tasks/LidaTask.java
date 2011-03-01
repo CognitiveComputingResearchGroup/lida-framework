@@ -130,5 +130,6 @@ public interface LidaTask extends Callable<LidaTask>, Learnable, FullyInitializa
 	 * @return scheduledTick tick when this task will run next
 	 */
 	public long getScheduledTick();
+	
 }
 
