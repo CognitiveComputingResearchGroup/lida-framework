@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -221,4 +223,25 @@ public class NodeStructureImplTest extends TestCase{
 					
 		assertTrue(NodeStructureImpl.compareNodeStructures(ns1, ns2));			
 	}	
+	
+	public final void testWorkspaceBufferImpl() {
+		NodeStructure ns = new NodeStructureImpl();
+		Node n = new NodeImpl();
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		
+		n.decay(100);
+		assertTrue(n.isRemovable());
+		
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		assertTrue(!n.isRemovable());
+		
+		Node storedNode = ns.addDefaultNode(n);
+		
+		assertTrue(storedNode.getActivation() + "", 0.1 == storedNode.getActivation());
+		assertTrue(storedNode.getActivatibleRemovalThreshold() + "", 0.05 == storedNode.getActivatibleRemovalThreshold());
+		ns.decayNodeStructure(100);
+		assertTrue(storedNode.isRemovable());
+	}
 }
