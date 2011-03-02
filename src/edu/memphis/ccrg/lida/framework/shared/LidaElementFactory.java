@@ -600,6 +600,13 @@ public class LidaElementFactory {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation());
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId());
+		
+		//TODO discuss.  perhaps this should be done in another getNode method.
+		// such as 
+		//public Node getNode(String nodeType, String decayStrategy,
+//		String exciteStrategy, String nodeLabel, double activation)
+		n.setActivatibleRemovalThreshold(oNode.getActivatibleRemovalThreshold());
+		
 		return n;
 	}
 
