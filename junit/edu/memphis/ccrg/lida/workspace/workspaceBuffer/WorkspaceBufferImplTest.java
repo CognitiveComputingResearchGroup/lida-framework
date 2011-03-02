@@ -1,3 +1,4 @@
+
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import static org.junit.Assert.*;
@@ -66,51 +67,67 @@ public class WorkspaceBufferImplTest {
 		
 	}
 
-	@Test
-	public final void testDecayModule() {
-		//Creates nodes and add them into a node structure
-		NodeStructure ns = new NodeStructureImpl();
-		
-		Node n1 = new NodeImpl();
-		n1.setId(2);
-		n1.setActivation(0.15);
-		n1.setActivatibleRemovalThreshold(0.1);
-		ns.addDefaultNode(n1);
-		
-		Node n2 = new NodeImpl();
-		n2.setId(6);
-		n2.setActivation(0.6);
-		ns.addDefaultNode(n2);
-		
-		//Create workspaceBuffer and add them into mockWorkspace
-		WorkspaceImpl wMoudle = new WorkspaceImpl();
-		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
-		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
-		wMoudle.addSubModule(perceptualBuffer);
-		
-		// Add node structure into workspaceBuffer of percetualBuffer
-		wMoudle.receivePercept(ns);
-		
-		WorkspaceBuffer perceptualBuffer2 = (WorkspaceBuffer) wMoudle
-		.getSubmodule(ModuleName.PerceptualBuffer);
-
-		perceptualBuffer2.decayModule(30);
-		
-		NodeStructure ns2 = (NodeStructure) perceptualBuffer2.getModuleContent();
-		int yy = 2;
-		for (Node n : ns2.getNodes()) {
-			System.out.println("The node Id is " + n.getId());
-
-			//assert (n.getId() != 2 );
-		}
-		
-
-	}
+//	@Test
+//	public final void testDecayModule() {
+//		//Creates nodes and add them into a node structure
+//		NodeStructure ns = new NodeStructureImpl();
+//		
+//		Node n1 = new NodeImpl();
+//		n1.setId(2);
+//		n1.setActivation(0.15);
+//		n1.setActivatibleRemovalThreshold(0.1);
+//		ns.addDefaultNode(n1);
+//		
+//		Node n2 = new NodeImpl();
+//		n2.setId(6);
+//		n2.setActivation(0.6);
+//		ns.addDefaultNode(n2);
+//		
+//		//Create workspaceBuffer and add them into mockWorkspace
+//		WorkspaceImpl wMoudle = new WorkspaceImpl();
+//		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
+//		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
+//		wMoudle.addSubModule(perceptualBuffer);
+//		
+//		// Add node structure into workspaceBuffer of percetualBuffer
+//		wMoudle.receivePercept(ns);
+//		
+//		WorkspaceBuffer perceptualBuffer2 = (WorkspaceBuffer) wMoudle
+//		.getSubmodule(ModuleName.PerceptualBuffer);
+//
+//		perceptualBuffer2.decayModule(30);
+//		
+//		NodeStructure ns2 = (NodeStructure) perceptualBuffer2.getModuleContent();
+//		int yy = 2;
+//		for (Node n : ns2.getNodes()) {
+//			System.out.println("The node Id is " + n.getId());
+//
+//			//assert (n.getId() != 2 );
+//		}
+//		
+//
+//	}
 
 	@Test
 	public final void testWorkspaceBufferImpl() {
-		// Tested in testInit() method above.
-
+		NodeStructure ns = new NodeStructureImpl();
+		Node n = new NodeImpl();
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		
+		n.decay(100);
+		assertTrue(n.isRemovable());
+		
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		assertTrue(!n.isRemovable());
+		
+		Node storedNode = ns.addDefaultNode(n);
+		
+		assertTrue(storedNode.getActivation() + "", 0.1 == storedNode.getActivation());
+		assertTrue(storedNode.getActivatibleRemovalThreshold() + "", 0.05 == storedNode.getActivatibleRemovalThreshold());
+		ns.decayNodeStructure(100);
+		assertTrue(storedNode.isRemovable());
 	}
 
 	@Test

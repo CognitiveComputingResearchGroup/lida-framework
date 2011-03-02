@@ -114,8 +114,15 @@ public class WorkspaceTest {
         public void addWorkspaceListener(WorkspaceListener l) {
         }
 
+        private NodeStructure receivedNs;
+        
         @Override
         public void cueEpisodicMemories(NodeStructure ns) {
+        	receivedNs = ns;
+        }
+        
+        public NodeStructure getCueEpisodicNS(){
+        	return receivedNs;
         }
 
         @Override
