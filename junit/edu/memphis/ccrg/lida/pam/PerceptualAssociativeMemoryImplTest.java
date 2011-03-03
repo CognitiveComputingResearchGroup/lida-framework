@@ -10,6 +10,7 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 
 /**
  * Tests {@link PerceptualAssociativeMemoryImpl}
- * @author Siminder Kaur, Ryan J. McCall
+ * @author Ryan J. McCall, Siminder Kaur
  */
 public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
@@ -111,7 +112,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNodes(java.util.Set)}.
-	 * @throws Exception 
+	 * @throws Exception e
 	 */
 	@Test
 	public void testAddDefaultNodes() throws Exception {		
@@ -288,7 +289,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	public void testPropagateActivationToParents(){
 		//TODO
-		//TODO
+		//TODO issue of cycle
 	}
 	
 	public void testAddNodeStructureToPercept(){
@@ -489,11 +490,40 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testGetPamNodes(){
-		//TODO
+		Collection<Node> nodes = pam.getPamNodes();
+		assertEquals(0, nodes.size());
+		try{
+			nodes.clear();
+		}catch(Exception e){
+			assertTrue(e instanceof UnsupportedOperationException);
+		}
+		
+		pam.addDefaultNode(node1);
+		pam.addNewNode("foo");
+		
+		nodes = pam.getPamNodes();
+		assertTrue(nodes.size() == 2);		
 	}
 	
 	public void testGetPamLinks(){
-		//TODO
+		pam.addDefaultNode(node1);
+		pam.addDefaultNode(node2);
+		pam.addDefaultNode(node3);
+		
+		Collection<Link> links = pam.getPamLinks();
+		assertTrue(links.size() == 0);
+		try{
+			links.remove(link1);
+		}catch(Exception e){
+			assertTrue(e instanceof UnsupportedOperationException);
+		}
+		
+		pam.addNewLink(node1, node2, LinkCategoryNode.NONE, 0.0);
+		pam.addNewLink(node2, node3, LinkCategoryNode.NONE, 0.0);
+		pam.addNewLink(node3, node1, LinkCategoryNode.NONE, 0.0);
+		
+		links = pam.getPamLinks();
+		assertTrue(links.size() == 3);		
 	}
 
 }
