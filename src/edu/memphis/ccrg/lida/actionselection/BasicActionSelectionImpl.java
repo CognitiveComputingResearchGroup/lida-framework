@@ -64,7 +64,6 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 
 	@Override
 	public void receiveBehavior(Behavior b) {
-
 		if (b.getActivation() > selectionThreshold) {
 			if (coolDownCounter == selectionFrequency) {
 				logger.log(Level.FINE, "selecting behavior " + b.getLabel()
