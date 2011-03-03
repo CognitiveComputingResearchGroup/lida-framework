@@ -36,7 +36,7 @@ public interface BroadcastTrigger {
 	 */
 	public void init (Map<String,Object> parameters,GlobalWorkspace gw);
 	/**
-	 * Each time a new Coalition is put in the GW, this method is called for all registered the Triggers.
+	 * Each time a new Coalition is put in the GW, this method is called for all the registered Triggers.
 	 * @param coalitions All the coalitions in the GW.
 	 */
 	public void checkForTriggerCondition (Collection<Coalition> coalitions);

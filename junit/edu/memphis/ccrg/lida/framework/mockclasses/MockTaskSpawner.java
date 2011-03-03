@@ -23,12 +23,14 @@ public class MockTaskSpawner implements TaskSpawner {
 
 	@Override
 	public void addTask(LidaTask task) {
+		System.out.println(task+" added! To be run at "+task.getNextTicksPerStep()+" ticks from now");
 		tasks.add(task);
 	}
 
 	@Override
 	public void cancelTask(LidaTask task) {
-
+		System.out.println(task+" removed! ");
+		tasks.remove(task);
 	}
 
 	@Override

@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.TimerTask;
 
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -26,7 +26,7 @@ public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	
 	/**
 	 * Called each time a new coalition is added to the {@link GlobalWorkspace} each {@link BroadcastTrigger}'s 
-	 * 'checkForTrigger' method is called.
+	 * 'checkForTriggerCondition' method is called.
 	 * In the case of this trigger the 'reset()' method inherited from {@link NoBroadcastOccurringTrigger}
 	 * is called which resets the {@link TimerTask} object.  
 	 * 
@@ -35,7 +35,8 @@ public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	 * @param coalitions Coalitions trigger will check
 	 * @param maxActivation not used
 	 */
-	public void checkForTrigger(Set<Coalition> coalitions, double maxActivation) {
+	@Override
+	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 		reset();
 	}
 

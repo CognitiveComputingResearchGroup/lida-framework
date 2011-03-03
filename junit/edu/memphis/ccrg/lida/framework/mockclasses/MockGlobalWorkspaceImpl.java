@@ -13,7 +13,8 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
-
+	protected TaskSpawner taskSpawner;
+	
 	@Override
 	public void addBroadcastListener(BroadcastListener bl) {
 		
@@ -89,13 +90,13 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public void triggerBroadcast() {
-		System.out.println("Boradcast started at tick: "+LidaTaskManager.getCurrentTick());
+		System.out.println("Broadcast started at tick: "+LidaTaskManager.getCurrentTick());
 		System.out.println();
 	}
 
 	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		// TODO Auto-generated method stub
+		taskSpawner = ts;
 		
 	}
 
@@ -107,8 +108,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public TaskSpawner getAssistingTaskSpawner() {
-		// TODO Auto-generated method stub
-		return null;
+		return taskSpawner;
 	}
 
 	@Override
