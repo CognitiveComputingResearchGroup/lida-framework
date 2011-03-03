@@ -51,7 +51,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 
 	@Override
 	public String toString() {
-		return PamLinkImpl.class.getSimpleName() +  " " + getCategory().getLabel() + " " + getExtendedId();
+		return getCategory().getLabel() + " " + getExtendedId();
 	}
 
 	//LEARNABLE METHODS

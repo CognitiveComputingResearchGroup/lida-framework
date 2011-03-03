@@ -296,7 +296,7 @@ public class LidaTaskManager {
 		try {
 			executorService.invokeAll(decaybles);
 		} catch (InterruptedException e) {
-			logger.log(Level.WARNING, e.getMessage(), currentTick);
+			logger.log(Level.WARNING, "Decaying interrupted. Message: " + e.getMessage(), currentTick);
 		}
 		lastDecayTick = currentTick;
 		logger.log(Level.FINEST, "Modules decayed", currentTick);

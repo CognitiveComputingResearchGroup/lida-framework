@@ -48,7 +48,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 
 	@Override
 	public String toString() {
-		return PamNodeImpl.class.getSimpleName() +  " " + getLabel() + " " + getId();
+		return getLabel() + " " + getId();
 	}
 	
 	//LEARNABLE METHODS

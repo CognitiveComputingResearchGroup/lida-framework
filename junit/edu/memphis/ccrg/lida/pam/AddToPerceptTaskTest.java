@@ -61,7 +61,7 @@ public class AddToPerceptTaskTest extends TestCase{
 		NodeStructure expectedNS = factory.getPamNodeStructure();
 		expectedNS.addDefaultNode(nodeA);
 		expectedNS.addDefaultNode(nodeB);
-		Link expectedLink = expectedNS.addLink(nodeA.getId(), nodeB.getId(), LinkCategoryNode.NONE, 1.0);
+		Link expectedLink = expectedNS.addLink(nodeA.getId(), nodeB.getId(), LinkCategoryNode.NONE, 1.0, 0.0);
 			
 		//Code being tested
 		AddToPerceptTask t = new AddToPerceptTask(expectedNS, pam);

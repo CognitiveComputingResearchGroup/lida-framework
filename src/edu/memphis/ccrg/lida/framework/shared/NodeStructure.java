@@ -50,10 +50,11 @@ public interface NodeStructure {
 	 * @param idSink {@link ExtendedId} of link's sink
 	 * @param type Link's {@link LinkCategory}
 	 * @param activation initial link activation
+	 * @param removalThreshold TODO
 	 * @return created Link or null if either source or sink are not present. 
 	 */
 	public Link addLink(ExtendedId idSource, ExtendedId idSink,
-			LinkCategory type, double activation);
+			LinkCategory type, double activation, double removalThreshold);
 
 	/**
 	 * Creates and adds a new Link with specified attributes.  Source and sink must
@@ -62,10 +63,11 @@ public interface NodeStructure {
 	 * @param idSink {@link ExtendedId} of link's sink
 	 * @param type Link's {@link LinkCategory}
 	 * @param activation initial link activation
+	 * @param removalThreshold TODO
 	 * @return created Link or null if either source or sink are not present. 
 	 */
 	public Link addLink(int idSource, ExtendedId idSink,
-			LinkCategory type, double activation);
+			LinkCategory type, double activation, double removalThreshold);
 
 	/**
 	 * Creates and adds a new Link with specified attributes.  Source and sink must
@@ -74,10 +76,11 @@ public interface NodeStructure {
 	 * @param idSink id of link's sink
 	 * @param type Link's {@link LinkCategory}
 	 * @param activation initial link activation
+	 * @param removalThreshold TODO
 	 * @return created Link or null if either source or sink are not present. 
 	 */
 	public Link addLink(int idSource, int idSink,
-			LinkCategory type, double activation);
+			LinkCategory type, double activation, double removalThreshold);
 
 	/**
 	 * Adds a COPY of specified Node to this NodeStructure. The copy will be of the default

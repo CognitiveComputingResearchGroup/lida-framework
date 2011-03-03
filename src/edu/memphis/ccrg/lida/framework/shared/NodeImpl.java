@@ -106,7 +106,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	@Override
 	public String toString(){
-		return "Node: " + getLabel() + " ["+getId()+"] ";
+		return getLabel() + " ["+getId()+"] ";
 	}
 
 	@Override

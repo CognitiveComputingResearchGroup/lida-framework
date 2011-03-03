@@ -51,8 +51,9 @@ public class TaskSpawnerImpl implements TaskSpawner {
 
 	@Override
 	public void addTasks(Collection<? extends LidaTask> initialTasks) {
-		for (LidaTask r : initialTasks)
+		for (LidaTask r : initialTasks){
 			addTask(r);
+		}
 	}
 
 	/**

@@ -442,10 +442,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Link addNewLink(Node src, Node snk, LinkCategory cat, double activ) {
 		if(src == null || snk == null || cat == null){
-			//log
+			logger.log(Level.WARNING, "One or more arguments was null, link not added", LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return nodeStructure.addLink(src.getExtendedId(), snk.getExtendedId(), cat, activ);
+		return nodeStructure.addLink(src.getExtendedId(), snk.getExtendedId(), cat, activ, 0.0);
 	}
 
 	/* (non-Javadoc)
@@ -455,11 +455,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Link addNewLink(ExtendedId srcId, ExtendedId sinkId,
 			LinkCategory cat, double activ) {
 		if(srcId == null || sinkId == null || cat == null){
-			//log
+			logger.log(Level.WARNING, "One or more arguments was null, link not added", LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return nodeStructure.addLink(srcId, sinkId, cat, activ);
+		return nodeStructure.addLink(srcId, sinkId, cat, activ, 0.0);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java.lang.String)

@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -59,8 +60,20 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	@Override
 	public void decayModule(long ticks){
 		super.decayModule(ticks);
-		buffer.decayNodeStructure(ticks);	
+		decayCounter++;
+		if(decayCounter % 20 == 0){
+			if(getModuleName() == ModuleName.PerceptualBuffer)
+				buffer.decayNodeStructure(ticks);
+			else{
+				buffer.decayNodeStructure(ticks);
+				decayCounter--;
+			}
+		}else{
+			buffer.decayNodeStructure(ticks);
+		}
 	}
+	
+	private int decayCounter = 0;
 	
 	@Override
 	public void addListener(ModuleListener listener) {

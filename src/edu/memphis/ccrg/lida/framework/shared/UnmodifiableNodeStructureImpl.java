@@ -93,7 +93,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type,
-			double activation) {
+			double activation, double removalThreshold) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 	
@@ -102,7 +102,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public Link addLink(int idSource, ExtendedId idSink,
-			LinkCategory type, double activation){
+			LinkCategory type, double activation, double removalThreshold){
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
@@ -111,7 +111,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 */
 	@Override
 	public Link addLink(int idSource, int idSink,
-			LinkCategory type, double activation){
+			LinkCategory type, double activation, double removalThreshold){
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 

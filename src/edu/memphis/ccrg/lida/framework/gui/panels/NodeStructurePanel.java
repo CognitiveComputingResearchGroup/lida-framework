@@ -144,11 +144,12 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		vv.getRenderContext().setVertexLabelTransformer(
 				new Transformer<Linkable, String>() {
 					@Override
-					public String transform(final Linkable l) {
-						if (l instanceof Link) {
-							return ((Link) l).getCategory().toString();
+					public String transform(final Linkable linkable) {
+						if (linkable instanceof Link) {
+							return "";
+//							return ((Link) linkable).getCategory().toString();
 						}
-						return l.toString();
+						return linkable.toString();
 					}
 				});
 

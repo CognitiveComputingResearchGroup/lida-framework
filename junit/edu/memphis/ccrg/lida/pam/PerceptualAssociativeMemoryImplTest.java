@@ -42,13 +42,13 @@ import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
  */
 public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
-	PerceptualAssociativeMemoryImpl pam;
-	NodeStructure nodeStructure;
-	PamNodeImpl node1,node2,node3;
-	DecayStrategy decayStrategy ;
-	ExciteStrategy exciteStrat;
-	TotalActivationStrategy tas;
-	PamLinkImpl link1,link2;
+	private PerceptualAssociativeMemoryImpl pam;
+	private NodeStructure nodeStructure;
+	private PamNodeImpl node1,node2,node3;
+	private DecayStrategy decayStrategy ;
+	private ExciteStrategy exciteStrat;
+	private TotalActivationStrategy tas;
+	private PamLinkImpl link1,link2;
 	
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	
@@ -307,11 +307,10 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		};
 		
 		pam.addPamListener(pl);
-		NodeStructure ns = new NodeStructureImpl();
-		ns.addDefaultNode(node1);
-		ns.addDefaultNode(node2);
-		ns.addDefaultNode(node3);
-		pam.addNodeStructureToPercept(ns);
+		nodeStructure.addDefaultNode(node1);
+		nodeStructure.addDefaultNode(node2);
+		nodeStructure.addDefaultNode(node3);
+		pam.addNodeStructureToPercept(nodeStructure);
 	}
 	
 	public void testContainsNode(){

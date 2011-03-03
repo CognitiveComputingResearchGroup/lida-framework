@@ -86,6 +86,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 */
 	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation);
 	
+	//TODO specify removal threshold? ^^
+	
 	/**
 	 * Adds a COPY of a collection of PamLinks to this PAM.
 	 * Links will be of Pam's default type.

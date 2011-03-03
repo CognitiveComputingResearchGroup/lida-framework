@@ -42,7 +42,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	/**
 	 * A custom id dependent on the source's and the sink's ids.
 	 */
-	private ExtendedId id;
+	private ExtendedId extendedId;
 	
 	/**
 	 * Category of this Link.
@@ -71,7 +71,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		sink = l.getSink();
 		source = l.getSource();
 		category = l.getCategory();
-		id = l.getExtendedId();
+		extendedId = l.getExtendedId();
 		groundingPamLink = l.getGroundingPamLink();
 		updateExtendedId();
 	}
@@ -116,13 +116,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
 			logger.log(Level.FINEST, "updated extended id", LidaTaskManager.getCurrentTick());
-			id = new ExtendedId(category.getId(), source.getId(), sink.getExtendedId());
+			extendedId = new ExtendedId(category.getId(), source.getId(), sink.getExtendedId());
 		}
 	}
 
 	@Override
 	public ExtendedId getExtendedId() {
-		return id;
+		return extendedId;
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	
 	@Override
 	public int hashCode() {
-		return id.hashCode();
+		return extendedId.hashCode();
 	}
 	
 	/**
@@ -184,18 +184,18 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		}
 		Link other = (Link) obj;
 		
-		return id.equals(other.getExtendedId());
+		return extendedId.equals(other.getExtendedId());
 	}
 	
 	
 	@Override
 	public String getLabel() {
-		return "Link: "+category.getLabel()+" " + id;
+		return category.getLabel();
 	}
 	
 	@Override
 	public String toString() {
-		return getLabel();
+		return getLabel() + " " + extendedId;
 	}
 
 }
