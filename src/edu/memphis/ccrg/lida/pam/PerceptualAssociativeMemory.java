@@ -50,7 +50,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
-	 * Node will be of Pam's default type.
+	 * Node will be of Pam's default type. 
 	 * @param node PamNode
 	 * @return Copied PamNode actually stored in this PAM.
 	 */

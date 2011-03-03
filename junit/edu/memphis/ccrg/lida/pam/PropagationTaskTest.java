@@ -20,8 +20,6 @@ public class PropagationTaskTest extends TestCase{
 	private PamNode sink;
 	private PamLink link;
 	
-	private double excitationAmount;
-	
 	/*
 	 * Used to make another excitation call
 	 */

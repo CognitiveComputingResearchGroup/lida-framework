@@ -111,7 +111,7 @@ public class ActivatibleImpl implements Activatible {
 
 	@Override
 	public boolean isRemovable() {
-		return activation < removableThreshold;
+		return activation <= removableThreshold;
 	}
 
 	@Override

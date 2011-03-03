@@ -520,7 +520,7 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode() {
-		return getNode(defaultNodeType,defaultDecayType, defaultExciteType, "",0.0);
+		return getNode(defaultNodeType,defaultDecayType, defaultExciteType, "",0.0, 0.0);
 	}
 
 	/**
@@ -597,16 +597,10 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
-		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation());
+		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
-		n.setId(oNode.getId());
-		
-		//TODO discuss.  perhaps this should be done in another getNode method.
-		// such as 
-		//public Node getNode(String nodeType, String decayStrategy,
-//		String exciteStrategy, String nodeLabel, double activation)
-		n.setActivatibleRemovalThreshold(oNode.getActivatibleRemovalThreshold());
-		
+		n.setId(oNode.getId());	
+		n.setDesirability(oNode.getDesirability());
 		return n;
 	}
 
@@ -650,7 +644,7 @@ public class LidaElementFactory {
 			exciteB=defaultExciteType;
 		}
 
-		Node n = getNode(nodeType, decayB, exciteB, nodeLabel,0.0);
+		Node n = getNode(nodeType, decayB, exciteB, nodeLabel,0.0, 0.0);
 		return n;
 	}
 
@@ -668,10 +662,11 @@ public class LidaElementFactory {
 	 *            label of new node
 	 * @param activation
 	 *            activation of new node
+	 * @param removableThreshold TODO
 	 * @return the node
 	 */
 	public Node getNode(String nodeType, String decayStrategy,
-						String exciteStrategy, String nodeLabel, double activation) {
+						String exciteStrategy, String nodeLabel, double activation, double removableThreshold) {
 		Node n = null;
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
@@ -687,6 +682,7 @@ public class LidaElementFactory {
 			n.setLabel(nodeLabel);
 			n.setId(elementIdCount++);
 			n.setActivation(activation);
+			n.setActivatibleRemovalThreshold(removableThreshold);
 			
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);	
 			n.init(nodeDef.getParams());

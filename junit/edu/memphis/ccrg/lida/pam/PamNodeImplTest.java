@@ -63,5 +63,17 @@ public class PamNodeImplTest extends TestCase{
 		node2.setId(id);
 		assertEquals(node1.hashCode() + " " + node2.hashCode(), node1.hashCode(), node2.hashCode());
 	}
+	
+	public void testSetActivationThreshold(){
+		double t = 0.7;
+		node1.setActivatibleRemovalThreshold(t);
+		assertEquals(t, node1.getActivatibleRemovalThreshold());
+		
+		node1.setActivation(1.0);
+		assertFalse(node1.isRemovable());
+		node1.decay(1000);
+		//TODO find issue
+		assertTrue(node1.isRemovable());
+	}
 
 }

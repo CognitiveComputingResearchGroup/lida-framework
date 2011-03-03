@@ -30,6 +30,7 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -163,7 +164,25 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if(n == null){
 			return null;
 		}		
-		return (PamNode) nodeStructure.addDefaultNode(n);
+		PamNode storedNode = (PamNode) nodeStructure.addDefaultNode(n);
+		if(n instanceof Learnable){
+			copyLearnableValues(storedNode, (Learnable) n);
+		}
+		return storedNode;
+	}
+	
+	/*
+	 * Updates the Learnable attributes of first Learnable with those of the second.
+	 * @param newOne Learnable to be updated
+	 * @param oldOne source Learnable
+	 * @see LearnableImpl
+	 */
+	private void copyLearnableValues(Learnable newOne, Learnable oldOne){
+		newOne.setBaseLevelActivation(oldOne.getBaseLevelActivation());
+		newOne.setBaseLevelExciteStrategy(oldOne.getBaseLevelExciteStrategy());
+		newOne.setBaseLevelDecayStrategy(oldOne.getBaseLevelDecayStrategy());
+		newOne.setTotalActivationStrategy(oldOne.getTotalActivationStrategy());
+		newOne.setLearnableRemovalThreshold(oldOne.getLearnableRemovalThreshold());
 	}
 
 	/*
@@ -175,8 +194,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links) {
 		Set<PamLink> copiedLinks = new HashSet<PamLink>();
-		for (Link l : links)
-			copiedLinks.add((PamLink) nodeStructure.addDefaultLink(l));
+		for (Link l : links){
+			PamLink storedLink = (PamLink) nodeStructure.addDefaultLink(l);
+			if(l instanceof Learnable){
+				copyLearnableValues(storedLink, (Learnable) l);				
+			}
+			copiedLinks.add(storedLink);
+		}
 		return copiedLinks;
 	}
 
@@ -516,18 +540,32 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public double getUpscaleFactor() {
 		return upscaleFactor;
 	}
+	
 	@Override
 	public void setUpscaleFactor(double f) {
-		upscaleFactor = f;		
+		if(f < 0.0){
+			upscaleFactor = 0.0;
+		}else if(f > 1.0){
+			upscaleFactor = 1.0;
+		}else{
+			upscaleFactor = f;
+		}		
 	}
 
 	@Override
 	public double getDownscaleFactor() {
 		return downscaleFactor;
 	}
+	
 	@Override
 	public void setDownscaleFactor(double f) {
-		downscaleFactor = f;
+		if(f < 0.0){
+			downscaleFactor = 0.0;
+		}else if(f > 1.0){
+			downscaleFactor = 1.0;
+		}else{
+			downscaleFactor = f;
+		}	
 	}
 
 	/* (non-Javadoc)
@@ -535,7 +573,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Link getPamLink(ExtendedId eid) {
-		return factory.getLink(nodeStructure.getLink(eid));
+		if(nodeStructure.containsLink(eid)){
+			return factory.getLink(nodeStructure.getLink(eid), nodeStructure.getDefaultLinkType());
+		}
+		return null;
 	}
 	
 
@@ -544,7 +585,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Node getPamNode(ExtendedId eid) {
-		return factory.getNode(nodeStructure.getNode(eid));
+		if(nodeStructure.containsNode(eid)){
+			return factory.getNode(nodeStructure.getNode(eid), nodeStructure.getDefaultNodeType());
+		}
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -552,7 +596,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Node getPamNode(int id) {
-		return factory.getNode(nodeStructure.getNode(id));
+		if(nodeStructure.containsNode(id)){
+			return factory.getNode(nodeStructure.getNode(id), nodeStructure.getDefaultNodeType());
+		}
+		return null;
 	}
 
 	@Override
