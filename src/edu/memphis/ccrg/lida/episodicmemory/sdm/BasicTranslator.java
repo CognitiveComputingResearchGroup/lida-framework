@@ -25,7 +25,7 @@ public class BasicTranslator implements Translator {
 
 	private int size;
 	private PerceptualAssociativeMemory pam;
-	private LidaElementFactory factory;
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();;
 	
 
 	/**
@@ -40,7 +40,6 @@ public class BasicTranslator implements Translator {
 		super();
 		this.size = size;
 		this.pam = pam;
-		this.factory=LidaElementFactory.getInstance();
 	}
 
 	/**

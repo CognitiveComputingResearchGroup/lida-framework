@@ -73,7 +73,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * To create new node and links
 	 */
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	private static final int DEFAULT_EXCITATION_TASK_TICKS = 1;
 	private int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;

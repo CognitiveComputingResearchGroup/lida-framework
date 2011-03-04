@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

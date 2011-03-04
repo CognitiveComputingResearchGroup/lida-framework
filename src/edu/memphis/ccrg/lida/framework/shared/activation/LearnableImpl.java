@@ -13,10 +13,9 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
@@ -28,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
+	private static LidaElementFactory factory=LidaElementFactory.getInstance();
 	
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
@@ -38,21 +38,27 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private double learnableRemovableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 
 	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
-									DecayStrategy decayStrategy, TotalActivationStrategy taStrategy) {
-		super(activation, exciteStrategy, decayStrategy);
+									DecayStrategy decayStrategy, TotalActivationStrategy taStrategy, double learnebleRemovableThreshold) {
+		super(activation, exciteStrategy, decayStrategy, 0.0);
 		this.baseLevelExciteStrategy = exciteStrategy;
 		this.baseLevelDecayStrategy = decayStrategy;
 		this.totalActivationStrategy = taStrategy;
+		this.learnableRemovableThreshold=learnebleRemovableThreshold;
 	}
 
 	public LearnableImpl() {
 		super();
 		baseLevelActivation = 0.0;
-		baseLevelDecayStrategy = new LinearDecayStrategy();
-		baseLevelExciteStrategy = new DefaultExciteStrategy();
+		baseLevelDecayStrategy = factory.getDecayStrategy(factory.getDefaultDecayType());
+		baseLevelExciteStrategy = factory.getExciteStrategy(factory.getDefaultExciteType());
+//FIXME move to the Factory!!!!
 		totalActivationStrategy = new DefaultTotalActivationStrategy();
 	}
 	
+	public LearnableImpl(Learnable l) {
+		this(l.getActivation(), l.getExciteStrategy(), l.getDecayStrategy(), l.getTotalActivationStrategy(), l.getLearnableRemovalThreshold());
+	}
+
 	@Override
 	public void decay(long ticks){
 		decayBaseLevelActivation(ticks);

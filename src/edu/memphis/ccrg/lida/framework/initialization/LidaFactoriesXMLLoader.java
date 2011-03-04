@@ -42,7 +42,7 @@ public class LidaFactoriesXMLLoader {
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaFactories.xsd";
 	private static final Logger logger = Logger.getLogger(LidaFactoriesXMLLoader.class.getCanonicalName());
 	private Document dom;
-	private LidaElementFactory nfactory = LidaElementFactory.getInstance();
+	private static LidaElementFactory nfactory = LidaElementFactory.getInstance();
 	private Map<String, StrategyDef> strategies;
 	private Map<String, LinkableDef> nodes;
 	private Map<String, LinkableDef> links;

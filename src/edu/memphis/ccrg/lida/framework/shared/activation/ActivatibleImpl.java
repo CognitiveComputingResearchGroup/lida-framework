@@ -10,10 +10,9 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
@@ -25,26 +24,29 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class ActivatibleImpl implements Activatible {
 	
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();
+
 	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
+	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 	
 	//this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
 	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
-	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	public ActivatibleImpl() {
 		activation = 0.0;
-		exciteStrategy = new DefaultExciteStrategy();
-		decayStrategy = new LinearDecayStrategy();
+		decayStrategy = factory.getDecayStrategy(factory.getDefaultDecayType());
+		exciteStrategy = factory.getExciteStrategy(factory.getDefaultExciteType());
 	}
 	
-	public ActivatibleImpl(double activation, ExciteStrategy eb, DecayStrategy db) {
+	public ActivatibleImpl(double activation, ExciteStrategy eb, DecayStrategy db, double removableThreshold) {
 		this.activation = activation;
 		this.exciteStrategy = eb;
 		this.decayStrategy = db;
+		this.removableThreshold=removableThreshold;
 	}
 
 	@Override

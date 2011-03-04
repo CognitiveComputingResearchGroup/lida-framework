@@ -30,9 +30,21 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
 	public static final String factoryName = PamNodeImpl.class.getSimpleName();
 	
+	
+	/*
+	 * Private Learnable object used for all learnable methods
+	 */
+	private Learnable learnable;
+	
 	public PamNodeImpl() {
 		super();
 		groundingPamNode = this;
+		learnable = new LearnableImpl();
+	}
+	public PamNodeImpl(PamNodeImpl pamNode) {
+		super(pamNode);
+		groundingPamNode = this;
+		this.learnable=new LearnableImpl(pamNode.learnable);
 	}
 
 	@Override
@@ -52,11 +64,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 	
 	//LEARNABLE METHODS
-	
-	/*
-	 * Private Learnable object used for all learnable methods
-	 */
-	private final Learnable learnable = new LearnableImpl();
 
 	@Override
 	public double getActivation() {
@@ -179,4 +186,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		learnable.setTotalActivationStrategy(strategy);
 	}	
 
+	@Override
+	public PamNode copy() {
+		return new PamNodeImpl(this);
+	}	
 }

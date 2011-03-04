@@ -3,7 +3,6 @@
  */
 package edu.memphis.ccrg.lida.sensorymemory;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.junit.Test;

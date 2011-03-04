@@ -39,7 +39,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	
 	private GlobalWorkspace globalWorkspace;
 
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	private String defaultCodeletName;
 

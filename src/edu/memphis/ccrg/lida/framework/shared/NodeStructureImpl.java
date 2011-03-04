@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -44,7 +45,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Standard factory for new objects. Used to create copies when adding
 	 * linkables to this NodeStructure
 	 */
-	private static LidaElementFactory factory;
+	private static LidaElementFactory factory=LidaElementFactory.getInstance();
 
 	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
 
@@ -82,7 +83,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Default constructor. Uses the default node and link types of the factory
 	 */
 	public NodeStructureImpl() {
-		factory = LidaElementFactory.getInstance();
 		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
 		nodes = new ConcurrentHashMap<Integer, Node>();
 		links = new ConcurrentHashMap<ExtendedId, Link>();

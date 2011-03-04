@@ -73,5 +73,11 @@ public interface Node extends Linkable, Activatible, Serializable {
 	 */
 	public void setDesirability(double degree);
 
+	/**
+	 * Deep copy of a Node. All implementations of Node must override this method.
+	 * @return
+	 */
+	public Node copy();
+
 }
 

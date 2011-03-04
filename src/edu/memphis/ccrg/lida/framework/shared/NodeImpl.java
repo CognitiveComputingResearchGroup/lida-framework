@@ -40,10 +40,13 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	public NodeImpl(NodeImpl n) {
-		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy());
+		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy(), n.getActivatibleRemovalThreshold());
 		this.id = n.id;
 		this.extendedId = n.extendedId;
 		this.groundingPamNode = n.groundingPamNode;
+		this.label=n.label;
+		this.desirability=n.desirability;
+		this.parameters = n.parameters;
 	}
 	
 	@Override
@@ -157,6 +160,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			value = defaultValue;
 		}
 		return value;
+	}
+
+	@Override
+	public Node copy() {
+		return new NodeImpl(this);
 	}
 
 }

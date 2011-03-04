@@ -29,22 +29,22 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	public static final String factoryName = NodeImpl.class.getSimpleName();
 	
-	/**
+	/*
 	 * Source of this link, always a node.
 	 */
 	private Node source;
 	
-	/**
+	/*
 	 * Sink of this link, a Linkable.
 	 */
 	private Linkable sink;
 	
-	/**
+	/*
 	 * A custom id dependent on the source's and the sink's ids.
 	 */
 	private ExtendedId extendedId;
 	
-	/**
+	/*
 	 * Category of this Link.
 	 */
 	private LinkCategory category;
@@ -57,22 +57,22 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	protected Map<String, ?> parameters;
 	
 	public LinkImpl() {
+		super();
 	}
-
+	
 	public LinkImpl(Node source, Linkable sink, LinkCategory category) {
 		this.source = source;
 		this.sink = sink;
 		this.category = category;
-		
 		updateExtendedId();
 	}
 
-	public LinkImpl(Link l) {
+	public LinkImpl(LinkImpl l) {
 		sink = l.getSink();
 		source = l.getSource();
 		category = l.getCategory();
-		extendedId = l.getExtendedId();
 		groundingPamLink = l.getGroundingPamLink();
+		parameters = l.parameters;
 		updateExtendedId();
 	}
 	
@@ -196,6 +196,11 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public String toString() {
 		return getLabel() + " " + extendedId;
+	}
+
+	@Override
+	public Link copy() {
+		return new LinkImpl(this);
 	}
 
 }

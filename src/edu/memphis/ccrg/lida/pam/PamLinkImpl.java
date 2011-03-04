@@ -28,6 +28,11 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 	
 	public static final String factoryName = PamLinkImpl.class.getSimpleName();
+
+	/*
+	 * Private Learnable object used for all learnable methods
+	 */
+	private Learnable learnable;
 	
 	/**
 	 * Only {@link LidaElementFactory} should be creating this Object.
@@ -35,6 +40,12 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public PamLinkImpl() {
 		super();
 		groundingPamLink = this;
+		learnable = new LearnableImpl();
+	}
+	public PamLinkImpl(PamLinkImpl pamLink) {
+		super(pamLink);
+		groundingPamLink = this;
+		this.learnable=new LearnableImpl(pamLink.learnable);
 	}
 	        
 	@Override
@@ -56,11 +67,6 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 
 	//LEARNABLE METHODS
 	
-	/*
-	 * Private Learnable object used for all learnable methods
-	 */
-	private final Learnable learnable = new LearnableImpl();
-
 	@Override
 	public double getActivation() {
 		return learnable.getActivation();
@@ -181,6 +187,11 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
 		learnable.setTotalActivationStrategy(strategy);
+	}
+	
+	@Override
+	public PamLink copy(){
+		return new PamLinkImpl(this);
 	}
 	
 }

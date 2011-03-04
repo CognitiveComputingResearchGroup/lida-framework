@@ -37,11 +37,10 @@ public class AttentionModuleInitializer implements Initializer {
 	@Override
 	public void initModule(Initializable module, Lida lida, Map<String, ?> params) {
 		AttentionCodeletModule driver = (AttentionCodeletModule)module;
-		LidaElementFactory factory = LidaElementFactory.getInstance();
 		GlobalWorkspace gw = (GlobalWorkspace)lida.getSubmodule(ModuleName.GlobalWorkspace);
 		WorkspaceBuffer csm = (WorkspaceBuffer)lida.getSubmodule(ModuleName.Workspace).getSubmodule(ModuleName.CurrentSituationalModel);
 		
-//		AttentionCodelet ac = driver.getNewAttentionCodelet();
+		LidaElementFactory factory = LidaElementFactory.getInstance();
 		AttentionCodelet ac=(AttentionCodelet)factory.getCodelet(BasicAttentionCodeletImpl.class.getSimpleName() , 20, 1.0, null);
 		ac.setAssociatedModule(gw, ModuleUsage.TO_WRITE_TO);
 		ac.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);

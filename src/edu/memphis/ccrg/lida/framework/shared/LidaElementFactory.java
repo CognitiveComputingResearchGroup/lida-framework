@@ -27,17 +27,18 @@ import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
- * Standard factory for the basic element of the framework.  
- * Support for {@link Node}s, {@link Link}s, {@link Codelet}s, and {@link NodeStructure}s
+ * Standard factory for the basic element of the framework. Support for
+ * {@link Node}s, {@link Link}s, {@link Codelet}s, and {@link NodeStructure}s
  * 
  * @author Javier Snaider, Ryan McCall
  */
 public class LidaElementFactory {
-	
-	private static final Logger logger = Logger.getLogger(LidaElementFactory.class.getCanonicalName());
+
+	private static final Logger logger = Logger
+			.getLogger(LidaElementFactory.class.getCanonicalName());
 
 	/**
-	 * Used to assign unique IDs to elements. 
+	 * Used to assign unique IDs to elements.
 	 */
 	private static int elementIdCount = 0;
 
@@ -45,95 +46,98 @@ public class LidaElementFactory {
 	 * Used to retrieve default decay strategy from 'decayStrategies' map.
 	 */
 	private String defaultDecayType;
-	
+
 	/**
-	 * Used to retrieve default excite strategy from 'exciteStrategies' map.  
+	 * Used to retrieve default excite strategy from 'exciteStrategies' map.
 	 */
 	private String defaultExciteType;
-	
+
 	/**
-	 * Used to retrieve default link class from 'linkClasses' map.
-	 * e.g. edu.memphis.ccrg.lida.framework.shared.LinkImpl
+	 * Used to retrieve default link class from 'linkClasses' map. e.g.
+	 * edu.memphis.ccrg.lida.framework.shared.LinkImpl
 	 */
 	private String defaultLinkClassName;
-	
+
 	/**
-	 * Specifies default link type used by the factory.
-	 * e.g. "LinkImpl"
+	 * Specifies default link type used by the factory. e.g. "LinkImpl"
 	 */
 	private String defaultLinkType;
-	
+
 	/**
-	 * Used to retrieve default node class from 'nodeClasses' map.
-	 * e.g. edu.memphis.ccrg.lida.framework.shared.NodeImpl
+	 * Used to retrieve default node class from 'nodeClasses' map. e.g.
+	 * edu.memphis.ccrg.lida.framework.shared.NodeImpl
 	 */
 	private String defaultNodeClassName;
-	
+
 	/**
-	 * Specifies default node type used by the factory.
-	 * e.g. "NodeImpl"
+	 * Specifies default node type used by the factory. e.g. "NodeImpl"
 	 */
 	private String defaultNodeType;
-	
+
 	/**
 	 * Map of all the ExciteStrategies available to this factory
 	 */
 	private Map<String, StrategyDef> exciteStrategies = new HashMap<String, StrategyDef>();
-	
+
 	/**
 	 * Map of all the DecayStrategies available to this factory
 	 */
 	private Map<String, StrategyDef> decayStrategies = new HashMap<String, StrategyDef>();
-	
+
 	/**
 	 * Map of all the strategies (of any type) available to this factory
 	 */
 	private Map<String, StrategyDef> strategies = new HashMap<String, StrategyDef>();
 
 	/**
-	 * Map of LinkableDefs for the Link types available to this factory indexed by their linkFactoryName. 
+	 * Map of LinkableDefs for the Link types available to this factory indexed
+	 * by their linkFactoryName.
 	 */
 	private Map<String, LinkableDef> linkClasses = new HashMap<String, LinkableDef>();
-	
+
 	/**
-	 * Map of LinkableDefs for the Node types available to this factory indexed by their nodeFactoryName. 
+	 * Map of LinkableDefs for the Node types available to this factory indexed
+	 * by their nodeFactoryName.
 	 */
 	private Map<String, LinkableDef> nodeClasses = new HashMap<String, LinkableDef>();
-	
+
 	/**
-	 * Map of CodeletDefs for the Codelet types available to this factory indexed by name as specified in 
-	 * factories data.
+	 * Map of CodeletDefs for the Codelet types available to this factory
+	 * indexed by name as specified in factories data.
 	 */
 	private Map<String, CodeletDef> codelets = new HashMap<String, CodeletDef>();
-	
+
 	/**
-	 * Sole instance of this class that will be used. 
+	 * Sole instance of this class that will be used.
 	 */
 	private static LidaElementFactory instance = new LidaElementFactory();
-	
+
 	/**
 	 * Name of decay strategy type
+	 * 
 	 * @see LidaFactories.xsd
 	 */
 	private static final String decayStrategyType = "decay";
-	
+
 	/**
 	 * Name of excite strategy type
+	 * 
 	 * @see LidaFactories.xsd
 	 */
 	private static final String exciteStrategyType = "excite";
-	
+
 	/**
 	 * Name of transmit strategy type
+	 * 
 	 * @see LidaFactories.xsd
 	 */
 	@SuppressWarnings("unused")
 	private static final String transmitStrategyType = "transmit";
-	
-	
+
 	/**
-	 * Returns the sole instance of this factory. Implements the
-	 * Singleton pattern.
+	 * Returns the sole instance of this factory. Implements the Singleton
+	 * pattern.
+	 * 
 	 * @return NodeFactory sole instance of this class
 	 */
 	public static LidaElementFactory getInstance() {
@@ -141,29 +145,36 @@ public class LidaElementFactory {
 	}
 
 	/**
-	 * Creates the Factory and adds default Node, Link and Strategies to the Maps in the Factory.
+	 * Creates the Factory and adds default Node, Link and Strategies to the
+	 * Maps in the Factory.
 	 */
 	private LidaElementFactory() {
 		defaultNodeType = NodeImpl.class.getSimpleName();
-		defaultNodeClassName =  NodeImpl.class.getCanonicalName();
+		defaultNodeClassName = NodeImpl.class.getCanonicalName();
 		addNodeType(defaultNodeType, defaultNodeClassName);
 		//
-		addNodeType(PamNodeImpl.class.getSimpleName(), PamNodeImpl.class.getCanonicalName());
-		addNodeType(LinkCategoryNode.class.getSimpleName(), LinkCategoryNode.class.getCanonicalName());
-		
+		addNodeType(PamNodeImpl.class.getSimpleName(), PamNodeImpl.class
+				.getCanonicalName());
+		addNodeType(LinkCategoryNode.class.getSimpleName(),
+				LinkCategoryNode.class.getCanonicalName());
+
 		defaultLinkType = LinkImpl.class.getSimpleName();
 		defaultLinkClassName = LinkImpl.class.getCanonicalName();
 		addLinkType(defaultLinkType, defaultLinkClassName);
 		//		
-		addLinkType(PamLinkImpl.class.getSimpleName(), PamLinkImpl.class.getCanonicalName());
+		addLinkType(PamLinkImpl.class.getSimpleName(), PamLinkImpl.class
+				.getCanonicalName());
 
-		defaultDecayType="defaultDecay";
-		addDecayStrategy(defaultDecayType, new StrategyDef(LinearDecayStrategy.class.getCanonicalName(),
-				defaultDecayType,new HashMap<String, Object>(),decayStrategyType,true));
-		
-		defaultExciteType="defaultExcite";
-		addExciteStrategy(defaultExciteType, new StrategyDef(DefaultExciteStrategy.class.getCanonicalName(),
-				defaultExciteType,new HashMap<String, Object>(),exciteStrategyType,true));
+		defaultDecayType = "defaultDecay";
+		addDecayStrategy(defaultDecayType, new StrategyDef(
+				LinearDecayStrategy.class.getCanonicalName(), defaultDecayType,
+				new HashMap<String, Object>(), decayStrategyType, true));
+
+		defaultExciteType = "defaultExcite";
+		addExciteStrategy(defaultExciteType, new StrategyDef(
+				DefaultExciteStrategy.class.getCanonicalName(),
+				defaultExciteType, new HashMap<String, Object>(),
+				exciteStrategyType, true));
 	}
 
 	/**
@@ -237,7 +248,7 @@ public class LidaElementFactory {
 	public void addNodeType(LinkableDef nodeDef) {
 		nodeClasses.put(nodeDef.getName(), nodeDef);
 	}
-	
+
 	/**
 	 * Adds the node type.
 	 * 
@@ -261,7 +272,7 @@ public class LidaElementFactory {
 	public void addCodeletType(CodeletDef codeletDef) {
 		codelets.put(codeletDef.getName(), codeletDef);
 	}
-	
+
 	/**
 	 * Adds the codelet type.
 	 * 
@@ -270,12 +281,13 @@ public class LidaElementFactory {
 	 * @param canonicalCodeletName
 	 *            the canonical codelet name
 	 */
-	public void addCodeletType(String simpleCodeletName, String canonicalCodeletName){
-		codelets.put(simpleCodeletName, new CodeletDef(canonicalCodeletName, 
-				new HashMap<String, String>(), simpleCodeletName, 
+	public void addCodeletType(String simpleCodeletName,
+			String canonicalCodeletName) {
+		codelets.put(simpleCodeletName, new CodeletDef(canonicalCodeletName,
+				new HashMap<String, String>(), simpleCodeletName,
 				new HashMap<String, Object>()));
 	}
-	
+
 	/**
 	 * Gets default link type.
 	 * 
@@ -293,7 +305,7 @@ public class LidaElementFactory {
 	public String getDefaultNodeType() {
 		return defaultNodeType;
 	}
-	
+
 	/**
 	 * Contains node type.
 	 * 
@@ -329,7 +341,8 @@ public class LidaElementFactory {
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
 			logger.log(Level.WARNING, "Strategy " + defaultExciteType
-					+ " does not exist. Default used instead.", LidaTaskManager.getCurrentTick());
+					+ " does not exist. Default used instead.", LidaTaskManager
+					.getCurrentTick());
 		}
 		d = (DecayStrategy) sd.getInstance();
 		return d;
@@ -348,12 +361,13 @@ public class LidaElementFactory {
 		if (sd == null) {
 			sd = exciteStrategies.get(defaultExciteType);
 			logger.log(Level.WARNING, "Strategy " + name
-					+ " does not exist. Default used instead.", LidaTaskManager.getCurrentTick());
+					+ " does not exist. Default used instead.", LidaTaskManager
+					.getCurrentTick());
 		}
 		d = (ExciteStrategy) sd.getInstance();
 		return d;
 	}
-	
+
 	/**
 	 * Get a strategy by name.
 	 * 
@@ -371,21 +385,28 @@ public class LidaElementFactory {
 	}
 
 	/**
-	 * Creates and returns a new Link with the same source, sink, category, and activation.  Default
-	 * link type and decay and excite strategies are used.
-	 * @param oLink Old Link
+	 * Creates and returns a new Link with the same source, sink, category, and
+	 * activation. Default link type and decay and excite strategies are used.
+	 * 
+	 * @param oLink
+	 *            Old Link
 	 * @return new link
 	 */
 	public Link getLink(Link oLink) {
-		return getLink(defaultLinkType, oLink.getSource(), oLink.getSink(), oLink.getCategory(),
-				       defaultDecayType, defaultExciteType, oLink.getActivation());
+		return getLink(defaultLinkType, oLink.getSource(), oLink.getSink(),
+				oLink.getCategory(), defaultDecayType, defaultExciteType, oLink
+						.getActivation());
 	}
 
 	/**
-	 * Creates and returns a new Link with the same source, sink, category, and activation.
-	 * Default link type and decay and excite strategies are specified by second argument.
-	 * @param oLink Old Link
-	 * @param linkT Link type
+	 * Creates and returns a new Link with the same source, sink, category, and
+	 * activation. Default link type and decay and excite strategies are
+	 * specified by second argument.
+	 * 
+	 * @param oLink
+	 *            Old Link
+	 * @param linkT
+	 *            Link type
 	 * @return new Link
 	 */
 	public Link getLink(Link oLink, String linkT) {
@@ -406,7 +427,6 @@ public class LidaElementFactory {
 		
 		return getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
 	}
-
 	/**
 	 * Creates and returns a new Link with specified source, sink, category, and
 	 * activation.
@@ -421,19 +441,27 @@ public class LidaElementFactory {
 	 *            initial activation
 	 * @return new Link
 	 */
-	public Link getLink(Node source, Linkable sink, LinkCategory category, double activation) {
-		return getLink(defaultLinkType,source,sink,category,defaultDecayType,defaultExciteType,activation);
+	public Link getLink(Node source, Linkable sink, LinkCategory category,
+			double activation) {
+		return getLink(defaultLinkType, source, sink, category,
+				defaultDecayType, defaultExciteType, activation);
 	}
-	
+
 	/**
-	 * Creates and returns a new Link with specified source, sink, and category.  Zero initial activation.
-	 * @param source Node that is link's source 
-	 * @param sink Linkable that is link's sink
-	 * @param category LinkCategory
+	 * Creates and returns a new Link with specified source, sink, and category.
+	 * Zero initial activation.
+	 * 
+	 * @param source
+	 *            Node that is link's source
+	 * @param sink
+	 *            Linkable that is link's sink
+	 * @param category
+	 *            LinkCategory
 	 * @return new Link
 	 */
 	public Link getLink(Node source, Linkable sink, LinkCategory category) {
-		return getLink(defaultLinkType,source,sink,category,defaultDecayType,defaultExciteType,0.0);
+		return getLink(defaultLinkType, source, sink, category,
+				defaultDecayType, defaultExciteType, 0.0);
 	}
 
 	/**
@@ -450,39 +478,49 @@ public class LidaElementFactory {
 	 *            LinkCategory
 	 * @return new Link
 	 */
-	public Link getLink(String linkT, Node source, Linkable sink, LinkCategory category){
-		LinkableDef linkDef = linkClasses.get(linkT);		
+	public Link getLink(String linkT, Node source, Linkable sink,
+			LinkCategory category) {
+		LinkableDef linkDef = linkClasses.get(linkT);
 		if (linkDef == null) {
-			logger.log(Level.WARNING, "LinkName " + linkT
-					+ " does not exist.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.",
+					LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
-		if(decayB == null){
-			decayB=defaultDecayType;
+		if (decayB == null) {
+			decayB = defaultDecayType;
 		}
 		String exciteB = linkDef.getDefaultStrategies().get(exciteStrategyType);
-		if(exciteB == null){
-			exciteB=defaultExciteType;
+		if (exciteB == null) {
+			exciteB = defaultExciteType;
 		}
-		
-		return getLink(linkT,source,sink,category,decayB,exciteB,0.0);		
+
+		return getLink(linkT, source, sink, category, decayB, exciteB, 0.0);
 	}
-		
+
 	/**
-	 * Creates and returns a new Link of specified type with specified source, sink, LinkCategory, DecayStrategy, 
-	 * ExciteStrategy, and category.
-	 * @param linkT Link type
-	 * @param source Link's source
-	 * @param sink Link's sink
-	 * @param category Link's category
-	 * @param decayStrategy Link's DecayStrategy
-	 * @param exciteStrategy Link's ExciteStrategy 
-	 * @param activation initial activation
+	 * Creates and returns a new Link of specified type with specified source,
+	 * sink, LinkCategory, DecayStrategy, ExciteStrategy, and category.
+	 * 
+	 * @param linkT
+	 *            Link type
+	 * @param source
+	 *            Link's source
+	 * @param sink
+	 *            Link's sink
+	 * @param category
+	 *            Link's category
+	 * @param decayStrategy
+	 *            Link's DecayStrategy
+	 * @param exciteStrategy
+	 *            Link's ExciteStrategy
+	 * @param activation
+	 *            initial activation
 	 * @return new Link
 	 */
-	public Link getLink(String linkT, Node source, Linkable sink, LinkCategory category,String decayStrategy,
-				String exciteStrategy,double activation) {
+	public Link getLink(String linkT, Node source, Linkable sink,
+			LinkCategory category, String decayStrategy, String exciteStrategy,
+			double activation) {
 		Link link = null;
 		try {
 			LinkableDef linkDef = linkClasses.get(linkT);
@@ -498,9 +536,9 @@ public class LidaElementFactory {
 			link.setSink(sink);
 			link.setCategory(category);
 			link.setActivation(activation);
-			setActivatibleStrategies(link, decayStrategy, exciteStrategy);	
+			setActivatibleStrategies(link, decayStrategy, exciteStrategy);
 			link.init(linkDef.getParams());
-			
+
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
 					.getCurrentTick());
@@ -520,7 +558,8 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode() {
-		return getNode(defaultNodeType,defaultDecayType, defaultExciteType, "",0.0, 0.0);
+		return getNode(defaultNodeType, defaultDecayType, defaultExciteType,
+				"", 0.0, 0.0);
 	}
 
 	/**
@@ -533,7 +572,8 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode) {
-		return getNode(oNode, defaultNodeType, defaultDecayType, defaultExciteType);
+		return getNode(oNode, defaultNodeType, defaultDecayType,
+				defaultExciteType);
 	}
 
 	/**
@@ -549,7 +589,7 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode, String nodeType) {
-		LinkableDef nodeDef = nodeClasses.get(nodeType);		
+		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
 					+ " does not exist.", LidaTaskManager.getCurrentTick());
@@ -557,11 +597,11 @@ public class LidaElementFactory {
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
 		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
-		if(decayB == null){
-			decayB=defaultDecayType;
+		if (decayB == null) {
+			decayB = defaultDecayType;
 		}
-		if(exciteB == null){
-			exciteB=defaultExciteType;
+		if (exciteB == null) {
+			exciteB = defaultExciteType;
 		}
 		return getNode(oNode, nodeType, decayB, exciteB);
 	}
@@ -629,7 +669,7 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(String nodeType, String nodeLabel) {
-		LinkableDef nodeDef = nodeClasses.get(nodeType);		
+		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
 					+ " does not exist.", LidaTaskManager.getCurrentTick());
@@ -637,14 +677,14 @@ public class LidaElementFactory {
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
 		String exciteB = nodeDef.getDefaultStrategies().get(exciteStrategyType);
-		if(decayB == null){
-			decayB=defaultDecayType;
+		if (decayB == null) {
+			decayB = defaultDecayType;
 		}
-		if(exciteB == null){
-			exciteB=defaultExciteType;
+		if (exciteB == null) {
+			exciteB = defaultExciteType;
 		}
 
-		Node n = getNode(nodeType, decayB, exciteB, nodeLabel,0.0, 0.0);
+		Node n = getNode(nodeType, decayB, exciteB, nodeLabel, 0.0, 0.0);
 		return n;
 	}
 
@@ -662,11 +702,13 @@ public class LidaElementFactory {
 	 *            label of new node
 	 * @param activation
 	 *            activation of new node
-	 * @param removableThreshold TODO
+	 * @param removableThreshold
+	 *            TODO
 	 * @return the node
 	 */
 	public Node getNode(String nodeType, String decayStrategy,
-						String exciteStrategy, String nodeLabel, double activation, double removableThreshold) {
+			String exciteStrategy, String nodeLabel, double activation,
+			double removableThreshold) {
 		Node n = null;
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
@@ -683,10 +725,10 @@ public class LidaElementFactory {
 			n.setId(elementIdCount++);
 			n.setActivation(activation);
 			n.setActivatibleRemovalThreshold(removableThreshold);
-			
-			setActivatibleStrategies(n, decayStrategy, exciteStrategy);	
+
+			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
 			n.init(nodeDef.getParams());
-			
+
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
 					.getCurrentTick());
@@ -702,7 +744,6 @@ public class LidaElementFactory {
 
 	/*
 	 * Assigns specified decay and excite strategies to supplied Activatible
-	 * 
 	 */
 	private void setActivatibleStrategies(Activatible activatible,
 			String decayStrategy, String exciteStrategy) {
@@ -719,11 +760,11 @@ public class LidaElementFactory {
 	 *            type of links created by this factory
 	 */
 	public void setDefaultLinkType(String defaultLinkType) {
-		if (linkClasses.containsKey(defaultLinkType)){
+		if (linkClasses.containsKey(defaultLinkType)) {
 			this.defaultLinkType = defaultLinkType;
 		}
 	}
-		
+
 	/**
 	 * Set the default Node type used by this factory.
 	 * 
@@ -731,7 +772,7 @@ public class LidaElementFactory {
 	 *            type of nodes created by this factory
 	 */
 	public void setDefaultNodeType(String defaultNodeType) {
-		if (nodeClasses.containsKey(defaultNodeType)){
+		if (nodeClasses.containsKey(defaultNodeType)) {
 			this.defaultNodeType = defaultNodeType;
 		}
 	}
@@ -752,7 +793,7 @@ public class LidaElementFactory {
 	 *            DecayType to be used
 	 */
 	public void setDefaultDecayType(String defaultDecayType) {
-		if(decayStrategies.containsKey(defaultDecayType)){
+		if (decayStrategies.containsKey(defaultDecayType)) {
 			this.defaultDecayType = defaultDecayType;
 		}
 	}
@@ -773,23 +814,31 @@ public class LidaElementFactory {
 	 *            the defaultExciteType to set
 	 */
 	public void setDefaultExciteType(String defaultExciteType) {
-		if (exciteStrategies.containsKey(defaultExciteType)){
+		if (exciteStrategies.containsKey(defaultExciteType)) {
 			this.defaultExciteType = defaultExciteType;
 		}
 	}
-	
+
 	/**
 	 * Returns a new codelet with specified attributes.
-	 * @param codeletName label for codelet
-	 * @param decayStrategy DecayStrategy used by codelet
-	 * @param exciteStrategy ExciteStrategy used by codelet
-	 * @param ticksPerStep execution frequency 
-	 * @param activation initial activation
-	 * @param params optional parameters to be set in object's init method
+	 * 
+	 * @param codeletName
+	 *            label for codelet
+	 * @param decayStrategy
+	 *            DecayStrategy used by codelet
+	 * @param exciteStrategy
+	 *            ExciteStrategy used by codelet
+	 * @param ticksPerStep
+	 *            execution frequency
+	 * @param activation
+	 *            initial activation
+	 * @param params
+	 *            optional parameters to be set in object's init method
 	 * @return new Codelet
 	 */
-	public Codelet getCodelet(String codeletName, String decayStrategy, String exciteStrategy, 
-							  int ticksPerStep, double activation, Map<String,?extends Object> params){
+	public Codelet getCodelet(String codeletName, String decayStrategy,
+			String exciteStrategy, int ticksPerStep, double activation,
+			Map<String, ? extends Object> params) {
 		Codelet codelet = null;
 		try {
 			CodeletDef codeletDef = codelets.get(codeletName);
@@ -804,85 +853,117 @@ public class LidaElementFactory {
 			codelet.setTicksPerStep(ticksPerStep);
 			codelet.setActivation(activation);
 			setActivatibleStrategies(codelet, decayStrategy, exciteStrategy);
-			
-			if (params != null){
+
+			if (params != null) {
 				codelet.init(params);
-			}else{ //Use default parameters from the factoriesData.xml file
+			} else { // Use default parameters from the factoriesData.xml file
 				codelet.init(codeletDef.getParams());
 			}
-			
+
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(),
+					LidaTaskManager.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(),
+					LidaTaskManager.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(),
+					LidaTaskManager.getCurrentTick());
 		}
 		return codelet;
 	}
-	
+
 	/**
 	 * Returns a new codelet with specified attributes.
-	 * @param codeletName type of codelet
-	 * @param ticksPerStep execution frequency 
-	 * @param activation initial activation
-	 * @param params optional parameters to be set in object's init method
+	 * 
+	 * @param codeletName
+	 *            type of codelet
+	 * @param ticksPerStep
+	 *            execution frequency
+	 * @param activation
+	 *            initial activation
+	 * @param params
+	 *            optional parameters to be set in object's init method
 	 * @return new Codelet
 	 */
-	public Codelet getCodelet(String codeletName, int ticksPerStep, double activation, Map<String,?extends Object> params){
-		CodeletDef codeletDef = codelets.get(codeletName);		
+	public Codelet getCodelet(String codeletName, int ticksPerStep,
+			double activation, Map<String, ? extends Object> params) {
+		CodeletDef codeletDef = codelets.get(codeletName);
 		if (codeletDef == null) {
-			logger.log(Level.WARNING, "Asked for codelet " + codeletName + 
-					" but factory does not have such a codelet. Check factoriesData.xml", LidaTaskManager.getCurrentTick());
+			logger
+					.log(
+							Level.WARNING,
+							"Asked for codelet "
+									+ codeletName
+									+ " but factory does not have such a codelet. Check factoriesData.xml",
+							LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
-		String exciteB = codeletDef.getDefaultStrategies().get(exciteStrategyType);
-		if(decayB == null){
-			decayB=defaultDecayType;
+		String decayB = codeletDef.getDefaultStrategies()
+				.get(decayStrategyType);
+		String exciteB = codeletDef.getDefaultStrategies().get(
+				exciteStrategyType);
+		if (decayB == null) {
+			decayB = defaultDecayType;
 		}
-		if(exciteB == null){
-			exciteB=defaultExciteType;
+		if (exciteB == null) {
+			exciteB = defaultExciteType;
 		}
-	
-		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
+
+		return getCodelet(codeletName, decayB, exciteB, ticksPerStep,
+				activation, params);
 	}
-	
+
 	/**
 	 * Gets a default NodeStructure
-	 * @return a new NodeStructure with default {@link Node} type and default {@link Link} type.
+	 * 
+	 * @return a new NodeStructure with default {@link Node} type and default
+	 *         {@link Link} type.
 	 */
-	public NodeStructure getNodeStructure(){
+	public NodeStructure getNodeStructure() {
 		return getNodeStructure(defaultNodeType, defaultLinkType);
 	}
-	
+
 	/**
 	 * Gets a PAM NodeStructure
-	 * @return a new NodeStructure with Node type {@link PamNodeImpl} and link type {@link PamLinkImpl}
+	 * 
+	 * @return a new NodeStructure with Node type {@link PamNodeImpl} and link
+	 *         type {@link PamLinkImpl}
 	 */
-	public NodeStructure getPamNodeStructure(){
-		return getNodeStructure(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+	public NodeStructure getPamNodeStructure() {
+		return getNodeStructure(PamNodeImpl.class.getSimpleName(),
+				PamLinkImpl.class.getSimpleName());
 	}
-	
+
 	/**
 	 * Gets a NodeStructure having specified types.
-	 * @param nodeType type of node in returned {@link NodeStructure}
-	 * @param linkType type of Link in returned {@link NodeStructure}
-	 * @return a new NodeStructure with specified node type and specified link type or null if types
-	 * do not exist in this factory.
+	 * 
+	 * @param nodeType
+	 *            type of node in returned {@link NodeStructure}
+	 * @param linkType
+	 *            type of Link in returned {@link NodeStructure}
+	 * @return a new NodeStructure with specified node type and specified link
+	 *         type or null if types do not exist in this factory.
 	 */
-	public NodeStructure getNodeStructure(String nodeType, String linkType){
-		if(containsNodeType(nodeType)){
-			if(containsLinkType(linkType)){
+	public NodeStructure getNodeStructure(String nodeType, String linkType) {
+		if (containsNodeType(nodeType)) {
+			if (containsLinkType(linkType)) {
 				return new NodeStructureImpl(nodeType, linkType);
 			}
-			logger.log(Level.WARNING, "Factory does not have linkType: " + linkType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not have linkType: "
+					+ linkType, LidaTaskManager.getCurrentTick());
 		}
-		logger.log(Level.WARNING, "Factory does not have nodeType: " + nodeType, LidaTaskManager.getCurrentTick());
+		logger.log(Level.WARNING,
+				"Factory does not have nodeType: " + nodeType, LidaTaskManager
+						.getCurrentTick());
 		return null;
 	}
-	
+
+	public LinkableDef getNodeLinkableDef(String factoryName) {
+		return nodeClasses.get(factoryName);
+	}
+
+	public LinkableDef getLinkLinkableDef(String factoryName) {
+		return linkClasses.get(factoryName);
+	}
 }

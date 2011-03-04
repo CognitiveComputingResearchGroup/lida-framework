@@ -75,4 +75,10 @@ public interface Link extends Linkable, Activatible{
 	 */
 	public PamLink getGroundingPamLink();
 
+	/**
+	 * Creates and returns a deep copy of this Link.
+	 * @return a deep copy
+	 */
+	public Link copy();
+
 }

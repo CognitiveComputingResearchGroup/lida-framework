@@ -47,7 +47,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 
 	private List<FrameworkGuiEventListener> guis;
 	
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 	
 	private String defaultCodeletName;
 

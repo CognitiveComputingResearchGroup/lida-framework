@@ -357,4 +357,10 @@ public class ArgumentImpl implements Argument {
 		
 	}
 
+	@Override
+	public Node copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
