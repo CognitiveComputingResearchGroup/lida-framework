@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -45,7 +46,6 @@ public class WSBackgroundTaskTest {
 		//step 3-1:
 		//Create 3 nodes and add them into a node structure
 		NodeStructure ns = new NodeStructureImpl();
-		NodeStructure nss = new NodeStructureImpl();
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);
@@ -56,13 +56,11 @@ public class WSBackgroundTaskTest {
 		n2.setId(6);
 		n2.setActivation(0.6);
 		ns.addDefaultNode(n2);
-		nss.addDefaultNode(n2);
 		
 		Node n3 = new NodeImpl();
 		n3.setId(8);
 		n3.setActivation(0.8);
 		ns.addDefaultNode(n3);
-		nss.addDefaultNode(n3);
 
 		//Step 3-2:
 		//Create workspaceBuffer and add them into mockWorkspace
@@ -72,26 +70,19 @@ public class WSBackgroundTaskTest {
 		
 		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
 		CSMBuffer.setModuleName(ModuleName.CurrentSituationalModel);
+		//For test only, because actually there is not episodicBuffer.
 		epsodicBuffer.setModuleName(ModuleName.EpisodicBuffer);
 		
 		
-		WorkspaceImpl wMoudle = new WorkspaceImpl();
+		mockWorkspaceImpl wMoudle = new mockWorkspaceImpl();
 		wMoudle.addSubModule(perceptualBuffer);
 		wMoudle.addSubModule(CSMBuffer);
 		wMoudle.addSubModule(epsodicBuffer);
 		
-		//Create association between workspace and epsodic memory
-		EpisodicMemoryImpl em = new EpisodicMemoryImpl();
-		PerceptualAssociativeMemoryImpl pam = new PerceptualAssociativeMemoryImpl(); 
-		em.init();
-		em.setAssociatedModule(pam, 0);
-		em.addListener(wMoudle);
-		wMoudle.addCueListener(em);
-
-		
 		//Step 3-3:
 		// Add node structure into workspaceBuffer of percetualBuffer
-		wMoudle.receivePercept(ns);
+		((NodeStructure)wMoudle.getSubmodule(ModuleName.PerceptualBuffer)
+				.getModuleContent()).mergeWith(ns);
 		
 		//Run method of target class
 		wst.setAssociatedModule(wMoudle, 0);
@@ -102,15 +93,22 @@ public class WSBackgroundTaskTest {
 		WorkspaceBuffer epsodicBuffer2 = (WorkspaceBuffer) wMoudle
 		.getSubmodule(ModuleName.EpisodicBuffer);
 		NodeStructure ns2 = (NodeStructure) epsodicBuffer2.getModuleContent();
-		
-		assertEquals("Problem with class RunThisLidaTask for cue()", nss,ns2);
+
+		// In method cue(), after node(Id = 2) is removed cause activation(0.2) < actThreshold(0.5),
+		// so here is only node (Id == 6)and node (Id == 8).
+		assertTrue("Problem with class RunThisLidaTask for cue()",
+				(ns2.getNode(2) == null)&&(ns2.getNode(6) != null)&&(ns2.getNode(8) != null)
+				&&(ns2.getNodeCount() == 2));
 		
 		//2> Check CSM Buffer
 		WorkspaceBuffer CSMBuffer2 = (WorkspaceBuffer) wMoudle
 		.getSubmodule(ModuleName.CurrentSituationalModel);
 		NodeStructure ns3 = (NodeStructure) CSMBuffer2.getModuleContent();
 		
-		assertEquals("Problem with class RunThisLidaTask for CSM()", ns,ns3);
+		// In method CSM(), both 3 nodes is retrieved from perceptual Buffer to CSM
+		assertTrue("Problem with class RunThisLidaTask for cue()",
+				(ns3.getNode(2) != null)&&(ns3.getNode(6) != null)&&(ns3.getNode(8) != null)
+				&&(ns3.getNodeCount() == 3));
 		
 	}
 
@@ -137,4 +135,46 @@ public class WSBackgroundTaskTest {
 
 	}
 
+}
+
+class mockWorkspaceImpl  extends LidaModuleImpl implements Workspace {
+	
+
+	@Override
+	public void cueEpisodicMemories(NodeStructure ns) {
+		//Temporally save content of nodeStructure to episodicBuffer for test.
+		WorkspaceBuffer csm = (WorkspaceBuffer)getSubmodule(ModuleName.EpisodicBuffer);
+		((NodeStructure) csm.getModuleContent()).mergeWith(ns);
+		
+	}
+
+	@Override
+	public void addListener(ModuleListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addCueListener(CueListener l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addWorkspaceListener(WorkspaceListener l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getModuleContent(Object... params) {
+		// Not applicable
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }
