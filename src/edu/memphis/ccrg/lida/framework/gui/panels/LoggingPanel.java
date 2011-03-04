@@ -41,7 +41,7 @@ public class LoggingPanel extends LidaPanelImpl {
 
 	private static final long serialVersionUID = 12L;
 
-    private String logName = "lida"; 
+    private String logName = "edu.memphis.ccrg.lida"; 
     private Logger logger = Logger.getLogger(logName);
     private String level="INFO";
 	//private DateFormat df= new SimpleDateFormat("HH:mm:ss:SSS");
