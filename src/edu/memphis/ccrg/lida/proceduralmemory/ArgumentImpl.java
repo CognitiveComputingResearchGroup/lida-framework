@@ -19,6 +19,8 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
+ * This class implement method of interface argument, which plays the role of node's interface.
+ * This class supports methods to access node's methods directly.  
  * @author Javier Snaider
  * 
  */
