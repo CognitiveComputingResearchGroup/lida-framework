@@ -3,6 +3,8 @@
  */
 package edu.memphis.ccrg.lida.workspace;
 
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -30,6 +32,8 @@ public class WSBackgroundTask extends LidaTaskImpl {
 	private int cueFrequency;
 	private int cueFrequencyCounter;
 
+	private static final Logger logger = Logger.getLogger(WSBackgroundTask.class.getCanonicalName());
+	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -12,10 +12,10 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * Default Constructor.
 	 * @param sourceNodeStructure supplied NodeStructure
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure){
+	public UnmodifiableNodeStructureImpl(NodeStructureImpl sourceNodeStructure){
 		super(sourceNodeStructure);
 	}
-	
+
 	/**
 	 * Returns true if both NodeStructures have the same nodes and links
 	 * and 
@@ -92,7 +92,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public Link addLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type,
+	public Link addDefaultLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type,
 			double activation, double removalThreshold) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
@@ -101,7 +101,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public Link addLink(int idSource, ExtendedId idSink,
+	public Link addDefaultLink(int idSource, ExtendedId idSink,
 			LinkCategory type, double activation, double removalThreshold){
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
@@ -110,7 +110,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
 	 */
 	@Override
-	public Link addLink(int idSource, int idSink,
+	public Link addDefaultLink(int idSource, int idSink,
 			LinkCategory type, double activation, double removalThreshold){
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
@@ -131,13 +131,13 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
-	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
-	 */
-	@Override
-	public Node addNode(Node n, String factoryNodeType) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
-	}
+//	/**
+//	 * @throws UnsupportedOperationException Cannot modify this object once created.
+//	 */
+//	@Override
+//	public Node addNode(Node n, String factoryNodeType) {
+//		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+//	}
 
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.

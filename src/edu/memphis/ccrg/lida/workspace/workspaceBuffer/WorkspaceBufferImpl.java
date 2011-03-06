@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
@@ -27,13 +26,11 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
-	private final double DEFAULT_REMOVABLE_THRESHOLD = 0.01;
-	
 	//TODO Consider having multiple NodeStructures 
 	private NodeStructure buffer;	
 	
 	/**
-	 * Construction method. This method initializes nodeStructures that belong to the workspaceBuffer.
+	 * Default constructor initializes nodeStructure.
 	 */
 	public WorkspaceBufferImpl() {
 		buffer = new NodeStructureImpl();
@@ -41,15 +38,6 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	
 	@Override
 	public void init() {
-		Double d = (Double) getParam("removableThreshold", DEFAULT_REMOVABLE_THRESHOLD);
-		setRemovalThreshold(d);
-	}
-	
-	@Override
-	public void setRemovalThreshold(double activationLowerBound) {
-		logger.log(Level.FINE, "Activation lower bound for buffer " + getModuleName() + 
-					" set to " + activationLowerBound, LidaTaskManager.getCurrentTick());
-		buffer.setLowerActivationBound(activationLowerBound);
 	}
 
 	@Override
@@ -60,23 +48,13 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	@Override
 	public void decayModule(long ticks){
 		super.decayModule(ticks);
-		decayCounter++;
-		if(decayCounter % 20 == 0){
-			if(getModuleName() == ModuleName.PerceptualBuffer)
-				buffer.decayNodeStructure(ticks);
-			else{
-				buffer.decayNodeStructure(ticks);
-				decayCounter--;
-			}
-		}else{
-			buffer.decayNodeStructure(ticks);
-		}
+		logger.log(Level.FINE, "Decaying buffer.", LidaTaskManager.getCurrentTick());
+		buffer.decayNodeStructure(ticks);
 	}
-	
-	private int decayCounter = 0;
-	
+
 	@Override
 	public void addListener(ModuleListener listener) {
-		//N/A
+		// NA		
 	}
+
 }

@@ -75,7 +75,7 @@ public interface Node extends Linkable, Activatible, Serializable {
 
 	/**
 	 * Deep copy of a Node. All implementations of Node must override this method.
-	 * @return
+	 * @return new Node
 	 */
 	public Node copy();
 

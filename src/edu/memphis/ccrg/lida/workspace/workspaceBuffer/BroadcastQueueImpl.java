@@ -38,9 +38,6 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements WorkspaceBuffe
 
 	private Queue<NodeStructure> broadcastQueue;
 	
-	private static final double DEFAULT_REMOVAL_THRESHOLD = 0.0;
-	private double removalThreshold = DEFAULT_REMOVAL_THRESHOLD;
-	
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
 
@@ -52,14 +49,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements WorkspaceBuffe
 
 	@Override
 	public void init() {
-		Double d = (Double) getParam("removableThreshold", DEFAULT_REMOVAL_THRESHOLD);
-		setRemovalThreshold(d);
 		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
-	}
-	
-	@Override
-	public synchronized void setRemovalThreshold(double t) {
-		this.removalThreshold = t;
 	}
 	
 	@Override
@@ -96,7 +86,6 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements WorkspaceBuffe
 		super.decayModule(ticks);
 		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getCurrentTick());
 		for (NodeStructure ns : broadcastQueue) {
-			ns.setLowerActivationBound(removalThreshold);
 			ns.decayNodeStructure(ticks);
 			if(ns.getNodeCount() == 0){
 				broadcastQueue.remove(ns);

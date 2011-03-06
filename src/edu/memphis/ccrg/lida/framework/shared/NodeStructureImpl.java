@@ -44,14 +44,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Standard factory for new objects. Used to create copies when adding
 	 * linkables to this NodeStructure
 	 */
-	private static LidaElementFactory factory=LidaElementFactory.getInstance();
-
-	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
-
-	/*
-	 * Threshold for a Linkable to remain in this structure.
-	 */
-	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
+	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	/*
 	 * Nodes contained in this NodeStructure indexed by their id
@@ -101,8 +94,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
-		setDefaultNodeType(defaultNode);
-		setDefaultLinkType(defaultLink);
+		this.defaultNodeType = defaultNode;
+		this.defaultLinkType = defaultLink;
 	}
 
 	/**
@@ -181,38 +174,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/**
-	 * @param nodeType
-	 *            the defaultNode to set
-	 */
-	@Override
-	public void setDefaultNodeType(String nodeType) {
-		if (factory.containsNodeType(nodeType))
-			this.defaultNodeType = nodeType;
-		else
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain specified node type!  Must specify all types in factoriesData.xml",
-							LidaTaskManager.getCurrentTick());
-	}
-
-	/**
-	 * @param linkType
-	 *            the defaultLink to set
-	 */
-	@Override
-	public void setDefaultLinkType(String linkType) {
-		if (factory.containsLinkType(linkType))
-			this.defaultLinkType = linkType;
-		else
-			logger
-					.log(
-							Level.WARNING,
-							"Factory does not contain specified link type!  Must specify all types in factoriesData.xml",
-							LidaTaskManager.getCurrentTick());
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -274,7 +235,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public synchronized Link addLink(ExtendedId sourceId, ExtendedId sinkId,
+	public synchronized Link addDefaultLink(ExtendedId sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
@@ -289,7 +250,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public synchronized Link addLink(int sourceId, ExtendedId sinkId,
+	public synchronized Link addDefaultLink(int sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
 		Node source = getNode(sourceId);
 		Linkable sink = getLinkable(sinkId);
@@ -304,7 +265,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public synchronized Link addLink(int sourceId, int sinkId,
+	public synchronized Link addDefaultLink(int sourceId, int sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
 		Node source = getNode(sourceId);
 		Linkable sink = getNode(sinkId);
@@ -387,20 +348,84 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	// return link;
 	// }
 
-	@Override
-	public synchronized Node addNode(Node n, String nodeType) {
-		if (factory.containsNodeType(nodeType) == false) {
-			logger
-					.log(
-							Level.WARNING,
-							"Tried to add node of type "
-									+ nodeType
-									+ " but factory does not contain that node type.  Make sure the node type is defined in "
-									+ " factoriesData.xml", LidaTaskManager
-									.getCurrentTick());
+//	@Override
+//	public synchronized Node addNode(Node n, String nodeType) {
+//		if (factory.containsNodeType(nodeType) == false) {
+//			logger.log(Level.WARNING, "Cannot add node of type "
+//									+ nodeType
+//									+ " because factory doesn't contain that node type.  Make sure the node type is defined in "
+//									+ " factoriesData.xml", LidaTaskManager
+//									.getCurrentTick());
+//			return null;
+//		}
+//		
+//		//Check instance of default node.
+//		String defaultCl = factory.getNodeLinkableDef(this.defaultNodeType).getClassName();
+//		Class<?> cls = Class.forName(defaultCl);
+//		if(cls.isInstance(n)){
+//			//TODO check
+//			String cl = factory.getNodeLinkableDef(nodeType).getClassName();
+//			Class<?> clss = Class.forName(cl);
+//			if (clss.isInstance(n)){
+//				Node node = nodes.get(n.getId());
+//				if (node == null) {
+//					node = n.copy();
+//					nodes.put(node.getId(), node);
+//					linkableMap.put(node, new HashSet<Link>());
+//					return node;
+//				}else {
+//					Node existing = this.getNode(n.getId());
+//					//TODO
+////					existing.updateValues(n);
+//					return existing;
+//				}
+//			}else{ 	//have factory create node
+//				Node node = nodes.get(n.getId());
+//				if (node == null) {
+//					node = getNewNode(n, nodeType);
+//					nodes.put(node.getId(), node);
+//					linkableMap.put(node, new HashSet<Link>());
+//					return node;
+//				}else {
+//					//TODO
+////					Node existing = this.getNode(n.getId());
+////					existing.updateValues(n);
+//					node.setActivatibleRemovalThreshold(n.getActivatibleRemovalThreshold());
+//					double newActiv = n.getActivation();
+//					if (node.getActivation() < newActiv) {
+//						node.setActivation(newActiv);
+//					}
+//					return node;
+//				}
+//			}
+//			
+//		}else{
+//			logger.log(Level.WARNING, "Cannot add a node that doesn't have default node type as a parent", LidaTaskManager.getCurrentTick());
+//			return null;
+//		}
+////
+////		Node node = nodes.get(n.getId());
+////		if (node == null) {
+////			node = getNewNode(n, nodeType);
+////			nodes.put(node.getId(), node);
+////			linkableMap.put(node, new HashSet<Link>());
+////		} else {
+////			double newActiv = n.getActivation();
+////			if (node.getActivation() < newActiv) {
+////				node.setActivation(newActiv);
+////			}
+////		}
+////		return node;
+//	} 
+	
+	private synchronized Node addNode(Node n, String nodeType) {		
+		if(factory.containsNodeType(nodeType) == false){
+			logger.log(Level.WARNING, "Tried to add node of type " + nodeType +
+					" but factory does not contain that node type.  Make sure the node type is defined in " +
+					" factoriesData.xml", LidaTaskManager.getCurrentTick());
 			return null;
 		}
-
+		
 		Node node = nodes.get(n.getId());
 		if (node == null) {
 			node = getNewNode(n, nodeType);
@@ -696,14 +721,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public void clearLinks() {
-		for (Link l : links.values())
+		for (Link l : links.values()){
 			removeLink(l);
+		}
+		this.links.clear();
 	}
 
 	@Override
 	public void clearNodeStructure() {
-		for (Linkable l : linkableMap.keySet())
-			removeLinkable(l);
+		this.linkableMap.clear();
+		this.nodes.clear();
+		this.links.clear();
 	}
 
 	@Override
@@ -786,16 +814,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				removeLinkable(lnk);
 			}
 		}
-	}
-
-	@Override
-	public double getLowerActivationBound() {
-		return removableThreshold;
-	}
-
-	@Override
-	public void setLowerActivationBound(double lowerActivationBound) {
-		this.removableThreshold = lowerActivationBound;
 	}
 
 	/*

@@ -53,7 +53,7 @@ public interface NodeStructure {
 	 * @param removalThreshold TODO
 	 * @return created Link or null if either source or sink are not present. 
 	 */
-	public Link addLink(ExtendedId idSource, ExtendedId idSink,
+	public Link addDefaultLink(ExtendedId idSource, ExtendedId idSink,
 			LinkCategory type, double activation, double removalThreshold);
 
 	/**
@@ -66,7 +66,7 @@ public interface NodeStructure {
 	 * @param removalThreshold TODO
 	 * @return created Link or null if either source or sink are not present. 
 	 */
-	public Link addLink(int idSource, ExtendedId idSink,
+	public Link addDefaultLink(int idSource, ExtendedId idSink,
 			LinkCategory type, double activation, double removalThreshold);
 
 	/**
@@ -79,7 +79,7 @@ public interface NodeStructure {
 	 * @param removalThreshold TODO
 	 * @return created Link or null if either source or sink are not present. 
 	 */
-	public Link addLink(int idSource, int idSink,
+	public Link addDefaultLink(int idSource, int idSink,
 			LinkCategory type, double activation, double removalThreshold);
 
 	/**
@@ -90,21 +90,21 @@ public interface NodeStructure {
 	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
 	 */
 	public Node addDefaultNode(Node n);
-
-	/**
-	 * Add a Node of a specified factory type to this NodeStructure
-	 * @param n Node
-	 * @param factoryNodeType name of node's type in the factory
-	 * @return copy of node actually added.
-	 */
-	public Node addNode(Node n, String factoryNodeType);
-
+	
 	/**
 	 * @return copied and/or updated nodes that are now present in this nodestructure
 	 * @see #addDefaultNode(Node)
 	 * @param nodes Node to be added.
 	 */
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
+
+//	/**
+//	 * Add a Node of a specified factory type to this NodeStructure
+//	 * @param n Node
+//	 * @param factoryType name of node's type in the factory
+//	 * @return copy of node actually added.
+//	 */
+//	public Node addNode(Node n, String factoryType);
 
 	/**
 	 * Removes specified {@link Link} if present.
@@ -137,6 +137,7 @@ public interface NodeStructure {
 
 	/**
 	 * Removes all nodes and links from this nodestructure
+	 *
 	 */
 	public void clearNodeStructure();
 
@@ -197,7 +198,7 @@ public interface NodeStructure {
 	public void mergeWith(NodeStructure ns);
 
 	/**
-	 * Returns a copy of this {@link NodeStructure}
+	 * Returns a deep copy of this {@link NodeStructure}
 	 * @return {@link NodeStructure}
 	 */
 	public NodeStructure copy();
@@ -210,19 +211,19 @@ public interface NodeStructure {
 	 */
 	public void decayNodeStructure(long ticks);
 	
-	/**
-	 * Gets lowerActivationBound
-	 * @return Amount of activation a {@link Linkable} must have in order to remain in this NodeStructure
-	 * after being decayed.
-	 */
-	public double getLowerActivationBound();
-	
-	/**
-	 * Sets lowerActivationBound
-	 * @param lowerActivationBound Amount of activation a {@link Linkable} must have in order to remain in this NodeStructure
-	 * after being decayed.
-	 */
-	public void setLowerActivationBound(double lowerActivationBound);
+//	/**
+//	 * Gets lowerActivationBound
+//	 * @return Amount of activation a {@link Linkable} must have in order to remain in this NodeStructure
+//	 * after being decayed.
+//	 */
+//	public double getLowerActivationBound();
+//	
+//	/**
+//	 * Sets lowerActivationBound
+//	 * @param lowerActivationBound Amount of activation a {@link Linkable} must have in order to remain in this NodeStructure
+//	 * after being decayed.
+//	 */
+//	public void setLowerActivationBound(double lowerActivationBound);
 
 	/**
 	 * Gets Link with specified ExtendedId if present.
@@ -245,14 +246,14 @@ public interface NodeStructure {
 	public Set<Link> getLinks(LinkCategory cat);
 
 	/**
-	 * Gets all {@link Link}s connected to specified Linkable.
+	 * Gets all {@link Link}s directly connected to specified Linkable.
 	 * @param l Linkable to find Links to and from.
 	 * @return an unmodifiable Set of all Links connected to specified Linkable.
 	 */
 	public Set<Link> getAttachedLinks(Linkable l);
 
 	/**
-	 * Gets all {@link Link}s connected to specified Linkable with specified {@link LinkCategory}
+	 * Gets all {@link Link}s directly connected to specified Linkable with specified {@link LinkCategory}
 	 * @param lnk a Linkable
 	 * @param cat LinkCategory
 	 * @return Links
@@ -260,14 +261,14 @@ public interface NodeStructure {
 	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory cat);
 
 	/**
-	 * Returns node with specified id
+	 * Returns a copy of the node in this nodestructure with specified id
 	 * @param id id of node
 	 * @return Node with specified id or null if not present
 	 */
 	public Node getNode(int id);
 
 	/**
-	 * Returns node with specified ExtendedId
+	 * Returns a copy of the node in this nodestructure with specified ExtendedId
 	 * @param eid ExtendedId of node
 	 * @return Node with specified ExtendedId or null if not present
 	 */
@@ -322,11 +323,11 @@ public interface NodeStructure {
 	 */
 	public String getDefaultNodeType();
 	
-	/**
-	 * Sets defaultNodeType
-	 * @param type node type used when creating new nodes that are being added to this NodeStructure.
-	 */
-	public void setDefaultNodeType(String type);
+//	/**
+//	 * Sets defaultNodeType
+//	 * @param type node type used when creating new nodes that are being added to this NodeStructure.
+//	 */
+//	public void setDefaultNodeType(String type);
 
 	/**
 	 * Gets defaultLinkType
@@ -334,11 +335,11 @@ public interface NodeStructure {
 	 */
 	public String getDefaultLinkType();
 
-	/**
-	 * Sets defaultLinkType
-	 * @param type link type used when creating new link copies that are being added to this NodeStructure.
-	 */
-	public void setDefaultLinkType(String type);	
+//	/**
+//	 * Sets defaultLinkType
+//	 * @param type link type used when creating new link copies that are being added to this NodeStructure.
+//	 */
+//	public void setDefaultLinkType(String type);	
 	
 
 	/**

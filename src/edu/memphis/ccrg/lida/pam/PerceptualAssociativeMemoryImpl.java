@@ -29,6 +29,7 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
@@ -104,10 +105,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#init()
 	 */
 	@Override
-	public void init() {
-		setDefaultNodeType((String) getParam("pam.newNodeType", PamNodeImpl.class.getSimpleName()));
-		setDefaultLinkType((String) getParam("pam.newLinkType", PamLinkImpl.class.getSimpleName()));
-		
+	public void init() {	
 		upscaleFactor=(Double)getParam("pam.Upscale",DEFAULT_UPSCALE_FACTOR);
 		downscaleFactor=(Double)getParam("pam.Downscale",DEFAULT_DOWNSCALE_FACTOR);
 		perceptThreshold=(Double)getParam("pam.Selectivity",
@@ -116,6 +114,34 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);
 		propagationTaskTicksPerRun = (Integer) getParam(
 				"pam.propagationTicksPerRun", DEFAULT_PROPAGATION_TASK_TICKS);
+		setDefaultNodeType((String) getParam("pam.newNodeType", PamNodeImpl.class.getSimpleName()));
+		setDefaultLinkType((String) getParam("pam.newLinkType", PamLinkImpl.class.getSimpleName()));
+	}
+	
+
+	/*
+	 * Sets default node type.  Note that this resets the NodeStructure.
+	 * @param type Node type of NodeStructure
+	 */
+	private void setDefaultNodeType(String type) {
+		if(!(factory.getNode(type) instanceof PamNode)){
+			logger.log(Level.WARNING, "Cannot set default node type to: " + type, LidaTaskManager.getCurrentTick());
+		}else{
+			nodeStructure = factory.getNodeStructure(type, nodeStructure.getDefaultLinkType());
+		}
+	}
+	
+	/*
+	 * Sets default link type.  Note that this resets the NodeStructure.
+	 * @param type Link type of NodeStructure
+	 */
+	private void setDefaultLinkType(String type) {
+		Link dummy = factory.getLink(type, factory.getNode(), factory.getNode(), LinkCategoryNode.NONE);
+		if(!(dummy instanceof PamLink)){
+			logger.log(Level.WARNING, "Cannot set default link type to: " + type, LidaTaskManager.getCurrentTick());
+		}else{
+			nodeStructure = factory.getNodeStructure(nodeStructure.getDefaultNodeType(), type);
+		}
 	}
 
 	/*
@@ -165,6 +191,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			return null;
 		}		
 		PamNode storedNode = (PamNode) nodeStructure.addDefaultNode(n);
+		//TODO !!
 		if(n instanceof Learnable){
 			copyLearnableValues(storedNode, (Learnable) n);
 		}
@@ -196,6 +223,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		Set<PamLink> copiedLinks = new HashSet<PamLink>();
 		for (Link l : links){
 			PamLink storedLink = (PamLink) nodeStructure.addDefaultLink(l);
+			//TODO !!
 			if(l instanceof Learnable){
 				copyLearnableValues(storedLink, (Learnable) l);				
 			}
@@ -421,7 +449,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {
-		return new UnmodifiableNodeStructureImpl(nodeStructure);
+		return new UnmodifiableNodeStructureImpl((NodeStructureImpl) nodeStructure);
 	}
 
 	/* (non-Javadoc)
@@ -441,11 +469,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Link addNewLink(Node src, Node snk, LinkCategory cat, double activ) {
+		//already done by NodeSTructre
+		//TODO fix
 		if(src == null || snk == null || cat == null){
 			logger.log(Level.WARNING, "One or more arguments was null, link not added", LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return nodeStructure.addLink(src.getExtendedId(), snk.getExtendedId(), cat, activ, 0.0);
+		return nodeStructure.addDefaultLink(src.getExtendedId(), snk.getExtendedId(), cat, activ, 0.0);
 	}
 
 	/* (non-Javadoc)
@@ -454,11 +484,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Link addNewLink(ExtendedId srcId, ExtendedId sinkId,
 			LinkCategory cat, double activ) {
+		//already done by NodeSTructre
+		//TODO fix
 		if(srcId == null || sinkId == null || cat == null){
 			logger.log(Level.WARNING, "One or more arguments was null, link not added", LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return nodeStructure.addLink(srcId, sinkId, cat, activ, 0.0);
+		return nodeStructure.addDefaultLink(srcId, sinkId, cat, activ, 0.0);
 	}
 
 
@@ -467,6 +499,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addNewNode(String label) {
+		//TODO move this to NodeStructure!
 		PamNode newNode = (PamNode) factory.getNode(nodeStructure.getDefaultNodeType(), label);
 		if(newNode != null){
 			newNode = (PamNode) nodeStructure.addDefaultNode(newNode);
@@ -482,10 +515,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addNewNode(String type, String label) {
+		//TODO move this to NodeStructure!
+		//TODO type not supported
 		Node newNode = factory.getNode(type, label);
 		if (newNode != null) {
 			if(newNode instanceof PamNode){
-				return (PamNode) nodeStructure.addNode(newNode, type);
+				return (PamNode) nodeStructure.addDefaultNode(newNode);
+//				return (PamNode) nodeStructure.addNode(newNode, type);
 			}else{
 				logger.log(Level.WARNING, "Cannot add non-PamNode nodes to PAM.  Node " + label + " not added", LidaTaskManager.getCurrentTick());
 				return null;
@@ -493,23 +529,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		}else{
 			logger.log(Level.WARNING, "Was unable to create node " + label + " of type " + type, LidaTaskManager.getCurrentTick());
 			return null;
-		}
-	}
-
-	private void setDefaultNodeType(String type) {
-		if(!(factory.getNode(type) instanceof PamNode)){
-			logger.log(Level.WARNING, "Cannot set default node type to: " + type, LidaTaskManager.getCurrentTick());
-		}else{
-			nodeStructure.setDefaultNodeType(type);
-		}
-	}
-	
-	private void setDefaultLinkType(String type) {
-		Link dummy = factory.getLink(type, factory.getNode(), factory.getNode(), LinkCategoryNode.NONE);
-		if(!(dummy instanceof PamLink)){
-			logger.log(Level.WARNING, "Cannot set default link type to: " + type, LidaTaskManager.getCurrentTick());
-		}else{
-			nodeStructure.setDefaultLinkType(type);
 		}
 	}
 
