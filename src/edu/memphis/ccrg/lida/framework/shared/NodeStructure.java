@@ -26,7 +26,8 @@ public interface NodeStructure {
 	 * Copied link will have the default link type of this {@link NodeStructure} when
 	 * it is added.
 	 * @param l Link to copy and add.
-	 * @return the copied Link that is actually stored in this NodeStructure, or the existing link.
+	 * @return the copied Link that is actually stored in this NodeStructure, or the existing link that is updated.
+	 * If Link cannot be added then null is returned.
 	 */
 	public Link addDefaultLink(Link l);
 	
@@ -71,7 +72,8 @@ public interface NodeStructure {
 
 	/**
 	 * Creates and adds a new Link with specified attributes.  Source and sink must
-	 * already be in this NodeStructure.
+	 * already be in this NodeStructure.  Allows multiple links from the same source and sink as long
+	 * as their LinkCategory differs.
 	 * @param idSource id of link's source
 	 * @param idSink id of link's sink
 	 * @param type Link's {@link LinkCategory}
@@ -85,7 +87,7 @@ public interface NodeStructure {
 	/**
 	 * Adds a COPY of specified Node to this NodeStructure. The copy will be of the default
 	 * type of this NodeStructure, NOT of the type of the specified node. If Node with the same
-	 * id already exists the the old node's activation is update.
+	 * id already exists the the old node's activation is updated ONLY IF it is higher than the existing activation.
 	 * @param n Node to add.
 	 * @return The copied Node that is stored in this NodeStructure or the existing, updated, Node already there.
 	 */
