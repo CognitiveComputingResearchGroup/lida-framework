@@ -549,53 +549,56 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * .ccrg.lida.shared.Linkable)
 	 */
 	@Override
-	public synchronized void removeLinkable(Linkable n) {
-		Set<Link> tempLinks = linkableMap.get(n);
+	public synchronized void removeLinkable(Linkable lnk) {
+		Set<Link> tempLinks = linkableMap.get(lnk);
 		Set<Link> otherLinks;
-		Linkable other;
+		Linkable otherLinkable;
 
 		if (tempLinks != null) {
 			for (Link l : tempLinks) {// for all of the links connected to n
-				other = l.getSink();
-				if (!other.equals(n)) {
-					otherLinks = linkableMap.get(other);
+				otherLinkable = l.getSink();
+				if(otherLinkable.equals(lnk)){
+					otherLinkable = l.getSource();
+					otherLinks = linkableMap.get(otherLinkable);
 					if (otherLinks != null) {
 						otherLinks.remove(l);
 					} else {
 						logger.log(Level.WARNING, "Expected other end of link "
-								+ other.getLabel() + " to have link "
+								+ otherLinkable.getLabel() + " to have link "
 								+ l.toString(), LidaTaskManager
 								.getCurrentTick());
 					}
-				} else {
-					other = l.getSource();
-					otherLinks = linkableMap.get(other);
+				}else{
+					otherLinks = linkableMap.get(otherLinkable);
 					if (otherLinks != null) {
 						otherLinks.remove(l);
 					} else {
 						logger.log(Level.WARNING, "Expected other end of link "
-								+ other.getLabel() + " to have link "
+								+ otherLinkable.getLabel() + " to have link "
 								+ l.toString(), LidaTaskManager
 								.getCurrentTick());
 					}
 				}
+				links.remove(l.getExtendedId());
 			}
 		}
 
-		linkableMap.remove(n);// finally remove the linkable and its links
-		if (n instanceof Node) {
-			nodes.remove(((Node) n).getId());
-		} else if (n instanceof Link) {
-			Link aux = links.get(n.getExtendedId());
+		linkableMap.remove(lnk);// finally remove the linkable and its links
+		if (lnk instanceof Node) {
+			nodes.remove(((Node) lnk).getId());
+		} else if (lnk instanceof Link) {
+			Link aux = links.get(lnk.getExtendedId());
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
-			links.remove(n.getExtendedId());
+			links.remove(lnk.getExtendedId());
 
-			if (sourceLinks != null)
+			if (sourceLinks != null){
 				sourceLinks.remove(aux);
+			}
 
-			if (sinkLinks != null)
+			if (sinkLinks != null){
 				sinkLinks.remove(aux);
+			}
 		}
 
 	}

@@ -245,7 +245,6 @@ public class NodeStructureImplTest extends TestCase{
 		l = ns1.addDefaultLink(node3.getId(), node1.getId(), category2, 0.0, 0.0);
 		assertTrue(l != null);
 		assertTrue(ns1.getLinkCount() == 2);
-		//TODO can add 'same' link with different categories!
 		
 		l = ns1.addDefaultLink(node1.getId(), node3.getId(), category1, 0.0, 0.0);
 		assertTrue(l != null);
@@ -373,24 +372,28 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns1.getNodeCount() == 2);
 			
 		ns1.removeNode(node1);
-		assertTrue(ns1.getLinkCount() == 1);
+		assertTrue(ns1.getLinkCount() == 0);
 		assertTrue(ns1.getNodeCount() == 1);
 		assertTrue(!ns1.containsNode(node1));
 		Link actualLink = ns1.getLink(foo.getExtendedId());
-		assertTrue(actualLink != null);
+		assertTrue(actualLink == null);
+		assertFalse(ns1.containsLink(foo));
 		
-		//TODO is this desired?
-//		assertTrue(actualLink.getSource() == null);
+		//remove other node this time
 		
-		assertTrue(actualLink.getSink() != null);
-		assertTrue(actualLink.getSink().equals(node2));
+		ns1.addDefaultNode(node1);
+		foo = ns1.addDefaultLink(node1.getId(), node2.getId(), category1, 0.0, 0.0);
+		assertTrue(ns1.getLinkableCount() == 3);
+		assertTrue(ns1.getLinkCount() == 1);
+		assertTrue(ns1.getNodeCount() == 2);
 		
 		ns1.removeNode(node2);
+		assertTrue(ns1.getLinkCount() == 0);
+		assertTrue(ns1.getNodeCount() == 1);
 		assertTrue(!ns1.containsNode(node2));
-		assertTrue(ns1.getNodeCount() == 0);
-		
-		//TODO Link still in there!
-		assertTrue(ns1.getLinkCount() == 1);
+		actualLink = ns1.getLink(foo.getExtendedId());
+		assertTrue(actualLink == null);
+		assertFalse(ns1.containsLink(foo));
 	}
 
 	/**
@@ -407,22 +410,25 @@ public class NodeStructureImplTest extends TestCase{
 	}
 	
 	public void testRemoveLinkable(){
-		Node stored1 = ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node1);
 		Node stored2 = ns1.addDefaultNode(node2);
 		Link stored3 = ns1.addDefaultLink(node1.getId(), node2.getId(), category2, 0.0, 0.0);
 		assertTrue(ns1.getNodeCount() == 2 && ns1.getLinkCount() == 1);
 		
 		ns1.removeLinkable(stored2);
-		assertTrue(ns1.getNodeCount() == 1 && ns1.getLinkCount() == 1);
+		assertTrue(ns1.getNodeCount() == 1 && ns1.getLinkCount() == 0);
 		assertFalse(ns1.containsNode(stored2.getId()));
 		
-		ns1.removeLinkable(stored3);
-		assertTrue(ns1.getNodeCount() == 1 && ns1.getLinkCount() == 0);
-		assertFalse(ns1.containsLink(stored3.getExtendedId()));
+		ns1.clearNodeStructure();
+		ns1.addDefaultNode(node1);
+		stored2 = ns1.addDefaultNode(node2);
+		stored3 = ns1.addDefaultLink(node1.getId(), node2.getId(), category2, 0.0, 0.0);
 		
-		ns1.removeLinkable(stored1);
-		assertTrue(ns1.getNodeCount() == 0 && ns1.getLinkCount() == 0);
-		assertFalse(ns1.containsNode(stored1.getId()));
+		ns1.removeLinkable(stored3);
+		
+		assertTrue(ns1.getLinkableCount() == 2);
+		assertTrue(ns1.getLinkCount() == 0);
+		assertTrue(ns1.getNodeCount() == 2);
 	}
 
 	/**
@@ -462,7 +468,7 @@ public class NodeStructureImplTest extends TestCase{
 	 * This method is used to test the NodeStructureImpl.equals() method
 	 */
 	@Test
-	public void testEquals() {
+	public void testCompareNodeStructures() {
 		
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
