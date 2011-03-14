@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
@@ -121,29 +122,31 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			}
 		}
 
-		// Copy Links but with Source and Sink pointing the old ones.
+		// Copy Links but keeping the old Source and Sink.
 		Collection<Link> oldLinks = original.getLinks();
 		if (oldLinks != null) {
 			for (Link l : oldLinks) {
 				links.put(l.getExtendedId(), generateNewLink(defaultLinkType, l
 						.getSource(), l.getSink(), l.getCategory(), l
-						.getActivation(), l.getActivatibleRemovalThreshold()));
+						.getActivation(), l.getActivatibleRemovalThreshold(), l.getGroundingPamLink()));
 			}
 		}
 
 		// Fix Source and Sinks now that all new Nodes and Links have been
 		// copied
 		for (ExtendedId ids : links.keySet()) {
-			Link l = links.get(ids);
-			Node lso = l.getSource();
-			Linkable lsi = l.getSink();
+			Link link = links.get(ids);
+			Node linkSource = link.getSource();
+			Linkable linkSink = link.getSink();
 
-			l.setSource(nodes.get(lso.getId()));
+			link.setSource(nodes.get(linkSource.getId()));
 
-			if (lsi instanceof Node) {
-				l.setSink(nodes.get(((Node) lsi).getId()));
-			} else {
-				l.setSink(links.get(lsi.getExtendedId()));
+			if (linkSink instanceof Node) {
+				link.setSink(nodes.get(((Node) linkSink).getId()));
+			}else if(linkSink instanceof Link){
+				link.setSink(links.get(linkSink.getExtendedId()));
+			}else{
+				logger.log(Level.WARNING, "This shouldn't have happened", LidaTaskManager.getCurrentTick());
 			}
 		}
 
@@ -152,21 +155,20 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (oldlinkableMap != null) {
 			Set<Linkable> oldKeys = oldlinkableMap.keySet();
 			if (oldKeys != null) {
-				for (Linkable l : oldKeys) {
+				for (Linkable linkable : oldKeys) {
 					Set<Link> newLinks = null;
-					Set<Link> llinks = oldlinkableMap.get(l);
-					if (llinks != null) {
+					Set<Link> linkableLinks = oldlinkableMap.get(linkable);
+					if (linkableLinks != null){
 						newLinks = new HashSet<Link>();
-						for (Link link : llinks) {
+						for (Link link : linkableLinks){
 							newLinks.add(links.get(link.getExtendedId()));
 						}
-					} else {
-						newLinks = null;
 					}
-					if (l instanceof Link) {
-						linkableMap.put(links.get(l.getExtendedId()), newLinks);
-					} else if (l instanceof Node) {
-						this.linkableMap.put(nodes.get(((Node) l).getId()),
+					
+					if (linkable instanceof Link){
+						linkableMap.put(links.get(linkable.getExtendedId()), newLinks);
+					}else if (linkable instanceof Node) {
+						linkableMap.put(nodes.get(((Node) linkable).getId()),
 								newLinks);
 					}
 				}
@@ -196,8 +198,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		double newActiv = l.getActivation();
 		double removalThreshold = l.getActivatibleRemovalThreshold();
 		Link oldLink = links.get(l.getExtendedId());
-		if (oldLink != null) { // if the link already exists in this node
-								// structure
+		if (oldLink != null) { // if the link already exists in this node structure			
 			oldLink.setActivatibleRemovalThreshold(removalThreshold);
 			// update activation
 			//TODO ? 
@@ -230,7 +231,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						+ " is not present in this NodeStructure.  Link: " + l
 						+ " will not be added.", LidaTaskManager
 						.getCurrentTick());
-//				throw new RuntimeException();
 				return null;
 			}
 		} else {
@@ -243,7 +243,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			}
 		}
 		return generateNewLink(defaultLinkType, newSource, newSink, l
-				.getCategory(), newActiv, removalThreshold);
+				.getCategory(), newActiv, removalThreshold, l.getGroundingPamLink());
 	}
 
 	/* (non-Javadoc)
@@ -261,7 +261,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return null;
 		}
 		return generateNewLink(defaultLinkType, source, sink, category,
-				activation, removalThreshold);
+				activation, removalThreshold, null);
 	}
 
 	/* (non-Javadoc)
@@ -279,7 +279,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return null;
 		}
 		return generateNewLink(defaultLinkType, source, sink, category,
-				activation, removalThreshold);
+				activation, removalThreshold, null);
 	}
 
 	/* (non-Javadoc)
@@ -297,7 +297,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return null;
 		}
 		return generateNewLink(defaultLinkType, source, sink, category,
-				activation, removalThreshold);
+				activation, removalThreshold, null);
+	}
+	
+	public synchronized Link addDefaultLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold){
+		return addDefaultLink(source.getId(), sink.getExtendedId(), category, activation, removalThreshold);
 	}
 
 	/*
@@ -310,10 +314,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	private Link generateNewLink(String linkType, Node newSource,
 			Linkable newSink, LinkCategory type, double activation,
-			double removalThreshold) {
+			double removalThreshold, PamLink groundingPamLink) {
 		Link newLink = getNewLink(linkType, newSource, newSink, type);
 		newLink.setActivation(activation);
 		newLink.setActivatibleRemovalThreshold(removalThreshold);
+		newLink.setGroundingPamLink(groundingPamLink);
 
 		links.put(newLink.getExtendedId(), newLink);
 		if (!linkableMap.containsKey(newLink))
@@ -521,13 +526,47 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		while (pending) {
 			pending = false;
 			for (Link l : cl) {
-				// TODO When does adding default link return null?
+				// At this point all nodes have been added.
+				// For links between nodes, all we would have to do is iteratively add them to this ns
+				// But there could be links with a link as their sink.  Thus the sink may not already
+				// be in the ns.  In those cases we set pending to true so that we readd all links until
+				// this doesn't happen again.  So for every link in a chain of links connected to links
+				// this for loop will run.  not very efficient but it works. O(n^2) worst case where n = # links
+				// hopefully this case won't happen much.
 				if (addDefaultLink(l) == null) {
 					pending = true;
 				}
 			}
 		}
 	}
+	
+//	/**
+//	 * Experimental method
+//	 * @param ns
+//	 */
+//	public void testMergeWith(NodeStructure ns){
+//		addDefaultNodes(ns.getNodes());		
+//		//'links' is actually an unmodifiable collection
+//		Collection<Link> links = ns.getLinks();
+//		
+//		//to store Links that couldn't be added on the first pass
+//		Collection<Link> leftToAdd = new ConcurrentHashSet<Link>();
+//		for (Link l : links) {
+//			if(addDefaultLink(l) == null){
+//				leftToAdd.add(l);
+//			}
+//		}
+//		
+//		int sizeBeforeLoop = leftToAdd.size();
+//		do{
+//			sizeBeforeLoop = leftToAdd.size();
+//			for(Link l: leftToAdd){
+//				if(addDefaultLink(l) != null){
+//					leftToAdd.remove(l);
+//				}
+//			}
+//		}while(leftToAdd.size() != sizeBeforeLoop);
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -550,36 +589,41 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public synchronized void removeLinkable(Linkable lnk) {
-		Set<Link> tempLinks = linkableMap.get(lnk);
+		if(!containsLinkable(lnk)){
+			return;
+		}
+		
+		Set<Link> connectedLinks = linkableMap.get(lnk);
 		Set<Link> otherLinks;
 		Linkable otherLinkable;
 
-		if (tempLinks != null) {
-			for (Link l : tempLinks) {// for all of the links connected to n
-				otherLinkable = l.getSink();
+		if (connectedLinks != null) {
+			for (Link connectedLink : connectedLinks) {// for all of the links connected to n
+				otherLinkable = connectedLink.getSink();
 				if(otherLinkable.equals(lnk)){
-					otherLinkable = l.getSource();
+					otherLinkable = connectedLink.getSource();
 					otherLinks = linkableMap.get(otherLinkable);
 					if (otherLinks != null) {
-						otherLinks.remove(l);
+						otherLinks.remove(connectedLink);
 					} else {
 						logger.log(Level.WARNING, "Expected other end of link "
 								+ otherLinkable.getLabel() + " to have link "
-								+ l.toString(), LidaTaskManager
+								+ connectedLink.toString(), LidaTaskManager
 								.getCurrentTick());
 					}
 				}else{
 					otherLinks = linkableMap.get(otherLinkable);
 					if (otherLinks != null) {
-						otherLinks.remove(l);
+						otherLinks.remove(connectedLink);
 					} else {
 						logger.log(Level.WARNING, "Expected other end of link "
 								+ otherLinkable.getLabel() + " to have link "
-								+ l.toString(), LidaTaskManager
+								+ connectedLink.toString(), LidaTaskManager
 								.getCurrentTick());
 					}
 				}
-				links.remove(l.getExtendedId());
+				links.remove(connectedLink.getExtendedId());
+				linkableMap.remove(connectedLink);
 			}
 		}
 
@@ -605,6 +649,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public void removeLinkable(ExtendedId id) {
+		if(!containsLinkable(id)){
+			return;
+		}
+		
 		if (id.isNodeId()) {
 			removeLinkable(nodes.get(id.getSourceNodeId()));
 		} else {
@@ -695,15 +743,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory category) {
 		Set<Link> temp = linkableMap.get(lnk);
-		Set<Link> result = new HashSet<Link>();
-		if (temp != null) {
-			for (Link l : temp) {
-				if (l.getCategory() == category){// add only desired category
-					result.add(l);
-				}
-			}// for each link
-		}// result != null
-		return result;
+		if(temp == null){
+			return null;
+		}
+		Set<Link> attachedLinks = new HashSet<Link>();
+		for (Link l : temp) {
+			if (l.getCategory() == category){
+				attachedLinks.add(l);
+			}
+		}			
+
+		return Collections.unmodifiableSet(attachedLinks);
 	}
 
 	/* (non-Javadoc)
@@ -776,7 +826,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Set<Link> getLinks(LinkCategory category) {
-		Set<Link> result = new HashSet<Link>();
+		Set<Link> result = new ConcurrentHashSet<Link>();
 		if (links != null) {
 			for (Link l : links.values()) {
 				if (l.getCategory() == category) {
@@ -784,7 +834,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				}
 			}
 		}
-		return result;
+		return Collections.unmodifiableSet(result);
 	}
 
 	
@@ -836,12 +886,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				// Sinks receive activation and are "higher than" node n, i.e.
 				// sink are the parents of this node.
 				Linkable sink = link.getSink();
-				if (!sink.equals(child)) {
+				if (!sink.equals(child) && sink instanceof Node) {
 					parentLinkMap.put((Node) sink, link);
 				}
 			}
 		}
-		return parentLinkMap;
+		return Collections.unmodifiableMap(parentLinkMap);
 	}
 
 	/* (non-Javadoc)

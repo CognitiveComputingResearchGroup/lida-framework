@@ -37,6 +37,18 @@ public class ActivatibleImplTest extends TestCase{
 	public void setUp() throws Exception {
 		node1 = new ActivatibleImpl();		
 	}	
+	
+	public void testRemovableThreshold(){
+		Node n = new NodeImpl();
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		n.decay(100);
+		assertTrue(n.isRemovable());
+		
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		assertTrue(!n.isRemovable());
+	}
 
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#ActivatibleImpl(double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy, double)}.

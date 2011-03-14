@@ -37,12 +37,26 @@ public interface NodeStructure {
 	 * id already exists then the old Link's activation is updated.
 	 * Copied links will have the default link type of this {@link NodeStructure} when
 	 * they are added.
+	 * Note if Links in supplied Collection link to each other then this method does NOT guarantee
+	 * that all Links will be added properly.  Links should be added one at a time in this case after
+	 * the dependent links are already present. 
+	 * 
 	 * @param links Links to copy and add.
 	 * @return the copied Links that are actually stored in this NodeStructure, or any existing links.
 	 */
 	public Collection<Link> addDefaultLinks(Collection<Link> links);
 	
 //	public Link addLink(Link l, String linkType);
+	
+	/**
+	 * @param source Link's source {@link Node}
+	 * @param sink Link's sink, a {@link Node} or a {@link Link}	
+	 * @param category Link's {@link LinkCategory}
+	 * @param activation initial link activation
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
+	 */
+	public Link addDefaultLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold);
 
 	/**
 	 * Creates and adds a new Link with specified attributes.  Source and sink must
@@ -51,8 +65,8 @@ public interface NodeStructure {
 	 * @param idSink {@link ExtendedId} of link's sink
 	 * @param type Link's {@link LinkCategory}
 	 * @param activation initial link activation
-	 * @param removalThreshold TODO
-	 * @return created Link or null if either source or sink are not present. 
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
 	 */
 	public Link addDefaultLink(ExtendedId idSource, ExtendedId idSink,
 			LinkCategory type, double activation, double removalThreshold);
@@ -64,8 +78,8 @@ public interface NodeStructure {
 	 * @param idSink {@link ExtendedId} of link's sink
 	 * @param type Link's {@link LinkCategory}
 	 * @param activation initial link activation
-	 * @param removalThreshold TODO
-	 * @return created Link or null if either source or sink are not present. 
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
 	 */
 	public Link addDefaultLink(int idSource, ExtendedId idSink,
 			LinkCategory type, double activation, double removalThreshold);
@@ -78,8 +92,8 @@ public interface NodeStructure {
 	 * @param idSink id of link's sink
 	 * @param type Link's {@link LinkCategory}
 	 * @param activation initial link activation
-	 * @param removalThreshold TODO
-	 * @return created Link or null if either source or sink are not present. 
+	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
+	 * @return created Link or null if either source or sink are not already present. 
 	 */
 	public Link addDefaultLink(int idSource, int idSink,
 			LinkCategory type, double activation, double removalThreshold);
@@ -351,5 +365,5 @@ public interface NodeStructure {
 	 * @param n supplied node
 	 * @return map of parents and links connecting node to them
 	 */
-	public Map<Node,Link> getParentLinkMap(Node n);
+	public Map<Node, Link> getParentLinkMap(Node n);
 }
