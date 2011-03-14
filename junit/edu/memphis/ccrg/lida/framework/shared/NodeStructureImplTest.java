@@ -19,7 +19,7 @@ import org.junit.Test;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
- * @author Siminder Kaur, Ryan McCall
+ * @author Ryan McCall, Siminder Kaur
  * 
  */
 
@@ -29,7 +29,6 @@ public class NodeStructureImplTest extends TestCase{
 	private LinkImpl link1,link2,link3;	
 	private LinkCategory category1,category2;	
 	private NodeStructureImpl ns1,ns2,ns3;
-	private NodeStructure ns;
 	private Set<Link> links;
 
 	/**
@@ -442,15 +441,90 @@ public class NodeStructureImplTest extends TestCase{
 		ns3.addDefaultLink(link1);
 		ns3.addDefaultLink(node2.getId(), node1.getId(), category1, 0.0, 0.0);
 		
-		ns = ns3.copy();		
+		NodeStructure copy = ns3.copy();		
 		
-		assertTrue(ns.getNodeCount() == 3);
-		assertTrue(ns.getLinkCount() == 2);
-		Collection<Link> links = ns.getAttachedLinks(node1);
+		assertTrue(copy.getNodeCount() == 3);
+		assertTrue(copy.getLinkCount() == 2);
+		Collection<Link> links = copy.getAttachedLinks(node1);
 		assertTrue(links.size() == 2);
-		links = ns.getAttachedLinks(node2);
+		links = copy.getAttachedLinks(node2);
 		assertTrue(links.size() == 2);
 	}	
+	
+	public void testCopy2(){
+		double testActivation = 0.69;
+		double testRemovable = 0.99;
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		ns1.addDefaultNode(node4);
+		
+		Link link34 = ns1.addDefaultLink(node3.getId(), node4.getId(), category1, testActivation, testRemovable);
+		Link link234 = ns1.addDefaultLink(node2.getId(), link34.getExtendedId(), category1, testActivation, testRemovable);
+		Link link1234 = ns1.addDefaultLink(node1.getId(), link234.getExtendedId(), category1, testActivation, testRemovable);
+		
+		NodeStructure copy = ns1.copy();
+		
+		assertTrue(copy.getLinkableCount() == 7);
+		assertTrue(copy.getLinkCount() == 3);
+		assertTrue(copy.getNodeCount() == 4);
+		
+		assertTrue(copy.containsNode(node1));
+		assertTrue(copy.containsNode(node2));
+		assertTrue(copy.containsNode(node3));
+		assertTrue(copy.containsNode(node4));
+		
+		assertTrue(copy.containsLink(link34));
+		assertTrue(copy.containsLink(link234));
+		assertTrue(copy.containsLink(link1234));
+		
+		assertTrue(copy.getAttachedLinks(node1).size() == 1);
+		assertTrue(copy.getAttachedLinks(node2).size() == 1);
+		assertTrue(copy.getAttachedLinks(node3).size() == 1);
+		assertTrue(copy.getAttachedLinks(node4).size() == 1);
+		
+		Link testRez = copy.getLink(link34.getExtendedId());
+		assertTrue(testRez.getSource().equals(node3) && testRez.getSink().equals(node4));
+		assertTrue(testRez.getActivation() == testActivation);
+		assertTrue(testRez.getActivatibleRemovalThreshold() == testRemovable);
+		
+		Link testRez2 = copy.getLink(link234.getExtendedId());
+		assertTrue(testRez2.getSource().equals(node2) && testRez2.getSink().equals(link34));
+		assertTrue(testRez2.getActivation() == testActivation);
+		assertTrue(testRez2.getActivatibleRemovalThreshold() == testRemovable);
+		
+		Link testRez3 = copy.getLink(link1234.getExtendedId());
+		assertTrue(testRez3.getSource().equals(node1) && testRez3.getSink().equals(link234));
+		assertTrue(testRez3.getActivation() == testActivation);
+		assertTrue(testRez3.getActivatibleRemovalThreshold() == testRemovable);
+	}
+	
+	public void testMerge(){
+		//TODO
+	}
+	
+	public void testDecayNodeStructure(){
+		NodeStructure ns = new NodeStructureImpl();
+		Node n = new NodeImpl();
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		
+		n.decay(100);
+		assertTrue(n.isRemovable());
+		
+		n.setActivation(0.1);
+		n.setActivatibleRemovalThreshold(0.05);
+		assertTrue(!n.isRemovable());
+		
+		Node storedNode = ns.addDefaultNode(n);
+		
+		assertTrue(storedNode.getActivation() + "", 0.1 == storedNode.getActivation());
+		assertTrue(storedNode.getActivatibleRemovalThreshold() + "", 0.05 == storedNode.getActivatibleRemovalThreshold());
+		ns.decayNodeStructure(100);
+		assertTrue(storedNode.isRemovable());
+		
+		//TODO
+	}
 
 	/**
 	 * This method is used to test the NodeStructureImpl.getLinksByType() method
@@ -462,6 +536,18 @@ public class NodeStructureImplTest extends TestCase{
 			assertEquals("Problem with GetLinksByType", l.getCategory(),category1);			
 			break;				
 		}	
+	}
+	
+	public void testGetAttachedLinks(){
+		//TODO
+	}
+	
+	public void testGetAttachedLinksByType(){
+		//TODO
+	}
+	
+	public void testGetParentLinkMap(){
+		//TODO		
 	}
 	
 	/**
@@ -481,28 +567,8 @@ public class NodeStructureImplTest extends TestCase{
 		ns2.addDefaultNode(node3);
 		ns2.addDefaultLink(link1);
 		ns2.addDefaultLink(link2);
-					
+					//TODO better example
 		assertTrue(NodeStructureImpl.compareNodeStructures(ns1, ns2));			
 	}	
-	
-	public void testWorkspaceBufferImpl() {
-		NodeStructure ns = new NodeStructureImpl();
-		Node n = new NodeImpl();
-		n.setActivation(0.1);
-		n.setActivatibleRemovalThreshold(0.05);
-		
-		n.decay(100);
-		assertTrue(n.isRemovable());
-		
-		n.setActivation(0.1);
-		n.setActivatibleRemovalThreshold(0.05);
-		assertTrue(!n.isRemovable());
-		
-		Node storedNode = ns.addDefaultNode(n);
-		
-		assertTrue(storedNode.getActivation() + "", 0.1 == storedNode.getActivation());
-		assertTrue(storedNode.getActivatibleRemovalThreshold() + "", 0.05 == storedNode.getActivatibleRemovalThreshold());
-		ns.decayNodeStructure(100);
-		assertTrue(storedNode.isRemovable());
-	}
+
 }
