@@ -227,8 +227,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		// in not in this nodestructure, return null
 		newSource = nodes.get(source.getId());
 		if (newSource == null) {
-			logger.log(Level.WARNING,
-					"Source node is not present in this NodeStructure",
+			logger.log(Level.FINER,
+					"Source: " + source + " is not present in this NodeStructure, Link will not be added.",
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
@@ -237,17 +237,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
 			if (newSink == null) {
-				logger.log(Level.WARNING, "Sink: " + sink
-						+ " is not present in this NodeStructure.  Link: " + l
-						+ " will not be added.", LidaTaskManager
-						.getCurrentTick());
+				logger.log(Level.FINER, 
+						"Sink: " + sink + " is not present in this NodeStructure, Link will not be added.",
+						LidaTaskManager.getCurrentTick());
 				return null;
 			}
 		} else {
 			newSink = links.get(sink.getExtendedId());
 			if (newSink == null) {
-				logger.log(Level.WARNING,
-						"Sink is not present in this NodeStructure",
+				logger.log(Level.FINER,
+						"Sink: " + sink + " is not present in this NodeStructure, Link will not be added.",
 						LidaTaskManager.getCurrentTick());
 				return null;
 			}
