@@ -95,8 +95,19 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
-		this.defaultNodeType = defaultNode;
-		this.defaultLinkType = defaultLink;
+		if(factory.containsNodeType(defaultNode)){
+			logger.log(Level.SEVERE, "Unsupported Node type: " + defaultNode, LidaTaskManager.getCurrentTick());
+			this.defaultNodeType = defaultNode;
+		}else{
+			throw new IllegalArgumentException();
+		}
+		
+		if(factory.containsLinkType(defaultLink)){
+			this.defaultLinkType = defaultLink;
+		}else{
+			logger.log(Level.SEVERE, "Unsupported Link type: " + defaultLink, LidaTaskManager.getCurrentTick());
+			throw new IllegalArgumentException();
+		}
 	}
 
 	/**
@@ -668,6 +679,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public void clearLinks() {
+//		for(Linkable l: linkableMap.keySet()){
+//			if(l instanceof Link){
+//				linkableMap.remove(l);
+//			}else{
+//				linkableMap.put(l, new ConcurrentHashSet<Link>());
+//			}
+//		}
+//		this.links.clear();
+		
 		for (Link l : links.values()){
 			removeLink(l);
 		}
@@ -722,15 +742,17 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Set<Link> getAttachedLinks(Linkable lnk) {
-		if (lnk == null)
+		if (lnk == null){
 			return null;
+		}
 
 		Set<Link> aux = linkableMap.get(lnk);
-		if (aux == null)
+		if (aux == null){
 			return null;
-		else
-			return Collections.unmodifiableSet(aux); // This returns the
-		// set of Links but it prevents to be modified
+		}else{
+			return Collections.unmodifiableSet(aux);
+		}
+		 // This returns the set of Links but it prevents to be modified
 	}
 
 	/*
@@ -751,8 +773,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			if (l.getCategory() == category){
 				attachedLinks.add(l);
 			}
-		}			
-
+		}		
 		return Collections.unmodifiableSet(attachedLinks);
 	}
 
@@ -767,7 +788,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}else{
 			return Collections.unmodifiableCollection(aux);
 		}
-
 	}
 
 	/* (non-Javadoc)
@@ -903,14 +923,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsNode(edu.memphis.ccrg.lida.framework.shared.Node)
-	 */
-	@Override
-	public boolean containsNode(Node n) {
-		return nodes.containsKey(n.getId());
-	}
-
-	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
@@ -931,7 +943,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public boolean containsLinkable(ExtendedId id) {
-		return (containsLink(id) || containsNode(id));
+		return (containsNode(id) || containsLink(id));
 	}
 
 	/* (non-Javadoc)
@@ -948,6 +960,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public boolean containsNode(ExtendedId id) {
 		return id.isNodeId() && nodes.containsKey(id.getSourceNodeId());
+	}
+
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsNode(edu.memphis.ccrg.lida.framework.shared.Node)
+	 */
+	@Override
+	public boolean containsNode(Node n) {
+		return nodes.containsKey(n.getId());
 	}
 	
 	/* (non-Javadoc)

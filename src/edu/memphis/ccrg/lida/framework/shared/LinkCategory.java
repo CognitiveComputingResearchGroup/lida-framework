@@ -15,7 +15,13 @@ package edu.memphis.ccrg.lida.framework.shared;
  */
 public interface LinkCategory {
 	
+	/**
+	 * @return readable label
+	 */
 	public String getLabel();
 	
+	/**
+	 * @return Category id
+	 */
 	public int getId();
 }

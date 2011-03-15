@@ -101,6 +101,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements WorkspaceBuffe
 
 	@Override
 	public void addListener(ModuleListener listener) {
+		// Not applicable
 		throw new UnsupportedOperationException();
 	}
 

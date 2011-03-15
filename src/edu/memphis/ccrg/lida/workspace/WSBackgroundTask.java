@@ -3,6 +3,7 @@
  */
 package edu.memphis.ccrg.lida.workspace;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
@@ -11,6 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -81,6 +83,7 @@ public class WSBackgroundTask extends LidaTaskImpl {
 				}
 			}
 			if (cueNodeStrucutre.getNodeCount() > 0) {
+				logger.log(Level.FINER, "Cueing Episodic Memories", LidaTaskManager.getCurrentTick());
 				workspace.cueEpisodicMemories(cueNodeStrucutre);
 			}
 		}

@@ -885,6 +885,26 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(map.size() == 0);
 	}
 	
+	public void testDefaultTypes(){
+		NodeStructure ns = new NodeStructureImpl();
+		assertEquals(ns.getDefaultNodeType(), NodeImpl.class.getSimpleName());
+		assertEquals(ns.getDefaultLinkType(), LinkImpl.class.getSimpleName());
+		
+		ns = new NodeStructureImpl(PamNodeImpl.factoryName, LinkImpl.factoryName);
+		assertEquals(ns.getDefaultNodeType(), PamNodeImpl.class.getSimpleName());
+		assertEquals(ns.getDefaultLinkType(), LinkImpl.class.getSimpleName());
+		
+		ns = new NodeStructureImpl(ns);
+		assertEquals(ns.getDefaultNodeType(), PamNodeImpl.class.getSimpleName());
+		assertEquals(ns.getDefaultLinkType(), LinkImpl.class.getSimpleName());
+		
+		try{
+			ns = new NodeStructureImpl(LinkImpl.factoryName, PamNodeImpl.factoryName);
+		}catch(Exception e){
+			assertTrue(e instanceof IllegalArgumentException);
+		}
+	}
+	
 	/**
 	 * This method is used to test the NodeStructureImpl.equals() method
 	 */
@@ -902,8 +922,57 @@ public class NodeStructureImplTest extends TestCase{
 		ns2.addDefaultLink(link1);
 		ns2.addDefaultLink(link2);
 		
-		//TODO better example
 		assertTrue(NodeStructureImpl.compareNodeStructures(ns1, ns2));			
 	}	
+	
+	public void testCompareNodeStructures2(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		
+		ns2.addDefaultNode(node2);
+		ns2.addDefaultNode(node1);
+		selfLink = ns1.addDefaultLink(node2, node2, category1, 0.0, 0.0);
+		ns2.addDefaultLink(node1, selfLink, category1, 0.0, 0.0);
+		
+		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
+	}
+	
+	public void testCompareNodeStructures3(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		
+		ns2.addDefaultNode(node1);
+		ns2.addDefaultNode(node2);
+		selfLink = ns1.addDefaultLink(node1, node1, category2, 0.0, 0.0);
+		ns2.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		
+		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
+	}
+	
+	public void testCompareNodeStructures4(){
+		ns1 = new NodeStructureImpl(NodeImpl.factoryName, LinkImpl.factoryName);
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		
+		PamNode pn1 = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+		PamNode pn2 = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+		ns2 = new NodeStructureImpl(PamNodeImpl.factoryName, PamLinkImpl.factoryName);
+		ns2.addDefaultNode(pn1);
+		ns2.addDefaultNode(pn2);
+		selfLink = ns2.addDefaultLink(pn1, pn1, category1, 0.0, 0.0);
+		ns2.addDefaultLink(pn2, selfLink, category1, 0.0, 0.0);
+		
+		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
+	}
+	
+	public void testF(){
+		System.out.println(LinkCategoryNode.CHILD);
+	}
 
 }

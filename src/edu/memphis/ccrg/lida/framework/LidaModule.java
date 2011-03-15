@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * General Module Interface in LIDA.
+ * Interface for the modules of LIDA.
  * 
  * @author Javier Snaider, Ryan J. McCall
  *
@@ -19,22 +19,21 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 public interface LidaModule extends FullyInitializable{
 	
 	/**
-	 * Gets module name.
+	 * Gets moduleName.
 	 * 
-	 * @return ModuleName
+	 * @return {@link ModuleName} of this LidaModule
 	 */
 	public ModuleName getModuleName();
 	
 	/**
-	 * param ModuleName.
+	 * Sets ModuleName.
 	 * 
-	 * @param moduleName
-	 *            the new module name
+	 * @param {@link ModuleName} of this LidaModule
 	 */
 	public void setModuleName(ModuleName moduleName);
 	
 	/**
-	 * Gets submodule.
+	 * Gets a subModule.
 	 * 
 	 * @param name
 	 *            of the desired submodule.

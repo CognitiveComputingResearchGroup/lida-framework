@@ -9,10 +9,18 @@ package edu.memphis.ccrg.lida.framework;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+
+/**
+ * A LidaModule containing all other LidaModules.
+ * 
+ * @author Javier Snaider
+ *
+ */
 public interface Lida extends LidaModule {
 
 	/**
-	 * @return the LidaTaskManager
+	 * Returns the Task Manager
+	 * @return {@link LidaTaskManager} in charge of all tasks.
 	 */
 	public LidaTaskManager getTaskManager();
 

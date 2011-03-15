@@ -27,7 +27,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private static final Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
 
-	public static final String factoryName = NodeImpl.class.getSimpleName();
+	public static final String factoryName = LinkImpl.class.getSimpleName();
 	
 	/*
 	 * Source of this link, always a node.
