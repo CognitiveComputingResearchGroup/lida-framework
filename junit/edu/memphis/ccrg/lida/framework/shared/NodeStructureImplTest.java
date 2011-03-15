@@ -112,7 +112,7 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns1.getLinkableCount() == 3);
 		assertTrue(ns1.containsNode(node3));		
 	}
-
+	
 	/**
 	 * Add same node 2x with different activation
 	 */
@@ -573,6 +573,8 @@ public class NodeStructureImplTest extends TestCase{
 		
 		PamLink pl = (PamLink) factory.getLink(link1, PamLinkImpl.factoryName);
 		link1.setGroundingPamLink(pl);
+		link1.setActivation(0.111);
+		link1.setActivatibleRemovalThreshold(0.00001);
 		ns3.addDefaultLink(link1);
 		ns3.addDefaultLink(node2.getId(), node1.getId(), category1, 0.0, 0.0);
 		ns3.addDefaultLink(node3.getId(), node3.getId(), category1, 0.0, 0.0);
@@ -971,8 +973,4 @@ public class NodeStructureImplTest extends TestCase{
 		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
 	}
 	
-	public void testF(){
-		System.out.println(LinkCategoryNode.CHILD);
-	}
-
 }

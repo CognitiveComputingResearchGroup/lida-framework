@@ -46,9 +46,6 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 	}
 	
 	@Override
-	public abstract String toString();
-	
-	@Override
 	public void addListener(ModuleListener listener) {
 		//Not applicable for environment
 	}
