@@ -12,6 +12,7 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
  * An Activatible that additionally has a base-level activation. It is used mostly for learning.

@@ -1,4 +1,5 @@
-package edu.memphis.ccrg.lida.framework.shared.activation;
+package edu.memphis.ccrg.lida.framework.strategies;
+
 
 /**
  * Default method to calculate total activation.  Sums activations returning sum or 1.0, whichever is lower.

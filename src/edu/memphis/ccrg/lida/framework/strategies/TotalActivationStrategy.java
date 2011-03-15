@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework.shared.activation;
+package edu.memphis.ccrg.lida.framework.strategies;
 
 /**
  * A strategy that calculates total activation.

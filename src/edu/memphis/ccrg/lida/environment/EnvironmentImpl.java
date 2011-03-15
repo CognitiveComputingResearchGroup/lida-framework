@@ -41,8 +41,9 @@ public abstract class EnvironmentImpl extends LidaModuleImpl implements Environm
 	 */
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt){
-		for(FrameworkGuiEventListener l: listeners)
+		for(FrameworkGuiEventListener l: listeners){
 			l.receiveFrameworkGuiEvent(evt);
+		}
 	}
 	
 	@Override
