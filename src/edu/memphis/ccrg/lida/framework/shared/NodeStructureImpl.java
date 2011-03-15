@@ -96,9 +96,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
 		if(factory.containsNodeType(defaultNode)){
-			logger.log(Level.SEVERE, "Unsupported Node type: " + defaultNode, LidaTaskManager.getCurrentTick());
 			this.defaultNodeType = defaultNode;
 		}else{
+			logger.log(Level.SEVERE, "Unsupported Node type: " + defaultNode, LidaTaskManager.getCurrentTick());
 			throw new IllegalArgumentException();
 		}
 		
@@ -167,10 +167,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Set<Linkable> oldKeys = oldlinkableMap.keySet();
 			if (oldKeys != null) {
 				for (Linkable linkable : oldKeys) {
-					Set<Link> newLinks = null;
+					Set<Link> newLinks = new HashSet<Link>();
 					Set<Link> linkableLinks = oldlinkableMap.get(linkable);
 					if (linkableLinks != null){
-						newLinks = new HashSet<Link>();
 						for (Link link : linkableLinks){
 							newLinks.add(links.get(link.getExtendedId()));
 						}
@@ -238,7 +237,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
 			if (newSink == null) {
-				logger.log(Level.WARNING, "Sink: " + snode.toString()
+				logger.log(Level.WARNING, "Sink: " + sink
 						+ " is not present in this NodeStructure.  Link: " + l
 						+ " will not be added.", LidaTaskManager
 						.getCurrentTick());
