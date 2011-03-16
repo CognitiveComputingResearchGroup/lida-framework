@@ -9,13 +9,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.shared.activation.DefaultTotalActivationStrategy;
+
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy;
+
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
  * @author Owner
