@@ -14,6 +14,10 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
+/**
+ * This is a JUnit class which can be used to test methods of the MockAttentionCodeletImpl class
+ * @author Siminder Kaur
+ */
 public class MockAttentionCodeletImplTest {
 	
 	MockAttentionCodeletImpl codelet;

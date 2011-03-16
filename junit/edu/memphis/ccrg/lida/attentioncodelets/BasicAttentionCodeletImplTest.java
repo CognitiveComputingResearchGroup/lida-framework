@@ -19,9 +19,10 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
+ * This is a JUnit class which can be used to test methods of the BasicAttentionCodeletImpl class
  * @author Siminder Kaur
- *
  */
+
 public class BasicAttentionCodeletImplTest {
 	WorkspaceBufferImpl buffer;
 	NodeImpl node1,node2,node3;

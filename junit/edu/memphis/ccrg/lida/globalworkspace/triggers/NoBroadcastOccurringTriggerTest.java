@@ -12,6 +12,11 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
+/**
+ * This is a JUnit class which can be used to test methods of the NoBroadcastOccurringTrigger class
+ * @author Siminder Kaur
+ */
+
 public class NoBroadcastOccurringTriggerTest {
 	
 	LidaTaskManager tm;

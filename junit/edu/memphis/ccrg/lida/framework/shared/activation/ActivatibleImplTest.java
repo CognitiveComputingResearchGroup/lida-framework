@@ -8,13 +8,15 @@
 /**
  * 
  */
-package edu.memphis.ccrg.lida.framework.shared;
+package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
@@ -22,9 +24,10 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 
 /**
+ * This is a JUnit class which can be used to test methods of the ActivatibleImpl class
  * @author Siminder Kaur
- *
  */
+
 public class ActivatibleImplTest extends TestCase{
 
 	ActivatibleImpl node1,node2;
@@ -38,16 +41,16 @@ public class ActivatibleImplTest extends TestCase{
 		node1 = new ActivatibleImpl();		
 	}	
 	
-	public void testRemovableThreshold(){
+	public void testIsRemovable(){
 		Node n = new NodeImpl();
 		n.setActivation(0.1);
 		n.setActivatibleRemovalThreshold(0.05);
 		n.decay(100);
-		assertTrue(n.isRemovable());
+		assertTrue("Problem with IsRemovable",n.isRemovable());
 		
 		n.setActivation(0.1);
 		n.setActivatibleRemovalThreshold(0.05);
-		assertTrue(!n.isRemovable());
+		assertTrue("Problem with IsRemovable",!n.isRemovable());
 	}
 
 	/**
@@ -168,6 +171,18 @@ public class ActivatibleImplTest extends TestCase{
 		node1.excite(0.1);
 		
 		assertEquals("Problem with GetTotalActivation", 0.6,node1.getActivation());
+	}
+	
+	@Test
+	public void testGetActivatibleRemovalThreshold() {		
+		node1.setActivatibleRemovalThreshold(0.5);		
+		assertEquals("Problem with GetActivatibleRemovalThreshold", 0.5,node1.getActivatibleRemovalThreshold());
+	}
+	
+	@Test
+	public void testSetActivatibleRemovalThreshold() {		
+		node1.setActivatibleRemovalThreshold(0.5);		
+		assertEquals("Problem with SetActivatibleRemovalThreshold", 0.5,node1.getActivatibleRemovalThreshold());
 	}
 
 }

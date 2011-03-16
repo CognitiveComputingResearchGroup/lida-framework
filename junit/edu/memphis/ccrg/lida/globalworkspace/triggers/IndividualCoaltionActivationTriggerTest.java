@@ -17,6 +17,11 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
+/**
+ * This is a JUnit class which can be used to test methods of the IndividualCoaltionActivationTrigger class
+ * @author Siminder Kaur
+ */
+
 public class IndividualCoaltionActivationTriggerTest {
 	
 	Set<Coalition> coalitions;

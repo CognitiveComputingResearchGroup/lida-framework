@@ -12,6 +12,10 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
+/**
+ * This is a JUnit class which can be used to test methods of the CoalitionImpl class
+ * @author Siminder Kaur, Nisrine
+ */
 public class CoalitionImplTest {
 	
 	CoalitionImpl coalition;

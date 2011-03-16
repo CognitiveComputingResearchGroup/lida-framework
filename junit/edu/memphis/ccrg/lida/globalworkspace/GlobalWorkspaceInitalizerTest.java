@@ -18,6 +18,10 @@ import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
+/**
+ * This is a JUnit class which can be used to test methods of the GlobalWorkspaceInitalizer class
+ * @author Siminder Kaur
+ */
 public class GlobalWorkspaceInitalizerTest {
 
 	Map<String, Object> params;
