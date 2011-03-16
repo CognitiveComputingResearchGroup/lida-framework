@@ -29,7 +29,6 @@ public class LinkImplTest extends TestCase{
 	private LinkImpl link1,link2,link3;	
 	private	PamLinkImpl pamLink1;
 	private LinkCategory linktype1;	
-	
 	private LidaElementFactory factory = LidaElementFactory.getInstance();
 
 	/**
@@ -169,6 +168,38 @@ public class LinkImplTest extends TestCase{
 		assertTrue(o1.equals(o2));
 		assertTrue(o2.equals(o1));
 		assertTrue(o1.hashCode() == o2.hashCode());
+	}
+	
+	public void testComplexLink(){
+		try{
+			Link foo = new LinkImpl(node4, link1, linktype1);
+			 new LinkImpl(node3, foo, linktype1);
+			assertTrue(false);
+		}catch(Exception e){
+			assertTrue(e instanceof IllegalArgumentException);
+		}
+	}
+	
+	public void testComplexLink2(){
+		Link foo = new LinkImpl(node4, link1, linktype1);
+		
+		try{
+			new LinkImpl(node1, foo, linktype1);
+			assertTrue(false);
+		}catch(Exception e){
+			assertTrue(e instanceof IllegalArgumentException);
+		}
+		
+		Link bar = new LinkImpl();
+		try{
+			bar.setSink(foo);
+			assertTrue(false);
+		}catch(Exception e){
+			assertTrue(e instanceof IllegalArgumentException);
+		}
+		
+		bar.setSink(link1);
+		assertEquals(link1, bar.getSink());
 	}
 
 }

@@ -26,30 +26,29 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		if(!(o instanceof NodeStructure)){
 			return false;
 		}
-		NodeStructure otherNS = (NodeStructure) o;
-		if(this.getNodeCount() != otherNS.getNodeCount()){
+		NodeStructure ns2 = (NodeStructure) o;
+		if(this.getNodeCount() != ns2.getNodeCount()){
 			return false;
-		}else if(this.getLinkCount() != otherNS.getLinkCount()){
+		}
+		if(this.getLinkCount() != ns2.getLinkCount()){
 			return false;
 		}
 		
 		//Iterate through other's nodes checking for equality
-		for(Node otherNode: otherNS.getNodes()){
-			if(this.containsNode(otherNode)){ //this checks for the node by id
-				//okay
-			}else{
+		for (Node n2 : ns2.getNodes()) {
+			Node n1 = getNode(n2.getId());
+			if (n1 == null || !n2.equals(n1) || !n1.equals(n2)){
+				return false;
+			}
+		}
+		
+		for (Link l2 : ns2.getLinks()) {
+			Link l1 = getLink(l2.getExtendedId());
+			if (l1 == null || !l2.equals(l1) || !l1.equals(l2)) {
 				return false;
 			}
 		}
 
-		//Iterate through other's link checking for equality
-		for(Link otherLink: otherNS.getLinks()){
-			if(this.containsLink(otherLink)){
-				//okay
-			}else{
-				return false;
-			}
-		}
 		return true;
 	}
 

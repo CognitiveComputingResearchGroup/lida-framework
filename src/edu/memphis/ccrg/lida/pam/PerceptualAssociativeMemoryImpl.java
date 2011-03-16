@@ -27,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -357,10 +358,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				.getActivationToPropagate(propagateParams);
 
 		// Get parents of pamNode and the connecting link
-		Map<Node, Link> parentLinkMap = nodeStructure.getParentLinkMap(pn);
-		for (Node parent : parentLinkMap.keySet()) {
+		Map<Linkable, Link> parentLinkMap = nodeStructure.getConnectedSinks(pn);
+		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
-			propagateActivation(pn, (PamNode)parent, (PamLink)parentLinkMap.get(parent), amountToPropagate);
+			if(parent instanceof PamNode){
+				propagateActivation(pn, (PamNode)parent, (PamLink)parentLinkMap.get(parent), amountToPropagate);
+			}
 		}
 	}
 

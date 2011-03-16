@@ -166,5 +166,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public Node copy() {
 		return new NodeImpl(this);
 	}
+	
+	@Override
+	public void updateSubclassValues(Node n) {
+		throw new UnsupportedOperationException("Only an overridde of this method in a subclass should be called");
+	}
 
 }

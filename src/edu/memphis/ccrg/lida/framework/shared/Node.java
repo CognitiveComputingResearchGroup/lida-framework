@@ -78,6 +78,16 @@ public interface Node extends Linkable, Activatible, Serializable {
 	 * @return new Node
 	 */
 	public Node copy();
+	
+	/** 
+	 * Subclasses of Node should override this method to set all of their type-specific member data
+	 * using the values of the specified Link.  
+	 * Thus specified Node must be of the same subclass type.
+	 * 
+	 * @param n Node whose values are used to update with.
+//	 * @see NodeStructureImpl#addNode()  TODO
+	 */
+	public void updateSubclassValues(Node n);
 
 }
 

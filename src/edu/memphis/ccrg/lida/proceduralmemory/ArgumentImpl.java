@@ -365,4 +365,10 @@ public class ArgumentImpl implements Argument {
 		return null;
 	}
 
+	@Override
+	public void updateSubclassValues(Node n) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

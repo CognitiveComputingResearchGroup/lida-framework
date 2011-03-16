@@ -18,6 +18,12 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 public interface Link extends Linkable, Activatible{
 	
 	/**
+	 * Returns whether Link is Simple (connects two nodes)
+	 * @return true if simple, false if complex (between a node and a simple link).
+	 */
+	public boolean isSimpleLink();
+	
+	/**
 	 * One end of the link which provides activation to the sink.  
 	 * @return source linkable
 	 */
@@ -80,5 +86,14 @@ public interface Link extends Linkable, Activatible{
 	 * @return a deep copy
 	 */
 	public Link copy();
+	
+	/** 
+	 * Subclasses of Link should override this method to set all of their type-specific member data
+	 * using the values of the specified Link.  
+	 * Thus specified Link must be of the same subclass type.
+	 * @param lnk Link whose values are used to update with.
+//	 * @see NodeStructureImpl#addLink()  TODO
+	 */
+	public void updateSubclassValues(Link lnk);
 
 }

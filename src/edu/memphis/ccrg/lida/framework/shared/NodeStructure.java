@@ -338,12 +338,6 @@ public interface NodeStructure {
 	 * @return node type used when creating new nodes that are being added to this NodeStructure.
 	 */
 	public String getDefaultNodeType();
-	
-//	/**
-//	 * Sets defaultNodeType
-//	 * @param type node type used when creating new nodes that are being added to this NodeStructure.
-//	 */
-//	public void setDefaultNodeType(String type);
 
 	/**
 	 * Gets defaultLinkType
@@ -351,19 +345,18 @@ public interface NodeStructure {
 	 */
 	public String getDefaultLinkType();
 
-//	/**
-//	 * Sets defaultLinkType
-//	 * @param type link type used when creating new link copies that are being added to this NodeStructure.
-//	 */
-//	public void setDefaultLinkType(String type);	
-	
-
 	/**
-	 * When you excite the parents of a node you might want to excite the connecting links too.
-	 * Thus this method Finds and returns the parents of specified Node with all of 
-	 * the links between them.
+ 	 * Finds and returns a map of all sink Linkables connected to specified Node.  
+ 	 * Values of the map are the Link connecting the Node to the sink Linkable.
 	 * @param n supplied node
 	 * @return map of parents and links connecting node to them
 	 */
-	public Map<Node, Link> getParentLinkMap(Node n);
+	public Map<Linkable, Link> getConnectedSinks(Node n);
+	
+	/**
+	 * @param lnk
+	 * @return
+	 */
+	public Map<Node, Link> getConnectedSources(Linkable lnk);
+
 }

@@ -62,6 +62,12 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	
 	public LinkImpl(Node source, Linkable sink, LinkCategory category) {
 		this.source = source;
+		if(source.equals(sink)){
+			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
+		}
+		if(sink.getExtendedId().isComplexLink()){
+			throw new IllegalArgumentException("Sink cannot be a complex link. Must be a node or simple link.");
+		}
 		this.sink = sink;
 		this.category = category;
 		updateExtendedId();
@@ -142,6 +148,12 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	@Override
 	public void setSink(Linkable sink) {
+		if(source.equals(sink)){
+			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
+		}
+		if(sink.getExtendedId().isComplexLink()){
+			throw new IllegalArgumentException("Sink cannot be a complex link. Must be a node or simple link.");
+		}
 		this.sink = sink;
 		updateExtendedId();
 	}
@@ -201,6 +213,16 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public Link copy() {
 		return new LinkImpl(this);
+	}
+	
+	@Override
+	public boolean isSimpleLink(){
+		return extendedId.isSimpleLink();
+	}
+
+	@Override
+	public void updateSubclassValues(Link lnk) {
+		throw new UnsupportedOperationException("Only an overridde of this method in a subclass should be called");
 	}
 
 }

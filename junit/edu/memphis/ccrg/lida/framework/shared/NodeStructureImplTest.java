@@ -179,30 +179,30 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns1.getLinkableCount() == 5);
 	}
 	
-	public void testAddLinkSelf() {	
-		ns1.addDefaultNode(node1);	
-		ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		
-		assertTrue(ns1.getLinkableCount() == 2);
-		assertTrue(ns1.getLinkCount() == 1);
-		
-		ns1.addDefaultLink(node1, node1, category2, 0.0, 0.0);
-		
-		assertTrue(ns1.getLinkableCount() == 3);
-		assertTrue(ns1.getLinkCount() == 2);
-	}
+//	public void testAddLinkSelf() {	
+//		ns1.addDefaultNode(node1);	
+//		ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+//		ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+//		
+//		assertTrue(ns1.getLinkableCount() == 2);
+//		assertTrue(ns1.getLinkCount() == 1);
+//		
+//		ns1.addDefaultLink(node1, node1, category2, 0.0, 0.0);
+//		
+//		assertTrue(ns1.getLinkableCount() == 3);
+//		assertTrue(ns1.getLinkCount() == 2);
+//	}
 	
-	public void testAddLinkSelf2(){
-		ns1.addDefaultNode(node1);
-		ns1.addDefaultNode(node2);
-		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
-		
-		assertTrue(ns1.getLinkableCount() == 4);
-		assertTrue(ns1.getLinkCount() == 2);
-		assertTrue(ns1.getNodeCount() == 2);
-	}
+//	public void testAddLinkSelf2(){
+//		ns1.addDefaultNode(node1);
+//		ns1.addDefaultNode(node2);
+//		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+//		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+//		
+//		assertTrue(ns1.getLinkableCount() == 4);
+//		assertTrue(ns1.getLinkCount() == 2);
+//		assertTrue(ns1.getNodeCount() == 2);
+//	}
 
 	/**
 	 * This method is used to test the NodeStructureImpl.addLinks() method
@@ -502,30 +502,30 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns1.getLinkableCount() == 2);
 	}
 	
-	public void testRemoveSelfLinkable(){
-		ns1.addDefaultNode(node1);
-		ns1.addDefaultNode(node2);
-		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
-		assertTrue(ns1.getLinkCount() == 2);
-		
-		ns1.removeLinkable(selfLink);
-		
-		assertTrue(ns1.getLinkableCount() == 2);
-		assertTrue(ns1.getLinkCount() == 0);
-	}
+//	public void testRemoveSelfLinkable(){
+//		ns1.addDefaultNode(node1);
+//		ns1.addDefaultNode(node2);
+//		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+//		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+//		assertTrue(ns1.getLinkCount() == 2);
+//		
+//		ns1.removeLinkable(selfLink);
+//		
+//		assertTrue(ns1.getLinkableCount() == 2);
+//		assertTrue(ns1.getLinkCount() == 0);
+//	}
 	
-	public void testRemoveSelfLinkable2(){
-		ns1.addDefaultNode(node1);
-		ns1.addDefaultNode(node2);
-		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		Link connector = ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
-		
-		ns1.removeLinkable(connector);
-		
-		assertTrue(ns1.getLinkableCount() == 3);
-		assertTrue(ns1.getLinkCount() == 1);
-	}
+//	public void testRemoveSelfLinkable2(){
+//		ns1.addDefaultNode(node1);
+//		ns1.addDefaultNode(node2);
+//		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
+//		Link connector = ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+//		
+//		ns1.removeLinkable(connector);
+//		
+//		assertTrue(ns1.getLinkableCount() == 3);
+//		assertTrue(ns1.getLinkCount() == 1);
+//	}
 	
 	public void testRemoveLinkLink(){
 		ns1.addDefaultNode(node1);
@@ -577,17 +577,16 @@ public class NodeStructureImplTest extends TestCase{
 		link1.setActivatibleRemovalThreshold(0.00001);
 		ns3.addDefaultLink(link1);
 		ns3.addDefaultLink(node2.getId(), node1.getId(), category1, 0.0, 0.0);
-		ns3.addDefaultLink(node3.getId(), node3.getId(), category1, 0.0, 0.0);
 		
 		NodeStructure copy = ns3.copy();		
 		
 		assertTrue(copy.getNodeCount() == 3);
-		assertTrue(copy.getLinkCount() == 3);
+		assertTrue(copy.getLinkCount() == 2);
 		Collection<Link> links = copy.getAttachedLinks(node1);
 		assertTrue(links.size() == 2);
 		links = copy.getAttachedLinks(node2);
 		assertTrue(links.size() == 2);
-		assertTrue(copy.getAttachedLinks(node3).size() == 1);
+		assertTrue(copy.getAttachedLinks(node3).size() == 0);
 		
 		Node copiedNode2 = copy.getNode(node2.getId());
 		assertEquals(copiedNode2.getActivatibleRemovalThreshold(), node2.getActivatibleRemovalThreshold());
@@ -625,9 +624,9 @@ public class NodeStructureImplTest extends TestCase{
 		ns1.addDefaultNode(node3);
 		ns1.addDefaultNode(node4);
 		
-		Link link34 = ns1.addDefaultLink(node3.getId(), node4.getId(), category1, testActivation, testRemovable);
-		Link link234 = ns1.addDefaultLink(node2.getId(), link34.getExtendedId(), category1, testActivation, testRemovable);
-		Link link1234 = ns1.addDefaultLink(node1.getId(), link234.getExtendedId(), category1, testActivation, testRemovable);
+		Link link34 = ns1.addDefaultLink(node3, node4, category1, testActivation, testRemovable);
+		Link link234 = ns1.addDefaultLink(node2, link34, category1, testActivation, testRemovable);
+		Link link12 = ns1.addDefaultLink(node1, node2, category1, testActivation, testRemovable);
 		
 		NodeStructure copy = ns1.copy();
 		
@@ -642,10 +641,10 @@ public class NodeStructureImplTest extends TestCase{
 		
 		assertTrue(copy.containsLink(link34));
 		assertTrue(copy.containsLink(link234));
-		assertTrue(copy.containsLink(link1234));
+		assertTrue(copy.containsLink(link12));
 		
 		assertTrue(copy.getAttachedLinks(node1).size() == 1);
-		assertTrue(copy.getAttachedLinks(node2).size() == 1);
+		assertTrue(copy.getAttachedLinks(node2).size() == 2);
 		assertTrue(copy.getAttachedLinks(node3).size() == 1);
 		assertTrue(copy.getAttachedLinks(node4).size() == 1);
 		
@@ -659,8 +658,8 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(testRez2.getActivation() == testActivation);
 		assertTrue(testRez2.getActivatibleRemovalThreshold() == testRemovable);
 		
-		Link testRez3 = copy.getLink(link1234.getExtendedId());
-		assertTrue(testRez3.getSource().equals(node1) && testRez3.getSink().equals(link234));
+		Link testRez3 = copy.getLink(link12.getExtendedId());
+		assertTrue(testRez3.getSource().equals(node1) && testRez3.getSink().equals(node2));
 		assertTrue(testRez3.getActivation() == testActivation);
 		assertTrue(testRez3.getActivatibleRemovalThreshold() == testRemovable);
 	}
@@ -720,15 +719,15 @@ public class NodeStructureImplTest extends TestCase{
 		ns2.addDefaultNode(node5);
 		
 		Link l45 = ns2.addDefaultLink(node4, node5, category1, 0.0, 0.0);
-		Link l345 = ns2.addDefaultLink(node3, l45, category1, 0.0, 0.0);
-		ns2.addDefaultLink(node2, l345, category1, 0.0, 0.0);
+		ns2.addDefaultLink(node3, l45, category1, 0.0, 0.0);
+		ns2.addDefaultLink(node2, node3, category1, 0.0, 0.0);
 		
 		ns1.mergeWith(ns2);
 		assertTrue(ns1.getLinkCount() == 4);
 		assertTrue(ns1.getNodeCount() == 5);
 		assertTrue(ns1.getAttachedLinks(node1).size() == 1);
 		assertTrue(ns1.getAttachedLinks(node2).size() == 2);
-		assertTrue(ns1.getAttachedLinks(node3).size() == 1);
+		assertTrue(ns1.getAttachedLinks(node3).size() == 2);
 		assertTrue(ns1.getAttachedLinks(node4).size() == 1);
 		assertTrue(ns1.getAttachedLinks(node5).size() == 1);
 		
@@ -737,7 +736,7 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns2.getNodeCount() == 5);
 		assertTrue(ns2.getAttachedLinks(node1).size() == 1);
 		assertTrue(ns2.getAttachedLinks(node2).size() == 2);
-		assertTrue(ns2.getAttachedLinks(node3).size() == 1);
+		assertTrue(ns2.getAttachedLinks(node3).size() == 2);
 		assertTrue(ns2.getAttachedLinks(node4).size() == 1);
 		assertTrue(ns2.getAttachedLinks(node5).size() == 1);
 	}
@@ -868,22 +867,22 @@ public class NodeStructureImplTest extends TestCase{
 		Link l23 = ns1.addDefaultLink(node2, node3, category2, 0.0, 0.0);
 		Link l24 = ns1.addDefaultLink(node2, node4, category1, 0.0, 0.0);
 		
-		Map<Node, Link> map = ns1.getParentLinkMap(node1);
+		Map<Linkable, Link> map = ns1.getConnectedSinks(node1);
 		assertTrue(map.size() == 1);
 		assertTrue(map.containsKey(node2));
 		assertTrue(map.containsValue(l12));
 		
-		map = ns1.getParentLinkMap(node2);
+		map = ns1.getConnectedSinks(node2);
 		assertTrue(map.size() == 2);
 		assertTrue(map.containsKey(node3));
 		assertTrue(map.containsValue(l23));
 		assertTrue(map.containsKey(node4));
 		assertTrue(map.containsValue(l24));
 		
-		map = ns1.getParentLinkMap(node3);
+		map = ns1.getConnectedSinks(node3);
 		assertTrue(map.size() == 0);
 		
-		map = ns1.getParentLinkMap(node4);
+		map = ns1.getConnectedSinks(node4);
 		assertTrue(map.size() == 0);
 	}
 	
@@ -930,13 +929,12 @@ public class NodeStructureImplTest extends TestCase{
 	public void testCompareNodeStructures2(){
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
-		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node2, node1, category1, 0.0, 0.0);
 		
 		ns2.addDefaultNode(node2);
 		ns2.addDefaultNode(node1);
-		selfLink = ns1.addDefaultLink(node2, node2, category1, 0.0, 0.0);
-		ns2.addDefaultLink(node1, selfLink, category1, 0.0, 0.0);
+		ns2.addDefaultLink(node1, node2, category1, 0.0, 0.0);
 		
 		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
 	}
@@ -944,13 +942,11 @@ public class NodeStructureImplTest extends TestCase{
 	public void testCompareNodeStructures3(){
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
-		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
 		
 		ns2.addDefaultNode(node1);
 		ns2.addDefaultNode(node2);
-		selfLink = ns1.addDefaultLink(node1, node1, category2, 0.0, 0.0);
-		ns2.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, node2, category2, 0.0, 0.0);
 		
 		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
 	}
@@ -959,18 +955,97 @@ public class NodeStructureImplTest extends TestCase{
 		ns1 = new NodeStructureImpl(NodeImpl.factoryName, LinkImpl.factoryName);
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
-		Link selfLink = ns1.addDefaultLink(node1, node1, category1, 0.0, 0.0);
-		ns1.addDefaultLink(node2, selfLink, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
 		
-		PamNode pn1 = (PamNode) factory.getNode(PamNodeImpl.factoryName);
-		PamNode pn2 = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+
 		ns2 = new NodeStructureImpl(PamNodeImpl.factoryName, PamLinkImpl.factoryName);
+		PamNode pn1 = (PamNode) factory.getNode(node1, PamNodeImpl.factoryName);
+		PamNode pn2 = (PamNode) factory.getNode(node2, PamNodeImpl.factoryName);
 		ns2.addDefaultNode(pn1);
 		ns2.addDefaultNode(pn2);
-		selfLink = ns2.addDefaultLink(pn1, pn1, category1, 0.0, 0.0);
-		ns2.addDefaultLink(pn2, selfLink, category1, 0.0, 0.0);
+		ns2.addDefaultLink(pn1, pn2, category1, 0.0, 0.0);
 		
 		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
+	}
+	
+	public void testWrongStructure(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		ns1.addDefaultNode(node4);
+		
+		Link l12 = ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
+		Link l34 = ns1.addDefaultLink(node3, node4, category1, 0.0, 0.0);
+		
+		Link l1234 = ns1.addDefaultLink(l12.getExtendedId(), l34.getExtendedId(), category1, 0.0, 0.0);
+		assertTrue(l1234 == null);
+	}
+	
+	public void testWeirdStructure(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		link1 = (LinkImpl) ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, link1, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node2, link1, category1, 0.0, 0.0);
+		
+		NodeStructure copy = ns1.copy();
+		copy.removeNode(node1);
+		assertTrue(copy.getLinkCount() == 0);
+		
+		assertTrue(ns1.getLinkCount() == 3);
+		assertTrue(ns1.getNodeCount() == 2);
+		ns1.removeLink(link1);
+		assertTrue(ns1.getLinkCount() == 0);
+		assertTrue(ns1.getNodeCount() == 2);
+		
+	}
+	
+	public void testWeirdStructure2(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		link1 = (LinkImpl) ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
+		Link foo = ns1.addDefaultLink(node2, link1, category1, 0.0, 0.0);
+		assertEquals(null, ns1.addDefaultLink(node1, foo, category1, 0.0, 0.0));
+		assertTrue(ns1.getLinkCount() == 2);
+	}
+	
+	public void testWeirdStructure3(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		Link l23 = ns1.addDefaultLink(node2, node3, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
+		ns1.addDefaultLink(node1, l23, category1, 0.0, 0.0);
+		
+		assertTrue(ns1.getLinkCount() == 3);
+		assertTrue(ns1.getNodeCount() == 3);
+		assertTrue(ns1.getAttachedLinks(node1).size() == 2);
+		assertTrue(ns1.getAttachedLinks(node2).size() == 2);
+		assertTrue(ns1.getAttachedLinks(node3).size() == 1);
+		
+		NodeStructure copy = ns1.copy();
+		
+		assertTrue(copy.getLinkCount() == 3);
+		assertTrue(copy.getNodeCount() == 3);
+		assertTrue(copy.getAttachedLinks(node1).size() == 2);
+		assertTrue(copy.getAttachedLinks(node2).size() == 2);
+		assertTrue(copy.getAttachedLinks(node3).size() == 1);
+		
+		copy.removeNode(node3);
+		assertTrue(copy.getNodeCount() == 2);
+		assertTrue(copy.getLinkCount()+"",copy.getLinkCount() == 1);
+		
+		ns1.removeNode(node2);
+		assertTrue(ns1.getNodeCount() == 2);
+		assertTrue(ns1.getLinkCount() == 0);
+	}
+	
+	public void testGetConnectedSinks(){
+		//TODO
+	}
+	
+	public void testGetConnectedSources(){
+		//TODO
 	}
 	
 }

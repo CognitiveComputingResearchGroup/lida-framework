@@ -18,24 +18,25 @@ public class ExtendedId {
 	private static final int UNDEFINED = Integer.MIN_VALUE;
 	
 	/*
-	 * For the Link constructor there are 3 categories of possible input.
+	 * There are 3 categories of possible ExtendedIds.
 	 * 
-	 * In each case linkCategory is set using the first argument
-	 * and sourceNodeId is set using the second.
-	 * 
-	 * Case 1: The sink is a Node.  
-	 * Then sinkCategory and sinkNode2Id are UNDEFINED.
-	 * while sinkNode1Id is the id of the Node.
+	 * Case 1: Node, 
+	 * variable sourceNodeId is set to the specified nodeId
+	 * the rest of the variables are set to UNDEFINED
 	 *
-	 * Case 2: The sink is a Link, call it BOB.
-	 * Then sinkLinkCategory is the LinkCategory of BOB. 
-	 * Then sinkNode1Id is BOB's sourceNodeId.
 	 * 
-	 * 	Subcase 2a:  BOB's sink is a node.
-	 * 	Then sinkNode2Id is BOB's sinkNode1Id
-	 * 
-	 * 	Subcase 2b: BOB's sink is a link. Call this other link ROB.
-	 * 	Then sinkNode2Id is set to the sinkNode1Id of BOB which is ROB's sourceNodeId.
+	 * Case 2: Simple link, source and sink are nodes.
+	 * linkCategory is set using the first argument
+	 * and sourceNodeId is set using the second.
+	 * Then sinkCategory and sinkNode2Id are UNDEFINED.
+	 * while sinkNode1Id is the id of the sink node.
+	 *
+	 * Case 3: Complex link, the sink is a SIMPLE Link, call it L1.
+	 * linkCategory is set using the first argument
+	 * and sourceNodeId is set using the second.
+	 * Then sinkLinkCategory is the LinkCategory of L1. 
+	 * Then sinkNode1Id is L1's sourceNodeId.
+	 * Then sinkNode2Id is L1's sinkNode1Id
 	 * 
 	 */
 
@@ -87,6 +88,22 @@ public class ExtendedId {
 		return linkCategory == UNDEFINED;
 	}
 
+	/**
+	 * Returns whether this ExtendedId is for a {@link Link} between 2 nodes.
+	 * @return true if id is for a simple link.  false if id is for a node or a complex link.
+	 */
+	public boolean isSimpleLink(){
+		return linkCategory != UNDEFINED && sinkLinkCategory == UNDEFINED;
+	}
+	
+	/**
+	 * Returns whether this ExtendedId is for a {@link Link} between a node and a Link.
+	 * @return true if id is for a complex link.  false if id is for a node or a simple link.
+	 */
+	public boolean isComplexLink(){
+		return linkCategory != UNDEFINED && sinkLinkCategory != UNDEFINED;
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ExtendedId) {
