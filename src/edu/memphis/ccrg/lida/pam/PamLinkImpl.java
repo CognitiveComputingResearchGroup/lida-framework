@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
@@ -192,6 +193,15 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public PamLink copy(){
 		return new PamLinkImpl(this);
+	}
+	
+	@Override
+	public void updateSubclassValues(Link lnk) {
+		//TODO use copy constructor instead?
+		if(lnk instanceof PamLinkImpl){
+			PamLinkImpl pl = (PamLinkImpl) lnk;
+			learnable = pl.learnable;
+		}
 	}
 	
 }

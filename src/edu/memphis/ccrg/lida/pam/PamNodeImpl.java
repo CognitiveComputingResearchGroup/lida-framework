@@ -190,4 +190,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public PamNode copy() {
 		return new PamNodeImpl(this);
 	}	
+	
+	@Override
+	public void updateSubclassValues(Node n) {
+		//TODO use copy constructor instead?
+		if(n instanceof PamNodeImpl){
+			PamNodeImpl pn = (PamNodeImpl) n;
+			learnable = pn.learnable;
+		}
+	}
 }
