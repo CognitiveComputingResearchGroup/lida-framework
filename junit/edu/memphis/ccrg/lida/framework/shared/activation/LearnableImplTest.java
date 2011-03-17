@@ -29,7 +29,7 @@ public class LearnableImplTest {
 	 * @throws java.lang.Exception
 	 */
 	
-	LearnableImpl node1, node2;
+	LearnableImpl node1;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -41,7 +41,7 @@ public class LearnableImplTest {
 	@Before
 	public void setUp() throws Exception {
 		node1 = new LearnableImpl ();
-		node2 = new LearnableImpl ();  
+		//node2 = new LearnableImpl ();  
 	}
 
 	/**
@@ -98,7 +98,13 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testDecayBaseLevelActivation() {
+		DecayStrategy ds = new LinearDecayStrategy();
+		node1.setBaseLevelDecayStrategy(ds);
+		node1.setBaseLevelActivation(0.5);			
+		node1.decayBaseLevelActivation(100);
+		node1.getBaseLevelActivation();
 		
+		assertTrue("Problem with DecayBaseLevelActivation", node1.getBaseLevelActivation()<0.5);
 	}
 
 	/**
@@ -183,8 +189,9 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testGetLearnableRemovalThreshold() {
-		node1.setActivatibleRemovalThreshold(0.2);
-		assertEquals (0.2, node1.getLearnableRemovalThreshold(), 0.001);
+		node1.setLearnableRemovalThreshold(0.2);
+		assertEquals (0.2, node1.getLearnableRemovalThreshold(), 0.00001);
+		//System.out.print(node1.getLearnableRemovalThreshold());
 	}
 
 	/**
@@ -194,6 +201,7 @@ public class LearnableImplTest {
 	public void testSetLearnableRemovalThreshold() {
 		node1.setLearnableRemovalThreshold(0.4);
 		assertEquals(0.4, node1.getLearnableRemovalThreshold(), 0.0001);
+		
 		
 	}
 
