@@ -44,14 +44,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Scheme)) {
-			return false;
-		}
-		return ((Scheme) o).getId() == id;
-	}
-
-	@Override
 	public NodeStructure getContext() {
 		return context;
 	}
@@ -84,11 +76,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public LidaAction getAction() {
 		return action;
-	}
-
-	@Override
-	public int hashCode() {
-		return ((int) id % 31);
 	}
 
 	@Override
@@ -159,4 +146,18 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		b.setGeneratingScheme(this);
 		return b;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Scheme)) {
+			return false;
+		}
+		return ((Scheme) o).getId() == id;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) id % Integer.MAX_VALUE;
+	}
+	
 }

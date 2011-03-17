@@ -28,6 +28,19 @@ public interface ProceduralMemory extends LidaModule, Saveable{
 	 */
 	public void addSchemes(Collection<Scheme> schemes);
 	
+	/**
+	 * Returns whether this procedural memory contains specified scheme.
+	 * @param s a {@link Scheme}
+ 	 * @return true if it contains an equal scheme
+	 */
+	public boolean containsScheme(Scheme s);
+	
+	/**
+	 * Returns scheme Count
+	 * @return number of schemes currently in the memory.
+	 */
+	public int getSchemeCount();
+	
     /**
      * To change how scheme are activated based on the broadcast.
      * @param b behavior

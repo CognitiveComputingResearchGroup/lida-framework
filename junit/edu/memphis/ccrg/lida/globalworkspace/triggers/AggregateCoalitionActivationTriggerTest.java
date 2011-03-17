@@ -94,7 +94,7 @@ public class AggregateCoalitionActivationTriggerTest {
 		parameters.put("threshold", 0.5);
 		trigger.init(parameters, gw);
 		
-		assertEquals("Problem with Init",0.5,trigger.threshold);
+		assertTrue("Problem with Init",0.5 == trigger.threshold);
 		assertEquals("Problem with Init",gw,trigger.gw);
 
 	}
