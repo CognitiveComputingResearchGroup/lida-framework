@@ -228,14 +228,14 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		links.add(link2);
 		
 		Set<PamLink> storedLinks = pam.addDefaultLinks(links);
-		for(PamLink lnk: storedLinks){
-			assertTrue(links.contains(lnk));
-			if(lnk.equals(link1)){
-				assertEquals(lnk.getBaseLevelActivation(), link1.getBaseLevelActivation());
-				assertEquals(lnk.getBaseLevelDecayStrategy(), link1.getBaseLevelDecayStrategy());
-				assertEquals(lnk.getBaseLevelExciteStrategy(), link1.getBaseLevelExciteStrategy());
-				assertEquals(lnk.getTotalActivationStrategy(), link1.getTotalActivationStrategy());
-				assertEquals(lnk.getLearnableRemovalThreshold(), link1.getLearnableRemovalThreshold());
+		for(PamLink pLink: storedLinks){
+			assertTrue(links.contains(pLink));
+			if(pLink.equals(link1)){
+				assertEquals(pLink.getBaseLevelActivation(), link1.getBaseLevelActivation());
+				assertEquals(pLink.getBaseLevelDecayStrategy(), link1.getBaseLevelDecayStrategy());
+				assertEquals(pLink.getBaseLevelExciteStrategy(), link1.getBaseLevelExciteStrategy());
+				assertEquals(pLink.getTotalActivationStrategy(), link1.getTotalActivationStrategy());
+				assertEquals(pLink.getLearnableRemovalThreshold(), link1.getLearnableRemovalThreshold());
 			}
 		}
 		assertTrue(pam.containsLink(link1));

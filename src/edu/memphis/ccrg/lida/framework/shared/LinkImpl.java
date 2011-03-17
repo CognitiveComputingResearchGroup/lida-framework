@@ -221,7 +221,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	}
 
 	@Override
-	public void updateSubclassValues(Link lnk) {
+	public void updateSubclassValues(Link link) {
 		throw new UnsupportedOperationException("Only an overridde of this method in a subclass should be called");
 	}
 

@@ -91,9 +91,9 @@ public interface Link extends Linkable, Activatible{
 	 * Subclasses of Link should override this method to set all of their type-specific member data
 	 * using the values of the specified Link.  
 	 * Thus specified Link must be of the same subclass type.
-	 * @param lnk Link whose values are used to update with.
+	 * @param link Link whose values are used to update with.
 //	 * @see NodeStructureImpl#addLink()  TODO
 	 */
-	public void updateSubclassValues(Link lnk);
+	public void updateSubclassValues(Link link);
 
 }

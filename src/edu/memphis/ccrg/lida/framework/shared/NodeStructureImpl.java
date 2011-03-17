@@ -117,11 +117,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param original
 	 *            original NodeStructure
-	 * @param defaultNodeType
-	 *            copy's default node type
-	 * @param defaultLinkType
-	 *            copy's default node type
-	 * @see #copy()
+	 * @see #mergeWith(NodeStructure)
 	 */
 	public NodeStructureImpl(NodeStructure original) {
 		this(original.getDefaultNodeType(), original.getDefaultLinkType());
@@ -268,6 +264,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				activation, removalThreshold, null);
 	}
 	
+	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold){
 		return addDefaultLink(source.getId(), sink.getExtendedId(), category, activation, removalThreshold);
 	}
@@ -289,8 +286,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		newLink.setGroundingPamLink(groundingPamLink);
 
 		links.put(newLink.getExtendedId(), newLink);
-		if (!linkableMap.containsKey(newLink))
+		if (!linkableMap.containsKey(newLink)){
 			linkableMap.put(newLink, new HashSet<Link>());
+		}
 
 		Set<Link> tempLinks = linkableMap.get(newSource);
 		if (tempLinks == null) {
@@ -537,14 +535,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * .ccrg.lida.shared.Linkable)
 	 */
 	@Override
-	public synchronized void removeLinkable(Linkable lnk) {
+	public synchronized void removeLinkable(Linkable linkable) {
 		//First check if the NS actually contains specified linkable to prevent null pointers.
-		if(!containsLinkable(lnk)){
+		if(!containsLinkable(linkable)){
 			return;
 		}
 		
 		//Need to remove all links connected to the linkable specified to be removed.
-		Set<Link> connectedLinks = linkableMap.get(lnk);
+		Set<Link> connectedLinks = linkableMap.get(linkable);
 		Set<Link> otherLinks;
 		Linkable otherLinkable;
 
@@ -553,7 +551,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				otherLinkable = connectedLink.getSink();
 				//Get the other Linkable for this link we are about to remove.
 				//we have to remove the other end's reference to this link
-				if(otherLinkable.equals(lnk)){
+				if(otherLinkable.equals(linkable)){
 					otherLinkable = connectedLink.getSource();
 					otherLinks = linkableMap.get(otherLinkable);
 					if (otherLinks != null) {
@@ -596,16 +594,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 		
 		// finally remove the linkable and its links
-		linkableMap.remove(lnk);
-		if (lnk instanceof Node) {
-			nodes.remove(((Node) lnk).getId());
-		} else if (lnk instanceof Link) {
+		linkableMap.remove(linkable);
+		if (linkable instanceof Node) {
+			nodes.remove(((Node) linkable).getId());
+		} else if (linkable instanceof Link) {
 			//if removing a link then must remove 2 references to the link
 			//1 for the source and 1 for the sink
-			Link aux = links.get(lnk.getExtendedId());
+			Link aux = links.get(linkable.getExtendedId());
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
-			links.remove(lnk.getExtendedId());
+			links.remove(linkable.getExtendedId());
 
 			if (sourceLinks != null){
 				sourceLinks.remove(aux);
@@ -654,11 +652,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public void decayNodeStructure(long ticks) {
-		for (Linkable lnk : linkableMap.keySet()) {
-			Activatible a = (Activatible) lnk;
+		for (Linkable linkable : linkableMap.keySet()) {
+			Activatible a = (Activatible) linkable;
 			a.decay(ticks);
 			if (a.isRemovable()) {
-				removeLinkable(lnk);
+				removeLinkable(linkable);
 			}
 		}
 	}
@@ -692,12 +690,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * lida.shared.Linkable)
 	 */
 	@Override
-	public Set<Link> getAttachedLinks(Linkable lnk) {
-		if (lnk == null){
+	public Set<Link> getAttachedLinks(Linkable linkable) {
+		if (linkable == null){
 			return null;
 		}
 
-		Set<Link> aux = linkableMap.get(lnk);
+		Set<Link> aux = linkableMap.get(linkable);
 		if (aux == null){
 			return null;
 		}else{
@@ -713,11 +711,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
 	 */
 	@Override
-	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory category) {
-		if (lnk == null){
+	public Set<Link> getAttachedLinks(Linkable linkable, LinkCategory category) {
+		if (linkable == null){
 			return null;
 		}
-		Set<Link> temp = linkableMap.get(lnk);
+		Set<Link> temp = linkableMap.get(linkable);
 		if(temp == null){
 			return null;
 		}
@@ -873,13 +871,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getConnectedSources(edu.memphis.ccrg.lida.framework.shared.Linkable)
 	 */
 	@Override
-	public Map<Node, Link> getConnectedSources(Linkable lnk) {
+	public Map<Node, Link> getConnectedSources(Linkable linkable) {
 		Map<Node, Link> sourceLinkMap = new HashMap<Node, Link>();
-		Set<Link> candidateLinks = linkableMap.get(lnk);
+		Set<Link> candidateLinks = linkableMap.get(linkable);
 		if (candidateLinks != null) {
 			for (Link link : candidateLinks) {
 				Node source = link.getSource();
-				if(!source.equals(link)){
+				if(!source.equals(linkable)){
 					sourceLinkMap.put(source, link);
 				}
 			}

@@ -28,7 +28,7 @@ public interface LidaModule extends FullyInitializable{
 	/**
 	 * Sets ModuleName.
 	 * 
-	 * @param {@link ModuleName} of this LidaModule
+	 * @param moduleName {@link ModuleName} of this LidaModule
 	 */
 	public void setModuleName(ModuleName moduleName);
 	

@@ -14,6 +14,8 @@ import org.junit.Before;
  */
 public class ExtendedIdTest extends TestCase {
 	
+	private int category1 = (int) (Math.random() * Integer.MAX_VALUE);
+	
 	@Override
 	@Before
 	public void setUp() throws Exception {}
@@ -25,6 +27,11 @@ public class ExtendedIdTest extends TestCase {
 		
 		assertTrue(id1.isNodeId());
 		assertTrue(id2.isNodeId());
+		assertFalse(id1.isComplexLink());
+		assertFalse(id2.isComplexLink());
+		assertFalse(id1.isSimpleLink());
+		assertFalse(id2.isSimpleLink());
+		
 		
 		assertEquals(nodeId, id1.getSourceNodeId());
 		assertEquals(nodeId, id2.getSourceNodeId());
@@ -40,6 +47,10 @@ public class ExtendedIdTest extends TestCase {
 		
 		assertTrue(id1.isNodeId());
 		assertTrue(id2.isNodeId());
+		assertFalse(id1.isComplexLink());
+		assertFalse(id2.isComplexLink());
+		assertFalse(id1.isSimpleLink());
+		assertFalse(id2.isSimpleLink());
 		
 		assertEquals(nodeId, id1.getSourceNodeId());
 		assertEquals(nodeId2, id2.getSourceNodeId());
@@ -122,6 +133,29 @@ public class ExtendedIdTest extends TestCase {
 		assertTrue(o1.equals(o2));
 		assertTrue(o2.equals(o1));
 		assertTrue(o1.hashCode() == o2.hashCode());
+	}
+	
+	public void testIsSimpleLink(){
+		int nodeId = (int) (Math.random() * Integer.MAX_VALUE);
+		ExtendedId id1 = new ExtendedId(nodeId);
+		ExtendedId id2 = new ExtendedId(nodeId + 1);
+		ExtendedId lid = new ExtendedId(category1, id1.getSourceNodeId(), id2);
+		
+		assertTrue(lid.isSimpleLink());
+		assertFalse(lid.isNodeId());
+		assertFalse(lid.isComplexLink());
+	}
+	
+	public void testIsComplexLink(){
+		int nodeId = 45;
+		ExtendedId id1 = new ExtendedId(nodeId);
+		ExtendedId id2 = new ExtendedId(99);
+		ExtendedId simple = new ExtendedId(category1, id1.getSourceNodeId(), id2);
+		ExtendedId complex = new ExtendedId(category1, 2348, simple);
+		
+		assertTrue(complex.isComplexLink());
+		assertFalse(complex.isSimpleLink());
+		assertFalse(complex.isNodeId());
 	}
 	
 }

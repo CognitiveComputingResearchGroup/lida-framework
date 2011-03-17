@@ -270,11 +270,11 @@ public interface NodeStructure {
 
 	/**
 	 * Gets all {@link Link}s directly connected to specified Linkable with specified {@link LinkCategory}
-	 * @param lnk a Linkable
+	 * @param linkable a Linkable
 	 * @param cat LinkCategory
 	 * @return Links
 	 */
-	public Set<Link> getAttachedLinks(Linkable lnk, LinkCategory cat);
+	public Set<Link> getAttachedLinks(Linkable linkable, LinkCategory cat);
 
 	/**
 	 * Returns a copy of the node in this nodestructure with specified id
@@ -349,14 +349,16 @@ public interface NodeStructure {
  	 * Finds and returns a map of all sink Linkables connected to specified Node.  
  	 * Values of the map are the Link connecting the Node to the sink Linkable.
 	 * @param n supplied node
-	 * @return map of parents and links connecting node to them
+	 * @return map of sinks and links connecting node to them
 	 */
 	public Map<Linkable, Link> getConnectedSinks(Node n);
 	
 	/**
-	 * @param lnk
-	 * @return
+	 * Finds and returns a map of all source Nodes connected to specified Linkable.  
+ 	 * Values of the map are the Link connecting the Linkable to the source Node.
+	 * @param linkable specified linkable
+	 * @return map of sources and links connecting Linkable to them
 	 */
-	public Map<Node, Link> getConnectedSources(Linkable lnk);
+	public Map<Node, Link> getConnectedSources(Linkable linkable);
 
 }

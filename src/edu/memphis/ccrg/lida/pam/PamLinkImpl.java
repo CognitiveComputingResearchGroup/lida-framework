@@ -196,10 +196,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 	
 	@Override
-	public void updateSubclassValues(Link lnk) {
+	public void updateSubclassValues(Link link) {
 		//TODO use copy constructor instead?
-		if(lnk instanceof PamLinkImpl){
-			PamLinkImpl pl = (PamLinkImpl) lnk;
+		if(link instanceof PamLinkImpl){
+			PamLinkImpl pl = (PamLinkImpl) link;
 			learnable = pl.learnable;
 		}
 	}

@@ -837,6 +837,16 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns1.getAttachedLinks(node2).size() == 3);
 	}
 	
+	public void testGetAttachedLinks2(){
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		Link foo = ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
+		Link bar = ns1.addDefaultLink(node3, foo, category1, 0.0, 0.0);
+		assertTrue(ns1.getAttachedLinks(foo).size() == 1);
+		assertTrue(ns1.getAttachedLinks(bar).size() == 0);
+	}
+	
 	public void testGetAttachedLinksByType(){
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
@@ -1041,11 +1051,42 @@ public class NodeStructureImplTest extends TestCase{
 	}
 	
 	public void testGetConnectedSinks(){
-		//TODO
+		ns1.addDefaultNode(node1);
+		assertTrue(ns1.getConnectedSinks(node1).size() == 0);
+		
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultLink(node2, node1, category2, 0.0, 0.0);
+		
+		assertTrue(ns1.getConnectedSinks(node1).size() == 0);
+		assertTrue(ns1.getConnectedSinks(node2).size() == 1);
+		
+		ns1.addDefaultNode(node3);
+		Link l23 = ns1.addDefaultLink(node2, node3, category2, 0.0, 0.0);
+		ns1.addDefaultLink(node1, l23, category2, 0.0, 0.0);
+		ns1.addDefaultLink(node1, node2, category2, 0.0, 0.0);
+		
+		assertTrue(ns1.getConnectedSinks(node1).size() == 2);
+		assertTrue(ns1.getConnectedSinks(node2).size() == 2);
+		assertTrue(ns1.getConnectedSinks(node3).size() == 0);
 	}
 	
 	public void testGetConnectedSources(){
-		//TODO
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		ns1.addDefaultNode(node3);
+		
+		Link l12 = ns1.addDefaultLink(node1, node2, category2, 0.0, 0.0);
+		Link l23 = ns1.addDefaultLink(node2, node3, category2, 0.0, 0.0);
+		Link l232 = ns1.addDefaultLink(node3, node2, category2, 0.0, 0.0);
+		Link l312 = ns1.addDefaultLink(node3, l12, category2, 0.0, 0.0);
+	
+		assertTrue(ns1.getConnectedSources(node1).size() == 0);
+		assertTrue(ns1.getConnectedSources(node2).size() == 2);
+		assertTrue(ns1.getConnectedSources(node3).size() == 1);
+		assertTrue(ns1.getConnectedSources(l12).size() == 1);
+		assertTrue(ns1.getConnectedSources(l23).size() == 0);
+		assertTrue(ns1.getConnectedSources(l232).size() == 0);
+		assertTrue(ns1.getConnectedSources(l312).size() == 0);
 	}
 	
 }
