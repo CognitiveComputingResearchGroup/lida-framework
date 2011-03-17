@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -19,10 +20,11 @@ public interface CodeletAction {
 
 	/**
 	 * An action from specified ordered buffer to a destination buffer 
-	 * @param src buffer from which codelet reads
-	 * @param result buffer to which the result of action is written.  
+	 * @param soughtContent TODO
+	 * @param readable buffer from which codelet reads
+	 * @param writable buffer to which the result of action is written.  
 	 */	
-	public void performAction(WorkspaceBuffer src, WorkspaceBuffer result);
+	public void performAction(NodeStructure soughtContent, WorkspaceBuffer readable, WorkspaceBuffer writable);
 	
 }
   

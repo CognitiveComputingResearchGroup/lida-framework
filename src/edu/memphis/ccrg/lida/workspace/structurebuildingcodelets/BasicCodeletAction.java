@@ -21,7 +21,7 @@ public class BasicCodeletAction implements CodeletAction {
 	 * Get the content of the buffer and merge it into the CSM's content
 	 */
 	@Override
-	public void performAction(WorkspaceBuffer buffer, WorkspaceBuffer currentSituationalModel) {
+	public void performAction(NodeStructure soughContent, WorkspaceBuffer buffer, WorkspaceBuffer currentSituationalModel) {
 		NodeStructure bufferContent = (NodeStructure) buffer.getModuleContent();
 		NodeStructure csmContent = (NodeStructure) currentSituationalModel.getModuleContent();
 		csmContent.mergeWith(bufferContent);

@@ -104,8 +104,8 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	@Override
 	protected void runThisLidaTask(){	
 		logger.finest("SB codelet " + this.toString() + " being run.");
-		for(WorkspaceBuffer buffer: readableBuffers){
-			action.performAction(buffer, writableBuffer);	
+		for(WorkspaceBuffer readableBuffer: readableBuffers){
+			action.performAction(soughtContent, readableBuffer, writableBuffer);	
 		}
 		results.reportFinished();
 		logger.finest("SB codelet " + this.toString() + " finishes one run.");
