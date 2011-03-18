@@ -45,7 +45,6 @@ public interface Node extends Linkable, Activatible, Serializable {
      */
     public int getId();
     
-    
     /**
      * Sets Node's id
      * @param id unique id

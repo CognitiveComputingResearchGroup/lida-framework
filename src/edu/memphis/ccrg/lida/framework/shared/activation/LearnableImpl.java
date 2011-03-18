@@ -131,7 +131,6 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.learnableRemovableThreshold = threshold;
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#isRemovable()
 	 */

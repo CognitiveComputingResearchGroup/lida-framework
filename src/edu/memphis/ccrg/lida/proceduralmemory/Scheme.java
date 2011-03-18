@@ -111,10 +111,22 @@ public interface Scheme extends Learnable{
 	public boolean isReliable();
 	
 	/**
+	 * Called when Scheme's action is executed
 	 * Scheme should update the number of times its action has been executed in order to calculate
 	 * reliability.
 	 */
-	public void actionWasExecuted();
+	public void actionExecuted();
+	
+	/**
+	 * Called when Scheme's action produces expected result.
+	 */
+	public void actionSuccessful();
+	
+	/**
+	 * Gets the number of executions
+	 * @return how many times this scheme's action has been executed
+	 */
+	public int getExecutions();
 
 	/**
 	 * @return true if this scheme should not be decayed.

@@ -553,7 +553,7 @@ public class LidaElementFactory {
 		}
 		return link;
 	}
-
+	
 	/**
 	 * Creates a default node with the default behaviors and 0 activation.
 	 * 
