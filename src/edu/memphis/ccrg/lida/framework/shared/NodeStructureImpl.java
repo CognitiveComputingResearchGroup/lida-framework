@@ -121,7 +121,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	public NodeStructureImpl(NodeStructure original) {
 		this(original.getDefaultNodeType(), original.getDefaultLinkType());
-		mergeWith(original);
+		internalMerge(original);
 	}
 	
 	/* (non-Javadoc)
@@ -496,6 +496,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	
 	@Override
 	public void mergeWith(NodeStructure ns) {
+		internalMerge(ns);
+	}
+
+	/*
+	 * This allows subclasses of NodeStructure to override merge but still gives 
+	 * this class a merge to be called from the constructor.
+	 * TODO do this for addNode and AddDefaultLink??????
+	 * @param ns
+	 */
+	private void internalMerge(NodeStructure ns) {
 		//Add nodes
 		addDefaultNodes(ns.getNodes());
 		
@@ -526,7 +536,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	public void removeLink(Link l) {
 		removeLinkable(l);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -542,54 +552,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 		
 		//Need to remove all links connected to the linkable specified to be removed.
-		Set<Link> connectedLinks = linkableMap.get(linkable);
-		Set<Link> otherLinks;
-		Linkable otherLinkable;
-
+		Set<Link> connectedLinks = new HashSet<Link>(linkableMap.get(linkable));
 		if (connectedLinks != null) {
-			for (Link connectedLink : connectedLinks) {// for all of the links connected to n
-				otherLinkable = connectedLink.getSink();
-				//Get the other Linkable for this link we are about to remove.
-				//we have to remove the other end's reference to this link
-				if(otherLinkable.equals(linkable)){
-					otherLinkable = connectedLink.getSource();
-					otherLinks = linkableMap.get(otherLinkable);
-					if (otherLinks != null) {
-						otherLinks.remove(connectedLink);
-					} else {
-						logger.log(Level.WARNING, "Expected other end of link "
-								+ otherLinkable.getLabel() + " to have link "
-								+ connectedLink.toString(), LidaTaskManager
-								.getCurrentTick());
-					}
-				}else{
-					otherLinks = linkableMap.get(otherLinkable);
-					if (otherLinks != null) {
-						otherLinks.remove(connectedLink);
-					} else {
-						logger.log(Level.WARNING, "Expected other end of link "
-								+ otherLinkable.getLabel() + " to have link "
-								+ connectedLink.toString(), LidaTaskManager
-								.getCurrentTick());
-					}
-				}
-				//If the link we are removing has other Links attached to it then 
-				// those attached links must be removed as well
-				Set<Link> attachedLinks = getAttachedLinks(connectedLink);
-				for(Link attachedLink: attachedLinks){
-					//We know the source of attched links is a node.
-					Node sourceOfAttached = attachedLink.getSource();
-					//Remove source node's reference to the attached link
-					linkableMap.get(sourceOfAttached).remove(attachedLink);
-					
-					//Now we can remove the attached link completely
-					links.remove(attachedLink.getExtendedId());
-					linkableMap.remove(attachedLink);
-				}
-				
-				//Now we can remove the connected link completely
-				links.remove(connectedLink.getExtendedId());
-				linkableMap.remove(connectedLink);
+			for (Link connectedLink : connectedLinks) {// for all of the links connected to n				
+				removeLinkable(connectedLink);
 			}
 		}
 		
@@ -598,23 +564,113 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (linkable instanceof Node) {
 			nodes.remove(((Node) linkable).getId());
 		} else if (linkable instanceof Link) {
-			//if removing a link then must remove 2 references to the link
+			//if removing a link then must remove the 2 references to the link
 			//1 for the source and 1 for the sink
 			Link aux = links.get(linkable.getExtendedId());
-			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
-			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
 			links.remove(linkable.getExtendedId());
 
+			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			if (sourceLinks != null){
 				sourceLinks.remove(aux);
 			}
 
+			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
 			if (sinkLinks != null){
 				sinkLinks.remove(aux);
 			}
 		}
-
 	}
+
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * edu.memphis.ccrg.lida.shared.NodeStructure#deleteLinkable(edu.memphis
+//	 * .ccrg.lida.shared.Linkable)
+//	 */
+//	@Override
+//	public synchronized void removeLinkable(Linkable linkable) {
+//		//First check if the NS actually contains specified linkable to prevent null pointers.
+//		if(!containsLinkable(linkable)){
+//			return;
+//		}
+//		
+//		//Need to remove all links connected to the linkable specified to be removed.
+//		Set<Link> connectedLinks = linkableMap.get(linkable);
+//		Set<Link> otherLinks;
+//		Linkable otherLinkable;
+//
+//		if (connectedLinks != null) {
+//			for (Link connectedLink : connectedLinks) {// for all of the links connected to n
+//				otherLinkable = connectedLink.getSink();
+//				//Get the other Linkable for this link we are about to remove.
+//				//we have to remove the other end's reference to this link
+//				if(otherLinkable.equals(linkable)){
+//					otherLinkable = connectedLink.getSource();
+//					otherLinks = linkableMap.get(otherLinkable);
+//					if (otherLinks != null) {
+//						otherLinks.remove(connectedLink);
+//					} else {
+//						logger.log(Level.WARNING, "Expected other end of link "
+//								+ otherLinkable.getLabel() + " to have link "
+//								+ connectedLink.toString(), LidaTaskManager
+//								.getCurrentTick());
+//					}
+//				}else{
+//					otherLinks = linkableMap.get(otherLinkable);
+//					if (otherLinks != null) {
+//						otherLinks.remove(connectedLink);
+//					} else {
+//						logger.log(Level.WARNING, "Expected other end of link "
+//								+ otherLinkable.getLabel() + " to have link "
+//								+ connectedLink.toString(), LidaTaskManager
+//								.getCurrentTick());
+//					}
+//				}
+//				//If the link we are removing has other Links attached to it then 
+//				// those attached links must be removed as well
+//				Set<Link> attachedLinks = getAttachedLinks(connectedLink);
+//				for(Link attachedLink: attachedLinks){
+//					//We know the source of attched links is a node.
+//					Node sourceOfAttached = attachedLink.getSource();
+//					//Remove source node's reference to the attached link
+//					linkableMap.get(sourceOfAttached).remove(attachedLink);
+//					
+//					//Now we can remove the attached link completely
+//					links.remove(attachedLink.getExtendedId());
+//					linkableMap.remove(attachedLink);
+//				}
+//				
+//				//Now we can remove the connected link completely
+//				links.remove(connectedLink.getExtendedId());
+//				linkableMap.remove(connectedLink);
+//				
+////				removeLinkable(connectedLink);
+//			}
+//		}
+//		
+//		// finally remove the linkable and its links
+//		linkableMap.remove(linkable);
+//		if (linkable instanceof Node) {
+//			nodes.remove(((Node) linkable).getId());
+//		} else if (linkable instanceof Link) {
+//			//if removing a link then must remove 2 references to the link
+//			//1 for the source and 1 for the sink
+//			Link aux = links.get(linkable.getExtendedId());
+//			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
+//			Set<Link> sinkLinks = linkableMap.get(aux.getSink());
+//			links.remove(linkable.getExtendedId());
+//
+//			if (sourceLinks != null){
+//				sourceLinks.remove(aux);
+//			}
+//
+//			if (sinkLinks != null){
+//				sinkLinks.remove(aux);
+//			}
+//		}
+//
+//	}
 
 	@Override
 	public void removeLinkable(ExtendedId id) {
@@ -960,7 +1016,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	/**
 	 * Returns true if two NodeStructures are meaningfully equal, else false.
-	 * Two NodeStructures are equal if they have the same exact nodes and links
+	 * Two NodeStructures are equal if they have the same exact nodes and links and 
+	 * the nodes and links are of the same type.
 	 * 
 	 * @param ns1
 	 *            first {@link NodeStructure}

@@ -31,7 +31,7 @@ public class WSBackgroundTaskTest {
 	@Test
 	public final void testRunThisLidaTask() throws Exception{
 
-		WSBackgroundTask wst = new WSBackgroundTask();
+		CueBackgroundTask wst = new CueBackgroundTask();
 		
 
 		// Initialize with assigned value
@@ -128,7 +128,7 @@ public class WSBackgroundTaskTest {
 
 	@Test
 	public final void testToString() {
-		WSBackgroundTask wst = new WSBackgroundTask();
+		CueBackgroundTask wst = new CueBackgroundTask();
 		String sAns = "WSBackgroundTask";
 		
 		assertEquals("Problem with class RunThisLidaTask for testToString()", wst.toString(), sAns);

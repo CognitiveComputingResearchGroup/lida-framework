@@ -1,24 +1,40 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable NodeStructureImpl.  Throws {@link UnsupportedOperationException} if any methods
  * which modify {@link NodeStructureImpl} are called.  
  */
-public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements NodeStructure {
+public class UnmodifiableNodeStructureImpl implements NodeStructure {
+	
+	private NodeStructure ns;
 	
 	/**
 	 * Default Constructor.
 	 * @param sourceNodeStructure supplied NodeStructure
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructureImpl sourceNodeStructure){
-		super(sourceNodeStructure);
+	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure){
+		ns = sourceNodeStructure;
 	}
 
 	/**
-	 * Returns true if both NodeStructures have the same nodes and links
-	 * and 
+	 * Default Constructor.
+	 * @param sourceNodeStructure supplied NodeStructure
+	 */
+	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure, boolean copy){
+		if (copy){
+			ns = sourceNodeStructure.copy();
+		}else{
+			ns = sourceNodeStructure;			
+		}
+	}
+
+	/**
+	 * Returns true if both NodeStructures have the same nodes and links.
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -26,29 +42,25 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		if(!(o instanceof NodeStructure)){
 			return false;
 		}
-		NodeStructure ns2 = (NodeStructure) o;
-		if(this.getNodeCount() != ns2.getNodeCount()){
+		NodeStructure otherNs = (NodeStructure) o;
+		if(this.getNodeCount() != otherNs.getNodeCount()){
 			return false;
 		}
-		if(this.getLinkCount() != ns2.getLinkCount()){
+		if(this.getLinkCount() != otherNs.getLinkCount()){
 			return false;
 		}
 		
 		//Iterate through other's nodes checking for equality
-		for (Node n2 : ns2.getNodes()) {
-			Node n1 = getNode(n2.getId());
-			if (n1 == null || !n2.equals(n1) || !n1.equals(n2)){
+		for (Node n2 : otherNs.getNodes()) {
+			if(!containsNode(n2.getId())){
 				return false;
 			}
 		}
-		
-		for (Link l2 : ns2.getLinks()) {
-			Link l1 = getLink(l2.getExtendedId());
-			if (l1 == null || !l2.equals(l1) || !l1.equals(l2)) {
+		for (Link l2 : otherNs.getLinks()) {
+			if(!containsLink(l2.getExtendedId())){
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -57,18 +69,18 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 		//Generate a long value for nodes based on individual node id and
 		//the number of nodes total.
 		Long aggregateNodeHash = 0L;
-		for(Node n: super.getNodes()){
+		for(Node n: ns.getNodes()){
 			aggregateNodeHash += n.hashCode();			
 		}	
-		aggregateNodeHash = aggregateNodeHash * 31 + super.getNodeCount() * 37;
+		aggregateNodeHash = aggregateNodeHash * 31 + ns.getNodeCount() * 37;
 		
 		//Generate a long value for links based on individual link id and
 		//the number of links total.
 		Long aggregateLinkHash = 0L;
-		for(Link l: super.getLinks()){
+		for(Link l: ns.getLinks()){
 			aggregateLinkHash += l.hashCode();
 		}
-		aggregateLinkHash = aggregateLinkHash * 41 + super.getLinkCount() * 43;
+		aggregateLinkHash = aggregateLinkHash * 41 + ns.getLinkCount() * 43;
 			
 		int hash = 47 + aggregateNodeHash.hashCode();
 		return hash * 53 + aggregateLinkHash.hashCode();
@@ -76,7 +88,7 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 
 	@Override
 	public NodeStructure copy(){
-		return new UnmodifiableNodeStructureImpl(this);
+		return new UnmodifiableNodeStructureImpl(ns, true);
 	}
 	
 	/**
@@ -201,5 +213,141 @@ public class UnmodifiableNodeStructureImpl extends NodeStructureImpl implements 
 	@Override
 	public void mergeWith(NodeStructure ns) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	@Override
+	public Link addDefaultLink(Node source, Linkable sink,
+			LinkCategory category, double activation, double removalThreshold) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	@Override
+	public void decayNodeStructure(long ticks) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	@Override
+	public boolean containsLink(Link l) {
+		return ns.containsLink(l);
+	}
+
+	@Override
+	public boolean containsLink(ExtendedId id) {
+		return ns.containsLink(id);
+	}
+
+	@Override
+	public boolean containsLinkable(Linkable l) {
+		return ns.containsLinkable(l);
+	}
+
+	@Override
+	public boolean containsLinkable(ExtendedId id) {
+		return ns.containsLinkable(id);
+	}
+
+	@Override
+	public boolean containsNode(Node n) {
+		return ns.containsNode(n);
+	}
+
+	@Override
+	public boolean containsNode(int id) {
+		return ns.containsNode(id);
+	}
+
+	@Override
+	public boolean containsNode(ExtendedId id) {
+		return ns.containsNode(id);
+	}
+
+	@Override
+	public Set<Link> getAttachedLinks(Linkable l) {
+		return ns.getAttachedLinks(l);
+	}
+
+	@Override
+	public Set<Link> getAttachedLinks(Linkable linkable, LinkCategory cat) {
+		return ns.getAttachedLinks(linkable, cat);
+	}
+
+	@Override
+	public Map<Linkable, Link> getConnectedSinks(Node n) {
+		return ns.getConnectedSinks(n);
+	}
+
+	@Override
+	public Map<Node, Link> getConnectedSources(Linkable linkable) {
+		return ns.getConnectedSources(linkable);
+	}
+
+	@Override
+	public String getDefaultLinkType() {
+		return ns.getDefaultLinkType();
+	}
+
+	@Override
+	public String getDefaultNodeType() {
+		return ns.getDefaultNodeType();
+	}
+
+	@Override
+	public Link getLink(ExtendedId ids) {
+		return ns.getLink(ids);
+	}
+
+	@Override
+	public int getLinkCount() {
+		return ns.getLinkCount();
+	}
+
+	@Override
+	public Linkable getLinkable(ExtendedId eid) {
+		return ns.getLinkable(eid);
+	}
+
+	@Override
+	public int getLinkableCount() {
+		return ns.getLinkableCount();
+	}
+
+	@Override
+	public Map<Linkable, Set<Link>> getLinkableMap() {
+		return ns.getLinkableMap();
+	}
+
+	@Override
+	public Collection<Linkable> getLinkables() {
+		return ns.getLinkables();
+	}
+
+	@Override
+	public Collection<Link> getLinks() {
+		return ns.getLinks();
+	}
+
+	@Override
+	public Set<Link> getLinks(LinkCategory cat) {
+		return ns.getLinks(cat);
+	}
+
+	@Override
+	public Node getNode(int id) {
+		return ns.getNode(id);
+	}
+
+	@Override
+	public Node getNode(ExtendedId eid) {
+		return ns.getNode(eid);
+	}
+
+	@Override
+	public int getNodeCount() {
+		return ns.getNodeCount();
+	}
+
+	@Override
+	public Collection<Node> getNodes() {
+		return ns.getNodes();
 	}
 }

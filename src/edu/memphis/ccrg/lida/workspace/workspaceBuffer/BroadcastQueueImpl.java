@@ -8,8 +8,7 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collections;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,56 +25,64 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
- * The BroadcastQueue is the data structure storing the recent contents of consciousness.
- * It is a submodule of the Workspace. There is a limit on the queue's capacity and on the amount
- * of activation {@link Linkable}s must have to remain in the queue.  
+ * The BroadcastQueue is the data structure storing the recent contents of
+ * consciousness. It is a submodule of the Workspace. There is a limit on the
+ * queue's capacity and on the amount of activation {@link Linkable}s must have
+ * to remain in the queue.
  * 
  * @author Ryan J McCall
  */
-public class BroadcastQueueImpl extends LidaModuleImpl implements WorkspaceBuffer, BroadcastListener {
+public class BroadcastQueueImpl extends LidaModuleImpl implements
+		WorkspaceBuffer, BroadcastListener {
 
-	private static final Logger logger = Logger.getLogger(BroadcastQueueImpl.class.getCanonicalName());
+	private static final Logger logger = Logger
+			.getLogger(BroadcastQueueImpl.class.getCanonicalName());
 
-	private Queue<NodeStructure> broadcastQueue;
-	
+	private LinkedList<NodeStructure> broadcastQueue;
+
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
 
 	public BroadcastQueueImpl() {
 		super(ModuleName.BroadcastQueue);
-		broadcastQueue = new ConcurrentLinkedQueue<NodeStructure>();
+		broadcastQueue = new LinkedList<NodeStructure>();
 		broadcastQueue.add(new NodeStructureImpl());
 	}
 
 	@Override
 	public void init() {
-		broadcastQueueCapacity = (Integer) getParam("workspace.broadcastQueueCapacity",DEFAULT_QUEUE_CAPACITY);
+		broadcastQueueCapacity = (Integer) getParam(
+				"workspace.broadcastQueueCapacity", DEFAULT_QUEUE_CAPACITY);
 	}
-	
+
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
+			ProcessBroadcastTask task = new ProcessBroadcastTask(
+					((NodeStructure) bc).copy());
 			taskSpawner.addTask(task);
 		}
 	}
-	private class ProcessBroadcastTask extends LidaTaskImpl{		
+
+	private class ProcessBroadcastTask extends LidaTaskImpl {
 		private NodeStructure broadcast;
+
 		public ProcessBroadcastTask(NodeStructure broadcast) {
 			super();
 			this.broadcast = broadcast;
 		}
+
 		@Override
-		protected void runThisLidaTask() {
+		protected synchronized void runThisLidaTask() {
 			broadcastQueue.offer(broadcast);
 			// Keep the buffer at a fixed size
-			while (broadcastQueue.size() > broadcastQueueCapacity){
+			while (broadcastQueue.size() > broadcastQueueCapacity) {
 				broadcastQueue.poll();// remove oldest
 			}
 			setTaskStatus(LidaTaskStatus.FINISHED);
-		}	
+		}
 	}
-	
+
 	@Override
 	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableCollection(broadcastQueue);
@@ -84,11 +91,14 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements WorkspaceBuffe
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager.getCurrentTick());
-		for (NodeStructure ns : broadcastQueue) {
-			ns.decayNodeStructure(ticks);
-			if(ns.getNodeCount() == 0){
-				broadcastQueue.remove(ns);
+		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager
+				.getCurrentTick());
+		synchronized(this){
+			for (NodeStructure ns : broadcastQueue) {
+				ns.decayNodeStructure(ticks);
+				if (ns.getNodeCount() == 0) {
+					broadcastQueue.remove(ns);
+				}
 			}
 		}
 	}

@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.WSBackgroundTask;
+import edu.memphis.ccrg.lida.workspace.CueBackgroundTask;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 
 

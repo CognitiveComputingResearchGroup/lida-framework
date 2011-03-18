@@ -129,7 +129,7 @@
 
     <complexType name="tasks">
     	<sequence>
-    		<element name="task" type="tns:task"></element>
+    		<element name="task" type="tns:task" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
 

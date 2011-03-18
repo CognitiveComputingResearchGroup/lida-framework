@@ -82,11 +82,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		}
 		logger.log(Level.FINER, "Cue performed.", LidaTaskManager.getCurrentTick());
 	}
-	private void sendToListeners(NodeStructure content){
-		for(WorkspaceListener listener: workspaceListeners){
-			listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent)content);
-		}
-	}
 	
 	/*
 	 * Received broadcasts are sent to the BroadcastQueue
@@ -102,9 +97,11 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
-		WorkspaceContent ns = (WorkspaceContent) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent();
+		NodeStructure ns = (NodeStructure) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent();
 		ns.mergeWith(association);
-		sendToListeners(ns);
+		for(WorkspaceListener listener: workspaceListeners){
+			listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent) ns);
+		}
 	}
 	
 	/*
@@ -118,14 +115,12 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// Not applicable
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	@Override
 	public void learn(BroadcastContent content) {
 		// Not applicable
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
