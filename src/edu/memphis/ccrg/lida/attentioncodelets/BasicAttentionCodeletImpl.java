@@ -8,12 +8,10 @@
 
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -42,22 +40,8 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		
-//		System.out.println("BUFFER HAS");
-//		System.out.println(model.toString());
-//		
-//		System.out.println("\nSEEKING");
-//		System.out.println(soughtContent.toString());
-		
-		Collection<Node> nodes = soughtContent.getNodes();
-		Collection<Link> links = soughtContent.getLinks();
-		for (Node n : nodes){
-			if (!model.containsNode(n)){
-				return false;
-			}
-		}
-
-		for (Link l : links){
-			if (!model.containsLink(l)){
+		for(Linkable ln: soughtContent.getLinkables()){
+			if(!model.containsLinkable(ln)){
 				return false;
 			}
 		}

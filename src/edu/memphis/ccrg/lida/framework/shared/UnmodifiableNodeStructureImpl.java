@@ -23,9 +23,11 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure {
 	/**
 	 * Default Constructor.
 	 * @param sourceNodeStructure supplied NodeStructure
+	 * @param shouldCopy If true, the supplied NodeStructure will be copied.  Otherwise supplied NodeStructure
+	 * will be used directly.
 	 */
-	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure, boolean copy){
-		if (copy){
+	public UnmodifiableNodeStructureImpl(NodeStructure sourceNodeStructure, boolean shouldCopy){
+		if (shouldCopy){
 			ns = sourceNodeStructure.copy();
 		}else{
 			ns = sourceNodeStructure;			

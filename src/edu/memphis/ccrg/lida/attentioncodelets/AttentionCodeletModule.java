@@ -154,7 +154,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 			NodeStructure deleteSet) {
 		// TODO Recive results from Action Selection and create Attention
 		// Codelets. We need
-		// to figure out how to create coalitions and detect that somsething was
+		// to figure out how to create coalitions and detect that something was
 		// "deleted"
 	}
 
