@@ -82,7 +82,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 		if (hasSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = getWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0){
-				globalWorkspace.addCoalition(new CoalitionImpl((BroadcastContent)csmContent, getActivation()));
+				globalWorkspace.addCoalition(new CoalitionImpl((BroadcastContent)csmContent, getActivation(),this));
 				logger.log(Level.FINE, this + " adds coalition", LidaTaskManager.getCurrentTick());
 			}
 		}
