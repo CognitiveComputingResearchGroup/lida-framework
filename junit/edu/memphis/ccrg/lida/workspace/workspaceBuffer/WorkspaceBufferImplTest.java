@@ -13,7 +13,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.workspace.CueBackgroundTask;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 
 
@@ -44,24 +43,13 @@ public class WorkspaceBufferImplTest {
 		NodeStructure ns2 = (NodeStructure) perceptualBuffer2.getModuleContent();
 		
 		assertTrue("Problem with class WorkspaceBufferImpl for GetModuleContent()",
-				(ns2.getNode(2) != null)&&(ns2.getNodeCount() == 1));
+				(NodeStructureImpl.compareNodeStructures(ns, ns2)));
 
 	}
 
 	@Test
 	public final void testInit() {
-		//Initializing of nodeStructures when 
-		WorkspaceBufferImpl wsb = new WorkspaceBufferImpl();
-		
-		// Initialize with assigned value
-		Map<String, Object> mapParas = new HashMap<String, Object>();
-		mapParas.put("removableThreshold", 0.05);
-		wsb.init(mapParas);
-		wsb.init();
-		
-//		assertTrue("Problem with class WorkspaceBufferImpl for Init()",
-//				((NodeStructure)wsb.getModuleContent()).getLowerActivationBound() == 0.05);
-		
+		//NA
 	}
 
 	@Test
@@ -121,9 +109,5 @@ public class WorkspaceBufferImplTest {
 		assertTrue(storedNode.isRemovable());
 	}
 
-	@Test
-	public final void testSetRemovalThreshold() {
-		// Tested in testInit() method above.
-	}
 
 }
