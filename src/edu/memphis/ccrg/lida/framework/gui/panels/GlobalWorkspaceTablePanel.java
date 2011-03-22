@@ -108,24 +108,19 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl {
 		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
 		return;
 		}
-		String[] modules = param[0].split("\\.");
-		System.out.println("Inside initPanel "+modules[0]);
+		String[] modules = param[0].split("\\.");		
 		try{
-		 moduleType= ModuleName.valueOf(modules[0]);
-		 System.out.println("Module type is "+moduleType);
+		 moduleType= ModuleName.valueOf(modules[0]);		 
 		}catch (Exception e){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
 		}
 		module = lida.getSubmodule(moduleType);
-		 //System.out.println("lida is "+lida);
-		System.out.println("Module is "+module);
 		if (module==null){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Module does not exist in LIDA.",0L);
 			return;			
 		}
-		
-		System.out.println("Module content is "+module.getModuleContent());
+				
 		display(module.getModuleContent());
 		
 		//draw();
@@ -213,8 +208,6 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl {
 	public void display(Object o) {
 		//Collections.unmodifiableCollection(coalitions)
 		coalitions = (Collection<Coalition>) o;
-		System.out.println("o is "+o.toString());
-		System.out.println("Coalitions num are "+coalitions.size());
 			//nodeStructure = (NodeStructure) o;
 			((AbstractTableModel) table.getModel()).fireTableStructureChanged();
 			//((AbstractTableModel) table.getModel()).fireTableDataChanged();
