@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -31,6 +32,8 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	 * times the activation of the creating {@link AttentionCodelet}
 	 * @param bc conscious content
 	 * @param activation activation of creating attention codelet
+	 * @param codelet The {@link AttentionCodelet} that created this Coalition
+	 * @see AttentionCodeletImpl
 	 */
 	public CoalitionImpl(BroadcastContent bc, double activation,AttentionCodelet codelet){
 		content = bc;
