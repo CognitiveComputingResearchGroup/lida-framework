@@ -34,6 +34,8 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
 
 /**
@@ -288,8 +290,57 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	
 	public void testPropagateActivationToParents(){
-		//TODO
-		//TODO issue of cycle
+		double upscaleFactor= 0.1;
+		pam.setUpscaleFactor(upscaleFactor);
+		Node testNod1= factory.getNode("PamNodeImpl");
+		testNod1.setActivation(1.0);
+		Node testNod2= factory.getNode("PamNodeImpl");
+		testNod2.setActivation(0.2);
+		Node testNod3= factory.getNode("PamNodeImpl");
+		testNod3.setActivation(0.3);
+		Node testNod4= factory.getNode("PamNodeImpl");
+		testNod4.setActivation(1.0);
+		testNod1 = pam.addDefaultNode(testNod1);
+		testNod2 = pam.addDefaultNode(testNod2);
+		testNod3 = pam.addDefaultNode(testNod3);
+		testNod4 = pam.addDefaultNode(testNod4);
+		Link l12 = pam.addNewLink(testNod1, testNod2, LinkCategoryNode.CHILD, 0.0);
+		Link l13 = pam.addNewLink(testNod1, testNod3, LinkCategoryNode.CHILD, 0.0);
+		Link l41 = pam.addNewLink(testNod4, testNod1, LinkCategoryNode.CHILD, 0.0);
+		
+		assertTrue(testNod4.getActivation() == 1.0);
+		assertTrue(l41.getActivation() == 0.0);
+		
+		NodeStructure ns = (NodeStructure) pam.getModuleContent();
+		
+		assertTrue(ns.getNodeCount() == 4);
+		assertTrue(ns.getLinkCount() == 3);
+		
+		assertTrue(ns.getConnectedSinks(testNod1).size() == 2);
+		assertTrue(ns.getConnectedSinks(testNod2).size() == 0);
+		assertTrue(ns.getConnectedSinks(testNod3).size() == 0);
+		assertTrue(ns.getConnectedSinks(testNod4).size() == 1);
+		
+		TaskSpawner ts = new MockTaskSpawner();
+		pam.setAssistingTaskSpawner(ts);
+		
+		pam.propagateActivationToParents((PamNode) testNod1);
+		
+		Collection<LidaTask> tasks = ts.getRunningTasks();
+		assertTrue(tasks.size() == 2);
+		
+		double amount = 1.0 * upscaleFactor;
+		
+		assertTrue(l12.getActivation() == amount);
+		assertTrue(l13.getActivation() == amount);
+		
+		System.out.println("actually " + testNod2.getActivation());
+		System.out.println("actually " + testNod3.getActivation());
+		assertTrue(testNod2.getActivation() >= 0.3 && testNod2.getActivation() <= 0.3001);
+		assertTrue(testNod3.getActivation() == 0.4);
+		
+		assertTrue(testNod4.getActivation() == 1.0);
+		assertTrue(l41.getActivation() == 0.0);		
 	}
 	
 	public void testAddNodeStructureToPercept(){

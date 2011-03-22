@@ -34,8 +34,6 @@ public class PamNodeImplTest extends TestCase{
 		node2 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);	
 		
 		node1.getActivation();
-		
-		
 	}
 	
 	@Override
@@ -51,7 +49,15 @@ public class PamNodeImplTest extends TestCase{
 		int id = (int) (Math.random()*Integer.MAX_VALUE);
 		node1.setId(id);
 		node2.setId(id);
-		assertEquals(node1.getId() + " " + node2.getId(), node1, node2);
+		assertEquals(node1, node2);
+		assertEquals(node2, node1);
+	}
+	
+	public void testNotEqual(){
+		node1.setId(0);
+		node2.setId(Integer.MIN_VALUE);
+		assertFalse(node1.equals(node2));
+		assertFalse(node2.equals(node1));
 	}
 	
 	/**
@@ -61,19 +67,25 @@ public class PamNodeImplTest extends TestCase{
 		int id = (int) (Math.random()*Integer.MAX_VALUE);
 		node1.setId(id);
 		node2.setId(id);
-		assertEquals(node1.hashCode() + " " + node2.hashCode(), node1.hashCode(), node2.hashCode());
+		assertEquals(node1.hashCode(), node2.hashCode());
 	}
 	
+	/**
+	 * 
+	 */
 	public void testSetActivationThreshold(){
-		double t = 0.7;
-		node1.setActivatibleRemovalThreshold(t);
-		assertEquals(t, node1.getActivatibleRemovalThreshold());
+		node1.setActivatibleRemovalThreshold(1.0);
+		node1.setActivation(0.0);
 		
-		node1.setActivation(1.0);
+		double t = 0.7;
+		node1.setLearnableRemovalThreshold(t);
+		assertEquals(t, node1.getLearnableRemovalThreshold());
+		
+		node1.setBaseLevelActivation(1.0);
 		assertFalse(node1.isRemovable());
 		node1.decay(1000);
-		//TODO find issue
 		assertTrue(node1.isRemovable());
 	}
+	
 
 }
