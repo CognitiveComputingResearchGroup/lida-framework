@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
@@ -23,6 +25,7 @@ public class CoalitionImplTest {
 	LinkImpl link1,link2;
 	NodeStructure content;
 	WorkspaceBufferImpl buffer;
+	AttentionCodelet codelet;
 
 	@Before
 	public void setUp() throws Exception {		
@@ -33,6 +36,7 @@ public class CoalitionImplTest {
 		node3 = new NodeImpl();
 		
 		content= new NodeStructureImpl();
+		codelet = new BasicAttentionCodeletImpl();
 		
 		node1.setId(1);
 		node2.setId(2);
@@ -58,7 +62,7 @@ public class CoalitionImplTest {
 	@Test
 	public void testCoalitionImpl() {
 
-		coalition = new CoalitionImpl((BroadcastContent) content,0.7);
+		coalition = new CoalitionImpl((BroadcastContent) content,0.7,codelet);
 		double d = ((0.7*(node1.getActivation()+node2.getActivation()+node3.getActivation()+link1.getActivation()+link2.getActivation()))/ (content.getNodeCount() + content.getLinkCount()));
 		
 		assertEquals ("Problem with CoalitionImpl",d,coalition.getActivation(),0.00001);			
@@ -66,7 +70,7 @@ public class CoalitionImplTest {
 
 	@Test
 	public void testGetContent() {					
-		coalition = new CoalitionImpl((BroadcastContent) content,1.0);
+		coalition = new CoalitionImpl((BroadcastContent) content,1.0,codelet);
 		assertEquals ("Problem with GetContent ", (BroadcastContent) content,coalition.getContent());		
 	}
 }

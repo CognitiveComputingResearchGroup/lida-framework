@@ -9,7 +9,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -35,6 +37,7 @@ public class GlobalWorkspaceImplTest {
 	AttentionCodeletModule attnModule = new AttentionCodeletModule();
 	MockTaskSpawner ts;
 	MockBroadcastListener listener;
+	AttentionCodelet codelet = new BasicAttentionCodeletImpl();
 
 	@Before
 	public void setUp() throws Exception {
@@ -58,9 +61,9 @@ public class GlobalWorkspaceImplTest {
 		ns2.addDefaultNode(n2);
 		ns2.addDefaultLink(l);
 
-		coalition = new CoalitionImpl(ns, 0.8);
-		coalition2 = new CoalitionImpl(ns2, 0.9);
-		coalition3 = new CoalitionImpl(ns, 0.1);
+		coalition = new CoalitionImpl(ns, 0.8,codelet);
+		coalition2 = new CoalitionImpl(ns2, 0.9,codelet);
+		coalition3 = new CoalitionImpl(ns, 0.1,codelet);
 	}
 
 	@SuppressWarnings("unchecked")

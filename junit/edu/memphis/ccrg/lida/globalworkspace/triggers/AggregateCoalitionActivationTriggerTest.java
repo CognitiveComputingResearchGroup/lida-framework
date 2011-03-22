@@ -10,6 +10,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
@@ -35,6 +37,7 @@ public class AggregateCoalitionActivationTriggerTest {
 	NodeStructureImpl ns2 = new NodeStructureImpl();
 	NodeImpl n1, n2, n3;
 	LinkImpl l;
+	AttentionCodelet codelet = new BasicAttentionCodeletImpl();
 
 	@Before
 	public void setUp() throws Exception {
@@ -66,9 +69,9 @@ public class AggregateCoalitionActivationTriggerTest {
 		ns2.addDefaultNode(n2);
 		ns2.addDefaultLink(l);
 
-		coalition = new CoalitionImpl(ns, 0.8);
-		coalition2 = new CoalitionImpl(ns2, 0.01);
-		coalition3 = new CoalitionImpl(ns, 0.4);
+		coalition = new CoalitionImpl(ns, 0.8,codelet);
+		coalition2 = new CoalitionImpl(ns2, 0.01,codelet);
+		coalition3 = new CoalitionImpl(ns, 0.4,codelet);
 
 		coalitions.add(coalition);
 		coalitions.add(coalition2);
