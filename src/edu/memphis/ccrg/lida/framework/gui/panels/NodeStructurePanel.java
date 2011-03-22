@@ -146,10 +146,9 @@ public class NodeStructurePanel extends LidaPanelImpl {
 					@Override
 					public String transform(final Linkable linkable) {
 						if (linkable instanceof Link) {
-							return "";
-//							return ((Link) linkable).getCategory().toString();
+							return ((Link) linkable).getCategory().getLabel();
 						}
-						return linkable.toString();
+						return linkable.getLabel();
 					}
 				});
 
