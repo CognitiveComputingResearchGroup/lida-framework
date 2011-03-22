@@ -23,6 +23,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	
 	private BroadcastContent content;	
 	private double attentionCodeletActivation;
+	private AttentionCodelet attentionCodelet;
 
 	/**
 	 * Constructs a coalition with content and sets activation to be equal to 
@@ -31,9 +32,10 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	 * @param bc conscious content
 	 * @param activation activation of creating attention codelet
 	 */
-	public CoalitionImpl(BroadcastContent bc, double activation){
+	public CoalitionImpl(BroadcastContent bc, double activation,AttentionCodelet codelet){
 		content = bc;
 		attentionCodeletActivation = activation;
+		attentionCodelet = codelet;
 		updateActivation();
 	}
 
@@ -53,6 +55,11 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	@Override
 	public BroadcastContent getContent() {
 		return content;
+	}
+	
+	@Override
+	public AttentionCodelet getAttentionCodelet(){		
+		return attentionCodelet;
 	}
 	
 }

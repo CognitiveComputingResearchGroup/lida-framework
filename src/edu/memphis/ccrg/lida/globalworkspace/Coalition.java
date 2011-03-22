@@ -28,4 +28,9 @@ public interface Coalition extends Activatible {
 	 */
 	public BroadcastContent getContent();
 	
+	/**
+	 * 
+	 * @return The attention codelet which creates this coalition.
+	 */
+	public AttentionCodelet getAttentionCodelet();	
 }
