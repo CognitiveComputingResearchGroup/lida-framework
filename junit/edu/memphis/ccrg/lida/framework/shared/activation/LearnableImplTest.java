@@ -49,7 +49,15 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testDecay() {
-		fail("Not yet implemented");
+		DecayStrategy ds = new LinearDecayStrategy();
+		node1.setBaseLevelDecayStrategy(ds);
+		node1.setBaseLevelActivation(0.5);
+		node1.decayBaseLevelActivation(100);
+		node1.decay(100);
+		node1.getBaseLevelActivation();
+		
+		assertTrue("Problem with Decay", node1.getBaseLevelActivation()<0.5);
+	
 	}
 
 	/**
