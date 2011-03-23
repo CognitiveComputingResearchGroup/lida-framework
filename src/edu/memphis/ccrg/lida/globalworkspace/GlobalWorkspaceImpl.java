@@ -61,7 +61,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seelida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
+	 * @see lida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
 	 * ccrg. globalworkspace.BroadcastListener)
 	 */
 	@Override

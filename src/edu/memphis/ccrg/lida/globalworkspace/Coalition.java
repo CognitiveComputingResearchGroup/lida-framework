@@ -23,14 +23,14 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 public interface Coalition extends Activatible { 
 
 	/**
-	 * 
-	 * @return The Content of the coalition.
+	 * Returns the content of the coalition
+	 * @return The Content of the coalition
 	 */
 	public BroadcastContent getContent();
 	
 	/**
-	 * 
-	 * @return The attention codelet which creates this coalition.
+	 * Returns the attention codelet that creates this coalition
+	 * @return The attention codelet which creates this coalition
 	 */
 	public AttentionCodelet getAttentionCodelet();	
 }
