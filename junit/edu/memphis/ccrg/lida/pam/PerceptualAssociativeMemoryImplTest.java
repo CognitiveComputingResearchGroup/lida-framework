@@ -334,8 +334,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		assertTrue(l12.getActivation() == amount);
 		assertTrue(l13.getActivation() == amount);
 		
-		System.out.println("actually " + testNod2.getActivation());
-		System.out.println("actually " + testNod3.getActivation());
 		assertTrue(testNod2.getActivation() >= 0.3 && testNod2.getActivation() <= 0.3001);
 		assertTrue(testNod3.getActivation() == 0.4);
 		
@@ -575,5 +573,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		links = pam.getPamLinks();
 		assertTrue(links.size() == 3);		
 	}
+	
 
 }

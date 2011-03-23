@@ -20,10 +20,9 @@ import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 
 /**
- * @author Siminder Kaur, Ryan McCall
+ * @author Usef Faghihi
  */
 public class PamLinkImplTest extends TestCase{
 	
@@ -66,7 +65,7 @@ public class PamLinkImplTest extends TestCase{
 	}
 	
 	/**
-	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#hashCode(java.lang.Object)}.
+	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#equals(Object)}
 	 */
 	public void testHashCode(){
 //		int id = (int) (Math.random()*Integer.MAX_VALUE);
