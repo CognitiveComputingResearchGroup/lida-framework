@@ -20,28 +20,22 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
- * @author Owner
+ * This is a JUnit class which can be used to test methods of the LearnableImpl class
+ * @author Nisrine,Siminder
  *
  */
 public class LearnableImplTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	
 	LearnableImpl node1;
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
+	LearnableImpl node2;
+		
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
 		node1 = new LearnableImpl ();
-		//node2 = new LearnableImpl ();  
+		  
 	}
 
 	/**
@@ -50,13 +44,15 @@ public class LearnableImplTest {
 	@Test
 	public void testDecay() {
 		DecayStrategy ds = new LinearDecayStrategy();
+		node1.setDecayStrategy(ds);
 		node1.setBaseLevelDecayStrategy(ds);
+		
 		node1.setBaseLevelActivation(0.5);
-		node1.decayBaseLevelActivation(100);
+		node1.setActivation(0.7);
 		node1.decay(100);
-		node1.getBaseLevelActivation();
 		
 		assertTrue("Problem with Decay", node1.getBaseLevelActivation()<0.5);
+		assertTrue("Problem with Decay", node1.getActivation()<0.7);
 	
 	}
 
@@ -79,9 +75,7 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testIsRemovable() {
-		//node1.setActivation(-1.1);
 		node1.setBaseLevelActivation(-1.0);
-		//System.out.println (node1.getBaseLevelActivation()) ;
 		 assertEquals ("problems",true , node1.isRemovable());
 	}
 
@@ -89,8 +83,10 @@ public class LearnableImplTest {
 	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#LearnableImpl(double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy, edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy)}.
 	 */
 	@Test
-	public void testLearnableImplDoubleExciteStrategyDecayStrategyTotalActivationStrategy() {
-
+	public void testLearnableImpl2() {
+		//node2 = new LearnableImpl(act,es,ds,tas,0.5);
+		
+		//assertEquals
 	}
 
 	/**
@@ -98,7 +94,17 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testLearnableImpl() {
-	
+		DecayStrategy db = new LinearDecayStrategy();
+		node1.setDecayStrategy(db);
+		ExciteStrategy eb;
+		//node1.setExciteStrategy(eb);
+		TotalActivationStrategy totalActivationStrategy;
+		//node1.setTotalActivationStrategy(totalActivationStrategy);
+		double threshold = 0.5;
+		node1.setLearnableRemovalThreshold(threshold);
+		node2 = new LearnableImpl(node1);
+		
+		//assertEquals
 	}
 
 	/**
@@ -110,8 +116,7 @@ public class LearnableImplTest {
 		node1.setBaseLevelDecayStrategy(ds);
 		node1.setBaseLevelActivation(0.5);			
 		node1.decayBaseLevelActivation(100);
-		node1.getBaseLevelActivation();
-		
+				
 		assertTrue("Problem with DecayBaseLevelActivation", node1.getBaseLevelActivation()<0.5);
 	}
 
@@ -199,7 +204,7 @@ public class LearnableImplTest {
 	public void testGetLearnableRemovalThreshold() {
 		node1.setLearnableRemovalThreshold(0.2);
 		assertEquals (0.2, node1.getLearnableRemovalThreshold(), 0.00001);
-		//System.out.print(node1.getLearnableRemovalThreshold());
+		
 	}
 
 	/**
