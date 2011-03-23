@@ -83,7 +83,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		
 		
 	}
@@ -115,6 +115,12 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	public void init() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public LidaModule getSubmodule(String name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

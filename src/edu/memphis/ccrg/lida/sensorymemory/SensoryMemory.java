@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.sensorymemory;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
@@ -43,6 +45,6 @@ public interface SensoryMemory extends LidaModule, Saveable {
 	 * @param params optional parameters
 	 * @return content
 	 */
-	public Object getSensoryContent(String modality, Object... params);
+	public Object getSensoryContent(String modality, Map<String, Object> params);
 
 }

@@ -22,8 +22,8 @@ public class BasicCodeletAction implements CodeletAction {
 	 */
 	@Override
 	public void performAction(NodeStructure soughContent, WorkspaceBuffer buffer, WorkspaceBuffer currentSituationalModel) {
-		NodeStructure bufferContent = (NodeStructure) buffer.getModuleContent();
-		NodeStructure csmContent = (NodeStructure) currentSituationalModel.getModuleContent();
+		NodeStructure bufferContent = (NodeStructure) buffer.getBufferContent(null);
+		NodeStructure csmContent = (NodeStructure) currentSituationalModel.getBufferContent(null);
 		csmContent.mergeWith(bufferContent);
 	} 
 

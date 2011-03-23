@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -59,7 +60,7 @@ public class UpdateCsmBackgroundTaskTest {
 				.getModuleContent()).mergeWith(ns);
 
 		// Testing of setAssociateMoudle()
-		uct.setAssociatedModule(wMoudle, 0);
+		uct.setAssociatedModule(wMoudle, ModuleUsage.NOT_SPECIFIED);
 		
 		//Run method of target class
 		uct.runThisLidaTask();

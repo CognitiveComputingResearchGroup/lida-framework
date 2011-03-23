@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * 
@@ -97,7 +98,8 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
-		NodeStructure ns = (NodeStructure) getSubmodule(ModuleName.EpisodicBuffer).getModuleContent();
+		WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.EpisodicBuffer);
+		NodeStructure ns = (NodeStructure)buffer.getBufferContent(null);
 		ns.mergeWith(association);
 		for(WorkspaceListener listener: workspaceListeners){
 			listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent) ns);
@@ -110,7 +112,8 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	 */
 	@Override
 	public void receivePercept(NodeStructure newPercept) {
-		((NodeStructure)getSubmodule(ModuleName.PerceptualBuffer).getModuleContent()).mergeWith(newPercept);
+		WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
+		buffer.addBufferContent((WorkspaceContent) newPercept);
 	}
 
 	@Override

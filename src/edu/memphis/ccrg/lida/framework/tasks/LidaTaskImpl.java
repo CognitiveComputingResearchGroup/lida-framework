@@ -199,7 +199,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 	}	
 	
 	@Override

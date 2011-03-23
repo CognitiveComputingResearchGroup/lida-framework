@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +24,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
  * The BroadcastQueue is the data structure storing the recent contents of
@@ -86,6 +88,19 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 	@Override
 	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableCollection(broadcastQueue);
+	}
+	@Override
+	public void addBufferContent(WorkspaceContent content) {
+		broadcastQueue.add(content);
+	}
+
+	@Override
+	public WorkspaceContent getBufferContent(Map<String, Object> params) {
+		Integer index = (Integer) params.get("position");
+		if(index == null){
+			return null;
+		}
+		return (WorkspaceContent) broadcastQueue.get(index);
 	}
 
 	@Override

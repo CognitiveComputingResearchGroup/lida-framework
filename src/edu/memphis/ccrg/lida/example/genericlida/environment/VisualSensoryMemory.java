@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.example.genericlida.environment;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryImpl;
 
 /**
@@ -31,7 +33,7 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 	public void runSensors() {
 		//Environment is inherited from SensoryMemoryImpl
 		//Module content depends on your environment
-		double[][] environContent = (double[][]) environment.getModuleContent();
+		double[][] environContent = (double[][]) environment.getState(null);
 		//Add processing code
 		
 		//Store the results of processing
@@ -49,12 +51,7 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 			return sensoryScene;
 		return null;
 	}
-	
-	@Override
-	public Object getSensoryContent(String modality, Object... params) {
-		//TODO feature detector should use this instead
-		return null;
-	}
+
 
 	@Override
 	public Object getState() {
@@ -72,6 +69,13 @@ public class VisualSensoryMemory extends SensoryMemoryImpl {
 	public void init() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public Object getSensoryContent(String modality, Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

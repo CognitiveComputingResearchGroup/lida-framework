@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
  * This class implements module of WorkspaceBuffer. WorkspaceBuffer is a submodule of workspace and 
@@ -55,6 +57,16 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	@Override
 	public void addListener(ModuleListener listener) {
 		// NA		
+	}
+
+	@Override
+	public void addBufferContent(WorkspaceContent content) {
+		buffer.mergeWith(content);
+	}
+
+	@Override
+	public WorkspaceContent getBufferContent(Map<String, Object> params) {
+		return (WorkspaceContent) buffer;
 	}
 
 }

@@ -23,71 +23,77 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
- * Basic attention codelet checking CSM and if finding sought content, creates a coalition
- * and puts it in the global workspace.
+ * Basic attention codelet checking CSM and if finding sought content, creates a
+ * coalition and puts it in the global workspace.
  * 
  * @author Ryan J McCall
  * 
  */
-public abstract class AttentionCodeletImpl extends CodeletImpl implements AttentionCodelet {
-	
-	private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
-	
+public abstract class AttentionCodeletImpl extends CodeletImpl implements
+		AttentionCodelet {
+
+	private static final Logger logger = Logger
+			.getLogger(AttentionCodeletImpl.class.getCanonicalName());
+
 	/**
 	 * Where codelet will look for and retrieve content from
 	 */
 	protected WorkspaceBuffer currentSituationalModel;
-	
+
 	protected GlobalWorkspace globalWorkspace;
-	
+
 	protected NodeStructure soughtContent;
-	
-	public AttentionCodeletImpl(){
+
+	public AttentionCodeletImpl() {
 		super();
-		soughtContent =new NodeStructureImpl();
+		soughtContent = new NodeStructureImpl();
 	}
-	
+
 	@Override
-	public void init(){
+	public void init() {
 	}
-    
+
 	/**
 	 * Sets associated Module
-	 * @param module the module to be associated with
-	 * @param usage - way of associating the module
+	 * 
+	 * @param module
+	 *            the module to be associated with
+	 * @param usage
+	 *            - way of associating the module
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, int usage) {
-		switch(usage){
-			case ModuleUsage.TO_READ_FROM:
-				if(module instanceof WorkspaceBuffer){
-					currentSituationalModel = (WorkspaceBuffer) module;
-				}
-				break;
-				
-			case ModuleUsage.TO_WRITE_TO:
-				if (module instanceof GlobalWorkspace){
-					globalWorkspace = (GlobalWorkspace) module;
-				}
-				break;
+	public void setAssociatedModule(LidaModule module, String usage) {
+		if (usage.equals(ModuleUsage.TO_READ_FROM)) {
+			if (module instanceof WorkspaceBuffer) {
+				currentSituationalModel = (WorkspaceBuffer) module;
+			}
+		} else if (usage.equals(ModuleUsage.TO_WRITE_TO)) {
+			if (module instanceof GlobalWorkspace) {
+				globalWorkspace = (GlobalWorkspace) module;
+			}
+		}else{
+			logger.log(Level.WARNING, "Module useage not supported",
+					LidaTaskManager.getCurrentTick());
 		}
 	}
-	
+
 	/**
-	 * On finding sought content in CSM, create a coalition
-     * and put it in the global workspace 
+	 * On finding sought content in CSM, create a coalition and put it in the
+	 * global workspace
 	 */
 	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = getWorkspaceContent(currentSituationalModel);
-			if (csmContent.getLinkableCount() > 0){
-				globalWorkspace.addCoalition(new CoalitionImpl((BroadcastContent)csmContent, getActivation(),this));
-				logger.log(Level.FINE, this + " adds coalition", LidaTaskManager.getCurrentTick());
+			if (csmContent.getLinkableCount() > 0) {
+				globalWorkspace.addCoalition(new CoalitionImpl(
+						(BroadcastContent) csmContent, getActivation(), this));
+				logger.log(Level.FINE, this + " adds coalition",
+						LidaTaskManager.getCurrentTick());
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
 	 * content.
@@ -108,27 +114,28 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements Attent
 	 * @return the workspace content
 	 */
 	@Override
-	public abstract NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
+	public abstract NodeStructure getWorkspaceContent(WorkspaceBuffer buffer);
 
 	/**
 	 * @return the sought content
 	 */
 	@Override
-	public NodeStructure getSoughtContent(){
+	public NodeStructure getSoughtContent() {
 		return soughtContent;
 	}
 
 	/**
-	 * @param content sought content
+	 * @param content
+	 *            sought content
 	 */
 	@Override
 	public void setSoughtContent(NodeStructure content) {
 		soughtContent = content;
 	}
-	
+
 	@Override
-	public String toString(){
-		return "AttentionCodelet-"+ getTaskId();
+	public String toString() {
+		return "AttentionCodelet-" + getTaskId();
 	}
 
 }

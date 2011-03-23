@@ -171,7 +171,7 @@ public class WorkspaceTest {
         }
 
         @Override
-        public void setAssociatedModule(LidaModule module, int moduleUsage) {
+        public void setAssociatedModule(LidaModule module, String moduleUsage) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -189,6 +189,12 @@ public class WorkspaceTest {
         public Object getParam(String name, Object defaultValue) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+
+		@Override
+		public LidaModule getSubmodule(String name) {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 
 }

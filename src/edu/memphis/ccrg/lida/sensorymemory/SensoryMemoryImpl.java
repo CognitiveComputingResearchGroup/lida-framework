@@ -70,7 +70,7 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
      * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)
      */
     @Override
-    public void setAssociatedModule(LidaModule module, int moduleUsage) {
+    public void setAssociatedModule(LidaModule module, String moduleUsage) {
         if (module instanceof Environment){
              environment = (Environment) module;
         }else{

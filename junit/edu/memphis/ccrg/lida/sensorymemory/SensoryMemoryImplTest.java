@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.sensorymemory;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import java.util.List;
 import edu.memphis.ccrg.lida.framework.LidaModule;
@@ -120,7 +121,7 @@ public class SensoryMemoryImplTest {
         // Test for SMM.
         System.out.println("setAssociatedModule");
         LidaModule module = null;
-        int moduleUsage = 0;
+        String moduleUsage = ModuleUsage.NOT_SPECIFIED;
         SensoryMemoryImpl instance = new MockSensoryMemoryImpl();
         instance.setAssociatedModule(module, moduleUsage);
         // TODO review the generated test code and remove the default call to fail.
@@ -161,12 +162,6 @@ public class SensoryMemoryImplTest {
         }
 
 		@Override
-		public Object getSensoryContent(String modality, Object... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
 		public Object getState() {
 			// TODO Auto-generated method stub
 			return null;
@@ -180,6 +175,13 @@ public class SensoryMemoryImplTest {
 
 		@Override
 		public Object getModuleContent(Object... params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Object getSensoryContent(String modality,
+				Map<String, Object> params) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -259,7 +261,7 @@ public class SensoryMemoryImplTest {
         }
 
         @Override
-        public void setAssociatedModule(LidaModule module, int moduleUsage) {
+        public void setAssociatedModule(LidaModule module, String moduleUsage) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -280,6 +282,12 @@ public class SensoryMemoryImplTest {
 
 		@Override
 		public Object getState(Map<String, ?> params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public LidaModule getSubmodule(String name) {
 			// TODO Auto-generated method stub
 			return null;
 		}

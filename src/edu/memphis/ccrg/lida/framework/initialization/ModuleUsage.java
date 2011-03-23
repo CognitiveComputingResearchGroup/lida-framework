@@ -1,12 +1,16 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
+/**
+ * @author Javier
+ *
+ */
 public class ModuleUsage {
 
-	public static final int NOT_SPECIFIED = 0;
-	public static final int TO_READ_FROM = 1;
-	public static final int TO_WRITE_TO = 2;
-	public static final int TO_DELETE_FROM = 3;
-	public static final int TO_CHECK_FROM = 4;
-	public static final int TO_LISTEN_FROM = 5;	
+	public static final String NOT_SPECIFIED = "NOT_SPECIFIED";
+	public static final String TO_READ_FROM = "TO_READ_FROM";
+	public static final String TO_WRITE_TO = "TO_WRITE_TO";
+	public static final String TO_DELETE_FROM = "TO_DELETE_FROM";
+	public static final String TO_CHECK_FROM = "TO_CHECK_FROM";
+	public static final String TO_LISTEN_FROM = "TO_LISTEN_FROM";	
 	
 }

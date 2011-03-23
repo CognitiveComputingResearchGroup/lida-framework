@@ -135,7 +135,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -156,6 +156,12 @@ public class MockActionSelectionImpl implements ActionSelection {
 	public void receiveBroadcast(BroadcastContent bc) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public LidaModule getSubmodule(String name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

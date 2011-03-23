@@ -10,6 +10,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
@@ -32,7 +33,7 @@ public class SensoryMemoryBackgroundTaskTest {
 	    SensoryMemoryBackgroundTask st = new SensoryMemoryBackgroundTask();
 	    
 	    // Testing of setAssociatedModule method.
-	    st.setAssociatedModule(mSensory, 1);
+	    st.setAssociatedModule(mSensory, ModuleUsage.NOT_SPECIFIED);
 	    
 	    // Testing of RunThisLidaTask method.
 	    st.runThisLidaTask();
@@ -40,7 +41,7 @@ public class SensoryMemoryBackgroundTaskTest {
 	}
 	
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, String)}.
 	 * @throws Exception e
 	 */
 	@Test
@@ -134,7 +135,7 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -182,7 +183,13 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public Object getSensoryContent(String modality, Object... params) {
+	public LidaModule getSubmodule(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getSensoryContent(String modality, Map<String, Object> params) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -23,45 +22,48 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
-public class StructureBuildingCodeletModule extends LidaModuleImpl implements GuiEventProvider, CodeletManager {
+public class StructureBuildingCodeletModule extends LidaModuleImpl implements
+		GuiEventProvider, CodeletManagerModule {
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
-	
+
 	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
 	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
-	
+
 	private static final int DEFAULT_TICKS = 1;
 	private int codeletTicksPerRun = DEFAULT_TICKS;
-	
-	/*
-	 * Pool keeping all recycled codelets.
-	 * Key = CodeletType
-	 * Value = finished, reset codelets of that type
-	 */
-	private Map<CodeletType, List<StructureBuildingCodelet>> codeletPool;
+
+	// /*
+	// * Pool keeping all recycled codelets.
+	// * Key = CodeletType
+	// * Value = finished, reset codelets of that type
+	// */
+	// private Map<CodeletType, List<StructureBuildingCodelet>> codeletPool;
 
 	private List<FrameworkGuiEventListener> guis;
-	
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
-	
+
+	private static LidaElementFactory factory = LidaElementFactory
+			.getInstance();
+
 	private String defaultCodeletName;
 
 	private Workspace workspace;
-	private WorkspaceBuffer csm;
-	private WorkspaceBuffer perceptualBuffer;
 
 	public StructureBuildingCodeletModule() {
 		super(ModuleName.StructureBuildingCodeletModule);
-		codeletPool = new HashMap<CodeletType, List<StructureBuildingCodelet>>();
-		codeletPool.put(CodeletType.PERCEPTUAL_BUFFER_TYPE, new ArrayList<StructureBuildingCodelet>());
-		
-		guis = new ArrayList<FrameworkGuiEventListener>();		
-		
+		// codeletPool = new HashMap<CodeletType,
+		// List<StructureBuildingCodelet>>();
+		// codeletPool.put(CodeletType.PERCEPTUAL_BUFFER_TYPE, new
+		// ArrayList<StructureBuildingCodelet>());
+
+		guis = new ArrayList<FrameworkGuiEventListener>();
+
 		Class<StructureBuildingCodeletImpl> cl = StructureBuildingCodeletImpl.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
@@ -73,12 +75,10 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
-			csm = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.CurrentSituationalModel);
-			perceptualBuffer = (WorkspaceBuffer) workspace.getSubmodule(ModuleName.PerceptualBuffer);
-		}else {
+		} else {
 			logger.log(Level.WARNING, "Cannot add module "
 					+ module.getModuleName(), LidaTaskManager.getCurrentTick());
 		}
@@ -86,62 +86,93 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements Gu
 
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
-		for (FrameworkGuiEventListener gui : guis)
+		for (FrameworkGuiEventListener gui : guis) {
 			gui.receiveFrameworkGuiEvent(evt);
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager#getNewCodelet(edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletType)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager
+	 * #getNewCodelet
+	 * (edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletType)
 	 */
 	@Override
-	public StructureBuildingCodelet getNewCodelet(CodeletType t) {
-		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getCodelet(defaultCodeletName, codeletTicksPerRun, codeletActivation, null);
+	public StructureBuildingCodelet getDefaultCodelet(Map<String, Object> params) {
+		return getCodelet(defaultCodeletName, params);		
+	}
+
+	@Override
+	public StructureBuildingCodelet getDefaultCodelet() {
+		return getCodelet(defaultCodeletName, null);
+	}
+
+	@Override
+	public StructureBuildingCodelet getCodelet(String type) {
+		return getCodelet(type, null);
+	}
+
+	@Override
+	public StructureBuildingCodelet getCodelet(String type, Map<String, Object> params) {
+		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory
+				.getCodelet(type, codeletTicksPerRun, codeletActivation, null);
 		if (codelet == null) {
 			logger.log(Level.WARNING,
-						"Factory returned a null codelet, sb-codelet not created.",
-						LidaTaskManager.getCurrentTick());
+					"Codelet type not supported: " + type,
+					LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		switch(t){
-			case CSM_TYPE:
-				codelet.setAssociatedModule(perceptualBuffer, ModuleUsage.TO_READ_FROM);
-				codelet.setAssociatedModule(csm, ModuleUsage.TO_WRITE_TO);
-				return codelet;
-			default:
-				logger.log(Level.WARNING, "Codelet type not supported: " + t, LidaTaskManager.getCurrentTick());
-				return null;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager#runCodelet(edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet)
-	 */
-	@Override
-	public void runCodelet(StructureBuildingCodelet cod){
-		logger.log(Level.FINER, "New codelet " + cod + "spawned",
-				LidaTaskManager.getCurrentTick());
-		taskSpawner.addTask(cod);
-	}
-	
 
-	// /**
-	// *  code to determine when/what codelets to activate. e.g., if BufferContent activates a sbCodelet's context, start a new
-	// codelet.
-	// */
-	// private void activateCodelets() {
-	//
-	// }
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager#recycle(edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet)
+		String readable = "PerceptualBuffer";
+		String writeable = "CurrentSituationalModel";
+
+		if (params != null) {
+			readable = (String) params.get(ModuleUsage.TO_READ_FROM);
+			writeable = (String) params.get(ModuleUsage.TO_WRITE_TO);
+		}
+
+		WorkspaceBuffer readableBuffer = (WorkspaceBuffer) workspace
+				.getSubmodule(readable);
+		if (readableBuffer == null) {
+			logger.log(Level.WARNING, "Readable buffer not found: " + readable,
+					LidaTaskManager.getCurrentTick());
+			return null;
+		}
+
+		WorkspaceBuffer writeableBuffer = (WorkspaceBuffer) workspace
+				.getSubmodule(writeable);
+		if (writeableBuffer == null) {
+			logger.log(Level.WARNING, "Writeable buffer not found: "
+					+ writeable, LidaTaskManager.getCurrentTick());
+			return null;
+		}
+
+		codelet.setAssociatedModule(readableBuffer, ModuleUsage.TO_READ_FROM);
+		codelet.setAssociatedModule(writeableBuffer, ModuleUsage.TO_WRITE_TO);
+		return codelet;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager
+	 * #runCodelet(edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.
+	 * StructureBuildingCodelet)
 	 */
 	@Override
-	public void recycle(StructureBuildingCodelet sbCode) {
-		List<StructureBuildingCodelet> scraps = codeletPool.get(sbCode.getCodeletType());
-		sbCode.reset();
-		scraps.add(sbCode);
+	public void addCodelet(Codelet cod) {
+		if (cod instanceof StructureBuildingCodelet) {
+			logger.log(Level.FINER, "New codelet " + cod + "spawned",
+					LidaTaskManager.getCurrentTick());
+			taskSpawner.addTask(cod);
+		} else {
+			logger.log(Level.WARNING,
+					"codelet must be a structure-buidling codelet",
+					LidaTaskManager.getCurrentTick());
+		}
 	}
 
 	@Override

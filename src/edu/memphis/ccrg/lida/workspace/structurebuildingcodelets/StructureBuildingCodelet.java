@@ -32,25 +32,12 @@ public interface StructureBuildingCodelet extends Codelet{
 	 */
 	public CodeletRunResult getCodeletRunResult();
 	
-	 /**
-	  * Returns {@link CodeletType}
-	  * @return type which buffers this codelet accesses.
-	  */
-	 public CodeletType getCodeletType();
-	 
-	 
-	 /**
-	  * Sets {@link CodeletType}
-	 * @param t type of buffers this codelet accesses.
-	 */
-	public void setType(CodeletType t);
-	
 	/**
 	 * Clears this codelet's fields in preparation for reuse. 
 	 * Idea is that the same codelet object is reconfigured at runtime
 	 * after it finishes to be run as a different altogether codelet. 
 	 */
 	public void reset();
-	public Long getId();
+	public long getId();
 
 }

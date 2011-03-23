@@ -62,7 +62,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	/** 
 	 * Implementations should only perform initialization of variables or
 	 * objects that depend on parameters in the parameter map specified in {@link #init(Map)}.
-	 * Furthermore they should not try to access modules added via {@link #setAssociatedModule(LidaModule, int)}
+	 * Furthermore they should not try to access modules added via {@link #setAssociatedModule(LidaModule, String)}
 	 * as this method will not have run yet at the time this method is called.
 	 */
 	@Override
@@ -83,6 +83,10 @@ public abstract class LidaModuleImpl implements LidaModule {
 	@Override
 	public LidaModule getSubmodule(ModuleName type) {
 		return submodules.get(type);
+	}
+	@Override
+	public LidaModule getSubmodule(String name){
+		return getSubmodule(ModuleName.getModuleName(name));
 	}
 
 	@Override
@@ -119,7 +123,7 @@ public abstract class LidaModuleImpl implements LidaModule {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 	}
 
 }

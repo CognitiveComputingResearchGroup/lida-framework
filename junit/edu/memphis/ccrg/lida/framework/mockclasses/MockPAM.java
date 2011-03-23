@@ -118,7 +118,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.framework.initialization.FullyInitializable#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		// TODO Auto-generated method stub
 
 	}
@@ -450,6 +450,12 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	@Override
 	public Collection<Link> getPamLinks() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LidaModule getSubmodule(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

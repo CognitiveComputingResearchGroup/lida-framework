@@ -129,9 +129,8 @@ public class NodeStructureTable extends LidaPanelImpl {
 		return;
 		}
 		String[] modules = param[0].split("\\.");
-		try{
-		 moduleType= ModuleName.valueOf(modules[0]);
-		}catch (Exception e){
+		moduleType= ModuleName.getModuleName(modules[0]);
+		if(moduleType==null){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
 		}
@@ -141,9 +140,8 @@ public class NodeStructureTable extends LidaPanelImpl {
 			return;			
 		}
 		for (int i=1; i<modules.length;i++){
-			try{
-				 moduleType= ModuleName.valueOf(modules[i]);
-				}catch (Exception e){
+			moduleType= ModuleName.getModuleName(modules[i]);
+			if(moduleType==null){
 					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 					return;
 				}

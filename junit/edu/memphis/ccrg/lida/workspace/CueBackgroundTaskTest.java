@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -65,7 +66,7 @@ public class CueBackgroundTaskTest {
 				.getModuleContent()).mergeWith(ns);
 		
         //Testing of setAssociateModule()
-		cbt.setAssociatedModule(wMoudle, 0);
+		cbt.setAssociatedModule(wMoudle, ModuleUsage.NOT_SPECIFIED);
 		
 		//Run method of target class
 		cbt.runThisLidaTask();

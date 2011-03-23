@@ -42,7 +42,7 @@ public class CueBackgroundTask extends LidaTaskImpl {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		}
@@ -57,7 +57,7 @@ public class CueBackgroundTask extends LidaTaskImpl {
 	protected void runThisLidaTask() {
 		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace
 				.getSubmodule(ModuleName.PerceptualBuffer);
-		NodeStructure ns = (NodeStructure) perceptualBuffer.getModuleContent();
+		NodeStructure ns = (NodeStructure) perceptualBuffer.getBufferContent(null);
 
 		NodeStructure cueNodeStrucutre = new NodeStructureImpl();
 		// Current impl. of episodic memory only processes Nodes.

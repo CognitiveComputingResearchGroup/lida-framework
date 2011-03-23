@@ -38,7 +38,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * 
  * Each module that is created is instantiated using {@link Class#forName(String)}. 
  * Next its {@link LidaModule#init()} method is run.  After all modules have been 
- * created in this way, all associated modules are added for each module {@link LidaModule#setAssociatedModule(LidaModule, int)
+ * created in this way, all associated modules are added for each module {@link LidaModule#setAssociatedModule(LidaModule, String)
  * } Finally each module's initializer is run if it has one.  Thus associated modules should not be used by the init method of modules, 
  * only constants and other variables should be set.
  * TODO consider 'postInit' method that runs after initializers run.  
@@ -247,7 +247,7 @@ public class LidaXmlFactory implements LidaFactory {
 		String name = moduleElement.getAttribute("name");
 		ModuleName moduleName = ModuleName.NoModule;
 		try {
-			moduleName = Enum.valueOf(ModuleName.class, name);
+			moduleName = ModuleName.addModuleName(name);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "ModuleName: " + name + " is not valid.", 0L);
 			return null;
@@ -409,20 +409,20 @@ public class LidaXmlFactory implements LidaFactory {
 			return;
 		}
 
-		ModuleName moduleName = ModuleName.NoModule;
-		try {
-			moduleName = Enum.valueOf(ModuleName.class, name);
-		} catch (Exception e) {
+		ModuleName moduleName;
+		
+			moduleName = ModuleName.getModuleName(name);
+		if (moduleName==null) {
 			logger.log(Level.WARNING,
 					"Module name: " + name + " is not valid.", 0L);
 			return;
 		}
 		LidaModule module = lida.getSubmodule(moduleName);
 
-		ModuleName listenerModuleName = ModuleName.NoModule;
-		try {
-			listenerModuleName = Enum.valueOf(ModuleName.class, listenername);
-		} catch (Exception e) {
+		ModuleName listenerModuleName;
+		
+			listenerModuleName = ModuleName.getModuleName(listenername);
+		if (listenerModuleName==null) {
 			logger.log(Level.WARNING, "Listener name: " + listenername
 					+ " is not valid.", 0L);
 			return;
@@ -457,13 +457,12 @@ public class LidaXmlFactory implements LidaFactory {
 	 * Iterates through the module/associated-module pairs and associates them
 	 */
 	private void associateModules() {
-		ModuleName moduleName = ModuleName.NoModule;
+		ModuleName moduleName;
 		for (Object[] vals : toAssociate) {
 			FullyInitializable initializable = (FullyInitializable) vals[0];
 			String assocModule = (String) vals[1];
-			try {
-				moduleName = Enum.valueOf(ModuleName.class, assocModule);
-			} catch (Exception e) {
+				moduleName = ModuleName.getModuleName(assocModule);
+			if (moduleName==null) {
 				logger.log(Level.WARNING,
 					"Module associated module name: " + assocModule + " is not valid.", 0L);
 				break;

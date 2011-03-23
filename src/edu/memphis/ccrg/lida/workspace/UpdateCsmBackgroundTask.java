@@ -22,7 +22,7 @@ public class UpdateCsmBackgroundTask extends LidaTaskImpl {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		}
@@ -40,10 +40,10 @@ public class UpdateCsmBackgroundTask extends LidaTaskImpl {
 		
 		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
 				.getSubmodule(ModuleName.PerceptualBuffer);
-		NodeStructure ns = (NodeStructure) percepBuff.getModuleContent();
+		NodeStructure ns = (NodeStructure) percepBuff.getBufferContent(null);
 		WorkspaceBuffer csm = (WorkspaceBuffer) workspace
 				.getSubmodule(ModuleName.CurrentSituationalModel);
-		((NodeStructure) csm.getModuleContent()).mergeWith(ns);
+		((NodeStructure) csm.getBufferContent(null)).mergeWith(ns);
 	}
 	
 	@Override

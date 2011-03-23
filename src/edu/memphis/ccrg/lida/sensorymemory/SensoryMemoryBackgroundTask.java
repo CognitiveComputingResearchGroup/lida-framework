@@ -32,7 +32,7 @@ public class SensoryMemoryBackgroundTask extends LidaTaskImpl {
 	 * @param moduleUsage It is not used here
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		if (module instanceof SensoryMemory) {
 			sm = (SensoryMemory) module;
 		}else{

@@ -28,7 +28,7 @@ public class BottomRightDetector extends FeatureDetectorImpl {
 
 	@Override
 	public double detect() {
-		double[][] data = (double[][]) sm.getModuleContent();
+		double[][] data = (double[][]) sm.getSensoryContent("", null);
 		
 		if (data != null && data[data.length-1][data[0].length-1] > 0.0) {
 			this.excite(0.01);

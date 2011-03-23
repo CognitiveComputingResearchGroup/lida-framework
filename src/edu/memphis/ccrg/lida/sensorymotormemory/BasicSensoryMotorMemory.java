@@ -69,7 +69,7 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		if (module instanceof Environment) {
 			environment = (Environment) module;
 		} else {

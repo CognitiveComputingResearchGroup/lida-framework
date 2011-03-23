@@ -42,6 +42,15 @@ public interface LidaModule extends FullyInitializable{
 	public LidaModule getSubmodule(ModuleName name);
 	
 	/**
+	 * Gets a subModule.
+	 * 
+	 * @param name
+	 *            of the desired submodule.
+	 * @return the submodule.
+	 */
+	public LidaModule getSubmodule(String name);
+	
+	/**
 	 * Adds submodule as a component of this LidaModule.
 	 * @param lm submodule to add
 	 */

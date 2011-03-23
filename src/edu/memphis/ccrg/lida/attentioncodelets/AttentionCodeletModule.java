@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -27,10 +29,11 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerModule;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 	
 public class AttentionCodeletModule extends LidaModuleImpl implements
-		BroadcastListener, PreafferenceListener {
+		BroadcastListener, PreafferenceListener, CodeletManagerModule {
 
 	private static final Logger logger = Logger
 			.getLogger(AttentionCodeletModule.class.getCanonicalName());
@@ -68,7 +71,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 *            way of associating the module
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, int moduleUsage) {
+	public void setAssociatedModule(LidaModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			csm = (WorkspaceBuffer) module
 					.getSubmodule(ModuleName.CurrentSituationalModel);
@@ -120,14 +123,29 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 * @return AttentionCodelet - the new attention codelet
 	 * 
 	 */
-	public AttentionCodelet getNewCodelet() {
+	public AttentionCodelet getDefaultCodelet(Map<String, Object> params) {
+		return getCodelet(defaultCodeletName, params);
+	}
+
+	@Override
+	public AttentionCodelet getDefaultCodelet() {
+		return getCodelet(defaultCodeletName, null);
+	}
+	
+	@Override
+	public AttentionCodelet getCodelet(String type) {
+		return getCodelet(type, null);
+	}	
+
+	//TODO params not being used currently
+	@Override
+	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(
-				defaultCodeletName, codeletTicksPerStep, codeletActivation,
-				null);
+				type, codeletTicksPerStep, codeletActivation, null);
 		if (codelet == null) {
 			logger.log(
 					Level.WARNING,
-					"Factory returned a null codelet, attention codelet not created.",
+					"Specified type does not exist in the factory. Attention codelet not created.",
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
@@ -143,10 +161,14 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 *            the new attention codelet to be run
 	 * 
 	 */
-	public void runCodelet(AttentionCodelet codelet) {
-		taskSpawner.addTask(codelet);
-		logger.log(Level.FINER, "New attention codelet " + codelet.toString()
+	public void addCodelet(Codelet codelet) {
+		if(codelet instanceof AttentionCodelet){
+			taskSpawner.addTask(codelet);
+			logger.log(Level.FINER, "New attention codelet " + codelet.toString()
 				+ " spawned.", LidaTaskManager.getCurrentTick());
+		}else{
+			logger.log(Level.WARNING, "Can only add an AttentionCodelet", LidaTaskManager.getCurrentTick());
+		}
 	}
 
 	@Override
@@ -200,5 +222,6 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 		super.decayModule(ticks);
 		// TODO
 	}
+
 
 }

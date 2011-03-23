@@ -29,9 +29,9 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 
-	private static Long idGenerator = 0L;
+	private static long idGenerator = 0L;
 	
-	private Long id;
+	private long id;
 	
 	/*
 	 * Set of workspace buffers this codelet 'looks at'
@@ -52,11 +52,6 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	 * This codelet's action
 	 */
 	private CodeletAction action;
-	
-	/*
-	 * This codelet's type
-	 */
-	private CodeletType type;
 	
 	/*
 	 * Expected results of this codelets
@@ -82,12 +77,11 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		readableBuffers.clear();
 		writableBuffer = null;
 		soughtContent = null;
-		action = null;
-		type = CodeletType.ALL_TYPE;		
+		action = null;	
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module, int usage) {
+	public void setAssociatedModule(LidaModule module, String usage) {
 		if(module instanceof WorkspaceBuffer){
 			if(usage == ModuleUsage.TO_READ_FROM){
 				readableBuffers.add((WorkspaceBuffer) module);		
@@ -105,6 +99,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	protected void runThisLidaTask(){	
 		logger.finest("SB codelet " + this.toString() + " being run.");
 		for(WorkspaceBuffer readableBuffer: readableBuffers){
+			//TODO performAction
 			action.performAction(soughtContent, readableBuffer, writableBuffer);	
 		}
 		results.reportFinished();
@@ -135,21 +130,12 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	}
 
 	@Override
-	public void setType(CodeletType t){
-		type = t;
-	}
-	@Override
-	public CodeletType getCodeletType() {
-		return type;
-	}
-
-	@Override
 	public String toString(){
-		return type + " SBCodelet-"+ getTaskId();
+		return " SBCodelet-"+ getTaskId();
 	}
 
 	@Override
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 

@@ -109,9 +109,8 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl {
 		return;
 		}
 		String[] modules = param[0].split("\\.");		
-		try{
-		 moduleType= ModuleName.valueOf(modules[0]);		 
-		}catch (Exception e){
+		moduleType= ModuleName.getModuleName(modules[0]);
+		if(moduleType==null){
 			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
 			return;
 		}
