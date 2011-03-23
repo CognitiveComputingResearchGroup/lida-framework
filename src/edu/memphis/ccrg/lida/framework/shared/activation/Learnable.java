@@ -67,12 +67,12 @@ public interface Learnable extends Activatible{
 	public void decayBaseLevelActivation(long ticks);	
 
     /**
-     * 
+     * Sets decay strategy for the Base Level activation
      * @param strategy the decay strategy for the Base Level activation.
      */
 	public void setBaseLevelDecayStrategy(DecayStrategy strategy);
 	/**
-	 * 
+	 * Gets decay strategy for the Base Level activation
 	 * @return the decay strategy for the Base Level activation.
 	 */
 	public DecayStrategy getBaseLevelDecayStrategy();

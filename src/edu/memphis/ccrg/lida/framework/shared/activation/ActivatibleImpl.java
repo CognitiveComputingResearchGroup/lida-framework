@@ -121,4 +121,4 @@ public class ActivatibleImpl implements Activatible {
 		this.removableThreshold = threshold;
 	}
 
-}//
+}

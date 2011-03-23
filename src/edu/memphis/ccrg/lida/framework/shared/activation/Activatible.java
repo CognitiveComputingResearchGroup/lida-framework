@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 public interface Activatible extends Serializable {
 		
 	/**
+	 * Returns the current activation of this activatible
 	 * @return the current activation.
 	 */
 	public double getActivation();
@@ -32,9 +33,9 @@ public interface Activatible extends Serializable {
 	 */
     public void setActivation(double activation);
     /**
-     * 
-     * @return The total activation. It should return the 
-     * current activation if no based activation is used.
+     * Returns the total activation of this activatible
+     * @return The total activation. 
+     * It should return the current activation if no base activation is used.
      */
 	public double getTotalActivation();
     
@@ -47,12 +48,12 @@ public interface Activatible extends Serializable {
 	 */
     public void excite(double amount); 
     /**
-     * 
+     * Sets the excite strategy
      * @param strategy the Excite strategy for the current activation.
      */
 	public void setExciteStrategy(ExciteStrategy strategy);
 	/**
-	 * 
+	 * Gets the excite strategy
 	 * @return the excite strategy
 	 */
 	public ExciteStrategy getExciteStrategy();
@@ -66,12 +67,12 @@ public interface Activatible extends Serializable {
 	public void decay(long ticks);	
 
     /**
-     * 
+     * Sets the decay strategy
      * @param strategy the decay strategy for the current activation.
      */
 	public void setDecayStrategy(DecayStrategy strategy);
 	/**
-	 * 
+	 * Gets the decay strategy
 	 * @return the decay strategy.
 	 */
 	public DecayStrategy getDecayStrategy();
