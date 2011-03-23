@@ -123,6 +123,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 * @return AttentionCodelet - the new attention codelet
 	 * 
 	 */
+	@Override
 	public AttentionCodelet getDefaultCodelet(Map<String, Object> params) {
 		return getCodelet(defaultCodeletName, params);
 	}
@@ -161,6 +162,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 *            the new attention codelet to be run
 	 * 
 	 */
+	@Override
 	public void addCodelet(Codelet codelet) {
 		if(codelet instanceof AttentionCodelet){
 			taskSpawner.addTask(codelet);
