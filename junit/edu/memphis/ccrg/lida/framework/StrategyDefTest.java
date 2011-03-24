@@ -9,10 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
+import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 
 public class StrategyDefTest {
 
-	StrategyDef strategy,instance;
+	StrategyDef strategy;
+	Strategy instance;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -20,11 +22,13 @@ public class StrategyDefTest {
 	}
 
 	@Test
-	public void testGetInstance() {
+	public void testGetInstance() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		 Map<String, Object> m = new HashMap <String, Object> ();
-		 instance =  new  StrategyDef ("instance","st",m, "strategy", true);		 
-		 //System.out.println (strategy1);
-		 assertEquals ("problem with GetInstance", instance , instance.getInstance());	 
+		 strategy  =  new  StrategyDef ("StartegyDef","strategy",m, "public", true);	
+		 instance  = (Strategy) Class.forName("strategy").newInstance();
+		 instance.init(m);
+		 assertEquals ("problem with GetInstance", instance , strategy.getInstance()); 
+		
 	
 	}
 
