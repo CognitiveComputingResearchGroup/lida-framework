@@ -94,7 +94,7 @@ public class LearnableImplTest {
 		assertEquals(0.4,node2.getLearnableRemovalThreshold(),0.001);
 		 
 		
-		//assertEquals
+		
 	}
 
 	/**
