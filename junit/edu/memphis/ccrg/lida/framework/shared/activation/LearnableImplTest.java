@@ -6,7 +6,6 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -66,8 +65,7 @@ public class LearnableImplTest {
 		node1.setTotalActivationStrategy(ts);
 		node1.setActivation(0.2);
 		node1.setBaseLevelActivation(0.2);
-		//assertEquals("Problem with GetTotalActivation", 0.4, node1.getTotalActivation());  
-	    assertEquals (0.4, node1.getTotalActivation(), 0.000000001);
+		assertEquals ("Problem with GetTotalActivation",0.4, node1.getTotalActivation(), 0.000000001);
 	}
 
 	/**
@@ -76,7 +74,7 @@ public class LearnableImplTest {
 	@Test
 	public void testIsRemovable() {
 		node1.setBaseLevelActivation(-1.0);
-		 assertEquals ("problems",true , node1.isRemovable());
+		 assertEquals ("problem with IsRemovable",true , node1.isRemovable());
 	}
 
 	/**
@@ -88,13 +86,13 @@ public class LearnableImplTest {
 		DecayStrategy ds = new LinearDecayStrategy();
 		TotalActivationStrategy ts= new DefaultTotalActivationStrategy();
 		node2 = new LearnableImpl(0.6,es,ds,ts,0.4);
-		assertEquals(0.6,node2.getActivation(),0.001);
-		assertEquals("Problem with ExciteStrategy",node2.getExciteStrategy(),es);
-		assertEquals("Problem with ExciteStrategy",node2.getDecayStrategy(),ds);
-		assertEquals(0.4,node2.getLearnableRemovalThreshold(),0.001);
+		assertEquals("Problem with LearnableImpl2", 0.6,node2.getActivation(),0.001);
+		assertEquals("Problem with LearnableImpl2",node2.getExciteStrategy(),es);
+		assertEquals("Problem with LearnableImpl2",node2.getDecayStrategy(),ds);
+		assertEquals("Problem with LearnableImpl2",0.4,node2.getLearnableRemovalThreshold(),0.001);
 		 
 		
-		
+		//assertEquals
 	}
 
 	/**
@@ -108,10 +106,10 @@ public class LearnableImplTest {
 		TotalActivationStrategy ts= new DefaultTotalActivationStrategy();
 		node1 = new LearnableImpl(0.6,es,ds,ts,0.4);
 		node2 = new LearnableImpl(node1);
-		assertEquals(0.6,node2.getActivation(),0.001);
-		assertEquals("Problem with ExciteStrategy",node2.getExciteStrategy(),es);
-		assertEquals("Problem with ExciteStrategy",node2.getDecayStrategy(),ds);
-		assertEquals(0.4,node2.getLearnableRemovalThreshold(),0.001);
+		assertEquals("Problem with LearnableImpl",0.6,node2.getActivation(),0.001);
+		assertEquals("Problem with LearnableImpl",node2.getExciteStrategy(),es);
+		assertEquals("Problem with LearnableImpl",node2.getDecayStrategy(),ds);
+		assertEquals("Problem with LearnableImpl",0.4,node2.getLearnableRemovalThreshold(),0.001);
 		 
 	}
 
