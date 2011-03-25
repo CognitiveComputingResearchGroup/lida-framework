@@ -71,8 +71,9 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 						+ b.getActivation(), LidaTaskManager.getCurrentTick());
 				sendAction(b.getAction());
 				coolDownCounter = 0;
-			} else
+			} else{
 				coolDownCounter++;
+			}
 
 			logger.log(Level.FINE, "Selected action: " + b.getAction(),
 					LidaTaskManager.getCurrentTick());

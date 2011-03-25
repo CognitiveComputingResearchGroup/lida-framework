@@ -49,16 +49,9 @@ public interface LidaTask extends Callable<LidaTask>, Learnable, FullyInitializa
 	public void setTaskStatus(LidaTaskStatus status);
 
 	/**
-	 * The LidaTask must stop.
+	 * Tells this LidaTask to shutdown.
 	 */
 	public void stopRunning();
-	
-	/**
-	 * Each LidaTask is meant to have a unique id that is set at the time of creation.
-	 * 
-	 * @param id unique task identifier
-	 */
-	public void setTaskID(long id);
 	
 	/**
 	 * Each LidaTask is meant to have a unique id that is set at the time of creation.
@@ -80,12 +73,6 @@ public interface LidaTask extends Callable<LidaTask>, Learnable, FullyInitializa
 	 * @return ticks 
 	 */
 	public  int getTicksPerStep();
-	
-	/**
-	 * It is useful to override toString for Tasks for comprehension in the GUI.
-	 */
-	@Override
-	public String toString();
 	
 	/**
 	 * Sets TaskSpawner that controls this LidaTask.

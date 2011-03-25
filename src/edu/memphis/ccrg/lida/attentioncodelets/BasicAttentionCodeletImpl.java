@@ -46,7 +46,7 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 			}
 		}
 
-		logger.log(Level.FINE, "Attn codelet " + this.toString() + " found sought content", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Attn codelet " + this.toString() + " found sought content", LidaTaskManager.getCurrentTick());
 		return true;
 	}
 	
@@ -59,7 +59,7 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	 * @return the workspace content
 	 */
 	@Override
-	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer) {
+	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {
 		//TODO Naive implementation. Should not copy entire buffer.
 		return ((NodeStructure) buffer.getBufferContent(null)).copy();
 	}

@@ -9,10 +9,13 @@ package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Collection;
 
+import org.apache.commons.collections15.collection.UnmodifiableCollection;
+
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
- * TaskSpawners create, manage, and end LidaTasks.  
+ * TaskSpawners manage {@link LidaTask}s. Maintains a {@link Collection} of all added tasks.
+ * Provides method to process the result of a {@link LidaTask}.
  * 
  * @author Ryan J McCall
  */
@@ -22,8 +25,7 @@ public interface TaskSpawner extends Initializable {
 	 * Set the LidaTaskManager this TaskSpawner will use to actually run the
 	 * tasks.
 	 * 
-	 * @param taskManager
-	 *            task manager
+	 * @param taskManager the {@link LidaTaskManager} of the system.
 	 */
 	public void setTaskManager(LidaTaskManager taskManager);
 	
@@ -36,22 +38,23 @@ public interface TaskSpawner extends Initializable {
 	/**
 	 * Adds and runs supplied LidaTasks.
 	 * 
-	 * @param initialTasks
-	 *            the initial tasks
+	 * @param tasks
+	 *            a collection of tasks to be run.
 	 */
-	public void addTasks(Collection<? extends LidaTask> initialTasks);
+	public void addTasks(Collection<? extends LidaTask> tasks);
 		
 	/**
-	 * This method receives the tasks that have finished. Each TaskSpawner can choose what to do 
-	 * with each LidaTask each time it finished to run one step. Generally the LidaTask's status commands this 
-	 * action.
+	 * This method receives a task  that has finished. TaskSpawners can choose what to do 
+	 * with the LidaTask each time it finishes running. Generally the LidaTask's {@link LidaTaskStatus}
+	 * determines this action.
 	 * 
-	 * @param task finished LidaTask
+	 * @param task finished {@link LidaTask}
 	 */
 	public void receiveFinishedTask(LidaTask task);
 	
 	/**
-	 * Cancels the task from the task queue. This is only possible if the tick for witch the task 
+	 * Cancels the task in the {@link LidaTaskManager}. 
+	 * This is only possible if the tick for which the task 
 	 * is scheduled has not been reached.
 	 * 
 	 * @param task The task to cancel.
@@ -59,15 +62,15 @@ public interface TaskSpawner extends Initializable {
 	public void cancelTask(LidaTask task);
 	
 	/**
-	 * returns a unmodifiable Collection that contains the LidaTasks in this
-	 * Spawner.
+	 * Returns a {@link UnmodifiableCollection} that contains the LidaTasks in this
+	 * TaskSpawner.
 	 * 
-	 * @return collection
+	 * @return collection of running tasks.
 	 */
 	public Collection<LidaTask> getRunningTasks();
 
 	/**
-	 * Returns whether this TaskSpawner manages this task
+	 * Returns whether this TaskSpawner manages this task.
 	 * @param t a LidaTask
 	 * @return True if this taskspawner contains a task with t's id
 	 */

@@ -50,6 +50,6 @@ public interface AttentionCodelet extends Codelet{
 	 *            the buffer
 	 * @return the workspace content
 	 */
-	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer); 
+	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer); 
 
 }

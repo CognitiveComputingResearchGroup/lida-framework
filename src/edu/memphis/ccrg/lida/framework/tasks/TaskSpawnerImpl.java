@@ -41,9 +41,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		taskManager=tm;
 	}
 	
-	/**
-	 * @param taskManager task manager
-	 */
 	@Override
 	public void setTaskManager(LidaTaskManager taskManager) {
 		this.taskManager = taskManager;
@@ -56,9 +53,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		}
 	}
 
-	/**
-	 * Add a task to this taskspawner to be run
-	 */
 	@Override
 	public void addTask(LidaTask task) {
 		task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
@@ -79,10 +73,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		taskManager.scheduleTask(task, task.getNextTicksPerStep());
 	}
 
-	/**
-	 * Finished tasks call this method. 
-	 * @see LidaTaskImpl
-	 */
 	@Override
 	public void receiveFinishedTask(LidaTask task) {
 		switch (task.getStatus()) {
@@ -145,6 +135,11 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		taskManager.cancelTask(task);		
 	}
 
+	@Override
+	public boolean containsTask(LidaTask t) {
+		return runningTasks.contains(t);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -177,10 +172,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 			value = defaultValue;
 		}
 		return value;
-	}
-	@Override
-	public boolean containsTask(LidaTask t) {
-		return runningTasks.contains(t);
 	}
 
 }

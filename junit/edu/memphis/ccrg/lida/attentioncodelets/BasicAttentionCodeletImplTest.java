@@ -79,7 +79,7 @@ public class BasicAttentionCodeletImplTest {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		model.mergeWith(nodeStructure);
 		
-		boolean test = NodeStructureImpl.compareNodeStructures(nodeStructure,attnCodelet.getWorkspaceContent(buffer));
+		boolean test = NodeStructureImpl.compareNodeStructures(nodeStructure,attnCodelet.retreiveWorkspaceContent(buffer));
 		if(test==false)
 		{
 			fail("Problem with HasSoughtContent");

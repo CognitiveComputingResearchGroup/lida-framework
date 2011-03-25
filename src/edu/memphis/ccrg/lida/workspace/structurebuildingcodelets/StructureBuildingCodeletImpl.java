@@ -88,19 +88,10 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 			logger.log(Level.WARNING, "Expected module to be a WorkspaceBuffer but it was not.  Module not added.", LidaTaskManager.getCurrentTick());
 		}
 	}
-                            
+    	
 	@Override
 	protected abstract void runThisLidaTask();
 	
-	@Override
-	public void setSoughtContent(NodeStructure content){
-		soughtContent = content;
-	}
-	@Override
-	public NodeStructure getSoughtContent(){
-		return soughtContent;
-	}
-
 	@Override
 	public CodeletRunResult getCodeletRunResult(){
 		return results;

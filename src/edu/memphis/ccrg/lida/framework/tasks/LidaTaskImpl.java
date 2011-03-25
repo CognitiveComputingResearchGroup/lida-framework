@@ -31,7 +31,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	private long nextExcecutionTicksPerStep = defaultTicksPerStep;
 	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
 	private Map<String, ? extends Object> parameters;
-	private TaskSpawner ts;
+	private TaskSpawner controllingTS;
 	private long scheduledTick;
 	
 	/**
@@ -48,9 +48,9 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	public LidaTaskImpl(int ticksPerStep) {
 		this(ticksPerStep,null);
 	}
-	public LidaTaskImpl(int ticksPerStep,TaskSpawner ts) {
+	public LidaTaskImpl(int ticksPerStep, TaskSpawner ts) {
 		taskID = nextTaskID++;
-		this.ts=ts;
+		this.controllingTS=ts;
 		setTicksPerStep(ticksPerStep);
 	}
 	
@@ -71,7 +71,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	 */
 	@Override
 	public LidaTask call() {
-		nextExcecutionTicksPerStep=ticksPerStep;
+		nextExcecutionTicksPerStep = ticksPerStep;
 		
 		try{
 			runThisLidaTask();
@@ -80,11 +80,12 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 			e.printStackTrace();
 		}
 		
-		if (ts != null) 
-			ts.receiveFinishedTask(this);
-		else 
+		if (controllingTS != null){ 
+			controllingTS.receiveFinishedTask(this);
+		}else {
 			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] { LidaTaskManager.getCurrentTick(), this });
-		
+		}
+			
 		return this;
 	}
 
@@ -98,11 +99,12 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	protected abstract void runThisLidaTask();
 
 	@Override
-	public void setTaskStatus(LidaTaskStatus status) {
-		if (this.status != LidaTaskStatus.CANCELED)
+	public synchronized void setTaskStatus(LidaTaskStatus status) {
+		if (this.status != LidaTaskStatus.CANCELED){
 			this.status = status;
-		else
+		}else {
 			logger.log(Level.WARNING, "Cannot set task status to CANCELED", LidaTaskManager.getCurrentTick());
+		}
 	}
 
 	@Override
@@ -115,21 +117,16 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 		return taskID;
 	}
 
-	@Override
-	public void setTaskID(long id) {
-		taskID = id;
-	}
-
 	/**
 	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTask#getTicksPerStep()
 	 */
 	@Override
-	public int getTicksPerStep() {
+	public synchronized int getTicksPerStep() {
 		return ticksPerStep;
 	}
 
 	@Override
-	public void setTicksPerStep(int ticks) {
+	public synchronized void setTicksPerStep(int ticks) {
 		if (ticks > 0){
 			ticksPerStep = ticks;
 			setNextTicksPerStep(ticks);
@@ -177,15 +174,15 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	 */
 	@Override
 	public TaskSpawner getControllingTaskSpawner() {		
-		return ts;
+		return controllingTS;
 	}
 
 	/*
 	 * @see edu.memphis.ccrg.lida.framework.LidaTask#setControllingTaskSpawner(edu.memphis.ccrg.lida.framework.TaskSpawner)
 	 */
 	@Override
-	public void setControllingTaskSpawner(TaskSpawner ts) {
-		this.ts=ts;		
+	public void setControllingTaskSpawner(TaskSpawner controllingTS) {
+		this.controllingTS=controllingTS;		
 	}
 	
 	@Override
@@ -195,11 +192,12 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	
 	@Override
 	public void setNextTicksPerStep(long lapTick) {
-		this.nextExcecutionTicksPerStep=lapTick;	
+		this.nextExcecutionTicksPerStep =lapTick;	
 	}
 	
 	@Override
 	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+		//Subclasses have the option of overriding this method.
 	}	
 	
 	@Override

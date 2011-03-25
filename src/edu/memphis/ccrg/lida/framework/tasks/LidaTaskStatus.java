@@ -43,17 +43,10 @@ public enum LidaTaskStatus {
 	 * Task is not running and not finished.
 	 */
 	WAITING_TO_RUN,
-	
-//	/**
-//	 * LidaTask status value:
-//	 * Task has finished and must be reset and started again.
-//	 */
-//	TO_RESET,
 
 	/**
 	 * LidaTask status value:
 	 * Task has finished and has results to process
-	 * TODO: How is this one different from FInished?
 	 */
 	FINISHED_WITH_RESULTS
 }

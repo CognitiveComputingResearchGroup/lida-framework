@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -42,15 +41,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 
 	protected GlobalWorkspace globalWorkspace;
 
-	protected NodeStructure soughtContent;
-
 	public AttentionCodeletImpl() {
 		super();
-		soughtContent = new NodeStructureImpl();
-	}
-
-	@Override
-	public void init() {
 	}
 
 	/**
@@ -84,53 +76,14 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
-			NodeStructure csmContent = getWorkspaceContent(currentSituationalModel);
+			NodeStructure csmContent = retreiveWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0) {
 				globalWorkspace.addCoalition(new CoalitionImpl(
 						(BroadcastContent) csmContent, getActivation(), this));
-				logger.log(Level.FINE, this + " adds coalition",
+				logger.log(Level.FINER, this + " adds coalition",
 						LidaTaskManager.getCurrentTick());
 			}
 		}
-	}
-
-	/**
-	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
-	 * content.
-	 * 
-	 * @param buffer
-	 *            the WorkspaceBuffer to be checked for content
-	 * @return true, if successful
-	 */
-	@Override
-	public abstract boolean hasSoughtContent(WorkspaceBuffer buffer);
-
-	/**
-	 * Returns sought content and related content from specified
-	 * WorkspaceBuffer.
-	 * 
-	 * @param buffer
-	 *            the buffer
-	 * @return the workspace content
-	 */
-	@Override
-	public abstract NodeStructure getWorkspaceContent(WorkspaceBuffer buffer);
-
-	/**
-	 * @return the sought content
-	 */
-	@Override
-	public NodeStructure getSoughtContent() {
-		return soughtContent;
-	}
-
-	/**
-	 * @param content
-	 *            sought content
-	 */
-	@Override
-	public void setSoughtContent(NodeStructure content) {
-		soughtContent = content;
 	}
 
 	@Override

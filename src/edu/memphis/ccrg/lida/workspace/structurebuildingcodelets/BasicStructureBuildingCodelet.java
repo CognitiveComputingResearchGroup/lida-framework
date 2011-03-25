@@ -5,7 +5,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl {
@@ -23,11 +26,29 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 		logger.log(Level.FINEST, "SB codelet " + this.toString() + " being run.", 
 				LidaTaskManager.getCurrentTick());
 		for(WorkspaceBuffer readableBuffer: readableBuffers){
+			if(hasSoughtContent(readableBuffer)){
+				writableBuffer.addBufferContent((WorkspaceContent) retreiveWorkspaceContent(readableBuffer));
+			}
 			writableBuffer.addBufferContent(readableBuffer.getBufferContent(null));
 		}
 		results.reportRunResults(resultMap);
 		logger.log(Level.FINEST, "SB codelet " + this.toString() + " finishes one run.",
 				LidaTaskManager.getCurrentTick());
+	}
+
+	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {
+		return buffer.getBufferContent(null);
+	}
+
+	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
+		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
+		for(Linkable ln: soughtContent.getLinkables()){
+			if(!ns.containsLinkable(ln)){
+				return false;
+			}
+		}
+		logger.log(Level.FINEST, "SBcodelet " + this.toString() + " found sought content", LidaTaskManager.getCurrentTick());
+		return true;
 	}
 
 }

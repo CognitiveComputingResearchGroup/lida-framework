@@ -11,18 +11,9 @@
     <strategy flyweight="true" name="defaultExcite" type="excite">
       <class>edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy</class>      <param name="m" type="double">1.0</param>
     </strategy>
-    <strategy flyweight="true" name="defaultDecay" type="decay">
-      <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>
-      <param name="m" type="double">0.1</param>
-    </strategy>
-  </strategies>
+    <strategy flyweight="true" name="defaultDecay" type="decay">      <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>      <param name="m" type="double">0.1</param>    </strategy>    <strategy flyweight="true" name="slowDecay" type="decay">      <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>      <param name="m" type="double">0.01</param>    </strategy>  </strategies>
   <nodes>
-    <node name="node">
-      <class>edu.memphis.ccrg.lida.framework.shared.NodeImpl</class>
-      <defaultstrategy>defaultDecay</defaultstrategy>
-      <defaultstrategy>defaultExcite</defaultstrategy>
-    </node>
-  </nodes>
+    <node name="node">      <class>edu.memphis.ccrg.lida.framework.shared.NodeImpl</class>      <defaultstrategy>defaultDecay</defaultstrategy>      <defaultstrategy>defaultExcite</defaultstrategy>    </node>    <node name="nodeSlow">      <class>edu.memphis.ccrg.lida.framework.shared.NodeImpl</class>      <defaultstrategy>slowDecay</defaultstrategy>      <defaultstrategy>defaultExcite</defaultstrategy>    </node>  </nodes>
   <links>
     <link name="link">
       <class>edu.memphis.ccrg.lida.framework.shared.LinkImpl</class>      <defaultstrategy>defaultDecay</defaultstrategy>
