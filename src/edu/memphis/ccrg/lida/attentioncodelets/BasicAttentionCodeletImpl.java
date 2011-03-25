@@ -38,7 +38,7 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	 */
 	@Override
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
-		NodeStructure model = (NodeStructure) buffer.getModuleContent();
+		NodeStructure model = (NodeStructure) buffer.getBufferContent(null);
 		
 		for(Linkable ln: soughtContent.getLinkables()){
 			if(!model.containsLinkable(ln)){
@@ -61,7 +61,7 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	@Override
 	public NodeStructure getWorkspaceContent(WorkspaceBuffer buffer) {
 		//TODO Naive implementation. Should not copy entire buffer.
-		return ((NodeStructure) buffer.getModuleContent()).copy();
+		return ((NodeStructure) buffer.getBufferContent(null)).copy();
 	}
 
 }

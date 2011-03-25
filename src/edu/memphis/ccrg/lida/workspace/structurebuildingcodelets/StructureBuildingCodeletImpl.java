@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  *
  */
-public class StructureBuildingCodeletImpl extends CodeletImpl implements StructureBuildingCodelet{
+public abstract class StructureBuildingCodeletImpl extends CodeletImpl implements StructureBuildingCodelet{
 	
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 
@@ -36,27 +36,22 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	/*
 	 * Set of workspace buffers this codelet 'looks at'
 	 */
-	private Set<WorkspaceBuffer> readableBuffers;
+	protected Set<WorkspaceBuffer> readableBuffers;
 	
 	/*
 	 *  Buffer written to.
 	 */
-	private WorkspaceBuffer writableBuffer;
+	protected WorkspaceBuffer writableBuffer;
 	
 	/*
 	 * The node structure required for this codelet's action to occur
 	 */
-	private NodeStructure soughtContent;
-	
-	/*
-	 * This codelet's action
-	 */
-	private CodeletAction action;
+	protected NodeStructure soughtContent;
 	
 	/*
 	 * Expected results of this codelets
 	 */
-	private CodeletRunResult results;
+	protected CodeletRunResult results;
 	
 	/**
 	 * 
@@ -66,7 +61,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		id = idGenerator++;
 		readableBuffers = new HashSet<WorkspaceBuffer>();
 		soughtContent = new NodeStructureImpl();
-		action = new BasicCodeletAction();
+		results = new BasicCodeletResult();
 	}
 	
 	@Override
@@ -77,7 +72,6 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 		readableBuffers.clear();
 		writableBuffer = null;
 		soughtContent = null;
-		action = null;	
 	}
 	
 	@Override
@@ -96,15 +90,7 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	}
                             
 	@Override
-	protected void runThisLidaTask(){	
-		logger.finest("SB codelet " + this.toString() + " being run.");
-		for(WorkspaceBuffer readableBuffer: readableBuffers){
-			//TODO performAction
-			action.performAction(soughtContent, readableBuffer, writableBuffer);	
-		}
-		results.reportFinished();
-		logger.finest("SB codelet " + this.toString() + " finishes one run.");
-	}
+	protected abstract void runThisLidaTask();
 	
 	@Override
 	public void setSoughtContent(NodeStructure content){
@@ -113,15 +99,6 @@ public class StructureBuildingCodeletImpl extends CodeletImpl implements Structu
 	@Override
 	public NodeStructure getSoughtContent(){
 		return soughtContent;
-	}
-	
-	@Override
-	public void setCodeletAction(CodeletAction a){
-		action = a;
-	}	
-	@Override
-	public CodeletAction getCodeletAction(){
-		return action;
 	}
 
 	@Override

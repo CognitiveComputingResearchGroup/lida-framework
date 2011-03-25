@@ -78,7 +78,7 @@ public class AttentionCodeletModuleTest {
 		ns.addDefaultLink(link2);	
 		
 		codelet.setSoughtContent(ns);	
-		NodeStructure model = (NodeStructure) csm.getModuleContent();
+		NodeStructure model = (NodeStructure) csm.getBufferContent(null);
 		model.mergeWith(ns);
 		
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);

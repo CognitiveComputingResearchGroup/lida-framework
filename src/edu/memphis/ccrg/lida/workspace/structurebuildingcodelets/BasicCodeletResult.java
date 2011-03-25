@@ -7,21 +7,24 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BasicCodeletResult implements CodeletRunResult {
 	
-	//TODO enum
-	private int exitStatus;
+	private Map<String, Object> resultMap;
 	
 	public BasicCodeletResult(){
-		exitStatus = -1;
+		resultMap = new HashMap<String, Object>();
 	}
-	
+
 	@Override
-	public void reportFinished(){
-		exitStatus = 1;
+	public Map<String, Object> getRunResults(){
+		return resultMap;
 	}
+
 	@Override
-	public int getCompletionStatus(){
-		return exitStatus;
+	public void reportRunResults(Map<String, Object> results) {
+		resultMap = results;
 	}
 }

@@ -22,9 +22,6 @@ public interface StructureBuildingCodelet extends Codelet{
 
 	 public void setSoughtContent(NodeStructure content);
 	 public NodeStructure getSoughtContent();
-	
-	 public void setCodeletAction(CodeletAction a);
-	 public CodeletAction getCodeletAction();
 	 
 	 /** 
 	  * Returns current {@link CodeletRunResult}

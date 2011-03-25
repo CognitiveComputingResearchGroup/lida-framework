@@ -41,7 +41,7 @@ public interface CodeletManagerModule extends LidaModule{
 	
 	/**
 	 * Adds specified {@link Codelet} to this module to be run.
-	 * @param cod
+	 * @param cod Codelet to be added to run
 	 */
 	public void addCodelet(Codelet cod);
 

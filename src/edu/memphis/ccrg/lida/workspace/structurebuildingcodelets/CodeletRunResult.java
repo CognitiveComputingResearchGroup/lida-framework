@@ -7,20 +7,25 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import java.util.Map;
+
 /**
- * An encapsulation of result of a run of a codelet.  
+ * An encapsulation of the result of a run of a codelet.  
  * @author Ryan J. McCall
  *
  */
 public interface CodeletRunResult {
 
-	public void reportFinished();
-	
+	/**
+	 * Stores the result of the codelet's current run.
+	 * @param results Map of relavent data
+	 */
+	public void reportRunResults(Map<String, Object> results);
 	
 	/**
-	 * Returns completionStatus
-	 * @return int representing completion
+	 * Returns  the result of the codelet's current run.
+	 * @return Map of relavent data
 	 */
-	public int getCompletionStatus();
+	public Map<String, Object> getRunResults();
 	
 }
