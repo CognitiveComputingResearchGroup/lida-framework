@@ -1,10 +1,7 @@
 
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 

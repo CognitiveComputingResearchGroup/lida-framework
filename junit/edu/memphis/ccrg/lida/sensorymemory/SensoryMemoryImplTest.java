@@ -8,29 +8,29 @@
 
 package edu.memphis.ccrg.lida.sensorymemory;
 
-import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 import java.util.Map;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import edu.memphis.ccrg.lida.environment.Environment;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * This class is the JUnit test for <code>SensoryMemoryImpl</code> class.
  * @author Rodrigo Silva-Lugo
  */
 public class SensoryMemoryImplTest {
-
-    private SensoryMotorMemoryListener sensoryMemory;
 
     /**
      * 
@@ -127,20 +127,21 @@ public class SensoryMemoryImplTest {
         // TODO review the generated test code and remove the default call to fail.
     }
 
-    /**
-     * Test of decayModule method, of class SensoryMemoryImpl.
-     */
-    @Test
-    public void testDecayModule() {
-        // Pre: instance has activation A.
-        // Pos: instance has activation A', A' < A.
-        System.out.println("decayModule");
-        long ticks = 0L;
-        SensoryMemoryImpl instance = new MockSensoryMemoryImpl();
-        Object SMContent = instance.getModuleContent();
-        instance.decayModule(ticks);
-        // TODO review the generated test code and remove the default call to fail.
-    }
+    //HEY!! You don't need to test this method.  ~Ryan
+//    /**
+//     * Test of decayModule method, of class SensoryMemoryImpl.
+//     */
+//    @Test
+//    public void testDecayModule() {
+//        // Pre: instance has activation A.
+//        // Pos: instance has activation A', A' < A.
+//        System.out.println("decayModule");
+//        long ticks = 0L;
+//        SensoryMemoryImpl instance = new MockSensoryMemoryImpl();
+//        Object SMContent = instance.getModuleContent();
+//        instance.decayModule(ticks);
+//        // TODO review the generated test code and remove the default call to fail.
+//    }
 
     /**
      *
