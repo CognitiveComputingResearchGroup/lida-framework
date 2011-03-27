@@ -28,10 +28,6 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 public abstract class StructureBuildingCodeletImpl extends CodeletImpl implements StructureBuildingCodelet{
 	
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
-
-	private static long idGenerator = 0L;
-	
-	private long id;
 	
 	/*
 	 * Set of workspace buffers this codelet 'looks at'
@@ -58,7 +54,6 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	 */
 	public StructureBuildingCodeletImpl(){
 		super();
-		id = idGenerator++;
 		readableBuffers = new HashSet<WorkspaceBuffer>();
 		soughtContent = new NodeStructureImpl();
 		results = new BasicCodeletResult();
@@ -100,11 +95,6 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	@Override
 	public String toString(){
 		return " SBCodelet-"+ getTaskId();
-	}
-
-	@Override
-	public long getId() {
-		return id;
 	}
 
 } 

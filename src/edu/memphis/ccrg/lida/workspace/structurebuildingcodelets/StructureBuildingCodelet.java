@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
@@ -19,9 +18,6 @@ import edu.memphis.ccrg.lida.framework.tasks.Codelet;
  *
  */
 public interface StructureBuildingCodelet extends Codelet{
-
-	 public void setSoughtContent(NodeStructure content);
-	 public NodeStructure getSoughtContent();
 	 
 	 /** 
 	  * Returns current {@link CodeletRunResult}
@@ -35,6 +31,5 @@ public interface StructureBuildingCodelet extends Codelet{
 	 * after it finishes to be run as a different altogether codelet. 
 	 */
 	public void reset();
-	public long getId();
 
 }

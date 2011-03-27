@@ -36,10 +36,12 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 				LidaTaskManager.getCurrentTick());
 	}
 
+	@Override
 	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {
 		return buffer.getBufferContent(null);
 	}
 
+	@Override
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
 		for(Linkable ln: soughtContent.getLinkables()){

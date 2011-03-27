@@ -423,7 +423,7 @@ public class LidaTaskManager {
 		/**
 		 * Updates the interval that all decayables should decay.
 		 * Must be setup before executing the run() method.
-		 * @param currentTick
+		 * @param currentTick current tick of the task manager
 		 */
 		public static void setDecayInterval(long currentTick) {
 			ticksToDecay = currentTick - lastDecayTick;
@@ -431,7 +431,7 @@ public class LidaTaskManager {
 
 		/**
 		 * Sets the last time that the decayables were decayed.
-		 * @param lastDecayTick
+		 * @param lastDecayTick last tick modules were decayed
 		 */
 		public static void setLastDecayTick(long lastDecayTick) {
 			DecayableWrapper.lastDecayTick = lastDecayTick;
