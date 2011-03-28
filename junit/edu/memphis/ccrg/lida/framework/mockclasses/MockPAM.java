@@ -38,7 +38,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public ModuleName getModuleName() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -47,7 +47,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void setModuleName(ModuleName moduleName) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -56,7 +56,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public LidaModule getSubmodule(ModuleName name) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -65,7 +65,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void addSubModule(LidaModule lm) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -74,7 +74,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -83,7 +83,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -92,7 +92,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -101,7 +101,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -110,7 +110,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public TaskSpawner getAssistingTaskSpawner() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -119,7 +119,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void setAssociatedModule(LidaModule module, String moduleUsage) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -128,7 +128,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void init(Map<String, ?> parameters) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -137,7 +137,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -146,7 +146,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Object getParam(String name, Object defaultValue) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -155,7 +155,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Object getState() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -164,7 +164,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean setState(Object content) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
@@ -173,7 +173,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public PamNode addNewNode(String label) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -182,7 +182,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public PamNode addNewNode(String type, String label) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -191,7 +191,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public PamNode addDefaultNode(Node node) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -200,7 +200,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -209,8 +209,8 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Link addNewLink(Node source, Node sink, LinkCategory type,
-			double activation) {
-		// TODO Auto-generated method stub
+			double activation, double removalThreshold) {
+		// not implemented
 		return null;
 	}
 
@@ -219,8 +219,8 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId,
-			LinkCategory type, double activation) {
-		// TODO Auto-generated method stub
+			LinkCategory type, double activation, double removalThreshold) {
+		// not implemented
 		return null;
 	}
 
@@ -229,7 +229,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -238,7 +238,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void addFeatureDetector(FeatureDetector fd) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -247,7 +247,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void addPamListener(PamListener pl) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -257,7 +257,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void setPropagationBehavior(PropagationBehavior b) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -266,7 +266,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void receiveActivationBurst(PamNode node, double amount) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -275,7 +275,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -285,7 +285,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	@Override
 	public void propagateActivation(PamNode source, PamNode sink, PamLink link,
 			double amount) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -325,7 +325,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean containsNode(Node node) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
@@ -334,7 +334,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean containsNode(ExtendedId id) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
@@ -343,7 +343,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean containsLink(Link link) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
@@ -352,7 +352,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean containsLink(ExtendedId id) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
@@ -370,7 +370,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void setUpscaleFactor(double f) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -379,7 +379,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public double getUpscaleFactor() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return 0;
 	}
 
@@ -388,7 +388,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public void setDownscaleFactor(double f) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
@@ -397,7 +397,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public double getDownscaleFactor() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return 0;
 	}
 
@@ -406,7 +406,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return l.getTotalActivation()>= MockPAM.perceptThreshold;
 
 	}
@@ -426,7 +426,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Node getPamNode(ExtendedId id) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -435,7 +435,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Link getPamLink(ExtendedId id) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -444,19 +444,24 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Collection<Node> getPamNodes() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public Collection<Link> getPamLinks() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public LidaModule getSubmodule(String name) {
-		// TODO Auto-generated method stub
+		// not implemented
+		return null;
+	}
+
+	@Override
+	public PamLink addDefaultLink(Link link) {
 		return null;
 	}
 

@@ -102,7 +102,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public void init(Map<String, ?> parameters) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
@@ -113,13 +113,13 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public LidaModule getSubmodule(String name) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 

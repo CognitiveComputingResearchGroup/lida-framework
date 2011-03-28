@@ -65,28 +65,13 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes);
 	
 	/**
-	 * Creates and adds a new link to this PAM.
+	 * Adds a COPY of specified link to this PAM.
+	 * Link will be of Pam's default type.
 	 *
-	 * @param source source for link
-	 * @param sink sink for link
-	 * @param type type for link
-	 * @param activation initial activation for link
-	 * @return created link
+	 * @param link  PamLink to add
+	 * @return Copied PamLink actually stored in this PAM
 	 */
-	public Link addNewLink(Node source, Node sink, LinkCategory type, double activation);
-
-	/**
-	 * Creates and adds a new default link to this PAM.
-	 *
-	 * @param sourceId Source's {@link ExtendedId}
-	 * @param sinkId Sink's {@link ExtendedId}
-	 * @param type Link's LinkCategory
-	 * @param activation initial activation
-	 * @return created Link
-	 */
-	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation);
-	
-	//TODO specify removal threshold? ^^
+	public PamLink addDefaultLink(Link link);
 	
 	/**
 	 * Adds a COPY of a collection of PamLinks to this PAM.
@@ -96,6 +81,30 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @return Copied PamLinks actually stored in this PAM
 	 */
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links);
+	
+	/**
+	 * Creates and adds a new link to this PAM.
+	 *
+	 * @param source source for link
+	 * @param sink sink for link
+	 * @param type type for link
+	 * @param activation initial activation for link
+	 * @param removalThreshold TODO
+	 * @return created link
+	 */
+	public Link addNewLink(Node source, Node sink, LinkCategory type, double activation, double removalThreshold);
+
+	/**
+	 * Creates and adds a new default link to this PAM.
+	 *
+	 * @param sourceId Source's {@link ExtendedId}
+	 * @param sinkId Sink's {@link ExtendedId}
+	 * @param type Link's LinkCategory
+	 * @param activation initial activation
+	 * @param removalThreshold TODO
+	 * @return created Link
+	 */
+	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation, double removalThreshold);
 	
 	/**
 	 * Adds and runs specified FeatureDetector.

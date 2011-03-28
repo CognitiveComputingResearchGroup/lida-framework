@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -16,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * Default implementation of PamNode.  Basically a {@link Learnable} {@link Node}.
@@ -26,10 +28,12 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  */
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
-	public static final String factoryName = PamNodeImpl.class.getSimpleName();
 	
+	/**
+	 * Useful attribute for specified this type to the factory.
+	 */
+	public static final String factoryName = PamNodeImpl.class.getSimpleName();
 	
 	/*
 	 * Private Learnable object used for all learnable methods
@@ -193,10 +197,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	@Override
 	public void updateSubclassValues(Node n) {
-		//TODO use copy constructor instead?
 		if(n instanceof PamNodeImpl){
 			PamNodeImpl pn = (PamNodeImpl) n;
-			learnable = pn.learnable;
+			learnable = new LearnableImpl(pn.learnable);
+		}else{
+			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
+					PamNodeImpl.class.getCanonicalName() + " but received: " + 
+					n.getClass().getCanonicalName(), LidaTaskManager.getCurrentTick());
 		}
 	}
 }

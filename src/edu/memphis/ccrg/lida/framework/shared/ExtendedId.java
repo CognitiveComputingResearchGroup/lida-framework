@@ -42,12 +42,11 @@ public class ExtendedId {
 
 	/**
 	 * Constructs an ExtendedId for a {@link Link}.
-	 * 
-	 * @param category Link's category
 	 * @param sourceNodeId Node's id
 	 * @param sinkId Sink's id
+	 * @param category Link's category
 	 */
-	public ExtendedId(int category, int sourceNodeId, ExtendedId sinkId) {
+	public ExtendedId(int sourceNodeId, ExtendedId sinkId, int category) {
 		super();
 		this.linkCategory = category;
 		this.sourceNodeId = sourceNodeId;

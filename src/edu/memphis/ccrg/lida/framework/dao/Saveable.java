@@ -13,10 +13,17 @@
 package edu.memphis.ccrg.lida.framework.dao;
 
 /**
- *
- * @author Tom
+ * 
+ * @author Tom Madl
  */
 public interface Saveable {
+	
+    /**
+     * Returns class state
+     * @return state of the Saveable
+     */
     public Object getState();
+    
     public boolean setState(Object content);
+    
 }

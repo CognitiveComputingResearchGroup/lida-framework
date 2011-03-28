@@ -122,7 +122,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
 			logger.log(Level.FINEST, "updated extended id", LidaTaskManager.getCurrentTick());
-			extendedId = new ExtendedId(category.getId(), source.getId(), sink.getExtendedId());
+			extendedId = new ExtendedId(source.getId(), sink.getExtendedId(), category.getId());
 		}
 	}
 
@@ -220,9 +220,20 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return extendedId.isSimpleLink();
 	}
 
+	/**
+	 * Updates the values of this LinkImpl based on the passed in Link.  
+	 * Link must be a LinkImpl.
+	 * Does not copy superclass attributes, e.g. ActivatibleImpl, only those of this class.
+	 */
 	@Override
 	public void updateSubclassValues(Link link) {
-		throw new UnsupportedOperationException("Only an overridde of this method in a subclass should be called");
+		if(link instanceof LinkImpl){
+			LinkImpl other = (LinkImpl) link;
+			this.extendedId = other.extendedId;
+			this.category = other.category;
+			this.groundingPamLink = other.groundingPamLink;
+			this.parameters = other.parameters;
+		}
 	}
 
 }

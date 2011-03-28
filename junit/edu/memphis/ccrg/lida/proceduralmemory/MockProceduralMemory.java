@@ -14,37 +14,37 @@ public class MockProceduralMemory implements ProceduralMemory {
 
 	@Override
 	public void activateSchemes(NodeStructure broadcastContent) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void addScheme(Scheme s) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public boolean containsScheme(Scheme s) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
 	@Override
 	public SchemeActivationBehavior getSchemeActivationBehavior() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public int getSchemeCount() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return 0;
 	}
 	
@@ -65,103 +65,103 @@ public class MockProceduralMemory implements ProceduralMemory {
 
 	@Override
 	public void setSchemeActivationBehavior(SchemeActivationBehavior b) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void addSubModule(LidaModule lm) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public TaskSpawner getAssistingTaskSpawner() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public ModuleName getModuleName() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public LidaModule getSubmodule(ModuleName name) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void setModuleName(ModuleName moduleName) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void setAssociatedModule(LidaModule module, String moduleUsage) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public Object getParam(String name, Object defaultValue) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public void init(Map<String, ?> parameters) {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		// not implemented
 
 	}
 
 	@Override
 	public Object getState() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public boolean setState(Object content) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return false;
 	}
 
 	@Override
 	public LidaModule getSubmodule(String name) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 

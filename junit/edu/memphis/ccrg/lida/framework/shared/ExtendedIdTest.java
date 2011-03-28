@@ -65,25 +65,25 @@ public class ExtendedIdTest extends TestCase {
 		int sourceNodeId = nodeId % 31;
 		int category = (int) (Math.random() * Integer.MAX_VALUE);
 		
-		ExtendedId id = new ExtendedId(category, sourceNodeId, sinkNodeId);
+		ExtendedId id = new ExtendedId(sourceNodeId, sinkNodeId, category);
 		assertTrue(!id.isNodeId());
 		assertEquals(sourceNodeId, id.getSourceNodeId());
 		
 		//equivalent id
-		ExtendedId id2 = new ExtendedId(category, sourceNodeId, sinkNodeId);
+		ExtendedId id2 = new ExtendedId(sourceNodeId, sinkNodeId, category);
 		assertHashCodeEquals(id, id2);
 		
 		//non equivalent id
-		ExtendedId id3 = new ExtendedId(category+1, sourceNodeId, sinkNodeId);
+		ExtendedId id3 = new ExtendedId(sourceNodeId, sinkNodeId, category+1);
 		assertDifferentHashCodeEquals(id, id3);
 		
 		//non equivalent id
-		ExtendedId id4 = new ExtendedId(category, sourceNodeId+1, sinkNodeId);
+		ExtendedId id4 = new ExtendedId(sourceNodeId+1, sinkNodeId, category);
 		assertDifferentHashCodeEquals(id, id4);
 		
 		//non equivalent id
 		ExtendedId sinkNodeId2 = new ExtendedId(nodeId+1);
-		ExtendedId id5 = new ExtendedId(category, sourceNodeId, sinkNodeId2);
+		ExtendedId id5 = new ExtendedId(sourceNodeId, sinkNodeId2, category);
 		assertDifferentHashCodeEquals(id, id5);
 	}
 	
@@ -93,33 +93,33 @@ public class ExtendedIdTest extends TestCase {
 		int slCat = 10;
 		int slSource = 11;
 		ExtendedId slSink = new ExtendedId(12);
-		ExtendedId sinkLink = new ExtendedId(slCat, slSource, slSink);
+		ExtendedId sinkLink = new ExtendedId(slSource, slSink, slCat);
 		
 		//Node to link link
 		int category = 2;
 		int sourceNodeId = 5;
-		ExtendedId nodeLinkId = new ExtendedId(category, sourceNodeId, sinkLink);
+		ExtendedId nodeLinkId = new ExtendedId(sourceNodeId, sinkLink, category);
 		assertTrue(!nodeLinkId.isNodeId());
 		
 		//clone
-		sinkLink = new ExtendedId(slCat, slSource, slSink);
-		ExtendedId sameNodeLinkId = new ExtendedId(category, sourceNodeId, sinkLink);
+		sinkLink = new ExtendedId(slSource, slSink, slCat);
+		ExtendedId sameNodeLinkId = new ExtendedId(sourceNodeId, sinkLink, category);
 		assertHashCodeEquals(nodeLinkId, sameNodeLinkId);
 		
 		//same structure, different sink link category
-		sinkLink = new ExtendedId(slCat+1, slSource, slSink);
-		ExtendedId diffNodeLinkId = new ExtendedId(category, sourceNodeId, sinkLink);
+		sinkLink = new ExtendedId(slSource, slSink, slCat+1);
+		ExtendedId diffNodeLinkId = new ExtendedId(sourceNodeId, sinkLink, category);
 		assertDifferentHashCodeEquals(nodeLinkId, diffNodeLinkId);
 		
 		//same structure, different sink link source node
-		sinkLink = new ExtendedId(slCat, slSource+1, slSink);
-		diffNodeLinkId = new ExtendedId(category, sourceNodeId, sinkLink);
+		sinkLink = new ExtendedId(slSource+1, slSink, slCat);
+		diffNodeLinkId = new ExtendedId(sourceNodeId, sinkLink, category);
 		assertDifferentHashCodeEquals(nodeLinkId, diffNodeLinkId);
 		
 		//same structure, different sink link sink node
 		slSink = new ExtendedId(slSink.getSourceNodeId() + 1);
-		sinkLink = new ExtendedId(slCat, slSource, slSink);
-		diffNodeLinkId = new ExtendedId(category, sourceNodeId, sinkLink);
+		sinkLink = new ExtendedId(slSource, slSink, slCat);
+		diffNodeLinkId = new ExtendedId(sourceNodeId, sinkLink, category);
 		assertDifferentHashCodeEquals(nodeLinkId, diffNodeLinkId);
 	}
 	
@@ -139,7 +139,7 @@ public class ExtendedIdTest extends TestCase {
 		int nodeId = (int) (Math.random() * Integer.MAX_VALUE);
 		ExtendedId id1 = new ExtendedId(nodeId);
 		ExtendedId id2 = new ExtendedId(nodeId + 1);
-		ExtendedId lid = new ExtendedId(category1, id1.getSourceNodeId(), id2);
+		ExtendedId lid = new ExtendedId(id1.getSourceNodeId(), id2, category1);
 		
 		assertTrue(lid.isSimpleLink());
 		assertFalse(lid.isNodeId());
@@ -150,8 +150,8 @@ public class ExtendedIdTest extends TestCase {
 		int nodeId = 45;
 		ExtendedId id1 = new ExtendedId(nodeId);
 		ExtendedId id2 = new ExtendedId(99);
-		ExtendedId simple = new ExtendedId(category1, id1.getSourceNodeId(), id2);
-		ExtendedId complex = new ExtendedId(category1, 2348, simple);
+		ExtendedId simple = new ExtendedId(id1.getSourceNodeId(), id2, category1);
+		ExtendedId complex = new ExtendedId(2348, simple, category1);
 		
 		assertTrue(complex.isComplexLink());
 		assertFalse(complex.isSimpleLink());

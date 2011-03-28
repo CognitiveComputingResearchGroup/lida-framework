@@ -131,18 +131,17 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public Object getState() {
-		// TODO Auto-generated method stub
+		// TODO DAO
 		return null;
 	}
 
 	@Override
 	public boolean setState(Object content) {
-		// TODO Auto-generated method stub
+		// TODO DAO
 		return false;
 	}
 

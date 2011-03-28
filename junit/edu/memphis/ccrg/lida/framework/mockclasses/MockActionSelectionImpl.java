@@ -82,85 +82,85 @@ public class MockActionSelectionImpl implements ActionSelection {
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public void addSubModule(LidaModule lm) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public ModuleName getModuleName() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public LidaModule getSubmodule(ModuleName name) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public void setModuleName(ModuleName moduleName) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public Object getParam(String name, Object defaultValue) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public void init(Map<String, ?> lidaProperties) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public void setAssociatedModule(LidaModule module, String moduleUsage) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public TaskSpawner getAssistingTaskSpawner() {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	@Override
 	public void learn(BroadcastContent content) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public LidaModule getSubmodule(String name) {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 

@@ -67,15 +67,15 @@ public class PamInitializer implements Initializer {
 				"PamNodeImpl", "bottomRight");
 		pam.addDefaultNode(bottomRight);
 		// Links
-		pam.addNewLink(gold, metal, LinkCategoryNode.NONE,1.0);
-		pam.addNewLink(metal, solid, LinkCategoryNode.NONE,1.0);
-		pam.addNewLink(iron, metal, LinkCategoryNode.NONE,1.0);
-		pam.addNewLink(wood, noMetal, LinkCategoryNode.NONE,1.0);
-		pam.addNewLink(plastic, noMetal, LinkCategoryNode.NONE,1.0);
-		pam.addNewLink(metal, noMetal, LinkCategoryNode.NONE,1.0);
-		pam.addNewLink(wood, solid, LinkCategoryNode.NONE,1.0);
+		pam.addNewLink(gold, metal, LinkCategoryNode.NONE,1.0, 0.0);
+		pam.addNewLink(metal, solid, LinkCategoryNode.NONE,1.0, 0.0);
+		pam.addNewLink(iron, metal, LinkCategoryNode.NONE,1.0, 0.0);
+		pam.addNewLink(wood, noMetal, LinkCategoryNode.NONE,1.0, 0.0);
+		pam.addNewLink(plastic, noMetal, LinkCategoryNode.NONE,1.0, 0.0);
+		pam.addNewLink(metal, noMetal, LinkCategoryNode.NONE,1.0, 0.0);
+		pam.addNewLink(wood, solid, LinkCategoryNode.NONE,1.0, 0.0);
 
-		pam.addNewLink(topLeft, wood, LinkCategoryNode.NONE,1.0);
+		pam.addNewLink(topLeft, wood, LinkCategoryNode.NONE,1.0, 0.0);
 
 		// Feature detectors
 		FeatureDetector fd = new BasicDetector(gold, sm, pam);

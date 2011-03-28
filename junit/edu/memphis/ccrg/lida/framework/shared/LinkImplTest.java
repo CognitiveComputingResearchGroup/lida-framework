@@ -159,7 +159,7 @@ public class LinkImplTest extends TestCase{
 		assertEquals(node2, link5.getSink());
 		assertEquals(linktype1, link5.getCategory());
 		assertTrue( !link5.getExtendedId().isNodeId());
-		ExtendedId eid = new ExtendedId(linktype1.getId(), node1.getId(), node2.getExtendedId());
+		ExtendedId eid = new ExtendedId(node1.getId(), node2.getExtendedId(), linktype1.getId());
 		assertHashCodeEquals(eid, link5.getExtendedId());
 	
 	}

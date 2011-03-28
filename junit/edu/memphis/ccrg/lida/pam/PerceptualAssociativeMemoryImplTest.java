@@ -189,8 +189,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testAddNewLink(){
-		Link l = pam.addNewLink(node1, node2, null, 0.0);
-		Link l2 = pam.addNewLink(node3.getExtendedId(), node2.getExtendedId(), null, 0.0);
+		Link l = pam.addNewLink(node1, node2, null, 0.0, 0.0);
+		Link l2 = pam.addNewLink(node3.getExtendedId(), node2.getExtendedId(), null, 0.0, 0.0);
 		assertEquals(l, null);
 		assertEquals(l2, null);
 		assertEquals(0, pam.getPamLinks().size());
@@ -200,15 +200,15 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
 		pam.addDefaultNode(node3);
-		Link l = pam.addNewLink(node1, node2, LinkCategoryNode.CHILD, 0.0);
+		Link l = pam.addNewLink(node1, node2, LinkCategoryNode.CHILD, 0.0, 0.0);
 		assertEquals(pam.getPamLink(l.getExtendedId()), l);
 		assertEquals(1, pam.getPamLinks().size());
 		
-		Link l2 = pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0);
+		Link l2 = pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0, 0.0);
 		assertEquals(pam.getPamLink(l2.getExtendedId()), l2);
 		assertEquals(2, pam.getPamLinks().size());
 		
-		pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0);
+		pam.addNewLink(node2.getExtendedId(), node3.getExtendedId(), LinkCategoryNode.CHILD, 0.0, 0.0);
 		assertEquals(2, pam.getPamLinks().size());
 		
 	}
@@ -304,9 +304,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		testNod2 = pam.addDefaultNode(testNod2);
 		testNod3 = pam.addDefaultNode(testNod3);
 		testNod4 = pam.addDefaultNode(testNod4);
-		Link l12 = pam.addNewLink(testNod1, testNod2, LinkCategoryNode.CHILD, 0.0);
-		Link l13 = pam.addNewLink(testNod1, testNod3, LinkCategoryNode.CHILD, 0.0);
-		Link l41 = pam.addNewLink(testNod4, testNod1, LinkCategoryNode.CHILD, 0.0);
+		Link l12 = pam.addNewLink(testNod1, testNod2, LinkCategoryNode.CHILD, 0.0, 0.0);
+		Link l13 = pam.addNewLink(testNod1, testNod3, LinkCategoryNode.CHILD, 0.0, 0.0);
+		Link l41 = pam.addNewLink(testNod4, testNod1, LinkCategoryNode.CHILD, 0.0, 0.0);
 		
 		assertTrue(testNod4.getActivation() == 1.0);
 		assertTrue(l41.getActivation() == 0.0);
@@ -412,7 +412,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testContainsLink1(){
 		PamNode a = pam.addNewNode("A");
 		PamNode b = pam.addNewNode("B");
-		Link l = pam.addNewLink(a, b, LinkCategoryNode.NONE, 0.0);
+		Link l = pam.addNewLink(a, b, LinkCategoryNode.NONE, 0.0, 0.0);
 		assertTrue(pam.containsLink(l));
 		assertFalse(pam.containsLink(this.link1));
 		assertFalse(pam.containsLink(this.link2));
@@ -513,12 +513,12 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testGetPamLink(){
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
-		Link l = pam.addNewLink(node1, node2, LinkCategoryNode.NONE, 0.0);
+		Link l = pam.addNewLink(node1, node2, LinkCategoryNode.NONE, 0.0, 0.0);
 		
 		assertEquals(l, pam.getPamLink(l.getExtendedId()));
-		assertEquals(null, pam.getPamLink(new ExtendedId(99, 99, new ExtendedId(11))));
+		assertEquals(null, pam.getPamLink(new ExtendedId(99, new ExtendedId(11), 99)));
 		
-		ExtendedId id2 = new ExtendedId(LinkCategoryNode.NONE.getId(), node1.getId(), node2.getExtendedId());
+		ExtendedId id2 = new ExtendedId(node1.getId(), node2.getExtendedId(), LinkCategoryNode.NONE.getId());
 		assertEquals(l, pam.getPamLink(id2));
 	}
 	
@@ -566,9 +566,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 			assertTrue(e instanceof UnsupportedOperationException);
 		}
 		
-		pam.addNewLink(node1, node2, LinkCategoryNode.NONE, 0.0);
-		pam.addNewLink(node2, node3, LinkCategoryNode.NONE, 0.0);
-		pam.addNewLink(node3, node1, LinkCategoryNode.NONE, 0.0);
+		pam.addNewLink(node1, node2, LinkCategoryNode.NONE, 0.0, 0.0);
+		pam.addNewLink(node2, node3, LinkCategoryNode.NONE, 0.0, 0.0);
+		pam.addNewLink(node3, node1, LinkCategoryNode.NONE, 0.0, 0.0);
 		
 		links = pam.getPamLinks();
 		assertTrue(links.size() == 3);		

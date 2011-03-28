@@ -68,13 +68,13 @@ public class MockTaskSpawner implements TaskSpawner {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 
 	@Override
 	public void init(Map<String, ?> lidaProperties) {
-		// TODO Auto-generated method stub
+		// not implemented
 		
 	}
 

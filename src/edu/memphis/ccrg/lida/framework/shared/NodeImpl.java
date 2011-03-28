@@ -167,9 +167,22 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		return new NodeImpl(this);
 	}
 	
+	/**
+	 * Updates the values of this NodeImpl based on the passed in Node.  
+	 * Node must be a NodeImpl.
+	 * Does not copy superclass attributes, e.g. ActivatibleImpl, only those of this class.
+	 */
 	@Override
 	public void updateSubclassValues(Node n) {
-		throw new UnsupportedOperationException("Only an overridde of this method in a subclass should be called");
+		if(n instanceof NodeImpl){
+			NodeImpl other = (NodeImpl) n;
+			id = other.id;
+			extendedId = other.extendedId;
+			label = other.label;
+			desirability = other.desirability;
+			groundingPamNode = other.groundingPamNode;
+			parameters = other.parameters;
+		} 
 	}
 
 }

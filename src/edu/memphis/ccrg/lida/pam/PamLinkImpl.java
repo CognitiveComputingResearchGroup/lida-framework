@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
@@ -17,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * Default implementation of PamLink.
@@ -25,9 +27,11 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  */
 public class PamLinkImpl extends LinkImpl implements PamLink {
 	
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(PamLinkImpl.class.getCanonicalName());
 	
+	/**
+	 * Useful attribute for specified this type to the factory.
+	 */
 	public static final String factoryName = PamLinkImpl.class.getSimpleName();
 
 	/*
@@ -197,10 +201,13 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	
 	@Override
 	public void updateSubclassValues(Link link) {
-		//TODO use copy constructor instead?
 		if(link instanceof PamLinkImpl){
 			PamLinkImpl pl = (PamLinkImpl) link;
-			learnable = pl.learnable;
+			this.learnable = new LearnableImpl(pl.learnable);
+		}else{
+			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
+					PamLinkImpl.class.getCanonicalName() + " Received: " + 
+					link.getClass().getCanonicalName(), LidaTaskManager.getCurrentTick());
 		}
 	}
 	

@@ -427,7 +427,9 @@ public class LidaElementFactory {
 			exciteB=defaultExciteType;
 		}
 		
-		return getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
+		Link copiedLink = getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
+		copiedLink.updateSubclassValues(oLink);
+		return copiedLink;
 	}
 	/**
 	 * Creates and returns a new Link with specified source, sink, category, and
@@ -605,7 +607,10 @@ public class LidaElementFactory {
 		if (exciteB == null) {
 			exciteB = defaultExciteType;
 		}
-		return getNode(oNode, nodeType, decayB, exciteB);
+		Node newNode = getNode(oNode, nodeType, decayB, exciteB);
+
+		
+		return newNode;
 	}
 
 	/**
@@ -640,6 +645,7 @@ public class LidaElementFactory {
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
+		n.updateSubclassValues(oNode);
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId());	
 		n.setDesirability(oNode.getDesirability());

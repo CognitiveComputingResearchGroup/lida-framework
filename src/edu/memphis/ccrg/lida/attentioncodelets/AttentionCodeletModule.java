@@ -222,7 +222,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		// TODO
+		// TODO decay codelets?
 	}
 
 

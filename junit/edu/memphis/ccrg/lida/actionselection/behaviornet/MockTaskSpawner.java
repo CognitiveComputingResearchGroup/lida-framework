@@ -21,8 +21,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 */
 	@Override
 	protected void runThisLidaTask() {
-		// TODO Auto-generated method stub
-
+		// not implemented
 	}
 
 	/* (non-Javadoc)
@@ -34,7 +33,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 			task.setControllingTaskSpawner(this);
 			task.call();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			// not implemented catch block
 			e.printStackTrace();
 		}
 
@@ -45,7 +44,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 */
 	@Override
 	public void cancelTask(LidaTask task) {
-		// TODO Auto-generated method stub
+		// not implemented method stub
 
 	}
 
@@ -54,7 +53,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 */
 	@Override
 	public Collection<LidaTask> getRunningTasks() {
-		// TODO Auto-generated method stub
+		// not implemented method stub
 		return null;
 	}
 
@@ -64,7 +63,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 */
 	@Override
 	public void receiveFinishedTask(LidaTask task) {
-		// TODO Auto-generated method stub
+		// not implemented method stub
 
 	}
 
@@ -73,7 +72,7 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 */
 	@Override
 	public void addTasks(Collection<? extends LidaTask> initialTasks) {
-		// TODO Auto-generated method stub
+		// not implemented method stub
 
 	}
 
@@ -82,13 +81,13 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 */
 	@Override
 	public void setTaskManager(LidaTaskManager taskManager) {
-		// TODO Auto-generated method stub
+		// not implemented method stub
 
 	}
 
 	@Override
 	public boolean containsTask(LidaTask t) {
-		// TODO Auto-generated method stub
+		// not implemented method stub
 		return false;
 	}
 
