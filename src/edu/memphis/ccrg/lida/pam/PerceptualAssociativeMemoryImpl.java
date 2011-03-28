@@ -187,6 +187,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addDefaultNode(Node n) {
+		if(n == null){
+			return null;
+		}		
 		return (PamNode) nodeStructure.addDefaultNode(n);
 	}
 
@@ -198,6 +201,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links) {
+		if(links == null){
+			return null;
+		}
 		Set<PamLink> copiedLinks = new HashSet<PamLink>();
 		for (Link l : links){
 			copiedLinks.add(addDefaultLink(l));
@@ -210,6 +216,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamLink addDefaultLink(Link link) {
+		if(link == null){
+			return null;
+		}
 		return (PamLink) nodeStructure.addDefaultLink(link);
 	}
 

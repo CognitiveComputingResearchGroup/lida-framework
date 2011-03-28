@@ -39,26 +39,45 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
 	private double learnableRemovableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 
-	public LearnableImpl(double activation, ExciteStrategy exciteStrategy, 
-									DecayStrategy decayStrategy, TotalActivationStrategy taStrategy, double learnebleRemovableThreshold) {
-		super(activation, exciteStrategy, decayStrategy, 0.0);
+	/**
+	 * @param activation
+	 * @param activatibleRemovalThreshold
+	 * @param baseLevelActivation
+	 * @param learnableRemovableThreshold
+	 * @param exciteStrategy
+	 * @param decayStrategy
+	 * @param taStrategy
+	 */
+	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovableThreshold,
+						ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, TotalActivationStrategy taStrategy) {
+		super(activation, activatibleRemovalThreshold, exciteStrategy, decayStrategy);
+		
+		this.baseLevelActivation = baseLevelActivation;
+		this.learnableRemovableThreshold=learnableRemovableThreshold;
 		this.baseLevelExciteStrategy = exciteStrategy;
 		this.baseLevelDecayStrategy = decayStrategy;
 		this.totalActivationStrategy = taStrategy;
-		this.learnableRemovableThreshold=learnebleRemovableThreshold;
 	}
 
+	/**
+	 * 
+	 */
 	public LearnableImpl() {
 		super();
 		baseLevelActivation = 0.0;
+		this.learnableRemovableThreshold=0.0;
 		baseLevelDecayStrategy = factory.getDecayStrategy(factory.getDefaultDecayType());
 		baseLevelExciteStrategy = factory.getExciteStrategy(factory.getDefaultExciteType());
-//FIXME move to the Factory!!!!
+		//FIXME move to the Factory!!!!
 		totalActivationStrategy = new DefaultTotalActivationStrategy();
 	}
 	
+	/**
+	 * @param l
+	 */
 	public LearnableImpl(Learnable l) {
-		this(l.getActivation(), l.getExciteStrategy(), l.getDecayStrategy(), l.getTotalActivationStrategy(), l.getLearnableRemovalThreshold());
+		this(l.getActivation(), l.getActivatibleRemovalThreshold(),  l.getBaseLevelActivation(), l.getLearnableRemovalThreshold(),
+			l.getExciteStrategy(), l.getDecayStrategy(), l.getTotalActivationStrategy());
 	}
 
 	@Override

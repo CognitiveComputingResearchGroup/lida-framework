@@ -40,7 +40,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 
 	public NodeImpl(NodeImpl n) {
-		super(n.getActivation(), n.getExciteStrategy(), n.getDecayStrategy(), n.getActivatibleRemovalThreshold());
+		super(n.getActivation(), n.getActivatibleRemovalThreshold(), n.getExciteStrategy(), n.getDecayStrategy());
 		this.id = n.id;
 		this.extendedId = n.extendedId;
 		this.groundingPamNode = n.groundingPamNode;

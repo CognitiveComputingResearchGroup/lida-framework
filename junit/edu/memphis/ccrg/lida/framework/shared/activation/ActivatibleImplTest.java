@@ -54,14 +54,14 @@ public class ActivatibleImplTest extends TestCase{
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#ActivatibleImpl(double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy, double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#ActivatibleImpl(double, double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
 	 */
 	@Test
 	public void testActivatibleImplDoubleExciteStrategyDecayStrategy() {
 		ExciteStrategy es = new DefaultExciteStrategy();
 		DecayStrategy ds = new LinearDecayStrategy();
 		
-		node2 = new ActivatibleImpl(0.2,es,ds, 0.0);
+		node2 = new ActivatibleImpl(0.2,0.0,es, ds);
 		
 		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", 0.2, node2.getActivation());
 		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", es, node2.getExciteStrategy());
