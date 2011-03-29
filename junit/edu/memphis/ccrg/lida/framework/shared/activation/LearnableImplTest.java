@@ -77,9 +77,6 @@ public class LearnableImplTest {
 		 assertEquals ("problem with IsRemovable",true , node1.isRemovable());
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#LearnableImpl(double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy, edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy)}.
-	 */
 	@Test
 	public void testLearnableImpl2() {
 		ExciteStrategy es = new DefaultExciteStrategy();
@@ -242,7 +239,7 @@ public class LearnableImplTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setTotalActivationStrategy(edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setTotalActivationStrategy(edu.memphis.ccrg.lida.framework.shared.strategies.TotalActivationStrategy)}.
 	 */
 	@Test
 	public void testSetTotalActivationStrategy() {

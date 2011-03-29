@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -40,13 +41,13 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private double learnableRemovableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 
 	/**
-	 * @param activation
-	 * @param activatibleRemovalThreshold
-	 * @param baseLevelActivation
-	 * @param learnableRemovableThreshold
-	 * @param exciteStrategy
-	 * @param decayStrategy
-	 * @param taStrategy
+	 * @param activation current activation
+	 * @param activatibleRemovalThreshold activation threshold to remain in a {@link NodeStructure}
+	 * @param baseLevelActivation base-level activation for learning
+	 * @param learnableRemovableThreshold base-level activation threshold to remain in a Pam NodeStructure
+	 * @param exciteStrategy {@link ExciteStrategy} for exciting both activation and base-level activation
+	 * @param decayStrategy {@link DecayStrategy} for decaying both activation and base-level activation
+	 * @param taStrategy {@link TotalActivationStrategy} how this LearnableImpl will calculate its total activation.
 	 */
 	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovableThreshold,
 						ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, TotalActivationStrategy taStrategy) {
@@ -73,7 +74,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 	
 	/**
-	 * @param l
+	 * @param l Another Learnable
 	 */
 	public LearnableImpl(Learnable l) {
 		this(l.getActivation(), l.getActivatibleRemovalThreshold(),  l.getBaseLevelActivation(), l.getLearnableRemovalThreshold(),

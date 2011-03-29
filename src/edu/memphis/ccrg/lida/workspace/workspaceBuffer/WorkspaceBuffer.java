@@ -18,12 +18,21 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildi
  * A submodule of the Workspace.  Managed by {@link WorkspaceImpl}.  
  * {@link StructureBuildingCodelet} read and write from them.
  * 
- * @author Ryan J McCall, Javier Snaider
+ * @author Ryan J. McCall, Javier Snaider
  */
 public interface WorkspaceBuffer extends LidaModule{
 	
+	/**
+	 * Gets buffer content based on specified parameters.
+	 * @param params optional parameters to specify what content is returned
+	 * @return {@link WorkspaceContent}
+	 */
 	public WorkspaceContent getBufferContent(Map<String, Object> params);
 	
+	/**
+	 * Adds specified content to this workspace buffer.
+	 * @param content {@link WorkspaceContent} to add
+	 */
 	public void addBufferContent(WorkspaceContent content);
 	
 }

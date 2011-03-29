@@ -133,7 +133,6 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDefaultNodes(java.util.Set)}.
-	 * @throws Exception e
 	 */
 	@Test
 	public void testAddDefaultNodes(){		

@@ -48,7 +48,7 @@ public class EpisodicMemoryImplTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception e
 	 */
 	@After
 	public void tearDown() throws Exception {
