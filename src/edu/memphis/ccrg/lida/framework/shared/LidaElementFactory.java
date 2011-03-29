@@ -607,8 +607,7 @@ public class LidaElementFactory {
 		if (exciteB == null) {
 			exciteB = defaultExciteType;
 		}
-		Node newNode = getNode(oNode, nodeType, decayB, exciteB);
-		return newNode;
+		return getNode(oNode, nodeType, decayB, exciteB);
 	}
 
 	/**
