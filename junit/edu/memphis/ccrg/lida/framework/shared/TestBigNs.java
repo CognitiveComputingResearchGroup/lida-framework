@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TestBigNs {
@@ -13,6 +15,7 @@ public class TestBigNs {
 	private int idCounter = 0;
 	private int categoryIdCounter = 0;
 	private Random random;
+	private List<LinkCategoryNode> linkCategoryPool = new ArrayList<LinkCategoryNode>();
 	
 	public void test1(){
 		int seed = 23434535;
@@ -20,11 +23,13 @@ public class TestBigNs {
 		ns = new NodeStructureImpl();
 		
 		int nodes = 10000;	
+		int linkCategories = 1000;
 		double nodeLinkRatio = 5.0;
 		
 		int links = (int)(nodes / nodeLinkRatio);
 		System.out.println("Creating NS with " + nodes + " nodes, " + links + " links");
 		
+		createLinkCategoryPool(linkCategories);
 		addSomeNodes(nodes);
 		addSomeLinks(links);
 		System.out.println("Copying NS\n");
@@ -37,6 +42,15 @@ public class TestBigNs {
 		System.out.println("total linkables " + ns.getLinkableCount());
 	}
 	
+	private void createLinkCategoryPool(int linkCategories) {
+		for(int i = 0; i < linkCategories; i++){
+			LinkCategoryNode temp = new LinkCategoryNode();
+			temp.setId(categoryIdCounter++);
+			linkCategoryPool.add(temp);
+		}
+		
+	}
+
 	public void addSomeNodes(int num){
 		for(int i = 0; i < num; i++){
 			Node foo = factory.getNode();
@@ -54,7 +68,8 @@ public class TestBigNs {
 			}
 			Node source = ns.getNode(randomSource);
 			Node sink = ns.getNode(randomSink);
-			LinkCategoryNode lcn = new LinkCategoryNode();
+			int randomCategory = random.nextInt(linkCategoryPool.size());
+			LinkCategoryNode lcn = linkCategoryPool.get(randomCategory);
 			lcn.setId(categoryIdCounter++);
 			ns.addDefaultLink(source, sink, lcn, 1.0, -1.0);
 		}
