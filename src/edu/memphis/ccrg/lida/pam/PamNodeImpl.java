@@ -199,7 +199,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		if(n instanceof PamNodeImpl){
 			PamNodeImpl pn = (PamNodeImpl) n;
 			learnable = new LearnableImpl(pn.learnable);
-		}else{
+		}else if(n != null){
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
 					PamNodeImpl.class.getCanonicalName() + " but received: " + 
 					n, LidaTaskManager.getCurrentTick());

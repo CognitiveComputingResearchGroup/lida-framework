@@ -204,7 +204,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		if(link instanceof PamLinkImpl){
 			PamLinkImpl pl = (PamLinkImpl) link;
 			this.learnable = new LearnableImpl(pl.learnable);
-		}else{
+		}else if(link != null){
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
 					PamLinkImpl.class.getCanonicalName() + " Received: " + 
 					link, LidaTaskManager.getCurrentTick());
