@@ -144,11 +144,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(Link l) {		
 		double newActiv = l.getActivation();
-		double removalThreshold = l.getActivatibleRemovalThreshold();
 		Link oldLink = links.get(l.getExtendedId());
-		if (oldLink != null) { // if the link already exists in this node structure			
-			oldLink.setActivatibleRemovalThreshold(removalThreshold);
-			//TODO update activation? 
+		if (oldLink != null) { // if the link already exists in this node structure		
+			//TODO no check
 			if (oldLink.getActivation() < newActiv){
 				oldLink.setActivation(newActiv);
 			}
@@ -187,8 +185,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				return null;
 			}
 		}
-		return generateNewLink(defaultLinkType, newSource, newSink, l
-				.getCategory(), newActiv, removalThreshold, l.getGroundingPamLink());
+		return generateNewLink(l, defaultLinkType, newSource, newSink, l
+						.getCategory(), newActiv, l.getActivatibleRemovalThreshold(), l.getGroundingPamLink());
 	}
 
 	/* (non-Javadoc)
@@ -213,8 +211,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return generateNewLink(defaultLinkType, source, sink, category,
-				activation, removalThreshold, null);
+		return generateNewLink(null, defaultLinkType, source, sink,
+				category, activation, removalThreshold, null);
 	}
 
 	/* (non-Javadoc)
@@ -239,8 +237,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return generateNewLink(defaultLinkType, source, sink, category,
-				activation, removalThreshold, null);
+		return generateNewLink(null, defaultLinkType, source, sink,
+				category, activation, removalThreshold, null);
 	}
 
 	/* (non-Javadoc)
@@ -260,8 +258,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		return generateNewLink(defaultLinkType, source, sink, category,
-				activation, removalThreshold, null);
+		return generateNewLink(null, defaultLinkType, source, sink,
+				category, activation, removalThreshold, null);
 	}
 	
 	@Override
@@ -277,10 +275,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * @param activation
 	 * @param removalThreshold
 	 */
-	private Link generateNewLink(String linkType, Node newSource,
-			Linkable newSink, LinkCategory type, double activation,
-			double removalThreshold, PamLink groundingPamLink) {
-		Link newLink = getNewLink(linkType, newSource, newSink, type);
+	private Link generateNewLink(Link link, String linkType,
+			Node newSource, Linkable newSink, LinkCategory type,
+			double activation, double removalThreshold, PamLink groundingPamLink) {
+		Link newLink = getNewLink(link, linkType, newSource, newSink, type);
 		newLink.setActivation(activation);
 		newLink.setActivatibleRemovalThreshold(removalThreshold);
 		newLink.setGroundingPamLink(groundingPamLink);
@@ -429,10 +427,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * @return
 	 */
 	private synchronized Node addNode(Node n, String nodeType) {		
-		if(factory.containsNodeType(nodeType) == false){
-			logger.log(Level.WARNING, "Tried to add node of type " + nodeType +
-					" but factory does not contain that node type.  Make sure the node type is defined in " +
-					" factoriesData.xml", LidaTaskManager.getCurrentTick());
+		if(!factory.containsNodeType(nodeType)){
+			logger.log(Level.WARNING, "Factory does not contain that node type: " + nodeType +
+						" Make sure the node type is defined in factoriesData.xml. Node not added: " + n, 
+						LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -443,7 +441,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			linkableMap.put(node, new HashSet<Link>());
 		} else {
 			double newActiv = n.getActivation();
-			//TODO Is this what we want? or just set with no check?
+			//TODO or just set with no check
 			if (node.getActivation() < newActiv) {
 				node.setActivation(newActiv);
 			}
@@ -480,18 +478,23 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	/**
 	 * This method can be overwritten to customize the Link Creation. some of
 	 * the parameter could be redundant in some cases.
-	 * 
+	 * @param link TODO
 	 * @param source
 	 *            The new source
 	 * @param sink
 	 *            The new sink
 	 * @param category
 	 *            the type of the link
+	 * 
 	 * @return The link to be used in this NodeStructure
 	 */
-	protected Link getNewLink(String linkType, Node source, Linkable sink,
-			LinkCategory category) {
-		return factory.getLink(linkType, source, sink, category);
+	protected Link getNewLink(Link link, String linkType, Node source,
+			Linkable sink, LinkCategory category) {
+		Link newLink = factory.getLink(linkType, source, sink, category);
+
+		//TODO???????
+		newLink.updateSubclassValues(link);
+		return newLink;
 	}
 	
 	@Override

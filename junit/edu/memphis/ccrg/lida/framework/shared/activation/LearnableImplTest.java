@@ -85,7 +85,10 @@ public class LearnableImplTest {
 		ExciteStrategy es = new DefaultExciteStrategy();
 		DecayStrategy ds = new LinearDecayStrategy();
 		TotalActivationStrategy ts= new DefaultTotalActivationStrategy();
-		node2 = new LearnableImpl(0.6,es,ds,ts,0.4);
+		//TODO Test these variables too
+		double activatibleRemovalThreshold = 0.01;
+		double baseLevelActivation = 0.5;
+		node2 = new LearnableImpl(0.6, activatibleRemovalThreshold, baseLevelActivation, 0.4, es,ds,ts);
 		assertEquals("Problem with LearnableImpl2", 0.6,node2.getActivation(),0.001);
 		assertEquals("Problem with LearnableImpl2",node2.getExciteStrategy(),es);
 		assertEquals("Problem with LearnableImpl2",node2.getDecayStrategy(),ds);
@@ -104,7 +107,11 @@ public class LearnableImplTest {
 	    ExciteStrategy es = new DefaultExciteStrategy();
 		DecayStrategy ds = new LinearDecayStrategy();
 		TotalActivationStrategy ts= new DefaultTotalActivationStrategy();
-		node1 = new LearnableImpl(0.6,es,ds,ts,0.4);
+		//TODO Test these variables too
+		double activatibleRemovalThreshold = 0.01;
+		double baseLevelActivation = 0.5;
+		
+		node1 = new LearnableImpl(0.6,activatibleRemovalThreshold, baseLevelActivation, 0.4, es,ds,ts);
 		node2 = new LearnableImpl(node1);
 		assertEquals("Problem with LearnableImpl",0.6,node2.getActivation(),0.001);
 		assertEquals("Problem with LearnableImpl",node2.getExciteStrategy(),es);

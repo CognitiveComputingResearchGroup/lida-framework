@@ -207,7 +207,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		}else{
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
 					PamLinkImpl.class.getCanonicalName() + " Received: " + 
-					link.getClass().getCanonicalName(), LidaTaskManager.getCurrentTick());
+					link, LidaTaskManager.getCurrentTick());
 		}
 	}
 	

@@ -27,10 +27,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 
 	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
 	public static final String factoryName = NodeImpl.class.getSimpleName();
+	
 	private int id;
 	private ExtendedId extendedId;
 	private String label;
-	
 	private double desirability;
 	protected PamNode groundingPamNode;
 	protected Map<String, ?> parameters;
@@ -62,6 +62,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.id = id;
 		extendedId = new ExtendedId(id);
 	}
+	
 	public void setExtendedId(ExtendedId eid) {
 		if(eid.isNodeId()){
 			this.extendedId = eid;

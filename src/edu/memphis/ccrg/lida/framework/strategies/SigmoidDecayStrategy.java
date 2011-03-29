@@ -18,6 +18,8 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	private static final double DEFAULT_C = 0.0;
 	private double c = DEFAULT_C;
 	
+	private static final double aLittleMoreThanOne = 1.00000000001;
+	
 	@Override
 	public void init() {
 		a = (Double) getParam("a", DEFAULT_A);
@@ -50,7 +52,7 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	
 	private double calcActivation(double curActiv, long ticks,
 			double aa, double cc) {
-		double curExcitation = -(Math.log((1 - curActiv)/curActiv) + cc) / aa - ticks;
+		double curExcitation = -(Math.log((aLittleMoreThanOne - curActiv)/curActiv) + cc) / aa - ticks;
 		return 1/(1 + Math.exp(-aa * curExcitation + cc));
 	}
 

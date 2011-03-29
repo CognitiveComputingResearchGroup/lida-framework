@@ -50,6 +50,7 @@ public interface Node extends Linkable, Activatible, Serializable {
      * @param id unique id
      */
     public void setId(int id);
+
     
     @Override
 	public String getLabel();

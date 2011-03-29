@@ -608,8 +608,6 @@ public class LidaElementFactory {
 			exciteB = defaultExciteType;
 		}
 		Node newNode = getNode(oNode, nodeType, decayB, exciteB);
-
-		
 		return newNode;
 	}
 
@@ -647,7 +645,7 @@ public class LidaElementFactory {
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
 		n.updateSubclassValues(oNode);
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
-		n.setId(oNode.getId());	
+		n.setId(oNode.getId());	//sets extended id as well.		
 		n.setDesirability(oNode.getDesirability());
 		return n;
 	}

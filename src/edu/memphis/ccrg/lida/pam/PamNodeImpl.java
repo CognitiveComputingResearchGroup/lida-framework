@@ -102,7 +102,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	@Override
 	public void decay(long ticks) {
 		learnable.decay(ticks);
-
 	}
 
 	@Override
@@ -203,7 +202,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		}else{
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
 					PamNodeImpl.class.getCanonicalName() + " but received: " + 
-					n.getClass().getCanonicalName(), LidaTaskManager.getCurrentTick());
+					n, LidaTaskManager.getCurrentTick());
 		}
 	}
 }
