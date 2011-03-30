@@ -157,8 +157,6 @@ public class LidaElementFactory {
 		//
 		addNodeType(PamNodeImpl.class.getSimpleName(), PamNodeImpl.class
 				.getCanonicalName());
-		addNodeType(LinkCategoryNode.class.getSimpleName(),
-				LinkCategoryNode.class.getCanonicalName());
 
 		defaultLinkType = LinkImpl.class.getSimpleName();
 		defaultLinkClassName = LinkImpl.class.getCanonicalName();
@@ -386,51 +384,54 @@ public class LidaElementFactory {
 		return d;
 	}
 
-	/**
-	 * Creates and returns a new Link with the same source, sink, category, and
-	 * activation. Default link type and decay and excite strategies are used.
-	 * 
-	 * @param oLink
-	 *            Old Link
-	 * @return new link
-	 */
-	public Link getLink(Link oLink) {
-		return getLink(defaultLinkType, oLink.getSource(), oLink.getSink(),
-				oLink.getCategory(), defaultDecayType, defaultExciteType, oLink
-						.getActivation());
-	}
-
-	/**
-	 * Creates and returns a new Link with the same source, sink, category, and
-	 * activation. Default link type and decay and excite strategies are
-	 * specified by second argument.
-	 * 
-	 * @param oLink
-	 *            Old Link
-	 * @param linkT
-	 *            Link type
-	 * @return new Link
-	 */
-	public Link getLink(Link oLink, String linkT) {
-		LinkableDef linkDef = linkClasses.get(linkT);		
-		if (linkDef == null) {
-			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.", 
-						LidaTaskManager.getCurrentTick());
-			return null;
-		}
-		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
-		String exciteB = linkDef.getDefaultStrategies().get(exciteStrategyType);
-		if(decayB == null){
-			decayB=defaultDecayType;
-		}
-		if(exciteB == null){
-			exciteB=defaultExciteType;
-		}
-		
-		Link copiedLink = getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
-		copiedLink.updateSubclassValues(oLink);
-		return copiedLink;
-	}
+//	/**
+//	 * Creates and returns a new Link with the same source, sink, category, and
+//	 * activation. Default link type and decay and excite strategies are used.
+//	 * 
+//	 * @param oLink
+//	 *            Old Link
+//	 * @return new link
+//	 */
+//	public Link getLink(Link oLink) {
+//		Link copiedLink = getLink(defaultLinkType, oLink.getSource(), oLink.getSink(),
+//				oLink.getCategory(), defaultDecayType, defaultExciteType, 
+//				oLink.getActivation());
+//		
+//		copiedLink.updateSubclassValues(oLink);
+//		return copiedLink;
+//	}
+//
+//	/**
+//	 * Creates and returns a new Link with the same source, sink, category, and
+//	 * activation. Default link type and decay and excite strategies are
+//	 * specified by second argument.
+//	 * 
+//	 * @param oLink
+//	 *            Old Link
+//	 * @param linkT
+//	 *            Link type
+//	 * @return new Link
+//	 */
+//	public Link getLink(Link oLink, String linkT) {
+//		LinkableDef linkDef = linkClasses.get(linkT);		
+//		if (linkDef == null) {
+//			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.", 
+//						LidaTaskManager.getCurrentTick());
+//			return null;
+//		}
+//		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
+//		String exciteB = linkDef.getDefaultStrategies().get(exciteStrategyType);
+//		if(decayB == null){
+//			decayB=defaultDecayType;
+//		}
+//		if(exciteB == null){
+//			exciteB=defaultExciteType;
+//		}
+//		
+//		Link copiedLink = getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
+//		copiedLink.updateSubclassValues(oLink);
+//		return copiedLink;
+//	}
 	/**
 	 * Creates and returns a new Link with specified source, sink, category, and
 	 * activation.
@@ -445,10 +446,9 @@ public class LidaElementFactory {
 	 *            initial activation
 	 * @return new Link
 	 */
-	public Link getLink(Node source, Linkable sink, LinkCategory category,
-			double activation) {
+	public Link getLink(Node source, Linkable sink, LinkCategory category,double activation) {
 		return getLink(defaultLinkType, source, sink, category,
-				defaultDecayType, defaultExciteType, activation);
+				defaultDecayType, defaultExciteType, activation, 0.0);
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class LidaElementFactory {
 	 */
 	public Link getLink(Node source, Linkable sink, LinkCategory category) {
 		return getLink(defaultLinkType, source, sink, category,
-				defaultDecayType, defaultExciteType, 0.0);
+				defaultDecayType, defaultExciteType, 0.0, 0.0);
 	}
 
 	/**
@@ -490,6 +490,7 @@ public class LidaElementFactory {
 					LidaTaskManager.getCurrentTick());
 			return null;
 		}
+		
 		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
 		if (decayB == null) {
 			decayB = defaultDecayType;
@@ -499,7 +500,7 @@ public class LidaElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		return getLink(linkT, source, sink, category, decayB, exciteB, 0.0);
+		return getLink(linkT, source, sink, category, decayB, exciteB, 0.0, 0.0);
 	}
 
 	/**
@@ -524,7 +525,24 @@ public class LidaElementFactory {
 	 */
 	public Link getLink(String linkT, Node source, Linkable sink,
 			LinkCategory category, String decayStrategy, String exciteStrategy,
-			double activation) {
+			double activation, double removalThreshold) {
+		
+		if(source == null){
+			logger.log(Level.WARNING, "Cannot create a link with a null source.",
+					LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		if(sink == null){
+			logger.log(Level.WARNING, "Cannot create a link with a null sink.",
+					LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		if(category == null){
+			logger.log(Level.WARNING, "Cannot create a link with a null category.",
+					LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		
 		Link link = null;
 		try {
 			LinkableDef linkDef = linkClasses.get(linkT);
@@ -540,6 +558,7 @@ public class LidaElementFactory {
 			link.setSink(sink);
 			link.setCategory(category);
 			link.setActivation(activation);
+			link.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(link, decayStrategy, exciteStrategy);
 			link.init(linkDef.getParams());
 
@@ -593,6 +612,10 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode, String nodeType) {
+		if(oNode == null){
+			logger.log(Level.WARNING, "Supplied node is null", LidaTaskManager.getCurrentTick());
+			return null;
+		}		
 		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
@@ -641,6 +664,10 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
+		if(oNode == null){
+			logger.log(Level.WARNING, "Supplied node is null", LidaTaskManager.getCurrentTick());
+			return null;
+		}
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
 		n.updateSubclassValues(oNode);
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
@@ -927,8 +954,13 @@ public class LidaElementFactory {
 	 * @return a new NodeStructure with {@link Node} type {@link PamNodeImpl} and {@link Link} type {@link PamLinkImpl}
 	 */
 	public NodeStructure getPamNodeStructure() {
-		return getNodeStructure(PamNodeImpl.class.getSimpleName(),
-				PamLinkImpl.class.getSimpleName());
+		if(containsNodeType(PamNodeImpl.class.getSimpleName()) &&
+				containsLinkType(PamLinkImpl.class.getSimpleName())){		
+			return getNodeStructure(PamNodeImpl.class.getSimpleName(),
+					PamLinkImpl.class.getSimpleName());
+		}
+		logger.log(Level.WARNING, "factory doesn't contain expected pam node and link types", LidaTaskManager.getCurrentTick());
+		return null;
 	}
 
 	/**

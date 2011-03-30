@@ -13,6 +13,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -200,26 +201,6 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 */
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
-		// not implemented
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
-	 */
-	@Override
-	public Link addNewLink(Node source, Node sink, LinkCategory type,
-			double activation, double removalThreshold) {
-		// not implemented
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId, edu.memphis.ccrg.lida.framework.shared.ExtendedId, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
-	 */
-	@Override
-	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId,
-			LinkCategory type, double activation, double removalThreshold) {
 		// not implemented
 		return null;
 	}
@@ -415,7 +396,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(int)
 	 */
 	@Override
-	public Node getPamNode(int id) {
+	public Node getNode(int id) {
 		Node n = new PamNodeImpl();
 		n.setId(id);
 		return n;
@@ -425,7 +406,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
-	public Node getPamNode(ExtendedId id) {
+	public Node getNode(ExtendedId id) {
 		// not implemented
 		return null;
 	}
@@ -434,7 +415,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
-	public Link getPamLink(ExtendedId id) {
+	public Link getLink(ExtendedId id) {
 		// not implemented
 		return null;
 	}
@@ -443,13 +424,13 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNodes()
 	 */
 	@Override
-	public Collection<Node> getPamNodes() {
+	public Collection<Node> getNodes() {
 		// not implemented
 		return null;
 	}
 
 	@Override
-	public Collection<Link> getPamLinks() {
+	public Collection<Link> getLinks() {
 		// not implemented
 		return null;
 	}
@@ -462,6 +443,45 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	@Override
 	public PamLink addDefaultLink(Link link) {
+		return null;
+	}
+
+	@Override
+	public LinkCategory addLinkCategory(LinkCategory cat) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<LinkCategory> getLinkCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LinkCategory getLinkCategory(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Link addNewLink(Node source, Linkable sink, LinkCategory type,
+			double activation, double removalThreshold) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type,
+			double activation, double removalThreshold) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PamNode addNewNode(String type, String label,
+			double baseLevelActivation, double baseLevelRemovalThreshold) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

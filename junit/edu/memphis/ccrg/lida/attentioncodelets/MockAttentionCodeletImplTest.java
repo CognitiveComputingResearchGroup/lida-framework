@@ -5,13 +5,13 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
@@ -29,6 +29,7 @@ public class MockAttentionCodeletImplTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		new PerceptualAssociativeMemoryImpl();
 		codelet = new MockAttentionCodeletImpl();
 				
 		buffer = new WorkspaceBufferImpl();
@@ -43,8 +44,8 @@ public class MockAttentionCodeletImplTest {
 		node2.setId(2);
 		node3.setId(3);		
 				
-		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
-		link2 = new LinkImpl(node2,node3,LinkCategoryNode.CHILD);
+		link1 = new LinkImpl(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
+		link2 = new LinkImpl(node2,node3,PerceptualAssociativeMemoryImpl.NONE);
 		
 		csmContent.addDefaultNode(node1);
 		csmContent.addDefaultNode(node2);

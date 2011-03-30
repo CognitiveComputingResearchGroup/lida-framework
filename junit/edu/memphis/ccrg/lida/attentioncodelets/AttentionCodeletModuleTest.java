@@ -1,18 +1,16 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -22,6 +20,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -48,6 +47,7 @@ public class AttentionCodeletModuleTest {
 
 	@Before
 	public void setUp() throws Exception {
+		new PerceptualAssociativeMemoryImpl();
 		attnModule = new AttentionCodeletModule();
 		globalWorkspace= new GlobalWorkspaceImpl();
 		workspace = new WorkspaceImpl();
@@ -68,8 +68,8 @@ public class AttentionCodeletModuleTest {
 		node2.setId(2);
 		node3.setId(3);		
 				
-		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
-		link2 = new LinkImpl(node2,node3,LinkCategoryNode.CHILD);
+		link1 = new LinkImpl(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
+		link2 = new LinkImpl(node2,node3,PerceptualAssociativeMemoryImpl.NONE);
 						
 		ns.addDefaultNode(node1);
 		ns.addDefaultNode(node2);

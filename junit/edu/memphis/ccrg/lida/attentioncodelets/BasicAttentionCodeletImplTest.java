@@ -3,19 +3,17 @@
  */
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
 
-
-
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
@@ -35,6 +33,7 @@ public class BasicAttentionCodeletImplTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		new PerceptualAssociativeMemoryImpl();
 		buffer = new WorkspaceBufferImpl();
 		node1 = new NodeImpl();
 		node2 = new NodeImpl();
@@ -46,8 +45,8 @@ public class BasicAttentionCodeletImplTest {
 		node2.setId(2);
 		node3.setId(3);		
 				
-		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
-		link2 = new LinkImpl(node2,node3,LinkCategoryNode.CHILD);
+		link1 = new LinkImpl(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
+		link2 = new LinkImpl(node2,node3,PerceptualAssociativeMemoryImpl.NONE);
 		
 		nodeStructure.addDefaultNode(node1);
 		nodeStructure.addDefaultNode(node2);

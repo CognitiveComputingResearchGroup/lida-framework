@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+
 public class TestBigNs {
 
 	public static void main(String[] args) {
@@ -15,7 +18,7 @@ public class TestBigNs {
 	private int idCounter = 0;
 	private int categoryIdCounter = 0;
 	private Random random;
-	private List<LinkCategoryNode> linkCategoryPool = new ArrayList<LinkCategoryNode>();
+	private List<LinkCategory> linkCategoryPool = new ArrayList<LinkCategory>();
 	
 	public void test1(){
 		int seed = 23434535;
@@ -44,7 +47,7 @@ public class TestBigNs {
 	
 	private void createLinkCategoryPool(int linkCategories) {
 		for(int i = 0; i < linkCategories; i++){
-			LinkCategoryNode temp = new LinkCategoryNode();
+			PamNodeImpl temp = new PamNodeImpl();
 			temp.setId(categoryIdCounter++);
 			linkCategoryPool.add(temp);
 		}
@@ -69,7 +72,7 @@ public class TestBigNs {
 			Node source = ns.getNode(randomSource);
 			Node sink = ns.getNode(randomSink);
 			int randomCategory = random.nextInt(linkCategoryPool.size());
-			LinkCategoryNode lcn = linkCategoryPool.get(randomCategory);
+			PamNode lcn = (PamNode) linkCategoryPool.get(randomCategory);
 			lcn.setId(categoryIdCounter++);
 			ns.addDefaultLink(source, sink, lcn, 1.0, -1.0);
 		}

@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
@@ -32,7 +33,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 public class NodeStructureImplTest extends TestCase{
 	
 	private Node node1, node2, node3, node4;
-	private LinkImpl link1, link2, link3;	
+	private Link link1, link2, link3;	
 	private LinkCategory category1, category2;	
 	private NodeStructureImpl ns1, ns2, ns3;
 	private static LidaElementFactory factory = LidaElementFactory.getInstance();
@@ -43,18 +44,8 @@ public class NodeStructureImplTest extends TestCase{
 	 */
 	@Override
 	@Before
-	public void setUp() throws Exception {			
-		link1 = new LinkImpl();
-		link2 = new LinkImpl();
-		link3 = new LinkImpl();
-		
-		category1 = LinkCategoryNode.PARENT ;
-		category2 = LinkCategoryNode.CHILD ;	
-		
-		ns1 = new NodeStructureImpl();	
-		ns2 = new NodeStructureImpl();
-		ns3 = new NodeStructureImpl();
-
+	public void setUp() throws Exception {		
+		new PerceptualAssociativeMemoryImpl();
 		node1 = factory.getNode();
 		node1.setLabel("red");
 		node1.setActivation(0.1);
@@ -71,17 +62,17 @@ public class NodeStructureImplTest extends TestCase{
 		node4.setLabel("green");
 		node4.setActivation(0.4);
 		
-		link1.setSource(node1);
-		link1.setSink(node2);
-		link1.setCategory(category1);
-			
-		link2.setSource(node2);
-		link2.setSink(node3);
-		link2.setCategory(category2);
+		new PerceptualAssociativeMemoryImpl();	
+		category1 = PerceptualAssociativeMemoryImpl.NONE;
+		category2 = PerceptualAssociativeMemoryImpl.LATERAL;
 		
-		link3.setSource(node2);
-		link3.setSink(node4);
-		link3.setCategory(category2);
+		link1 = factory.getLink(node1, node2, category1);
+		link2 = factory.getLink(node2, node3, category2);
+		link3 = factory.getLink(node2, node4, category2);
+			
+		ns1 = new NodeStructureImpl();	
+		ns2 = new NodeStructureImpl();
+		ns3 = new NodeStructureImpl();
 	}
 	
 	/**
@@ -257,16 +248,16 @@ public class NodeStructureImplTest extends TestCase{
 	}
 	
 	public void testAddLinkParams0(){
-		Link l = ns1.addDefaultLink(100, 101, category1, 0.0, 0.0);
+		Link l = ns1.addDefaultLink(Integer.MAX_VALUE - 100, Integer.MAX_VALUE - 101, category1, 0.0, 0.0);
 		assertTrue(l == null);
 		assertTrue(ns1.getLinkCount() == 0);
 		
 		ns1.addDefaultNode(node1);
-		l = ns1.addDefaultLink(node1.getId(), 101, category1, 0.0, 0.0);
+		l = ns1.addDefaultLink(node1.getId(), Integer.MAX_VALUE - 101, category1, 0.0, 0.0);
 		assertTrue(l == null);
 		assertTrue(ns1.getLinkCount() == 0);
 		
-		l = ns1.addDefaultLink(100, node1.getId(), category1, 0.0, 0.0);
+		l = ns1.addDefaultLink(Integer.MAX_VALUE - 100, node1.getId(), category1, 0.0, 0.0);
 		assertTrue(l == null);
 		assertTrue(ns1.getLinkCount() == 0);
 		
@@ -571,7 +562,7 @@ public class NodeStructureImplTest extends TestCase{
 		ns3.addDefaultNode(node2);
 		ns3.addDefaultNode(node3);
 		
-		PamLink pl = (PamLink) factory.getLink(link1, PamLinkImpl.factoryName);
+		PamLink pl = (PamLink) factory.getLink(PamLinkImpl.factoryName, link1.getSource(), link1.getSink(), link1.getCategory());
 		link1.setGroundingPamLink(pl);
 		link1.setActivation(0.111);
 		link1.setActivatibleRemovalThreshold(0.00001);
@@ -609,7 +600,7 @@ public class NodeStructureImplTest extends TestCase{
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
 		
-		PamLink pl = (PamLink) factory.getLink(link1, PamLinkImpl.factoryName);
+		PamLink pl = (PamLink) factory.getLink(PamLinkImpl.factoryName, link1.getSource(), link1.getSink(), link1.getCategory());
 		link1.setGroundingPamLink(pl);
 		Link stored = ns1.addDefaultLink(link1);
 		
@@ -821,8 +812,6 @@ public class NodeStructureImplTest extends TestCase{
 		links = ns1.getLinks(category2);
 		assertTrue(links.size() == 2);
 		
-		links = ns1.getLinks(LinkCategoryNode.NONE);
-		assertTrue(links.size() == 0);
 	}
 	
 	public void testGetAttachedLinks(){

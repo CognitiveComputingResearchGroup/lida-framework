@@ -25,6 +25,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	public void addTask(LidaTask task) {
 //		System.out.println(task+" added! To be run at "+task.getNextTicksPerStep()+" ticks from now");
 		tasks.add(task);
+		task.setControllingTaskSpawner(this);
 		try {
 			task.call();
 		} catch (Exception e) {

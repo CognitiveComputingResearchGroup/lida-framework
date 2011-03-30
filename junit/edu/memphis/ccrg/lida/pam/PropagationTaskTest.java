@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
@@ -32,12 +31,11 @@ public class PropagationTaskTest extends TestCase{
 	
 	@Override
 	public void setUp() throws Exception {
-		
+		new PerceptualAssociativeMemoryImpl();
 		source =  (PamNode) LidaElementFactory.getInstance().getNode(PamNodeImpl.factoryName);
 		sink   =  (PamNode) LidaElementFactory.getInstance().getNode(PamNodeImpl.factoryName);
-		link  = (PamLink) factory.getLink(PamLinkImpl.factoryName, source, sink, LinkCategoryNode.NONE);
-		
-			 
+		link  = (PamLink) factory.getLink(PamLinkImpl.factoryName, source, sink, PerceptualAssociativeMemoryImpl.NONE);
+		 
 		pam = new MockPAM();
 		taskSpawner= new MockTaskSpawner();
 	}

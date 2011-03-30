@@ -57,7 +57,10 @@ public class BasicTranslator implements Translator {
 		NodeStructure ns = new NodeStructureImpl();
 		for (int i = 0; i < size; i++) {
 			if (data.getQuick(i)) {
-				Node n = pam.getPamNode(i);
+				Node n = pam.getNode(i);
+				if(n == null){
+					continue;
+				}
 				ns.addDefaultNode(factory.getNode(n));
 			}
 		}

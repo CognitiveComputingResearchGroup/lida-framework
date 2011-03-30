@@ -18,7 +18,6 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
@@ -35,13 +34,14 @@ public class PamLinkImplTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {
+		new PerceptualAssociativeMemoryImpl();
 		Factory = LidaElementFactory.getInstance();
 		link1 = new PamLinkImpl();
 		link2 = new PamLinkImpl();
 		node1 = Factory.getNode();
 		node2 = Factory.getNode();
 		
-		linkCategory= LinkCategoryNode.CHILD;			
+		linkCategory= PerceptualAssociativeMemoryImpl.NONE;			
 	}
 	
 	@Override

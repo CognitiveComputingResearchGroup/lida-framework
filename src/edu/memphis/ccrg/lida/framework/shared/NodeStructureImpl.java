@@ -276,9 +276,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * @param removalThreshold
 	 */
 	private Link generateNewLink(Link link, String linkType,
-			Node newSource, Linkable newSink, LinkCategory type,
+			Node newSource, Linkable newSink, LinkCategory category,
 			double activation, double removalThreshold, PamLink groundingPamLink) {
-		Link newLink = getNewLink(link, linkType, newSource, newSink, type);
+		Link newLink = getNewLink(link, linkType, newSource, newSink, category);
 		newLink.setActivation(activation);
 		newLink.setActivatibleRemovalThreshold(removalThreshold);
 		newLink.setGroundingPamLink(groundingPamLink);
@@ -491,8 +491,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	protected Link getNewLink(Link link, String linkType, Node source,
 			Linkable sink, LinkCategory category) {
 		Link newLink = factory.getLink(linkType, source, sink, category);
-
-		//TODO???????
 		newLink.updateSubclassValues(link);
 		return newLink;
 	}

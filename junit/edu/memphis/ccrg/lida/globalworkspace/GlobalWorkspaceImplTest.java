@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.Queue;
@@ -15,10 +16,10 @@ import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the GlobalWorkspaceImpl class
@@ -41,6 +42,7 @@ public class GlobalWorkspaceImplTest {
 
 	@Before
 	public void setUp() throws Exception {
+		new PerceptualAssociativeMemoryImpl();
 		ts = new MockTaskSpawner();
 		listener = new MockBroadcastListener();
 
@@ -50,7 +52,7 @@ public class GlobalWorkspaceImplTest {
 		n1.setId(1);
 		n2.setId(2);
 		n3.setId(3);
-		l = new LinkImpl(n1, n2, LinkCategoryNode.CHILD);
+		l = new LinkImpl(n1, n2, PerceptualAssociativeMemoryImpl.NONE);
 
 		ns.addDefaultNode(n1);
 		ns.addDefaultNode(n2);

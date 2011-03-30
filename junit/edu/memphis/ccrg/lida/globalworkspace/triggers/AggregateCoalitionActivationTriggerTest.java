@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,13 +14,13 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the AggregateCoalitionActivationTrigger class
@@ -41,7 +42,7 @@ public class AggregateCoalitionActivationTriggerTest {
 
 	@Before
 	public void setUp() throws Exception {
-
+		new PerceptualAssociativeMemoryImpl();
 		trigger = new AggregateCoalitionActivationTrigger();
 		coalitions = new HashSet<Coalition>();
 		parameters = new HashMap<String, Object>();
@@ -57,7 +58,7 @@ public class AggregateCoalitionActivationTriggerTest {
 		n1.setActivation(0.5);
 		n2.setActivation(0.6);
 		n3.setActivation(0.7);
-		l = new LinkImpl(n1, n2, LinkCategoryNode.CHILD);
+		l = new LinkImpl(n1, n2, PerceptualAssociativeMemoryImpl.NONE);
 		l.setActivation(0.5);
 
 		ns.addDefaultNode(n1);

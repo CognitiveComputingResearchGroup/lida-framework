@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the LinkImpl class
@@ -37,18 +38,19 @@ public class LinkImplTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {
+		new PerceptualAssociativeMemoryImpl();
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		node3 = factory.getNode();
 		node4 = factory.getNode();	
 		
-		linktype1 = LinkCategoryNode.PARENT;
+		linktype1 = PerceptualAssociativeMemoryImpl.NONE;
 		
-		pamLink1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node3, node4, LinkCategoryNode.NONE);
+		pamLink1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node3, node4, PerceptualAssociativeMemoryImpl.NONE);
 		
-		link1 = new LinkImpl(node1,node2,LinkCategoryNode.CHILD);
-		link2 = new LinkImpl(node3,node4,LinkCategoryNode.PARENT);
-		link3 = new LinkImpl(node3,link2,LinkCategoryNode.GROUNDING);
+		link1 = new LinkImpl(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
+		link2 = new LinkImpl(node3,node4,PerceptualAssociativeMemoryImpl.NONE);
+		link3 = new LinkImpl(node3,link2,PerceptualAssociativeMemoryImpl.NONE);
 	}
 
 	/**
@@ -82,8 +84,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testGetSink() {
-		link1.setSink(node1);
-		assertEquals("Problem with getSink", node1, link1.getSink());
+		link1.setSink(node2);
+		assertEquals("Problem with getSink", node2, link1.getSink());
 	}
 
 	/**
@@ -109,8 +111,8 @@ public class LinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testSetSink() {
-		link1.setSink(node1);
-		assertEquals("Problem with setSink", node1, link1.getSink());
+		link1.setSink(node2);
+		assertEquals("Problem with setSink", node2, link1.getSink());
 	}
 
 	/**

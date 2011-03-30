@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 /**
  * Specifies the category of a Link
- * @see LinkCategoryNode
+ * @see PerceptualAssociativeMemoryImpl
  * @see LinkImpl
  */
 public interface LinkCategory {

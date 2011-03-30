@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
@@ -33,7 +34,9 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
     /**
      * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label.
      * The new node is returned.  Default PamNode type is used.
+     * Node is given a reasonable initial base-level activation and base-level activation removal threshold.
      * @param label label of new node
+     * @see Learnable
      * @return the new node
      */
 	public PamNode addNewNode(String label);
@@ -41,12 +44,49 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	/**
 	 * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label and 
 	 * PamNode type.  New node is returned.
-	 * 
+	 * Node is given a reasonable initial base-level activation and base-level activation removal threshold.
 	 * @param type type of PamNode used.
 	 * @param label label of new node
+	 * @see Learnable
 	 * @return the new node
 	 */
 	public PamNode addNewNode(String type, String label);
+	
+	/**
+	 * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} of specified type, with 
+	 * specified label, base-level activation, and base-level removal threshold 
+     *  New node is returned.
+	 * @param type PamNode type of specified node
+	 * @param label label of new node
+	 * @param baseLevelActivation initial base-level activation
+	 * @param baseLevelRemovalThreshold initial base-level removal threshold
+	 * @return
+	 */
+	public PamNode addNewNode(String type, String label, double baseLevelActivation, double baseLevelRemovalThreshold);
+	
+	/**
+	 * Creates and adds a new link to this PAM.
+	 *
+	 * @param source source for link
+	 * @param sink sink for link
+	 * @param type type for link
+	 * @param baseLevelActivation initial activation for link
+	 * @param baseLevelRemovalThreshold amount of base-level activation link must have to remain in this PAM.
+	 * @return created link
+	 */
+	public Link addNewLink(Node source, Linkable sink, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold);
+
+	/**
+	 * Creates and adds a new default link to this PAM.
+	 *
+	 * @param sourceId Source's {@link ExtendedId}
+	 * @param sinkId Sink's {@link ExtendedId}
+	 * @param type Link's LinkCategory
+	 * @param baseLevelActivation initial activation
+	 * @param baseLevelRemovalThreshold amount of base-level activation link must have to remain in PAM.
+	 * @return created Link
+	 */
+	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold);
 
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
@@ -83,30 +123,6 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links);
 	
 	/**
-	 * Creates and adds a new link to this PAM.
-	 *
-	 * @param source source for link
-	 * @param sink sink for link
-	 * @param type type for link
-	 * @param activation initial activation for link
-	 * @param removalThreshold TODO
-	 * @return created link
-	 */
-	public Link addNewLink(Node source, Node sink, LinkCategory type, double activation, double removalThreshold);
-
-	/**
-	 * Creates and adds a new default link to this PAM.
-	 *
-	 * @param sourceId Source's {@link ExtendedId}
-	 * @param sinkId Sink's {@link ExtendedId}
-	 * @param type Link's LinkCategory
-	 * @param activation initial activation
-	 * @param removalThreshold TODO
-	 * @return created Link
-	 */
-	public Link addNewLink(ExtendedId sourceId, ExtendedId sinkId, LinkCategory type, double activation, double removalThreshold);
-	
-	/**
 	 * Adds and runs specified FeatureDetector.
 	 * @param fd {@link FeatureDetector}
 	 */
@@ -117,7 +133,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 *
 	 * @param pl listener
 	 */
-	public void addPamListener(PamListener pl);
+	public void addPamListener(PamListener pl);	
 	
 	/**
 	 * Sets {@link PropagationBehavior} governing how activation is propagated in this PAM.
@@ -168,6 +184,27 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @see AddToPerceptTask
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
+	
+	/**
+	 * Returns LinkCategory with specified id.
+	 * @param id id of LinkCategory sought
+	 * @return LinkCategory or null if category does not exist in PAM.
+	 */
+	public LinkCategory getLinkCategory(int id);
+	
+	/**
+	 * Returns all categories in this Pam
+	 * @return Collection of all {@link LinkCategory}
+	 */
+	public Collection<LinkCategory> getLinkCategories();
+	
+	/**
+	 * Adds a COPY of specified LinkCategory to this {@link PerceptualAssociativeMemory}.
+	 * Category must also be a node in order to be added. Node will be of Pam's default type. 
+	 * @param cat {@link LinkCategory}
+	 * @return Copied LinkCategory actually stored in this PAM.
+	 */
+	public LinkCategory addLinkCategory(LinkCategory cat);
 	
 	/**
 	 * Returns true if this PAM contains specified PamNode.
@@ -244,34 +281,36 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param id the id
 	 * @return the pam node
 	 */
-	public Node getPamNode(int id);
+	public Node getNode(int id);
 	
 	/**
-	 * Returns {@link PamNode} with specified {@link ExtendedId} or null
+	 * Returns copy of the {@link PamNode} with specified {@link ExtendedId} or null
 	 * @param id sought {@link ExtendedId}
-	 * @return PamNode
+	 * @return PamNode  Copy of the actual Node.  The copy is of 
+	 * the default type of Pam and not necessarily the type of the actual Node. 
 	 */
-	public Node getPamNode(ExtendedId id);
+	public Node getNode(ExtendedId id);
 	
 	/**
 	 * 
 	 * @param id link's eid
-	 * @return Copy of {@link PamLink} with specified id from this PAM or null. 
+	 * @return Copy of the {@link PamLink} with specified id from this PAM or null. The copy is of 
+	 * the default type of Pam and not necessarily the type of the actual Link. 
 	 */
-	public Link getPamLink(ExtendedId id);
+	public Link getLink(ExtendedId id);
 	
 	/**
 	 * Returns an unmodifiable collection of the {@link PamNode}s in this PAM as {@link Node}s.
 	 *
 	 * @return the PamNodes of this PAM
 	 */
-	public Collection<Node> getPamNodes();
+	public Collection<Node> getNodes();
 	
 	/**
 	 * Returns an unmodifiable collection of the {@link PamLink}s in this PAM as {@link Link}s.
 	 *
 	 * @return the PamLink of this PAM
 	 */
-	public Collection<Link> getPamLinks();
+	public Collection<Link> getLinks();
 		
 } 

@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
-import edu.memphis.ccrg.lida.framework.shared.LinkCategoryNode;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -44,7 +43,8 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceListener;
 
 /**
- * Default implementation of {@link PerceptualAssociativeMemory}.  Module essentially concerned with PamNode and PamLinks, source of meaning in LIDA, 
+ * Default implementation of {@link PerceptualAssociativeMemory}. Module
+ * essentially concerned with PamNode and PamLinks, source of meaning in LIDA,
  * how they are activated and how they pass activation among themselves.
  * 
  * @author Ryan J. McCall
@@ -60,7 +60,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * Modules listening for the current percept
 	 */
 	private List<PamListener> pamListeners;
-	
+
 	/*
 	 * Contains all of the Node, Links and their connections.
 	 */
@@ -74,7 +74,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * To create new node and links
 	 */
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static LidaElementFactory factory = LidaElementFactory
+			.getInstance();
 
 	private static final int DEFAULT_EXCITATION_TASK_TICKS = 1;
 	private int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
@@ -91,62 +92,62 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;
 
+	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
+
+	/**
+	 * If using this variable in a non-standard LIDA application, e.g. testing,
+	 * note that it is not initialized until constructor runs.
+	 */
+	public static LinkCategory NONE;
+	
+	/**
+	 * If using this variable in a non-standard LIDA application, e.g. testing,
+	 * note that it is not initialized until constructor runs.
+	 */
+	public static LinkCategory LATERAL;
+
 	/**
 	 * Default constructor.
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		super(ModuleName.PerceptualAssociativeMemory);
-		nodeStructure = factory.getNodeStructure(PamNodeImpl.class.getSimpleName(), PamLinkImpl.class.getSimpleName());
+		
 		pamListeners = new ArrayList<PamListener>();
 		propagationBehavior = new UpscalePropagationBehavior();
+		nodeStructure = factory.getPamNodeStructure();	
+		
+		PamNode none = (PamNode) factory.getNode(PamNodeImpl.factoryName, "None");
+		none.setBaseLevelActivation(1.0);
+		none.setActivatibleRemovalThreshold(-1.0);
+		NONE = addLinkCategory((LinkCategory) none);
+
+		PamNode lateralType = (PamNode) factory.getNode(PamNodeImpl.factoryName, "LateralType");
+		lateralType.setBaseLevelActivation(1.0);
+		lateralType.setActivatibleRemovalThreshold(-1.0);
+		LATERAL = addLinkCategory((LinkCategory) lateralType);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#init()
 	 */
 	@Override
-	public void init() {	
-		upscaleFactor=(Double)getParam("pam.Upscale",DEFAULT_UPSCALE_FACTOR);
-		downscaleFactor=(Double)getParam("pam.Downscale",DEFAULT_DOWNSCALE_FACTOR);
-		perceptThreshold=(Double)getParam("pam.Selectivity",
+	public void init() {
+		upscaleFactor = (Double) getParam("pam.Upscale", DEFAULT_UPSCALE_FACTOR);
+		downscaleFactor = (Double) getParam("pam.Downscale",
+				DEFAULT_DOWNSCALE_FACTOR);
+		perceptThreshold = (Double) getParam("pam.Selectivity",
 				DEFAULT_PERCEPT_THRESHOLD);
 		excitationTaskTicksPerRun = (Integer) getParam(
 				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);
 		propagationTaskTicksPerRun = (Integer) getParam(
 				"pam.propagationTicksPerRun", DEFAULT_PROPAGATION_TASK_TICKS);
-		setDefaultNodeType((String) getParam("pam.newNodeType", PamNodeImpl.class.getSimpleName()));
-		setDefaultLinkType((String) getParam("pam.newLinkType", PamLinkImpl.class.getSimpleName()));
-	}
-	
-
-	/*
-	 * Sets default node type.  Note that this resets the NodeStructure.
-	 * @param type Node type of NodeStructure
-	 */
-	private void setDefaultNodeType(String type) {
-		if(!(factory.getNode(type) instanceof PamNode)){
-			logger.log(Level.WARNING, "Cannot set default node type to: " + type, LidaTaskManager.getCurrentTick());
-		}else{
-			nodeStructure = factory.getNodeStructure(type, nodeStructure.getDefaultLinkType());
-		}
-	}
-	
-	/*
-	 * Sets default link type.  Note that this resets the NodeStructure.
-	 * @param type Link type of NodeStructure
-	 */
-	private void setDefaultLinkType(String type) {
-		Link dummy = factory.getLink(type, factory.getNode(), factory.getNode(), LinkCategoryNode.NONE);
-		if(!(dummy instanceof PamLink)){
-			logger.log(Level.WARNING, "Cannot set default link type to: " + type, LidaTaskManager.getCurrentTick());
-		}else{
-			nodeStructure = factory.getNodeStructure(nodeStructure.getDefaultNodeType(), type);
-		}
 	}
 
 	/*
 	 * Set the propagation behavior for this PAM.
-	 *
+	 * 
 	 * @param b the new propagation behavior
 	 */
 	@Override
@@ -156,7 +157,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 
 	/*
 	 * Get the propagation behavior for this PAM.
-	 *
+	 * 
 	 * @return the propagation behavior
 	 */
 	public PropagationBehavior getPropagationBehavior() {
@@ -164,59 +165,69 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	}
 
 	/*
-	 *
+	 * 
 	 * Adds set of PamNodes to this PAM.
-	 *
+	 * 
 	 * @param nodes the nodes
+	 * 
 	 * @return the Sets
 	 */
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
-		if(nodes == null){
+		if (nodes == null) {
 			return null;
 		}
 		Set<PamNode> storedNodes = new HashSet<PamNode>();
-		for (Node n : nodes){
+		for (Node n : nodes) {
 			storedNodes.add(addDefaultNode(n));
 		}
 		return storedNodes;
 	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNode(edu.memphis.ccrg.lida.pam.PamNode)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNode(edu.memphis
+	 * .ccrg.lida.pam.PamNode)
 	 */
 	@Override
 	public PamNode addDefaultNode(Node n) {
-		if(n == null){
+		if (n == null) {
 			return null;
-		}		
+		}
 		return (PamNode) nodeStructure.addDefaultNode(n);
 	}
 
 	/*
 	 * Adds set of PamLinks to this PAM.
-	 *
+	 * 
 	 * @param links the links
+	 * 
 	 * @return the Sets
 	 */
 	@Override
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links) {
-		if(links == null){
+		if (links == null) {
 			return null;
 		}
 		Set<PamLink> copiedLinks = new HashSet<PamLink>();
-		for (Link l : links){
+		for (Link l : links) {
 			copiedLinks.add(addDefaultLink(l));
 		}
 		return copiedLinks;
 	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultLink(edu.memphis.ccrg.lida.framework.shared.Link)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultLink(
+	 * edu.memphis.ccrg.lida.framework.shared.Link)
 	 */
 	@Override
 	public PamLink addDefaultLink(Link link) {
-		if(link == null){
+		if (link == null) {
 			return null;
 		}
 		return (PamLink) nodeStructure.addDefaultLink(link);
@@ -224,71 +235,97 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 
 	/*
 	 * Adds a feature detector to this PAM.
-	 *
+	 * 
 	 * @param detector the detector
 	 */
 	@Override
 	public void addFeatureDetector(FeatureDetector detector) {
 		taskSpawner.addTask(detector);
-		logger.log(Level.FINE, "Added feature detector to PAM",
-				LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Added feature detector to PAM", LidaTaskManager
+				.getCurrentTick());
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addPamListener(edu.memphis.ccrg.lida.pam.PamListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addPamListener(
+	 * edu.memphis.ccrg.lida.pam.PamListener)
 	 */
 	@Override
 	public void addPamListener(PamListener pl) {
 		pamListeners.add(pl);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.workspace.main.WorkspaceListener#receiveWorkspaceContent(edu.memphis.ccrg.lida.framework.ModuleName, edu.memphis.ccrg.lida.workspace.main.WorkspaceContent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeedu.memphis.ccrg.lida.workspace.main.WorkspaceListener#
+	 * receiveWorkspaceContent(edu.memphis.ccrg.lida.framework.ModuleName,
+	 * edu.memphis.ccrg.lida.workspace.main.WorkspaceContent)
 	 */
 	@Override
 	public synchronized void receiveBroadcast(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
 		taskSpawner.addTask(new ProcessBroadcastTask(ns.copy()));
 	}
+
 	private class ProcessBroadcastTask extends LidaTaskImpl {
 		private NodeStructure broadcast;
+
 		public ProcessBroadcastTask(NodeStructure broadcast) {
 			super();
 			this.broadcast = broadcast;
 		}
+
 		@Override
 		protected void runThisLidaTask() {
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#receiveBroadcast(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#receiveBroadcast
+	 * (edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
 	 */
 	@Override
-	public synchronized void receiveWorkspaceContent(ModuleName originatingBuffer, WorkspaceContent content) {
-//		NodeStructure ns = (NodeStructure) content;
-//		LidaTask t = new FooTask(ns.copy());
-//		taskSpawner.addTask(t);
-		//TODO Task
+	public synchronized void receiveWorkspaceContent(
+			ModuleName originatingBuffer, WorkspaceContent content) {
+		// NodeStructure ns = (NodeStructure) content;
+		// LidaTask t = new FooTask(ns.copy());
+		// taskSpawner.addTask(t);
+		// TODO Task
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.PreafferenceListener#receivePreafference(edu.memphis.ccrg.lida.framework.shared.NodeStructure, edu.memphis.ccrg.lida.framework.shared.NodeStructure)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeedu.memphis.ccrg.lida.actionselection.behaviornetwork.main.
+	 * PreafferenceListener
+	 * #receivePreafference(edu.memphis.ccrg.lida.framework.shared
+	 * .NodeStructure, edu.memphis.ccrg.lida.framework.shared.NodeStructure)
 	 */
 	@Override
-	public synchronized void receivePreafference(NodeStructure addList, NodeStructure deleteList) {
-		//TODO task to use preafferent signal
+	public synchronized void receivePreafference(NodeStructure addList,
+			NodeStructure deleteList) {
+		// TODO task to use preafferent signal
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#learn(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.globalworkspace.BroadcastListener#learn(edu.memphis
+	 * .ccrg.lida.globalworkspace.BroadcastContent)
 	 */
 	@Override
 	public void learn(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
-		//TODO learning algorithm
+		// TODO learning algorithm
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
 			n.getId();
@@ -297,7 +334,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 
 	/*
 	 * Called by the task manager every tick.
-	 *
+	 * 
 	 * @param ticks the ticks
 	 */
 	@Override
@@ -309,8 +346,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * Receive activation from feature detectors or other codelets to excite a
 	 * PamNode.
-	 *
+	 * 
 	 * @param node the node
+	 * 
 	 * @param amount the amount
 	 */
 	@Override
@@ -324,18 +362,25 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		taskSpawner.addTask(task);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#receiveActivationBurst(java.util.Set, double)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#receiveActivationBurst
+	 * (java.util.Set, double)
 	 */
 	@Override
 	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
-		for (PamNode n : nodes){
+		for (PamNode n : nodes) {
 			receiveActivationBurst(n, amount);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeedu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#
+	 * propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
 	public void propagateActivationToParents(PamNode pn) {
@@ -350,14 +395,20 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		Map<Linkable, Link> parentLinkMap = nodeStructure.getConnectedSinks(pn);
 		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
-			if(parent instanceof PamNode){
-				propagateActivation(pn, (PamNode)parent, (PamLink)parentLinkMap.get(parent), amountToPropagate);
+			if (parent instanceof PamNode) {
+				propagateActivation(pn, (PamNode) parent,
+						(PamLink) parentLinkMap.get(parent), amountToPropagate);
 			}
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivation(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamLink, double)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivation
+	 * (edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode,
+	 * edu.memphis.ccrg.lida.pam.PamLink, double)
 	 */
 	@Override
 	public void propagateActivation(PamNode source, PamNode sink, PamLink link,
@@ -371,139 +422,198 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		taskSpawner.addTask(task);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNodeStructureToPercept(edu.memphis.ccrg.lida.framework.shared.NodeStructure)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeedu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#
+	 * addNodeStructureToPercept
+	 * (edu.memphis.ccrg.lida.framework.shared.NodeStructure)
 	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		for(PamListener pl: pamListeners){
+		for (PamListener pl : pamListeners) {
 			pl.receivePercept(ns);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.pam.PamNode)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu
+	 * .memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
 	public boolean containsNode(Node node) {
 		return nodeStructure.containsNode(node);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu
+	 * .memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
 	public boolean containsNode(ExtendedId id) {
 		return nodeStructure.containsNode(id);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsLink(edu.memphis.ccrg.lida.pam.PamLink)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsLink(edu
+	 * .memphis.ccrg.lida.pam.PamLink)
 	 */
 	@Override
 	public boolean containsLink(Link link) {
 		return nodeStructure.containsLink(link);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsLink(edu
+	 * .memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
 	public boolean containsLink(ExtendedId id) {
 		return nodeStructure.containsLink(id);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNodes()
 	 */
 	@Override
-	public Collection<Node> getPamNodes() {
-		Collection<Node> pamNodes = nodeStructure.getNodes();
-		Collection<Node> copiedNodes = new ArrayList<Node>();
-		for (Node pamNode : pamNodes){
-			copiedNodes.add(factory.getNode(pamNode));
-		}
-		return Collections.unmodifiableCollection(copiedNodes);
-	}
-	
-	@Override
-	public Collection<Link> getPamLinks(){
-		Collection<Link> pamLinks = nodeStructure.getLinks();
-		Collection<Link> copiedLinks = new ArrayList<Link>();
-		for (Link pamLink : pamLinks){
-			copiedLinks.add(factory.getLink(pamLink));
-		}
-		return Collections.unmodifiableCollection(copiedLinks);
+	public Collection<Node> getNodes() {
+		return nodeStructure.getNodes();
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#getModuleContent(java.lang.Object[])
+	@Override
+	public Collection<Link> getLinks() {
+		return nodeStructure.getLinks();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModuleImpl#getModuleContent(java.
+	 * lang.Object[])
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {
-		return new UnmodifiableNodeStructureImpl((NodeStructureImpl) nodeStructure);
+		return new UnmodifiableNodeStructureImpl(
+				(NodeStructureImpl) nodeStructure);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg
+	 * .lida.framework.ModuleListener)
 	 */
 	@Override
 	public void addListener(ModuleListener l) {
 		if (l instanceof PamListener) {
 			addPamListener((PamListener) l);
-		}else{
-			logger.log(Level.WARNING, "Cannot add listener type " + l.toString() + " to this module.", LidaTaskManager.getCurrentTick());
+		} else {
+			logger.log(Level.WARNING, "Cannot add listener type "
+					+ l.toString() + " to this module.", LidaTaskManager
+					.getCurrentTick());
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
+	 * memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode,
+	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
 	 */
 	@Override
-	public Link addNewLink(Node src, Node snk, LinkCategory cat, double initialActivation, double removalThreshold) {
-		return nodeStructure.addDefaultLink(src.getExtendedId(), snk.getExtendedId(), cat, initialActivation, removalThreshold);
+	public Link addNewLink(Node src, Linkable sink, LinkCategory cat,
+			double initialActivation, double removalThreshold) {
+		return addNewLink(src.getId(), sink.getExtendedId(), cat, initialActivation, removalThreshold);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId, edu.memphis.ccrg.lida.framework.shared.ExtendedId, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
+	 * memphis.ccrg.lida.framework.shared.ExtendedId,
+	 * edu.memphis.ccrg.lida.framework.shared.ExtendedId,
+	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
 	 */
 	@Override
-	public Link addNewLink(ExtendedId srcId, ExtendedId sinkId, LinkCategory cat, double initialActivation, double removalThreshold) {
-		return nodeStructure.addDefaultLink(srcId, sinkId, cat, initialActivation, removalThreshold);
-	}
-
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java.lang.String)
-	 */
-	@Override
-	public PamNode addNewNode(String label) {
-		//TODO use other addNewNode method once it is settled
-		PamNode newNode = (PamNode) factory.getNode(nodeStructure.getDefaultNodeType(), label);
-		if(newNode != null){
-			return (PamNode) nodeStructure.addDefaultNode(newNode);
+	public Link addNewLink(int srcId, ExtendedId sinkId,
+			LinkCategory cat, double initialActivation, double removalThreshold) {
+		Link newLink = nodeStructure.addDefaultLink(srcId, sinkId, cat, 0.0, 0.0);
+		if(newLink instanceof PamLink){
+			PamLink newPamLink = (PamLink) newLink;
+			newPamLink.setBaseLevelActivation(initialActivation);
+			newPamLink.setLearnableRemovalThreshold(removalThreshold);
+			return newPamLink;
 		}else{
-			logger.log(Level.WARNING, "Was unable to get node labeled " + label + " of type " + nodeStructure.getDefaultNodeType(), LidaTaskManager.getCurrentTick());
+			//TODO log
 			return null;
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
+	 * .lang.String)
+	 */
+	@Override
+	public PamNode addNewNode(String label) {
+		return addNewNode(nodeStructure.getDefaultNodeType(), label, 1.0, 0.0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
+	 * .lang.String, java.lang.String)
 	 */
 	@Override
 	public PamNode addNewNode(String type, String label) {
+		return addNewNode(type, label, 1.0, 0.0);
+	}
+	
+	//TODO make private for first version!!!
+	@Override
+	public PamNode addNewNode(String type, String label,
+			double baseLevelActivation, double baseLevelRemovalThreshold) {
 		Node newNode = factory.getNode(type, label);
 		if (newNode != null) {
-			if(newNode instanceof PamNode){
+			if (newNode instanceof PamNode) {
+				PamNode newPamNode = (PamNode) newNode;
+				newPamNode.setBaseLevelActivation(baseLevelActivation);
+				newPamNode.setLearnableRemovalThreshold(baseLevelRemovalThreshold);
 				return (PamNode) nodeStructure.addDefaultNode(newNode);
-//				return (PamNode) nodeStructure.addNode(newNode, type);
-			}else{
-				logger.log(Level.WARNING, "Cannot add non-PamNode nodes to PAM.  Node " + label + " not added", LidaTaskManager.getCurrentTick());
+				//TODO return (PamNode) nodeStructure.addNode(newNode, type);
+			} else {
+				logger.log(Level.WARNING,
+						"Cannot add non-PamNode nodes to PAM.  Node " + label
+								+ " not added", LidaTaskManager
+								.getCurrentTick());
 				return null;
 			}
-		}else{
-			logger.log(Level.WARNING, "Was unable to create node " + label + " of type " + type, LidaTaskManager.getCurrentTick());
+		} else {
+			logger.log(Level.WARNING, "Was unable to create node " + label
+					+ " of type " + type, LidaTaskManager.getCurrentTick());
 			return null;
 		}
 	}
@@ -511,24 +621,38 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public static double getPerceptThreshold() {
 		return perceptThreshold;
 	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPerceptThreshold(double)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPerceptThreshold
+	 * (double)
 	 */
 	@Override
 	public void setPerceptThreshold(double t) {
-		if(t >= 0.0 && t <= 1.0){
+		if (t >= 0.0 && t <= 1.0) {
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
-		}else{
-			logger.log(Level.WARNING, "Percept threshold must in [0.0, 1.0] threshold will not be modified.", LidaTaskManager.getCurrentTick());
+		} else {
+			logger
+					.log(
+							Level.WARNING,
+							"Percept threshold must in [0.0, 1.0] threshold will not be modified.",
+							LidaTaskManager.getCurrentTick());
 		}
 	}
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#isOverPerceptThreshold(edu.memphis.ccrg.lida.pam.PamLinkable)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#isOverPerceptThreshold
+	 * (edu.memphis.ccrg.lida.pam.PamLinkable)
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		logger.log(Level.FINEST, l.getTotalActivation() +" >? " + perceptThreshold, LidaTaskManager.getCurrentTick());		
+		logger.log(Level.FINEST, l.getTotalActivation() + " >? "
+				+ perceptThreshold, LidaTaskManager.getCurrentTick());
 		return l.getTotalActivation() > perceptThreshold;
 	}
 
@@ -536,64 +660,85 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public double getUpscaleFactor() {
 		return upscaleFactor;
 	}
-	
+
 	@Override
 	public void setUpscaleFactor(double f) {
-		if(f < 0.0){
+		if (f < 0.0) {
 			upscaleFactor = 0.0;
-		}else if(f > 1.0){
+		} else if (f > 1.0) {
 			upscaleFactor = 1.0;
-		}else{
+		} else {
 			upscaleFactor = f;
-		}		
+		}
 	}
 
 	@Override
 	public double getDownscaleFactor() {
 		return downscaleFactor;
 	}
-	
+
 	@Override
 	public void setDownscaleFactor(double f) {
-		if(f < 0.0){
+		if (f < 0.0) {
 			downscaleFactor = 0.0;
-		}else if(f > 1.0){
+		} else if (f > 1.0) {
 			downscaleFactor = 1.0;
-		}else{
+		} else {
 			downscaleFactor = f;
-		}	
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
-	@Override
-	public Link getPamLink(ExtendedId eid) {
-		if(nodeStructure.containsLink(eid)){
-			return factory.getLink(nodeStructure.getLink(eid), nodeStructure.getDefaultLinkType());
 		}
-		return null;
-	}
-	
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
-	@Override
-	public Node getPamNode(ExtendedId eid) {
-		if(nodeStructure.containsNode(eid)){
-			return factory.getNode(nodeStructure.getNode(eid), nodeStructure.getDefaultNodeType());
-		}
-		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamLink(edu.
+	 * memphis.ccrg.lida.framework.shared.ExtendedId)
 	 */
 	@Override
-	public Node getPamNode(int id) {
-		if(nodeStructure.containsNode(id)){
-			return factory.getNode(nodeStructure.getNode(id), nodeStructure.getDefaultNodeType());
+	public Link getLink(ExtendedId eid) {
+		return nodeStructure.getLink(eid);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(edu.
+	 * memphis.ccrg.lida.framework.shared.ExtendedId)
+	 */
+	@Override
+	public Node getNode(ExtendedId eid) {
+		return nodeStructure.getNode(eid);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(int)
+	 */
+	@Override
+	public Node getNode(int id) {
+		return nodeStructure.getNode(id);
+	}
+
+	@Override
+	public Collection<LinkCategory> getLinkCategories() {
+		return Collections.unmodifiableCollection(linkCategories.values());
+	}
+
+	@Override
+	public LinkCategory getLinkCategory(int id) {
+		return linkCategories.get(id);
+	}
+
+	@Override
+	public LinkCategory addLinkCategory(LinkCategory cat) {
+		if (cat instanceof PamNode) {
+			cat = (LinkCategory) addDefaultNode((Node) cat);
+			linkCategories.put(cat.getId(), cat);
+			return cat;
 		}
 		return null;
 	}
@@ -607,6 +752,5 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public boolean setState(Object content) {
 		return false;
 	}
-
 	
 }
