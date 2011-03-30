@@ -86,13 +86,16 @@ public class LearnableImplTest {
 		double activatibleRemovalThreshold = 0.01;
 		double baseLevelActivation = 0.5;
 		node2 = new LearnableImpl(0.6, activatibleRemovalThreshold, baseLevelActivation, 0.4, es,ds,ts);
+		 
 		assertEquals("Problem with LearnableImpl2", 0.6,node2.getActivation(),0.001);
 		assertEquals("Problem with LearnableImpl2",node2.getExciteStrategy(),es);
 		assertEquals("Problem with LearnableImpl2",node2.getDecayStrategy(),ds);
 		assertEquals("Problem with LearnableImpl2",0.4,node2.getLearnableRemovalThreshold(),0.001);
+		assertEquals("Problem with LearnableImpl2",0.5,node2.getBaseLevelActivation(),0.001);
+		 
 		 
 		
-		//assertEquals
+
 	}
 
 	/**
