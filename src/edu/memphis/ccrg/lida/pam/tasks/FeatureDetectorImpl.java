@@ -14,9 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
@@ -37,26 +38,26 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 
 	private static final Logger logger = Logger
 			.getLogger(FeatureDetectorImpl.class.getCanonicalName());
-	protected List<PamNode> pamNodes = new ArrayList<PamNode>();
+	protected List<ExtendedId> linkableIds = new ArrayList<ExtendedId>();
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
 
 	/**
 	 * Instantiates a new feature detector impl.
 	 * 
-	 * @param n
+	 * @param eid
 	 *            the n
 	 * @param sm
 	 *            the sm
 	 * @param pam
 	 *            the pam
 	 */
-	public FeatureDetectorImpl(PamNode n, SensoryMemory sm,
+	public FeatureDetectorImpl(ExtendedId eid, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
 		this.sm = sm;
-		this.pamNodes.add(n);
+		this.linkableIds.add(eid);
 	}
 
 	/* (non-Javadoc)
@@ -65,15 +66,24 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	@Override
 	@SuppressWarnings("unchecked")
 	public void init() {
-		pam = (PerceptualAssociativeMemory) getParam("PAM", null);
-		sm = (SensoryMemory) getParam("SensoryMemory", null);
-		List<PamNode> nodes = (List<PamNode>) getParam("PamNodes", null);
-		if (nodes != null) {
-			pamNodes.addAll(nodes);
+		List<ExtendedId> ids = (List<ExtendedId>) getParam("linkables", null);
+		if (ids != null) {
+			linkableIds.addAll(ids);
 		}
-		PamNode pn = (PamNode) getParam("PamNode", null);
-		if (pn != null) {
-			pamNodes.add(pn);
+		ExtendedId id =  (ExtendedId) getParam("id", null);
+		if (id != null) {
+			linkableIds.add(id);
+		}
+	}
+	
+	@Override
+	public void setAssociatedModule(LidaModule module, String moduleUsage){
+		if(module instanceof PerceptualAssociativeMemory){
+			pam = (PerceptualAssociativeMemory) module;
+		}else if(module instanceof SensoryMemory){
+			sm = (SensoryMemory) module;
+		}else{
+			logger.log(Level.WARNING, "Cannot set associated module " + module, LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -81,16 +91,16 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#addPamNode(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
-	public void addPamNode(PamNode node) {
-		pamNodes.add(node);
+	public void addPamLinkable(ExtendedId eid) {
+		linkableIds.add(eid);
 	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#getPamNodes()
 	 */
 	@Override
-	public Collection<PamNode> getPamNodes() {
-		return Collections.unmodifiableCollection(pamNodes);
+	public Collection<ExtendedId> getPamLinkables() {
+		return Collections.unmodifiableCollection(linkableIds);
 	}
 
 	@Override
@@ -118,7 +128,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	 */
 	@Override
 	public void excitePam(double amount) {
-		for (PamNode pn : pamNodes) {
+		for (ExtendedId pn : linkableIds) {
 			pam.receiveActivationBurst(pn, amount);
 		}
 	}

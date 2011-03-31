@@ -81,10 +81,29 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 			l.getExciteStrategy(), l.getDecayStrategy(), l.getTotalActivationStrategy());
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#decay(long)
+	 */
 	@Override
 	public void decay(long ticks){
 		decayBaseLevelActivation(ticks);
 		super.decay(ticks);
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#isRemovable()
+	 */
+	@Override
+	public boolean isRemovable() {
+		return baseLevelActivation <= learnableRemovableThreshold;
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getTotalActivation()
+	 */
+	@Override
+	public double getTotalActivation() { 
+	    return totalActivationStrategy.calculateTotalActivation(baseLevelActivation, getActivation());
 	}
 
 	@Override
@@ -97,6 +116,17 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 			}
 			logger.log(Level.FINEST, toString() + " after decay has a BaseLevelAct: " + 
 					baseLevelActivation,LidaTaskManager.getCurrentTick());
+		}		
+	}
+	
+	@Override
+	public void reinforceBaseLevelActivation(double amount) {
+		if (baseLevelExciteStrategy != null) {
+			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
+			synchronized(this){
+				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
+			}
+			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
 		}		
 	}
 
@@ -121,17 +151,6 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public void reinforceBaseLevelActivation(double amount) {
-		if (baseLevelExciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
-			synchronized(this){
-				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
-			}
-			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
-		}		
-	}
-
-	@Override
 	public void setBaseLevelActivation(double activation) {
 		this.baseLevelActivation=activation;		
 	}
@@ -151,14 +170,6 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.learnableRemovableThreshold = threshold;
 	}
 	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#isRemovable()
-	 */
-	@Override
-	public boolean isRemovable() {
-		return baseLevelActivation <= learnableRemovableThreshold;
-	}
-	
 	@Override
 	public TotalActivationStrategy getTotalActivationStrategy() {
 		return totalActivationStrategy;
@@ -170,9 +181,4 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.totalActivationStrategy = totalActivationStrategy;
 	}
 	
-
-	@Override
-	public double getTotalActivation() { 
-	    return totalActivationStrategy.calculateTotalActivation(baseLevelActivation, getActivation());
-	}
 }

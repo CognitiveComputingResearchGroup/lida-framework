@@ -243,24 +243,6 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#receiveActivationBurst(edu.memphis.ccrg.lida.pam.PamNode, double)
-	 */
-	@Override
-	public void receiveActivationBurst(PamNode node, double amount) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#receiveActivationBurst(java.util.Set, double)
-	 */
-	@Override
-	public void receiveActivationBurst(Set<PamNode> nodes, double amount) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivation(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamLink, double)
 	 */
 	@Override
@@ -480,9 +462,21 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	@Override
 	public PamNode addNewNode(String type, String label,
-			double baseLevelActivation, double baseLevelRemovalThreshold) {
+			double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelDecayStrat, String baseLevelExciteStrat) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void receiveActivationBurst(ExtendedId nodeId, double amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveActivationBurst(Set<ExtendedId> nodeIds, double amount) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

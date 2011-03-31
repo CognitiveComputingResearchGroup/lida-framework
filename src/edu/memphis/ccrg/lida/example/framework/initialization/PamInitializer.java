@@ -78,19 +78,19 @@ public class PamInitializer implements Initializer {
 		pam.addNewLink(topLeft, wood, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
 
 		// Feature detectors
-		FeatureDetector fd = new BasicDetector(gold, sm, pam);
+		FeatureDetector fd = new BasicDetector(gold.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(5);
 		pam.addFeatureDetector(fd);
-		fd = new BasicDetector(iron, sm, pam);
+		fd = new BasicDetector(iron.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(3);
 		pam.addFeatureDetector(fd);
-		fd = new BasicDetector(wood, sm, pam);
+		fd = new BasicDetector(wood.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(2);
 		pam.addFeatureDetector(fd);
-		fd = new TopLeftDetector(topLeft, sm, pam);
+		fd = new TopLeftDetector(topLeft.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(7);
 		pam.addFeatureDetector(fd);
-		fd = new BottomRightDetector(bottomRight, sm, pam);
+		fd = new BottomRightDetector(bottomRight.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(3);
 		pam.addFeatureDetector(fd);
 

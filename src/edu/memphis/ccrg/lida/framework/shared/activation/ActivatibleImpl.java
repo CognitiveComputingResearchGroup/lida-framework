@@ -31,7 +31,9 @@ public class ActivatibleImpl implements Activatible {
 	private DecayStrategy decayStrategy;
 	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
 	
-	//this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
+	/*
+	 * this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
+	 */
 	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
@@ -75,6 +77,11 @@ public class ActivatibleImpl implements Activatible {
 	public double getActivation() {
 		return activation;
 	}
+	
+	@Override
+	public double getActivatibleRemovalThreshold() {
+		return removableThreshold;
+	}
 
 	@Override
 	public DecayStrategy getDecayStrategy() {
@@ -90,6 +97,11 @@ public class ActivatibleImpl implements Activatible {
 	public synchronized void setActivation(double d) {
 		this.activation = d;
 	}
+	
+	@Override
+	public void setActivatibleRemovalThreshold(double threshold) {
+		this.removableThreshold = threshold;
+	}
 
 	@Override
 	public void setDecayStrategy(DecayStrategy db) {
@@ -100,25 +112,15 @@ public class ActivatibleImpl implements Activatible {
 	public void setExciteStrategy(ExciteStrategy eb) {
 		this.exciteStrategy = eb;
 	}
-
+	
 	@Override
 	public double getTotalActivation() {
 		return activation;
 	}
 
 	@Override
-	public double getActivatibleRemovalThreshold() {
-		return removableThreshold;
-	}
-
-	@Override
 	public boolean isRemovable() {
 		return activation <= removableThreshold;
-	}
-
-	@Override
-	public void setActivatibleRemovalThreshold(double threshold) {
-		this.removableThreshold = threshold;
 	}
 
 }

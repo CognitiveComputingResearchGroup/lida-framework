@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
@@ -32,7 +33,7 @@ public interface FeatureDetector extends LidaTask {
 	 * 
 	 * @return the pam nodes
 	 */
-	public Collection<PamNode> getPamNodes();
+	public Collection<ExtendedId> getPamLinkables();
 	
 	/**
 	 * 
@@ -40,7 +41,7 @@ public interface FeatureDetector extends LidaTask {
 	 * @param node
 	 *            the node
 	 */
-	public void addPamNode(PamNode node);
+	public void addPamLinkable(ExtendedId eid);
 	
 	/**
 	 * Excites PAM some amount.

@@ -44,7 +44,15 @@ public interface Learnable extends Activatible{
 	 * @param   amount the value to be used to increase the Base Level activation of
 	 *          this node
 	 */
-    public void reinforceBaseLevelActivation(double amount); 
+    public void reinforceBaseLevelActivation(double amount);
+    
+	/**
+	 * decay the Base Level activation using the decay strategy. The decay depends on 
+	 * the time since the last decaying. It is indicated by the parameter ticks.
+	 * 
+	 * @param ticks the number of ticks to decay
+	 */
+	public void decayBaseLevelActivation(long ticks);	
     
     /**
      * Sets BaseLevelExciteStrategy
@@ -58,13 +66,6 @@ public interface Learnable extends Activatible{
 	 */
 	public ExciteStrategy getBaseLevelExciteStrategy();
 	
-	/**
-	 * decay the Base Level activation using the decay strategy. The decay depends on 
-	 * the time since the last decaying. It is indicated by the parameter ticks.
-	 * 
-	 * @param ticks the number of ticks to decay
-	 */
-	public void decayBaseLevelActivation(long ticks);	
 
     /**
      * Sets decay strategy for the Base Level activation
@@ -94,7 +95,6 @@ public interface Learnable extends Activatible{
 	 * @return Strategy this Learnable uses to calculate total activation.
 	 */
 	public TotalActivationStrategy getTotalActivationStrategy();
-	
 	
 	/**
 	 * Sets {@link TotalActivationStrategy}

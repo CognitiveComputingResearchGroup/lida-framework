@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
 
 	private static final Logger logger = Logger.getLogger(MultipleFeatureDetectorImpl.class.getCanonicalName());
-	protected Map<String, PamNode> pamNodeMap;
+	protected Map<String, ExtendedId> pamNodeMap;
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sensoryMemory;
 	
@@ -34,7 +34,7 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 	 * @param sm {@link SensoryMemory}
 	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
-	public MultipleFeatureDetectorImpl(Map<String, PamNode> nodeMap, SensoryMemory sm,
+	public MultipleFeatureDetectorImpl(Map<String, ExtendedId> nodeMap, SensoryMemory sm,
 	   		   						   PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
@@ -44,14 +44,14 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 	
 	@Override
 	protected void runThisLidaTask(){
-		detectMultipleNodes();
+		detectMultipleLinkables();
 		logger.log(Level.FINE,"detection performed "+ toString(),LidaTaskManager.getCurrentTick());
 	}
 
 	/**
 	 * Override this method for domain-specific feature detection
 	 */
-	public abstract void detectMultipleNodes();
+	public abstract void detectMultipleLinkables();
 	
 	@Override
 	public String toString(){

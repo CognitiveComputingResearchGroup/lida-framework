@@ -38,7 +38,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	/*
 	 * Private Learnable object used for all learnable methods
 	 */
-	private Learnable learnable;
+	private LearnableImpl learnable;
 	
 	public PamNodeImpl() {
 		super();

@@ -12,7 +12,6 @@ package edu.memphis.ccrg.lida.pam;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,22 +22,15 @@ import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
  */
 public class PamNodeImplTest extends TestCase{
 	
+	private LidaElementFactory factory = LidaElementFactory.getInstance();	
 	private PamNodeImpl node1;
 	private PamNodeImpl node2;
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
 	
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);
 		node2 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);	
-		
-		node1.getActivation();
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

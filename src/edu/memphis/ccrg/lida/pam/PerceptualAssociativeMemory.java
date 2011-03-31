@@ -32,6 +32,8 @@ import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
     /**
+     * Convenience method for initializing {@link PerceptualAssociativeMemory}
+     * before runtime, does not check for duplicates.
      * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label.
      * The new node is returned.  Default PamNode type is used.
      * Node is given a reasonable initial base-level activation and base-level activation removal threshold.
@@ -42,6 +44,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public PamNode addNewNode(String label);
 	
 	/**
+	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
+     * before runtime, does not check for duplicates.
 	 * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label and 
 	 * PamNode type.  New node is returned.
 	 * Node is given a reasonable initial base-level activation and base-level activation removal threshold.
@@ -53,6 +57,8 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public PamNode addNewNode(String type, String label);
 	
 	/**
+	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
+     * before runtime, does not check for duplicates.
 	 * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} of specified type, with 
 	 * specified label, base-level activation, and base-level removal threshold 
      *  New node is returned.
@@ -60,12 +66,18 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param label label of new node
 	 * @param baseLevelActivation initial base-level activation
 	 * @param baseLevelRemovalThreshold initial base-level removal threshold
+	 * @param baseLevelDecayStrat TODO
+	 * @param baseLevelExciteStrat TODO
+
 	 * @return new {@link PamNode}
+
 	 */
-	public PamNode addNewNode(String type, String label, double baseLevelActivation, double baseLevelRemovalThreshold);
+	public PamNode addNewNode(String type, String label, double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelDecayStrat, String baseLevelExciteStrat);
 	
 	/**
-	 * Creates and adds a new link to this PAM.
+	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
+     * before runtime, does not check for duplicates.
+	 * Creates and adds a new default {@link PamLink} with specified attributes. 
 	 *
 	 * @param source source for link
 	 * @param sink sink for link
@@ -77,7 +89,9 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public Link addNewLink(Node source, Linkable sink, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold);
 
 	/**
-	 * Creates and adds a new default link to this PAM.
+	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
+     * before runtime, does not check for duplicates.
+	 * Creates and adds a new default {@link PamLink} with specified attributes. 
 	 *
 	 * @param sourceId Source's {@link ExtendedId}
 	 * @param sinkId Sink's {@link ExtendedId}
@@ -114,7 +128,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public PamLink addDefaultLink(Link link);
 	
 	/**
-	 * Adds a COPY of a collection of PamLinks to this PAM.
+	 * Adds a COPY of specified collection of PamLinks to this PAM.
 	 * Links will be of Pam's default type.
 	 *
 	 * @param links  PamLinks to add
@@ -123,7 +137,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links);
 	
 	/**
-	 * Adds and runs specified FeatureDetector.
+	 * Adds specified FeatureDetector to be run.
 	 * @param fd {@link FeatureDetector}
 	 */
 	public void addFeatureDetector(FeatureDetector fd);
@@ -144,18 +158,18 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * Excites specified {@link PamNode} an amount of activation.
-	 * @param node The node to receiving the activation
+	 * @param nodeId Id of the node receiving the activation
 	 * @param amount amount of activation to excite
 	 * @see ExcitationTask {@link FeatureDetectorImpl}
 	 */
-	public void receiveActivationBurst(PamNode node, double amount);
+	public void receiveActivationBurst(ExtendedId nodeId, double amount);
 	
 	/**
 	 * Excites PamNodes with an amount of activation.
-	 * @param nodes PamNodes to be excited
+	 * @param nodeIds Ids of PamNodes to be excited
 	 * @param amount amount of activation
 	 */
-	public void receiveActivationBurst(Set<PamNode> nodes, double amount);
+	public void receiveActivationBurst(Set<ExtendedId> nodeIds, double amount);
 	
 	/**
 	 * Propagate activation from a PamNode to another PamNode along a PamLink.

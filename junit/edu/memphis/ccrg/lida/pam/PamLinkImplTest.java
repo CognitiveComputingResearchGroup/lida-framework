@@ -25,23 +25,23 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  */
 public class PamLinkImplTest extends TestCase{
 	
-	PamLinkImpl link1,link2, linkId1, linkId2;
-	LidaElementFactory  Factory;
-	Node node1;
-	Node node2;
-	LinkCategory linkCategory;
+	private LidaElementFactory  factory = LidaElementFactory.getInstance();
+	private Node node1;
+	private Node node2;
+	private LinkCategory linkCategory;
+	private PamLinkImpl link1,link2, link3;
  
 	@Override
 	@Before
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
-		Factory = LidaElementFactory.getInstance();
-		link1 = new PamLinkImpl();
-		link2 = new PamLinkImpl();
-		node1 = Factory.getNode();
-		node2 = Factory.getNode();
 		
-		linkCategory= PerceptualAssociativeMemoryImpl.NONE;			
+		node1 = factory.getNode();
+		node2 = factory.getNode();
+		linkCategory= PerceptualAssociativeMemoryImpl.NONE;	
+		link1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, linkCategory);
+		link2 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, linkCategory);
+		link3 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node2, node1, linkCategory);	
 	}
 	
 	@Override
@@ -54,27 +54,17 @@ public class PamLinkImplTest extends TestCase{
 	 */
 	@Test
 	public void testEquals() {
-			
-		link1.setSource(node1);
-		link2.setSource(node1);
-		link1.setSource(node2);
-		link2.setSource(node2);
-		link1.setCategory(linkCategory);
-		link2.setCategory(linkCategory);
-		assertEquals(link1.getExtendedId().toString() + " " + link2.getExtendedId().toString(), link1, link2);
+		assertTrue(link1.equals(link2));
+		assertTrue(link2.equals(link1));
+		assertFalse(link1.equals(link3));
+		assertFalse(link3.equals(link2));
 	}
 	
 	/**
 	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#equals(Object)}
 	 */
-	public void testHashCode(){
-//		int id = (int) (Math.random()*Integer.MAX_VALUE);
-//		link1.getl(id);
-//		link2.setId(id);
-		linkId1 = (PamLinkImpl) Factory.getLink(node1, node2,linkCategory);
-		linkId2 = (PamLinkImpl) Factory.getLink(node2, node1,linkCategory); 
-		
-		assertEquals(linkId1.hashCode() + " " + linkId2.hashCode(), linkId1.hashCode(), linkId2.hashCode());
+	public void testHashCode(){		
+		assertEquals(link1.hashCode(), link2.hashCode());
 	}
 	
 

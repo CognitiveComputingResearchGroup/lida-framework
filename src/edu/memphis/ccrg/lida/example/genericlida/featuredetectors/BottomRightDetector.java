@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.example.genericlida.featuredetectors;
 
-import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.tasks.FeatureDetectorImpl;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
@@ -21,9 +21,9 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  */
 public class BottomRightDetector extends FeatureDetectorImpl {
 
-	public BottomRightDetector(PamNode n, SensoryMemory sm,
+	public BottomRightDetector(ExtendedId id, SensoryMemory sm,
 							   PerceptualAssociativeMemory pam) {
-		super(n, sm, pam);
+		super(id, sm, pam);
 	}
 
 	@Override

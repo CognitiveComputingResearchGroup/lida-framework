@@ -220,17 +220,24 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
 		pam.addDefaultNode(node3);
-		Link l = pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		PamLink l = (PamLink) pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.333, 0.111);
 		assertEquals(pam.getLink(l.getExtendedId()), l);
 		assertEquals(1, pam.getLinks().size());
+		assertEquals(0.333, l.getBaseLevelActivation());
+		assertEquals(0.111, l.getLearnableRemovalThreshold());
+		assertEquals(0.0, l.getActivation());
+		assertEquals(0.0, l.getActivatibleRemovalThreshold());
+		assertTrue(pam.containsLink(l));
 		
-		Link l2 = pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
-		assertEquals(pam.getLink(l2.getExtendedId()), l2);
+		l = (PamLink) pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		assertEquals(pam.getLink(l.getExtendedId()), l);
 		assertEquals(2, pam.getLinks().size());
+		assertEquals(0.0, l.getBaseLevelActivation());
+		assertEquals(0.0, l.getLearnableRemovalThreshold());
+		assertTrue(pam.containsLink(l));
 		
 		pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
 		assertEquals(2, pam.getLinks().size());
-		
 	}
 
 	public void testAddDefaultLinks(){
@@ -270,7 +277,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddFeatureDetector() {	
-		FeatureDetector detector = new BasicDetector(node1, null, pam);
+		FeatureDetector detector = new BasicDetector(node1.getExtendedId(), null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addFeatureDetector(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
@@ -278,7 +285,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testAddFeatureDetector1() {	
-		FeatureDetector detector = new BasicDetector(node1, null, pam);
+		FeatureDetector detector = new BasicDetector(node1.getExtendedId(), null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addFeatureDetector(detector);
 		pam.addFeatureDetector(detector);
