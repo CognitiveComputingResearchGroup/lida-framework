@@ -48,7 +48,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param type type of PamNode used.
 	 * @param label label of new node
 	 * @see Learnable
-	 * @return the new node
+	 * @return the new {@link PamNode}
 	 */
 	public PamNode addNewNode(String type, String label);
 	
@@ -60,7 +60,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param label label of new node
 	 * @param baseLevelActivation initial base-level activation
 	 * @param baseLevelRemovalThreshold initial base-level removal threshold
-	 * @return
+	 * @return new {@link PamNode}
 	 */
 	public PamNode addNewNode(String type, String label, double baseLevelActivation, double baseLevelRemovalThreshold);
 	

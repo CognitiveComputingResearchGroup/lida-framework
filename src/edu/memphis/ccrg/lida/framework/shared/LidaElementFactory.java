@@ -521,6 +521,7 @@ public class LidaElementFactory {
 	 *            Link's ExciteStrategy
 	 * @param activation
 	 *            initial activation
+	 * @param removalThreshold threshold of activation required to remain active
 	 * @return new Link
 	 */
 	public Link getLink(String linkT, Node source, Linkable sink,

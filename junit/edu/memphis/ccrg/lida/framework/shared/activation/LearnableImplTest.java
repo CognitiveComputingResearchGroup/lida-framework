@@ -92,10 +92,6 @@ public class LearnableImplTest {
 		assertEquals("Problem with LearnableImpl2",node2.getDecayStrategy(),ds);
 		assertEquals("Problem with LearnableImpl2",0.4,node2.getLearnableRemovalThreshold(),0.001);
 		assertEquals("Problem with LearnableImpl2",0.5,node2.getBaseLevelActivation(),0.001);
-		 
-		 
-		
-
 	}
 
 	/**
@@ -103,7 +99,6 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testLearnableImpl() {
-		
 	    ExciteStrategy es = new DefaultExciteStrategy();
 		DecayStrategy ds = new LinearDecayStrategy();
 		TotalActivationStrategy ts= new DefaultTotalActivationStrategy();

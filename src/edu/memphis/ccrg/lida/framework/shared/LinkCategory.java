@@ -7,11 +7,13 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import edu.memphis.ccrg.lida.pam.PamLink;
+
 
 /**
  * Specifies the category of a Link
- * @see PerceptualAssociativeMemoryImpl
- * @see LinkImpl
+ * @see PamLink
+ * @see Link
  */
 public interface LinkCategory {
 	
