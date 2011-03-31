@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PropagationBehavior;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 
 /**
  * @author Javier Snaider
@@ -218,7 +218,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)
 	 */
 	@Override
-	public void addFeatureDetector(FeatureDetector fd) {
+	public void addDetectionAlgorithm(DetectionAlgorithm fd) {
 		// not implemented
 
 	}
@@ -448,21 +448,21 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	@Override
 	public Link addNewLink(Node source, Linkable sink, LinkCategory type,
-			double activation, double removalThreshold) {
+			double activation, double removalThreshold, String blExciteStrategy, String blDecayStrategy) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type,
-			double activation, double removalThreshold) {
+			double activation, double removalThreshold, String blExciteStrategy, String blDecayStrategy) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PamNode addNewNode(String type, String label,
-			double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelDecayStrat, String baseLevelExciteStrat) {
+			double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrat, String baseLevelDecayStrat) {
 		// TODO Auto-generated method stub
 		return null;
 	}

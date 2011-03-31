@@ -22,9 +22,9 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  *
  * 
  */
-public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implements FeatureDetector {
+public abstract class MultipleDetectionAlgorithm extends LidaTaskImpl implements DetectionAlgorithm {
 
-	private static final Logger logger = Logger.getLogger(MultipleFeatureDetectorImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(MultipleDetectionAlgorithm.class.getCanonicalName());
 	protected Map<String, ExtendedId> pamNodeMap;
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sensoryMemory;
@@ -34,7 +34,7 @@ public abstract class MultipleFeatureDetectorImpl extends LidaTaskImpl implement
 	 * @param sm {@link SensoryMemory}
 	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
-	public MultipleFeatureDetectorImpl(Map<String, ExtendedId> nodeMap, SensoryMemory sm,
+	public MultipleDetectionAlgorithm(Map<String, ExtendedId> nodeMap, SensoryMemory sm,
 	   		   						   PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;

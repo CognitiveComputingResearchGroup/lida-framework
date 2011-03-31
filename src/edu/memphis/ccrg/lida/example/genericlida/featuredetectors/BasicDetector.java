@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.example.genericlida.featuredetectors;
 
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @author Ryan J. McCall - Javier Snaider
  *
  */
-public class BasicDetector extends FeatureDetectorImpl {
+public class BasicDetector extends BasicDetectionAlgorithm {
 
 	public BasicDetector(ExtendedId eid, SensoryMemory sm, 
 								 PerceptualAssociativeMemory pam) {

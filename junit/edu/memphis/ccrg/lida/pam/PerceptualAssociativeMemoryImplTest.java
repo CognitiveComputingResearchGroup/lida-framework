@@ -36,7 +36,7 @@ import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 
 /**
  * Tests {@link PerceptualAssociativeMemoryImpl}
@@ -209,8 +209,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testAddNewLink(){
-		Link l = pam.addNewLink(node1, node2, null, 0.0, 0.0);
-		Link l2 = pam.addNewLink(node3.getId(), node2.getExtendedId(), null, 0.0, 0.0);
+		Link l = pam.addNewLink(node1, node2, null, 0.0, 0.0, null, null);
+		Link l2 = pam.addNewLink(node3.getId(), node2.getExtendedId(), null, 0.0, 0.0, null, null);
 		assertEquals(l, null);
 		assertEquals(l2, null);
 		assertEquals(0, pam.getLinks().size());
@@ -220,7 +220,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
 		pam.addDefaultNode(node3);
-		PamLink l = (PamLink) pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.333, 0.111);
+		PamLink l = (PamLink) pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.333, 0.111, null, null);
 		assertEquals(pam.getLink(l.getExtendedId()), l);
 		assertEquals(1, pam.getLinks().size());
 		assertEquals(0.333, l.getBaseLevelActivation());
@@ -229,14 +229,14 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		assertEquals(0.0, l.getActivatibleRemovalThreshold());
 		assertTrue(pam.containsLink(l));
 		
-		l = (PamLink) pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		l = (PamLink) pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
 		assertEquals(pam.getLink(l.getExtendedId()), l);
 		assertEquals(2, pam.getLinks().size());
 		assertEquals(0.0, l.getBaseLevelActivation());
 		assertEquals(0.0, l.getLearnableRemovalThreshold());
 		assertTrue(pam.containsLink(l));
 		
-		pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
 		assertEquals(2, pam.getLinks().size());
 	}
 
@@ -273,22 +273,22 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDetectionAlgorithm(edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm)}.
 	 */
 	@Test
 	public void testAddFeatureDetector() {	
-		FeatureDetector detector = new BasicDetector(node1.getExtendedId(), null, pam);
+		DetectionAlgorithm detector = new BasicDetector(node1.getExtendedId(), null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
-		pam.addFeatureDetector(detector);
+		pam.addDetectionAlgorithm(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
 		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 1);
 	}
 	
-	public void testAddFeatureDetector1() {	
-		FeatureDetector detector = new BasicDetector(node1.getExtendedId(), null, pam);
+	public void testDetectionAlgorithm1() {	
+		DetectionAlgorithm detector = new BasicDetector(node1.getExtendedId(), null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
-		pam.addFeatureDetector(detector);
-		pam.addFeatureDetector(detector);
+		pam.addDetectionAlgorithm(detector);
+		pam.addDetectionAlgorithm(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
 		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 2);
 	}
@@ -331,9 +331,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		testNod2 = pam.addDefaultNode(testNod2);
 		testNod3 = pam.addDefaultNode(testNod3);
 		testNod4 = pam.addDefaultNode(testNod4);
-		Link l12 = pam.addNewLink(testNod1, testNod2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
-		Link l13 = pam.addNewLink(testNod1, testNod3, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
-		Link l41 = pam.addNewLink(testNod4, testNod1, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		Link l12 = pam.addNewLink(testNod1, testNod2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		Link l13 = pam.addNewLink(testNod1, testNod3, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		Link l41 = pam.addNewLink(testNod4, testNod1, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
 		
 		assertTrue(testNod4.getActivation() == 1.0);
 		assertTrue(l41.getActivation() == 0.0);
@@ -439,7 +439,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testContainsLink1(){
 		PamNode a = pam.addNewNode("A");
 		PamNode b = pam.addNewNode("B");
-		Link l = pam.addNewLink(a, b, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		Link l = pam.addNewLink(a, b, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
 		assertTrue(pam.containsLink(l));
 		assertFalse(pam.containsLink(this.link1));
 		assertFalse(pam.containsLink(this.link2));
@@ -540,7 +540,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testGetPamLink(){
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
-		Link l = pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		Link l = pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
 		
 		assertEquals(l, pam.getLink(l.getExtendedId()));
 		assertEquals(null, pam.getLink(new ExtendedId(99, new ExtendedId(11), 99)));
@@ -596,9 +596,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 			assertTrue(e instanceof UnsupportedOperationException);
 		}
 		
-		pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
-		pam.addNewLink(node2, node3, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
-		pam.addNewLink(node3, node1, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0);
+		pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		pam.addNewLink(node2, node3, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		pam.addNewLink(node3, node1, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
 		
 		links = pam.getLinks();
 		assertTrue(links.size() == 3);		

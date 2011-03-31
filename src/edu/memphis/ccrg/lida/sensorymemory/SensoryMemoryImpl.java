@@ -18,13 +18,13 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
 /**
  * Default implementation of the {@link SensoryMemory} module. This module should
  * sense the environment, store the sensed data and processing it. It should expect access 
- * to its content from {@link FeatureDetector}s and it should transmit content to
+ * to its content from {@link DetectionAlgorithm}s and it should transmit content to
  * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */

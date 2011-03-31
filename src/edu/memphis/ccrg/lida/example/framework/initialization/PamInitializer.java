@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.pam.PropagationBehavior;
 import edu.memphis.ccrg.lida.pam.UpscalePropagationBehavior;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
+import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 public class PamInitializer implements Initializer {
@@ -67,32 +67,32 @@ public class PamInitializer implements Initializer {
 				"PamNodeImpl", "bottomRight");
 		pam.addDefaultNode(bottomRight);
 		// Links
-		pam.addNewLink(gold, metal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
-		pam.addNewLink(metal, solid, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
-		pam.addNewLink(iron, metal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
-		pam.addNewLink(wood, noMetal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
-		pam.addNewLink(plastic, noMetal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
-		pam.addNewLink(metal, noMetal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
-		pam.addNewLink(wood, solid, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
+		pam.addNewLink(gold, metal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
+		pam.addNewLink(metal, solid, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
+		pam.addNewLink(iron, metal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
+		pam.addNewLink(wood, noMetal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
+		pam.addNewLink(plastic, noMetal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
+		pam.addNewLink(metal, noMetal, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
+		pam.addNewLink(wood, solid, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
 
-		pam.addNewLink(topLeft, wood, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0);
+		pam.addNewLink(topLeft, wood, PerceptualAssociativeMemoryImpl.NONE,1.0, 0.0, "slowExcite", "slowDecay");
 
 		// Feature detectors
-		FeatureDetector fd = new BasicDetector(gold.getExtendedId(), sm, pam);
+		DetectionAlgorithm fd = new BasicDetector(gold.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(5);
-		pam.addFeatureDetector(fd);
+		pam.addDetectionAlgorithm(fd);
 		fd = new BasicDetector(iron.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(3);
-		pam.addFeatureDetector(fd);
+		pam.addDetectionAlgorithm(fd);
 		fd = new BasicDetector(wood.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(2);
-		pam.addFeatureDetector(fd);
+		pam.addDetectionAlgorithm(fd);
 		fd = new TopLeftDetector(topLeft.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(7);
-		pam.addFeatureDetector(fd);
+		pam.addDetectionAlgorithm(fd);
 		fd = new BottomRightDetector(bottomRight.getExtendedId(), sm, pam);
 		fd.setTicksPerStep(3);
-		pam.addFeatureDetector(fd);
+		pam.addDetectionAlgorithm(fd);
 
 		PropagationBehavior b = new UpscalePropagationBehavior();
 		pam.setPropagationBehavior(b);

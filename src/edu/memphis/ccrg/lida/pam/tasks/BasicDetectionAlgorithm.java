@@ -33,11 +33,11 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @author Ryan J. McCall - Javier Snaider
  * 
  */
-public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
-		FeatureDetector {
+public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
+		DetectionAlgorithm {
 
 	private static final Logger logger = Logger
-			.getLogger(FeatureDetectorImpl.class.getCanonicalName());
+			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
 	protected List<ExtendedId> linkableIds = new ArrayList<ExtendedId>();
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
@@ -52,7 +52,7 @@ public abstract class FeatureDetectorImpl extends LidaTaskImpl implements
 	 * @param pam
 	 *            the pam
 	 */
-	public FeatureDetectorImpl(ExtendedId eid, SensoryMemory sm,
+	public BasicDetectionAlgorithm(ExtendedId eid, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;

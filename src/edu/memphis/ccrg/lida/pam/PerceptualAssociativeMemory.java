@@ -21,8 +21,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetector;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
+import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
 /**
@@ -66,13 +66,12 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param label label of new node
 	 * @param baseLevelActivation initial base-level activation
 	 * @param baseLevelRemovalThreshold initial base-level removal threshold
-	 * @param baseLevelDecayStrat TODO
 	 * @param baseLevelExciteStrat TODO
-
+	 * @param baseLevelDecayStrat TODO
 	 * @return new {@link PamNode}
 
 	 */
-	public PamNode addNewNode(String type, String label, double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelDecayStrat, String baseLevelExciteStrat);
+	public PamNode addNewNode(String type, String label, double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrat, String baseLevelDecayStrat);
 	
 	/**
 	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
@@ -84,9 +83,11 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param type type for link
 	 * @param baseLevelActivation initial activation for link
 	 * @param baseLevelRemovalThreshold amount of base-level activation link must have to remain in this PAM.
+	 * @param blExciteStrategy TODO
+	 * @param blDecayStrategy TODO
 	 * @return created link
 	 */
-	public Link addNewLink(Node source, Linkable sink, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold);
+	public Link addNewLink(Node source, Linkable sink, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold, String blExciteStrategy, String blDecayStrategy);
 
 	/**
 	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
@@ -98,9 +99,11 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param type Link's LinkCategory
 	 * @param baseLevelActivation initial activation
 	 * @param baseLevelRemovalThreshold amount of base-level activation link must have to remain in PAM.
+	 * @param blExciteStrategy TODO
+	 * @param blDecayStrategy TODO
 	 * @return created Link
 	 */
-	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold);
+	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold, String blExciteStrategy, String blDecayStrategy);
 
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
@@ -138,9 +141,9 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * Adds specified FeatureDetector to be run.
-	 * @param fd {@link FeatureDetector}
+	 * @param fd {@link DetectionAlgorithm}
 	 */
-	public void addFeatureDetector(FeatureDetector fd);
+	public void addDetectionAlgorithm(DetectionAlgorithm fd);
 		
 	/**
 	 * Adds {@link PamListener}.
@@ -160,7 +163,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * Excites specified {@link PamNode} an amount of activation.
 	 * @param nodeId Id of the node receiving the activation
 	 * @param amount amount of activation to excite
-	 * @see ExcitationTask {@link FeatureDetectorImpl}
+	 * @see ExcitationTask {@link BasicDetectionAlgorithm}
 	 */
 	public void receiveActivationBurst(ExtendedId nodeId, double amount);
 	

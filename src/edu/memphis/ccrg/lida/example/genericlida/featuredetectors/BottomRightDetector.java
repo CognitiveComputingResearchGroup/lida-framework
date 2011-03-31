@@ -12,14 +12,14 @@ package edu.memphis.ccrg.lida.example.genericlida.featuredetectors;
 
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.pam.tasks.FeatureDetectorImpl;
+import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
  * @author Javier Snaider
  * 
  */
-public class BottomRightDetector extends FeatureDetectorImpl {
+public class BottomRightDetector extends BasicDetectionAlgorithm {
 
 	public BottomRightDetector(ExtendedId id, SensoryMemory sm,
 							   PerceptualAssociativeMemory pam) {

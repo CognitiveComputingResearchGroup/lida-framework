@@ -821,6 +821,14 @@ public class LidaElementFactory {
 	public String getDefaultDecayType() {
 		return defaultDecayType;
 	}
+	
+	/**
+	 * Returns the default {@link DecayStrategy}
+	 * @return Factory's default {@link DecayStrategy} 
+	 */
+	public DecayStrategy getDefaultDecayStrategy(){
+		return getDecayStrategy(defaultDecayType);
+	}
 
 	/**
 	 * Sets default decay type.
@@ -843,6 +851,14 @@ public class LidaElementFactory {
 	 */
 	public String getDefaultExciteType() {
 		return defaultExciteType;
+	}
+	
+	/**
+	 * Returns the default {@link ExciteStrategy}
+	 * @return Factory's default excite strategy
+	 */
+	public ExciteStrategy getDefaultExciteStrategy(){
+		return getExciteStrategy(defaultExciteType);
 	}
 
 	/**

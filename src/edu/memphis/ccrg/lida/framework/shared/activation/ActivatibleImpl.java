@@ -40,8 +40,8 @@ public class ActivatibleImpl implements Activatible {
 
 	public ActivatibleImpl() {
 		activation = 0.0;
-		decayStrategy = factory.getDecayStrategy(factory.getDefaultDecayType());
-		exciteStrategy = factory.getExciteStrategy(factory.getDefaultExciteType());
+		decayStrategy = factory.getDefaultDecayStrategy();
+		exciteStrategy = factory.getDefaultExciteStrategy();
 	}
 	
 	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy eb, DecayStrategy db) {
