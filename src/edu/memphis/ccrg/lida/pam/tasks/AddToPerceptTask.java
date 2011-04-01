@@ -31,16 +31,16 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	/**
 	 * Creates a new AddToPerceptTask to add a single {@link PamNode}
 	 * 
-	 * @param pn
+	 * @param pamNode
 	 *            a {@link PamNode}
 	 * @param pam
 	 *            the {@link PerceptualAssociativeMemory}
 	 */
-	public AddToPerceptTask(Node pn, PerceptualAssociativeMemory pam) {
+	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
 		nodeStructure = LidaElementFactory.getInstance().getPamNodeStructure();
-		nodeStructure.addDefaultNode(pn);
+		nodeStructure.addDefaultNode(pamNode);
 	}
 	
 	/**

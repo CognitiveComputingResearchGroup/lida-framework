@@ -385,18 +385,25 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void receiveActivationBurst(ExtendedId linkableId, double amount) {
-		// TODO link support
-		Node node = getNode(linkableId);
-		if (node != null) {
-			logger.log(Level.FINE, node.getLabel()
+		PamNode linkable = (PamNode) getNode(linkableId);
+		if (linkable != null) {
+			logger.log(Level.FINE, linkable.getLabel()
 					+ " gets activation burst. Amount: " + amount
-					+ ", total activation: " + node.getTotalActivation(),
+					+ ", total activation: " + linkable.getTotalActivation(),
 					LidaTaskManager.getCurrentTick());
-			ExcitationTask task = new ExcitationTask((PamNode) node, amount,
+			ExcitationTask task = new ExcitationTask(linkable, amount,
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			// TODO log
+			if(linkableId.isNodeId()){
+				logger.log(Level.WARNING, 
+					"Cannot find PamNode with extended id: " + linkableId, 
+					LidaTaskManager.getCurrentTick());
+			}else{
+				logger.log(Level.WARNING, 
+						"Cannot use this method for PamLinks: " + linkableId, 
+						LidaTaskManager.getCurrentTick());
+			}
 		}
 	}
 

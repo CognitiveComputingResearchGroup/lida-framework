@@ -11,13 +11,14 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
  * A process which detects a pattern (feature) in {@link SensoryMemory} content and excites {@link PamNode}s 
  * representing that pattern.
- * @author Javier Snaider
+ * @author Javier Snaider, Ryan McCall
  * @see BasicDetectionAlgorithm
  */
 public interface DetectionAlgorithm extends LidaTask {
@@ -37,9 +38,8 @@ public interface DetectionAlgorithm extends LidaTask {
 	
 	/**
 	 * 
-	 * Provides this feature detector with access to specified PamNode.
-	 * @param node
-	 *            the node
+	 * Provides this feature detector with access to specified {@link PamLinkable}.
+	 * @param eid ExtendedId of a {@link PamLinkable}
 	 */
 	public void addPamLinkable(ExtendedId eid);
 	
