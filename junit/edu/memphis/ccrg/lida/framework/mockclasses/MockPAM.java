@@ -422,52 +422,52 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	@Override
 	public LinkCategory addLinkCategory(LinkCategory cat) {
-		// TODO Auto-generated method stub
+		// --
 		return null;
 	}
 
 	@Override
 	public Collection<LinkCategory> getLinkCategories() {
-		// TODO Auto-generated method stub
+		// --
 		return null;
 	}
 
 	@Override
 	public LinkCategory getLinkCategory(int id) {
-		// TODO Auto-generated method stub
+		// --
 		return null;
 	}
 
 	@Override
 	public Link addNewLink(Node source, Linkable sink, LinkCategory type,
 			double activation, double removalThreshold, String blExciteStrategy, String blDecayStrategy) {
-		// TODO Auto-generated method stub
+		// --
 		return null;
 	}
 
 	@Override
 	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type,
 			double activation, double removalThreshold, String blExciteStrategy, String blDecayStrategy) {
-		// TODO Auto-generated method stub
+		// --
 		return null;
 	}
 
 	@Override
 	public PamNode addNewNode(String label,
 			double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		// TODO Auto-generated method stub
+		// --
 		return null;
 	}
 
 	@Override
 	public void receiveActivationBurst(ExtendedId nodeId, double amount) {
-		// TODO Auto-generated method stub
+		// --
 		
 	}
 
 	@Override
 	public void receiveActivationBurst(Set<ExtendedId> nodeIds, double amount) {
-		// TODO Auto-generated method stub
+		// --
 		
 	}
 

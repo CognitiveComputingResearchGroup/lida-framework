@@ -19,6 +19,8 @@ import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
@@ -42,20 +44,7 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
      * @return the new node
      */
 	public PamNode addNewNode(String label);
-	
-	/**
-	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
-     * before runtime, does not check for duplicates.
-	 * Creates and adds a new Node to this {@link PerceptualAssociativeMemory} with specified label and 
-	 * PamNode type.  New node is returned.
-	 * Node is given a reasonable initial base-level activation and base-level activation removal threshold.
-	 * @param type type of PamNode used.
-	 * @param label label of new node
-	 * @see Learnable
-	 * @return the new {@link PamNode}
-	 */
-	//public PamNode addNewNode(String type, String label);
-	
+		
 	/**
 	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
      * before runtime, does not check for duplicates.
@@ -65,12 +54,13 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param label label of new node
 	 * @param baseLevelActivation initial base-level activation
 	 * @param baseLevelRemovalThreshold initial base-level removal threshold
-	 * @param baseLevelExciteStrat TODO
-	 * @param baseLevelDecayStrat TODO
-	 * @return new {@link PamNode}
+	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for base-level activation
+	 * @param baseLevelDecayStrategy {@link DecayStrategy} for base-level activation
+	 * @return the new {@link PamNode} stored in this PAM.
 
 	 */
-	public PamNode addNewNode(String label, double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrat, String baseLevelDecayStrat);
+	public PamNode addNewNode(String label, double baseLevelActivation, 
+			double baseLevelRemovalThreshold, String baseLevelExciteStrategy, String baseLevelDecayStrategy);
 	
 	/**
 	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
@@ -82,11 +72,11 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param type type for link
 	 * @param baseLevelActivation initial activation for link
 	 * @param baseLevelRemovalThreshold amount of base-level activation link must have to remain in this PAM.
-	 * @param blExciteStrategy TODO
-	 * @param blDecayStrategy TODO
-	 * @return created link
+	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for base-level activation
+	 * @param baseLevelDecayStrategy {@link DecayStrategy} for base-level activation
+	 * @return the new {@link PamLink} stored in this PAM.
 	 */
-	public Link addNewLink(Node source, Linkable sink, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold, String blExciteStrategy, String blDecayStrategy);
+	public Link addNewLink(Node source, Linkable sink, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrategy, String baseLevelDecayStrategy);
 
 	/**
 	 * Convenience method for initializing {@link PerceptualAssociativeMemory}
@@ -98,11 +88,11 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	 * @param type Link's LinkCategory
 	 * @param baseLevelActivation initial activation
 	 * @param baseLevelRemovalThreshold amount of base-level activation link must have to remain in PAM.
-	 * @param blExciteStrategy TODO
-	 * @param blDecayStrategy TODO
-	 * @return created Link
+	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for base-level activation
+	 * @param baseLevelDecayStrategy {@link DecayStrategy} for base-level activation
+	 * @return the new {@link PamLink} stored in this PAM.
 	 */
-	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold, String blExciteStrategy, String blDecayStrategy);
+	public Link addNewLink(int sourceId, ExtendedId sinkId, LinkCategory type, double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrategy, String baseLevelDecayStrategy);
 
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.

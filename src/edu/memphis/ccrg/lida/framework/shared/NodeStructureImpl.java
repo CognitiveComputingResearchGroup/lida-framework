@@ -348,79 +348,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	 @Override
 	 public synchronized Link addLink(Link l, String linkType) {
-		 	//TODO complete this method
-			return null;
+		//TODO complete this method
+		return null;
 	 }
-
-//	@Override
-//	public synchronized Node addNode(Node n, String nodeType) {
-//		if (factory.containsNodeType(nodeType) == false) {
-//			logger.log(Level.WARNING, "Cannot add node of type "
-//									+ nodeType
-//									+ " because factory doesn't contain that node type.  Make sure the node type is defined in "
-//									+ " factoriesData.xml", LidaTaskManager
-//									.getCurrentTick());
-//			return null;
-//		}
-//		
-//		//Check instance of default node.
-//		String defaultCl = factory.getNodeLinkableDef(this.defaultNodeType).getClassName();
-//		Class<?> cls = Class.forName(defaultCl);
-//		if(cls.isInstance(n)){
-//			//TODO check
-//			String cl = factory.getNodeLinkableDef(nodeType).getClassName();
-//			Class<?> clss = Class.forName(cl);
-//			if (clss.isInstance(n)){
-//				Node node = nodes.get(n.getId());
-//				if (node == null) {
-//					node = n.copy();
-//					nodes.put(node.getId(), node);
-//					linkableMap.put(node, new HashSet<Link>());
-//					return node;
-//				}else {
-//					Node existing = this.getNode(n.getId());
-//					//TODO
-////					existing.updateValues(n);
-//					return existing;
-//				}
-//			}else{ 	//have factory create node
-//				Node node = nodes.get(n.getId());
-//				if (node == null) {
-//					node = getNewNode(n, nodeType);
-//					nodes.put(node.getId(), node);
-//					linkableMap.put(node, new HashSet<Link>());
-//					return node;
-//				}else {
-//					//TODO
-////					Node existing = this.getNode(n.getId());
-////					existing.updateValues(n);
-//					node.setActivatibleRemovalThreshold(n.getActivatibleRemovalThreshold());
-//					double newActiv = n.getActivation();
-//					if (node.getActivation() < newActiv) {
-//						node.setActivation(newActiv);
-//					}
-//					return node;
-//				}
-//			}
-//			
-//		}else{
-//			logger.log(Level.WARNING, "Cannot add a node that doesn't have default node type as a parent", LidaTaskManager.getCurrentTick());
-//			return null;
-//		}
-////
-////		Node node = nodes.get(n.getId());
-////		if (node == null) {
-////			node = getNewNode(n, nodeType);
-////			nodes.put(node.getId(), node);
-////			linkableMap.put(node, new HashSet<Link>());
-////		} else {
-////			double newActiv = n.getActivation();
-////			if (node.getActivation() < newActiv) {
-////				node.setActivation(newActiv);
-////			}
-////		}
-////		return node;
-//	} 
 	
 	/* 
 	 * @param n

@@ -56,7 +56,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		PerceptualAssociativeMemory, BroadcastListener, WorkspaceListener,
 		PreafferenceListener {
 
-	private static final String DEFAULT_NO_DECAY_PAMNODE = "NoDecayPamNode";
+	private static final String DEFAULT_NONDECAYING_PAMNODE = "NoDecayPamNode";
 
 	private static final Logger logger = Logger
 			.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
@@ -69,7 +69,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * Contains all of the Node, Links and their connections.
 	 */
-	private NodeStructure nodeStructure;
+	private NodeStructure pamNodeStructure;
 
 	/*
 	 * How PAM calculates the amount of activation to propagate
@@ -134,23 +134,23 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 
 		pamListeners = new ArrayList<PamListener>();
 		propagationBehavior = new UpscalePropagationBehavior();
-		nodeStructure = factory.getPamNodeStructure();
+		pamNodeStructure = factory.getPamNodeStructure();
 
-		PamNode none = (PamNode) factory.getNode(DEFAULT_NO_DECAY_PAMNODE,
+		PamNode linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
 				"None");
-		NONE = addLinkCategory((LinkCategory) none);
+		NONE = addLinkCategory((LinkCategory) linkCategory);
 
-		PamNode lateralType = (PamNode) factory.getNode(
-				DEFAULT_NO_DECAY_PAMNODE, "LateralType");
-		LATERAL = addLinkCategory((LinkCategory) lateralType);
+		linkCategory = (PamNode) factory.getNode(
+				DEFAULT_NONDECAYING_PAMNODE, "LateralType");
+		LATERAL = addLinkCategory((LinkCategory) linkCategory);
 
-		PamNode membership = (PamNode) factory.getNode(DEFAULT_NO_DECAY_PAMNODE,
+		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
 				"Membership");
-		MEMBERSHIP = addLinkCategory((LinkCategory) membership);
+		MEMBERSHIP = addLinkCategory((LinkCategory) linkCategory);
 
-		PamNode feature = (PamNode) factory.getNode(DEFAULT_NO_DECAY_PAMNODE,
+		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
 				"Feature");
-		FEATURE = addLinkCategory((LinkCategory) feature);
+		FEATURE = addLinkCategory((LinkCategory) linkCategory);
 	}
 
 	/*
@@ -222,7 +222,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (n == null) {
 			return null;
 		}
-		return (PamNode) nodeStructure.addDefaultNode(n);
+		return (PamNode) pamNodeStructure.addDefaultNode(n);
 	}
 
 	/*
@@ -256,7 +256,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (link == null) {
 			return null;
 		}
-		return (PamLink) nodeStructure.addDefaultLink(link);
+		return (PamLink) pamNodeStructure.addDefaultLink(link);
 	}
 
 	/*
@@ -365,8 +365,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
-		nodeStructure.decayNodeStructure(ticks);
+		//TODO next version
+//		super.decayModule(ticks);
+//		pamNodeStructure.decayNodeStructure(ticks);
 	}
 
 	/*
@@ -432,7 +433,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				.getActivationToPropagate(propagateParams);
 
 		// Get parents of pamNode and the connecting link
-		Map<Linkable, Link> parentLinkMap = nodeStructure.getConnectedSinks(pn);
+		Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
 		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
 			if (parent instanceof PamNode) {
@@ -485,7 +486,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsNode(Node node) {
-		return nodeStructure.containsNode(node);
+		return pamNodeStructure.containsNode(node);
 	}
 
 	/*
@@ -497,7 +498,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsNode(ExtendedId id) {
-		return nodeStructure.containsNode(id);
+		return pamNodeStructure.containsNode(id);
 	}
 
 	/*
@@ -509,7 +510,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsLink(Link link) {
-		return nodeStructure.containsLink(link);
+		return pamNodeStructure.containsLink(link);
 	}
 
 	/*
@@ -521,7 +522,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public boolean containsLink(ExtendedId id) {
-		return nodeStructure.containsLink(id);
+		return pamNodeStructure.containsLink(id);
 	}
 
 	/*
@@ -531,12 +532,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Collection<Node> getNodes() {
-		return nodeStructure.getNodes();
+		return pamNodeStructure.getNodes();
 	}
 
 	@Override
 	public Collection<Link> getLinks() {
-		return nodeStructure.getLinks();
+		return pamNodeStructure.getLinks();
 	}
 
 	/*
@@ -549,7 +550,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public Object getModuleContent(Object... params) {
 		return new UnmodifiableNodeStructureImpl(
-				(NodeStructureImpl) nodeStructure);
+				(NodeStructureImpl) pamNodeStructure);
 	}
 
 	/*
@@ -600,7 +601,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Link addNewLink(int srcId, ExtendedId sinkId, LinkCategory cat,
 			double baseLevelActivation, double baseLevelRemovalThreshold,
 			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		Link newLink = nodeStructure.addDefaultLink(srcId, sinkId, cat, 0.0,
+		Link newLink = pamNodeStructure.addDefaultLink(srcId, sinkId, cat, 0.0,
 				0.0);
 		if (newLink instanceof PamLink) {
 			PamLink newPamLink = (PamLink) newLink;
@@ -609,7 +610,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 					baseLevelDecayStrat);
 			return newPamLink;
 		} else {
-			nodeStructure.removeLink(newLink);
+			pamNodeStructure.removeLink(newLink);
 			logger.log(Level.WARNING,
 					"Could not add link because it was not a PamLink",
 					LidaTaskManager.getCurrentTick());
@@ -629,34 +630,19 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		return addNewNode(label, 1.0, 0.0,
 				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
 	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see
-//	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
-//	 * .lang.String, java.lang.String)
-//	 */
-//	@Override
-//	public PamNode addNewNode(String type, String label) {
-//		return addNewNode(type, label, 1.0, 0.0,
-//				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
-//	}
-
+	
 	@Override
 	public PamNode addNewNode(String label,
 			double baseLevelActivation, double baseLevelRemovalThreshold,
 			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		Node newNode = factory.getNode(DEFAULT_NO_DECAY_PAMNODE, label);
+		Node newNode = factory.getNode(DEFAULT_NONDECAYING_PAMNODE, label);
 		if (newNode != null) {
 			if (newNode instanceof PamNode) {
-				PamNode newPamNode = (PamNode) nodeStructure.addDefaultNode(newNode);
+				PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
 				setLearnableValues(newPamNode, baseLevelActivation,
 						baseLevelRemovalThreshold, baseLevelExciteStrat,
 						baseLevelDecayStrat);
 				return newPamNode;
-				// TODO USE TYPE: return (PamNode)
-				// nodeStructure.addNode(newNode, type);
 			} else {
 				logger.log(Level.WARNING,
 						"Cannot add non-PamNode nodes to PAM.  Node " + label
@@ -790,7 +776,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Link getLink(ExtendedId eid) {
-		return nodeStructure.getLink(eid);
+		return pamNodeStructure.getLink(eid);
 	}
 
 	/*
@@ -802,7 +788,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Node getNode(ExtendedId eid) {
-		return nodeStructure.getNode(eid);
+		return pamNodeStructure.getNode(eid);
 	}
 
 	/*
@@ -813,7 +799,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Node getNode(int id) {
-		return nodeStructure.getNode(id);
+		return pamNodeStructure.getNode(id);
 	}
 
 	@Override
