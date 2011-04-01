@@ -554,7 +554,7 @@ public class NodeStructureImplTest extends TestCase{
 		node2.setActivatibleRemovalThreshold(0.666);
 		node2.setActivation(0.777);
 		node2.setDesirability(0.888);
-		PamNode pn = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+		PamNode pn = (PamNode) factory.getNode("PamNodeImpl");
 		node2.setGroundingPamNode(pn);
 		node2.setLabel("FOO");
 		
@@ -562,7 +562,7 @@ public class NodeStructureImplTest extends TestCase{
 		ns3.addDefaultNode(node2);
 		ns3.addDefaultNode(node3);
 		
-		PamLink pl = (PamLink) factory.getLink(PamLinkImpl.factoryName, link1.getSource(), link1.getSink(), link1.getCategory());
+		PamLink pl = (PamLink) factory.getLink("PamLinkImpl", link1.getSource(), link1.getSink(), link1.getCategory());
 		link1.setGroundingPamLink(pl);
 		link1.setActivation(0.111);
 		link1.setActivatibleRemovalThreshold(0.00001);
@@ -600,7 +600,7 @@ public class NodeStructureImplTest extends TestCase{
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
 		
-		PamLink pl = (PamLink) factory.getLink(PamLinkImpl.factoryName, link1.getSource(), link1.getSink(), link1.getCategory());
+		PamLink pl = (PamLink) factory.getLink("PamLinkImpl", link1.getSource(), link1.getSink(), link1.getCategory());
 		link1.setGroundingPamLink(pl);
 		Link stored = ns1.addDefaultLink(link1);
 		
@@ -890,7 +890,7 @@ public class NodeStructureImplTest extends TestCase{
 		assertEquals(ns.getDefaultNodeType(), NodeImpl.class.getSimpleName());
 		assertEquals(ns.getDefaultLinkType(), LinkImpl.class.getSimpleName());
 		
-		ns = new NodeStructureImpl(PamNodeImpl.factoryName, LinkImpl.factoryName);
+		ns = new NodeStructureImpl("PamNodeImpl", "LinkImpl");
 		assertEquals(ns.getDefaultNodeType(), PamNodeImpl.class.getSimpleName());
 		assertEquals(ns.getDefaultLinkType(), LinkImpl.class.getSimpleName());
 		
@@ -899,7 +899,7 @@ public class NodeStructureImplTest extends TestCase{
 		assertEquals(ns.getDefaultLinkType(), LinkImpl.class.getSimpleName());
 		
 		try{
-			ns = new NodeStructureImpl(LinkImpl.factoryName, PamNodeImpl.factoryName);
+			ns = new NodeStructureImpl("LinkImpl", "PamNodeImpl");
 		}catch(Exception e){
 			assertTrue(e instanceof IllegalArgumentException);
 		}
@@ -951,15 +951,15 @@ public class NodeStructureImplTest extends TestCase{
 	}
 	
 	public void testCompareNodeStructures4(){
-		ns1 = new NodeStructureImpl(NodeImpl.factoryName, LinkImpl.factoryName);
+		ns1 = new NodeStructureImpl("NodeImpl", "LinkImpl");
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
 		ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
 		
 
-		ns2 = new NodeStructureImpl(PamNodeImpl.factoryName, PamLinkImpl.factoryName);
-		PamNode pn1 = (PamNode) factory.getNode(node1, PamNodeImpl.factoryName);
-		PamNode pn2 = (PamNode) factory.getNode(node2, PamNodeImpl.factoryName);
+		ns2 = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
+		PamNode pn1 = (PamNode) factory.getNode(node1, "PamNodeImpl");
+		PamNode pn2 = (PamNode) factory.getNode(node2, "PamNodeImpl");
 		ns2.addDefaultNode(pn1);
 		ns2.addDefaultNode(pn2);
 		ns2.addDefaultLink(pn1, pn2, category1, 0.0, 0.0);

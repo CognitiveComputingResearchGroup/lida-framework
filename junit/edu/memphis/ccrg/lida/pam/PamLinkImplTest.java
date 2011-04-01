@@ -39,9 +39,9 @@ public class PamLinkImplTest extends TestCase{
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		linkCategory= PerceptualAssociativeMemoryImpl.NONE;	
-		link1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, linkCategory);
-		link2 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, linkCategory);
-		link3 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node2, node1, linkCategory);	
+		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, linkCategory);
+		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, linkCategory);
+		link3 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node1, linkCategory);	
 	}
 	
 	@Override

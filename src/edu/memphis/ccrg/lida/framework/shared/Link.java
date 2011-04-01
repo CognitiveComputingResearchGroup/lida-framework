@@ -94,6 +94,6 @@ public interface Link extends Linkable, Activatible{
 	 * @param link Link whose values are used to update with.
 //	 * @see NodeStructureImpl#addLink()  TODO
 	 */
-	public void updateSubclassValues(Link link);
+	public void updateLinkValues(Link link);
 
 }

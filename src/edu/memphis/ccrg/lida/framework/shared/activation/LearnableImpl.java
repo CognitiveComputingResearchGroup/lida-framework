@@ -37,8 +37,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
 
-	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
-	private double learnableRemovableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
+	private double learnableRemovableThreshold = DEFAULT_REMOVAL_THRESHOLD;
 
 	/**
 	 * @param activation current activation
@@ -50,13 +49,13 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 * @param taStrategy {@link TotalActivationStrategy} how this LearnableImpl will calculate its total activation.
 	 */
 	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovableThreshold,
-						ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, TotalActivationStrategy taStrategy) {
+			ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, ExciteStrategy baseLevelExciteStrategy, DecayStrategy baseLevelDecayStrategy, TotalActivationStrategy taStrategy) {
 		super(activation, activatibleRemovalThreshold, exciteStrategy, decayStrategy);
 		
 		this.baseLevelActivation = baseLevelActivation;
 		this.learnableRemovableThreshold=learnableRemovableThreshold;
-		this.baseLevelExciteStrategy = exciteStrategy;
-		this.baseLevelDecayStrategy = decayStrategy;
+		this.baseLevelExciteStrategy = baseLevelExciteStrategy;
+		this.baseLevelDecayStrategy = baseLevelDecayStrategy;
 		this.totalActivationStrategy = taStrategy;
 	}
 
@@ -78,7 +77,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 */
 	public LearnableImpl(Learnable l) {
 		this(l.getActivation(), l.getActivatibleRemovalThreshold(),  l.getBaseLevelActivation(), l.getLearnableRemovalThreshold(),
-			l.getExciteStrategy(), l.getDecayStrategy(), l.getTotalActivationStrategy());
+			l.getExciteStrategy(), l.getDecayStrategy(),l.getBaseLevelExciteStrategy(), l.getBaseLevelDecayStrategy(), l.getTotalActivationStrategy());
 	}
 
 	/* (non-Javadoc)

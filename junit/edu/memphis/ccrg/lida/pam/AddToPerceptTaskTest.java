@@ -39,8 +39,8 @@ public class AddToPerceptTaskTest extends TestCase{
 	@Before
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
-		nodeA = (PamNode) factory.getNode(PamNodeImpl.factoryName);
-		nodeB = (PamNode) factory.getNode(PamNodeImpl.factoryName);
+		nodeA = (PamNode) factory.getNode("PamNodeImpl");
+		nodeB = (PamNode) factory.getNode("PamNodeImpl");
 		pam = new MockPAM();
 	}
 	

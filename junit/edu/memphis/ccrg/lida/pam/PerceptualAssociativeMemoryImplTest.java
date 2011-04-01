@@ -61,9 +61,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.init();
 		nodeStructure = factory.getPamNodeStructure();
 
-		node1 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName, "Node 1");
-		node2 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName, "Node 2");
-		node3 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName, "Node 3");
+		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 1");
+		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 2");
+		node3 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 3");
 		decayStrategy = new SigmoidDecayStrategy();
 		exciteStrat = new SigmoidExciteStrategy();
 		tas = new TotalActivationStrategy() {
@@ -73,8 +73,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 			}
 		};
 		
-		link1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node1, node2, PerceptualAssociativeMemoryImpl.NONE);
-		link2 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node2, node3, PerceptualAssociativeMemoryImpl.NONE);
+		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
+		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testAddNewNode2(){
-		PamNode pn = pam.addNewNode(PamNodeImpl.factoryName, "BOB");
+		PamNode pn = pam.addNewNode("BOB");
 		assertTrue(pn != null);
 		assertTrue(pn instanceof PamNodeImpl);
 		assertTrue(pn.getLabel().equals("BOB"));	
@@ -108,9 +108,9 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testAddNewNode3(){
-		PamNode pn = pam.addNewNode("BAD5TYPE#T$", "BOB");
-		assertTrue(pn == null);	
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 0);
+		PamNode pn = pam.addNewNode("BOB");
+		assertTrue(pn != null);	
+		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
 	}
 	
 	public void testAddDefaultNode(){
@@ -405,7 +405,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		Node foo = pam.addNewNode("foo");
 		assertTrue(pam.containsNode(foo));
 		
-		Node bar = pam.addNewNode(PamNodeImpl.factoryName, "bar");
+		Node bar = pam.addNewNode("bar");
 		assertTrue(pam.containsNode(bar));
 
 	}
@@ -618,7 +618,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		int id = PerceptualAssociativeMemoryImpl.NONE.getId();
 		assertEquals(PerceptualAssociativeMemoryImpl.NONE, pam.getLinkCategory(id));
 		
-		Node newCat = factory.getNode(PamNodeImpl.factoryName);
+		Node newCat = factory.getNode("PamNodeImpl");
 		newCat.setId(666);
 		pam.addLinkCategory((LinkCategory) newCat);
 		assertTrue(pam.getLinkCategory(666) != null);

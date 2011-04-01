@@ -469,6 +469,21 @@ public class LidaElementFactory {
 	}
 
 	/**
+	 * @param defaultLinkType2
+	 * @param linkType
+	 * @param source
+	 * @param sink
+	 * @param category
+	 * @return
+	 */
+	public Link getLink(String defaultLinkType, String linkType, Node source,
+			Linkable sink, LinkCategory category) {
+		// TODO check that linktType class is a subclass of defaultLinkType
+		return getLink(linkType,source,sink,category);
+	}
+	
+	
+	/**
 	 * Creates and returns a new Link with specified type, source, sink, and
 	 * category.
 	 * 
@@ -634,6 +649,11 @@ public class LidaElementFactory {
 		return getNode(oNode, nodeType, decayB, exciteB);
 	}
 
+	public Node getNode(String defaultNodeType, Node n, String factoryName) {
+		//TODO: Check that factoryName node Type is a subclass of defaultNodeType
+		return getNode(n,factoryName);
+	}
+
 	/**
 	 * Creates a copy of oNode with the specified decay and excite strategies.
 	 * The type of the new node will be the default node type.
@@ -670,7 +690,7 @@ public class LidaElementFactory {
 			return null;
 		}
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
-		n.updateSubclassValues(oNode);
+		n.updateNodeValues(oNode);
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId());	//sets extended id as well.		
 		n.setDesirability(oNode.getDesirability());
@@ -1011,4 +1031,6 @@ public class LidaElementFactory {
 	public LinkableDef getLinkLinkableDef(String factoryName) {
 		return linkClasses.get(factoryName);
 	}
+
+
 }

@@ -366,7 +366,7 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public void updateSubclassValues(Node n) {
+	public void updateNodeValues(Node n) {
 		// TODO Auto-generated method stub
 		
 	}

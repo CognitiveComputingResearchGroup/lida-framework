@@ -46,7 +46,12 @@ public interface NodeStructure {
 	 */
 	public Collection<Link> addDefaultLinks(Collection<Link> links);
 	
-//	public Link addLink(Link l, String linkType);
+	/**
+	 * @param l
+	 * @param linkType
+	 * @return
+	 */
+	public Link addLink(Link l, String linkType);
 	
 	/**
 	 * @param source Link's source {@link Node}
@@ -114,13 +119,13 @@ public interface NodeStructure {
 	 */
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
 
-//	/**
-//	 * Add a Node of a specified factory type to this NodeStructure
-//	 * @param n Node
-//	 * @param factoryType name of node's type in the factory
-//	 * @return copy of node actually added.
-//	 */
-//	public Node addNode(Node n, String factoryType);
+	/**
+	 * Add a Node of a specified factory type to this NodeStructure
+	 * @param n Node
+	 * @param factoryType name of node's type in the factory
+	 * @return copy of node actually added.
+	 */
+	public Node addNode(Node n, String factoryType);
 
 	/**
 	 * Removes specified {@link Link} if present.

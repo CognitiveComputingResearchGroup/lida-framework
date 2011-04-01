@@ -46,7 +46,7 @@ public class LinkImplTest extends TestCase{
 		
 		linktype1 = PerceptualAssociativeMemoryImpl.NONE;
 		
-		pamLink1 = (PamLinkImpl) factory.getLink(PamLinkImpl.factoryName, node3, node4, PerceptualAssociativeMemoryImpl.NONE);
+		pamLink1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node3, node4, PerceptualAssociativeMemoryImpl.NONE);
 		
 		link1 = new LinkImpl(node1,node2,PerceptualAssociativeMemoryImpl.NONE);
 		link2 = new LinkImpl(node3,node4,PerceptualAssociativeMemoryImpl.NONE);

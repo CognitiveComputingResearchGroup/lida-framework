@@ -36,10 +36,10 @@ public class NodeImplTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {
-		node1 = (NodeImpl) factory.getNode(NodeImpl.factoryName);
+		node1 = (NodeImpl) factory.getNode();
 		node2 = new NodeImpl();
-		pamNode1 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);	
-		pamNode2 = (PamNodeImpl) factory.getNode(PamNodeImpl.factoryName);
+		pamNode1 = (PamNodeImpl) factory.getNode("PamNodeImpl");	
+		pamNode2 = (PamNodeImpl) factory.getNode("PamNodeImpl");
 					
 		node1.setLabel("red");		
 		node1.setGroundingPamNode(pamNode1);		

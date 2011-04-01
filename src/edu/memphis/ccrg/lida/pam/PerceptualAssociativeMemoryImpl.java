@@ -56,6 +56,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		PerceptualAssociativeMemory, BroadcastListener, WorkspaceListener,
 		PreafferenceListener {
 
+	private static final String DEFAULT_NO_DECAY_PAMNODE = "NoDecayPamNode";
+
 	private static final Logger logger = Logger
 			.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
 
@@ -134,28 +136,20 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		propagationBehavior = new UpscalePropagationBehavior();
 		nodeStructure = factory.getPamNodeStructure();
 
-		PamNode none = (PamNode) factory.getNode(PamNodeImpl.factoryName,
+		PamNode none = (PamNode) factory.getNode(DEFAULT_NO_DECAY_PAMNODE,
 				"None");
-		none.setBaseLevelActivation(1.0);
-		none.setActivatibleRemovalThreshold(-1.0);
 		NONE = addLinkCategory((LinkCategory) none);
 
 		PamNode lateralType = (PamNode) factory.getNode(
-				PamNodeImpl.factoryName, "LateralType");
-		lateralType.setBaseLevelActivation(1.0);
-		lateralType.setActivatibleRemovalThreshold(-1.0);
+				DEFAULT_NO_DECAY_PAMNODE, "LateralType");
 		LATERAL = addLinkCategory((LinkCategory) lateralType);
 
-		PamNode membership = (PamNode) factory.getNode(PamNodeImpl.factoryName,
+		PamNode membership = (PamNode) factory.getNode(DEFAULT_NO_DECAY_PAMNODE,
 				"Membership");
-		membership.setBaseLevelActivation(1.0);
-		membership.setActivatibleRemovalThreshold(-1.0);
 		MEMBERSHIP = addLinkCategory((LinkCategory) membership);
 
-		PamNode feature = (PamNode) factory.getNode(PamNodeImpl.factoryName,
+		PamNode feature = (PamNode) factory.getNode(DEFAULT_NO_DECAY_PAMNODE,
 				"Feature");
-		feature.setBaseLevelActivation(1.0);
-		feature.setActivatibleRemovalThreshold(-1.0);
 		FEATURE = addLinkCategory((LinkCategory) feature);
 	}
 
@@ -632,28 +626,28 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addNewNode(String label) {
-		return addNewNode(nodeStructure.getDefaultNodeType(), label, 1.0, 0.0,
+		return addNewNode(label, 1.0, 0.0,
 				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
-	 * .lang.String, java.lang.String)
-	 */
-	@Override
-	public PamNode addNewNode(String type, String label) {
-		return addNewNode(type, label, 1.0, 0.0,
-				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
+//	 * .lang.String, java.lang.String)
+//	 */
+//	@Override
+//	public PamNode addNewNode(String type, String label) {
+//		return addNewNode(type, label, 1.0, 0.0,
+//				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
+//	}
 
 	@Override
-	public PamNode addNewNode(String type, String label,
+	public PamNode addNewNode(String label,
 			double baseLevelActivation, double baseLevelRemovalThreshold,
 			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		Node newNode = factory.getNode(type, label);
+		Node newNode = factory.getNode(DEFAULT_NO_DECAY_PAMNODE, label);
 		if (newNode != null) {
 			if (newNode instanceof PamNode) {
 				PamNode newPamNode = (PamNode) nodeStructure.addDefaultNode(newNode);
@@ -672,7 +666,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			}
 		} else {
 			logger.log(Level.WARNING, "Was unable to create node " + label
-					+ " of type " + type, LidaTaskManager.getCurrentTick());
+					, LidaTaskManager.getCurrentTick());
 			return null;
 		}
 	}

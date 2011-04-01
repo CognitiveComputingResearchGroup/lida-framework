@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
@@ -30,10 +31,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
 	
-	/**
-	 * Useful attribute for specified this type to the factory.
-	 */
-	public static final String factoryName = PamNodeImpl.class.getSimpleName();
 	
 	/*
 	 * Private Learnable object used for all learnable methods
@@ -44,13 +41,53 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		super();
 		groundingPamNode = this;
 		learnable = new LearnableImpl();
+		initLearnable();
 	}
 	public PamNodeImpl(PamNodeImpl pamNode) {
 		super(pamNode);
 		groundingPamNode = this;
 		this.learnable=new LearnableImpl(pamNode.learnable);
 	}
+	
+	/**
+	 * 
+	 */
+	private void initLearnable() {
+		learnable.setBaseLevelActivation(DEFAULT_BASE_LEVEl_ACTIVATION);
+		LidaElementFactory factory = LidaElementFactory.getInstance();
+		learnable.setDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
+		learnable.setExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
+		learnable.setLearnableRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
+	}
 
+	/** 
+	 * This init method sets the following values from the parameters in the 
+	 * Factorydata.xml file:
+	 * 
+	 * baseLevelDecayStrategy: a String with the factory name of the DecayStrategy
+	 * baseLevelExciteStrategy: a String with the factory name of the ExciteStrategy
+	 * baseLevelRemovalThreshold: a double value. -1.0 for no removal
+	 * baseLevelActivation: a double value between 0.0 and 1.0;
+	 * 
+	 * @see edu.memphis.ccrg.lida.framework.shared.NodeImpl#init()
+	 */
+	@Override
+	public void init(){
+		LidaElementFactory factory = LidaElementFactory.getInstance();
+		
+	    String strategyName = (String)getParam("baseLevelDecayStrategy","pamDefaultDecay");
+		learnable.setDecayStrategy(factory.getDecayStrategy(strategyName));
+		
+	    strategyName = (String)getParam("baseLevelExciteStrategy","pamDefaultExcite");
+		learnable.setExciteStrategy(factory.getExciteStrategy(strategyName));
+		
+		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		learnable.setLearnableRemovalThreshold(threshold);
+
+		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEl_ACTIVATION);
+		learnable.setBaseLevelActivation(activation);	
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof PamNodeImpl))
@@ -195,7 +232,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}	
 	
 	@Override
-	public void updateSubclassValues(Node n) {
+	public void updateNodeValues(Node n) {
 		if(n instanceof PamNodeImpl){
 			PamNodeImpl pn = (PamNodeImpl) n;
 			learnable = new LearnableImpl(pn.learnable);

@@ -27,7 +27,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private static final Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
 
-	public static final String factoryName = LinkImpl.class.getSimpleName();
 	
 	/*
 	 * Source of this link, always a node.
@@ -245,7 +244,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 * Does not copy superclass attributes, e.g. ActivatibleImpl, only those of this class.
 	 */
 	@Override
-	public void updateSubclassValues(Link link) {
+	public void updateLinkValues(Link link) {
 		if(link instanceof LinkImpl){
 			LinkImpl other = (LinkImpl) link;
 			this.extendedId = other.extendedId;

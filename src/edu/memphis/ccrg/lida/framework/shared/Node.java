@@ -87,7 +87,7 @@ public interface Node extends Linkable, Activatible, Serializable {
 	 * @param n Node whose values are used to update with.
 //	 * @see NodeStructureImpl#addNode()  TODO
 	 */
-	public void updateSubclassValues(Node n);
+	public void updateNodeValues(Node n);
 
 }
 

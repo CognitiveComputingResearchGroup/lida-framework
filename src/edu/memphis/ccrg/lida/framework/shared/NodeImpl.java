@@ -26,7 +26,6 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 public class NodeImpl extends ActivatibleImpl implements Node {
 
 	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
-	public static final String factoryName = NodeImpl.class.getSimpleName();
 	
 	private int id;
 	private ExtendedId extendedId;
@@ -174,7 +173,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * Does not copy superclass attributes, e.g. ActivatibleImpl, only those of this class.
 	 */
 	@Override
-	public void updateSubclassValues(Node n) {
+	public void updateNodeValues(Node n) {
 		if(n instanceof NodeImpl){
 			NodeImpl other = (NodeImpl) n;
 			id = other.id;

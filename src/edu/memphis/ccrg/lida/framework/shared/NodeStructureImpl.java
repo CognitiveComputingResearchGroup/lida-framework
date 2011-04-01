@@ -195,6 +195,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(ExtendedId sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
+		
+		//FIXME check that the link doesn't exists in this NS
+		
 		if(sourceId.equals(sinkId)){
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
 		}
@@ -221,6 +224,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
+
+		//FIXME check that the link doesn't exists in this NS
+		
 		if(sinkId.isNodeId() && sourceId == sinkId.getSourceNodeId()){
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
 		}
@@ -247,6 +253,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, int sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
+
+		//FIXME check that the link doesn't exists in this NS
+		
 		if(sourceId == sinkId){
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
 		}
@@ -337,19 +346,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return addNode(n, defaultNodeType);
 	}
 
-	// @Override
-	// public synchronized Link addLink(Link l, String linkType) {
-	// if(factory.containsLinkType(linkType) == false){
-	// logger.log(Level.WARNING, "Tried to add link of type " + linkType +
-	// " but factory does not contain that node type.  Make sure the node type is defined in "
-	// +
-	// " factoriesData.xml", LidaTaskManager.getCurrentTick());
-	// return null;
-	// }
-	// //TODO use other link method
-	// Link link;
-	// return link;
-	// }
+	 @Override
+	 public synchronized Link addLink(Link l, String linkType) {
+		 	//TODO complete this method
+			return null;
+	 }
 
 //	@Override
 //	public synchronized Node addNode(Node n, String nodeType) {
@@ -425,8 +426,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * @param n
 	 * @param nodeType
 	 * @return
-	 */
-	private synchronized Node addNode(Node n, String nodeType) {		
+	 */	
+	@Override
+	public synchronized Node addNode(Node n, String nodeType) {		
 		if(!factory.containsNodeType(nodeType)){
 			logger.log(Level.WARNING, "Factory does not contain that node type: " + nodeType +
 						" Make sure the node type is defined in factoriesData.xml. Node not added: " + n, 
@@ -444,6 +446,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			//TODO or just set with no check
 			if (node.getActivation() < newActiv) {
 				node.setActivation(newActiv);
+				node.updateNodeValues(node);
 			}
 		}
 		return node;
@@ -472,7 +475,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * @return The Node to be used in this NodeStructure
 	 */
 	protected Node getNewNode(Node n, String factoryName) {
-		return factory.getNode(n, factoryName);
+		return factory.getNode(defaultNodeType, n, factoryName);
 	}
 
 	/**
@@ -490,8 +493,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	protected Link getNewLink(Link link, String linkType, Node source,
 			Linkable sink, LinkCategory category) {
-		Link newLink = factory.getLink(linkType, source, sink, category);
-		newLink.updateSubclassValues(link);
+		Link newLink = factory.getLink(defaultLinkType, linkType, source, sink, category);
+		newLink.updateLinkValues(link);
 		return newLink;
 	}
 	
@@ -1049,5 +1052,5 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 		return true;
 	}
-	
+
 }

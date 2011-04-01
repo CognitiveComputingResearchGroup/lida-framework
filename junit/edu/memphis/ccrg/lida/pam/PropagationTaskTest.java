@@ -32,9 +32,9 @@ public class PropagationTaskTest extends TestCase{
 	@Override
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
-		source =  (PamNode) LidaElementFactory.getInstance().getNode(PamNodeImpl.factoryName);
-		sink   =  (PamNode) LidaElementFactory.getInstance().getNode(PamNodeImpl.factoryName);
-		link  = (PamLink) factory.getLink(PamLinkImpl.factoryName, source, sink, PerceptualAssociativeMemoryImpl.NONE);
+		source =  (PamNode) LidaElementFactory.getInstance().getNode("PamNodeImpl");
+		sink   =  (PamNode) LidaElementFactory.getInstance().getNode("PamNodeImpl");
+		link  = (PamLink) factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.NONE);
 		 
 		pam = new MockPAM();
 		taskSpawner= new MockTaskSpawner();

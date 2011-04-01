@@ -178,14 +178,6 @@ public class MockPAM implements PerceptualAssociativeMemory {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java.lang.String, java.lang.String)
-	 */
-	@Override
-	public PamNode addNewNode(String type, String label) {
-		// not implemented
-		return null;
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultNode(edu.memphis.ccrg.lida.framework.shared.Node)
@@ -461,7 +453,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	@Override
-	public PamNode addNewNode(String type, String label,
+	public PamNode addNewNode(String label,
 			double baseLevelActivation, double baseLevelRemovalThreshold, String baseLevelExciteStrat, String baseLevelDecayStrat) {
 		// TODO Auto-generated method stub
 		return null;
