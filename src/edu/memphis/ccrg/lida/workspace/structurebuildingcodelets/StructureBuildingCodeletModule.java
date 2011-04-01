@@ -27,6 +27,13 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
+/**
+ * A module which maintains Codelets of workspace. This module manages Codelets
+ * and responds for sending events to framework GUI.
+ * 
+ * @author Ryan J McCall
+ *
+ */
 public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 		GuiEventProvider, CodeletManagerModule {
 
@@ -55,6 +62,10 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 
 	private Workspace workspace;
 
+	/**
+	 * Constructor method. It responds for registration of this module to system
+	 * and initialization of both Codelet and Framework GUI listener.
+	 */
 	public StructureBuildingCodeletModule() {
 		super(ModuleName.StructureBuildingCodeletModule);
 		// codeletPool = new HashMap<CodeletType,
