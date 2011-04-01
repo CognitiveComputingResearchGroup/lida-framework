@@ -144,13 +144,21 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
 
-//	/**
-//	 * @throws UnsupportedOperationException Cannot modify this object once created.
-//	 */
-//	@Override
-//	public Node addNode(Node n, String factoryNodeType) {
-//		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
-//	}
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Link addLink(Link l, String linkType) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
+
+	/**
+	 * @throws UnsupportedOperationException Cannot modify this object once created.
+	 */
+	@Override
+	public Node addNode(Node n, String factoryType) {
+		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
+	}
 
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.
