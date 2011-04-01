@@ -460,13 +460,13 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	@Override
-	public void receiveActivationBurst(ExtendedId nodeId, double amount) {
+	public void receiveActivationBurst(PamLinkable nodeId, double amount) {
 		// --
 		
 	}
 
 	@Override
-	public void receiveActivationBurst(Set<ExtendedId> nodeIds, double amount) {
+	public void receiveActivationBurst(Set<PamLinkable> nodeIds, double amount) {
 		// --
 		
 	}

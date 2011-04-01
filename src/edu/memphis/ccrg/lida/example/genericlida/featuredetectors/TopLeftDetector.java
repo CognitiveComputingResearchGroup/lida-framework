@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.example.genericlida.featuredetectors;
 
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
+import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  */
 public class TopLeftDetector extends BasicDetectionAlgorithm {
 
-	public TopLeftDetector(ExtendedId id, SensoryMemory sm,
+	public TopLeftDetector(PamLinkable id, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super(id, sm, pam);
 	}

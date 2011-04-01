@@ -277,7 +277,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddFeatureDetector() {	
-		DetectionAlgorithm detector = new BasicDetector(node1.getExtendedId(), null, pam);
+		DetectionAlgorithm detector = new BasicDetector(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
@@ -285,7 +285,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testDetectionAlgorithm1() {	
-		DetectionAlgorithm detector = new BasicDetector(node1.getExtendedId(), null, pam);
+		DetectionAlgorithm detector = new BasicDetector(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		pam.addDetectionAlgorithm(detector);

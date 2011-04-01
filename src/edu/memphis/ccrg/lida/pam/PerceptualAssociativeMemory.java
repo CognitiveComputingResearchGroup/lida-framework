@@ -150,18 +150,18 @@ public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
 	
 	/**
 	 * Excites specified {@link PamNode} an amount of activation.
-	 * @param nodeId Id of the node receiving the activation
+	 * @param linkable Id of the node receiving the activation
 	 * @param amount amount of activation to excite
 	 * @see ExcitationTask {@link BasicDetectionAlgorithm}
 	 */
-	public void receiveActivationBurst(ExtendedId nodeId, double amount);
+	public void receiveActivationBurst(PamLinkable linkable, double amount);
 	
 	/**
 	 * Excites PamNodes with an amount of activation.
-	 * @param nodeIds Ids of PamNodes to be excited
+	 * @param linkables Ids of PamNodes to be excited
 	 * @param amount amount of activation
 	 */
-	public void receiveActivationBurst(Set<ExtendedId> nodeIds, double amount);
+	public void receiveActivationBurst(Set<PamLinkable> linkables, double amount);
 	
 	/**
 	 * Propagate activation from a PamNode to another PamNode along a PamLink.

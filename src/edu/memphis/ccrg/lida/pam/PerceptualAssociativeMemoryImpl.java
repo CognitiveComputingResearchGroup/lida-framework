@@ -379,8 +379,15 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @param amount the amount
 	 */
 	@Override
-	public void receiveActivationBurst(ExtendedId linkableId, double amount) {
-		PamNode linkable = (PamNode) getNode(linkableId);
+	public void receiveActivationBurst(PamLinkable plnk, double amount) {
+		if(plnk instanceof PamLink){
+			logger.log(Level.WARNING, 
+					"Does not support pam links yet", 
+					LidaTaskManager.getCurrentTick());
+			return;
+		}
+		
+		PamNode linkable = (PamNode) getNode(plnk.getExtendedId());
 		if (linkable != null) {
 			logger.log(Level.FINE, linkable.getLabel()
 					+ " gets activation burst. Amount: " + amount
@@ -390,15 +397,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			if(linkableId.isNodeId()){
-				logger.log(Level.WARNING, 
-					"Cannot find PamNode with extended id: " + linkableId, 
+			logger.log(Level.WARNING, 
+					"Cannot find pamnode: " + linkable, 
 					LidaTaskManager.getCurrentTick());
-			}else{
-				logger.log(Level.WARNING, 
-						"Cannot use this method for PamLinks: " + linkableId, 
-						LidaTaskManager.getCurrentTick());
-			}
 		}
 	}
 
@@ -410,10 +411,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * (java.util.Set, double)
 	 */
 	@Override
-	public void receiveActivationBurst(Set<ExtendedId> linkableIds,
+	public void receiveActivationBurst(Set<PamLinkable> linkableIds,
 			double amount) {
-		for (ExtendedId id : linkableIds) {
-			receiveActivationBurst(id, amount);
+		for (PamLinkable linkable : linkableIds) {
+			receiveActivationBurst(linkable, amount);
 		}
 	}
 

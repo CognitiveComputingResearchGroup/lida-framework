@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -30,22 +29,22 @@ public interface DetectionAlgorithm extends LidaTask {
 	public double detect(); 
 	
 	/**
-	 * Returns PamNodes this feature detector can access.
+	 * Returns {@link PamLinkable}s this algorithm can detect.
 	 * 
 	 * @return the pam nodes
 	 */
-	public Collection<ExtendedId> getPamLinkables();
+	public Collection<PamLinkable> getPamLinkables();
 	
 	/**
 	 * 
 	 * Provides this feature detector with access to specified {@link PamLinkable}.
-	 * @param eid ExtendedId of a {@link PamLinkable}
+	 * @param linkable s {@link PamLinkable}
 	 */
-	public void addPamLinkable(ExtendedId eid);
+	public void addPamLinkable(PamLinkable linkable);
 	
 	/**
 	 * Excites PAM some amount.
-	 * @param detectionActivation Amount to excite.
+	 * @param amount amout to excite
 	 */
-	public void excitePam(double detectionActivation);
+	public void excitePam(double amount);
 }

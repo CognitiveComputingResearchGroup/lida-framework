@@ -15,9 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
@@ -38,26 +38,26 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
-	protected List<ExtendedId> linkableIds = new ArrayList<ExtendedId>();
+	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sm;
 
 	/**
 	 * Instantiates a new feature detector impl.
 	 * 
-	 * @param eid
+	 * @param linkable
 	 *            the n
 	 * @param sm
 	 *            the sm
 	 * @param pam
 	 *            the pam
 	 */
-	public BasicDetectionAlgorithm(ExtendedId eid, SensoryMemory sm,
+	public BasicDetectionAlgorithm(PamLinkable linkable, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
 		this.sm = sm;
-		this.linkableIds.add(eid);
+		this.linkables.add(linkable);
 	}
 
 	/* (non-Javadoc)
@@ -66,13 +66,13 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	@Override
 	@SuppressWarnings("unchecked")
 	public void init() {
-		List<ExtendedId> ids = (List<ExtendedId>) getParam("linkables", null);
+		List<PamLinkable> ids = (List<PamLinkable>) getParam("linkables", null);
 		if (ids != null) {
-			linkableIds.addAll(ids);
+			linkables.addAll(ids);
 		}
-		ExtendedId id =  (ExtendedId) getParam("id", null);
-		if (id != null) {
-			linkableIds.add(id);
+		PamLinkable linkable =  (PamLinkable) getParam("linkable", null);
+		if (linkable != null) {
+			linkables.add(linkable);
 		}
 	}
 	
@@ -91,16 +91,16 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#addPamNode(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
-	public void addPamLinkable(ExtendedId eid) {
-		linkableIds.add(eid);
+	public void addPamLinkable(PamLinkable linkable) {
+		linkables.add(linkable);
 	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#getPamNodes()
 	 */
 	@Override
-	public Collection<ExtendedId> getPamLinkables() {
-		return Collections.unmodifiableCollection(linkableIds);
+	public Collection<PamLinkable> getPamLinkables() {
+		return Collections.unmodifiableCollection(linkables);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	 */
 	@Override
 	public void excitePam(double amount) {
-		for (ExtendedId pn : linkableIds) {
+		for (PamLinkable pn : linkables) {
 			pam.receiveActivationBurst(pn, amount);
 		}
 	}

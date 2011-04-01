@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public abstract class MultipleDetectionAlgorithm extends LidaTaskImpl implements DetectionAlgorithm {
 
 	private static final Logger logger = Logger.getLogger(MultipleDetectionAlgorithm.class.getCanonicalName());
-	protected Map<String, ExtendedId> pamNodeMap;
+	protected Map<String, PamLinkable> pamNodeMap;
 	protected PerceptualAssociativeMemory pam;
 	protected SensoryMemory sensoryMemory;
 	
@@ -34,7 +34,7 @@ public abstract class MultipleDetectionAlgorithm extends LidaTaskImpl implements
 	 * @param sm {@link SensoryMemory}
 	 * @param pam {@link PerceptualAssociativeMemory}
 	 */
-	public MultipleDetectionAlgorithm(Map<String, ExtendedId> nodeMap, SensoryMemory sm,
+	public MultipleDetectionAlgorithm(Map<String, PamLinkable> nodeMap, SensoryMemory sm,
 	   		   						   PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
