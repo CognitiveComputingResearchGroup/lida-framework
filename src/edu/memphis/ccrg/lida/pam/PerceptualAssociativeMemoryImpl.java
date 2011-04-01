@@ -829,6 +829,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public LinkCategory addLinkCategory(LinkCategory cat) {
 		if (cat instanceof PamNode) {
+			//TODO: create no_Decay PAM nodes here
 			cat = (LinkCategory) addDefaultNode((Node) cat);
 			linkCategories.put(cat.getId(), cat);
 			return cat;
