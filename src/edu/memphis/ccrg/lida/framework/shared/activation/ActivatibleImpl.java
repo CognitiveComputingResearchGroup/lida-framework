@@ -23,25 +23,17 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * 
  */
 public class ActivatibleImpl implements Activatible {
-	
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 
-	private double activation;
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
+	private double activation = DEFAULT_ACTIVATION;
 	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
-	
-	/*
-	 * this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
-	 */
-	private static final double DEFAULT_REMOVABLE_THRESHOLD = -1.0;
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	public ActivatibleImpl() {
-		activation = 0.0;
-		decayStrategy = factory.getDefaultDecayStrategy();
-		exciteStrategy = factory.getDefaultExciteStrategy();
+		decayStrategy = LidaElementFactory.getInstance().getDefaultDecayStrategy();
+		exciteStrategy = LidaElementFactory.getInstance().getDefaultExciteStrategy();
 	}
 	
 	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy eb, DecayStrategy db) {

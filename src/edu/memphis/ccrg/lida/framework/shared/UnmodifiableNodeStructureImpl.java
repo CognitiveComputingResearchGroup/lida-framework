@@ -100,15 +100,6 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure {
 	public Link addDefaultLink(Link l) {
 		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
 	}
-
-	/**
-	 * @throws UnsupportedOperationException Cannot modify this object once created.
-	 */
-	@Override
-	public Link addDefaultLink(ExtendedId idSource, ExtendedId idSink, LinkCategory type,
-			double activation, double removalThreshold) {
-		throw new UnsupportedOperationException("UnmodifiableNodeStructure cannot be modified");
-	}
 	
 	/**
 	 * @throws UnsupportedOperationException Cannot modify this object once created.

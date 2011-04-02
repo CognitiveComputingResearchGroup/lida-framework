@@ -44,8 +44,10 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 * @param activatibleRemovalThreshold activation threshold to remain in a {@link NodeStructure}
 	 * @param baseLevelActivation base-level activation for learning
 	 * @param learnableRemovableThreshold base-level activation threshold to remain in a Pam NodeStructure
-	 * @param exciteStrategy {@link ExciteStrategy} for exciting both activation and base-level activation
-	 * @param decayStrategy {@link DecayStrategy} for decaying both activation and base-level activation
+	 * @param exciteStrategy {@link ExciteStrategy} for exciting {@link ActivatibleImpl} activation.
+	 * @param decayStrategy {@link DecayStrategy} for decaying {@link ActivatibleImpl} activation.
+	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for reinforcing {@link LearnableImpl} base-level activation.
+	 * @param baseLevelDecayStrategy {@link DecayStrategy} for decaying {@link LearnableImpl} base-level activation.
 	 * @param taStrategy {@link TotalActivationStrategy} how this LearnableImpl will calculate its total activation.
 	 */
 	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovableThreshold,

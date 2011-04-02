@@ -47,9 +47,10 @@ public interface NodeStructure {
 	public Collection<Link> addDefaultLinks(Collection<Link> links);
 	
 	/**
-	 * @param l
-	 * @param linkType
-	 * @return
+	 * Adds copy of specified Link. Copy is of specified type.
+	 * @param l original {@link Link}
+	 * @param linkType type of copied {@link Link}
+	 * @return new {@link Link} or null if such a link cannot be created.
 	 */
 	public Link addLink(Link l, String linkType);
 	
@@ -62,19 +63,6 @@ public interface NodeStructure {
 	 * @return created Link or null if either source or sink are not already present. 
 	 */
 	public Link addDefaultLink(Node source, Linkable sink, LinkCategory category, double activation, double removalThreshold);
-
-	/**
-	 * Creates and adds a new Link with specified attributes.  Source and sink must
-	 * already be in this NodeStructure.
-	 * @param idSource {@link ExtendedId} of link's source
-	 * @param idSink {@link ExtendedId} of link's sink
-	 * @param type Link's {@link LinkCategory}
-	 * @param activation initial link activation
-	 * @param removalThreshold amount of activation Link must maintain to remain in this NodeStructure after decaying.
-	 * @return created Link or null if either source or sink are not already present. 
-	 */
-	public Link addDefaultLink(ExtendedId idSource, ExtendedId idSink,
-			LinkCategory type, double activation, double removalThreshold);
 
 	/**
 	 * Creates and adds a new Link with specified attributes.  Source and sink must

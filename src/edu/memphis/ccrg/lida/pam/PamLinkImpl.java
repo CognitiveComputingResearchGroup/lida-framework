@@ -53,7 +53,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	 * 
 	 */
 	private void initLearnable() {
-		learnable.setBaseLevelActivation(DEFAULT_BASE_LEVEl_ACTIVATION);
+		learnable.setBaseLevelActivation(DEFAULT_BASE_LEVEL_ACTIVATION);
 		LidaElementFactory factory = LidaElementFactory.getInstance();
 		learnable.setDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
 		learnable.setExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
@@ -84,7 +84,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_REMOVAL_THRESHOLD);
 		learnable.setLearnableRemovalThreshold(threshold);
 
-		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEl_ACTIVATION);
+		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
 		learnable.setBaseLevelActivation(activation);	
 	}
 

@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.pam.tasks;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
@@ -23,7 +22,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * A task that allows PAM nodes to be excited asynchronously.
  * Created in PAM method 'receiveActivationBurst' 
  * 
- * @see PerceptualAssociativeMemory#receiveActivationBurst(ExtendedId, double)
+ * @see PerceptualAssociativeMemory#receiveActivationBurst(PamLinkable, double)
  * @author Ryan J McCall
  *
  */

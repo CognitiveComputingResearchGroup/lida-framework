@@ -444,11 +444,12 @@ public class LidaElementFactory {
 	 *            LinkCategory
 	 * @param activation
 	 *            initial activation
+	 * @param removalThreshold threshold to remain in {@link NodeStructure}
 	 * @return new Link
 	 */
-	public Link getLink(Node source, Linkable sink, LinkCategory category,double activation) {
+	public Link getLink(Node source, Linkable sink, LinkCategory category,double activation, double removalThreshold) {
 		return getLink(defaultLinkType, source, sink, category,
-				defaultDecayType, defaultExciteType, activation, 0.0);
+				defaultDecayType, defaultExciteType, activation, removalThreshold);
 	}
 
 	/**
@@ -465,21 +466,45 @@ public class LidaElementFactory {
 	 */
 	public Link getLink(Node source, Linkable sink, LinkCategory category) {
 		return getLink(defaultLinkType, source, sink, category,
-				defaultDecayType, defaultExciteType, 0.0, 0.0);
+				defaultDecayType, defaultExciteType, 
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
 	}
 
 	/**
-	 * @param defaultLinkType2
-	 * @param linkType
-	 * @param source
-	 * @param sink
-	 * @param category
-	 * @return
+	 * Checks if desiredType is-a requiredType.  Creates and returns
+	 * a Link of desiredType with specified parameters.
+	 * @param requiredType Required Link type for {@link NodeStructure}
+	 * @param desiredType Desired Link type for returned Link. Must be a subtype of required type.
+	 * @param source Link's source
+	 * @param sink Link's sink
+	 * @param category Link's {@link LinkCategory}
+	 * @return new {@link Link} with specified attributes.
 	 */
-	public Link getLink(String defaultLinkType, String linkType, Node source,
-			Linkable sink, LinkCategory category) {
-		// TODO check that linktType class is a subclass of defaultLinkType
-		return getLink(linkType,source,sink,category);
+	public Link getLink(String requiredType, String desiredType, 
+						Node source, Linkable sink, LinkCategory category) {
+		LinkableDef requiredDef = linkClasses.get(requiredType);
+		if(requiredDef == null){
+			logger.log(Level.WARNING, "Factory does not contain link type: " + requiredType, LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		LinkableDef desiredDef = linkClasses.get(desiredType);
+		if(desiredDef == null){
+			logger.log(Level.WARNING, "Factory does not contain link type: " + desiredType, LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		
+		Link l = null;
+		try {
+			Class<?> required = Class.forName(requiredDef.getClassName());
+			Class<?> desired = Class.forName(desiredDef.getClassName());
+			
+			if(required != null && required.isInstance(desired)){
+				l = getLink(desiredType, source, sink, category);
+			}
+		} catch (ClassNotFoundException exc) {
+			exc.printStackTrace();
+		}
+		return l;
 	}
 	
 	
@@ -498,7 +523,7 @@ public class LidaElementFactory {
 	 * @return new Link
 	 */
 	public Link getLink(String linkT, Node source, Linkable sink,
-			LinkCategory category) {
+						LinkCategory category) {
 		LinkableDef linkDef = linkClasses.get(linkT);
 		if (linkDef == null) {
 			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.",
@@ -515,7 +540,8 @@ public class LidaElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		return getLink(linkT, source, sink, category, decayB, exciteB, 0.0, 0.0);
+		return getLink(linkT, source, sink, category, decayB, exciteB, 
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
 	}
 
 	/**
@@ -598,7 +624,7 @@ public class LidaElementFactory {
 	 */
 	public Node getNode() {
 		return getNode(defaultNodeType, defaultDecayType, defaultExciteType,
-				"", 0.0, 0.0);
+				"Node", Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
 	}
 
 	/**
@@ -649,9 +675,38 @@ public class LidaElementFactory {
 		return getNode(oNode, nodeType, decayB, exciteB);
 	}
 
-	public Node getNode(String defaultNodeType, Node n, String factoryName) {
-		//TODO: Check that factoryName node Type is a subclass of defaultNodeType
-		return getNode(n,factoryName);
+	/**
+	 * Creates a copy of specified node of desired type.  Desired type
+	 * must pass is-a test with requireType.
+	 * @param requiredType Default node type of {@link NodeStructure} 
+	 * @param oNode {@link Node} to be copied.
+	 * @param desiredType type of copied node
+	 * @return copy of oNode of desired type or null
+	 */
+	public Node getNode(String requiredType, Node oNode, String desiredType) {
+		LinkableDef requiredDef = linkClasses.get(requiredType);
+		if(requiredDef == null){
+			logger.log(Level.WARNING, "Factory does not contain link type: " + requiredType, LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		LinkableDef desiredDef = linkClasses.get(desiredType);
+		if(desiredDef == null){
+			logger.log(Level.WARNING, "Factory does not contain link type: " + desiredType, LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		
+		Node newNode = null;
+		try {
+			Class<?> required = Class.forName(requiredDef.getClassName());
+			Class<?> desired = Class.forName(desiredDef.getClassName());
+			
+			if(required != null && required.isInstance(desired)){
+				newNode = getNode(oNode, desiredType);
+			}
+		} catch (ClassNotFoundException exc) {
+			exc.printStackTrace();
+		}
+		return newNode;
 	}
 
 	/**
@@ -707,7 +762,7 @@ public class LidaElementFactory {
 	 * @return the node
 	 */
 	public Node getNode(String nodeType) {
-		return getNode(nodeType, "Label");
+		return getNode(nodeType, "Node");
 	}
 
 	/**
@@ -737,7 +792,8 @@ public class LidaElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		Node n = getNode(nodeType, decayB, exciteB, nodeLabel, 0.0, 0.0);
+		Node n = getNode(nodeType, decayB, exciteB, nodeLabel, 
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
 		return n;
 	}
 
@@ -776,10 +832,9 @@ public class LidaElementFactory {
 			n.setId(elementIdCount++);
 			n.setActivation(activation);
 			n.setActivatibleRemovalThreshold(removableThreshold);
-
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
 			n.init(nodeDef.getParams());
-
+			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
 					.getCurrentTick());
