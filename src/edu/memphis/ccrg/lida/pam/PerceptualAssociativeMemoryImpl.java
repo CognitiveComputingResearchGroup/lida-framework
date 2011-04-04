@@ -136,12 +136,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		propagationBehavior = new UpscalePropagationBehavior();
 		pamNodeStructure = factory.getPamNodeStructure();
 
-		PamNode linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-				"None");
+		PamNode linkCategory = (PamNode) factory.getNode(
+				DEFAULT_NONDECAYING_PAMNODE, "None");
 		NONE = addLinkCategory((LinkCategory) linkCategory);
 
-		linkCategory = (PamNode) factory.getNode(
-				DEFAULT_NONDECAYING_PAMNODE, "LateralType");
+		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+				"LateralType");
 		LATERAL = addLinkCategory((LinkCategory) linkCategory);
 
 		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
@@ -152,7 +152,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				"Feature");
 		FEATURE = addLinkCategory((LinkCategory) linkCategory);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -267,8 +267,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
 		taskSpawner.addTask(detector);
-		logger.log(Level.FINE, "Added feature detector to PAM", LidaTaskManager
-				.getCurrentTick());
+		logger.log(Level.FINE, "Added feature detector to PAM",
+				LidaTaskManager.getCurrentTick());
 	}
 
 	/*
@@ -365,9 +365,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		//TODO next version
-//		super.decayModule(ticks);
-//		pamNodeStructure.decayNodeStructure(ticks);
+		// TODO next version
+		// super.decayModule(ticks);
+		// pamNodeStructure.decayNodeStructure(ticks);
 	}
 
 	/*
@@ -380,13 +380,12 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void receiveActivationBurst(PamLinkable plnk, double amount) {
-		if(plnk instanceof PamLink){
-			logger.log(Level.WARNING, 
-					"Does not support pam links yet", 
+		if (plnk instanceof PamLink) {
+			logger.log(Level.WARNING, "Does not support pam links yet",
 					LidaTaskManager.getCurrentTick());
 			return;
 		}
-		
+
 		PamNode linkable = (PamNode) getNode(plnk.getExtendedId());
 		if (linkable != null) {
 			logger.log(Level.FINE, linkable.getLabel()
@@ -397,8 +396,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			logger.log(Level.WARNING, 
-					"Cannot find pamnode: " + linkable, 
+			logger.log(Level.WARNING, "Cannot find pamnode: " + linkable,
 					LidaTaskManager.getCurrentTick());
 		}
 	}
@@ -434,7 +432,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				.getActivationToPropagate(propagateParams);
 
 		// Get parents of pamNode and the connecting link
-		Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
+		Map<Linkable, Link> parentLinkMap = pamNodeStructure
+				.getConnectedSinks(pn);
 		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
 			if (parent instanceof PamNode) {
@@ -566,10 +565,28 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (l instanceof PamListener) {
 			addPamListener((PamListener) l);
 		} else {
-			logger.log(Level.WARNING, "Cannot add listener type "
-					+ l.toString() + " to this module.", LidaTaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING,
+					"Cannot add listener type " + l.toString()
+							+ " to this module.",
+					LidaTaskManager.getCurrentTick());
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
+	 * memphis.ccrg.lida.framework.shared.Node,
+	 * edu.memphis.ccrg.lida.framework.shared.Linkable,
+	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory)
+	 */
+	@Override
+	public Link addNewLink(Node source, Linkable sink, LinkCategory type) {
+		return addNewLink(source, sink, type,
+				Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
+				Learnable.DEFAULT_REMOVAL_THRESHOLD,
+				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
 	}
 
 	/*
@@ -584,10 +601,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Link addNewLink(Node src, Linkable sink, LinkCategory cat,
 			double initialActivation, double removalThreshold,
 			String blExciteStrategy, String blDecayStrategy) {
-		if(src == null || sink == null){
+		if (src == null || sink == null) {
 			return null;
 		}
-		
+
 		return addNewLink(src.getId(), sink.getExtendedId(), cat,
 				initialActivation, removalThreshold, blExciteStrategy,
 				blDecayStrategy);
@@ -604,15 +621,18 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Link addNewLink(int srcId, ExtendedId sinkId, LinkCategory cat,
-						   double baseLevelActivation, double baseLevelRemovalThreshold,
-						   String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		PamLink newLink = (PamLink) pamNodeStructure.addDefaultLink(srcId, sinkId, cat, 0.0,
-				0.0);
-		if(newLink == null){
+			double baseLevelActivation, double baseLevelRemovalThreshold,
+			String baseLevelExciteStrat, String baseLevelDecayStrat) {
+		PamLink newLink = (PamLink) pamNodeStructure.addDefaultLink(srcId,
+				sinkId, cat, 0.0, 0.0);
+		if (newLink == null) {
+			logger.log(Level.WARNING, "Was unable to add Link",
+					LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		setLearnableValues(newLink, baseLevelActivation,baseLevelRemovalThreshold, 
-						   baseLevelExciteStrat, baseLevelDecayStrat);
+		setLearnableValues(newLink, baseLevelActivation,
+				baseLevelRemovalThreshold, baseLevelExciteStrat,
+				baseLevelDecayStrat);
 		return newLink;
 	}
 
@@ -625,37 +645,32 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public PamNode addNewNode(String label) {
-		return addNewNode(label, 1.0, 0.0,
+		return addNewNode(label, Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
+				Learnable.DEFAULT_REMOVAL_THRESHOLD,
 				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
 	}
-	
+
 	@Override
-	public PamNode addNewNode(String label,
-			double baseLevelActivation, double baseLevelRemovalThreshold,
-			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		Node newNode = factory.getNode(DEFAULT_NONDECAYING_PAMNODE, label);
-		if (newNode != null) {
-			if (newNode instanceof PamNode) {
-				PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
-				if(newPamNode == null){
-					return null;
-				}
-				setLearnableValues(newPamNode, baseLevelActivation,
-						baseLevelRemovalThreshold, baseLevelExciteStrat,
-						baseLevelDecayStrat);
-				return newPamNode;
-			} else {
-				logger.log(Level.WARNING,
-						"Cannot add non-PamNode nodes to PAM.  Node " + label
-								+ " not added", LidaTaskManager
-								.getCurrentTick());
-				return null;
-			}
-		} else {
-			logger.log(Level.WARNING, "Was unable to create node " + label
-					, LidaTaskManager.getCurrentTick());
+	public PamNode addNewNode(String label, double baseLevelActivation,
+			double baseLevelRemovalThreshold, String baseLevelExciteStrat,
+			String baseLevelDecayStrat) {
+		Node newNode = factory.getNode("PamNodeImpl", label);
+		if (newNode == null) {
+			logger.log(Level.WARNING, "Was unable to create node " + label,
+					LidaTaskManager.getCurrentTick());
 			return null;
 		}
+
+		PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
+		if (newPamNode == null) {
+			logger.log(Level.WARNING, "Cannot add node to nodestructure " + label,
+					LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		setLearnableValues(newPamNode, baseLevelActivation,
+				baseLevelRemovalThreshold, baseLevelExciteStrat,
+				baseLevelDecayStrat);
+		return newPamNode;
 	}
 
 	/*
@@ -680,8 +695,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (blExciteStrategy == null) {
 			logger.log(Level.WARNING,
 					"Specified base-level excite strategy not found: "
-							+ baseLevelExciteStrat + " Using default.", LidaTaskManager
-							.getCurrentTick());
+							+ baseLevelExciteStrat + " Using default.",
+					LidaTaskManager.getCurrentTick());
 			blExciteStrategy = factory.getDefaultExciteStrategy();
 		}
 		learnable.setBaseLevelExciteStrategy(blExciteStrategy);
@@ -690,9 +705,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				.getDecayStrategy(baseLevelDecayStrat);
 		if (blDecayStrategy == null) {
 			logger.log(Level.WARNING,
-				"Specified base-level decay strategy not found: "
-				+ baseLevelDecayStrat + " Using default.", LidaTaskManager
-				.getCurrentTick());
+					"Specified base-level decay strategy not found: "
+							+ baseLevelDecayStrat + " Using default.",
+					LidaTaskManager.getCurrentTick());
 			blDecayStrategy = factory.getDefaultDecayStrategy();
 		}
 		learnable.setBaseLevelDecayStrategy(blDecayStrategy);
@@ -714,9 +729,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (t >= 0.0 && t <= 1.0) {
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		} else {
-			logger.log(Level.WARNING,
-					   "Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
-						LidaTaskManager.getCurrentTick());
+			logger.log(
+					Level.WARNING,
+					"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
+					LidaTaskManager.getCurrentTick());
 		}
 	}
 
@@ -814,7 +830,8 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public LinkCategory addLinkCategory(LinkCategory cat) {
 		if (cat instanceof PamNode) {
-			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat, DEFAULT_NONDECAYING_PAMNODE);
+			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat,
+					DEFAULT_NONDECAYING_PAMNODE);
 			linkCategories.put(cat.getId(), cat);
 			return cat;
 		}
