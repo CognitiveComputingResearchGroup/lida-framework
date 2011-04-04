@@ -15,6 +15,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Utilities for loading {@link Properties}
+ * @author Javier Snaider
+ *
+ */
 public class ConfigUtils {
 
 	private static final Logger logger = Logger.getLogger(ConfigUtils.class

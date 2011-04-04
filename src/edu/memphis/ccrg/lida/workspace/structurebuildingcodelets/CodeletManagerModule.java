@@ -6,6 +6,11 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
+/**
+ * A {@link LidaModule} that manages {@link Codelet}s
+ * @author ryanjmccall, Javier Snaider
+ *
+ */
 public interface CodeletManagerModule extends LidaModule{
 
 	/**

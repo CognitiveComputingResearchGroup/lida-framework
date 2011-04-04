@@ -10,6 +10,11 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Basic implementation of {@link CodeletRunResult}
+ * @author ryanjmccall
+ *
+ */
 public class BasicCodeletResult implements CodeletRunResult {
 	
 	private Map<String, Object> resultMap;

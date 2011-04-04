@@ -31,7 +31,8 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
- * 
+ * Default implementation of {@link ProceduralMemory}. Indexes scheme by context
+ * elements for quick access.
  *
  */
 public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {

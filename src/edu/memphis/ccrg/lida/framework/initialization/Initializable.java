@@ -2,14 +2,20 @@ package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.util.Map;
 
+/**
+ * An object which can be configured in particular ways.
+ * @author ryanjmccall
+ *
+ */
 public interface Initializable {
 
 	/**
 	 * This method initializes the module with parameters specified in LIDA.xml
-	 * TODO add another map for default parameters. first will be runtime-specified parameters.
+	 * 
 	 * @param parameters Map of parameters indexed by String names
 	 */
 	public void init(Map<String, ?> parameters);
+//	TODO add another map for default parameters. first will be runtime-specified parameters.
 
 	/**
 	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 

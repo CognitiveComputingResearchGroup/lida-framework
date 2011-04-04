@@ -11,6 +11,12 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
+/**
+ * Default implementation of {@link StructureBuildingCodelet}.  Checks for sought content
+ * in all accessible {@link WorkspaceBuffer}s and adds all buffer content to the Current Situational Model. 
+ * @author ryanjmccall
+ *
+ */
 public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl {
 	
 	private static Logger logger = Logger.getLogger(BasicStructureBuildingCodelet.class.getCanonicalName());

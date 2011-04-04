@@ -10,6 +10,14 @@ package edu.memphis.ccrg.lida.framework.initialization;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+
+/**
+ * Definition of a {@link Linkable} object
+ * @see LidaXmlFactory
+ * @author Javier Snaider
+ *
+ */
 public class LinkableDef {
 	private String name;
 	private String className;

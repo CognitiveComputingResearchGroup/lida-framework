@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import java.util.Map;
 
 /**
+ * An {@link ExciteStrategy} that never modifies the activation passed to it.
  * WARNING:	Renaming this class requires renaming values in
  * 	  configs/factoriesData.xml
  */

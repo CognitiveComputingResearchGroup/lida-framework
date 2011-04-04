@@ -15,6 +15,12 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * Definition of a {@link Strategy} object
+ * @see LidaXmlFactory
+ * @author Javier Snaider
+ *
+ */
 public class StrategyDef {
 
 	private static final Logger logger = Logger.getLogger(StrategyDef.class.getCanonicalName());

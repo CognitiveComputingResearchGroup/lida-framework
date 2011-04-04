@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import java.util.Map;
 
 /**
+ * Basic {@link ExciteStrategy} governed by a linear curve.
  * WARNING:	Renaming this class requires renaming values in
  * 	  configs/factoriesData.xml
  */

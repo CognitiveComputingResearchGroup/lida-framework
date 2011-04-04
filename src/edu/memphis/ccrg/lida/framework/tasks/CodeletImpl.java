@@ -3,6 +3,11 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
+/**
+ * Abstract implementation of {@link Codelet}
+ * @author ryanjmccall
+ *
+ */
 public abstract class CodeletImpl extends LidaTaskImpl implements Codelet {
 
 	protected NodeStructure soughtContent;

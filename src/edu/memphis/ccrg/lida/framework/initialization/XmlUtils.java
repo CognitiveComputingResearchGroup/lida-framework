@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
+ * Utilities for reading an XML file.
  * @author Javier Snaider, Ryan J. McCall
  *
  */

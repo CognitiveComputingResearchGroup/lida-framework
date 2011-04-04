@@ -15,6 +15,11 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
+/**
+ * Default implementation of {@link Scheme}
+ * @author ryanjmccall, Javier Snaider
+ *
+ */
 public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	private static final double RELIABILITY_THRESHOLD = 0.5;

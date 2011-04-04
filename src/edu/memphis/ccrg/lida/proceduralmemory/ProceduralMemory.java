@@ -10,10 +10,19 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelection;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
+/**
+ * LidaModule containing {@link Scheme}s activated by each conscious broadcast.  
+ * Activated schemes are instantiated, becoming {@link Behavior}s which are sent to 
+ * {@link ActionSelection}
+ * @author ryanjmccall
+ *
+ */
 public interface ProceduralMemory extends LidaModule, Saveable{
 	
 	/**

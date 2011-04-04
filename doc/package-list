@@ -1,5 +1,4 @@
 edu.memphis.ccrg.lida.actionselection
-edu.memphis.ccrg.lida.actionselection.behaviornet
 edu.memphis.ccrg.lida.actionselection.behaviornetwork
 edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies
 edu.memphis.ccrg.lida.attentioncodelets
@@ -17,7 +16,6 @@ edu.memphis.ccrg.lida.framework.gui.events
 edu.memphis.ccrg.lida.framework.gui.panels
 edu.memphis.ccrg.lida.framework.gui.utils
 edu.memphis.ccrg.lida.framework.initialization
-edu.memphis.ccrg.lida.framework.mockclasses
 edu.memphis.ccrg.lida.framework.shared
 edu.memphis.ccrg.lida.framework.shared.activation
 edu.memphis.ccrg.lida.framework.strategies

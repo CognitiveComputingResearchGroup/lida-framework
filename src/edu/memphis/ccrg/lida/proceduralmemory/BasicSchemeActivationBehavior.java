@@ -17,6 +17,11 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * A basic algorithm to activate {@link Scheme}s given a {@link NodeStructure}
+ * @author ryanjmccall
+ *
+ */
 public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 
 	private static final Logger logger = Logger

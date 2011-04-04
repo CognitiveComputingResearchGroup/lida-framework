@@ -2,6 +2,11 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
+/**
+ * Abstract implementation of {@link Strategy}
+ * @author Javier Snaider
+ *
+ */
 public abstract class StrategyImpl implements Strategy {
 
 	protected Map<String, ?> parameters;

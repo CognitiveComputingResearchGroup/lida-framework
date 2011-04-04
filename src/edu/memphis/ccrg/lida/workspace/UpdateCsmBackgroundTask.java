@@ -10,6 +10,12 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
+/**
+ * A background task in the {@link Workspace} which transfers percepts from 
+ * the Perceptual buffer to the Current Situational Model
+ * @author ryanjmccall
+ *
+ */
 public class UpdateCsmBackgroundTask extends LidaTaskImpl {
 
 	private static final Logger logger = Logger

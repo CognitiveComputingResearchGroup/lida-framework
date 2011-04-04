@@ -18,7 +18,9 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 //TODO Make Coalition a Factory element.  then we can change the way a coalition calculates its activation
 // and the type of content that it has.
 /**
- * 
+ * Default implementation of {@link Coalition}.  Wraps content entering the 
+ * {@link GlobalWorkspace} to compete for consciousness. Extends {@link ActivatibleImpl}.
+ * Contains reference to the {@link AttentionCodelet} that created it.
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	
