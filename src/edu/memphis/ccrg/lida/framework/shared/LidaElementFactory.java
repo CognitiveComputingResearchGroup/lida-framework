@@ -496,12 +496,16 @@ public class LidaElementFactory {
 		Link l = null;
 		try {
 			Class<?> required = Class.forName(requiredDef.getClassName());
-			Class<?> desired = Class.forName(desiredDef.getClassName());
+			Object desired = Class.forName(desiredDef.getClassName()).newInstance();
 			
 			if(required != null && required.isInstance(desired)){
 				l = getLink(desiredType, source, sink, category);
 			}
 		} catch (ClassNotFoundException exc) {
+			exc.printStackTrace();
+		} catch (InstantiationException exc) {
+			exc.printStackTrace();
+		} catch (IllegalAccessException exc) {
 			exc.printStackTrace();
 		}
 		return l;
@@ -684,26 +688,30 @@ public class LidaElementFactory {
 	 * @return copy of oNode of desired type or null
 	 */
 	public Node getNode(String requiredType, Node oNode, String desiredType) {
-		LinkableDef requiredDef = linkClasses.get(requiredType);
+		LinkableDef requiredDef = nodeClasses.get(requiredType);
 		if(requiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain link type: " + requiredType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type: " + requiredType, LidaTaskManager.getCurrentTick());
 			return null;
 		}
-		LinkableDef desiredDef = linkClasses.get(desiredType);
+		LinkableDef desiredDef = nodeClasses.get(desiredType);
 		if(desiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain link type: " + desiredType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type: " + desiredType, LidaTaskManager.getCurrentTick());
 			return null;
 		}
 		
 		Node newNode = null;
 		try {
 			Class<?> required = Class.forName(requiredDef.getClassName());
-			Class<?> desired = Class.forName(desiredDef.getClassName());
+ 			Object desired = Class.forName(desiredDef.getClassName()).newInstance();
 			
 			if(required != null && required.isInstance(desired)){
 				newNode = getNode(oNode, desiredType);
 			}
 		} catch (ClassNotFoundException exc) {
+			exc.printStackTrace();
+		} catch (InstantiationException exc) {
+			exc.printStackTrace();
+		} catch (IllegalAccessException exc) {
 			exc.printStackTrace();
 		}
 		return newNode;

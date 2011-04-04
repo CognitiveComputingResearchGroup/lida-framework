@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
@@ -21,7 +23,6 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
@@ -30,10 +31,11 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  */
 
 public class NodeStructureImplTest extends TestCase{
+	private static final Logger logger = Logger.getLogger(NodeStructureImplTest.class.getCanonicalName());
 	
 	private Node node1, node2, node3, node4;
 	private Link link1, link2, link3;	
-	private LinkCategory category1, category2;	
+	private PamNode category1, category2;	
 	private NodeStructureImpl ns1, ns2, ns3;
 	private static LidaElementFactory factory = LidaElementFactory.getInstance();
 	
@@ -44,7 +46,6 @@ public class NodeStructureImplTest extends TestCase{
 	@Override
 	@Before
 	public void setUp() throws Exception {		
-		new PerceptualAssociativeMemoryImpl();
 		node1 = factory.getNode();
 		node1.setLabel("red");
 		node1.setActivation(0.1);
@@ -61,9 +62,10 @@ public class NodeStructureImplTest extends TestCase{
 		node4.setLabel("green");
 		node4.setActivation(0.4);
 		
-		new PerceptualAssociativeMemoryImpl();	
-		category1 = PerceptualAssociativeMemoryImpl.NONE;
-		category2 = PerceptualAssociativeMemoryImpl.LATERAL;
+		category1 = new PamNodeImpl();
+		category1.setId(99999);
+		category2 = new PamNodeImpl();
+		category2.setId(100000);
 		
 		link1 = factory.getLink(node1, node2, category1);
 		link2 = factory.getLink(node2, node3, category2);
@@ -72,6 +74,7 @@ public class NodeStructureImplTest extends TestCase{
 		ns1 = new NodeStructureImpl();	
 		ns2 = new NodeStructureImpl();
 		ns3 = new NodeStructureImpl();
+		logger.log(Level.INFO, "\nConstructor finished");
 	}
 	
 	/**
@@ -278,7 +281,7 @@ public class NodeStructureImplTest extends TestCase{
 		assertTrue(ns1.getLinkCount() == 3);
 		
 		l = ns1.addDefaultLink(node1.getId(), node3.getId(), category1, 0.0, 0.0);
-		assertTrue(l != null);
+		assertTrue(l == null);
 		assertTrue(ns1.getLinkCount() == 3);
 	}
 	

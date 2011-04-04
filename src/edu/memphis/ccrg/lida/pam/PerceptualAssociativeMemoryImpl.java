@@ -136,19 +136,19 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		propagationBehavior = new UpscalePropagationBehavior();
 		pamNodeStructure = factory.getPamNodeStructure();
 
-		PamNode linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+		PamNode linkCategory = (PamNode) factory.getNode("PamNodeImpl",
 				"None");
 		NONE = addLinkCategory((LinkCategory) linkCategory);
 
 		linkCategory = (PamNode) factory.getNode(
-				DEFAULT_NONDECAYING_PAMNODE, "LateralType");
+				"PamNodeImpl", "LateralType");
 		LATERAL = addLinkCategory((LinkCategory) linkCategory);
 
-		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+		linkCategory = (PamNode) factory.getNode("PamNodeImpl",
 				"Membership");
 		MEMBERSHIP = addLinkCategory((LinkCategory) linkCategory);
 
-		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+		linkCategory = (PamNode) factory.getNode("PamNodeImpl",
 				"Feature");
 		FEATURE = addLinkCategory((LinkCategory) linkCategory);
 	}
