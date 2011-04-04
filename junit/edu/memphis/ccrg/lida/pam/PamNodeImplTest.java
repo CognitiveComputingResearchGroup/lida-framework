@@ -70,7 +70,7 @@ public class PamNodeImplTest extends TestCase{
 		node1.setActivation(0.0);
 		
 		double t = 0.7;
-		node1.setLearnableRemovalThreshold(t);
+		node1.setBaseLevelRemovalThreshold(t);
 		assertEquals(t, node1.getLearnableRemovalThreshold());
 		
 		node1.setBaseLevelActivation(1.0);

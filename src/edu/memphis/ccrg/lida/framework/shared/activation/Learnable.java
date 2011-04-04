@@ -85,7 +85,7 @@ public interface Learnable extends Activatible{
 	 * Sets learnableRemovalThreshold
 	 * @param threshold threshold for removal of this Learnable
 	 */
-	public void setLearnableRemovalThreshold(double threshold);
+	public void setBaseLevelRemovalThreshold(double threshold);
 	
 	/**
 	 * Gets learnableRemovalThreshold

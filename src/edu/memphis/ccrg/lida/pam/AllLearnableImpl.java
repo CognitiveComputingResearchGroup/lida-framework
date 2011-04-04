@@ -120,8 +120,8 @@ final class AllLearnableImpl implements Learnable {
 	}
 
 	@Override
-	public void setLearnableRemovalThreshold(double threshold) {
-		learnable.setLearnableRemovalThreshold(threshold);
+	public void setBaseLevelRemovalThreshold(double threshold) {
+		learnable.setBaseLevelRemovalThreshold(threshold);
 
 	}
 

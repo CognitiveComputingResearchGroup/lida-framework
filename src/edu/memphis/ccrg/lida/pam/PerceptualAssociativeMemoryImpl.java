@@ -136,23 +136,23 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		propagationBehavior = new UpscalePropagationBehavior();
 		pamNodeStructure = factory.getPamNodeStructure();
 
-		PamNode linkCategory = (PamNode) factory.getNode("PamNodeImpl",
+		PamNode linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
 				"None");
 		NONE = addLinkCategory((LinkCategory) linkCategory);
 
 		linkCategory = (PamNode) factory.getNode(
-				"PamNodeImpl", "LateralType");
+				DEFAULT_NONDECAYING_PAMNODE, "LateralType");
 		LATERAL = addLinkCategory((LinkCategory) linkCategory);
 
-		linkCategory = (PamNode) factory.getNode("PamNodeImpl",
+		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
 				"Membership");
 		MEMBERSHIP = addLinkCategory((LinkCategory) linkCategory);
 
-		linkCategory = (PamNode) factory.getNode("PamNodeImpl",
+		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
 				"Feature");
 		FEATURE = addLinkCategory((LinkCategory) linkCategory);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -584,6 +584,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public Link addNewLink(Node src, Linkable sink, LinkCategory cat,
 			double initialActivation, double removalThreshold,
 			String blExciteStrategy, String blDecayStrategy) {
+		if(src == null || sink == null){
+			return null;
+		}
+		
 		return addNewLink(src.getId(), sink.getExtendedId(), cat,
 				initialActivation, removalThreshold, blExciteStrategy,
 				blDecayStrategy);
@@ -600,23 +604,16 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public Link addNewLink(int srcId, ExtendedId sinkId, LinkCategory cat,
-			double baseLevelActivation, double baseLevelRemovalThreshold,
-			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		Link newLink = pamNodeStructure.addDefaultLink(srcId, sinkId, cat, 0.0,
+						   double baseLevelActivation, double baseLevelRemovalThreshold,
+						   String baseLevelExciteStrat, String baseLevelDecayStrat) {
+		PamLink newLink = (PamLink) pamNodeStructure.addDefaultLink(srcId, sinkId, cat, 0.0,
 				0.0);
-		if (newLink instanceof PamLink) {
-			PamLink newPamLink = (PamLink) newLink;
-			setLearnableValues(newPamLink, baseLevelActivation,
-					baseLevelRemovalThreshold, baseLevelExciteStrat,
-					baseLevelDecayStrat);
-			return newPamLink;
-		} else {
-			pamNodeStructure.removeLink(newLink);
-			logger.log(Level.WARNING,
-					"Could not add link because it was not a PamLink",
-					LidaTaskManager.getCurrentTick());
+		if(newLink == null){
 			return null;
 		}
+		setLearnableValues(newLink, baseLevelActivation,baseLevelRemovalThreshold, 
+						   baseLevelExciteStrat, baseLevelDecayStrat);
+		return newLink;
 	}
 
 	/*
@@ -640,6 +637,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (newNode != null) {
 			if (newNode instanceof PamNode) {
 				PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
+				if(newPamNode == null){
+					return null;
+				}
 				setLearnableValues(newPamNode, baseLevelActivation,
 						baseLevelRemovalThreshold, baseLevelExciteStrat,
 						baseLevelDecayStrat);
@@ -673,7 +673,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			double baseLevelActivation, double baseLevelRemovalThreshold,
 			String baseLevelExciteStrat, String baseLevelDecayStrat) {
 		learnable.setBaseLevelActivation(baseLevelActivation);
-		learnable.setLearnableRemovalThreshold(baseLevelRemovalThreshold);
+		learnable.setBaseLevelRemovalThreshold(baseLevelRemovalThreshold);
 
 		ExciteStrategy blExciteStrategy = factory
 				.getExciteStrategy(baseLevelExciteStrat);
@@ -714,11 +714,9 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		if (t >= 0.0 && t <= 1.0) {
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		} else {
-			logger
-					.log(
-							Level.WARNING,
-							"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
-							LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING,
+					   "Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
+						LidaTaskManager.getCurrentTick());
 		}
 	}
 

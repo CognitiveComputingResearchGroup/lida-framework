@@ -167,7 +167,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 
 	@Override
-	public void setLearnableRemovalThreshold(double threshold) {
+	public void setBaseLevelRemovalThreshold(double threshold) {
 		this.learnableRemovableThreshold = threshold;
 	}
 	

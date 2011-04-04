@@ -10,8 +10,8 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import junit.framework.TestCase;
@@ -19,6 +19,9 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
+import edu.memphis.ccrg.lida.framework.initialization.LidaFactoriesXMLLoader;
+import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -37,7 +40,14 @@ public class NodeStructureImplTest extends TestCase{
 	private Link link1, link2, link3;	
 	private PamNode category1, category2;	
 	private NodeStructureImpl ns1, ns2, ns3;
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static LidaElementFactory factory;
+	
+	static{
+		factory = LidaElementFactory.getInstance();
+		LidaFactoriesXMLLoader factoryLoader = new LidaFactoriesXMLLoader();
+		Properties prop = ConfigUtils.loadProperties(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH);
+		factoryLoader.loadFactoriesData(prop);
+	}
 	
 	/**
 	 * This method is called before running each test case to initialize the objects
@@ -74,7 +84,6 @@ public class NodeStructureImplTest extends TestCase{
 		ns1 = new NodeStructureImpl();	
 		ns2 = new NodeStructureImpl();
 		ns3 = new NodeStructureImpl();
-		logger.log(Level.INFO, "\nConstructor finished");
 	}
 	
 	/**
@@ -775,6 +784,10 @@ public class NodeStructureImplTest extends TestCase{
 		node3.setActivation(0.2);
 		node4.setActivation(1.0);
 		
+		node1.setActivatibleRemovalThreshold(0.0);
+		node2.setActivatibleRemovalThreshold(0.0);
+		node3.setActivatibleRemovalThreshold(0.0);
+		node4.setActivatibleRemovalThreshold(0.0);
 		ns1.addDefaultNode(node1);
 		ns1.addDefaultNode(node2);
 		ns1.addDefaultNode(node3);
@@ -967,21 +980,6 @@ public class NodeStructureImplTest extends TestCase{
 		ns2.addDefaultLink(pn1, pn2, category1, 0.0, 0.0);
 		
 		assertFalse(NodeStructureImpl.compareNodeStructures(ns1, ns2));
-	}
-	
-	public void testWrongStructure(){
-		ns1.addDefaultNode(node1);
-		ns1.addDefaultNode(node2);
-		ns1.addDefaultNode(node3);
-		ns1.addDefaultNode(node4);
-		
-		Link l12 = ns1.addDefaultLink(node1, node2, category1, 0.0, 0.0);
-		Link l34 = ns1.addDefaultLink(node3, node4, category1, 0.0, 0.0);
-		
-		//TODO
-		
-//		Link l1234 = ns1.addDefaultLink(l12.getExtendedId(), l34.getExtendedId(), category1, 0.0, 0.0);
-//		assertTrue(l1234 == null);
 	}
 	
 	public void testWeirdStructure(){

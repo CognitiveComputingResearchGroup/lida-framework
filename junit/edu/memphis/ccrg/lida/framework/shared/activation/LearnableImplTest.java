@@ -210,17 +210,17 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testGetLearnableRemovalThreshold() {
-		node1.setLearnableRemovalThreshold(0.2);
+		node1.setBaseLevelRemovalThreshold(0.2);
 		assertEquals (0.2, node1.getLearnableRemovalThreshold(), 0.00001);
 		
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setLearnableRemovalThreshold(double)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelRemovalThreshold(double)}.
 	 */
 	@Test
 	public void testSetLearnableRemovalThreshold() {
-		node1.setLearnableRemovalThreshold(0.4);
+		node1.setBaseLevelRemovalThreshold(0.4);
 		assertEquals(0.4, node1.getLearnableRemovalThreshold(), 0.0001);
 		
 		

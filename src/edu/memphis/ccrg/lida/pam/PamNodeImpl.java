@@ -43,21 +43,20 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		learnable = new LearnableImpl();
 		initLearnable();
 	}
+	
 	public PamNodeImpl(PamNodeImpl pamNode) {
 		super(pamNode);
 		groundingPamNode = this;
 		this.learnable=new LearnableImpl(pamNode.learnable);
 	}
 	
-	/**
-	 * 
-	 */
 	private void initLearnable() {
-		learnable.setBaseLevelActivation(DEFAULT_BASE_LEVEL_ACTIVATION);
+		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
 		LidaElementFactory factory = LidaElementFactory.getInstance();
-		learnable.setDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
-		learnable.setExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
-		learnable.setLearnableRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
+		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
+		
 	}
 
 	/** 
@@ -76,13 +75,13 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		LidaElementFactory factory = LidaElementFactory.getInstance();
 		
 	    String strategyName = (String)getParam("baseLevelDecayStrategy","pamDefaultDecay");
-		learnable.setDecayStrategy(factory.getDecayStrategy(strategyName));
+		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));
 		
 	    strategyName = (String)getParam("baseLevelExciteStrategy","pamDefaultExcite");
-		learnable.setExciteStrategy(factory.getExciteStrategy(strategyName));
+		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
 		
 		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_REMOVAL_THRESHOLD);
-		learnable.setLearnableRemovalThreshold(threshold);
+		learnable.setBaseLevelRemovalThreshold(threshold);
 
 		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
 		learnable.setBaseLevelActivation(activation);	
@@ -207,8 +206,8 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 
 	@Override
-	public void setLearnableRemovalThreshold(double threshold) {
-		learnable.setLearnableRemovalThreshold(threshold);
+	public void setBaseLevelRemovalThreshold(double threshold) {
+		learnable.setBaseLevelRemovalThreshold(threshold);
 	}
 
 	@Override
