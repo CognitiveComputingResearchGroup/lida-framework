@@ -496,16 +496,12 @@ public class LidaElementFactory {
 		Link l = null;
 		try {
 			Class<?> required = Class.forName(requiredDef.getClassName());
-			Object desired = Class.forName(desiredDef.getClassName()).newInstance();
+			Class<?> desired = Class.forName(desiredDef.getClassName());
 			
-			if(required != null && required.isInstance(desired)){
+			if(required != null && required.isAssignableFrom(desired)){
 				l = getLink(desiredType, source, sink, category);
 			}
 		} catch (ClassNotFoundException exc) {
-			exc.printStackTrace();
-		} catch (InstantiationException exc) {
-			exc.printStackTrace();
-		} catch (IllegalAccessException exc) {
 			exc.printStackTrace();
 		}
 		return l;
@@ -702,18 +698,14 @@ public class LidaElementFactory {
 		Node newNode = null;
 		try {
 			Class<?> required = Class.forName(requiredDef.getClassName());
- 			Object desired = Class.forName(desiredDef.getClassName()).newInstance();
+			Class<?> desired = Class.forName(desiredDef.getClassName());
 			
-			if(required != null && required.isInstance(desired)){
+			if(required != null && required.isAssignableFrom(desired)){
 				newNode = getNode(oNode, desiredType);
 			}
 		} catch (ClassNotFoundException exc) {
 			exc.printStackTrace();
-		} catch (InstantiationException exc) {
-			exc.printStackTrace();
-		} catch (IllegalAccessException exc) {
-			exc.printStackTrace();
-		}
+		} 
 		return newNode;
 	}
 

@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
@@ -34,7 +33,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  */
 
 public class NodeStructureImplTest extends TestCase{
-	private static final Logger logger = Logger.getLogger(NodeStructureImplTest.class.getCanonicalName());
+//	private static final Logger logger = Logger.getLogger(NodeStructureImplTest.class.getCanonicalName());
 	
 	private Node node1, node2, node3, node4;
 	private Link link1, link2, link3;	
