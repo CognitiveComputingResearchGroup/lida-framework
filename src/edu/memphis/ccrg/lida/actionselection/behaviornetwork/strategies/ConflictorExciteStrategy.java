@@ -8,6 +8,11 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * Strategy determining how a conflictor is inhibited.
+ * @author ryanjmccall
+ *
+ */
 public class ConflictorExciteStrategy extends StrategyImpl implements BehaviorExciteStrategy {
 
 	private static final Logger logger = Logger.getLogger(ConflictorExciteStrategy.class.getCanonicalName());

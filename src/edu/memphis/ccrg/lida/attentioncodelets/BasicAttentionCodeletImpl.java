@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
+ * Basic implementation of {@link AttentionCodelet}
  * WARNING:	Renaming this class requires renaming values in
  * 	  configs/factoriesData.xml
  */

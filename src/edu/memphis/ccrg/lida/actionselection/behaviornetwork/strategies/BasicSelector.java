@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * Selector iterates and chooses competitor with max alpha
+ * Selector that chooses {@link Behavior} with maximum activation
  */
 public class BasicSelector implements Selector{
 	
@@ -32,9 +32,6 @@ public class BasicSelector implements Selector{
 //    stochastic in behavior net + drives to explore novel things
     // have a parameter which at 1.0 gives deterministic action selection.  
     // If 0.0 then completely random
-    
-    public BasicSelector() {       
-    }
     
     @Override
 	public Behavior selectSingleBehavior(Collection<Behavior> candidateBehaviors, double candidateThreshold){
@@ -45,9 +42,7 @@ public class BasicSelector implements Selector{
        logger.log(Level.FINEST,"\nStarting selection, num candidates: " + candidateBehaviors.size(),LidaTaskManager.getCurrentTick());
       
         for(Behavior current: candidateBehaviors){
-        	
     		double currentActivation = current.getTotalActivation();
-//    		p("action " + current.getLabel() + " has activ: " + currentActivation);
     		if(currentActivation > maxActivation) {                    
                 winners.clear();
     			winners.add(current);

@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
- * Interface for the action selection module
+ * Interface for the action selection module of LIDA.
  * 
  * @author Ryan J McCall
  * 

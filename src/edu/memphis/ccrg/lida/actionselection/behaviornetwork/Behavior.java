@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * The Interface Behavior.
+ * An instantiated {@link Scheme} with a context, adding list, and deleting list.
  */
 public interface Behavior extends Activatible {
 	

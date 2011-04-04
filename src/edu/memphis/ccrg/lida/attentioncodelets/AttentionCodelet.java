@@ -9,12 +9,16 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
- * The interface for LIDA's AttentionCodelet.
- * Specific implementations of AttentionCodlet must implement this interface.
- * AttentionCodelet in LIDA communicates with the workspace returning coalitions
+ * A kind of {@link Codelet} that checks {@link WorkspaceBuffer}s
+ * for its desired content and possibly adds {@link Coalition}s to the
+ * {@link GlobalWorkspace}
  * @author Ryan J McCall
+ * 
  */
 public interface AttentionCodelet extends Codelet{
 

@@ -14,6 +14,8 @@ import java.util.List;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 /**
+ * Abstract implmementation of {@link LidaAction}
+ * 
  * @author Javier Snaider
  * 
  */

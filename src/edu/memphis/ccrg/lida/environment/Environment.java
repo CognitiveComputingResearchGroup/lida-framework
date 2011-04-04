@@ -12,7 +12,7 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 /**
- * Specification for Environments that the framework can use.
+ * Specification for domains that the framework can use as an environment.
  * 
  * @author Ryan J. McCall
  */

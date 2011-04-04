@@ -8,6 +8,11 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * Strategy that determines how a successor is excited.
+ * @author ryanjmccall
+ *
+ */
 public class SuccessorExciteStrategy extends StrategyImpl implements BehaviorExciteStrategy {
 	
 	private static final Logger logger = Logger.getLogger(SuccessorExciteStrategy.class.getCanonicalName());

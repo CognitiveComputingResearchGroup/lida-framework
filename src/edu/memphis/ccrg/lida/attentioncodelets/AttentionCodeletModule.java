@@ -32,6 +32,11 @@ import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerModule;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 	
+/**
+ * {@link LidaModule} which creates and manages all {@link AttentionCodelet}s.
+ * @author ryanjmccall
+ *
+ */
 public class AttentionCodeletModule extends LidaModuleImpl implements
 		BroadcastListener, PreafferenceListener, CodeletManagerModule {
 

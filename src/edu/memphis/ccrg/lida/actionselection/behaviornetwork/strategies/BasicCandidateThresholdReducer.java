@@ -8,9 +8,14 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 
+/**
+ * Basic strategy to reduce candidate threshold
+ * @author ryanjmccall
+ *
+ */
 public class BasicCandidateThresholdReducer implements CandidateThresholdReducer {
 	
-    /**
+    /*
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected
 	 */
     private final double ACTIVATION_THRESHOLD_REDUCTION  = 0.10;  

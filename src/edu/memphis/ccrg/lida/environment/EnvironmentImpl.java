@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
 /**
+ * Abstract implementation of {@link Environment}
  * Environments should not be a listener of anything besides GUIs.  Rather, SensoryMemory and SensoryMotorMemory should
  * add environments as associated modules in the XML configuration file. 
  * @author Ryan J. McCall

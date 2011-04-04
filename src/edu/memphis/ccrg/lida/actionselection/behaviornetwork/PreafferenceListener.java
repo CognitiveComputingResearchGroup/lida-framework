@@ -8,10 +8,21 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
 
+import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
+/**
+ * Listener of preafferent signal from {@link ActionSelection}
+ * @author Ryan J McCall
+ *
+ */
 public interface PreafferenceListener {
 	
+	/**
+	 * Listener receives preafference.
+	 * @param addSet expected additions in future percepts
+	 * @param deleteSet expected deletions in future percepts
+	 */
 	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet);
 
 }

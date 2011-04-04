@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
+ * Abstract implementation of {@link LidaModule}
  * Implementations should add themselves to the lida.xml configuration file 
  * 
  * @author Javier Snaider

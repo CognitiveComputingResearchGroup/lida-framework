@@ -26,7 +26,8 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * @author ryanjmccall
+ * Basic implementation of {@link Behavior}
+ * @author Ryan J McCall
  *
  */
 public class BehaviorImpl extends ActivatibleImpl implements Behavior {

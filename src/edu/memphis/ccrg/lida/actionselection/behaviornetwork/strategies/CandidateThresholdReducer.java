@@ -7,8 +7,18 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
+/**
+ * A strategy to reduce the threshold for action selection.
+ * @author ryanjmccall
+ *
+ */
 public interface CandidateThresholdReducer {
 
-	public double reduceActivationThreshold(double behaviorActivationThreshold);
+	/**
+	 * Reduces specified threshold
+	 * @param currentThreshold current threshold
+	 * @return new, reduced threshold
+	 */
+	public double reduceActivationThreshold(double currentThreshold);
 
 }

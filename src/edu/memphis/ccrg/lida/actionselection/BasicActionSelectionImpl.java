@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 /**
  * Rudimentary action selection that selects all behaviors sent to it which are
  * above the selectionThreshold. Only selects an action every
- * 'selectionFrequency' number of cycles it is run
+ * 'selectionFrequency' times.
  * 
  * @author Ryan J McCall
  * 

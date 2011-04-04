@@ -17,13 +17,15 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
- * Basic attention codelet checking CSM and if finding sought content, creates a
- * coalition and puts it in the global workspace.
+ * Abstract implementation of {@link AttentionCodelet} that checks the CSM for desired
+ * content.  If this is found it creates a
+ * {@link Coalition} and adds it to the {@link GlobalWorkspace}.
  * 
  * @author Ryan J McCall
  * 

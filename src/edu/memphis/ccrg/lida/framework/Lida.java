@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 
 /**
- * A LidaModule containing all other LidaModules.
+ * A {@link LidaModule} containing all of the modules of LIDA.
  * 
  * @author Javier Snaider
  *

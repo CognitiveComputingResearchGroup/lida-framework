@@ -48,7 +48,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 // actions as well but have to consider who is the actor of the action
 
 /**
- * The Class BehaviorNetworkImpl.
+ * A modern implementation of Maes' behavior network.
  * 
  * @author Ryan J McCall, Javier Snaider
  */

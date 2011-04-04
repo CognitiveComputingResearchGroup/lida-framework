@@ -10,7 +10,8 @@ package edu.memphis.ccrg.lida.actionselection;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
- * Something that listens to the Action Selection Module
+ * A listeners of the {@link ActionSelection} Module
+ * 
  * @author Ryan J. McCall
  *
  */
