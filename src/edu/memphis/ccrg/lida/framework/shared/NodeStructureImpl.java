@@ -166,7 +166,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		Linkable newSink = null;
 
 		// If link's source is a node, but that node in not in this
-		// nodestructure, return null
+		// NodeStructure, return null
 		newSource = nodes.get(source.getId());
 		if (newSource == null) {
 			logger.log(
@@ -285,6 +285,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				activation, removalThreshold, null);
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultLink(edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double, double)
+	 */
 	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
@@ -305,11 +308,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param removalThreshold
 	 */
-	private Link generateNewLink(Link link, String linkType, Node newSource,
-								Linkable newSink, LinkCategory category, double activation,
-			double removalThreshold, PamLink groundingPamLink) {
+	private Link generateNewLink(Link link, String linkType, 
+								Node newSource,	Linkable newSink, LinkCategory category, 
+								double activation, double removalThreshold, PamLink groundingPamLink) {
 		Link newLink = getNewLink(link, linkType, newSource, newSink, category);
-		//TODO updateLinkValues
+		//set values of passed in parameters not handled by 'getNewLink'
 		newLink.setActivation(activation);
 		newLink.setActivatibleRemovalThreshold(removalThreshold);
 		newLink.setGroundingPamLink(groundingPamLink);

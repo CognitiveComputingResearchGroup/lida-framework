@@ -25,12 +25,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * Overrides hashCode and equals.  Has a private {@link LearnableImpl} to help 
  * implement all {@link Learnable} methods.
  * @author Ryan J. McCall
- *
  */
 public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
-	
 	
 	/*
 	 * Private Learnable object used for all learnable methods

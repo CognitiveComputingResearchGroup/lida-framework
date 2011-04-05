@@ -55,7 +55,6 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		LidaElementFactory factory = LidaElementFactory.getInstance();
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
-		
 	}
 
 	/** 
