@@ -326,7 +326,12 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	public int getUnsatisfiedContextCount() {
 		return unsatisfiedContextConditionCount.get();
 	}
-
 	
+	@Override
+	public String toString(){
+
+		return getLabel() + " action: "  + getAction() + 
+		" activ. " + getActivation() + " "+ getId();
+	}
 
 }
