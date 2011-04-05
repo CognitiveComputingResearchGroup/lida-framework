@@ -149,6 +149,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public synchronized Link addDefaultLink(Link l) {
+		if(l == null){
+			logger.log(Level.WARNING, "Cannot add null.", LidaTaskManager.getCurrentTick());
+		}
+		
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getExtendedId());
 		if (oldLink != null) { // if the link already exists in this node
@@ -291,6 +295,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
+		if(source == null || sink == null){
+			logger.log(Level.WARNING, "Cannot add link between null linkables.", LidaTaskManager.getCurrentTick());
+		}
+		
 		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
 				activation, removalThreshold);
 	}
@@ -346,6 +354,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Collection<Link> addDefaultLinks(Collection<Link> links) {
+		if(links == null){
+			logger.log(Level.WARNING, "Cannot add links. Link collection is null", LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		
 		Collection<Link> copiedLinks = new ArrayList<Link>();
 		// Add simple links
 		for (Link l : links) {
@@ -372,6 +385,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Node addDefaultNode(Node n) {
+		if (n == null) {
+			logger.log(Level.WARNING, "Cannot add null node",
+					LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		
 		return addNode(n, defaultNodeType);
 	}
 
@@ -448,7 +467,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						+ nodeType, LidaTaskManager.getCurrentTick());
 			}
 		} else {
-			// TODO  just updateNodeValues
+			// TODO  just updateNodeValues and that does specific things
 			double newActiv = n.getActivation();
 			if (node.getActivation() < newActiv) {
 				node.setActivation(newActiv);
@@ -465,6 +484,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
+		if(nodes == null){
+			logger.log(Level.WARNING, "Cannot add nodes. Node collection is null", LidaTaskManager.getCurrentTick());
+			return null;
+		}
+		
 		Collection<Node> storedNodes = new ArrayList<Node>();
 		for (Node n : nodes) {
 			Node stored = addNode(n, defaultNodeType);
@@ -514,11 +538,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	/*
 	 * This allows subclasses of NodeStructure to override merge but still gives
-	 * this class a merge to be called from the constructor. TODO do this for
-	 * addNode and AddDefaultLink??????
+	 * this class a merge to be called from the constructor. 
 	 * 
 	 * @param ns
 	 */
+//	TODO do this for addNode and AddDefaultLink??????
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {
 			logger.log(Level.WARNING, "Asked to merge null",
@@ -626,14 +650,14 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		for (Link l : links.values()) {
 			removeLink(l);
 		}
-		this.links.clear();
+		links.clear();
 	}
 
 	@Override
 	public void clearNodeStructure() {
-		this.linkableMap.clear();
-		this.nodes.clear();
-		this.links.clear();
+		linkableMap.clear();
+		nodes.clear();
+		links.clear();
 	}
 
 	@Override

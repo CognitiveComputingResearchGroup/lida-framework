@@ -58,7 +58,6 @@ public interface LidaModule extends FullyInitializable{
 	
 	/**
 	 * Returns module content specified by params.  Should only be used by the GUI.
-	 * TODO being used in ways other than for the gui!
 	 * 
 	 * @param params
 	 *            - specifies what content will be returned.

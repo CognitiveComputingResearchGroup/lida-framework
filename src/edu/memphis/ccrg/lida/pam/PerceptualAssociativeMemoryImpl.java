@@ -103,25 +103,25 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
 	/**
-	 * If using this variable in a non-standard LIDA application, e.g. testing,
+	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
 	public static LinkCategory NONE;
 
 	/**
-	 * If using this variable in a non-standard LIDA application, e.g. testing,
+	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
 	public static LinkCategory LATERAL;
 
 	/**
-	 * If using this variable in a non-standard LIDA application, e.g. testing,
+	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
 	public static LinkCategory MEMBERSHIP;
 
 	/**
-	 * If using this variable in a non-standard LIDA application, e.g. testing,
+	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
 	public static LinkCategory FEATURE;
