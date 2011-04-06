@@ -9,13 +9,22 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 
+/**
+ * This command is used for the tick mode to add ticks for execution.
+ * 
+ * A Integer "ticks" parameter must be specified. 
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class AddTicksCommand extends GenericCommandImpl {
 
 	@Override
 	public void execute(Lida lida) {
-		int ticks= (Integer)getParameter("ticks");
-		lida.getTaskManager().addTicksToExecute(ticks);
-		
+		Integer ticks= (Integer)getParameter("ticks");
+		if (ticks !=null){
+			lida.getTaskManager().addTicksToExecute(ticks);
+		}
 	}
 
 }

@@ -20,9 +20,6 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListene
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.TaskCountEvent;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -40,7 +37,7 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(BasicActionSelectionImpl.class.getCanonicalName());
 
-	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
+//	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 	private Queue<Behavior> behaviors = new ConcurrentLinkedQueue<Behavior>();
 	
@@ -104,9 +101,6 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 			for (ActionSelectionListener bl : listeners) {
 				bl.receiveAction(action);
 			}
-			FrameworkGuiEvent ge = new TaskCountEvent(
-					ModuleName.ActionSelection, behaviors.size() + "");
-			sendEventToGui(ge);
 		}
 	}
 
@@ -121,11 +115,11 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 		return selected;
 	}
 	
-	private void sendEventToGui(FrameworkGuiEvent evt) {
-		for (FrameworkGuiEventListener fg : guis){
-			fg.receiveFrameworkGuiEvent(evt);
-		}
-	}
+//	private void sendEventToGui(FrameworkGuiEvent evt) {
+//		for (FrameworkGuiEventListener fg : guis){
+//			fg.receiveFrameworkGuiEvent(evt);
+//		}
+//	}
 
 	@Override
 	public Object getModuleContent(Object... params) {

@@ -9,13 +9,21 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 
+/**
+ * Sets the tickDuration of the system.
+ * 
+ * A Integer "tickDuration" parameter must be specified. 
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class SetTimeScaleCommand extends GenericCommandImpl {
 
 	@Override
 	public void execute(Lida lida) {
-		Integer timeScale = (Integer) getParameter("timeScale");
-		if (timeScale != null) {
-			lida.getTaskManager().setTickDuration(timeScale);
+		Integer tickDuration = (Integer) getParameter("tickDuration");
+		if (tickDuration != null) {
+			lida.getTaskManager().setTickDuration(tickDuration);
 		}
 	}
 

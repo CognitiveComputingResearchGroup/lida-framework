@@ -13,6 +13,8 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 import edu.memphis.ccrg.lida.framework.Lida;
 
 /**
+ * Pauses all Tasks.
+ * 
  * @author Javier Snaider
  *
  */

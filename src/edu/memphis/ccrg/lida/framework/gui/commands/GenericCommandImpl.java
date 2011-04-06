@@ -12,6 +12,13 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 
+/**
+ * Abstract implementation of {@link Command}.
+ * Extend from this base class to create new commands overriding {@link #execute(Lida)}.
+ * 
+ * @author Javier Snaider
+ *
+ */
 public abstract class GenericCommandImpl implements Command {
 	
 	private Map<String,Object> parameters=new HashMap<String,Object>();
@@ -39,9 +46,6 @@ public abstract class GenericCommandImpl implements Command {
 		parameters.put(name, value);
 	}
 
-	/**
-	 * @param parameters the parameters to set
-	 */
 	@Override
 	public void setParameters(Map<String, Object> parameters) {
 		this.parameters = parameters;

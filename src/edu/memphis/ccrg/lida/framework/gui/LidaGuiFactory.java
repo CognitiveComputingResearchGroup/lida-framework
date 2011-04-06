@@ -36,13 +36,21 @@ public class LidaGuiFactory {
 	        	//Create the controller
 				String filename=lidaProperties.getProperty("lida.gui.commands",DEFAULT_COMMANDS_FILENAME);
 				Properties properties =ConfigUtils.loadProperties(filename);
+				if(properties == null){
+					logger.log(Level.SEVERE, "unable to load gui commands");
+				}
+				
 	        	LidaGuiController controller = new LidaGuiControllerImpl(lida, properties);
-				logger.log(Level.CONFIG,"GUI Controller created",0L);
+				logger.log(Level.INFO,"GUI Controller created",0L);
 				
 				filename=lidaProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);
 				properties = ConfigUtils.loadProperties(filename);
+				if(properties == null){
+					logger.log(Level.SEVERE, "unable to load gui panels properties");
+				}
+				
 	        	LidaGui lidaGui = new LidaGui(lida, controller, properties);
-				logger.log(Level.CONFIG,"GUI created",0L);
+				logger.log(Level.INFO,"GUI created",0L);
 	        	//Start the GUI
 	            lidaGui.setVisible(true);
 	        }//run

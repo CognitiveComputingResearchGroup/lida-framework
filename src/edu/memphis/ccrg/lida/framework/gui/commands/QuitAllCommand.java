@@ -10,6 +10,12 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
+/**
+ * Stops all thread execution and quits the system.
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class QuitAllCommand extends GenericCommandImpl {
 
 	@Override

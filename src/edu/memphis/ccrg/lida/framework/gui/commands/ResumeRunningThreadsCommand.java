@@ -9,6 +9,12 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 
+/**
+ * Resumes Tasks execution.
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class ResumeRunningThreadsCommand extends GenericCommandImpl {
 
 	@Override

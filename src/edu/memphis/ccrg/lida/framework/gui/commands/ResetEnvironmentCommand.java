@@ -7,14 +7,24 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
+import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
+/**
+ * Resets the {@link Environment} of the current application.
+ * @author ryan
+ *
+ */
 public class ResetEnvironmentCommand extends GenericCommandImpl {
 
 	@Override
 	public void execute(Lida lida) {
-		lida.getSubmodule(ModuleName.Environment);
+		LidaModule environ = lida.getSubmodule(ModuleName.Environment);
+		if(environ != null && environ instanceof Environment){
+			((Environment)environ).resetState();
+		}
 	}
 
 }

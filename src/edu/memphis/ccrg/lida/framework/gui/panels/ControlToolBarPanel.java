@@ -208,7 +208,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 			sleepTimeTextField.setText(sleepTime + "");
 			// Another way to execute commands
 			Command command = new SetTimeScaleCommand();
-			command.setParameter("timeScale", sleepTime);
+			command.setParameter("tickDuration", sleepTime);
 			controller.executeCommand(command);
 			refresh();
 		}

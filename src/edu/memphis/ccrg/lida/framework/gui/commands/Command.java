@@ -20,8 +20,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
  * A command is an encapsulation of an event from the Gui such as a button press or a 
  * slider state change.  
  * 
- * Implementations should add themselves to guiCommands.properties.  Be careful renaming classes
- * after adding them to this config file.
+ * Implementations should add themselves to guiCommands.properties.
  * @author Javier Snaider
  */
 public interface Command {
@@ -35,14 +34,14 @@ public interface Command {
     public void execute(Lida lida);
     
     /**
-	 * Expected result of the command.
+	 * Returns result of the command.
 	 * 
-	 * @return the result
+	 * @return the result of the command's execution
 	 */
     public Object getResult();    
 
     /**
-	 * Set multiple parameters using a map.
+	 * Sets optional parameters for command.
 	 * 
 	 * @param parameters
 	 *            parameters
@@ -50,7 +49,7 @@ public interface Command {
     public void setParameters(Map<String, Object> parameters);
     
     /**
-	 * Set single parameter.
+	 * Set single parameter for command.
 	 * 
 	 * @param name
 	 *            name of parameter
@@ -60,7 +59,7 @@ public interface Command {
     public void setParameter(String name, Object value);
     
     /**
-	 * Get a parameter.
+	 * Gets a parameter by name.
 	 * 
 	 * @param name
 	 *            retrieved parameter

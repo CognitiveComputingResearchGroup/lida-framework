@@ -17,18 +17,19 @@ import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * The Class LidaGuiControllerImpl.
+ * Default Implementation of {@link LidaGuiController}
  * 
  * @author Javier Snaider
  */
 public class LidaGuiControllerImpl implements LidaGuiController {
 
 	private static final Logger logger = Logger.getLogger(LidaGuiControllerImpl.class.getCanonicalName());
+	
 	private Lida lida;
-	Properties commands;
+	private Properties commands;
 
 	/**
-	 * Instantiates a new lida gui controller impl.
+	 * 
 	 * 
 	 * @param lida
 	 *            Lida object
@@ -41,16 +42,6 @@ public class LidaGuiControllerImpl implements LidaGuiController {
  		this.commands = commands;
 	}
 	
-	/**
-	 * Instantiates a new lida gui controller impl.
-	 * 
-	 * @param lida
-	 *            the lida
-	 */
-	public LidaGuiControllerImpl(Lida lida) {
-		this(lida,null);
-	}
-
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.gui.LidaGuiController#executeCommand(java.lang.String, java.util.Map)
 	 */
@@ -71,32 +62,21 @@ public class LidaGuiControllerImpl implements LidaGuiController {
 		if(parameters != null){
 			command.setParameters(parameters);
 		}
-		command.execute(lida);
-		logger.log(Level.FINE, "Command "+ commandName + " executed",LidaTaskManager.getCurrentTick());
-		return command.getResult();
+		return executeCommand(command);
 	}
 
-	/**
-	 * Executes a command sent by the GUI.
-	 * 
-	 * @param command
-	 *            the command to execute.
-	 * @return The result of the command.
+	/* (non-Javadoc)
+	 * @see edu.memphis.ccrg.lida.framework.gui.LidaGuiController#executeCommand(edu.memphis.ccrg.lida.framework.gui.commands.Command)
 	 */
 	@Override
 	public Object executeCommand (Command command){
-		command.execute(lida);
-		logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getCurrentTick());
-		return command.getResult();
-	}
-	
-	/**
-	 * Checks if is system paused.
-	 * 
-	 * @return true, if is system paused
-	 */
-	public boolean isSystemPaused() {
-		return lida.getTaskManager().isTasksPaused();
+		if(command != null){
+			command.execute(lida);
+			logger.log(Level.FINE, "Command "+ command + " executed",LidaTaskManager.getCurrentTick());
+			return command.getResult();
+		}
+		logger.log(Level.WARNING, "Cannot execute null command", LidaTaskManager.getCurrentTick());
+		return null;
 	}
 
 	/* (non-Javadoc)

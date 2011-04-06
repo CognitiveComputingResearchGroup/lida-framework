@@ -16,8 +16,10 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 
 /**
+ * Controller for the {@link LidaGui}.  An interface between the Gui and {@link Lida} implementing 
+ * the MVC pattern.
+ * 
  * @author Javier Snaider
- *
  */
 public interface LidaGuiController {
 
@@ -25,11 +27,12 @@ public interface LidaGuiController {
 	 * Executes a command specified by the name. This name corresponds to a property in 
 	 * guiCommands.properties file.
 	 * 
-	 * @param commandName the name of the command.
-	 * @param parameters a Map of parameters for the command.
+	 * @param commandName the name of the command, names must be defined in guiCommands.properties 
+	 * @param parameters a Map of optional parameters for the command.
 	 * @return the result of the command.
 	 */
-	public Object executeCommand (String commandName, Map<String,Object> parameters);
+	public Object executeCommand (String commandName, Map<String, Object> parameters);
+	
 	/**
 	 * Executes a command sent by the GUI
 	 * @param command the command to execute. 
@@ -37,6 +40,10 @@ public interface LidaGuiController {
 	 */
 	public Object executeCommand (Command command);
 	
+	/**
+	 * Sets the {@link Lida} this controller controls. This {@link Lida} object represents the model.
+	 * @param lida {@link Lida}
+	 */
 	public void registrerLida(Lida lida);
 	
 }

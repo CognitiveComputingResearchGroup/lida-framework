@@ -9,12 +9,22 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 
+/**
+ * This command is used for enabling or disabling the tick mode.
+ * 
+ * A Boolean "enable" parameter must be specified. 
+ * 
+ * @author Javier Snaider
+ *
+ */
 public class EnableTicksModeCommand extends GenericCommandImpl {
 
 	@Override
 	public void execute(Lida lida) {
 		Boolean b= (Boolean)getParameter("enable");
-		lida.getTaskManager().setInIntervalMode(b);
+		if(b!= null){
+			lida.getTaskManager().setInIntervalMode(b);
+		}
 	}
 
 }

@@ -13,23 +13,26 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 
 /**
- * A GUI Panel for the LidaGui.
+ * A GUI Panel which can be displayed in the {@link LidaGui}
+ * 
  * @author Javier Snaider
  */
 public interface LidaPanel {
 	
 	/**
-	 * Registers the LidaGuiController
+	 * Registers the {@link LidaGuiController} as the controller.
 	 * @param lgc GuiController for this panel
 	 */
 	public void registrerLidaGuiController(LidaGuiController lgc);
 	
 	/**
-	 * Set Lida object for this panel.
+	 * Sets {@link Lida} object as the model for this panel.
 	 * @param lida Lida object
 	 */
 	public void registerLida(Lida lida);
@@ -41,7 +44,7 @@ public interface LidaPanel {
 	public void display (Object o);
 	
 	/**
-	 * Refresh the content this panel displays.
+	 * Refreshes the content this panel displays.
 	 */
 	public void refresh();
 	
@@ -52,14 +55,14 @@ public interface LidaPanel {
 	public JPanel getPanel();
 	
 	/**
-	 * Returns supported Module.
-	 * @return ModuleName of Module supported by this LidaPanel
+	 * Returns supported {@link LidaModule}.
+	 * @return {@link ModuleName} of LidaModule supported by this LidaPanel
 	 */
     public ModuleName getSupportedModule();
     
     /**
-     * Sets supported module
-     * @param module ModuleName of supported Module
+     * Sets supported {@link LidaModule}
+     * @param module ModuleName of supported LidaModule
      */
     public void setSupportedModule(ModuleName module);
     
