@@ -36,15 +36,9 @@ public interface DetectionAlgorithm extends LidaTask {
 	public Collection<PamLinkable> getPamLinkables();
 	
 	/**
-	 * 
-	 * Provides this feature detector with access to specified {@link PamLinkable}.
+	 * Adds {@link PamLinkable} that will be detected by this algorithm.
 	 * @param linkable s {@link PamLinkable}
 	 */
 	public void addPamLinkable(PamLinkable linkable);
 	
-	/**
-	 * Excites PAM some amount.
-	 * @param amount amout to excite
-	 */
-	public void excitePam(double amount);
 }

@@ -266,6 +266,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 */
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
+		for(PamLinkable pl: detector.getPamLinkables()){
+			if(!pamNodeStructure.containsLinkable(pl)){
+				logger.log(Level.WARNING, "Adding detection algorithm " + detector + 
+						" but, detector's pam linkable " + pl + " is not in PAM.", 
+						LidaTaskManager.getCurrentTick());
+			}
+		}
+		
 		taskSpawner.addTask(detector);
 		logger.log(Level.FINE, "Added feature detector to PAM",
 				LidaTaskManager.getCurrentTick());

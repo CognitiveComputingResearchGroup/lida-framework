@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.logging.Level; 
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
@@ -38,20 +38,21 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
+
 	
 	protected SensoryMemory sensoryMemory;
 	protected PerceptualAssociativeMemory pam;
 	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();	
 
 	/**
-	 * Instantiates a new feature detector impl.
+	 * Default constructor
 	 * 
 	 * @param linkable
-	 *            the n
+	 *            {@link PamLinkable} this detector will detect
 	 * @param sm
-	 *            the sm
+	 *            {@link SensoryMemory}
 	 * @param pam
-	 *            the pam
+	 *            {@link PerceptualAssociativeMemory}
 	 */
 	public BasicDetectionAlgorithm(PamLinkable linkable, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
@@ -115,6 +116,11 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 			excitePam(amount);
 		}
 	}
+	private void excitePam(double amount) {
+		for (PamLinkable pn : linkables) {
+			pam.receiveActivationBurst(pn, amount);
+		}
+	}
 
 	/*
 	 * Override this method for domain-specific feature detection.
@@ -123,16 +129,6 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	 */
 	@Override
 	public abstract double detect();
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#excitePam(double)
-	 */
-	@Override
-	public void excitePam(double amount) {
-		for (PamLinkable pn : linkables) {
-			pam.receiveActivationBurst(pn, amount);
-		}
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
