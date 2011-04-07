@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
- * This class implements the FeatureDetector interface and provides hook default
+ * This class implements the FeatureDetector interface and provides default
  * methods. Users should extend this class and overwrite the detect() and
  * excitePam() methods. A convenience init() method is added to initialize the
  * class. This method can be overwritten as well. This implementation is
@@ -38,9 +38,10 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
-	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();
+	
+	protected SensoryMemory sensoryMemory;
 	protected PerceptualAssociativeMemory pam;
-	protected SensoryMemory sm;
+	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();	
 
 	/**
 	 * Instantiates a new feature detector impl.
@@ -56,7 +57,7 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 			PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		this.sm = sm;
+		this.sensoryMemory = sm;
 		this.linkables.add(linkable);
 	}
 
@@ -81,7 +82,7 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 		if(module instanceof PerceptualAssociativeMemory){
 			pam = (PerceptualAssociativeMemory) module;
 		}else if(module instanceof SensoryMemory){
-			sm = (SensoryMemory) module;
+			sensoryMemory = (SensoryMemory) module;
 		}else{
 			logger.log(Level.WARNING, "Cannot set associated module " + module, LidaTaskManager.getCurrentTick());
 		}

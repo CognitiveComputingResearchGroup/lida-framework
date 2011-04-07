@@ -75,7 +75,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 
 		guis = new ArrayList<FrameworkGuiEventListener>();
 
-		Class<StructureBuildingCodeletImpl> cl = StructureBuildingCodeletImpl.class;
+		Class<BasicStructureBuildingCodelet> cl = BasicStructureBuildingCodelet.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 	}

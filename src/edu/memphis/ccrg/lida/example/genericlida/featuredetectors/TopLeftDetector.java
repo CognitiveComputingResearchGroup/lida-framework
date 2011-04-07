@@ -28,7 +28,7 @@ public class TopLeftDetector extends BasicDetectionAlgorithm {
 
 	@Override
 	public double detect() {
-		double[][] data = (double[][]) sm.getSensoryContent("", null);
+		double[][] data = (double[][]) sensoryMemory.getSensoryContent("", null);
 
 		if (data != null && data[0][0] > 0.0) {
 			//this.excite(0.01);
