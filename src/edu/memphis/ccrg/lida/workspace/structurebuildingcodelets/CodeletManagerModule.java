@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
  * A {@link LidaModule} that manages {@link Codelet}s
- * @author ryanjmccall, Javier Snaider
+ * @author Ryan J. McCall, Javier Snaider
  *
  */
 public interface CodeletManagerModule extends LidaModule{

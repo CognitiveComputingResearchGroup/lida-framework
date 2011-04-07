@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies;
 
 /**
  * Basic strategy to reduce candidate threshold
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class BasicCandidateThresholdReducer implements CandidateThresholdReducer {

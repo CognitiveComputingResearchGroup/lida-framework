@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * Encapsulation of the name of a {@link LidaModule}.  Provides several public-static instances by default. 
- * @author Javier Snaider, ryanjmccall
+ * @author Javier Snaider, Ryan J. McCall
  *
  */
 public class ModuleName {

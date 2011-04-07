@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * LidaModule containing {@link Scheme}s activated by each conscious broadcast.  
  * Activated schemes are instantiated, becoming {@link Behavior}s which are sent to 
  * {@link ActionSelection}
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface ProceduralMemory extends LidaModule, Saveable{

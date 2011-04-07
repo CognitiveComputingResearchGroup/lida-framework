@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 /**
  * A background task in the {@link Workspace} which transfers percepts from 
  * the Perceptual buffer to the Current Situational Model
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class UpdateCsmBackgroundTask extends LidaTaskImpl {

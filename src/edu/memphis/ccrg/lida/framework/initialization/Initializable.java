@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * An object which can be configured in particular ways.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public interface Initializable {

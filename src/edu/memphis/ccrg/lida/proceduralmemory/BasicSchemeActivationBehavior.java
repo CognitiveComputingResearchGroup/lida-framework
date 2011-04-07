@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * A basic algorithm to activate {@link Scheme}s given a {@link NodeStructure}
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {

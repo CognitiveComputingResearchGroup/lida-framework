@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 	
 /**
  * {@link LidaModule} which creates and manages all {@link AttentionCodelet}s.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class AttentionCodeletModule extends LidaModuleImpl implements

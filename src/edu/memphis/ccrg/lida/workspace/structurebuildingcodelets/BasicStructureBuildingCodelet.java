@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 /**
  * Default implementation of {@link StructureBuildingCodelet}.  Checks for sought content
  * in all accessible {@link WorkspaceBuffer}s and adds all buffer content to the Current Situational Model. 
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl {

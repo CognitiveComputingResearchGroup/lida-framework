@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * Strategy that determines how a successor is excited.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class SuccessorExciteStrategy extends StrategyImpl implements BehaviorExciteStrategy {

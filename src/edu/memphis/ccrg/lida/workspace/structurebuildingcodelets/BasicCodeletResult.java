@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Basic implementation of {@link CodeletRunResult}
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class BasicCodeletResult implements CodeletRunResult {

@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * Strategy determining how a conflictor is inhibited.
- * @author ryanjmccall
+ * @author Ryan J. McCall
  *
  */
 public class ConflictorExciteStrategy extends StrategyImpl implements BehaviorExciteStrategy {
