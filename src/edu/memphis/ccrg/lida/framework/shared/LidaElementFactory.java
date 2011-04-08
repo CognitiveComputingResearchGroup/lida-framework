@@ -307,25 +307,30 @@ public class LidaElementFactory {
 	}
 
 	/**
-	 * Contains node type.
-	 * 
-	 * @param nodeType
-	 *            the node type
-	 * @return true, if successful
+	 * Returns whether this factory contains specified {@link Node} type.
+	 * @param type String
+	 * @return true if factory contains type or false if not
 	 */
 	public boolean containsNodeType(String nodeType) {
 		return nodeClasses.containsKey(nodeType);
 	}
 
 	/**
-	 * Contains link type.
-	 * 
-	 * @param defaultLink
-	 *            the default link
-	 * @return true, if successful
+	 * Returns whether this factory contains specified {@link Link} type.
+	 * @param type String
+	 * @return true if factory contains type or false if not
 	 */
 	public boolean containsLinkType(String defaultLink) {
 		return linkClasses.containsKey(defaultLink);
+	}
+	
+	/**
+	 * Returns whether this factory contains specified {@link Codelet} type.
+	 * @param type String
+	 * @return true if factory contains type or false if not
+	 */
+	public boolean containsCodeletType(String type) {
+		return codelets.containsKey(type);
 	}
 
 	/**
@@ -1086,10 +1091,5 @@ public class LidaElementFactory {
 	public LinkableDef getLinkLinkableDef(String factoryName) {
 		return linkClasses.get(factoryName);
 	}
-
-	public boolean containsCodeletType(String type) {
-		return codelets.containsKey(type);
-	}
-
 
 }

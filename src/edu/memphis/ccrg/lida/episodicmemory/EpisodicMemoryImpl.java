@@ -21,7 +21,6 @@ import edu.memphis.ccrg.lida.episodicmemory.sdm.Translator;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -54,7 +53,6 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 	private int wordLength = DEF_WORD_LENGTH;
 
 	public EpisodicMemoryImpl() {
-		super(ModuleName.TransientEpisodicMemory);
 	}
 
 	/**

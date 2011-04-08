@@ -46,7 +46,6 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	private List<WorkspaceListener> workspaceListeners = new ArrayList<WorkspaceListener>();
 	
 	public WorkspaceImpl(){
-		super (ModuleName.Workspace);
 	}	
 	
 	@Override

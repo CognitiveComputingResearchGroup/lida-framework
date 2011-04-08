@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -49,7 +48,6 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	private static final double LOWER_ACTIVATION_BOUND = 0.0;
 
 	public GlobalWorkspaceImpl() {
-		super(ModuleName.GlobalWorkspace);
 	}
 
 	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();

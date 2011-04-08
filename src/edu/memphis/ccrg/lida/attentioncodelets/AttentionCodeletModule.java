@@ -62,6 +62,17 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 	}
+	
+	@Override
+	public void setDefaultCodeletType(String type){
+		if(factory.containsCodeletType(type)){
+			defaultCodeletName = type;
+		}else{
+			logger.log(Level.WARNING, 
+					"Cannot set default codelet type, factory does not have type: " + type, 
+					LidaTaskManager.getCurrentTick());
+		}
+	}
 
 	@Override
 	public void init() {

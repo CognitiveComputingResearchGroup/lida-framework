@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -67,7 +66,6 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	private List<ProceduralMemoryListener> proceduralMemoryListeners;
 
 	public ProceduralMemoryImpl() {
-		super(ModuleName.ProceduralMemory);
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 //		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 		schemeSet = new HashSet<Scheme>();

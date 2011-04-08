@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -46,7 +45,6 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
 
 	public BroadcastQueueImpl() {
-		super(ModuleName.BroadcastQueue);
 		broadcastQueue = new LinkedList<NodeStructure>();
 		broadcastQueue.add(new NodeStructureImpl());
 	}

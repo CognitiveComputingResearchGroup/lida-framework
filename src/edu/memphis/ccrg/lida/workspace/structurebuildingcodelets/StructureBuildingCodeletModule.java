@@ -67,12 +67,6 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 	 * and initialization of both Codelet and Framework GUI listener.
 	 */
 	public StructureBuildingCodeletModule() {
-		super(ModuleName.StructureBuildingCodeletModule);
-		// codeletPool = new HashMap<CodeletType,
-		// List<StructureBuildingCodelet>>();
-		// codeletPool.put(CodeletType.PERCEPTUAL_BUFFER_TYPE, new
-		// ArrayList<StructureBuildingCodelet>());
-
 		guis = new ArrayList<FrameworkGuiEventListener>();
 
 		Class<BasicStructureBuildingCodelet> cl = BasicStructureBuildingCodelet.class;
@@ -85,9 +79,15 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 		guis.add(listener);
 	}
 	
+	@Override
 	public void setDefaultCodeletType(String type){
-		if(factory.containsCodeletType(type))
-			this.defaultCodeletName = type;
+		if(factory.containsCodeletType(type)){
+			defaultCodeletName = type;
+		}else{
+			logger.log(Level.WARNING, 
+					"Cannot set default codelet type, factory does not have type: " + type, 
+					LidaTaskManager.getCurrentTick());
+		}
 	}
 
 	@Override

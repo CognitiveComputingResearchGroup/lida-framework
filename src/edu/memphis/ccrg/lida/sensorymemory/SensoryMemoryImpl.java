@@ -16,7 +16,6 @@ import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
@@ -47,7 +46,6 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
      * Default Constructor.
      */
     public SensoryMemoryImpl() {
-        super(ModuleName.SensoryMemory);
     }
 
     /* (non-Javadoc)

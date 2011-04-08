@@ -49,6 +49,14 @@ public interface CodeletManagerModule extends LidaModule{
 	 * @param cod Codelet to be added to run
 	 */
 	public void addCodelet(Codelet cod);
+	
+	
+	/**
+	 * Sets default codelet type used by this Manager.
+	 * @param type Codelet type
+	 * @see LidaElementFactory
+	 */
+	public void setDefaultCodeletType(String type);
 
 	//TODO next version
 //	/**

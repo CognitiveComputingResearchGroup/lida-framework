@@ -130,8 +130,6 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * Default constructor.
 	 */
 	public PerceptualAssociativeMemoryImpl() {
-		super(ModuleName.PerceptualAssociativeMemory);
-
 		pamListeners = new ArrayList<PamListener>();
 		propagationBehavior = new UpscalePropagationBehavior();
 		pamNodeStructure = factory.getPamNodeStructure();

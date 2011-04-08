@@ -19,7 +19,6 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -45,7 +44,6 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 	 * Default constructor
 	 */
 	public BasicActionSelectionImpl() {
-		super(ModuleName.ActionSelection);
 	}
 
 	@Override

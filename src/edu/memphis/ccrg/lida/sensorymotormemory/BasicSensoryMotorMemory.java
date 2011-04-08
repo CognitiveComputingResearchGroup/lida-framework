@@ -20,7 +20,6 @@ import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
@@ -42,7 +41,6 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 	private Environment environment;
 
 	public BasicSensoryMotorMemory() {
-		super(ModuleName.SensoryMotorMemory);
 	}
 
 	@Override
