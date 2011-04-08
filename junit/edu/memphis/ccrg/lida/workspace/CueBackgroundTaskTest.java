@@ -19,6 +19,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
+/**
+ * 
+ * @author Daqi
+ *
+ */
+
 public class CueBackgroundTaskTest {
 
 	@Test
