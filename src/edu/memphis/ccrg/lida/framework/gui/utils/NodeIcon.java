@@ -16,7 +16,10 @@ import java.awt.Graphics;
 
 import javax.swing.Icon;
 
+import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
+
 /**
+ * Utility which {@link NodeStructurePanel} uses to represent Nodes.
  * @author Javier Snaider
  *
  */

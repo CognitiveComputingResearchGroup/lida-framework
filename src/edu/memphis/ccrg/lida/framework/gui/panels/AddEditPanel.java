@@ -20,9 +20,11 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.gui.LidaGui;
+
 /**
- *
- * @author Administrator
+ * Allows users to add and edit {@link LidaPanel}s from the main {@link LidaGui}
+ * @author Tamas Madl
  */
 public class AddEditPanel extends LidaPanelImpl {
 

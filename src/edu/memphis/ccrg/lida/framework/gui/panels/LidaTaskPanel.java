@@ -24,21 +24,29 @@ import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
  * 
+ * A {@link LidaPanel} which displays the {@link LidaTask}s which are part of a
+ * particular {@link LidaModule}.
+ * 
  * @author Javier Snaider
  */
 public class LidaTaskPanel extends LidaPanelImpl {
 
-	private static final Logger logger = Logger.getLogger(LidaTaskPanel.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(LidaTaskPanel.class
+			.getCanonicalName());
 	private Collection<LidaTask> tasks;
 	private LidaTask[] taskArray;
+	private LidaModule module;
 
-	/** Creates new form PropertiesPanel */
+	/**
+	 * creates new {@link LidaTaskPanel}
+	 */
 	public LidaTaskPanel() {
 		initComponents();
 		tasks = new HashSet<LidaTask>();
@@ -104,25 +112,63 @@ public class LidaTaskPanel extends LidaPanelImpl {
 												269, Short.MAX_VALUE)));
 	}// </editor-fold>//GEN-END:initComponents
 
+	@Override
+	public void initPanel(String[] param) {
+		if (param == null || param.length == 0) {
+			logger.log(Level.WARNING,
+					"Error initializing LidaTaskPanel, not enough parameters.",
+					0L);
+			return;
+		}
+
+		module = GuiUtils.parseLidaModule(param[0], lida);
+		refresh();
+	}
+
+
 	private void ApplyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
 		refresh();
-		
 	}// GEN-LAST:event_ApplyButtonActionPerformed
+
+	@Override
+	public void refresh() {
+		if(module != null){
+			display(module.getAssistingTaskSpawner().getRunningTasks());
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void display(Object o) {
+		logger.log(Level.FINEST, "Refreshing display", LidaTaskManager
+				.getCurrentTick());
+		if (o instanceof Collection) {
+			tasks = (Collection<LidaTask>) o;
+
+			taskArray = tasks.toArray(new LidaTask[0]);
+
+			((AbstractTableModel) tasksTable.getModel()).fireTableDataChanged();
+		}
+	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton ApplyButton;
-//	private javax.swing.JButton LoadButton;
+	// private javax.swing.JButton LoadButton;
 	private javax.swing.JTable tasksTable;
-//	private javax.swing.JButton SaveButton;
+	// private javax.swing.JButton SaveButton;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
 
 	// End of variables declaration//GEN-END:variables
 
+	/*
+	 * This TaskTableModel adapts the collection of LidaTasks to an
+	 * AbstractTableModel
+	 */
 	private class TaskTableModel extends AbstractTableModel {
 
-		private static final long serialVersionUID = 1L;
-		private int columnCnt=5;
+		private int columnCnt = 5;
+
 		@Override
 		public int getColumnCount() {
 			return columnCnt;
@@ -153,24 +199,24 @@ public class LidaTaskPanel extends LidaPanelImpl {
 				cName = "Scheduled Tick";
 				break;
 			default:
-				cName="col"+column;
+				cName = "col" + column;
 			}
 			return cName;
 		}
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			LidaTask task= taskArray[rowIndex];
-			Object o=null;
+			LidaTask task = taskArray[rowIndex];
+			Object o = null;
 			switch (columnIndex) {
 			case 0:
-				o= task.getTaskId();
+				o = task.getTaskId();
 				break;
 			case 1:
-				o = Math.round(task.getActivation()*1000.0) / 1000.0;
+				o = Math.round(task.getActivation() * 1000.0) / 1000.0;
 				break;
 			case 2:
-				o=task.getStatus();
+				o = task.getStatus();
 				break;
 			case 3:
 				o = task;
@@ -179,7 +225,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 				o = task.getScheduledTick();
 				break;
 			default:
-				o="";
+				o = "";
 			}
 			return o;
 		}
@@ -191,26 +237,6 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
-		}
-	}
-
-	@Override
-	public void refresh(){
-		display(lida.getSubmodule(ModuleName.PerceptualAssociativeMemory).getAssistingTaskSpawner().getRunningTasks());
-	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public void display(Object o) {
-		logger.log(Level.FINE, "Refreshing display", LidaTaskManager.getCurrentTick());
-		if (o instanceof Collection) {
-			tasks = (Collection<LidaTask>) o;
-			
-			//Concurrent Modification Exception here. 9/15/09	
-			//Iterating over a shared Collection during the call to 'toArray'
-			taskArray = tasks.toArray(new LidaTask[0]);
-
-			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
 		}
 	}
 

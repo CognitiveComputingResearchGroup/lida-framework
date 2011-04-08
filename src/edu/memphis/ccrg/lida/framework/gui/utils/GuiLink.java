@@ -7,9 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.utils;
 
+import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 
 /**
+ * Utility which {@link NodeStructurePanel} uses to represent {@link Link}s.
  * @author Javier Snaider
  *
  */

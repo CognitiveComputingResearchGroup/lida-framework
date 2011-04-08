@@ -26,13 +26,15 @@ import java.util.logging.Logger;
 import javax.swing.JSlider;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 
 /**
- * 
+ * Implements the tool bar of the {@link LidaGui}. 
+ * Can receive parameters for the tick slider min and max values.
  * @author Javier Snaider
  */
 public class ControlToolBarPanel extends LidaPanelImpl implements
@@ -41,7 +43,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 	private static final Logger logger = Logger
 			.getLogger(ControlToolBarPanel.class.getCanonicalName());
 	boolean isPaused = true;
-	private int sliderMin = 100;
+	private int sliderMin = 1;
 	private int sliderMax = 1000;
 	private int sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;
 
@@ -53,9 +55,11 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 
 	@Override
 	public void initPanel(String[] params) {
+		sliderStartValue = lida.getTaskManager().getTickDuration();
 		if (params.length >= 1) {
 			try {
 				sliderMin = Integer.parseInt(params[0]);
+				sliderMin = (sliderMin < sliderStartValue)? sliderMin : sliderStartValue;
 			} catch (NumberFormatException e) {
 				logger.log(Level.WARNING, "Invalid Parameter " + params[0], 0L);
 			}
@@ -63,16 +67,16 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		if (params.length >= 2) {
 			try {
 				sliderMax = Integer.parseInt(params[1]);
+				sliderMax = (sliderMax > sliderStartValue)? sliderMax : sliderStartValue;
 			} catch (NumberFormatException e) {
 				logger.log(Level.WARNING, "Invalid Parameter " + params[1], 0L);
 			}
 		}
 
-		sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;
 		speedSlider.setMaximum(sliderMax);
 		speedSlider.setMinimum(sliderMin);
 		speedSlider.setValue(sliderStartValue);
-		sleepTimeTextField.setText(this.sliderStartValue + "");
+		sleepTimeTextField.setText(sliderStartValue + "");
 	}
 
 	/**
@@ -189,6 +193,10 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		add(toolbar, java.awt.BorderLayout.CENTER);
 	}// </editor-fold>
 
+	/*
+	 * Sends pauseRunningThreads and resumeRunningThreads commands
+	 * @param evt
+	 */
 	private void startPauseButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		isPaused = !isPaused;
 		if (isPaused) {
@@ -201,6 +209,10 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		refresh();
 	}
 
+	/*
+	 * Changes LidaTaskManager's tick Duration using SetTimeScaleCommand
+	 * @param evt
+	 */
 	private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {
 		JSlider source = (JSlider) evt.getSource();
 		if (!source.getValueIsAdjusting()) {
@@ -214,6 +226,10 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		}
 	}
 
+	/*
+	 * Adds ticks for execution during ticks mode. using AddTicksCommand
+	 * @param evt
+	 */
 	private void addTicksButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		int ticks;
@@ -226,12 +242,20 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		controller.executeCommand("AddTicks", parameters);
 	}
 
+	/* 
+	 * Toggles the LidaTaskManager's ticks mode using the EnableTicksMode command. 
+	 * @param evt
+	 */
 	private void ticksModeTBActionPerformed(java.awt.event.ActionEvent evt) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("enable", ticksModeTB.isSelected());
 		controller.executeCommand("EnableTicksMode", parameters);
 	}
 
+	/*
+	 * Executes the quitAll command.
+	 * @param evt
+	 */
 	private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		statusLabel.setText("QUITTING");
 		controller.executeCommand("quitAll", null);
@@ -257,10 +281,11 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 	@Override
 	public void refresh() {
 		isPaused = lida.getTaskManager().isTasksPaused();
-		if (isPaused)
+		if (isPaused){
 			statusLabel.setText("PAUSED");
-		else
+		}else{
 			statusLabel.setText("RUNNING");
+		}
 	}
 
 	@Override

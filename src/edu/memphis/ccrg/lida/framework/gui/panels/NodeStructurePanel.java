@@ -26,10 +26,9 @@ import javax.swing.Icon;
 
 import org.apache.commons.collections15.Transformer;
 
-import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
+import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeStructureGuiAdapter;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -54,6 +53,7 @@ import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 public class NodeStructurePanel extends LidaPanelImpl {
 
 	private static final Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
+	
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
 	private VisualizationViewer<Linkable, GuiLink> vv;
 	private LidaModule module;
@@ -127,7 +127,6 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
 	private javax.swing.JButton refreshButton;
-
 	// End of variables declaration//GEN-END:variables
 
 	private void draw() {
@@ -231,37 +230,15 @@ public class NodeStructurePanel extends LidaPanelImpl {
 
 	
 	@Override
-	public void initPanel(String[]param){		
-		ModuleName moduleType=null;
-		if (param==null || param.length==0){
-			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
+	public void initPanel(String[]param){	
+		if (param == null || param.length == 0) {
+			logger.log(Level.WARNING,
+					"Error initializing LidaTaskPanel, not enough parameters.",
+					0L);
 			return;
 		}
-		String[] modules = param[0].split("\\.");
-			moduleType= ModuleName.getModuleName(modules[0]);
-		if(moduleType==null){
-			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
-			return;
-		}
-		module = lida.getSubmodule(moduleType);
-		if (module==null){
-			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Module does not exist in LIDA.",0L);
-			return;			
-		}
-		for (int i=1; i<modules.length;i++){
-				moduleType= ModuleName.getModuleName(modules[i]);
-				if(moduleType==null){
-					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
-					return;
-				}
-			
-			module=module.getSubmodule(moduleType);
-			if (module==null){
-				logger.log(Level.WARNING,"Error initializing NodeStructure Panel, SubModule "+moduleType+ " was not found.",0L);
-				return;			
-			}
-		}
-		
+		module = GuiUtils.parseLidaModule(param[0], lida);
+
 		display(module.getModuleContent());
 		draw();
 	}
@@ -285,9 +262,4 @@ public class NodeStructurePanel extends LidaPanelImpl {
 			guiGraph.setNodeStructure((NodeStructure) o);
 		}
     }
-
-	@Override
-	public void registerLida(Lida lida) {
-		super.registerLida(lida);
-	}
 }
