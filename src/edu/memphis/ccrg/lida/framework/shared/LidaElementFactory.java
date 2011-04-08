@@ -1087,5 +1087,9 @@ public class LidaElementFactory {
 		return linkClasses.get(factoryName);
 	}
 
+	public boolean containsCodeletType(String type) {
+		return codelets.containsKey(type);
+	}
+
 
 }
