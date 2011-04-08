@@ -50,6 +50,11 @@ public class ApproxSigmoidExciteStrategy extends StrategyImpl implements ExciteS
 	 * @param aa 
 	 * @return
 	 */
+	
+	/**
+	 * This is a direct function to calculate new activation.
+	 * You could choose it if you care about time very much.
+	 */
 	public double calcExcitation(double curActiv, double excitation, double aa) {
 
 		double curExcitation = 0;

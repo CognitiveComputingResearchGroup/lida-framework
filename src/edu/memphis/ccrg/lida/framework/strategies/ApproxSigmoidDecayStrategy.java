@@ -42,6 +42,10 @@ public class ApproxSigmoidDecayStrategy extends StrategyImpl implements DecayStr
 		return calcActivation(currentActivation, ticks, aa);
 	}
 	
+	/**
+	 * This is a direct function to calculate new activation.
+	 * You could choose it if you care about time very much.
+	 */
 	public double calcActivation(double curActiv, long ticks, double aa) {
 		double curExcitation = 0;
 		double newExcitation = 0;
