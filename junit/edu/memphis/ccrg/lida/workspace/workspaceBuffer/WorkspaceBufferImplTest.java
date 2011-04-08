@@ -12,7 +12,11 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 
-
+/**
+ * 
+ * @author Daqi
+ *
+ */
 public class WorkspaceBufferImplTest {
 
 	@Test
@@ -74,10 +78,10 @@ public class WorkspaceBufferImplTest {
 		// Add node structure into workspaceBuffer of percetualBuffer
 		wMoudle.receivePercept(ns);
 
-		perceptualBuffer.decayModule(100);
+		perceptualBuffer.decayModule(1);
 		
 		NodeStructure ns2 = (NodeStructure) perceptualBuffer.getModuleContent();
-	
+
 		// After node(Id == 2) is removed cause decay, so here is only node (Id == 6).
 		assertTrue("Problem with class WorkspaceBufferImpl for DecayModule()",
 				(ns2.getNode(2) == null)&&(ns2.getNode(6) != null)&&(ns2.getNodeCount() == 1));
