@@ -18,7 +18,6 @@
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -31,12 +30,9 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 public class VisualEnvironmentPanel extends LidaPanelImpl implements
 		FrameworkGuiEventListener {
 
-	private static final long serialVersionUID = 13L;
-
 	/** Creates new form VisualFieldPanel */
 	public VisualEnvironmentPanel() {
 		initComponents();
-		setSupportedModule(ModuleName.Environment);
 	}
 
 	/**
@@ -69,17 +65,7 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JTextArea jTextArea1;
-
 	// End of variables declaration//GEN-END:variables
-
-	@Override
-	public void registerLida(Lida lida) {
-		super.registerLida(lida);
-		Environment e = (Environment)lida.getSubmodule(ModuleName.Environment);
-		if (e instanceof GuiEventProvider) {
-			((GuiEventProvider) e).addFrameworkGuiEventListener(this);
-		}
-	}
 
 	@Override
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {

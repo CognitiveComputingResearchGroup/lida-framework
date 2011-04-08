@@ -36,9 +36,9 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  */
 public class TaskQueuePanel extends LidaPanelImpl {
 
-	private static final long serialVersionUID = 3129545758505110771L;
 	private static final Logger logger = Logger
 			.getLogger(TaskQueuePanel.class.getCanonicalName());
+	
 	private Map<Long, Queue<LidaTask>> tasks= new HashMap<Long, Queue<LidaTask>>();
 
 	// private LidaTask[] taskArray;
@@ -57,7 +57,6 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
 		jScrollPane1 = new javax.swing.JScrollPane();
 		tasksTable = new javax.swing.JTable();
 		jToolBar1 = new javax.swing.JToolBar();
@@ -118,12 +117,9 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	private javax.swing.JTable tasksTable;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JToolBar jToolBar1;
-
 	// End of variables declaration//GEN-END:variables
 
 	private class TaskQueueTableModel extends AbstractTableModel {
-
-		private static final long serialVersionUID = 1L;
 
 		@Override
 		public int getColumnCount() {

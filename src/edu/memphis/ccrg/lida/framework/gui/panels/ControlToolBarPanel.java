@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JSlider;
 
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
@@ -50,7 +49,6 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 	/** Creates new form ControlToolBarPanel */
 	public ControlToolBarPanel() {
 		initComponents();
-		setSupportedModule(ModuleName.NoModule);
 	}
 
 	@Override

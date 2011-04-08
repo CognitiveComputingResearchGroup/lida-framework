@@ -52,7 +52,6 @@ public class TaskManagerPanel extends LidaPanelImpl {
 	// <editor-fold defaultstate="collapsed"
 	// desc="Generated Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
 		jScrollPane1 = new javax.swing.JScrollPane();
 		tasksTable = new javax.swing.JTable();
 		jToolBar1 = new javax.swing.JToolBar();
@@ -199,7 +198,10 @@ public class TaskManagerPanel extends LidaPanelImpl {
 	@Override
 	public void refresh(){
 		logger.log(Level.FINEST, "Refreshing TaskManager Panel",LidaTaskManager.getCurrentTick());
-
+		//TODO change this class to TaskSpawnerPanel
+		//Lida could return all taskSpawners
+		//super.lida.getTaskSpawners();
+		
 //		display(lida.getTaskManager().getSpawnedTasks());
 	}
 	@Override

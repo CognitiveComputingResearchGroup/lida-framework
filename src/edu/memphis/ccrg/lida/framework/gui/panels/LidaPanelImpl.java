@@ -21,7 +21,6 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
@@ -46,7 +45,6 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 
 	protected LidaGuiController controller;
 	protected Lida lida;
-    private ModuleName supportedModule;
 
     /** Creates new form LidaPanelImpl */
     public LidaPanelImpl() {
@@ -112,14 +110,5 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 	public void registerLida(Lida lida) {
 		this.lida=lida;
 	}
-
-    @Override
-	public ModuleName getSupportedModule() {
-        return supportedModule;
-    }
-    @Override
-	public void setSupportedModule(ModuleName module) {
-         this.supportedModule=module;
-    }
 
 }

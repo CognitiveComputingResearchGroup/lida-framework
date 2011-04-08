@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * 
+ * TODO rename
  * @author Javier Snaider
  */
 public class PropertiesPanel extends LidaPanelImpl {

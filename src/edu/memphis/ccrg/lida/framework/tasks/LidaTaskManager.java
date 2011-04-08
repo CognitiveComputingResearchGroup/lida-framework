@@ -290,8 +290,9 @@ public class LidaTaskManager {
 	 * @return true if the task was scheduled.
 	 */
 	public boolean scheduleTask(LidaTask task, long inXTicks) {
-		if (inXTicks <= 0)
+		if (inXTicks <= 0){
 			return false;
+		}
 
 		Long time = currentTick + inXTicks;
 		Queue<LidaTask> queue = taskQueue.get(time);
@@ -343,7 +344,6 @@ public class LidaTaskManager {
 
 	private void decayModules() {
 		DecayableWrapper.setDecayInterval(currentTick);
-
 		try {
 			executorService.invokeAll(decaybles);
 		} catch (InterruptedException e) {

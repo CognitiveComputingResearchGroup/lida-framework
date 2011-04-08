@@ -13,8 +13,6 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.LidaGui;
 import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
 
@@ -24,6 +22,12 @@ import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
  * @author Javier Snaider
  */
 public interface LidaPanel {
+	
+    /**
+     * Initializes panel
+     * @param param Parameters to initialize with.
+     */
+    public void initPanel(String[] param);
 	
 	/**
 	 * Registers the {@link LidaGuiController} as the controller.
@@ -53,18 +57,6 @@ public interface LidaPanel {
 	 * @return a JPanel
 	 */
 	public JPanel getPanel();
-	
-	/**
-	 * Returns supported {@link LidaModule}.
-	 * @return {@link ModuleName} of LidaModule supported by this LidaPanel
-	 */
-    public ModuleName getSupportedModule();
-    
-    /**
-     * Sets supported {@link LidaModule}
-     * @param module ModuleName of supported LidaModule
-     */
-    public void setSupportedModule(ModuleName module);
     
     /**
      * Sets name of panel
@@ -73,15 +65,10 @@ public interface LidaPanel {
     public void setName(String name);
     
     /**
-     * 
+     * Gets name of panels
      * @return name of panel
      */
     public String getName();
     
-    /**
-     * initializes panel
-     * @param param Paramters to initialize 
-     */
-    public void initPanel(String[] param);
 }
 
