@@ -84,6 +84,11 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
 		guis.add(listener);
 	}
+	
+	public void setDefaultCodeletType(String type){
+		if(factory.containsCodeletType(type))
+			this.defaultCodeletName = type;
+	}
 
 	@Override
 	public void setAssociatedModule(LidaModule module, String moduleUsage) {
