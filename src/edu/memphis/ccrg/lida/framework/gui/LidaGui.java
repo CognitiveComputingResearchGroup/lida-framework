@@ -119,7 +119,6 @@ public class LidaGui extends javax.swing.JFrame {
 		loadPanels(panelProperties);
 
 		pack();
-		logger.log(Level.INFO, "LidaGUI started", 0L);
 	}
 
 	/*
@@ -218,6 +217,8 @@ public class LidaGui extends javax.swing.JFrame {
 				e.printStackTrace();
 			}
 		}
+		
+		logger.log(Level.INFO, "LidaPanel added: " + panel.getName());
 	}
 	
 	/*

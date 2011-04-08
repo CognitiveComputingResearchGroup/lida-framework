@@ -50,9 +50,9 @@ public class LidaGuiFactory {
 				}
 				
 	        	LidaGui lidaGui = new LidaGui(lida, controller, properties);
-				logger.log(Level.INFO,"GUI created",0L);
-	        	//Start the GUI
 	            lidaGui.setVisible(true);
+	            
+	            logger.log(Level.INFO,"LidaGui started\n",0L);
 	        }//run
 		});//invokeLater
 		

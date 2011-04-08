@@ -36,8 +36,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
  * Can receive parameters for the tick slider min and max values.
  * @author Javier Snaider
  */
-public class ControlToolBarPanel extends LidaPanelImpl implements
-		FrameworkGuiEventListener {
+public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEventListener {
 
 	private static final Logger logger = Logger
 			.getLogger(ControlToolBarPanel.class.getCanonicalName());
@@ -89,7 +88,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		toolbar = new javax.swing.JToolBar();
 		startPauseButton = new javax.swing.JButton();
 		statusLabel = new javax.swing.JLabel();
-		quitButton = new javax.swing.JButton();
+//		quitButton = new javax.swing.JButton();
 		jSeparator2 = new javax.swing.JToolBar.Separator();
 		ticksModeTB = new javax.swing.JToggleButton();
 		addTicksButton = new javax.swing.JButton();
@@ -126,18 +125,18 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		statusLabel.setText("Paused");
 		toolbar.add(statusLabel);
 
-		quitButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-		quitButton.setText("Quit");
-		quitButton.setFocusable(false);
-		quitButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		quitButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		quitButton.addActionListener(new java.awt.event.ActionListener() {
-			@Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				quitButtonActionPerformed(evt);
-			}
-		});
-		toolbar.add(quitButton);
+//		quitButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+//		quitButton.setText("Quit");
+//		quitButton.setFocusable(false);
+//		quitButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+//		quitButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+//		quitButton.addActionListener(new java.awt.event.ActionListener() {
+//			@Override
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				quitButtonActionPerformed(evt);
+//			}
+//		});
+//		toolbar.add(quitButton);
 		toolbar.add(jSeparator2);
 
 		ticksModeTB.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
@@ -250,14 +249,14 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 		controller.executeCommand("EnableTicksMode", parameters);
 	}
 
-	/*
-	 * Executes the quitAll command.
-	 * @param evt
-	 */
-	private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		statusLabel.setText("QUITTING");
-		controller.executeCommand("quitAll", null);
-	}
+//	/*
+//	 * Executes the quitAll command.
+//	 * @param evt
+//	 */
+//	private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
+//		statusLabel.setText("QUITTING");
+//		controller.executeCommand("quitAll", null);
+//	}
 
 	// Variables declaration - do not modify
 	private javax.swing.JButton addTicksButton;
@@ -265,7 +264,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements
 	private javax.swing.JLabel jLabel2;
 	private javax.swing.JToolBar.Separator jSeparator1;
 	private javax.swing.JToolBar.Separator jSeparator2;
-	private javax.swing.JButton quitButton;
+//	private javax.swing.JButton quitButton;
 	private javax.swing.JTextField sleepTimeTextField;
 	private javax.swing.JSlider speedSlider;
 	private javax.swing.JButton startPauseButton;

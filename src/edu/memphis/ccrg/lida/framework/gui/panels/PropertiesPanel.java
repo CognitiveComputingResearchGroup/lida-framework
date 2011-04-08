@@ -34,13 +34,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class PropertiesPanel extends LidaPanelImpl {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3135377683820863184L;
 	private static final Logger logger = Logger
 			.getLogger(PropertiesPanel.class.getCanonicalName());
-	Properties properties;
+	private Properties properties;
 
 	/** Creates new form PropertiesPanel */
 	public PropertiesPanel() {
@@ -235,9 +231,9 @@ public class PropertiesPanel extends LidaPanelImpl {
 
 	@Override
 	public void display(Object o) {
-		if (o instanceof Properties)
+		if (o instanceof Properties){
 			properties = (Properties) o;
-
+		}
 	}
 
 }
