@@ -17,29 +17,41 @@ public class SigmoidDecayStrategyTest {
 	public final void testInit() {
 		SigmoidDecayStrategy sds = new SigmoidDecayStrategy();
 		sds.init();
-			
+		
+		//To prove that default value of 'a' is 1.0 and 'c' is 0.0
 		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
 				(sds.decay(0.5, 1, 1.0, 0.0) == sds.decay(0.5, 1)));
-		
-		HashMap<String, Double> map = new HashMap<String, Double>();
-		
-		map.put("a", 1.0);
-		map.put("c", 0.0);
-		
-		
-		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double)",
-				((sds.decay(1.0, 0) == 1.0)&&(sds.decay(0.0, 0)== 0.0)&&(sds.decay(0.5, 0)== 0.5)));
 		
 	}
 
 	@Test
 	public final void testDecayDoubleLongObjectArray() {
-		//Be tested in testInit()
+		
+		SigmoidDecayStrategy sds = new SigmoidDecayStrategy();
+		
+		//To prove that the third argument of method 
+		//decay(double currentActivation, long ticks, Object... params) is effective
+		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
+				(sds.decay(0.5, 1, 2.0, 1.0) != sds.decay(0.5, 1)));
+
+		//Test for correction
+		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
+				(sds.decay(0.5, 2) < 0.5));
 	}
 
 	@Test
 	public final void testDecayDoubleLongMapOfStringQextendsObject() {
-		//Be tested in testInit()
+		SigmoidDecayStrategy sds = new SigmoidDecayStrategy();
+		
+		HashMap<String, Double> map = new HashMap<String, Double>();
+		
+		map.put("a", 2.0);
+		map.put("c", 1.0);
+		
+		//To prove that the third argument of method 
+		//decay(double currentActivation, long ticks, Map<String, ? extends Object> params) is effective
+		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, MAP<String, Object>)",
+				(sds.decay(0.7, 1, map) != sds.decay(0.7, 1)));
 	}
 
 }
