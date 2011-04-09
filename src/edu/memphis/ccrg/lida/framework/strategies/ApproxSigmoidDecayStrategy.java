@@ -45,6 +45,10 @@ public class ApproxSigmoidDecayStrategy extends StrategyImpl implements DecayStr
 	/**
 	 * This is a direct function to calculate new activation.
 	 * You could choose it if you care about time very much.
+	 * @param curActiv current activation 
+	 * @param ticks ticks that have passed since last decay
+	 * @param aa parameter
+	 * @return new activation
 	 */
 	public double calcActivation(double curActiv, long ticks, double aa) {
 		double curExcitation = 0;

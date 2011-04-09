@@ -21,7 +21,8 @@ public class GuiUtils {
 	 * Utility method to parse a String to obtain a {@link LidaModule}
 	 * @param param String to parse
 	 * @param lida {@link Lida}
-	 */
+	 * @return LidaModule with specified name or null
+ 	 */
 	public static LidaModule parseLidaModule(String param, Lida lida) {
 		if(param == null){
 			logger.log(Level.WARNING, "null string argument.", 0L);

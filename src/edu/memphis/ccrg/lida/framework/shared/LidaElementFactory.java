@@ -308,7 +308,7 @@ public class LidaElementFactory {
 
 	/**
 	 * Returns whether this factory contains specified {@link Node} type.
-	 * @param type String
+	 * @param nodeType name of node type
 	 * @return true if factory contains type or false if not
 	 */
 	public boolean containsNodeType(String nodeType) {
@@ -317,11 +317,11 @@ public class LidaElementFactory {
 
 	/**
 	 * Returns whether this factory contains specified {@link Link} type.
-	 * @param type String
+	 * @param linkType name of Link type
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsLinkType(String defaultLink) {
-		return linkClasses.containsKey(defaultLink);
+	public boolean containsLinkType(String linkType) {
+		return linkClasses.containsKey(linkType);
 	}
 	
 	/**
