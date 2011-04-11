@@ -142,6 +142,11 @@ public class HardLocationImpl implements HardLocation {
 	 */
 	@Override
 	public int hammingDistance(BitVector vector) {
+		if(vector == null){
+			//TODO log warning
+			return Integer.MAX_VALUE;
+		}
+		
 		BitVector aux = vector.copy();
 		aux.xor(address);
 

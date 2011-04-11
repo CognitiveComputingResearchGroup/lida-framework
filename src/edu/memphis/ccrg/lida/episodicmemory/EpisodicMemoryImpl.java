@@ -87,12 +87,17 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 		try {
 			address = translator.translate(ns);
 		} catch (Exception e) {
+			if(translator == null){
+				logger.log(Level.SEVERE, "Translator is null, wasn't set up properly.", LidaTaskManager.getCurrentTick());
+			}
+			logger.log(Level.WARNING, "Translation failed.", LidaTaskManager.getCurrentTick());
 			e.printStackTrace();
+			return;
 		}
 
 		//TODO make sure this method is thread-safe
 		BitVector out = sdm.retrieveIterating(address);
-
+		
 		NodeStructure result = null;
 		try {
 			result = translator.translate(out);

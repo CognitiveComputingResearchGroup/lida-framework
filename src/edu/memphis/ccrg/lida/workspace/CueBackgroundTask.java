@@ -60,11 +60,17 @@ public class CueBackgroundTask extends LidaTaskImpl {
 		NodeStructure cueNodeStrucutre = new NodeStructureImpl();
 		// Current impl. of episodic memory only processes Nodes.
 		// TODO add links when episodic memory supports them
-		for (Node n : ns.getNodes()) {
-			if (n.getActivation() >= actThreshold) {
-				cueNodeStrucutre.addDefaultNode(n);
+		if(ns != null){
+			for (Node n : ns.getNodes()) {
+				if (n.getActivation() >= actThreshold) {
+					cueNodeStrucutre.addDefaultNode(n);
+				}
 			}
+		}else{
+			logger.log(Level.WARNING, "Got a null nodestructure", LidaTaskManager
+					.getCurrentTick());
 		}
+		
 		if (cueNodeStrucutre.getNodeCount() > 0) {
 			logger.log(Level.FINER, "Cueing Episodic Memories", LidaTaskManager
 					.getCurrentTick());

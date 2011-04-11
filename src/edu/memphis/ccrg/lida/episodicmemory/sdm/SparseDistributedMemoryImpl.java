@@ -160,6 +160,8 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	 */
 	@Override
 	public BitVector retrieve(BitVector addr) {
+		//TODO case where address is null
+		
 		int[] buff = new int[wordLength];
 		for (int i = 0; i < memorySize; i++) {
 			if (hardlocations[i].hammingDistance(addr) <= activationRadius) {

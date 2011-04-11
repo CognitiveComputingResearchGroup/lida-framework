@@ -8,6 +8,8 @@
 
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
+import java.util.Collection;
+
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
@@ -79,8 +81,11 @@ public class BasicTranslator implements Translator {
 	@Override
 	public BitVector translate(NodeStructure structure) {
 		BitVector v = new BitVector(size);
-		for (Node n : structure.getNodes()) {
-			v.put(n.getId(), true);
+		Collection<Node> nodes = structure.getNodes();
+		if(nodes != null){
+			for (Node n : nodes) {
+				v.put(n.getId(), true);
+			}
 		}
 		return v;
 	}

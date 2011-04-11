@@ -26,7 +26,7 @@ public interface GuiEventProvider {
 	/**
 	 * This is a convenience method to send GUI events to listeners.
 	 * 
-	 * @param evt GuiEvent
+	 * @param event GuiEvent
 	 */
-	public void sendEventToGui(FrameworkGuiEvent evt);
+	public void sendEventToGui(FrameworkGuiEvent event);
 }
