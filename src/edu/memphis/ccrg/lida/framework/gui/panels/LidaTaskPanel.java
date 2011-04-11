@@ -52,6 +52,19 @@ public class LidaTaskPanel extends LidaPanelImpl {
 		tasks = new HashSet<LidaTask>();
 		taskArray = tasks.toArray(new LidaTask[0]);
 	}
+	
+	@Override
+	public void initPanel(String[] param) {
+		if (param == null || param.length == 0) {
+			logger.log(Level.WARNING,
+					"Error initializing LidaTaskPanel, not enough parameters.",
+					0L);
+			return;
+		}
+
+		module = GuiUtils.parseLidaModule(param[0], lida);
+		refresh();
+	}
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -111,20 +124,6 @@ public class LidaTaskPanel extends LidaPanelImpl {
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												269, Short.MAX_VALUE)));
 	}// </editor-fold>//GEN-END:initComponents
-
-	@Override
-	public void initPanel(String[] param) {
-		if (param == null || param.length == 0) {
-			logger.log(Level.WARNING,
-					"Error initializing LidaTaskPanel, not enough parameters.",
-					0L);
-			return;
-		}
-
-		module = GuiUtils.parseLidaModule(param[0], lida);
-		refresh();
-	}
-
 
 	private void ApplyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
 		refresh();
