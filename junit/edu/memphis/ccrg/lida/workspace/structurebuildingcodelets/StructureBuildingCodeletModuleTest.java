@@ -1,38 +1,23 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
-
-
-
-import org.junit.Test;
 
 /**
  * 

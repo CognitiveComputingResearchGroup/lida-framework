@@ -12,7 +12,6 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import java.io.Serializable;
 
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
@@ -25,7 +24,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * @author Javier Snaider, Ryan J. McCall
  * 
  */
-public interface Node extends Linkable, Activatible, Serializable {
+public interface Node extends Linkable, Serializable {
 	
 	/**
 	 * Returns the grounding PamNode.

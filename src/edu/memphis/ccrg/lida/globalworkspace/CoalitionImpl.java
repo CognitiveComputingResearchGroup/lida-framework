@@ -9,9 +9,7 @@ package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
-import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
@@ -50,12 +48,8 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	private void updateActivation() {
 		double sum = 0.0;
 		NodeStructure ns = (NodeStructure) content;
-		
-		for(Node n: ns.getNodes()){
-			sum += n.getActivation();
-		}
-		for(Link l: ns.getLinks()){
-			sum += l.getActivation();
+		for(Linkable lnk: ns.getLinkables()){
+			sum += lnk.getActivation();
 		}
 		setActivation(attentionCodeletActivation * sum / ns.getLinkableCount());
 	}

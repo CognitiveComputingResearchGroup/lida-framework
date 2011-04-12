@@ -1,10 +1,6 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import static org.junit.Assert.*;
-
 import java.util.Set;
-
-import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;

@@ -10,13 +10,14 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.io.Serializable;
 
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**
  * A object that can have links attached to it.
  * 
  * @author Javier Snaider
  */
-public interface Linkable extends Initializable, Serializable {
+public interface Linkable extends Activatible, Initializable, Serializable {
 
 	/**
 	 * Gets label.

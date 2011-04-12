@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.pam.PamLink;
 
 /**
@@ -15,7 +14,7 @@ import edu.memphis.ccrg.lida.pam.PamLink;
  * 
  * @author Javier Snaider, Ryan J. McCall
  */
-public interface Link extends Linkable, Activatible{
+public interface Link extends Linkable{
 	
 	/**
 	 * Returns whether Link is Simple (connects two nodes)
