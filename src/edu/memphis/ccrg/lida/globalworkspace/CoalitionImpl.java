@@ -49,12 +49,15 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	 */
 	private void updateActivation() {
 		double sum = 0.0;
-		NodeStructure ns = (NodeStructure)content;
-		for(Node n: ns.getNodes())
+		NodeStructure ns = (NodeStructure) content;
+		
+		for(Node n: ns.getNodes()){
 			sum += n.getActivation();
-		for(Link l: ns.getLinks())
+		}
+		for(Link l: ns.getLinks()){
 			sum += l.getActivation();
-		setActivation((attentionCodeletActivation * sum) / (ns.getNodeCount() + ns.getLinkCount()));
+		}
+		setActivation(attentionCodeletActivation * sum / ns.getLinkableCount());
 	}
 
 	@Override
