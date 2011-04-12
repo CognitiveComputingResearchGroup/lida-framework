@@ -33,6 +33,7 @@ public class LidaImpl extends LidaModuleImpl implements Lida {
 	 */
 	@Override
 	public void init(){
+		//TODO recursively retrieve all LidaModules to simplify the decaying.  #Discuss
 		taskManager.setDecayingModules(getSubmodules().values());
 		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
 	}

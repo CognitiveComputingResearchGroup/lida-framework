@@ -192,7 +192,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	
 	@Override
 	public void setNextTicksPerStep(long lapTick) {
-		this.nextExcecutionTicksPerStep =lapTick;	
+		this.nextExcecutionTicksPerStep = lapTick;	
 	}
 	
 	@Override

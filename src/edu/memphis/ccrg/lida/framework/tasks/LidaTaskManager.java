@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
 
 /**
- * All tasks in the Lida system are executed by this class. Controls the decay
+ * All tasks in the {@link Lida} system are executed by this class. Controls the decay
  * of all the {@link LidaModule}s in {@link Lida}. Keeps track of the current
  * tick, the unit of time in the application. Maintains a task queue where each
  * position represents the time (in ticks) when a task will be executed.

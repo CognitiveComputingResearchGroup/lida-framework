@@ -31,7 +31,16 @@ public abstract class LidaModuleImpl implements LidaModule {
 	public LidaModuleImpl() {
 	}
 	
-	public LidaModuleImpl(ModuleName moduleName) {
+	/*
+	 * Creates a LidaModule with specified module name.  
+	 * It is generally preferable to use the 
+	 * default constructor instead of this one 
+	 * since the ModuleName is typically specified by lida.xml and set by {@link LidaXmlFactory}
+	 * 
+	 * @see {@link LidaXmlFactory}
+	 * @param moduleName {@link ModuleName} of this {@link LidaModule}
+	 */
+	LidaModuleImpl(ModuleName moduleName) {
 		this.moduleName = moduleName;
 	}
 	
