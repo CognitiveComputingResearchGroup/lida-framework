@@ -8,31 +8,30 @@
 
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
-import java.text.DecimalFormat;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+ import java.text.DecimalFormat;
+ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
 
-import javax.swing.table.AbstractTableModel;
+ import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl;
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructureTable;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+ import edu.memphis.ccrg.lida.framework.Lida;
+ import edu.memphis.ccrg.lida.framework.LidaModule;
+ import edu.memphis.ccrg.lida.framework.ModuleName;
+ import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl;
+ import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructureTable;
+ import edu.memphis.ccrg.lida.framework.shared.Node;
+ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+ import javax.swing.GroupLayout.Alignment;
+ import javax.swing.GroupLayout;
+ import javax.swing.LayoutStyle.ComponentPlacement;
+ import javax.swing.JScrollPane;
+ import javax.swing.JTable;
 
 /**
 * This is a Panel which shows all current coalitions in Global Workspace 
@@ -47,6 +46,7 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 	private Collection<Coalition> coalitions;
 
 	private NodeStructure broadcastContent;
+	private double winnerCoalActivation;
 
 	/** Creates new form NodeStructureTable */
 	public GlobalWorkspaceTablePanel() {
@@ -218,12 +218,16 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-
+			
+			if(coalitions.size()==0 ){				
+				return null;
+			}
+			
 			Coalition coal = null;
 			if (rowIndex > coalitions.size() || columnIndex > columNames.length
 					|| rowIndex < 0 || columnIndex < 0) {
 				return null;
-			}
+			}			
 
 			// Collection<Coalition> coals = coalitions.getNodes();
 			Iterator<Coalition> it = coalitions.iterator();
@@ -306,22 +310,8 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 			case 0:
 				return broadcastContent.hashCode();
 			case 1:
-				 {
-					double act = 0;
-					for (Node n : broadcastContent.getNodes()) {
-						act += n.getActivation();
-					}
-					for (Link l : broadcastContent.getLinks()) {
-						act += l.getActivation();
-					}
-					if(act>=1.0)
-						return 1.0;
-					
-					if(act<=0.0)
-						return 0.0;
-					
-					return act;
-					 //return ((Activatible)broadcastContent).getActivation();
+				{					 
+					return winnerCoalActivation;					
 				}
 			case 2: {
 				Collection<Node> nodes =  broadcastContent.getNodes();
@@ -360,8 +350,8 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = (NodeStructure) bc;
-
+		broadcastContent = (NodeStructure) bc;	
+		winnerCoalActivation = (Double)module.getModuleContent("winnerCoalActivation");
 	}
 
 }
