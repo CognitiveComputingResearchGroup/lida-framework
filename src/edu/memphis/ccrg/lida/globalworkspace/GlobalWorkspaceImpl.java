@@ -46,6 +46,8 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
 	private static final double LOWER_ACTIVATION_BOUND = 0.0;
+	
+	private double winnerCoalActivation;
 
 	public GlobalWorkspaceImpl() {
 	}
@@ -127,6 +129,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 				LidaTaskManager.getCurrentTick());
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
+			winnerCoalActivation = coal.getActivation();
 			coalitions.remove(coal);
 			NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
 			//TODO Create LidaTask for parallel processing 
@@ -185,6 +188,12 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 
 	@Override
 	public Object getModuleContent(Object... params) {
+		if(params.length>0){
+			for(int i=0;i<params.length;i++){
+				if(params[i]=="winnerCoalActivation")
+					return winnerCoalActivation;
+			}			
+		}
 		return Collections.unmodifiableCollection(coalitions);
 	}
 
