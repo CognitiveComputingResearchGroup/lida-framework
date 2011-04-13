@@ -20,7 +20,7 @@ public class ApproxSigmoidDecayStrategyTest {
 		asds.init();
 		
 		//To prove that default value of 'a' is 1.0
-		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
+		assertTrue("Problem with class SigmoidExciteStrategy for decay( double, double, ... Object)",
 				(asds.decay(0.5, 1, 1.0) == asds.decay(0.5, 1)));
 
 	}
@@ -31,7 +31,7 @@ public class ApproxSigmoidDecayStrategyTest {
 		
 		//To prove that the third argument of method 
 		//decay(double currentActivation, long ticks, Object... params) is effective
-		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
+		assertTrue("Problem with class SigmoidExciteStrategy for decay( double, double, ... Object)",
 				(asds.decay(0.5, 1, 2.0) != asds.decay(0.5, 1)));
 
 	}
@@ -47,7 +47,7 @@ public class ApproxSigmoidDecayStrategyTest {
 		
 		//To prove that the third argument of method 
 		//decay(double currentActivation, long ticks, Map<String, ? extends Object> params) is effective
-		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, MAP<String, Object>)",
+		assertTrue("Problem with class SigmoidExciteStrategy for decay( double, double, MAP<String, Object>)",
 				(asds.decay(0.7, 1, map) != asds.decay(0.7, 1)));
 		
     }
@@ -59,7 +59,7 @@ public class ApproxSigmoidDecayStrategyTest {
 		ApproxSigmoidDecayStrategy asds = new ApproxSigmoidDecayStrategy();
 
 		// Testing of upper and lower bound of function
-		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, MAP<String, Object>)",
+		assertTrue("Problem with class SigmoidExciteStrategy for decay( double, double, MAP<String, Object>)",
 				((asds.calcActivation(1.0, 10, 1.0) == LOWER_BOUND)
 						&&(asds.calcActivation(9.0, 0, 0.0) == UPPER_BOUND)));
 		
@@ -101,17 +101,17 @@ public class ApproxSigmoidDecayStrategyTest {
 		//System.out.println("The average mistake is " + total/counter);
 		double mistake = total/counter;
 		
-		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, MAP<String, Object>)",
+		assertTrue("Problem with class SigmoidExciteStrategy for decay( double, double, MAP<String, Object>)",
 				(mistake < 0.05));
 	}
 	
 	public double realSigmmoidDecayFunc(double curActiv, long ticks, double aa){
 		
-		double curExi = Math.log(curActiv/(1-curActiv));
+		double curDecay = Math.log(curActiv/(1-curActiv));
 		
-		double newExi = curExi - ticks*aa;
+		double newDecay = curDecay - ticks*aa;
 		
-		double newAct = 1/(1 + Math.pow((Math.E),(0 - newExi)));
+		double newAct = 1/(1 + Math.pow((Math.E),(0 - newDecay)));
 		
 		return newAct;
 	}
