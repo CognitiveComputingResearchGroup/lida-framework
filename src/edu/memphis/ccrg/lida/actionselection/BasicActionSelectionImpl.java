@@ -9,9 +9,9 @@ package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,7 +38,7 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 
 //	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-	private Queue<Behavior> behaviors = new ConcurrentLinkedQueue<Behavior>();
+	private Queue<Behavior> behaviors = new LinkedList<Behavior>();
 	
 	/**
 	 * Default constructor
@@ -82,7 +82,9 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 
 	@Override
 	public void receiveBehavior(Behavior b) {
-		behaviors.add(b);
+		synchronized(this){
+			behaviors.add(b);
+		}
 		logger.log(Level.FINE, "Behavior added " + b,
 				   LidaTaskManager.getCurrentTick());
 	}
@@ -91,10 +93,12 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 	public void selectAction() {
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
-			behaviors.remove(behavior);
+			synchronized(this){
+				behaviors.remove(behavior);
+			}
 			LidaAction action = behavior.getAction();
 			
-			logger.log(Level.FINE, "Action Selected at tick {0}: " + action,
+			logger.log(Level.FINE, "Action Selected at tick: " + LidaTaskManager.getCurrentTick() + " act: " + action,
 					LidaTaskManager.getCurrentTick());
 			for (ActionSelectionListener bl : listeners) {
 				bl.receiveAction(action);
@@ -109,16 +113,12 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 				selected = b;
 			}
 		}
-		behaviors.clear();
+		synchronized(this){
+			behaviors.clear();
+		}
 		return selected;
 	}
 	
-//	private void sendEventToGui(FrameworkGuiEvent evt) {
-//		for (FrameworkGuiEventListener fg : guis){
-//			fg.receiveFrameworkGuiEvent(evt);
-//		}
-//	}
-
 	@Override
 	public Object getModuleContent(Object... params) {
 		if(params[0].equals("behaviors")){

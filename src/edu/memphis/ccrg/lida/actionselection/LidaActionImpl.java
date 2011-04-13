@@ -21,6 +21,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  */
 public abstract class LidaActionImpl implements LidaAction {
 
+	private static long idGenerator = 0;
 	private long id;
 	private Object content;
 	protected LidaModule module;
@@ -32,6 +33,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	 * 
 	 */
 	public LidaActionImpl() {
+		id = idGenerator++;
 	}
 
 	/**
@@ -39,6 +41,7 @@ public abstract class LidaActionImpl implements LidaAction {
 	 * @param label label
 	 */
 	public LidaActionImpl(String label) {
+		this();
 		this.label = label;
 	}
 
@@ -129,12 +132,8 @@ public abstract class LidaActionImpl implements LidaAction {
 	public long getId() {
 		return id;
 	}
-
-	/**
-	 * @param id the id to set
-	 */
-	@Override
-	public void setId(long id) {
+	
+	public void setId(long id){
 		this.id = id;
 	}
 

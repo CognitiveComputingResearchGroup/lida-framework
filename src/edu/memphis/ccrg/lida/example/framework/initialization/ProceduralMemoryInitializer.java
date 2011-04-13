@@ -66,7 +66,7 @@ public class ProceduralMemoryInitializer implements Initializer {
 				Node n = nodes[idx];
 				rstl.addDefaultNode(n);
 			}
-			Scheme scheme = new SchemeImpl("test scheme", i, new LidaActionImpl("test") {
+			Scheme scheme = new SchemeImpl("test scheme", new LidaActionImpl("test") {
 				@Override
 				public void performAction() {				
 				}

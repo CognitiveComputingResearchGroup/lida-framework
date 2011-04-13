@@ -35,17 +35,18 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private LidaAction action;
 	private String label;
 	private long id;
+	private static long idGenerator = 0;
 	
 	public SchemeImpl(){
+		this.id = idGenerator++;
 		context = new NodeStructureImpl();
 		addingResult = new NodeStructureImpl();
 		deletingResult = new NodeStructureImpl();
 	}
 
-	public SchemeImpl(String label, long id, LidaAction a) {
+	public SchemeImpl(String label, LidaAction a) {
 		this();
 		this.label = label;
-		this.id = id;
 		this.action = a;
 	}
 
@@ -124,10 +125,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return (int) id % Integer.MAX_VALUE;
 	}
 
-	@Override
-	public void setId(long id) {
-		this.id = id;
-	}
+//	@Override
+//	public void setId(long id) {
+//		this.id = id;
+//	}
 
 	@Override
 	public void setInnate(boolean innate) {

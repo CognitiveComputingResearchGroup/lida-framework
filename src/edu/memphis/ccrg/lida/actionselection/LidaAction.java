@@ -74,13 +74,18 @@ public interface LidaAction extends Serializable {
 	 */
 	public LidaModule getAssociatedModule();
 
+	//TODO add when we have factory support for this 
+//	/**
+//	 * Sets scheme's id.
+//	 * @param id unique identifier for this scheme
+//	 */
+//	public void setId(long id);
+	
 	/**
 	 * @return the LidaAction id
 	 */
 	public long getId();
+	
+	public String toString();
 
-	/**
-	 * @param id the LidaAction id to set. it should be unique
-	 */
-	public void setId(long id);
 }

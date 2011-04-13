@@ -38,9 +38,9 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 
 		map = new HashMap<Node, Set<Scheme>>();
 		
-		a = new SchemeImpl("", 1, null);
-		b = new SchemeImpl("", 2, null);
-		c = new SchemeImpl("", 3, null);
+		a = new SchemeImpl("", null);
+		b = new SchemeImpl("", null);
+		c = new SchemeImpl("", null);
 		
 		Set<Scheme> node1Set = new HashSet<Scheme>();
 		Set<Scheme> node2Set = new HashSet<Scheme>();

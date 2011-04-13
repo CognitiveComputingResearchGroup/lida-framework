@@ -48,6 +48,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  */ 
 public class LidaXmlFactory implements LidaFactory {
 //	TODO consider 'postInit' method that runs after initializers run.
+	//This will allow objects created in the initial pass, e.g. Nodes, LidaActions, to be used by other 
+	//modules initialized before the objects were created.
 	private static final Logger logger = Logger.getLogger(LidaXmlFactory.class.getCanonicalName());
 	
 	private static final String DEFAULT_XML_FILE_PATH = "configs/lida.xml";

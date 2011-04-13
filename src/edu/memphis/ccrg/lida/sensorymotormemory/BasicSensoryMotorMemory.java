@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
 /**
@@ -37,7 +38,7 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 			.getLogger(BasicSensoryMotorMemory.class.getCanonicalName());
 
 	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
-	private Map<Long, Object> actionAlgorithmMap = new HashMap<Long, Object>();
+	private Map<Number, Object> actionAlgorithmMap = new HashMap<Number, Object>();
 	private Environment environment;
 
 	public BasicSensoryMotorMemory() {
@@ -75,12 +76,8 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 					+ module.getModuleName(), LidaTaskManager.getCurrentTick());
 		}
 	}
-	
-	public void setLidaActionAlgorithmMap(Map<Long, Object> actionMap) {
-		this.actionAlgorithmMap = actionMap;
-	}
 
-	public void addActionAlgorithm(long actionId, Object action) {
+	public void addActionAlgorithm(Number actionId, Object action) {
 		actionAlgorithmMap.put(actionId, action);
 	}
 
@@ -93,12 +90,18 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 		private LidaAction action;
 		public ProcessActionTask(LidaAction a) {
 			action = a;
+			setTicksPerStep(processActionTicks);
 		}
 		@Override
 		protected void runThisLidaTask() {
-			Long id = (Long) action.getContent();
+			Number id = (Number) action.getId();
 			Object alg = actionAlgorithmMap.get(id);
-			sendActuatorCommand(alg);
+			if(alg != null){
+				sendActuatorCommand(alg);
+			}else{
+				logger.log(Level.WARNING, "could not find algorithm for action " + action,LidaTaskManager.getCurrentTick());
+			}
+			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
 		@Override
 		public String toString() {
@@ -130,9 +133,12 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 	public void receiveSensoryMemoryContent(Object content) {
 		// Research problem
 	}
+	
+	private int processActionTicks;
 
 	@Override
 	public void init() {
+		processActionTicks = (Integer)getParam("smm.ProcessActionTaskSpeed", 5);
 	}
 
 	@Override

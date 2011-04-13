@@ -19,7 +19,6 @@ public class ProceduralMemoryImplTest extends TestCase {
 
 	public void testAddScheme() {
 		Scheme s = new SchemeImpl();
-		s.setId(100);
 		pm.addScheme(s);
 
 		assertTrue(pm.containsScheme(s));
@@ -29,7 +28,7 @@ public class ProceduralMemoryImplTest extends TestCase {
 		assertTrue(pm.containsScheme(s));
 		assertTrue(pm.getSchemeCount() == 1);
 
-		s.setId(101);
+		s = new SchemeImpl();
 		pm.addScheme(s);
 		assertTrue(pm.containsScheme(s));
 		assertTrue(pm.getSchemeCount() == 2);
@@ -59,7 +58,7 @@ public class ProceduralMemoryImplTest extends TestCase {
 		
 		pm.addListener(l);
 		
-		Scheme s = new SchemeImpl("foo", 1, a);
+		Scheme s = new SchemeImpl("foo", a);
 		pm.sendInstantiatedScheme(s);
 	}
 
