@@ -35,6 +35,13 @@ public class SigmoidExciteStrategyTest {
 		//Test for correction
 		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
 				(ses.excite(0.5, 0.2) > 0.5));
+		
+		//Value of "ses.excite(0.5, 0.0)" is close to 0.5 very much but not equal to 0.5
+		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
+				(ses.excite(0.5, 0.0) > 0.4999)&&(ses.excite(0.5, 0.0) < 0.5));
+		
+		assertTrue("Problem with class SigmoidExciteStrategy for exict( double, double, ... Object)",
+				(ses.excite(0.5, -0.2) < 0.5));
 	}
 
 	@Test
