@@ -86,6 +86,11 @@ public interface LidaAction extends Serializable {
 	 */
 	public long getId();
 	
+	/**
+	 * Useful to implement this for the display of tasks in the GUI
+	 * @return {@link String}
+	 */
+	@Override
 	public String toString();
 
 }

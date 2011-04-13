@@ -24,9 +24,9 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 public abstract class LidaModuleImpl implements LidaModule {
 
 	private ModuleName moduleName;
-	protected Map<String, ?> parameters;
 	private Map<ModuleName, LidaModule> submodules = new ConcurrentHashMap<ModuleName, LidaModule>();
 	protected TaskSpawner taskSpawner;
+	protected Map<String, ?> parameters;
 
 	public LidaModuleImpl() {
 	}
