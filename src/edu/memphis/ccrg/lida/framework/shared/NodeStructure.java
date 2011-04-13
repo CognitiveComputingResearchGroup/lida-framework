@@ -219,20 +219,6 @@ public interface NodeStructure {
 	 *            the number of ticks to decay for. 
 	 */
 	public void decayNodeStructure(long ticks);
-	
-//	/**
-//	 * Gets lowerActivationBound
-//	 * @return Amount of activation a {@link Linkable} must have in order to remain in this NodeStructure
-//	 * after being decayed.
-//	 */
-//	public double getLowerActivationBound();
-//	
-//	/**
-//	 * Sets lowerActivationBound
-//	 * @param lowerActivationBound Amount of activation a {@link Linkable} must have in order to remain in this NodeStructure
-//	 * after being decayed.
-//	 */
-//	public void setLowerActivationBound(double lowerActivationBound);
 
 	/**
 	 * Gets Link with specified ExtendedId if present.
@@ -339,16 +325,18 @@ public interface NodeStructure {
 	public String getDefaultLinkType();
 
 	/**
- 	 * Finds and returns a map of all sink Linkables connected to specified Node.  
- 	 * Values of the map are the Link connecting the Node to the sink Linkable.
+ 	 * Finds and returns a {@link Map} of all sink {@link Linkable}s connected to specified {@link Node}.
+ 	 * Keys are the connected sinks  
+ 	 * Values are the {@link Link}s connecting the sinks to the specified {@link Node}
 	 * @param n supplied node
 	 * @return map of sinks and links connecting node to them
 	 */
 	public Map<Linkable, Link> getConnectedSinks(Node n);
 	
 	/**
-	 * Finds and returns a map of all source Nodes connected to specified Linkable.  
- 	 * Values of the map are the Link connecting the Linkable to the source Node.
+	 * Finds and returns a {@link Map} of all source Nodes connected to specified {@link Linkable}.  
+ 	 * Keys are the connected sources  
+ 	 * Values are the {@link Link}s connecting the sources to the specified {@link Linkable}
 	 * @param linkable specified linkable
 	 * @return map of sources and links connecting Linkable to them
 	 */
