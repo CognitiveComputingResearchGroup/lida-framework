@@ -104,6 +104,13 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		for (BroadcastTrigger trigger : broadcastTriggers)
 			trigger.checkForTriggerCondition(coalitions);
 	}
+	
+	@Override
+	public void triggerBroadcast() {
+		if (broadcastStarted.compareAndSet(false, true)) {
+			sendBroadcast();
+		}
+	}
 
 	/**
 	 * This method realizes the broadcast. First it chooses the winner
@@ -116,14 +123,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	 * This method is supposed to be called from {@link BroadcastTrigger}s. 
 	 * The reset() method is invoked on each trigger at the end of this method.
 	 * 
-	 */
-	@Override
-	public void triggerBroadcast() {
-		if (broadcastStarted.compareAndSet(false, true)) {
-			sendBroadcast();
-		}
-	}
-
+	 */	
 	private void sendBroadcast() {
 		logger.log(Level.FINE, "Triggering broadcast",
 				LidaTaskManager.getCurrentTick());
