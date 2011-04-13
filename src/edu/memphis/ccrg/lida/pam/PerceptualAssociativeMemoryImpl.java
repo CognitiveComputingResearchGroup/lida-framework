@@ -315,6 +315,10 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
+		@Override
+		public String toString() {
+			return PerceptualAssociativeMemoryImpl.class.getSimpleName() + "Broadcast";
+		}
 	}
 
 	/*

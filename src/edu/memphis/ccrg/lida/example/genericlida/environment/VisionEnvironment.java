@@ -240,7 +240,11 @@ public class VisionEnvironment extends EnvironmentImpl implements GuiEventProvid
 					arrow = (int) Math.floor(Math.random() * 4);
 			}
 		}
-	}//background task
+		@Override
+		public String toString() {
+			return VisionEnvironment.class.getSimpleName() + "Background";
+		}
+	}
 
 	@Override
 	public Object getState(Map<String, ?> params) {

@@ -25,11 +25,11 @@ import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
@@ -40,6 +40,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 public class NodeStructureTable extends LidaPanelImpl {
 
 	private static final Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
+	
 	private NodeStructure nodeStructure;
     
 	/** Creates new form NodeStructureTable */
@@ -123,38 +124,15 @@ public class NodeStructureTable extends LidaPanelImpl {
     
 	@Override
 	public void initPanel(String[]param){
-		ModuleName moduleType=null;
-		if (param==null || param.length==0){
-		logger.log(Level.WARNING,"Error initializing NodeStructure Panel, not enough parameters.",0L);
-		return;
-		}
-		String[] modules = param[0].split("\\.");
-		moduleType= ModuleName.getModuleName(modules[0]);
-		if(moduleType==null){
-			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
+		if (param == null || param.length == 0) {
+			logger.log(Level.WARNING,
+					"Error initializing LidaTaskPanel, not enough parameters.",
+					0L);
 			return;
 		}
-		module = lida.getSubmodule(moduleType);
-		if (module==null){
-			logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Module does not exist in LIDA.",0L);
-			return;			
-		}
-		for (int i=1; i<modules.length;i++){
-			moduleType= ModuleName.getModuleName(modules[i]);
-			if(moduleType==null){
-					logger.log(Level.WARNING,"Error initializing NodeStructure Panel, Parameter is not a ModuleType.",0L);
-					return;
-				}
-			
-			module=module.getSubmodule(moduleType);
-			if (module==null){
-				logger.log(Level.WARNING,"Error initializing NodeStructure Panel, SubModule "+moduleType+ " does not exist.",0L);
-				return;			
-			}
-		}
+		module = GuiUtils.parseLidaModule(param[0], lida);
 		
 		display(module.getModuleContent());
-		//draw();
 	}
 
     @Override
@@ -162,21 +140,12 @@ public class NodeStructureTable extends LidaPanelImpl {
     	display(module.getModuleContent());
     }
     
-    @Override
-	public void registerLida(Lida lida){
-		super.registerLida(lida);
-		
-	}
 	private class NodeStructureTableModel extends AbstractTableModel {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 3902918248689475445L;
-		private String[] columNames ={"Node","Activation","Base Activation","Threshold"};
+		
+		private String[] columnNames ={"Node","Activation","Base Activation","Threshold"};
 		@Override
 		public int getColumnCount() {
-			return columNames.length;
+			return columnNames.length;
 		}
 
 		@Override
@@ -186,8 +155,8 @@ public class NodeStructureTable extends LidaPanelImpl {
 
 		@Override
 		public String getColumnName(int column){
-			if(column<columNames.length){
-				return columNames[column];
+			if(column < columnNames.length){
+				return columnNames[column];
 			}
 			return "";
 		}
@@ -195,7 +164,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Node node=null;
-			if (rowIndex>nodeStructure.getNodeCount() || columnIndex > columNames.length
+			if (rowIndex>nodeStructure.getNodeCount() || columnIndex > columnNames.length
 					||rowIndex<0||columnIndex<0){
 				return null;
 			}
@@ -232,7 +201,9 @@ public class NodeStructureTable extends LidaPanelImpl {
 		if (o instanceof NodeStructure) {
 			nodeStructure = (NodeStructure) o;
 			((AbstractTableModel) table.getModel()).fireTableStructureChanged();
-			//((AbstractTableModel) table.getModel()).fireTableDataChanged();
+		}else{
+			logger.log(Level.WARNING, "Can only display NodeStructure, but received " +
+					o + " from module: " + module.getModuleName(), LidaTaskManager.getCurrentTick());
 		}
 	}
 }

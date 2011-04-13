@@ -86,7 +86,6 @@ public class VisualEnvironmentPanel extends LidaPanelImpl implements
 
 	public String convertToString(double[][] a) {
 		String res = "";
-
 		if ((a != null) && (a[0] != null)) {
 			for (int i = 0; i < a.length; i++) {
 				for (int j = 0; j < a[0].length; j++) {

@@ -159,6 +159,10 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 			activateSchemes(broadcast);			
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}	
+		@Override
+		public String toString() {
+			return ProceduralMemoryImpl.class.getSimpleName() + "Broadcast";
+		}
 	}
 
 	@Override

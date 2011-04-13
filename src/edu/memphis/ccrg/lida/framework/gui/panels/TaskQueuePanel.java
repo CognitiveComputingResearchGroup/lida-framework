@@ -41,12 +41,8 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	
 	private Map<Long, Queue<LidaTask>> tasks= new HashMap<Long, Queue<LidaTask>>();
 
-	// private LidaTask[] taskArray;
-
 	public TaskQueuePanel() {
 		initComponents();
-		//tasks = new HashMap<Long, Queue<LidaTask>>();
-		// taskArray = tasks.toArray(new LidaTask[0]);
 	}
 
 	/**
@@ -125,8 +121,9 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		public int getColumnCount() {
 			int total = 0;
 			for (Queue<LidaTask> qt : tasks.values()) {
-				if (qt.size() > total)
+				if (qt.size() > total){
 					total = qt.size();
+				}
 			}
 			return total+1; //the first one is the tick number
 		}
@@ -142,7 +139,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		public String getColumnName(int column) {
 			String cName;
 			if (column == 0) {
-				cName = "tick";
+				cName = "Scheduled Tick";
 			} else {
 				cName = "Task " + column;
 			}
@@ -183,7 +180,6 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	public void refresh() {
 		logger.log(Level.FINEST, "Refreshing TaskQueue Panel",
 				LidaTaskManager.getCurrentTick());
-
 		display(lida.getTaskManager().getTaskQueue());
 	}
 
@@ -192,9 +188,6 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	public void display(Object o) {
 		if (o instanceof Map) {
 			tasks = (Map<Long,Queue<LidaTask>>) o;
-
-			// Concurrent Modification Exception here. 9/15/09
-			// Iterating over a shared Collection during the call to 'toArray'
 			((AbstractTableModel) tasksTable.getModel()).fireTableStructureChanged();
 		}
 	}

@@ -100,6 +100,10 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 			Object alg = actionAlgorithmMap.get(id);
 			sendActuatorCommand(alg);
 		}
+		@Override
+		public String toString() {
+			return BasicSensoryMotorMemory.class.getSimpleName() + "ProcessAction";
+		}
 	}
 
 	@Override

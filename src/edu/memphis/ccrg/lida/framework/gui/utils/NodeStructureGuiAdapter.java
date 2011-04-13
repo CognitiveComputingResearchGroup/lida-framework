@@ -24,7 +24,9 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.graph.util.Pair;
 
 /**
- * Utility to adapt {@link NodeStructure} for use with the {@link NodeStructurePanel}
+ * Utility to convert {@link NodeStructure} to {@link AbstractTypedGraph} for
+ * use with the {@link NodeStructurePanel}
+ * 
  * @author Javier Snaider
  * 
  */
@@ -32,6 +34,11 @@ public class NodeStructureGuiAdapter extends
 		AbstractTypedGraph<Linkable, GuiLink> {
 
 	private NodeStructure nodeStructure;
+
+	public NodeStructureGuiAdapter(NodeStructure ns) {
+		super(EdgeType.DIRECTED);
+		this.nodeStructure = ns;
+	}
 
 	/**
 	 * @return the nodeStructure
@@ -48,11 +55,6 @@ public class NodeStructureGuiAdapter extends
 		this.nodeStructure = nodeStructure;
 	}
 
-	public NodeStructureGuiAdapter(NodeStructure ns) {
-		super(EdgeType.DIRECTED);
-		this.nodeStructure = ns;
-	}
-
 	@Override
 	public boolean addEdge(GuiLink arg0, Pair<? extends Linkable> arg1,
 			EdgeType arg2) {
@@ -60,22 +62,39 @@ public class NodeStructureGuiAdapter extends
 	}
 
 	@Override
-	public Linkable getDest(GuiLink arg0) {
-		if (arg0.getType() == 'S') // If the GuiLink is type Source
+	public Linkable getDest(GuiLink guiLink) {
+		if (guiLink.getType() == 'S') { // If the GuiLink is type Source
+			return guiLink.getLink();
+		} else {
+			return guiLink.getLink().getSink();
+		}
+	}
+
+	@Override
+	public Linkable getSource(GuiLink arg0) {
+		if (arg0.getType() == 'S') { // If the GuiLink is type Source
+			return arg0.getLink().getSource();
+		} else {
 			return arg0.getLink();
-		else
-			return arg0.getLink().getSink();
+		}
 	}
 
 	@Override
 	public Pair<Linkable> getEndpoints(GuiLink arg0) {
-		if (arg0.getType() == 'S') // If the GuiLink is type Source
+		if (arg0.getType() == 'S') { // If the GuiLink is type Source
 			return new Pair<Linkable>(arg0.getLink().getSource(), arg0
 					.getLink());
-		else
+		} else {
 			return new Pair<Linkable>(arg0.getLink(), arg0.getLink().getSink());
+		}
 	}
 
+	/*
+	 * (non-Javadoc) Creates and returns GuiLinks for all Links in the
+	 * nodestructure whose sink is the argument
+	 * 
+	 * @see edu.uci.ics.jung.graph.Graph#getInEdges(java.lang.Object)
+	 */
 	@Override
 	public Collection<GuiLink> getInEdges(Linkable arg0) {
 		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
@@ -87,12 +106,21 @@ public class NodeStructureGuiAdapter extends
 				}
 			}
 		}
-		if (arg0 instanceof Link)
+		if (arg0 instanceof Link) {
 			ret.add(new GuiLink((Link) arg0, 'S'));
+		}
 
 		return ret;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * Creates and returns GuiLinks for all Links in the nodestructure whose
+	 * source is the argument
+	 * 
+	 * @see edu.uci.ics.jung.graph.Graph#getOutEdges(java.lang.Object)
+	 */
 	@Override
 	public Collection<GuiLink> getOutEdges(Linkable arg0) {
 		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
@@ -104,8 +132,9 @@ public class NodeStructureGuiAdapter extends
 				}
 			}
 		}
-		if (arg0 instanceof Link)
+		if (arg0 instanceof Link) {
 			ret.add(new GuiLink((Link) arg0, 'D'));
+		}
 		return ret;
 	}
 
@@ -118,19 +147,13 @@ public class NodeStructureGuiAdapter extends
 				if (l.getSink().equals(arg0)) {
 					ret.add(l);
 				}
-				if (arg0 instanceof Link)
-					ret.add(((Link) arg0).getSource());
 			}
 		}
-		return ret;
-	}
+		if (arg0 instanceof Link) {
+			ret.add(((Link) arg0).getSource());
+		}
 
-	@Override
-	public Linkable getSource(GuiLink arg0) {
-		if (arg0.getType() == 'S') // If the GuiLink is type Source
-			return arg0.getLink().getSource();
-		else
-			return arg0.getLink();
+		return ret;
 	}
 
 	@Override
@@ -142,13 +165,21 @@ public class NodeStructureGuiAdapter extends
 				if (l.getSource().equals(arg0)) {
 					ret.add(l);
 				}
-				if (arg0 instanceof Link)
-					ret.add(((Link) arg0).getSink());
 			}
 		}
+		if (arg0 instanceof Link) {
+			ret.add(((Link) arg0).getSink());
+		}
+
 		return ret;
 	}
 
+	/*
+	 * (non-Javadoc) Returns true if arg0 is a destination of GuiLink arg1
+	 * 
+	 * @see edu.uci.ics.jung.graph.Graph#isDest(java.lang.Object,
+	 * java.lang.Object)
+	 */
 	@Override
 	public boolean isDest(Linkable arg0, GuiLink arg1) {
 		if (arg1.getType() == 'S') {
@@ -158,6 +189,12 @@ public class NodeStructureGuiAdapter extends
 		}
 	}
 
+	/*
+	 * (non-Javadoc) Returns true if arg0 is a source of GuiLink arg1
+	 * 
+	 * @see edu.uci.ics.jung.graph.Graph#isSource(java.lang.Object,
+	 * java.lang.Object)
+	 */
 	@Override
 	public boolean isSource(Linkable arg0, GuiLink arg1) {
 		if (arg1.getType() == 'D') {
@@ -202,30 +239,37 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
+	/*
+	 * (non-Javadoc) Returns all edges attached to specified linkable
+	 * 
+	 * @see edu.uci.ics.jung.graph.Hypergraph#getIncidentEdges(java.lang.Object)
+	 */
 	@Override
 	public Collection<GuiLink> getIncidentEdges(Linkable arg0) {
 		Collection<GuiLink> ret = getInEdges(arg0);
-		if (ret == null)
+		if (ret == null) {
 			ret = getOutEdges(arg0);
-		else
+		} else {
 			ret.addAll(getOutEdges(arg0));
-
+		}
 		return ret;
-
 	}
 
 	@Override
 	public Collection<Linkable> getNeighbors(Linkable arg0) {
-		Collection<Linkable> res = getPredecessors(arg0);
-		if (res != null)
-			res.addAll(getSuccessors(arg0));
-		else
-			res = getSuccessors(arg0);
-
-		if (res != null && res.isEmpty()) {
-			res = null;
+		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
+		Set<Linkable> ret = new HashSet<Linkable>();
+		if (links != null) {
+			for (Link l : links) {
+				ret.add(l);
+			}
 		}
-		return res;
+		if (arg0 instanceof Link) {
+			ret.add(((Link) arg0).getSource());
+			ret.add(((Link) arg0).getSink());
+		}
+
+		return ret;
 	}
 
 	@Override

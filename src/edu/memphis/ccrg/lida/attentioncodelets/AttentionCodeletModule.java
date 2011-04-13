@@ -114,6 +114,10 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
+		@Override
+		public String toString() {
+			return AttentionCodeletModule.class.getSimpleName() + "Broadcast";
+		}
 	}
 
 	/**

@@ -28,7 +28,8 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * 
+ * TODO Delete?  now performed by LidaTaskPanel which is more like TaskSpawnerPanel 
+ * since it displays the tasks of a taskspawner, not just for tasks of the module.
  * @author Javier Snaider
  */
 public class TaskManagerPanel extends LidaPanelImpl {
@@ -200,7 +201,7 @@ public class TaskManagerPanel extends LidaPanelImpl {
 		logger.log(Level.FINEST, "Refreshing TaskManager Panel",LidaTaskManager.getCurrentTick());
 		//TODO change this class to TaskSpawnerPanel
 		//Lida could return all taskSpawners
-		//super.lida.getTaskSpawners();
+//		super.lida.getTaskSpawners();
 		
 //		display(lida.getTaskManager().getSpawnedTasks());
 	}
@@ -209,11 +210,11 @@ public class TaskManagerPanel extends LidaPanelImpl {
 	public void display(Object o) {
 		if (o instanceof Collection) {
 			tasks = (Collection<LidaTask>) o;
-			
-			//Concurrent Modification Exception here. 9/15/09	
-			//Iterating over a shared Collection during the call to 'toArray'
 			taskArray = tasks.toArray(new LidaTask[0]);
 			((AbstractTableModel)tasksTable.getModel()).fireTableDataChanged();
+		}else{
+			logger.log(Level.WARNING, "Can only display Collection<LidaTasks>, but received " +
+					o, LidaTaskManager.getCurrentTick());
 		}
 	}
 

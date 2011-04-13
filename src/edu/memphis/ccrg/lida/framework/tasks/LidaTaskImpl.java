@@ -212,4 +212,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 		return (int) taskID;
 	}
 	
+	@Override
+	public abstract String toString();
+	
 }

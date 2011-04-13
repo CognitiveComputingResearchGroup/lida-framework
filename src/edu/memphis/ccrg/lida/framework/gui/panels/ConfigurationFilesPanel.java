@@ -29,17 +29,17 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * TODO rename
+ *TODO RENAME
  * @author Javier Snaider
  */
-public class PropertiesPanel extends LidaPanelImpl {
+public class ConfigurationFilesPanel extends LidaPanelImpl {
 
 	private static final Logger logger = Logger
-			.getLogger(PropertiesPanel.class.getCanonicalName());
+			.getLogger(ConfigurationFilesPanel.class.getCanonicalName());
 	private Properties properties;
 
 	/** Creates new form PropertiesPanel */
-	public PropertiesPanel() {
+	public ConfigurationFilesPanel() {
 		initComponents();
 		properties = new Properties();
 		String propertiesFile = "configs/lidaConfig.properties";

@@ -91,4 +91,9 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return null;
+	}
+
 }

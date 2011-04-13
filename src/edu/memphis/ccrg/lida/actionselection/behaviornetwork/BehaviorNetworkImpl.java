@@ -228,6 +228,11 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			passActivationFromBroadcast(broadcast);
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
+
+		@Override
+		public String toString() {
+			return BehaviorNetworkImpl.class.getSimpleName() + "Broadcast";
+		}
 	}
 
 	/**

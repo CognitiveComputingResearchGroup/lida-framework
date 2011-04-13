@@ -81,6 +81,10 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 			}
 			setTaskStatus(LidaTaskStatus.FINISHED);
 		}
+		@Override
+		public String toString() {
+			return BroadcastQueueImpl.class.getSimpleName() + "Broadcast";
+		}
 	}
 
 	@Override

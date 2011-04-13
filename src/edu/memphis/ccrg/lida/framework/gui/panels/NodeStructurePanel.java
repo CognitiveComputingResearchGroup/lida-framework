@@ -37,6 +37,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
+import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -47,7 +48,12 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 
 /**
+ * A {@link LidaPanel} which creates a graphical view of a {@link NodeStructure}.
  * 
+ *  The {@link NodeStructure} is one from a paticular {@link LidaModule} which is defined as a parameter in the guiPanels.properties file.
+ *  
+ *  {@link LidaModule#getModuleContent(Object...)} must return {@link NodeStructure}.
+ *   
  * @author Javier Snaider
  */
 public class NodeStructurePanel extends LidaPanelImpl {
@@ -55,7 +61,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	private static final Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
 	
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
-	private VisualizationViewer<Linkable, GuiLink> vv;
+	private VisualizationViewer<Linkable, GuiLink> vizViewer;
 	private LidaModule module;
 	
 	/** Creates new form NodeStructurePanel */
@@ -121,6 +127,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 
 	private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshButtonActionPerformed
 		refresh();
+		refresh();
 	}// GEN-LAST:event_refreshButtonActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -135,12 +142,10 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		Layout<Linkable, GuiLink> layout = new FRLayout<Linkable, GuiLink>(guiGraph);
 		layout.setSize(new Dimension(300, 300)); // Sets initial size of the
 		// The BasicVisualizationServer<V,E> is parameterized by the edge types
-		vv = new VisualizationViewer<Linkable, GuiLink>(
-				layout);
-		vv.setPreferredSize(new Dimension(350, 350)); // Sets viewing area
-														// size
+		vizViewer = new VisualizationViewer<Linkable, GuiLink>(layout);
+		vizViewer.setPreferredSize(new Dimension(350, 350)); // Sets viewing area size
 		// Show vertex and edge labels
-		vv.getRenderContext().setVertexLabelTransformer(
+		vizViewer.getRenderContext().setVertexLabelTransformer(
 				new Transformer<Linkable, String>() {
 					@Override
 					public String transform(final Linkable linkable) {
@@ -156,7 +161,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		// Create a graph mouse and add it to the visualization component
 		DefaultModalGraphMouse<Linkable, GuiLink> gm2 = new DefaultModalGraphMouse<Linkable, GuiLink>();
 		gm2.setMode(ModalGraphMouse.Mode.TRANSFORMING);
-		vv.getRenderContext().setVertexIconTransformer(
+		vizViewer.getRenderContext().setVertexIconTransformer(
 				new Transformer<Linkable, Icon>() {
 					/*
 					 * Implements the Icon interface to draw an Icon with
@@ -165,13 +170,14 @@ public class NodeStructurePanel extends LidaPanelImpl {
 					@Override
 					public Icon transform(final Linkable v) {
 						if (v instanceof Node) {
-							return NodeIcon.NODEICON;
+							return NodeIcon.NODE_ICON;
 						} else {
-							return NodeIcon.LINKICON;
+							return NodeIcon.LINK_ICON;
 						}
 					}
 				});
-		vv.setVertexToolTipTransformer(new Transformer<Linkable, String>() {
+		vizViewer.setVertexToolTipTransformer(new Transformer<Linkable, String>() {
+			//TODO use the toString of the linkable
 			@Override
 			public String transform(final Linkable l) {
 				String tip = null;
@@ -190,7 +196,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 				return tip;
 			}
 		});
-		vv.setEdgeToolTipTransformer(new Transformer<GuiLink, String>() {
+		vizViewer.setEdgeToolTipTransformer(new Transformer<GuiLink, String>() {
 			@Override
 			public String transform(final GuiLink l) {
 				String tip = null;
@@ -201,33 +207,11 @@ public class NodeStructurePanel extends LidaPanelImpl {
 			}
 		});
 
-		vv.setGraphMouse(gm2);
+		vizViewer.setGraphMouse(gm2);
 
-		jScrollPane1.setViewportView(vv);
-		vv.fireStateChanged();
-		// // Trying out our new popup menu mouse plugin...
-		// PopupVertexEdgeMenuMousePlugin myPlugin = new
-		// PopupVertexEdgeMenuMousePlugin();
-		// // Add some popup menus for the edges and vertices to our mouse
-		// plugin.
-		// JFrame frame = new JFrame("Editing and Mouse Menu Demo");
-		// JPopupMenu edgeMenu = new MyMouseMenus.EdgeMenu(frame);
-		// JPopupMenu vertexMenu = new MyMouseMenus.VertexMenu();
-		// myPlugin.setEdgePopup(edgeMenu);
-		// myPlugin.setVertexPopup(vertexMenu);
-		// //gm.remove(gm.getPopupEditingPlugin());
-		// gm.add(myPlugin); // Add our new plugin to the mouse
-		// vv.setGraphMouse(gm);
-		// gm.setMode(ModalGraphMouse.Mode.EDITING);
+		jScrollPane1.setViewportView(vizViewer);
+		vizViewer.fireStateChanged();
 	}
-
-//	private Graph<Linkable, GuiLink> getGraph() {
-//		NodeStructure struct = ((PerceptualAssociativeMemoryImpl) lida.getPam())
-//				.getNodeStructure();
-//		guiGraph = new NodeStructureGuiAdapter(struct);
-//		return guiGraph;
-//	}
-
 	
 	@Override
 	public void initPanel(String[]param){	
@@ -246,9 +230,9 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	@Override
 	public void refresh(){
 		display(module.getModuleContent());
-		Layout<Linkable, GuiLink> layout = vv.getGraphLayout();
+		Layout<Linkable, GuiLink> layout = vizViewer.getGraphLayout();
 		layout.initialize();
-		Relaxer relaxer = vv.getModel().getRelaxer();
+		Relaxer relaxer = vizViewer.getModel().getRelaxer();
 		if(relaxer != null) {
 			relaxer.stop();
 			relaxer.prerelax();
@@ -260,6 +244,9 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	public void display(Object o) {
 		if(o instanceof NodeStructure){
 			guiGraph.setNodeStructure((NodeStructure) o);
+		}else{
+			logger.log(Level.WARNING, "Can only display NodeStructure, but received " +
+					o + " from module: " + module.getModuleName(), LidaTaskManager.getCurrentTick());
 		}
     }
 }

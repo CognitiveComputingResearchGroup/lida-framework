@@ -29,7 +29,6 @@ public class GuiUtils {
 			return null;
 		}
 		
-		
 		String[] modules = param.trim().split("\\.");
 		ModuleName moduleType = ModuleName.getModuleName(modules[0]);
 		if (moduleType == null) {

@@ -17,16 +17,18 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 
 import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
- * Utility which {@link NodeStructurePanel} uses to represent Nodes.
+ * Utility which {@link NodeStructurePanel} uses to represent {@link Node}.
+ * 
  * @author Javier Snaider
  *
  */
 public class NodeIcon implements Icon {
 	
-	public static final Icon NODEICON=new NodeIcon(20,Color.red);
-	public static final Icon LINKICON=new NodeIcon(5,Color.black);
+	public static final Icon NODE_ICON=new NodeIcon(20,Color.red);
+	public static final Icon LINK_ICON=new NodeIcon(5,Color.black);
 
 	private int size;
 	private Color color;
@@ -64,7 +66,6 @@ public class NodeIcon implements Icon {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		g.setColor(color);
 		g.fillOval(x, y, size, size);
-
 	}
 
 }

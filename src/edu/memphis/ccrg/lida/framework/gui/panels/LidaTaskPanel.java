@@ -30,7 +30,6 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * 
  * A {@link LidaPanel} which displays the {@link LidaTask}s which are part of a
  * particular {@link LidaModule}.
  * 
