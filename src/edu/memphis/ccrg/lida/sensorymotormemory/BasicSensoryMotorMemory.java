@@ -83,8 +83,12 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 
 	@Override
 	public synchronized void receiveAction(LidaAction action) {
-		ProcessActionTask t = new ProcessActionTask(action);
-		taskSpawner.addTask(t);
+		if(action != null){
+			ProcessActionTask t = new ProcessActionTask(action);
+			taskSpawner.addTask(t);
+		}else{
+			//TODO log
+		}
 	}
 	private class ProcessActionTask extends LidaTaskImpl {
 		private LidaAction action;
@@ -94,8 +98,7 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 		}
 		@Override
 		protected void runThisLidaTask() {
-			Number id = (Number) action.getId();
-			Object alg = actionAlgorithmMap.get(id);
+			Object alg = actionAlgorithmMap.get((Number) action.getId());
 			if(alg != null){
 				sendActuatorCommand(alg);
 			}else{
