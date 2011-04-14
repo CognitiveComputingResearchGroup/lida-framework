@@ -69,7 +69,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * Contains all of the Node, Links and their connections.
 	 */
-	private NodeStructure pamNodeStructure;
+	protected NodeStructure pamNodeStructure;
 
 	/*
 	 * How PAM calculates the amount of activation to propagate
@@ -389,14 +389,15 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * @param amount the amount
 	 */
 	@Override
-	public void receiveActivationBurst(PamLinkable plnk, double amount) {
-		if (plnk instanceof PamLink) {
+	public void receiveActivationBurst(PamLinkable pl, double amount) {
+		if (pl instanceof PamLink) {
 			logger.log(Level.WARNING, "Does not support pam links yet",
 					LidaTaskManager.getCurrentTick());
 			return;
 		}
 
-		PamNode linkable = (PamNode) getNode(plnk.getExtendedId());
+		
+		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl.getExtendedId());
 		if (linkable != null) {
 			logger.log(Level.FINE, linkable.getLabel()
 					+ " gets activation burst. Amount: " + amount
