@@ -78,7 +78,7 @@
 			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.ProceduralMemoryInitializer</initializerclass>
 		</module>
 		<module name="ActionSelection">
-			<class>edu.memphis.ccrg.lida.actionselection.BasicActionSelectionImpl</class>
+			<class>edu.memphis.ccrg.lida.actionselection.BasicActionSelection</class>
 			<param name="actionSelection.ticksPerStep" type="int"> 10</param>
 			<taskspawner>defaultTS</taskspawner>		</module> 
 	</submodules>

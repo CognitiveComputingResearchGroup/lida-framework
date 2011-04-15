@@ -49,7 +49,7 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 	 * @return the workspace content
 	 */
 	@Override
-	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {		
+	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {		
 		return ((NodeStructure) buffer.getModuleContent()).copy();
 	}
 }

@@ -33,7 +33,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 				LidaTaskManager.getCurrentTick());
 		for(WorkspaceBuffer readableBuffer: readableBuffers){
 			if(hasSoughtContent(readableBuffer)){
-				writableBuffer.addBufferContent((WorkspaceContent) retreiveWorkspaceContent(readableBuffer));
+				writableBuffer.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
 			}
 			writableBuffer.addBufferContent(readableBuffer.getBufferContent(null));
 		}
@@ -43,7 +43,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	}
 
 	@Override
-	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {
+	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 		return buffer.getBufferContent(null);
 	}
 

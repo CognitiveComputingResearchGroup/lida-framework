@@ -34,9 +34,9 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public void cancelTask(LidaTask task) {
+	public boolean cancelTask(LidaTask task) {
 		System.out.println(task+" removed! ");
-		tasks.remove(task);
+		return tasks.remove(task);
 	}
 
 	@Override

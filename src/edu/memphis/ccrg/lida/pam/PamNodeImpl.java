@@ -223,10 +223,10 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		learnable.setTotalActivationStrategy(strategy);
 	}	
 
-	@Override
-	public PamNode copy() {
-		return new PamNodeImpl(this);
-	}	
+//	@Override
+//	public PamNode copy() {
+//		return new PamNodeImpl(this);
+//	}	
 	
 	@Override
 	public void updateNodeValues(Node n) {

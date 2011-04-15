@@ -23,7 +23,7 @@ public class mockStructureBuildingCodeletImpl extends BasicStructureBuildingCode
 	}
 
 	@Override
-	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {
+	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 		// 
 		return null;
 	}

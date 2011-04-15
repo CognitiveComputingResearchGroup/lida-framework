@@ -11,13 +11,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * Generic Activatible Implementation. Useful to inherit from it 
- * Activatible classes like nodes or codelets.
+ * Generic {@link Activatible} Implementation. Useful for classes to extend from it, 
+ * e.g. {@link Node} and {@link Codelet}.
  *  
  * @author Javier Snaider
  * 

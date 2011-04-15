@@ -43,9 +43,9 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#cancelTask(edu.memphis.ccrg.lida.framework.tasks.LidaTask)
 	 */
 	@Override
-	public void cancelTask(LidaTask task) {
+	public boolean cancelTask(LidaTask task) {
 		// not implemented method stub
-
+		return false;
 	}
 
 	/* (non-Javadoc)

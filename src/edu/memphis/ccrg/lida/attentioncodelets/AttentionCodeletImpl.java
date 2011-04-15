@@ -72,17 +72,17 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	}
 
 	/**
-	 * On finding sought content in CSM, create a coalition and put it in the
-	 * global workspace
+	 * On finding sought content in CSM, create a coalition and add it to the
+	 * {@link GlobalWorkspace}.
 	 */
 	@Override
 	protected void runThisLidaTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
-			NodeStructure csmContent = retreiveWorkspaceContent(currentSituationalModel);
+			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0) {
 				globalWorkspace.addCoalition(new CoalitionImpl(
 						(BroadcastContent) csmContent, getActivation(), this));
-				logger.log(Level.FINER, this + " adds coalition",
+				logger.log(Level.FINER, this + " adds new coalition",
 						LidaTaskManager.getCurrentTick());
 			}
 		}

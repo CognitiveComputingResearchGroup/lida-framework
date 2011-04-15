@@ -60,7 +60,7 @@ public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
 	 * @return the workspace content
 	 */
 	@Override
-	public NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer) {
+	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 		//TODO Naive implementation. Should not copy entire buffer.
 		return ((NodeStructure) buffer.getBufferContent(null)).copy();
 	}

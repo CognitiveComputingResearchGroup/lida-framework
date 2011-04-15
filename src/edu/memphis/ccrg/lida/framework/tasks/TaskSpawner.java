@@ -53,13 +53,16 @@ public interface TaskSpawner extends Initializable {
 	public void receiveFinishedTask(LidaTask task);
 	
 	/**
-	 * Cancels the task in the {@link LidaTaskManager}. 
+	 * Cancels specified task if it exists in this {@link TaskSpawner}
+	 * Task is removed from {@link TaskSpawner} and canceled in the {@link LidaTaskManager}. 
 	 * This is only possible if the tick for which the task 
 	 * is scheduled has not been reached.
 	 * 
 	 * @param task The task to cancel.
+	 * @see LidaTaskManager#cancelTask(LidaTask)
+	 * @return true if the task was canceled, false otherwise
 	 */
-	public void cancelTask(LidaTask task);
+	public boolean cancelTask(LidaTask task);
 	
 	/**
 	 * Returns a {@link UnmodifiableCollection} that contains the LidaTasks in this

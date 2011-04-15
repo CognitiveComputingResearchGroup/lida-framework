@@ -72,11 +72,11 @@ public interface Node extends Linkable, Serializable {
 	 */
 	public void setDesirability(double degree);
 
-	/**
-	 * Deep copy of a Node. All implementations of Node must override this method.
-	 * @return new Node
-	 */
-	public Node copy();
+//	/**
+//	 * Deep copy of a Node. All implementations of Node must override this method.
+//	 * @return new Node
+//	 */
+//	public Node copy();
 	
 	/** 
 	 * Subclasses of Node should override this method to set all of their type-specific member data

@@ -49,7 +49,7 @@ public interface Codelet extends LidaTask{
 	 *            the buffer
 	 * @return the workspace content
 	 */
-	NodeStructure retreiveWorkspaceContent(WorkspaceBuffer buffer);
+	NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer);
 	
 	
 }

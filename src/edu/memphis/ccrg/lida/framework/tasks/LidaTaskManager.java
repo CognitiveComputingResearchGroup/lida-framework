@@ -176,37 +176,6 @@ public class LidaTaskManager {
 	}
 
 	/**
-	 * This method stops all tasks executing and prevents further tasks from
-	 * being executed. It is used to shutdown the entire system. Method shuts
-	 * down all tasks, the executor service, waits, and exits.
-	 */
-	public void stopRunning() {
-		shuttingDown = true;
-		taskManagerThread.interrupt();
-		// Now that we can be sure that active tasks will no longer be executed
-		// the executor service can be shutdown.
-		executorService.shutdown();
-		logger.log(Level.INFO, "All threads and tasks told to stop",
-				getCurrentTick());
-		try {
-			executorService.awaitTermination(800, TimeUnit.MILLISECONDS);
-			executorService.shutdownNow();
-			Thread.sleep(400);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		logger.log(Level.INFO,
-				"LidaTaskManager shutting down. System exiting.",
-				getCurrentTick());
-		System.exit(0);
-	}
-
-	@Override
-	public String toString() {
-		return "LidaTaskManager";
-	}
-
-	/**
 	 * @return true if tasks are paused
 	 */
 	public boolean isTasksPaused() {
@@ -226,11 +195,13 @@ public class LidaTaskManager {
 	 * Resumes the execution of tasks in the queue.
 	 */
 	public void resumeTasks() {
+		if (shuttingDown){
+			return;
+		}
+		
 		logger.log(Level.INFO,
 				"resume tasks called actualTime: {0} maxTick: {1}",
 				new Object[] { currentTick, maxTick });
-		if (shuttingDown)
-			return;
 
 		tasksPaused = false;
 
@@ -248,14 +219,13 @@ public class LidaTaskManager {
 	 * @return true if it was , false otherwise.
 	 */
 	public boolean cancelTask(LidaTask task) {
-		Queue<LidaTask> queue = null;
 		if (task != null) {
 			long time = task.getScheduledTick();
 			if (time > currentTick) {
-				queue = taskQueue.get(time);
-			}
-			if (queue != null) {
-				return queue.remove(task);
+				Queue<LidaTask> queue = taskQueue.get(time);
+				if (queue != null) {
+					return queue.remove(task);
+				}
 			}
 		}
 		return false;
@@ -449,5 +419,36 @@ public class LidaTaskManager {
 			return null;
 		}
 	}// private class
+	
+	/**
+	 * This method stops all tasks executing and prevents further tasks from
+	 * being executed. It is used to shutdown the entire system. Method shuts
+	 * down all tasks, the executor service, waits, and exits.
+	 */
+	public void stopRunning() {
+		shuttingDown = true;
+		taskManagerThread.interrupt();
+		// Now that we can be sure that active tasks will no longer be executed
+		// the executor service can be shutdown.
+		executorService.shutdown();
+		logger.log(Level.INFO, "All threads and tasks told to stop",
+				getCurrentTick());
+		try {
+			executorService.awaitTermination(800, TimeUnit.MILLISECONDS);
+			executorService.shutdownNow();
+			Thread.sleep(400);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		logger.log(Level.INFO,
+				"LidaTaskManager shutting down. System exiting.",
+				getCurrentTick());
+		System.exit(0);
+	}
+	
+	@Override
+	public String toString() {
+		return "LidaTaskManager";
+	}
 
 }

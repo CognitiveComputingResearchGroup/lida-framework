@@ -27,7 +27,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 
 	private static final Logger logger = Logger.getLogger(LinkImpl.class.getCanonicalName());
 
-	
 	/*
 	 * Source of this link, always a node.
 	 */
@@ -228,10 +227,10 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		return getLabel() + " " + extendedId;
 	}
 
-	@Override
-	public Link copy() {
-		return new LinkImpl(this);
-	}
+//	@Override
+//	public Link copy() {
+//		return new LinkImpl(this);
+//	}
 	
 	@Override
 	public boolean isSimpleLink(){

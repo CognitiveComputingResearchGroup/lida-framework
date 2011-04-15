@@ -226,10 +226,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		learnable.setTotalActivationStrategy(strategy);
 	}
 	
-	@Override
-	public PamLink copy(){
-		return new PamLinkImpl(this);
-	}
+//	@Override
+//	public PamLink copy(){
+//		return new PamLinkImpl(this);
+//	}
 	
 	@Override
 	public void updateLinkValues(Link link) {

@@ -20,6 +20,8 @@ import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * 
@@ -30,7 +32,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
-	private static LidaElementFactory factory=LidaElementFactory.getInstance();
+	private static final LidaElementFactory factory = LidaElementFactory.getInstance();
 	
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;
@@ -43,7 +45,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 * @param activation current activation
 	 * @param activatibleRemovalThreshold activation threshold to remain in a {@link NodeStructure}
 	 * @param baseLevelActivation base-level activation for learning
-	 * @param learnableRemovableThreshold base-level activation threshold to remain in a Pam NodeStructure
+	 * @param learnableRemovableThreshold base-level activation threshold to remain in a {@link NodeStructure} of {@link PamNode} and {@link PamLink}
 	 * @param exciteStrategy {@link ExciteStrategy} for exciting {@link ActivatibleImpl} activation.
 	 * @param decayStrategy {@link DecayStrategy} for decaying {@link ActivatibleImpl} activation.
 	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for reinforcing {@link LearnableImpl} base-level activation.

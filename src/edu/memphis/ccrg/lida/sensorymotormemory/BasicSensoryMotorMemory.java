@@ -57,11 +57,9 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 	@Override
 	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l) {
 		if (l instanceof Environment) {
-			logger
-					.log(
-							Level.SEVERE,
-							"Cannot add Environment as SensoryMotorMemoryListener.  Add it as an associated module.",
-							LidaTaskManager.getCurrentTick());
+			logger.log(Level.SEVERE,
+					"Cannot add Environment as SensoryMotorMemoryListener.  Add it as an associated module.",
+					LidaTaskManager.getCurrentTick());
 		} else {
 			listeners.add(l);
 		}

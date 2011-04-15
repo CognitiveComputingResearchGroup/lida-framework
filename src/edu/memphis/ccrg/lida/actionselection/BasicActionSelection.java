@@ -30,11 +30,11 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  * @author Ryan J McCall
  * 
  */
-public class BasicActionSelectionImpl extends LidaModuleImpl implements
+public class BasicActionSelection extends LidaModuleImpl implements
 		ActionSelection, ProceduralMemoryListener {
 
 	private static final Logger logger = Logger
-			.getLogger(BasicActionSelectionImpl.class.getCanonicalName());
+			.getLogger(BasicActionSelection.class.getCanonicalName());
 
 //	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
@@ -43,7 +43,7 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 	/**
 	 * Default constructor
 	 */
-	public BasicActionSelectionImpl() {
+	public BasicActionSelection() {
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class BasicActionSelectionImpl extends LidaModuleImpl implements
 		}
 		@Override
 		public String toString() {
-			return BasicActionSelectionImpl.class.getSimpleName()
+			return BasicActionSelection.class.getSimpleName()
 					+ " background task";
 		}
 	}

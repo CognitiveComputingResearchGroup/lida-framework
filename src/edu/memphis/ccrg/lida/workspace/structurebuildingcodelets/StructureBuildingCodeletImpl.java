@@ -50,7 +50,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	protected CodeletRunResult results;
 	
 	/**
-	 * 
+	 * Default Constructor
 	 */
 	public StructureBuildingCodeletImpl(){
 		super();
