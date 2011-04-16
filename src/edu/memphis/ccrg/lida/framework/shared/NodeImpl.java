@@ -161,11 +161,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		}
 		return value;
 	}
-
-//	@Override
-//	public Node copy() {
-//		return new NodeImpl(this);
-//	}
 	
 	/**
 	 * Updates the values of this NodeImpl based on the passed in Node.  

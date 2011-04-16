@@ -79,19 +79,12 @@ public interface Link extends Linkable{
 	 * @return the grounding pam link
 	 */
 	public PamLink getGroundingPamLink();
-
-//	/**
-//	 * Creates and returns a deep copy of this Link.
-//	 * @return a deep copy
-//	 */
-//	public Link copy();
 	
 	/** 
 	 * Subclasses of Link should override this method to set all of their type-specific member data
 	 * using the values of the specified Link.  
 	 * Thus specified Link must be of the same subclass type.
 	 * @param link Link whose values are used to update with.
-//	 * @see NodeStructureImpl#addLink()  TODO
 	 */
 	public void updateLinkValues(Link link);
 

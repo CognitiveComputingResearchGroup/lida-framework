@@ -226,11 +226,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	public String toString() {
 		return getLabel() + " " + extendedId;
 	}
-
-//	@Override
-//	public Link copy() {
-//		return new LinkImpl(this);
-//	}
 	
 	@Override
 	public boolean isSimpleLink(){

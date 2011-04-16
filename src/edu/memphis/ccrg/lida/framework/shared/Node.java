@@ -71,12 +71,6 @@ public interface Node extends Linkable, Serializable {
 	 * @param degree  degree to which this node is a goal of the agent
 	 */
 	public void setDesirability(double degree);
-
-//	/**
-//	 * Deep copy of a Node. All implementations of Node must override this method.
-//	 * @return new Node
-//	 */
-//	public Node copy();
 	
 	/** 
 	 * Subclasses of Node should override this method to set all of their type-specific member data
@@ -84,7 +78,6 @@ public interface Node extends Linkable, Serializable {
 	 * Thus specified Node must be of the same subclass type.
 	 * 
 	 * @param n Node whose values are used to update with.
-//	 * @see NodeStructureImpl#addNode()  TODO
 	 */
 	public void updateNodeValues(Node n);
 
