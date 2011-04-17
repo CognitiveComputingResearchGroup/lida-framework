@@ -93,11 +93,7 @@ public class BasicActionSelection extends LidaModuleImpl implements
 	public void selectAction() {
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
-			synchronized(this){
-				behaviors.remove(behavior);
-			}
 			LidaAction action = behavior.getAction();
-			
 			logger.log(Level.FINE, "Action Selected at tick: " + LidaTaskManager.getCurrentTick() + " act: " + action,
 					LidaTaskManager.getCurrentTick());
 			for (ActionSelectionListener bl : listeners) {
