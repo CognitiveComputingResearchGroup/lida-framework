@@ -82,19 +82,15 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	private static long idCounter = 0;
 	
 	public BehaviorImpl(){
+		this.id = idCounter++;
 		context = new NodeStructureImpl();
 		addingList = new NodeStructureImpl();
 		deletingList = new NodeStructureImpl();
 	}
 	
-	public BehaviorImpl(long id, LidaAction action) {
-		this();
-		this.id = id;
-		this.action = action;
-	}
-	
 	public BehaviorImpl(LidaAction action){
-		this(idCounter++, action);
+		this();
+		this.action = action;
 	}
 
 	// Precondition methods
