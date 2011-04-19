@@ -18,22 +18,21 @@ public class ExtendedId {
 	private static final int UNDEFINED = Integer.MIN_VALUE;
 	
 	/*
-	 * There are 3 categories of possible ExtendedIds.
+	 * There are 3 categories of possible ExtendedId instances.
 	 * 
-	 * Case 1: Node, 
+	 * Case 1: Id is for Node: 
 	 * variable sourceNodeId is set to the specified nodeId
 	 * the rest of the variables are set to UNDEFINED
 	 *
 	 * 
-	 * Case 2: Simple link, source and sink are nodes.
+	 * Case 2: Id is for a Simple link, where the source and sink are nodes.
 	 * linkCategory is set using the first argument
 	 * and sourceNodeId is set using the second.
 	 * Then sinkCategory and sinkNode2Id are UNDEFINED.
 	 * while sinkNode1Id is the id of the sink node.
 	 *
-	 * Case 3: Complex link, the sink is a SIMPLE Link, call it L1.
-	 * linkCategory is set using the first argument
-	 * and sourceNodeId is set using the second.
+	 * Case 3: Id is for a Complex link, where the sink is a SIMPLE Link, call it L1.
+	 * sourceNodeId and linkCategory are set normally.
 	 * Then sinkLinkCategory is the LinkCategory of L1. 
 	 * Then sinkNode1Id is L1's sourceNodeId.
 	 * Then sinkNode2Id is L1's sinkNode1Id
