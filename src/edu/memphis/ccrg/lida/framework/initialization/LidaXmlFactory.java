@@ -486,7 +486,7 @@ public class LidaXmlFactory implements LidaFactory {
 	 */
 	private void initializeModules() {
 		for (Object[] vals : toInitialize) {
-			Initializable moduleToInitialize = (Initializable) vals[0];
+			FullyInitializable moduleToInitialize = (FullyInitializable) vals[0];
 			String initializerClassName = (String) vals[1];
 			@SuppressWarnings("unchecked")
 			Map<String,?> params = (Map<String,?>) vals[2];

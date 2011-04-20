@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.initialization.Initializable;
+import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
@@ -43,7 +43,7 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 	}
 
 	@Override
-	public void initModule(Initializable module, Lida lida,
+	public void initModule(FullyInitializable module, Lida lida,
 			Map<String, ?> params) {
 
 		GlobalWorkspace globalWksp = (GlobalWorkspace) module;

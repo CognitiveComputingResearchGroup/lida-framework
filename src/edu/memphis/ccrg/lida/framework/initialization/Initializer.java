@@ -26,6 +26,6 @@ public interface Initializer {
 	 * @param lida Lida object
 	 * @param params module parameters
 	 */
-	public void initModule(Initializable module, Lida lida, Map<String, ?> params); 
+	public void initModule(FullyInitializable module, Lida lida, Map<String, ?> params); 
 
 }
