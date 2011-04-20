@@ -20,10 +20,10 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.example.genericlida.featuredetectors.BasicDetector;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.LidaFactoriesXMLLoader;
 import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockDetectionAlgorithm;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
@@ -279,7 +279,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	 */
 	@Test
 	public void testAddFeatureDetector() {	
-		DetectionAlgorithm detector = new BasicDetector(node1, null, pam);
+		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
@@ -287,7 +287,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	public void testDetectionAlgorithm1() {	
-		DetectionAlgorithm detector = new BasicDetector(node1, null, pam);
+		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		pam.addDetectionAlgorithm(detector);
