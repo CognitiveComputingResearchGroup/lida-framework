@@ -119,7 +119,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		}
 	}
 
-	/**
+	/*
 	 * This method realizes the broadcast. First it chooses the winner
 	 * coalition. Then, all registered {@link BroadcastListener}s receive a reference
 	 * to the coalition content.
@@ -134,6 +134,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	private boolean sendBroadcast() {
 		logger.log(Level.FINE, "Triggering broadcast",
 				LidaTaskManager.getCurrentTick());
+		boolean broadcastWasSent = false;
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
 			winnerCoalActivation = coal.getActivation();
@@ -142,23 +143,15 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			//TODO Create LidaTask for parallel processing 
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
-			}
-//			FrameworkGuiEvent ge = new TaskCountEvent(
-//					ModuleName.GlobalWorkspace, coalitions.size() + "");
-//			sendEventToGui(ge);			
+			}		
 			
 			logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
 					LidaTaskManager.getCurrentTick());
-
-			resetTriggers();
-			broadcastStarted.set(false);
-			return true;
+			broadcastWasSent = true;
 		}
-		else
-		{
-			return false;
-		}
-		
+		resetTriggers();
+		broadcastStarted.set(false);
+		return broadcastWasSent;
 	}
 
 	private Coalition chooseCoalition() {
