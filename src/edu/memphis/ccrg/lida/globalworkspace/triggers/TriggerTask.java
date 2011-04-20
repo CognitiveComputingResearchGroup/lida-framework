@@ -32,23 +32,27 @@ public class TriggerTask extends LidaTaskImpl {
 	private String name;
 
 	private TriggerListener gw;
+	
+	private BroadcastTrigger trigger;
 
 	/**
 	 * Constructor for creating a TriggerTask
 	 * @param ticksForCycle ticks per step for this task
 	 * @param gw Trigger listener which is the Global Workspace
 	 * @param name Name of the trigger
+	 * @param trigger The trigger which creates this task
 	 */
-	public TriggerTask(int ticksForCycle, TriggerListener gw, String name) {
+	public TriggerTask(int ticksForCycle, TriggerListener gw, String name, BroadcastTrigger trigger) {
 		super(ticksForCycle);
 		this.gw = gw;
 		this.name = name;
+		this.trigger=trigger;
 	}
 
 	@Override
 	protected void runThisLidaTask() {
 		logger.log(Level.FINE, name, LidaTaskManager.getCurrentTick());
-		gw.triggerBroadcast();
+		gw.triggerBroadcast(trigger);
 		setTaskStatus(LidaTaskStatus.FINISHED);
 	}
 

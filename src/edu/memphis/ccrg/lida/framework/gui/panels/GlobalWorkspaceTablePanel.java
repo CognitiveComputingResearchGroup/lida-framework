@@ -8,45 +8,48 @@
 
 package edu.memphis.ccrg.lida.framework.gui.panels;
 
- import java.text.DecimalFormat;
- import java.util.Collection;
- import java.util.Iterator;
- import java.util.logging.Level;
- import java.util.logging.Logger;
+import java.text.DecimalFormat;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
- import javax.swing.table.AbstractTableModel;
+import javax.swing.table.AbstractTableModel;
 
- import edu.memphis.ccrg.lida.framework.Lida;
- import edu.memphis.ccrg.lida.framework.LidaModule;
- import edu.memphis.ccrg.lida.framework.ModuleName;
- import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl;
- import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructureTable;
- import edu.memphis.ccrg.lida.framework.shared.Node;
- import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl;
+import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructureTable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
- import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
- import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
- import edu.memphis.ccrg.lida.globalworkspace.Coalition;
- import javax.swing.GroupLayout.Alignment;
- import javax.swing.GroupLayout;
- import javax.swing.LayoutStyle.ComponentPlacement;
- import javax.swing.JScrollPane;
- import javax.swing.JTable;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
-* This is a Panel which shows all current coalitions in Global Workspace 
-* and also the most recent broadcast.
-* @author Siminder Kaur
-*/
+ * This is a Panel which shows all current coalitions in Global Workspace and
+ * also the most recent broadcast.
+ * 
+ * @author Siminder Kaur
+ */
 public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 		BroadcastListener {
 	private static final Logger logger = Logger
 			.getLogger(NodeStructureTable.class.getCanonicalName());
-	// private NodeStructure nodeStructure;
 	private Collection<Coalition> coalitions;
 
 	private NodeStructure broadcastContent;
 	private double winnerCoalActivation;
+	private BroadcastTrigger lastBroadcastTrigger;
 
 	/** Creates new form NodeStructureTable */
 	public GlobalWorkspaceTablePanel() {
@@ -80,31 +83,33 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 			}
 		});
 		jToolBar1.add(refreshButton);
-		
+
 		scrollPane = new javax.swing.JScrollPane();
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-		layout.setHorizontalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
-				.addComponent(jToolBar1, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-				.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-				.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-		);
-		layout.setVerticalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-					.addComponent(jToolBar1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 208, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
-		);
-		
+		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING)
+				.addComponent(jToolBar1, GroupLayout.DEFAULT_SIZE, 450,
+						Short.MAX_VALUE).addComponent(jScrollPane1,
+						GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+				.addComponent(scrollPane, Alignment.TRAILING,
+						GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(
+						layout.createSequentialGroup().addComponent(jToolBar1,
+								GroupLayout.PREFERRED_SIZE, 25,
+								GroupLayout.PREFERRED_SIZE).addPreferredGap(
+								ComponentPlacement.RELATED).addComponent(
+								jScrollPane1, GroupLayout.PREFERRED_SIZE, 208,
+								GroupLayout.PREFERRED_SIZE).addPreferredGap(
+								ComponentPlacement.RELATED).addComponent(
+								scrollPane, GroupLayout.DEFAULT_SIZE, 55,
+								Short.MAX_VALUE)));
+
 		table_1 = new javax.swing.JTable();
 		table_1.setModel(new NodeStructureTableModel2());
 		scrollPane.setViewportView(table_1);
-		
-		//scrollPane.setRowHeaderView(table_1);
+
+		// scrollPane.setRowHeaderView(table_1);
 		this.setLayout(layout);
 
 		table = new javax.swing.JTable();
@@ -192,8 +197,8 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 	private class NodeStructureTableModel extends AbstractTableModel {
 
 		/**
- * 
- */
+		 * 
+		 */
 		private static final long serialVersionUID = 3902918248689475445L;
 		private String[] columNames = { "Coalition", "Activation",
 				"AttentionCodelet", "Coalition nodes", "Sought content" };
@@ -218,16 +223,16 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			
-			if(coalitions.size()==0 ){				
+
+			if (coalitions.size() == 0) {
 				return null;
 			}
-			
+
 			Coalition coal = null;
 			if (rowIndex > coalitions.size() || columnIndex > columNames.length
 					|| rowIndex < 0 || columnIndex < 0) {
 				return null;
-			}			
+			}
 
 			// Collection<Coalition> coals = coalitions.getNodes();
 			Iterator<Coalition> it = coalitions.iterator();
@@ -277,7 +282,7 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 		 */
 		private static final long serialVersionUID = 3902918248689475445L;
 		private String[] columNames = { "Last Broadcast", "Activation",
-				 "Broadcast nodes" };
+				"Broadcast nodes", "Broadcast Trigger" };
 
 		@Override
 		public int getColumnCount() {
@@ -299,29 +304,30 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
-			
-			if (rowIndex > 1 || columnIndex > columNames.length
-					|| rowIndex < 0 || columnIndex < 0 || broadcastContent==null) {
+
+			if (rowIndex > 1 || columnIndex > columNames.length || rowIndex < 0
+					|| columnIndex < 0 || broadcastContent == null) {
 				return null;
 			}
-				
-			
+
 			switch (columnIndex) {
 			case 0:
 				return broadcastContent.hashCode();
-			case 1:
-				{					 
-					return winnerCoalActivation;					
-				}
+			case 1: {
+				return winnerCoalActivation;
+			}
 			case 2: {
-				Collection<Node> nodes =  broadcastContent.getNodes();
+				Collection<Node> nodes = broadcastContent.getNodes();
 				String nodesString = "";
 				for (Node n : nodes) {
 					nodesString = nodesString + n.getLabel() + "; ";
 				}
 				return nodesString;
 
-			}			
+			}
+			case 3: {
+				return lastBroadcastTrigger.getClass().getSimpleName();
+			}
 			default:
 				return "";
 			}
@@ -329,7 +335,6 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 		}
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void display(Object o) {
@@ -350,8 +355,11 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		broadcastContent = (NodeStructure) bc;	
-		winnerCoalActivation = (Double)module.getModuleContent("winnerCoalActivation");
+		broadcastContent = (NodeStructure) bc;
+		winnerCoalActivation = (Double) module
+				.getModuleContent("winnerCoalActivation");
+		lastBroadcastTrigger = (BroadcastTrigger) module
+				.getModuleContent("lastBroadcastTrigger");
 	}
 
 }

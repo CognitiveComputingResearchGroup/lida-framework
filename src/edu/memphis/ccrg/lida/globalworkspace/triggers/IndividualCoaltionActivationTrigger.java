@@ -32,7 +32,7 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 			if(c.getActivation()>threshold){
 				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getCurrentTick());
 
-				gw.triggerBroadcast();
+				gw.triggerBroadcast(this);
 				break;
 			}
 		}

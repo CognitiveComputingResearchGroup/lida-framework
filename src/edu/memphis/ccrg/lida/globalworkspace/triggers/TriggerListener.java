@@ -20,7 +20,8 @@ public interface TriggerListener {
 	
 	/**
 	 * Listener must be able to trigger a broadcast
+	 * @param trigger that wants to start the broadcast
 	 */
-	public void triggerBroadcast();
+	public void triggerBroadcast(BroadcastTrigger trigger);
 
 }

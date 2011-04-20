@@ -142,7 +142,7 @@ public class GlobalWorkspaceImplTest {
 		gw.setAssistingTaskSpawner(ts);
 		gw.addBroadcastListener(listener);
 
-		gw.triggerBroadcast();
+		gw.triggerBroadcast(null);
 	}
 
 }

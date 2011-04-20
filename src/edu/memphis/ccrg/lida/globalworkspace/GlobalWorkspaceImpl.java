@@ -48,6 +48,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	private static final double LOWER_ACTIVATION_BOUND = 0.0;
 	
 	private double winnerCoalActivation;
+	private BroadcastTrigger lastBroadcastTrigger;
 
 	public GlobalWorkspaceImpl() {
 	}
@@ -106,9 +107,15 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	}
 	
 	@Override
-	public void triggerBroadcast() {
+	public void triggerBroadcast(BroadcastTrigger trigger) {
 		if (broadcastStarted.compareAndSet(false, true)) {
-			sendBroadcast();
+			
+			boolean broadcastSent;
+			broadcastSent = sendBroadcast();
+			
+			if (broadcastSent == true){
+				lastBroadcastTrigger = trigger;				
+			}
 		}
 	}
 
@@ -124,7 +131,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	 * The reset() method is invoked on each trigger at the end of this method.
 	 * 
 	 */	
-	private void sendBroadcast() {
+	private boolean sendBroadcast() {
 		logger.log(Level.FINE, "Triggering broadcast",
 				LidaTaskManager.getCurrentTick());
 		Coalition coal = chooseCoalition();
@@ -138,13 +145,20 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			}
 //			FrameworkGuiEvent ge = new TaskCountEvent(
 //					ModuleName.GlobalWorkspace, coalitions.size() + "");
-//			sendEventToGui(ge);
-		}
-		logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
-				LidaTaskManager.getCurrentTick());
+//			sendEventToGui(ge);			
+			
+			logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
+					LidaTaskManager.getCurrentTick());
 
-		resetTriggers();
-		broadcastStarted.set(false);
+			resetTriggers();
+			broadcastStarted.set(false);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 
 	private Coalition chooseCoalition() {
@@ -192,6 +206,8 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			for(int i=0;i<params.length;i++){
 				if(params[i]=="winnerCoalActivation")
 					return winnerCoalActivation;
+				if(params[i]=="lastBroadcastTrigger")
+					return lastBroadcastTrigger;
 			}			
 		}
 		return Collections.unmodifiableCollection(coalitions);

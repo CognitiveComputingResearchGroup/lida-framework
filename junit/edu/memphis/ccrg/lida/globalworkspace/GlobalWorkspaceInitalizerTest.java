@@ -90,8 +90,7 @@ public class GlobalWorkspaceInitalizerTest {
 		globalWksp.setAssistingTaskSpawner(ts);
 		globalWksp.addBroadcastListener(listener);
 		initializer.initModule(globalWksp, lida, params);
-
-		globalWksp.triggerBroadcast();
+		globalWksp.triggerBroadcast(null);
 	}
 
 }

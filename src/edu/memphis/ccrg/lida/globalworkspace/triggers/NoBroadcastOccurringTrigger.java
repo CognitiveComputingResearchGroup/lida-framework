@@ -81,7 +81,7 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	 */
 	@Override
 	public void start() {
-		task=new TriggerTask(delay,gw,name);
+		task=new TriggerTask(delay,gw,name,this);
 		gw.getAssistingTaskSpawner().addTask(task);
 	}
 
