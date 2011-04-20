@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
@@ -47,7 +47,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	
 	private GlobalWorkspace globalWorkspace;
 
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static ElementFactory factory = ElementFactory.getInstance();
 
 	private String defaultCodeletName;
 

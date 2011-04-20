@@ -13,7 +13,7 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
@@ -32,7 +32,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	private static final Logger logger = Logger.getLogger(LearnableImpl.class.getCanonicalName());
-	private static final LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static final ElementFactory factory = ElementFactory.getInstance();
 	
 	private double baseLevelActivation;
 	private ExciteStrategy baseLevelExciteStrategy;

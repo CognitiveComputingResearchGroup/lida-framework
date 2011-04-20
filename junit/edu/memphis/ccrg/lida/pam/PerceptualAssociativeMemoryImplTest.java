@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockDetectionAlgorithm;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -57,10 +57,10 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	private TotalActivationStrategy tas;
 	private PamLinkImpl link1,link2;
 	
-	private static LidaElementFactory factory;
+	private static ElementFactory factory;
 	
 	static{
-		factory = LidaElementFactory.getInstance();
+		factory = ElementFactory.getInstance();
 		LidaFactoriesXMLLoader factoryLoader = new LidaFactoriesXMLLoader();
 		Properties prop = ConfigUtils.loadProperties(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);

@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
@@ -51,7 +51,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	private void initLearnable() {
 		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
 		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
-		LidaElementFactory factory = LidaElementFactory.getInstance();
+		ElementFactory factory = ElementFactory.getInstance();
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
 		
@@ -70,7 +70,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	@Override
 	public void init(){
-		LidaElementFactory factory = LidaElementFactory.getInstance();
+		ElementFactory factory = ElementFactory.getInstance();
 		
 	    String strategyName = (String)getParam("baseLevelDecayStrategy","pamDefaultDecay");
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));

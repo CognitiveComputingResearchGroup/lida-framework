@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -43,7 +43,7 @@ public class AttentionCodeletModuleTest {
 	NodeStructure ns;
 	TaskSpawner taskSpawner;
 	MockAttentionCodeletImpl codelet;
-	LidaElementFactory factory = LidaElementFactory.getInstance();
+	ElementFactory factory = ElementFactory.getInstance();
 
 	@Before
 	public void setUp() throws Exception {

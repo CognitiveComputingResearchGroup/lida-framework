@@ -24,7 +24,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
@@ -42,14 +42,14 @@ public class LidaFactoriesXMLLoader {
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaFactories.xsd";
 	private static final Logger logger = Logger.getLogger(LidaFactoriesXMLLoader.class.getCanonicalName());
 	private Document dom;
-	private static LidaElementFactory nfactory = LidaElementFactory.getInstance();
+	private static ElementFactory nfactory = ElementFactory.getInstance();
 	private Map<String, StrategyDef> strategies;
 	private Map<String, LinkableDef> nodes;
 	private Map<String, LinkableDef> links;
 	private Map<String, CodeletDef> codelets;
 
 	/**
-	 * Loads {@link LidaElementFactory} with object types specified in {@link Properties}
+	 * Loads {@link ElementFactory} with object types specified in {@link Properties}
 	 * @param properties {@link Properties}
 	 */
 	public void loadFactoriesData(Properties properties) {

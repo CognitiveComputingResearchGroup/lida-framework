@@ -47,7 +47,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Standard factory for new objects. Used to create copies when adding
 	 * linkables to this NodeStructure
 	 */
-	private static LidaElementFactory factory = LidaElementFactory
+	private static ElementFactory factory = ElementFactory
 			.getInstance();
 
 	/*

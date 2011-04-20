@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
@@ -55,7 +55,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 
 	private List<FrameworkGuiEventListener> guis;
 
-	private static LidaElementFactory factory = LidaElementFactory
+	private static ElementFactory factory = ElementFactory
 			.getInstance();
 
 	private String defaultCodeletName;

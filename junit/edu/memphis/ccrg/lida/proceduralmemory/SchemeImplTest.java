@@ -7,7 +7,7 @@ import org.junit.Before;
 import edu.memphis.ccrg.lida.actionselection.LidaAction;
 import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -18,7 +18,7 @@ public class SchemeImplTest extends TestCase {
 	private LidaAction a;
 	private Node node1, node2, node3;
 	
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static ElementFactory factory = ElementFactory.getInstance();
 	
 	@Override
 	@Before

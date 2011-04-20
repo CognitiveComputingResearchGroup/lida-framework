@@ -29,15 +29,15 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 
 /**
- * Standard factory for the basic element of the framework. Support for
+ * Standard factory for the basic elements of the framework. Support for
  * {@link Node}s, {@link Link}s, {@link Codelet}s, and {@link NodeStructure}s
  * 
  * @author Javier Snaider, Ryan McCall
  */
-public class LidaElementFactory {
+public class ElementFactory {
 
 	private static final Logger logger = Logger
-			.getLogger(LidaElementFactory.class.getCanonicalName());
+			.getLogger(ElementFactory.class.getCanonicalName());
 
 	/**
 	 * Used to assign unique IDs to elements.
@@ -112,7 +112,7 @@ public class LidaElementFactory {
 	/**
 	 * Sole instance of this class that will be used.
 	 */
-	private static LidaElementFactory instance = new LidaElementFactory();
+	private static ElementFactory instance = new ElementFactory();
 
 	/**
 	 * Name of decay strategy type
@@ -127,15 +127,15 @@ public class LidaElementFactory {
 	 * @see LidaFactories.xsd
 	 */
 	private static final String exciteStrategyType = "excite";
-	//TODO enum?
 	
-	/**
-	 * Name of transmit strategy type
-	 * 
-	 * @see LidaFactories.xsd
-	 */
-	@SuppressWarnings("unused")
-	private static final String transmitStrategyType = "transmit";
+	//TODO not used
+//	/**
+//	 * Name of transmit strategy type
+//	 * 
+//	 * @see LidaFactories.xsd
+//	 */
+//	@SuppressWarnings("unused")
+//	private static final String transmitStrategyType = "transmit";
 
 	/**
 	 * Returns the sole instance of this factory. Implements the Singleton
@@ -143,7 +143,7 @@ public class LidaElementFactory {
 	 * 
 	 * @return NodeFactory sole instance of this class
 	 */
-	public static LidaElementFactory getInstance() {
+	public static ElementFactory getInstance() {
 		return instance;
 	}
 
@@ -151,7 +151,7 @@ public class LidaElementFactory {
 	 * Creates the Factory and adds default Node, Link and Strategies to the
 	 * Maps in the Factory.
 	 */
-	private LidaElementFactory() {
+	private ElementFactory() {
 		defaultNodeType = NodeImpl.class.getSimpleName();
 		defaultNodeClassName = NodeImpl.class.getCanonicalName();
 		addNodeType(defaultNodeType, defaultNodeClassName);

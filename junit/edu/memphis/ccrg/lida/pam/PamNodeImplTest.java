@@ -15,14 +15,14 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 
 /**
  * @author Siminder Kaur, Ryan McCall
  */
 public class PamNodeImplTest extends TestCase{
 	
-	private LidaElementFactory factory = LidaElementFactory.getInstance();	
+	private ElementFactory factory = ElementFactory.getInstance();	
 	private PamNodeImpl node1;
 	private PamNodeImpl node2;
 	

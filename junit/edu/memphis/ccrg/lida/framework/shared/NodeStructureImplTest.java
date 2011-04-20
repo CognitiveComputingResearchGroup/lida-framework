@@ -39,10 +39,10 @@ public class NodeStructureImplTest extends TestCase{
 	private Link link1, link2, link3;	
 	private PamNode category1, category2;	
 	private NodeStructureImpl ns1, ns2, ns3;
-	private static LidaElementFactory factory;
+	private static ElementFactory factory;
 	
 	static{
-		factory = LidaElementFactory.getInstance();
+		factory = ElementFactory.getInstance();
 		LidaFactoriesXMLLoader factoryLoader = new LidaFactoriesXMLLoader();
 		Properties prop = ConfigUtils.loadProperties(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);

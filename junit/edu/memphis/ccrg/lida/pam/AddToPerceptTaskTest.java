@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -30,7 +30,7 @@ public class AddToPerceptTaskTest extends TestCase{
 	private PamNode nodeA, nodeB;
 	private MockPAM pam;
 	
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private ElementFactory factory = ElementFactory.getInstance();
 
 	/**
 	 * @throws java.lang.Exception e

@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -34,8 +34,8 @@ public class ActivatibleImpl implements Activatible {
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	public ActivatibleImpl() {
-		decayStrategy = LidaElementFactory.getInstance().getDefaultDecayStrategy();
-		exciteStrategy = LidaElementFactory.getInstance().getDefaultExciteStrategy();
+		decayStrategy = ElementFactory.getInstance().getDefaultDecayStrategy();
+		exciteStrategy = ElementFactory.getInstance().getDefaultExciteStrategy();
 	}
 	
 	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy eb, DecayStrategy db) {

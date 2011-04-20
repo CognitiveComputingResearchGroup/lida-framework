@@ -12,7 +12,7 @@ import java.util.Collection;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -27,7 +27,7 @@ public class BasicTranslator implements Translator {
 
 	private int size;
 	private PerceptualAssociativeMemory pam;
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();;
+	private static ElementFactory factory = ElementFactory.getInstance();;
 	
 
 	/**

@@ -7,7 +7,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -78,7 +78,7 @@ public class StructureBuildingCodeletModuleTest {
 		sbcm.setAssociatedModule(wMoudle, null);
 		
 		//Also test for getCodelet(String)
-		LidaElementFactory factory = LidaElementFactory.getInstance();
+		ElementFactory factory = ElementFactory.getInstance();
 		factory.addCodeletType(mockStructureBuildingCodeletImpl.class.getSimpleName(), 
 				mockStructureBuildingCodeletImpl.class.getCanonicalName());
 		

@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
@@ -35,7 +35,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	private Learnable learnable;
 	
 	/**
-	 * Only {@link LidaElementFactory} should be creating this Object.
+	 * Only {@link ElementFactory} should be creating this Object.
 	 */
 	public PamLinkImpl() {
 		super();
@@ -52,7 +52,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	private void initLearnable() {
 		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
 		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
-		LidaElementFactory factory = LidaElementFactory.getInstance();
+		ElementFactory factory = ElementFactory.getInstance();
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
 	}
@@ -70,7 +70,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	 */
 	@Override
 	public void init(){
-		LidaElementFactory factory = LidaElementFactory.getInstance();
+		ElementFactory factory = ElementFactory.getInstance();
 		
 	    String strategyName = (String)getParam("baseLevelDecayStrategy","pamDefaultDecay");
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));

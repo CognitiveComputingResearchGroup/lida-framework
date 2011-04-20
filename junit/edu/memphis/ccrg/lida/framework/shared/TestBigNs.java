@@ -14,7 +14,7 @@ public class TestBigNs {
 	}
 	
 	private NodeStructure ns;
-	private static LidaElementFactory factory = LidaElementFactory.getInstance();
+	private static ElementFactory factory = ElementFactory.getInstance();
 	private int idCounter = 0;
 	private int categoryIdCounter = 0;
 	private Random random;

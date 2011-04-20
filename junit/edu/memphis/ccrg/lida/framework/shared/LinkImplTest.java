@@ -30,7 +30,7 @@ public class LinkImplTest extends TestCase{
 	private LinkImpl link1,link2,link3;	
 	private	PamLinkImpl pamLink1;
 	private LinkCategory linktype1;	
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private ElementFactory factory = ElementFactory.getInstance();
 
 	/**
 	 * This method is called before running each test case to initialize the objects

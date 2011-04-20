@@ -27,7 +27,7 @@ public class NodeImplTest extends TestCase{
 	private NodeImpl node1,node2;
 	private PamNodeImpl pamNode1,pamNode2;
 	
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private ElementFactory factory = ElementFactory.getInstance();
 	
 	/**
 	 * This method is called before running each test case to initialize the objects

@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.pam;
 import junit.framework.TestCase;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
@@ -23,7 +23,7 @@ public class PropagationTaskTest extends TestCase{
 	 * Used to make another excitation call
 	 */
 	private MockPAM pam;
-	private LidaElementFactory factory = LidaElementFactory.getInstance();
+	private ElementFactory factory = ElementFactory.getInstance();
 	/*
 	 * For threshold task creation
 	 */
@@ -32,8 +32,8 @@ public class PropagationTaskTest extends TestCase{
 	@Override
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
-		source =  (PamNode) LidaElementFactory.getInstance().getNode("PamNodeImpl");
-		sink   =  (PamNode) LidaElementFactory.getInstance().getNode("PamNodeImpl");
+		source =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
+		sink   =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
 		link  = (PamLink) factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.NONE);
 		 
 		pam = new MockPAM();

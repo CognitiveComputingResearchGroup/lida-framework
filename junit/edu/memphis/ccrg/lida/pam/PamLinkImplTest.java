@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  */
 public class PamLinkImplTest extends TestCase{
 	
-	private LidaElementFactory  factory = LidaElementFactory.getInstance();
+	private ElementFactory  factory = ElementFactory.getInstance();
 	private Node node1;
 	private Node node2;
 	private LinkCategory linkCategory;

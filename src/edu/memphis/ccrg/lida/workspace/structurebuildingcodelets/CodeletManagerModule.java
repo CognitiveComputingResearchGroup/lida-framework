@@ -3,7 +3,7 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
@@ -30,7 +30,7 @@ public interface CodeletManagerModule extends LidaModule{
 	 * Returns a new {@link Codelet} of the specified type or null if this type is 
 	 * not supported.
 	 * @param type Codelet type
-	 * @see LidaElementFactory
+	 * @see ElementFactory
 	 * @return new Codelet of specified type or null if type is not supported
 	 */
 	public Codelet getCodelet(String type);
@@ -54,7 +54,7 @@ public interface CodeletManagerModule extends LidaModule{
 	/**
 	 * Sets default codelet type used by this Manager.
 	 * @param type Codelet type
-	 * @see LidaElementFactory
+	 * @see ElementFactory
 	 */
 	public void setDefaultCodeletType(String type);
 
