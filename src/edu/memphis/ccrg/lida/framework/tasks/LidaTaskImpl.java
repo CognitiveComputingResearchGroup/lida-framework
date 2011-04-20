@@ -29,7 +29,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	private int ticksPerStep = defaultTicksPerStep;
 	private long taskID;
 	private long nextExcecutionTicksPerStep = defaultTicksPerStep;
-	protected LidaTaskStatus status = LidaTaskStatus.WAITING;
+	protected TaskStatus status = TaskStatus.WAITING;
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner controllingTS;
 	private long scheduledTick;
@@ -99,8 +99,8 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	protected abstract void runThisLidaTask();
 
 	@Override
-	public synchronized void setTaskStatus(LidaTaskStatus status) {
-		if (this.status != LidaTaskStatus.CANCELED){
+	public synchronized void setTaskStatus(TaskStatus status) {
+		if (this.status != TaskStatus.CANCELED){
 			this.status = status;
 		}else {
 			logger.log(Level.WARNING, "Cannot set task status to CANCELED", LidaTaskManager.getCurrentTick());
@@ -108,7 +108,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 	}
 
 	@Override
-	public LidaTaskStatus getStatus() {
+	public TaskStatus getStatus() {
 		return status;
 	}
 
@@ -135,7 +135,7 @@ public abstract class LidaTaskImpl extends LearnableImpl implements LidaTask {
 
 	@Override
 	public void stopRunning() {
-		setTaskStatus(LidaTaskStatus.CANCELED);
+		setTaskStatus(TaskStatus.CANCELED);
 	}
 	
 	@Override

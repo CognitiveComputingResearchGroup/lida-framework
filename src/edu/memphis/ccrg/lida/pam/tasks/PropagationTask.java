@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.pam.tasks;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -83,7 +83,7 @@ public class PropagationTask extends LidaTaskImpl {
 			taskSpawner.addTask(task);
 		}
 		pam.propagateActivationToParents(sink);
-		setTaskStatus(LidaTaskStatus.FINISHED);
+		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
 	@Override

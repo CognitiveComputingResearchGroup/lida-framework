@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
@@ -53,7 +53,7 @@ public class TriggerTask extends LidaTaskImpl {
 	protected void runThisLidaTask() {
 		logger.log(Level.FINE, name, LidaTaskManager.getCurrentTick());
 		gw.triggerBroadcast(trigger);
-		setTaskStatus(LidaTaskStatus.FINISHED);
+		setTaskStatus(TaskStatus.FINISHED);
 	}
 
 	@Override

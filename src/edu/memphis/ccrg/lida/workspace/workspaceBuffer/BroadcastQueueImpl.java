@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -79,7 +79,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 			while (broadcastQueue.size() > broadcastQueueCapacity) {
 				broadcastQueue.poll();// remove oldest
 			}
-			setTaskStatus(LidaTaskStatus.FINISHED);
+			setTaskStatus(TaskStatus.FINISHED);
 		}
 		@Override
 		public String toString() {

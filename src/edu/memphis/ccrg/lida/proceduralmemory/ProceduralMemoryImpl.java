@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
@@ -157,7 +157,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 		@Override
 		protected void runThisLidaTask() {
 			activateSchemes(broadcast);			
-			setTaskStatus(LidaTaskStatus.FINISHED);
+			setTaskStatus(TaskStatus.FINISHED);
 		}	
 		@Override
 		public String toString() {

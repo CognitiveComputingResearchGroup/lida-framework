@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -112,7 +112,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 		@Override
 		protected void runThisLidaTask() {
 			learn((BroadcastContent) broadcast);
-			setTaskStatus(LidaTaskStatus.FINISHED);
+			setTaskStatus(TaskStatus.FINISHED);
 		}
 		@Override
 		public String toString() {

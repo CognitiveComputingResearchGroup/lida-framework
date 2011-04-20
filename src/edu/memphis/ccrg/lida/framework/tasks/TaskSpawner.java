@@ -45,7 +45,7 @@ public interface TaskSpawner extends Initializable {
 		
 	/**
 	 * This method receives a task  that has finished. TaskSpawners can choose what to do 
-	 * with the LidaTask each time it finishes running. Generally the LidaTask's {@link LidaTaskStatus}
+	 * with the LidaTask each time it finishes running. Generally the LidaTask's {@link TaskStatus}
 	 * determines this action.
 	 * 
 	 * @param task finished {@link LidaTask}

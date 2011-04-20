@@ -12,7 +12,7 @@ package edu.memphis.ccrg.lida.framework.tasks;
  * @author Javier Snaider
  *
  */
-public enum LidaTaskStatus {
+public enum TaskStatus {
 	
 	/**
 	 * LidaTask status value:

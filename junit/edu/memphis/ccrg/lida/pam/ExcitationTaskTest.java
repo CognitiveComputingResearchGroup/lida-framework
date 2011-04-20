@@ -7,7 +7,7 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 
@@ -41,7 +41,7 @@ public class ExcitationTaskTest extends TestCase {
 		excite.call();
 		assertTrue(pamNode.getActivation() == 0.5);
 		assertTrue(pam.testGetSink().getActivation() == 0.5);
-		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
 	 
 	}
 	
@@ -59,7 +59,7 @@ public class ExcitationTaskTest extends TestCase {
 			assertTrue(tsk instanceof AddToPerceptTask);
 		}
 		 
-		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
 	 
 	}
 

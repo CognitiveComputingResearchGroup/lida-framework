@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -76,7 +76,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	@Override
 	protected void runThisLidaTask() {		
 		pam.addNodeStructureToPercept(nodeStructure);	
-		setTaskStatus(LidaTaskStatus.FINISHED);
+		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
 	/* (non-Javadoc)

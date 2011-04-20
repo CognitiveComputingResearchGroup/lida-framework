@@ -36,7 +36,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
@@ -313,7 +313,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		@Override
 		protected void runThisLidaTask() {
 			learn((BroadcastContent) broadcast);
-			setTaskStatus(LidaTaskStatus.FINISHED);
+			setTaskStatus(TaskStatus.FINISHED);
 		}
 		@Override
 		public String toString() {

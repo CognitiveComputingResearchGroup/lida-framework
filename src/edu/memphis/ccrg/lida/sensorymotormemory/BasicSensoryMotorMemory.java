@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
 /**
@@ -102,7 +102,7 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 			}else{
 				logger.log(Level.WARNING, "could not find algorithm for action " + action,LidaTaskManager.getCurrentTick());
 			}
-			setTaskStatus(LidaTaskStatus.FINISHED);
+			setTaskStatus(TaskStatus.FINISHED);
 		}
 		@Override
 		public String toString() {

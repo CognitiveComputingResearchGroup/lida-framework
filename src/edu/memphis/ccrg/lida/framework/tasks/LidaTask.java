@@ -38,7 +38,7 @@ public interface LidaTask extends Callable<LidaTask>, Learnable, FullyInitializa
 	 * Returns status
 	 * @return current LidaTask status
 	 */
-	public LidaTaskStatus getStatus();
+	public TaskStatus getStatus();
 	
 	/**
 	 * Sets task status. Intended to be called by runThisLidaTask() 
@@ -46,7 +46,7 @@ public interface LidaTask extends Callable<LidaTask>, Learnable, FullyInitializa
 	 * cancel the task.       
 	 * @param status the new task status 
 	 */
-	public void setTaskStatus(LidaTaskStatus status);
+	public void setTaskStatus(TaskStatus status);
 
 	/**
 	 * Tells this LidaTask to shutdown.

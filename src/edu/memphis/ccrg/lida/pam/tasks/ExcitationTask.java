@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -87,7 +87,7 @@ public class ExcitationTask extends LidaTaskImpl{
 			taskSpawner.addTask(new AddToPerceptTask(pamNode, pam));		
 		}
 		pam.propagateActivationToParents(pamNode);
-		setTaskStatus(LidaTaskStatus.FINISHED);
+		setTaskStatus(TaskStatus.FINISHED);
 	}
 
 	@Override

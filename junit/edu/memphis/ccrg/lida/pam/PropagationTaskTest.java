@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.LidaElementFactory;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
 /**
@@ -56,7 +56,7 @@ public class PropagationTaskTest extends TestCase{
 		assertTrue(link.getActivation() > 0.1);
 		assertTrue(sink.getActivation() > 0.1);
 		assertTrue(source.getActivation() == 0.1);
-		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
 	 
 		assertEquals(sink, pam.testGetSink());
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());
@@ -82,7 +82,7 @@ public class PropagationTaskTest extends TestCase{
 		assertTrue(link.getActivation() > 0.1);
 		assertTrue(sink.getActivation() > 0.1);
 		assertTrue(source.getActivation() == 0.1);
-		assertTrue(LidaTaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
 	 
 		assertEquals(sink, pam.testGetSink());
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());

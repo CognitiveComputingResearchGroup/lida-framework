@@ -58,7 +58,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 
 	@Override
 	public void addTask(LidaTask task) {
-		task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
+		task.setTaskStatus(TaskStatus.WAITING_TO_RUN);
 		task.setControllingTaskSpawner(this);
 		runningTasks.add(task);
 		runTask(task);
@@ -74,7 +74,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	protected void runTask(LidaTask task) {
 		logger.log(Level.FINEST, "Running task {1}", new Object[] {
 				LidaTaskManager.getCurrentTick(), task });
-		task.setTaskStatus(LidaTaskStatus.RUNNING);
+		task.setTaskStatus(TaskStatus.RUNNING);
 		taskManager.scheduleTask(task, task.getNextTicksPerStep());
 	}
 
@@ -101,7 +101,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		case RUNNING:
 			logger.log(Level.FINEST, "RUNNING",
 					new Object[] { LidaTaskManager.getCurrentTick(), task });
-			task.setTaskStatus(LidaTaskStatus.WAITING_TO_RUN);
+			task.setTaskStatus(TaskStatus.WAITING_TO_RUN);
 			runTask(task);
 			break;
 		}

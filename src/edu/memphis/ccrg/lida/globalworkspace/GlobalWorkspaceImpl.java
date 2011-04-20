@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskStatus;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /**
@@ -235,7 +235,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			for (BroadcastTrigger t : broadcastTriggers) {
 				t.start();
 			}
-			setTaskStatus(LidaTaskStatus.FINISHED); // Runs only once
+			setTaskStatus(TaskStatus.FINISHED); // Runs only once
 		}
 
 		@Override
