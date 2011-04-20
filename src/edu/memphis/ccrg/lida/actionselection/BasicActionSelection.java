@@ -161,7 +161,6 @@ public class BasicActionSelection extends LidaModuleImpl implements
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		// TODO
 	}
 
 	@Override
