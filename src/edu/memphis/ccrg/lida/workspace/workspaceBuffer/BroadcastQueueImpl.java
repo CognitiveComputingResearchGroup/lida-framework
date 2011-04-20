@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * 
  * @author Ryan J McCall
  */
-public class BroadcastQueueImpl extends LidaModuleImpl implements
+public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 		WorkspaceBuffer, BroadcastListener {
 
 	private static final Logger logger = Logger
@@ -64,7 +64,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 		}
 	}
 
-	private class ProcessBroadcastTask extends LidaTaskImpl {
+	private class ProcessBroadcastTask extends FrameworkTaskImpl {
 		private NodeStructure broadcast;
 
 		public ProcessBroadcastTask(NodeStructure broadcast) {
@@ -73,7 +73,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 		}
 
 		@Override
-		protected synchronized void runThisLidaTask() {
+		protected synchronized void runThisFrameworkTask() {
 			broadcastQueue.offer(broadcast);
 			// Keep the buffer at a fixed size
 			while (broadcastQueue.size() > broadcastQueueCapacity) {
@@ -108,7 +108,7 @@ public class BroadcastQueueImpl extends LidaModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
-		logger.log(Level.FINER, "Decaying Broadcast Queue", LidaTaskManager
+		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
 				.getCurrentTick());
 		synchronized(this){
 			for (NodeStructure ns : broadcastQueue) {

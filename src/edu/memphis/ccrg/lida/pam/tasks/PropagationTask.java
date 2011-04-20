@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLink;
@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * @author Ryan J McCall
  *
  */
-public class PropagationTask extends LidaTaskImpl {
+public class PropagationTask extends FrameworkTaskImpl {
 		
 	private PamNode source;
 	private PamNode sink;
@@ -68,7 +68,7 @@ public class PropagationTask extends LidaTaskImpl {
 	}
 
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		link.excite(excitationAmount);
 		sink.excite(excitationAmount);
 		if(pam.isOverPerceptThreshold(link) && 

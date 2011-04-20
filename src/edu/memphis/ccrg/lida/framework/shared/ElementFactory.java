@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -347,7 +347,7 @@ public class ElementFactory {
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
 			logger.log(Level.WARNING, "Strategy " + defaultExciteType
-					+ " does not exist. Default used instead.", LidaTaskManager
+					+ " does not exist. Default used instead.", TaskManager
 					.getCurrentTick());
 		}
 		d = (DecayStrategy) sd.getInstance();
@@ -367,7 +367,7 @@ public class ElementFactory {
 		if (sd == null) {
 			sd = exciteStrategies.get(defaultExciteType);
 			logger.log(Level.WARNING, "Strategy " + name
-					+ " does not exist. Default used instead.", LidaTaskManager
+					+ " does not exist. Default used instead.", TaskManager
 					.getCurrentTick());
 		}
 		d = (ExciteStrategy) sd.getInstance();
@@ -422,7 +422,7 @@ public class ElementFactory {
 //		LinkableDef linkDef = linkClasses.get(linkT);		
 //		if (linkDef == null) {
 //			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.", 
-//						LidaTaskManager.getCurrentTick());
+//						TaskManager.getCurrentTick());
 //			return null;
 //		}
 //		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
@@ -490,12 +490,12 @@ public class ElementFactory {
 						Node source, Linkable sink, LinkCategory category) {
 		LinkableDef requiredDef = linkClasses.get(requiredType);
 		if(requiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain link type: " + requiredType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain link type: " + requiredType, TaskManager.getCurrentTick());
 			return null;
 		}
 		LinkableDef desiredDef = linkClasses.get(desiredType);
 		if(desiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain link type: " + desiredType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain link type: " + desiredType, TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -533,7 +533,7 @@ public class ElementFactory {
 		LinkableDef linkDef = linkClasses.get(linkT);
 		if (linkDef == null) {
 			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -577,17 +577,17 @@ public class ElementFactory {
 		
 		if(source == null){
 			logger.log(Level.WARNING, "Cannot create a link with a null source.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		if(sink == null){
 			logger.log(Level.WARNING, "Cannot create a link with a null sink.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		if(category == null){
 			logger.log(Level.WARNING, "Cannot create a link with a null category.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -596,7 +596,7 @@ public class ElementFactory {
 			LinkableDef linkDef = linkClasses.get(linkT);
 			if (linkDef == null) {
 				logger.log(Level.WARNING, "LinkName " + linkT
-						+ " does not exist.", LidaTaskManager.getCurrentTick());
+						+ " does not exist.", TaskManager.getCurrentTick());
 				return null;
 			}
 
@@ -611,13 +611,13 @@ public class ElementFactory {
 			link.init(linkDef.getParams());
 
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating Link.", TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating Link.", TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Link.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating Link.", TaskManager
 					.getCurrentTick());
 		}
 		return link;
@@ -661,13 +661,13 @@ public class ElementFactory {
 	 */
 	public Node getNode(Node oNode, String nodeType) {
 		if(oNode == null){
-			logger.log(Level.WARNING, "Supplied node is null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Supplied node is null", TaskManager.getCurrentTick());
 			return null;
 		}		
 		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
-					+ " does not exist.", LidaTaskManager.getCurrentTick());
+					+ " does not exist.", TaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -692,12 +692,12 @@ public class ElementFactory {
 	public Node getNode(String requiredType, Node oNode, String desiredType) {
 		LinkableDef requiredDef = nodeClasses.get(requiredType);
 		if(requiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain node type: " + requiredType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type: " + requiredType, TaskManager.getCurrentTick());
 			return null;
 		}
 		LinkableDef desiredDef = nodeClasses.get(desiredType);
 		if(desiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain node type: " + desiredType, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type: " + desiredType, TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -747,7 +747,7 @@ public class ElementFactory {
 	 */
 	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		if(oNode == null){
-			logger.log(Level.WARNING, "Supplied node is null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Supplied node is null", TaskManager.getCurrentTick());
 			return null;
 		}
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
@@ -786,7 +786,7 @@ public class ElementFactory {
 		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
 			logger.log(Level.WARNING, "nodeType " + nodeType
-					+ " does not exist.", LidaTaskManager.getCurrentTick());
+					+ " does not exist.", TaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -827,7 +827,7 @@ public class ElementFactory {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
 			if (nodeDef == null) {
 				logger.log(Level.WARNING, "NodeName " + nodeType
-						+ " does not exist.", LidaTaskManager.getCurrentTick());
+						+ " does not exist.", TaskManager.getCurrentTick());
 				return null;
 			}
 
@@ -842,13 +842,13 @@ public class ElementFactory {
 			n.init(nodeDef.getParams());
 			
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating Node.", TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating Node.", TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Node.", LidaTaskManager
+			logger.log(Level.WARNING, "Error creating Node.", TaskManager
 					.getCurrentTick());
 		}
 		return n;
@@ -876,7 +876,7 @@ public class ElementFactory {
 		if (linkClasses.containsKey(defaultLinkType)){
 			this.defaultLinkType = defaultLinkType;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain link type, so it cannot be used as default.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain link type, so it cannot be used as default.", TaskManager.getCurrentTick());
 		}
 	}
 
@@ -890,7 +890,7 @@ public class ElementFactory {
 		if (nodeClasses.containsKey(defaultNodeType)){
 			this.defaultNodeType = defaultNodeType;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain node type, so it cannot be used as default.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type, so it cannot be used as default.", TaskManager.getCurrentTick());
 		}
 	}
 	
@@ -921,7 +921,7 @@ public class ElementFactory {
 		if (decayStrategies.containsKey(defaultDecayType)) {
 			this.defaultDecayType = defaultDecayType;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain decay strategy, so it cannot be used as default.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain decay strategy, so it cannot be used as default.", TaskManager.getCurrentTick());
 		}
 	}
 
@@ -952,7 +952,7 @@ public class ElementFactory {
 		if (exciteStrategies.containsKey(defaultExciteType)){
 			this.defaultExciteType = defaultExciteType;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain excite strategy, so it cannot be used as default.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain excite strategy, so it cannot be used as default.", TaskManager.getCurrentTick());
 		}
 	}
 	
@@ -968,7 +968,7 @@ public class ElementFactory {
 		CodeletDef codeletDef = codelets.get(codeletName);		
 		if (codeletDef == null) {
 			logger.log(Level.WARNING, "Asked for codelet " + codeletName + 
-					" but factory does not have such a codelet. Check factoriesData.xml", LidaTaskManager.getCurrentTick());
+					" but factory does not have such a codelet. Check factoriesData.xml", TaskManager.getCurrentTick());
 			return null;
 		}
 		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
@@ -1007,7 +1007,7 @@ public class ElementFactory {
 			CodeletDef codeletDef = codelets.get(codeletName);
 			if (codeletDef == null) {
 				logger.log(Level.WARNING, "CodeletName " + codeletName
-						+ " does not exist.", LidaTaskManager.getCurrentTick());
+						+ " does not exist.", TaskManager.getCurrentTick());
 			}
 
 			String className = codeletDef.getClassName();
@@ -1024,13 +1024,13 @@ public class ElementFactory {
 			}
 			
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), LidaTaskManager
+			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), TaskManager
 					.getCurrentTick());
 		}
 		return codelet;
@@ -1057,7 +1057,7 @@ public class ElementFactory {
 			return getNodeStructure(PamNodeImpl.class.getSimpleName(),
 					PamLinkImpl.class.getSimpleName());
 		}
-		logger.log(Level.WARNING, "factory doesn't contain expected pam node and link types", LidaTaskManager.getCurrentTick());
+		logger.log(Level.WARNING, "factory doesn't contain expected pam node and link types", TaskManager.getCurrentTick());
 		return null;
 	}
 
@@ -1077,10 +1077,10 @@ public class ElementFactory {
 				return new NodeStructureImpl(nodeType, linkType);
 			}
 			logger.log(Level.WARNING, "Factory does not have linkType: "
-					+ linkType, LidaTaskManager.getCurrentTick());
+					+ linkType, TaskManager.getCurrentTick());
 		}
 		logger.log(Level.WARNING,
-				"Factory does not have nodeType: " + nodeType, LidaTaskManager
+				"Factory does not have nodeType: " + nodeType, TaskManager
 						.getCurrentTick());
 		return null;
 	}

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
@@ -22,11 +22,11 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 public class SensoryMemoryBackgroundTaskTest {
 
 	/*
-	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#runThisLidaTask()}.
+	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#runThisFrameworkTask()}.
 	 * @throws Exception e
 	 */
 	@Test
-	public final void testRunThisLidaTask() throws Exception {
+	public final void testRunThisTask() throws Exception {
 		
 		MockSensory mSensory = new MockSensory();
 		
@@ -35,19 +35,19 @@ public class SensoryMemoryBackgroundTaskTest {
 	    // Testing of setAssociatedModule method.
 	    st.setAssociatedModule(mSensory, ModuleUsage.NOT_SPECIFIED);
 	    
-	    // Testing of RunThisLidaTask method.
-	    st.runThisLidaTask();
+	    // Testing of RunThisFrameworkTask method.
+	    st.runThisFrameworkTask();
 	
 	}
 	
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, String)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, String)}.
 	 * @throws Exception e
 	 */
 	@Test
 	public final void testSetAssociatedModule() throws Exception {
-		//SetAssociatedModule() be tested in testRunThisLidaTask method above with testing of 
-		//RunThisLidaTask() together.
+		//SetAssociatedModule() be tested in testRunThisFrameworkTask method above with testing of 
+		//RunThisFrameworkTask() together.
 		
 	}
 
@@ -75,7 +75,7 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	public void runSensors() {
 		System.out.println("This is mock sensor.");
 	    
-		System.out.println("Step 3-1: testRunThisLidaTask() is OK");
+		System.out.println("Step 3-1: testRunThisFrameworkTask() is OK");
 		System.out.println("Step 3-2: testSetAssociatedModule() is OK");
 		
 	}
@@ -93,13 +93,13 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public LidaModule getSubmodule(ModuleName name) {
+	public FrameworkModule getSubmodule(ModuleName name) {
 		// not implemented
 		return null;
 	}
 
 	@Override
-	public void addSubModule(LidaModule lm) {
+	public void addSubModule(FrameworkModule lm) {
 		// not implemented
 		
 	}
@@ -135,7 +135,7 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		// not implemented
 		
 	}
@@ -183,7 +183,7 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public LidaModule getSubmodule(String name) {
+	public FrameworkModule getSubmodule(String name) {
 		// not implemented
 		return null;
 	}

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Encapsulation of the name of a {@link LidaModule}.  Provides several public-static instances by default. 
+ * Encapsulation of the name of a {@link FrameworkModule}.  Provides several public-static instances by default. 
  * @author Javier Snaider, Ryan J. McCall
  *
  */
@@ -95,5 +95,5 @@ public class ModuleName {
 
 	public final static ModuleName AllModules = new ModuleName("AllModules");
 	public final static ModuleName NoModule = new ModuleName("NoModule");
-	public final static ModuleName LIDA = new ModuleName("LIDA");
+	public final static ModuleName Agent = new ModuleName("Agent");
 }

@@ -17,14 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * elements for quick access.
  *
  */
-public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMemory, BroadcastListener {
+public class ProceduralMemoryImpl extends FrameworkModuleImpl implements ProceduralMemory, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
 
@@ -83,7 +83,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 			proceduralMemoryListeners.add((ProceduralMemoryListener) listener);
 		}else{
 			logger.log(Level.WARNING, "Try to add wrong listener type", 
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -134,13 +134,13 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	
 	@Override
 	public void activateSchemes(NodeStructure broadcast) {
-		logger.log(Level.FINEST, "Procedural memory activates schemes", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Procedural memory activates schemes", TaskManager.getCurrentTick());
 		schemeActivationBehavior.activateSchemesWithBroadcast(broadcast, contextSchemeMap);
 	}
 	
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		logger.log(Level.FINEST, "Procedural memory receives broadcast", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Procedural memory receives broadcast", TaskManager.getCurrentTick());
 		synchronized (this) {
 			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
 			taskSpawner.addTask(task);
@@ -148,14 +148,14 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	}
 	
 	//inner class
-	private class ProcessBroadcastTask extends LidaTaskImpl{		
+	private class ProcessBroadcastTask extends FrameworkTaskImpl{		
 		private NodeStructure broadcast;
 		public ProcessBroadcastTask(NodeStructure broadcast) {
 			super();
 			this.broadcast = broadcast;
 		}
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			activateSchemes(broadcast);			
 			setTaskStatus(TaskStatus.FINISHED);
 		}	
@@ -181,7 +181,7 @@ public class ProceduralMemoryImpl extends LidaModuleImpl implements ProceduralMe
 	@Override
 	public void sendInstantiatedScheme(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(s.getInstantiation());
 		}

@@ -29,7 +29,7 @@ public class mockStructureBuildingCodeletImpl extends BasicStructureBuildingCode
 	}
 
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		// 
 		
 	}

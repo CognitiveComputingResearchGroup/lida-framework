@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 /**
@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * {@link WorkspaceBuffer} implementation. Uses a single NodeStructure for the content.
  * @author Ryan J. McCall
  */
-public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuffer{
+public class WorkspaceBufferImpl extends FrameworkModuleImpl implements WorkspaceBuffer{
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
@@ -50,7 +50,7 @@ public class WorkspaceBufferImpl extends LidaModuleImpl implements WorkspaceBuff
 	@Override
 	public void decayModule(long ticks){
 		super.decayModule(ticks);
-		logger.log(Level.FINE, "Decaying buffer.", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Decaying buffer.", TaskManager.getCurrentTick());
 		buffer.decayNodeStructure(ticks);
 	}
 

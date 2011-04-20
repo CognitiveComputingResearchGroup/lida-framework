@@ -18,11 +18,11 @@ import edu.memphis.ccrg.lida.episodicmemory.sdm.BasicTranslator;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemory;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemoryImpl;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.Translator;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * 
  * @author Javier Snaider
  */
-public class EpisodicMemoryImpl extends LidaModuleImpl implements
+public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 		EpisodicMemory, BroadcastListener, CueListener {
 
 	private static final Logger logger = Logger
@@ -88,9 +88,9 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 			address = translator.translate(ns);
 		} catch (Exception e) {
 			if(translator == null){
-				logger.log(Level.SEVERE, "Translator is null, wasn't set up properly.", LidaTaskManager.getCurrentTick());
+				logger.log(Level.SEVERE, "Translator is null, wasn't set up properly.", TaskManager.getCurrentTick());
 			}
-			logger.log(Level.WARNING, "Translation failed.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Translation failed.", TaskManager.getCurrentTick());
 			e.printStackTrace();
 			return;
 		}
@@ -119,7 +119,7 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 		for (LocalAssociationListener l : localAssocListeners) {
 			l.receiveLocalAssociation(localAssociation);
 			logger.log(Level.FINER, "Local Association sent.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -141,7 +141,7 @@ public class EpisodicMemoryImpl extends LidaModuleImpl implements
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof PerceptualAssociativeMemory) {
 			pam = (PerceptualAssociativeMemory) module;
 			translator = new BasicTranslator(wordLength, pam);

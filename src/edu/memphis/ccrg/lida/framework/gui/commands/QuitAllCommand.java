@@ -7,8 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Stops all thread execution and quits the system.
@@ -19,8 +19,8 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 public class QuitAllCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Lida lida) {
-		LidaTaskManager tm = lida.getTaskManager();
+	public void execute(Agent lida) {
+		TaskManager tm = lida.getTaskManager();
 		tm.pauseTasks();
 		try {
 			Thread.sleep(100);

@@ -8,7 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 public class CueBackgroundTaskTest {
 
 	@Test
-	public final void testRunThisLidaTask() {
+	public final void testRunThisTask() {
 		CueBackgroundTask cbt = new CueBackgroundTask();
 		
 
@@ -75,20 +75,20 @@ public class CueBackgroundTaskTest {
 		cbt.setAssociatedModule(wMoudle, ModuleUsage.NOT_SPECIFIED);
 		
 		//Run method of target class
-		cbt.runThisLidaTask();
+		cbt.runThisFrameworkTask();
 		
 	}
 
 	@Test
 	public final void testInit() {
-		//Init() be tested in testRunThisLidaTask method above with testing of 
-		//RunThisLidaTask() together.
+		//Init() be tested in testRunThisFrameworkTask method above with testing of 
+		//RunThisFrameworkTask() together.
 	}
 
 	@Test
 	public final void testSetAssociatedModule() {
-		//SetAssociatedModule() be tested in testRunThisLidaTask method above with testing of 
-		//RunThisLidaTask() together.
+		//SetAssociatedModule() be tested in testRunThisFrameworkTask method above with testing of 
+		//RunThisFrameworkTask() together.
 	}
 
 	@Test
@@ -101,13 +101,13 @@ public class CueBackgroundTaskTest {
 
 }
 
-class mockWorkspace  extends LidaModuleImpl implements Workspace {
+class mockWorkspace  extends FrameworkModuleImpl implements Workspace {
 
 	@Override
 	public void cueEpisodicMemories(NodeStructure ns) {
 		// Node (Id = 2) is removed cause activation(0.2) < actThreshold(0.5),
 		// so here are only node (Id == 6) and node (Id == 8).
-		assertTrue("Problem with class RunThisLidaTask for testRunThisLidaTask()",
+		assertTrue("Problem with class RunThisFrameworkTask for testRunThisFrameworkTask()",
 				(ns.getNode(2) == null)&&(ns.getNode(6) != null)&&(ns.getNode(8) != null)
 				&&(ns.getNodeCount() == 2));
 		

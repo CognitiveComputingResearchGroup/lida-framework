@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * A basic algorithm to activate {@link Scheme}s given a {@link NodeStructure}
@@ -46,7 +46,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 	@Override
 	public void activateSchemesWithBroadcast(NodeStructure broadcast, Object... params) {
 		logger.log(Level.FINEST, "activating schemes from broadcast",
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		Set<Scheme> toInstantiate = new HashSet<Scheme>();
 		Map<?, Set<Scheme>> schemeMap = (Map<?, Set<Scheme>>) params[0];
 		for (Node n: broadcast.getNodes()) {

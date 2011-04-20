@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Default implementation of PamNode.  Basically a {@link Learnable} {@link Node}.
@@ -236,7 +236,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		}else if(n != null){
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
 					PamNodeImpl.class.getCanonicalName() + " but received: " + 
-					n, LidaTaskManager.getCurrentTick());
+					n, TaskManager.getCurrentTick());
 		}
 	}
 }

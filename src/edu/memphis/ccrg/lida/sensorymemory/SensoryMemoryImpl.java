@@ -13,10 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * {@link SensoryMotorMemory}.
  * @author Ryan J. McCall
  */
-public abstract class SensoryMemoryImpl extends LidaModuleImpl implements SensoryMemory {
+public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements SensoryMemory {
 
 	private static Logger logger = Logger.getLogger(SensoryMemoryImpl.class.getCanonicalName());
 	
@@ -49,14 +49,14 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
     }
 
     /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
      */
     @Override
     public void addListener(ModuleListener listener) {
         if (listener instanceof SensoryMemoryListener) {
             addSensoryMemoryListener((SensoryMemoryListener) listener);
         }else{
-        	logger.log(Level.WARNING, "Cannot add listener " + listener.toString(), LidaTaskManager.getCurrentTick());
+        	logger.log(Level.WARNING, "Cannot add listener " + listener.toString(), TaskManager.getCurrentTick());
         }
     }
     @Override
@@ -65,14 +65,14 @@ public abstract class SensoryMemoryImpl extends LidaModuleImpl implements Sensor
     }
 
     /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, int)
      */
     @Override
-    public void setAssociatedModule(LidaModule module, String moduleUsage) {
+    public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
         if (module instanceof Environment){
              environment = (Environment) module;
         }else{
-        	logger.log(Level.WARNING, "Cannot add module " + module.getModuleName(), LidaTaskManager.getCurrentTick());
+        	logger.log(Level.WARNING, "Cannot add module " + module.getModuleName(), TaskManager.getCurrentTick());
         }
     }
     

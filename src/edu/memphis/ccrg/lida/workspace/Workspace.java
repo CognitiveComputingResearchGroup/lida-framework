@@ -8,7 +8,7 @@
 package edu.memphis.ccrg.lida.workspace;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * 
  * @author Ryan J. McCall
  */
-public interface Workspace extends LidaModule{
+public interface Workspace extends FrameworkModule{
 
 	/**
 	 * Add episodic memory that will listen for cues from the Workspace

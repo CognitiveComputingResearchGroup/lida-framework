@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * Pauses all Tasks.
@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 public class PauseRunningThreadsCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Lida lida) {
+	public void execute(Agent lida) {
 		lida.getTaskManager().pauseTasks();
 	}
 }

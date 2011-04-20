@@ -20,7 +20,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import edu.memphis.ccrg.lida.framework.Lida;
 import edu.memphis.ccrg.lida.framework.Module;
-import edu.memphis.ccrg.lida.framework.gui.LidaGuiController;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 
 import javax.swing.JPanel;
@@ -34,7 +34,7 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected LidaGuiController controller;
+	protected FrameworkGuiController controller;
 	protected Lida lida;
     private Module supportedModule;
 
@@ -67,7 +67,7 @@ public abstract class LidaPanelImpl extends javax.swing.JPanel implements LidaPa
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    public void registrerLidaGuiController(LidaGuiController lgc) {
+    public void registrerGuiController(FrameworkGuiController lgc) {
         controller = lgc;
     }
 

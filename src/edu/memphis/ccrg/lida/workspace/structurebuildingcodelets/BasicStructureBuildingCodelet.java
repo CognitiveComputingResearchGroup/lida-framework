@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
@@ -28,9 +28,9 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	}
 	
 	@Override
-	protected void runThisLidaTask(){	
+	protected void runThisFrameworkTask(){	
 		logger.log(Level.FINEST, "SB codelet " + this.toString() + " being run.", 
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		for(WorkspaceBuffer readableBuffer: readableBuffers){
 			if(hasSoughtContent(readableBuffer)){
 				writableBuffer.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
@@ -39,7 +39,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 		}
 		results.reportRunResults(resultMap);
 		logger.log(Level.FINEST, "SB codelet " + this.toString() + " finishes one run.",
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 				return false;
 			}
 		}
-		logger.log(Level.FINEST, "SBcodelet " + this.toString() + " found sought content", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "SBcodelet " + this.toString() + " found sought content", TaskManager.getCurrentTick());
 		return true;
 	}
 

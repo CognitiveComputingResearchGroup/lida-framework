@@ -81,7 +81,7 @@ public class EpisodicMemoryImplTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, String)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, String)}.
 	 */
 	@Test
 	public void testSetAssociatedModule() {

@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
@@ -67,7 +67,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			this.extendedId = eid;
 			this.id = eid.getSourceNodeId();
 		}else{
-			logger.log(Level.WARNING, "Cannot give a node a Link's extended id", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot give a node a Link's extended id", TaskManager.getCurrentTick());
 		}
 	}
 
@@ -132,7 +132,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
 	 */
 	@Override
 	public void init(Map<String, ?> params) {
@@ -144,7 +144,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init()
 	 */
 	@Override
 	public void init() {

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 public class NoBroadcastOccurringTriggerTest {
 	
-	LidaTaskManager tm;
+	TaskManager tm;
 	NoBroadcastOccurringTrigger trigger;
 	Map<String, Object> parameters;
 	GlobalWorkspace gw;
@@ -30,7 +30,7 @@ public class NoBroadcastOccurringTriggerTest {
 	public void setUp() throws Exception {
 		ts = new MockTaskSpawner();
 		
-		tm = new LidaTaskManager(200,50);		
+		tm = new TaskManager(200,50);		
 		trigger = new NoBroadcastOccurringTrigger();
 		gw = new MockGlobalWorkspaceImpl();		
 		parameters = new HashMap<String, Object>();	
@@ -42,7 +42,7 @@ public class NoBroadcastOccurringTriggerTest {
 				
 		gw.setAssistingTaskSpawner(ts);	
 		
-		trigger.setLidaTaskManager(tm);		
+		trigger.setTaskManager(tm);		
 		parameters.put("name", "StartTask");	
 		parameters.put("delay", 20);	
 		trigger.init(parameters, gw);		
@@ -57,7 +57,7 @@ public class NoBroadcastOccurringTriggerTest {
 		
 		gw.setAssistingTaskSpawner(ts);	
 		
-		trigger.setLidaTaskManager(tm);		
+		trigger.setTaskManager(tm);		
 		parameters.put("name", "ResetTask");	
 		parameters.put("delay", 25);	
 		trigger.init(parameters, gw);
@@ -69,18 +69,18 @@ public class NoBroadcastOccurringTriggerTest {
 	}
 	
 	@Test
-	public void testGetLidaTaskManager() {
-		trigger.setLidaTaskManager(tm);		
-		assertEquals("Problem with GetLidaTaskManager", tm, trigger.getLidaTaskManager());
+	public void testGetTaskManager() {
+		trigger.setTaskManager(tm);		
+		assertEquals("Problem with GetTaskManager", tm, trigger.getTaskManager());
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setLidaTaskManager(edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setTaskManager(edu.memphis.ccrg.lida.framework.tasks.TaskManager)}.
 	 */
 	@Test
-	public void testSetLidaTaskManager() {
-		trigger.setLidaTaskManager(tm);		
-		assertEquals("Problem with GetLidaTaskManager", tm, trigger.getLidaTaskManager());
+	public void testSetTaskManager() {
+		trigger.setTaskManager(tm);		
+		assertEquals("Problem with GetTaskManager", tm, trigger.getTaskManager());
 	}
 
 }

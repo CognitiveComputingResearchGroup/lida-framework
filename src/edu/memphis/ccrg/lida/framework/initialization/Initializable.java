@@ -19,7 +19,7 @@ public interface Initializable {
 
 	/**
 	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
-	 * Subclasses can overwrite this method in order to initialize the LidaTask
+	 * Subclasses can overwrite this method in order to initialize the FrameworkTask
 	 */
 	public void init();
 

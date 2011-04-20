@@ -26,7 +26,7 @@ import javax.swing.Icon;
 
 import org.apache.commons.collections15.Transformer;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiLink;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.gui.utils.NodeIcon;
@@ -37,7 +37,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -48,21 +48,21 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 
 /**
- * A {@link LidaPanel} which creates a graphical view of a {@link NodeStructure}.
+ * A {@link GuiPanel} which creates a graphical view of a {@link NodeStructure}.
  * 
- *  The {@link NodeStructure} is one from a paticular {@link LidaModule} which is defined as a parameter in the guiPanels.properties file.
+ *  The {@link NodeStructure} is one from a paticular {@link FrameworkModule} which is defined as a parameter in the guiPanels.properties file.
  *  
- *  {@link LidaModule#getModuleContent(Object...)} must return {@link NodeStructure}.
+ *  {@link FrameworkModule#getModuleContent(Object...)} must return {@link NodeStructure}.
  *   
  * @author Javier Snaider
  */
-public class NodeStructurePanel extends LidaPanelImpl {
+public class NodeStructurePanel extends GuiPanelImpl {
 
 	private static final Logger logger = Logger.getLogger(NodeStructurePanel.class.getCanonicalName());
 	
 	private NodeStructureGuiAdapter guiGraph=new NodeStructureGuiAdapter(new NodeStructureImpl());
 	private VisualizationViewer<Linkable, GuiLink> vizViewer;
-	private LidaModule module;
+	private FrameworkModule module;
 	
 	/** Creates new form NodeStructurePanel */
 	public NodeStructurePanel() {
@@ -217,17 +217,17 @@ public class NodeStructurePanel extends LidaPanelImpl {
 	 * Definition of this Panel should include a parameter for the ModuleName for the
 	 * module from which the NodeStructure will be obtained.  
 	 * E.g., workspace.PerceptualBuffer or PerceptualAssociativeMemory
-	 * @see edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl#initPanel(java.lang.String[])
+	 * @see edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl#initPanel(java.lang.String[])
 	 */
 	@Override
 	public void initPanel(String[]param){	
 		if (param == null || param.length == 0) {
 			logger.log(Level.WARNING,
-					"Error initializing LidaTaskPanel, not enough parameters.",
+					"Error initializing NodeStructurePanel, not enough parameters.",
 					0L);
 			return;
 		}
-		module = GuiUtils.parseLidaModule(param[0], lida);
+		module = GuiUtils.parseFrameworkModule(param[0], lida);
 
 		display(module.getModuleContent());
 		draw();
@@ -252,7 +252,7 @@ public class NodeStructurePanel extends LidaPanelImpl {
 			guiGraph.setNodeStructure((NodeStructure) o);
 		}else{
 			logger.log(Level.WARNING, "Can only display NodeStructure, but received " +
-					o + " from module: " + module.getModuleName(), LidaTaskManager.getCurrentTick());
+					o + " from module: " + module.getModuleName(), TaskManager.getCurrentTick());
 		}
     }
 }

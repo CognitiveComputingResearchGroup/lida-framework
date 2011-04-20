@@ -32,7 +32,7 @@ import javax.swing.table.AbstractTableModel;
  *TODO RENAME
  * @author Javier Snaider
  */
-public class ConfigurationFilesPanel extends LidaPanelImpl {
+public class ConfigurationFilesPanel extends GuiPanelImpl {
 
 	private static final Logger logger = Logger
 			.getLogger(ConfigurationFilesPanel.class.getCanonicalName());

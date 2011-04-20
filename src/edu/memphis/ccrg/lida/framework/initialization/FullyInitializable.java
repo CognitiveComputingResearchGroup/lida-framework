@@ -8,22 +8,22 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
- * An Initializable module will be initialized automatically by the LidaXmlFactory
+ * An Initializable module will be initialized automatically by the AgentXmlFactory
  * 
- * @see LidaXmlFactory
+ * @see AgentXmlFactory
  * @author Ryan J. McCall, Javier Snaider
  *
  */
 public interface FullyInitializable extends Initializable {
 	
 	/**
-	 * Sets an associated LidaModule.
+	 * Sets an associated FrameworkModule.
 	 * @param module the module to be associated.
      * @param moduleUsage how module will be used @see ModuleUsage
 	 */
-	public void setAssociatedModule(LidaModule module, String moduleUsage);
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage);
 	
 }

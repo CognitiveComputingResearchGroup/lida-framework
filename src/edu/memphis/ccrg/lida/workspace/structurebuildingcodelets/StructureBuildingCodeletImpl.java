@@ -12,12 +12,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -70,22 +70,22 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module, String usage) {
+	public void setAssociatedModule(FrameworkModule module, String usage) {
 		if(module instanceof WorkspaceBuffer){
 			if(usage == ModuleUsage.TO_READ_FROM){
 				readableBuffers.add((WorkspaceBuffer) module);		
 			}else if(usage == ModuleUsage.TO_WRITE_TO){
 				writableBuffer = (WorkspaceBuffer) module;
 			}else{
-				logger.log(Level.WARNING, "Specified usage is not supported.  See ModuleUsage", LidaTaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Specified usage is not supported.  See ModuleUsage", TaskManager.getCurrentTick());
 			}
 		}else{
-			logger.log(Level.WARNING, "Expected module to be a WorkspaceBuffer but it was not.  Module not added.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Expected module to be a WorkspaceBuffer but it was not.  Module not added.", TaskManager.getCurrentTick());
 		}
 	}
     	
 	@Override
-	protected abstract void runThisLidaTask();
+	protected abstract void runThisFrameworkTask();
 	
 	@Override
 	public CodeletRunResult getCodeletRunResult(){

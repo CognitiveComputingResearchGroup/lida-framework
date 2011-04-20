@@ -2,16 +2,16 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
- * A {@link LidaModule} that manages {@link Codelet}s
+ * A {@link FrameworkModule} that manages {@link Codelet}s
  * @author Ryan J. McCall, Javier Snaider
  *
  */
-public interface CodeletManagerModule extends LidaModule{
+public interface CodeletManagerModule extends FrameworkModule{
 
 	/**
 	 * Returns a new {@link Codelet} of the default type of the Manager

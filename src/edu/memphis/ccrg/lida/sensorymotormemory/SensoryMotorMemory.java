@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 /**
@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * @author Ryan J McCall, Javier Snaider
  *
  */
-public interface SensoryMotorMemory extends LidaModule, Saveable{
+public interface SensoryMotorMemory extends FrameworkModule, Saveable{
 
 	/**
 	 * Any non-environment communication should use listeners.

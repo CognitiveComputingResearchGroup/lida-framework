@@ -13,11 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Definition of a {@link Strategy} object
- * @see LidaXmlFactory
+ * @see AgentXmlFactory
  * @author Javier Snaider
  *
  */
@@ -59,13 +59,13 @@ public class StrategyDef {
 
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		} catch (IllegalAccessException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.WARNING, "Error creating Strategy.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 		return st;
 	}

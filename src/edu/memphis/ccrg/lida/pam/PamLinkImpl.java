@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Default implementation of PamLink.
@@ -239,7 +239,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		}else if(link != null){
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
 					PamLinkImpl.class.getCanonicalName() + " Received: " + 
-					link, LidaTaskManager.getCurrentTick());
+					link, TaskManager.getCurrentTick());
 		}
 	}
 	

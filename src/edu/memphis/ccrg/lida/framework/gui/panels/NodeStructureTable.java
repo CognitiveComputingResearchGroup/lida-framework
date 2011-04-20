@@ -25,25 +25,25 @@ import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
- * A {@link LidaPanel} which displays the attributes of a {@link NodeStructure}
+ * A {@link GuiPanel} which displays the attributes of a {@link NodeStructure}
  * in a table.
  * @author Javier Snaider
  */
-public class NodeStructureTable extends LidaPanelImpl {
+public class NodeStructureTable extends GuiPanelImpl {
 
 	private static final Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
 	
 	private NodeStructure nodeStructure;
-	private LidaModule module;
+	private FrameworkModule module;
     
 	/** Creates new form NodeStructureTable */
     public NodeStructureTable() {
@@ -126,17 +126,17 @@ public class NodeStructureTable extends LidaPanelImpl {
 	 * Definition of this Panel should include a parameter for the ModuleName for the
 	 * module from which the NodeStructure will be obtained.  
 	 * E.g., workspace.PerceptualBuffer or PerceptualAssociativeMemory
-	 * @see edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl#initPanel(java.lang.String[])
+	 * @see edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl#initPanel(java.lang.String[])
 	 */
 	@Override
 	public void initPanel(String[]param){
 		if (param == null || param.length == 0) {
 			logger.log(Level.WARNING,
-					"Error initializing LidaTaskPanel, not enough parameters.",
+					"Error initializing NodeStructureTable, not enough parameters.",
 					0L);
 			return;
 		}
-		module = GuiUtils.parseLidaModule(param[0], lida);
+		module = GuiUtils.parseFrameworkModule(param[0], lida);
 		
 		display(module.getModuleContent());
 	}
@@ -223,7 +223,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 			((AbstractTableModel) table.getModel()).fireTableStructureChanged();
 		}else{
 			logger.log(Level.WARNING, "Can only display NodeStructure, but received " +
-					o + " from module: " + module.getModuleName(), LidaTaskManager.getCurrentTick());
+					o + " from module: " + module.getModuleName(), TaskManager.getCurrentTick());
 		}
 	}
 }

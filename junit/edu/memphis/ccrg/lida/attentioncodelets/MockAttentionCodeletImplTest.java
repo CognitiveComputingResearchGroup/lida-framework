@@ -55,7 +55,7 @@ public class MockAttentionCodeletImplTest {
 	}
  
 	@Test
-	public void testRunThisLidaTask() {		
+	public void testRunThisTask() {		
 		codelet.setSoughtContent(csmContent);	
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		model.mergeWith(csmContent);
@@ -63,7 +63,7 @@ public class MockAttentionCodeletImplTest {
 		codelet.setAssociatedModule(buffer, ModuleUsage.TO_READ_FROM);
 		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
 		
-		System.out.println("Testing method runThisLidaTask() See console...");
+		System.out.println("Testing method runThisFrameworkTask() See console...");
 		codelet.call();
 		
 	}

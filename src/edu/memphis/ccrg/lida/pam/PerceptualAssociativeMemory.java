@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.pam;
 import java.util.Collection;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
  * A main LIDA module which contains feature detectors, nodes, and links.
  * @author Ryan J. McCall
  */
-public interface PerceptualAssociativeMemory extends LidaModule, Saveable {
+public interface PerceptualAssociativeMemory extends FrameworkModule, Saveable {
 	
     /**
      * Convenience method for initializing {@link PerceptualAssociativeMemory}

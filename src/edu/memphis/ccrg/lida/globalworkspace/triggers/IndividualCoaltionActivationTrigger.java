@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
@@ -30,7 +30,7 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 	public void checkForTriggerCondition(Set<Coalition> coalitions) {
 		for(Coalition c:coalitions){
 			if(c.getActivation()>threshold){
-				logger.log(Level.FINE,"Individual Activation trigger ",LidaTaskManager.getCurrentTick());
+				logger.log(Level.FINE,"Individual Activation trigger ",TaskManager.getCurrentTick());
 
 				gw.triggerBroadcast(this);
 				break;

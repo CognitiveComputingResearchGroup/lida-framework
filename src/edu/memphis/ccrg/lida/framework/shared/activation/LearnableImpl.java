@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
 
@@ -113,23 +113,23 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {
 			logger.log(Level.FINEST, toString() + " before decay has a BaseLevelAct: " +
-						baseLevelActivation,LidaTaskManager.getCurrentTick());
+						baseLevelActivation,TaskManager.getCurrentTick());
 			synchronized(this){
 				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
 			}
 			logger.log(Level.FINEST, toString() + " after decay has a BaseLevelAct: " + 
-					baseLevelActivation,LidaTaskManager.getCurrentTick());
+					baseLevelActivation,TaskManager.getCurrentTick());
 		}		
 	}
 	
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
 		if (baseLevelExciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,TaskManager.getCurrentTick());
 			synchronized(this){
 				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
 			}
-			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,TaskManager.getCurrentTick());
 		}		
 	}
 

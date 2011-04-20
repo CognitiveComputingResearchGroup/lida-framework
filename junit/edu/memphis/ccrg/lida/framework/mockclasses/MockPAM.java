@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
@@ -35,7 +35,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	private static double perceptThreshold = 0.0;
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleName()
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getModuleName()
 	 */
 	@Override
 	public ModuleName getModuleName() {
@@ -44,7 +44,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#setModuleName(edu.memphis.ccrg.lida.framework.ModuleName)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#setModuleName(edu.memphis.ccrg.lida.framework.ModuleName)
 	 */
 	@Override
 	public void setModuleName(ModuleName moduleName) {
@@ -53,25 +53,25 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getSubmodule(edu.memphis.ccrg.lida.framework.ModuleName)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getSubmodule(edu.memphis.ccrg.lida.framework.ModuleName)
 	 */
 	@Override
-	public LidaModule getSubmodule(ModuleName name) {
+	public FrameworkModule getSubmodule(ModuleName name) {
 		// not implemented
 		return null;
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#addSubModule(edu.memphis.ccrg.lida.framework.LidaModule)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addSubModule(edu.memphis.ccrg.lida.framework.FrameworkModule)
 	 */
 	@Override
-	public void addSubModule(LidaModule lm) {
+	public void addSubModule(FrameworkModule lm) {
 		// not implemented
 
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getModuleContent(java.lang.Object[])
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getModuleContent(java.lang.Object[])
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {
@@ -80,7 +80,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#decayModule(long)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
 	 */
 	@Override
 	public void decayModule(long ticks) {
@@ -89,7 +89,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
 	 */
 	@Override
 	public void addListener(ModuleListener listener) {
@@ -98,7 +98,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#setAssistingTaskSpawner(edu.memphis.ccrg.lida.framework.tasks.TaskSpawner)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#setAssistingTaskSpawner(edu.memphis.ccrg.lida.framework.tasks.TaskSpawner)
 	 */
 	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts) {
@@ -107,7 +107,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#getAssistingTaskSpawner()
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getAssistingTaskSpawner()
 	 */
 	@Override
 	public TaskSpawner getAssistingTaskSpawner() {
@@ -116,10 +116,10 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.FullyInitializable#setAssociatedModule(edu.memphis.ccrg.lida.framework.LidaModule, int)
+	 * @see edu.memphis.ccrg.lida.framework.initialization.FullyInitializable#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, int)
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		// not implemented
 
 	}
@@ -410,7 +410,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	@Override
-	public LidaModule getSubmodule(String name) {
+	public FrameworkModule getSubmodule(String name) {
 		// not implemented
 		return null;
 	}

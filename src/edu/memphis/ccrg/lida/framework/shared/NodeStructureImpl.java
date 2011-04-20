@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -102,7 +102,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			this.defaultNodeType = defaultNode;
 		} else {
 			logger.log(Level.SEVERE, "Unsupported Node type: " + defaultNode,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			throw new IllegalArgumentException();
 		}
 
@@ -110,7 +110,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			this.defaultLinkType = defaultLink;
 		} else {
 			logger.log(Level.SEVERE, "Unsupported Link type: " + defaultLink,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			throw new IllegalArgumentException();
 		}
 	}
@@ -136,7 +136,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public NodeStructure copy() {
 		logger.log(Level.FINER, "Copying NodeStructure " + this,
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		return new NodeStructureImpl(this);
 	}
 
@@ -150,7 +150,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addDefaultLink(Link l) {
 		if(l == null){
-			logger.log(Level.WARNING, "Cannot add null.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add null.", TaskManager.getCurrentTick());
 		}
 		
 		double newActiv = l.getActivation();
@@ -178,7 +178,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					"Source: "
 							+ source
 							+ " is not present in this NodeStructure, Link will not be added.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -191,7 +191,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						"Sink: "
 								+ sink
 								+ " is not present in this NodeStructure, Link will not be added.",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 				return null;
 			}
 		} else {
@@ -202,7 +202,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						"Sink: "
 								+ sink
 								+ " is not present in this NodeStructure, Link will not be added.",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 				return null;
 			}
 		}
@@ -230,7 +230,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			logger.log(
 					Level.WARNING,
 					"Sink cannot be a complex link. Must be a node or simple link.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		Node source = getNode(sourceId);
@@ -238,7 +238,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (source == null || sink == null) {
 			logger.log(Level.WARNING,
 					"Source and/or Sink are not present in this NodeStructure",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		ExtendedId newLinkId = new ExtendedId(sourceId, sinkId,
@@ -246,7 +246,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (containsLink(newLinkId)) {
 			logger.log(Level.WARNING,
 					"Link already exists.  Cannot add again.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -273,7 +273,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (source == null || sink == null) {
 			logger.log(Level.WARNING,
 					"Source and/or Sink are not present in this NodeStructure",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		ExtendedId newLinkId = new ExtendedId(sourceId, sink.getExtendedId(),
@@ -281,7 +281,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (containsLink(newLinkId)) {
 			logger.log(Level.WARNING,
 					"Link already exists.  Cannot add again.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -296,7 +296,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
 		if(source == null || sink == null){
-			logger.log(Level.WARNING, "Cannot add link between null linkables.", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add link between null linkables.", TaskManager.getCurrentTick());
 		}
 		
 		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
@@ -355,7 +355,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Collection<Link> addDefaultLinks(Collection<Link> links) {
 		if(links == null){
-			logger.log(Level.WARNING, "Cannot add links. Link collection is null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add links. Link collection is null", TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -387,7 +387,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	public Node addDefaultNode(Node n) {
 		if (n == null) {
 			logger.log(Level.WARNING, "Cannot add null node",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -401,7 +401,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	public synchronized Link addLink(Link l, String linkType) {
 		if (l == null) {
 			logger.log(Level.WARNING, "Cannot add null link",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		if (!factory.containsLinkType(linkType)) {
@@ -410,7 +410,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					"Factory does not contain link type: "
 							+ linkType
 							+ " Check that type is defined in factoriesData.xml. Link not added: "
-							+ l, LidaTaskManager.getCurrentTick());
+							+ l, TaskManager.getCurrentTick());
 			return null;
 		}
 		Link link = links.get(l.getExtendedId());
@@ -422,7 +422,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				linkableMap.put(link, new HashSet<Link>());
 			} else {
 				logger.log(Level.WARNING, "Could not create new node of type: "
-						+ linkType, LidaTaskManager.getCurrentTick());
+						+ linkType, TaskManager.getCurrentTick());
 			}
 		} else {
 			link.updateLinkValues(l);
@@ -442,7 +442,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	public synchronized Node addNode(Node n, String nodeType) {
 		if (n == null) {
 			logger.log(Level.WARNING, "Cannot add null node",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -452,7 +452,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					"Factory does not contain node type: "
 							+ nodeType
 							+ " Check that type is defined in factoriesData.xml. Node not added: "
-							+ n, LidaTaskManager.getCurrentTick());
+							+ n, TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -464,7 +464,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				linkableMap.put(node, new HashSet<Link>());
 			} else {
 				logger.log(Level.WARNING, "Could not create new node of type: "
-						+ nodeType, LidaTaskManager.getCurrentTick());
+						+ nodeType, TaskManager.getCurrentTick());
 			}
 		} else {
 			// TODO  just updateNodeValues and that does specific things
@@ -485,7 +485,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
 		if(nodes == null){
-			logger.log(Level.WARNING, "Cannot add nodes. Node collection is null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add nodes. Node collection is null", TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -546,7 +546,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {
 			logger.log(Level.WARNING, "Asked to merge null",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return;
 		}
 		// Add nodes

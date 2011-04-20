@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
@@ -33,8 +33,8 @@ public class MockActionSelectionImpl implements ActionSelection {
 
 	@Override
 	public void selectAction() {
-		System.out.println("action selected at tick: " + LidaTaskManager.getCurrentTick());
-		logger.log(Level.FINE,"Action Selection Performed at tick: {0}",LidaTaskManager.getCurrentTick());
+		System.out.println("action selected at tick: " + TaskManager.getCurrentTick());
+		logger.log(Level.FINE,"Action Selection Performed at tick: {0}",TaskManager.getCurrentTick());
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void addSubModule(LidaModule lm) {
+	public void addSubModule(FrameworkModule lm) {
 		// not implemented
 		
 	}
@@ -111,7 +111,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public LidaModule getSubmodule(ModuleName name) {
+	public FrameworkModule getSubmodule(ModuleName name) {
 		// not implemented
 		return null;
 	}
@@ -135,7 +135,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		// not implemented
 		
 	}
@@ -159,7 +159,7 @@ public class MockActionSelectionImpl implements ActionSelection {
 	}
 
 	@Override
-	public LidaModule getSubmodule(String name) {
+	public FrameworkModule getSubmodule(String name) {
 		// not implemented
 		return null;
 	}

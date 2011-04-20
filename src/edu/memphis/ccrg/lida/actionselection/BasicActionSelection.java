@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  * @author Ryan J McCall
  * 
  */
-public class BasicActionSelection extends LidaModuleImpl implements
+public class BasicActionSelection extends FrameworkModuleImpl implements
 		ActionSelection, ProceduralMemoryListener {
 
 	private static final Logger logger = Logger
@@ -54,12 +54,12 @@ public class BasicActionSelection extends LidaModuleImpl implements
 	}
 
 	// TODO move to xml as initial task
-	private class BackgroundTask extends LidaTaskImpl {
+	private class BackgroundTask extends FrameworkTaskImpl {
 		public BackgroundTask(int ticksPerRun) {
 			super(ticksPerRun);
 		}
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			selectAction();
 		}
 		@Override
@@ -86,16 +86,16 @@ public class BasicActionSelection extends LidaModuleImpl implements
 			behaviors.add(b);
 		}
 		logger.log(Level.FINE, "Behavior added " + b,
-				   LidaTaskManager.getCurrentTick());
+				   TaskManager.getCurrentTick());
 	}
 
 	@Override
 	public void selectAction() {
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
-			LidaAction action = behavior.getAction();
-			logger.log(Level.FINE, "Action Selected at tick: " + LidaTaskManager.getCurrentTick() + " act: " + action,
-					LidaTaskManager.getCurrentTick());
+			AgentAction action = behavior.getAction();
+			logger.log(Level.FINE, "Action Selected at tick: " + TaskManager.getCurrentTick() + " act: " + action,
+					TaskManager.getCurrentTick());
 			for (ActionSelectionListener bl : listeners) {
 				bl.receiveAction(action);
 			}

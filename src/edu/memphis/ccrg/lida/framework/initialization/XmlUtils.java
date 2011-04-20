@@ -32,7 +32,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Utilities for reading an XML file.
@@ -167,14 +167,14 @@ public class XmlUtils {
 					value=Integer.parseInt(sValue);
 					}catch(NumberFormatException e){
 						value=sValue;
-						logger.log(Level.FINE, e.toString(), LidaTaskManager.getCurrentTick());
+						logger.log(Level.FINE, e.toString(), TaskManager.getCurrentTick());
 					}
 				}else if("double".equalsIgnoreCase(type)){
 					try{
 					value=Double.parseDouble(sValue);
 					}catch(NumberFormatException e){
 						value = sValue;
-						logger.log(Level.FINE, e.toString(), LidaTaskManager.getCurrentTick());
+						logger.log(Level.FINE, e.toString(), TaskManager.getCurrentTick());
 					}
 				}else if("boolean".equalsIgnoreCase(type)){
 						value=Boolean.parseBoolean(sValue);

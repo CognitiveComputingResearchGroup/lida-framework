@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet;
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildi
  * 
  * @author Ryan J. McCall, Javier Snaider
  */
-public interface WorkspaceBuffer extends LidaModule{
+public interface WorkspaceBuffer extends FrameworkModule{
 	
 	/**
 	 * Gets buffer content based on specified parameters.

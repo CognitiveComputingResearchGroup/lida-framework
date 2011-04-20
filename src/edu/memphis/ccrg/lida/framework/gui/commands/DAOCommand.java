@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.dao.DAOManager;
 
 public class DAOCommand extends GenericCommandImpl {
@@ -18,7 +18,7 @@ public class DAOCommand extends GenericCommandImpl {
         public static String FAILED_STRING = "failed";
 
 	@Override
-	public void execute(Lida lida) {
+	public void execute(Agent lida) {
 		String action = getParameter("action").toString().toLowerCase();
                 boolean success = false;
                 String displayString;

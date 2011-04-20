@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Strategy that determines how a predecessor is excited.
@@ -33,7 +33,7 @@ public class PredecessorExciteStrategy extends StrategyImpl implements BehaviorE
 		recipientBehavior.excite(amount);
 		logger.log(Level.FINEST, sourceBehavior.getActivation() + " "
 				+ sourceBehavior.getLabel() + "<--" + amount
-				+ " to " + recipientBehavior, LidaTaskManager
+				+ " to " + recipientBehavior, TaskManager
 				.getCurrentTick());
 //		double granted = (behavior.getActivation() * predecessorExcitationFactor)
 //		/ behavior.getUnsatisfiedContextCount();

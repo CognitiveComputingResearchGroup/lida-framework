@@ -15,13 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
 
@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryListener;
  * @author Ryan J. McCall
  * 
  */
-public class BasicSensoryMotorMemory extends LidaModuleImpl implements
+public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		SensoryMotorMemory, SensoryMemoryListener, ActionSelectionListener {
 
 	private static final Logger logger = Logger
@@ -50,7 +50,7 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 			addSensoryMotorMemoryListener((SensoryMotorMemoryListener) listener);
 		} else {
 			logger.log(Level.WARNING, "Cannot add listener "
-					+ listener.toString(), LidaTaskManager.getCurrentTick());
+					+ listener.toString(), TaskManager.getCurrentTick());
 		}
 	}
 
@@ -59,19 +59,19 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 		if (l instanceof Environment) {
 			logger.log(Level.SEVERE,
 					"Cannot add Environment as SensoryMotorMemoryListener.  Add it as an associated module.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		} else {
 			listeners.add(l);
 		}
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Environment) {
 			environment = (Environment) module;
 		} else {
 			logger.log(Level.WARNING, "Cannot add module "
-					+ module.getModuleName(), LidaTaskManager.getCurrentTick());
+					+ module.getModuleName(), TaskManager.getCurrentTick());
 		}
 	}
 
@@ -80,7 +80,7 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 	}
 
 	@Override
-	public synchronized void receiveAction(LidaAction action) {
+	public synchronized void receiveAction(AgentAction action) {
 		if(action != null){
 			ProcessActionTask t = new ProcessActionTask(action);
 			taskSpawner.addTask(t);
@@ -88,19 +88,19 @@ public class BasicSensoryMotorMemory extends LidaModuleImpl implements
 			//TODO log
 		}
 	}
-	private class ProcessActionTask extends LidaTaskImpl {
-		private LidaAction action;
-		public ProcessActionTask(LidaAction a) {
+	private class ProcessActionTask extends FrameworkTaskImpl {
+		private AgentAction action;
+		public ProcessActionTask(AgentAction a) {
 			action = a;
 			setTicksPerStep(processActionTicks);
 		}
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			Object alg = actionAlgorithmMap.get((Number) action.getId());
 			if(alg != null){
 				sendActuatorCommand(alg);
 			}else{
-				logger.log(Level.WARNING, "could not find algorithm for action " + action,LidaTaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "could not find algorithm for action " + action,TaskManager.getCurrentTick());
 			}
 			setTaskStatus(TaskStatus.FINISHED);
 		}

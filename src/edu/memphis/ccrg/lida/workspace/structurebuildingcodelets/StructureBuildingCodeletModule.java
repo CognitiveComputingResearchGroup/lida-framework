@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J McCall
  *
  */
-public class StructureBuildingCodeletModule extends LidaModuleImpl implements
+public class StructureBuildingCodeletModule extends FrameworkModuleImpl implements
 		GuiEventProvider, CodeletManagerModule {
 
 	private static final Logger logger = Logger
@@ -86,17 +86,17 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 		}else{
 			logger.log(Level.WARNING, 
 					"Cannot set default codelet type, factory does not have type: " + type, 
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		} else {
 			logger.log(Level.WARNING, "Cannot add module "
-					+ module.getModuleName(), LidaTaskManager.getCurrentTick());
+					+ module.getModuleName(), TaskManager.getCurrentTick());
 		}
 	}
 
@@ -137,7 +137,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 		if (codelet == null) {
 			logger.log(Level.WARNING,
 					"Codelet type not supported: " + type,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -153,7 +153,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 				.getSubmodule(readable);
 		if (readableBuffer == null) {
 			logger.log(Level.WARNING, "Readable buffer not found: " + readable,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -161,7 +161,7 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 				.getSubmodule(writeable);
 		if (writeableBuffer == null) {
 			logger.log(Level.WARNING, "Writeable buffer not found: "
-					+ writeable, LidaTaskManager.getCurrentTick());
+					+ writeable, TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -182,12 +182,12 @@ public class StructureBuildingCodeletModule extends LidaModuleImpl implements
 	public void addCodelet(Codelet cod) {
 		if (cod instanceof StructureBuildingCodelet) {
 			logger.log(Level.FINER, "New codelet " + cod + "spawned",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			taskSpawner.addTask(cod);
 		} else {
 			logger.log(Level.WARNING,
 					"codelet must be a structure-buidling codelet",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 

@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
-import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
+import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetworkImpl;
@@ -43,7 +43,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		
 		behaviorNet.addActionSelectionListener(this);
 		
-		//LidaTaskManager ltm = new LidaTaskManager(0, 100);
+		//TaskManager ltm = new TaskManager(0, 100);
 		//ltm.resumeSpawnedTasks();
 		//ActionSelectionDriver driver = new ActionSelectionDriver(1, ltm);
 		//NoActionSelectionOccurringTrigger t = new NoActionSelectionOccurringTrigger();
@@ -129,7 +129,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){
-		LidaActionImpl action = new LidaActionImpl("action_"+label) {			
+		AgentActionImpl action = new AgentActionImpl("action_"+label) {			
 			@Override
 			public void performAction() {
 			}
@@ -150,7 +150,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	@Override
-	public void receiveAction(LidaAction action) {
+	public void receiveAction(AgentAction action) {
 		System.out.println("Result: Received action " + action);
 	}
 

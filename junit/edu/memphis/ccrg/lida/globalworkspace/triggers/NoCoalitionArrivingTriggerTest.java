@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 public class NoCoalitionArrivingTriggerTest {
 	
-	LidaTaskManager tm;
+	TaskManager tm;
 	NoCoalitionArrivingTrigger trigger;
 	Map<String, Object> parameters;
 	GlobalWorkspace gw;
@@ -27,7 +27,7 @@ public class NoCoalitionArrivingTriggerTest {
 	public void setUp() throws Exception {
 		ts = new MockTaskSpawner();
 		
-		tm = new LidaTaskManager(200,50);		
+		tm = new TaskManager(200,50);		
 		trigger = new NoCoalitionArrivingTrigger();
 		gw = new MockGlobalWorkspaceImpl();		
 		parameters = new HashMap<String, Object>();	
@@ -39,7 +39,7 @@ public class NoCoalitionArrivingTriggerTest {
 		
 		gw.setAssistingTaskSpawner(ts);	
 		
-		trigger.setLidaTaskManager(tm);		
+		trigger.setTaskManager(tm);		
 		parameters.put("name", "StartTask");	
 		parameters.put("delay", 20);	
 		trigger.init(parameters, gw);

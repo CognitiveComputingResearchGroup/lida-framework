@@ -11,7 +11,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
  * 
  * @author Javier Snaider
  */
-public interface GlobalWorkspace extends LidaModule, TriggerListener{
+public interface GlobalWorkspace extends FrameworkModule, TriggerListener{
 	/**
 	 * This method is invoked by the {@link AttentionCodelet} to add a new {@link Coalition}
 	 * @param coalition to be added 

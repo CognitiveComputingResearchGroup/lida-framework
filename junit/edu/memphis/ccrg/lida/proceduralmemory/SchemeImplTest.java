@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
-import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
+import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 public class SchemeImplTest extends TestCase {
 
 	private Scheme s;
-	private LidaAction a;
+	private AgentAction a;
 	private Node node1, node2, node3;
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
@@ -23,7 +23,7 @@ public class SchemeImplTest extends TestCase {
 	@Override
 	@Before
 	public void setUp() throws Exception {		
-		a = new LidaActionImpl() {
+		a = new AgentActionImpl() {
 			@Override
 			public void performAction() {}
 		};
@@ -48,7 +48,7 @@ public class SchemeImplTest extends TestCase {
 	}
 	
 	public void test2(){
-		LidaAction foo = new LidaActionImpl() {
+		AgentAction foo = new AgentActionImpl() {
 			@Override public void performAction() {}};
 		s.setAction(foo);
 		assertEquals(foo, s.getAction());

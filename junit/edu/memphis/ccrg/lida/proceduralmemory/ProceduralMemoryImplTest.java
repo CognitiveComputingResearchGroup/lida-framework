@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
-import edu.memphis.ccrg.lida.actionselection.LidaActionImpl;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
+import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 public class ProceduralMemoryImplTest extends TestCase {
 
@@ -42,7 +42,7 @@ public class ProceduralMemoryImplTest extends TestCase {
 
 	public void testSendInstantiatedScheme() {
 		
-		final LidaAction a = new LidaActionImpl() {
+		final AgentAction a = new AgentActionImpl() {
 			@Override
 			public void performAction() {
 			}

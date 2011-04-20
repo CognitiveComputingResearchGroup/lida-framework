@@ -15,7 +15,7 @@ public abstract class StrategyImpl implements Strategy {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
 	 */
 	@Override
 	public void init(Map<String, ?> params) {
@@ -27,7 +27,7 @@ public abstract class StrategyImpl implements Strategy {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init()
 	 */
 	@Override
 	public void init() {

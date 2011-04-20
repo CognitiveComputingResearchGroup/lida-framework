@@ -36,14 +36,14 @@ public class Lida {
 //	private ProceduralMemory proceduralMemory;
 //	private ActionSelection actionSelection;
 //	// A class that helps pause and control the drivers.
-//	private LidaTaskManager taskManager;
+//	private FrameworkTaskManager taskManager;
 
 	/**
 	 * List of drivers which run the major components of LIDA
 	 */
 //	private List<ModuleDriver> drivers = new ArrayList<ModuleDriver>();
 
-//	public Lida(LidaTaskManager ft, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
+//	public Lida(FrameworkTaskManager ft, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
 //		logger.info("Starting Lida");
 //		initComponents(ft, e, sm, configFilesMap);
 //		initDrivers();
@@ -51,7 +51,7 @@ public class Lida {
 //		start();
 //	}
 
-//	private void initComponents(LidaTaskManager tm, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
+//	private void initComponents(FrameworkTaskManager tm, EnvironmentImpl e, SensoryMemory sm, Map<Module, String> configFilesMap) {
 //		taskManager = tm;
 //		environment = e;
 //		sensoryMemory = sm;
@@ -225,7 +225,7 @@ public class Lida {
 //	/**
 //	 * @return the timer
 //	 */
-//	public LidaTaskManager getTaskManager() {
+//	public FrameworkTaskManager getTaskManager() {
 //		return null;
 //	}
 //

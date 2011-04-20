@@ -9,14 +9,14 @@ package edu.memphis.ccrg.lida.environment;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
  * Specification for domains that the framework can use as an environment.
  * 
  * @author Ryan J. McCall
  */
-public interface Environment extends LidaModule{
+public interface Environment extends FrameworkModule{
 
 	/**
 	 * Environment resets its state.

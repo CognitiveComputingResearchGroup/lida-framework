@@ -11,7 +11,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
 import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -28,7 +28,7 @@ public class GlobalWorkspaceInitalizerTest {
 
 	Map<String, Object> params;
 	GlobalWorkspace globalWksp;
-	Lida lida;
+	Agent lida;
 	GlobalWorkspaceInitalizer initializer = new GlobalWorkspaceInitalizer();
 	Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 	Coalition coalition, coalition2, coalition3;

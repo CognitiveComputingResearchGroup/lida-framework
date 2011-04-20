@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Strategy determining how a conflictor is inhibited.
@@ -34,7 +34,7 @@ public class ConflictorExciteStrategy extends StrategyImpl implements BehaviorEx
 		recipientBehavior.excite(inhibitionAmount);
 		logger.log(Level.FINEST, sourceBehavior.getLabel() + " inhibits " + 
 					recipientBehavior.getLabel() + " amount " + inhibitionAmount,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 
 	}
 

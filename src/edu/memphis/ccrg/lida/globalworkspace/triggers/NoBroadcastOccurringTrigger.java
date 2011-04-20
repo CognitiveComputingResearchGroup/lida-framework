@@ -13,7 +13,7 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 import java.util.Collection;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
@@ -38,20 +38,20 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	private TriggerTask task;
 	private GlobalWorkspace gw;
 	private String name="";
-	private LidaTaskManager tm;
+	private TaskManager tm;
 
 	/**
-	 * @return the lidaTaskManager
+	 * @return the {@link TaskManager}
 	 */
-	public LidaTaskManager getLidaTaskManager() {
+	public TaskManager getTaskManager() {
 		return tm;
 	}
 
 	/**
-	 * @param lidaTaskManager the lidaTaskManager to set
+	 * @param taskManager the {@link TaskManager} to set
 	 */
-	public void setLidaTaskManager(LidaTaskManager lidaTaskManager) {
-		this.tm = lidaTaskManager;
+	public void setTaskManager(TaskManager taskManager) {
+		this.tm = taskManager;
 	}
 
 	/**

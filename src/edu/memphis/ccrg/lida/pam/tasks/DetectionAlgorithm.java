@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @author Javier Snaider, Ryan McCall
  * @see BasicDetectionAlgorithm
  */
-public interface DetectionAlgorithm extends LidaTask {
+public interface DetectionAlgorithm extends FrameworkTask {
 		
 	/**
 	 * Detects a feature.

@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Generic {@link Activatible} Implementation. Useful for classes to extend from it, 
@@ -48,22 +48,22 @@ public class ActivatibleImpl implements Activatible {
 	@Override
 	public void decay(long ticks) {	
 		if (decayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,TaskManager.getCurrentTick());
 			synchronized(this){
 				activation = decayStrategy.decay(activation,ticks);
 			}
-			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,TaskManager.getCurrentTick());
 		}
 	}
 
 	@Override
 	public void excite(double excitation) {	
 		if (exciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,TaskManager.getCurrentTick());
 			synchronized(this){
 				activation = exciteStrategy.excite(activation, excitation);
 			}
-			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,TaskManager.getCurrentTick());
 		}
 	}
 

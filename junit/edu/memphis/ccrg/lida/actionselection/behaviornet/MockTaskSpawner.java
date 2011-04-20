@@ -5,30 +5,30 @@ package edu.memphis.ccrg.lida.actionselection.behaviornet;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * @author Javier Snaider, Ryan J. McCall
  *
  */
-public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
+public class MockTaskSpawner extends FrameworkTaskImpl implements TaskSpawner {
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl#runThisLidaTask()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl#runThisFrameworkTask()
 	 */
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		// not implemented
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#addTask(edu.memphis.ccrg.lida.framework.tasks.LidaTask)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#addTask(edu.memphis.ccrg.lida.framework.tasks.FrameworkTask)
 	 */
 	@Override
-	public void addTask(LidaTask task) {
+	public void addTask(FrameworkTask task) {
 		try {
 			task.setControllingTaskSpawner(this);
 			task.call();
@@ -40,10 +40,10 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#cancelTask(edu.memphis.ccrg.lida.framework.tasks.LidaTask)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#cancelTask(edu.memphis.ccrg.lida.framework.tasks.FrameworkTask)
 	 */
 	@Override
-	public boolean cancelTask(LidaTask task) {
+	public boolean cancelTask(FrameworkTask task) {
 		// not implemented method stub
 		return false;
 	}
@@ -52,17 +52,17 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#getSpawnedTasks()
 	 */
 	@Override
-	public Collection<LidaTask> getRunningTasks() {
+	public Collection<FrameworkTask> getRunningTasks() {
 		// not implemented method stub
 		return null;
 	}
 
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#receiveFinishedTask(edu.memphis.ccrg.lida.framework.tasks.LidaTask)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#receiveFinishedTask(edu.memphis.ccrg.lida.framework.tasks.FrameworkTask)
 	 */
 	@Override
-	public void receiveFinishedTask(LidaTask task) {
+	public void receiveFinishedTask(FrameworkTask task) {
 		// not implemented method stub
 
 	}
@@ -71,22 +71,22 @@ public class MockTaskSpawner extends LidaTaskImpl implements TaskSpawner {
 	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#setInitialTasks(java.util.Collection)
 	 */
 	@Override
-	public void addTasks(Collection<? extends LidaTask> initialTasks) {
+	public void addTasks(Collection<? extends FrameworkTask> initialTasks) {
 		// not implemented method stub
 
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#setTaskManager(edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager)
+	 * @see edu.memphis.ccrg.lida.framework.tasks.TaskSpawner#setTaskManager(edu.memphis.ccrg.lida.framework.tasks.TaskManager)
 	 */
 	@Override
-	public void setTaskManager(LidaTaskManager taskManager) {
+	public void setTaskManager(TaskManager taskManager) {
 		// not implemented method stub
 
 	}
 
 	@Override
-	public boolean containsTask(LidaTask t) {
+	public boolean containsTask(FrameworkTask t) {
 		// not implemented method stub
 		return false;
 	}

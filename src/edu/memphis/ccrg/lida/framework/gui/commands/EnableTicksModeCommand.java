@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * This command is used for enabling or disabling the tick mode.
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 public class EnableTicksModeCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Lida lida) {
+	public void execute(Agent lida) {
 		Boolean b= (Boolean)getParameter("enable");
 		if(b!= null){
 			lida.getTaskManager().setInIntervalMode(b);

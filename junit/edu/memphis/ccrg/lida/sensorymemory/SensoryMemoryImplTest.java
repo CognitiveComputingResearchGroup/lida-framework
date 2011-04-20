@@ -20,7 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
@@ -120,7 +120,7 @@ public class SensoryMemoryImplTest {
         // Pos: instance has 1 associated module, same as added.
         // Test for SMM.
         System.out.println("setAssociatedModule");
-        LidaModule module = null;
+        FrameworkModule module = null;
         String moduleUsage = ModuleUsage.NOT_SPECIFIED;
         SensoryMemoryImpl instance = new MockSensoryMemoryImpl();
         instance.setAssociatedModule(module, moduleUsage);
@@ -227,12 +227,12 @@ public class SensoryMemoryImplTest {
         }
 
         @Override
-        public LidaModule getSubmodule(ModuleName name) {
+        public FrameworkModule getSubmodule(ModuleName name) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public void addSubModule(LidaModule lm) {
+        public void addSubModule(FrameworkModule lm) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -262,7 +262,7 @@ public class SensoryMemoryImplTest {
         }
 
         @Override
-        public void setAssociatedModule(LidaModule module, String moduleUsage) {
+        public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -288,7 +288,7 @@ public class SensoryMemoryImplTest {
 		}
 
 		@Override
-		public LidaModule getSubmodule(String name) {
+		public FrameworkModule getSubmodule(String name) {
 			// TODO Auto-generated method stub
 			return null;
 		}

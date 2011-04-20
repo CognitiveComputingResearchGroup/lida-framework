@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.shared.Linkable;
 
 /**
  * Definition of a {@link Linkable} object
- * @see LidaXmlFactory
+ * @see AgentXmlFactory
  * @author Javier Snaider
  *
  */

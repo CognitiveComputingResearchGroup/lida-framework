@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
@@ -46,7 +46,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		}
 		if (acc > threshold) {
 			logger.log(Level.FINE, "Aggregate Activation trigger ",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			gw.triggerBroadcast(this);
 		}
 	}

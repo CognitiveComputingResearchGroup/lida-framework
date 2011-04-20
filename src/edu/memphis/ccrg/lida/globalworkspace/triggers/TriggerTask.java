@@ -13,8 +13,8 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  * 
  * @author Javier
  */
-public class TriggerTask extends LidaTaskImpl {
+public class TriggerTask extends FrameworkTaskImpl {
 
 	private Logger logger = Logger.getLogger(TriggerTask.class
 			.getCanonicalName());
@@ -50,8 +50,8 @@ public class TriggerTask extends LidaTaskImpl {
 	}
 
 	@Override
-	protected void runThisLidaTask() {
-		logger.log(Level.FINE, name, LidaTaskManager.getCurrentTick());
+	protected void runThisFrameworkTask() {
+		logger.log(Level.FINE, name, TaskManager.getCurrentTick());
 		gw.triggerBroadcast(trigger);
 		setTaskStatus(TaskStatus.FINISHED);
 	}

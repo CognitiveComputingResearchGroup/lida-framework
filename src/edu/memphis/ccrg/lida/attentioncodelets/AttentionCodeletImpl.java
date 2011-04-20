@@ -11,11 +11,11 @@ package edu.memphis.ccrg.lida.attentioncodelets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
@@ -56,7 +56,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	 *            - way of associating the module
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, String usage) {
+	public void setAssociatedModule(FrameworkModule module, String usage) {
 		if (usage.equals(ModuleUsage.TO_READ_FROM)) {
 			if (module instanceof WorkspaceBuffer) {
 				currentSituationalModel = (WorkspaceBuffer) module;
@@ -67,7 +67,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 			}
 		}else{
 			logger.log(Level.WARNING, "Module useage not supported",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -76,14 +76,14 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	 * {@link GlobalWorkspace}.
 	 */
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		if (hasSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0) {
 				globalWorkspace.addCoalition(new CoalitionImpl(
 						(BroadcastContent) csmContent, getActivation(), this));
 				logger.log(Level.FINER, this + " adds new coalition",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			}
 		}
 	}

@@ -15,7 +15,7 @@ package edu.memphis.ccrg.lida.framework.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
  *
@@ -24,12 +24,12 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 public class DataAccessObjectImpl implements DataAccessObject {
     public static int SDATA_INDEX = 2;
 
-    protected LidaModule module;
+    protected FrameworkModule module;
     protected Storage storage = null;
     public String storageName = "unknown_module";
     protected int lidaId = 0;
 
-    public DataAccessObjectImpl(LidaModule newmodule, Storage cStorage, String cStorageName, int cLidaId) {
+    public DataAccessObjectImpl(FrameworkModule newmodule, Storage cStorage, String cStorageName, int cLidaId) {
         module = newmodule;
         storage = cStorage;
         lidaId = cLidaId;

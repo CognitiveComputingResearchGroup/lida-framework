@@ -17,12 +17,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
@@ -59,7 +59,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
 	 * executes
 	 */
-	private LidaAction action;
+	private AgentAction action;
 
 	/**
 	 * unique identifier
@@ -88,7 +88,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		deletingList = new NodeStructureImpl();
 	}
 	
-	public BehaviorImpl(LidaAction action){
+	public BehaviorImpl(AgentAction action){
 		this();
 		this.action = action;
 	}
@@ -105,7 +105,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		this.id = id;
 	}
 
-	public void setAction(LidaAction action) {
+	public void setAction(AgentAction action) {
 		this.action = action;
 	}
 
@@ -139,7 +139,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		}else{
 			logger.log(Level.WARNING, "BN asked to update a context condition " + 
 						broadcastCondition.getLabel() + " but it wasn't in the context of behavior "
-						+ label, LidaTaskManager.getCurrentTick());
+						+ label, TaskManager.getCurrentTick());
 		}
 	}
 	
@@ -161,7 +161,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		}else{
 			logger.log(Level.WARNING, "BN asked to update a result condition " + 
 						condition.getLabel() + " but it wasn't in the result list of behavior "
-						+ label, LidaTaskManager.getCurrentTick());
+						+ label, TaskManager.getCurrentTick());
 		}
 	}
 
@@ -230,7 +230,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	@Override
-	public LidaAction getAction() {
+	public AgentAction getAction() {
 		return action;
 	}
 

@@ -3,11 +3,11 @@ package edu.memphis.ccrg.lida.workspace;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Ryan J. McCall
  *
  */
-public class UpdateCsmBackgroundTask extends LidaTaskImpl {
+public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 
 	private static final Logger logger = Logger
 			.getLogger(UpdateCsmBackgroundTask.class.getCanonicalName());
@@ -28,7 +28,7 @@ public class UpdateCsmBackgroundTask extends LidaTaskImpl {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		}
@@ -40,8 +40,8 @@ public class UpdateCsmBackgroundTask extends LidaTaskImpl {
 	 * which will be accessed by attentional codelets.
 	 */
 	@Override
-	protected void runThisLidaTask() {
-		logger.log(Level.FINER, "Updating CSM with perceptual buffer content.", LidaTaskManager
+	protected void runThisFrameworkTask() {
+		logger.log(Level.FINER, "Updating CSM with perceptual buffer content.", TaskManager
 				.getCurrentTick());
 		
 		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace

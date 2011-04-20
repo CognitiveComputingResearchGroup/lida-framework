@@ -1,12 +1,12 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
  * Specifies different ways a {@link FullyInitializable} will use
  * an associated module.
  * 
- * @see FullyInitializable#setAssociatedModule(LidaModule, String)
+ * @see FullyInitializable#setAssociatedModule(FrameworkModule, String)
  * @author Javier Snaider
  *
  */

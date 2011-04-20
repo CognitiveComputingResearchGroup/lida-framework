@@ -3,8 +3,8 @@ package edu.memphis.ccrg.lida.framework.gui.utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
@@ -18,12 +18,12 @@ public class GuiUtils {
 			.getCanonicalName());
 
 	/**
-	 * Utility method to parse a String to obtain a {@link LidaModule}
+	 * Utility method to parse a String to obtain a {@link FrameworkModule}
 	 * @param param String to parse
-	 * @param lida {@link Lida}
-	 * @return LidaModule with specified name or null
+	 * @param lida {@link Agent}
+	 * @return FrameworkModule with specified name or null
  	 */
-	public static LidaModule parseLidaModule(String param, Lida lida) {
+	public static FrameworkModule parseFrameworkModule(String param, Agent lida) {
 		if(param == null){
 			logger.log(Level.WARNING, "null string argument.", 0L);
 			return null;
@@ -35,7 +35,7 @@ public class GuiUtils {
 			logger.log(Level.WARNING, "Error getting module type " + moduleType, 0L);
 			return null;
 		}
-		LidaModule module = lida.getSubmodule(moduleType);
+		FrameworkModule module = lida.getSubmodule(moduleType);
 		if (module == null) {
 			logger.log(Level.WARNING, "Error getting submodule " + moduleType,
 					0L);

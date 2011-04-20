@@ -27,22 +27,22 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * A {@link LidaPanel} which displays the current queue of tasks scheduled for execution in 
- * {@link LidaTaskManager}.  Rows represent all the tasks scheduled at a particular tick 
+ * A {@link GuiPanel} which displays the current queue of tasks scheduled for execution in 
+ * {@link TaskManager}.  Rows represent all the tasks scheduled at a particular tick 
  * . The first column is the tick number and 
  * the rest of the columns are for each individual tasks scheduled at a particular tick. 
  * @author Javier Snaider
  */
-public class TaskQueuePanel extends LidaPanelImpl {
+public class TaskQueuePanel extends GuiPanelImpl {
 
 	private static final Logger logger = Logger
 			.getLogger(TaskQueuePanel.class.getCanonicalName());
 	
-	private Map<Long, Queue<LidaTask>> tasks= new HashMap<Long, Queue<LidaTask>>();
+	private Map<Long, Queue<FrameworkTask>> tasks= new HashMap<Long, Queue<FrameworkTask>>();
 
 	public TaskQueuePanel() {
 		initComponents();
@@ -119,7 +119,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	// End of variables declaration//GEN-END:variables
 
 	/*
-	 * Implementation of abstract table model to display the contents of the LidaTaskManager's
+	 * Implementation of abstract table model to display the contents of the TaskManager's
 	 * task queue to a Table.
 	 * 
 	 * @author Javier Snaider
@@ -133,7 +133,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		@Override
 		public int getColumnCount() {
 			int total = 0;
-			for (Queue<LidaTask> qt : tasks.values()) {
+			for (Queue<FrameworkTask> qt : tasks.values()) {
 				if (qt.size() > total){
 					total = qt.size();
 				}
@@ -143,7 +143,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 
 		@Override
 		public int getRowCount() {
-			int rows = (int) (lida.getTaskManager().getMaxTick() - LidaTaskManager
+			int rows = (int) (lida.getTaskManager().getMaxTick() - TaskManager
 					.getCurrentTick())+1;
 			return rows;
 		}
@@ -160,24 +160,24 @@ public class TaskQueuePanel extends LidaPanelImpl {
 		}
 
 		/**
-		 * Based on the specified indices, returns a LidaTask.
-		 * @param rowIndex scheduled tick of the LidaTask
-		 * @param columnIndex the position of the LidaTask in the rowIndex row.
+		 * Based on the specified indices, returns a FrameworkTask.
+		 * @param rowIndex scheduled tick of the FrameworkTask
+		 * @param columnIndex the position of the FrameworkTask in the rowIndex row.
 		 * @see javax.swing.table.TableModel#getValueAt(int, int)
 		 */
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object o = null;
 			if (columnIndex==0){
-				return LidaTaskManager.getCurrentTick()+ rowIndex;
+				return TaskManager.getCurrentTick()+ rowIndex;
 			}
 			
-			Queue<LidaTask> qt = tasks.get(LidaTaskManager.getCurrentTick()
+			Queue<FrameworkTask> qt = tasks.get(TaskManager.getCurrentTick()
 					+ rowIndex);
 			if (qt == null) {
 				return "";
 			}
-			Iterator<LidaTask> it = qt.iterator();
+			Iterator<FrameworkTask> it = qt.iterator();
 			for (int i = 1; i <= columnIndex; i++) {
 				if (it.hasNext()) {
 					o = it.next();
@@ -198,7 +198,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	@Override
 	public void refresh() {
 		logger.log(Level.FINEST, "Refreshing TaskQueue Panel",
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		display(lida.getTaskManager().getTaskQueue());
 	}
 
@@ -206,7 +206,7 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Map) {
-			tasks = (Map<Long,Queue<LidaTask>>) o;
+			tasks = (Map<Long,Queue<FrameworkTask>>) o;
 			((AbstractTableModel) tasksTable.getModel()).fireTableStructureChanged();
 		}
 	}

@@ -19,7 +19,7 @@ public interface GuiEventProvider {
 	/**
 	 * Must be able to register FrameworkGuiEvent listeners
 	 * 
-	 * @param listener receiver of GuiEvents, typically a LidaPanel
+	 * @param listener receiver of GuiEvents, typically a GuiPanel
 	 */
 	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener);
 

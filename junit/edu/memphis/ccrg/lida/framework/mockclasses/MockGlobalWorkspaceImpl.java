@@ -2,10 +2,10 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -41,7 +41,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void addSubModule(LidaModule lm) {
+	public void addSubModule(FrameworkModule lm) {
 		
 		
 	}
@@ -65,7 +65,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public LidaModule getSubmodule(ModuleName name) {
+	public FrameworkModule getSubmodule(ModuleName name) {
 		
 		return null;
 	}
@@ -83,14 +83,14 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		
 		
 	}
 
 	@Override
 	public void triggerBroadcast(BroadcastTrigger trigger) {
-		System.out.println("Broadcast started at tick: "+LidaTaskManager.getCurrentTick());
+		System.out.println("Broadcast started at tick: "+TaskManager.getCurrentTick());
 		System.out.println();
 	}
 
@@ -118,7 +118,7 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public LidaModule getSubmodule(String name) {
+	public FrameworkModule getSubmodule(String name) {
 		// not implemented
 		return null;
 	}

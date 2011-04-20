@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.environment;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
  * add environments as associated modules in the XML configuration file. 
  * @author Ryan J. McCall
  */
-public abstract class EnvironmentImpl extends LidaModuleImpl implements Environment, GuiEventProvider{
+public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Environment, GuiEventProvider{
 	
 	private List<FrameworkGuiEventListener> listeners = new ArrayList<FrameworkGuiEventListener>();
 

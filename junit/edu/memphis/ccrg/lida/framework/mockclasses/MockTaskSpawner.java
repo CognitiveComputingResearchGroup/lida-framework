@@ -13,16 +13,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 public class MockTaskSpawner implements TaskSpawner {
 	
-	private List<LidaTask> tasks = new ArrayList<LidaTask>(); 
+	private List<FrameworkTask> tasks = new ArrayList<FrameworkTask>(); 
 
 	@Override
-	public void addTask(LidaTask task) {
+	public void addTask(FrameworkTask task) {
 //		System.out.println(task+" added! To be run at "+task.getNextTicksPerStep()+" ticks from now");
 		tasks.add(task);
 		task.setControllingTaskSpawner(this);
@@ -34,29 +34,29 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public boolean cancelTask(LidaTask task) {
+	public boolean cancelTask(FrameworkTask task) {
 		System.out.println(task+" removed! ");
 		return tasks.remove(task);
 	}
 
 	@Override
-	public Collection<LidaTask> getRunningTasks() {
+	public Collection<FrameworkTask> getRunningTasks() {
 		return Collections.unmodifiableCollection(tasks);
 	}
 
 	@Override
-	public void receiveFinishedTask(LidaTask task) {
+	public void receiveFinishedTask(FrameworkTask task) {
 
 	}
 
 	@Override
-	public void addTasks(Collection<? extends LidaTask> initialTasks) {
+	public void addTasks(Collection<? extends FrameworkTask> initialTasks) {
 		
 
 	}
 
 	@Override
-	public void setTaskManager(LidaTaskManager taskManager) {
+	public void setTaskManager(TaskManager taskManager) {
 		
 
 	}
@@ -80,7 +80,7 @@ public class MockTaskSpawner implements TaskSpawner {
 	}
 
 	@Override
-	public boolean containsTask(LidaTask t) {
+	public boolean containsTask(FrameworkTask t) {
 		return tasks.contains(t);
 	}
 	

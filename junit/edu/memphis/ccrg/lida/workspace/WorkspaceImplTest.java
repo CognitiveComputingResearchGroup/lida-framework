@@ -9,7 +9,7 @@
 package edu.memphis.ccrg.lida.workspace;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -69,7 +69,7 @@ public class WorkspaceImplTest {
     public void testAddSubModule() {
         // TODO review test
         System.out.println("addSubModule");
-        LidaModule lm = null;
+        FrameworkModule lm = null;
         WorkspaceImpl instance = new WorkspaceImpl();
         instance.addSubModule(lm);
     }

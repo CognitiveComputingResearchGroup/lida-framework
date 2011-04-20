@@ -19,8 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
-import edu.memphis.ccrg.lida.framework.initialization.LidaFactoriesXMLLoader;
-import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
+import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXMLLoader;
+import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -43,8 +43,8 @@ public class NodeStructureImplTest extends TestCase{
 	
 	static{
 		factory = ElementFactory.getInstance();
-		LidaFactoriesXMLLoader factoryLoader = new LidaFactoriesXMLLoader();
-		Properties prop = ConfigUtils.loadProperties(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH);
+		FactoriesDataXMLLoader factoryLoader = new FactoriesDataXMLLoader();
+		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_LIDA_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);
 	}
 	

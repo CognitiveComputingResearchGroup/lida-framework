@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -76,7 +76,7 @@ public class MockProceduralMemory implements ProceduralMemory {
 	}
 
 	@Override
-	public void addSubModule(LidaModule lm) {
+	public void addSubModule(FrameworkModule lm) {
 		// not implemented
 
 	}
@@ -106,7 +106,7 @@ public class MockProceduralMemory implements ProceduralMemory {
 	}
 
 	@Override
-	public LidaModule getSubmodule(ModuleName name) {
+	public FrameworkModule getSubmodule(ModuleName name) {
 		// not implemented
 		return null;
 	}
@@ -124,7 +124,7 @@ public class MockProceduralMemory implements ProceduralMemory {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		// not implemented
 
 	}
@@ -160,7 +160,7 @@ public class MockProceduralMemory implements ProceduralMemory {
 	}
 
 	@Override
-	public LidaModule getSubmodule(String name) {
+	public FrameworkModule getSubmodule(String name) {
 		// not implemented
 		return null;
 	}

@@ -16,10 +16,10 @@ import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
 import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructureTable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -41,7 +41,7 @@ import javax.swing.JTable;
  * 
  * @author Siminder Kaur
  */
-public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
+public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 		BroadcastListener {
 	private static final Logger logger = Logger
 			.getLogger(NodeStructureTable.class.getCanonicalName());
@@ -136,7 +136,7 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 	private javax.swing.JToolBar jToolBar1;
 	private javax.swing.JButton refreshButton;
 	// End of variables declaration
-	private LidaModule module;
+	private FrameworkModule module;
 	private JScrollPane scrollPane;
 	private JTable table_1;
 
@@ -189,7 +189,7 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 	}
 
 	@Override
-	public void registerLida(Lida lida) {
+	public void registerLida(Agent lida) {
 		super.registerLida(lida);
 
 	}

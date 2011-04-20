@@ -25,18 +25,18 @@ import java.util.logging.Logger;
 
 import javax.swing.JSlider;
 
-import edu.memphis.ccrg.lida.framework.gui.LidaGui;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 
 /**
- * Implements the tool bar of the {@link LidaGui}. 
+ * Implements the tool bar of the {@link FrameworkGui}. 
  * Can receive parameters for the tick slider min and max values.
  * @author Javier Snaider
  */
-public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEventListener {
+public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEventListener {
 
 	private static final Logger logger = Logger
 			.getLogger(ControlToolBarPanel.class.getCanonicalName());
@@ -207,7 +207,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
 	}
 
 	/*
-	 * Changes LidaTaskManager's tick Duration using SetTimeScaleCommand
+	 * Changes TaskManager's tick Duration using SetTimeScaleCommand
 	 * @param evt
 	 */
 	private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {
@@ -240,7 +240,7 @@ public class ControlToolBarPanel extends LidaPanelImpl implements FrameworkGuiEv
 	}
 
 	/* 
-	 * Toggles the LidaTaskManager's ticks mode using the EnableTicksMode command. 
+	 * Toggles the TaskManager's ticks mode using the EnableTicksMode command. 
 	 * @param evt
 	 */
 	private void ticksModeTBActionPerformed(java.awt.event.ActionEvent evt) {

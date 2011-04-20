@@ -12,7 +12,7 @@
 
 package edu.memphis.ccrg.lida.framework.dao;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
  *
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
  */
 public class ActionSelectionDAO extends DataAccessObjectImpl {
     public static final String STORAGE_NAME = "actionselection";
-    public ActionSelectionDAO(LidaModule module, Storage cStorage, int cLidaId) {
+    public ActionSelectionDAO(FrameworkModule module, Storage cStorage, int cLidaId) {
         super(module, cStorage, STORAGE_NAME, cLidaId);
     }
 }

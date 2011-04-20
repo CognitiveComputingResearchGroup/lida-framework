@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
  *
@@ -34,7 +34,7 @@ public class TransientEpisodicMemoryDAO extends DataAccessObjectImpl {
     public static final int DB_ADDRESS_INDEX = 2;
     public static final int DB_COUNTER_INDEX = 2;
 
-    public TransientEpisodicMemoryDAO(LidaModule module, Storage cStorage, int cLidaId) {
+    public TransientEpisodicMemoryDAO(FrameworkModule module, Storage cStorage, int cLidaId) {
         super(module, cStorage, STORAGE_NAME, cLidaId);
     }
 

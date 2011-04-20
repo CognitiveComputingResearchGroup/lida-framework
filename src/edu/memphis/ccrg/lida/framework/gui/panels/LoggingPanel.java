@@ -31,10 +31,10 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollBar;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * A {@link LidaPanel} to display the logs of the system.
+ * A {@link GuiPanel} to display the logs of the system.
  * 
  * Panel is initialized by loading all relevant Loggers which includes all those
  * in the framework (edu.memphis.ccrg.lida.*) and optionally those specified by
@@ -42,7 +42,7 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
  * 
  * @author Javier Snaider
  */
-public class LoggingPanel extends LidaPanelImpl {
+public class LoggingPanel extends GuiPanelImpl {
 
 	private String logName = "edu.memphis.ccrg.lida";
 	private Logger logger = Logger.getLogger(logName);
@@ -296,7 +296,7 @@ public class LoggingPanel extends LidaPanelImpl {
 			String message = logRecord.getMessage();
 			if (message == null) {
 				logger.log(Level.WARNING, "in Logging Panel message was null",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			} else {
 				MessageFormat mf = new MessageFormat(message);
 

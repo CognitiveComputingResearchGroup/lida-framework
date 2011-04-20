@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
@@ -34,8 +34,8 @@ import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -52,7 +52,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceListener;
  * 
  * @author Ryan J. McCall
  */
-public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
+public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl implements
 		PerceptualAssociativeMemory, BroadcastListener, WorkspaceListener,
 		PreafferenceListener {
 
@@ -154,7 +154,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#init()
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */
 	@Override
 	public void init() {
@@ -268,13 +268,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			if(!pamNodeStructure.containsLinkable(pl)){
 				logger.log(Level.WARNING, "Adding detection algorithm " + detector + 
 						" but, detector's pam linkable " + pl + " is not in PAM.", 
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			}
 		}
 		
 		taskSpawner.addTask(detector);
 		logger.log(Level.FINE, "Added feature detector to PAM",
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 	}
 
 	/*
@@ -302,7 +302,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		taskSpawner.addTask(new ProcessBroadcastTask(ns.copy()));
 	}
 
-	private class ProcessBroadcastTask extends LidaTaskImpl {
+	private class ProcessBroadcastTask extends FrameworkTaskImpl {
 		private NodeStructure broadcast;
 
 		public ProcessBroadcastTask(NodeStructure broadcast) {
@@ -311,7 +311,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		}
 
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
@@ -332,7 +332,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public synchronized void receiveWorkspaceContent(
 			ModuleName originatingBuffer, WorkspaceContent content) {
 		// NodeStructure ns = (NodeStructure) content;
-		// LidaTask t = new FooTask(ns.copy());
+		// FrameworkTask t = new FooTask(ns.copy());
 		// taskSpawner.addTask(t);
 		// TODO Task
 	}
@@ -392,7 +392,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	public void receiveActivationBurst(PamLinkable pl, double amount) {
 		if (pl instanceof PamLink) {
 			logger.log(Level.WARNING, "Does not support pam links yet",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return;
 		}
 
@@ -402,13 +402,13 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			logger.log(Level.FINE, linkable.getLabel()
 					+ " gets activation burst. Amount: " + amount
 					+ ", total activation: " + linkable.getTotalActivation(),
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			ExcitationTask task = new ExcitationTask(linkable, amount,
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
 			logger.log(Level.WARNING, "Cannot find pamnode: " + linkable,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -467,7 +467,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			double amount) {
 		logger.log(Level.FINE, "exciting parent: " + sink.getLabel()
 				+ " and connecting link " + link.getLabel() + " amount: "
-				+ amount, LidaTaskManager.getCurrentTick());
+				+ amount, TaskManager.getCurrentTick());
 		PropagationTask task = new PropagationTask(source, link, sink, amount,
 				this, taskSpawner);
 		task.setTicksPerStep(propagationTaskTicksPerRun);
@@ -555,7 +555,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModuleImpl#getModuleContent(java.
+	 * edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#getModuleContent(java.
 	 * lang.Object[])
 	 */
 	@Override
@@ -568,7 +568,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg
 	 * .lida.framework.ModuleListener)
 	 */
 	@Override
@@ -579,7 +579,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			logger.log(Level.WARNING,
 					"Cannot add listener type " + l.toString()
 							+ " to this module.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -638,7 +638,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 				sinkId, cat, 0.0, 0.0);
 		if (newLink == null) {
 			logger.log(Level.WARNING, "Was unable to add Link",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		setLearnableValues(newLink, baseLevelActivation,
@@ -668,14 +668,14 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 		Node newNode = factory.getNode("PamNodeImpl", label);
 		if (newNode == null) {
 			logger.log(Level.WARNING, "Was unable to create node " + label,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 
 		PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
 		if (newPamNode == null) {
 			logger.log(Level.WARNING, "Cannot add node to nodestructure " + label,
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		setLearnableValues(newPamNode, baseLevelActivation,
@@ -707,7 +707,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			logger.log(Level.WARNING,
 					"Specified base-level excite strategy not found: "
 							+ baseLevelExciteStrat + " Using default.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			blExciteStrategy = factory.getDefaultExciteStrategy();
 		}
 		learnable.setBaseLevelExciteStrategy(blExciteStrategy);
@@ -718,7 +718,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			logger.log(Level.WARNING,
 					"Specified base-level decay strategy not found: "
 							+ baseLevelDecayStrat + " Using default.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			blDecayStrategy = factory.getDefaultDecayStrategy();
 		}
 		learnable.setBaseLevelDecayStrategy(blDecayStrategy);
@@ -743,7 +743,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 			logger.log(
 					Level.WARNING,
 					"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -757,7 +757,7 @@ public class PerceptualAssociativeMemoryImpl extends LidaModuleImpl implements
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
 		logger.log(Level.FINEST, l.getTotalActivation() + " >? "
-				+ perceptThreshold, LidaTaskManager.getCurrentTick());
+				+ perceptThreshold, TaskManager.getCurrentTick());
 		return l.getTotalActivation() > perceptThreshold;
 	}
 

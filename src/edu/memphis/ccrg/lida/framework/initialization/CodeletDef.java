@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
  * Definition of a {@link Codelet} object
- * @see LidaXmlFactory
+ * @see AgentXmlFactory
  * @author Javier Snaider
  *
  */

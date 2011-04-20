@@ -12,7 +12,7 @@ import java.util.Collection;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * @author Ryan J McCall
  * @see ExcitationTask AddToPerceptTask is spawned by ExcitationTask
  */
-public class AddToPerceptTask extends LidaTaskImpl {
+public class AddToPerceptTask extends FrameworkTaskImpl {
 	
 	private NodeStructure nodeStructure;
 	private PerceptualAssociativeMemory pam;
@@ -74,7 +74,7 @@ public class AddToPerceptTask extends LidaTaskImpl {
 	 * Thus it is justifiable to make this a separate thread
 	 */
 	@Override
-	protected void runThisLidaTask() {		
+	protected void runThisFrameworkTask() {		
 		pam.addNodeStructureToPercept(nodeStructure);	
 		setTaskStatus(TaskStatus.FINISHED);
 	}

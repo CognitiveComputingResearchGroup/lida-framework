@@ -8,44 +8,44 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
 /**
- * Enumeration of the possible statuses of LidaTasks
+ * Enumeration of the possible statuses of FrameworkTasks
  * @author Javier Snaider
  *
  */
 public enum TaskStatus {
 	
 	/**
-	 * LidaTask status value:
+	 * FrameworkTask status value:
 	 * Task is scheduled to be run, but is not running yet.
 	 */
 	WAITING,
 	
 	/**
-	 * LidaTask status value:
+	 * FrameworkTask status value:
 	 * Task is running
 	 */
 	RUNNING,
 	
 	/**
-	 * LidaTask status value:
+	 * FrameworkTask status value:
 	 * Task is finished and cannot be restarted
 	 */
 	CANCELED,
 	
 	/**
-	 * LidaTask status value:
+	 * FrameworkTask status value:
 	 * Task is finished and has a result
 	 */
 	FINISHED,
 	
 	/**
-	 * LidaTask status value:
+	 * FrameworkTask status value:
 	 * Task is not running and not finished.
 	 */
 	WAITING_TO_RUN,
 
 	/**
-	 * LidaTask status value:
+	 * FrameworkTask status value:
 	 * Task has finished and has results to process
 	 */
 	FINISHED_WITH_RESULTS

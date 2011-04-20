@@ -6,13 +6,13 @@ package edu.memphis.ccrg.lida.workspace;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * @author Javier Snaider
  * 
  */
-public class CueBackgroundTask extends LidaTaskImpl {
+public class CueBackgroundTask extends FrameworkTaskImpl {
 
 	private static final double DEFAULT_ACT_THRESHOLD = 0.4;
 	private double actThreshold = DEFAULT_ACT_THRESHOLD;
@@ -40,7 +40,7 @@ public class CueBackgroundTask extends LidaTaskImpl {
 	}
 
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		}
@@ -52,7 +52,7 @@ public class CueBackgroundTask extends LidaTaskImpl {
 	 * PAM, then provides them to episodic listener.
 	 */
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		WorkspaceBuffer perceptualBuffer = (WorkspaceBuffer) workspace
 				.getSubmodule(ModuleName.PerceptualBuffer);
 		NodeStructure ns = (NodeStructure) perceptualBuffer.getBufferContent(null);
@@ -67,12 +67,12 @@ public class CueBackgroundTask extends LidaTaskImpl {
 				}
 			}
 		}else{
-			logger.log(Level.WARNING, "Got a null nodestructure", LidaTaskManager
+			logger.log(Level.WARNING, "Got a null nodestructure", TaskManager
 					.getCurrentTick());
 		}
 		
 		if (cueNodeStrucutre.getNodeCount() > 0) {
-			logger.log(Level.FINER, "Cueing Episodic Memories", LidaTaskManager
+			logger.log(Level.FINER, "Cueing Episodic Memories", TaskManager
 					.getCurrentTick());
 			workspace.cueEpisodicMemories(cueNodeStrucutre);
 		}

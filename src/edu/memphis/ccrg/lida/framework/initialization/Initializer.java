@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * An initializer configures the parameters and objects of a particular module.  
@@ -26,6 +26,6 @@ public interface Initializer {
 	 * @param lida Lida object
 	 * @param params module parameters
 	 */
-	public void initModule(FullyInitializable module, Lida lida, Map<String, ?> params); 
+	public void initModule(FullyInitializable module, Agent lida, Map<String, ?> params); 
 
 }

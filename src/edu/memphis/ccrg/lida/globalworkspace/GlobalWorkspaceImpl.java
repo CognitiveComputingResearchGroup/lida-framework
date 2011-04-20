@@ -19,14 +19,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
@@ -40,7 +40,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  * @author Javier Snaider
  * 
  */
-public class GlobalWorkspaceImpl extends LidaModuleImpl implements
+public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 		GlobalWorkspace, GuiEventProvider {
 
 	private static final Logger logger = Logger
@@ -93,7 +93,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
 			logger.log(Level.FINE, "New Coalition added",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -133,20 +133,20 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	 */	
 	private boolean sendBroadcast() {
 		logger.log(Level.FINE, "Triggering broadcast",
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		boolean broadcastWasSent = false;
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
 			winnerCoalActivation = coal.getActivation();
 			coalitions.remove(coal);
 			NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
-			//TODO Create LidaTask for parallel processing 
+			//TODO Create FrameworkTask for parallel processing 
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}		
 			
 			logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			broadcastWasSent = true;
 		}
 		resetTriggers();
@@ -188,7 +188,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 			if (c.getActivation() <= LOWER_ACTIVATION_BOUND) {
 				coalitions.remove(c);
 				logger.log(Level.FINE, "Coallition removed",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			}
 		}
 	}
@@ -210,7 +210,7 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 	public void decayModule(long ticks) {
 		super.decayModule(ticks);
 		decay(ticks);
-		logger.log(Level.FINEST, "Coallitions Decayed", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Coallitions Decayed", TaskManager.getCurrentTick());
 	}
 
 	@Override
@@ -225,13 +225,13 @@ public class GlobalWorkspaceImpl extends LidaModuleImpl implements
 		getAssistingTaskSpawner().addTask(new BackgroundTask());
 	}
 
-	private class BackgroundTask extends LidaTaskImpl {
+	private class BackgroundTask extends FrameworkTaskImpl {
 		public BackgroundTask() {
 			super(1);
 		}
 
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			for (BroadcastTrigger t : broadcastTriggers) {
 				t.start();
 			}

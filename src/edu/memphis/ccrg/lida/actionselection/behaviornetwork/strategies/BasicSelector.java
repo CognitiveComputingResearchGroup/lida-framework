@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Selector that chooses {@link Behavior} with maximum activation
@@ -39,7 +39,7 @@ public class BasicSelector implements Selector{
         List<Behavior>winners=new ArrayList<Behavior>();
         Behavior winner = null;
         
-       logger.log(Level.FINEST,"\nStarting selection, num candidates: " + candidateBehaviors.size(),LidaTaskManager.getCurrentTick());
+       logger.log(Level.FINEST,"\nStarting selection, num candidates: " + candidateBehaviors.size(),TaskManager.getCurrentTick());
       
         for(Behavior current: candidateBehaviors){
     		double currentActivation = current.getTotalActivation();

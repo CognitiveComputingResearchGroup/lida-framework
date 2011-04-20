@@ -8,8 +8,8 @@
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.environment.Environment;
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
@@ -20,8 +20,8 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 public class ResetEnvironmentCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Lida lida) {
-		LidaModule environ = lida.getSubmodule(ModuleName.Environment);
+	public void execute(Agent lida) {
+		FrameworkModule environ = lida.getSubmodule(ModuleName.Environment);
 		if(environ != null && environ instanceof Environment){
 			((Environment)environ).resetState();
 		}

@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * A task that represents a demon-like processor.
  * @author Javier Snaider, Ryan J. McCall
  */
-public interface Codelet extends LidaTask{
+public interface Codelet extends FrameworkTask{
 
 
 	/**

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Calculates a new activation using an upscale parameter.
@@ -34,7 +34,7 @@ public class UpscalePropagationBehavior implements PropagationBehavior{
 		if(params.containsKey("totalActivation") && params.containsKey("upscale")){
 			return (Double)params.get("totalActivation") * (Double)params.get("upscale");
 		}else{
-			logger.log(Level.WARNING,"Unable to obtain parameters",LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING,"Unable to obtain parameters",TaskManager.getCurrentTick());
 			return 0;
 		}
 	}

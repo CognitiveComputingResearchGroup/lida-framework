@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -32,7 +32,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private NodeStructure addingResult;
 	private NodeStructure deletingResult;
 
-	private LidaAction action;
+	private AgentAction action;
 	private String label;
 	private long id;
 	private static long idGenerator = 0;
@@ -44,7 +44,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		deletingResult = new NodeStructureImpl();
 	}
 
-	public SchemeImpl(String label, LidaAction a) {
+	public SchemeImpl(String label, AgentAction a) {
 		this();
 		this.label = label;
 		this.action = a;
@@ -141,7 +141,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public void setAction(LidaAction action) {
+	public void setAction(AgentAction action) {
 		this.action = action;
 	}
 
@@ -196,7 +196,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public LidaAction getAction() {
+	public AgentAction getAction() {
 		return action;
 	}
 	

@@ -13,8 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
@@ -22,8 +22,8 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -33,11 +33,11 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerM
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 	
 /**
- * {@link LidaModule} which creates and manages all {@link AttentionCodelet}s.
+ * {@link FrameworkModule} which creates and manages all {@link AttentionCodelet}s.
  * @author Ryan J. McCall
  *
  */
-public class AttentionCodeletModule extends LidaModuleImpl implements
+public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		BroadcastListener, PreafferenceListener, CodeletManagerModule {
 
 	private static final Logger logger = Logger
@@ -70,7 +70,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 		}else{
 			logger.log(Level.WARNING, 
 					"Cannot set default codelet type, factory does not have type: " + type, 
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -87,7 +87,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 *            way of associating the module
 	 */
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage) {
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			csm = (WorkspaceBuffer) module
 					.getSubmodule(ModuleName.CurrentSituationalModel);
@@ -101,7 +101,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 	 * learning
 	 * 
 	 */
-	private class ProcessBroadcastTask extends LidaTaskImpl {
+	private class ProcessBroadcastTask extends FrameworkTaskImpl {
 		private NodeStructure broadcast;
 
 		public ProcessBroadcastTask(NodeStructure broadcast) {
@@ -110,7 +110,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 		}
 
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
@@ -167,7 +167,7 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 			logger.log(
 					Level.WARNING,
 					"Specified type does not exist in the factory. Attention codelet not created.",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
@@ -187,9 +187,9 @@ public class AttentionCodeletModule extends LidaModuleImpl implements
 		if(codelet instanceof AttentionCodelet){
 			taskSpawner.addTask(codelet);
 			logger.log(Level.FINER, "New attention codelet " + codelet.toString()
-				+ " spawned.", LidaTaskManager.getCurrentTick());
+				+ " spawned.", TaskManager.getCurrentTick());
 		}else{
-			logger.log(Level.WARNING, "Can only add an AttentionCodelet", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Can only add an AttentionCodelet", TaskManager.getCurrentTick());
 		}
 	}
 

@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.LidaAction;
+import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicCandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BasicSelector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.BehaviorExciteStrategy;
@@ -30,14 +30,14 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Conflict
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.PredecessorExciteStrategy;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.Selector;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.strategies.SuccessorExciteStrategy;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
@@ -52,7 +52,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  * 
  * @author Ryan J McCall, Javier Snaider
  */
-public class BehaviorNetworkImpl extends LidaModuleImpl implements
+public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 		ActionSelection, ProceduralMemoryListener {
 
 	private static final Logger logger = Logger
@@ -162,7 +162,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#init()
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */
 	@Override
 	public void init() {
@@ -178,9 +178,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		conflictorExciteStrategy.init(exciteParameters);
 
 		// TODO set parameters for activation passing
-		LidaTask backgroundTask = new LidaTaskImpl() {
+		FrameworkTask backgroundTask = new FrameworkTaskImpl() {
 			@Override
-			protected void runThisLidaTask() {
+			protected void runThisFrameworkTask() {
 				passActivationAmongBehaviors();
 			}
 			@Override
@@ -190,9 +190,9 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		};
 		taskSpawner.addTask(backgroundTask);
 		
-		LidaTask selectionTask = new LidaTaskImpl() {
+		FrameworkTask selectionTask = new FrameworkTaskImpl() {
 			@Override
-			protected void runThisLidaTask() {
+			protected void runThisFrameworkTask() {
 				selectAction();
 			}
 			@Override
@@ -215,7 +215,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			taskSpawner.addTask(task);
 		}
 	}
-	private class ProcessBroadcastTask extends LidaTaskImpl {
+	private class ProcessBroadcastTask extends FrameworkTaskImpl {
 		private NodeStructure broadcast;
 
 		public ProcessBroadcastTask(NodeStructure broadcast) {
@@ -224,7 +224,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		}
 
 		@Override
-		protected void runThisLidaTask() {
+		protected void runThisFrameworkTask() {
 			passActivationFromBroadcast(broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
@@ -263,7 +263,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
 	 */
 	@Override
 	public void addListener(ModuleListener listener) {
@@ -488,7 +488,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 
 			logger.log(Level.FINEST, behavior.toString() + " "
 					+ excitationAmount / behavior.getContextSize() + " for "
-					+ broadcastNode, LidaTaskManager.getCurrentTick());
+					+ broadcastNode, TaskManager.getCurrentTick());
 		}
 	}
 
@@ -513,7 +513,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	private void sendPreafference(Behavior winningBehavior) {
 		logger.log(Level.FINEST,
 				"Sending preafference for " + winningBehavior.getLabel(),
-				LidaTaskManager.getCurrentTick());
+				TaskManager.getCurrentTick());
 		for (PreafferenceListener l : preafferenceListeners)
 			l.receivePreafference(winningBehavior.getAddingList(),
 					winningBehavior.getDeletingList());
@@ -523,16 +523,16 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 		candidateBehaviorThreshold = candidateThresholdReducer
 				.reduceActivationThreshold(candidateBehaviorThreshold);
 		logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to "
-				+ candidateBehaviorThreshold, LidaTaskManager.getCurrentTick());
+				+ candidateBehaviorThreshold, TaskManager.getCurrentTick());
 	}
 
 	private void resetCandidateBehaviorThreshold() {
 		candidateBehaviorThreshold = INITIAL_CANDIDATE_BEHAVIOR_THRESHOLD;
 		logger.log(Level.FINEST, "Candidate behavior threshold RESET to  "
-				+ candidateBehaviorThreshold, LidaTaskManager.getCurrentTick());
+				+ candidateBehaviorThreshold, TaskManager.getCurrentTick());
 	}
 
-	private void sendAction(LidaAction action) {
+	private void sendAction(AgentAction action) {
 		for (ActionSelectionListener l : listeners)
 			l.receiveAction(action);
 	}
@@ -552,7 +552,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 			if (behavior.getActivation() <= behaviorActivationLowerBound) {
 				logger.log(Level.FINER,
 						"Removing behavior: " + behavior.getLabel(),
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 				removeBehavior(behavior);
 			}
 		}
@@ -660,7 +660,7 @@ public class BehaviorNetworkImpl extends LidaModuleImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaModuleImpl#getModuleContent(java.lang.Object[])
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#getModuleContent(java.lang.Object[])
 	 */
 	@Override
 	public Object getModuleContent(Object... params) {

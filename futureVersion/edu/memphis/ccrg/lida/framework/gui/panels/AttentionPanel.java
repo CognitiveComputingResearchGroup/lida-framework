@@ -22,7 +22,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
  *
  * @author Javier
  */
-public class AttentionPanel extends LidaPanelImpl {
+public class AttentionPanel extends GuiPanelImpl {
 
     /** Creates new form NodeStructurePanel */
     public AttentionPanel() {

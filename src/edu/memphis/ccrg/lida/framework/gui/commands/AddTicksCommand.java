@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * This command is used for the tick mode to add ticks for execution.
@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.Lida;
 public class AddTicksCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Lida lida) {
+	public void execute(Agent lida) {
 		Integer ticks= (Integer)getParameter("ticks");
 		if (ticks !=null){
 			lida.getTaskManager().addTicksToExecute(ticks);

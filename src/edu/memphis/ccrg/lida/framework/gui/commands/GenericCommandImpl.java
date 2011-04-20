@@ -10,11 +10,11 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * Abstract implementation of {@link Command}.
- * Extend from this base class to create new commands overriding {@link #execute(Lida)}.
+ * Extend from this base class to create new commands overriding {@link #execute(Agent)}.
  * 
  * @author Javier Snaider
  *
@@ -25,7 +25,7 @@ public abstract class GenericCommandImpl implements Command {
 	protected Object result;
 
 	@Override
-	public abstract void execute(Lida lida);
+	public abstract void execute(Agent lida);
 
 	@Override
 	public Object getParameter(String name) {

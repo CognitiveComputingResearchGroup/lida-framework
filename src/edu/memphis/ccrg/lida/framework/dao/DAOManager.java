@@ -13,8 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl;
-import edu.memphis.ccrg.lida.framework.Lida;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
@@ -41,7 +41,7 @@ public class DAOManager implements DataAccessObject {
         return instance;
     }
 
-    public boolean initDataAccessObjects(Lida lida) {
+    public boolean initDataAccessObjects(Agent lida) {
         boolean success = true;
 
         storage = DataBaseStorageImpl.getInstance();
@@ -61,7 +61,7 @@ public class DAOManager implements DataAccessObject {
             TEM_WORD_LENGTH = (Integer)lida.getParam("tem.wordLength",EpisodicMemoryImpl.DEF_WORD_LENGTH);
 
             for (ModuleName name : ModuleName.values()) {
-                LidaModule module = lida.getSubmodule(name);
+                FrameworkModule module = lida.getSubmodule(name);
                 if (module != null && module.getModuleName() == name) {
                     Class<?> daoClass = null;
                     try {
@@ -72,7 +72,7 @@ public class DAOManager implements DataAccessObject {
                     if (daoClass != null) {
                         try {
                             Constructor<?> daoConstructor = daoClass.getConstructor(
-                                    new Class[] {LidaModule.class, Storage.class, int.class}
+                                    new Class[] {FrameworkModule.class, Storage.class, int.class}
                             );
                             DataAccessObject dao = (DataAccessObject)daoConstructor.newInstance(
                                     new Object[] {module, storage, cLidaId}

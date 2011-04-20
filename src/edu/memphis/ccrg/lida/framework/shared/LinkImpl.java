@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLink;
 
 /**
@@ -84,7 +84,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#init(java.util.Properties)
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
 	 */
 	@Override
 	public void init(Map<String, ?> params) {
@@ -96,7 +96,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.LidaModule#init()
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init()
 	 */
 	@Override
 	public void init() {
@@ -119,7 +119,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
-			logger.log(Level.FINEST, "updated extended id", LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINEST, "updated extended id", TaskManager.getCurrentTick());
 			extendedId = new ExtendedId(source.getId(), sink.getExtendedId(), category.getId());
 		}
 	}
@@ -147,12 +147,12 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public void setSink(Linkable sink) {
 		if(sink == null){
-			logger.log(Level.WARNING, "Cannot set sink to null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set sink to null", TaskManager.getCurrentTick());
 			return;
 		}
 		
 		if(sink.equals(source)){
-			logger.log(Level.WARNING, "Cannot set sink to same Linkable as source", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set sink to same Linkable as source", TaskManager.getCurrentTick());
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
 		}
 		if(sink.getExtendedId().isComplexLink()){
@@ -165,11 +165,11 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public void setSource(Node source) {
 		if(source == null){
-			logger.log(Level.WARNING, "Cannot set source to null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set source to null", TaskManager.getCurrentTick());
 			return;
 		}
 		if(source.equals(sink)){
-			logger.log(Level.WARNING, "Cannot set source to same Linkable as sink", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set source to same Linkable as sink", TaskManager.getCurrentTick());
 			throw new IllegalArgumentException("Cannot create a link with the same source and sink.");
 		}
 		
@@ -180,7 +180,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public void setCategory(LinkCategory category) {
 		if(category == null){
-			logger.log(Level.WARNING, "Cannot set category to null", LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set category to null", TaskManager.getCurrentTick());
 			return;
 		}
 		this.category = category;

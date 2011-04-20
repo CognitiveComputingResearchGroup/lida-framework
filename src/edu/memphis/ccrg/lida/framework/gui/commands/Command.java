@@ -14,7 +14,7 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * A command is an encapsulation of an event from the Gui such as a button press or a 
@@ -31,7 +31,7 @@ public interface Command {
 	 * @param lida
 	 *            Lida Object
 	 */
-    public void execute(Lida lida);
+    public void execute(Agent lida);
     
     /**
 	 * Returns result of the command.

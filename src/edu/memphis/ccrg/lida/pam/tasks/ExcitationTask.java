@@ -10,8 +10,8 @@ package edu.memphis.ccrg.lida.pam.tasks;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * @author Ryan J McCall
  *
  */
-public class ExcitationTask extends LidaTaskImpl{
+public class ExcitationTask extends FrameworkTaskImpl{
 	
 	private static final Logger logger = Logger.getLogger(ExcitationTask.class.getCanonicalName());
 	
@@ -80,10 +80,10 @@ public class ExcitationTask extends LidaTaskImpl{
 	 * Propagate activation to parents.
 	 */
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		pamNode.excite(excitationAmount); 
 		if(pam.isOverPerceptThreshold(pamNode)){
-			logger.log(Level.FINER, "PamNode " + pamNode.toString() + " over threshold", LidaTaskManager.getCurrentTick());
+			logger.log(Level.FINER, "PamNode " + pamNode.toString() + " over threshold", TaskManager.getCurrentTick());
 			taskSpawner.addTask(new AddToPerceptTask(pamNode, pam));		
 		}
 		pam.propagateActivationToParents(pamNode);

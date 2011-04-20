@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
@@ -54,8 +54,8 @@ public class ExcitationTaskTest extends TestCase {
 		assertTrue(pamNode.getActivation() == 0.5);
 		assertTrue(pam.testGetSink().getActivation() == 0.5);
 		
-		Collection<LidaTask> tasks= taskSpawner.getRunningTasks(); 
-		for(LidaTask tsk: tasks){
+		Collection<FrameworkTask> tasks= taskSpawner.getRunningTasks(); 
+		for(FrameworkTask tsk: tasks){
 			assertTrue(tsk instanceof AddToPerceptTask);
 		}
 		 

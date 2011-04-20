@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.sensorymemory;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 /**
@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * 
  * @author Ryan J. McCall
  */
-public interface SensoryMemory extends LidaModule, Saveable {
+public interface SensoryMemory extends FrameworkModule, Saveable {
 
 	/**
 	 * Adds a listener to this memory. This listener constantly checks for

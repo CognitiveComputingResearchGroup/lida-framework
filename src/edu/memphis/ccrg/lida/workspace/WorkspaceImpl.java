@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.episodicmemory.LocalAssociationListener;
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.LidaModuleImpl;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PamListener;
@@ -37,7 +37,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  *
  */
 
-public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListener, 
+public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, PamListener, 
 									  	LocalAssociationListener, BroadcastListener{
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceImpl.class.getCanonicalName());
@@ -49,7 +49,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 	}	
 	
 	@Override
-	public void addSubModule(LidaModule lm){
+	public void addSubModule(FrameworkModule lm){
 		super.addSubModule(lm);
 	}
 	
@@ -61,7 +61,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 			addCueListener((CueListener)listener);
 		}else{
 			logger.log(Level.WARNING, "Listener " + listener + " was not added, wrong type.", 
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -80,7 +80,7 @@ public class WorkspaceImpl extends LidaModuleImpl implements Workspace, PamListe
 		for(CueListener c: cueListeners){
 			c.receiveCue(content);
 		}
-		logger.log(Level.FINER, "Cue performed.", LidaTaskManager.getCurrentTick());
+		logger.log(Level.FINER, "Cue performed.", TaskManager.getCurrentTick());
 	}
 	
 	/*

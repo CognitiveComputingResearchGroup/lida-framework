@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.gui.commands.Command;
  * @author Javier Snaider
  *
  */
-public interface LidaGuiController {
+public interface FrameworkGuiController {
 
 	/**
 	 * Executes a command specified by the name. This name corresponds to a property in 

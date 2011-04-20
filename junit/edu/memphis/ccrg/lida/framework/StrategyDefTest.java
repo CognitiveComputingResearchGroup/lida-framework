@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 public class StrategyDefTest {
 
@@ -36,13 +36,13 @@ public class StrategyDefTest {
 
 			} catch (InstantiationException e) {
 				logger.log(Level.WARNING, "Error creating Strategy.",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			} catch (IllegalAccessException e) {
 				logger.log(Level.WARNING, "Error creating Strategy.",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			} catch (ClassNotFoundException e) {
 				logger.log(Level.WARNING, "Error creating Strategy.",
-						LidaTaskManager.getCurrentTick());
+						TaskManager.getCurrentTick());
 			}
 		 assertEquals ("problem with GetInstance", instance , strategy.getInstance()); 
 		

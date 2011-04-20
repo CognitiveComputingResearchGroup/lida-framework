@@ -8,7 +8,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
  * @author Ryan J. McCall
  *
  */
-public abstract class CodeletImpl extends LidaTaskImpl implements Codelet {
+public abstract class CodeletImpl extends FrameworkTaskImpl implements Codelet {
 
 	protected NodeStructure soughtContent;
 	

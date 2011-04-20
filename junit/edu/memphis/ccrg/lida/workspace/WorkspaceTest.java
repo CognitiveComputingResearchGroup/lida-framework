@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.LidaModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -136,12 +136,12 @@ public class WorkspaceTest {
         }
 
         @Override
-        public LidaModule getSubmodule(ModuleName name) {
+        public FrameworkModule getSubmodule(ModuleName name) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public void addSubModule(LidaModule lm) {
+        public void addSubModule(FrameworkModule lm) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -171,7 +171,7 @@ public class WorkspaceTest {
         }
 
         @Override
-        public void setAssociatedModule(LidaModule module, String moduleUsage) {
+        public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -191,7 +191,7 @@ public class WorkspaceTest {
         }
 
 		@Override
-		public LidaModule getSubmodule(String name) {
+		public FrameworkModule getSubmodule(String name) {
 			// TODO Auto-generated method stub
 			return null;
 		}

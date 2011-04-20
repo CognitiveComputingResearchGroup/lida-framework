@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.logging.Level; 
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.LidaModule;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @author Ryan J. McCall - Javier Snaider
  * 
  */
-public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
+public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implements
 		DetectionAlgorithm {
 
 	private static final Logger logger = Logger
@@ -63,7 +63,7 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.LidaTaskImpl#init()
+	 * @see edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl#init()
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -79,13 +79,13 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	}
 	
 	@Override
-	public void setAssociatedModule(LidaModule module, String moduleUsage){
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage){
 		if(module instanceof PerceptualAssociativeMemory){
 			pam = (PerceptualAssociativeMemory) module;
 		}else if(module instanceof SensoryMemory){
 			sensoryMemory = (SensoryMemory) module;
 		}else{
-			logger.log(Level.WARNING, "Cannot set associated module " + module, LidaTaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set associated module " + module, TaskManager.getCurrentTick());
 		}
 	}
 
@@ -106,12 +106,12 @@ public abstract class BasicDetectionAlgorithm extends LidaTaskImpl implements
 	}
 
 	@Override
-	protected void runThisLidaTask() {
+	protected void runThisFrameworkTask() {
 		double amount = detect();
 		logger.log(Level.FINE, "detection performed " + toString() + ": "
-				+ amount, LidaTaskManager.getCurrentTick());
+				+ amount, TaskManager.getCurrentTick());
 		if (amount > 0.0) {
-			logger.log(Level.FINE, "Pam excited: " + amount, LidaTaskManager
+			logger.log(Level.FINE, "Pam excited: " + amount, TaskManager
 					.getCurrentTick());
 			excitePam(amount);
 		}

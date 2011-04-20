@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
@@ -130,7 +130,7 @@ public class StructureBuildingCodeletModuleTest {
 	public final void testAddFrameworkGuiEventListener() {
 		StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
 		
-		FrameworkGuiEvent fge = new FrameworkGuiEvent(ModuleName.LIDA, "01", new Object());
+		FrameworkGuiEvent fge = new FrameworkGuiEvent(ModuleName.Agent, "01", new Object());
 		mockFrameworkGuiEventListener mockgui = new mockFrameworkGuiEventListener();
 		sbcm.addFrameworkGuiEventListener(mockgui);
 		sbcm.sendEventToGui(fge);
@@ -210,7 +210,7 @@ class mockFrameworkGuiEventListener implements FrameworkGuiEventListener{
 
 class mockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner{
 	@Override
-	public void addTask(LidaTask task){
+	public void addTask(FrameworkTask task){
 		NodeStructure ns = ((StructureBuildingCodelet)task).getSoughtContent();
 		assertTrue("Problem with class StructureBuildingCodeletModule for testAddCodelet()",
 				(ns.getNode(9) != null)&&(ns.getNodeCount() == 1));

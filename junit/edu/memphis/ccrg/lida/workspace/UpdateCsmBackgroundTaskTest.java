@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 public class UpdateCsmBackgroundTaskTest {
 
 	@Test
-	public final void testRunThisLidaTask() {
+	public final void testRunThisTask() {
 
 		UpdateCsmBackgroundTask uct = new UpdateCsmBackgroundTask();
 		
@@ -67,12 +67,12 @@ public class UpdateCsmBackgroundTaskTest {
 		uct.setAssociatedModule(wMoudle, ModuleUsage.NOT_SPECIFIED);
 		
 		//Run method of target class
-		uct.runThisLidaTask();
+		uct.runThisFrameworkTask();
 		
 		// Check CSM Buffer
 		NodeStructure ns2 = (NodeStructure) CSMBuffer.getModuleContent();
 		
-		assertTrue("Problem with class UpdateCsmBackgroundTask for testRunThisLidaTask()",
+		assertTrue("Problem with class UpdateCsmBackgroundTask for testRunThisFrameworkTask()",
 				(NodeStructureImpl.compareNodeStructures(ns, ns2)));
 	}
 
@@ -83,8 +83,8 @@ public class UpdateCsmBackgroundTaskTest {
 
 	@Test
 	public final void testSetAssociatedModule() {
-		//SetAssociatedModule() be tested in testRunThisLidaTask method above with testing of 
-		//RunThisLidaTask() together.
+		//SetAssociatedModule() be tested in testRunThisFrameworkTask method above with testing of 
+		//RunThisFrameworkTask() together.
 	}
 
 	@Test

@@ -21,8 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
-import edu.memphis.ccrg.lida.framework.initialization.LidaFactoriesXMLLoader;
-import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
+import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXMLLoader;
+import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockDetectionAlgorithm;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
@@ -39,7 +39,7 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 
@@ -61,8 +61,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	static{
 		factory = ElementFactory.getInstance();
-		LidaFactoriesXMLLoader factoryLoader = new LidaFactoriesXMLLoader();
-		Properties prop = ConfigUtils.loadProperties(LidaStarter.DEFAULT_LIDA_PROPERTIES_PATH);
+		FactoriesDataXMLLoader factoryLoader = new FactoriesDataXMLLoader();
+		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_LIDA_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);
 	}
 	
@@ -363,7 +363,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		pam.setUpscaleFactor(upscaleFactor);
 		pam.propagateActivationToParents((PamNode) testNod1);
 		
-		Collection<LidaTask> tasks = ts.getRunningTasks();
+		Collection<FrameworkTask> tasks = ts.getRunningTasks();
 		assertTrue(tasks.size() == 2);
 		
 

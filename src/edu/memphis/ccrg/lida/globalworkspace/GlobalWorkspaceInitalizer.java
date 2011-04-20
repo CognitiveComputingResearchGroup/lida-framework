@@ -12,10 +12,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.Lida;
+import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
-import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualCoaltionActivationTrigger;
@@ -43,7 +43,7 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 	}
 
 	@Override
-	public void initModule(FullyInitializable module, Lida lida,
+	public void initModule(FullyInitializable module, Agent lida,
 			Map<String, ?> params) {
 
 		GlobalWorkspace globalWksp = (GlobalWorkspace) module;
@@ -53,7 +53,7 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 			delayNoBroadcast = DEFAULT_DELAY_NO_BROADCAST;
 			logger.log(Level.WARNING,
 					"Delay no broadcast could not be read, using default",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 
 		Integer delayNoNewCoalition = (Integer) params
@@ -62,7 +62,7 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 			delayNoNewCoalition = DEFAULT_DELAY_NO_NEW_COALITION;
 			logger.log(Level.WARNING,
 					"Delay no new coalition could not be read, using default",
-					LidaTaskManager.getCurrentTick());
+					TaskManager.getCurrentTick());
 		}
 
 		Double aggregateActivationThreshold = (Double) params
@@ -73,7 +73,7 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 					.log(
 							Level.WARNING,
 							"aggregate activation threshold could not be read, using default",
-							LidaTaskManager.getCurrentTick());
+							TaskManager.getCurrentTick());
 		}
 
 		Double individualActivationThreshold = (Double) params
@@ -84,7 +84,7 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 					.log(
 							Level.WARNING,
 							"individual activation threshold could not be read, using default",
-							LidaTaskManager.getCurrentTick());
+							TaskManager.getCurrentTick());
 		}
 
 		BroadcastTrigger tr;

@@ -10,7 +10,7 @@
  */
 
 /*
- * LidaGui.java
+ * FrameworkGui.java
  *
  * Created on 12/07/2009, 08:47:40
  */
@@ -42,7 +42,7 @@ import edu.memphis.ccrg.lida.framework.initialization.LidaStarter;
  * 
  * @author Javier Snaider
  */
-public class LidaGui extends javax.swing.JFrame {
+public class FrameworkGui extends javax.swing.JFrame {
 
     private static final String PANEL_PROPFILE_COMMENT = "name = real name, class name, Position [A,B,C,FLOAT, TOOL], Order at Position, Refresh after load?, Additional strings are used as general parameters for the panel's initPanel method";
 
@@ -57,18 +57,18 @@ public class LidaGui extends javax.swing.JFrame {
     private List<String[]> panelParameters = new ArrayList<String[]>();
     private List<java.awt.Container> panelParents = new ArrayList<java.awt.Container>();
     private Lida lida;
-    private LidaGuiController controller;
-    private static final Logger logger = Logger.getLogger(LidaGui.class.getCanonicalName());
+    private FrameworkGuiController controller;
+    private static final Logger logger = Logger.getLogger(FrameworkGui.class.getCanonicalName());
     private javax.swing.JDialog addEditDialog;
 
-    public LidaGui(Lida lida, LidaGuiController controller, Properties panelProperties) {
+    public FrameworkGui(Lida lida, FrameworkGuiController controller, Properties panelProperties) {
         initComponents();
         this.lida = lida;
         this.controller = controller;
 
         loadPanels(panelProperties);
         pack();
-        logger.log(Level.INFO, "LidaGUI started", 0L);
+        logger.log(Level.INFO, "FrameworkGui started", 0L);
     }
 
     /**
@@ -119,7 +119,7 @@ public class LidaGui extends javax.swing.JFrame {
         }
         panel.setName(panelParams[PANEL_NAME]);
         panel.registerLida(lida);
-        panel.registrerLidaGuiController(controller);
+        panel.registrerGuiController(controller);
         String[] param = new String[panelParams.length - FIRST_PARAM];
         System.arraycopy(panelParams, FIRST_PARAM, param, 0, panelParams.length - FIRST_PARAM);
         panel.initPanel(param);
@@ -503,7 +503,7 @@ public class LidaGui extends javax.swing.JFrame {
         final AddEditPanel addEditPanel = new AddEditPanel();
         addEditPanel.setName("AddPanel");
         addEditPanel.registerLida(lida);
-        addEditPanel.registrerLidaGuiController(this.controller);
+        addEditPanel.registrerGuiController(this.controller);
         if (addEditDialog != null) addEditDialog.setVisible(false);
         addEditDialog = new javax.swing.JDialog();
         addEditDialog.add(addEditPanel.getPanel());
@@ -530,7 +530,7 @@ public class LidaGui extends javax.swing.JFrame {
         final AddEditPanel addEditPanel = new AddEditPanel();
         addEditPanel.setName("EditPanel");
         addEditPanel.registerLida(lida);
-        addEditPanel.registrerLidaGuiController(this.controller);
+        addEditPanel.registrerGuiController(this.controller);
         addEditPanel.setPanelParams(panelParams);
         if (addEditDialog != null) addEditDialog.setVisible(false);
         addEditDialog = new javax.swing.JDialog();
