@@ -237,7 +237,9 @@ public class GlobalWorkspaceTablePanel extends LidaPanelImpl implements
 			// Collection<Coalition> coals = coalitions.getNodes();
 			Iterator<Coalition> it = coalitions.iterator();
 			for (int i = 0; i <= rowIndex; i++) {
-				coal = it.next();
+				if(it.hasNext()){
+					coal = it.next();
+				}
 			}
 			DecimalFormat df = new DecimalFormat("#.###");
 			switch (columnIndex) {
