@@ -28,10 +28,11 @@ import edu.memphis.ccrg.lida.framework.LidaModule;
 import edu.memphis.ccrg.lida.framework.gui.utils.GuiUtils;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * A {@link LidaPanel} which displays the {@link LidaTask}s which are part of a
- * particular {@link LidaModule}.
+ * A {@link LidaPanel} which displays the {@link LidaTask}s which are controlled by
+ * the {@link TaskSpawner} associated with a particular {@link LidaModule}.
  * 
  * @author Javier Snaider
  */
@@ -165,7 +166,7 @@ public class LidaTaskPanel extends LidaPanelImpl {
 	 */
 	private class TaskTableModel extends AbstractTableModel {
 
-		private int columnCnt = 5;
+		private int columnCnt = 6;
 
 		@Override
 		public int getColumnCount() {
@@ -196,6 +197,9 @@ public class LidaTaskPanel extends LidaPanelImpl {
 			case 4:
 				cName = "Scheduled Tick";
 				break;
+			case 5:
+				cName = "Next ticksPerStep";	
+				break;
 			default:
 				cName = "col" + column;
 			}
@@ -221,6 +225,9 @@ public class LidaTaskPanel extends LidaPanelImpl {
 				break;
 			case 4:
 				o = task.getScheduledTick();
+				break;
+			case 5:
+				o=task.getNextTicksPerStep();
 				break;
 			default:
 				o = "";

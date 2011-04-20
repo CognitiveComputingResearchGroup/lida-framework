@@ -31,7 +31,10 @@ import edu.memphis.ccrg.lida.framework.tasks.LidaTask;
 import edu.memphis.ccrg.lida.framework.tasks.LidaTaskManager;
 
 /**
- * 
+ * A {@link LidaPanel} which displays the current queue of tasks scheduled for execution in 
+ * {@link LidaTaskManager}.  Rows represent all the tasks scheduled at a particular tick 
+ * . The first column is the tick number and 
+ * the rest of the columns are for each individual tasks scheduled at a particular tick. 
  * @author Javier Snaider
  */
 public class TaskQueuePanel extends LidaPanelImpl {
@@ -115,8 +118,18 @@ public class TaskQueuePanel extends LidaPanelImpl {
 	private javax.swing.JToolBar jToolBar1;
 	// End of variables declaration//GEN-END:variables
 
+	/*
+	 * Implementation of abstract table model to display the contents of the LidaTaskManager's
+	 * task queue to a Table.
+	 * 
+	 * @author Javier Snaider
+	 */
 	private class TaskQueueTableModel extends AbstractTableModel {
 
+		/* (non-Javadoc)
+		 * Returns the size of the largest queue in the task queue plus 1
+		 * @see javax.swing.table.TableModel#getColumnCount()
+		 */
 		@Override
 		public int getColumnCount() {
 			int total = 0;
@@ -146,6 +159,12 @@ public class TaskQueuePanel extends LidaPanelImpl {
 			return cName;
 		}
 
+		/**
+		 * Based on the specified indices, returns a LidaTask.
+		 * @param rowIndex scheduled tick of the LidaTask
+		 * @param columnIndex the position of the LidaTask in the rowIndex row.
+		 * @see javax.swing.table.TableModel#getValueAt(int, int)
+		 */
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Object o = null;

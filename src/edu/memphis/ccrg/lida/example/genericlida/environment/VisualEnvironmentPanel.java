@@ -5,27 +5,18 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * VisualFieldPanel.java
- *
- * Created on 12/07/2009, 10:08:22
- */
-package edu.memphis.ccrg.lida.framework.gui.panels;
+package edu.memphis.ccrg.lida.example.genericlida.environment;
 
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl;
 
 /**
- * 
- * @author Javier Snaider
+ * A simple panel to display the visual environment in a JTextArea
+ * @author Ryan McCall
  */
 public class VisualEnvironmentPanel extends LidaPanelImpl implements
 		FrameworkGuiEventListener {

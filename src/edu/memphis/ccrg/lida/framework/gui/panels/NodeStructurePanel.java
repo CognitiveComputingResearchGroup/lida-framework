@@ -213,6 +213,12 @@ public class NodeStructurePanel extends LidaPanelImpl {
 		vizViewer.fireStateChanged();
 	}
 	
+	/**
+	 * Definition of this Panel should include a parameter for the ModuleName for the
+	 * module from which the NodeStructure will be obtained.  
+	 * E.g., workspace.PerceptualBuffer or PerceptualAssociativeMemory
+	 * @see edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl#initPanel(java.lang.String[])
+	 */
 	@Override
 	public void initPanel(String[]param){	
 		if (param == null || param.length == 0) {

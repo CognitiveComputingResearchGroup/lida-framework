@@ -34,7 +34,8 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
- *
+ * A {@link LidaPanel} which displays the attributes of a {@link NodeStructure}
+ * in a table.
  * @author Javier Snaider
  */
 public class NodeStructureTable extends LidaPanelImpl {
@@ -42,6 +43,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 	private static final Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
 	
 	private NodeStructure nodeStructure;
+	private LidaModule module;
     
 	/** Creates new form NodeStructureTable */
     public NodeStructureTable() {
@@ -115,13 +117,17 @@ public class NodeStructureTable extends LidaPanelImpl {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton refreshButton;
     // End of variables declaration
-	private LidaModule module;
     
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
     	refresh();
     }//GEN-LAST:event_refreshButtonActionPerformed
     
-    
+	/**
+	 * Definition of this Panel should include a parameter for the ModuleName for the
+	 * module from which the NodeStructure will be obtained.  
+	 * E.g., workspace.PerceptualBuffer or PerceptualAssociativeMemory
+	 * @see edu.memphis.ccrg.lida.framework.gui.panels.LidaPanelImpl#initPanel(java.lang.String[])
+	 */
 	@Override
 	public void initPanel(String[]param){
 		if (param == null || param.length == 0) {
@@ -140,8 +146,13 @@ public class NodeStructureTable extends LidaPanelImpl {
     	display(module.getModuleContent());
     }
     
+	/*
+	 * Implementation of abstract table model to adapt a NodeStructure to a Table.
+	 * Columns are the attributes of the Nodes in the NodeStructure.  Rows are the Nodes
+	 * @author Javier Snaider
+	 */
 	private class NodeStructureTableModel extends AbstractTableModel {
-		
+		//TODO support links as well
 		private String[] columnNames ={"Node","Activation","Base Activation","Threshold"};
 		@Override
 		public int getColumnCount() {
@@ -161,6 +172,14 @@ public class NodeStructureTable extends LidaPanelImpl {
 			return "";
 		}
 
+		/**
+		 * Depending on the columnIndex, the appropriate method is called 
+		 * to get an attribute of the Node. 
+		 * 
+		 * @param rowIndex which row that is being filled in
+		 * @param columnIndex the attribute being asked for
+		 * @see javax.swing.table.TableModel#getValueAt(int, int)
+		 */
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			Node node=null;
@@ -170,6 +189,7 @@ public class NodeStructureTable extends LidaPanelImpl {
 			}
 			Collection<Node> nodes = nodeStructure.getNodes();
 			Iterator<Node> it = nodes.iterator();
+			//TODO optimize
 			for (int i=0;i<=rowIndex;i++){
 				node=it.next();
 			}
