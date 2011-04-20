@@ -127,7 +127,8 @@ public class LidaElementFactory {
 	 * @see LidaFactories.xsd
 	 */
 	private static final String exciteStrategyType = "excite";
-
+	//TODO enum?
+	
 	/**
 	 * Name of transmit strategy type
 	 * 
