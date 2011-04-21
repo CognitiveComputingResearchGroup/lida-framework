@@ -136,7 +136,7 @@ public class NodeStructureTable extends GuiPanelImpl {
 					0L);
 			return;
 		}
-		module = GuiUtils.parseFrameworkModule(param[0], lida);
+		module = GuiUtils.parseFrameworkModule(param[0], agent);
 		
 		display(module.getModuleContent());
 	}

@@ -110,10 +110,6 @@ public class FactoriesDataXMLLoader {
 		nodes = getLinkables(docEle, "nodes", "node");
 		links = getLinkables(docEle, "links", "link");
 		codelets = getCodelets(docEle);
-
-		// TaskManager tm= getTaskManager(docEle);
-		// lida=new LidaImpl(tm);
-
 	}
 
 	private Map<String, StrategyDef> getStrategies(Element element) {

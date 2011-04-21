@@ -25,7 +25,7 @@ public abstract class GenericCommandImpl implements Command {
 	protected Object result;
 
 	@Override
-	public abstract void execute(Agent lida);
+	public abstract void execute(Agent agent);
 
 	@Override
 	public Object getParameter(String name) {

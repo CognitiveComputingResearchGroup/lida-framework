@@ -62,7 +62,7 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
 			return;
 		}
 
-		module = GuiUtils.parseFrameworkModule(param[0], lida);
+		module = GuiUtils.parseFrameworkModule(param[0], agent);
 		refresh();
 	}
 

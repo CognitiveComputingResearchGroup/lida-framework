@@ -15,10 +15,10 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 
 /**
- * For specific lida agent implementations, create a main class simply 
+ * For specific agent implementations, create a main class simply 
  * need call this class's start method with particular parameters for that agent:
- * Lida instance and a Properties.
- * Creates a MVC for LIDA
+ * {@link Agent} instance and a Properties.
+ * Creates a MVC for the system
  * 
  * @author Ryan J. McCall
  *

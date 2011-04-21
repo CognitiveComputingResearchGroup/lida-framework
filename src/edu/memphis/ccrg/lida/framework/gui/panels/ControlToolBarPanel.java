@@ -52,7 +52,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 
 	@Override
 	public void initPanel(String[] params) {
-		sliderStartValue = lida.getTaskManager().getTickDuration();
+		sliderStartValue = agent.getTaskManager().getTickDuration();
 		if (params.length >= 1) {
 			try {
 				sliderMin = Integer.parseInt(params[0]);
@@ -277,7 +277,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 
 	@Override
 	public void refresh() {
-		isPaused = lida.getTaskManager().isTasksPaused();
+		isPaused = agent.getTaskManager().isTasksPaused();
 		if (isPaused){
 			statusLabel.setText("PAUSED");
 		}else{

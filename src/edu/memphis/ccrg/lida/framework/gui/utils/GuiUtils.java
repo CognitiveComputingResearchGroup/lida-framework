@@ -20,10 +20,10 @@ public class GuiUtils {
 	/**
 	 * Utility method to parse a String to obtain a {@link FrameworkModule}
 	 * @param param String to parse
-	 * @param lida {@link Agent}
+	 * @param agent {@link Agent}
 	 * @return FrameworkModule with specified name or null
  	 */
-	public static FrameworkModule parseFrameworkModule(String param, Agent lida) {
+	public static FrameworkModule parseFrameworkModule(String param, Agent agent) {
 		if(param == null){
 			logger.log(Level.WARNING, "null string argument.", 0L);
 			return null;
@@ -35,7 +35,7 @@ public class GuiUtils {
 			logger.log(Level.WARNING, "Error getting module type " + moduleType, 0L);
 			return null;
 		}
-		FrameworkModule module = lida.getSubmodule(moduleType);
+		FrameworkModule module = agent.getSubmodule(moduleType);
 		if (module == null) {
 			logger.log(Level.WARNING, "Error getting submodule " + moduleType,
 					0L);

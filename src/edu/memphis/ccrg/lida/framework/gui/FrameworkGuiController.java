@@ -42,8 +42,8 @@ public interface FrameworkGuiController {
 	
 	/**
 	 * Sets the {@link Agent} this controller controls. This {@link Agent} object represents the model.
-	 * @param lida {@link Agent}
+	 * @param agent {@link Agent}
 	 */
-	public void registerAgent(Agent lida);
+	public void registerAgent(Agent agent);
 	
 }

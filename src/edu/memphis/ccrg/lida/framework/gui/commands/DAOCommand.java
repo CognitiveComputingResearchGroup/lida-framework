@@ -18,7 +18,7 @@ public class DAOCommand extends GenericCommandImpl {
         public static String FAILED_STRING = "failed";
 
 	@Override
-	public void execute(Agent lida) {
+	public void execute(Agent agent) {
 		String action = getParameter("action").toString().toLowerCase();
                 boolean success = false;
                 String displayString;

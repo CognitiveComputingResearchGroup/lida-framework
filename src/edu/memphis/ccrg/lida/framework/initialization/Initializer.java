@@ -19,13 +19,13 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public interface Initializer {
 	
 	/**
-	 * Receives a particular module to configure. The Lida object and a map of parameters can be used.  
+	 * Receives a particular module to configure. The {@link Agent} object and a map of parameters can be used.  
 	 * The variables in params are those specified in Lida.xml for the module being initialized.
 	 * 
 	 * @param module module being initialized
-	 * @param lida Lida object
+	 * @param agent {@link Agent} object
 	 * @param params module parameters
 	 */
-	public void initModule(FullyInitializable module, Agent lida, Map<String, ?> params); 
+	public void initModule(FullyInitializable module, Agent agent, Map<String, ?> params); 
 
 }

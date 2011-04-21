@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public class PauseRunningThreadsCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
-		lida.getTaskManager().pauseTasks();
+	public void execute(Agent agent) {
+		agent.getTaskManager().pauseTasks();
 	}
 }

@@ -80,7 +80,7 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController#registrerLida(edu.memphis.ccrg.lida.framework.Lida)
+	 * @see edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController#registerAgent(edu.memphis.ccrg.lida.framework.Lida)
 	 */
 	@Override
 	public void registerAgent(Agent agent) {

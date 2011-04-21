@@ -14,26 +14,21 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructureTable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
-
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 /**
  * This is a Panel which shows all current coalitions in Global Workspace and
@@ -167,12 +162,12 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 							0L);
 			return;
 		}
-		module = lida.getSubmodule(moduleType);
+		module = agent.getSubmodule(moduleType);
 		if (module == null) {
 			logger
 					.log(
 							Level.WARNING,
-							"Error initializing NodeStructure Panel, Module does not exist in LIDA.",
+							"Error initializing NodeStructure Panel, Module does not exist in agent.",
 							0L);
 			return;
 		}
@@ -186,12 +181,6 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 	@Override
 	public void refresh() {
 		display(module.getModuleContent());
-	}
-
-	@Override
-	public void registerLida(Agent lida) {
-		super.registerLida(lida);
-
 	}
 
 	private class NodeStructureTableModel extends AbstractTableModel {

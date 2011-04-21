@@ -184,7 +184,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 		}
 		panelParameters.add(panelParams);
 		panel.setName(panelParams[PANEL_NAME]);
-		panel.registerLida(agent);
+		panel.registerAgent(agent);
 		panel.registerGuiController(controller);
 
 		// init panel with optional parameters
@@ -578,7 +578,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private void showAddPanelDialog() {
 		final AddEditPanel addEditPanel = new AddEditPanel();
 		addEditPanel.setName("AddPanel");
-		addEditPanel.registerLida(agent);
+		addEditPanel.registerAgent(agent);
 		addEditPanel.registerGuiController(this.controller);
 		addEditPanel.initClassnames(panelClassNames);
 		if (addEditDialog != null)
@@ -701,7 +701,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private void showEditPanelDialog(final String[] panelParams) {
 		final AddEditPanel addEditPanel = new AddEditPanel();
 		addEditPanel.setName("EditPanel");
-		addEditPanel.registerLida(agent);
+		addEditPanel.registerAgent(agent);
 		addEditPanel.registerGuiController(this.controller);
 		addEditPanel.setPanelParams(panelParams);
 		if (addEditDialog != null)

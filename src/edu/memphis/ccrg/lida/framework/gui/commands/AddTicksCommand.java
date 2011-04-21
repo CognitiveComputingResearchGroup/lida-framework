@@ -20,10 +20,10 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public class AddTicksCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
+	public void execute(Agent agent) {
 		Integer ticks= (Integer)getParameter("ticks");
 		if (ticks !=null){
-			lida.getTaskManager().addTicksToExecute(ticks);
+			agent.getTaskManager().addTicksToExecute(ticks);
 		}
 	}
 

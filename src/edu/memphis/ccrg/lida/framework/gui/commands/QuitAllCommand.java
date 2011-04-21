@@ -19,8 +19,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 public class QuitAllCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
-		TaskManager tm = lida.getTaskManager();
+	public void execute(Agent agent) {
+		TaskManager tm = agent.getTaskManager();
 		tm.pauseTasks();
 		try {
 			Thread.sleep(100);

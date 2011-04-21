@@ -143,7 +143,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
 
 		@Override
 		public int getRowCount() {
-			int rows = (int) (lida.getTaskManager().getMaxTick() - TaskManager
+			int rows = (int) (agent.getTaskManager().getMaxTick() - TaskManager
 					.getCurrentTick())+1;
 			return rows;
 		}
@@ -199,7 +199,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
 	public void refresh() {
 		logger.log(Level.FINEST, "Refreshing TaskQueue Panel",
 				TaskManager.getCurrentTick());
-		display(lida.getTaskManager().getTaskQueue());
+		display(agent.getTaskManager().getTaskQueue());
 	}
 
 	@Override

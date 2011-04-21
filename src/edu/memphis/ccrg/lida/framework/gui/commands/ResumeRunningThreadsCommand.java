@@ -18,8 +18,8 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public class ResumeRunningThreadsCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
-		lida.getTaskManager().resumeTasks();
+	public void execute(Agent agent) {
+		agent.getTaskManager().resumeTasks();
 	}
 
 }

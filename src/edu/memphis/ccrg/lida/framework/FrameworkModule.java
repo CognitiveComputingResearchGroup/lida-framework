@@ -11,7 +11,7 @@ import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * Interface for the modules of LIDA.
+ * Interface for the modules of an agent.
  * 
  * @author Javier Snaider, Ryan J. McCall
  *

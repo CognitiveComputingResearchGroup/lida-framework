@@ -108,7 +108,7 @@ public class AgentStarter {
         // Initialize Data Access Objects
 		DAOManager manager = DAOManager.getInstance();
         if (!manager.isInitialized())
-//        	manager.initDataAccessObjects(lida);
+//        	manager.initDataAccessObjects(agent);
         //TODO Uncomment when DAO is operational
 
 		// Use the FrameworkGuiFactory to start the agent

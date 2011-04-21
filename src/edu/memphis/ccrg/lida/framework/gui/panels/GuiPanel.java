@@ -36,9 +36,9 @@ public interface GuiPanel {
 	
 	/**
 	 * Sets {@link Agent} object as the model for this panel.
-	 * @param lida Lida object
+	 * @param agent {@link Agent} object
 	 */
-	public void registerLida(Agent lida);
+	public void registerAgent(Agent agent);
 	
 	/**
 	 * Update Panel to display supplied object

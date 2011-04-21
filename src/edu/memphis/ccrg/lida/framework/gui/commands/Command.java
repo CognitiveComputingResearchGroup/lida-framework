@@ -28,10 +28,10 @@ public interface Command {
     /**
 	 * Executes this command performing the necessary steps in the model (Lida).
 	 * 
-	 * @param lida
-	 *            Lida Object
+	 * @param agent
+	 *            {@link Agent} Object
 	 */
-    public void execute(Agent lida);
+    public void execute(Agent agent);
     
     /**
 	 * Returns result of the command.

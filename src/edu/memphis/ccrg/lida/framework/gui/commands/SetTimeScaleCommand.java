@@ -20,10 +20,10 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public class SetTimeScaleCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
+	public void execute(Agent agent) {
 		Integer tickDuration = (Integer) getParameter("tickDuration");
 		if (tickDuration != null) {
-			lida.getTaskManager().setTickDuration(tickDuration);
+			agent.getTaskManager().setTickDuration(tickDuration);
 		}
 	}
 

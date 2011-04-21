@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public class AddPanelCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
+	public void execute(Agent agent) {
 		java.awt.Container parent = (java.awt.Container)getParameter("parent");
 		javax.swing.JPanel panel = (javax.swing.JPanel)getParameter("panel");
 		

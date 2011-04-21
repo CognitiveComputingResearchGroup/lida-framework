@@ -39,7 +39,7 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 public abstract class GuiPanelImpl extends javax.swing.JPanel implements GuiPanel{
 
 	protected FrameworkGuiController controller;
-	protected Agent lida;
+	protected Agent agent;
 
     /** Creates new form GuiPanelImpl */
     public GuiPanelImpl() {
@@ -102,8 +102,8 @@ public abstract class GuiPanelImpl extends javax.swing.JPanel implements GuiPane
     }
 
     @Override
-	public void registerLida(Agent lida) {
-		this.lida=lida;
+	public void registerAgent(Agent agent) {
+		this.agent=agent;
 	}
 
 }

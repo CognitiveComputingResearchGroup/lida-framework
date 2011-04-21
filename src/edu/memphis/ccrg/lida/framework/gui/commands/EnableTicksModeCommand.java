@@ -20,10 +20,10 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public class EnableTicksModeCommand extends GenericCommandImpl {
 
 	@Override
-	public void execute(Agent lida) {
+	public void execute(Agent agent) {
 		Boolean b= (Boolean)getParameter("enable");
 		if(b!= null){
-			lida.getTaskManager().setInIntervalMode(b);
+			agent.getTaskManager().setInIntervalMode(b);
 		}
 	}
 
