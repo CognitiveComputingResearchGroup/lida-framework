@@ -87,7 +87,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private List<String[]> panelParameters = new ArrayList<String[]>();
 	private List<Container> panelParents = new ArrayList<Container>();
 
-	private Agent lida;
+	private Agent agent;
 	private FrameworkGuiController controller;
 	private javax.swing.JDialog addEditDialog;
 
@@ -97,23 +97,23 @@ public class FrameworkGui extends javax.swing.JFrame {
 	 * {@link FrameworkGuiController} as the controller. Reads the {@link Properties}
 	 * file and creates and configures the {@link GuiPanel}s specified therein.
 	 * 
-	 * @param lida
+	 * @param agent
 	 *            {@link Agent} the model.
 	 * @param controller
 	 *            {@link FrameworkGuiController} the controller
 	 * @param panelProperties
 	 *            for configuration
 	 */
-	public FrameworkGui(Agent lida, FrameworkGuiController controller,
+	public FrameworkGui(Agent agent, FrameworkGuiController controller,
 			Properties panelProperties) {
-		if (lida == null || controller == null || panelProperties == null) {
+		if (agent == null || controller == null || panelProperties == null) {
 			logger.log(Level.WARNING, "Null argument", TaskManager
 					.getCurrentTick());
 		}
 
 		initComponents();
 
-		this.lida = lida;
+		this.agent = agent;
 		this.controller = controller;
 
 		loadPanels(panelProperties);
@@ -122,11 +122,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	}
 
 	/*
-	 * @param lida
-	 * 
-	 * @param controller
-	 * 
-	 * @param panelsFile
+	 * @param panelProp
 	 */
 	private void loadPanels(Properties panelProp) {
 		String[][] panelsArray = new String[panelProp.size()][];
@@ -188,7 +184,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 		}
 		panelParameters.add(panelParams);
 		panel.setName(panelParams[PANEL_NAME]);
-		panel.registerLida(lida);
+		panel.registerLida(agent);
 		panel.registerGuiController(controller);
 
 		// init panel with optional parameters
@@ -582,7 +578,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private void showAddPanelDialog() {
 		final AddEditPanel addEditPanel = new AddEditPanel();
 		addEditPanel.setName("AddPanel");
-		addEditPanel.registerLida(lida);
+		addEditPanel.registerLida(agent);
 		addEditPanel.registerGuiController(this.controller);
 		addEditPanel.initClassnames(panelClassNames);
 		if (addEditDialog != null)
@@ -705,7 +701,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private void showEditPanelDialog(final String[] panelParams) {
 		final AddEditPanel addEditPanel = new AddEditPanel();
 		addEditPanel.setName("EditPanel");
-		addEditPanel.registerLida(lida);
+		addEditPanel.registerLida(agent);
 		addEditPanel.registerGuiController(this.controller);
 		addEditPanel.setPanelParams(panelParams);
 		if (addEditDialog != null)
@@ -783,7 +779,4 @@ public class FrameworkGui extends javax.swing.JFrame {
 		}
 	}
 
-//	public Collection<GuiPanel> getPanels() {
-//		return Collections.unmodifiableCollection(panels);
-//	}
 }

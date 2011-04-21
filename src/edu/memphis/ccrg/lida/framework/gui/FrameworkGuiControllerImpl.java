@@ -25,20 +25,20 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 
 	private static final Logger logger = Logger.getLogger(FrameworkGuiControllerImpl.class.getCanonicalName());
 	
-	private Agent lida;
+	private Agent agent;
 	private Properties commands;
 
 	/**
 	 * 
 	 * 
-	 * @param lida
-	 *            Lida object
+	 * @param agent
+	 *            {@link Agent} object
 	 * @param commands
 	 *            the commands
 	 */
-	public FrameworkGuiControllerImpl(Agent lida, Properties commands) {
+	public FrameworkGuiControllerImpl(Agent agent, Properties commands) {
 		super();
-		this.lida = lida;
+		this.agent = agent;
  		this.commands = commands;
 	}
 	
@@ -71,7 +71,7 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 	@Override
 	public Object executeCommand (Command command){
 		if(command != null){
-			command.execute(lida);
+			command.execute(agent);
 			logger.log(Level.FINE, "Command "+ command + " executed",TaskManager.getCurrentTick());
 			return command.getResult();
 		}
@@ -83,8 +83,8 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 	 * @see edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController#registrerLida(edu.memphis.ccrg.lida.framework.Lida)
 	 */
 	@Override
-	public void registrerLida(Agent lida) {
-		this.lida = lida;
+	public void registerAgent(Agent agent) {
+		this.agent = agent;
 	}
 
 }
