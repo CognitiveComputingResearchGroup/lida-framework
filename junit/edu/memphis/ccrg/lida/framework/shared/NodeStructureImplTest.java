@@ -44,7 +44,7 @@ public class NodeStructureImplTest extends TestCase{
 	static{
 		factory = ElementFactory.getInstance();
 		FactoriesDataXMLLoader factoryLoader = new FactoriesDataXMLLoader();
-		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_LIDA_PROPERTIES_PATH);
+		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);
 	}
 	

@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
- * Creates and returns a Lida Object based on an XML file.
+ * Creates and returns a {@link Agent} Object based on an XML file.
  * 
  * Each module that is created is instantiated using {@link Class#forName(String)}. 
  * Next its {@link FrameworkModule#init()} method is run.  After all modules have been 
@@ -58,21 +58,18 @@ public class AgentXmlFactory implements AgentFactory {
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	
 	private Document dom;
-	private Agent lida;
+	private Agent agent;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();
 	private List<Object[]> toAssociate = new ArrayList<Object[]>();
 	private Map<String,TaskSpawner> taskSpawners = new HashMap<String,TaskSpawner>();
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.LidaFactory#getLida()
-	 */
 	@Override
-	public Agent getLida(Properties properties) { 
+	public Agent getAgent(Properties properties) { 
 		String fileName = properties.getProperty("lida.factory.data",DEFAULT_XML_FILE_PATH);
 		parseXmlFile(fileName);
 		parseDocument();
-		lida.init();
-		return lida;
+		agent.init();
+		return agent;
 	}
 
 	/**
@@ -90,7 +87,7 @@ public class AgentXmlFactory implements AgentFactory {
 			if(XmlUtils.validateXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH)){
 				dom = db.parse(fileName);
 			}else{
-				logger.log(Level.SEVERE, "Lida XML file is invalid.", TaskManager.getCurrentTick());
+				logger.log(Level.SEVERE, "Agent XML file is invalid.", TaskManager.getCurrentTick());
 			}
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();
@@ -112,13 +109,13 @@ public class AgentXmlFactory implements AgentFactory {
 
 		TaskManager tm = getTaskManager(docEle);
 		logger.log(Level.INFO, "Finished obtaining TaskManager\n", 0L);
-		lida = new AgentImpl(tm);
+		agent = new AgentImpl(tm);
 		
 		getTaskSpawners(docEle);
 		logger.log(Level.INFO, "Finished creating TaskSpawners\n", 0L);
 		
 		for (FrameworkModule lm : getModules(docEle)) {
-			lida.addSubModule(lm);
+			agent.addSubModule(lm);
 		}
 		logger.log(Level.INFO, "Finished creating modules and submodules\n", 0L);
 		
@@ -208,7 +205,7 @@ public class AgentXmlFactory implements AgentFactory {
 			return;
 		}
 		
-		ts.setTaskManager(lida.getTaskManager());
+		ts.setTaskManager(agent.getTaskManager());
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		try{
 			ts.init(params);
@@ -343,7 +340,7 @@ public class AgentXmlFactory implements AgentFactory {
 		try {
 			task = (FrameworkTask) Class.forName(className).newInstance();
 		} catch(ClassNotFoundException e){
-			logger.log(Level.SEVERE, "Lida Task class name: " + className + 
+			logger.log(Level.SEVERE, "Framework Task class name: " + className + 
 					" not found.  Check class name.\n", 0L);
 			return null;
 		}catch (Exception e) {
@@ -419,7 +416,7 @@ public class AgentXmlFactory implements AgentFactory {
 					"Module name: " + name + " is not valid.", 0L);
 			return;
 		}
-		FrameworkModule module = lida.getSubmodule(moduleName);
+		FrameworkModule module = agent.getSubmodule(moduleName);
 
 		ModuleName listenerModuleName;
 		
@@ -431,7 +428,7 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 
 		ModuleListener listener = null;
-		FrameworkModule listenerModule = lida.getSubmodule(listenerModuleName);
+		FrameworkModule listenerModule = agent.getSubmodule(listenerModuleName);
 		if(listenerModule == null){
 			logger.log(Level.WARNING, "Could not find listener module " + listenerModuleName + 
 						" listener will not be set up", 0L);
@@ -469,7 +466,7 @@ public class AgentXmlFactory implements AgentFactory {
 					"Module associated module name: " + assocModule + " is not valid.", 0L);
 				break;
 			}
-			FrameworkModule module=lida.getSubmodule(moduleName);
+			FrameworkModule module=agent.getSubmodule(moduleName);
 			if(module != null){
 				initializable.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
 			}else{
@@ -504,7 +501,7 @@ public class AgentXmlFactory implements AgentFactory {
 			
 			if(initializer != null){
 				try{
-					initializer.initModule(moduleToInitialize, lida, params);
+					initializer.initModule(moduleToInitialize, agent, params);
 				}catch (Exception e){
 					logger.log(Level.SEVERE, "Exception occurred running initializer: " + initializerClassName , TaskManager.getCurrentTick());
 					e.printStackTrace();

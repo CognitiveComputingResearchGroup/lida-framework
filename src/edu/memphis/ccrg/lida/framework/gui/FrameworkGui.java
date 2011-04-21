@@ -612,7 +612,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 
 	private void loadPanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
-				new java.io.File(AgentStarter.DEFAULT_LIDA_PROPERTIES_PATH));
+				new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
 		fc.showOpenDialog(this);
 		java.io.File file = fc.getSelectedFile();
 		if (file != null) {
@@ -639,7 +639,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private void savePanelSettingsMenuItemActionPerformed(
 			java.awt.event.ActionEvent evt) {
 		javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
-				new java.io.File(AgentStarter.DEFAULT_LIDA_PROPERTIES_PATH));
+				new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
 		fc.showSaveDialog(this);
 		java.io.File file = fc.getSelectedFile();
 		if(file != null){
