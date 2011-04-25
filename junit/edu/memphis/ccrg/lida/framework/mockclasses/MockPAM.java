@@ -210,7 +210,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)
 	 */
 	@Override
-	public void addDetectionAlgorithm(DetectionAlgorithm fd) {
+	public void addPerceptualAlgorithm(DetectionAlgorithm fd) {
 		// not implemented
 
 	}

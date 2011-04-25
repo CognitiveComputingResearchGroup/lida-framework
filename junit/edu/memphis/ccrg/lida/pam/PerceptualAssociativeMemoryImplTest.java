@@ -275,13 +275,13 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	}
 	
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addDetectionAlgorithm(edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#addPerceptualAlgorithm(edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm)}.
 	 */
 	@Test
 	public void testAddFeatureDetector() {	
 		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
-		pam.addDetectionAlgorithm(detector);
+		pam.addPerceptualAlgorithm(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
 		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 1);
 	}
@@ -289,8 +289,8 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	public void testDetectionAlgorithm1() {	
 		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
-		pam.addDetectionAlgorithm(detector);
-		pam.addDetectionAlgorithm(detector);
+		pam.addPerceptualAlgorithm(detector);
+		pam.addPerceptualAlgorithm(detector);
 		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
 		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 2);
 	}

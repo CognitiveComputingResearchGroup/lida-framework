@@ -148,7 +148,7 @@ public interface PerceptualAssociativeMemory extends FrameworkModule, Saveable {
 	 * Adds specified FeatureDetector to be run.
 	 * @param fd {@link DetectionAlgorithm}
 	 */
-	public void addDetectionAlgorithm(DetectionAlgorithm fd);
+	public void addPerceptualAlgorithm(DetectionAlgorithm fd);
 		
 	/**
 	 * Adds {@link PamListener}.

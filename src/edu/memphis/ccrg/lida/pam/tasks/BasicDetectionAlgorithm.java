@@ -38,7 +38,6 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
-
 	
 	protected SensoryMemory sensoryMemory;
 	protected PerceptualAssociativeMemory pam;

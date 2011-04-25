@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @see BasicDetectionAlgorithm
  */
 public interface DetectionAlgorithm extends FrameworkTask {
-		
+	
 	/**
 	 * Detects a feature.
 	 * @return value from 0.0 to 1.0 representing the degree to which the feature occurs.

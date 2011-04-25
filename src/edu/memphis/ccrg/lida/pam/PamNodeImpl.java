@@ -54,7 +54,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		ElementFactory factory = ElementFactory.getInstance();
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
-		
 	}
 
 	/** 
