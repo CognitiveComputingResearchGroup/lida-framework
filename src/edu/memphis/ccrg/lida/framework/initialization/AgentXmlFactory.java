@@ -42,7 +42,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * } Finally each module's initializer is run if it has one.  Thus associated modules should not be used by the init method of modules, 
  * only constants and other variables should be set.
  *   
- * 
  * @author Javier Snaider, Ryan J. McCall
  * 
  */ 
