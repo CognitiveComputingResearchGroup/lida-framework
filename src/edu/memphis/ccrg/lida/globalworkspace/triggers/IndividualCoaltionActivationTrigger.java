@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +27,8 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 	 * Triggers a broadcast if any {@link Coalition} has activation over threshold.
 	 * @param coalitions Coalitions
 	 */
-	public void checkForTriggerCondition(Set<Coalition> coalitions) {
+	@Override
+	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 		for(Coalition c:coalitions){
 			if(c.getActivation()>threshold){
 				logger.log(Level.FINE,"Individual Activation trigger ",TaskManager.getCurrentTick());
