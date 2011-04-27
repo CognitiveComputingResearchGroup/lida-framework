@@ -9,7 +9,7 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 
-public class AddPanelCommand extends GenericCommandImpl {
+public class AddPanelCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

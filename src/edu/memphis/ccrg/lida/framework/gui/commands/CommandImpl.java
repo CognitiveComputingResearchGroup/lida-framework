@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
  * @author Javier Snaider
  *
  */
-public abstract class GenericCommandImpl implements Command {
+public abstract class CommandImpl implements Command {
 	
 	private Map<String,Object> parameters=new HashMap<String,Object>();
 	protected Object result;

@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Javier Snaider
  *
  */
-public class QuitAllCommand extends GenericCommandImpl {
+public class QuitAllCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

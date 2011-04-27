@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
  * @author Javier Snaider
  *
  */
-public class EnableTicksModeCommand extends GenericCommandImpl {
+public class EnableTicksModeCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

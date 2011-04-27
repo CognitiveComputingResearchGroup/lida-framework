@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
  * @author Javier Snaider
  *
  */
-public class SetTimeScaleCommand extends GenericCommandImpl {
+public class SetTimeScaleCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

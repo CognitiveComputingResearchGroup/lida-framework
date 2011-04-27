@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
  * @author ryan
  *
  */
-public class ResetEnvironmentCommand extends GenericCommandImpl {
+public class ResetEnvironmentCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

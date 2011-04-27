@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
  * @author Javier Snaider
  *
  */
-public class PauseRunningThreadsCommand extends GenericCommandImpl {
+public class PauseRunningThreadsCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

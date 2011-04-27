@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
  * @author Javier Snaider
  *
  */
-public class AddTicksCommand extends GenericCommandImpl {
+public class AddTicksCommand extends CommandImpl {
 
 	@Override
 	public void execute(Agent agent) {

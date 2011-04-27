@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.framework.gui.commands;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.dao.DAOManager;
 
-public class DAOCommand extends GenericCommandImpl {
+public class DAOCommand extends CommandImpl {
         public static String LOAD_ACTION = "load";
         public static String SAVE_ACTION = "save";
 
