@@ -30,8 +30,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
  * 
  * @author Ryan J. McCall, Javier Snaider
  *
- */
- 
+ */ 
 public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, FullyInitializable{
 	
 	/**
