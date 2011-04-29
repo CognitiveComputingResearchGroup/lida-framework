@@ -101,7 +101,9 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 
 	@Override
 	public void addSubModule(FrameworkModule lm) {
-		submodules.put(lm.getModuleName(), lm);
+		if(lm != null){
+			submodules.put(lm.getModuleName(), lm);
+		}
 	}
 
 	protected Map<ModuleName, FrameworkModule> getSubmodules() {

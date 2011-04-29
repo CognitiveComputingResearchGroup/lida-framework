@@ -8,23 +8,29 @@
 
 package edu.memphis.ccrg.lida.workspace;
 
-import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import edu.memphis.ccrg.lida.episodicmemory.CueListener;
+import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
  * @author Rodrigo Silva-Lugo
  */
 public class WorkspaceImplTest {
+	
+	private static final ElementFactory factory = ElementFactory.getInstance();
 
     /**
      *
@@ -60,18 +66,6 @@ public class WorkspaceImplTest {
      */
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of addSubModule method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testAddSubModule() {
-        // TODO review test
-        System.out.println("addSubModule");
-        FrameworkModule lm = null;
-        WorkspaceImpl instance = new WorkspaceImpl();
-        instance.addSubModule(lm);
     }
 
     /**
@@ -127,11 +121,21 @@ public class WorkspaceImplTest {
      */
     @Test
     public void testReceiveBroadcast() {
-        // TODO review test
-        System.out.println("receiveBroadcast");
         BroadcastContent bc = null;
-        WorkspaceImpl instance = new WorkspaceImpl();
-        instance.receiveBroadcast(bc);
+        WorkspaceImpl workspace = new WorkspaceImpl();
+        
+        MockQueue bq = new MockQueue();
+        bq.setModuleName(ModuleName.BroadcastQueue);
+        workspace.addSubModule(bq);
+        
+        workspace.receiveBroadcast(bc);
+        assertEquals(bc, bq.checkContent());
+        
+        NodeStructure foo = new NodeStructureImpl();
+        foo.addDefaultNode(factory.getNode());
+        
+        workspace.receiveBroadcast((BroadcastContent) foo);
+        assertEquals(foo, bq.checkContent());
     }
 
     /**
@@ -140,7 +144,6 @@ public class WorkspaceImplTest {
     @Test
     public void testReceiveLocalAssociation() {
         // TODO review test
-        System.out.println("receiveLocalAssociation");
         NodeStructure association = null;
         WorkspaceImpl instance = new WorkspaceImpl();
         instance.receiveLocalAssociation(association);

@@ -49,11 +49,6 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	}	
 	
 	@Override
-	public void addSubModule(FrameworkModule lm){
-		super.addSubModule(lm);
-	}
-	
-	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof WorkspaceListener){
 			addWorkspaceListener((WorkspaceListener)listener);

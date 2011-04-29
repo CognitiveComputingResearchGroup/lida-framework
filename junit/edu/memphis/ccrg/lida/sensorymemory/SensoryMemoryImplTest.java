@@ -119,7 +119,6 @@ public class SensoryMemoryImplTest {
         // Pre: instance has 0 associated modules.
         // Pos: instance has 1 associated module, same as added.
         // Test for SMM.
-        System.out.println("setAssociatedModule");
         FrameworkModule module = null;
         String moduleUsage = ModuleUsage.NOT_SPECIFIED;
         SensoryMemoryImpl instance = new MockSensoryMemoryImpl();

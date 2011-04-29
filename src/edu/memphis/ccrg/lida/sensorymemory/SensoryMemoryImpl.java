@@ -72,7 +72,7 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
         if (module instanceof Environment){
              environment = (Environment) module;
         }else{
-        	logger.log(Level.WARNING, "Cannot add module " + module.getModuleName(), TaskManager.getCurrentTick());
+        	logger.log(Level.WARNING, "Cannot add module " + module, TaskManager.getCurrentTick());
         }
     }
     

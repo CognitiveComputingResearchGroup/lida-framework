@@ -18,7 +18,6 @@ import cern.colt.bitvector.BitVector;
 
 /**
  * @author Javier Snaider
- *
  */
 public class EpisodicMemoryImplTest {
 	
