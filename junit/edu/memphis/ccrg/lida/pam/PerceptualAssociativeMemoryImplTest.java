@@ -319,29 +319,36 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	
 	public void testPropagateActivationToParents(){
-		
 		Node testNod1= factory.getNode("PamNodeImpl");
 		testNod1.setActivation(1.0);
+		testNod1.setLabel("Node1");
 		Node testNod2= factory.getNode("PamNodeImpl");
 		testNod2.setActivation(0.2);
+		testNod2.setLabel("Node2");
 		Node testNod3= factory.getNode("PamNodeImpl");
 		testNod3.setActivation(0.3);
+		testNod3.setLabel("Node3");
 		Node testNod4= factory.getNode("PamNodeImpl");
 		testNod4.setActivation(1.0);
+		testNod4.setLabel("Node4");
 		testNod1 = pam.addDefaultNode(testNod1);
 		testNod2 = pam.addDefaultNode(testNod2);
 		testNod3 = pam.addDefaultNode(testNod3);
 		testNod4 = pam.addDefaultNode(testNod4);
 		
-		
-		Link l12 = factory.getLink("PamLinkImpl", testNod1, testNod2, PerceptualAssociativeMemoryImpl.NONE);
+		PamLinkImpl l12 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod1, testNod2, PerceptualAssociativeMemoryImpl.NONE);
 		pam.addDefaultLink(l12);
-		Link l13 = factory.getLink("PamLinkImpl", testNod1, testNod3, PerceptualAssociativeMemoryImpl.NONE);
+		PamLinkImpl l13 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod1, testNod3, PerceptualAssociativeMemoryImpl.NONE);
 		pam.addDefaultLink(l13);
-		Link l41 = factory.getLink("PamLinkImpl", testNod4, testNod1, PerceptualAssociativeMemoryImpl.NONE);
+		PamLinkImpl l41 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod4, testNod1, PerceptualAssociativeMemoryImpl.NONE);
 		pam.addDefaultLink(l41);
 		
+		assertTrue(testNod1.getActivation() == 1.0);
+		assertTrue(testNod2.getActivation() == 0.2);
+		assertTrue(testNod3.getActivation() == 0.3);
 		assertTrue(testNod4.getActivation() == 1.0);
+		assertTrue(l12.getActivation() == Activatible.DEFAULT_ACTIVATION);
+		assertTrue(l13.getActivation() == Activatible.DEFAULT_ACTIVATION);
 		assertTrue(l41.getActivation() == Activatible.DEFAULT_ACTIVATION);
 		
 		NodeStructure ns = (NodeStructure) pam.getModuleContent();
@@ -354,26 +361,28 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 		assertTrue(ns.getConnectedSinks(testNod3).size() == 0);
 		assertTrue(ns.getConnectedSinks(testNod4).size() == 1);
 		
+		assertTrue(ns.getConnectedSources(testNod1).size() == 1);
+		assertTrue(ns.getConnectedSources(testNod2).size() == 1);
+		assertTrue(ns.getConnectedSources(testNod3).size() == 1);
+		assertTrue(ns.getConnectedSources(testNod4).size() == 0);
+		
 		TaskSpawner ts = new MockTaskSpawner();
 		pam.setAssistingTaskSpawner(ts);
-		
-		assertTrue(testNod1.getActivation() == 1.0);
 		
 		double upscaleFactor = 0.1;
 		pam.setUpscaleFactor(upscaleFactor);
 		pam.propagateActivationToParents((PamNode) testNod1);
 		
+		//Should be 2 tasks to pass the activation to Nodes 2, 3.
 		Collection<FrameworkTask> tasks = ts.getRunningTasks();
 		assertTrue(tasks.size() == 2);
 		
-
-		double amount = 1.0 * upscaleFactor;
-		
-		assertEquals(l12.getActivation(), amount);
-		assertEquals(l13.getActivation(), amount);
-		
 		assertTrue(testNod2.getActivation() >= 0.3 && testNod2.getActivation() <= 0.3001);
 		assertEquals(testNod3.getActivation(), 0.4);
+		
+		double amount = 1.0 * upscaleFactor + Activatible.DEFAULT_ACTIVATION;
+		assertEquals(pam.getLink(l12.getExtendedId()).getActivation(), amount);
+		assertEquals(pam.getLink(l13.getExtendedId()).getActivation(), amount);
 		
 		assertEquals(testNod4.getActivation(), 1.0);
 		assertEquals(l41.getActivation(), Activatible.DEFAULT_ACTIVATION);		
