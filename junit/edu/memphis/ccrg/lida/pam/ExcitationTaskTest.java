@@ -5,6 +5,7 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
+import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -39,8 +40,8 @@ public class ExcitationTaskTest extends TestCase {
 		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
 		
 		excite.call();
-		assertTrue(pamNode.getActivation() == 0.5);
-		assertTrue(pam.testGetSink().getActivation() == 0.5);
+		assertEquals(pamNode.getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
+		assertEquals(pam.testGetSink().getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
 		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
 	 
 	}
@@ -51,8 +52,8 @@ public class ExcitationTaskTest extends TestCase {
 		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
 		
 		excite.call();
-		assertTrue(pamNode.getActivation() == 0.5);
-		assertTrue(pam.testGetSink().getActivation() == 0.5);
+		assertEquals(pamNode.getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
+		assertEquals(pam.testGetSink().getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
 		
 		Collection<FrameworkTask> tasks= taskSpawner.getRunningTasks(); 
 		for(FrameworkTask tsk: tasks){

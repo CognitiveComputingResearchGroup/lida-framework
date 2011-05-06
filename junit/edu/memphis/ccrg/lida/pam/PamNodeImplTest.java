@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 
 /**
  * @author Siminder Kaur, Ryan McCall
@@ -66,6 +67,7 @@ public class PamNodeImplTest extends TestCase{
 	 * 
 	 */
 	public void testSetActivationThreshold(){
+		node1.setBaseLevelDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(1.0);
 		node1.setActivation(0.0);
 		

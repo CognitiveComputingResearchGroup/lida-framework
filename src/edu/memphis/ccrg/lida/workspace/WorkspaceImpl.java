@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.episodicmemory.LocalAssociationListener;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
