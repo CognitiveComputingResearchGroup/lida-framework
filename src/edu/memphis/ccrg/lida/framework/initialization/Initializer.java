@@ -20,7 +20,7 @@ public interface Initializer {
 	
 	/**
 	 * Receives a particular module to configure. The {@link Agent} object and a map of parameters can be used.  
-	 * The variables in params are those specified in Lida.xml for the module being initialized.
+	 * The variables in params are those specified in agent.xml for the module being initialized.
 	 * 
 	 * @param module module being initialized
 	 * @param agent {@link Agent} object

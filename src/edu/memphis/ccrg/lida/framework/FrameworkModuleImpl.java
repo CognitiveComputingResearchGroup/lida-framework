@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * Abstract implementation of {@link FrameworkModule}
- * Implementations should add themselves to the lida.xml configuration file 
+ * Implementations should add themselves to the agent.xml configuration file 
  * 
  * @author Javier Snaider
  */
@@ -35,7 +35,7 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	 * Creates a FrameworkModule with specified module name.  
 	 * It is generally preferable to use the 
 	 * default constructor instead of this one 
-	 * since the ModuleName is typically specified by lida.xml and set by {@link AgentXmlFactory}
+	 * since the ModuleName is typically specified by agent.xml and set by {@link AgentXmlFactory}
 	 * 
 	 * @see {@link AgentXmlFactory}
 	 * @param moduleName {@link ModuleName} of this {@link FrameworkModule}

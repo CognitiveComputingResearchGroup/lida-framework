@@ -51,7 +51,7 @@ public class AgentXmlFactory implements AgentFactory {
 	//modules initialized before the objects were created.
 	private static final Logger logger = Logger.getLogger(AgentXmlFactory.class.getCanonicalName());
 	
-	private static final String DEFAULT_XML_FILE_PATH = "configs/lida.xml";
+	private static final String DEFAULT_XML_FILE_PATH = "configs/agent.xml";
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaXMLSchema.xsd";
 	private static final int DEFAULT_TICK_DURATION = 10;
 	private static final int DEFAULT_NUMBER_OF_THREADS = 20;

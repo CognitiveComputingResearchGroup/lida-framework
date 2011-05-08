@@ -10,7 +10,7 @@ import java.util.Map;
 public interface Initializable {
 
 	/**
-	 * This method initializes the module with parameters specified in LIDA.xml
+	 * This method initializes the module with parameters specified in agent.xml
 	 * 
 	 * @param parameters Map of parameters indexed by String names
 	 */

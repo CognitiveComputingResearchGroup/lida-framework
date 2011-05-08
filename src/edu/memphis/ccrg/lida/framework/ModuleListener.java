@@ -11,7 +11,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 /**
- * Implementations should be added to the lida.xml configuration file by canonical name.
+ * Implementations should be added to the agent.xml configuration file by canonical name.
  * i.e. package name + class name
  * @author Javier Snaider
  */
