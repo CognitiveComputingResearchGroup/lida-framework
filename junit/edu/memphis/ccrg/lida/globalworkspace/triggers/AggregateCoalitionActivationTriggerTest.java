@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
@@ -38,7 +38,7 @@ public class AggregateCoalitionActivationTriggerTest {
 	NodeStructureImpl ns2 = new NodeStructureImpl();
 	NodeImpl n1, n2, n3;
 	LinkImpl l;
-	AttentionCodelet codelet = new BasicAttentionCodeletImpl();
+	AttentionCodelet codelet = new BasicAttentionCodelet();
 
 	@Before
 	public void setUp() throws Exception {

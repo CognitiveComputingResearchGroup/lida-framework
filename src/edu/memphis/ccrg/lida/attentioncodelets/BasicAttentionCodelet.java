@@ -21,11 +21,11 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
  * WARNING:	Renaming this class requires renaming values in
  * 	  configs/factoriesData.xml
  */
-public class BasicAttentionCodeletImpl extends AttentionCodeletImpl {
+public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	
-	private static final Logger logger = Logger.getLogger(BasicAttentionCodeletImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(BasicAttentionCodelet.class.getCanonicalName());
 	
-	public BasicAttentionCodeletImpl(){
+	public BasicAttentionCodelet(){
 		super();
 	}
 	

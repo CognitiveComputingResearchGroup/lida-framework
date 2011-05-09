@@ -42,7 +42,7 @@ public class ElementFactory {
 	/**
 	 * Used to assign unique IDs to elements.
 	 */
-	private static int elementIdCount = 0;
+	private static int elementIdCount;
 
 	/**
 	 * Used to retrieve default decay strategy from 'decayStrategies' map.
@@ -179,16 +179,16 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the decay strategy.
+	 * Adds a {@link DecayStrategy} with specified name
 	 * 
 	 * @param name
-	 *            the name
-	 * @param decay
-	 *            the decay
+	 *            the name used to refer to the strategy
+	 * @param decayDef
+	 *            the decay strategy's {@link StrategyDef}
 	 */
-	public void addDecayStrategy(String name, StrategyDef decay) {
-		decayStrategies.put(name, decay);
-		strategies.put(name, decay);
+	public void addDecayStrategy(String name, StrategyDef decayDef) {
+		decayStrategies.put(name, decayDef);
+		strategies.put(name, decayDef);
 	}
 
 	/**
@@ -1085,12 +1085,12 @@ public class ElementFactory {
 		return null;
 	}
 
-	public LinkableDef getNodeLinkableDef(String factoryName) {
-		return nodeClasses.get(factoryName);
-	}
-
-	public LinkableDef getLinkLinkableDef(String factoryName) {
-		return linkClasses.get(factoryName);
-	}
+//	public LinkableDef getNodeLinkableDef(String factoryName) {
+//		return nodeClasses.get(factoryName);
+//	}
+//
+//	public LinkableDef getLinkLinkableDef(String factoryName) {
+//		return linkClasses.get(factoryName);
+//	}
 
 }

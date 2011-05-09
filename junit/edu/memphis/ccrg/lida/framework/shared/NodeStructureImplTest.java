@@ -45,7 +45,6 @@ public class NodeStructureImplTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass(){
-
 		factory = ElementFactory.getInstance();
 		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
@@ -333,7 +332,7 @@ public class NodeStructureImplTest {
 	public void addDuplicateLink(){
 		ns1.addDefaultNode(node1);	
 		ns1.addDefaultNode(node2);	
-		Link stored = ns1.addDefaultLink(link1);
+		ns1.addDefaultLink(link1);
 		assertTrue("Problem with addLink", ns1.containsLink(link1));
 		assertTrue(ns1.getLinkCount() == 1);
 		assertTrue(ns1.getLinkableCount() == 3);

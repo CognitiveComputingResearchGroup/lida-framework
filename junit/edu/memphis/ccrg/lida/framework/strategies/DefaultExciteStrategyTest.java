@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.strategies;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,12 +21,11 @@ import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
  * @author Siminder Kaur
  *
  */
-public class DefaultExciteStrategyTest extends TestCase{
+public class DefaultExciteStrategyTest{
 	
 	DefaultExciteStrategy exciteStrategy;
 	NodeImpl node1;
 	
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		exciteStrategy = new DefaultExciteStrategy();
@@ -46,7 +45,7 @@ public class DefaultExciteStrategyTest extends TestCase{
 		double newActivation = exciteStrategy.excite(node1.getActivation(),0.8);		
 		node1.setActivation(newActivation);		
 		
-		assertEquals("Problem with Excite", 1.0, node1.getTotalActivation());
+		assertTrue("Problem with Excite", 1.0== node1.getTotalActivation());
 	}
 
 }

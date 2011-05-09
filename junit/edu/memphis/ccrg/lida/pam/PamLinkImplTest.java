@@ -10,9 +10,10 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 /**
  * @author Usef Faghihi
  */
-public class PamLinkImplTest extends TestCase{
+public class PamLinkImplTest{
 	
 	private ElementFactory  factory = ElementFactory.getInstance();
 	private Node node1;
@@ -31,7 +32,6 @@ public class PamLinkImplTest extends TestCase{
 	private LinkCategory linkCategory;
 	private PamLinkImpl link1,link2, link3;
  
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
@@ -42,11 +42,6 @@ public class PamLinkImplTest extends TestCase{
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, linkCategory);
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, linkCategory);
 		link3 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node1, linkCategory);	
-	}
-	
-	@Override
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**
@@ -63,10 +58,9 @@ public class PamLinkImplTest extends TestCase{
 	/**
 	 * {@link edu.memphis.ccrg.lida.pam.PamLinkImpl#equals(Object)}
 	 */
+	@Test
 	public void testHashCode(){		
 		assertEquals(link1.hashCode(), link2.hashCode());
 	}
-	
-
 
 }

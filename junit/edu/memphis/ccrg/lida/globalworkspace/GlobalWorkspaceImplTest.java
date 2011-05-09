@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -38,7 +38,7 @@ public class GlobalWorkspaceImplTest {
 	AttentionCodeletModule attnModule = new AttentionCodeletModule();
 	MockTaskSpawner ts;
 	MockBroadcastListener listener;
-	AttentionCodelet codelet = new BasicAttentionCodeletImpl();
+	AttentionCodelet codelet = new BasicAttentionCodelet();
 
 	@Before
 	public void setUp() throws Exception {

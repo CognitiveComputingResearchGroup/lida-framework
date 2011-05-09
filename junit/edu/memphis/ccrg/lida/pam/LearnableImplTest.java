@@ -1,16 +1,17 @@
 package edu.memphis.ccrg.lida.pam;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class LearnableImplTest extends TestCase {
+public class LearnableImplTest{
 	
 	private PamNode node1;
 	private ElementFactory factory = ElementFactory.getInstance();
 	
-	@Override
+	@Before
 	public void setUp() throws Exception {		
 		node1 = (PamNode) factory.getNode("PamNodeImpl");
 	}
@@ -22,7 +23,7 @@ public class LearnableImplTest extends TestCase {
 	public void testGetBaselevelActivation() {
 		node1.setId(1);			
 		node1.setBaseLevelActivation(0.3);
-		assertEquals("Problem with GetBaselevelActivation", 0.3,node1.getBaseLevelActivation());
+		assertTrue("Problem with GetBaselevelActivation", 0.3==node1.getBaseLevelActivation());
 	}
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PamNodeImpl#setBaseLevelActivation(double)}
@@ -31,7 +32,7 @@ public class LearnableImplTest extends TestCase {
 	public void testSetBaselevelActivation() {
 		node1.setId(1);			
 		node1.setBaseLevelActivation(0.3);
-		assertEquals("Problem with SetBaselevelActivation", 0.3,node1.getBaseLevelActivation());
+		assertTrue("Problem with SetBaselevelActivation", 0.3==node1.getBaseLevelActivation());
 	}
 
 	/**
@@ -42,7 +43,7 @@ public class LearnableImplTest extends TestCase {
 		node1.setId(1);			
 		node1.setBaseLevelActivation(0.3);
 		node1.setActivation(0.4);
-		assertEquals("Problem with GetTotalActivation", 0.7,node1.getTotalActivation());
+		assertTrue("Problem with GetTotalActivation", 0.7==node1.getTotalActivation());
 	}
 
 }

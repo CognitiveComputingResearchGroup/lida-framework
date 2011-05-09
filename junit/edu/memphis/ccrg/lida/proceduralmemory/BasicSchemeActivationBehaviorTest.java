@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 
@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
-public class BasicSchemeActivationBehaviorTest extends TestCase {
+public class BasicSchemeActivationBehaviorTest{
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
 	private Node node1, node2, node3;
@@ -24,7 +24,6 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 	private MockProceduralMemory pm;
 	private Scheme a, b, c;
 	
-	@Override
 	@Before
 	public void setUp() throws Exception {	
 		pm = new MockProceduralMemory();
@@ -71,6 +70,7 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 		map.put(node2, node2Set);
 		map.put(node3, node3Set);
 	}	
+	@Before
 	public void test1(){
 		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
 		
@@ -89,7 +89,7 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 		assertTrue(instantiated.contains(b));
 		assertTrue(instantiated.contains(c));
 	}
-	
+	@Before
 	public void test2(){
 		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
 		
@@ -106,7 +106,7 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 		assertTrue(instantiated.contains(b));
 		assertFalse(instantiated.contains(c));
 	}
-
+	@Before
 	public void test3(){
 		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
 		
@@ -123,7 +123,7 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 		assertTrue(instantiated.contains(b));
 		assertTrue(instantiated.contains(c));
 	}
-	
+	@Before
 	public void test4(){
 		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
 		
@@ -139,6 +139,4 @@ public class BasicSchemeActivationBehaviorTest extends TestCase {
 		assertTrue(instantiated.contains(b));
 		assertFalse(instantiated.contains(c));
 	}
-	
-	
 }

@@ -32,6 +32,26 @@ public class StrategyDef {
 	private Strategy instance = null;
 
 	/**
+	 * @param className Qualified name
+	 * @param name Strategy name
+	 * @param params optional parameters
+	 * @param type kind of strategy, e.g. decay, excite
+	 * @param flyWeight Will there be multiple copies of this strategy or just one shared?
+	 */
+	public StrategyDef(String className, String name,
+			Map<String, Object> params, String type, boolean flyWeight) {
+		this.className = className;
+		this.name = name;
+		this.params = params;
+		this.type = type;
+		this.flyWeight=flyWeight;
+	}
+
+	public StrategyDef() {
+		params = new HashMap<String, Object>();
+	}
+	
+	/**
 	 * if this strategy is flyweight returns the only one instance, a new instance otherwise.
 	 * 
 	 * @return the instance
@@ -83,26 +103,6 @@ public class StrategyDef {
 	 */
 	public void setFlyWeight(boolean flyWeight) {
 		this.flyWeight = flyWeight;
-	}
-
-	/**
-	 * @param className Qualified name
-	 * @param name Strategy name
-	 * @param params optional parameters
-	 * @param type kind of strategy, e.g. decay, excite
-	 * @param flyWeight Will there be multiple copies of this strategy or just one shared?
-	 */
-	public StrategyDef(String className, String name,
-			Map<String, Object> params, String type, boolean flyWeight) {
-		this.className = className;
-		this.name = name;
-		this.params = params;
-		this.type = type;
-		this.flyWeight=flyWeight;
-	}
-
-	public StrategyDef() {
-		params = new HashMap<String, Object>();
 	}
 
 	/**

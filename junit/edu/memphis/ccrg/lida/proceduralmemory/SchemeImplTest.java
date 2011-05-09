@@ -1,8 +1,11 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
@@ -12,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
-public class SchemeImplTest extends TestCase {
+public class SchemeImplTest{
 
 	private Scheme s;
 	private AgentAction a;
@@ -20,7 +23,6 @@ public class SchemeImplTest extends TestCase {
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
 	
-	@Override
 	@Before
 	public void setUp() throws Exception {		
 		a = new AgentActionImpl() {
@@ -35,6 +37,7 @@ public class SchemeImplTest extends TestCase {
 		
 	}
 	
+	@Test
 	public void test1(){
 		assertEquals("1", s.getLabel());
 		assertEquals(a, s.getAction());
@@ -46,7 +49,7 @@ public class SchemeImplTest extends TestCase {
 		s.setAction(a);
 		assertEquals(a, s.getAction());
 	}
-	
+	@Test
 	public void test2(){
 		AgentAction foo = new AgentActionImpl() {
 			@Override public void performAction() {}};
@@ -67,7 +70,7 @@ public class SchemeImplTest extends TestCase {
 		s.setInnate(true);
 		assertTrue(s.isInnate());
 	}
-	
+	@Test
 	public void test3(){		
 		assertTrue(0 == s.getExecutions());
 		assertTrue(0.0 == s.getReliability());
@@ -94,7 +97,7 @@ public class SchemeImplTest extends TestCase {
 		
 		assertTrue(s.isReliable());
 	}
-	
+	@Test
 	public void testEquals(){
 		//TODO
 //		Scheme s2 = new SchemeImpl();
@@ -108,7 +111,7 @@ public class SchemeImplTest extends TestCase {
 //		
 //		assertFalse(s.equals(s2));
 	}
-	
+	@Test
 	public void testGetInstantiation(){
 		s.setActivation(0.99);
 		NodeStructure context = new NodeStructureImpl();
@@ -125,7 +128,7 @@ public class SchemeImplTest extends TestCase {
 		
 		Behavior b = s.getInstantiation();
 		assertEquals(a, b.getAction());
-		assertEquals(0.99, b.getActivation());
+		assertTrue(0.99 == b.getActivation());
 		assertEquals(s, b.getGeneratingScheme());
 		
 		assertTrue(b.containsContextCondition(node1));

@@ -58,7 +58,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	private double codeletActivation = defaultCodeletActivation;
 
 	public AttentionCodeletModule() {
-		Class<BasicAttentionCodeletImpl> cl = BasicAttentionCodeletImpl.class;
+		Class<BasicAttentionCodelet> cl = BasicAttentionCodelet.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 	}

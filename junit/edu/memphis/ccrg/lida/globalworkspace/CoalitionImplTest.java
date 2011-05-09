@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodeletImpl;
+import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -36,7 +36,7 @@ public class CoalitionImplTest {
 		node3 = new NodeImpl();
 		
 		content= new NodeStructureImpl();
-		codelet = new BasicAttentionCodeletImpl();
+		codelet = new BasicAttentionCodelet();
 		
 		node1.setId(1);
 		node2.setId(2);

@@ -1,6 +1,10 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -17,7 +21,7 @@ import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
  *
  */
 
-public class PropagationTaskTest extends TestCase{
+public class PropagationTaskTest{
 	private PamNode source;
 	private PamNode sink;
 	private PamLink link;
@@ -31,8 +35,7 @@ public class PropagationTaskTest extends TestCase{
 	 * For threshold task creation
 	 */
 	private MockTaskSpawner taskSpawner;
-	
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
 		source =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
@@ -42,7 +45,7 @@ public class PropagationTaskTest extends TestCase{
 		pam = new MockPAM();
 		taskSpawner= new MockTaskSpawner();
 	}
-	
+	@Test
 	public void test(){
 		double perceptThreshold = 1.0;
 		double linkActivation = 0.1;
@@ -68,7 +71,7 @@ public class PropagationTaskTest extends TestCase{
 		 
 	 
 	}
-	
+	@Test
 	public void test2(){
 		double perceptThreshold = 0.15;
 		double linkActivation = 0.1;

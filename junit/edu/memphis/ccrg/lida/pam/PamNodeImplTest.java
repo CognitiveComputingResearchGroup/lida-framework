@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.pam;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,13 +21,12 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 /**
  * @author Siminder Kaur, Ryan McCall
  */
-public class PamNodeImplTest extends TestCase{
+public class PamNodeImplTest{
 	
 	private ElementFactory factory = ElementFactory.getInstance();	
 	private PamNodeImpl node1;
 	private PamNodeImpl node2;
 	
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl");
@@ -45,7 +44,7 @@ public class PamNodeImplTest extends TestCase{
 		assertEquals(node1, node2);
 		assertEquals(node2, node1);
 	}
-	
+	@Test
 	public void testNotEqual(){
 		node1.setId(0);
 		node2.setId(Integer.MIN_VALUE);
@@ -56,6 +55,7 @@ public class PamNodeImplTest extends TestCase{
 	/**
 	 * {@link PamNodeImpl#hashCode()}
 	 */
+	@Test
 	public void testHashCode(){
 		int id = (int) (Math.random()*Integer.MAX_VALUE);
 		node1.setId(id);
@@ -66,6 +66,7 @@ public class PamNodeImplTest extends TestCase{
 	/**
 	 * 
 	 */
+	@Test
 	public void testSetActivationThreshold(){
 		node1.setBaseLevelDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(1.0);
@@ -73,7 +74,7 @@ public class PamNodeImplTest extends TestCase{
 		
 		double t = 0.7;
 		node1.setBaseLevelRemovalThreshold(t);
-		assertEquals(t, node1.getLearnableRemovalThreshold());
+		assertTrue(t== node1.getLearnableRemovalThreshold());
 		
 		node1.setBaseLevelActivation(1.0);
 		assertFalse(node1.isRemovable());

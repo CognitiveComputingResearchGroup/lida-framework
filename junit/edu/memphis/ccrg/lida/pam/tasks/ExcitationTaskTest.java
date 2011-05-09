@@ -2,7 +2,10 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import java.util.Collection;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
@@ -14,7 +17,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 
-public class ExcitationTaskTest extends TestCase {
+public class ExcitationTaskTest{
 	
 	private PamNode pamNode;
 	
@@ -27,35 +30,34 @@ public class ExcitationTaskTest extends TestCase {
 	 * For threshold task creation
 	 */
 	private MockTaskSpawner taskSpawner;
-	
-	@Override
+	@Before
 	public void setUp() throws Exception {
 		pamNode = new PamNodeImpl();
 		pam = new MockPAM();
 		taskSpawner= new MockTaskSpawner();
 	}
 	
-	
+	@Test
 	public void test(){
 		pam.setPerceptThreshold(1.0);
 		pamNode.setExciteStrategy(new DefaultExciteStrategy());
 		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
 		
 		excite.call();
-		assertEquals(pamNode.getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
-		assertEquals(pam.testGetSink().getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
+		assertTrue(pamNode.getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
+		assertTrue(pam.testGetSink().getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
 		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
 	 
 	}
-	
+	@Test
 	public void testTaskSpawner(){
 		pam.setPerceptThreshold(0.4);
 		pamNode.setExciteStrategy(new DefaultExciteStrategy());
 		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
 		
 		excite.call();
-		assertEquals(pamNode.getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
-		assertEquals(pam.testGetSink().getActivation(), 0.5 + Activatible.DEFAULT_ACTIVATION);
+		assertTrue(pamNode.getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
+		assertTrue(pam.testGetSink().getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
 		
 		Collection<FrameworkTask> tasks= taskSpawner.getRunningTasks(); 
 		for(FrameworkTask tsk: tasks){

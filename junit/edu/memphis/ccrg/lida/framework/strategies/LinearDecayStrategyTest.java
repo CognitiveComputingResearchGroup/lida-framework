@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.strategies;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,12 +21,11 @@ import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
  * @author Siminder Kaur
  *
  */
-public class LinearDecayStrategyTest extends TestCase{
+public class LinearDecayStrategyTest{
 
 	LinearDecayStrategy decayStrategy;
 	NodeImpl node1;
 	
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		decayStrategy = new LinearDecayStrategy();		
@@ -45,7 +44,7 @@ public class LinearDecayStrategyTest extends TestCase{
 		double newActivation = decayStrategy.decay(node1.getActivation(), 1000);	
 		node1.setActivation(newActivation);		
 		
-		assertEquals("Problem with Decay", 0.0, node1.getTotalActivation());
+		assertTrue("Problem with Decay", 0.0== node1.getTotalActivation());
 	}
 
 }

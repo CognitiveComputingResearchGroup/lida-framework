@@ -10,9 +10,10 @@
  */
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -29,7 +30,7 @@ import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
  * @author Ryan McCall, Usef Faghihi
  *
  */
-public class AddToPerceptTaskTest extends TestCase{
+public class AddToPerceptTaskTest{
 	
 	private PamNode nodeA, nodeB;
 	private MockPAM pam;
@@ -39,7 +40,6 @@ public class AddToPerceptTaskTest extends TestCase{
 	/**
 	 * @throws java.lang.Exception e
 	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
@@ -49,6 +49,7 @@ public class AddToPerceptTaskTest extends TestCase{
 	}
 	
 	//test adding a single node
+	@Test
 	public void test1(){
 		AddToPerceptTask t = new AddToPerceptTask(nodeA, pam);
 		t.call();
@@ -59,7 +60,7 @@ public class AddToPerceptTaskTest extends TestCase{
 		assertEquals(nodeA.getId(), actual.getId());
 		assertEquals(nodeA.getClass().getSimpleName(), actual.getClass().getSimpleName());
 	}
-	
+	@Test
 	public void test2(){
 		//Setup
 		NodeStructure expectedNS = factory.getPamNodeStructure();

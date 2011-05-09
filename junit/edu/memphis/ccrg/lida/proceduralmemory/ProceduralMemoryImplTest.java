@@ -1,17 +1,16 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import junit.framework.TestCase;
 
 import org.junit.Before;
+import static org.junit.Assert.*;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
-public class ProceduralMemoryImplTest extends TestCase {
+public class ProceduralMemoryImplTest{
 
 	private ProceduralMemory pm;
 
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		pm = new ProceduralMemoryImpl();
