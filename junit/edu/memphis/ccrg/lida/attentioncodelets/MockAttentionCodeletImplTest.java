@@ -1,5 +1,7 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
+import junit.framework.TestCase;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
  * This is a JUnit class which can be used to test methods of the MockAttentionCodeletImpl class
  * @author Siminder Kaur
  */
-public class MockAttentionCodeletImplTest {
+public class MockAttentionCodeletImplTest extends TestCase{
 	
 	MockAttentionCodeletImpl codelet;
 	WorkspaceBufferImpl buffer;
@@ -27,8 +29,9 @@ public class MockAttentionCodeletImplTest {
 	LinkImpl link1,link2;
 	NodeStructure csmContent;
 	
+	@Override
 	@Before
-	public void setUp() throws Exception {
+	public void setUp(){
 		new PerceptualAssociativeMemoryImpl();
 		codelet = new MockAttentionCodeletImpl();
 				

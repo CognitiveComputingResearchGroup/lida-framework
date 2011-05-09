@@ -98,7 +98,7 @@ public class AgentStarter {
 	 */
 	private static void run() {
 		//Load factories data
-		FactoriesDataXMLLoader factoriesDataLoader=new FactoriesDataXMLLoader();
+		FactoriesDataXmlLoader factoriesDataLoader=new FactoriesDataXmlLoader();
 		factoriesDataLoader.loadFactoriesData(agentProperties);
 		
 		// Create model: Agent

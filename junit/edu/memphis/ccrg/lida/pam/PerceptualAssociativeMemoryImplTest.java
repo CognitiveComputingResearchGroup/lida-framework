@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
-import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXMLLoader;
+import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockDetectionAlgorithm;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -61,7 +61,7 @@ public class PerceptualAssociativeMemoryImplTest extends TestCase{
 	
 	static{
 		factory = ElementFactory.getInstance();
-		FactoriesDataXMLLoader factoryLoader = new FactoriesDataXMLLoader();
+		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
 		factoryLoader.loadFactoriesData(prop);
 	}

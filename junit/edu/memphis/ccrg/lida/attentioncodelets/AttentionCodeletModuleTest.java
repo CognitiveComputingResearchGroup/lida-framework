@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
  * This is a JUnit class which can be used to test methods of the AttentionCodeletModule class
  * @author Siminder Kaur
  */
-public class AttentionCodeletModuleTest {
+public class AttentionCodeletModuleTest{
 	
 	AttentionCodeletModule attnModule;
 	Workspace workspace;

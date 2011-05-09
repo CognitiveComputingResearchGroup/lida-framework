@@ -3,8 +3,7 @@
  */
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,7 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
  * @author Siminder Kaur
  */
 
-public class BasicAttentionCodeletImplTest {
+public class BasicAttentionCodeletImplTest extends TestCase{
 	WorkspaceBufferImpl buffer;
 	NodeImpl node1,node2,node3;
 	LinkImpl link1,link2;
@@ -31,8 +30,9 @@ public class BasicAttentionCodeletImplTest {
 	/**
 	 * @throws java.lang.Exception e
 	 */
+	@Override
 	@Before
-	public void setUp() throws Exception {
+	public void setUp(){
 		new PerceptualAssociativeMemoryImpl();
 		buffer = new WorkspaceBufferImpl();
 		node1 = new NodeImpl();
