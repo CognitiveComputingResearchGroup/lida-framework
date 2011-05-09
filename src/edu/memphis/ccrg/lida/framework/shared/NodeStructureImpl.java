@@ -47,8 +47,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Standard factory for new objects. Used to create copies when adding
 	 * linkables to this NodeStructure
 	 */
-	private static ElementFactory factory = ElementFactory
-			.getInstance();
+	private static ElementFactory factory = ElementFactory.getInstance();
 
 	/*
 	 * Nodes contained in this NodeStructure indexed by their id
@@ -135,8 +134,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public NodeStructure copy() {
-		logger.log(Level.FINER, "Copying NodeStructure " + this,
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINER, "Copying NodeStructure " + this, TaskManager
+				.getCurrentTick());
 		return new NodeStructureImpl(this);
 	}
 
@@ -149,14 +148,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public synchronized Link addDefaultLink(Link l) {
-		if(l == null){
-			logger.log(Level.WARNING, "Cannot add null.", TaskManager.getCurrentTick());
+		if (l == null) {
+			logger.log(Level.WARNING, "Cannot add null.", TaskManager
+					.getCurrentTick());
 		}
-		
+
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getExtendedId());
 		if (oldLink != null) { // if the link already exists in this node
-								// structure
+			// structure
 			// no check
 			if (oldLink.getActivation() < newActiv) {
 				oldLink.setActivation(newActiv);
@@ -173,12 +173,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		// NodeStructure, return null
 		newSource = nodes.get(source.getId());
 		if (newSource == null) {
-			logger.log(
-					Level.FINER,
-					"Source: "
-							+ source
-							+ " is not present in this NodeStructure, Link will not be added.",
-					TaskManager.getCurrentTick());
+			logger
+					.log(
+							Level.FINER,
+							"Source: "
+									+ source
+									+ " is not present in this NodeStructure, Link will not be added.",
+							TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -186,29 +187,31 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			Node snode = (Node) sink;
 			newSink = nodes.get(snode.getId());
 			if (newSink == null) {
-				logger.log(
-						Level.FINER,
-						"Sink: "
-								+ sink
-								+ " is not present in this NodeStructure, Link will not be added.",
-						TaskManager.getCurrentTick());
+				logger
+						.log(
+								Level.FINER,
+								"Sink: "
+										+ sink
+										+ " is not present in this NodeStructure, Link will not be added.",
+								TaskManager.getCurrentTick());
 				return null;
 			}
 		} else {
 			newSink = links.get(sink.getExtendedId());
 			if (newSink == null) {
-				logger.log(
-						Level.FINER,
-						"Sink: "
-								+ sink
-								+ " is not present in this NodeStructure, Link will not be added.",
-						TaskManager.getCurrentTick());
+				logger
+						.log(
+								Level.FINER,
+								"Sink: "
+										+ sink
+										+ " is not present in this NodeStructure, Link will not be added.",
+								TaskManager.getCurrentTick());
 				return null;
 			}
 		}
-		return generateNewLink(l, defaultLinkType, newSource, newSink,
-				l.getCategory(), newActiv, l.getActivatibleRemovalThreshold(),
-				l.getGroundingPamLink());
+		return generateNewLink(l, defaultLinkType, newSource, newSink, l
+				.getCategory(), newActiv, l.getActivatibleRemovalThreshold(), l
+				.getGroundingPamLink());
 	}
 
 	/*
@@ -227,10 +230,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					"Cannot create a link with the same source and sink.");
 		}
 		if (sinkId.isComplexLink()) {
-			logger.log(
-					Level.WARNING,
-					"Sink cannot be a complex link. Must be a node or simple link.",
-					TaskManager.getCurrentTick());
+			logger
+					.log(
+							Level.WARNING,
+							"Sink cannot be a complex link. Must be a node or simple link.",
+							TaskManager.getCurrentTick());
 			return null;
 		}
 		Node source = getNode(sourceId);
@@ -241,12 +245,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					TaskManager.getCurrentTick());
 			return null;
 		}
-		ExtendedId newLinkId = new ExtendedId(sourceId, sinkId,
-				category.getId());
+		ExtendedId newLinkId = new ExtendedId(sourceId, sinkId, category
+				.getId());
 		if (containsLink(newLinkId)) {
 			logger.log(Level.WARNING,
-					"Link already exists.  Cannot add again.",
-					TaskManager.getCurrentTick());
+					"Link already exists.  Cannot add again.", TaskManager
+							.getCurrentTick());
 			return null;
 		}
 
@@ -280,8 +284,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				category.getId());
 		if (containsLink(newLinkId)) {
 			logger.log(Level.WARNING,
-					"Link already exists.  Cannot add again.",
-					TaskManager.getCurrentTick());
+					"Link already exists.  Cannot add again.", TaskManager
+							.getCurrentTick());
 			return null;
 		}
 
@@ -289,16 +293,24 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				activation, removalThreshold, null);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultLink(edu.memphis.ccrg.lida.framework.shared.Node, edu.memphis.ccrg.lida.framework.shared.Linkable, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double, double)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultLink(edu
+	 * .memphis.ccrg.lida.framework.shared.Node,
+	 * edu.memphis.ccrg.lida.framework.shared.Linkable,
+	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double, double)
 	 */
 	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
-		if(source == null || sink == null){
-			logger.log(Level.WARNING, "Cannot add link between null linkables.", TaskManager.getCurrentTick());
+		if (source == null || sink == null) {
+			logger.log(Level.WARNING,
+					"Cannot add link between null linkables.", TaskManager
+							.getCurrentTick());
 		}
-		
+
 		return addDefaultLink(source.getId(), sink.getExtendedId(), category,
 				activation, removalThreshold);
 	}
@@ -316,11 +328,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param removalThreshold
 	 */
-	private Link generateNewLink(Link link, String linkType, 
-								Node newSource,	Linkable newSink, LinkCategory category, 
-								double activation, double removalThreshold, PamLink groundingPamLink) {
+	private Link generateNewLink(Link link, String linkType, Node newSource,
+			Linkable newSink, LinkCategory category, double activation,
+			double removalThreshold, PamLink groundingPamLink) {
 		Link newLink = getNewLink(link, linkType, newSource, newSink, category);
-		//set values of passed in parameters not handled by 'getNewLink'
+		// set values of passed in parameters not handled by 'getNewLink'
 		newLink.setActivation(activation);
 		newLink.setActivatibleRemovalThreshold(removalThreshold);
 		newLink.setGroundingPamLink(groundingPamLink);
@@ -354,11 +366,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Collection<Link> addDefaultLinks(Collection<Link> links) {
-		if(links == null){
-			logger.log(Level.WARNING, "Cannot add links. Link collection is null", TaskManager.getCurrentTick());
+		if (links == null) {
+			logger.log(Level.WARNING,
+					"Cannot add links. Link collection is null", TaskManager
+							.getCurrentTick());
 			return null;
 		}
-		
+
 		Collection<Link> copiedLinks = new ArrayList<Link>();
 		// Add simple links
 		for (Link l : links) {
@@ -386,37 +400,42 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Node addDefaultNode(Node n) {
 		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null node",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add null node", TaskManager
+					.getCurrentTick());
 			return null;
 		}
-		
+
 		return addNode(n, defaultNodeType);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#addLink(edu.memphis.ccrg.lida.framework.shared.Link, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addLink(edu.memphis
+	 * .ccrg.lida.framework.shared.Link, java.lang.String)
 	 */
 	@Override
 	public synchronized Link addLink(Link l, String linkType) {
 		if (l == null) {
-			logger.log(Level.WARNING, "Cannot add null link",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add null link", TaskManager
+					.getCurrentTick());
 			return null;
 		}
 		if (!factory.containsLinkType(linkType)) {
-			logger.log(
-					Level.WARNING,
-					"Factory does not contain link type: "
-							+ linkType
-							+ " Check that type is defined in factoriesData.xml. Link not added: "
-							+ l, TaskManager.getCurrentTick());
+			logger
+					.log(
+							Level.WARNING,
+							"Factory does not contain link type: "
+									+ linkType
+									+ " Check that type is defined in factoriesData.xml. Link not added: "
+									+ l, TaskManager.getCurrentTick());
 			return null;
 		}
 		Link link = links.get(l.getExtendedId());
 		if (link == null) {
-			link = getNewLink(l, linkType, l.getSource(), l.getSink(),
-					l.getCategory());
+			link = getNewLink(l, linkType, l.getSource(), l.getSink(), l
+					.getCategory());
 			if (link != null) {
 				links.put(link.getExtendedId(), link);
 				linkableMap.put(link, new HashSet<Link>());
@@ -441,18 +460,19 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Node addNode(Node n, String nodeType) {
 		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null node",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add null node", TaskManager
+					.getCurrentTick());
 			return null;
 		}
 
 		if (!factory.containsNodeType(nodeType)) {
-			logger.log(
-					Level.WARNING,
-					"Factory does not contain node type: "
-							+ nodeType
-							+ " Check that type is defined in factoriesData.xml. Node not added: "
-							+ n, TaskManager.getCurrentTick());
+			logger
+					.log(
+							Level.WARNING,
+							"Factory does not contain node type: "
+									+ nodeType
+									+ " Check that type is defined in factoriesData.xml. Node not added: "
+									+ n, TaskManager.getCurrentTick());
 			return null;
 		}
 
@@ -467,7 +487,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 						+ nodeType, TaskManager.getCurrentTick());
 			}
 		} else {
-			// TODO  just updateNodeValues and that does specific things
+			// TODO just updateNodeValues and that does specific things
 			double newActiv = n.getActivation();
 			if (node.getActivation() < newActiv) {
 				node.setActivation(newActiv);
@@ -484,11 +504,13 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	@Override
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
-		if(nodes == null){
-			logger.log(Level.WARNING, "Cannot add nodes. Node collection is null", TaskManager.getCurrentTick());
+		if (nodes == null) {
+			logger.log(Level.WARNING,
+					"Cannot add nodes. Node collection is null", TaskManager
+							.getCurrentTick());
 			return null;
 		}
-		
+
 		Collection<Node> storedNodes = new ArrayList<Node>();
 		for (Node n : nodes) {
 			Node stored = addNode(n, defaultNodeType);
@@ -538,15 +560,15 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	/*
 	 * This allows subclasses of NodeStructure to override merge but still gives
-	 * this class a merge to be called from the constructor. 
+	 * this class a merge to be called from the constructor.
 	 * 
 	 * @param ns
 	 */
-//	TODO do this for addNode and AddDefaultLink??????
+	// TODO do this for addNode and AddDefaultLink??????
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {
-			logger.log(Level.WARNING, "Asked to merge null",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Asked to merge null", TaskManager
+					.getCurrentTick());
 			return;
 		}
 		// Add nodes
@@ -600,7 +622,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		Set<Link> connectedLinks = new HashSet<Link>(linkableMap.get(linkable));
 		if (connectedLinks != null) {
 			for (Link connectedLink : connectedLinks) {// for all of the links
-														// connected to n
+				// connected to n
 				removeLinkable(connectedLink);
 			}
 		}
@@ -1064,14 +1086,12 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return false;
 		}
 		for (Node n1 : ns1.getNodes()) {
-			Node n2 = ns2.getNode(n1.getId());
-			if (n2 == null || !n1.equals(n2) || !n2.equals(n1)) {
+			if (!ns1.containsNode(n1)) {
 				return false;
 			}
 		}
 		for (Link l1 : ns1.getLinks()) {
-			Link l2 = ns2.getLink(l1.getExtendedId());
-			if (l2 == null || !l1.equals(l2) || !l2.equals(l1)) {
+			if (!ns1.containsLink(l1)) {
 				return false;
 			}
 		}
