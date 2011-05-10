@@ -3,7 +3,7 @@
  */
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +19,8 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
  * This is a JUnit class which can be used to test methods of the BasicAttentionCodelet class
  * @author Siminder Kaur
  */
-
-public class BasicAttentionCodeletTest extends TestCase{
+public class BasicAttentionCodeletTest{
+	
 	WorkspaceBufferImpl buffer;
 	NodeImpl node1,node2,node3;
 	LinkImpl link1,link2;
@@ -28,9 +28,7 @@ public class BasicAttentionCodeletTest extends TestCase{
 	BasicAttentionCodelet attnCodelet;
 
 	/**
-	 * @throws java.lang.Exception e
 	 */
-	@Override
 	@Before
 	public void setUp(){
 		new PerceptualAssociativeMemoryImpl();

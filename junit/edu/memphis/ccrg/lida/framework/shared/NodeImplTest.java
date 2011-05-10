@@ -10,8 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.shared;
 
-
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,18 +21,18 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  * This is a JUnit class which can be used to test methods of the NodeImpl class
  * @author Siminder Kaur
  */
-public class NodeImplTest extends TestCase{
+public class NodeImplTest{
 
-	private NodeImpl node1,node2;
-	private PamNodeImpl pamNode1,pamNode2;
+	private NodeImpl node1, node2;
+	private PamNodeImpl pamNode1, pamNode2;
 	
 	private ElementFactory factory = ElementFactory.getInstance();
 	
 	/**
 	 * This method is called before running each test case to initialize the objects
+	 * @throws Exception e
 	 * 
 	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = (NodeImpl) factory.getNode();
@@ -116,22 +115,22 @@ public class NodeImplTest extends TestCase{
 		node2.setId(1);	
 		assertEquals("Problem with setNodeClass",node1.hashCode(), node2.hashCode());
 	}	
-	
+	@Test
 	public void testDesirability(){
 		node1.setDesirability(5.0);
-		assertEquals(1.0, node1.getDesirability());
+		assertTrue(1.0== node1.getDesirability());
 		
 		node1.setDesirability(-14534545);
-		assertEquals(0.0, node1.getDesirability());
+		assertTrue(0.0== node1.getDesirability());
 		
 		node1.setDesirability(0.4);
-		assertEquals(0.4, node1.getDesirability());
+		assertTrue(0.4== node1.getDesirability());
 		
 		node1.setDesirability(0.0);
-		assertEquals(0.0, node1.getDesirability());
+		assertTrue(0.0== node1.getDesirability());
 		
 		node1.setDesirability(1.0);
-		assertEquals(1.0, node1.getDesirability());
+		assertTrue(1.0== node1.getDesirability());
 	}
 	
 }

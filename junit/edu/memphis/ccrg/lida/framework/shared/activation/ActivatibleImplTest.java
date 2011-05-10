@@ -10,7 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework.shared.activation;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,19 +28,18 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
  * @author Siminder Kaur
  */
 
-public class ActivatibleImplTest extends TestCase{
+public class ActivatibleImplTest{
 
 	ActivatibleImpl node1,node2;
 	
 	/**
 	 * @throws java.lang.Exception e
 	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = new ActivatibleImpl();		
 	}	
-	
+	@Test
 	public void testIsRemovable(){
 		Node n = new NodeImpl();
 		n.setActivation(0.1);
@@ -63,7 +62,7 @@ public class ActivatibleImplTest extends TestCase{
 		
 		node2 = new ActivatibleImpl(0.2,0.0,es, ds);
 		
-		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", 0.2, node2.getActivation());
+		assertTrue("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", 0.2 == node2.getActivation());
 		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", es, node2.getExciteStrategy());
 		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", ds, node2.getDecayStrategy());
 	}
@@ -100,7 +99,7 @@ public class ActivatibleImplTest extends TestCase{
 	@Test
 	public void testGetActivation() {
 		node1.setActivation(0.2);
-		assertEquals("Problem with GetActivation", 0.2,node1.getActivation());
+		assertTrue("Problem with GetActivation", 0.2 == node1.getActivation());
 	}
 
 	/**
@@ -133,7 +132,7 @@ public class ActivatibleImplTest extends TestCase{
 	@Test
 	public void testSetActivation() {
 		node1.setActivation(0.2);
-		assertEquals("Problem with GetActivation", 0.2,node1.getActivation());
+		assertTrue("Problem with GetActivation", 0.2 == node1.getActivation());
 	}
 
 	/**
@@ -170,19 +169,19 @@ public class ActivatibleImplTest extends TestCase{
 		node1.setExciteStrategy(es);
 		node1.excite(0.1);
 		
-		assertEquals("Problem with GetTotalActivation", 0.6,node1.getActivation());
+		assertTrue("Problem with GetTotalActivation", 0.6 == node1.getActivation());
 	}
 	
 	@Test
 	public void testGetActivatibleRemovalThreshold() {		
 		node1.setActivatibleRemovalThreshold(0.5);		
-		assertEquals("Problem with GetActivatibleRemovalThreshold", 0.5,node1.getActivatibleRemovalThreshold());
+		assertTrue("Problem with GetActivatibleRemovalThreshold", 0.5 == node1.getActivatibleRemovalThreshold());
 	}
 	
 	@Test
 	public void testSetActivatibleRemovalThreshold() {		
 		node1.setActivatibleRemovalThreshold(0.5);		
-		assertEquals("Problem with SetActivatibleRemovalThreshold", 0.5,node1.getActivatibleRemovalThreshold());
+		assertTrue("Problem with SetActivatibleRemovalThreshold", 0.5 == node1.getActivatibleRemovalThreshold());
 	}
 
 }

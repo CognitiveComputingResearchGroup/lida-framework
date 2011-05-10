@@ -8,7 +8,7 @@
 
 package edu.memphis.ccrg.lida.framework.shared.activation;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +23,12 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
  * @author Siminder Kaur
  *
  */
-public class BasedActivatibleImplTest extends TestCase{
+public class BasedActivatibleImplTest{
 
 	LearnableImpl node1;
 	/**
 	 * @throws java.lang.Exception e
 	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		node1 = new LearnableImpl();
@@ -43,7 +42,7 @@ public class BasedActivatibleImplTest extends TestCase{
 		node1.setBaseLevelActivation(0.2);
 		node1.setActivation(0.3);
 				
-		assertEquals("Problem with GetTotalActivation", 0.5,node1.getTotalActivation());
+		assertTrue("Problem with GetTotalActivation", 0.5 == node1.getTotalActivation());
 	}
 
 	/**
@@ -111,7 +110,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	public void testGetBaseLevelActivation() {
 		node1.setBaseLevelActivation(0.2);
 		
-		assertEquals("Problem with GetBaseLevelActivation", 0.2,node1.getBaseLevelActivation());
+		assertTrue("Problem with GetBaseLevelActivation", 0.2 == node1.getBaseLevelActivation());
 	}
 
 	/**
@@ -124,7 +123,7 @@ public class BasedActivatibleImplTest extends TestCase{
 		node1.setBaseLevelActivation(0.2);
 		node1.reinforceBaseLevelActivation(0.3);
 		
-		assertEquals("Problem with ReinforceBaseLevelActivation", 0.5,node1.getBaseLevelActivation());
+		assertTrue("Problem with ReinforceBaseLevelActivation", 0.5 == node1.getBaseLevelActivation());
 	}
 
 	/**
@@ -134,7 +133,7 @@ public class BasedActivatibleImplTest extends TestCase{
 	public void testSetBaseLevelActivation() {
 		node1.setBaseLevelActivation(0.2);
 		
-		assertEquals("Problem with SetBaseLevelActivation", 0.2,node1.getBaseLevelActivation());
+		assertTrue("Problem with SetBaseLevelActivation", 0.2 == node1.getBaseLevelActivation());
 	}
 
 }

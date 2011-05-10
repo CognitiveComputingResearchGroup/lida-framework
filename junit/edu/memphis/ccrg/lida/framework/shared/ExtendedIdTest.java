@@ -1,8 +1,10 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
@@ -12,14 +14,11 @@ import org.junit.Before;
  * @author Ryan McCall
  *
  */
-public class ExtendedIdTest extends TestCase {
+public class ExtendedIdTest{
 	
 	private int category1 = (int) (Math.random() * Integer.MAX_VALUE);
-	
-	@Override
-	@Before
-	public void setUp() throws Exception {}
-	
+
+	@Test
 	public void testNodeId(){
 		int nodeId = (int) (Math.random() * Integer.MAX_VALUE);
 		ExtendedId id1 = new ExtendedId(nodeId);
@@ -38,7 +37,7 @@ public class ExtendedIdTest extends TestCase {
 		
 		assertHashCodeEquals(id1, id2);	
 	}
-	
+	@Test
 	public void testNodeId0(){
 		int nodeId = (int) (Math.random() * Integer.MAX_VALUE);
 		int nodeId2 = nodeId % 31;
@@ -59,6 +58,7 @@ public class ExtendedIdTest extends TestCase {
 	}
 
 	//Two nodes case
+	@Test
 	public void testLinkId(){
 		int nodeId = (int) (Math.random() * Integer.MAX_VALUE);
 		ExtendedId sinkNodeId = new ExtendedId(nodeId);
@@ -88,6 +88,7 @@ public class ExtendedIdTest extends TestCase {
 	}
 	
 	//One node, one link, link between 2 nodes case
+	@Test
 	public void testLinkId2(){
 		//sink will be a link between 2 nodes
 		int slCat = 10;
@@ -134,7 +135,7 @@ public class ExtendedIdTest extends TestCase {
 		assertTrue(o2.equals(o1));
 		assertTrue(o1.hashCode() == o2.hashCode());
 	}
-	
+	@Test
 	public void testIsSimpleLink(){
 		int nodeId = (int) (Math.random() * Integer.MAX_VALUE);
 		ExtendedId id1 = new ExtendedId(nodeId);
@@ -145,7 +146,7 @@ public class ExtendedIdTest extends TestCase {
 		assertFalse(lid.isNodeId());
 		assertFalse(lid.isComplexLink());
 	}
-	
+	@Test
 	public void testIsComplexLink(){
 		int nodeId = 45;
 		ExtendedId id1 = new ExtendedId(nodeId);

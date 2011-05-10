@@ -10,9 +10,9 @@
  */
 package edu.memphis.ccrg.lida.framework.shared;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  * @author Siminder Kaur
  *
  */
-public class LinkImplTest extends TestCase{
+public class LinkImplTest{
 	
 	private Node node1,node2,node3,node4;
 	private LinkImpl link1,link2,link3;	
@@ -34,8 +34,8 @@ public class LinkImplTest extends TestCase{
 
 	/**
 	 * This method is called before running each test case to initialize the objects
+	 * @throws Exception e
 	 */
-	@Override
 	@Before
 	public void setUp() throws Exception {
 		new PerceptualAssociativeMemoryImpl();
@@ -54,14 +54,6 @@ public class LinkImplTest extends TestCase{
 	}
 
 	/**
-	 * This method is called after running each test case
-	 */
-	@Override
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
 	 * This method is used to test the LinkImpl.equals() method
 	 */
 	@Test
@@ -76,7 +68,6 @@ public class LinkImplTest extends TestCase{
 		link3.setCategory(linktype1);
 		
 		assertHashCodeEquals(link1, link3);
-		
 	}
 
 	/**
@@ -171,7 +162,7 @@ public class LinkImplTest extends TestCase{
 		assertTrue(o2.equals(o1));
 		assertTrue(o1.hashCode() == o2.hashCode());
 	}
-	
+	@Test
 	public void testComplexLink(){
 		try{
 			Link foo = new LinkImpl(node4, link1, linktype1);
@@ -181,7 +172,7 @@ public class LinkImplTest extends TestCase{
 			assertTrue(e instanceof IllegalArgumentException);
 		}
 	}
-	
+	@Test
 	public void testComplexLink2(){
 		Link foo = new LinkImpl(node4, link1, linktype1);
 		
