@@ -147,7 +147,7 @@ public class ElementFactory {
 		return instance;
 	}
 
-	/**
+	/*
 	 * Creates the Factory and adds default Node, Link and Strategies to the
 	 * Maps in the Factory.
 	 */
@@ -179,7 +179,7 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds a {@link DecayStrategy} with specified name
+	 * Adds a {@link DecayStrategy} indexed by specified name.
 	 * 
 	 * @param name
 	 *            the name used to refer to the strategy
@@ -192,12 +192,12 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the excite strategy.
+	 * Adds an excite strategy indexed by specified name.
 	 * 
 	 * @param name
-	 *            the name
+	 *            the name used to reference the strategy 
 	 * @param exciteDef
-	 *            the excite
+	 *            the excite strategy {@link StrategyDef}
 	 */
 	public void addExciteStrategy(String name, StrategyDef exciteDef) {
 		exciteStrategies.put(name, exciteDef);
@@ -205,19 +205,19 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the strategy.
+	 * Adds a strategy to this factory indexed by specified name.
 	 * 
 	 * @param name
 	 *            the name
 	 * @param strategyDef
-	 *            the strategy def
+	 *            the {@link StrategyDef}
 	 */
 	public void addStrategy(String name, StrategyDef strategyDef) {
 		strategies.put(name, strategyDef);
 	}
 
 	/**
-	 * Adds the link type.
+	 * Adds a Link type to this factory
 	 * 
 	 * @param linkDef
 	 *            the link def
@@ -227,7 +227,7 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the link type.
+	 * Adds a link type indexed by specified typeName
 	 * 
 	 * @param typeName
 	 *            the link type
@@ -241,7 +241,7 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the node type.
+	 * Adds a {@link Node} type to this factory
 	 * 
 	 * @param nodeDef
 	 *            the node def
@@ -251,7 +251,7 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the node type.
+     * Adds a Node type indexed by specified typeName
 	 * 
 	 * @param typeName
 	 *            the simple node name
@@ -967,12 +967,11 @@ public class ElementFactory {
 	 * @param codeletType type of codelet
 	 * @param ticksPerStep execution frequency 
 	 * @param activation initial activation
-	 * @param removalThreshold TODO
+	 * @param removalThreshold activation needed to remain active
 	 * @param params optional parameters to be set in object's init method
 	 * @return the new Codelet
 	 */
 	public Codelet getCodelet(String codeletType, int ticksPerStep, double activation, double removalThreshold, Map<String,?extends Object> params){
-		//TODO param for removal threshold
 		CodeletDef codeletDef = codelets.get(codeletType);		
 		if (codeletDef == null) {
 			logger.log(Level.WARNING, "Asked for codelet " + codeletType + 
@@ -1004,7 +1003,7 @@ public class ElementFactory {
 	 *            execution frequency
 	 * @param activation
 	 *            initial activation
-	 * @param removalThreshold TODO
+	 * @param removalThreshold activation needed to remain active
 	 * @param params
 	 *            optional parameters to be set in object's init method
 	 * @return new Codelet
