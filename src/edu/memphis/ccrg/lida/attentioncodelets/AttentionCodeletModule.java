@@ -159,10 +159,11 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	}	
 
 	//TODO params not being used currently
+	//TODO default removal threshold parameters
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(
-				type, codeletTicksPerStep, codeletActivation, null);
+		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(type, codeletTicksPerStep, 
+				codeletActivation, -1.0, null);
 		if (codelet == null) {
 			logger.log(
 					Level.WARNING,

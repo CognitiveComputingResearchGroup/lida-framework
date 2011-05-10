@@ -7,14 +7,18 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 
 /**
- * A PamNode extends nodes.  The added functionalities are mainly due to the fact that
+ * A PamNode is a {@link Node} which resides in {@link PerceptualAssociativeMemory} and 
+ * represents a feature or a concept.  
  * PamNodes are involved in activation passing where Nodes are not. 
+ * They can represent the {@link LinkCategory} of a {@link Link}.
+ * 
  * @author Ryan J McCall, Javier Snaider
- *
+ * @see PerceptualAssociativeMemory
  */
 public interface PamNode extends Node, PamLinkable, LinkCategory{
 

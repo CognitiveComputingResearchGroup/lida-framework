@@ -51,7 +51,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	 
 	private void initLearnable() {
 		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
 		ElementFactory factory = ElementFactory.getInstance();
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
@@ -78,7 +78,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	    strategyName = (String)getParam("baseLevelExciteStrategy","pamDefaultExcite");
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
 		
-		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
 		learnable.setBaseLevelRemovalThreshold(threshold);
 
 		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);

@@ -49,7 +49,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 	
 	private void initLearnable() {
-		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
 		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
 		ElementFactory factory = ElementFactory.getInstance();
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
@@ -77,7 +77,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	    strategyName = (String)getParam("baseLevelExciteStrategy","pamDefaultExcite");
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
 		
-		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_REMOVAL_THRESHOLD);
+		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
 		learnable.setBaseLevelRemovalThreshold(threshold);
 
 		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
@@ -85,9 +85,22 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	}
 	
 	@Override
+	public void updateNodeValues(Node n) {
+		if(n instanceof PamNodeImpl){
+			PamNodeImpl pn = (PamNodeImpl) n;
+			learnable = new LearnableImpl(pn.learnable);
+		}else if(n != null){
+			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
+					PamNodeImpl.class.getCanonicalName() + " but received: " + 
+					n, TaskManager.getCurrentTick());
+		}
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof PamNodeImpl))
+		if(!(obj instanceof PamNodeImpl)){
 			return false;
+		}
 		return getId() == ((PamNodeImpl) obj).getId();
 	}
 	@Override
@@ -222,20 +235,4 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		learnable.setTotalActivationStrategy(strategy);
 	}	
 
-//	@Override
-//	public PamNode copy() {
-//		return new PamNodeImpl(this);
-//	}	
-	
-	@Override
-	public void updateNodeValues(Node n) {
-		if(n instanceof PamNodeImpl){
-			PamNodeImpl pn = (PamNodeImpl) n;
-			learnable = new LearnableImpl(pn.learnable);
-		}else if(n != null){
-			logger.log(Level.WARNING, "Cannot update type-specified values of this object.  Required: " + 
-					PamNodeImpl.class.getCanonicalName() + " but received: " + 
-					n, TaskManager.getCurrentTick());
-		}
-	}
 }

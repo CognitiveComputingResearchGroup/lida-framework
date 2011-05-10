@@ -39,7 +39,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
 
-	private double learnableRemovableThreshold = DEFAULT_REMOVAL_THRESHOLD;
+	private double learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
 
 	/**
 	 * @param activation current activation

@@ -596,7 +596,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	public Link addNewLink(Node source, Linkable sink, LinkCategory type) {
 		return addNewLink(source, sink, type,
 				Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
-				Learnable.DEFAULT_REMOVAL_THRESHOLD,
+				Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD,
 				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
 	}
 
@@ -657,7 +657,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	@Override
 	public PamNode addNewNode(String label) {
 		return addNewNode(label, Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
-				Learnable.DEFAULT_REMOVAL_THRESHOLD,
+				Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD,
 				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
 	}
 

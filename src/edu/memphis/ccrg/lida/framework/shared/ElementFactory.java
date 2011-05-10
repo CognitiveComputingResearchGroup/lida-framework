@@ -196,12 +196,12 @@ public class ElementFactory {
 	 * 
 	 * @param name
 	 *            the name
-	 * @param excite
+	 * @param exciteDef
 	 *            the excite
 	 */
-	public void addExciteStrategy(String name, StrategyDef excite) {
-		exciteStrategies.put(name, excite);
-		strategies.put(name, excite);
+	public void addExciteStrategy(String name, StrategyDef exciteDef) {
+		exciteStrategies.put(name, exciteDef);
+		strategies.put(name, exciteDef);
 	}
 
 	/**
@@ -229,14 +229,14 @@ public class ElementFactory {
 	/**
 	 * Adds the link type.
 	 * 
-	 * @param linkType
+	 * @param typeName
 	 *            the link type
 	 * @param className
 	 *            the class name
 	 */
-	public void addLinkType(String linkType, String className) {
-		linkClasses.put(linkType, new LinkableDef(className,
-				new HashMap<String, String>(), linkType,
+	public void addLinkType(String typeName, String className) {
+		linkClasses.put(typeName, new LinkableDef(className,
+				new HashMap<String, String>(), typeName,
 				new HashMap<String, Object>()));
 	}
 
@@ -253,14 +253,14 @@ public class ElementFactory {
 	/**
 	 * Adds the node type.
 	 * 
-	 * @param simpleNodeName
+	 * @param typeName
 	 *            the simple node name
-	 * @param canonicalNodeName
+	 * @param className
 	 *            the canonical node name
 	 */
-	public void addNodeType(String simpleNodeName, String canonicalNodeName) {
-		nodeClasses.put(simpleNodeName, new LinkableDef(canonicalNodeName,
-				new HashMap<String, String>(), simpleNodeName,
+	public void addNodeType(String typeName, String className) {
+		nodeClasses.put(typeName, new LinkableDef(className,
+				new HashMap<String, String>(), typeName,
 				new HashMap<String, Object>()));
 	}
 
@@ -277,15 +277,15 @@ public class ElementFactory {
 	/**
 	 * Adds the codelet type.
 	 * 
-	 * @param simpleCodeletName
+	 * @param typeName
 	 *            the simple codelet name
-	 * @param canonicalCodeletName
+	 * @param className
 	 *            the canonical codelet name
 	 */
-	public void addCodeletType(String simpleCodeletName,
-			String canonicalCodeletName) {
-		codelets.put(simpleCodeletName, new CodeletDef(canonicalCodeletName,
-				new HashMap<String, String>(), simpleCodeletName,
+	public void addCodeletType(String typeName,
+			String className) {
+		codelets.put(typeName, new CodeletDef(className,
+				new HashMap<String, String>(), typeName,
 				new HashMap<String, Object>()));
 	}
 
@@ -473,7 +473,7 @@ public class ElementFactory {
 	public Link getLink(Node source, Linkable sink, LinkCategory category) {
 		return getLink(defaultLinkType, source, sink, category,
 				defaultDecayType, defaultExciteType, 
-				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
 	/**
@@ -547,7 +547,7 @@ public class ElementFactory {
 		}
 
 		return getLink(linkT, source, sink, category, decayB, exciteB, 
-				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
 	/**
@@ -630,7 +630,7 @@ public class ElementFactory {
 	 */
 	public Node getNode() {
 		return getNode(defaultNodeType, defaultDecayType, defaultExciteType,
-				"Node", Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
+				"Node", Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
 	/**
@@ -648,10 +648,12 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Creates a copy of the supplied node with the default strategies. The type
-	 * of the new node is based on the argument. Note that the strategies of the
-	 * new node are based on those node passed in the argument. if the node type
-	 * does not have default strategies then the default strategies are used.
+	 * Creates a copy of specified {@link Node}. The second argument specifies the type of
+	 * the new node. The {@link Activatible} strategies of the
+	 * new node are based on those specified by the {@link Node} type's {@link LinkableDef} 
+	 * (specified by factoriesData.xml) If the {@link Node} type
+	 * does not specify default {@link Activatible} strategies then the default strategies are used.
+	 * All other values of the specified {@link Node} are copied to the new {@link Node}, e.g. activation.
 	 * 
 	 * @param oNode
 	 *            supplied node
@@ -731,9 +733,10 @@ public class ElementFactory {
 		return getNode(oNode, defaultNodeType, decayStrategy, exciteStrategy);
 	}
 
-	/**
-	 * Creates a copy of oNode with specified node type, decay and excite
-	 * strategies.
+	/*
+	 * Creates a copy of oNode with specified node type. Copy will have
+	 * Decay and Excite as specified in this method's parameters, not according
+	 * to the default for the Node type.
 	 * 
 	 * @param oNode
 	 *            supplied node
@@ -745,7 +748,9 @@ public class ElementFactory {
 	 *            exciteStrategy new node's excite strategy
 	 * @return the node
 	 */
-	public Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
+	//TODO review, does not seem necessary for this to be public, could merge this into the 
+	//other getNode method which this method calls
+	private Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		if(oNode == null){
 			logger.log(Level.WARNING, "Supplied node is null", TaskManager.getCurrentTick());
 			return null;
@@ -799,7 +804,7 @@ public class ElementFactory {
 		}
 
 		Node n = getNode(nodeType, decayB, exciteB, nodeLabel, 
-				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_REMOVABLE_THRESHOLD);
+				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 		return n;
 	}
 
@@ -957,17 +962,20 @@ public class ElementFactory {
 	}
 	
 	/**
-	 * Returns a new {@link Codelet} having specified attributes.
-	 * @param codeletName type of codelet
+	 * Returns a new {@link Codelet} having specified attributes.  Codelet will have strategies
+	 * specified for the codeletType
+	 * @param codeletType type of codelet
 	 * @param ticksPerStep execution frequency 
 	 * @param activation initial activation
+	 * @param removalThreshold TODO
 	 * @param params optional parameters to be set in object's init method
 	 * @return the new Codelet
 	 */
-	public Codelet getCodelet(String codeletName, int ticksPerStep, double activation, Map<String,?extends Object> params){
-		CodeletDef codeletDef = codelets.get(codeletName);		
+	public Codelet getCodelet(String codeletType, int ticksPerStep, double activation, double removalThreshold, Map<String,?extends Object> params){
+		//TODO param for removal threshold
+		CodeletDef codeletDef = codelets.get(codeletType);		
 		if (codeletDef == null) {
-			logger.log(Level.WARNING, "Asked for codelet " + codeletName + 
+			logger.log(Level.WARNING, "Asked for codelet " + codeletType + 
 					" but factory does not have such a codelet. Check factoriesData.xml", TaskManager.getCurrentTick());
 			return null;
 		}
@@ -980,7 +988,7 @@ public class ElementFactory {
 			exciteB=defaultExciteType;
 		}
 	
-		return getCodelet(codeletName,decayB,exciteB,ticksPerStep,activation,params);
+		return getCodelet(codeletType,decayB,exciteB,ticksPerStep,activation,removalThreshold,params);
 	}
 	
 	/**
@@ -996,12 +1004,13 @@ public class ElementFactory {
 	 *            execution frequency
 	 * @param activation
 	 *            initial activation
+	 * @param removalThreshold TODO
 	 * @param params
 	 *            optional parameters to be set in object's init method
 	 * @return new Codelet
 	 */
 	public Codelet getCodelet(String codeletName, String decayStrategy, String exciteStrategy, 
-							  int ticksPerStep, double activation, Map<String, ? extends Object> params){
+							  int ticksPerStep, double activation, double removalThreshold, Map<String, ? extends Object> params){
 		Codelet codelet = null;
 		try {
 			CodeletDef codeletDef = codelets.get(codeletName);
@@ -1015,6 +1024,7 @@ public class ElementFactory {
 
 			codelet.setTicksPerStep(ticksPerStep);
 			codelet.setActivation(activation);
+			codelet.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(codelet, decayStrategy, exciteStrategy);
 			
 			if (params != null){
@@ -1084,13 +1094,4 @@ public class ElementFactory {
 						.getCurrentTick());
 		return null;
 	}
-
-//	public LinkableDef getNodeLinkableDef(String factoryName) {
-//		return nodeClasses.get(factoryName);
-//	}
-//
-//	public LinkableDef getLinkLinkableDef(String factoryName) {
-//		return linkClasses.get(factoryName);
-//	}
-
 }

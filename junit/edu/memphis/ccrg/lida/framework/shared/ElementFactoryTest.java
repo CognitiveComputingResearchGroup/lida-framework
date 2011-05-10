@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Before;
@@ -56,6 +57,12 @@ public class ElementFactoryTest {
 		pamNode1 = (PamNode) factory.getNode("PamNodeImpl");
 		category1 = (LinkCategory)factory.getNode("PamNodeImpl");
 		link1 = factory.getLink(node1, node2, category1);
+		
+		node1.setActivation(0.11);
+		node1.setActivatibleRemovalThreshold(0.22);
+		node1.setDesirability(0.33);
+		node1.setLabel("blah");
+		node1.setGroundingPamNode(pamNode1);
 	}
 
 	@Test
@@ -190,7 +197,7 @@ public class ElementFactoryTest {
 		CodeletDef codeletDef = new CodeletDef(BasicAttentionCodelet.class.getCanonicalName(), 
 											   new HashMap<String, String>(), "winwin", null);
 		factory.addCodeletType(codeletDef);
-		Codelet foo = factory.getCodelet("winwin", 1, 0.0, null);
+		Codelet foo = factory.getCodelet("winwin", 1, 0.0, 0.0, null);
 		assertTrue(foo instanceof BasicAttentionCodelet);
 		assertTrue(factory.containsCodeletType("winwin"));
 	}
@@ -198,7 +205,7 @@ public class ElementFactoryTest {
 	@Test
 	public void testAddCodeletType2() {
 		factory.addCodeletType("apple", BasicStructureBuildingCodelet.class.getCanonicalName());
-		Codelet foo = factory.getCodelet("apple", 1, 0.0, null);
+		Codelet foo = factory.getCodelet("apple", 1, 0.0, 0.0, null);
 		assertTrue(foo instanceof BasicStructureBuildingCodelet);
 		assertTrue(factory.containsCodeletType("apple"));
 	}
@@ -285,7 +292,7 @@ public class ElementFactoryTest {
 		assertEquals(l.getSink(), node2);
 		assertEquals(l.getCategory(), category1);
 		assertTrue(Activatible.DEFAULT_ACTIVATION == l.getActivation());
-		assertTrue(Activatible.DEFAULT_REMOVABLE_THRESHOLD == l.getActivatibleRemovalThreshold());
+		assertTrue(Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD == l.getActivatibleRemovalThreshold());
 		assertTrue(l.isSimpleLink());
 		assertTrue(l.getGroundingPamLink() == null);
 	}
@@ -297,7 +304,7 @@ public class ElementFactoryTest {
 		Link l = factory.getLink(requiredType, desiredType, node1, node2, category1);
 		assertTrue(l instanceof PamLinkImpl);
 		assertTrue(Activatible.DEFAULT_ACTIVATION == l.getActivation());
-		assertTrue(Activatible.DEFAULT_REMOVABLE_THRESHOLD == l.getActivatibleRemovalThreshold());
+		assertTrue(Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD == l.getActivatibleRemovalThreshold());
 		
 		requiredType = "PamLinkImpl";
 		desiredType = "LinkImpl";
@@ -343,17 +350,39 @@ public class ElementFactoryTest {
 		assertTrue(n.getDesirability() == 0.0);
 		assertTrue(n.getGroundingPamNode() == null);
 		assertTrue(n.getActivation() == Activatible.DEFAULT_ACTIVATION);
-		assertTrue(n.getActivatibleRemovalThreshold() == Activatible.DEFAULT_REMOVABLE_THRESHOLD);
+		assertTrue(n.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 	
 	@Test
 	public void testGetNode7() {
-//		factory.getNode(nodeType)
+		Node n = factory.getNode("NodeImpl");
+		
+		assertTrue(n.getDesirability() == 0.0);
+		assertTrue(n.getGroundingPamNode() == null);
+		assertTrue(n.getActivation() == Activatible.DEFAULT_ACTIVATION);
+		assertTrue(n.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		
+		PamNode pn = (PamNode) factory.getNode("PamNodeImpl");
+		
+		assertTrue(pn.getDesirability() == 0.0);
+		assertEquals(pn.getGroundingPamNode(), pn);
+		assertTrue(pn.getActivation() == Activatible.DEFAULT_ACTIVATION);
+		assertTrue(pn.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		
+		n = factory.getNode("adfowifjwoqi");
+		assertTrue(n == null);
 	}
 
 	@Test
 	public void testGetNode8() {
-//		factory.getNode(nodeType, nodeLabel)
+		Node n = factory.getNode("NodeImpl", "foobar");
+		assertEquals("foobar", n.getLabel());
+		
+		n = factory.getNode("aslfskj", "asdlfkj");
+		assertTrue(n == null);
+		
+		n = factory.getNode("NodeImpl", null);
+		assertTrue(n.getLabel() == null);
 	}
 
 	@Test
@@ -375,62 +404,186 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetNode2() {
-//		factory.getNode(oNode, nodeType);
+
+		StrategyDef decayDef = new StrategyDef(SigmoidDecayStrategy.class.getCanonicalName(), 
+				"specialDecay", null, "decay", true);
+		factory.addDecayStrategy("specialDecay", decayDef);
+		
+		StrategyDef exciteDef = new StrategyDef(SigmoidExciteStrategy.class.getCanonicalName(), 
+				"specialExcite", null, "excite", true);
+		factory.addExciteStrategy("specialExcite", exciteDef);
+		
+		Map<String, String> defaultStrategies = new HashMap<String, String>();
+		defaultStrategies.put("decay", "specialDecay");
+		defaultStrategies.put("excite", "specialExcite");
+		LinkableDef nodeDef = new LinkableDef(NodeImpl.class.getCanonicalName(), 
+				defaultStrategies, "special", null);
+		factory.addNodeType(nodeDef);
+		
+		Node oNode = factory.getNode();
+		
+		assertFalse(oNode.getExciteStrategy() instanceof SigmoidExciteStrategy);
+		assertFalse(oNode.getDecayStrategy() instanceof SigmoidDecayStrategy);
+		
+		oNode.setActivation(0.11);
+		oNode.setActivatibleRemovalThreshold(0.22);
+		oNode.setDesirability(0.33);
+		oNode.setLabel("blah");
+		oNode.setGroundingPamNode(pamNode1);
+		
+		Node newNode = factory.getNode(oNode, "special");
+		
+		assertTrue(newNode.getExciteStrategy() instanceof SigmoidExciteStrategy);
+		assertTrue(newNode.getDecayStrategy() instanceof SigmoidDecayStrategy);
+		assertTrue(newNode.getActivation() == 0.11);
+		assertTrue(newNode.getActivatibleRemovalThreshold() == 0.22);
+		assertTrue(newNode.getDesirability() == 0.33);
+		assertEquals("blah", newNode.getLabel());
+		assertEquals(oNode.getGroundingPamNode(), newNode.getGroundingPamNode());
 	}
 
 	@Test
 	public void testGetNode3() {
-//		factory.getNode(requiredType, oNode, desiredType)
+		String requiredType = "NodeImpl";
+		String desiredType = "PamNodeImpl";
+		Node oNode = factory.getNode();
+		oNode.setActivation(0.11);
+		oNode.setActivatibleRemovalThreshold(0.22);
+		oNode.setDesirability(0.33);
+		oNode.setLabel("blah");
+		oNode.setGroundingPamNode(pamNode1);
+		
+		Node n = factory.getNode(requiredType, oNode, desiredType);
+		
+		assertTrue(n instanceof PamNodeImpl);
+		assertTrue(n.getActivation() == 0.11);
+		assertTrue(n.getActivatibleRemovalThreshold() == 0.22);
+		assertTrue(n.getDesirability() == 0.33);
+		assertEquals("blah", n.getLabel());
+		assertEquals(oNode.getGroundingPamNode(), n.getGroundingPamNode());
+		
+		//sub test
+		requiredType = "PamNodeImpl";
+		desiredType = "NodeImpl";
+		
+		n = factory.getNode(requiredType, oNode, desiredType);
+		
+		assertTrue(n == null);
 	}
 
 	@Test
 	public void testGetNode4() {
-//		factory.getNode(oNode, decayStrategy, exciteStrategy)
+		Node n = factory.getNode(node1, "specialDecay", "specialExcite");
+		assertTrue(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
+		assertTrue(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
+		
+		assertTrue(n instanceof NodeImpl);
+		assertTrue(n.getActivation() == node1.getActivation());
+		assertTrue(n.getActivatibleRemovalThreshold() == node1.getActivatibleRemovalThreshold());
+		assertTrue(n.getDesirability() == node1.getDesirability());
+		assertEquals(n.getLabel(), node1.getLabel());
+		assertEquals(n.getGroundingPamNode(), node1.getGroundingPamNode());
 	}
 
-	@Test
-	public void testGetNode5() {
-//		factory.getNode(oNode, nodeType, decayStrategy, exciteStrategy)
-	}
+//	@Test
+//	public void testGetNode5() {
+////		factory.getNode(oNode, nodeType, decayStrategy, exciteStrategy)
+//	}
 
 	@Test
 	public void testGetNode6() {
-//		factory.getNode(nodeType, decayStrategy, exciteStrategy, nodeLabel, activation, removableThreshold)
+		Node n = factory.getNode("PamNodeImpl", "specialDecay", "specialExcite", "chuck", 0.99, 0.11);
+		assertTrue(n instanceof PamNodeImpl);
+		assertTrue(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
+		assertTrue(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
+		assertEquals(n.getLabel(), "chuck");
+		assertTrue(0.99 == n.getActivation());
+		assertTrue(0.11 == n.getActivatibleRemovalThreshold());
+		
+		n = factory.getNode(null, "specialDecay", "specialExcite", "chuck", 0.99, 0.11);
+		assertTrue(n == null);
+		
+		n = factory.getNode("PamNodeImpl", null, "specialExcite", "chuck", 0.99, 0.11);
+		assertTrue(n instanceof PamNodeImpl);
+		assertFalse(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
+		assertTrue(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
+		
+		n = factory.getNode("PamNodeImpl", "specialDecay", null, "chuck", 0.99, 0.11);
+		assertTrue(n instanceof PamNodeImpl);
+		assertTrue(n.getDecayStrategy() instanceof SigmoidDecayStrategy);
+		assertFalse(n.getExciteStrategy() instanceof SigmoidExciteStrategy);
+		
+		n = factory.getNode("PamNodeImpl", "specialDecay", "specialExcite", null, 0.99, 0.11);
+		assertTrue(n instanceof PamNodeImpl);
 	}
 
 	@Test
 	public void testGetCodelet0() {
-//		factory.getCodelet(codeletName, ticksPerStep, activation, params)
+		factory.addCodeletType("testType", BasicAttentionCodelet.class.getCanonicalName());
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Hello", 500);
+		
+		Codelet c = factory.getCodelet("testType", 100, 0.66, 0.77, params);
+		assertTrue(c instanceof BasicAttentionCodelet);
+		assertEquals(c.getTicksPerStep(), 100);
+		assertTrue(c.getActivation() == 0.66);
+		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
+		int hello = (Integer) c.getParam("Hello", null);
+		assertEquals(500, hello);
 	}
 
 	@Test
 	public void testGetCodelet1() {
-//		factory.getCodelet(codeletName, decayStrategy, exciteStrategy, ticksPerStep, activation, params)
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Hello", 500);
+		Codelet c = factory.getCodelet("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
+		
+		assertTrue(c.getDecayStrategy() instanceof LinearDecayStrategy);
+		assertTrue(c.getExciteStrategy() instanceof DefaultExciteStrategy);
+		
+		assertTrue(c instanceof BasicAttentionCodelet);
+		assertEquals(c.getTicksPerStep(), 100);
+		assertTrue(c.getActivation() == 0.66);
+		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
+		int hello = (Integer) c.getParam("Hello", null);
+		assertEquals(500, hello);
 	}
 
 	@Test
 	public void testGetNodeStructure() {
-
+		NodeStructure ns = factory.getNodeStructure();
+		assertEquals(ns.getDefaultNodeType(), factory.getDefaultNodeType());
+		assertEquals(ns.getDefaultLinkType(), factory.getDefaultLinkType());
 	}
 
 	@Test
 	public void testGetPamNodeStructure() {
-
+		NodeStructure ns = factory.getPamNodeStructure();
+		assertEquals(ns.getDefaultNodeType(), "PamNodeImpl");
+		assertEquals(ns.getDefaultLinkType(), "PamLinkImpl");
 	}
 
 	@Test
-	public void testGetNodeStructureStringString() {
-
-	}
-
-	@Test
-	public void testGetNodeLinkableDef() {
-//		factory.getNodeLinkableDef(factoryName)
-	}
-
-	@Test
-	public void testGetLinkLinkableDef() {
-
+	public void testGetNodeStructure1() {
+		NodeStructure ns = factory.getNodeStructure("basdf", "asdfl");
+		assertTrue(ns == null);
+		
+		ns = factory.getNodeStructure("LinkImpl", "NodeImpl");
+		assertTrue(ns == null);
+		
+		ns = factory.getNodeStructure("NodeImpl", "ffsdfs");
+		assertTrue(ns == null);
+		
+		ns = factory.getNodeStructure("Nsdfasdfl", "LinkImpl");
+		assertTrue(ns == null);
+		
+		ns = factory.getNodeStructure(null, null);
+		assertTrue(ns == null);
+		
+		ns = factory.getNodeStructure("PamNodeImpl", "LinkImpl");
+		assertTrue(ns != null);
+		assertEquals(ns.getDefaultNodeType(), "PamNodeImpl");
+		assertEquals(ns.getDefaultLinkType(), "LinkImpl");
 	}
 
 }

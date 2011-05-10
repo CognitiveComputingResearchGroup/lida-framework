@@ -24,7 +24,7 @@ public interface Activatible extends Serializable {
 	/*
 	 * this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
 	 */
-	public static final double DEFAULT_REMOVABLE_THRESHOLD = 0.0;
+	public static final double DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD = 0.0;
 	public static final double DEFAULT_ACTIVATION = 0.01;
 		
 	/**

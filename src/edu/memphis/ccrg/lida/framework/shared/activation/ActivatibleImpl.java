@@ -29,7 +29,7 @@ public class ActivatibleImpl implements Activatible {
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
 	private double activation = DEFAULT_ACTIVATION;
-	private double removableThreshold = DEFAULT_REMOVABLE_THRESHOLD;
+	private double removableThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 

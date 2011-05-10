@@ -130,10 +130,11 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		return getCodelet(type, null);
 	}
 
+	//TODO removal threshold parameter
 	@Override
 	public StructureBuildingCodelet getCodelet(String type, Map<String, Object> params) {
-		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory
-				.getCodelet(type, codeletTicksPerRun, codeletActivation, null);
+		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getCodelet(type,
+						codeletTicksPerRun, codeletActivation, -1.0, null);
 		if (codelet == null) {
 			logger.log(Level.WARNING,
 					"Codelet type not supported: " + type,
