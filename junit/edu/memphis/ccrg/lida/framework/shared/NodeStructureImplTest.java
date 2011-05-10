@@ -53,9 +53,9 @@ public class NodeStructureImplTest {
 	
 	/**
 	 * This method is called before running each test case to initialize the objects
+	 * @throws Exception e
 	 * 
 	 */
-
 	@Before
 	public void setUp() throws Exception {		
 		node1 = factory.getNode();
