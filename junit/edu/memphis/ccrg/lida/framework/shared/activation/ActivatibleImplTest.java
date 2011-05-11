@@ -1,83 +1,122 @@
-/*******************************************************************************
- * Copyright (c) 2009, 2010 The University of Memphis.  All rights reserved. 
- * This program and the accompanying materials are made available 
- * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
- * which accompanies this distribution, and is available at
- * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
- *******************************************************************************/
-/**
- * 
- */
 package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
+import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 
-/**
- * This is a JUnit class which can be used to test methods of the ActivatibleImpl class
- * @author Siminder Kaur
- */
-
-public class ActivatibleImplTest{
-
-	ActivatibleImpl node1,node2;
+public class ActivatibleImplTest {
 	
-	/**
-	 * @throws java.lang.Exception e
-	 */
+	private ActivatibleImpl act1;
+	private ActivatibleImpl multArg;
+	private static ElementFactory factory;
+
+	@BeforeClass
+	public static void setUpFirst(){
+		factory = ElementFactory.getInstance();
+		StrategyDef decayDef = new StrategyDef(SigmoidDecayStrategy.class.getCanonicalName(), 
+				"specialDecay", null, "decay", true);
+		factory.addDecayStrategy("specialDecay", decayDef);
+		
+		StrategyDef exciteDef = new StrategyDef(SigmoidExciteStrategy.class.getCanonicalName(), 
+				"specialExcite", null, "excite", true);
+		factory.addExciteStrategy("specialExcite", exciteDef);
+	}
+	
 	@Before
 	public void setUp() throws Exception {
-		node1 = new ActivatibleImpl();		
-	}	
-	@Test
-	public void testIsRemovable(){
-		Node n = new NodeImpl();
-		n.setActivation(0.1);
-		n.setActivatibleRemovalThreshold(0.05);
-		n.decay(100);
-		assertTrue("Problem with IsRemovable",n.isRemovable());
-		
-		n.setActivation(0.1);
-		n.setActivatibleRemovalThreshold(0.05);
-		assertTrue("Problem with IsRemovable",!n.isRemovable());
+		act1 = new ActivatibleImpl();
+		multArg = new ActivatibleImpl(0.11, 0.22, 
+				factory.getExciteStrategy("specialExcite"), 
+				factory.getDecayStrategy("specialDecay"));
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#ActivatibleImpl(double, double, edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy, edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
-	 */
 	@Test
-	public void testActivatibleImplDoubleExciteStrategyDecayStrategy() {
-		ExciteStrategy es = new DefaultExciteStrategy();
-		DecayStrategy ds = new LinearDecayStrategy();
-		
-		node2 = new ActivatibleImpl(0.2,0.0,es, ds);
-		
-		assertTrue("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", 0.2 == node2.getActivation());
-		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", es, node2.getExciteStrategy());
-		assertEquals("Problem with ActivatibleImpl(Double, ExciteStrategy, DecayStrategy)", ds, node2.getDecayStrategy());
+	public void testGetActivation() {
+		assertTrue(act1.getActivation() == Activatible.DEFAULT_ACTIVATION);
+		assertTrue(multArg.getActivation() == 0.11);
 	}
 
+	@Test
+	public void testGetActivatibleRemovalThreshold() {
+		assertTrue(act1.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
+		assertTrue(multArg.getActivatibleRemovalThreshold() == 0.22);
+	}
+
+	@Test
+	public void testGetDecayStrategy() {
+		assertEquals(act1.getDecayStrategy(), factory.getDefaultDecayStrategy());
+		assertEquals(SigmoidDecayStrategy.class, multArg.getDecayStrategy().getClass());
+	}
+
+	@Test
+	public void testGetExciteStrategy() {
+		assertEquals(act1.getExciteStrategy(), factory.getDefaultExciteStrategy());
+		assertEquals(SigmoidExciteStrategy.class, multArg.getExciteStrategy().getClass());
+	}
+	
+	private double epsilon = 0.000000001;
+
+	@Test
+	public void testSetActivation() {
+		act1.setActivation(345.45);
+		assertEquals(1.0, act1.getActivation(), epsilon);
+		
+		act1.setActivation(-35395);
+		assertEquals(0.0, act1.getActivation(), epsilon);
+		
+		act1.setActivation(0.0);
+		assertEquals(0.0, act1.getActivation(), epsilon);
+		
+		act1.setActivation(1.0);
+		assertEquals(1.0, act1.getActivation(), epsilon);
+		
+		act1.setActivation(0.345);
+		assertEquals(0.345, act1.getActivation(), epsilon);
+	}
+
+	@Test
+	public void testSetActivatibleRemovalThreshold() {
+		act1.setActivatibleRemovalThreshold(-345);
+		assertEquals(-345, act1.getActivatibleRemovalThreshold(), epsilon);
+		
+		act1.setActivatibleRemovalThreshold(1.0);
+		assertEquals(1.0, act1.getActivatibleRemovalThreshold(), epsilon);
+		
+		act1.setActivatibleRemovalThreshold(1.01);
+		assertEquals(1.0, act1.getActivatibleRemovalThreshold(), epsilon);
+	}
+
+	@Test
+	public void testGetTotalActivation() {
+		act1.setActivation(0.0);
+		assertEquals(0.0, act1.getTotalActivation(), epsilon);
+		
+		act1.setActivation(5.0);
+		assertEquals(1.0, act1.getTotalActivation(), epsilon);
+	}
+	
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#decay(long)}.
 	 */
 	@Test
 	public void testDecay() {
 		DecayStrategy ds = new LinearDecayStrategy();
-		node1.setActivation(0.5);
-		node1.setDecayStrategy(ds);
-		node1.decay(10);
+		act1.setActivation(0.5);
+		act1.setDecayStrategy(ds);
+		act1.decay(10);
 		
-		assertTrue("Problem with Decay", node1.getActivation()<0.5);
+		assertTrue("Problem with Decay", act1.getActivation()<0.5);
 	}
 
 	/**
@@ -86,102 +125,34 @@ public class ActivatibleImplTest{
 	@Test
 	public void testExcite() {
 		ExciteStrategy es = new DefaultExciteStrategy();
-		node1.setActivation(0.5);
-		node1.setExciteStrategy(es);
-		node1.excite(0.1);
+		act1.setActivation(0.5);
+		act1.setExciteStrategy(es);
+		act1.excite(0.1);
 				
-		assertTrue("Problem with Excite", node1.getActivation()>0.5);
+		assertTrue("Problem with Excite", act1.getActivation()>0.5);
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getActivation()}.
-	 */
 	@Test
-	public void testGetActivation() {
-		node1.setActivation(0.2);
-		assertTrue("Problem with GetActivation", 0.2 == node1.getActivation());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getDecayStrategy()}.
-	 */
-	@Test
-	public void testGetDecayStrategy() {
-		DecayStrategy ds = new LinearDecayStrategy();
-		node1.setActivation(0.5);
-		node1.setDecayStrategy(ds);
+	public void testIsRemovable() {
+		act1.setActivation(5.0);
+		act1.setActivatibleRemovalThreshold(7.0);
 		
-		assertEquals("Problem with GetDecayStrategy", ds,node1.getDecayStrategy());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getExciteStrategy()}.
-	 */
-	@Test
-	public void testGetExciteStrategy() {
-		ExciteStrategy es = new DefaultExciteStrategy();
-		node1.setActivation(0.5);
-		node1.setExciteStrategy(es);
+		assertTrue(act1.isRemovable());
 		
-		assertEquals("Problem with GetExciteStrategy", es,node1.getExciteStrategy());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#setActivation(double)}.
-	 */
-	@Test
-	public void testSetActivation() {
-		node1.setActivation(0.2);
-		assertTrue("Problem with GetActivation", 0.2 == node1.getActivation());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#setDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}.
-	 */
-	@Test
-	public void testSetDecayStrategy() {
-		DecayStrategy ds = new LinearDecayStrategy();
-		node1.setActivation(0.5);
-		node1.setDecayStrategy(ds);
+		act1.setActivation(0.0);
+		act1.setActivatibleRemovalThreshold(7.0);
 		
-		assertEquals("Problem with GetDecayStrategy", ds,node1.getDecayStrategy());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#setExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}.
-	 */
-	@Test
-	public void testSetExciteStrategy() {
-		ExciteStrategy es = new DefaultExciteStrategy();
-		node1.setActivation(0.5);
-		node1.setExciteStrategy(es);
+		assertTrue(act1.isRemovable());
 		
-		assertEquals("Problem with GetExciteStrategy", es,node1.getExciteStrategy());
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getTotalActivation()}.
-	 */
-	@Test
-	public void testGetTotalActivation() {
-		ExciteStrategy es = new DefaultExciteStrategy();
-		node1.setActivation(0.5);
-		node1.setExciteStrategy(es);
-		node1.excite(0.1);
+		act1.setActivation(0.0);
+		act1.setActivatibleRemovalThreshold(0.0);
 		
-		assertTrue("Problem with GetTotalActivation", 0.6 == node1.getActivation());
-	}
-	
-	@Test
-	public void testGetActivatibleRemovalThreshold() {		
-		node1.setActivatibleRemovalThreshold(0.5);		
-		assertTrue("Problem with GetActivatibleRemovalThreshold", 0.5 == node1.getActivatibleRemovalThreshold());
-	}
-	
-	@Test
-	public void testSetActivatibleRemovalThreshold() {		
-		node1.setActivatibleRemovalThreshold(0.5);		
-		assertTrue("Problem with SetActivatibleRemovalThreshold", 0.5 == node1.getActivatibleRemovalThreshold());
+		assertTrue(act1.isRemovable());
+		
+		act1.setActivation(-1.0);
+		act1.setActivatibleRemovalThreshold(-1.0);
+		
+		assertFalse(act1.isRemovable());
 	}
 
 }

@@ -88,13 +88,33 @@ public class ActivatibleImpl implements Activatible {
 	}
 
 	@Override
-	public synchronized void setActivation(double d) {
-		this.activation = d;
+	public void setActivation(double a) {
+		if(a > 1.0){
+			synchronized(this){
+				this.activation = 1.0;
+			}
+		}else if(a < 0.0){
+			synchronized(this){
+				this.activation = 0.0;
+			}
+		}else{
+			synchronized(this){
+				this.activation = a;
+			}
+		}
 	}
 	
 	@Override
 	public void setActivatibleRemovalThreshold(double threshold) {
-		this.removableThreshold = threshold;
+		if(threshold > 1.0){
+			synchronized(this){
+				removableThreshold = 1.0;
+			}
+		}else{
+			synchronized(this){
+				removableThreshold = threshold;
+			}
+		}
 	}
 
 	@Override
