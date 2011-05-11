@@ -34,7 +34,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public SchemeActivationBehavior getSchemeActivationBehavior() {
+	public SchemeActivationStrategy getSchemeActivationStrategy() {
 		// not implemented
 		return null;
 	}
@@ -61,7 +61,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public void setSchemeActivationBehavior(SchemeActivationBehavior b) {
+	public void setSchemeActivationStrategy(SchemeActivationStrategy b) {
 		// not implemented
 
 	}

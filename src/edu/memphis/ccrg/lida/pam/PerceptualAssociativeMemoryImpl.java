@@ -74,7 +74,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	/*
 	 * How PAM calculates the amount of activation to propagate
 	 */
-	private PropagationStrategy propagationBehavior;
+	private PropagationStrategy propagationStrategy;
 
 	/*
 	 * To create new node and links
@@ -131,7 +131,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		pamListeners = new ArrayList<PamListener>();
-		propagationBehavior = new UpscalePropagationStrategy();
+		propagationStrategy = new UpscalePropagationStrategy();
 		pamNodeStructure = factory.getPamNodeStructure();
 
 		PamNode linkCategory = (PamNode) factory.getNode(
@@ -169,23 +169,13 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 				"pam.propagationTicksPerRun", DEFAULT_PROPAGATION_TASK_TICKS);
 	}
 
-	/*
-	 * Set the propagation behavior for this PAM.
-	 * 
-	 * @param b the new propagation behavior
-	 */
 	@Override
-	public void setPropagationBehavior(PropagationStrategy b) {
-		propagationBehavior = b;
+	public void setPropagationStrategy(PropagationStrategy b) {
+		propagationStrategy = b;
 	}
 
-	/*
-	 * Get the propagation behavior for this PAM.
-	 * 
-	 * @return the propagation behavior
-	 */
-	public PropagationStrategy getPropagationBehavior() {
-		return propagationBehavior;
+	public PropagationStrategy getPropagationStrategy() {
+		return propagationStrategy;
 	}
 
 	/*
@@ -340,7 +330,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seeedu.memphis.ccrg.lida.actionselection.behaviornetwork.main.
+	 * @see edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.
 	 * PreafferenceListener
 	 * #receivePreafference(edu.memphis.ccrg.lida.framework.shared
 	 * .NodeStructure, edu.memphis.ccrg.lida.framework.shared.NodeStructure)
@@ -438,7 +428,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		propagateParams.put("upscale", upscaleFactor);
 		propagateParams.put("totalActivation", pn.getTotalActivation());
-		double amountToPropagate = propagationBehavior
+		double amountToPropagate = propagationStrategy
 				.getActivationToPropagate(propagateParams);
 
 		// Get parents of pamNode and the connecting link

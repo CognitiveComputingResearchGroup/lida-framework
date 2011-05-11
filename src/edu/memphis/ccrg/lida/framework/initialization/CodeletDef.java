@@ -56,7 +56,7 @@ public class CodeletDef {
 	}
 
 	/**
-	 * @return the defeaultBehaviors
+	 * @return a {@link Map} of this CodeletDef's default strategies
 	 */
 	public Map<String,String> getDefaultStrategies() {
 		return defaultStrategies;
@@ -87,7 +87,7 @@ public class CodeletDef {
 		this.className = className;
 	}
 	/**
-	 * @param defaultStrategies the defeaultBehaviors to set
+	 * @param defaultStrategies the default strategies to set
 	 */
 	public void setDefaultStrategies(Map<String,String> defaultStrategies) {
 		this.defaultStrategies = defaultStrategies;

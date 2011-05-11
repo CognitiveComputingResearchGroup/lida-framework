@@ -148,7 +148,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationBehavior)
 	 */
 	@Override
-	public void setPropagationBehavior(PropagationStrategy b) {
+	public void setPropagationStrategy(PropagationStrategy b) {
 		// not implemented
 
 	}

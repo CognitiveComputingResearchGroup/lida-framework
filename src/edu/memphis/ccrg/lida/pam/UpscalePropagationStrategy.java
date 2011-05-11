@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
@@ -18,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @author Ryan J. McCall
  */
-public class UpscalePropagationStrategy implements PropagationStrategy{
+public class UpscalePropagationStrategy extends StrategyImpl implements PropagationStrategy{
 	
 	private Logger logger = Logger.getLogger(UpscalePropagationStrategy.class.getCanonicalName());
 

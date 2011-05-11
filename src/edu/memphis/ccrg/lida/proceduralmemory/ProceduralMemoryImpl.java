@@ -58,7 +58,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * Determines how scheme are given activation and whether they should be
 	 * instantiated
 	 */
-	private SchemeActivationBehavior schemeActivationBehavior;
+	private SchemeActivationStrategy schemeActivationStrategy;
 
 	/**
 	 * Listeners of this Procedural Memory
@@ -69,7 +69,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 //		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 		schemeSet = new HashSet<Scheme>();
-		schemeActivationBehavior = new BasicSchemeActivationBehavior(this);
+		schemeActivationStrategy = new BasicSchemeActivationStrategy(this);
 		proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 	}
 
@@ -88,12 +88,12 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public void setSchemeActivationBehavior(SchemeActivationBehavior b) {
-		schemeActivationBehavior = b;
+	public void setSchemeActivationStrategy(SchemeActivationStrategy strategy) {
+		schemeActivationStrategy = strategy;
 	}
 	@Override
-	public SchemeActivationBehavior getSchemeActivationBehavior() {
-		return schemeActivationBehavior;
+	public SchemeActivationStrategy getSchemeActivationStrategy() {
+		return schemeActivationStrategy;
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void activateSchemes(NodeStructure broadcast) {
 		logger.log(Level.FINEST, "Procedural memory activates schemes", TaskManager.getCurrentTick());
-		schemeActivationBehavior.activateSchemesWithBroadcast(broadcast, contextSchemeMap);
+		schemeActivationStrategy.activateSchemesWithBroadcast(broadcast, contextSchemeMap);
 	}
 	
 	@Override

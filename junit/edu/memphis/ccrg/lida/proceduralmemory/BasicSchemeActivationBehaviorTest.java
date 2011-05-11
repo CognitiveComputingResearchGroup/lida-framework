@@ -72,7 +72,7 @@ public class BasicSchemeActivationBehaviorTest{
 	}	
 	@Before
 	public void test1(){
-		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
+		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
 		broadcast = new NodeStructureImpl();
 		broadcast.addDefaultNode(node1);
@@ -91,7 +91,7 @@ public class BasicSchemeActivationBehaviorTest{
 	}
 	@Before
 	public void test2(){
-		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
+		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
 		broadcast = new NodeStructureImpl();
 		broadcast.addDefaultNode(node1);
@@ -108,7 +108,7 @@ public class BasicSchemeActivationBehaviorTest{
 	}
 	@Before
 	public void test3(){
-		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
+		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
 		broadcast = new NodeStructureImpl();
 		broadcast.addDefaultNode(node1);
@@ -125,7 +125,7 @@ public class BasicSchemeActivationBehaviorTest{
 	}
 	@Before
 	public void test4(){
-		SchemeActivationBehavior behavior = new BasicSchemeActivationBehavior(pm);
+		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
 		broadcast = new NodeStructureImpl();
 		broadcast.addDefaultNode(node2);

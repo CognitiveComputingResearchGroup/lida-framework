@@ -52,15 +52,15 @@ public interface ProceduralMemory extends FrameworkModule, Saveable{
 	
     /**
      * To change how scheme are activated based on the broadcast.
-     * @param b behavior
+     * @param strategy SchemeActivationStrategy
      */
-    public void setSchemeActivationBehavior(SchemeActivationBehavior b);
+    public void setSchemeActivationStrategy(SchemeActivationStrategy strategy);
     
     /**
-     * Returns SchemeActivationBehavior.
-     * @return Behavior used to Activate schemes
+     * Returns the {@link SchemeActivationStrategy}.
+     * @return {@link SchemeActivationStrategy} used to activate {@link Scheme}s
      */
-    public SchemeActivationBehavior getSchemeActivationBehavior();
+    public SchemeActivationStrategy getSchemeActivationStrategy();
     
 	/**
 	 * Using the Broadcast content, activate the relevant schemes of procedural memory 

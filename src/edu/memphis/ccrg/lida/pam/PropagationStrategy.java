@@ -9,19 +9,21 @@ package edu.memphis.ccrg.lida.pam;
 
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.framework.strategies.Strategy;
+
 /**
- * A behavior that calculates an activation to be propagated.
+ * A {@link Strategy} that calculates an activation to be propagated.
  * 
  * @author Ryan J. McCall
  */
-public interface PropagationStrategy {
+public interface PropagationStrategy extends Strategy{
 	
 	/**
-	 * Depending on the behavior different parameters can be passed to this method for the
-	 * calculation of the amount to propagate.
+	 * Various parameters can be passed to this method for the
+	 * calculation of activation to propagate.
 	 *
-	 * @param params parameters
-	 * @return the activation to propagate
+	 * @param params Map of parameters
+	 * @return the calculated activation to propagate
 	 */
 	public double getActivationToPropagate(Map<String, Object> params);
 }

@@ -8,17 +8,18 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 
 /**
- * A behavior to activation schemes whose context and/or result intersects with the conscious broaadcast.
+ * A {@link Strategy} that activates schemes whose context and/or result intersects with the conscious broadcast.
  * @author Ryan J. McCall
  */
-public interface SchemeActivationBehavior {
+public interface SchemeActivationStrategy extends Strategy{
 	
 	/**
-	 * Activate schemes which intersect with the broadcast.
-	 * @param broadcast NodeStructure
-	 * @param params Parameters which allow the behavior to access to the schemes of {@link ProceduralMemory}
+	 * Activates schemes which intersect with the broadcast.
+	 * @param broadcast {@link NodeStructure}
+	 * @param params optional parameters which will be at least the {@link Scheme}s of {@link ProceduralMemory}
 	 */
 	public void activateSchemesWithBroadcast(NodeStructure broadcast, Object... params);
 	

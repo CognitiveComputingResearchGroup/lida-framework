@@ -70,13 +70,13 @@ public class LinkableDef {
 		this.className = className;
 	}
 	/**
-	 * @return the defaultBehaviors
+	 * @return {@link Map} of this def's default strategies
 	 */
 	public Map<String,String> getDefaultStrategies() {
 		return defaultStrategies;
 	}
 	/**
-	 * @param defaultStrategies the defaultBehaviors to set
+	 * @param defaultStrategies the default strategies to set
 	 */
 	public void setDefaultStrategies(Map<String,String> defaultStrategies) {
 		this.defaultStrategies = defaultStrategies;

@@ -576,7 +576,8 @@ public class ElementFactory {
 	}
 	
 	/**
-	 * Creates a default node with the default behaviors and 0 activation.
+	 * Creates a default node with the default strategies and default activation.
+	 * @see Activatible
 	 * 
 	 * @return the node
 	 */
@@ -586,7 +587,7 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Creates a copy of the supplied node with the default behaviors. Note that
+	 * Creates a copy of the supplied node with the default strategies. Note that
 	 * the new node is of a default type regardless of the node passed in the
 	 * parameter.
 	 * 

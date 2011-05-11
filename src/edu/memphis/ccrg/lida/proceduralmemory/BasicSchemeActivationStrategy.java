@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
@@ -22,16 +23,16 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Ryan J. McCall
  *
  */
-public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
+public class BasicSchemeActivationStrategy extends StrategyImpl implements SchemeActivationStrategy {
 
 	private static final Logger logger = Logger
-			.getLogger(BasicSchemeActivationBehavior.class.getCanonicalName());
+			.getLogger(BasicSchemeActivationStrategy.class.getCanonicalName());
 
 	private ProceduralMemory pm;
 	private static final double DEFAULT_SELECTION_THRESHOLD = 0.6;
 	private double schemeSelectionThreshold = DEFAULT_SELECTION_THRESHOLD;
 
-	public BasicSchemeActivationBehavior(ProceduralMemory pm) {
+	public BasicSchemeActivationStrategy(ProceduralMemory pm) {
 		this.pm = pm;
 	}
 
@@ -39,7 +40,7 @@ public class BasicSchemeActivationBehavior implements SchemeActivationBehavior {
 	 * params[0] must contain Map<? extends Object, Set<Scheme>> with all the
 	 * Schemes of {@link ProceduralMemory}
 	 * 
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.SchemeActivationBehavior#activateSchemesWithBroadcast(edu.memphis.ccrg.lida.framework.shared.NodeStructure,
+	 * @see edu.memphis.ccrg.lida.proceduralmemory.SchemeActivationStrategy#activateSchemesWithBroadcast(edu.memphis.ccrg.lida.framework.shared.NodeStructure,
 	 *      java.lang.Object[])
 	 */
 	@SuppressWarnings("unchecked")

@@ -160,9 +160,9 @@ public interface PerceptualAssociativeMemory extends FrameworkModule, Saveable {
 	/**
 	 * Sets {@link PropagationStrategy} governing how activation is propagated in this PAM.
 	 *
-	 * @param b PropagationBehavior
+	 * @param strategy {@link PropagationStrategy}
 	 */
-	public void setPropagationBehavior(PropagationStrategy b);
+	public void setPropagationStrategy(PropagationStrategy strategy);
 	
 	/**
 	 * Excites specified {@link PamNode} an amount of activation.

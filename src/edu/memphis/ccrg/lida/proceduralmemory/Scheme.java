@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * A scheme is activated in the presence of its context.  If its action is taken 
  * then its result is more likely to be true. 
  * It can be instantiated in which case
- * the instantiation is called a behavior.  
+ * the instantiation is called a {@link Behavior}.  
  * 
  * 
  * @author Ryan J. McCall
@@ -135,7 +135,7 @@ public interface Scheme extends Learnable{
 	public boolean isInnate();
 	/**
 	 * Sets innate
-	 * @param innate whether this behavior is hard-wired and cannot be decayed.
+	 * @param innate whether this {@link Scheme} is hard-wired and cannot be decayed.
 	 */
 	public void setInnate(boolean innate);
 	

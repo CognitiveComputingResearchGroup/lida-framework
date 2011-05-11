@@ -307,13 +307,13 @@ public class PerceptualAssociativeMemoryImplTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationStrategy)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationStrategy(edu.memphis.ccrg.lida.pam.PropagationStrategy)}.
 	 */
 	@Test
 	public void testSetPropagationBehavior() {
 		PropagationStrategy pb = new UpscalePropagationStrategy();
-		pam.setPropagationBehavior(pb);		
-		assertEquals("Problem with SetPropagationBehavior", pb, pam.getPropagationBehavior());
+		pam.setPropagationStrategy(pb);		
+		assertEquals("Problem with SetPropagationBehavior", pb, pam.getPropagationStrategy());
 	}
 	
 	@Test
