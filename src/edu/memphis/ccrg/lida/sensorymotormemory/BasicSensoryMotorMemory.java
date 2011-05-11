@@ -120,7 +120,6 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		// Your module specific decay code. should call super first.
 	}
 	

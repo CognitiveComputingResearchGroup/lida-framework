@@ -1,19 +1,14 @@
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
-import java.util.Map;
-
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
-public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
-	protected TaskSpawner taskSpawner;
+public class MockGlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWorkspace {
 	
 	@Override
 	public void addBroadcastListener(BroadcastListener bl) {
@@ -40,11 +35,6 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 		
 	}
 
-	@Override
-	public void addSubModule(FrameworkModule lm) {
-		
-		
-	}
 
 	@Override
 	public void decayModule(long ticks) {
@@ -58,35 +48,6 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 		return null;
 	}
 
-	@Override
-	public ModuleName getModuleName() {
-		
-		return null;
-	}
-
-	@Override
-	public FrameworkModule getSubmodule(ModuleName name) {
-		
-		return null;
-	}
-
-	@Override
-	public void setModuleName(ModuleName moduleName) {
-		
-		
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		
-		return null;
-	}
-
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		
-		
-	}
 
 	@Override
 	public void triggerBroadcast(BroadcastTrigger trigger) {
@@ -95,32 +56,9 @@ public class MockGlobalWorkspaceImpl implements GlobalWorkspace {
 	}
 
 	@Override
-	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		taskSpawner = ts;
-		
-	}
-
-	@Override
-	public void init(Map<String, ?> parameters) {
-		// not implemented
-		
-	}
-
-	@Override
-	public TaskSpawner getAssistingTaskSpawner() {
-		return taskSpawner;
-	}
-
-	@Override
 	public void init() {
-		// not implemented
+		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public FrameworkModule getSubmodule(String name) {
-		// not implemented
-		return null;
 	}
 
 }

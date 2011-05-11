@@ -123,5 +123,14 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	public void init() {
 		// Not applicable		
 	}
+
+	/** 
+	 * Should do nothing, submodules' decayModule method is called 
+     * in FrameworkModuleImpl#taskManagerDecayModule.
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
+	 */
+	@Override
+	public void decayModule(long ticks) {
+	}
 	
 }

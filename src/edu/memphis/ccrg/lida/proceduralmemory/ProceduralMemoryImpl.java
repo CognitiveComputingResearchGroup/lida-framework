@@ -205,7 +205,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		for (Scheme s : schemeSet){
 			s.decay(ticks);
 		}

@@ -78,7 +78,7 @@ public class WorkspaceBufferImplTest {
 		// Add node structure into workspaceBuffer of percetualBuffer
 		wMoudle.receivePercept(ns);
 
-		perceptualBuffer.decayModule(1);
+		perceptualBuffer.taskManagerDecayModule(1);
 		
 		NodeStructure ns2 = (NodeStructure) perceptualBuffer.getModuleContent();
 

@@ -67,6 +67,15 @@ public interface FrameworkModule extends FullyInitializable{
 
 	/**
 	 * Decay this module and all its submodules. 
+	 * Framework users should not call this method. It will be called by the TaskManager.
+	 * Decays this module and all its submodules. 
+	 * 
+	 * @param ticks number of ticks to decay.
+	 */
+	public void taskManagerDecayModule(long ticks);
+	
+	/**
+	 * Decay only this Module.   
 	 * @param ticks number of ticks to decay.
 	 */
 	public void decayModule(long ticks);

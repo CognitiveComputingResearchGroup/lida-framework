@@ -107,7 +107,6 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
 				.getCurrentTick());
 		synchronized(this){

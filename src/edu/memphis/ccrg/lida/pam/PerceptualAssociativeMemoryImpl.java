@@ -74,7 +74,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	/*
 	 * How PAM calculates the amount of activation to propagate
 	 */
-	private PropagationBehavior propagationBehavior;
+	private PropagationStrategy propagationBehavior;
 
 	/*
 	 * To create new node and links
@@ -131,7 +131,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 */
 	public PerceptualAssociativeMemoryImpl() {
 		pamListeners = new ArrayList<PamListener>();
-		propagationBehavior = new UpscalePropagationBehavior();
+		propagationBehavior = new UpscalePropagationStrategy();
 		pamNodeStructure = factory.getPamNodeStructure();
 
 		PamNode linkCategory = (PamNode) factory.getNode(
@@ -175,7 +175,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 * @param b the new propagation behavior
 	 */
 	@Override
-	public void setPropagationBehavior(PropagationBehavior b) {
+	public void setPropagationBehavior(PropagationStrategy b) {
 		propagationBehavior = b;
 	}
 
@@ -184,7 +184,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 * 
 	 * @return the propagation behavior
 	 */
-	public PropagationBehavior getPropagationBehavior() {
+	public PropagationStrategy getPropagationBehavior() {
 		return propagationBehavior;
 	}
 
@@ -376,7 +376,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	@Override
 	public void decayModule(long ticks) {
 		// TODO next version
-		// super.decayModule(ticks);
 		// pamNodeStructure.decayNodeStructure(ticks);
 	}
 

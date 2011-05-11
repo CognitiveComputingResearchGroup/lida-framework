@@ -125,7 +125,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 		System.out.println("\nRun: " + step++);
 		behaviorNet.receiveBroadcast((BroadcastContent) bc);
 		behaviorNet.selectAction();
-		behaviorNet.decayModule(10);
+		behaviorNet.taskManagerDecayModule(10);
 	}
 	
 	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){

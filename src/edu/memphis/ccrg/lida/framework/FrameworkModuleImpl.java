@@ -118,11 +118,13 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	 * @param ticks number of ticks to decay.
 	 */
 	@Override
-	public void decayModule(long ticks) {
+	public void taskManagerDecayModule(long ticks) {
+		decayModule(ticks);
 		for (FrameworkModule lm : submodules.values()) {
-			lm.decayModule(ticks);
+			lm.taskManagerDecayModule(ticks);
 		}
 	}
+	
 
 	@Override
 	public void setModuleName(ModuleName moduleName) {

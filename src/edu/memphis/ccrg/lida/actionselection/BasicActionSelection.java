@@ -165,7 +165,6 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		// TODO decay behaviors
 	}
 

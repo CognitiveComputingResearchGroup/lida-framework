@@ -18,9 +18,9 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @author Ryan J. McCall
  */
-public class UpscalePropagationBehavior implements PropagationBehavior{
+public class UpscalePropagationStrategy implements PropagationStrategy{
 	
-	private Logger logger = Logger.getLogger(UpscalePropagationBehavior.class.getCanonicalName());
+	private Logger logger = Logger.getLogger(UpscalePropagationStrategy.class.getCanonicalName());
 
 	/*
 	 * Calculate and return an activation to propagate.

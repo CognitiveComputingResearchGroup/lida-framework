@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
+
 /**
  * Maintains a queue of running tasks and their task status. Methods to add and
  * cancel tasks. This implementation actually uses {@link TaskManager} to
@@ -35,12 +37,18 @@ public class TaskSpawnerImpl implements TaskSpawner {
 
 	private Map<String, ?> parameters;
 
+	/**
+	 * This default constructor is used by the {@link AgentXmlFactory}.
+	 * {@link TaskManager} must be set using {@link TaskSpawner#setTaskManager(TaskManager)}
+	 */
 	public TaskSpawnerImpl() {
-		super();
 	}
 
+	/**
+	 * Convenience constructor that sets the {@link TaskManager}
+	 * @param tm the {@link TaskManager} to set
+	 */
 	public TaskSpawnerImpl(TaskManager tm) {
-		super();
 		taskManager = tm;
 	}
 
@@ -80,7 +88,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 
 	@Override
 	public void receiveFinishedTask(FrameworkTask task) {
-		switch (task.getStatus()) {
+		switch (task.getTaskStatus()) {
 		case FINISHED_WITH_RESULTS:
 			processResults(task);
 			removeTask(task);

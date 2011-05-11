@@ -218,7 +218,7 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
 				o = Math.round(task.getActivation() * 1000.0) / 1000.0;
 				break;
 			case 2:
-				o = task.getStatus();
+				o = task.getTaskStatus();
 				break;
 			case 3:
 				o = task;

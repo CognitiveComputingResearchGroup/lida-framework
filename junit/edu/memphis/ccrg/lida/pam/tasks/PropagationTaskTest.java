@@ -62,7 +62,7 @@ public class PropagationTaskTest{
 		assertTrue(link.getActivation() > 0.1);
 		assertTrue(sink.getActivation() > 0.1);
 		assertTrue(source.getActivation() == 0.1);
-		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
 	 
 		assertEquals(sink, pam.testGetSink());
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());
@@ -88,7 +88,7 @@ public class PropagationTaskTest{
 		assertTrue(link.getActivation() > 0.1);
 		assertTrue(sink.getActivation() > 0.1);
 		assertTrue(source.getActivation() == 0.1);
-		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
 	 
 		assertEquals(sink, pam.testGetSink());
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());

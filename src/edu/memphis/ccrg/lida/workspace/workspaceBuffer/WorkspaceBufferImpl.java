@@ -49,7 +49,6 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 
 	@Override
 	public void decayModule(long ticks){
-		super.decayModule(ticks);
 		logger.log(Level.FINE, "Decaying buffer.", TaskManager.getCurrentTick());
 		buffer.decayNodeStructure(ticks);
 	}

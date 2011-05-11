@@ -14,7 +14,7 @@ import java.util.Map;
  * 
  * @author Ryan J. McCall
  */
-public interface PropagationBehavior {
+public interface PropagationStrategy {
 	
 	/**
 	 * Depending on the behavior different parameters can be passed to this method for the

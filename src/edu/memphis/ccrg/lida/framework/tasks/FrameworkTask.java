@@ -37,7 +37,7 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	 * Returns status
 	 * @return current FrameworkTask status
 	 */
-	public TaskStatus getStatus();
+	public TaskStatus getTaskStatus();
 	
 	/**
 	 * Sets task status. Intended to be called by runThisFrameworkTask() 

@@ -53,5 +53,14 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 	@Override
 	public void addListener(ModuleListener listener) {
 	}
+	
+	/** 
+	 * Should do nothing, submodules' decayModule method is called 
+     * in FrameworkModuleImpl#taskManagerDecayModule.
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
+	 */
+	@Override
+	public void decayModule(long ticks) {
+	}
 
 }

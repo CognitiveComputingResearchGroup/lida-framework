@@ -307,11 +307,11 @@ public class PerceptualAssociativeMemoryImplTest {
 	}
 
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationBehavior)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationStrategy)}.
 	 */
 	@Test
 	public void testSetPropagationBehavior() {
-		PropagationBehavior pb = new UpscalePropagationBehavior();
+		PropagationStrategy pb = new UpscalePropagationStrategy();
 		pam.setPropagationBehavior(pb);		
 		assertEquals("Problem with SetPropagationBehavior", pb, pam.getPropagationBehavior());
 	}
@@ -572,7 +572,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	}
 	
 	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#decayModule(long)}.
+	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#taskManagerDecayModule(long)}.
 	 * @see LinearDecayStrategy
 	 */
 	@Test

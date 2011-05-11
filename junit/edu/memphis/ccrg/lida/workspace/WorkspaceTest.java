@@ -8,8 +8,6 @@
 
 package edu.memphis.ccrg.lida.workspace;
 
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,11 +15,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
  * This class is the JUnit test for <code>Workspace</code> class.
@@ -104,7 +100,7 @@ public class WorkspaceTest {
     /**
      *
      */
-    public class MockWorkspaceImpl implements Workspace {
+    public class MockWorkspaceImpl extends FrameworkModuleImpl implements Workspace {
 
         @Override
         public void addCueListener(CueListener l) {
@@ -126,26 +122,6 @@ public class WorkspaceTest {
         }
 
         @Override
-        public ModuleName getModuleName() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void setModuleName(ModuleName moduleName) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public FrameworkModule getSubmodule(ModuleName name) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void addSubModule(FrameworkModule lm) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
         public Object getModuleContent(Object... params) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
@@ -159,42 +135,10 @@ public class WorkspaceTest {
         public void addListener(ModuleListener listener) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
-
-        @Override
-        public void setAssistingTaskSpawner(TaskSpawner ts) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public TaskSpawner getAssistingTaskSpawner() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        public void init(Map<String, ?> parameters) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
         @Override
         public void init() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
-
-        @Override
-        public Object getParam(String name, Object defaultValue) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-		@Override
-		public FrameworkModule getSubmodule(String name) {
-			// TODO Auto-generated method stub
-			return null;
-		}
     }
 
 }

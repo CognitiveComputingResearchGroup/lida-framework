@@ -4,71 +4,34 @@
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
-import edu.memphis.ccrg.lida.pam.PropagationBehavior;
+import edu.memphis.ccrg.lida.pam.PropagationStrategy;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 
 /**
  * @author Javier Snaider
  *
  */
-public class MockPAM implements PerceptualAssociativeMemory {
+public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativeMemory {
 
 	private static double perceptThreshold = 0.0;
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getModuleName()
-	 */
-	@Override
-	public ModuleName getModuleName() {
-		// not implemented
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#setModuleName(edu.memphis.ccrg.lida.framework.ModuleName)
-	 */
-	@Override
-	public void setModuleName(ModuleName moduleName) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getSubmodule(edu.memphis.ccrg.lida.framework.ModuleName)
-	 */
-	@Override
-	public FrameworkModule getSubmodule(ModuleName name) {
-		// not implemented
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addSubModule(edu.memphis.ccrg.lida.framework.FrameworkModule)
-	 */
-	@Override
-	public void addSubModule(FrameworkModule lm) {
-		// not implemented
-
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getModuleContent(java.lang.Object[])
@@ -98,42 +61,6 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#setAssistingTaskSpawner(edu.memphis.ccrg.lida.framework.tasks.TaskSpawner)
-	 */
-	@Override
-	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getAssistingTaskSpawner()
-	 */
-	@Override
-	public TaskSpawner getAssistingTaskSpawner() {
-		// not implemented
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.FullyInitializable#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, int)
-	 */
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializable#init(java.util.Map)
-	 */
-	@Override
-	public void init(Map<String, ?> parameters) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializable#init()
 	 */
 	@Override
@@ -142,14 +69,6 @@ public class MockPAM implements PerceptualAssociativeMemory {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializable#getParam(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		// not implemented
-		return null;
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
@@ -229,7 +148,7 @@ public class MockPAM implements PerceptualAssociativeMemory {
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPropagationBehavior(edu.memphis.ccrg.lida.pam.PropagationBehavior)
 	 */
 	@Override
-	public void setPropagationBehavior(PropagationBehavior b) {
+	public void setPropagationBehavior(PropagationStrategy b) {
 		// not implemented
 
 	}

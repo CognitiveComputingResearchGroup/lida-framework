@@ -546,7 +546,6 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		for (Behavior behavior : getBehaviors()) {
 			behavior.decay(ticks);
 			if (behavior.getActivation() <= behaviorActivationLowerBound) {

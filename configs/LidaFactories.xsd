@@ -16,7 +16,7 @@
     			<restriction base="string">
     				<enumeration value="excite"></enumeration>
     				<enumeration value="decay"></enumeration>
-    				<enumeration value="transmit"></enumeration>
+    				<enumeration value="propagation"></enumeration>
     			</restriction>
     		</simpleType>
     	</attribute>

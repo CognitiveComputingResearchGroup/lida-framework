@@ -93,6 +93,9 @@ public class TaskManager {
 		int corePoolSize = 50;
 		long keepAliveTime = 10;
 		this.tickDuration = tickDuration;
+		if (corePoolSize > maxPoolSize){
+			corePoolSize=maxPoolSize;
+		}
 		taskQueue = new ConcurrentHashMap<Long, Queue<FrameworkTask>>();
 		executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize,
 				keepAliveTime, TimeUnit.SECONDS,
@@ -414,7 +417,7 @@ public class TaskManager {
 		@Override
 		public Void call() throws Exception {
 			if (module != null) {
-				module.decayModule(ticksToDecay);
+				module.taskManagerDecayModule(ticksToDecay);
 			}
 			return null;
 		}

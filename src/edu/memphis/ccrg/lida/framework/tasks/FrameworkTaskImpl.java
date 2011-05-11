@@ -108,7 +108,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 
 	@Override
-	public TaskStatus getStatus() {
+	public TaskStatus getTaskStatus() {
 		return status;
 	}
 

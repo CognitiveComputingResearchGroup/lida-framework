@@ -7,11 +7,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
 /**
@@ -69,7 +67,7 @@ public class SensoryMemoryBackgroundTaskTest {
 }
 
 // Define a temporal class of implementing Class sensoryMemory for test
-class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
+class MockSensory extends FrameworkModuleImpl implements SensoryMemory, SensoryMotorMemoryListener {
 	
 	@Override
 	public void runSensors() {
@@ -79,31 +77,6 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 		System.out.println("Step 3-2: testSetAssociatedModule() is OK");
 		
 	}
-
-	@Override
-	public ModuleName getModuleName() {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public void setModuleName(ModuleName moduleName) {
-		// not implemented
-		
-	}
-
-	@Override
-	public FrameworkModule getSubmodule(ModuleName name) {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public void addSubModule(FrameworkModule lm) {
-		// not implemented
-		
-	}
-
 	@Override
 	public Object getModuleContent(Object... params) {
 		// not implemented
@@ -123,39 +96,9 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	}
 
 	@Override
-	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		// not implemented
-		
-	}
-
-	@Override
-	public TaskSpawner getAssistingTaskSpawner() {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		// not implemented
-		
-	}
-
-	@Override
-	public void init(Map<String, ?> parameters) {
-		// not implemented
-		
-	}
-
-	@Override
 	public void init() {
 		// not implemented
 		
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		// not implemented
-		return null;
 	}
 
 	@Override
@@ -180,12 +123,6 @@ class MockSensory implements SensoryMemory, SensoryMotorMemoryListener {
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {
 		// not implemented
 		
-	}
-
-	@Override
-	public FrameworkModule getSubmodule(String name) {
-		// not implemented
-		return null;
 	}
 
 	@Override

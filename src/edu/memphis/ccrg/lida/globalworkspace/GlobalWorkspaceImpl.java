@@ -208,7 +208,6 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		decay(ticks);
 		logger.log(Level.FINEST, "Coallitions Decayed", TaskManager.getCurrentTick());
 	}

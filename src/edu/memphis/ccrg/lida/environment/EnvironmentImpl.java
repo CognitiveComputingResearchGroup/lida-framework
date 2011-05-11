@@ -52,7 +52,6 @@ public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Env
 	
 	@Override
 	public void decayModule(long ticks) {
-		super.decayModule(ticks);
 		//Decay module appropriately
 	}
 	

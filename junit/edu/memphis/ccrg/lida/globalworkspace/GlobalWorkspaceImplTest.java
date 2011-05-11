@@ -107,10 +107,10 @@ public class GlobalWorkspaceImplTest {
 		gw.addCoalition(coalition);
 		coalition.setActivation(0.8);
 
-		gw.decayModule(10);
+		gw.taskManagerDecayModule(10);
 		assertTrue("Problem with decayModule", coalition.getActivation() < 0.8);
 
-		gw.decayModule(1000);
+		gw.taskManagerDecayModule(1000);
 		Collection<Coalition> content = (Collection<Coalition>) gw.getModuleContent();
 		assertTrue("Problem with decayModule", content.isEmpty());
 

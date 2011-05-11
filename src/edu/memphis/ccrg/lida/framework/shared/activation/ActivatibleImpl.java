@@ -38,11 +38,11 @@ public class ActivatibleImpl implements Activatible {
 		exciteStrategy = ElementFactory.getInstance().getDefaultExciteStrategy();
 	}
 	
-	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy eb, DecayStrategy db) {
+	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy excite, DecayStrategy decay) {
 		this.activation = activation;
 		this.removableThreshold = removableThreshold;
-		this.exciteStrategy = eb;
-		this.decayStrategy = db;
+		this.exciteStrategy = excite;
+		this.decayStrategy = decay;
 	}
 
 	@Override

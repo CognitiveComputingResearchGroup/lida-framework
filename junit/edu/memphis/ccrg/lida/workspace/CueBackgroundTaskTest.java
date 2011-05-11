@@ -141,6 +141,11 @@ class mockWorkspace  extends FrameworkModuleImpl implements Workspace {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void decayModule(long ticks) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
 

@@ -46,7 +46,7 @@ public class ExcitationTaskTest{
 		excite.call();
 		assertTrue(pamNode.getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
 		assertTrue(pam.testGetSink().getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
-		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
 	 
 	}
 	@Test
@@ -64,7 +64,7 @@ public class ExcitationTaskTest{
 			assertTrue(tsk instanceof AddToPerceptTask);
 		}
 		 
-		assertTrue(TaskStatus.FINISHED == excite.getStatus() );
+		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
 	 
 	}
 

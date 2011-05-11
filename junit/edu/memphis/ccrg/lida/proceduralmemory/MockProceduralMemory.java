@@ -2,15 +2,12 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
-public class MockProceduralMemory implements ProceduralMemory {
+public class MockProceduralMemory extends FrameworkModuleImpl implements ProceduralMemory {
 
 	@Override
 	public void activateSchemes(NodeStructure broadcastContent) {
@@ -76,69 +73,15 @@ public class MockProceduralMemory implements ProceduralMemory {
 	}
 
 	@Override
-	public void addSubModule(FrameworkModule lm) {
-		// not implemented
-
-	}
-
-	@Override
 	public void decayModule(long ticks) {
 		// not implemented
 
 	}
 
 	@Override
-	public TaskSpawner getAssistingTaskSpawner() {
-		// not implemented
-		return null;
-	}
-
-	@Override
 	public Object getModuleContent(Object... params) {
 		// not implemented
 		return null;
-	}
-
-	@Override
-	public ModuleName getModuleName() {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public FrameworkModule getSubmodule(ModuleName name) {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public void setAssistingTaskSpawner(TaskSpawner ts) {
-		// not implemented
-
-	}
-
-	@Override
-	public void setModuleName(ModuleName moduleName) {
-		// not implemented
-
-	}
-
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		// not implemented
-
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public void init(Map<String, ?> parameters) {
-		// not implemented
-
 	}
 
 	@Override
@@ -157,12 +100,6 @@ public class MockProceduralMemory implements ProceduralMemory {
 	public boolean setState(Object content) {
 		// not implemented
 		return false;
-	}
-
-	@Override
-	public FrameworkModule getSubmodule(String name) {
-		// not implemented
-		return null;
 	}
 
 }

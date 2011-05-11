@@ -5,7 +5,6 @@
     which accompanies this distribution, and is available at
     http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  -->
-
 <LidaFactories xmlns="http://ccrg.cs.memphis.edu/LidaFactories" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaFactories LidaFactories.xsd ">
   <strategies>
     <strategy flyweight="true" name="defaultExcite" type="excite">

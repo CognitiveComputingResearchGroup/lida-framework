@@ -128,14 +128,14 @@ public class ElementFactory {
 	 */
 	private static final String exciteStrategyType = "excite";
 	
-	//TODO not used
-//	/**
-//	 * Name of transmit strategy type
-//	 * 
-//	 * @see LidaFactories.xsd
-//	 */
-//	@SuppressWarnings("unused")
-//	private static final String transmitStrategyType = "transmit";
+	//TODO Implement PropagationStrategy in Pam in a generic way
+	/**
+	 * Name of propagation strategy type
+	 * 
+	 * @see LidaFactories.xsd
+	 */
+	@SuppressWarnings("unused")
+	private static final String propagationStrategyType = "propagation";
 
 	/**
 	 * Returns the sole instance of this factory. Implements the Singleton
@@ -390,54 +390,6 @@ public class ElementFactory {
 		return d;
 	}
 
-//	/**
-//	 * Creates and returns a new Link with the same source, sink, category, and
-//	 * activation. Default link type and decay and excite strategies are used.
-//	 * 
-//	 * @param oLink
-//	 *            Old Link
-//	 * @return new link
-//	 */
-//	public Link getLink(Link oLink) {
-//		Link copiedLink = getLink(defaultLinkType, oLink.getSource(), oLink.getSink(),
-//				oLink.getCategory(), defaultDecayType, defaultExciteType, 
-//				oLink.getActivation());
-//		
-//		copiedLink.updateSubclassValues(oLink);
-//		return copiedLink;
-//	}
-//
-//	/**
-//	 * Creates and returns a new Link with the same source, sink, category, and
-//	 * activation. Default link type and decay and excite strategies are
-//	 * specified by second argument.
-//	 * 
-//	 * @param oLink
-//	 *            Old Link
-//	 * @param linkT
-//	 *            Link type
-//	 * @return new Link
-//	 */
-//	public Link getLink(Link oLink, String linkT) {
-//		LinkableDef linkDef = linkClasses.get(linkT);		
-//		if (linkDef == null) {
-//			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.", 
-//						TaskManager.getCurrentTick());
-//			return null;
-//		}
-//		String decayB = linkDef.getDefaultStrategies().get(decayStrategyType);
-//		String exciteB = linkDef.getDefaultStrategies().get(exciteStrategyType);
-//		if(decayB == null){
-//			decayB=defaultDecayType;
-//		}
-//		if(exciteB == null){
-//			exciteB=defaultExciteType;
-//		}
-//		
-//		Link copiedLink = getLink(linkT,oLink.getSource(),oLink.getSink(),oLink.getCategory(),decayB,exciteB,oLink.getActivation());
-//		copiedLink.updateSubclassValues(oLink);
-//		return copiedLink;
-//	}
 	/**
 	 * Creates and returns a new Link with specified source, sink, category, and
 	 * activation.
@@ -748,8 +700,6 @@ public class ElementFactory {
 	 *            exciteStrategy new node's excite strategy
 	 * @return the node
 	 */
-	//TODO review, does not seem necessary for this to be public, could merge this into the 
-	//other getNode method which this method calls
 	private Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		if(oNode == null){
 			logger.log(Level.WARNING, "Supplied node is null", TaskManager.getCurrentTick());
