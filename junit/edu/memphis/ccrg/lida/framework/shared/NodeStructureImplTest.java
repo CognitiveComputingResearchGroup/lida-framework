@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the NodeStructureImpl class
- * @author Ryan McCall, Siminder Kaur
+ * @author Ryan J. McCall, Siminder Kaur
  * 
  */
 

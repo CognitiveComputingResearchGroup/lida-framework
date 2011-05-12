@@ -3,15 +3,16 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Thread-safe HashSet based on a ConcurrentHashMap
+ * Thread-safe {@link HashSet} based on a {@link ConcurrentHashMap}
  * 
- * @author Ryan McCall
+ * @author Ryan J. McCall
  * 
  * @param <E>
  *            The generic type to use in this HashSet

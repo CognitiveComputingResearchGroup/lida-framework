@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
-public class BasicSchemeActivationBehaviorTest{
+public class BasicSchemeActivationStrategyTest{
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
 	private Node node1, node2, node3;

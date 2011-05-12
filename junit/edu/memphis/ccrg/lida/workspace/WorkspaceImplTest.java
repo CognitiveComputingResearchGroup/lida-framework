@@ -10,8 +10,6 @@ package edu.memphis.ccrg.lida.workspace;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,18 +38,10 @@ public class WorkspaceImplTest {
 
     /**
      *
-     * @throws Exception
+     * @throws Exception e
      */
     @BeforeClass
     public static void setUpClass() throws Exception {
-    }
-
-    /**
-     *
-     * @throws Exception
-     */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
     }
 
     /**
@@ -61,12 +51,6 @@ public class WorkspaceImplTest {
     public void setUp() {
     }
 
-    /**
-     *
-     */
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of addListener method, of class WorkspaceImpl.

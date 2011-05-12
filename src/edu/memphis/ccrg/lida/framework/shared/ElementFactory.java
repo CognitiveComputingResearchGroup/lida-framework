@@ -32,7 +32,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * Standard factory for the basic elements of the framework. Support for
  * {@link Node}s, {@link Link}s, {@link Codelet}s, and {@link NodeStructure}s
  * 
- * @author Javier Snaider, Ryan McCall
+ * @author Javier Snaider, Ryan J. McCall
  */
 public class ElementFactory {
 

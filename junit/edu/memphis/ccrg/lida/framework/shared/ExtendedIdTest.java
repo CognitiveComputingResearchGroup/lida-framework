@@ -11,7 +11,7 @@ import org.junit.Test;
  * If you are really bored then you can test the case where the sinks link's sink is a link between 2 nodes
  * I've just tested up to the case where the sink's link is just between 2 nodes and
  * that should be sufficient because it tests the same code (the link constructor) just with different values in the sink ExtendedId
- * @author Ryan McCall
+ * @author Ryan J. McCall
  *
  */
 public class ExtendedIdTest{

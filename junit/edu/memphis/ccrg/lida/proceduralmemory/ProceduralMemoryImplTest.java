@@ -33,7 +33,7 @@ public class ProceduralMemoryImplTest{
 		assertTrue(pm.getSchemeCount() == 2);
 	}
 
-	public void testSetSchemeActivationBehavior() {
+	public void testSetSchemeActivationStrategy() {
 		SchemeActivationStrategy b = new BasicSchemeActivationStrategy(pm);
 		pm.setSchemeActivationStrategy(b);
 		assertEquals(b, pm.getSchemeActivationStrategy());
@@ -58,7 +58,7 @@ public class ProceduralMemoryImplTest{
 		pm.addListener(l);
 		
 		Scheme s = new SchemeImpl("foo", a);
-		pm.sendInstantiatedScheme(s);
+		pm.createInstantiation(s);
 	}
 
 }

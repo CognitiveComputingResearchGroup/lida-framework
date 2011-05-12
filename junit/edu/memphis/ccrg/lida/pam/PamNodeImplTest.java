@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 
 /**
- * @author Siminder Kaur, Ryan McCall
+ * @author Siminder Kaur, Ryan J. McCall
  */
 public class PamNodeImplTest{
 	

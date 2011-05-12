@@ -20,19 +20,19 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * FrameworkModule containing {@link Scheme}s activated by each conscious broadcast.  
  * Activated schemes are instantiated, becoming {@link Behavior}s which are sent to 
  * {@link ActionSelection}
+ * 
  * @author Ryan J. McCall
- *
  */
 public interface ProceduralMemory extends FrameworkModule, Saveable{
 	
 	/**
-	 * Add supplied scheme to this procedural memory.
+	 * Adds specified scheme to this {@link ProceduralMemory}.
 	 * @param s Scheme
 	 */
 	public void addScheme(Scheme s);
 		
 	/**
-	 * Add supplied schemes to this procedural memory.
+	 * Adds specified schemes to this procedural memory.
 	 * @param schemes set of Schemes
 	 */
 	public void addSchemes(Collection<Scheme> schemes);
@@ -45,14 +45,14 @@ public interface ProceduralMemory extends FrameworkModule, Saveable{
 	public boolean containsScheme(Scheme s);
 	
 	/**
-	 * Returns scheme Count
-	 * @return number of schemes currently in the memory.
+	 * Returns a count of the schemes
+	 * @return number of schemes currently in this procedural memory.
 	 */
 	public int getSchemeCount();
 	
     /**
-     * To change how scheme are activated based on the broadcast.
-     * @param strategy SchemeActivationStrategy
+     * Sets the {@link SchemeActivationStrategy}
+     * @param strategy how schemes will be activated based on the broadcast.
      */
     public void setSchemeActivationStrategy(SchemeActivationStrategy strategy);
     
@@ -69,9 +69,9 @@ public interface ProceduralMemory extends FrameworkModule, Saveable{
 	public void activateSchemes(NodeStructure broadcastContent);
 	
 	/**
-	 * Instantiate scheme and send it to listeners.
+	 * Instantiates specified scheme.
 	 * @param s a scheme over threshold
 	 */
-	public void sendInstantiatedScheme(Scheme s);
+	public void createInstantiation(Scheme s);
 		
 }

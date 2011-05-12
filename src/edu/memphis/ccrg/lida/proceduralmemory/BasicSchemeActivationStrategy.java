@@ -65,7 +65,7 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 		}
 		
 		for(Scheme s: toInstantiate){
-			pm.sendInstantiatedScheme(s);
+			pm.createInstantiation(s);
 		}
 	}
 

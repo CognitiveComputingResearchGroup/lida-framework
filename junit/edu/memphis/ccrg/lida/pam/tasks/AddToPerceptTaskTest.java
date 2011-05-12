@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 
 /**
- * @author Ryan McCall, Usef Faghihi
+ * @author Ryan J. McCall, Usef Faghihi
  *
  */
 public class AddToPerceptTaskTest{

@@ -9,7 +9,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
  * A collection of static Gui utility methods.
- * @author Ryan McCall, Javier Snaider
+ * @author Ryan J. McCall, Javier Snaider
  *
  */
 public class GuiUtils {

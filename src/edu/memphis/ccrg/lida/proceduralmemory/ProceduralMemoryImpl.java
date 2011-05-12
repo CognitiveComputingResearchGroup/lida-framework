@@ -179,7 +179,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * Listeners
 	 */
 	@Override
-	public void sendInstantiatedScheme(Scheme s) {
+	public void createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				TaskManager.getCurrentTick());
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {

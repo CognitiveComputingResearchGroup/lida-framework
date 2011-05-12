@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  * This is a JUnit class which can be used to test methods of the LearnableImpl
  * class
  * 
- * @author Nisrine, Siminder Kaur, Ryan McCall
+ * @author Nisrine, Siminder Kaur, Ryan J. McCall
  * 
  */
 public class LearnableImplTest {

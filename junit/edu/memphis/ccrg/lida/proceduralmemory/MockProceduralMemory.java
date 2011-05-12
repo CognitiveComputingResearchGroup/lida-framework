@@ -56,7 +56,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	private Collection<Scheme> instantiated = new ArrayList<Scheme>();
 
 	@Override
-	public void sendInstantiatedScheme(Scheme s) {
+	public void createInstantiation(Scheme s) {
 		instantiated.add(s);
 	}
 
