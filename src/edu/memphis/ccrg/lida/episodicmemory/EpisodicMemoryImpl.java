@@ -28,7 +28,8 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * This is the canonical implementation of EM. It uses a sparse distributed
+ * This is the canonical implementation of {@link EpisodicMemory}. 
+ * It uses a sparse distributed
  * memory to store the information.
  * 
  * @author Javier Snaider
