@@ -74,9 +74,6 @@ public class NoBroadcastOccurringTriggerTest {
 		assertEquals("Problem with GetTaskManager", tm, trigger.getTaskManager());
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.actionselection.triggers.NoActionSelectionOccurringTrigger#setTaskManager(edu.memphis.ccrg.lida.framework.tasks.TaskManager)}.
-	 */
 	@Test
 	public void testSetTaskManager() {
 		trigger.setTaskManager(tm);		
