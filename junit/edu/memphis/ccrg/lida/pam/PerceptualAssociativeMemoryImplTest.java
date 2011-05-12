@@ -87,41 +87,41 @@ public class PerceptualAssociativeMemoryImplTest {
 		link2 = (PamLinkImpl) factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
 	}
 
-	@Test
-	public void testAddNewNode() {
-		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode("BOB");
-		assertTrue(pn != null);
-		assertTrue(pn.getLabel().equals("BOB"));
-		assertTrue(pam.containsNode(pn));
-		assertTrue(pam.getNodes().size()+"", pam.getNodes().size() - pam.getLinkCategories().size() == 1);
-		Node other = pam.getNode(pn.getId());
-		assertTrue(other.equals(pn));
-	}
-	@Test
-	public void testAddNullString(){
-		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode(null);
-		assertTrue(pn != null);
-		assertTrue(pam.containsNode(pn));
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
-		Node other = pam.getNode(pn.getId());
-		assertTrue(other.equals(pn));
-	}
-	@Test
-	public void testAddNewNode2(){
-		PamNode pn = pam.addNewNode("BOB");
-		assertTrue(pn != null);
-		assertTrue(pn instanceof PamNodeImpl);
-		assertTrue(pn.getLabel().equals("BOB"));	
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
-		Node other = pam.getNode(pn.getId());
-		assertTrue(other.equals(pn));
-	}
-	@Test
-	public void testAddNewNode3(){
-		PamNode pn = pam.addNewNode("BOB");
-		assertTrue(pn != null);	
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
-	}
+//	@Test
+//	public void testAddNewNode() {
+//		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode("BOB");
+//		assertTrue(pn != null);
+//		assertTrue(pn.getLabel().equals("BOB"));
+//		assertTrue(pam.containsNode(pn));
+//		assertTrue(pam.getNodes().size()+"", pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+//		Node other = pam.getNode(pn.getId());
+//		assertTrue(other.equals(pn));
+//	}
+//	@Test
+//	public void testAddNullString(){
+//		PamNodeImpl pn = (PamNodeImpl) pam.addNewNode(null);
+//		assertTrue(pn != null);
+//		assertTrue(pam.containsNode(pn));
+//		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+//		Node other = pam.getNode(pn.getId());
+//		assertTrue(other.equals(pn));
+//	}
+//	@Test
+//	public void testAddNewNode2(){
+//		PamNode pn = pam.addNewNode("BOB");
+//		assertTrue(pn != null);
+//		assertTrue(pn instanceof PamNodeImpl);
+//		assertTrue(pn.getLabel().equals("BOB"));	
+//		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+//		Node other = pam.getNode(pn.getId());
+//		assertTrue(other.equals(pn));
+//	}
+//	@Test
+//	public void testAddNewNode3(){
+//		PamNode pn = pam.addNewNode("BOB");
+//		assertTrue(pn != null);	
+//		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+//	}
 	@Test
 	public void testAddDefaultNode(){
 		node2.setBaseLevelActivation(0.01);
@@ -207,39 +207,38 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertTrue(pam.containsNode(node1));
 		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
 	}
-	@Test
-	public void testAddNewLink(){
-		//TODO
-		Link l = pam.addNewLink(node1, node2, null, 0.0, 0.0, null, null);
-		Link l2 = pam.addNewLink(node3.getId(), node2.getExtendedId(), null, 0.0, 0.0, null, null);
-		assertEquals(l, null);
-		assertEquals(l2, null);
-		assertEquals(0, pam.getLinks().size());
-	}
-	@Test
-	public void testAddNewLink2(){
-		pam.addDefaultNode(node1);
-		pam.addDefaultNode(node2);
-		pam.addDefaultNode(node3);
-		PamLink l = (PamLink) pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.333, 0.111, null, null);
-		assertEquals(pam.getLink(l.getExtendedId()), l);
-		assertEquals(1, pam.getLinks().size());
-		assertTrue(0.333== l.getBaseLevelActivation());
-		assertTrue(0.111== l.getLearnableRemovalThreshold());
-		assertTrue(0.0== l.getActivation());
-		assertTrue(0.0== l.getActivatibleRemovalThreshold());
-		assertTrue(pam.containsLink(l));
-		
-		l = (PamLink) pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
-		assertEquals(pam.getLink(l.getExtendedId()), l);
-		assertEquals(2, pam.getLinks().size());
-		assertTrue(0.0== l.getBaseLevelActivation());
-		assertTrue(0.0== l.getLearnableRemovalThreshold());
-		assertTrue(pam.containsLink(l));
-		
-		pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
-		assertEquals(2, pam.getLinks().size());
-	}
+//	@Test
+//	public void testAddNewLink(){
+//		Link l = pam.addNewLink(node1, node2, null, 0.0, 0.0, null, null);
+//		Link l2 = pam.addNewLink(node3.getId(), node2.getExtendedId(), null, 0.0, 0.0, null, null);
+//		assertEquals(l, null);
+//		assertEquals(l2, null);
+//		assertEquals(0, pam.getLinks().size());
+//	}
+//	@Test
+//	public void testAddNewLink2(){
+//		pam.addDefaultNode(node1);
+//		pam.addDefaultNode(node2);
+//		pam.addDefaultNode(node3);
+//		PamLink l = (PamLink) pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.333, 0.111, null, null);
+//		assertEquals(pam.getLink(l.getExtendedId()), l);
+//		assertEquals(1, pam.getLinks().size());
+//		assertTrue(0.333== l.getBaseLevelActivation());
+//		assertTrue(0.111== l.getLearnableRemovalThreshold());
+//		assertTrue(0.0== l.getActivation());
+//		assertTrue(0.0== l.getActivatibleRemovalThreshold());
+//		assertTrue(pam.containsLink(l));
+//		
+//		l = (PamLink) pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+//		assertEquals(pam.getLink(l.getExtendedId()), l);
+//		assertEquals(2, pam.getLinks().size());
+//		assertTrue(0.0== l.getBaseLevelActivation());
+//		assertTrue(0.0== l.getLearnableRemovalThreshold());
+//		assertTrue(pam.containsLink(l));
+//		
+//		pam.addNewLink(node2.getId(), node3.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+//		assertEquals(2, pam.getLinks().size());
+//	}
 	@Test
 	public void testAddDefaultLinks(){
 		pam.addDefaultNode(node1);	
@@ -421,11 +420,11 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
 		
-		Node foo = pam.addNewNode("foo");
-		assertTrue(pam.containsNode(foo));
-		
-		Node bar = pam.addNewNode("bar");
-		assertTrue(pam.containsNode(bar));
+//		Node foo = pam.addNewNode("foo");
+//		assertTrue(pam.containsNode(foo));
+//		
+//		Node bar = pam.addNewNode("bar");
+//		assertTrue(pam.containsNode(bar));
 
 	}
 	@Test
@@ -459,21 +458,23 @@ public class PerceptualAssociativeMemoryImplTest {
 	}
 	@Test
 	public void testContainsLink1(){
-		PamNode a = pam.addNewNode("A");
-		PamNode b = pam.addNewNode("B");
-		Link l = pam.addNewLink(a, b, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		PamNode a = pam.addDefaultNode(node1);
+		PamNode b = pam.addDefaultNode(node2);
+		Link l = factory.getLink("PamLinkImpl", a, b, PerceptualAssociativeMemoryImpl.NONE);
+		pam.addDefaultLink(l);
 		assertTrue(pam.containsLink(l));
-		assertFalse(pam.containsLink(this.link1));
 		assertFalse(pam.containsLink(this.link2));
 		assertTrue(pam.containsLink(l.getExtendedId()));
 	}
 	@Test
-	public void setPerceptThreshold(double t){
+	public void testSetPerceptThreshold(){
+		pam.setPerceptThreshold(0.7);
+		
 		pam.setPerceptThreshold(-1);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.0);
+		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.7);
 		
 		pam.setPerceptThreshold(231);
-		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 1.0);
+		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.7);
 		
 		pam.setPerceptThreshold(0.3487);
 		assertTrue(PerceptualAssociativeMemoryImpl.getPerceptThreshold() == 0.3487);
@@ -562,7 +563,8 @@ public class PerceptualAssociativeMemoryImplTest {
 	public void testGetPamLink(){
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
-		Link l = pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		Link l = factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
+		pam.addDefaultLink(l);
 		
 		assertEquals(l, pam.getLink(l.getExtendedId()));
 		assertEquals(null, pam.getLink(new ExtendedId(99, new ExtendedId(11), 99)));
@@ -601,7 +603,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		}
 		
 		pam.addDefaultNode(node1);
-		pam.addNewNode("foo");
+		pam.addDefaultNode(node2);
 		
 		nodes = pam.getNodes();
 		assertTrue(nodes.size() - pam.getLinkCategories().size() == 2);		
@@ -619,11 +621,15 @@ public class PerceptualAssociativeMemoryImplTest {
 		}catch(Exception e){
 			assertTrue(e instanceof UnsupportedOperationException);
 		}
+		Link l = factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
+		pam.addDefaultLink(l);
 		
-		pam.addNewLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
-		pam.addNewLink(node2, node3, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
-		pam.addNewLink(node3, node1, PerceptualAssociativeMemoryImpl.NONE, 0.0, 0.0, null, null);
+		l = factory.getLink("PamLinkImpl", node2, node3, PerceptualAssociativeMemoryImpl.NONE);
+		pam.addDefaultLink(l);
 		
+		l = factory.getLink("PamLinkImpl", node3, node1, PerceptualAssociativeMemoryImpl.NONE);
+		pam.addDefaultLink(l);
+				
 		links = pam.getLinks();
 		assertTrue(links.size() == 3);		
 	}

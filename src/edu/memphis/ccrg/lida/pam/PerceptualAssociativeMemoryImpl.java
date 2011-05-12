@@ -22,8 +22,8 @@ import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListene
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
@@ -31,9 +31,6 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -83,7 +80,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 			.getInstance();
 
 	private static final int DEFAULT_EXCITATION_TASK_TICKS = 1;
-	private int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
+	protected int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
 
 	private static final int DEFAULT_PROPAGATION_TASK_TICKS = 1;
 	private int propagationTaskTicksPerRun = DEFAULT_PROPAGATION_TASK_TICKS;
@@ -97,8 +94,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;
 
-	private static final String defaultBaseLevelExciteStrategy = "slowExcite";
-	private static final String defaultBaseLevelDecayStrategy = "slowDecay";
+//	private static final String defaultBaseLevelExciteStrategy = "slowExcite";
+//	private static final String defaultBaseLevelDecayStrategy = "slowDecay";
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
@@ -384,7 +381,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 					TaskManager.getCurrentTick());
 			return;
 		}
-
 		
 		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl.getExtendedId());
 		if (linkable != null) {
@@ -396,6 +392,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
+			//TODO not actually a bad thing..
 			logger.log(Level.WARNING, "Cannot find pamnode: " + linkable,
 					TaskManager.getCurrentTick());
 		}
@@ -572,146 +569,146 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
-	 * memphis.ccrg.lida.framework.shared.Node,
-	 * edu.memphis.ccrg.lida.framework.shared.Linkable,
-	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory)
-	 */
-	@Override
-	public Link addNewLink(Node source, Linkable sink, LinkCategory type) {
-		return addNewLink(source, sink, type,
-				Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
-				Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD,
-				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
-	 * memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode,
-	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
-	 */
-	@Override
-	public Link addNewLink(Node src, Linkable sink, LinkCategory cat,
-			double initialActivation, double removalThreshold,
-			String blExciteStrategy, String blDecayStrategy) {
-		if (src == null || sink == null) {
-			return null;
-		}
-
-		return addNewLink(src.getId(), sink.getExtendedId(), cat,
-				initialActivation, removalThreshold, blExciteStrategy,
-				blDecayStrategy);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
-	 * memphis.ccrg.lida.framework.shared.ExtendedId,
-	 * edu.memphis.ccrg.lida.framework.shared.ExtendedId,
-	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
-	 */
-	@Override
-	public Link addNewLink(int srcId, ExtendedId sinkId, LinkCategory cat,
-			double baseLevelActivation, double baseLevelRemovalThreshold,
-			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		PamLink newLink = (PamLink) pamNodeStructure.addDefaultLink(srcId,
-				sinkId, cat, 0.0, 0.0);
-		if (newLink == null) {
-			logger.log(Level.WARNING, "Was unable to add Link",
-					TaskManager.getCurrentTick());
-			return null;
-		}
-		setLearnableValues(newLink, baseLevelActivation,
-				baseLevelRemovalThreshold, baseLevelExciteStrat,
-				baseLevelDecayStrat);
-		return newLink;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
-	 * .lang.String)
-	 */
-	@Override
-	public PamNode addNewNode(String label) {
-		return addNewNode(label, Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
-				Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD,
-				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
-	}
-
-	@Override
-	public PamNode addNewNode(String label, double baseLevelActivation,
-			double baseLevelRemovalThreshold, String baseLevelExciteStrat,
-			String baseLevelDecayStrat) {
-		Node newNode = factory.getNode("PamNodeImpl", label);
-		if (newNode == null) {
-			logger.log(Level.WARNING, "Was unable to create node " + label,
-					TaskManager.getCurrentTick());
-			return null;
-		}
-
-		PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
-		if (newPamNode == null) {
-			logger.log(Level.WARNING, "Cannot add node to nodestructure " + label,
-					TaskManager.getCurrentTick());
-			return null;
-		}
-		setLearnableValues(newPamNode, baseLevelActivation,
-				baseLevelRemovalThreshold, baseLevelExciteStrat,
-				baseLevelDecayStrat);
-		return newPamNode;
-	}
-
-	/*
-	 * @param newPamNode
-	 * 
-	 * @param baseLevelActivation
-	 * 
-	 * @param baseLevelRemovalThreshold
-	 * 
-	 * @param baseLevelExciteStrat
-	 * 
-	 * @param baseLevelDecayStrat
-	 */
-	private void setLearnableValues(Learnable learnable,
-			double baseLevelActivation, double baseLevelRemovalThreshold,
-			String baseLevelExciteStrat, String baseLevelDecayStrat) {
-		learnable.setBaseLevelActivation(baseLevelActivation);
-		learnable.setBaseLevelRemovalThreshold(baseLevelRemovalThreshold);
-
-		ExciteStrategy blExciteStrategy = factory
-				.getExciteStrategy(baseLevelExciteStrat);
-		if (blExciteStrategy == null) {
-			logger.log(Level.WARNING,
-					"Specified base-level excite strategy not found: "
-							+ baseLevelExciteStrat + " Using default.",
-					TaskManager.getCurrentTick());
-			blExciteStrategy = factory.getDefaultExciteStrategy();
-		}
-		learnable.setBaseLevelExciteStrategy(blExciteStrategy);
-
-		DecayStrategy blDecayStrategy = factory
-				.getDecayStrategy(baseLevelDecayStrat);
-		if (blDecayStrategy == null) {
-			logger.log(Level.WARNING,
-					"Specified base-level decay strategy not found: "
-							+ baseLevelDecayStrat + " Using default.",
-					TaskManager.getCurrentTick());
-			blDecayStrategy = factory.getDefaultDecayStrategy();
-		}
-		learnable.setBaseLevelDecayStrategy(blDecayStrategy);
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
+//	 * memphis.ccrg.lida.framework.shared.Node,
+//	 * edu.memphis.ccrg.lida.framework.shared.Linkable,
+//	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory)
+//	 */
+//	@Override
+//	public Link addNewLink(Node source, Linkable sink, LinkCategory type) {
+//		return addNewLink(source, sink, type,
+//				Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
+//				Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD,
+//				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
+//	 * memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode,
+//	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
+//	 */
+//	@Override
+//	public Link addNewLink(Node src, Linkable sink, LinkCategory cat,
+//			double initialActivation, double removalThreshold,
+//			String blExciteStrategy, String blDecayStrategy) {
+//		if (src == null || sink == null) {
+//			return null;
+//		}
+//
+//		return addNewLink(src.getId(), sink.getExtendedId(), cat,
+//				initialActivation, removalThreshold, blExciteStrategy,
+//				blDecayStrategy);
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewLink(edu.
+//	 * memphis.ccrg.lida.framework.shared.ExtendedId,
+//	 * edu.memphis.ccrg.lida.framework.shared.ExtendedId,
+//	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double)
+//	 */
+//	@Override
+//	public Link addNewLink(int srcId, ExtendedId sinkId, LinkCategory cat,
+//			double baseLevelActivation, double baseLevelRemovalThreshold,
+//			String baseLevelExciteStrat, String baseLevelDecayStrat) {
+//		PamLink newLink = (PamLink) pamNodeStructure.addDefaultLink(srcId,
+//				sinkId, cat, 0.0, 0.0);
+//		if (newLink == null) {
+//			logger.log(Level.WARNING, "Was unable to add Link",
+//					TaskManager.getCurrentTick());
+//			return null;
+//		}
+//		setLearnableValues(newLink, baseLevelActivation,
+//				baseLevelRemovalThreshold, baseLevelExciteStrat,
+//				baseLevelDecayStrat);
+//		return newLink;
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see
+//	 * edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java
+//	 * .lang.String)
+//	 */
+//	@Override
+//	public PamNode addNewNode(String label) {
+//		return addNewNode(label, Learnable.DEFAULT_BASE_LEVEL_ACTIVATION,
+//				Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD,
+//				defaultBaseLevelExciteStrategy, defaultBaseLevelDecayStrategy);
+//	}
+//
+//	@Override
+//	public PamNode addNewNode(String label, double baseLevelActivation,
+//			double baseLevelRemovalThreshold, String baseLevelExciteStrat,
+//			String baseLevelDecayStrat) {
+//		Node newNode = factory.getNode("PamNodeImpl", label);
+//		if (newNode == null) {
+//			logger.log(Level.WARNING, "Was unable to create node " + label,
+//					TaskManager.getCurrentTick());
+//			return null;
+//		}
+//
+//		PamNode newPamNode = (PamNode) pamNodeStructure.addDefaultNode(newNode);
+//		if (newPamNode == null) {
+//			logger.log(Level.WARNING, "Cannot add node to nodestructure " + label,
+//					TaskManager.getCurrentTick());
+//			return null;
+//		}
+//		setLearnableValues(newPamNode, baseLevelActivation,
+//				baseLevelRemovalThreshold, baseLevelExciteStrat,
+//				baseLevelDecayStrat);
+//		return newPamNode;
+//	}
+//
+//	/*
+//	 * @param newPamNode
+//	 * 
+//	 * @param baseLevelActivation
+//	 * 
+//	 * @param baseLevelRemovalThreshold
+//	 * 
+//	 * @param baseLevelExciteStrat
+//	 * 
+//	 * @param baseLevelDecayStrat
+//	 */
+//	private void setLearnableValues(Learnable learnable,
+//			double baseLevelActivation, double baseLevelRemovalThreshold,
+//			String baseLevelExciteStrat, String baseLevelDecayStrat) {
+//		learnable.setBaseLevelActivation(baseLevelActivation);
+//		learnable.setBaseLevelRemovalThreshold(baseLevelRemovalThreshold);
+//
+//		ExciteStrategy blExciteStrategy = factory
+//				.getExciteStrategy(baseLevelExciteStrat);
+//		if (blExciteStrategy == null) {
+//			logger.log(Level.WARNING,
+//					"Specified base-level excite strategy not found: "
+//							+ baseLevelExciteStrat + " Using default.",
+//					TaskManager.getCurrentTick());
+//			blExciteStrategy = factory.getDefaultExciteStrategy();
+//		}
+//		learnable.setBaseLevelExciteStrategy(blExciteStrategy);
+//
+//		DecayStrategy blDecayStrategy = factory
+//				.getDecayStrategy(baseLevelDecayStrat);
+//		if (blDecayStrategy == null) {
+//			logger.log(Level.WARNING,
+//					"Specified base-level decay strategy not found: "
+//							+ baseLevelDecayStrat + " Using default.",
+//					TaskManager.getCurrentTick());
+//			blDecayStrategy = factory.getDefaultDecayStrategy();
+//		}
+//		learnable.setBaseLevelDecayStrategy(blDecayStrategy);
+//	}
 
 	public static double getPerceptThreshold() {
 		return perceptThreshold;
