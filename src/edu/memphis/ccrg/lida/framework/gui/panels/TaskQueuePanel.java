@@ -20,7 +20,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +42,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
 	private static final Logger logger = Logger
 			.getLogger(TaskQueuePanel.class.getCanonicalName());
 	
-	private Map<Long, Queue<FrameworkTask>> tasks= new HashMap<Long, Queue<FrameworkTask>>();
+	private Map<Long, Set<FrameworkTask>> tasks= new HashMap<Long, Set<FrameworkTask>>();
 
 	public TaskQueuePanel() {
 		initComponents();
@@ -133,7 +133,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
 		@Override
 		public int getColumnCount() {
 			int total = 0;
-			for (Queue<FrameworkTask> qt : tasks.values()) {
+			for (Set<FrameworkTask> qt : tasks.values()) {
 				if (qt.size() > total){
 					total = qt.size();
 				}
@@ -172,7 +172,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
 				return TaskManager.getCurrentTick()+ rowIndex;
 			}
 			
-			Queue<FrameworkTask> qt = tasks.get(TaskManager.getCurrentTick()
+			Set<FrameworkTask> qt = tasks.get(TaskManager.getCurrentTick()
 					+ rowIndex);
 			if (qt == null) {
 				return "";
@@ -206,7 +206,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
 	@SuppressWarnings("unchecked")
 	public void display(Object o) {
 		if (o instanceof Map) {
-			tasks = (Map<Long,Queue<FrameworkTask>>) o;
+			tasks = (Map<Long,Set<FrameworkTask>>) o;
 			((AbstractTableModel) tasksTable.getModel()).fireTableStructureChanged();
 		}
 	}

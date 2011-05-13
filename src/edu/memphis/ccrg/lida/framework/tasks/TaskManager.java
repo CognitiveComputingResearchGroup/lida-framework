@@ -12,10 +12,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,13 +25,14 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**
- * All tasks in the {@link Agent} system are executed by this class. Controls the decay
- * of all the {@link FrameworkModule}s in {@link Agent}. Keeps track of the current
- * tick, the unit of time in the application. Maintains a task queue where each
- * position represents the time (in ticks) when a task will be executed.
- * Multiple tasks can be scheduled for the same tick. Uses an
+ * All tasks in the {@link Agent} system are executed by this class. Controls
+ * the decay of all the {@link FrameworkModule}s in {@link Agent}. Keeps track
+ * of the current tick, the unit of time in the application. Maintains a task
+ * queue where each position represents the time (in ticks) when a task will be
+ * executed. Multiple tasks can be scheduled for the same tick. Uses an
  * {@link ExecutorService} to obtain the threads to run all the tasks scheduled
  * in one tick concurrently.
  * 
@@ -43,6 +43,8 @@ public class TaskManager {
 	private static final Logger logger = Logger.getLogger(TaskManager.class
 			.getCanonicalName());
 
+	public static final int DEFAULT_TICK_DURATION = 1;
+	public static final int DEFAULT_NUMBER_OF_THREADS = 50;
 	/*
 	 * Determines whether or not spawned tasks should run
 	 */
@@ -59,13 +61,13 @@ public class TaskManager {
 	private volatile boolean inIntervalMode = false;
 	private volatile Object lock = new Object();
 
-	private ConcurrentMap<Long, Queue<FrameworkTask>> taskQueue;
+	private ConcurrentMap<Long, Set<FrameworkTask>> taskQueue;
 	/**
 	 * Length of time of 1 tick in milliseconds. The actual time thats the tick
 	 * unit represents. In practice tickDuration affects the speed of tasks in
 	 * the simulation.
 	 */
-	private int tickDuration = 1;
+	private int tickDuration = DEFAULT_TICK_DURATION;
 
 	/**
 	 * Service used to execute the tasks
@@ -90,13 +92,18 @@ public class TaskManager {
 	 *            - max number of threads used by the ExecutorService
 	 */
 	public TaskManager(int tickDuration, int maxPoolSize) {
-		int corePoolSize = 50;
+		int corePoolSize = DEFAULT_NUMBER_OF_THREADS;
 		long keepAliveTime = 10;
-		this.tickDuration = tickDuration;
-		if (corePoolSize > maxPoolSize){
-			corePoolSize=maxPoolSize;
+		if (tickDuration > 0) {
+			this.tickDuration = tickDuration;
+		} else {
+			logger.log(Level.WARNING, "Tick duration must be 1 or greater",
+					currentTick);
 		}
-		taskQueue = new ConcurrentHashMap<Long, Queue<FrameworkTask>>();
+		if (corePoolSize > maxPoolSize) {
+			corePoolSize = maxPoolSize;
+		}
+		taskQueue = new ConcurrentHashMap<Long, Set<FrameworkTask>>();
 		executorService = new ThreadPoolExecutor(corePoolSize, maxPoolSize,
 				keepAliveTime, TimeUnit.SECONDS,
 				new LinkedBlockingQueue<Runnable>());
@@ -146,7 +153,12 @@ public class TaskManager {
 	 *            simulation.
 	 */
 	public synchronized void setTickDuration(int newTickDuration) {
-		tickDuration = newTickDuration;
+		if (newTickDuration > 0) {
+			tickDuration = newTickDuration;
+		} else {
+			logger.log(Level.WARNING, "Only positive tick duration allowed.",
+					currentTick);
+		}
 	}
 
 	public int getTickDuration() {
@@ -174,7 +186,7 @@ public class TaskManager {
 	/**
 	 * @return UnmodifiableMap of the task queue
 	 */
-	public Map<Long, Queue<FrameworkTask>> getTaskQueue() {
+	public Map<Long, Set<FrameworkTask>> getTaskQueue() {
 		return Collections.unmodifiableMap(taskQueue);
 	}
 
@@ -198,10 +210,10 @@ public class TaskManager {
 	 * Resumes the execution of tasks in the queue.
 	 */
 	public void resumeTasks() {
-		if (shuttingDown){
+		if (shuttingDown) {
 			return;
 		}
-		
+
 		logger.log(Level.INFO,
 				"resume tasks called actualTime: {0} maxTick: {1}",
 				new Object[] { currentTick, maxTick });
@@ -225,9 +237,9 @@ public class TaskManager {
 		if (task != null) {
 			long time = task.getScheduledTick();
 			if (time > currentTick) {
-				Queue<FrameworkTask> queue = taskQueue.get(time);
-				if (queue != null) {
-					return queue.remove(task);
+				Set<FrameworkTask> set = taskQueue.get(time);
+				if (set != null) {
+					return set.remove(task);
 				}
 			}
 		}
@@ -243,11 +255,18 @@ public class TaskManager {
 	 *            the number of ticks to use as an interval.
 	 */
 	public void addTicksToExecute(long ticks) {
-		if (inIntervalMode) {
-			endOfNextInterval = ticks + currentTick;
-			synchronized (lock) {
-				lock.notify();
+		if (ticks > 0) {
+			if (inIntervalMode) {
+				if(endOfNextInterval<currentTick){
+					endOfNextInterval=currentTick;
+				}
+				endOfNextInterval += ticks;
+				synchronized (lock) {
+					lock.notify();
+				}
 			}
+		} else {
+			logger.log(Level.WARNING, "Number of ticks added must be greater than zero", currentTick);
 		}
 	}
 
@@ -263,17 +282,21 @@ public class TaskManager {
 	 * @return true if the task was scheduled.
 	 */
 	public boolean scheduleTask(FrameworkTask task, long inXTicks) {
-		if (inXTicks <= 0){
+		if (inXTicks <= 0) {
+			logger.log(Level.WARNING, "inXTicks must be 1 or greater",
+					currentTick);
 			return false;
 		}
-
+		if(task==null){
+			return false;
+		}
 		Long time = currentTick + inXTicks;
-		Queue<FrameworkTask> queue = taskQueue.get(time);
-		if (queue == null) {
-			Queue<FrameworkTask> queue2 = new ConcurrentLinkedQueue<FrameworkTask>();
-			queue = taskQueue.putIfAbsent(time, queue2);
-			if (queue == null) {// there wasn't a Queue already at key 'time'
-				queue = queue2;
+		Set<FrameworkTask> set = taskQueue.get(time);
+		if (set == null) {
+			Set<FrameworkTask> set2 = new ConcurrentHashSet<FrameworkTask>();
+			set = taskQueue.putIfAbsent(time, set2);
+			if (set == null) {// there wasn't a set already at key 'time'
+				set = set2;
 				synchronized (maxTick) {
 					if (time > maxTick) {
 						maxTick = time;
@@ -285,20 +308,20 @@ public class TaskManager {
 			}
 		}
 		task.setScheduledTick(time);
-		queue.add(task);
+		set.add(task);
 		return true;
 	}
 
 	private long goNextTick() {
 		// TODO optimize this method to skip ticks until the next tick with
 		// scheduled tasks is found
-		Queue<FrameworkTask> queue = taskQueue.get(++currentTick);
+		Set<FrameworkTask> set = taskQueue.get(++currentTick);
 		taskQueue.remove(currentTick);
 		logger.log(Level.FINER, "Tick {0} executed", currentTick);
-		if (queue != null) {
+		if (set != null) {
 			try {
 				decayModules();
-				executorService.invokeAll(queue); // Execute all tasks scheduled
+				executorService.invokeAll(set); // Execute all tasks scheduled
 				// for this tick
 			} catch (InterruptedException e) {
 				if (!shuttingDown) {
@@ -337,13 +360,13 @@ public class TaskManager {
 		for (FrameworkModule lm : modules) {
 			decaybles.add(new DecayableWrapper(lm));
 		}
-	}	
-	
+	}
+
 	/**
-	 * This inner class implements the main loop of the system.
-	 * The main loop waits on the lock if the tasks are paused,
-	 * if in interval mode and have reached endOfNextInterval, 
-	 * or if no tasks are scheduled beyond current tick.
+	 * This inner class implements the main loop of the system. The main loop
+	 * waits on the lock if the tasks are paused, if in interval mode and have
+	 * reached endOfNextInterval, or if no tasks are scheduled beyond current
+	 * tick.
 	 */
 	private class TaskManagerMainLoop implements Runnable {
 
@@ -371,7 +394,7 @@ public class TaskManager {
 
 				long duration = System.currentTimeMillis() - initTime;
 				if (duration < tickDuration) {// TODO change this if multiticks
-												// are executed in goNextTick()
+					// are executed in goNextTick()
 					try {
 						Thread.sleep(tickDuration - duration);
 					} catch (InterruptedException e) {
@@ -383,10 +406,11 @@ public class TaskManager {
 	}// class
 
 	/**
-	 * This is an auxiliary class to perform the decaying of the modules in parallel.
+	 * This is an auxiliary class to perform the decaying of the modules in
+	 * parallel.
 	 * 
 	 * @author Javier Snaider
-	 *
+	 * 
 	 */
 	private static class DecayableWrapper implements Callable<Void> {
 		private FrameworkModule module;
@@ -394,9 +418,11 @@ public class TaskManager {
 		private static long lastDecayTick = 0L;
 
 		/**
-		 * Updates the interval that all decayables should decay.
-		 * Must be setup before executing the run() method.
-		 * @param currentTick current tick of the task manager
+		 * Updates the interval that all decayables should decay. Must be setup
+		 * before executing the run() method.
+		 * 
+		 * @param currentTick
+		 *            current tick of the task manager
 		 */
 		public static void setDecayInterval(long currentTick) {
 			ticksToDecay = currentTick - lastDecayTick;
@@ -404,7 +430,9 @@ public class TaskManager {
 
 		/**
 		 * Sets the last time that the decayables were decayed.
-		 * @param lastDecayTick last tick modules were decayed
+		 * 
+		 * @param lastDecayTick
+		 *            last tick modules were decayed
 		 */
 		public static void setLastDecayTick(long lastDecayTick) {
 			DecayableWrapper.lastDecayTick = lastDecayTick;
@@ -422,7 +450,7 @@ public class TaskManager {
 			return null;
 		}
 	}// private class
-	
+
 	/**
 	 * This method stops all tasks executing and prevents further tasks from
 	 * being executed. It is used to shutdown the entire system. Method shuts
@@ -443,12 +471,28 @@ public class TaskManager {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		logger.log(Level.INFO,
-				"TaskManager shutting down. System exiting.",
+		logger.log(Level.INFO, "TaskManager shutting down. System exiting.",
 				getCurrentTick());
 		System.exit(0);
 	}
-	
+
+	/**
+	 * This method clean up the Task Queue and reset to 0 the currentTick and
+	 * the maxTick. All {@link TaskSpawner} must be reset also. This method is
+	 * intended to be used only when the {@link Agent} is reset. To be
+	 * implemented in a future version.
+	 */
+	void reset() {
+		taskQueue = new ConcurrentHashMap<Long, Set<FrameworkTask>>();
+		endOfNextInterval = 0L;
+		currentTick = 0L;
+		maxTick = 0L;
+		tasksPaused = true;
+		inIntervalMode = false;
+		DecayableWrapper.lastDecayTick=0;
+		DecayableWrapper.ticksToDecay=0;
+	}
+
 	@Override
 	public String toString() {
 		return "TaskManager";

@@ -53,11 +53,10 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	private static final String DEFAULT_XML_FILE_PATH = "configs/agent.xml";
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaXMLSchema.xsd";
-	private static final int DEFAULT_TICK_DURATION = 10;
-	private static final int DEFAULT_NUMBER_OF_THREADS = 20;
 	
 	private Document dom;
 	private Agent agent;
+	private TaskManager taskMan;
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();
 	private List<Object[]> toAssociate = new ArrayList<Object[]>();
 	private Map<String,TaskSpawner> taskSpawners = new HashMap<String,TaskSpawner>();
@@ -75,7 +74,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * Verifies and parses specified xml file into a {@link Document}.
 	 * @param fileName
 	 */
-	private void parseXmlFile(String fileName) {
+	void parseXmlFile(String fileName) {
 		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
@@ -102,7 +101,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * Parses the xml document creating the TaskManager, TaskSpawners, Modules, submodules.  Sets up listeners
 	 * and associates modules.
 	 */
-	private void parseDocument() {
+	void parseDocument() {
 		// get the root element
 		Element docEle = dom.getDocumentElement();
 
@@ -131,7 +130,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element Element containing the task manager
 	 * @return {@link TaskManager}
 	 */
-	private TaskManager getTaskManager(Element element) {
+	TaskManager getTaskManager(Element element) {
 		NodeList nl = element.getElementsByTagName("taskmanager");
 		Element moduleElement=null;
 		if (nl != null && nl.getLength() > 0) {
@@ -144,9 +143,13 @@ public class AgentXmlFactory implements AgentFactory {
 		
 		Integer tickDuration = null; 
 		Integer maxNumberOfThreads = null;
-		
+
 		if(t instanceof String){
+			try{
 			tickDuration = Integer.parseInt((String) t);
+			}catch (NumberFormatException e){
+				logger.warning("Could not load tick duration. using default");				
+			}
 		}else if(t instanceof Integer){
 			tickDuration = (Integer)t;
 		}else{
@@ -154,7 +157,11 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		
 		if(m instanceof String){
+			try{
 			maxNumberOfThreads = Integer.parseInt((String) m);
+			}catch (NumberFormatException e){
+				logger.warning("Could not load max no of threads, using default");				
+			}
 		}else if(m instanceof Integer){
 			maxNumberOfThreads = (Integer)m;
 		}else{
@@ -162,13 +169,14 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		
 		if (tickDuration==null){
-			tickDuration=DEFAULT_TICK_DURATION;
+			tickDuration=TaskManager.DEFAULT_TICK_DURATION;
 		}
 		if(maxNumberOfThreads==null){
-			 maxNumberOfThreads=DEFAULT_NUMBER_OF_THREADS;			
+			 maxNumberOfThreads=TaskManager.DEFAULT_NUMBER_OF_THREADS;			
 		}		
 		TaskManager taskManager = new TaskManager(tickDuration, maxNumberOfThreads);
 
+		taskMan=taskManager;
 		return taskManager;
 	}
 	
@@ -176,7 +184,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * Reads in and creates all task spawners specified in {@link Element}
 	 * @param element
 	 */
-	private void getTaskSpawners(Element element) {
+	void getTaskSpawners(Element element) {
 		NodeList nl = element.getElementsByTagName("taskspawners");
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
@@ -204,7 +212,7 @@ public class AgentXmlFactory implements AgentFactory {
 			return;
 		}
 		
-		ts.setTaskManager(agent.getTaskManager());
+		ts.setTaskManager(taskMan);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		try{
 			ts.init(params);
@@ -221,7 +229,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * @return {@link FrameworkModule}s
 	 */
-	private List<FrameworkModule> getModules(Element element) {
+	List<FrameworkModule> getModules(Element element) {
 		List<FrameworkModule> modules = new ArrayList<FrameworkModule>();
 		NodeList nl = element.getElementsByTagName("submodules");
 		if (nl != null && nl.getLength() > 0) {
@@ -238,7 +246,12 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		return modules;
 	}
-	private FrameworkModule getModule(Element moduleElement) {
+	/**
+	 * Reads and creates a {@link FrameworkModule} in specified moduleElement
+	 * @param moduleElement dom element
+	 * @return {@link FrameworkModule}
+	 */
+	FrameworkModule getModule(Element moduleElement) {
 		//Get module name and class name
 		FrameworkModule module = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
@@ -309,10 +322,10 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	/**
 	 * Reads and creates {@link FrameworkTask}s specified in element
-	 * @param element
-	 * @return
+	 * @param element dom element
+	 * @return a list of {@link FrameworkTask}s
 	 */
-	private List<FrameworkTask> getTasks(Element element) {
+	List<FrameworkTask> getTasks(Element element) {
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 		NodeList nl = element.getElementsByTagName("initialTasks");
 
@@ -331,7 +344,13 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		return tasks;
 	}
-	private FrameworkTask getTask(Element moduleElement) {
+	
+	/**
+	 * Reads and creates {@link FrameworkTask} specified in element
+	 * @param element dom element
+	 * @return a {@link FrameworkTask}
+	 */
+	FrameworkTask getTask(Element moduleElement) {
 		FrameworkTask task = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
 		String name = moduleElement.getAttribute("name");
@@ -362,7 +381,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param moduleElement
 	 * @param initializable
 	 */
-	private void getAssociatedModules(Element moduleElement, Initializable initializable) {
+	void getAssociatedModules(Element moduleElement, Initializable initializable) {
 		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
 		if (nl != null && nl.getLength() > 0) {
 			for (int i = 0; i < nl.getLength(); i++) {
@@ -374,10 +393,10 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	/**
 	 * Reads and creates all listeners specified in element.
-	 * @param element
+	 * @param element dom element
 	 * 
 	 */
-	private void getListeners(Element element) {
+	void getListeners(Element element) {
 		NodeList nl = element.getElementsByTagName("listeners");
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
@@ -391,7 +410,13 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		return;
 	}
-	private void getListener(Element moduleElement) {
+	
+	/**
+	 * Reads and creates a listener specified in element.
+	 * @param element dom element
+	 * 
+	 */	
+	void getListener(Element moduleElement) {
 		Class<?> listenerClass = null;
 		String listenerType = XmlUtils.getTextValue(moduleElement,
 				"listenertype");
@@ -454,7 +479,7 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Iterates through the module/associated-module pairs and associates them
 	 */
-	private void associateModules() {
+	void associateModules() {
 		ModuleName moduleName;
 		for (Object[] vals : toAssociate) {
 			FullyInitializable initializable = (FullyInitializable) vals[0];
@@ -480,7 +505,7 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * For all modules with an initializer, run the initializer passing in the specific module.
 	 */
-	private void initializeModules() {
+	void initializeModules() {
 		for (Object[] vals : toInitialize) {
 			FullyInitializable moduleToInitialize = (FullyInitializable) vals[0];
 			String initializerClassName = (String) vals[1];

@@ -16,12 +16,6 @@ public enum TaskStatus {
 	
 	/**
 	 * FrameworkTask status value:
-	 * Task is scheduled to be run, but is not running yet.
-	 */
-	WAITING,
-	
-	/**
-	 * FrameworkTask status value:
 	 * Task is running
 	 */
 	RUNNING,
@@ -42,7 +36,7 @@ public enum TaskStatus {
 	 * FrameworkTask status value:
 	 * Task is not running and not finished.
 	 */
-	WAITING_TO_RUN,
+	WAITING,
 
 	/**
 	 * FrameworkTask status value:

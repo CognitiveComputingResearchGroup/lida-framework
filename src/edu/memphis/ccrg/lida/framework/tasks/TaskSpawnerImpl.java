@@ -10,11 +10,12 @@ package edu.memphis.ccrg.lida.framework.tasks;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**
  * Maintains a queue of running tasks and their task status. Methods to add and
@@ -33,7 +34,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	/*
 	 * The tasks currently being run
 	 */
-	private ConcurrentLinkedQueue<FrameworkTask> runningTasks = new ConcurrentLinkedQueue<FrameworkTask>();
+	private Set<FrameworkTask> runningTasks = new ConcurrentHashSet<FrameworkTask>();
 
 	private Map<String, ?> parameters;
 
@@ -66,7 +67,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 
 	@Override
 	public void addTask(FrameworkTask task) {
-		task.setTaskStatus(TaskStatus.WAITING_TO_RUN);
+		task.setTaskStatus(TaskStatus.WAITING);
 		task.setControllingTaskSpawner(this);
 		runningTasks.add(task);
 		runTask(task);
@@ -74,12 +75,12 @@ public class TaskSpawnerImpl implements TaskSpawner {
 				TaskManager.getCurrentTick(), task });
 	}
 
-	/**
+	/*
 	 * Schedule the FrameworkTask to be executed. Sets task status to RUNNING.
 	 * 
 	 * @param task
 	 */
-	protected void runTask(FrameworkTask task) {
+	private void runTask(FrameworkTask task) {
 		logger.log(Level.FINEST, "Running task {1}", new Object[] {
 				TaskManager.getCurrentTick(), task });
 		task.setTaskStatus(TaskStatus.RUNNING);
@@ -105,17 +106,17 @@ public class TaskSpawnerImpl implements TaskSpawner {
 			logger.log(Level.FINEST, "CANCELLED {1}", new Object[] {
 					TaskManager.getCurrentTick(), task });
 			break;
-		case WAITING_TO_RUN:
+		case WAITING:
 		case RUNNING:
 			logger.log(Level.FINEST, "RUNNING",
 					new Object[] { TaskManager.getCurrentTick(), task });
-			task.setTaskStatus(TaskStatus.WAITING_TO_RUN);
+			task.setTaskStatus(TaskStatus.WAITING);
 			runTask(task);
 			break;
 		}
 	}
 
-	/**
+	/*
 	 * When a finished task is received and its status is FINISHED_WITH_RESULTS
 	 * or FINISHED or CANCELLED This method is called to remove the task from
 	 * this TaskSpawner
@@ -123,7 +124,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 * @param task
 	 *            the FrameworkTask to remove.
 	 */
-	protected void removeTask(FrameworkTask task) {
+	private void removeTask(FrameworkTask task) {
 		logger.log(Level.FINEST, "Cancelling task {1}", new Object[] {
 				TaskManager.getCurrentTick(), task });
 		runningTasks.remove(task);
@@ -150,7 +151,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	}
 
 	/*
-	 * Removes FrameworkTask from task queue and tells TaskManager to cancel the
+	 * Removes FrameworkTask from task set and tells TaskManager to cancel the
 	 * task
 	 */
 	@Override

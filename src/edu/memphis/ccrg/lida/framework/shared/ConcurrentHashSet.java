@@ -49,8 +49,9 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 		boolean modified = false;
 		Iterator<? extends E> e = c.iterator();
 		while (e.hasNext()) {
-			if (add(e.next()))
+			if (add(e.next())){
 				modified = true;
+			}
 		}
 		return modified;
 	}

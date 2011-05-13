@@ -6,6 +6,7 @@ import java.util.List;
 public class MockTaskManager extends TaskManager {
 
 	public FrameworkTask task;
+	public FrameworkTask cancelTask;
 	public long ticks;
 	public List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 
@@ -22,5 +23,10 @@ public class MockTaskManager extends TaskManager {
 		tasks.add(task);
 		return true;
 		
+	}
+	@Override
+	public boolean cancelTask(FrameworkTask task){
+		cancelTask=task;
+		return true;
 	}
 }
