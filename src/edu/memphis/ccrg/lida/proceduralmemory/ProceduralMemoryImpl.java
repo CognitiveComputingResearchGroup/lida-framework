@@ -17,12 +17,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -65,6 +69,12 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private List<ProceduralMemoryListener> proceduralMemoryListeners;
 
+	private DecayStrategy behaviorDecayStrategy;
+
+	private ExciteStrategy behaviorExciteStrategy;
+	
+	private static final ElementFactory factory = ElementFactory.getInstance();
+
 	public ProceduralMemoryImpl() {
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 //		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
@@ -75,6 +85,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public void init() {		
+		String decayName = (String) getParam("behaviorDecayStrategy", factory.getDefaultDecayType());
+		behaviorDecayStrategy = factory.getDecayStrategy(decayName);
+		
+		String exciteName = (String) getParam("behaviorExciteStrategy", factory.getDefaultExciteType());
+		behaviorExciteStrategy = factory.getExciteStrategy(exciteName);
 	}
 	
 	@Override
@@ -182,8 +197,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				TaskManager.getCurrentTick());
+		Behavior b = s.getInstantiation();
+		b.setDecayStrategy(behaviorDecayStrategy);
+		b.setExciteStrategy(behaviorExciteStrategy);
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
-			listener.receiveBehavior(s.getInstantiation());
+			listener.receiveBehavior(b);
 		}
 	}
 

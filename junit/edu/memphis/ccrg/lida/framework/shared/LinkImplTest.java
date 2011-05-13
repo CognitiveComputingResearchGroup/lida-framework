@@ -13,9 +13,15 @@ package edu.memphis.ccrg.lida.framework.shared;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Properties;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
+import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
@@ -30,7 +36,15 @@ public class LinkImplTest{
 	private LinkImpl link1,link2,link3;	
 	private	PamLinkImpl pamLink1;
 	private LinkCategory linktype1;	
-	private ElementFactory factory = ElementFactory.getInstance();
+	private static ElementFactory factory = ElementFactory.getInstance();
+	
+	@BeforeClass
+	public static void setUpBeforeClass(){
+		factory = ElementFactory.getInstance();
+		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
+		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
+		factoryLoader.loadFactoriesData(prop);
+	}
 
 	/**
 	 * This method is called before running each test case to initialize the objects

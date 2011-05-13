@@ -18,6 +18,7 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
@@ -59,7 +60,8 @@ public class PerceptualAssociativeMemoryImplTest {
 	
 	private static ElementFactory factory;
 	
-	static{
+	@BeforeClass
+	public static void setUpBeforeClass(){
 		factory = ElementFactory.getInstance();
 		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);

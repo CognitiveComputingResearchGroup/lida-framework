@@ -14,9 +14,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Properties;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
+import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -26,11 +32,20 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  */
 public class PamLinkImplTest{
 	
-	private ElementFactory  factory = ElementFactory.getInstance();
 	private Node node1;
 	private Node node2;
 	private LinkCategory linkCategory;
 	private PamLinkImpl link1,link2, link3;
+	
+	private static ElementFactory factory = ElementFactory.getInstance();
+	
+	@BeforeClass
+	public static void setUpBeforeClass(){
+		factory = ElementFactory.getInstance();
+		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
+		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
+		factoryLoader.loadFactoriesData(prop);
+	}
  
 	@Before
 	public void setUp() throws Exception {

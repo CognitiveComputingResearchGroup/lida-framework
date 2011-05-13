@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework;
+package edu.memphis.ccrg.lida.framework.initialization;
 
 import static org.junit.Assert.*;
 
@@ -45,22 +45,13 @@ public class StrategyDefTest {
 						TaskManager.getCurrentTick());
 			}
 		 assertEquals ("problem with GetInstance", instance , strategy.getInstance()); 
-		
-	
 	}
-
-	
 
 	@Test
 	public void testIsFlyWeight() {
 		Map<String, Object> p = new HashMap <String, Object> ();
 		StrategyDef strategy =  new  StrategyDef ("Strategy1","st",p, "public", true);
 		assertEquals ("problem wit GetInstance", true, strategy.isFlyWeight()); 
-	}
-
-	@Test
-	public void testSetFlyWeight() {
-		fail("Not yet implemented");
 	}
 
 	@Test
@@ -79,46 +70,6 @@ public class StrategyDefTest {
 		 Map<String, Object> p = new HashMap <String, Object> ();
 		 strategy =  new  StrategyDef ("Strategy","st",p, "public", true);
 		 assertEquals ("problem with StrategyDef", p, strategy.getParams());
-	}
-
-	@Test
-	public void testGetName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetClassName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetClassName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetType() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetType() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetParams() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetParams() {
-		fail("Not yet implemented");
 	}
 
 }

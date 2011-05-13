@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.framework;
+package edu.memphis.ccrg.lida.framework.initialization;
 
 import static org.junit.Assert.*;
 
