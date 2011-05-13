@@ -27,6 +27,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -83,12 +84,21 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 	}
 
+	/**
+	 * This module can accept parameters for the decay and excite strategies for
+	 * behaviors instantiated in this module.  The parameters names are:<br>
+	 * 
+	 * <b>proceduralMemory.behaviorDecayStrategy</b> - name (a String) of the {@link Strategy} in the {@link ElementFactory} <br>
+	 * <b>proceduralMemory.behaviorExciteStrategy</b> - name (a String) of the {@link Strategy} in the {@link ElementFactory} 
+	 * 
+	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+	 */
 	@Override
 	public void init() {		
-		String decayName = (String) getParam("behaviorDecayStrategy", factory.getDefaultDecayType());
+		String decayName = (String) getParam("proceduralMemory.behaviorDecayStrategy", factory.getDefaultDecayType());
 		behaviorDecayStrategy = factory.getDecayStrategy(decayName);
 		
-		String exciteName = (String) getParam("behaviorExciteStrategy", factory.getDefaultExciteType());
+		String exciteName = (String) getParam("proceduralMemory.behaviorExciteStrategy", factory.getDefaultExciteType());
 		behaviorExciteStrategy = factory.getExciteStrategy(exciteName);
 	}
 	
