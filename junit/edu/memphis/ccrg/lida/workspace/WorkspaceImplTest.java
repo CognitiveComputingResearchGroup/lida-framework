@@ -21,6 +21,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
@@ -59,9 +60,26 @@ public class WorkspaceImplTest {
     public void testAddListener() {
         // TODO review test
         System.out.println("addListener");
-        ModuleListener listener = null;
         WorkspaceImpl instance = new WorkspaceImpl();
+        
+    	// Type of listener is neither WorkspaceListener nor CueListener 
+        ModuleListener listener = null;
         instance.addListener(listener);
+        
+        // Type of listener is WorkspaceListener (PerceptualAssociativeMemoryImpl)
+        // TODO: This test case should pass without warning, but warning happened.
+        WorkspaceListener wListener = new PerceptualAssociativeMemoryImpl();
+        instance.addListener(wListener);
+        
+        // Type of listener is WorkspaceListener (mockWorkListenerImpl)
+        WorkspaceListener wListener2 = new mockWorkListenerImpl();
+        instance.addListener(wListener2);
+        
+        // Type of listener is CueListener (mockCueListenerImpl)
+        // TODO: BUG? Compiling error happened. It because that CueListener doesn't extend ModuleListener.
+        CueListener cListener = new mockCueListenerImpl();
+        instance.addListener(cListener);
+        
     }
 
     /**
@@ -181,4 +199,25 @@ public class WorkspaceImplTest {
         WorkspaceImpl instance = new WorkspaceImpl();
         instance.init();
     }
+}
+
+class mockWorkListenerImpl implements WorkspaceListener {
+
+	@Override
+	public void receiveWorkspaceContent(ModuleName originatingBuffer,
+			WorkspaceContent content) {
+		
+	}
+	
+}
+
+class mockCueListenerImpl implements CueListener {
+
+	@Override
+	public void receiveCue(NodeStructure cue) {
+
+	}
+
+
+	
 }
