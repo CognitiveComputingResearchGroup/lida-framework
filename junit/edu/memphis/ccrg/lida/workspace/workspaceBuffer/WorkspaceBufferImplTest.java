@@ -1,7 +1,6 @@
-
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -10,18 +9,13 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 
-/**
- * 
- * @author Daqi
- *
- */
 public class WorkspaceBufferImplTest {
 
 	@Test
 	public final void testGetModuleContent() {
-				
 		//Creates node and add them into a node structure
 		NodeStructure ns = new NodeStructureImpl();
 		
@@ -45,12 +39,22 @@ public class WorkspaceBufferImplTest {
 		
 		assertTrue("Problem with class WorkspaceBufferImpl for GetModuleContent()",
 				(NodeStructureImpl.compareNodeStructures(ns, ns2)));
-
 	}
 
 	@Test
 	public final void testInit() {
 		//NA
+	}
+
+	@Test
+	public final void testWorkspaceBufferImpl() {
+		NodeStructure ns = new NodeStructureImpl();
+		WorkspaceBuffer buffer = new WorkspaceBufferImpl();
+		String s1 = ns.toString();
+		String s2 = ((NodeStructure)buffer.getBufferContent(null)).toString();
+		assertTrue("Problem with class WorkspaceBufferImpl for workspaceBufferImpl()",
+				 s1.equals(s2));
+
 	}
 
 	@Test
@@ -84,31 +88,36 @@ public class WorkspaceBufferImplTest {
 
 		// After node(Id == 2) is removed cause decay, so here is only node (Id == 6).
 		assertTrue("Problem with class WorkspaceBufferImpl for DecayModule()",
-				(ns2.getNode(2) == null)&&(ns2.getNode(6) != null)&&(ns2.getNodeCount() == 1));
-		
+				(ns2.containsNode(6))&&(!ns2.containsNode(2)));
 	}
 
 	@Test
-	public final void testWorkspaceBufferImpl() {
-		NodeStructure ns = new NodeStructureImpl();
-		Node n = new NodeImpl();
-		n.setActivation(0.1);
-		n.setActivatibleRemovalThreshold(0.05);
-		
-		n.decay(100);
-		assertTrue(n.isRemovable());
-		
-		n.setActivation(0.1);
-		n.setActivatibleRemovalThreshold(0.05);
-		assertTrue(!n.isRemovable());
-		
-		Node storedNode = ns.addDefaultNode(n);
-		
-		assertTrue(storedNode.getActivation() + "", 0.1 == storedNode.getActivation());
-		assertTrue(storedNode.getActivatibleRemovalThreshold() + "", 0.05 == storedNode.getActivatibleRemovalThreshold());
-		ns.decayNodeStructure(100);
-		assertTrue(storedNode.isRemovable());
+	public final void testAddListener() {
+		//NA
 	}
 
+	@Test
+	public final void testAddBufferContent() {
+		//Create a NodeStructure with NodeId = 2
+		NodeStructure ns = new NodeStructureImpl();
+		Node n1 = new NodeImpl();
+		n1.setId(2);
+		ns.addDefaultNode(n1);
+		
+		// Add the NodeStructure to buffer
+		WorkspaceBuffer buffer = new WorkspaceBufferImpl();
+		buffer.addBufferContent((WorkspaceContent)ns);
+		
+		// Check whether action of adding is successful
+		// In the same time, getBufferContent() method be tested too
+		assertTrue("Problem with class WorkspaceBufferImpl for addBufferContent()",
+				((NodeStructure)buffer.getBufferContent(null)).containsNode(2));
+			
+	}
+
+	@Test
+	public final void testGetBufferContent() {
+	//Be tested in testAddBufferContent function above together
+	}
 
 }
