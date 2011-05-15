@@ -3,6 +3,8 @@
  */
 package edu.memphis.ccrg.lida.sensorymemory;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Map;
 
 import org.junit.Test;
@@ -10,6 +12,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
 /**
@@ -24,6 +27,7 @@ public class SensoryMemoryBackgroundTaskTest {
 	 * @throws Exception e
 	 */
 	@Test
+	
 	public final void testRunThisTask() throws Exception {
 		
 		MockSensory mSensory = new MockSensory();
@@ -34,7 +38,11 @@ public class SensoryMemoryBackgroundTaskTest {
 	    st.setAssociatedModule(mSensory, ModuleUsage.NOT_SPECIFIED);
 	    
 	    // Testing of RunThisFrameworkTask method.
+	    mSensory.setFlag(false);
 	    st.runThisFrameworkTask();
+	    assertTrue("Problem with class SensoryMemoryBackgroundTask for runThisTask()",
+				mSensory.getFlag() == true);
+	    
 	
 	}
 	
@@ -58,24 +66,27 @@ public class SensoryMemoryBackgroundTaskTest {
 		SensoryMemoryBackgroundTask st = new SensoryMemoryBackgroundTask();
 		String sAns = "SensoryMemoryBackgroundTask background task";
 		
-		if (st.toString().equals(sAns))
-			System.out.println("Step 3-3: testToString() is OK");
-		else
-			System.out.println("Step 3-3: testToString() is NG");
-
+	    assertTrue("Problem with class SensoryMemoryBackgroundTask for toString()()",
+	    		st.toString().equals(sAns));
 	}
 }
 
 // Define a temporal class of implementing Class sensoryMemory for test
 class MockSensory extends FrameworkModuleImpl implements SensoryMemory, SensoryMotorMemoryListener {
 	
+	private boolean flag = false;
+	
+	public void setFlag(boolean flag){
+		this.flag = flag;
+	}
+	
+	public boolean getFlag(){
+		return flag;
+	}
 	@Override
 	public void runSensors() {
-		System.out.println("This is mock sensor.");
-	    
-		System.out.println("Step 3-1: testRunThisFrameworkTask() is OK");
-		System.out.println("Step 3-2: testSetAssociatedModule() is OK");
-		
+		flag = true;
+	
 	}
 	@Override
 	public Object getModuleContent(Object... params) {
