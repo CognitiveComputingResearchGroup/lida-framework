@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.episodicmemory;
 
+import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 
@@ -16,7 +17,7 @@ import edu.memphis.ccrg.lida.workspace.Workspace;
  * 
  * @author Ryan J. McCall
  */
-public interface CueListener {
+public interface CueListener  extends ModuleListener {
 	
 	/**
 	 * Receive a cue
