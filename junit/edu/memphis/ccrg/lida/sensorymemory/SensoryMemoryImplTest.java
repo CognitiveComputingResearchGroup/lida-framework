@@ -23,7 +23,12 @@ import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.pam.PamListener;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
 /**
  * This class is the JUnit test for <code>SensoryMemoryImpl</code> class.
@@ -35,7 +40,7 @@ public class SensoryMemoryImplTest {
      * 
      */
     public SensoryMemoryImplTest() {
-        //sensoryMemory = new ;
+        //NA
     }
 
     /**
@@ -74,7 +79,6 @@ public class SensoryMemoryImplTest {
     @Test
     public void testAddListener() {
         final int NUM_LIS_TO_ADD = 1;
-        System.out.println("addListener");
         final MockSensoryMemoryListener SM_LISTENER
                 = new MockSensoryMemoryListener();
         MockSensoryMemoryImpl instance = new MockSensoryMemoryImpl();
@@ -86,7 +90,15 @@ public class SensoryMemoryImplTest {
         // Pos: instance has 1 SM_LISTENER, same as added.
         assertEquals(NUM_LIS_AFTER, NUM_LIS_BEFORE + NUM_LIS_TO_ADD);
         assertEquals(SM_LISTENER, instance.getListeners().get(0));
+        
         // TODO test adding 2 listeners, one for SMM, and one for PAM
+    	// Warning should appear
+        MockSMMListener SMM_LISTENER = new MockSMMListener();
+        instance.addListener(SMM_LISTENER);
+    	// Warning should appear
+        MockPAMListener PAM_LISTENER = new MockPAMListener();
+        instance.addListener(PAM_LISTENER);
+        
     }
 
     /**
@@ -95,7 +107,6 @@ public class SensoryMemoryImplTest {
     @Test
     public void testAddSensoryMemoryListener() {
         final int NUM_LIS_TO_ADD = 1;
-        System.out.println("addListener");
         final MockSensoryMemoryListener SM_LISTENER
                 = new MockSensoryMemoryListener();
         MockSensoryMemoryImpl instance = new MockSensoryMemoryImpl();
@@ -107,7 +118,9 @@ public class SensoryMemoryImplTest {
         // Pos: instance has 1 SM_LISTENER, same as added.
         assertEquals(NUM_LIS_AFTER, NUM_LIS_BEFORE + NUM_LIS_TO_ADD);
         assertEquals(SM_LISTENER, instance.getListeners().get(0));
+        
         // TODO test adding 2 listeners, one for SMM, and one for PAM
+        // Do we need to check addSensoryMemoryListener() with paras of SMM or PAM? --Daqi
     }
 
     /**
@@ -118,10 +131,19 @@ public class SensoryMemoryImplTest {
         // Pre: instance has 0 associated modules.
         // Pos: instance has 1 associated module, same as added.
         // Test for SMM.
-        FrameworkModule module = null;
+    	
+    	// Type of module is not Environment
+    	// Warning should appear
+    	MockFrameworkModule module = new MockFrameworkModule();
         String moduleUsage = ModuleUsage.NOT_SPECIFIED;
         SensoryMemoryImpl instance = new MockSensoryMemoryImpl();
         instance.setAssociatedModule(module, moduleUsage);
+        
+     // Type of module is Environment
+        MockEnvironmentImpl env = new MockEnvironmentImpl();
+        instance.setAssociatedModule(env, moduleUsage);
+        
+        
         // TODO review the generated test code and remove the default call to fail.
     }
 
@@ -208,6 +230,7 @@ public class SensoryMemoryImplTest {
 
     }
 
+    
     public class MockEnvironmentImpl extends FrameworkModuleImpl implements Environment {
 
         @Override
@@ -244,5 +267,118 @@ public class SensoryMemoryImplTest {
 			// TODO Auto-generated method stub
 			return null;
 		}
+    }
+    
+    public class MockSMMListener implements SensoryMotorMemoryListener{
+
+		@Override
+		public void receiveActuatorCommand(Object command) {
+			
+		}
+    	
+    }
+    
+    public class MockPAMListener implements PamListener{
+
+		@Override
+		public void receivePercept(NodeStructure ns) {
+			
+		}
+    	
+    }
+    
+    public class MockFrameworkModule implements FrameworkModule{
+
+		@Override
+		public void setAssociatedModule(FrameworkModule module,
+				String moduleUsage) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void init(Map<String, ?> parameters) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void init() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Object getParam(String name, Object defaultValue) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ModuleName getModuleName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void setModuleName(ModuleName moduleName) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public FrameworkModule getSubmodule(ModuleName name) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public FrameworkModule getSubmodule(String name) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void addSubModule(FrameworkModule lm) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public Object getModuleContent(Object... params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void taskManagerDecayModule(long ticks) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void decayModule(long ticks) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void addListener(ModuleListener listener) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void setAssistingTaskSpawner(TaskSpawner ts) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public TaskSpawner getAssistingTaskSpawner() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+    	
     }
 }
