@@ -9,6 +9,7 @@
 package edu.memphis.ccrg.lida.workspace;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,14 +19,18 @@ import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
- * @author Rodrigo Silva-Lugo
+ * @author Rodrigo Silva-Lugo, Daqi Dong
  */
 public class WorkspaceImplTest {
 	
@@ -59,24 +64,18 @@ public class WorkspaceImplTest {
     @Test
     public void testAddListener() {
         // TODO review test
-        System.out.println("addListener");
         WorkspaceImpl instance = new WorkspaceImpl();
         
     	// Type of listener is neither WorkspaceListener nor CueListener 
-        ModuleListener listener = null;
+        // Warning should appear
+        ModuleListener listener = new mockModuleListenerImpl();
         instance.addListener(listener);
-        
-        // Type of listener is WorkspaceListener (PerceptualAssociativeMemoryImpl)
-        // TODO: This test case should pass without warning, but warning happened.
-        WorkspaceListener wListener = new PerceptualAssociativeMemoryImpl();
-        instance.addListener(wListener);
         
         // Type of listener is WorkspaceListener (mockWorkListenerImpl)
         WorkspaceListener wListener2 = new mockWorkListenerImpl();
         instance.addListener(wListener2);
         
         // Type of listener is CueListener (mockCueListenerImpl)
-        // TODO: BUG? Compiling error happened. It because that CueListener doesn't extend ModuleListener.
         CueListener cListener = new mockCueListenerImpl();
         instance.addListener(cListener);
         
@@ -88,8 +87,7 @@ public class WorkspaceImplTest {
     @Test
     public void testAddCueListener() {
         // TODO review test
-        System.out.println("addCueListener");
-        CueListener l = null;
+        CueListener l = new mockCueListenerImpl();
         WorkspaceImpl instance = new WorkspaceImpl();
         instance.addCueListener(l);
     }
@@ -100,8 +98,7 @@ public class WorkspaceImplTest {
     @Test
     public void testAddWorkspaceListener() {
         // TODO review test
-        System.out.println("addWorkspaceListener");
-        WorkspaceListener listener = null;
+        WorkspaceListener listener = new mockWorkListenerImpl();;
         WorkspaceImpl instance = new WorkspaceImpl();
         instance.addWorkspaceListener(listener);
     }
@@ -112,10 +109,18 @@ public class WorkspaceImplTest {
     @Test
     public void testCueEpisodicMemories() {
         // TODO review test
-        System.out.println("cueEpisodicMemories");
-        NodeStructure content = null;
         WorkspaceImpl instance = new WorkspaceImpl();
-        instance.cueEpisodicMemories(content);
+        
+        // Add a CueListener to list
+        CueListener l = new mockCueListenerImpl();
+        instance.addCueListener(l);
+        
+        // Set a NodeStructure (with nodeId = 2) to list of cueListener
+        NodeStructure ns = new NodeStructureImpl();
+		Node n1 = new NodeImpl();
+		n1.setId(2);
+		ns.addDefaultNode(n1);
+		instance.cueEpisodicMemories(ns);
     }
 
     /**
@@ -146,9 +151,22 @@ public class WorkspaceImplTest {
     @Test
     public void testReceiveLocalAssociation() {
         // TODO review test
-        NodeStructure association = null;
+    	// Create a sub module of EpisodicBuffer
         WorkspaceImpl instance = new WorkspaceImpl();
-        instance.receiveLocalAssociation(association);
+        WorkspaceBufferImpl buffer = new WorkspaceBufferImpl();
+        buffer.setModuleName(ModuleName.EpisodicBuffer);
+        instance.addSubModule(buffer);
+    	    	
+        // Add a WorkspaceListener to list
+        WorkspaceListener w = new mockWorkListenerImpl();
+        instance.addWorkspaceListener(w);
+        
+        // Set a NodeStructure (with nodeId = 5) to list of WorkspaceListener
+        NodeStructure ns = new NodeStructureImpl();
+		Node n1 = new NodeImpl();
+		n1.setId(5);
+		ns.addDefaultNode(n1);
+        instance.receiveLocalAssociation(ns);
     }
 
     /**
@@ -157,10 +175,25 @@ public class WorkspaceImplTest {
     @Test
     public void testReceivePercept() {
         // TODO review test
-        System.out.println("receivePercept");
-        NodeStructure newPercept = null;
+    	// Create a sub module of PerceptualBuffer
         WorkspaceImpl instance = new WorkspaceImpl();
-        instance.receivePercept(newPercept);
+        WorkspaceBuffer buffer = new WorkspaceBufferImpl();
+        buffer.setModuleName(ModuleName.PerceptualBuffer);
+        instance.addSubModule(buffer);
+    	
+        // Set a NodeStructure (with nodeId = 9) to PerceptualBuffer
+        NodeStructure ns = new NodeStructureImpl();
+		Node n1 = new NodeImpl();
+		n1.setId(9);
+		ns.addDefaultNode(n1);
+        instance.receivePercept(ns);
+        
+        //Check the action above has been done successfully
+		buffer = (WorkspaceBuffer) instance.getSubmodule(ModuleName.PerceptualBuffer);
+		NodeStructure ns2 = (NodeStructure)buffer.getBufferContent(null);
+	    assertTrue("Problem with class WorkspaceImpl for receivePercept()",
+				ns2.containsNode(9));
+				
     }
 
     /**
@@ -169,7 +202,6 @@ public class WorkspaceImplTest {
     @Test
     public void testGetModuleContent() {
         // TODO review test
-        System.out.println("getModuleContent");
         Object[] params = null;
         WorkspaceImpl instance = new WorkspaceImpl();
         Object expResult = null;
@@ -183,10 +215,7 @@ public class WorkspaceImplTest {
     @Test
     public void testLearn() {
         // TODO review test
-        System.out.println("learn");
-        BroadcastContent content = null;
-        WorkspaceImpl instance = new WorkspaceImpl();
-        instance.learn(content);
+        //N/A because of "Not applicable"
     }
 
     /**
@@ -195,9 +224,7 @@ public class WorkspaceImplTest {
     @Test
     public void testInit() {
         // TODO review test
-        System.out.println("init");
-        WorkspaceImpl instance = new WorkspaceImpl();
-        instance.init();
+        //N/A because of "Not applicable"
     }
 }
 
@@ -206,6 +233,9 @@ class mockWorkListenerImpl implements WorkspaceListener {
 	@Override
 	public void receiveWorkspaceContent(ModuleName originatingBuffer,
 			WorkspaceContent content) {
+		//Check for receiving a NodeStructure which has a node with Id = 5
+		assertTrue("Problem with class WorkspaceImpl for receiveLocalAssociation()",
+				content.containsNode(5));
 		
 	}
 	
@@ -215,9 +245,13 @@ class mockCueListenerImpl implements CueListener {
 
 	@Override
 	public void receiveCue(NodeStructure cue) {
-
+		//Check for receiving a NodeStructure which has a node with Id = 2
+		assertTrue("Problem with class WorkspaceImpl for cueEpisodicMemories()",
+				cue.containsNode(2));
 	}
+	
+}
 
-
+class mockModuleListenerImpl implements ModuleListener{
 	
 }
