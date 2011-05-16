@@ -46,7 +46,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * 
  */ 
 public class AgentXmlFactory implements AgentFactory {
-//	TODO consider 'postInit' method that runs after initializers run.
+	//TODO consider 'postInit' method that runs after initializers run.
 	//This will allow objects created in the initial pass, e.g. Nodes, AgentActions, to be used by other 
 	//modules initialized before the objects were created.
 	private static final Logger logger = Logger.getLogger(AgentXmlFactory.class.getCanonicalName());
@@ -56,10 +56,10 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	private Document dom;
 	private Agent agent;
-	private TaskManager taskMan;
+
 	private List<Object[]> toInitialize = new ArrayList<Object[]>();
 	private List<Object[]> toAssociate = new ArrayList<Object[]>();
-	private Map<String,TaskSpawner> taskSpawners = new HashMap<String,TaskSpawner>();
+	private Map<String,TaskSpawner> taskSpawners;
 
 	@Override
 	public Agent getAgent(Properties properties) { 
@@ -109,21 +109,21 @@ public class AgentXmlFactory implements AgentFactory {
 		logger.log(Level.INFO, "Finished obtaining TaskManager\n", 0L);
 		agent = new AgentImpl(tm);
 		
-		getTaskSpawners(docEle);
+		taskSpawners=getTaskSpawners(docEle,tm);
 		logger.log(Level.INFO, "Finished creating TaskSpawners\n", 0L);
 		
-		for (FrameworkModule lm : getModules(docEle)) {
+		for (FrameworkModule lm : getModules(docEle,toAssociate,toInitialize,taskSpawners)) {
 			agent.addSubModule(lm);
 		}
 		logger.log(Level.INFO, "Finished creating modules and submodules\n", 0L);
 		
-		getListeners(docEle);
+		getListeners(docEle,agent);
 		logger.log(Level.INFO, "Finished setting up listeners\n", 0L);
 
-		associateModules();
+		associateModules(agent);
 		logger.log(Level.INFO, "Finished associating modules\n", 0L);
 		
-		initializeModules();
+		initializeModules(agent,toInitialize);
 	}
 	
 	/**
@@ -176,30 +176,38 @@ public class AgentXmlFactory implements AgentFactory {
 		}		
 		TaskManager taskManager = new TaskManager(tickDuration, maxNumberOfThreads);
 
-		taskMan=taskManager;
 		return taskManager;
 	}
 	
 	/**
-	 * Reads in and creates all task spawners specified in {@link Element}
-	 * @param element
+	 * Reads in and creates all {@link TaskSpawner}s specified in {@link Element}
+	 * @param element Dom element
+	 * @param tm the {@link TaskManager}
 	 */
-	void getTaskSpawners(Element element) {
+	Map<String,TaskSpawner> getTaskSpawners(Element element, TaskManager tm) {
+		Map<String,TaskSpawner>spawners = new HashMap<String, TaskSpawner>();
 		NodeList nl = element.getElementsByTagName("taskspawners");
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
 			List<Element> list = XmlUtils.getChildren(modulesElemet,"taskspawner");
 			if (list != null && list.size() > 0) {
 				for (Element moduleElement:list) {					
-					getTaskSpawner(moduleElement);
+					getTaskSpawner(moduleElement,tm,spawners);
 				}
 			}
 		}
+		return spawners;
 	}
-	private void getTaskSpawner(Element moduleElement) {
+	/**
+	 * Creates a {@link TaskSpawner} from specified {@link Element} and {@link TaskManager}
+	 * @param element Dom element
+	 * @param tm the {@link TaskManager}
+	 * @param spawners The msp of {@link TaskSpawner}s where the new {@link TaskSpawner} is included
+	 */
+	void getTaskSpawner(Element element, TaskManager tm,Map<String,TaskSpawner>spawners) {
 		TaskSpawner ts = null;
-		String className = XmlUtils.getTextValue(moduleElement, "class");
-		String name = moduleElement.getAttribute("name");
+		String className = XmlUtils.getTextValue(element, "class");
+		String name = element.getAttribute("name");
 		try {
 			ts = (TaskSpawner) Class.forName(className).newInstance();
 		}
@@ -212,15 +220,15 @@ public class AgentXmlFactory implements AgentFactory {
 			return;
 		}
 		
-		ts.setTaskManager(taskMan);
-		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		ts.setTaskManager(tm);
+		Map<String,Object> params = XmlUtils.getTypedParams(element);
 		try{
 			ts.init(params);
 		}catch(Exception e){
 			logger.log(Level.SEVERE, "Error initializing  task spawner: " + ts.toString(), 0L);
 			e.printStackTrace();
 		}
-		taskSpawners.put(name, ts);
+		spawners.put(name, ts);
 		logger.log(Level.INFO, "TaskSpawner: " + name + " added.", 0L);
 	}
 	
@@ -229,7 +237,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * @return {@link FrameworkModule}s
 	 */
-	List<FrameworkModule> getModules(Element element) {
+	List<FrameworkModule> getModules(Element element,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner>spawners) {
 		List<FrameworkModule> modules = new ArrayList<FrameworkModule>();
 		NodeList nl = element.getElementsByTagName("submodules");
 		if (nl != null && nl.getLength() > 0) {
@@ -237,7 +245,7 @@ public class AgentXmlFactory implements AgentFactory {
 			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
 			if (list != null && list.size() > 0) {
 				for (Element moduleElement:list) {					
-					FrameworkModule module = getModule(moduleElement);
+					FrameworkModule module = getModule(moduleElement,toAssoc,toInit,spawners);
 					if(module != null){
 						modules.add(module);
 					}
@@ -251,7 +259,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param moduleElement dom element
 	 * @return {@link FrameworkModule}
 	 */
-	FrameworkModule getModule(Element moduleElement) {
+	FrameworkModule getModule(Element moduleElement,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner> spawners) {
 		//Get module name and class name
 		FrameworkModule module = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
@@ -281,17 +289,17 @@ public class AgentXmlFactory implements AgentFactory {
 		
 		//Set up module's Taskspawner and initial tasks.
 		String taskspawner = XmlUtils.getTextValue(moduleElement,"taskspawner");
-		TaskSpawner ts = taskSpawners.get(taskspawner);
+		TaskSpawner ts = spawners.get(taskspawner);
 		if (ts != null) {
 			module.setAssistingTaskSpawner(ts);
-			List<FrameworkTask>initialTasks = getTasks(moduleElement);
+			List<FrameworkTask>initialTasks = getTasks(moduleElement,toAssoc);
 			ts.addTasks(initialTasks);
 		}else{
 			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
 		}
 		
 		//Get and add all submodules.
-		for (FrameworkModule lm : getModules(moduleElement)) {
+		for (FrameworkModule lm : getModules(moduleElement,toAssoc,toInit, spawners)) {
 			module.addSubModule(lm);
 		}
 		
@@ -310,11 +318,11 @@ public class AgentXmlFactory implements AgentFactory {
 		// custom initialization of the module. 
 		String classInit = XmlUtils.getTextValue(moduleElement,	"initializerclass");
 		if (classInit != null) {
-			toInitialize.add(new Object[] { module, classInit, params});
+			toInit.add(new Object[] { module, classInit, params});
 		}
 		
 		//Gathers all 'associatedmodules' for this module.  To be added later.
-		getAssociatedModules(moduleElement, module);
+		getAssociatedModules(moduleElement, module,toAssoc);
 		
 		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
 		return module;
@@ -325,7 +333,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * @return a list of {@link FrameworkTask}s
 	 */
-	List<FrameworkTask> getTasks(Element element) {
+	List<FrameworkTask> getTasks(Element element,List<Object[]>toAssoc) {
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 		NodeList nl = element.getElementsByTagName("initialTasks");
 
@@ -335,7 +343,7 @@ public class AgentXmlFactory implements AgentFactory {
 			if (nl != null && nl.getLength() > 0) {
 				for (int i = 0; i < nl.getLength(); i++) {
 					Element moduleElement = (Element) nl.item(i);
-					FrameworkTask task = getTask(moduleElement);
+					FrameworkTask task = getTask(moduleElement,toAssoc);
 					if(task != null){
 						tasks.add(task);
 					}
@@ -350,7 +358,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * @return a {@link FrameworkTask}
 	 */
-	FrameworkTask getTask(Element moduleElement) {
+	FrameworkTask getTask(Element moduleElement,List<Object[]>toAssoc) {
 		FrameworkTask task = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
 		String name = moduleElement.getAttribute("name");
@@ -370,7 +378,7 @@ public class AgentXmlFactory implements AgentFactory {
 		task.setTicksPerStep(ticks);
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		task.init(params);
-		getAssociatedModules(moduleElement, task);
+		getAssociatedModules(moduleElement, task,toAssoc);
 
 		logger.log(Level.INFO, "Task: " + name + " added.", 0L);
 		return task;
@@ -381,12 +389,12 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param moduleElement
 	 * @param initializable
 	 */
-	void getAssociatedModules(Element moduleElement, Initializable initializable) {
+	void getAssociatedModules(Element moduleElement, Initializable initializable,List<Object[]>toAssoc) {
 		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
 		if (nl != null && nl.getLength() > 0) {
 			for (int i = 0; i < nl.getLength(); i++) {
 				String assocMod=XmlUtils.getValue((Element) nl.item(i));
-				toAssociate.add(new Object[]{initializable,assocMod});
+				toAssoc.add(new Object[]{initializable,assocMod});
 			}
 		}
 	}
@@ -396,7 +404,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * 
 	 */
-	void getListeners(Element element) {
+	void getListeners(Element element,FrameworkModule topModule) {
 		NodeList nl = element.getElementsByTagName("listeners");
 		if (nl != null && nl.getLength() > 0) {
 			Element modulesElemet = (Element) nl.item(0);
@@ -404,7 +412,7 @@ public class AgentXmlFactory implements AgentFactory {
 			if (nl != null && nl.getLength() > 0) {
 				for (int i = 0; i < nl.getLength(); i++) {
 					Element moduleElement = (Element) nl.item(i);
-					getListener(moduleElement);
+					getListener(moduleElement,topModule);
 				}
 			}
 		}
@@ -416,7 +424,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * 
 	 */	
-	void getListener(Element moduleElement) {
+	void getListener(Element moduleElement,FrameworkModule topModule) {
 		Class<?> listenerClass = null;
 		String listenerType = XmlUtils.getTextValue(moduleElement,
 				"listenertype");
@@ -434,17 +442,17 @@ public class AgentXmlFactory implements AgentFactory {
 
 		ModuleName moduleName;
 		
-			moduleName = ModuleName.getModuleName(name);
+		moduleName = ModuleName.getModuleName(name);
 		if (moduleName==null) {
 			logger.log(Level.WARNING,
 					"Module name: " + name + " is not valid.", 0L);
 			return;
 		}
-		FrameworkModule module = agent.getSubmodule(moduleName);
+		FrameworkModule module = topModule.getSubmodule(moduleName);
 
 		ModuleName listenerModuleName;
 		
-			listenerModuleName = ModuleName.getModuleName(listenername);
+		listenerModuleName = ModuleName.getModuleName(listenername);
 		if (listenerModuleName==null) {
 			logger.log(Level.WARNING, "Listener name: " + listenername
 					+ " is not valid.", 0L);
@@ -452,7 +460,7 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 
 		ModuleListener listener = null;
-		FrameworkModule listenerModule = agent.getSubmodule(listenerModuleName);
+		FrameworkModule listenerModule = topModule.getSubmodule(listenerModuleName);
 		if(listenerModule == null){
 			logger.log(Level.WARNING, "Could not find listener module " + listenerModuleName + 
 						" listener will not be set up", 0L);
@@ -479,7 +487,7 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Iterates through the module/associated-module pairs and associates them
 	 */
-	void associateModules() {
+	void associateModules(FrameworkModule topModule) {
 		ModuleName moduleName;
 		for (Object[] vals : toAssociate) {
 			FullyInitializable initializable = (FullyInitializable) vals[0];
@@ -490,7 +498,7 @@ public class AgentXmlFactory implements AgentFactory {
 					"Module associated module name: " + assocModule + " is not valid.", 0L);
 				break;
 			}
-			FrameworkModule module=agent.getSubmodule(moduleName);
+			FrameworkModule module=topModule.getSubmodule(moduleName);
 			if(module != null){
 				initializable.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
 			}else{
@@ -505,8 +513,8 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * For all modules with an initializer, run the initializer passing in the specific module.
 	 */
-	void initializeModules() {
-		for (Object[] vals : toInitialize) {
+	void initializeModules(Agent topModule,List<Object[]>toInit) {
+		for (Object[] vals : toInit) {
 			FullyInitializable moduleToInitialize = (FullyInitializable) vals[0];
 			String initializerClassName = (String) vals[1];
 			@SuppressWarnings("unchecked")
@@ -525,7 +533,7 @@ public class AgentXmlFactory implements AgentFactory {
 			
 			if(initializer != null){
 				try{
-					initializer.initModule(moduleToInitialize, agent, params);
+					initializer.initModule(moduleToInitialize, topModule, params);
 				}catch (Exception e){
 					logger.log(Level.SEVERE, "Exception occurred running initializer: " + initializerClassName , TaskManager.getCurrentTick());
 					e.printStackTrace();

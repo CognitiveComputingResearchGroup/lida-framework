@@ -1,5 +1,8 @@
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
@@ -7,6 +10,7 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 
 	public boolean wasDecayed;
 	public long decayTicks;
+	public List<ModuleListener>listeners = new ArrayList<ModuleListener>();
 
 	@Override
 	public Object getModuleContent(Object... params) {
@@ -22,7 +26,7 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		listeners.add(listener);
 
 	}
 
@@ -30,7 +34,6 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 	public void decayModule(long ticks) {
 		decayTicks=ticks;
 		wasDecayed = true;
-
 	}
 
 }

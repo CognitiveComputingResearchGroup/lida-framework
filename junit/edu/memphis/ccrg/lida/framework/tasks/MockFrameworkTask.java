@@ -1,11 +1,14 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
-public class TestTask extends FrameworkTaskImpl{
-	public TestTask(int i, TaskSpawner taskSpawner) {
+public class MockFrameworkTask extends FrameworkTaskImpl{
+	public MockFrameworkTask(int i, TaskSpawner taskSpawner) {
 		super(i, taskSpawner);
 	}
-	public TestTask(int i) {
+	public MockFrameworkTask(int i) {
 		super(i);
+	}
+	public MockFrameworkTask() {
+		super(10);
 	}
 	@Override
 	public String toString() {

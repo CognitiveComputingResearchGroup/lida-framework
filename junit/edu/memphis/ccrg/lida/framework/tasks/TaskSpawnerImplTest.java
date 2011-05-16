@@ -14,7 +14,7 @@ public class TaskSpawnerImplTest {
 
 	private TaskSpawnerImpl taskSpawner;
 	private MockTaskManager tm;
-	private TestTask task1;
+	private MockFrameworkTask task1;
 	private boolean initCalled;
 	
 	@Before
@@ -28,8 +28,8 @@ public class TaskSpawnerImplTest {
 
 	@Test
 	public void testAddTasks() {
-		task1 = new TestTask(10);
-		TestTask task2 = new TestTask(20);
+		task1 = new MockFrameworkTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(20);
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 		tasks.add(task1);
 		tasks.add(task2);
@@ -48,7 +48,7 @@ public class TaskSpawnerImplTest {
 
 	@Test
 	public void testAddTask() {
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		taskSpawner.addTask(task1);
 		assertEquals(taskSpawner, task1.getControllingTaskSpawner());
 		assertEquals(TaskStatus.RUNNING, task1.getTaskStatus());
@@ -64,7 +64,7 @@ public class TaskSpawnerImplTest {
 	
 	@Test
 	public void testReceiveFinishedTaskRUNNING() {
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		//RUNNING
 		taskSpawner.addTask(task1);
 		tm.task=null;
@@ -80,7 +80,7 @@ public class TaskSpawnerImplTest {
 	@Test
 	public void testReceiveFinishedTaskFINISHED_WITH_RESULTS() {
 		
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		
 		//FINISHED_WITH_RESULTS
 		taskSpawner=new TaskSpawnerImpl(){
@@ -108,7 +108,7 @@ public class TaskSpawnerImplTest {
 	@Test
 	public void testReceiveFinishedTaskFINISHED() {
 		
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		
 		taskSpawner=new TaskSpawnerImpl(){
 			@Override
@@ -134,7 +134,7 @@ public class TaskSpawnerImplTest {
 	
 	@Test
 	public void testReceiveFinishedTaskWAITING() {
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		//RUNNING
 		taskSpawner.addTask(task1);
 		task1.setTaskStatus(TaskStatus.WAITING);
@@ -151,7 +151,7 @@ public class TaskSpawnerImplTest {
 	@Test
 	public void testReceiveFinishedTaskCANCEL() {
 		
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		
 		taskSpawner=new TaskSpawnerImpl(){
 			@Override
@@ -177,8 +177,8 @@ public class TaskSpawnerImplTest {
 
 	@Test
 	public void testGetRunningTasks() {
-		task1 = new TestTask(10);
-		TestTask task2 = new TestTask(20);
+		task1 = new MockFrameworkTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(20);
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 		tasks.add(task1);
 		tasks.add(task2);
@@ -201,8 +201,8 @@ public class TaskSpawnerImplTest {
 
 	@Test
 	public void testCancelTask() {
-		task1 = new TestTask(10);
-		TestTask task2 = new TestTask(20);
+		task1 = new MockFrameworkTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(20);
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
 		tasks.add(task1);
 		tasks.add(task2);
@@ -216,7 +216,7 @@ public class TaskSpawnerImplTest {
 
 	@Test
 	public void testContainsTask() {
-		task1 = new TestTask(10);
+		task1 = new MockFrameworkTask(10);
 		assertTrue(!taskSpawner.containsTask(task1));
 		taskSpawner.addTask(task1);
 		assertEquals(taskSpawner, task1.getControllingTaskSpawner());

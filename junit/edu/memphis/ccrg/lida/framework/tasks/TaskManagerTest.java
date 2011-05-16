@@ -33,7 +33,7 @@ public class TaskManagerTest {
 	
 	@Test
 	public void testGetCurrentTick() {
-		TestTask task = new TestTask(10);
+		MockFrameworkTask task = new MockFrameworkTask(10);
 		tm.scheduleTask(task, 40);
 		assertEquals(40,tm.getMaxTick());
 		assertEquals(0, TaskManager.getCurrentTick());		
@@ -50,10 +50,10 @@ public class TaskManagerTest {
 	@Test
 	public void testGetMaxTick() {
 		assertEquals(0,tm.getMaxTick());
-		TestTask task = new TestTask(10);
+		MockFrameworkTask task = new MockFrameworkTask(10);
 		tm.scheduleTask(task, 40);
 		assertEquals(40,tm.getMaxTick());
-		task = new TestTask(10);
+		task = new MockFrameworkTask(10);
 		tm.scheduleTask(task, 80);
 		assertEquals(80,tm.getMaxTick());
 	}
@@ -63,7 +63,7 @@ public class TaskManagerTest {
 		tm.setInIntervalMode(true);
 		tm.addTicksToExecute(20);
 		assertEquals(20, tm.getEndOfNextInterval());
-		TestTask task = new TestTask(10);
+		MockFrameworkTask task = new MockFrameworkTask(10);
 		tm.scheduleTask(task, 100);
 		assertEquals(20, tm.getEndOfNextInterval());
 	}
@@ -89,11 +89,11 @@ public class TaskManagerTest {
 	@Test
 	public void testGetTaskQueue() {
 		assertEquals(0,TaskManager.getCurrentTick());
-		TestTask task = new TestTask(10);
+		MockFrameworkTask task = new MockFrameworkTask(10);
 		task.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task, 40);
 
-		TestTask task2 = new TestTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(10);
 		task.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task2, 80);
 
@@ -114,11 +114,11 @@ public class TaskManagerTest {
 
 	@Test
 	public void testPauseTasks() {
-		TestTask task1 = new TestTask(10);
+		MockFrameworkTask task1 = new MockFrameworkTask(10);
 		task1.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task1, 10);
 
-		TestTask task2 = new TestTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(10);
 		task2.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task2, 20);
 		
@@ -131,11 +131,11 @@ public class TaskManagerTest {
 		
 		tm.pauseTasks();
 		
-		TestTask task3 = new TestTask(10);
+		MockFrameworkTask task3 = new MockFrameworkTask(10);
 		task3.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task3, 30);
 
-		TestTask task4 = new TestTask(10);
+		MockFrameworkTask task4 = new MockFrameworkTask(10);
 		task4.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task4, 40);
 		
@@ -155,11 +155,11 @@ public class TaskManagerTest {
 
 	@Test
 	public void testResumeTasks() {
-		TestTask task1 = new TestTask(10);
+		MockFrameworkTask task1 = new MockFrameworkTask(10);
 		task1.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task1, 10);
 
-		TestTask task2 = new TestTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(10);
 		task2.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task2, 20);
 		
@@ -172,11 +172,11 @@ public class TaskManagerTest {
 		
 		tm.pauseTasks();
 		
-		TestTask task3 = new TestTask(10);
+		MockFrameworkTask task3 = new MockFrameworkTask(10);
 		task3.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task3, 30);
 
-		TestTask task4 = new TestTask(10);
+		MockFrameworkTask task4 = new MockFrameworkTask(10);
 		task4.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task4, 40);
 		
@@ -208,11 +208,11 @@ public class TaskManagerTest {
 
 	@Test
 	public void testCancelTask() {
-		TestTask task1 = new TestTask(10);
+		MockFrameworkTask task1 = new MockFrameworkTask(10);
 		task1.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task1, 10);
 
-		TestTask task2 = new TestTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(10);
 		task2.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task2, 20);
 		
@@ -247,7 +247,7 @@ public class TaskManagerTest {
 		assertEquals(200,tm.getEndOfNextInterval());
 		tm.addTicksToExecute(-100);
 		assertEquals(200,tm.getEndOfNextInterval());
-		TestTask task1 = new TestTask(10);
+		MockFrameworkTask task1 = new MockFrameworkTask(10);
 		
 		tm.setInIntervalMode(false);
 		task1.setControllingTaskSpawner(taskSpawner);
@@ -269,11 +269,11 @@ public class TaskManagerTest {
 
 	@Test
 	public void testScheduleTask() {
-		TestTask task1 = new TestTask(10);
+		MockFrameworkTask task1 = new MockFrameworkTask(10);
 		task1.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task1, 10);
 
-		TestTask task2 = new TestTask(10);
+		MockFrameworkTask task2 = new MockFrameworkTask(10);
 		task2.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task2, 20);
 		
@@ -293,7 +293,7 @@ public class TaskManagerTest {
 		assertTrue(task1.wasRun);
 		assertTrue(task2.wasRun);
 		
-		TestTask task3 = new TestTask(10);
+		MockFrameworkTask task3 = new MockFrameworkTask(10);
 		task3.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task3, 20);
 		
@@ -315,7 +315,7 @@ public class TaskManagerTest {
 		MockFrameworkModule module = new MockFrameworkModule();
 		modules.add(module);
 		tm.setDecayingModules(modules);
-		TestTask task1 = new TestTask(10);
+		MockFrameworkTask task1 = new MockFrameworkTask(10);
 		task1.setControllingTaskSpawner(taskSpawner);
 		tm.scheduleTask(task1, 10);
 		tm.resumeTasks();

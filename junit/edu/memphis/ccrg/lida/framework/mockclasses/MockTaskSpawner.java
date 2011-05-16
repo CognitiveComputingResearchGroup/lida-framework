@@ -11,13 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
+import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
-public class MockTaskSpawner implements TaskSpawner {
+public class MockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
 	
 	private List<FrameworkTask> tasks = new ArrayList<FrameworkTask>(); 
 
@@ -54,27 +53,8 @@ public class MockTaskSpawner implements TaskSpawner {
 		
 
 	}
-
-	@Override
-	public void setTaskManager(TaskManager taskManager) {
-		
-
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		
-		return null;
-	}
-
 	@Override
 	public void init() {
-		// not implemented
-		
-	}
-
-	@Override
-	public void init(Map<String, ?> lidaProperties) {
 		// not implemented
 		
 	}
@@ -83,5 +63,4 @@ public class MockTaskSpawner implements TaskSpawner {
 	public boolean containsTask(FrameworkTask t) {
 		return tasks.contains(t);
 	}
-	
 }

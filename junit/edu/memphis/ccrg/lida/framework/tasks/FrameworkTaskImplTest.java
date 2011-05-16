@@ -10,13 +10,13 @@ import org.junit.Test;
 
 public class FrameworkTaskImplTest {
 
-	private TestTask task1;
+	private MockFrameworkTask task1;
 	private MockTaskSpawner taskSpawner;
 	
 	@Before
 	public void setUp() throws Exception {
 		taskSpawner = new MockTaskSpawner();
-		task1 = new TestTask(10, taskSpawner);
+		task1 = new MockFrameworkTask(10, taskSpawner);
 	}
 	
 	
@@ -43,7 +43,7 @@ public class FrameworkTaskImplTest {
 
 	@Test
 	public void testGetTaskId() {
-		TestTask task2 = new TestTask(10, taskSpawner);
+		MockFrameworkTask task2 = new MockFrameworkTask(10, taskSpawner);
 		assertNotSame(task1.getTaskId(), task2.getTaskId());
 	}
 
