@@ -17,119 +17,114 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 public class SchemeImplTest{
 
-	private Scheme s;
-	private AgentAction a;
+	private Scheme scheme;
+	private AgentAction action;
 	private Node node1, node2, node3;
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
 	
 	@Before
 	public void setUp() throws Exception {		
-		a = new AgentActionImpl() {
+		action = new AgentActionImpl() {
 			@Override
 			public void performAction() {}
 		};
 
-		s = new SchemeImpl("1", a);
+		scheme = new SchemeImpl("1", action);
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		node3 = factory.getNode();
-		
 	}
 	
 	@Test
 	public void test1(){
-		assertEquals("1", s.getLabel());
-		assertEquals(a, s.getAction());
+		assertEquals("1", scheme.getLabel());
+		assertEquals(action, scheme.getAction());
 		
-		s = new SchemeImpl();
-		s.setLabel("1");
-		assertEquals("1", s.getLabel());
+		scheme = new SchemeImpl();
+		scheme.setLabel("1");
+		assertEquals("1", scheme.getLabel());
 		
-		s.setAction(a);
-		assertEquals(a, s.getAction());
+		scheme.setAction(action);
+		assertEquals(action, scheme.getAction());
 	}
 	@Test
 	public void test2(){
 		AgentAction foo = new AgentActionImpl() {
 			@Override public void performAction() {}};
-		s.setAction(foo);
-		assertEquals(foo, s.getAction());
+		scheme.setAction(foo);
+		assertEquals(foo, scheme.getAction());
 		
 		NodeStructure ns = new NodeStructureImpl();
-		s.setAddingResult(ns);
-		assertEquals(ns, s.getAddingResult());
+		scheme.setAddingResult(ns);
+		assertEquals(ns, scheme.getAddingResult());
 		
-		s.setContext(ns);
-		assertEquals(ns, s.getContext());
+		scheme.setContext(ns);
+		assertEquals(ns, scheme.getContext());
 		
-		s.setDeletingResult(ns);
-		assertEquals(ns, s.getDeletingResult());
+		scheme.setDeletingResult(ns);
+		assertEquals(ns, scheme.getDeletingResult());
 		
-		assertFalse(s.isInnate());
-		s.setInnate(true);
-		assertTrue(s.isInnate());
+		assertFalse(scheme.isInnate());
+		scheme.setInnate(true);
+		assertTrue(scheme.isInnate());
 	}
 	@Test
 	public void test3(){		
-		assertTrue(0 == s.getExecutions());
-		assertTrue(0.0 == s.getReliability());
-		assertFalse(s.isReliable());
+		assertTrue(0 == scheme.getExecutions());
+		assertTrue(0.0 == scheme.getReliability());
+		assertFalse(scheme.isReliable());
 		
-		s.actionSuccessful();
+		scheme.actionSuccessful();
 		
-		assertTrue(0 == s.getExecutions());
-		assertTrue(0.0 == s.getReliability());
-		assertFalse(s.isReliable());
+		assertTrue(0 == scheme.getExecutions());
+		assertTrue(0.0 == scheme.getReliability());
+		assertFalse(scheme.isReliable());
 		
-		s.actionExecuted();
-		s.actionExecuted();
-		s.actionExecuted();
-		s.actionExecuted();
+		scheme.actionExecuted();
+		scheme.actionExecuted();
+		scheme.actionExecuted();
+		scheme.actionExecuted();
 		
-		assertTrue(4 == s.getExecutions());
-		assertTrue(0.25 == s.getReliability());
-		assertFalse(s.isReliable());
+		assertTrue(4 == scheme.getExecutions());
+		assertTrue(0.25 == scheme.getReliability());
+		assertFalse(scheme.isReliable());
 		
-		s.actionSuccessful();
-		s.actionSuccessful();
-		s.actionSuccessful();
+		scheme.actionSuccessful();
+		scheme.actionSuccessful();
+		scheme.actionSuccessful();
 		
-		assertTrue(s.isReliable());
+		assertTrue(scheme.isReliable());
 	}
 	@Test
 	public void testEquals(){
-		//TODO
-//		Scheme s2 = new SchemeImpl();
-//		s2.setId(2);
-//		
-//		Scheme sSame = new SchemeImpl();
-//		sSame.setId(s2.getId());
-//		
-//		assertEquals(s2, sSame);
-//		assertEquals(s2.hashCode(), sSame.hashCode());
-//		
-//		assertFalse(s.equals(s2));
+		Scheme scheme2 = new SchemeImpl(2);
+		Scheme scheme3 = new SchemeImpl(scheme2.getId());
+		
+		assertEquals(scheme2, scheme3);
+		assertEquals(scheme2.hashCode(), scheme3.hashCode());
+		
+		assertFalse(scheme.equals(scheme2));
 	}
 	@Test
 	public void testGetInstantiation(){
-		s.setActivation(0.99);
+		scheme.setActivation(0.99);
 		NodeStructure context = new NodeStructureImpl();
 		context.addDefaultNode(node1);
-		s.setContext(context);
+		scheme.setContext(context);
 		
 		NodeStructure deleting = new NodeStructureImpl();
 		deleting.addDefaultNode(node2);
-		s.setDeletingResult(deleting);
+		scheme.setDeletingResult(deleting);
 		
 		NodeStructure adding = new NodeStructureImpl();
 		adding.addDefaultNode(node3);
-		s.setAddingResult(adding);
+		scheme.setAddingResult(adding);
 		
-		Behavior b = s.getInstantiation();
-		assertEquals(a, b.getAction());
+		Behavior b = scheme.getInstantiation();
+		assertEquals(action, b.getAction());
 		assertTrue(0.99 == b.getActivation());
-		assertEquals(s, b.getGeneratingScheme());
+		assertEquals(scheme, b.getGeneratingScheme());
 		
 		assertTrue(b.containsContextCondition(node1));
 		assertTrue(b.containsDeletingItem(node2));

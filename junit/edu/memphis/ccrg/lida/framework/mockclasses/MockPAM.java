@@ -385,6 +385,12 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 		
 	}
 
+	@Override
+	public PropagationStrategy getPropagationStrategy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 //	@Override
 //	public Link addNewLink(Node source, Linkable sink, LinkCategory category) {
 //		// TODO Auto-generated method stub

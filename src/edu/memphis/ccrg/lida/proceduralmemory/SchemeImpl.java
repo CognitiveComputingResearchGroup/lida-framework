@@ -37,6 +37,15 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private long id;
 	private static long idGenerator = 0;
 	
+	/*
+	 * For testing only
+	 * @param id Scheme's id
+	 */
+	SchemeImpl(long id){
+		this();
+		this.id = id;
+	}
+	
 	public SchemeImpl(){
 		this.id = idGenerator++;
 		context = new NodeStructureImpl();
@@ -116,19 +125,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 		return ((Scheme) o).getId() == id;
 	}
-
-	/*
-	 * @return
-	 */
 	@Override
 	public int hashCode() {
 		return (int) id % Integer.MAX_VALUE;
 	}
-
-//	@Override
-//	public void setId(long id) {
-//		this.id = id;
-//	}
 
 	@Override
 	public void setInnate(boolean innate) {

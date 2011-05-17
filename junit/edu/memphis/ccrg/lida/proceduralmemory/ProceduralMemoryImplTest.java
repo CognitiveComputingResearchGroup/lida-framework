@@ -1,12 +1,13 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import static org.junit.Assert.*;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+
 public class ProceduralMemoryImplTest{
 
 	private ProceduralMemory pm;
@@ -40,25 +41,19 @@ public class ProceduralMemoryImplTest{
 	}
 
 	public void testSendInstantiatedScheme() {
-		
-		final AgentAction a = new AgentActionImpl() {
+		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
+		pm.addListener(listener);
+		AgentAction a = new AgentActionImpl(){
 			@Override
 			public void performAction() {
 			}
 		};
-		
-		ProceduralMemoryListener l = new ProceduralMemoryListener() {	
-			@Override
-			public void receiveBehavior(Behavior behavior) {
-				assertEquals(behavior.getAction(), a);
-				System.out.println("was run");
-			}
-		};
-		
-		pm.addListener(l);
-		
 		Scheme s = new SchemeImpl("foo", a);
+		
 		pm.createInstantiation(s);
+		
+		assertEquals(listener.behavior.getAction(), a);
+		assertEquals(listener.behavior.getLabel(), "foo");
 	}
 
 }
