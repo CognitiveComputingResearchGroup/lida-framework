@@ -460,6 +460,7 @@ public class AgentXmlFactoryTest {
 	private class MockSMListener extends MockFrameworkModule implements
 			SensoryMotorMemoryListener, LocalAssociationListener {
 
+		@Override
 		public void receiveActuatorCommand(Object command) {
 		}
 

@@ -1,11 +1,18 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 public class UnmodifiableNodeStructureImplTest {
 
@@ -14,6 +21,14 @@ public class UnmodifiableNodeStructureImplTest {
 	private NodeStructure aa = new NodeStructureImpl();
 	private NodeStructure xx = new NodeStructureImpl();
 	private PamNode category;
+	private UnmodifiableNodeStructureImpl uns;
+	private UnmodifiableNodeStructureImpl filledUNS;
+	private Node n1, n2, n3, n4, n5;
+	
+	private Link l23, l123, l43, l53;
+	
+	private Link noLink;
+	private Node noNode;
 
 	@Before
 	public void setUp() throws Exception {
@@ -27,6 +42,44 @@ public class UnmodifiableNodeStructureImplTest {
 		cNode = factory.getNode();
 		cNode.setLabel("C");
 		category = (PamNode) factory.getNode("PamNodeImpl");
+		
+		uns = new UnmodifiableNodeStructureImpl(new NodeStructureImpl(), true);
+		
+		NodeStructure source = new NodeStructureImpl();
+		
+		n1 = factory.getNode();
+		n1.setLabel("1");
+		source.addDefaultNode(n1);
+		
+		n2 = factory.getNode();
+		n2.setLabel("2");
+		source.addDefaultNode(n2);
+		
+		n3 = factory.getNode();
+		n3.setLabel("3");
+		source.addDefaultNode(n3);
+		
+		n4 = factory.getNode();
+		n4.setLabel("4");
+		source.addDefaultNode(n4);
+		
+		n5 = factory.getNode();
+		n5.setLabel("5");
+		source.addDefaultNode(n5);
+		
+		l23 = source.addDefaultLink(n2, n3, category, 0.0, 0.0);
+		source.addDefaultLink(l23);
+		l123 = source.addDefaultLink(n1, l23, category, 0.0, 0.0);
+		source.addDefaultLink(l123);
+		l43 = source.addDefaultLink(n4, n3, category, 0.0, 0.0);
+		source.addDefaultLink(l43);
+		l53 = source.addDefaultLink(n5, n3, category, 0.0, 0.0);
+		source.addDefaultLink(l53);
+		
+		filledUNS = new UnmodifiableNodeStructureImpl(source);
+		
+		noNode = factory.getNode();
+		noLink = factory.getLink(n3, bNode, category);
 	}
 
 	/**
@@ -101,6 +154,25 @@ public class UnmodifiableNodeStructureImplTest {
 	}
 
 	/**
+	 * Test add link2.
+	 */
+	@Test
+	public void testAddLinkEquality3() {
+		aa.addDefaultNode(aNode);
+		aa.addDefaultNode(bNode);
+		aa.addDefaultNode(cNode);
+		Link abLink = aa.addDefaultLink(aNode, bNode, category, 0.0, 0.0);
+		aa.addDefaultLink(cNode, abLink, category, 0.0, 0.0);
+		
+		xx.addDefaultNode(aNode);
+		xx.addDefaultNode(bNode);
+		xx.addDefaultNode(cNode);
+		abLink = xx.addDefaultLink(aNode.getId(), bNode.getExtendedId(), category, 0.0, 0.0);
+		xx.addDefaultLink(cNode, abLink, category, 0.0, 0.0);
+		assertEqualsHashCode("Add link: ", aa, xx, true);
+	}
+	
+	/**
 	 * Check equals hash code.
 	 *
 	 * @param testName the test name
@@ -117,236 +189,503 @@ public class UnmodifiableNodeStructureImplTest {
 
 		assertEquals(testName + ": A equals B", aEqualsB, equalExpected);
 		assertEquals(testName + ": B equals A", bEqualsA, equalExpected);
-		assertEquals(testName + ": Hashcodes", hashCodesEqual, equalExpected);
-		if (aEqualsB && bEqualsA){
+		
+		if (equalExpected){
 			assertTrue(testName + ": Hashcodes not equal but should be.",
 					   hashCodesEqual);
 		}
 	}
 
 	@Test
-	public void testUnmodifiableNodeStructureImplNodeStructureBoolean() {
-		fail("Not yet implemented");
+	public void testUnmodifiableNodeStructureImplNodeStructureConstructor() {
+		NodeStructure sourceNodeStructure = new NodeStructureImpl();
+		sourceNodeStructure.addDefaultNode(aNode);
+		
+		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure);
+		
+		assertEquals(1, a.getNodeCount());
+		
+		sourceNodeStructure.addDefaultNode(bNode);
+		
+		assertEquals(2, sourceNodeStructure.getNodeCount());
+		assertEquals(2, a.getNodeCount());
 	}
 
 	@Test
-	public void testEqualsObject() {
-		fail("Not yet implemented");
+	public void testUnmodifiableNodeStructureImplNodeStructureConstructor1() {
+		NodeStructure sourceNodeStructure = new NodeStructureImpl();
+		sourceNodeStructure.addDefaultNode(aNode);
+		
+		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, false);
+		
+		assertEquals(1, a.getNodeCount());
+		
+		sourceNodeStructure.addDefaultNode(bNode);
+		
+		assertEquals(2, sourceNodeStructure.getNodeCount());
+		assertEquals(2, a.getNodeCount());
+		
+		//true case
+		sourceNodeStructure = new NodeStructureImpl();
+		sourceNodeStructure.addDefaultNode(aNode);
+		a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, true);
+		
+		assertEquals(1, a.getNodeCount());
+		
+		sourceNodeStructure.addDefaultNode(bNode);
+		
+		assertEquals(2, sourceNodeStructure.getNodeCount());
+		assertEquals(1, a.getNodeCount());
+		
+		sourceNodeStructure.clearNodeStructure();
+		
+		assertEquals(0, sourceNodeStructure.getNodeCount());
+		assertEquals(1, a.getNodeCount());
 	}
 
 	@Test
 	public void testCopy() {
-		fail("Not yet implemented");
+		NodeStructure sourceNodeStructure = new NodeStructureImpl();
+		sourceNodeStructure.addDefaultNode(aNode);
+		UnmodifiableNodeStructureImpl a = new UnmodifiableNodeStructureImpl(sourceNodeStructure, false);
+		assertEquals(1, a.getNodeCount());
+		
+		NodeStructure copy = a.copy();
+		
+		assertEquals(1, copy.getNodeCount());
+		assertEquals(1, a.getNodeCount());
+		
+		sourceNodeStructure.clearNodeStructure();
+		
+		assertEquals(1, copy.getNodeCount());
+		assertEquals(0, a.getNodeCount());
+	}
+	
+	@Test
+	public void testAddLink() {
+		try{
+			uns.addLink(null, null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testAddDefaultLinkLink() {
-		fail("Not yet implemented");
+		try{
+			uns.addDefaultLink(null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testAddDefaultLinkIntExtendedIdLinkCategoryDoubleDouble() {
-		fail("Not yet implemented");
+		try{
+			uns.addDefaultLink(0, new ExtendedId(0), new PamNodeImpl(), 0.0, 0.0);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testAddDefaultLinkIntIntLinkCategoryDoubleDouble() {
-		fail("Not yet implemented");
+		try{
+			uns.addDefaultLink(0, 0, new PamNodeImpl(), 0.0, 0.0);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
-
+	
+	@Test
+	public void testAddDefaultLinkConven() {
+		try{
+			uns.addDefaultLink(aNode, bNode, new PamNodeImpl(), 0.0, 0.0);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
+	}
+	
 	@Test
 	public void testAddDefaultLinks() {
-		fail("Not yet implemented");
+		try{
+			uns.addDefaultLinks(null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testAddDefaultNode() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAddLink() {
-		fail("Not yet implemented");
+		try{
+			uns.addDefaultNode(aNode);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testAddNode() {
-		fail("Not yet implemented");
+		try{
+			uns.addNode(null, null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testAddDefaultNodes() {
-		fail("Not yet implemented");
+		try{
+			uns.addDefaultNodes(null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testRemoveLink() {
-		fail("Not yet implemented");
+		try{
+			uns.removeLink(null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testRemoveLinkableLinkable() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRemoveNode() {
-		fail("Not yet implemented");
+		try{
+			uns.removeLinkable(new ExtendedId(0));
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testRemoveLinkableExtendedId() {
-		fail("Not yet implemented");
+		try{
+			uns.removeLinkable(new NodeImpl());
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
+	}
+	
+	@Test
+	public void testRemoveNode() {
+		try{
+			uns.removeNode(aNode);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testClearLinks() {
-		fail("Not yet implemented");
+		try{
+			uns.clearLinks();
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testClearNodeStructure() {
-		fail("Not yet implemented");
+		try{
+			uns.clearNodeStructure();
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testMergeWith() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAddDefaultLinkNodeLinkableLinkCategoryDoubleDouble() {
-		fail("Not yet implemented");
+		try{
+			uns.mergeWith(null);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testDecayNodeStructure() {
-		fail("Not yet implemented");
+		try{
+			uns.decayNodeStructure(0);
+			assertTrue(false);
+		}catch(UnsupportedOperationException e){
+			
+		}
 	}
 
 	@Test
 	public void testContainsLinkLink() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsLink(l23));
+		assertTrue(filledUNS.containsLink(l123));
+		assertTrue(filledUNS.containsLink(l43));
+		assertTrue(filledUNS.containsLink(l53));
+		
+		assertFalse(filledUNS.containsLink(noLink));
 	}
 
 	@Test
 	public void testContainsLinkExtendedId() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsLink(l23.getExtendedId()));
+		assertTrue(filledUNS.containsLink(l123.getExtendedId()));
+		assertTrue(filledUNS.containsLink(l43.getExtendedId()));
+		assertTrue(filledUNS.containsLink(l53.getExtendedId()));
+		
+		assertFalse(filledUNS.containsLink(noLink.getExtendedId()));
 	}
 
 	@Test
 	public void testContainsLinkableLinkable() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsLinkable(l23));
+		assertTrue(filledUNS.containsLinkable(l123));
+		assertTrue(filledUNS.containsLinkable(l43));
+		assertTrue(filledUNS.containsLinkable(l53));
+		
+		assertTrue(filledUNS.containsLinkable(n1));
+		assertTrue(filledUNS.containsLinkable(n2));
+		assertTrue(filledUNS.containsLinkable(n3));
+		assertTrue(filledUNS.containsLinkable(n4));
+		assertTrue(filledUNS.containsLinkable(n5));
+		
+		assertFalse(filledUNS.containsLinkable(noLink));
+		assertFalse(filledUNS.containsLinkable(noNode));
 	}
 
 	@Test
 	public void testContainsLinkableExtendedId() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsLinkable(l23.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(l123.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(l43.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(l53.getExtendedId()));
+		
+		assertTrue(filledUNS.containsLinkable(n1.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(n2.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(n3.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(n4.getExtendedId()));
+		assertTrue(filledUNS.containsLinkable(n5.getExtendedId()));
+		
+		assertFalse(filledUNS.containsLinkable(noLink.getExtendedId()));
+		assertFalse(filledUNS.containsLinkable(noNode.getExtendedId()));
 	}
 
 	@Test
 	public void testContainsNodeNode() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsNode(n1));
+		assertTrue(filledUNS.containsNode(n2));
+		assertTrue(filledUNS.containsNode(n3));
+		assertTrue(filledUNS.containsNode(n4));
+		assertTrue(filledUNS.containsNode(n5));
+		
+		assertFalse(filledUNS.containsNode(noNode));
 	}
 
 	@Test
 	public void testContainsNodeInt() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsNode(n1.getId()));
+		assertTrue(filledUNS.containsNode(n2.getId()));
+		assertTrue(filledUNS.containsNode(n3.getId()));
+		assertTrue(filledUNS.containsNode(n4.getId()));
+		assertTrue(filledUNS.containsNode(n5.getId()));
+		
+		assertFalse(filledUNS.containsNode(noNode.getId()));
 	}
 
 	@Test
 	public void testContainsNodeExtendedId() {
-		fail("Not yet implemented");
+		assertTrue(filledUNS.containsNode(n1.getExtendedId()));
+		assertTrue(filledUNS.containsNode(n2.getExtendedId()));
+		assertTrue(filledUNS.containsNode(n3.getExtendedId()));
+		assertTrue(filledUNS.containsNode(n4.getExtendedId()));
+		assertTrue(filledUNS.containsNode(n5.getExtendedId()));
+		
+		assertFalse(filledUNS.containsNode(noNode.getExtendedId()));
 	}
 
 	@Test
 	public void testGetAttachedLinksLinkable() {
-		fail("Not yet implemented");
+		assertEquals(1, filledUNS.getAttachedLinks(n1).size());
+		assertEquals(1, filledUNS.getAttachedLinks(n2).size());
+		assertEquals(3, filledUNS.getAttachedLinks(n3).size());
+		assertEquals(1, filledUNS.getAttachedLinks(n4).size());
+		assertEquals(1, filledUNS.getAttachedLinks(n5).size());
+		
+		assertEquals(1, filledUNS.getAttachedLinks(l23).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l123).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l43).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l53).size());
 	}
 
 	@Test
-	public void testGetAttachedLinksLinkableLinkCategory() {
-		fail("Not yet implemented");
+	public void testGetAttachedLinksLinkableLinkCategory() {		
+		assertEquals(1, filledUNS.getAttachedLinks(n1, category).size());
+		assertEquals(1, filledUNS.getAttachedLinks(n2, category).size());
+		assertEquals(3, filledUNS.getAttachedLinks(n3, category).size());
+		assertEquals(1, filledUNS.getAttachedLinks(n4, category).size());
+		assertEquals(1, filledUNS.getAttachedLinks(n5, category).size());
+		
+		assertEquals(1, filledUNS.getAttachedLinks(l23, category).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l123, category).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l43, category).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l53, category).size());
+		
+		PamNodeImpl dumbCat = new PamNodeImpl();
+		dumbCat.setId(Integer.MAX_VALUE);
+		
+		assertEquals(0, filledUNS.getAttachedLinks(n1, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(n2, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(n3, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(n4, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(n5, dumbCat).size());
+		
+		assertEquals(0, filledUNS.getAttachedLinks(l23, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l123, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l43, dumbCat).size());
+		assertEquals(0, filledUNS.getAttachedLinks(l53, dumbCat).size());
 	}
 
 	@Test
 	public void testGetConnectedSinks() {
-		fail("Not yet implemented");
+		Map<Linkable, Link> sinks = filledUNS.getConnectedSinks(n3);
+		assertEquals(0, sinks.size());
+		
+		sinks = filledUNS.getConnectedSinks(n5);
+		assertEquals(1, sinks.size());
+		assertTrue(sinks.containsKey(n3));
+		assertTrue(sinks.containsValue(l53));
 	}
 
 	@Test
 	public void testGetConnectedSources() {
-		fail("Not yet implemented");
+		Map<Node, Link> sources = filledUNS.getConnectedSources(n3);
+		assertEquals(3, sources.size());
+		assertTrue(sources.containsKey(n2));
+		assertTrue(sources.containsKey(n4));
+		assertTrue(sources.containsKey(n5));
+		
+		sources = filledUNS.getConnectedSources(n5);
+		assertEquals(0, sources.size());
 	}
 
 	@Test
 	public void testGetDefaultLinkType() {
-		fail("Not yet implemented");
+		assertEquals("LinkImpl", uns.getDefaultLinkType());
+		assertEquals("LinkImpl", filledUNS.getDefaultLinkType());
 	}
 
 	@Test
 	public void testGetDefaultNodeType() {
-		fail("Not yet implemented");
+		assertEquals("NodeImpl", uns.getDefaultNodeType());
+		assertEquals("NodeImpl", filledUNS.getDefaultNodeType());
 	}
 
 	@Test
 	public void testGetLink() {
-		fail("Not yet implemented");
+		assertEquals(l23, filledUNS.getLink(l23.getExtendedId()));
 	}
 
 	@Test
 	public void testGetLinkCount() {
-		fail("Not yet implemented");
+		assertEquals(4, filledUNS.getLinkCount());
 	}
 
 	@Test
 	public void testGetLinkable() {
-		fail("Not yet implemented");
+		assertEquals(n5, filledUNS.getLinkable(n5.getExtendedId()));
+		assertEquals(l123, filledUNS.getLinkable(l123.getExtendedId()));
 	}
 
 	@Test
 	public void testGetLinkableCount() {
-		fail("Not yet implemented");
+		assertEquals(9, filledUNS.getLinkableCount());
 	}
 
 	@Test
 	public void testGetLinkableMap() {
-		fail("Not yet implemented");
+		Map<Linkable, Set<Link>> map = filledUNS.getLinkableMap();
+		assertEquals(9, map.size());
 	}
 
 	@Test
 	public void testGetLinkables() {
-		fail("Not yet implemented");
+		Collection<Linkable> linkables = filledUNS.getLinkables();
+		assertTrue(linkables.contains(n1));
+		assertTrue(linkables.contains(n2));
+		assertTrue(linkables.contains(n3));
+		assertTrue(linkables.contains(n4));
+		assertTrue(linkables.contains(n5));
+		
+		assertTrue(linkables.contains(l23));
+		assertTrue(linkables.contains(l123));
+		assertTrue(linkables.contains(l53));
+		assertTrue(linkables.contains(l43));
 	}
 
 	@Test
 	public void testGetLinks() {
-		fail("Not yet implemented");
+		Collection<Link> links = filledUNS.getLinks();
+		assertTrue(links.contains(l123));
+		assertTrue(links.contains(l23));
+		assertTrue(links.contains(l43));
+		assertTrue(links.contains(l53));
 	}
 
 	@Test
 	public void testGetLinksLinkCategory() {
-		fail("Not yet implemented");
+		Collection<Link> links = filledUNS.getLinks(category);
+		assertTrue(links.contains(l123));
+		assertTrue(links.contains(l23));
+		assertTrue(links.contains(l43));
+		assertTrue(links.contains(l53));
+		
+		PamNodeImpl cat2 = new PamNodeImpl();
+		cat2.setId(453458934);
+		links = filledUNS.getLinks(cat2);
+		assertTrue(!links.contains(l123));
+		assertTrue(!links.contains(l23));
+		assertTrue(!links.contains(l43));
+		assertTrue(!links.contains(l53));
 	}
 
 	@Test
 	public void testGetNodeInt() {
-		fail("Not yet implemented");
+		assertEquals(n4, filledUNS.getNode(n4.getId()));
 	}
 
 	@Test
 	public void testGetNodeExtendedId() {
-		fail("Not yet implemented");
+		assertEquals(n3, filledUNS.getNode(n3.getExtendedId()));
 	}
 
 	@Test
 	public void testGetNodeCount() {
-		fail("Not yet implemented");
+		assertEquals(5, filledUNS.getNodeCount());
 	}
 
 	@Test
 	public void testGetNodes() {
-		fail("Not yet implemented");
+		Collection<Node> nodes = filledUNS.getNodes();
+		assertTrue(nodes.contains(n1));
+		assertTrue(nodes.contains(n2));
+		assertTrue(nodes.contains(n3));
+		assertTrue(nodes.contains(n4));
+		assertTrue(nodes.contains(n5));
 	}
 
 }
