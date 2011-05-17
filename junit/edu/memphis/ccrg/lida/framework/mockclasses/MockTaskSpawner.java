@@ -18,18 +18,17 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
 public class MockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
 	
-	private List<FrameworkTask> tasks = new ArrayList<FrameworkTask>(); 
+	public List<FrameworkTask> tasks = new ArrayList<FrameworkTask>(); 
 
 	@Override
 	public void addTask(FrameworkTask task) {
-//		System.out.println(task+" added! To be run at "+task.getNextTicksPerStep()+" ticks from now");
 		tasks.add(task);
 		task.setControllingTaskSpawner(this);
-		try {
-			task.call();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			task.call();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -50,8 +49,9 @@ public class MockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
 
 	@Override
 	public void addTasks(Collection<? extends FrameworkTask> initialTasks) {
-		
-
+		for(FrameworkTask t: initialTasks){
+			addTask(t);
+		}
 	}
 	@Override
 	public void init() {

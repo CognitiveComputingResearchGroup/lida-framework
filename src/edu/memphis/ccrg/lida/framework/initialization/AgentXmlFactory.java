@@ -22,7 +22,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.AgentImpl;
@@ -130,13 +129,13 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element Element containing the task manager
 	 * @return {@link TaskManager}
 	 */
-	TaskManager getTaskManager(Element element) {
-		NodeList nl = element.getElementsByTagName("taskmanager");
-		Element moduleElement=null;
-		if (nl != null && nl.getLength() > 0) {
-			 moduleElement = (Element) nl.item(0);
+	TaskManager getTaskManager(Element element) {		
+		List<Element> nl = XmlUtils.getChildren(element,"taskmanager");
+		Element taskManagerElement=null;
+		if (nl != null && nl.size() > 0) {
+			 taskManagerElement = nl.get(0);
 		}
-		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
+		Map<String,Object> params = XmlUtils.getTypedParams(taskManagerElement);
 		
 		Object t = params.get("taskManager.tickDuration");
 		Object m = params.get("taskManager.maxNumberOfThreads");
@@ -186,13 +185,13 @@ public class AgentXmlFactory implements AgentFactory {
 	 */
 	Map<String,TaskSpawner> getTaskSpawners(Element element, TaskManager tm) {
 		Map<String,TaskSpawner>spawners = new HashMap<String, TaskSpawner>();
-		NodeList nl = element.getElementsByTagName("taskspawners");
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChildren(modulesElemet,"taskspawner");
+		List<Element> elementList = XmlUtils.getChildren(element,"taskspawners");
+		if (elementList != null && elementList.size() > 0) {
+			Element taskSpawnersElement = elementList.get(0);
+			List<Element> list = XmlUtils.getChildren(taskSpawnersElement,"taskspawner");
 			if (list != null && list.size() > 0) {
-				for (Element moduleElement:list) {					
-					getTaskSpawner(moduleElement,tm,spawners);
+				for (Element taskSpawnerElement:list) {					
+					getTaskSpawner(taskSpawnerElement,tm,spawners);
 				}
 			}
 		}
@@ -239,12 +238,12 @@ public class AgentXmlFactory implements AgentFactory {
 	 */
 	List<FrameworkModule> getModules(Element element,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner>spawners) {
 		List<FrameworkModule> modules = new ArrayList<FrameworkModule>();
-		NodeList nl = element.getElementsByTagName("submodules");
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChildren(modulesElemet,"module");
+		List<Element> nl = XmlUtils.getChildren(element, "submodules");
+		if (nl != null && nl.size() > 0) {
+			Element submoduleElement = nl.get(0);
+			List<Element> list = XmlUtils.getChildren(submoduleElement,"module");
 			if (list != null && list.size() > 0) {
-				for (Element moduleElement:list) {					
+				for (Element moduleElement : list) {					
 					FrameworkModule module = getModule(moduleElement,toAssoc,toInit,spawners);
 					if(module != null){
 						modules.add(module);
@@ -335,15 +334,13 @@ public class AgentXmlFactory implements AgentFactory {
 	 */
 	List<FrameworkTask> getTasks(Element element,List<Object[]>toAssoc) {
 		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
-		NodeList nl = element.getElementsByTagName("initialTasks");
-
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			nl = modulesElemet.getElementsByTagName("task");
-			if (nl != null && nl.getLength() > 0) {
-				for (int i = 0; i < nl.getLength(); i++) {
-					Element moduleElement = (Element) nl.item(i);
-					FrameworkTask task = getTask(moduleElement,toAssoc);
+		List<Element> nl = XmlUtils.getChildren(element,"initialTasks");
+		if (nl != null && nl.size() > 0) {
+			Element initialTasksElement =  nl.get(0);
+			nl = XmlUtils.getChildren(initialTasksElement,"task");
+			if (nl != null && nl.size() > 0) {
+				for (Element taskElement:nl) {
+					FrameworkTask task = getTask(taskElement,toAssoc);
 					if(task != null){
 						tasks.add(task);
 					}
@@ -386,14 +383,14 @@ public class AgentXmlFactory implements AgentFactory {
 
 	/**
 	 * Gets associated modules of the specified {@link Initializable}
-	 * @param moduleElement
+	 * @param element
 	 * @param initializable
 	 */
-	void getAssociatedModules(Element moduleElement, Initializable initializable,List<Object[]>toAssoc) {
-		NodeList nl = moduleElement.getElementsByTagName("associatedmodule");
-		if (nl != null && nl.getLength() > 0) {
-			for (int i = 0; i < nl.getLength(); i++) {
-				String assocMod=XmlUtils.getValue((Element) nl.item(i));
+	void getAssociatedModules(Element element, Initializable initializable,List<Object[]>toAssoc) {
+		List<Element> nl = XmlUtils.getChildren(element,"associatedmodule");
+		if (nl != null && nl.size() > 0) {
+			for (Element assocModuleElement:nl ) {
+				String assocMod=XmlUtils.getValue(assocModuleElement);
 				toAssoc.add(new Object[]{initializable,assocMod});
 			}
 		}
@@ -404,15 +401,14 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param element dom element
 	 * 
 	 */
-	void getListeners(Element element,FrameworkModule topModule) {
-		NodeList nl = element.getElementsByTagName("listeners");
-		if (nl != null && nl.getLength() > 0) {
-			Element modulesElemet = (Element) nl.item(0);
-			nl = modulesElemet.getElementsByTagName("listener");
-			if (nl != null && nl.getLength() > 0) {
-				for (int i = 0; i < nl.getLength(); i++) {
-					Element moduleElement = (Element) nl.item(i);
-					getListener(moduleElement,topModule);
+	void getListeners(Element element, FrameworkModule topModule) {
+		List<Element> childrenList = XmlUtils.getChildren(element,"listeners");
+		if (childrenList != null && childrenList.size() > 0) {
+			Element listenersElement = (Element) childrenList.get(0);
+			childrenList = XmlUtils.getChildren(listenersElement,"listener");
+			if (childrenList != null) {
+				for (Element listenerElement:childrenList) {
+					getListener(listenerElement,topModule);
 				}
 			}
 		}

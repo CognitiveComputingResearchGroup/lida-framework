@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 import edu.memphis.ccrg.lida.workspace.CueBackgroundTask;
+import edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask;
+import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 public class AgentXmlFactoryTest {
 
@@ -41,15 +44,6 @@ public class AgentXmlFactoryTest {
 	public void setUp() throws Exception {
 		factory = new AgentXmlFactory();
 		dom = null;
-		// String xml ="<lida><taskspawners>" +
-		// "<taskspawner name='defaultTS'>" +
-		// "<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>"
-		// +
-		// "</taskspawner>" +
-		// "</taskspawners>" +
-		// "</lida>";
-		//		
-		// Element docEle = parseDomElement(xml);
 	}
 
 	@After
@@ -74,21 +68,6 @@ public class AgentXmlFactoryTest {
 		}
 		Element docEle = dom.getDocumentElement();
 		return docEle;
-	}
-
-	@Test
-	public void testGetAgent() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testParseXmlFile() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testParseDocument() {
-		fail("Not yet implemented");
 	}
 
 	@Test
@@ -180,11 +159,6 @@ public class AgentXmlFactoryTest {
 	}
 
 	@Test
-	public void testGetModules() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testGetModule() {
 		List<Object[]> toAssociate = new ArrayList<Object[]>();
 		List<Object[]> toInitialize = new ArrayList<Object[]>();
@@ -219,6 +193,136 @@ public class AgentXmlFactoryTest {
 		assertEquals("edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer",toInitialize.get(0)[1]);
 	}
 
+	@Test
+	public void testGetModule0() {
+		List<Object[]> toAssociate = new ArrayList<Object[]>();
+		List<Object[]> toInitialize = new ArrayList<Object[]>();
+		String xml = "<module name='PerceptualAssociativeMemory'>"
+				+ "<class>edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule</class>"
+				+ "<submodules>" 
+				+		"<module name=\"NewEpisodicBuffer\">" +
+						"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+						"<param name=\"eParam\" type=\"double\">0.01 </param>" +
+						"<taskspawner>fancyTS</taskspawner>" +
+						"</module>" +						
+						"<module name=\"NewPerceptualBuffer\">" +
+						"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+						"<param name=\"pParam\" type=\"double\">0.02 </param>" +
+						"<taskspawner>superFancyTS</taskspawner>" +
+						
+						"<initialTasks>" +
+						"<task name=\"updateCsmBackground\">" +
+						"<class>edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask</class>" +
+						"<ticksperrun>55</ticksperrun>" +
+						"<associatedmodule>GlobalWorkspace</associatedmodule>" +
+						"</task>" +
+						"</initialTasks>" +						
+						"<initializerclass>edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer</initializerclass>"+
+						"</module>" 
+				+ "</submodules>"		
+				+ "<associatedmodule>Apple</associatedmodule>"
+				+ "<param name='pam.Upscale' type='double'>.7 </param>"
+				+ "<param name='pam.Downscale' type='double'>.6 </param>"
+				+ "<param name='pam.Selectivity' type='double'>.5 </param>"
+				+ "<param name='pam.newNodeType' type='string'>PamNodeImpl</param>"
+				+ "<param name='pam.newLinkType' type='string'>PamLinkImpl</param>"
+				+ "<taskspawner>defaultTS</taskspawner>"
+				+"<initialTasks>" +
+						"<task name=\"cueBackground\">" +
+						"<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>" +
+						"<ticksperrun>15</ticksperrun>" +
+						"<associatedmodule>Workspace</associatedmodule>" +
+						"<param name=\"taskParameter\"  type=\"double\">0.4</param>	" +
+						"</task>" +
+						"<task name=\"fooBar\">" +
+						"<class>edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask</class>" +
+						"<ticksperrun>5</ticksperrun>" +
+						"<associatedmodule>Ryan</associatedmodule>" +
+						"</task>" +
+						"</initialTasks>"
+				
+				+ "<initializerclass>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer</initializerclass>"
+				+ "</module>";
+		Map<String, TaskSpawner> taskSpawners = new HashMap<String, TaskSpawner>();
+		MockTaskSpawner ts = new MockTaskSpawner();
+		MockTaskSpawner fancyts = new MockTaskSpawner();
+		MockTaskSpawner superFancyTS = new MockTaskSpawner();
+		taskSpawners.put("defaultTS", ts);
+		taskSpawners.put("fancyTS", fancyts);
+		taskSpawners.put("superFancyTS", superFancyTS);		
+		Element moduleElement = parseDomElement(xml);
+		
+		//**Code being tested**
+		FrameworkModule module = factory.getModule(moduleElement, toAssociate, toInitialize,
+				taskSpawners);
+		
+		//**Verification**
+		//Main Module attributes
+		assertTrue(module != null);
+		assertEquals(ModuleName.PerceptualAssociativeMemory, module.getModuleName());
+		assertEquals(ts, module.getAssistingTaskSpawner());
+		
+		assertEquals(0.7, module.getParam("pam.Upscale", null));
+		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", null));
+		assertEquals(5, module.getParam("eParam", 5));
+		
+		//Submodules
+		FrameworkModule eBuffer = module.getSubmodule(ModuleName.getModuleName("NewEpisodicBuffer"));
+		assertTrue(eBuffer instanceof WorkspaceBufferImpl);
+		assertEquals(0.01, eBuffer.getParam("eParam", null));
+		assertEquals(999, eBuffer.getParam("pam.Upscale", 999));
+		assertEquals(fancyts, eBuffer.getAssistingTaskSpawner());
+		
+		FrameworkModule pBuffer = module.getSubmodule(ModuleName.getModuleName("NewPerceptualBuffer"));
+		assertTrue(pBuffer instanceof WorkspaceBufferImpl);
+		assertEquals(0.02, pBuffer.getParam("pParam", null));
+		assertEquals(999, pBuffer.getParam("pam.Upscale", 999));
+		assertEquals(superFancyTS, pBuffer.getAssistingTaskSpawner());
+		
+		assertEquals(pBuffer, toInitialize.get(0)[0]);
+		assertEquals("edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer",toInitialize.get(0)[1]);
+		assertEquals(module, toInitialize.get(1)[0]);
+		assertEquals("edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer",toInitialize.get(1)[1]);
+		
+		//Tasks
+		Collection<FrameworkTask> outerTasks = module.getAssistingTaskSpawner().getRunningTasks();
+		assertEquals(2, outerTasks.size());
+		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
+		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
+		assertEquals(15, cueBackgroundTask.getTicksPerStep());
+		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
+		FrameworkTask mockTask = ts.tasks.get(1);
+		assertTrue(mockTask instanceof MockFrameworkTask);
+		assertEquals(5, mockTask.getTicksPerStep());
+		
+		Collection<FrameworkTask> noInnerTasks = eBuffer.getAssistingTaskSpawner().getRunningTasks();
+		assertEquals(0, noInnerTasks.size());	
+		
+		Collection<FrameworkTask> innerTasks = pBuffer.getAssistingTaskSpawner().getRunningTasks();
+		assertEquals(1, innerTasks.size());	
+		FrameworkTask updateCsmTask = superFancyTS.tasks.get(0);
+		assertTrue(updateCsmTask instanceof UpdateCsmBackgroundTask);
+		assertEquals(55, updateCsmTask.getTicksPerStep());
+		
+		//Associations
+		assertEquals(cueBackgroundTask, toAssociate.get(0)[0]);
+		assertEquals("Workspace", toAssociate.get(0)[1]);
+		
+		assertEquals(mockTask, toAssociate.get(1)[0]);
+		assertEquals("Ryan", toAssociate.get(1)[1]);
+		
+		assertEquals(mockTask, toAssociate.get(1)[0]);
+		assertEquals("Ryan", toAssociate.get(1)[1]);
+		
+		assertEquals(module, toAssociate.get(3)[0]);
+		assertEquals("Apple", toAssociate.get(3)[1]);				
+	}	
+
+	@Test
+	public void testGetModules() {
+		fail("Not yet implemented");
+	}
+	
 	@Test
 	public void testGetTasks() {
 		List<Object[]> toAssociate = new ArrayList<Object[]>();
@@ -454,6 +558,21 @@ public class AgentXmlFactoryTest {
 
 	@Test
 	public void testInitializeModules() {
+		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testGetAgent() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testParseXmlFile() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testParseDocument() {
 		fail("Not yet implemented");
 	}
 
