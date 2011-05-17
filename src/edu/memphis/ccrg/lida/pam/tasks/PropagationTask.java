@@ -8,6 +8,8 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -17,8 +19,8 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A propagation task excites a node and a link.  
- * The link connects the source of the activation to the node.
+ * A propagation task excites a {@link Node} n and a {@link Link} l.  
+ * The {@link Link} l is the connection from the source of the activation to the {@link Node} n.
  * @author Ryan J McCall
  *
  */
