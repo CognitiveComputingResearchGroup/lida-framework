@@ -9,7 +9,7 @@
     			minOccurs="1">
     		</element>
     		<element name="submodules" type="tns:modules"
-    			maxOccurs="unbounded" minOccurs="0">
+    			maxOccurs="1" minOccurs="0">
     		</element>
     		<element name="associatedmodule" type="tns:associatedmodule"
     			maxOccurs="unbounded" minOccurs="0">
