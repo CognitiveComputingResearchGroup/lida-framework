@@ -292,14 +292,15 @@ class MockWorkspaceImpl extends WorkspaceImpl{
 	public boolean cueListenerFlag = false;
 	public boolean moduleContentflag = false;
 	
+	@Override
 	public void addCueListener(CueListener l){
 		cueListenerFlag =true;
 	}
-	
+	@Override
 	public void addWorkspaceListener(WorkspaceListener listener){
 		workListenerFlag =true;
 	}
-	
+	@Override
 	public Object getModuleContent(Object... params) {
 		moduleContentflag = true;
 		return null;

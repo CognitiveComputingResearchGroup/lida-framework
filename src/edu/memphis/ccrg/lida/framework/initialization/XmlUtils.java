@@ -20,12 +20,15 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
@@ -284,5 +287,51 @@ public class XmlUtils {
 			}
 		}
 		return nl;
+	}
+
+	/**
+	 * Returns the Elements with name childName, in the group groupName
+	 * inside the specified Element e
+	 * @param e {@link Element}
+	 * @param groupName name of the group
+	 * @param childName name of children Elements returned
+	 * @return
+	 */
+	public static List<Element> getCollectionElements(Element e, String groupName,
+			String childName) {
+		Element groupElement = getChild(e, groupName);
+		if (groupElement != null) {
+			List<Element> list = getChildren(groupElement, childName);
+			return list;
+		}
+		return null;
+	}
+
+	/**
+	 * Verifies and parses specified xml file into a {@link Document}.
+	 * @param fileName the name of the file to parse
+	 * @param schemaFilePath path to the schema file
+	 * @return the DOM {@link Document} of the file fileName
+	 */
+	public static Document parseXmlFile(String fileName, String schemaFilePath) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db;
+		Document dom = null;
+		try {
+			db = dbf.newDocumentBuilder();
+			if (validateXmlFile(fileName, schemaFilePath)){
+				// parse using builder to get DOM representation of the XML file
+				dom = db.parse(fileName);
+			}else{
+				logger.log(Level.WARNING, "Xml file invalid, file: " +fileName+" was not parsed");
+			}
+		}catch (Exception e) {
+//			StringWriter sw = new StringWriter();
+//			PrintWriter pw = new PrintWriter(sw);
+//			e.printStackTrace(pw);
+//			pw.close();
+			logger.log(Level.WARNING, e.getMessage(),e);
+		}
+		return dom;
 	}
 }

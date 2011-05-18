@@ -859,20 +859,8 @@ public class AgentXmlFactoryTest {
 	}
 
 	@Test
-	public void testParseXmlFile() {
-		Document dom = factory.parseXmlFile("configs/agent.xml");
-		assertNotNull (dom);
-		
-		dom = factory.parseXmlFile("agent.xml");
-		assertTrue (dom == null);
-		
-		dom = factory.parseXmlFile("testData/agentbad.xml");
-		assertTrue (dom == null);		
-	}
-
-	@Test
 	public void testParseDocument() {		
-		Document dom = factory.parseXmlFile("testData/shortagent.xml");
+		Document dom = XmlUtils.parseXmlFile("testData/shortagent.xml","configs/LidaXMLSchema.xsd");
 		assertNotNull(dom);
 		
 		Agent a = factory.parseDocument(dom);

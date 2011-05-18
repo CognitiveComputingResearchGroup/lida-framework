@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,15 +15,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * 
@@ -41,13 +34,9 @@ public class FactoriesDataXmlLoader {
 	private static final String DEFAULT_XML_FILE_PATH = "configs/factoriesData.xml";
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaFactories.xsd";
 	private static final Logger logger = Logger.getLogger(FactoriesDataXmlLoader.class.getCanonicalName());
-	private Document dom;
-	private static ElementFactory nfactory = ElementFactory.getInstance();
-	private Map<String, StrategyDef> strategies;
-	private Map<String, LinkableDef> nodes;
-	private Map<String, LinkableDef> links;
-	private Map<String, CodeletDef> codelets;
 
+	private static ElementFactory nfactory = ElementFactory.getInstance();
+	
 	/**
 	 * Loads {@link ElementFactory} with object types specified in {@link Properties}
 	 * @param properties {@link Properties}
@@ -55,20 +44,34 @@ public class FactoriesDataXmlLoader {
 	public void loadFactoriesData(Properties properties) {
 		String fileName = properties.getProperty("lida.factories",
 				DEFAULT_XML_FILE_PATH);
-		parseXmlFile(fileName);
-		parseDocument();
-		fillFactories();
-	}
+		Document dom = XmlUtils.parseXmlFile(fileName,DEFAULT_SCHEMA_FILE_PATH);
+		parseDocument(dom);
+	}	
 
-	private void fillFactories() {
+	void parseDocument(Document dom) {
+		// get the root element
+		Element docEle = dom.getDocumentElement();
+		Map<String, StrategyDef> strategies = getStrategies(docEle);
+		Map<String, LinkableDef> nodes = getLinkables(docEle, "nodes", "node", strategies);
+		Map<String, LinkableDef> links = getLinkables(docEle, "links", "link", strategies);
+		Map<String, CodeletDef> codelets = getCodelets(docEle, strategies);
+		fillNodes(nodes);
+		fillLinks(links);
+		fillStrategies(strategies);
+		fillCodelets(codelets);
+	}
+	
+	private void fillNodes(Map<String, LinkableDef> nodes){
 		for(LinkableDef ld:nodes.values()){
 			nfactory.addNodeType(ld);
 		}
-		
+	}	
+	private void fillLinks(Map<String, LinkableDef> links){
 		for(LinkableDef ld:links.values()){
 			nfactory.addLinkType(ld);
 		}
-				
+	}
+	private void fillStrategies(Map<String, StrategyDef> strategies){
 		for(StrategyDef sd:strategies.values()){
 			if (sd.getType().equalsIgnoreCase("decay")){
 				nfactory.addDecayStrategy(sd.getName(), sd);
@@ -77,44 +80,16 @@ public class FactoriesDataXmlLoader {
 			}
 			nfactory.addStrategy(sd.getName(), sd);
 		}
+	}
+	private void fillCodelets(Map<String, CodeletDef> codelets){
 		for(CodeletDef cd:codelets.values()){
 			nfactory.addCodeletType(cd);
 		}
 	}
 
-	private void parseXmlFile(String fileName) {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db;
-		try {
-			db = dbf.newDocumentBuilder();
-			if (XmlUtils.validateXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH)){
-				// parse using builder to get DOM representation of the XML file
-				dom = db.parse(fileName);
-			}else{
-				logger.log(Level.WARNING, "Xml file invalid, no factories data was loaded.", TaskManager.getCurrentTick());
-			}
-		}catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			pw.close();
-			logger.log(Level.WARNING, sw.getBuffer().toString(), 0L);
-		}
-	}
-
-	
-	private void parseDocument() {
-		// get the root element
-		Element docEle = dom.getDocumentElement();
-		strategies = getStrategies(docEle);
-		nodes = getLinkables(docEle, "nodes", "node");
-		links = getLinkables(docEle, "links", "link");
-		codelets = getCodelets(docEle);
-	}
-
-	private Map<String, StrategyDef> getStrategies(Element element) {
+	Map<String, StrategyDef> getStrategies(Element element) {
 		Map<String, StrategyDef> strat = new HashMap<String, StrategyDef>();
-		List<Element> list = getCollectionElements(element, "strategies",
+		List<Element> list = XmlUtils.getCollectionElements(element, "strategies",
 				"strategy");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
@@ -125,7 +100,7 @@ public class FactoriesDataXmlLoader {
 		return strat;
 	}
 
-	private StrategyDef getStrategyDef(Element e) {
+	StrategyDef getStrategyDef(Element e) {
 		StrategyDef strategy = new StrategyDef();
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -142,30 +117,36 @@ public class FactoriesDataXmlLoader {
 		return strategy;
 	}
 
-	private Map<String, LinkableDef> getLinkables(Element element,
-			String groupName, String childName) {
+	Map<String, LinkableDef> getLinkables(Element element,
+			String groupName, String childName, Map<String, StrategyDef> strategies) {
 		Map<String, LinkableDef> linkables = new HashMap<String, LinkableDef>();
-		List<Element> list = getCollectionElements(element, groupName,
+		List<Element> list = XmlUtils.getCollectionElements(element, groupName,
 				childName);
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
-				LinkableDef linkable = getLinkable(e);
+				LinkableDef linkable = getLinkable(e, strategies);
 				linkables.put(linkable.getName(), linkable);
 			}
 		}
 		return linkables;
 	}
 
-	private LinkableDef getLinkable(Element e) {
+	LinkableDef getLinkable(Element e, Map<String, StrategyDef> strategies) {
 		LinkableDef node = new LinkableDef();
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
 		Map<String,String> strat = new HashMap<String,String>();
-		List<String> list=	XmlUtils.getChildrenValues(e, "defaultstrategy");
-		checkStrategies(list);
+		List<String> list =	XmlUtils.getChildrenValues(e, "defaultstrategy");
+		checkStrategies(list, strategies);
 		for(String s:list){
 			StrategyDef bd=strategies.get(s);
-			strat.put(bd.getType(), s);
+			String type = bd.getType();
+			if(strat.containsKey(type)){
+				logger.log(Level.WARNING, "Cannot add strategy " + s + " a strategy of type: " + type +
+						" already exists");
+			}else{
+				strat.put(type, s);
+			}
 		}
 
 		Map<String,Object> params = XmlUtils.getTypedParams(e);
@@ -176,13 +157,13 @@ public class FactoriesDataXmlLoader {
 		return node;
 	}
 
-	private Map<String, CodeletDef> getCodelets(Element docEle) {
+	Map<String, CodeletDef> getCodelets(Element docEle, Map<String, StrategyDef> strategies) {
 		Map<String, CodeletDef> codels = new HashMap<String, CodeletDef>();
-		List<Element> list = getCollectionElements(docEle, "codelets",
+		List<Element> list = XmlUtils.getCollectionElements(docEle, "codelets",
 				"codelet");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
-				CodeletDef codelet = getCodelet(e);
+				CodeletDef codelet = getCodelet(e, strategies);
 				if (codelet != null) {
 					codels.put(codelet.getName(), codelet);
 				}
@@ -191,7 +172,7 @@ public class FactoriesDataXmlLoader {
 		return codels;
 	}
 
-	private CodeletDef getCodelet(Element e) {
+	CodeletDef getCodelet(Element e, Map<String, StrategyDef> strategies) {
 		CodeletDef codelet = null;
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
@@ -199,7 +180,7 @@ public class FactoriesDataXmlLoader {
 		char codeletType = evaluateType(type);
 		Map<String,String> behav = new HashMap<String,String>();
 		List<String> list=	XmlUtils.getChildrenValues(e, "defaultstrategy");
-		checkStrategies(list);
+		checkStrategies(list, strategies);
 		for(String s:list){
 			StrategyDef bd=strategies.get(s);
 			behav.put(bd.getType(), s);
@@ -236,7 +217,7 @@ public class FactoriesDataXmlLoader {
 		return codeletType;
 	}
 
-	private void checkStrategies(List<String> strat) {
+	void checkStrategies(List<String> strat, Map<String, StrategyDef> strategies) {
 		Iterator<String> it = strat.iterator();
 		String b;
 		while (it.hasNext()) {
@@ -247,16 +228,5 @@ public class FactoriesDataXmlLoader {
 				it.remove();
 			}
 		}
-	}
-
-	private List<Element> getCollectionElements(Element e, String groupName,
-			String childName) {
-		NodeList nl = e.getElementsByTagName(groupName);
-		if (nl != null && nl.getLength() > 0) {
-			Element bhvrsElement = (Element) nl.item(0);
-			List<Element> list = XmlUtils.getChildren(bhvrsElement, childName);
-			return list;
-		}
-		return null;
 	}
 }

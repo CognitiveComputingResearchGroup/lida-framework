@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +14,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,38 +58,9 @@ public class AgentXmlFactory implements AgentFactory {
 			logger.log(Level.WARNING, "Properties was null using default agent XML file path");
 		}
 		
-		Document dom = parseXmlFile(fileName);
+		Document dom = XmlUtils.parseXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH);
 		Agent agent = parseDocument(dom);
 		return agent;
-	}
-
-	/**
-	 * Verifies and parses specified xml file into a {@link Document}.
-	 * @param fileName
-	 */
-	Document parseXmlFile(String fileName) {
-		// get the factory
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		Document dom=null;
-		try {
-			// Using factory get an instance of document builder
-			DocumentBuilder db = dbf.newDocumentBuilder();
-
-			// parse using builder to get DOM representation of the XML file
-			if(XmlUtils.validateXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH)){
-				dom = db.parse(fileName);
-			}else{
-				logger.log(Level.SEVERE, "Agent XML file is invalid.", TaskManager.getCurrentTick());
-			}
-		} catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			logger.log(Level.WARNING, sw.getBuffer().toString(), 0L);
-			
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			pw.close();
-		}
-		return dom;
 	}
 
 	/**
