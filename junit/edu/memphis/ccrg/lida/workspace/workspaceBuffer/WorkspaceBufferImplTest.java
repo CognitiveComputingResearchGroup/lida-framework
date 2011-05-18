@@ -24,18 +24,13 @@ public class WorkspaceBufferImplTest {
 		n1.setActivation(0.2);
 		ns.addDefaultNode(n1);
 		
-		//Create workspaceBuffer and add them into mockWorkspace
-		WorkspaceImpl wMoudle = new WorkspaceImpl();
+		//Create a workspaceBuffer and add a NodeStructure into it
 		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
 		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
-		wMoudle.addSubModule(perceptualBuffer);
-		
-		// Add node structure into workspaceBuffer of percetualBuffer
-		wMoudle.receivePercept(ns);
-		
-		WorkspaceBuffer perceptualBuffer2 = (WorkspaceBuffer) wMoudle
-		.getSubmodule(ModuleName.PerceptualBuffer);
-		NodeStructure ns2 = (NodeStructure) perceptualBuffer2.getModuleContent();
+		perceptualBuffer.addBufferContent((WorkspaceContent) ns);
+
+		// Execution of getModuleContent() method
+		NodeStructure ns2 = (NodeStructure) perceptualBuffer.getModuleContent();
 		
 		assertTrue("Problem with class WorkspaceBufferImpl for GetModuleContent()",
 				(NodeStructureImpl.compareNodeStructures(ns, ns2)));
