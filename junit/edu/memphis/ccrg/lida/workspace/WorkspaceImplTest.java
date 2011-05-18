@@ -63,20 +63,30 @@ public class WorkspaceImplTest {
     @Test
     public void testAddListener() {
         // TODO review test
-        WorkspaceImpl instance = new WorkspaceImpl();
+    	MockWorkspaceImpl instance = new MockWorkspaceImpl();
         
     	// Type of listener is neither WorkspaceListener nor CueListener 
         // Warning should appear
+        instance.workListenerFlag = false;
+        instance.cueListenerFlag = false;
         ModuleListener listener = new mockModuleListenerImpl();
         instance.addListener(listener);
+	    assertTrue("Problem with class WorkspaceImpl for addListener()",
+				(instance.workListenerFlag == false) && (instance.cueListenerFlag == false));
         
         // Type of listener is WorkspaceListener (mockWorkListenerImpl)
+        instance.workListenerFlag = false;
         WorkspaceListener wListener2 = new mockWorkListenerImpl();
         instance.addListener(wListener2);
+	    assertTrue("Problem with class WorkspaceImpl for addListener()",
+				instance.workListenerFlag == true);
         
         // Type of listener is CueListener (mockCueListenerImpl)
+        instance.cueListenerFlag = false;
         CueListener cListener = new mockCueListenerImpl();
         instance.addListener(cListener);
+	    assertTrue("Problem with class WorkspaceImpl for addListener()",
+				instance.cueListenerFlag == true);
         
     }
 
@@ -87,8 +97,11 @@ public class WorkspaceImplTest {
     public void testAddCueListener() {
         // TODO review test
         CueListener l = new mockCueListenerImpl();
-        WorkspaceImpl instance = new WorkspaceImpl();
+        MockWorkspaceImpl instance = new MockWorkspaceImpl();
+        instance.cueListenerFlag = false;
         instance.addCueListener(l);
+	    assertTrue("Problem with class WorkspaceImpl for addCueListener()",
+				instance.cueListenerFlag == true);
     }
 
     /**
@@ -97,9 +110,12 @@ public class WorkspaceImplTest {
     @Test
     public void testAddWorkspaceListener() {
         // TODO review test
-        WorkspaceListener listener = new mockWorkListenerImpl();;
-        WorkspaceImpl instance = new WorkspaceImpl();
+        WorkspaceListener listener = new mockWorkListenerImpl();
+        MockWorkspaceImpl instance = new MockWorkspaceImpl();
+        instance.workListenerFlag = false;
         instance.addWorkspaceListener(listener);
+	    assertTrue("Problem with class WorkspaceImpl for addWorkspaceListener()",
+				instance.workListenerFlag == true);
     }
 
     /**
@@ -111,7 +127,8 @@ public class WorkspaceImplTest {
         WorkspaceImpl instance = new WorkspaceImpl();
         
         // Add a CueListener to list
-        CueListener l = new mockCueListenerImpl();
+        mockCueListenerImpl l = new mockCueListenerImpl();
+        l.ns = null;
         instance.addCueListener(l);
         
         // Set a NodeStructure (with nodeId = 2) to list of cueListener
@@ -120,6 +137,9 @@ public class WorkspaceImplTest {
 		n1.setId(2);
 		ns.addDefaultNode(n1);
 		instance.cueEpisodicMemories(ns);
+		
+		assertTrue("Problem with class WorkspaceImpl for CueEpisodicMemories()",
+				l.ns.toString().equals(ns.toString()));
     }
 
     /**
@@ -154,18 +174,31 @@ public class WorkspaceImplTest {
         WorkspaceImpl instance = new WorkspaceImpl();
         WorkspaceBufferImpl buffer = new WorkspaceBufferImpl();
         buffer.setModuleName(ModuleName.EpisodicBuffer);
+        
+        NodeStructure ns1 = new NodeStructureImpl();
+		Node n1 = new NodeImpl();
+		n1.setId(2);
+		ns1.addDefaultNode(n1);
+		buffer.addBufferContent((WorkspaceContent) ns1);
+
         instance.addSubModule(buffer);
     	    	
         // Add a WorkspaceListener to list
-        WorkspaceListener w = new mockWorkListenerImpl();
+        mockWorkListenerImpl w = new mockWorkListenerImpl();
+        w.ns = null;
         instance.addWorkspaceListener(w);
         
         // Set a NodeStructure (with nodeId = 5) to list of WorkspaceListener
-        NodeStructure ns = new NodeStructureImpl();
-		Node n1 = new NodeImpl();
-		n1.setId(5);
-		ns.addDefaultNode(n1);
-        instance.receiveLocalAssociation(ns);
+        NodeStructure ns2 = new NodeStructureImpl();
+		Node n2 = new NodeImpl();
+		n2.setId(5);
+		ns2.addDefaultNode(n2);
+        instance.receiveLocalAssociation(ns2);
+        
+        ns1.mergeWith(ns2);
+        
+		assertTrue("Problem with class WorkspaceImpl for receiveLocalAssociation()",
+				w.ns.toString().equals(ns1.toString()) );
     }
 
     /**
@@ -191,8 +224,7 @@ public class WorkspaceImplTest {
 		buffer = (WorkspaceBuffer) instance.getSubmodule(ModuleName.PerceptualBuffer);
 		NodeStructure ns2 = (NodeStructure)buffer.getBufferContent(null);
 	    assertTrue("Problem with class WorkspaceImpl for receivePercept()",
-				ns2.containsNode(9));
-				
+				ns.toString().equals(ns2.toString()));				
     }
 
     /**
@@ -202,10 +234,12 @@ public class WorkspaceImplTest {
     public void testGetModuleContent() {
         // TODO review test
         Object[] params = null;
-        WorkspaceImpl instance = new WorkspaceImpl();
         Object expResult = null;
+        MockWorkspaceImpl instance = new MockWorkspaceImpl();
+        instance.moduleContentflag = false;
         Object result = instance.getModuleContent(params);
-        assertEquals(expResult, result);
+	    assertTrue("Problem with class WorkspaceImpl for getModuleContent()",
+				instance.moduleContentflag == true);	
     }
 
     /**
@@ -229,12 +263,11 @@ public class WorkspaceImplTest {
 
 class mockWorkListenerImpl implements WorkspaceListener {
 
+	public NodeStructure ns = null;
 	@Override
 	public void receiveWorkspaceContent(ModuleName originatingBuffer,
 			WorkspaceContent content) {
-		//Check for receiving a NodeStructure which has a node with Id = 5
-		assertTrue("Problem with class WorkspaceImpl for receiveLocalAssociation()",
-				content.containsNode(5));
+            this.ns = (NodeStructure)content;
 		
 	}
 	
@@ -242,15 +275,33 @@ class mockWorkListenerImpl implements WorkspaceListener {
 
 class mockCueListenerImpl implements CueListener {
 
+	public NodeStructure ns = null;
 	@Override
 	public void receiveCue(NodeStructure cue) {
-		//Check for receiving a NodeStructure which has a node with Id = 2
-		assertTrue("Problem with class WorkspaceImpl for cueEpisodicMemories()",
-				cue.containsNode(2));
+		this.ns = cue;
 	}
 	
 }
 
 class mockModuleListenerImpl implements ModuleListener{
 	
+}
+
+class MockWorkspaceImpl extends WorkspaceImpl{
+	public boolean workListenerFlag = false;
+	public boolean cueListenerFlag = false;
+	public boolean moduleContentflag = false;
+	
+	public void addCueListener(CueListener l){
+		cueListenerFlag =true;
+	}
+	
+	public void addWorkspaceListener(WorkspaceListener listener){
+		workListenerFlag =true;
+	}
+	
+	public Object getModuleContent(Object... params) {
+		moduleContentflag = true;
+		return null;
+	}
 }
