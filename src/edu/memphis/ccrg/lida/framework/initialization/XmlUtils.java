@@ -63,9 +63,11 @@ public class XmlUtils {
 		// Here the schema is loaded from a java.io.File, but you could use
 		// a java.net.URL or a javax.xml.transform.Source instead.
 		File schemaLocation = new File(schemaFile);
+		//InputStream is = ClassLoader.getSystemResourceAsStream(schemaFile);
 		Schema schema;
 		try {
 			schema = factory.newSchema(schemaLocation);
+//			schema = factory.newSchema(new StreamSource(new InputStreamReader(is)));
 		} catch (SAXException ex) {
 			logger.log(Level.WARNING, "The Schema file is not valid. "
 					+ ex.getMessage());

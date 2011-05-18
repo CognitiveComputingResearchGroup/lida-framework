@@ -51,21 +51,20 @@ public class AgentXmlFactory implements AgentFactory {
 	private static final Logger logger = Logger.getLogger(AgentXmlFactory.class.getCanonicalName());
 	
 	private static final String DEFAULT_XML_FILE_PATH = "configs/agent.xml";
+//	private static final String DEFAULT_SCHEMA_FILE_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaXMLSchema.xsd";
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaXMLSchema.xsd";
-	
-	private Document dom;
-	private Agent agent;
-
-	private List<Object[]> toInitialize = new ArrayList<Object[]>();
-	private List<Object[]> toAssociate = new ArrayList<Object[]>();
-	private Map<String,TaskSpawner> taskSpawners;
 
 	@Override
-	public Agent getAgent(Properties properties) { 
-		String fileName = properties.getProperty("lida.factory.data",DEFAULT_XML_FILE_PATH);
-		parseXmlFile(fileName);
-		parseDocument();
-		agent.init();
+	public Agent getAgent(Properties properties) {
+		String fileName = DEFAULT_XML_FILE_PATH;
+		if(properties != null){
+			fileName = properties.getProperty("lida.factory.data",DEFAULT_XML_FILE_PATH);
+		}else{
+			logger.log(Level.WARNING, "Properties was null using default agent XML file path");
+		}
+		
+		Document dom = parseXmlFile(fileName);
+		Agent agent = parseDocument(dom);
 		return agent;
 	}
 
@@ -73,9 +72,10 @@ public class AgentXmlFactory implements AgentFactory {
 	 * Verifies and parses specified xml file into a {@link Document}.
 	 * @param fileName
 	 */
-	void parseXmlFile(String fileName) {
+	Document parseXmlFile(String fileName) {
 		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		Document dom=null;
 		try {
 			// Using factory get an instance of document builder
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -94,35 +94,52 @@ public class AgentXmlFactory implements AgentFactory {
 			e.printStackTrace(pw);
 			pw.close();
 		}
+		return dom;
 	}
 
 	/**
 	 * Parses the xml document creating the TaskManager, TaskSpawners, Modules, submodules.  Sets up listeners
 	 * and associates modules.
 	 */
-	void parseDocument() {
+	Agent parseDocument(Document dom) {
+		if(dom == null){
+			logger.log(Level.SEVERE, "Document dom was null. Cannot parse it");
+			return null;
+		}
+		
+		Agent agent=null;
+		TaskManager tm;
+		List<FrameworkModule> modules;
+		Map<String,TaskSpawner> taskSpawners;
+		List<Object[]> toInitialize = new ArrayList<Object[]>();
+		List<Object[]> toAssociate = new ArrayList<Object[]>();
+		
 		// get the root element
 		Element docEle = dom.getDocumentElement();
 
-		TaskManager tm = getTaskManager(docEle);
+		tm = getTaskManager(docEle);
 		logger.log(Level.INFO, "Finished obtaining TaskManager\n", 0L);
 		agent = new AgentImpl(tm);
 		
 		taskSpawners=getTaskSpawners(docEle,tm);
 		logger.log(Level.INFO, "Finished creating TaskSpawners\n", 0L);
 		
-		for (FrameworkModule lm : getModules(docEle,toAssociate,toInitialize,taskSpawners)) {
-			agent.addSubModule(lm);
+		modules = getModules(docEle,toAssociate,toInitialize,taskSpawners);
+		for (FrameworkModule frameworkModule :modules) {
+			agent.addSubModule(frameworkModule);
 		}
 		logger.log(Level.INFO, "Finished creating modules and submodules\n", 0L);
 		
 		getListeners(docEle,agent);
 		logger.log(Level.INFO, "Finished setting up listeners\n", 0L);
 
-		associateModules(agent);
+		associateModules(toAssociate,agent);
 		logger.log(Level.INFO, "Finished associating modules\n", 0L);
 		
 		initializeModules(agent,toInitialize);
+		agent.init();
+		
+		return agent;
 	}
 	
 	/**
@@ -391,7 +408,8 @@ public class AgentXmlFactory implements AgentFactory {
 		if (nl != null && nl.size() > 0) {
 			for (Element assocModuleElement:nl ) {
 				String assocMod=XmlUtils.getValue(assocModuleElement);
-				toAssoc.add(new Object[]{initializable,assocMod});
+				String function = element.getAttribute("function");
+				toAssoc.add(new Object[]{initializable,assocMod,function});
 			}
 		}
 	}
@@ -483,9 +501,9 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Iterates through the module/associated-module pairs and associates them
 	 */
-	void associateModules(FrameworkModule topModule) {
+	void associateModules(List<Object[]>toAssoc, FrameworkModule topModule) {
 		ModuleName moduleName;
-		for (Object[] vals : toAssociate) {
+		for (Object[] vals : toAssoc) {
 			FullyInitializable initializable = (FullyInitializable) vals[0];
 			String assocModule = (String) vals[1];
 				moduleName = ModuleName.getModuleName(assocModule);
@@ -496,7 +514,11 @@ public class AgentXmlFactory implements AgentFactory {
 			}
 			FrameworkModule module=topModule.getSubmodule(moduleName);
 			if(module != null){
-				initializable.setAssociatedModule(module, ModuleUsage.NOT_SPECIFIED);
+				String function = ModuleUsage.NOT_SPECIFIED;
+				if(vals[2]!=null){
+					function=(String) vals[2];
+				}
+				initializable.setAssociatedModule(module, function);
 			}else{
 				logger.log(Level.SEVERE, 
 						"Could not obtain " + module + ".  Module will NOT be associated to " + initializable, 
@@ -510,6 +532,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * For all modules with an initializer, run the initializer passing in the specific module.
 	 */
 	void initializeModules(Agent topModule,List<Object[]>toInit) {
+		//TODO change first parameter to FrameworkModule
 		for (Object[] vals : toInit) {
 			FullyInitializable moduleToInitialize = (FullyInitializable) vals[0];
 			String initializerClassName = (String) vals[1];

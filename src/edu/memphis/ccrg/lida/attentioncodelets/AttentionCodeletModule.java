@@ -56,6 +56,9 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	private static final double defaultCodeletActivation = 1.0;
 	private double codeletActivation = defaultCodeletActivation;
+	
+	private static final double defaultCodeletRemovalThreshold = -1.0;
+	private double codeletRemovalThreshold = defaultCodeletRemovalThreshold;
 
 	public AttentionCodeletModule() {
 		Class<BasicAttentionCodelet> cl = BasicAttentionCodelet.class;
@@ -91,7 +94,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		if (module instanceof Workspace) {
 			csm = (WorkspaceBuffer) module
 					.getSubmodule(ModuleName.CurrentSituationalModel);
-		} else if (module instanceof GlobalWorkspace) {
+		}else if (module instanceof GlobalWorkspace) {
 			globalWorkspace = (GlobalWorkspace) module;
 		}
 	}
@@ -163,7 +166,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(type, codeletTicksPerStep, 
-				codeletActivation, -1.0, null);
+				codeletActivation, codeletRemovalThreshold, params);
 		if (codelet == null) {
 			logger.log(
 					Level.WARNING,

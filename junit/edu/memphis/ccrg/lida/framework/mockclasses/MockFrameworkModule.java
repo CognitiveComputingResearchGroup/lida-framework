@@ -3,6 +3,7 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
@@ -34,6 +35,15 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 	public void decayModule(long ticks) {
 		decayTicks=ticks;
 		wasDecayed = true;
+	}
+	
+	public FrameworkModule associatedModule;
+	public String moduleUsage;
+	
+	@Override
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+		associatedModule = module;
+		this.moduleUsage = moduleUsage;
 	}
 
 }

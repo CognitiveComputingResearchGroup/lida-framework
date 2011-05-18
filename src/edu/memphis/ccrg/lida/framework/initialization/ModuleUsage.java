@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  *
  */
 public class ModuleUsage {
+	//TODO dynamic enum like ModuleName
 
 	public static final String NOT_SPECIFIED = "NOT_SPECIFIED";
 	public static final String TO_READ_FROM = "TO_READ_FROM";

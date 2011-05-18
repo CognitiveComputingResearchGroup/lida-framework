@@ -33,7 +33,6 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 	 */
 	@Override
 	public void init(){
-		//TODO recursively retrieve all FrameworkModules to simplify the decaying.  #Discuss
 		taskManager.setDecayingModules(getSubmodules().values());
 		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
 	}

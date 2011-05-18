@@ -1,14 +1,20 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
@@ -17,23 +23,25 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 /**
- * This is a JUnit class which can be used to test methods of the AttentionCodeletModule class
+ * This is a JUnit class which can be used to test methods of the AttentionCodeletModule class.
+ * 
  * @author Ryan McCall
+ * 
  */
 public class AttentionCodeletModuleTest{
 	
-	private AttentionCodeletModule attnModule;
+	private AttentionCodeletModule attentionModule;
 	private TaskSpawner taskSpawner;
 	private WorkspaceBuffer csm;
-	private GlobalWorkspace globalWorkspace;
+	private WorkspaceImpl workspace;
+	private MockGlobalWorkspaceImpl globalWorkspace;
 	private Node node1,node2;
 	private Link link1;
 	private NodeStructure ns;
@@ -42,12 +50,16 @@ public class AttentionCodeletModuleTest{
 
 	@Before
 	public void setUp() throws Exception {
-		attnModule = new AttentionCodeletModule();
+		attentionModule = new AttentionCodeletModule();
 		taskSpawner = new MockTaskSpawner();
-		attnModule.setAssistingTaskSpawner(taskSpawner);
+		attentionModule.setAssistingTaskSpawner(taskSpawner);
 		
-		globalWorkspace= new GlobalWorkspaceImpl();
 		csm = new WorkspaceBufferImpl();
+		csm.setModuleName(ModuleName.CurrentSituationalModel);
+		workspace = new WorkspaceImpl();
+		workspace.addSubModule(csm);
+		
+		globalWorkspace= new MockGlobalWorkspaceImpl();
 		
 		ns = new NodeStructureImpl();
 		node1 = factory.getNode();
@@ -69,25 +81,74 @@ public class AttentionCodeletModuleTest{
 	
 	@Test
 	public void testReceiveBroadcast() {	
-		attnModule.receiveBroadcast((BroadcastContent)ns);
+		assertEquals(0, attentionModule.getAssistingTaskSpawner().getRunningTasks().size());
 		
-		assertEquals(1, attnModule.getAssistingTaskSpawner().getRunningTasks().size());
+		attentionModule.receiveBroadcast((BroadcastContent)ns);
+		
+		assertEquals(1, attentionModule.getAssistingTaskSpawner().getRunningTasks().size());
 		//more testing when fully implemented
 	}
 
 	@Test
-	public void testGetNewAttentionCodelet() {
-		
-		AttentionCodelet codelet = attnModule.getDefaultCodelet(null);		
+	public void testGetDefaultCodelet() {
+		//Without associated modules 
+		AttentionCodeletImpl codelet = (AttentionCodeletImpl) attentionModule.getDefaultCodelet();		
 		assertTrue(codelet instanceof BasicAttentionCodelet);
-//		codelet.
+		codelet.setSoughtContent(ns);
+		try{
+			codelet.runThisFrameworkTask();
+			assertTrue(false);
+		}catch(NullPointerException e){
+		}
+		
+		//with associated modules
+		attentionModule.setAssociatedModule(workspace, null);
+		attentionModule.setAssociatedModule(globalWorkspace, null);
+		
+		codelet = (AttentionCodeletImpl) attentionModule.getDefaultCodelet();		
+		assertTrue(codelet instanceof BasicAttentionCodelet);
+		
+		assertEquals(null, globalWorkspace.coalition);
+		
+		codelet.setSoughtContent(ns);
+		codelet.runThisFrameworkTask();
+		
+		assertNotNull(globalWorkspace.coalition);
+	}
+	
+
+	@Test
+	public void testGetCodeletString() {
+		AttentionCodelet codelet = attentionModule.getCodelet("foo");
+		assertEquals(null, codelet);
+		
+		factory.addCodeletType("coolCodelet", MockAttentionCodeletImpl.class.getCanonicalName());
+		codelet = attentionModule.getCodelet("coolCodelet");
+		assertTrue(codelet instanceof MockAttentionCodeletImpl);
+	}
+
+	@Test
+	public void testGetCodeletStringMapOfStringObject() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("arg0", 10.0);
+		params.put("name", "Javier");
+		
+		AttentionCodelet codelet = attentionModule.getCodelet("BasicAttentionCodelet", params);
+		assertEquals(10.0, codelet.getParam("arg0", null));
+		assertEquals("Javier", codelet.getParam("name", null));
+	}
+	
+
+	@Test
+	public void testGetDefaultCodeletMapOfStringObject() {
+		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testRunAttentionCodelet() {
 		
 		System.out.println("Testing runAttentionCodelet() method. See console...");		
-		attnModule.addCodelet(codelet);
+		attentionModule.addCodelet(codelet);
 	}	
 	
 	@Test
@@ -107,26 +168,6 @@ public class AttentionCodeletModuleTest{
 
 	@Test
 	public void testSetDefaultCodeletType() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetDefaultCodeletMapOfStringObject() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetDefaultCodelet() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetCodeletString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetCodeletStringMapOfStringObject() {
 		fail("Not yet implemented");
 	}
 

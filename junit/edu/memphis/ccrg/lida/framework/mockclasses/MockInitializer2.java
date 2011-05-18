@@ -6,7 +6,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 
-public class MockInitializer implements Initializer {
+public class MockInitializer2 implements Initializer {
 
 	public static FullyInitializable module;
 	public static Agent agent;
@@ -15,9 +15,9 @@ public class MockInitializer implements Initializer {
 	@Override
 	public void initModule(FullyInitializable module, Agent agent,
 			Map<String, ?> params) {
-		MockInitializer.module = module;
-		MockInitializer.agent = agent;
-		MockInitializer.params = params;
+		MockInitializer2.module = module;
+		MockInitializer2.agent = agent;
+		MockInitializer2.params = params;
 	}
 
 }
