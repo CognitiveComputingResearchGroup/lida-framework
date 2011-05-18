@@ -239,7 +239,7 @@ public class WorkspaceImplTest {
         instance.moduleContentflag = false;
         Object result = instance.getModuleContent(params);
 	    assertTrue("Problem with class WorkspaceImpl for getModuleContent()",
-				instance.moduleContentflag == true);	
+				(instance.moduleContentflag == true) && ( result == expResult));	
     }
 
     /**
