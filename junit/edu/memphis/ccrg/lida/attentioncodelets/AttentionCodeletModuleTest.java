@@ -3,7 +3,6 @@ package edu.memphis.ccrg.lida.attentioncodelets;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,7 +85,7 @@ public class AttentionCodeletModuleTest{
 		attentionModule.receiveBroadcast((BroadcastContent)ns);
 		
 		assertEquals(1, attentionModule.getAssistingTaskSpawner().getRunningTasks().size());
-		//more testing when fully implemented
+		//TODO more testing when fully implemented
 	}
 
 	@Test
@@ -119,12 +118,28 @@ public class AttentionCodeletModuleTest{
 
 	@Test
 	public void testGetCodeletString() {
-		AttentionCodelet codelet = attentionModule.getCodelet("foo");
+		AttentionCodeletImpl codelet = (AttentionCodeletImpl) attentionModule.getCodelet("foo");
 		assertEquals(null, codelet);
 		
 		factory.addCodeletType("coolCodelet", MockAttentionCodeletImpl.class.getCanonicalName());
-		codelet = attentionModule.getCodelet("coolCodelet");
+		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("coolCodelet");
 		assertTrue(codelet instanceof MockAttentionCodeletImpl);
+		
+		
+		//with associated modules
+		attentionModule.setAssociatedModule(workspace, null);
+		attentionModule.setAssociatedModule(globalWorkspace, null);
+		
+		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("BasicAttentionCodelet");	
+		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertEquals(100, codelet.getParam("arg0", 100));
+		
+		assertEquals(null, globalWorkspace.coalition);
+		
+		codelet.setSoughtContent(ns);
+		codelet.runThisFrameworkTask();
+		
+		assertNotNull(globalWorkspace.coalition);
 	}
 
 	@Test
@@ -134,70 +149,109 @@ public class AttentionCodeletModuleTest{
 		params.put("name", "Javier");
 		
 		AttentionCodelet codelet = attentionModule.getCodelet("BasicAttentionCodelet", params);
+		assertTrue(codelet instanceof BasicAttentionCodelet);
 		assertEquals(10.0, codelet.getParam("arg0", null));
 		assertEquals("Javier", codelet.getParam("name", null));
+		
+		codelet = attentionModule.getCodelet("foo", params);
+		assertEquals(null, codelet);
+		
+		params.put("arg0", 20.0);
+		params.put("name", "Ryan");
+		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("coolCodelet", params);
+		assertTrue(codelet instanceof MockAttentionCodeletImpl);
+		assertEquals(20.0, codelet.getParam("arg0", null));
+		assertEquals("Ryan", codelet.getParam("name", null));
 	}
 	
 
 	@Test
 	public void testGetDefaultCodeletMapOfStringObject() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRunAttentionCodelet() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("arg0", 10.0);
+		params.put("name", "Javier");
 		
-		System.out.println("Testing runAttentionCodelet() method. See console...");		
-		attentionModule.addCodelet(codelet);
-	}	
-	
-	@Test
-	public void testGetModuleContent() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testInit() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAttentionCodeletModule() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetDefaultCodeletType() {
-		fail("Not yet implemented");
+		AttentionCodelet codelet = attentionModule.getDefaultCodelet(params);
+		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertEquals(10.0, codelet.getParam("arg0", null));
+		assertEquals("Javier", codelet.getParam("name", null));
+		
+		params = null;
+		codelet = attentionModule.getDefaultCodelet(params);
+		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertEquals(20.0, codelet.getParam("arg0", 20.0));
+		assertEquals("Ryan", codelet.getParam("name", "Ryan"));
 	}
 
 	@Test
 	public void testAddCodelet() {
-		fail("Not yet implemented");
+		assertEquals(0, taskSpawner.getRunningTasks().size());
+		
+		attentionModule.addCodelet(codelet);
+		
+		assertTrue(taskSpawner.containsTask(codelet));
+		assertEquals(1, taskSpawner.getRunningTasks().size());
+	}	
+	
+	@Test
+	public void testGetModuleContent() {
+		attentionModule.setAssociatedModule(globalWorkspace, "");
+		
+		Object[] o = null;
+		Object content = attentionModule.getModuleContent(o);
+		assertEquals(null, content);
+		
+		content = attentionModule.getModuleContent(new Object[]{});
+		assertEquals(null, content);
+		
+		content = attentionModule.getModuleContent(new Object[0]);
+		assertEquals(null, content);
+		
+		content = attentionModule.getModuleContent(new Object[]{null});
+		assertEquals(null, content);
+		
+		content = attentionModule.getModuleContent(new Object[]{2456});
+		assertEquals(null, content);
+		
+		content = attentionModule.getModuleContent(new Object[]{"hi"});
+		assertEquals(null, content);
+		
+		content = attentionModule.getModuleContent(new Object[]{"globalworkspace"});
+		assertEquals(globalWorkspace, content);
+		
+		content = attentionModule.getModuleContent(new Object[]{"GLOBALWORKSPACE"});
+		assertEquals(globalWorkspace, content);
 	}
 
 	@Test
-	public void testReceivePreafference() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testLearn() {
-		fail("Not yet implemented");
+	public void testSetDefaultCodeletType() {
+		AttentionCodelet codelet = attentionModule.getDefaultCodelet();
+		assertTrue(codelet instanceof BasicAttentionCodelet);
+		
+		attentionModule.setDefaultCodeletType("34t90j");
+		
+		codelet = attentionModule.getDefaultCodelet();
+		assertTrue(codelet instanceof BasicAttentionCodelet);
+		
+		assertTrue(factory.containsCodeletType("coolCodelet"));
+		attentionModule.setDefaultCodeletType("coolCodelet");
+		
+		codelet = attentionModule.getDefaultCodelet();
+		assertTrue(codelet instanceof MockAttentionCodeletImpl);
 	}
 
 	@Test
 	public void testToString() {
-		fail("Not yet implemented");
+		assertEquals(ModuleName.AttentionModule.toString(), attentionModule.toString());
 	}
 
 	@Test
 	public void testAddListener() {
-		fail("Not yet implemented");
+		//TODO when implemented
 	}
 
 	@Test
 	public void testDecayModule() {
-		fail("Not yet implemented");
+		//TODO when implemented
 	}
 }

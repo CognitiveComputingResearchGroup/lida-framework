@@ -225,16 +225,15 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public String toString() {
-		return ModuleName.AttentionModule + "";
+		return ModuleName.AttentionModule.toString();
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		if(params.length>0){
-			for(int i=0;i<params.length;i++){
-				if(params[i]=="GlobalWorkspace")
-					return globalWorkspace;
-			}			
+		if(params != null && params.length > 0 && params[0] instanceof String){
+			if("GlobalWorkspace".equalsIgnoreCase((String) params[0])){
+				return globalWorkspace;
+			}
 		}
 		return null;
 	}

@@ -1,37 +1,27 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import java.util.Set;
-
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
+public class MockStructureBuildingCodeletImpl extends
+		StructureBuildingCodeletImpl {
 
-public class mockStructureBuildingCodeletImpl extends BasicStructureBuildingCodelet implements StructureBuildingCodelet{
+	@Override
+	protected void runThisFrameworkTask() {
+		// TODO Auto-generated method stub
 
-	public Set<WorkspaceBuffer> getReadableBuffers(){
-		return readableBuffers;
 	}
-	
-	public WorkspaceBuffer getWritableBuffer() {
-		return writableBuffer;
-	}
-	
+
 	@Override
 	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
-		// 
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		// 
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	protected void runThisFrameworkTask() {
-		// 
-		
-	}
-	
 }

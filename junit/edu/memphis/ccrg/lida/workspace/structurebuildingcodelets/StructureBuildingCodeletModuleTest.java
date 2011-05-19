@@ -1,219 +1,219 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
+import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
-/**
- * 
- * @author Daqi
- *
- */
 public class StructureBuildingCodeletModuleTest {
 
-	@Test
-	public final void testGetModuleContent() {
-		// N/A
-	}
+	private StructureBuildingCodeletModule sbcModule;
+	private TaskSpawner taskSpawner;
+	private WorkspaceBuffer perceptualBuffer, csm;
+	private WorkspaceImpl workspace;
+	private Node node1,node2;
+	private Link link1;
+	private NodeStructure ns;
+	private MockStructureBuildingCodeletImpl codelet;
+	private static final ElementFactory factory = ElementFactory.getInstance();
 
-	@Test
-	public final void testInit() {
-		// N/A
-	}
-
-	@Test
-	public final void testDecayModule() {
-		//Skip because implement does not yet complete.
+	@Before
+	public void setUp() throws Exception {
+		sbcModule = new StructureBuildingCodeletModule();
+		taskSpawner = new MockTaskSpawner();
+		sbcModule.setAssistingTaskSpawner(taskSpawner);
 		
-	}
-
-	@Test
-	public final void testSetAssociatedModule() {
+		csm = new WorkspaceBufferImpl();
+		csm.setModuleName(ModuleName.CurrentSituationalModel);
 		
-		StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
-		
-		//Creates node and add them into a node structure
-		NodeStructure ns = new NodeStructureImpl();
-		NodeStructure ns2 = new NodeStructureImpl();
-		
-		Node n1 = new NodeImpl();
-		n1.setId(1);
-		ns.addDefaultNode(n1);
-		
-		Node n2 = new NodeImpl();
-		n2.setId(6);
-		ns2.addDefaultNode(n2);
-		
-		WorkspaceImpl wMoudle = new WorkspaceImpl();
-		
-		//Create workspaceBuffer of PerceptualBuffer and add it to workspace
-		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
+		perceptualBuffer = new WorkspaceBufferImpl();
 		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
-		wMoudle.addSubModule(perceptualBuffer);
-		// Add node structure into workspaceBuffer of percetualBuffer
-		wMoudle.receivePercept(ns);
 		
-		//Create workspaceBuffer of CurrentSituationalModel and add it to workspace
-		WorkspaceBuffer CSMBuffer = new WorkspaceBufferImpl();
-		CSMBuffer.setModuleName(ModuleName.CurrentSituationalModel);
-		wMoudle.addSubModule(CSMBuffer);
-		//Add node 
-		((NodeStructure) CSMBuffer.getBufferContent(null)).mergeWith(ns2);
+		workspace = new WorkspaceImpl();
+		workspace.addSubModule(csm);
+		workspace.addSubModule(perceptualBuffer);
 		
-		sbcm.setAssociatedModule(wMoudle, null);
+		ns = new NodeStructureImpl();
+		node1 = factory.getNode();
+		node2 = factory.getNode();
+		PamNode category = (PamNode) factory.getNode("PamNodeImpl");
+		link1 = factory.getLink(node1,node2,category);
+		ns.addDefaultNode(node1);
+		ns.addDefaultNode(node2);
+		ns.addDefaultLink(link1);	
 		
-		//Also test for getCodelet(String)
-		ElementFactory factory = ElementFactory.getInstance();
-		factory.addCodeletType(mockStructureBuildingCodeletImpl.class.getSimpleName(), 
-				mockStructureBuildingCodeletImpl.class.getCanonicalName());
+		csm.addBufferContent((WorkspaceContent) ns);
 		
-		//Set a mock CodeletType to default type for testing defaultCodelet
-		sbcm.setDefaultCodeletType(mockStructureBuildingCodeletImpl.class.getSimpleName());
-		
-		
-		//Test for getCodelet(String)
-		mockStructureBuildingCodeletImpl mockSbcm = (mockStructureBuildingCodeletImpl) sbcm.getCodelet("mockStructureBuildingCodeletImpl");
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm.getReadableBuffers()).contains(perceptualBuffer));
-		
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm.getWritableBuffer()).equals(CSMBuffer));
-		
-		//Test for getCodelet(String, Map<String, Object>)
-		mockStructureBuildingCodeletImpl mockSbcm2 = (mockStructureBuildingCodeletImpl)sbcm.getCodelet("mockStructureBuildingCodeletImpl", null);
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm2.getReadableBuffers()).contains(perceptualBuffer));
-		
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm2.getWritableBuffer()).equals(CSMBuffer));
-		
-			
-		//Test for getDefaultCodelet()
-		mockStructureBuildingCodeletImpl mockSbcm3 = (mockStructureBuildingCodeletImpl) sbcm.getDefaultCodelet();
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm3.getReadableBuffers()).contains(perceptualBuffer));
-		
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm3.getWritableBuffer()).equals(CSMBuffer));
-
-		//Test for getDefaultCodelet(Map<String, Object>)
-		mockStructureBuildingCodeletImpl mockSbcm4 = (mockStructureBuildingCodeletImpl) sbcm.getDefaultCodelet(null);
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm4.getReadableBuffers()).contains(perceptualBuffer));
-		
-		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-				(mockSbcm4.getWritableBuffer()).equals(CSMBuffer));
-		
-}
+		codelet = new MockStructureBuildingCodeletImpl();
+		codelet.setSoughtContent(ns);	
+	
+		codelet.setAssociatedModule(csm, ModuleUsage.TO_WRITE_TO);
+		codelet.setAssociatedModule(perceptualBuffer, ModuleUsage.TO_READ_FROM);
+	}
+	
+	
 
 	@Test
-	public final void testStructureBuildingCodeletModule() {
-		// Tested in testAddFrameworkGuiEventListener() and testGetDefaultCodelet()
+	public void testSetAssociatedModule() {
+//StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
+//		
+//		//Creates node and add them into a node structure
+//		NodeStructure ns = new NodeStructureImpl();
+//		NodeStructure ns2 = new NodeStructureImpl();
+//		
+//		Node n1 = new NodeImpl();
+//		n1.setId(1);
+//		ns.addDefaultNode(n1);
+//		
+//		Node n2 = new NodeImpl();
+//		n2.setId(6);
+//		ns2.addDefaultNode(n2);
+//		
+//		WorkspaceImpl wMoudle = new WorkspaceImpl();
+//		
+//		//Create workspaceBuffer of PerceptualBuffer and add it to workspace
+//		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
+//		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
+//		wMoudle.addSubModule(perceptualBuffer);
+//		// Add node structure into workspaceBuffer of percetualBuffer
+//		wMoudle.receivePercept(ns);
+//		
+//		//Create workspaceBuffer of CurrentSituationalModel and add it to workspace
+//		WorkspaceBuffer CSMBuffer = new WorkspaceBufferImpl();
+//		CSMBuffer.setModuleName(ModuleName.CurrentSituationalModel);
+//		wMoudle.addSubModule(CSMBuffer);
+//		//Add node 
+//		((NodeStructure) CSMBuffer.getBufferContent(null)).mergeWith(ns2);
+//		
+//		sbcm.setAssociatedModule(wMoudle, null);
+//		
+//		//Also test for getCodelet(String)
+//		ElementFactory factory = ElementFactory.getInstance();
+//		factory.addCodeletType(MockStructureBuildingCodeletImpl.class.getSimpleName(), 
+//				MockStructureBuildingCodeletImpl.class.getCanonicalName());
+//		
+//		//Set a mock CodeletType to default type for testing defaultCodelet
+//		sbcm.setDefaultCodeletType(MockStructureBuildingCodeletImpl.class.getSimpleName());
+//		
+//		
+//		//Test for getCodelet(String)
+//		MockStructureBuildingCodeletImpl mockSbcm = (MockStructureBuildingCodeletImpl) sbcm.getCodelet("MockStructureBuildingCodeletImpl");
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm.getReadableBuffers()).contains(perceptualBuffer));
+//		
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm.getWritableBuffer()).equals(CSMBuffer));
+//		
+//		//Test for getCodelet(String, Map<String, Object>)
+//		MockStructureBuildingCodeletImpl mockSbcm2 = (MockStructureBuildingCodeletImpl)sbcm.getCodelet("MockStructureBuildingCodeletImpl", null);
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm2.getReadableBuffers()).contains(perceptualBuffer));
+//		
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm2.getWritableBuffer()).equals(CSMBuffer));
+//		
+//			
+//		//Test for getDefaultCodelet()
+//		MockStructureBuildingCodeletImpl mockSbcm3 = (MockStructureBuildingCodeletImpl) sbcm.getDefaultCodelet();
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm3.getReadableBuffers()).contains(perceptualBuffer));
+//		
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm3.getWritableBuffer()).equals(CSMBuffer));
+//
+//		//Test for getDefaultCodelet(Map<String, Object>)
+//		MockStructureBuildingCodeletImpl mockSbcm4 = (MockStructureBuildingCodeletImpl) sbcm.getDefaultCodelet(null);
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm4.getReadableBuffers()).contains(perceptualBuffer));
+//		
+//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
+//				(mockSbcm4.getWritableBuffer()).equals(CSMBuffer));
 	}
 
 	@Test
-	public final void testAddFrameworkGuiEventListener() {
-		StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
-		
-		FrameworkGuiEvent fge = new FrameworkGuiEvent(ModuleName.Agent, "01", new Object());
-		mockFrameworkGuiEventListener mockgui = new mockFrameworkGuiEventListener();
-		sbcm.addFrameworkGuiEventListener(mockgui);
-		sbcm.sendEventToGui(fge);
-		
+	public void testStructureBuildingCodeletModule() {
+		fail("Not yet implemented");
 	}
 
 	@Test
-	public final void testSendEventToGui() {
-		//Be tested in testAddFrameworkGuiEventListener() method
+	public void testAddFrameworkGuiEventListener() {
+		fail("Not yet implemented");
 	}
 
 	@Test
-	public final void testGetDefaultCodelet() {
-		//Be tested in testSetAssociatedModule() method
+	public void testSetDefaultCodeletType() {
+		fail("Not yet implemented");
 	}
 
 	@Test
-	public final void testAddCodelet() {
-		//Creates node and add them into a node structure
-		NodeStructure ns = new NodeStructureImpl();
-	    Node n1 = new NodeImpl();
-		n1.setId(9);
-		ns.addDefaultNode(n1);
+	public void testSendEventToGui() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetDefaultCodeletMapOfStringObject() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetDefaultCodelet() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetCodeletString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetCodeletStringMapOfStringObject() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testAddCodelet() {
+		assertEquals(0, taskSpawner.getRunningTasks().size());
 		
-		//Create a mock StructureBuildingCodelet and spawner
-		StructureBuildingCodelet sbc = new mockStructureBuildingCodeletImpl();
-		sbc.setSoughtContent(ns);
-		mockTaskSpawner mockSpawner = new mockTaskSpawner();
+		sbcModule.addCodelet(codelet);
 		
-		StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
-		sbcm.setAssistingTaskSpawner(mockSpawner);
-		sbcm.addCodelet(sbc);
-		
+		assertTrue(taskSpawner.containsTask(codelet));
+		assertEquals(1, taskSpawner.getRunningTasks().size());
 	}
 
 	@Test
-	public final void testToString() {
-		StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
-		assertTrue("Problem with class StructureBuildingCodeletModule for testToString()",
-				((ModuleName.StructureBuildingCodeletModule + "")).equals(sbcm.toString()));
-
-	}
-
-	@Test
-	public final void testAddListener() {
-		// N/A
-	}
-
-	@Test
-	public final void testGetDefaultCodeletMapOfStringObject() {
-		//Be tested in testSetAssociatedModule() method
-		
+	public void testToString() {
+		assertEquals(ModuleName.StructureBuildingCodeletModule.toString(), sbcModule.toString());
 	}
 	
 	@Test
-	public final void testGetCodeletString() {
-		//Be tested in testSetAssociatedModule() method
+	public void testGetModuleContent() {
 	}
-	
 	@Test
-	public final void testGetCodeletStringMapOfStringObject() {
-		//Be tested in testSetAssociatedModule() method
+	public void testInit() {
 	}
-}
-
-
-class mockFrameworkGuiEventListener implements FrameworkGuiEventListener{
-
-	@Override
-	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
-		assertTrue("Problem with class StructureBuildingCodeletModule for testAddFrameworkGuiEventListener()",
-				event.getMessage() == "01");
-		
+	@Test
+	public void testAddListener() {
 	}
-	
-}
-
-class mockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner{
-	@Override
-	public void addTask(FrameworkTask task){
-		NodeStructure ns = ((StructureBuildingCodelet)task).getSoughtContent();
-		assertTrue("Problem with class StructureBuildingCodeletModule for testAddCodelet()",
-				(ns.getNode(9) != null)&&(ns.getNodeCount() == 1));
+	@Test
+	public void testDecayModule() {
 	}
-}
 
+}
