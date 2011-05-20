@@ -114,18 +114,6 @@
     		</element>
     	</sequence>
         <attribute name="name" type="string" use="required"></attribute>
-        <attribute name="type" use="required">
-    		<simpleType>
-    			<restriction base="string">
-    				<enumeration value="FeatureDetector"></enumeration>
-    				<enumeration value="SBCodelet"></enumeration>
-    				<enumeration value="AttentionCodelet"></enumeration>
-    				<enumeration value="FD"></enumeration>
-    				<enumeration value="SBC"></enumeration>
-    				<enumeration value="AC"></enumeration>
-    			</restriction>
-    		</simpleType>
-    	</attribute>
     </complexType>
 
     <complexType name="codelets">

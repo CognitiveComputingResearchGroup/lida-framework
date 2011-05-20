@@ -12,6 +12,7 @@ package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,14 +67,16 @@ public class XmlUtils {
 		// Here the schema is loaded from a java.io.File, but you could use
 		// a java.net.URL or a javax.xml.transform.Source instead.
 		File schemaLocation = new File(schemaFile);
-		//InputStream is = ClassLoader.getSystemResourceAsStream(schemaFile);
+//		InputStream is = ClassLoader.getSystemResourceAsStream("edu/memphis/ccrg/lida/framework/initialization/config/NewXMLSchema.xsd");
+
 		Schema schema;
 		try {
 			schema = factory.newSchema(schemaLocation);
-//			schema = factory.newSchema(new StreamSource(new InputStreamReader(is)));
+//			schema = factory.newSchema(new StreamSource(is));
 		} catch (SAXException ex) {
 			logger.log(Level.WARNING, "The Schema file is not valid. "
 					+ ex.getMessage());
+			ex.printStackTrace();
 			return false;
 		}
 
@@ -113,7 +116,7 @@ public class XmlUtils {
 		List<Element> nl = getChildren(ele, tagName);
 		if (nl != null && nl.size()!=0) {
 			Element el = (Element) nl.get(0);
-			textVal = getValue(el);
+			textVal = getValue(el).trim();
 		}
 
 		return textVal;
@@ -242,7 +245,7 @@ public class XmlUtils {
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
 			if (child instanceof Text) {
-				return child.getNodeValue();
+				return child.getNodeValue().trim();
 			}
 		}
 		return null;
@@ -326,10 +329,6 @@ public class XmlUtils {
 				logger.log(Level.WARNING, "Xml file invalid, file: " +fileName+" was not parsed");
 			}
 		}catch (Exception e) {
-//			StringWriter sw = new StringWriter();
-//			PrintWriter pw = new PrintWriter(sw);
-//			e.printStackTrace(pw);
-//			pw.close();
 			logger.log(Level.WARNING, e.getMessage(),e);
 		}
 		return dom;

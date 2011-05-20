@@ -189,7 +189,7 @@ public class AgentXmlFactory implements AgentFactory {
 	void getTaskSpawner(Element element, TaskManager tm,Map<String,TaskSpawner>spawners) {
 		TaskSpawner ts = null;
 		String className = XmlUtils.getTextValue(element, "class");
-		String name = element.getAttribute("name");
+		String name = element.getAttribute("name").trim();
 		try {
 			ts = (TaskSpawner) Class.forName(className).newInstance();
 		}
@@ -245,7 +245,7 @@ public class AgentXmlFactory implements AgentFactory {
 		//Get module name and class name
 		FrameworkModule module = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
-		String name = moduleElement.getAttribute("name");
+		String name = moduleElement.getAttribute("name").trim();
 		ModuleName moduleName = ModuleName.NoModule;
 		try {
 			moduleName = ModuleName.addModuleName(name);
@@ -341,7 +341,7 @@ public class AgentXmlFactory implements AgentFactory {
 	FrameworkTask getTask(Element moduleElement,List<Object[]>toAssoc) {
 		FrameworkTask task = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
-		String name = moduleElement.getAttribute("name");
+		String name = moduleElement.getAttribute("name").trim();
 		int ticks = XmlUtils.getIntValue(moduleElement, "ticksperrun");
 		try {
 			task = (FrameworkTask) Class.forName(className).newInstance();
@@ -374,7 +374,7 @@ public class AgentXmlFactory implements AgentFactory {
 		if (nl != null && nl.size() > 0) {
 			for (Element assocModuleElement:nl ) {
 				String assocMod=XmlUtils.getValue(assocModuleElement);
-				String function = element.getAttribute("function");
+				String function = element.getAttribute("function").trim();
 				toAssoc.add(new Object[]{initializable,assocMod,function});
 			}
 		}

@@ -18,6 +18,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
@@ -35,59 +36,41 @@ public class WorkspaceImplTest {
 	
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
-    /**
-     *
-     */
-    public WorkspaceImplTest() {
-    }
-
-    /**
-     *
-     * @throws Exception e
-     */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
+	private WorkspaceImpl workspace;
+	private MockWorkspaceBufferImpl eBuffer;
+	private NodeStructure content;
+	private Node node1, node2;
+	
     /**
      *
      */
     @Before
     public void setUp() {
+    	workspace = new WorkspaceImpl();
+    	eBuffer = new MockWorkspaceBufferImpl();
+    	eBuffer.setModuleName(ModuleName.EpisodicBuffer);
+    	content = new NodeStructureImpl();
+    	node1 = factory.getNode();
+    	node2 = factory.getNode();
     }
-
 
     /**
      * Test of addListener method, of class WorkspaceImpl.
      */
     @Test
     public void testAddListener() {
-        // TODO review test
-    	MockWorkspaceImpl instance = new MockWorkspaceImpl();
-        
-    	// Type of listener is neither WorkspaceListener nor CueListener 
-        // Warning should appear
-        instance.workListenerFlag = false;
-        instance.cueListenerFlag = false;
-        ModuleListener listener = new mockModuleListenerImpl();
-        instance.addListener(listener);
-	    assertTrue("Problem with class WorkspaceImpl for addListener()",
-				(instance.workListenerFlag == false) && (instance.cueListenerFlag == false));
-        
-        // Type of listener is WorkspaceListener (mockWorkListenerImpl)
-        instance.workListenerFlag = false;
-        WorkspaceListener wListener2 = new mockWorkListenerImpl();
-        instance.addListener(wListener2);
-	    assertTrue("Problem with class WorkspaceImpl for addListener()",
-				instance.workListenerFlag == true);
-        
-        // Type of listener is CueListener (mockCueListenerImpl)
-        instance.cueListenerFlag = false;
-        CueListener cListener = new mockCueListenerImpl();
-        instance.addListener(cListener);
-	    assertTrue("Problem with class WorkspaceImpl for addListener()",
-				instance.cueListenerFlag == true);
-        
+
+    	mockModuleListenerImpl listener = new mockModuleListenerImpl();
+    	workspace.addListener(listener);
+    	workspace.addSubModule(eBuffer);
+   
+    	content.addDefaultNode(node1);
+    	workspace.receiveLocalAssociation(content);
+    	
+    	assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
+    	assertTrue(listener.content.containsNode(node1));
+    	
+    	//TODO cue listener!!
     }
 
     /**
@@ -97,11 +80,11 @@ public class WorkspaceImplTest {
     public void testAddCueListener() {
         // TODO review test
         CueListener l = new mockCueListenerImpl();
-        MockWorkspaceImpl instance = new MockWorkspaceImpl();
-        instance.cueListenerFlag = false;
-        instance.addCueListener(l);
-	    assertTrue("Problem with class WorkspaceImpl for addCueListener()",
-				instance.cueListenerFlag == true);
+//        MockWorkspaceImpl instance = new MockWorkspaceImpl();
+//        instance.cueListenerFlag = false;
+//        instance.addCueListener(l);
+//	    assertTrue("Problem with class WorkspaceImpl for addCueListener()",
+//				instance.cueListenerFlag == true);
     }
 
     /**
@@ -111,11 +94,11 @@ public class WorkspaceImplTest {
     public void testAddWorkspaceListener() {
         // TODO review test
         WorkspaceListener listener = new mockWorkListenerImpl();
-        MockWorkspaceImpl instance = new MockWorkspaceImpl();
-        instance.workListenerFlag = false;
-        instance.addWorkspaceListener(listener);
-	    assertTrue("Problem with class WorkspaceImpl for addWorkspaceListener()",
-				instance.workListenerFlag == true);
+//        MockWorkspaceImpl instance = new MockWorkspaceImpl();
+//        instance.workListenerFlag = false;
+//        instance.addWorkspaceListener(listener);
+//	    assertTrue("Problem with class WorkspaceImpl for addWorkspaceListener()",
+//				instance.workListenerFlag == true);
     }
 
     /**
@@ -235,11 +218,11 @@ public class WorkspaceImplTest {
         // TODO review test
         Object[] params = null;
         Object expResult = null;
-        MockWorkspaceImpl instance = new MockWorkspaceImpl();
-        instance.moduleContentflag = false;
-        Object result = instance.getModuleContent(params);
-	    assertTrue("Problem with class WorkspaceImpl for getModuleContent()",
-				(instance.moduleContentflag == true) && ( result == expResult));	
+//        MockWorkspaceImpl instance = new MockWorkspaceImpl();
+//        instance.moduleContentflag = false;
+//        Object result = instance.getModuleContent(params);
+//	    assertTrue("Problem with class WorkspaceImpl for getModuleContent()",
+//				(instance.moduleContentflag == true) && ( result == expResult));	
     }
 
     /**
@@ -283,26 +266,14 @@ class mockCueListenerImpl implements CueListener {
 	
 }
 
-class mockModuleListenerImpl implements ModuleListener{
+class mockModuleListenerImpl implements WorkspaceListener{
+	public ModuleName originatingBuffer;
+	public WorkspaceContent content;
+	@Override
+	public void receiveWorkspaceContent(ModuleName originatingBuffer,
+			WorkspaceContent content) {
+		this.originatingBuffer = originatingBuffer;
+		this.content = content;	
+	}
 	
-}
-
-class MockWorkspaceImpl extends WorkspaceImpl{
-	public boolean workListenerFlag = false;
-	public boolean cueListenerFlag = false;
-	public boolean moduleContentflag = false;
-	
-	@Override
-	public void addCueListener(CueListener l){
-		cueListenerFlag =true;
-	}
-	@Override
-	public void addWorkspaceListener(WorkspaceListener listener){
-		workListenerFlag =true;
-	}
-	@Override
-	public Object getModuleContent(Object... params) {
-		moduleContentflag = true;
-		return null;
-	}
 }

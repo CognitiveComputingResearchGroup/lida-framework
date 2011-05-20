@@ -26,7 +26,6 @@ public class CodeletDef {
 	private Map<String,String>defaultStrategies;
 	private String name;
 	private Map<String,Object> params;
-	private char type;
 	/**
 	 * 
 	 */
@@ -75,12 +74,6 @@ public class CodeletDef {
 		return params;
 	}
 	/**
-	 * @return the type
-	 */
-	public char getType() {
-		return type;
-	}
-	/**
 	 * @param className the className to set
 	 */
 	public void setClassName(String className) {
@@ -103,17 +96,5 @@ public class CodeletDef {
 	 */
 	public void setParams(Map<String,Object> params) {
 		this.params = params;
-	}
-	/**
-	 * valid types:
-	 * B: Structure Building Codelets
-	 * F: Feature Detectors
-	 * A: Attention Codelets
-	 * @param type the type to set
-	 */
-	public void setType(char type) {
-		if(type=='B'||type=='F'||type=='A'){
-			this.type = type;
-		}
 	}
 }

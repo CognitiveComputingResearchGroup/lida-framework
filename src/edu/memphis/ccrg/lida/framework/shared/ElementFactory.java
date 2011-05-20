@@ -306,6 +306,14 @@ public class ElementFactory {
 	public String getDefaultNodeType() {
 		return defaultNodeType;
 	}
+	/**
+	 * Returns whether this factory contains specified {@link Strategy} type.
+	 * @param strategyType name of strategy type
+	 * @return true if factory contains type or false if not
+	 */
+	public boolean containsStrategy(String strategyType){
+		return strategies.containsKey(strategyType);
+	}
 
 	/**
 	 * Returns whether this factory contains specified {@link Node} type.

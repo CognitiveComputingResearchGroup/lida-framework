@@ -12,7 +12,10 @@ package edu.memphis.ccrg.lida.framework;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
 /**
@@ -23,6 +26,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  */
 public abstract class FrameworkModuleImpl implements FrameworkModule {
 
+	private static final Logger logger = Logger.getLogger(FrameworkModuleImpl.class.getCanonicalName());
 	private ModuleName moduleName;
 	private Map<ModuleName, FrameworkModule> submodules = new ConcurrentHashMap<ModuleName, FrameworkModule>();
 	protected TaskSpawner taskSpawner;
@@ -107,8 +111,10 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 
 	@Override
 	public void addSubModule(FrameworkModule lm) {
-		if(lm != null){
+		if(lm != null && lm.getModuleName() != null){
 			submodules.put(lm.getModuleName(), lm);
+		}else{
+			logger.log(Level.WARNING, "Either module or module's name was null", TaskManager.getCurrentTick());
 		}
 	}
 

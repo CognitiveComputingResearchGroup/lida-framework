@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -40,16 +39,7 @@ public class FactoriesDataXmlLoaderTest {
 		strategies.put("strategy4", def);
 	}
 
-	@Test
-	public void testLoadFactoriesData() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testParseDocument() {
-		fail("Not yet implemented");
-	}
-
+	
 	@Test
 	public void testGetStrategies() {
 		String xml = "<LidaFactories><strategies><strategy flyweight=\"true\" name=\"defaultExcite\" type=\"excite\">"
@@ -192,14 +182,14 @@ public class FactoriesDataXmlLoaderTest {
 
 	@Test
 	public void testGetCodelets() {
-		String xml = "<LidaFactories><codelets><codelet name=\"topleft\" type=\"FeatureDetector\">"
+		String xml = "<LidaFactories><codelets><codelet name=\"topleft\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector</class>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
 				+ "<param name=\"param\" type=\"int\">10</param>"
 				+ "</codelet>"
-				+"<codelet name=\"bottomright\" type=\"ac\">"
+				+"<codelet name=\"bottomright\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<param name=\"param1\" type=\"string\">hi</param>"
@@ -217,7 +207,6 @@ public class FactoriesDataXmlLoaderTest {
 				"edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector",
 				def.getClassName());
 		assertEquals("topleft", def.getName());
-		assertEquals('F', def.getType());
 		assertEquals("strategy1", def.getDefaultStrategies().get("excite"));
 		assertEquals("strategy2", def.getDefaultStrategies().get("decay"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
@@ -230,7 +219,6 @@ public class FactoriesDataXmlLoaderTest {
 				"edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another",
 				def.getClassName());
 		assertEquals("bottomright", def.getName());
-		assertEquals('A', def.getType());
 		assertEquals("strategy1", def.getDefaultStrategies().get("excite"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(1, def.getParams().size());
@@ -239,7 +227,7 @@ public class FactoriesDataXmlLoaderTest {
 
 	@Test
 	public void testGetCodelet() {
-		String xml = "<codelet name=\"topleft\" type=\"FeatureDetector\">"
+		String xml = "<codelet name=\"topleft\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector</class>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
@@ -255,7 +243,6 @@ public class FactoriesDataXmlLoaderTest {
 				"edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector",
 				def.getClassName());
 		assertEquals("topleft", def.getName());
-		assertEquals('F', def.getType());
 		assertEquals("strategy1", def.getDefaultStrategies().get("excite"));
 		assertEquals("strategy2", def.getDefaultStrategies().get("decay"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
@@ -277,6 +264,16 @@ public class FactoriesDataXmlLoaderTest {
 	}
 
 	private Element parseDomElement(String xml) {
+		Document dom = parseDocument(xml);
+		Element docEle = dom.getDocumentElement();
+		return docEle;
+	}
+
+	/**
+	 * @param xml
+	 * @return
+	 */
+	private Document parseDocument(String xml) {
 		Document dom = null;
 		// get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -287,10 +284,10 @@ public class FactoriesDataXmlLoaderTest {
 			// parse using builder to get DOM representation of the XML file
 			dom = db.parse(new ByteArrayInputStream(xml.getBytes()));
 		} catch (Exception e) {
+			e.printStackTrace();
 			assertTrue(false);
 		}
-		Element docEle = dom.getDocumentElement();
-		return docEle;
+		return dom;
 	}
 
 }

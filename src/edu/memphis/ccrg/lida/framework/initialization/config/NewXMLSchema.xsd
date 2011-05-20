@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><schema targetNamespace="http://ccrg.cs.memphis.edu/LidaXMLSchema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaXMLSchema">
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ccrg.cs.memphis.edu/LidaXMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaXMLSchema" elementFormDefault="qualified">
     <include schemaLocation=""></include>
     <complexType name="module">
     	<sequence>
@@ -31,15 +32,12 @@
     		<element name="module" type="tns:module" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
-
     <complexType name="taskspawners">
     	<sequence>
     		<element name="taskspawner" type="tns:taskspawner" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
-
-    <element name="lida" type="tns:lida"></element>
-    
+    <element name="lida" type="tns:lida"></element>  
     <complexType name="lida">
     	<sequence>
             <element name="taskmanager" type="tns:taskmanager" maxOccurs="1" minOccurs="1"></element>
@@ -54,7 +52,6 @@
     		</element>
     	</sequence>
     </complexType>
-
     <complexType name="param">
     	<simpleContent>
     		<extension base="string">
@@ -72,7 +69,6 @@
     		</extension>
     	</simpleContent>
     </complexType>
-
     <complexType name="listener">
     	<sequence>
     		<element name="listenertype" type="string" maxOccurs="1" minOccurs="1"></element>
@@ -80,19 +76,16 @@
     		<element name="listenername" type="string" maxOccurs="1" minOccurs="1"></element>
     	</sequence>
     </complexType>
-
     <complexType name="listeners">
     	<sequence>
     		<element name="listener" type="tns:listener" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
-
     <complexType name="taskmanager">
     	<sequence>
     		<element name="param" type="tns:param" maxOccurs="unbounded" minOccurs="0"></element>
     	</sequence>
     </complexType>
-
     <complexType name="associatedmodule">
        <simpleContent>
       <extension base="string">
@@ -100,7 +93,6 @@
       </extension>
     </simpleContent>
     </complexType>
-
     <complexType name="task">
         	<sequence>
     		<element name="class" type="string" maxOccurs="1"
@@ -118,13 +110,11 @@
     	</sequence>
     	<attribute name="name" type="string" use="required"></attribute>
     </complexType>
-
-    <complexType name="tasks">
+        <complexType name="tasks">
     	<sequence>
     		<element name="task" type="tns:task" maxOccurs="unbounded" minOccurs="1"></element>
     	</sequence>
     </complexType>
-
     <complexType name="taskspawner">
     <sequence>
         		<element name="class" type="string" maxOccurs="1"
@@ -134,7 +124,6 @@
     			minOccurs="0">
     		</element>
     	</sequence>
-    	<attribute name="name" type="string" use="required"></attribute>
-    
+    	<attribute name="name" type="string" use="required"></attribute>   
     </complexType>
 </schema>

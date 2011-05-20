@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -92,11 +93,16 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
 		WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.EpisodicBuffer);
-		NodeStructure ns = (NodeStructure)buffer.getBufferContent(null);
-		ns.mergeWith(association);
-		for(WorkspaceListener listener: workspaceListeners){
-			listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, (WorkspaceContent) ns);
+
+		if(buffer != null){
+			((NodeStructure)buffer.getBufferContent(null)).mergeWith(association);
+			for(WorkspaceListener listener: workspaceListeners){
+				listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, buffer.getBufferContent(null));
+			}
+		}else{
+			logger.log(Level.WARNING, "Received a Local assocation but Workspace does not have an episodic buffer ", TaskManager.getCurrentTick());
 		}
+		
 	}
 	
 	/*
