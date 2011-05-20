@@ -1,8 +1,11 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,24 +13,22 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 public class StructureBuildingCodeletModuleTest {
 
 	private StructureBuildingCodeletModule sbcModule;
 	private TaskSpawner taskSpawner;
-	private WorkspaceBuffer perceptualBuffer, csm;
+	private MockWorkspaceBufferImpl perceptualBuffer, csm;
 	private WorkspaceImpl workspace;
 	private Node node1,node2;
 	private Link link1;
@@ -41,10 +42,10 @@ public class StructureBuildingCodeletModuleTest {
 		taskSpawner = new MockTaskSpawner();
 		sbcModule.setAssistingTaskSpawner(taskSpawner);
 		
-		csm = new WorkspaceBufferImpl();
+		csm = new MockWorkspaceBufferImpl();
 		csm.setModuleName(ModuleName.CurrentSituationalModel);
 		
-		perceptualBuffer = new WorkspaceBufferImpl();
+		perceptualBuffer = new MockWorkspaceBufferImpl();
 		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
 		
 		workspace = new WorkspaceImpl();
@@ -68,124 +69,130 @@ public class StructureBuildingCodeletModuleTest {
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_WRITE_TO);
 		codelet.setAssociatedModule(perceptualBuffer, ModuleUsage.TO_READ_FROM);
 	}
-	
-	
-
-	@Test
-	public void testSetAssociatedModule() {
-//StructureBuildingCodeletModule sbcm = new StructureBuildingCodeletModule();
-//		
-//		//Creates node and add them into a node structure
-//		NodeStructure ns = new NodeStructureImpl();
-//		NodeStructure ns2 = new NodeStructureImpl();
-//		
-//		Node n1 = new NodeImpl();
-//		n1.setId(1);
-//		ns.addDefaultNode(n1);
-//		
-//		Node n2 = new NodeImpl();
-//		n2.setId(6);
-//		ns2.addDefaultNode(n2);
-//		
-//		WorkspaceImpl wMoudle = new WorkspaceImpl();
-//		
-//		//Create workspaceBuffer of PerceptualBuffer and add it to workspace
-//		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
-//		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
-//		wMoudle.addSubModule(perceptualBuffer);
-//		// Add node structure into workspaceBuffer of percetualBuffer
-//		wMoudle.receivePercept(ns);
-//		
-//		//Create workspaceBuffer of CurrentSituationalModel and add it to workspace
-//		WorkspaceBuffer CSMBuffer = new WorkspaceBufferImpl();
-//		CSMBuffer.setModuleName(ModuleName.CurrentSituationalModel);
-//		wMoudle.addSubModule(CSMBuffer);
-//		//Add node 
-//		((NodeStructure) CSMBuffer.getBufferContent(null)).mergeWith(ns2);
-//		
-//		sbcm.setAssociatedModule(wMoudle, null);
-//		
-//		//Also test for getCodelet(String)
-//		ElementFactory factory = ElementFactory.getInstance();
-//		factory.addCodeletType(MockStructureBuildingCodeletImpl.class.getSimpleName(), 
-//				MockStructureBuildingCodeletImpl.class.getCanonicalName());
-//		
-//		//Set a mock CodeletType to default type for testing defaultCodelet
-//		sbcm.setDefaultCodeletType(MockStructureBuildingCodeletImpl.class.getSimpleName());
-//		
-//		
-//		//Test for getCodelet(String)
-//		MockStructureBuildingCodeletImpl mockSbcm = (MockStructureBuildingCodeletImpl) sbcm.getCodelet("MockStructureBuildingCodeletImpl");
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm.getReadableBuffers()).contains(perceptualBuffer));
-//		
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm.getWritableBuffer()).equals(CSMBuffer));
-//		
-//		//Test for getCodelet(String, Map<String, Object>)
-//		MockStructureBuildingCodeletImpl mockSbcm2 = (MockStructureBuildingCodeletImpl)sbcm.getCodelet("MockStructureBuildingCodeletImpl", null);
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm2.getReadableBuffers()).contains(perceptualBuffer));
-//		
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm2.getWritableBuffer()).equals(CSMBuffer));
-//		
-//			
-//		//Test for getDefaultCodelet()
-//		MockStructureBuildingCodeletImpl mockSbcm3 = (MockStructureBuildingCodeletImpl) sbcm.getDefaultCodelet();
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm3.getReadableBuffers()).contains(perceptualBuffer));
-//		
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm3.getWritableBuffer()).equals(CSMBuffer));
-//
-//		//Test for getDefaultCodelet(Map<String, Object>)
-//		MockStructureBuildingCodeletImpl mockSbcm4 = (MockStructureBuildingCodeletImpl) sbcm.getDefaultCodelet(null);
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm4.getReadableBuffers()).contains(perceptualBuffer));
-//		
-//		assertTrue("Problem with class StructureBuildingCodeletModule for testSetAssociatedModule()",
-//				(mockSbcm4.getWritableBuffer()).equals(CSMBuffer));
-	}
-
-	@Test
-	public void testStructureBuildingCodeletModule() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testAddFrameworkGuiEventListener() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetDefaultCodeletType() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSendEventToGui() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetDefaultCodeletMapOfStringObject() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testGetDefaultCodelet() {
-		fail("Not yet implemented");
+		//test1
+		BasicStructureBuildingCodelet codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
+		assertEquals(null, codelet);
+
+		//test2
+		sbcModule.setAssociatedModule(csm, "");		
+		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
+		assertEquals(null, codelet);
+		
+		//test3
+		workspace = new WorkspaceImpl();
+		workspace.addSubModule(csm);
+		sbcModule.setAssociatedModule(workspace, "");
+		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
+		assertEquals(null, codelet);
+		
+		//test4
+		workspace.addSubModule(perceptualBuffer);
+		sbcModule.setAssociatedModule(workspace, "");
+		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
+		assertNotNull(codelet);
+		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(csm, codelet.writableBuffer);
+	}
+	
+	@Test
+	public void testGetDefaultCodeletMapOfStringObject() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("arg0", 10.0);
+		params.put("name", "Javier");
+		BasicStructureBuildingCodelet codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
+		
+		assertEquals(null, codelet);
+		
+		sbcModule.setAssociatedModule(workspace, "");
+		
+		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
+		assertNotNull(codelet);
+		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(csm, codelet.writableBuffer);
+
+		params.put(ModuleUsage.TO_READ_FROM, "PerceptualBuffer");
+		params.put(ModuleUsage.TO_WRITE_TO, "CurrentSituationalModel");
+		
+		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
+		assertNotNull(codelet);
+		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(csm, codelet.writableBuffer);
+		
+		params.put(ModuleUsage.TO_READ_FROM, "CurrentSituationalModel");
+		params.put(ModuleUsage.TO_WRITE_TO, "PerceptualBuffer");
+		
+		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
+		assertNotNull(codelet);
+		assertTrue(codelet.readableBuffers.contains(csm));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(perceptualBuffer, codelet.writableBuffer);
 	}
 
 	@Test
 	public void testGetCodeletString() {
-		fail("Not yet implemented");
+		sbcModule.setAssociatedModule(workspace, "");
+		StructureBuildingCodeletImpl codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("23");
+		assertEquals(null, codelet);
+		
+		factory.addCodeletType("coolCodelet", MockStructureBuildingCodeletImpl.class.getCanonicalName());
+		
+		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet");
+		assertNotNull(codelet);		
+		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(csm, codelet.writableBuffer);
+		assertEquals(100, codelet.getParam("arg0", 100));
 	}
 
 	@Test
 	public void testGetCodeletStringMapOfStringObject() {
-		fail("Not yet implemented");
+		sbcModule.setAssociatedModule(workspace, "");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("arg0", 10.0);
+		params.put("name", "Ryan");
+		
+		StructureBuildingCodeletImpl codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("223cd3", params);
+		assertEquals(null, codelet);
+		
+		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet", params);
+		assertNotNull(codelet);		
+		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(csm, codelet.writableBuffer);
+		assertEquals(100, codelet.getParam("arg0", 100));
+		
+		params.put(ModuleUsage.TO_READ_FROM, "CurrentSituationalModel");
+		params.put(ModuleUsage.TO_WRITE_TO, "PerceptualBuffer");
+		
+		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet",params);
+		assertNotNull(codelet);
+		assertTrue(codelet.readableBuffers.contains(csm));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(perceptualBuffer, codelet.writableBuffer);
+	}
+	
+	@Test
+	public void testSetDefaultCodeletType() {
+		sbcModule.setAssociatedModule(workspace, "");
+		StructureBuildingCodelet codelet = sbcModule.getDefaultCodelet();
+		assertTrue(codelet instanceof BasicStructureBuildingCodelet);
+		
+		sbcModule.setDefaultCodeletType("34t90j");
+		
+		codelet = sbcModule.getDefaultCodelet();
+		assertTrue(codelet instanceof BasicStructureBuildingCodelet);
+		
+		assertTrue(factory.containsCodeletType("coolCodelet"));
+		sbcModule.setDefaultCodeletType("coolCodelet");
+		
+		codelet = sbcModule.getDefaultCodelet();
+		assertTrue(codelet instanceof MockStructureBuildingCodeletImpl);
 	}
 
 	@Test

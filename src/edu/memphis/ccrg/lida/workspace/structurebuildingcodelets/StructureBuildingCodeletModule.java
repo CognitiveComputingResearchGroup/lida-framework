@@ -42,6 +42,9 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 
 	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
 	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
+	
+	private static final double DEFAULT_CODELET_REMOVAL_THRESHOLD = -1.0;
+	private double codeletRemovalThreshold = DEFAULT_CODELET_REMOVAL_THRESHOLD;
 
 	private static final int DEFAULT_TICKS = 1;
 	private int codeletTicksPerRun = DEFAULT_TICKS;
@@ -63,15 +66,22 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	private Workspace workspace;
 
 	/**
-	 * Constructor method. It responds for registration of this module to system
-	 * and initialization of both Codelet and Framework GUI listener.
+	 * Default Constructor. Sets up the initial 
+	 * default {@link StructureBuildingCodelet} for the module.
 	 */
 	public StructureBuildingCodeletModule() {
-		guis = new ArrayList<FrameworkGuiEventListener>();
-
 		Class<BasicStructureBuildingCodelet> cl = BasicStructureBuildingCodelet.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
+		
+		guis = new ArrayList<FrameworkGuiEventListener>(); 
+	}
+
+	@Override
+	public void init() {
+		codeletActivation = (Double) getParam("sbcModule.codeletActivation", DEFAULT_CODELET_ACTIVATION);
+		codeletRemovalThreshold = (Double) getParam("sbcModule.codeletRemovalThreshold", DEFAULT_CODELET_REMOVAL_THRESHOLD);
+		codeletTicksPerRun = (Integer) getParam("sbcModule.codeletTicksPerRun", DEFAULT_TICKS);
 	}
 
 	@Override
@@ -95,7 +105,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		} else {
-			logger.log(Level.WARNING, "Cannot add module "
+			logger.log(Level.WARNING, "Cannot associate module "
 					+ module.getModuleName(), TaskManager.getCurrentTick());
 		}
 	}
@@ -107,34 +117,24 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager
-	 * #getNewCodelet
-	 * (edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletType)
-	 */
+	@Override
+	public StructureBuildingCodelet getDefaultCodelet() {
+		return getCodelet(defaultCodeletName, null);
+	}
 	@Override
 	public StructureBuildingCodelet getDefaultCodelet(Map<String, Object> params) {
 		return getCodelet(defaultCodeletName, params);		
 	}
 
 	@Override
-	public StructureBuildingCodelet getDefaultCodelet() {
-		return getCodelet(defaultCodeletName, null);
+	public StructureBuildingCodelet getCodelet(String codeletType) {
+		return getCodelet(codeletType, null);
 	}
 
-	@Override
-	public StructureBuildingCodelet getCodelet(String type) {
-		return getCodelet(type, null);
-	}
-
-	//TODO removal threshold parameter
 	@Override
 	public StructureBuildingCodelet getCodelet(String type, Map<String, Object> params) {
 		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getCodelet(type,
-						codeletTicksPerRun, codeletActivation, -1.0, null);
+						codeletTicksPerRun, codeletActivation, codeletRemovalThreshold, null);
 		if (codelet == null) {
 			logger.log(Level.WARNING,
 					"Codelet type not supported: " + type,
@@ -146,8 +146,27 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		String writeable = "CurrentSituationalModel";
 
 		if (params != null) {
-			readable = (String) params.get(ModuleUsage.TO_READ_FROM);
-			writeable = (String) params.get(ModuleUsage.TO_WRITE_TO);
+			String desiredReadable = (String) params.get(ModuleUsage.TO_READ_FROM);
+			if(desiredReadable != null){
+				readable = desiredReadable;
+			}else{
+				logger.log(Level.WARNING, "Could not find desired readable module, using " +
+						readable, TaskManager.getCurrentTick());
+			}
+			String desiredWriteable = (String) params.get(ModuleUsage.TO_WRITE_TO);
+			if(desiredWriteable != null){
+				writeable = desiredWriteable;
+			}else{
+				logger.log(Level.WARNING, "Could not find desired writeable module, using " +
+						writeable, TaskManager.getCurrentTick());
+			}
+		}
+		
+		if(workspace == null){
+			logger.log(Level.WARNING, "Workspace has not been associated to this module" +
+					". Cannot initialize structure-building codelet.",
+					TaskManager.getCurrentTick());
+			return null;
 		}
 
 		WorkspaceBuffer readableBuffer = (WorkspaceBuffer) workspace
@@ -170,15 +189,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		codelet.setAssociatedModule(writeableBuffer, ModuleUsage.TO_WRITE_TO);
 		return codelet;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManager
-	 * #runCodelet(edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.
-	 * StructureBuildingCodelet)
-	 */
+	
 	@Override
 	public void addCodelet(Codelet cod) {
 		if (cod instanceof StructureBuildingCodelet) {
@@ -207,12 +218,8 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	}
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void decayModule(long ticks) {
-		// TODO decay codelets?
+		// TODO decay codelets
 	}
 
 }

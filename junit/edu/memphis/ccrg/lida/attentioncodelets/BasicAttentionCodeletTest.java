@@ -36,11 +36,11 @@ public class BasicAttentionCodeletTest {
 	@Before
 	public void setUp() throws Exception {
 		codelet = new BasicAttentionCodelet();
-		codelet.setAssociatedModule(csm, "");
-		codelet.setAssociatedModule(globalWorkspace, "");
-		
 		csm = new MockWorkspaceBufferImpl();
 		globalWorkspace = new MockGlobalWorkspaceImpl();
+		
+		codelet.setAssociatedModule(csm, "");
+		codelet.setAssociatedModule(globalWorkspace, "");
 		
 		csmContent = new NodeStructureImpl();
 		soughtContent = new NodeStructureImpl();

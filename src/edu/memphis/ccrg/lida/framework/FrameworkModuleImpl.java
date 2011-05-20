@@ -92,10 +92,16 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 
 	@Override
 	public FrameworkModule getSubmodule(ModuleName type) {
+		if(type == null){
+			return null;
+		}
 		return submodules.get(type);
 	}
 	@Override
 	public FrameworkModule getSubmodule(String name){
+		if(name == null){
+			return null;
+		}
 		return getSubmodule(ModuleName.getModuleName(name));
 	}
 

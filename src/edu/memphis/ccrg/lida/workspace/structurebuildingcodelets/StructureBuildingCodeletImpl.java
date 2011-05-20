@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
@@ -40,11 +38,6 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	protected WorkspaceBuffer writableBuffer;
 	
 	/*
-	 * The node structure required for this codelet's action to occur
-	 */
-	protected NodeStructure soughtContent;
-	
-	/*
 	 * Expected results of this codelets
 	 */
 	protected CodeletRunResult results;
@@ -55,7 +48,6 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	public StructureBuildingCodeletImpl(){
 		super();
 		readableBuffers = new HashSet<WorkspaceBuffer>();
-		soughtContent = new NodeStructureImpl();
 		results = new BasicCodeletResult();
 	}
 	
@@ -66,7 +58,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 		
 		readableBuffers.clear();
 		writableBuffer = null;
-		soughtContent = null;
+		super.soughtContent = null;
 	}
 	
 	@Override

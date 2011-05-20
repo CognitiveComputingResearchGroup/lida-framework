@@ -95,6 +95,10 @@ public class FrameworkModuleImplTest {
 		
 		sub =  module.getSubmodule(ModuleName.DeclarativeMemory);
 		assertEquals(null, sub);
+		
+		ModuleName foo = null;
+		sub =  module.getSubmodule(foo);
+		assertEquals(null, sub);
 	}
 
 	@Test
@@ -103,6 +107,14 @@ public class FrameworkModuleImplTest {
 		assertEquals(submodule, sub);
 		
 		sub =  module.getSubmodule("DeclarativeMemory");
+		assertEquals(null, sub);
+		
+		String foo = null;
+		sub =  module.getSubmodule(foo);
+		assertEquals(null, sub);
+		
+		foo = "asdlfkjsdlfkj";
+		sub =  module.getSubmodule(foo);
 		assertEquals(null, sub);
 	}
 
