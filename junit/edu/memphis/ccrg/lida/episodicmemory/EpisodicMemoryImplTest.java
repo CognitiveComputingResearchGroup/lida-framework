@@ -3,18 +3,22 @@
  */
 package edu.memphis.ccrg.lida.episodicmemory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * @author Javier Snaider
@@ -22,20 +26,7 @@ import cern.colt.bitvector.BitVector;
 public class EpisodicMemoryImplTest {
 	
 	private EpisodicMemoryImpl em;
-
-	/**
-	 * @throws java.lang.Exception e
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception e
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+	private PerceptualAssociativeMemory pam;
 
 	/**
 	 * @throws java.lang.Exception e
@@ -43,23 +34,10 @@ public class EpisodicMemoryImplTest {
 	@Before
 	public void setUp() throws Exception {
 		em=new EpisodicMemoryImpl();
+		pam = new MockPAM();
 		em.init();
 	}
 
-	/**
-	 * @throws java.lang.Exception e
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#getModuleContent(java.lang.Object[])}.
-	 */
-	@Test
-	public void testGetModuleContent() {
-		assertEquals(null, em.getModuleContent());
-	}
 
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#init()}.
@@ -79,12 +57,17 @@ public class EpisodicMemoryImplTest {
 		assertEquals(150,((byte[][])data[1])[0].length);
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, String)}.
-	 */
 	@Test
 	public void testSetAssociatedModule() {
-		fail("Not yet implemented");
+		em.setAssociatedModule(pam, ModuleUsage.NOT_SPECIFIED);
+		assertEquals(pam, em.getPam());
+	}
+
+	@Test
+	public void testSetAssociatedModule2() {
+		FrameworkModule module = new MockFrameworkModule();
+		em.setAssociatedModule(module , ModuleUsage.NOT_SPECIFIED);
+		assertEquals(null, em.getPam());
 	}
 
 	/**
@@ -103,13 +86,6 @@ public class EpisodicMemoryImplTest {
 		fail("Not yet implemented");
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#learn(edu.memphis.ccrg.lida.globalworkspace.BroadcastContent)}.
-	 */
-	@Test
-	public void testLearn() {
-		
-	}
 
 	/**
 	 * Test method for {@link edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)}.

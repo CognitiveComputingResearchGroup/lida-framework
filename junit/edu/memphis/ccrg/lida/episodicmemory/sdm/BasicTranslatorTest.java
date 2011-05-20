@@ -23,13 +23,6 @@ public class BasicTranslatorTest {
 	private PerceptualAssociativeMemory pam;
 	private NodeStructure ns;
 	private BitVector vector;
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -46,10 +39,6 @@ public class BasicTranslatorTest {
 		vector.set(10);
 		vector.set(20);
 		
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

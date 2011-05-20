@@ -7,7 +7,12 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 
 /**
  * Default implementation of HardLocation.
@@ -15,6 +20,8 @@ import cern.colt.bitvector.BitVector;
  * @author Javier Snaider
  */
 public class HardLocationImpl implements HardLocation {
+	
+	private static final Logger logger = Logger.getLogger(HardLocationImpl.class.getCanonicalName());
 	private static final byte DEFAULT_COUNTER_MAX = 40;
 	private BitVector address;
 	private int wordLength;
@@ -132,6 +139,7 @@ public class HardLocationImpl implements HardLocation {
 		// }
 
 		for (int i = 0; i < wordLength; i++) {
+			int inc=0;
 			buff[i] += Integer.signum(counters[i]);
 		}
 		return buff;
@@ -143,8 +151,7 @@ public class HardLocationImpl implements HardLocation {
 	@Override
 	public int hammingDistance(BitVector vector) {
 		if(vector == null){
-			//TODO log warning
-			return Integer.MAX_VALUE;
+			logger.log(Level.WARNING,"The vector can not be null.",TaskManager.getCurrentTick());			return Integer.MAX_VALUE;
 		}
 		
 		BitVector aux = vector.copy();

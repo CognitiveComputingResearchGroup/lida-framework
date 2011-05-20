@@ -19,13 +19,6 @@ public class HardLocationImplTest {
 	
 	private HardLocation hl;
 	private BitVector address;
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	@Before
 	public void setUp() throws Exception {

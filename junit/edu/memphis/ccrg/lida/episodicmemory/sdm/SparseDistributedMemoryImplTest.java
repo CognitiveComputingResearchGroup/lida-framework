@@ -22,14 +22,6 @@ public class SparseDistributedMemoryImplTest {
 	
 	
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		sdm = new SparseDistributedMemoryImpl(MSIZE, RADIUS, WSIZE);
@@ -38,15 +30,13 @@ public class SparseDistributedMemoryImplTest {
 		v3 = BitVectorUtils.getRandomVector(WSIZE);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testStoreBitVectorBitVector() {
 		sdm.store(v1);
 		BitVector ret = sdm.retrieve(v1);
 		assertEquals(v1, ret);
+		ret = sdm.retrieve(v2);
+		assertNotSame(v2, ret);
 	}
 
 	@Test
@@ -54,6 +44,7 @@ public class SparseDistributedMemoryImplTest {
 		sdm.store(v1,v2);
 		BitVector ret = sdm.retrieve(v2);
 		assertEquals(v1, ret);
+		assertNotSame(v2, ret);
 	}
 
 	@Test
@@ -61,13 +52,8 @@ public class SparseDistributedMemoryImplTest {
 		sdm.mappedStore(v1,v2);
 		BitVector ret = sdm.retrieve(v1, v2);
 		assertEquals(v1, ret);
-	}
-
-	@Test
-	public void testMappedStoreBitVectorBitVectorBitVector() {
-		sdm.mappedStore(v1,v2,v3);
-		BitVector ret = sdm.retrieve(v2, v3);
-		assertEquals(v1, ret);
+		ret = sdm.retrieve(v1);
+		assertNotSame(v1, ret);
 	}
 
 	@Test
@@ -79,17 +65,59 @@ public class SparseDistributedMemoryImplTest {
 
 	@Test
 	public void testRetrieveIteratingBitVector() {
-		sdm.mappedStore(v1,v2);
+		sdm.store(v1);
 		BitVector addr = BitVectorUtils.noisyVector(v1, 50);
-		BitVector ret = sdm.retrieveIterating(addr,v2);
+		
+		for (int i=0;i<50;i++){
+			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);
+			sdm.store(aux);			
+		}
+		
+		BitVector ret = sdm.retrieveIterating(addr);
 		assertEquals(v1, ret);
+	}
+	@Test
+	public void testRetrieveIteratingBitVector2() {
+		sdm.store(v1);
+		BitVector addr = BitVectorUtils.noisyVector(v2, 50);
+		
+		for (int i=0;i<50;i++){
+			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);
+			sdm.store(aux);			
+		}
+		
+		BitVector ret = sdm.retrieveIterating(addr);
+		assertNotSame(v1, ret);
 	}
 
 	@Test
 	public void testRetrieveIteratingBitVectorBitVector() {
-		sdm.store(v1,v2);
-		BitVector addr = BitVectorUtils.noisyVector(v2, 50);
-		BitVector ret = sdm.retrieve(addr);
+		sdm.mappedStore(v1,v2);
+		BitVector addr = BitVectorUtils.noisyVector(v1, 50);
+		
+		for (int i=0;i<50;i++){
+			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);
+			sdm.mappedStore(aux,v2);			
+		}
+		
+		BitVector ret = sdm.retrieveIterating(addr,v2);
 		assertEquals(v1, ret);
+	}
+	@Test
+	public void testRetrieveIteratingBitVectorBitVector2() {
+		sdm.mappedStore(v1,v2);
+		BitVector addr = BitVectorUtils.getRandomVector(WSIZE);
+		BitVector ret = sdm.retrieveIterating(addr,v2);
+		
+		for (int i=0;i<50;i++){
+			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);
+			sdm.mappedStore(aux,v2);			
+		}
+		
+		BitVector aux = v1.copy();
+		aux.xor(v2);
+		addr.xor(v2);
+		System.out.println(BitVectorUtils.hamming(addr, aux));
+		assertNotSame(v1, ret);
 	}
 }

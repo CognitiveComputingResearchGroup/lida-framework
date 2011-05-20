@@ -51,19 +51,6 @@ public interface SparseDistributedMemory extends Saveable {
 	public void mappedStore(BitVector word, BitVector mapping);
 
 	/**
-	 * Stores word in this sparse distributed memory using the word as address.
-	 * The word is mapped (using XOR) with the mapping address.
-	 * 
-	 * @param word
-	 *            the word to be stored.
-	 * @param addr
-	 *            the address.
-	 * @param mapping
-	 *            the mapping address.
-	 */
-	public void mappedStore(BitVector word,BitVector addr, BitVector mapping);
-
-	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
 	 * address.
 	 * 
@@ -101,7 +88,9 @@ public interface SparseDistributedMemory extends Saveable {
 
 	/**
 	 * Retrieves the contents of this SDM at addr.  addr is first mapped using mapping.  then
-	 * retrieve contents of this SDM with mapped address.
+	 * retrieve contents of this SDM with mapped address.<br/>
+	 * Note that the retrieved vector is mapped back before return it.
+	 *  
 	 * @param addr
 	 * @param mapping
 	 * @return the contents of this sparse distributed memory associated with

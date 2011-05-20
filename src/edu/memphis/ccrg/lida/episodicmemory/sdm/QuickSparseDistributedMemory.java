@@ -106,22 +106,6 @@ public class QuickSparseDistributedMemory implements SparseDistributedMemory {
 	}
 
 	/**
-	 * Stores a word in this sparse distributed memory using the word as
-	 * address. The word is mapped (xor) with the mapping address.
-	 * 
-	 * @param wrd
-	 *            the word to be stored.
-	 * @param mapping
-	 *            the mapping address.
-	 */
-	@Override
-	public void mappedStore(BitVector wrd, BitVector addr, BitVector mapping) {
-		BitVector mapped = addr.copy();
-		mapped.xor(mapping);
-		store(wrd, mapped);
-	}
-
-	/**
 	 * Retrieves the contents of this sparse distributed memory at the given
 	 * address.
 	 * 

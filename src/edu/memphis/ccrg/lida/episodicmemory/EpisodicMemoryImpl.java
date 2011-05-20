@@ -145,7 +145,6 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof PerceptualAssociativeMemory) {
 			pam = (PerceptualAssociativeMemory) module;
-			translator = new BasicTranslator(wordLength, pam);
 		}else{
 			logger.log(Level.WARNING, "Cannot associate " + module + " to this module.", 0L);
 		}
@@ -163,6 +162,28 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,addressLength);
 	}
 
+	/**
+	 * Returns the {@link PerceptualAssociativeMemory} associated with this {@link EpisodicMemoryImpl}
+	 * @return
+	 */
+	public PerceptualAssociativeMemory getPam(){
+		return pam;
+	}
+	/**
+	 * Sets the {@link Translator} of this {@link EpisodicMemoryImpl}
+	 * @param translator the {@link Translator} to set
+	 */
+	public void setTranslator(Translator translator){
+		this.translator = translator;
+	}
+	/**
+	 * Returns the {@link Translator} associated with this {@link EpisodicMemoryImpl}
+	 * @return the Translator
+	 */
+	public Translator getTranslator(){
+		return translator;
+	}
+	
 	@Override
 	public Object getState() {
 		return sdm.getState();
