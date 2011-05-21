@@ -47,16 +47,54 @@ public class BasicStructureBuildingCodeletTest {
 	
 	@Test
 	public void testRunThisFrameworkTask(){
-		fail();
-		//TODO init codelet with buffers
-		//TODO add to sought content, readable content
-		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
+		codelet.setAssociatedModule(readableBuffer, ModuleUsage.TO_READ_FROM);
+		codelet.setAssociatedModule(writeableBuffer, ModuleUsage.TO_WRITE_TO);
 
+		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
 		codelet.setSoughtContent(soughtContent);
+		assertNull(codelet.runResults.getRunResults());
+		
 		codelet.runThisFrameworkTask();
 		
-		//TODO assert that writeable buffer has the content of the readable buffer.
+		NodeStructure ns = writeableBuffer.content;
+		assertNotNull(ns);
+		assertEquals(0,ns.getLinkableCount());
+		assertNotNull(codelet.runResults.getRunResults());
 		
+		soughtContent.addDefaultNode(node1);
+		codelet.setSoughtContent(soughtContent);
+		writeableBuffer.content = null;
+		
+		codelet.runThisFrameworkTask();
+		
+		assertNull(writeableBuffer.content);
+		
+		readableContent.addDefaultNode(node1);
+		readableContent.addDefaultNode(node2);
+		readableContent.addDefaultLink(link1);
+		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
+		writeableBuffer.content = null;
+		
+		codelet.runThisFrameworkTask();
+		
+		assertNotNull(ns);
+		assertEquals(3,ns.getLinkableCount());
+		assertTrue(ns.containsLink(link1));
+		assertTrue(ns.containsNode(node1));
+		assertTrue(ns.containsNode(node2));
+		
+		soughtContent.addDefaultNode(node2);
+		soughtContent.addDefaultLink(link1);
+		codelet.setSoughtContent(soughtContent);
+		writeableBuffer.content = null;
+		
+		codelet.runThisFrameworkTask();
+		
+		assertNotNull(ns);
+		assertEquals(3,ns.getLinkableCount());
+		assertTrue(ns.containsLink(link1));
+		assertTrue(ns.containsNode(node1));
+		assertTrue(ns.containsNode(node2));
 	}
 	
 	@Test
@@ -66,7 +104,7 @@ public class BasicStructureBuildingCodeletTest {
 		codelet.setSoughtContent(soughtContent);
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
 		
-		assertTrue(codelet.hasSoughtContent(readableBuffer));
+		assertTrue(codelet.bufferContainsSoughtContent(readableBuffer));
 		
 		soughtContent.addDefaultNode(node1);
 		codelet.setSoughtContent(soughtContent);
@@ -74,26 +112,26 @@ public class BasicStructureBuildingCodeletTest {
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
 		
 		assertTrue(readableBuffer.getBufferContent(new HashMap<String, Object>()).containsNode(node1));
-		assertTrue(codelet.hasSoughtContent(readableBuffer));
+		assertTrue(codelet.bufferContainsSoughtContent(readableBuffer));
 		
 		soughtContent.addDefaultNode(node2);
 		codelet.setSoughtContent(soughtContent);
-		assertFalse(codelet.hasSoughtContent(readableBuffer));
+		assertFalse(codelet.bufferContainsSoughtContent(readableBuffer));
 		
 		readableContent.addDefaultNode(node2);
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
-		assertTrue(codelet.hasSoughtContent(readableBuffer));
+		assertTrue(codelet.bufferContainsSoughtContent(readableBuffer));
 		
 		soughtContent.addDefaultLink(link1);
-		assertFalse(codelet.hasSoughtContent(readableBuffer));
+		assertFalse(codelet.bufferContainsSoughtContent(readableBuffer));
 		
 		readableContent.addDefaultLink(link1);
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
-		assertTrue(codelet.hasSoughtContent(readableBuffer));
+		assertTrue(codelet.bufferContainsSoughtContent(readableBuffer));
 		
 		readableContent.addDefaultNode(factory.getNode());
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
-		assertTrue(codelet.hasSoughtContent(readableBuffer));
+		assertTrue(codelet.bufferContainsSoughtContent(readableBuffer));
 	}
 
 	@Test

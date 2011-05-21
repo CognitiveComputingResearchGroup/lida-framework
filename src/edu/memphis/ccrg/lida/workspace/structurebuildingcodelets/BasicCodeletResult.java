@@ -20,7 +20,6 @@ public class BasicCodeletResult implements CodeletRunResult {
 	private Map<String, Object> resultMap;
 	
 	public BasicCodeletResult(){
-		resultMap = new HashMap<String, Object>();
 	}
 
 	@Override

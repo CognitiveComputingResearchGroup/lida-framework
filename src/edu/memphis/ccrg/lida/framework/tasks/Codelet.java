@@ -39,7 +39,7 @@ public interface Codelet extends FrameworkTask{
 	 *            the WorkspaceBuffer to be checked for content
 	 * @return true, if successful
 	 */
-	boolean hasSoughtContent(WorkspaceBuffer buffer);
+	boolean bufferContainsSoughtContent(WorkspaceBuffer buffer);
 	
 	/**
 	 * Returns sought content and related content from specified

@@ -38,7 +38,7 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	 * @return true, if successful
 	 */
 	@Override
-	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
+	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure model = (NodeStructure) buffer.getBufferContent(null);
 		
 		for(Linkable ln: soughtContent.getLinkables()){

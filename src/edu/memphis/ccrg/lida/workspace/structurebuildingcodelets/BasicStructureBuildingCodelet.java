@@ -32,12 +32,11 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 		logger.log(Level.FINEST, "SB codelet " + this.toString() + " being run.", 
 				TaskManager.getCurrentTick());
 		for(WorkspaceBuffer readableBuffer: readableBuffers){
-			if(hasSoughtContent(readableBuffer)){
+			if(bufferContainsSoughtContent(readableBuffer)){
 				writableBuffer.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
 			}
-			writableBuffer.addBufferContent(readableBuffer.getBufferContent(null));
 		}
-		results.reportRunResults(resultMap);
+		runResults.reportRunResults(resultMap);
 		logger.log(Level.FINEST, "SB codelet " + this.toString() + " finishes one run.",
 				TaskManager.getCurrentTick());
 	}
@@ -48,7 +47,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	}
 
 	@Override
-	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
+	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
 		for(Linkable ln: soughtContent.getLinkables()){
 			if(!ns.containsLinkable(ln)){

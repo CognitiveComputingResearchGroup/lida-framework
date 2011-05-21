@@ -16,7 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 
 /**
  * @author Siminder Kaur, Ryan J. McCall
@@ -26,6 +31,7 @@ public class PamNodeImplTest{
 	private ElementFactory factory = ElementFactory.getInstance();	
 	private PamNodeImpl node1;
 	private PamNodeImpl node2;
+	private double epsilon = 0.000000001;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -80,6 +86,177 @@ public class PamNodeImplTest{
 		assertFalse(node1.isRemovable());
 		node1.decay(1000);
 		assertTrue(node1.isRemovable());
+	}
+	
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decay(long)}
+	 * .
+	 */
+	@Test
+	public void testDecay() {
+		DecayStrategy ds = new LinearDecayStrategy();
+		node1.setDecayStrategy(ds);
+		node1.setBaseLevelDecayStrategy(ds);
+		node1.setBaseLevelActivation(0.5);
+		node1.setActivation(0.7);
+
+		node1.decay(1);
+
+		assertTrue(node1.getBaseLevelActivation() < 0.5);
+		assertTrue(node1.getActivation() < 0.7);
+
+		node1.setBaseLevelActivation(0.5);
+		node1.setActivation(0.7);
+
+		node1.decay(0);
+
+		assertEquals(node1.getBaseLevelActivation(), 0.5, epsilon);
+		assertEquals(node1.getActivation(), 0.7, epsilon);
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#isRemovable()}
+	 * .
+	 */
+	@Test
+	public void testIsRemovable() {
+		// both 0 then removable
+		node1.setBaseLevelRemovalThreshold(0.0);
+		node1.setBaseLevelActivation(0.0);
+		assertTrue(node1.isRemovable());
+
+		node1.setBaseLevelActivation(1.0);
+		assertFalse(node1.isRemovable());
+
+		// changing activatible stuff doesn't matter
+		node1.setActivation(0.0);
+		node1.setActivatibleRemovalThreshold(1.0);
+		assertFalse(node1.isRemovable());
+
+		node1.setBaseLevelRemovalThreshold(1.0);
+		assertTrue(node1.isRemovable());
+
+		node1.setBaseLevelRemovalThreshold(-1.0);
+		node1.setBaseLevelActivation(0.0);
+		assertFalse(node1.isRemovable());
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivation()}
+	 * .
+	 */
+	@Test
+	public void testGetTotalActivation() {
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
+		node1.setTotalActivationStrategy(ts);
+		node1.setActivation(0.11);
+		node1.setBaseLevelActivation(0.44);
+		assertEquals(0.55, node1.getTotalActivation(), epsilon);
+
+		node1.setActivation(0.9);
+		node1.setBaseLevelActivation(0.3);
+		assertEquals(1.0, node1.getTotalActivation(), epsilon);
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#decayBaseLevelActivation(long)}
+	 * .
+	 */
+	@Test
+	public void testDecayBaseLevelActivation() {
+		DecayStrategy ds = new LinearDecayStrategy();
+		node1.setBaseLevelDecayStrategy(ds);
+		node1.setBaseLevelActivation(0.5);
+		node1.decayBaseLevelActivation(1);
+		node1.setActivation(1.0);
+
+		assertTrue(node1.getBaseLevelActivation() < 0.5);
+		assertTrue(node1.getActivation() == 1.0);
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelExciteStrategy(edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy)}
+	 * .
+	 */
+	@Test
+	public void testSetBaseLevelExciteStrategy() {
+		ExciteStrategy es = new DefaultExciteStrategy();
+		node1.setBaseLevelExciteStrategy(es);
+
+		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
+				node1.getBaseLevelExciteStrategy());
+
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelDecayStrategy(edu.memphis.ccrg.lida.framework.strategies.DecayStrategy)}
+	 * .
+	 */
+	@Test
+	public void testSetBaseLevelDecayStrategy() {
+		DecayStrategy ds = new LinearDecayStrategy();
+		node1.setBaseLevelDecayStrategy(ds);
+
+		assertEquals("Problem with SetBaseLevelDecayStrategy", ds,
+				node1.getBaseLevelDecayStrategy());
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#reinforceBaseLevelActivation(double)}
+	 * .
+	 */
+	@Test
+	public void testReinforceBaseLevelActivation() {
+		ExciteStrategy es = new DefaultExciteStrategy();
+		node1.setBaseLevelExciteStrategy(es);
+		node1.setBaseLevelActivation(0.2);
+		node1.reinforceBaseLevelActivation(0.3);
+		node1.setActivation(0.0);
+
+		assertEquals(0.5, node1.getBaseLevelActivation(), epsilon);
+		assertEquals(0.0, node1.getActivation(), epsilon);
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelActivation(double)}
+	 * .
+	 */
+	@Test
+	public void testSetBaseLevelActivation() {
+		node1.setBaseLevelActivation(0.4);
+		assertEquals(0.4, node1.getBaseLevelActivation(), 0.001);
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#setBaseLevelRemovalThreshold(double)}
+	 * .
+	 */
+	@Test
+	public void testSetLearnableRemovalThreshold() {
+		node1.setBaseLevelRemovalThreshold(0.4);
+		assertEquals(0.4, node1.getLearnableRemovalThreshold(), 0.0001);
+	}
+
+	/**
+	 * Test method for
+	 * {@link edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl#getTotalActivationStrategy()}
+	 * .
+	 */
+	@Test
+	public void testGetTotalActivationStrategy() {
+		TotalActivationStrategy ts = new DefaultTotalActivationStrategy();
+		node1.setTotalActivationStrategy(ts);
+		assertEquals("problem with GetTotalActivationStrategy() ", ts,
+				node1.getTotalActivationStrategy());
 	}
 	
 

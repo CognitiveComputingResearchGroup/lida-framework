@@ -40,7 +40,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	/*
 	 * Expected results of this codelets
 	 */
-	protected CodeletRunResult results;
+	protected CodeletRunResult runResults;
 	
 	/**
 	 * Default Constructor
@@ -48,7 +48,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	public StructureBuildingCodeletImpl(){
 		super();
 		readableBuffers = new HashSet<WorkspaceBuffer>();
-		results = new BasicCodeletResult();
+		runResults = new BasicCodeletResult();
 	}
 	
 	@Override
@@ -81,7 +81,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	
 	@Override
 	public CodeletRunResult getCodeletRunResult(){
-		return results;
+		return runResults;
 	}
 
 	@Override

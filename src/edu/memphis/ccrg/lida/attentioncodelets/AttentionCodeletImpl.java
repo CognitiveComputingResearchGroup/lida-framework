@@ -77,7 +77,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		if (hasSoughtContent(currentSituationalModel)) {
+		if (bufferContainsSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0) {
 				globalWorkspace.addCoalition(new CoalitionImpl(

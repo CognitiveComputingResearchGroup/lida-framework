@@ -25,7 +25,7 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 	 * @return true, if successful
 	 */
 	@Override
-	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
+	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		NodeStructure model = (NodeStructure) buffer.getModuleContent();
 		Collection<Node> nodes = soughtContent.getNodes();
 		Collection<Link> links = soughtContent.getLinks();

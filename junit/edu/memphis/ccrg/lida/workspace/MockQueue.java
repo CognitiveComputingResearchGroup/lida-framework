@@ -5,14 +5,11 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.BroadcastQueueImpl;
 
 public class MockQueue extends BroadcastQueueImpl{
 
-	private BroadcastContent bc;
+	public BroadcastContent broadcastContent;
 	
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		this.bc = bc;
+		this.broadcastContent = bc;
 	}
 	
-	public BroadcastContent checkContent(){
-		return bc;
-	}
 }

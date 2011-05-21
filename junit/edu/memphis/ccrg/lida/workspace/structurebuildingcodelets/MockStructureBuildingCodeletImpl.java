@@ -13,7 +13,7 @@ public class MockStructureBuildingCodeletImpl extends
 	}
 
 	@Override
-	public boolean hasSoughtContent(WorkspaceBuffer buffer) {
+	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		// TODO Auto-generated method stub
 		return false;
 	}

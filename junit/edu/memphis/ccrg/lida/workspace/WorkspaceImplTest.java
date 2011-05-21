@@ -12,11 +12,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.episodicmemory.CueListener;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -138,13 +136,13 @@ public class WorkspaceImplTest {
         workspace.addSubModule(bq);
         
         workspace.receiveBroadcast(bc);
-        assertEquals(bc, bq.checkContent());
+        assertEquals(bc, bq.broadcastContent);
         
         NodeStructure foo = new NodeStructureImpl();
         foo.addDefaultNode(factory.getNode());
         
         workspace.receiveBroadcast((BroadcastContent) foo);
-        assertEquals(foo, bq.checkContent());
+        assertEquals(foo, bq.broadcastContent);
     }
 
     /**

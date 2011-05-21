@@ -54,32 +54,32 @@ public class BasicAttentionCodeletTest {
 		codelet.setSoughtContent(soughtContent);
 		csm.addBufferContent((WorkspaceContent) csmContent);
 		
-		assertTrue(codelet.hasSoughtContent(csm));
+		assertTrue(codelet.bufferContainsSoughtContent(csm));
 		
 		soughtContent.addDefaultNode(node1);
 		csmContent.addDefaultNode(node1);
 		csm.addBufferContent((WorkspaceContent) csmContent);
 		
 		assertTrue(csm.getBufferContent(new HashMap<String, Object>()).containsNode(node1));
-		assertTrue(codelet.hasSoughtContent(csm));
+		assertTrue(codelet.bufferContainsSoughtContent(csm));
 		
 		soughtContent.addDefaultNode(node2);
-		assertFalse(codelet.hasSoughtContent(csm));
+		assertFalse(codelet.bufferContainsSoughtContent(csm));
 		
 		csmContent.addDefaultNode(node2);
 		csm.addBufferContent((WorkspaceContent) csmContent);
-		assertTrue(codelet.hasSoughtContent(csm));
+		assertTrue(codelet.bufferContainsSoughtContent(csm));
 		
 		soughtContent.addDefaultLink(link1);
-		assertFalse(codelet.hasSoughtContent(csm));
+		assertFalse(codelet.bufferContainsSoughtContent(csm));
 		
 		csmContent.addDefaultLink(link1);
 		csm.addBufferContent((WorkspaceContent) csmContent);
-		assertTrue(codelet.hasSoughtContent(csm));
+		assertTrue(codelet.bufferContainsSoughtContent(csm));
 		
 		csmContent.addDefaultNode(factory.getNode());
 		csm.addBufferContent((WorkspaceContent) csmContent);
-		assertTrue(codelet.hasSoughtContent(csm));
+		assertTrue(codelet.bufferContainsSoughtContent(csm));
 	}
 
 	@Test
