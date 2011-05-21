@@ -71,8 +71,10 @@ public class PropagationTask extends FrameworkTaskImpl {
 
 	@Override
 	protected void runThisFrameworkTask() {
+		//TODO think about a propagation strategy
 		link.excite(excitationAmount);
-		sink.excite(excitationAmount);
+		double linkActivation = link.getActivation();
+		sink.excite(linkActivation);
 		if(pam.isOverPerceptThreshold(link) && 
 		   pam.isOverPerceptThreshold(sink)){
 			//If over threshold then spawn a new task to add the node to the percept

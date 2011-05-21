@@ -141,8 +141,9 @@ public class PerceptualAssociativeMemoryImplTest {
 				assertFalse(true);
 			}
 		}
-		assertTrue("Problem with AddNodes", pam.containsNode(node2) && pam.containsNode(node3));
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 2);
+		assertTrue(pam.containsNode(node2));
+		assertTrue(pam.containsNode(node3));
+		assertEquals(2, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
 	@Test
 	public void testAddNullNodes(){
@@ -156,25 +157,25 @@ public class PerceptualAssociativeMemoryImplTest {
 		nodes.add(factory.getNode());
 		nodes.add(factory.getNode());
 		pam.addDefaultNodes(nodes);
-		assertTrue(pam.getNodes().size()  - pam.getLinkCategories().size()== 2);
+		assertEquals(2, pam.getNodes().size() - pam.getLinkCategories().size());
  	}
 	@Test
 	public void testAddDefNode(){
 		PamNode res = pam.addDefaultNode(null);
 		assertTrue(res == null);
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 0);
+		assertEquals(0, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
 	@Test
 	public void testAddDefNode2(){
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node1);
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
 	@Test
 	public void testAddDefNode1(){
 		pam.addDefaultNode(node1);
 		assertTrue(pam.containsNode(node1));
-		assertTrue(pam.getNodes().size() - pam.getLinkCategories().size() == 1);
+		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
 	}
 
 	@Test
@@ -207,7 +208,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		}
 		assertTrue(pam.containsLink(link1));
 		assertTrue(pam.containsLink(link2));
-		assertTrue(pam.getLinks().size() == 2);
+		assertEquals(2, pam.getLinks().size());
 	}
 	
 	/**
@@ -218,8 +219,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addPerceptualAlgorithm(detector);
-		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
-		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 1);
+		assertTrue(pam.getAssistingTaskSpawner().containsTask(detector));
+		assertEquals(1, pam.getAssistingTaskSpawner().getRunningTasks().size());
 	}
 	@Test
 	public void testDetectionAlgorithm1() {	
@@ -227,8 +228,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addPerceptualAlgorithm(detector);
 		pam.addPerceptualAlgorithm(detector);
-		assertTrue("Problem with AddFeatureDetector", pam.getAssistingTaskSpawner().containsTask(detector));
-		assertTrue(pam.getAssistingTaskSpawner().getRunningTasks().size() == 2);
+		assertTrue(pam.getAssistingTaskSpawner().containsTask(detector));
+		assertEquals(2, pam.getAssistingTaskSpawner().getRunningTasks().size());
 	}
 	@Test
 	public void testAddPamListener(){
@@ -237,8 +238,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.addNodeStructureToPercept(new NodeStructureImpl());
 		
 		NodeStructure ns = pl.ns;
-		assertTrue(ns.getNodeCount() == 0);
-		assertTrue(ns.getLinkCount() == 0);
+		assertEquals(0,ns.getNodeCount());
+		assertEquals(0,ns.getLinkCount());
 	}
 
 	/**
@@ -250,6 +251,8 @@ public class PerceptualAssociativeMemoryImplTest {
 		pam.setPropagationStrategy(ps);		
 		assertEquals(ps, pam.getPropagationStrategy());
 	}
+	
+	private final double epsilon = 0.000001;
 	
 	@Test
 	public void testPropagateActivationToParents(){
@@ -277,28 +280,28 @@ public class PerceptualAssociativeMemoryImplTest {
 		PamLinkImpl l41 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod4, testNod1, PerceptualAssociativeMemoryImpl.NONE);
 		pam.addDefaultLink(l41);
 		
-		assertTrue(testNod1.getActivation() == 1.0);
-		assertTrue(testNod2.getActivation() == 0.2);
-		assertTrue(testNod3.getActivation() == 0.3);
-		assertTrue(testNod4.getActivation() == 1.0);
-		assertTrue(l12.getActivation() == Activatible.DEFAULT_ACTIVATION);
-		assertTrue(l13.getActivation() == Activatible.DEFAULT_ACTIVATION);
-		assertTrue(l41.getActivation() == Activatible.DEFAULT_ACTIVATION);
+		assertEquals(1.0,testNod1.getActivation(), epsilon);
+		assertEquals(0.2,testNod2.getActivation(), epsilon);
+		assertEquals(0.3,testNod3.getActivation(), epsilon);
+		assertEquals(1.0,testNod4.getActivation(), epsilon);
+		assertEquals(Activatible.DEFAULT_ACTIVATION,l12.getActivation(), epsilon);
+		assertEquals(Activatible.DEFAULT_ACTIVATION,l13.getActivation(), epsilon);
+		assertEquals(Activatible.DEFAULT_ACTIVATION,l41.getActivation(), epsilon);
 		
 		NodeStructure ns = (NodeStructure) pam.getModuleContent();
 		
-		assertTrue(ns.getNodeCount() - pam.getLinkCategories().size() == 4);
-		assertTrue(ns.getLinkCount() == 3);
+		assertEquals(4,ns.getNodeCount() - pam.getLinkCategories().size());
+		assertEquals(3,ns.getLinkCount());
 		
-		assertTrue(ns.getConnectedSinks(testNod1).size() == 2);
-		assertTrue(ns.getConnectedSinks(testNod2).size() == 0);
-		assertTrue(ns.getConnectedSinks(testNod3).size() == 0);
-		assertTrue(ns.getConnectedSinks(testNod4).size() == 1);
+		assertEquals(2,ns.getConnectedSinks(testNod1).size());
+		assertEquals(0,ns.getConnectedSinks(testNod2).size());
+		assertEquals(0,ns.getConnectedSinks(testNod3).size());
+		assertEquals(1,ns.getConnectedSinks(testNod4).size());
 		
-		assertTrue(ns.getConnectedSources(testNod1).size() == 1);
-		assertTrue(ns.getConnectedSources(testNod2).size() == 1);
-		assertTrue(ns.getConnectedSources(testNod3).size() == 1);
-		assertTrue(ns.getConnectedSources(testNod4).size() == 0);
+		assertEquals(1,ns.getConnectedSources(testNod1).size());
+		assertEquals(1,ns.getConnectedSources(testNod2).size());
+		assertEquals(1,ns.getConnectedSources(testNod3).size());
+		assertEquals(0,ns.getConnectedSources(testNod4).size());
 		
 		TaskSpawner ts = new PamMockTaskSpawner();
 		pam.setAssistingTaskSpawner(ts);
@@ -309,17 +312,17 @@ public class PerceptualAssociativeMemoryImplTest {
 		
 		//Should be 2 tasks to pass the activation to Nodes 2, 3.
 		Collection<FrameworkTask> tasks = ts.getRunningTasks();
-		assertTrue(tasks.size() == 2);
+		assertEquals(2, tasks.size());
 		
-		assertTrue(testNod3.getActivation()+"", testNod3.getActivation()== 0.4);
-		assertTrue(testNod2.getActivation()+"",testNod2.getActivation() >= 0.3 && testNod2.getActivation() <= 0.3001);
+		assertEquals(testNod3.getActivation()+"", testNod3.getActivation(), (0.4 + Activatible.DEFAULT_ACTIVATION), epsilon);
+		assertEquals(testNod2.getActivation()+"",testNod2.getActivation(), (0.3 + Activatible.DEFAULT_ACTIVATION), epsilon);
 		
 		double amount = 1.0 * upscaleFactor + Activatible.DEFAULT_ACTIVATION;
-		assertTrue(pam.getLink(l12.getExtendedId()).getActivation()== amount);
-		assertTrue(pam.getLink(l13.getExtendedId()).getActivation()== amount);
+		assertEquals(amount, pam.getLink(l12.getExtendedId()).getActivation(), epsilon);
+		assertEquals(amount, pam.getLink(l13.getExtendedId()).getActivation(), epsilon);
 		
-		assertTrue(testNod4.getActivation()== 1.0);
-		assertTrue(l41.getActivation()== Activatible.DEFAULT_ACTIVATION);		
+		assertEquals(1.0, testNod4.getActivation(), epsilon);
+		assertEquals(Activatible.DEFAULT_ACTIVATION, l41.getActivation(), epsilon);		
 	}
 	@Test
 	public void testAddNodeStructureToPercept(){

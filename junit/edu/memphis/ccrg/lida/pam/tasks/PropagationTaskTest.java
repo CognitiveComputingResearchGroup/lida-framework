@@ -2,9 +2,15 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import static org.junit.Assert.*;
 
+import java.util.Properties;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
+import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -30,7 +36,16 @@ public class PropagationTaskTest{
 	 * Used to make another excitation call
 	 */
 	private MockPAM pam;
-	private ElementFactory factory = ElementFactory.getInstance();
+	private static ElementFactory factory;
+	
+	@BeforeClass
+	public static void setUpBeforeClass(){
+		factory = ElementFactory.getInstance();
+		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
+		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
+		factoryLoader.loadFactoriesData(prop);
+	}
+	
 	/*
 	 * For threshold task creation
 	 */
