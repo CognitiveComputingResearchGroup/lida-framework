@@ -14,23 +14,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.episodicmemory.sdm.BasicTranslator;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemory;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemoryImpl;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.Translator;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * This is the canonical implementation of {@link EpisodicMemory}. 
- * It uses a sparse distributed
- * memory to store the information.
+ * This is the canonical implementation of {@link EpisodicMemory}. It uses a
+ * sparse distributed memory to store the information.
  * 
  * @author Javier Snaider
  */
@@ -48,7 +44,6 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	private SparseDistributedMemory sdm;
 	private Translator translator;
 	private List<LocalAssociationListener> localAssocListeners = new ArrayList<LocalAssociationListener>();
-	private PerceptualAssociativeMemory pam;
 	private int numOfHardLoc = DEF_HARD_LOCATIONS;
 	private int addressLength = DEF_ADDRESS_LENGTH;
 	private int wordLength = DEF_WORD_LENGTH;
@@ -64,15 +59,22 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		NodeStructure ns =(NodeStructure) bc;
+		NodeStructure ns = (NodeStructure) bc;
 		BitVector address = null;
-		try {
-			address = translator.translate(ns);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (translator != null) {
+			try {
+				address = translator.translate(ns);
+			} catch (Exception e) {
+				logger.log(Level.WARNING,
+						"Translation failed. " + e.getMessage(),
+						TaskManager.getCurrentTick());
+			}
+			sdm.store(address);
+		} else {
+			logger.log(Level.SEVERE,
+					"Translator is null, wasn't set up properly.",
+					TaskManager.getCurrentTick());
 		}
-
-		sdm.store(address);
 	}
 
 	@Override
@@ -85,29 +87,37 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 */
 	public void receiveCue(NodeStructure ns) {
 		BitVector address = null;
-		try {
-			address = translator.translate(ns);
-		} catch (Exception e) {
-			if(translator == null){
-				logger.log(Level.SEVERE, "Translator is null, wasn't set up properly.", TaskManager.getCurrentTick());
+		if (translator != null) {
+			try {
+				address = translator.translate(ns);
+			} catch (Exception e) {
+				logger.log(Level.WARNING,
+						"Translation failed. " + e.getMessage(),
+						TaskManager.getCurrentTick());
+				return;
 			}
-			logger.log(Level.WARNING, "Translation failed.", TaskManager.getCurrentTick());
-			e.printStackTrace();
-			return;
+
+			// TODO make sure this method is thread-safe
+			BitVector out = sdm.retrieveIterating(address);
+			if (out != null) {//no local association
+				NodeStructure result = null;
+				try {
+					result = translator.translate(out);
+				} catch (Exception e) {
+					logger.log(Level.WARNING,
+							"Translation failed. " + e.getMessage(),
+							TaskManager.getCurrentTick());
+					return;
+				}
+				if(result.getNodeCount()>0){
+					sendLocalAssociation(result);
+				}
+			}
+		} else {
+			logger.log(Level.SEVERE, "Translator is not defined.",
+					TaskManager.getCurrentTick());
 		}
 
-		//TODO make sure this method is thread-safe
-		BitVector out = sdm.retrieveIterating(address);
-		
-		NodeStructure result = null;
-		try {
-			result = translator.translate(out);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		sendLocalAssociation(result);
-		return;
 	}
 
 	/**
@@ -142,48 +152,38 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		if (module instanceof PerceptualAssociativeMemory) {
-			pam = (PerceptualAssociativeMemory) module;
-		}else{
-			logger.log(Level.WARNING, "Cannot associate " + module + " to this module.", 0L);
-		}
-	}
-
-	@Override
 	public void init() {
 		numOfHardLoc = (Integer) getParam("tem.numOfHardLoc",
 				DEF_HARD_LOCATIONS);
-		addressLength=(Integer) getParam("tem.addressLength",
+		addressLength = (Integer) getParam("tem.addressLength",
 				DEF_ADDRESS_LENGTH);
 		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
 		int radius = (Integer) getParam("tem.activationRadius",
 				DEF_ACTIVATION_RADIUS);
-		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,addressLength);
+		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,
+				addressLength);
 	}
 
 	/**
-	 * Returns the {@link PerceptualAssociativeMemory} associated with this {@link EpisodicMemoryImpl}
-	 * @return
-	 */
-	public PerceptualAssociativeMemory getPam(){
-		return pam;
-	}
-	/**
 	 * Sets the {@link Translator} of this {@link EpisodicMemoryImpl}
-	 * @param translator the {@link Translator} to set
+	 * 
+	 * @param translator
+	 *            the {@link Translator} to set
 	 */
-	public void setTranslator(Translator translator){
+	public void setTranslator(Translator translator) {
 		this.translator = translator;
 	}
+
 	/**
-	 * Returns the {@link Translator} associated with this {@link EpisodicMemoryImpl}
+	 * Returns the {@link Translator} associated with this
+	 * {@link EpisodicMemoryImpl}
+	 * 
 	 * @return the Translator
 	 */
-	public Translator getTranslator(){
+	public Translator getTranslator() {
 		return translator;
 	}
-	
+
 	@Override
 	public Object getState() {
 		return sdm.getState();
@@ -196,6 +196,15 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO next version		
+		// TODO next version
+	}
+
+	/**
+	 * Returns the SDM used in this {@link EpisodicMemory}
+	 * 
+	 * @return the SDM
+	 */
+	public SparseDistributedMemory getSdm() {
+		return sdm;
 	}
 }

@@ -1,4 +1,4 @@
-package edu.memphis.ccrg.lida.episodicmemory;
+package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.BasicTranslator;
@@ -10,16 +10,18 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class MockTranslator implements Translator {
 
 	public NodeStructure ns;
-	public BitVector v;
+	public NodeStructure ns2;
+	public BitVector v=BitVectorUtils.getRandomVector(1000);
+	public BitVector data;
 	@Override
 	public NodeStructure translate(BitVector data) {
-		return ns;
+		this.data=data;
+		return ns2;
 	}
 
 	@Override
 	public BitVector translate(NodeStructure structure) {
 		ns=structure;
-		v=BitVectorUtils.getRandomVector(1000);
 		return v;
 	}
 

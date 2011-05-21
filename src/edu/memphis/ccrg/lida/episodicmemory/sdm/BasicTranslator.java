@@ -39,11 +39,15 @@ public class BasicTranslator implements Translator {
 	 *            the PAM associated with this translator
 	 */
 	public BasicTranslator(int size, PerceptualAssociativeMemory pam) {
-		super();
 		this.size = size;
 		this.pam = pam;
 	}
 
+	/**
+	 * Default constructor. The PAM and vectors' size must be set before to use this {@link Translator}.
+	 */
+	public BasicTranslator(){		
+	}
 	/**
 	 * Translates a bit vector into a node structure. Since the getQuick method
 	 * in the BitVector class is used, no preconditions are checked.
@@ -90,4 +94,33 @@ public class BasicTranslator implements Translator {
 		return v;
 	}
 
+	/**
+	 * @return the vectors' size 
+	 */
+	public int getSize() {
+		return size;
+	}
+
+	/**
+	 * @param size the vectors' size in the {@link SparseDistributedMemory}
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	/**
+	 * @return the pam
+	 */
+	public PerceptualAssociativeMemory getPam() {
+		return pam;
+	}
+
+	/**
+	 * @param pam the pam to set
+	 */
+	public void setPam(PerceptualAssociativeMemory pam) {
+		this.pam = pam;
+	}
+
+	
 }
