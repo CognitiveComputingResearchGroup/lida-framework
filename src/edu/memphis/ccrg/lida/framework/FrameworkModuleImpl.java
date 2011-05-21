@@ -93,13 +93,23 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		}
 		return value;
 	}
+	
+	@Override
+	public boolean containsSubmodule(ModuleName name){
+		return submodules.containsKey(name);
+	}
+	
+	@Override
+	public boolean containsSubmodule(String name){
+		return submodules.containsKey(ModuleName.getModuleName(name));
+	}
 
 	@Override
-	public FrameworkModule getSubmodule(ModuleName type) {
-		if(type == null){
+	public FrameworkModule getSubmodule(ModuleName name) {
+		if(name == null){
 			return null;
 		}
-		return submodules.get(type);
+		return submodules.get(name);
 	}
 	@Override
 	public FrameworkModule getSubmodule(String name){

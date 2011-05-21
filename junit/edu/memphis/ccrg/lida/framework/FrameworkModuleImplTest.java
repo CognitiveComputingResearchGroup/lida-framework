@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
@@ -49,7 +50,23 @@ public class FrameworkModuleImplTest {
 		submodule.setModuleName(ModuleName.EpisodicBuffer);
 		module.addSubModule(submodule);
 	}
-
+	
+	@Test
+	public void testContainsSubmodule1(){
+		assertTrue(module.containsSubmodule(ModuleName.EpisodicBuffer));
+		assertTrue(module.containsSubmodule("EpisodicBuffer"));
+		assertFalse(module.containsSubmodule(ModuleName.ActionSelection));
+		assertFalse(module.containsSubmodule("ActionSelection"));
+		
+		TestModule newSub = new TestModule();
+		ModuleName newSubName = ModuleName.addModuleName("AI");
+		newSub.setModuleName(newSubName);
+		module.addSubModule(newSub);
+		
+		assertTrue(module.containsSubmodule(newSubName));
+		assertTrue(module.containsSubmodule("AI"));
+	}
+	
 	@Test
 	public void testGetModuleContent() {
 		assertEquals(10, module.getModuleContent(0));

@@ -71,7 +71,7 @@ public class PropagationTask extends FrameworkTaskImpl {
 
 	@Override
 	protected void runThisFrameworkTask() {
-		//TODO think about a propagation strategy
+		//TODO think about a propagation strategy here
 		link.excite(excitationAmount);
 		double linkActivation = link.getActivation();
 		sink.excite(linkActivation);

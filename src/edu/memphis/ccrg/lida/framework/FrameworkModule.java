@@ -33,19 +33,35 @@ public interface FrameworkModule extends FullyInitializable{
 	public void setModuleName(ModuleName moduleName);
 	
 	/**
-	 * Gets a subModule.
+	 * Returns whether this {@link FrameworkModule} contains a submodule with 
+	 * specified {@link ModuleName}.
+	 * @param name {@link ModuleName} of submodule
+	 * @return true if there is a {@link FrameworkModule} with specified {@link ModuleName}
+	 * in this {@link FrameworkModule}
+	 */
+	public boolean containsSubmodule(ModuleName name);
+	
+	/**
+	 * Returns whether this {@link FrameworkModule} contains a submodule with 
+	 * specified name.
+	 * @param name {@link ModuleName} of submodule
+	 * @return true if there is a {@link FrameworkModule} with specified name
+	 * in this {@link FrameworkModule}
+	 */
+	public boolean containsSubmodule(String name);
+	
+	/**
+	 * Gets specified submodule subModule.
 	 * 
-	 * @param name
-	 *            of the desired submodule.
+	 * @param name name of the desired submodule.
 	 * @return the submodule.
 	 */
 	public FrameworkModule getSubmodule(ModuleName name);
 	
 	/**
-	 * Gets a subModule.
+	 * Gets specified submodule.
 	 * 
-	 * @param name
-	 *            of the desired submodule.
+	 * @param name name of the desired submodule.
 	 * @return the submodule.
 	 */
 	public FrameworkModule getSubmodule(String name);

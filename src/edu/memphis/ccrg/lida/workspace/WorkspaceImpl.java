@@ -45,6 +45,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	private List<WorkspaceListener> workspaceListeners = new ArrayList<WorkspaceListener>();
 	
 	public WorkspaceImpl(){
+		super();
 	}	
 	
 	@Override
@@ -82,7 +83,12 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		((BroadcastListener)getSubmodule(ModuleName.BroadcastQueue)).receiveBroadcast(bc);	
+		if(containsSubmodule(ModuleName.BroadcastQueue)){
+			BroadcastListener listener = (BroadcastListener) getSubmodule(ModuleName.BroadcastQueue);
+			listener.receiveBroadcast(bc);
+		}else{
+			logger.log(Level.WARNING, "Received broadcast content but Workspace does not have a broadcast queue.", TaskManager.getCurrentTick());
+		}
 	}
 	
 	/*
@@ -91,27 +97,30 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	 */
 	@Override
 	public void receiveLocalAssociation(NodeStructure association) {
-		WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.EpisodicBuffer);
-
-		if(buffer != null){
-			((NodeStructure)buffer.getBufferContent(null)).mergeWith(association);
+		if(containsSubmodule(ModuleName.EpisodicBuffer)){
+			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.EpisodicBuffer);
+			buffer.addBufferContent((WorkspaceContent) association);
 			for(WorkspaceListener listener: workspaceListeners){
 				listener.receiveWorkspaceContent(ModuleName.EpisodicBuffer, buffer.getBufferContent(null));
 			}
 		}else{
-			logger.log(Level.WARNING, "Received a Local assocation but Workspace does not have an episodic buffer ", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Received a Local assocation but Workspace does not have an episodic buffer.", TaskManager.getCurrentTick());
 		}
 		
 	}
 	
 	/*
-	 * Implementation of the PamListener interface.  Send received Node Structure to the
+	 * Implementation of the PamListener interface.  Adds newPercept to the
 	 * the perceptualBuffer.
 	 */
 	@Override
 	public void receivePercept(NodeStructure newPercept) {
-		WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
-		buffer.addBufferContent((WorkspaceContent) newPercept);
+		if(containsSubmodule(ModuleName.PerceptualBuffer)){
+			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
+			buffer.addBufferContent((WorkspaceContent) newPercept);
+		}else{
+			logger.log(Level.WARNING, "Received a percept but Workspace does not have a perceptual buffer.", TaskManager.getCurrentTick());
+		}
 	}
 
 	@Override
@@ -130,7 +139,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	}
 
 	/** 
-	 * Should do nothing, submodules' decayModule method is called 
+	 * Should do nothing, submodules' decayModule method will be called 
      * in FrameworkModuleImpl#taskManagerDecayModule.
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
 	 */
