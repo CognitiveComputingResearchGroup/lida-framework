@@ -152,7 +152,6 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
