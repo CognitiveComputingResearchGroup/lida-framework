@@ -14,18 +14,18 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 public class BasicActionSelectionTest {
 	
-	BasicActionSelection as;
-	Behavior behav1,behav2;	
-	MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
-	Scheme scheme1,scheme2 ;
+	private BasicActionSelection as;
+	private Behavior behav1,behav2;	
+	private MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
+	private Scheme scheme1,scheme2 ;
 		
-	AgentAction action1 = new AgentActionImpl() {
+	private AgentAction action1 = new AgentActionImpl() {
 		@Override
 		public void performAction() {
 		}
 	};
 	
-	AgentAction action2 = new AgentActionImpl() {
+	private AgentAction action2 = new AgentActionImpl() {
 		@Override
 		public void performAction() {
 		}
@@ -33,7 +33,6 @@ public class BasicActionSelectionTest {
 	
 	@Before
 	public void setUp() throws Exception {			
-		
 		scheme1= new SchemeImpl("scheme1",action1);
 		scheme2= new SchemeImpl("scheme2",action2);
 		
@@ -63,7 +62,7 @@ public class BasicActionSelectionTest {
 		
 		assertTrue("Problem with ReceiveBehavior", content.size()==2);
 		assertTrue("Problem with ReceiveBehavior", content.contains(behav1));
-		assertTrue("Problem with ReceiveBehavior", content.contains(behav1));
+		assertTrue("Problem with ReceiveBehavior", content.contains(behav2));
 	}
 
 	@Test
@@ -72,8 +71,11 @@ public class BasicActionSelectionTest {
 		behav2.setActivation(0.2);
 		as.receiveBehavior(behav1);
 		as.receiveBehavior(behav2);
-		
 		as.addListener(smm);		
+		
+		assertNull(smm.action);
+		assertFalse(smm.actionReceived);
+		
 		as.selectAction();
 		
 		assertTrue("Problem with SelectAction",smm.actionReceived);
@@ -81,18 +83,15 @@ public class BasicActionSelectionTest {
 		
 	}
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testGetState() {
-		as.receiveBehavior(behav1);
-		as.receiveBehavior(behav2);
-		
-		Object[] state = (Object[])as.getState();
-		Collection<Behavior> content = (Collection<Behavior>)state[0];
-		
-		assertTrue("Problem with GetState", content.size()==2);
-	}
-
-
+//	@Test
+//	public void testGetState() {
+//		as.receiveBehavior(behav1);
+//		as.receiveBehavior(behav2);
+//		
+//		Object[] state = (Object[])as.getState();
+//		Collection<Behavior> content = (Collection<Behavior>)state[0];
+//		
+//		assertTrue("Problem with GetState", content.size()==2);
+//	}
 
 }
