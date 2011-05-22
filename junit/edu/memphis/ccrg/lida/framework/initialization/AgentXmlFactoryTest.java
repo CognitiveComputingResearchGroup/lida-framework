@@ -860,7 +860,7 @@ public class AgentXmlFactoryTest {
 
 	@Test
 	public void testParseDocument() {		
-		Document dom = XmlUtils.parseXmlFile("testData/shortagent.xml","configs/LidaXMLSchema.xsd");
+		Document dom = XmlUtils.parseXmlFile("testData/shortagent.xml","edu/memphis/ccrg/lida/framework/initialization/config/LidaXMLSchema.xsd");
 		assertNotNull(dom);
 		
 		Agent a = factory.parseDocument(dom);

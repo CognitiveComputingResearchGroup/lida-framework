@@ -32,7 +32,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 public class FactoriesDataXmlLoader {
 
 	private static final String DEFAULT_XML_FILE_PATH = "configs/factoriesData.xml";
-	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaFactories.xsd";
+	private static final String DEFAULT_SCHEMA_FILE_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaFactories.xsd";
 	private static final Logger logger = Logger
 			.getLogger(FactoriesDataXmlLoader.class.getCanonicalName());
 

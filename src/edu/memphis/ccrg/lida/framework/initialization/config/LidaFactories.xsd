@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema targetNamespace="http://ccrg.cs.memphis.edu/LidaFactories" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaFactories">
-
     <complexType name="strategydef">
     	<sequence>
     		<element name="class" type="string" maxOccurs="1"

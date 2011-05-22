@@ -10,7 +10,6 @@
  */
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -60,19 +59,18 @@ public class XmlUtils {
 	public static boolean validateXmlFile(String xmlFile, String schemaFile) {
 		boolean result = false;
 		// 1. Lookup a factory for the W3C XML Schema language
-		SchemaFactory factory = SchemaFactory
-				.newInstance("http://www.w3.org/2001/XMLSchema");
+		SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 
 		// 2. Compile the schema.
 		// Here the schema is loaded from a java.io.File, but you could use
 		// a java.net.URL or a javax.xml.transform.Source instead.
-		File schemaLocation = new File(schemaFile);
-//		InputStream is = ClassLoader.getSystemResourceAsStream("edu/memphis/ccrg/lida/framework/initialization/config/NewXMLSchema.xsd");
+//		File schemaLocation = new File(schemaFile);
+		InputStream is = ClassLoader.getSystemResourceAsStream(schemaFile);
 
 		Schema schema;
 		try {
-			schema = factory.newSchema(schemaLocation);
-//			schema = factory.newSchema(new StreamSource(is));
+//			schema = factory.newSchema(schemaLocation);
+			schema = factory.newSchema(new StreamSource(is));
 		} catch (SAXException ex) {
 			logger.log(Level.WARNING, "The Schema file is not valid. "
 					+ ex.getMessage());

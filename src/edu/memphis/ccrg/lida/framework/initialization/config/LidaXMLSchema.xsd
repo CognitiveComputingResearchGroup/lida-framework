@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><schema targetNamespace="http://ccrg.cs.memphis.edu/LidaXMLSchema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaXMLSchema">
-    <include schemaLocation=""></include>
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://ccrg.cs.memphis.edu/LidaXMLSchema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ccrg.cs.memphis.edu/LidaXMLSchema">
     <complexType name="module">
     	<sequence>
     		<element name="class" type="string" maxOccurs="1"
@@ -26,6 +26,11 @@
     	</sequence>
     	<attribute name="name" type="string" use="required"></attribute>
     </complexType>
+
+
+
+
+
     <complexType name="modules">
     	<sequence>
     		<element name="module" type="tns:module" maxOccurs="unbounded" minOccurs="1"></element>

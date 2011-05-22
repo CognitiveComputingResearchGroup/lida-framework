@@ -46,8 +46,7 @@ public class AgentXmlFactory implements AgentFactory {
 	private static final Logger logger = Logger.getLogger(AgentXmlFactory.class.getCanonicalName());
 	
 	private static final String DEFAULT_XML_FILE_PATH = "configs/agent.xml";
-//	private static final String DEFAULT_SCHEMA_FILE_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaXMLSchema.xsd";
-	private static final String DEFAULT_SCHEMA_FILE_PATH = "configs/LidaXMLSchema.xsd";
+	private static final String DEFAULT_SCHEMA_FILE_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaXMLSchema.xsd";
 
 	@Override
 	public Agent getAgent(Properties properties) {

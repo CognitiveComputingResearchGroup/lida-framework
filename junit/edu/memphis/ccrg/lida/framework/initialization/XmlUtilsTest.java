@@ -74,7 +74,7 @@ public class XmlUtilsTest {
 
 	@Test
 	public void testParseXmlFile() {
-		Document dom = XmlUtils.parseXmlFile("configs/agent.xml","");
+		Document dom = XmlUtils.parseXmlFile("configs/agent.xml","edu/memphis/ccrg/lida/framework/initialization/config/LidaXMLSchema.xsd");
 		assertNotNull (dom);
 		
 //		dom = XmlUtils.parseXmlFile("agent.xml","");
