@@ -48,6 +48,7 @@ public class WorkspaceImplTest {
     	eBuffer.setModuleName(ModuleName.EpisodicBuffer);
     	content = new NodeStructureImpl();
     	node1 = factory.getNode();
+    	node1.setId(8);
     	node2 = factory.getNode();
     }
 
@@ -165,6 +166,7 @@ public class WorkspaceImplTest {
         
         NodeStructure localAssociation = new NodeStructureImpl();
 		Node node3 = factory.getNode();
+		node3.setId(9);
 		localAssociation.addDefaultNode(node3);
 		
         workspace.receiveLocalAssociation(localAssociation);
@@ -174,6 +176,8 @@ public class WorkspaceImplTest {
     	assertTrue(listener.content.containsNode(node3));
         
     	assertTrue(eBuffer.content.containsNode(node3));
+    	System.out.println(eBuffer.content.toString());
+    	System.out.println(listener.content.toString());    	
     }
 
     /**
@@ -194,6 +198,7 @@ public class WorkspaceImplTest {
 	    assertTrue(ns.containsNode(node1));
 	    assertEquals(1, ns.getLinkableCount());
 	    assertEquals(1, ns.getNodeCount());
+	    assertEquals(0, ns.getLinkCount());
     }
 
     @Test
