@@ -122,13 +122,11 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	@Override
 	public void learn(BroadcastContent content) {
 		// Not applicable
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
 		// Not applicable
-		throw new UnsupportedOperationException();
 	}
 
 }
