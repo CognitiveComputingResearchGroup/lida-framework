@@ -8,7 +8,7 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;

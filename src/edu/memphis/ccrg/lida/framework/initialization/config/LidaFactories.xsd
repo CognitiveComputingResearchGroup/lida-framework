@@ -16,6 +16,7 @@
     				<enumeration value="excite"></enumeration>
     				<enumeration value="decay"></enumeration>
     				<enumeration value="propagation"></enumeration>
+    				<enumeration value="other"></enumeration>
     			</restriction>
     		</simpleType>
     	</attribute>

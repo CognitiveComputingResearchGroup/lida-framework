@@ -5,23 +5,23 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
+package edu.memphis.ccrg.lida.actionselection;
 
-package edu.memphis.ccrg.lida.proceduralmemory;
 
-
-import edu.memphis.ccrg.lida.actionselection.Behavior;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * A procedural memory listener receives instantiated schemes which are behaviors
- * @author Ryan J. McCall
+ * Listener of preafferent signal from {@link ActionSelection}
+ * @author Ryan J McCall
+ *
  */
-public interface ProceduralMemoryListener extends ModuleListener{
+public interface PreafferenceListener {
+	
+	/**
+	 * Listener receives preafference.
+	 * @param addSet expected additions in future percepts
+	 * @param deleteSet expected deletions in future percepts
+	 */
+	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet);
 
-    /**
-     * 
-     * @param behavior - a stream, a partial order, of behaviors
-     */
-    public void receiveBehavior(Behavior behavior);
-   
 }

@@ -7,22 +7,18 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
-
-import edu.memphis.ccrg.lida.actionselection.ActionSelection;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-
 /**
- * Listener of preafferent signal from {@link ActionSelection}
- * @author Ryan J McCall
+ * A strategy to reduce the threshold for action selection.
+ * @author Ryan J. McCall
  *
  */
-public interface PreafferenceListener {
-	
+public interface CandidateThresholdReducer {
+
 	/**
-	 * Listener receives preafference.
-	 * @param addSet expected additions in future percepts
-	 * @param deleteSet expected deletions in future percepts
+	 * Reduces specified threshold
+	 * @param currentThreshold current threshold
+	 * @return new, reduced threshold
 	 */
-	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet);
+	public double reduceActivationThreshold(double currentThreshold);
 
 }

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -84,6 +85,20 @@ public class PerceptualAssociativeMemoryImplTest {
 			@Override
 			public double calculateTotalActivation(double bla, double ca) {
 				return 0;
+			}
+
+			@Override
+			public Object getParam(String name, Object defaultValue) {
+				return null;
+			}
+
+			@Override
+			public void init(Map<String, ?> parameters) {
+				
+			}
+
+			@Override
+			public void init() {
 			}
 		};
 		

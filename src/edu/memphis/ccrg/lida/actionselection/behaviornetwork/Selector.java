@@ -5,23 +5,28 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
+package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
 
-package edu.memphis.ccrg.lida.proceduralmemory;
-
+import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.Behavior;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
- * A procedural memory listener receives instantiated schemes which are behaviors
+ * A strategy for choosing which behavior to execute.
+ *  
  * @author Ryan J. McCall
  */
-public interface ProceduralMemoryListener extends ModuleListener{
+public interface Selector {
 
-    /**
-     * 
-     * @param behavior - a stream, a partial order, of behaviors
-     */
-    public void receiveBehavior(Behavior behavior);
-   
+	/**
+	 * Select a single behavior as the current winner.
+	 * 
+	 * @param behaviors
+	 *            the behaviors
+	 * @param candidateThreshold
+	 *            the candidate threshold
+	 * @return Behavior selected behavior
+	 */
+	public Behavior selectSingleBehavior(Collection<Behavior> behaviors, double candidateThreshold);
+
 }

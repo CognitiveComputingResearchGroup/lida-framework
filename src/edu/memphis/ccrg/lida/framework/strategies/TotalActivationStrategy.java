@@ -4,7 +4,7 @@ package edu.memphis.ccrg.lida.framework.strategies;
  * A strategy that calculates total activation.
  * @author Ryan J. McCall
  */
-public interface TotalActivationStrategy {
+public interface TotalActivationStrategy extends Strategy {
 
 	/**
 	 * Calculates and returns total activation.

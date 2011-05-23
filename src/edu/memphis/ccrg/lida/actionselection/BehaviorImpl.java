@@ -10,14 +10,13 @@
  *
  * @author Ryan J. McCall 
  */
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
+package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;

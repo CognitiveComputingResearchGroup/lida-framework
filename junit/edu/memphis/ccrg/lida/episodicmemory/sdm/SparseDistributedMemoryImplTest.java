@@ -1,11 +1,9 @@
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
@@ -18,7 +16,6 @@ public class SparseDistributedMemoryImplTest {
 	private static int RADIUS = 451;
 	private BitVector v1;
 	private BitVector v2;
-	private BitVector v3;
 	
 	
 
@@ -27,7 +24,6 @@ public class SparseDistributedMemoryImplTest {
 		sdm = new SparseDistributedMemoryImpl(MSIZE, RADIUS, WSIZE);
 		v1 = BitVectorUtils.getRandomVector(WSIZE);
 		v2 = BitVectorUtils.getRandomVector(WSIZE);
-		v3 = BitVectorUtils.getRandomVector(WSIZE);
 	}
 
 	@Test

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;

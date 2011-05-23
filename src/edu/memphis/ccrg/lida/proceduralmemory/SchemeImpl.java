@@ -8,8 +8,8 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorImpl;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
+import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;

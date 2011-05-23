@@ -5,11 +5,10 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.actionselection.behaviornetwork;
+package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;

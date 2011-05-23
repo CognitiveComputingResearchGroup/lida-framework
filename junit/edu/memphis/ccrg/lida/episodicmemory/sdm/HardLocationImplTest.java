@@ -1,13 +1,11 @@
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;

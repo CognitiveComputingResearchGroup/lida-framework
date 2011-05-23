@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;

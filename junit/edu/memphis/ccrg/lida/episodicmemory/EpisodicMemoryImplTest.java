@@ -4,6 +4,7 @@
 package edu.memphis.ccrg.lida.episodicmemory;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.episodicmemory.sdm.SparseDistributedMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockLocalAssocListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTranslator;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -57,11 +59,11 @@ public class EpisodicMemoryImplTest {
 		params.put("tem.activationRadius", 451);
 		params.put("tem.wordLength", 150);
 		em.init(params);
+		SparseDistributedMemory sdm=em.getSdm();
+		BitVector addr = new BitVector(100);
 		
-		Object[] data = (Object[])em.getState();
-		assertEquals(20,((BitVector[])data[0]).length);
-		assertEquals(100,((BitVector[])data[0])[0].size());
-		assertEquals(150,((byte[][])data[1])[0].length);
+		assertNotNull(sdm);
+		assertEquals(150,(sdm.retrieve(addr).size()));
 	}
 
 	@Test
