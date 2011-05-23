@@ -10,7 +10,7 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 import cern.colt.bitvector.BitVector;
 
 
-//TODO getRandomVector and Hamming are the only used methods
+
 /**
  * Utilities for {@link BitVector}s
  */

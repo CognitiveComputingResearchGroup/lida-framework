@@ -144,7 +144,7 @@ public class NodeStructureImplTest {
 		
 		ns1.addDefaultNode(node1);
 		assertTrue(ns1.containsNode(node1));
-		//TODO
+		//TODO test decay
 //		assertTrue(ns1.getNode(9).getActivation() == 0.0);			
 	}
 	@Test

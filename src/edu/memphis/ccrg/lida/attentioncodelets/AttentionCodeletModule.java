@@ -161,8 +161,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		return getCodelet(type, null);
 	}	
 
-	//TODO params not being used currently
-	//TODO default removal threshold parameters
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
 		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(type, codeletTicksPerStep, 
@@ -200,7 +198,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	@Override
 	public void receivePreafference(NodeStructure addSet,
 			NodeStructure deleteSet) {
-		// TODO Recive results from Action Selection and create Attention
+		// TODO Receive results from Action Selection and create Attention
 		// Codelets. We need
 		// to figure out how to create coalitions and detect that something was
 		// "deleted"
@@ -244,7 +242,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO decay codelets?
 	}
 
 

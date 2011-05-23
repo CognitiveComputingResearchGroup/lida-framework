@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -84,6 +85,16 @@ public class PerceptualAssociativeMemoryImplTest {
 			@Override
 			public double calculateTotalActivation(double bla, double ca) {
 				return 0;
+			}
+			@Override
+			public Object getParam(String name, Object defaultValue) {
+				return null;
+			}
+			@Override
+			public void init(Map<String, ?> parameters) {
+			}
+			@Override
+			public void init() {
 			}
 		};
 		
@@ -361,7 +372,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		node2.setBaseLevelActivation(1.0);
 		node2 = (PamNodeImpl) pam.addDefaultNode(node2);	
 		assertTrue(pam.containsNode(node2));
-		//TODO
+		//TODO test decay
 //		pam.decayModule(1000);
 	}
 	@Test
@@ -381,7 +392,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		node1.setBaseLevelActivation(0.0);
 		assertTrue(pam.containsNode(node1));
 		
-		//TODO
+		//TODO test decay
 //		pam.decayModule(1);
 	}
 	@Test
@@ -507,7 +518,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	 */
 	@Test
 	public void testDecayModule() {
-		//TODO
+		//TODO test decay
 //		node1.setBaseLevelActivation(1.0);
 //		node1.setLearnableRemovalThreshold(0.0001);
 //		node1.setDecayStrategy(decayStrategy);

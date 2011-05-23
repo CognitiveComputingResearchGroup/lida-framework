@@ -52,7 +52,7 @@ public class MockGlobalWorkspaceImpl extends FrameworkModuleImpl implements Glob
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		
 	}
 	
 }

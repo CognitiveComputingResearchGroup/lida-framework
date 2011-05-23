@@ -186,7 +186,6 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO next version
 	}
 
 	/**

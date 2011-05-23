@@ -72,7 +72,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.learnableRemovableThreshold=0.0;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
-		//FIXME move to the Factory!!!!
+		
+		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");
 		totalActivationStrategy = new DefaultTotalActivationStrategy();
 	}
 	

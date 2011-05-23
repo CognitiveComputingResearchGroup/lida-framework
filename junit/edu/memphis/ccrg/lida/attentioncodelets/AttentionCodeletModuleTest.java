@@ -85,7 +85,7 @@ public class AttentionCodeletModuleTest{
 		attentionModule.receiveBroadcast((BroadcastContent)ns);
 		
 		assertEquals(1, attentionModule.getAssistingTaskSpawner().getRunningTasks().size());
-		//TODO more testing when fully implemented
+		// more testing when fully implemented
 	}
 
 	@Test
@@ -247,11 +247,11 @@ public class AttentionCodeletModuleTest{
 
 	@Test
 	public void testAddListener() {
-		//TODO when implemented
+		// when implemented
 	}
 
 	@Test
 	public void testDecayModule() {
-		//TODO when implemented
+		// when implemented
 	}
 }

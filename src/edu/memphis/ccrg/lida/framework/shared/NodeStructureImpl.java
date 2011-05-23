@@ -564,7 +564,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param ns
 	 */
-	// TODO do this for addNode and AddDefaultLink??????
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {
 			logger.log(Level.WARNING, "Asked to merge null", TaskManager

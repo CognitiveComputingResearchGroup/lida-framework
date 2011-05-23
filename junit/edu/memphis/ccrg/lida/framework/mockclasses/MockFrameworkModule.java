@@ -15,13 +15,13 @@ public class MockFrameworkModule extends FrameworkModuleImpl {
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		
 
 	}
 

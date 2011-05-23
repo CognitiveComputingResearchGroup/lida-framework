@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import java.io.Serializable;
-import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
@@ -52,18 +51,6 @@ public interface AgentAction extends Serializable {
 	public void setLabel(String label);
 
 	/**
-	 * @return the subActions
-	 */
-	public List<AgentAction> getSubActions();
-
-	/**
-	 * @return the topology of the subActions.
-	 */
-	public Topology getTopology();
-
-	public void addSubAction(AgentAction action, Topology topology);
-
-	/**
 	 * Sets an associated FrameworkModule.
 	 * @param module the module to be associated.
 	 */
@@ -74,13 +61,6 @@ public interface AgentAction extends Serializable {
 	 */
 	public FrameworkModule getAssociatedModule();
 
-	//TODO add when we have factory support for this 
-//	/**
-//	 * Sets scheme's id.
-//	 * @param id unique identifier for this scheme
-//	 */
-//	public void setId(long id);
-	
 	/**
 	 * @return the {@link AgentAction} id
 	 */

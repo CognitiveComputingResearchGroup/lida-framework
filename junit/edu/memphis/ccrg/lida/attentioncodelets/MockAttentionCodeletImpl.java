@@ -7,13 +7,13 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 
 	@Override
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

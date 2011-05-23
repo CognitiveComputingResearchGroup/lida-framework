@@ -79,13 +79,13 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

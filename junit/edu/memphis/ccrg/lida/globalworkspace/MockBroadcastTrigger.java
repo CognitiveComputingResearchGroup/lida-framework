@@ -15,7 +15,7 @@ public class MockBroadcastTrigger implements BroadcastTrigger {
 
 	@Override
 	public void init(Map<String, Object> parameters, GlobalWorkspace gw) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -28,7 +28,7 @@ public class MockBroadcastTrigger implements BroadcastTrigger {
 
 	@Override
 	public void start() {
-		// TODO Auto-generated method stub
+		
 
 	}
 

@@ -6,7 +6,7 @@ package edu.memphis.ccrg.lida.framework.strategies;
  * @author Ryan J. McCall
  *
  */
-public class DefaultTotalActivationStrategy implements TotalActivationStrategy {
+public class DefaultTotalActivationStrategy extends StrategyImpl implements TotalActivationStrategy {
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy#calculateTotalActivation(double, double)
