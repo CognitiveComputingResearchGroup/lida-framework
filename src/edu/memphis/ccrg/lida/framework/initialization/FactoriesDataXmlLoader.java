@@ -99,7 +99,7 @@ public class FactoriesDataXmlLoader {
 
 	Map<String, StrategyDef> getStrategies(Element element) {
 		Map<String, StrategyDef> strat = new HashMap<String, StrategyDef>();
-		List<Element> list = XmlUtils.getCollectionElements(element,
+		List<Element> list = XmlUtils.getChildrenInGroup(element,
 				"strategies", "strategy");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
@@ -130,7 +130,7 @@ public class FactoriesDataXmlLoader {
 	Map<String, LinkableDef> getLinkables(Element element, String groupName,
 			String childName, Map<String, StrategyDef> strategies) {
 		Map<String, LinkableDef> linkables = new HashMap<String, LinkableDef>();
-		List<Element> list = XmlUtils.getCollectionElements(element, groupName,
+		List<Element> list = XmlUtils.getChildrenInGroup(element, groupName,
 				childName);
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
@@ -170,7 +170,7 @@ public class FactoriesDataXmlLoader {
 	Map<String, CodeletDef> getCodelets(Element docEle,
 			Map<String, StrategyDef> strategies) {
 		Map<String, CodeletDef> codels = new HashMap<String, CodeletDef>();
-		List<Element> list = XmlUtils.getCollectionElements(docEle, "codelets",
+		List<Element> list = XmlUtils.getChildrenInGroup(docEle, "codelets",
 				"codelet");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {

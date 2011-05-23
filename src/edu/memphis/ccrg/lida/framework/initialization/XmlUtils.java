@@ -10,8 +10,6 @@
  */
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,17 +59,18 @@ public class XmlUtils {
 	public static boolean validateXmlFile(String xmlFile, String schemaFile) {
 		boolean result = false;
 		// 1. Lookup a factory for the W3C XML Schema language
-		SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+		SchemaFactory factory = SchemaFactory
+				.newInstance("http://www.w3.org/2001/XMLSchema");
 
 		// 2. Compile the schema.
 		// Here the schema is loaded from a java.io.File, but you could use
 		// a java.net.URL or a javax.xml.transform.Source instead.
-//		File schemaLocation = new File(schemaFile);
+		// File schemaLocation = new File(schemaFile);
 		InputStream is = ClassLoader.getSystemResourceAsStream(schemaFile);
 
 		Schema schema;
 		try {
-//			schema = factory.newSchema(schemaLocation);
+			// schema = factory.newSchema(schemaLocation);
 			schema = factory.newSchema(new StreamSource(is));
 		} catch (SAXException ex) {
 			logger.log(Level.WARNING, "The Schema file is not valid. "
@@ -104,7 +102,7 @@ public class XmlUtils {
 
 	/**
 	 * Returns text value of first element in specified element with specified
-	 * tag.
+	 * tag. Returns null if specified tag is empty or only has subchildren.
 	 * 
 	 * @param ele
 	 *            Dom element
@@ -115,13 +113,14 @@ public class XmlUtils {
 	public static String getTextValue(Element ele, String tagName) {
 		String textVal = null;
 		List<Element> nl = getChildren(ele, tagName);
-		if (nl != null && nl.size()!=0) {
+		if (nl != null && nl.size() != 0) {
 			Element el = (Element) nl.get(0);
 			textVal = getValue(el);
-			if (textVal!=null){
+			if (textVal != null) {
 				textVal = textVal.trim();
-			}else{
-				textVal="";
+				if (textVal.equalsIgnoreCase("")) {
+					return null;
+				}
 			}
 		}
 
@@ -129,23 +128,32 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Returns int value of first element inside specified element with
-	 * specified tag.
+	 * Returns Integer value of first element inside specified element with
+	 * specified tag or else null.
 	 * 
 	 * @param ele
 	 *            Dom element
 	 * @param tagName
 	 *            name of xml tag
-	 * @return int value of element with specified xml tag
+	 * @return Integer value of first element with specified xml tag or null if
+	 *         no such value can be parsed
+	 * 
 	 */
-	public static int getIntValue(Element ele, String tagName) {
-		// in production application you would catch the exception
-		return Integer.parseInt(getTextValue(ele, tagName));
+	public static Integer getIntegerValue(Element ele, String tagName) {
+		Integer i = null;
+		try {
+			i = Integer.parseInt(getTextValue(ele, tagName));
+		} catch (NumberFormatException e) {
+			logger.log(Level.WARNING, "Cannot parse int value in tag "
+					+ tagName);
+		}
+		return i;
 	}
 
 	/**
-	 * Returns boolean value of first element inside specified element with
-	 * specified tag.
+	 * Returns a Boolean with value true if the first element inside specified
+	 * element has specified tag contains 'true' ignoring case. Returns false
+	 * otherwise.
 	 * 
 	 * @param ele
 	 *            Dom element
@@ -164,21 +172,27 @@ public class XmlUtils {
 	 *            Dom element
 	 * @return Properties
 	 */
-	public static Properties getParams(Element moduleElement) {
-		Properties prop = new Properties();
+	public static Map<String, Object> getParams(Element moduleElement) {
+		Map<String, Object> prop = new HashMap<String, Object>();
 		List<Element> nl = getChildren(moduleElement, "param");
 		if (nl != null) {
 			for (Element param : nl) {
 				String name = param.getAttribute("name");
 				String value = (getValue(param)).trim();
-				prop.setProperty(name, value);
+				prop.put(name, value);
 			}
 		}
 		return prop;
 	}
 
 	/**
-	 * Reads typed params from Xml element and returns them in a map.
+	 * Reads typed parameters from xml element and returns them in a Map where
+	 * the key is the parameter's String name and the value is the value of the parameter.
+	 * Finds all tags named "param".  Those tags should have two attributes, name and type. 
+	 * Valid parameters types are "int", "double", "boolean", and "string".
+	 * If the value is not compatible with the specified type then value will be null, except
+	 * in the case of a Boolean with an incompatible value, in which case the value will be False.
+	 * If a parameter's value is not specified or empty then the value will be null. 
 	 * 
 	 * @param moduleElement
 	 *            Dom {@link Element}
@@ -191,29 +205,31 @@ public class XmlUtils {
 			for (Element param : nl) {
 				String name = param.getAttribute("name");
 				String type = param.getAttribute("type");
-				String sValue = (getValue(param)).trim();
+				String sValue = getValue(param);
 				Object value = sValue;
+				if (sValue != null) {
 
-				if (type == null || "string".equalsIgnoreCase(type)) {
-					value = sValue;
-				} else if ("int".equalsIgnoreCase(type)) {
-					try {
-						value = Integer.parseInt(sValue);
-					} catch (NumberFormatException e) {
+					if (type == null || "string".equalsIgnoreCase(type)) {
 						value = sValue;
-						logger.log(Level.FINE, e.toString(), TaskManager
-								.getCurrentTick());
+					} else if ("int".equalsIgnoreCase(type)) {
+						try {
+							value = Integer.parseInt(sValue);
+						} catch (NumberFormatException e) {
+							value = null;
+							logger.log(Level.FINE, e.toString(), TaskManager
+									.getCurrentTick());
+						}
+					} else if ("double".equalsIgnoreCase(type)) {
+						try {
+							value = Double.parseDouble(sValue);
+						} catch (NumberFormatException e) {
+							value = null;
+							logger.log(Level.FINE, e.toString(), TaskManager
+									.getCurrentTick());
+						}
+					} else if ("boolean".equalsIgnoreCase(type)) {
+						value = Boolean.parseBoolean(sValue);
 					}
-				} else if ("double".equalsIgnoreCase(type)) {
-					try {
-						value = Double.parseDouble(sValue);
-					} catch (NumberFormatException e) {
-						value = sValue;
-						logger.log(Level.FINE, e.toString(), TaskManager
-								.getCurrentTick());
-					}
-				} else if ("boolean".equalsIgnoreCase(type)) {
-					value = Boolean.parseBoolean(sValue);
 				}
 				prop.put(name, value);
 			}
@@ -222,7 +238,7 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Returns child of specified Element with specified name.
+	 * Returns the first child of specified Element with specified name.
 	 * 
 	 * @param parent
 	 *            an {@link Element}
@@ -241,7 +257,8 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Returns NodeValue of first child found that is a Text.
+	 * Returns String value of first child found that is a {@link Text}. or null
+	 * if the Text is empty
 	 * 
 	 * @param parent
 	 *            Element
@@ -251,14 +268,19 @@ public class XmlUtils {
 		for (Node child = parent.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
 			if (child instanceof Text) {
-				return child.getNodeValue().trim();
+				String value = child.getNodeValue().trim();
+				if (value.equalsIgnoreCase("")) {
+					return null;
+				} else {
+					return value;
+				}
 			}
 		}
 		return null;
 	}
 
 	/**
-	 * Gets the children values of specified element with specified tag name.
+	 * Gets the values of the children of the element with specified name.
 	 * 
 	 * @param element
 	 *            Parent {@link Element}
@@ -271,7 +293,7 @@ public class XmlUtils {
 		List<Element> nl = getChildren(element, name);
 		if (nl != null) {
 			for (Element el : nl) {
-				String value = (getValue(el)).trim();
+				String value = getValue(el);
 				vals.add(value);
 			}
 		}
@@ -299,29 +321,36 @@ public class XmlUtils {
 	}
 
 	/**
-	 * Returns the Elements with name childName, in the group groupName
-	 * inside the specified Element e
-	 * @param e {@link Element}
-	 * @param groupName name of the group
-	 * @param childName name of children Elements returned
+	 * Returns the Elements with name childName, in the group groupName inside
+	 * the specified Element e.  groupName must be a direct child of e.  
+	 * 
+	 * @param e
+	 *            {@link Element}
+	 * @param groupName
+	 *            name of the group
+	 * @param childName
+	 *            name of children Elements returned
 	 * @return
 	 */
-	public static List<Element> getCollectionElements(Element e, String groupName,
-			String childName) {
+	public static List<Element> getChildrenInGroup(Element e,
+			String groupName, String childName) {
+		List<Element> children = new ArrayList<Element>();
 		Element groupElement = getChild(e, groupName);
 		if (groupElement != null) {
-			List<Element> list = getChildren(groupElement, childName);
-			return list;
+			children = getChildren(groupElement, childName);
 		}
-		return null;
+		return children;
 	}
 
 	/**
 	 * Verifies and parses specified xml file into a {@link Document}.
-	 * @param fileName the name of the file to parse
-	 * @param schemaFilePath path to the schema file
-	 * @return the DOM {@link Document} of the file fileName or null if
-	 * the xml file is not valid
+	 * 
+	 * @param fileName
+	 *            the name of the file to parse
+	 * @param schemaFilePath
+	 *            path to the schema file
+	 * @return the DOM {@link Document} of the file fileName or null if the xml
+	 *         file is not valid
 	 */
 	public static Document parseXmlFile(String fileName, String schemaFilePath) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -329,21 +358,24 @@ public class XmlUtils {
 		Document dom = null;
 		try {
 			db = dbf.newDocumentBuilder();
-			if (validateXmlFile(fileName, schemaFilePath)){
+			if (validateXmlFile(fileName, schemaFilePath)) {
 				// parse using builder to get DOM representation of the XML file
 				dom = db.parse(fileName);
-			}else{
-				logger.log(Level.WARNING, "Xml file invalid, file: " +fileName+" was not parsed");
+			} else {
+				logger.log(Level.WARNING, "Xml file invalid, file: " + fileName
+						+ " was not parsed");
 			}
-		}catch (Exception e) {
-			logger.log(Level.WARNING, e.getMessage(),e);
+		} catch (Exception e) {
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 		return dom;
 	}
-	
+
 	/**
 	 * Parses a String containing xml data into a dom {@link Document}
-	 * @param xml the string with xml data
+	 * 
+	 * @param xml
+	 *            the string with xml data
 	 * @return a dom {@link Document}
 	 */
 	public static Document parseXmlString(String xml) {
@@ -357,7 +389,7 @@ public class XmlUtils {
 			// parse using builder to get DOM representation of the XML file
 			dom = db.parse(new ByteArrayInputStream(xml.getBytes()));
 		} catch (Exception e) {
-			logger.log(Level.WARNING, e.getMessage(),e);
+			logger.log(Level.WARNING, e.getMessage(), e);
 		}
 		return dom;
 	}

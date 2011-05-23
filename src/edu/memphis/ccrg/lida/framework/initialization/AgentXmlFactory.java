@@ -339,9 +339,8 @@ public class AgentXmlFactory implements AgentFactory {
 	 */
 	FrameworkTask getTask(Element moduleElement,List<Object[]>toAssoc) {
 		FrameworkTask task = null;
-		String className = XmlUtils.getTextValue(moduleElement, "class");
+		String className = XmlUtils.getTextValue(moduleElement, "class");	
 		String name = moduleElement.getAttribute("name").trim();
-		int ticks = XmlUtils.getIntValue(moduleElement, "ticksperrun");
 		try {
 			task = (FrameworkTask) Class.forName(className).newInstance();
 		} catch(ClassNotFoundException e){
@@ -353,8 +352,14 @@ public class AgentXmlFactory implements AgentFactory {
 				"\" occurred during creation of object of class " + className + "\n", 0L);
 			return null;
 		}
-
-		task.setTicksPerStep(ticks);
+		
+		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
+		if(ticks != null){
+			task.setTicksPerStep(ticks);
+		}else{
+			logger.log(Level.WARNING, "Cannot set ticksPerRun for task \"" + name + "\". Using default ticksPerRun.");
+		}
+		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		task.init(params);
 		getAssociatedModules(moduleElement, task,toAssoc);
