@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.Agent;
-import edu.memphis.ccrg.lida.framework.dao.DAOManager;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiFactory;
 
 /**
@@ -103,11 +102,15 @@ public class AgentStarter {
 		
 		// Create model: Agent
 		Agent agent = new AgentXmlFactory().getAgent(agentProperties);
+		if(agent == null){
+			logger.log(Level.INFO, "Failed to create agent, application not started.");
+			return;
+		}
 		logger.log(Level.CONFIG, "Agent created", 0L);
 
         // Initialize Data Access Objects
-		DAOManager manager = DAOManager.getInstance();
-        if (!manager.isInitialized())
+//		DAOManager manager = DAOManager.getInstance();
+//        if (!manager.isInitialized())
 //        	manager.initDataAccessObjects(agent);
         //TODO Uncomment when DAO is operational
 

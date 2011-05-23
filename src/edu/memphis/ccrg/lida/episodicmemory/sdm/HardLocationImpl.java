@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 
 /**
  * Default implementation of HardLocation.
@@ -139,7 +138,7 @@ public class HardLocationImpl implements HardLocation {
 		// }
 
 		for (int i = 0; i < wordLength; i++) {
-			int inc=0;
+//			int inc=0;
 			buff[i] += Integer.signum(counters[i]);
 		}
 		return buff;

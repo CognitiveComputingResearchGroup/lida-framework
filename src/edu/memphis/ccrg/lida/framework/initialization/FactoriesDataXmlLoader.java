@@ -54,6 +54,11 @@ public class FactoriesDataXmlLoader {
 	}
 
 	void parseDocument(Document dom) {
+		if(dom == null){
+			logger.log(Level.SEVERE, "Document dom was null. Factory data will not be loaded.");
+			return;
+		}
+		
 		// get the root element
 		Element docEle = dom.getDocumentElement();
 		Map<String, StrategyDef> strategies = getStrategies(docEle);

@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
