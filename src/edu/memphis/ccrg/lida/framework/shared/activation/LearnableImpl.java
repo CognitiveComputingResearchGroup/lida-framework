@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -72,9 +71,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.learnableRemovableThreshold=0.0;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
-		
 		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");
-		totalActivationStrategy = new DefaultTotalActivationStrategy();
 	}
 	
 	/**
