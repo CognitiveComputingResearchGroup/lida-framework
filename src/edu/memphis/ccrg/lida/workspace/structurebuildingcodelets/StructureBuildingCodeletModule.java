@@ -219,7 +219,6 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO decay codelets
 	}
 
 }

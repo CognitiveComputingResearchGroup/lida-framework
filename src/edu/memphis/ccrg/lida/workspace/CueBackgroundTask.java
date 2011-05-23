@@ -28,8 +28,7 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 	private static final double DEFAULT_ACT_THRESHOLD = 0.4;
 	private double actThreshold = DEFAULT_ACT_THRESHOLD;
 	private Workspace workspace;
-	// TODO Remove this parameter. Too much. If the pbuffer decays fast enough
-	// it should be relatively small?
+	
 	private static final Logger logger = Logger
 			.getLogger(CueBackgroundTask.class.getCanonicalName());
 

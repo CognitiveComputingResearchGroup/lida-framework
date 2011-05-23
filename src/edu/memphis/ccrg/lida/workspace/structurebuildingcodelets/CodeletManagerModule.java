@@ -58,13 +58,4 @@ public interface CodeletManagerModule extends FrameworkModule{
 	 */
 	public void setDefaultCodeletType(String type);
 
-	//TODO next version
-//	/**
-//	 * Recycles the given codelet to be re-used later on, for quickly providing
-//	 * new empty codelets.
-//	 * 
-//	 * @param sbCode The codelet to be recycled
-//	 */
-//	public void recycle(Codelet cod);
-
 }

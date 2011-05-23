@@ -85,7 +85,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 			ProcessActionTask t = new ProcessActionTask(action);
 			taskSpawner.addTask(t);
 		}else{
-			//TODO log
+			logger.log(Level.WARNING, "Receive null Action"
+					, TaskManager.getCurrentTick());
 		}
 	}
 	private class ProcessActionTask extends FrameworkTaskImpl {

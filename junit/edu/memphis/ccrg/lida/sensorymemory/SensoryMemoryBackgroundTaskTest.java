@@ -118,18 +118,6 @@ class MockSensory extends FrameworkModuleImpl implements SensoryMemory, SensoryM
 	}
 
 	@Override
-	public Object getState() {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		// not implemented
-		return false;
-	}
-
-	@Override
 	public void addSensoryMemoryListener(SensoryMemoryListener l) {
 		// not implemented
 		

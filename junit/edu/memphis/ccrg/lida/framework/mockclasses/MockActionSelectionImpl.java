@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
+import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -52,17 +52,6 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 		t.start();
 	}
 
-	@Override
-	public Object getState() {
-		
-		return null;
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		
-		return false;
-	}
 
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {

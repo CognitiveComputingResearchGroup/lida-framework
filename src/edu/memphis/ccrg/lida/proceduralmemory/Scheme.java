@@ -24,14 +24,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * @author Ryan J. McCall
  */
 public interface Scheme extends Learnable{
-	 
-	//TODO add when we have factory support for this 
-//	/**
-//	 * Sets scheme's id.
-//	 * @param id unique identifier for this scheme
-//	 */
-//	public void setId(long id);
-	
+	 	
 	/**
 	 * Gets scheme's id.
 	 * @return unique identifier for this scheme

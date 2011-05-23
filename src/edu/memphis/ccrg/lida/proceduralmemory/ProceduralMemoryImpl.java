@@ -51,9 +51,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap;
 	
-//	TODO support for Node desirability
-//	private Map<Object, Set<Scheme>> resultSchemeMap;
-
 	/**
 	 * Convenient for decaying the schemes
 	 */

@@ -1,6 +1,6 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 
 public class MockProceduralMemoryListener implements ProceduralMemoryListener {
 

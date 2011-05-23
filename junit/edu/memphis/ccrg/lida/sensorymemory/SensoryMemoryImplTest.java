@@ -117,18 +117,6 @@ public class SensoryMemoryImplTest {
 		}
 
 		@Override
-		public Object getState() {
-			
-			return null;
-		}
-
-		@Override
-		public boolean setState(Object content) {
-			
-			return false;
-		}
-
-		@Override
 		public Object getModuleContent(Object... params) {
 			
 			return null;

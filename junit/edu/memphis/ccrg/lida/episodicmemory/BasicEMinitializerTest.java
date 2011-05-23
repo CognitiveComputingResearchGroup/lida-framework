@@ -1,6 +1,7 @@
 package edu.memphis.ccrg.lida.episodicmemory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,10 +9,8 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.episodicmemory.sdm.BasicTranslator;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.AgentImpl;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
-import edu.memphis.ccrg.lida.framework.tasks.MockTaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 

@@ -37,7 +37,6 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 		return calcActivation(currentActivation, ticks, aa, cc);
 	}
 
-	//TODO test boundary conditions 1, 0.
 	@Override
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {

@@ -28,7 +28,6 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
 	
-	//TODO Consider having multiple NodeStructures 
 	private NodeStructure buffer;	
 	
 	/**

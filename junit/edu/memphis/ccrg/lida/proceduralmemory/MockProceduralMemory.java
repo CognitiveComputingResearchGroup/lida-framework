@@ -89,17 +89,4 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		// not implemented
 
 	}
-
-	@Override
-	public Object getState() {
-		// not implemented
-		return null;
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		// not implemented
-		return false;
-	}
-
 }

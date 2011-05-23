@@ -27,7 +27,6 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 		c = (Double) getParam("c", DEFAULT_C);
 	}
 
-	//TODO test boundary conditions 1, 0.
 	@Override
 	public double excite(double curActiv, double excitation,
 			Object... params) {

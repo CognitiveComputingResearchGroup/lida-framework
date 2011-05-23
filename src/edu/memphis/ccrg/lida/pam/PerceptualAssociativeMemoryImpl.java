@@ -348,7 +348,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	@Override
 	public void learn(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
-		// TODO learning algorithm
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
 			n.getId();
@@ -362,8 +361,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		// TODO next version
-		// pamNodeStructure.decayNodeStructure(ticks);
+		 pamNodeStructure.decayNodeStructure(ticks);
 	}
 
 	/*
@@ -392,8 +390,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			//TODO not actually a bad thing..
-			logger.log(Level.WARNING, "Cannot find pamnode: " + linkable,
+			logger.log(Level.FINE, "Cannot find pamnode: " + linkable,
 					TaskManager.getCurrentTick());
 		}
 	}
