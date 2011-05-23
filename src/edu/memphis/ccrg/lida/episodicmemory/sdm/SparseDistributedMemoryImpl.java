@@ -234,40 +234,4 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		return res;
 	}
 
-	@Override
-	public Object getState() {
-		BitVector[] addresses = new BitVector[memorySize];
-		byte[][] counters = new byte[memorySize][];
-
-		for (int i = 0; i < memorySize; i++) {
-			addresses[i] = hardlocations[i].getAddress();
-			counters[i] = hardlocations[i].getCounters();
-		}
-
-		Object[] state = new Object[2];
-		state[0] = addresses;
-		state[1] = counters;
-
-		return state;
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		if (content instanceof Object[]) {
-			try {
-				Object[] state = (Object[]) content;
-				BitVector[] addresses = (BitVector[]) state[0];
-				byte[][] counters = (byte[][]) state[1];
-				// BitVector bv;
-				for (int i = 0; i < addresses.length; i++) {
-					hardlocations[i].setAddress(addresses[i]);
-					hardlocations[i].setCounters(counters[i]);
-				}
-				return true;
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-		return false;
-	}
 }

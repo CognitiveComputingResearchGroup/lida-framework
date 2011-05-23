@@ -140,17 +140,5 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	public void init() {
 		processActionTicks = (Integer)getParam("smm.ProcessActionTaskSpeed", 5);
 	}
-
-	@Override
-	public Object getState() {
-		// TODO DAO
-		return null;
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		// TODO DAO
-		return false;
-	}
-
+	
 }

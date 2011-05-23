@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
+import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
@@ -241,33 +241,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public Object getModuleContent(Object... params) {
 		return null;
-	}
-
-	@Override
-	public Object getState() {
-		Object[] state = new Object[2];
-		state[0] = this.contextSchemeMap;
-		state[1] = this.schemeSet;
-		return state;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public boolean setState(Object content) {
-		if (content instanceof Object[]) {
-			Object[] state = (Object[]) content;
-			if (state.length == 2 && state[0] instanceof Map
-					&& state[1] instanceof Set) {
-				try {
-					this.contextSchemeMap = (Map<Object, Set<Scheme>>) state[0];
-					this.schemeSet = (Set<Scheme>) state[1];
-					return true;
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		return false;
 	}
 	
 }

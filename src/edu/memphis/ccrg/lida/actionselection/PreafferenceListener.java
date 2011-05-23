@@ -5,22 +5,23 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package edu.memphis.ccrg.lida.actionselection;
 
-package edu.memphis.ccrg.lida.framework.dao;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
+ * Listener of preafferent signal from {@link ActionSelection}
+ * @author Ryan J McCall
  *
- * @author Tom
  */
-public class ActionSelectionDAO extends DataAccessObjectImpl {
-    public static final String STORAGE_NAME = "actionselection";
-    public ActionSelectionDAO(FrameworkModule module, Storage cStorage, int cLidaId) {
-        super(module, cStorage, STORAGE_NAME, cLidaId);
-    }
+public interface PreafferenceListener {
+	
+	/**
+	 * Listener receives preafference.
+	 * @param addSet expected additions in future percepts
+	 * @param deleteSet expected deletions in future percepts
+	 */
+	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet);
+
 }

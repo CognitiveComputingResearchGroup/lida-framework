@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.sensorymotormemory;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 /**
  * Sensory Motor Memory is a module which receives selected actions from ActionSelection and
@@ -17,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * @author Ryan J McCall, Javier Snaider
  *
  */
-public interface SensoryMotorMemory extends FrameworkModule, Saveable{
+public interface SensoryMotorMemory extends FrameworkModule{
 
 	/**
 	 * Any non-environment communication should use listeners.

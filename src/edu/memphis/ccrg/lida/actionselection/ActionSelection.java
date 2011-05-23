@@ -7,9 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.dao.Saveable;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
@@ -18,7 +16,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * @author Ryan J McCall
  * 
  */
-public interface ActionSelection extends FrameworkModule, BroadcastListener, Saveable {
+public interface ActionSelection extends FrameworkModule, BroadcastListener{
 
 	/**
 	 * Those classes that should be receiving selected actions from Action

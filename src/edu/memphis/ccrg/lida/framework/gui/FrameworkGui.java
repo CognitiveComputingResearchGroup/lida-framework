@@ -37,12 +37,10 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import edu.memphis.ccrg.lida.framework.Agent;
-import edu.memphis.ccrg.lida.framework.gui.commands.Command;
-import edu.memphis.ccrg.lida.framework.gui.commands.DAOCommand;
 import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
-import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
+import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
@@ -91,7 +89,6 @@ public class FrameworkGui extends javax.swing.JFrame {
 	private FrameworkGuiController controller;
 	private javax.swing.JDialog addEditDialog;
 
-	//TODO convert config files from Properties to XML
 	/**
 	 * Constructs a new FrameworkGui using the {@link Agent} object as the model and
 	 * {@link FrameworkGuiController} as the controller. Reads the {@link Properties}
@@ -555,21 +552,13 @@ public class FrameworkGui extends javax.swing.JFrame {
 		// setPreferredSize(new Dimension(800, 1000));
 	}// </editor-fold>
 
-	//TODO comment out for first version
 	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		Command command = new DAOCommand();
-		command.setParameter("action", DAOCommand.SAVE_ACTION);
-		controller.executeCommand(command);
 	}
 
 	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		Command command = new DAOCommand();
-		command.setParameter("action", DAOCommand.LOAD_ACTION);
-		controller.executeCommand(command);
 	}
 
 	private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
 	}
 
 	private void addPanelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 /**
  * Implementation of Kanerva's sparse distributed memory. This implementation is
@@ -19,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * @author Javier Snaider
  *
  */
-public interface SparseDistributedMemory extends Saveable {
+public interface SparseDistributedMemory{
 
 	/**
 	 * Stores word in the given address in this sparse distributed memory.

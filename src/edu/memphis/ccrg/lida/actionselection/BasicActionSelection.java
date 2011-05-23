@@ -15,8 +15,6 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -121,33 +119,6 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			return Collections.unmodifiableCollection(behaviors);
 		}
 		return null;
-	}
-
-	@Override
-	public Object getState() {
-		Object[] state = new Object[4];
-		state[0] = this.behaviors;
-		state[1] = null;
-		state[2] = null;
-		state[3] = null;
-		return state;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public boolean setState(Object content) {
-		if (content instanceof Object[]) {
-			Object[] state = (Object[]) content;
-			if (state.length == 4) {
-				try {
-					this.behaviors = (Queue<Behavior>) state[0];
-					return true;
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		return false;
 	}
 
 	@Override

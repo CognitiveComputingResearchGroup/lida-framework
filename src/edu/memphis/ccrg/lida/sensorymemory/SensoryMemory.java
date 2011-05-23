@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.sensorymemory;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 /**
  * This is the interface to be implemented by sensory memory modules.
@@ -19,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * 
  * @author Ryan J. McCall
  */
-public interface SensoryMemory extends FrameworkModule, Saveable {
+public interface SensoryMemory extends FrameworkModule{
 
 	/**
 	 * Adds a listener to this memory. This listener constantly checks for

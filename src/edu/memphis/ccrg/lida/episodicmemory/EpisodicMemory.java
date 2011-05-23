@@ -9,7 +9,6 @@
 package edu.memphis.ccrg.lida.episodicmemory;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.dao.Saveable;
 
 
 /**
@@ -22,6 +21,6 @@ import edu.memphis.ccrg.lida.framework.dao.Saveable;
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
  * @author Rodrigo Silva L.
  */
-public interface EpisodicMemory extends FrameworkModule, Saveable {
+public interface EpisodicMemory extends FrameworkModule{
     
 }

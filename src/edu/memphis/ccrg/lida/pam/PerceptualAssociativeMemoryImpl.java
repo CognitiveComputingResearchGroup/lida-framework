@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.PreafferenceListener;
+import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -693,15 +693,5 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		}
 		return null;
 	}
-
-	@Override
-	public Object getState() {
-		return null;
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		return false;
-	}
-
+	
 }

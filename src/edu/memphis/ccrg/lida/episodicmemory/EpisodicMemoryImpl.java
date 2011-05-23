@@ -185,16 +185,6 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public Object getState() {
-		return sdm.getState();
-	}
-
-	@Override
-	public boolean setState(Object content) {
-		return sdm.setState(content);
-	}
-
-	@Override
 	public void decayModule(long ticks) {
 		// TODO next version
 	}
