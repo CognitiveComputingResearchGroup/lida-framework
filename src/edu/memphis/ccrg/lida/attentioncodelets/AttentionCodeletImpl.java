@@ -16,7 +16,6 @@ import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -80,8 +79,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 		if (bufferContainsSoughtContent(currentSituationalModel)) {
 			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
 			if (csmContent.getLinkableCount() > 0) {
-				globalWorkspace.addCoalition(new CoalitionImpl(
-						(BroadcastContent) csmContent, getActivation(), this));
+				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, 
+											getActivation(), this));
 				logger.log(Level.FINER, this + " adds new coalition",
 						TaskManager.getCurrentTick());
 			}

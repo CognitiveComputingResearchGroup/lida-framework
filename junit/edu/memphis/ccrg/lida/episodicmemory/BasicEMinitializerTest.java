@@ -18,10 +18,10 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 public class BasicEMinitializerTest {
 
-	private BasicEMinitializer initializer;
+	private BasicEpisodicMemoryInitializer initializer;
 	@Before
 	public void setUp() throws Exception {
-		initializer = new BasicEMinitializer();
+		initializer = new BasicEpisodicMemoryInitializer();
 	}
 
 	@Test

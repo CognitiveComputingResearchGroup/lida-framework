@@ -30,20 +30,20 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition{
 	 * Constructs a coalition with content and sets activation to be equal to 
 	 * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
 	 * times the activation of the creating {@link AttentionCodelet}
-	 * @param bc conscious content
+	 * @param content conscious content
 	 * @param activation activation of creating attention codelet
 	 * @param codelet The {@link AttentionCodelet} that created this Coalition
 	 * @see AttentionCodeletImpl
 	 */
-	public CoalitionImpl(BroadcastContent bc, double activation,AttentionCodelet codelet){
-		content = bc;
+	public CoalitionImpl(NodeStructure content, double activation,AttentionCodelet codelet){
+		this.content = (BroadcastContent) content;
 		attentionCodeletActivation = activation;
 		attentionCodelet = codelet;
 		updateActivation();
 	}
 
 	/*
-	 * 
+	 * calculates coalition's activation based on BroadcastContent attention codelet activation
 	 */
 	private void updateActivation() {
 		double sum = 0.0;

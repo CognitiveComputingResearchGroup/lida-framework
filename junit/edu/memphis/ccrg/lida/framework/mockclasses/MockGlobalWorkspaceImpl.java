@@ -1,5 +1,8 @@
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -9,12 +12,14 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 public class MockGlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWorkspace {
 	
+	public List<BroadcastTrigger> triggers = new ArrayList<BroadcastTrigger>();
 	@Override
 	public void addBroadcastListener(BroadcastListener bl) {
 	}
 
 	@Override
 	public void addBroadcastTrigger(BroadcastTrigger t) {	
+		triggers.add(t);
 	}
 	
 	public Coalition coalition;

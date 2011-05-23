@@ -1,13 +1,17 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
@@ -17,17 +21,14 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 public class NoCoalitionArrivingTriggerTest {
 	
-	TaskManager tm;
-	NoCoalitionArrivingTrigger trigger;
-	Map<String, Object> parameters;
-	GlobalWorkspace gw;
-	MockTaskSpawner ts;
+	private NoCoalitionArrivingTrigger trigger;
+	private Map<String, Object> parameters;
+	private GlobalWorkspace gw;
+	private MockTaskSpawner ts;
 
 	@Before
 	public void setUp() throws Exception {
 		ts = new MockTaskSpawner();
-		
-		tm = new TaskManager(200,50);		
 		trigger = new NoCoalitionArrivingTrigger();
 		gw = new MockGlobalWorkspaceImpl();		
 		parameters = new HashMap<String, Object>();	
@@ -35,16 +36,19 @@ public class NoCoalitionArrivingTriggerTest {
 
 	@Test
 	public void testCheckForTriggerCondition() {
-		System.out.println("Testing CheckForTriggerCondition method. See console...");
-		
 		gw.setAssistingTaskSpawner(ts);	
-		
-		trigger.setTaskManager(tm);		
 		parameters.put("name", "StartTask");	
 		parameters.put("delay", 20);	
 		trigger.init(parameters, gw);
 		
+		assertEquals(0, ts.tasks.size());
+		trigger.start();
+		
+		FrameworkTask t = ts.tasks.get(0);
+		assertEquals(1, ts.tasks.size());
 		trigger.checkForTriggerCondition(null);
+		assertEquals(1, ts.tasks.size());
+		assertNotSame(t, ts.tasks.get(0));
 	}
 
 }

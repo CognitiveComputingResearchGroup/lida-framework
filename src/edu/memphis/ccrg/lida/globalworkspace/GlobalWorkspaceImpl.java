@@ -32,10 +32,11 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /**
  * This class implements GlobalWorkspace and maintains the collection of
- * {@link Coalition}s. It supports {@link BroadcastTrigger}s that are in charge of triggering
- *  the new broadcast. Triggers should implement {@link BroadcastTrigger} interface. This class maintains
- * a list of {@link BroadcastListener}s. These are the modules that need to
- * receive broadcast content.
+ * {@link Coalition}s. It supports {@link BroadcastTrigger}s that are in charge
+ * of triggering the new broadcast. Triggers should implement
+ * {@link BroadcastTrigger} interface. This class maintains a list of
+ * {@link BroadcastListener}s. These are the modules that need to receive
+ * broadcast content.
  * 
  * @author Javier Snaider
  * 
@@ -46,7 +47,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
 	private static final double LOWER_ACTIVATION_BOUND = 0.0;
-	
+
 	private double winnerCoalActivation;
 	private BroadcastTrigger lastBroadcastTrigger;
 
@@ -62,7 +63,8 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see lida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
+	 * @see
+	 * lida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
 	 * ccrg. globalworkspace.BroadcastListener)
 	 */
 	@Override
@@ -92,8 +94,8 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	@Override
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
-			logger.log(Level.FINE, "New Coalition added",
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINE, "New Coalition added", TaskManager
+					.getCurrentTick());
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -102,49 +104,48 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	}
 
 	private void newCoalitionEvent() {
-		for (BroadcastTrigger trigger : broadcastTriggers)
+		for (BroadcastTrigger trigger : broadcastTriggers) {
 			trigger.checkForTriggerCondition(coalitions);
+		}
 	}
-	
+
 	@Override
 	public void triggerBroadcast(BroadcastTrigger trigger) {
 		if (broadcastStarted.compareAndSet(false, true)) {
-			
+
 			boolean broadcastSent;
 			broadcastSent = sendBroadcast();
-			
-			if (broadcastSent == true){
-				lastBroadcastTrigger = trigger;				
+
+			if (broadcastSent == true) {
+				lastBroadcastTrigger = trigger;
 			}
 		}
 	}
 
 	/*
 	 * This method realizes the broadcast. First it chooses the winner
-	 * coalition. Then, all registered {@link BroadcastListener}s receive a reference
-	 * to the coalition content.
-	 * The winning Coalition is removed from the pool.
-	 * Broadcast recipients must return as soon as possible in order to not 
-	 * delay the rest of the broadcasting. A good implementation should copy the broadcast 
-	 * content and create a task to process it.
-	 * This method is supposed to be called from {@link BroadcastTrigger}s. 
-	 * The reset() method is invoked on each trigger at the end of this method.
-	 * 
-	 */	
+	 * coalition. Then, all registered {@link BroadcastListener}s receive a
+	 * reference to the coalition content. The winning Coalition is removed from
+	 * the pool. Broadcast recipients must return as soon as possible in order
+	 * to not delay the rest of the broadcasting. A good implementation should
+	 * copy the broadcast content and create a task to process it. This method
+	 * is supposed to be called from {@link BroadcastTrigger}s. The reset()
+	 * method is invoked on each trigger at the end of this method.
+	 */
 	private boolean sendBroadcast() {
-		logger.log(Level.FINE, "Triggering broadcast",
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Triggering broadcast", TaskManager
+				.getCurrentTick());
 		boolean broadcastWasSent = false;
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
 			winnerCoalActivation = coal.getActivation();
 			coalitions.remove(coal);
 			NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
-			//TODO Create FrameworkTask for parallel processing 
+			// TODO Create FrameworkTask for parallel processing
 			for (BroadcastListener bl : broadcastListeners) {
 				bl.receiveBroadcast((BroadcastContent) copy);
-			}		
-			
+			}
+
 			logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
 					TaskManager.getCurrentTick());
 			broadcastWasSent = true;
@@ -178,30 +179,21 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void sendEventToGui(FrameworkGuiEvent evt) {
-		for (FrameworkGuiEventListener fg : guis)
+		for (FrameworkGuiEventListener fg : guis) {
 			fg.receiveFrameworkGuiEvent(evt);
-	}
-
-	private void decay(long ticks) {
-		for (Coalition c : coalitions) {
-			c.decay(ticks);
-			if (c.getActivation() <= LOWER_ACTIVATION_BOUND) {
-				coalitions.remove(c);
-				logger.log(Level.FINE, "Coallition removed",
-						TaskManager.getCurrentTick());
-			}
 		}
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		if(params.length>0){
-			for(int i=0;i<params.length;i++){
-				if(params[i]=="winnerCoalActivation")
-					return winnerCoalActivation;
-				if(params[i]=="lastBroadcastTrigger")
-					return lastBroadcastTrigger;
-			}			
+		if (params.length > 0) {
+			if (params[0].equals("winnerCoalActivation")) {
+				return winnerCoalActivation;
+			} else if (params[0].equals("lastBroadcastTrigger")) {
+				return lastBroadcastTrigger;
+			} else if (params[0].equals("coalitions")) {
+				return Collections.unmodifiableCollection(coalitions);
+			}
 		}
 		return Collections.unmodifiableCollection(coalitions);
 	}
@@ -209,13 +201,28 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		decay(ticks);
-		logger.log(Level.FINEST, "Coallitions Decayed", TaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Coallitions Decayed", TaskManager
+				.getCurrentTick());
+	}
+	private void decay(long ticks) {
+		for (Coalition c : coalitions) {
+			c.decay(ticks);
+			if (c.getActivation() <= LOWER_ACTIVATION_BOUND) {
+				coalitions.remove(c);
+				logger.log(Level.FINE, "Coallition removed", TaskManager
+						.getCurrentTick());
+			}
+		}
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof BroadcastListener) {
 			addBroadcastListener((BroadcastListener) listener);
+		} else {
+			logger.log(Level.WARNING,
+					"Can only add listeners of type BroadcastListener. "
+							+ "Tried to add " + listener);
 		}
 	}
 

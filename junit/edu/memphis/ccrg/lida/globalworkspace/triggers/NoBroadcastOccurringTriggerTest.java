@@ -1,6 +1,8 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
@@ -19,65 +21,65 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 public class NoBroadcastOccurringTriggerTest {
 	
-	TaskManager tm;
-	NoBroadcastOccurringTrigger trigger;
-	Map<String, Object> parameters;
-	GlobalWorkspace gw;
-	MockTaskSpawner ts;
+	private NoBroadcastOccurringTrigger trigger;
+	private Map<String, Object> parameters;
+	private GlobalWorkspace gw;
+	private MockTaskSpawner ts;
 
 
 	@Before
 	public void setUp() throws Exception {
 		ts = new MockTaskSpawner();
-		
-		tm = new TaskManager(200,50);		
+			
 		trigger = new NoBroadcastOccurringTrigger();
 		gw = new MockGlobalWorkspaceImpl();		
 		parameters = new HashMap<String, Object>();	
 	}	
+	
+	@Test
+	public void testInit(){
+		gw.setAssistingTaskSpawner(ts);	
+		parameters.put("name", "whatever");
+		parameters.put("delay", 567);
+		trigger.init(parameters, gw);
+		
+		trigger.start();
+		
+		TriggerTask t = (TriggerTask) ts.tasks.get(0);
+		assertEquals("TriggerTask " + "whatever" + " " + t.getTaskId(), t.toString());
+		assertEquals(1, ts.tasks.size());	
+		assertEquals(567, t.getTicksPerStep());
+	}
 
 	@Test
-	public void testStart() {
-		System.out.println("Testing start method. See console...");
-				
+	public void testStart() {				
 		gw.setAssistingTaskSpawner(ts);	
-		
-		trigger.setTaskManager(tm);		
 		parameters.put("name", "StartTask");	
 		parameters.put("delay", 20);	
-		trigger.init(parameters, gw);		
+		trigger.init(parameters, gw);
 		
-		trigger.start();		
+		assertEquals(0, ts.tasks.size());
+		trigger.start();
+		
+		TriggerTask t = (TriggerTask) ts.tasks.get(0);
+		assertEquals("TriggerTask " + "StartTask" + " " + t.getTaskId(), t.toString());
+		assertEquals(1, ts.tasks.size());	
 	}
 	
 	@Test
 	public void testReset() {
-		
-		System.out.println("Testing reset() method. See console...");
-		
 		gw.setAssistingTaskSpawner(ts);	
-		
-		trigger.setTaskManager(tm);		
-		parameters.put("name", "ResetTask");	
-		parameters.put("delay", 25);	
+		parameters.put("name", "StartTask");	
+		parameters.put("delay", 20);	
 		trigger.init(parameters, gw);
+		
+		assertEquals(0, ts.tasks.size());
 		trigger.start();
-				
-		System.out.println("trigger is being reset");
+		
+		FrameworkTask t = ts.tasks.get(0);
+		assertEquals(1, ts.tasks.size());
 		trigger.reset();
-				
+		assertEquals(1, ts.tasks.size());
+		assertNotSame(t.getTaskId(), ts.tasks.get(0));				
 	}
-	
-	@Test
-	public void testGetTaskManager() {
-		trigger.setTaskManager(tm);		
-		assertEquals("Problem with GetTaskManager", tm, trigger.getTaskManager());
-	}
-
-	@Test
-	public void testSetTaskManager() {
-		trigger.setTaskManager(tm);		
-		assertEquals("Problem with GetTaskManager", tm, trigger.getTaskManager());
-	}
-
 }

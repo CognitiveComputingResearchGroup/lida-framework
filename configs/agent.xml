@@ -39,14 +39,14 @@
 			<param name="tem.addressLength" type="int">1000</param>			
 			<param name="tem.wordLength" type="int">1000</param>			
 			<param name="tem.activationRadius" type="int">451</param>			
-			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.episodicmemory.BasicEMinitializer</initializerclass>		</module>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.episodicmemory.BasicEpisodicMemoryInitializer</initializerclass>		</module>
 		<module name="DeclarativeMemory">
 			<class>edu.memphis.ccrg.lida.episodicmemory.EpisodicMemoryImpl</class>
 			<associatedmodule>PerceptualAssociativeMemory</associatedmodule>			<param name="tem.numOfHardLoc" type="int">10000</param>			
 			<param name="tem.addressLength" type="int">1000</param>			
 			<param name="tem.wordLength" type="int">1000</param>			
 			<param name="tem.activationRadius" type="int">451</param>						
-			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.episodicmemory.BasicEMinitializer</initializerclass>		</module>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.episodicmemory.BasicEpisodicMemoryInitializer</initializerclass>		</module>
 		<module name="Workspace">
 			<class>edu.memphis.ccrg.lida.workspace.WorkspaceImpl</class>
 			<submodules>

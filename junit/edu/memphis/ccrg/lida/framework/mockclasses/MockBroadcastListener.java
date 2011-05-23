@@ -5,10 +5,10 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 public class MockBroadcastListener implements BroadcastListener {
 	
+	public BroadcastContent content;
 	@Override
 	public void receiveBroadcast(BroadcastContent bc){
-		System.out.println ("Mock Broadcast Listener received broadcast: "+ bc );
-		
+		content = bc;
 	}
 
 	@Override

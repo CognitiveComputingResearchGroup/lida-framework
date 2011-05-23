@@ -1,24 +1,21 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.Agent;
-import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
-import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
-import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.AggregateCoalitionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.IndividualCoaltionActivationTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastOccurringTrigger;
+import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger;
 
 /**
  * This is a JUnit class which can be used to test methods of the GlobalWorkspaceInitalizer class
@@ -26,71 +23,41 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  */
 public class GlobalWorkspaceInitalizerTest {
 
-	Map<String, Object> params;
-	GlobalWorkspace globalWksp;
-	Agent lida;
-	GlobalWorkspaceInitalizer initializer = new GlobalWorkspaceInitalizer();
-	Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
-	Coalition coalition, coalition2, coalition3;
-	NodeStructureImpl ns = new NodeStructureImpl();
-	NodeStructureImpl ns2 = new NodeStructureImpl();
-	NodeImpl n1, n2, n3;
-	LinkImpl l;
-	AttentionCodeletModule attnModule = new AttentionCodeletModule();
-	MockTaskSpawner ts;
-	MockBroadcastListener listener;
-	AttentionCodelet codelet = new BasicAttentionCodelet();
+	private Map<String, Object> params;
+	private MockGlobalWorkspaceImpl globalWksp;
+	private Agent lida;
+	private GlobalWorkspaceInitalizer initializer = new GlobalWorkspaceInitalizer();
 
 	@Before
 	public void setUp() throws Exception {
-		new PerceptualAssociativeMemoryImpl();
 		params = new HashMap<String, Object>();
-		globalWksp = new GlobalWorkspaceImpl();
-		params.put("globalWorkspace.delayNoBroadcast", 1000);
-		params.put("globalWorkspace.delayNoNewCoalition", 500);
-		params.put("globalWorkspace.aggregateActivationThreshold", 0.9);
-		params.put("globalWorkspace.individualActivationThreshold", 0.3);
-
-		ts = new MockTaskSpawner();
-		listener = new MockBroadcastListener();
-
-		n1 = new NodeImpl();
-		n2 = new NodeImpl();
-		n3 = new NodeImpl();
-		n1.setId(1);
-		n2.setId(2);
-		n3.setId(3);
-		l = new LinkImpl(n1, n2, PerceptualAssociativeMemoryImpl.NONE);
-
-		ns.addDefaultNode(n1);
-		ns.addDefaultNode(n2);
-		ns.addDefaultNode(n3);
-		ns.addDefaultLink(l);
-
-		ns2.addDefaultNode(n1);
-		ns2.addDefaultNode(n2);
-		ns2.addDefaultLink(l);
-
-		coalition = new CoalitionImpl(ns, 0.8,codelet);
-		coalition2 = new CoalitionImpl(ns2, 0.9,codelet);
-		coalition3 = new CoalitionImpl(ns, 0.1,codelet);
+		globalWksp = new MockGlobalWorkspaceImpl();
 	}
 
 	@Test
 	public void testInitModule() {
-		
-		System.out.println("Testing InitModule() method. See console...");
-		
-		globalWksp.setAssociatedModule(attnModule, ModuleUsage.TO_WRITE_TO);
-		globalWksp.addCoalition(coalition);
-		globalWksp.addCoalition(coalition2);
-		globalWksp.addCoalition(coalition3);
-		coalition.setActivation(0.2);
-		coalition2.setActivation(0.3);
-		globalWksp.setAssistingTaskSpawner(ts);
-		globalWksp.addBroadcastListener(listener);
+		params.put("globalWorkspace.delayNoBroadcast", 1111);
+		params.put("globalWorkspace.aggregateActivationThreshold", 0.9999);
+		params.put("globalWorkspace.delayNoNewCoalition", 555);
+		params.put("globalWorkspace.individualActivationThreshold", 0.3333);
+
 		initializer.initModule(globalWksp, lida, params);
-		globalWksp.triggerBroadcast(null);
+		
+		BroadcastTrigger trigger = globalWksp.triggers.get(0);
+		assertTrue(trigger instanceof NoBroadcastOccurringTrigger);
+		assertEquals(1111, ((NoBroadcastOccurringTrigger) trigger).getDelay());
+		
+		trigger = globalWksp.triggers.get(1);
+		assertTrue(trigger instanceof AggregateCoalitionActivationTrigger);
+		assertEquals(0.9999, ((AggregateCoalitionActivationTrigger) trigger).getThreshold(), 0.00001);
+		
+		trigger = globalWksp.triggers.get(2);
+		assertTrue(trigger instanceof NoCoalitionArrivingTrigger);
+		assertEquals(555, ((NoCoalitionArrivingTrigger) trigger).getDelay());
+		
+		trigger = globalWksp.triggers.get(3);
+		assertTrue(trigger instanceof IndividualCoaltionActivationTrigger);
+		assertEquals(0.3333, ((IndividualCoaltionActivationTrigger) trigger).getThreshold(), 0.00001);
 	}
 
 }

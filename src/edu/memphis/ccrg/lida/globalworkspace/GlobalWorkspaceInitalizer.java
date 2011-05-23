@@ -49,41 +49,41 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 		GlobalWorkspace globalWksp = (GlobalWorkspace) module;
 		Integer delayNoBroadcast = (Integer) params
 				.get("globalWorkspace.delayNoBroadcast");
-		if (delayNoBroadcast == null) {
+		if (delayNoBroadcast == null || delayNoBroadcast <= 0) {
 			delayNoBroadcast = DEFAULT_DELAY_NO_BROADCAST;
 			logger.log(Level.WARNING,
-					"Delay no broadcast could not be read, using default",
+					"Invalid delay no broadcast parameter, using default",
 					TaskManager.getCurrentTick());
 		}
 
 		Integer delayNoNewCoalition = (Integer) params
 				.get("globalWorkspace.delayNoNewCoalition");
-		if (delayNoNewCoalition == null) {
+		if (delayNoNewCoalition == null || delayNoNewCoalition <= 0) {
 			delayNoNewCoalition = DEFAULT_DELAY_NO_NEW_COALITION;
 			logger.log(Level.WARNING,
-					"Delay no new coalition could not be read, using default",
+					"Invalid delay no new coalition parameter, using default",
 					TaskManager.getCurrentTick());
 		}
 
 		Double aggregateActivationThreshold = (Double) params
 				.get("globalWorkspace.aggregateActivationThreshold");
-		if (aggregateActivationThreshold == null) {
+		if (aggregateActivationThreshold == null || aggregateActivationThreshold <= 0.0) {
 			aggregateActivationThreshold = DEFAULT_AGGREGATE_ACT_THRESHOLD;
 			logger
 					.log(
 							Level.WARNING,
-							"aggregate activation threshold could not be read, using default",
+							"Invalid aggregate activation threshold parameter, using default",
 							TaskManager.getCurrentTick());
 		}
 
 		Double individualActivationThreshold = (Double) params
 				.get("globalWorkspace.individualActivationThreshold");
-		if (individualActivationThreshold == null) {
+		if (individualActivationThreshold == null || individualActivationThreshold <= 0.0) {
 			individualActivationThreshold = DEFAULT_INDIVIDUAL_ACT_THRESHOLD;
 			logger
 					.log(
 							Level.WARNING,
-							"individual activation threshold could not be read, using default",
+							"Invalid individual activation threshold parameter, using default",
 							TaskManager.getCurrentTick());
 		}
 

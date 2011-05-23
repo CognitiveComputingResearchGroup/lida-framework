@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  */
 public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 
+	private static final double DEFAULT_THRESHOLD = 0.5;
 	private Logger logger = Logger
 			.getLogger(AggregateCoalitionActivationTrigger.class
 					.getCanonicalName());
@@ -62,12 +63,22 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		Object o = parameters.get("threshold");
 		if ((o != null) && (o instanceof Double)) {
 			threshold = (Double) o;
+			if(threshold <= 0.0){
+				logger.log(Level.WARNING, "Invalid threshold parameter, using default.", TaskManager.getCurrentTick());
+				threshold = DEFAULT_THRESHOLD;
+			}
+		}else{
+			threshold = DEFAULT_THRESHOLD;
+			logger.log(Level.WARNING, "Failed to set threshold parameter, using default.", TaskManager.getCurrentTick());
 		}
 	}
 
 	@Override
 	public void start() {
 		// not applicable
+	}
+	public double getThreshold(){
+		return threshold;
 	}
 
 }

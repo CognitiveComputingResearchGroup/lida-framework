@@ -24,7 +24,6 @@ public class NodeStructureConcurrencyTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-
 		factory = ElementFactory.getInstance();
 		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
 		Properties prop = ConfigUtils

@@ -24,16 +24,10 @@ public class MockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
 	public void addTask(FrameworkTask task) {
 		tasks.add(task);
 		task.setControllingTaskSpawner(this);
-//		try {
-//			task.call();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	@Override
 	public boolean cancelTask(FrameworkTask task) {
-		System.out.println(task+" removed! ");
 		return tasks.remove(task);
 	}
 
