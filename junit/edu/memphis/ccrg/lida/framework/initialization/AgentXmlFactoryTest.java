@@ -44,13 +44,11 @@ import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
 
 public class AgentXmlFactoryTest {
 
-	private Document dom;
 	private AgentXmlFactory factory;
 
 	@Before
 	public void setUp() throws Exception {
 		factory = new AgentXmlFactory();
-		dom = null;
 	}
 
 	@After
@@ -62,17 +60,7 @@ public class AgentXmlFactoryTest {
 	 * @return
 	 */
 	private Element parseDomElement(String xml) {
-		// get the factory
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		try {
-			// Using factory get an instance of document builder
-			DocumentBuilder db = dbf.newDocumentBuilder();
-
-			// parse using builder to get DOM representation of the XML file
-			dom = db.parse(new ByteArrayInputStream(xml.getBytes()));
-		} catch (Exception e) {
-			assertTrue(false);
-		}
+		Document dom = XmlUtils.parseXmlString(xml);
 		Element docEle = dom.getDocumentElement();
 		return docEle;
 	}

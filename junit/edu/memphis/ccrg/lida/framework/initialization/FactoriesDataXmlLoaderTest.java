@@ -264,30 +264,8 @@ public class FactoriesDataXmlLoaderTest {
 	}
 
 	private Element parseDomElement(String xml) {
-		Document dom = parseDocument(xml);
+		Document dom = XmlUtils.parseXmlString(xml);
 		Element docEle = dom.getDocumentElement();
 		return docEle;
 	}
-
-	/**
-	 * @param xml
-	 * @return
-	 */
-	private Document parseDocument(String xml) {
-		Document dom = null;
-		// get the factory
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		try {
-			// Using factory get an instance of document builder
-			DocumentBuilder db = dbf.newDocumentBuilder();
-
-			// parse using builder to get DOM representation of the XML file
-			dom = db.parse(new ByteArrayInputStream(xml.getBytes()));
-		} catch (Exception e) {
-			e.printStackTrace();
-			assertTrue(false);
-		}
-		return dom;
-	}
-
 }

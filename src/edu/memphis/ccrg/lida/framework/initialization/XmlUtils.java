@@ -10,6 +10,9 @@
  */
 package edu.memphis.ccrg.lida.framework.initialization;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -114,7 +117,12 @@ public class XmlUtils {
 		List<Element> nl = getChildren(ele, tagName);
 		if (nl != null && nl.size()!=0) {
 			Element el = (Element) nl.get(0);
-			textVal = getValue(el).trim();
+			textVal = getValue(el);
+			if (textVal!=null){
+				textVal = textVal.trim();
+			}else{
+				textVal="";
+			}
 		}
 
 		return textVal;
@@ -312,7 +320,8 @@ public class XmlUtils {
 	 * Verifies and parses specified xml file into a {@link Document}.
 	 * @param fileName the name of the file to parse
 	 * @param schemaFilePath path to the schema file
-	 * @return the DOM {@link Document} of the file fileName
+	 * @return the DOM {@link Document} of the file fileName or null if
+	 * the xml file is not valid
 	 */
 	public static Document parseXmlFile(String fileName, String schemaFilePath) {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -327,6 +336,27 @@ public class XmlUtils {
 				logger.log(Level.WARNING, "Xml file invalid, file: " +fileName+" was not parsed");
 			}
 		}catch (Exception e) {
+			logger.log(Level.WARNING, e.getMessage(),e);
+		}
+		return dom;
+	}
+	
+	/**
+	 * Parses a String containing xml data into a dom {@link Document}
+	 * @param xml the string with xml data
+	 * @return a dom {@link Document}
+	 */
+	public static Document parseXmlString(String xml) {
+		Document dom = null;
+		// get the factory
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			// Using factory get an instance of document builder
+			DocumentBuilder db = dbf.newDocumentBuilder();
+
+			// parse using builder to get DOM representation of the XML file
+			dom = db.parse(new ByteArrayInputStream(xml.getBytes()));
+		} catch (Exception e) {
 			logger.log(Level.WARNING, e.getMessage(),e);
 		}
 		return dom;
