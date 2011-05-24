@@ -52,7 +52,6 @@ public class LinkImplTest{
 	 */
 	@Before
 	public void setUp() throws Exception {
-		new PerceptualAssociativeMemoryImpl();
 		node1 = factory.getNode();
 		node2 = factory.getNode();
 		node3 = factory.getNode();

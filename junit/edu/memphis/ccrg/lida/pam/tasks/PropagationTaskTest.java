@@ -52,7 +52,6 @@ public class PropagationTaskTest{
 	private MockTaskSpawner taskSpawner;
 	@Before
 	public void setUp() throws Exception {
-		new PerceptualAssociativeMemoryImpl();
 		source =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
 		sink   =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
 		link  = (PamLink) factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.NONE);
