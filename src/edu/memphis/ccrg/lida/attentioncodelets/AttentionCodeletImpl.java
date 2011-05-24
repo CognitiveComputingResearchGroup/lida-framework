@@ -1,6 +1,5 @@
 /*******************************************************************************
-
- * Copyright (c) 2009, 2010 The University of Memphis.  All rights reserved. 
+ * Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
  * This program and the accompanying materials are made available 
  * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
  * which accompanies this distribution, and is available at
