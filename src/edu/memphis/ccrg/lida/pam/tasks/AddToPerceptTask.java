@@ -9,9 +9,9 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import java.util.Collection;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
@@ -39,7 +39,7 @@ public class AddToPerceptTask extends FrameworkTaskImpl {
 	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
 		super();
 		this.pam = pam;
-		nodeStructure = ElementFactory.getInstance().getPamNodeStructure();
+		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 		nodeStructure.addDefaultNode(pamNode);
 	}
 	
@@ -51,7 +51,7 @@ public class AddToPerceptTask extends FrameworkTaskImpl {
 	public AddToPerceptTask(Collection<Node> nodes, PerceptualAssociativeMemory pam){
 		super();
 		this.pam = pam;
-		nodeStructure = ElementFactory.getInstance().getPamNodeStructure();
+		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 		nodeStructure.addDefaultNodes(nodes);
 	}
 

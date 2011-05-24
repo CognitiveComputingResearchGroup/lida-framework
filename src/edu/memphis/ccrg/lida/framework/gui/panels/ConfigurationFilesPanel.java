@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *TODO RENAME
  * @author Javier Snaider
  */
 public class ConfigurationFilesPanel extends GuiPanelImpl {

@@ -557,13 +557,6 @@ public class ElementFactoryTest {
 	}
 
 	@Test
-	public void testGetPamNodeStructure() {
-		NodeStructure ns = factory.getPamNodeStructure();
-		assertEquals(ns.getDefaultNodeType(), "PamNodeImpl");
-		assertEquals(ns.getDefaultLinkType(), "PamLinkImpl");
-	}
-
-	@Test
 	public void testGetNodeStructure1() {
 		NodeStructure ns = factory.getNodeStructure("basdf", "asdfl");
 		assertTrue(ns == null);

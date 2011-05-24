@@ -74,7 +74,7 @@ public class PerceptualAssociativeMemoryImplTest {
 	@Before
 	public void setUp() throws Exception {		
 		pam = new PerceptualAssociativeMemoryImpl();
-		nodeStructure = factory.getPamNodeStructure();
+		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 
 		node1 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 1");
 		node2 = (PamNodeImpl) factory.getNode("PamNodeImpl", "Node 2");

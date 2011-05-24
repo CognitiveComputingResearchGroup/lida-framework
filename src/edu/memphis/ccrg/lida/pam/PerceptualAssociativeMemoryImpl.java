@@ -66,7 +66,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	/*
 	 * Contains all of the Node, Links and their connections.
 	 */
-	protected NodeStructure pamNodeStructure;
+	protected PamNodeStructure pamNodeStructure;
 
 	/*
 	 * How PAM calculates the amount of activation to propagate
@@ -103,25 +103,29 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
-	public static LinkCategory NONE;
+	public static LinkCategory NONE = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "None");
 
 	/**
 	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
-	public static LinkCategory LATERAL;
+	public static LinkCategory LATERAL = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+	"Lateral");
 
 	/**
 	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
-	public static LinkCategory MEMBERSHIP;
+	public static LinkCategory MEMBERSHIP=(PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+	"Membership");
 
 	/**
 	 * If using this variable in a non-standard LIDA application (e.g. testing)
 	 * note that it is not initialized until constructor runs.
 	 */
-	public static LinkCategory FEATURE;
+	public static LinkCategory FEATURE = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
+	"Feature");
 
 	/**
 	 * Default constructor.
@@ -129,23 +133,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	public PerceptualAssociativeMemoryImpl() {
 		pamListeners = new ArrayList<PamListener>();
 		propagationStrategy = new UpscalePropagationStrategy();
-		pamNodeStructure = factory.getPamNodeStructure();
+		pamNodeStructure = new PamNodeStructure("PamNodeImpl", "PamLinkImpl");
 
-		PamNode linkCategory = (PamNode) factory.getNode(
-				DEFAULT_NONDECAYING_PAMNODE, "None");
-		NONE = addLinkCategory((LinkCategory) linkCategory);
-
-		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-				"LateralType");
-		LATERAL = addLinkCategory((LinkCategory) linkCategory);
-
-		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-				"Membership");
-		MEMBERSHIP = addLinkCategory((LinkCategory) linkCategory);
-
-		linkCategory = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-				"Feature");
-		FEATURE = addLinkCategory((LinkCategory) linkCategory);
+		addInternalLinkCategory(NONE);
+		addInternalLinkCategory(LATERAL);
+		addInternalLinkCategory(MEMBERSHIP);
+		addInternalLinkCategory(FEATURE);
 	}
 
 	/*
@@ -348,7 +341,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	@Override
 	public void learn(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
-		// TODO learning algorithm
+		//TODO implement learning
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
 			n.getId();
@@ -391,8 +384,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			//TODO not actually a bad thing..
-			logger.log(Level.WARNING, "Cannot find pamnode: " + linkable,
+			logger.log(Level.FINE, "Cannot find pamnode: " + linkable,
 					TaskManager.getCurrentTick());
 		}
 	}
@@ -692,7 +684,25 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		}
 		return null;
 	}
-
+	private LinkCategory addInternalLinkCategory(LinkCategory cat) {
+		if (cat instanceof PamNode) {
+			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat,
+					false);
+			linkCategories.put(cat.getId(), cat);
+			return cat;
+		}
+		return null;
+	}
+	
+	private static class PamNodeStructure extends NodeStructureImpl{
+			public PamNodeStructure(String nodeType, String linkType){
+				super(nodeType, linkType);
+			}
+			@Override
+			public Node addNode(Node n, boolean copy){
+				return super.addNode(n,copy);
+			}
+	}
 	@Override
 	public Object getState() {
 		return null;

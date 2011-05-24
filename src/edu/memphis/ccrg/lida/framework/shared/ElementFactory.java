@@ -20,12 +20,13 @@ import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 
 /**
@@ -176,6 +177,31 @@ public class ElementFactory {
 				DefaultExciteStrategy.class.getCanonicalName(),
 				defaultExciteType, new HashMap<String, Object>(),
 				exciteStrategyType, true));
+		
+		String strategyName="noDecay";
+		addDecayStrategy(strategyName, new StrategyDef(
+				NoDecayStrategy.class.getCanonicalName(), strategyName,
+				new HashMap<String, Object>(), decayStrategyType, true));
+		
+		strategyName="noExcite";
+		addExciteStrategy(strategyName, new StrategyDef(
+				NoExciteStrategy.class.getCanonicalName(), strategyName,
+				new HashMap<String, Object>(), exciteStrategyType, true));
+
+		Map<String, String> defaultStrategies = new HashMap<String, String>();
+		defaultStrategies.put("decay", "defaultDecay");
+		defaultStrategies.put("excite", "defaultExcite");
+		
+		Map<String, Object> params= new HashMap<String, Object>();
+		params.put("baseLevelDecayStrategy", "noDecay");
+		params.put("baseLevelExciteStrategy", "noExcite");
+		params.put("baseLevelRemovalThreshold", -1.0);
+		params.put("baseLevelActivation", 0.0);
+		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
+		addNodeType(newNodeDef);
+		
+		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
+		addLinkType(newLinkDef);
 	}
 
 	/**
@@ -1013,20 +1039,6 @@ public class ElementFactory {
 	 */
 	public NodeStructure getNodeStructure() {
 		return getNodeStructure(defaultNodeType, defaultLinkType);
-	}
-
-	/**
-	 * Returns a new {@link PerceptualAssociativeMemory} NodeStructure
-	 * @return a new NodeStructure with {@link Node} type {@link PamNodeImpl} and {@link Link} type {@link PamLinkImpl}
-	 */
-	public NodeStructure getPamNodeStructure() {
-		if(containsNodeType(PamNodeImpl.class.getSimpleName()) &&
-				containsLinkType(PamLinkImpl.class.getSimpleName())){		
-			return getNodeStructure(PamNodeImpl.class.getSimpleName(),
-					PamLinkImpl.class.getSimpleName());
-		}
-		logger.log(Level.WARNING, "factory doesn't contain expected pam node and link types", TaskManager.getCurrentTick());
-		return null;
 	}
 
 	/**

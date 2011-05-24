@@ -26,6 +26,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -77,7 +78,7 @@ public class AddToPerceptTaskTest{
 	@Test
 	public void test2(){
 		//Setup
-		NodeStructure expectedNS = factory.getPamNodeStructure();
+		NodeStructure expectedNS = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 		expectedNS.addDefaultNode(nodeA);
 		expectedNS.addDefaultNode(nodeB);
 		Link expectedLink = expectedNS.addDefaultLink(nodeA.getId(), nodeB.getId(), PerceptualAssociativeMemoryImpl.NONE, 1.0, 0.0);
