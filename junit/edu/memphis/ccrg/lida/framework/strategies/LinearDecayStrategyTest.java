@@ -44,6 +44,7 @@ public class LinearDecayStrategyTest{
 		double newActivation = decayStrategy.decay(node1.getActivation(), 1000);	
 		node1.setActivation(newActivation);		
 		
+		
 		assertTrue("Problem with Decay", 0.0== node1.getTotalActivation());
 	}
 
