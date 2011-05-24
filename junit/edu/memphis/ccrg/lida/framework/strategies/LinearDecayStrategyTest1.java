@@ -2,6 +2,9 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,15 +35,26 @@ public class LinearDecayStrategyTest1 {
 		array[2]= 9.0;	
 		
 		double mm = 0.1, currentActivation = 0;
-		mm= (Double) array[0];		
-		currentActivation -= mm * 1000;
+		mm= (Double) array[0];			
+		currentActivation -= mm * 1000;		
 		node1.setActivation(currentActivation);
 		assertTrue("Problem with Decay", 0.0== node1.getTotalActivation() );
+		
 	}
 
 	@Test
 	public void testDecayDoubleLongMapOfStringQextendsObject() {
-		fail("Not yet implemented");
+		Map <String, Double> params= new HashMap <String, Double>();
+		params.put("one",  10.0);
+		params.put("two",  6.0);
+		params.put("three",  15.0);
+		
+		double mm = 0.1, currentActivation = 0;
+		mm = (Double) params.get("one");
+		currentActivation -= mm * 1000;		
+		node1.setActivation(currentActivation);
+		assertTrue("Problem with Decay", 0.0== node1.getTotalActivation() );
+		
 	}
 
 }
