@@ -1,6 +1,9 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
@@ -15,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 
 public class BasicAttentionCodeletTest {
@@ -46,7 +49,7 @@ public class BasicAttentionCodeletTest {
 		soughtContent = new NodeStructureImpl();
 		node1 = factory.getNode();
 		node2 = factory.getNode();
-		link1 = factory.getLink(node1, node2, new PamNodeImpl());
+		link1 = factory.getLink(node1, node2, PerceptualAssociativeMemoryImpl.NONE);
 	}
 	
 	@Test

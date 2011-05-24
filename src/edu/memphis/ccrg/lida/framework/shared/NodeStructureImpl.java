@@ -497,6 +497,35 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return node;
 	}
 
+	/**
+	 * If copy is false, this method adds a already generated {@link Node}
+	 *  to this NodeStructure without copying it.
+	 * If copy is true, {@link NodeStructure#addDefaultNode(Node)} is used.
+	 * If a Node with the same id is already in this NodeStructure, the new
+	 * Node is not added.
+	 * 
+	 * This method is intended for internal use only. 
+	 * @param n the Node to add
+	 * @param copy determines if the node is copied or not.
+	 * @return The Node stored in this NodeStructure
+	 */
+	protected Node addNode(Node n, boolean copy){
+		if(copy){
+			return addDefaultNode(n);
+		}else{
+			Node node = nodes.get(n.getId());
+			if (node == null) {
+					node=n;
+					nodes.put(node.getId(), node);
+					linkableMap.put(node, new HashSet<Link>());
+			} else {
+				logger.log(Level.FINE,
+						"Cannot add node. Node is already in this NodeStructure.", TaskManager
+								.getCurrentTick());				
+			}
+			return node;
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -564,6 +593,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param ns
 	 */
+	// TODO do this for addNode and AddDefaultLink??????
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {
 			logger.log(Level.WARNING, "Asked to merge null", TaskManager

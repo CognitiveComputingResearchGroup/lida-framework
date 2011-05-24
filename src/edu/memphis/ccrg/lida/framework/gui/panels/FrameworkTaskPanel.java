@@ -57,7 +57,7 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
 	public void initPanel(String[] param) {
 		if (param == null || param.length == 0) {
 			logger.log(Level.WARNING,
-					"Error initializing FrameworkFrameworkTaskPanel, not enough parameters.",
+					"Error initializing FrameworkTaskPanel, not enough parameters.",
 					0L);
 			return;
 		}
