@@ -330,7 +330,7 @@ public class XmlUtils {
 	 *            name of the group
 	 * @param childName
 	 *            name of children Elements returned
-	 * @return
+	 * @return List of child {@link Element}s
 	 */
 	public static List<Element> getChildrenInGroup(Element e,
 			String groupName, String childName) {
