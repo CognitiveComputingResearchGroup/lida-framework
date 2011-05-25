@@ -47,6 +47,9 @@ public class StrategyDef {
 		this.flyWeight=flyWeight;
 	}
 
+	/**
+	 * Default constructor
+	 */
 	public StrategyDef() {
 		params = new HashMap<String, Object>();
 	}

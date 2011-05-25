@@ -24,6 +24,9 @@ public abstract class AgentActionImpl implements AgentAction {
 	protected FrameworkModule module;
 	private String label;
 
+	/**
+	 * Default constructor
+	 */
 	public AgentActionImpl() {
 		id = idGenerator++;
 	}
@@ -78,7 +81,7 @@ public abstract class AgentActionImpl implements AgentAction {
 		return id;
 	}
 	
-	public void setId(long id){
-		this.id = id;
-	}
+//	public void setId(long id){
+//		this.id = id;
+//	}
 }

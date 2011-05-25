@@ -52,6 +52,9 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 		return tm;
 	}
 	
+	/**
+	 * @return delay
+	 */
 	public int getDelay(){
 		return delay;
 	}

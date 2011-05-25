@@ -46,6 +46,9 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		this.id = id;
 	}
 	
+	/**
+	 * Default constructor
+	 */
 	public SchemeImpl(){
 		this.id = idGenerator++;
 		context = new NodeStructureImpl();
@@ -53,6 +56,11 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		deletingResult = new NodeStructureImpl();
 	}
 
+	/**
+	 * constructor
+	 * @param label Scheme's name
+	 * @param a scheme's {@link AgentAction}
+	 */
 	public SchemeImpl(String label, AgentAction a) {
 		this();
 		this.label = label;

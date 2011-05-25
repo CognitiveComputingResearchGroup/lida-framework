@@ -161,6 +161,9 @@ public class TaskManager {
 		}
 	}
 
+	/**
+	 * @return tickDuration
+	 */
 	public int getTickDuration() {
 		return tickDuration;
 	}

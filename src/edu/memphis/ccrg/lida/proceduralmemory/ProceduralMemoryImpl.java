@@ -51,6 +51,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap;
 	
+//	TODO support for Node desirability
+//	private Map<Object, Set<Scheme>> resultSchemeMap;
+
 	/**
 	 * Convenient for decaying the schemes
 	 */
@@ -73,6 +76,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
+	/**
+	 * Default constructor
+	 */
 	public ProceduralMemoryImpl() {
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 //		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();

@@ -32,7 +32,11 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	protected TaskSpawner taskSpawner;
 	protected Map<String, ?> parameters;
 
+	/**
+	 * Default constructor
+	 */
 	public FrameworkModuleImpl() {
+		super();
 	}
 	
 	/*

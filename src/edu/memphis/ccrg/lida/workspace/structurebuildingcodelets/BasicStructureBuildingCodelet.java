@@ -29,6 +29,9 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	private static Logger logger = Logger.getLogger(BasicStructureBuildingCodelet.class.getCanonicalName());
 	private Map<String, Object> resultMap;
 	
+	/**
+	 * Default constructor
+	 */
 	public BasicStructureBuildingCodelet(){
 		super();
 		resultMap = new HashMap<String, Object>();

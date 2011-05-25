@@ -34,10 +34,17 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	protected PamNode groundingPamNode;
 	protected Map<String, ?> parameters;
 	
+	/**
+	 * Default constructor
+	 */
 	public NodeImpl(){
 		super();
 	}
 
+	/**
+	 * Copy constructor
+	 * @param n source {@link NodeImpl}
+	 */
 	public NodeImpl(NodeImpl n) {
 		super(n.getActivation(), n.getActivatibleRemovalThreshold(), n.getExciteStrategy(), n.getDecayStrategy());
 		this.id = n.id;
@@ -63,6 +70,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	
 	public void setExtendedId(ExtendedId eid) {
+		if(eid == null){
+			logger.log(Level.WARNING, "Supplied ExtendedId was null. ExtendedId not set.", TaskManager.getCurrentTick());
+			return;
+		}
+		
 		if(eid.isNodeId()){
 			this.extendedId = eid;
 			this.id = eid.getSourceNodeId();

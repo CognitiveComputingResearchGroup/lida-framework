@@ -80,6 +80,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	private static long idCounter = 0;
 	
+	/**
+	 * Default constructor
+	 */
 	public BehaviorImpl(){
 		this.id = idCounter++;
 		context = new NodeStructureImpl();
@@ -87,6 +90,10 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		deletingList = new NodeStructureImpl();
 	}
 	
+	/**
+	 * 
+	 * @param action {@link AgentAction} 
+	 */
 	public BehaviorImpl(AgentAction action){
 		this();
 		this.action = action;
@@ -100,10 +107,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		unsatisfiedContextConditionCount.set(getContextSize());
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
+	@Override
 	public void setAction(AgentAction action) {
 		this.action = action;
 	}

@@ -41,6 +41,9 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	private Map<Number, Object> actionAlgorithmMap = new HashMap<Number, Object>();
 	private Environment environment;
 
+	/**
+	 * Default constructor
+	 */
 	public BasicSensoryMotorMemory() {
 	}
 
@@ -75,6 +78,11 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		}
 	}
 
+	/**
+	 * Adds an Algorithm to this {@link SensoryMotorMemory}
+	 * @param actionId Id of {@link AgentAction} which is implemented by the algorithm
+	 * @param action an algorithm
+	 */
 	public void addActionAlgorithm(Number actionId, Object action) {
 		actionAlgorithmMap.put(actionId, action);
 	}
@@ -85,8 +93,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 			ProcessActionTask t = new ProcessActionTask(action);
 			taskSpawner.addTask(t);
 		}else{
-			logger.log(Level.WARNING, "Receive null Action"
-					, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Received null action", TaskManager.getCurrentTick());
 		}
 	}
 	private class ProcessActionTask extends FrameworkTaskImpl {
@@ -141,5 +148,5 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	public void init() {
 		processActionTicks = (Integer)getParam("smm.ProcessActionTaskSpeed", 5);
 	}
-	
+
 }

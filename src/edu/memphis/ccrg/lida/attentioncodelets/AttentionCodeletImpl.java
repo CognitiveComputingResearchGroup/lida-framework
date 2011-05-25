@@ -41,6 +41,9 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 
 	protected GlobalWorkspace globalWorkspace;
 
+	/**
+	 * Default constructor
+	 */
 	public AttentionCodeletImpl() {
 		super();
 	}

@@ -39,9 +39,6 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 	private static final Double DEFAULT_AGGREGATE_ACT_THRESHOLD = 0.8;
 	private static final Double DEFAULT_INDIVIDUAL_ACT_THRESHOLD = 0.5;
 
-	public GlobalWorkspaceInitalizer() {
-	}
-
 	@Override
 	public void initModule(FullyInitializable module, Agent lida,
 			Map<String, ?> params) {

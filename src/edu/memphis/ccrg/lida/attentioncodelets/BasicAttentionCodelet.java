@@ -25,6 +25,9 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	
 	private static final Logger logger = Logger.getLogger(BasicAttentionCodelet.class.getCanonicalName());
 	
+	/**
+	 * Default constructor
+	 */
 	public BasicAttentionCodelet(){
 		super();
 	}

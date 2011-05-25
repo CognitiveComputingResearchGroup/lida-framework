@@ -77,6 +77,9 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	public void start() {
 		// not applicable
 	}
+	/**
+	 * @return threshold
+	 */
 	public double getThreshold(){
 		return threshold;
 	}

@@ -54,10 +54,18 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	
 	protected Map<String, ?> params;
 	
+	/**
+	 * Default constructor
+	 */
 	public LinkImpl() {
 		super();
 	}
 	
+	/**
+	 * @param source source {@link Node}
+	 * @param sink sink {@link Linkable}
+	 * @param category link's {@link LinkCategory}
+	 */
 	public LinkImpl(Node source, Linkable sink, LinkCategory category) {
 		this.source = source;
 		if(source.equals(sink)){
@@ -71,6 +79,10 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		updateExtendedId();
 	}
 
+	/**
+	 * Copy constructor
+	 * @param l source {@link LinkImpl}
+	 */
 	public LinkImpl(LinkImpl l) {
 		sink = l.getSink();
 		source = l.getSource();

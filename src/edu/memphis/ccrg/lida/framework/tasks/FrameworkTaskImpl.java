@@ -45,9 +45,18 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	public FrameworkTaskImpl() {
 		this(defaultTicksPerStep,null);
 	}
+	/**
+	 * @param ticksPerStep task's run frequency
+	 * 
+	 */
 	public FrameworkTaskImpl(int ticksPerStep) {
 		this(ticksPerStep,null);
 	}
+	
+	/**
+	 * @param ticksPerStep task's run frequency
+	 * @param ts controlling {@link TaskSpawner}
+	 */
 	public FrameworkTaskImpl(int ticksPerStep, TaskSpawner ts) {
 		taskID = nextTaskID++;
 		this.controllingTS=ts;

@@ -51,14 +51,18 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	private double winnerCoalActivation;
 	private BroadcastTrigger lastBroadcastTrigger;
 
-	public GlobalWorkspaceImpl() {
-	}
-
 	private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 	private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private AtomicBoolean broadcastStarted = new AtomicBoolean(false);
+	
+	/**
+	 * Default constructor
+	 */
+	public GlobalWorkspaceImpl() {
+		super();
+	}
 
 	/*
 	 * (non-Javadoc)

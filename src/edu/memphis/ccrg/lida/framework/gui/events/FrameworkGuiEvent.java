@@ -44,6 +44,10 @@ public class FrameworkGuiEvent {
 		this.content = content;
 	}
 
+	/**
+	 * sets module
+	 * @param m module sending the event
+	 */
 	public void setModule(ModuleName m){
 		module = m;
 	}
@@ -54,6 +58,10 @@ public class FrameworkGuiEvent {
 		return module;
 	}
 
+	/**
+	 * sets events message
+	 * @param m event's message
+	 */
 	public void setMessage(String m){
 		message = m;
 	}
@@ -64,6 +72,9 @@ public class FrameworkGuiEvent {
 		return message;
 	}
 
+	/**
+	 * @param o content
+	 */
 	public void setContent(Object o){
 		content = o;
 	}
