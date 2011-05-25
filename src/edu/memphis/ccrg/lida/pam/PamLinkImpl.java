@@ -35,6 +35,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	private Learnable learnable;
 	
 	/**
+	 * Default constructor
 	 * Only {@link ElementFactory} should be creating this Object.
 	 */
 	public PamLinkImpl() {
@@ -43,6 +44,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		learnable = new LearnableImpl();
 		initLearnable();
 	}
+	/**
+	 * Copy constructor
+	 * @param pamLink source {@link PamLinkImpl}
+	 */
 	public PamLinkImpl(PamLinkImpl pamLink) {
 		super(pamLink);
 		groundingPamLink = this;

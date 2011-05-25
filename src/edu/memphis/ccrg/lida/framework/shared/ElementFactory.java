@@ -18,6 +18,7 @@ import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
@@ -202,6 +203,11 @@ public class ElementFactory {
 		
 		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
 		addLinkType(newLinkDef);
+		
+		strategyName="DefaultTotalActivation";
+		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), 
+				strategyName, new HashMap<String, Object>(), "other", true);
+		addStrategy(strategyName, strategyDef);
 	}
 
 	/**

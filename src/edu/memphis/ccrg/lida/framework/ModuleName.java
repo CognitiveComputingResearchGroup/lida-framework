@@ -19,6 +19,9 @@ import java.util.Map;
  */
 public class ModuleName {
 
+	/**
+	 * String representation of {@link ModuleName}
+	 */
 	public final String name;
 	private static Map<String, ModuleName> moduleNames = new HashMap<String, ModuleName>();
 

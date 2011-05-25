@@ -35,6 +35,10 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 */
 	private LearnableImpl learnable;
 	
+	
+	/**
+	 * Default constructor
+	 */
 	public PamNodeImpl() {
 		super();
 		groundingPamNode = this;
@@ -42,6 +46,10 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		initLearnable();
 	}
 	
+	/**
+	 * Copy constructor
+	 * @param pamNode source {@link PamNodeImpl}
+	 */
 	public PamNodeImpl(PamNodeImpl pamNode) {
 		super(pamNode);
 		groundingPamNode = this;

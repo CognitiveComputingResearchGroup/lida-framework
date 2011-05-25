@@ -61,6 +61,10 @@ public interface AgentAction extends Serializable {
 	 */
 	public Topology getTopology();
 
+	/**
+	 * @param action AgentAction
+	 * @param topology Topology
+	 */
 	public void addSubAction(AgentAction action, Topology topology);
 
 	/**

@@ -27,9 +27,15 @@ public interface Behavior extends Activatible {
 	public long getId();
 	
 	/**
-	 * Gets action id.
+	 * Sets action
+	 * @param action {@link AgentAction} this behavior contains
+	 */
+	public void setAction(AgentAction action);
+	
+	/**
+	 * Gets action.
 	 * 
-	 * @return the action id
+	 * @return the {@link AgentAction} this behavior contains
 	 */
 	public AgentAction getAction();
 	

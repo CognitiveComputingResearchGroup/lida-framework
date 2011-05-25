@@ -35,6 +35,10 @@ public class NodeStructureGuiAdapter extends
 
 	private NodeStructure nodeStructure;
 
+	/**
+	 * Default constructor
+	 * @param ns {@link NodeStructure} to be adapted.
+	 */
 	public NodeStructureGuiAdapter(NodeStructure ns) {
 		super(EdgeType.DIRECTED);
 		this.nodeStructure = ns;

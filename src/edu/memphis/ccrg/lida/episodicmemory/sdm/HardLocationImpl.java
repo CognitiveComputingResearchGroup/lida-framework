@@ -28,6 +28,10 @@ public class HardLocationImpl implements HardLocation {
 	private int writeCount;
 	private final byte counterMax = DEFAULT_COUNTER_MAX;
 
+	/**
+	 * @param address {@link BitVector}
+	 * @param wordLength int
+	 */
 	public HardLocationImpl(BitVector address, int wordLength) {
 		this.address = address;
 		this.wordLength = wordLength;

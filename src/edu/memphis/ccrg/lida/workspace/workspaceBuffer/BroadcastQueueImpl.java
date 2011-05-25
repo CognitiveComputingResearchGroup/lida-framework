@@ -44,6 +44,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
 
+	/**
+	 * Default constructor
+	 */
 	public BroadcastQueueImpl() {
 		broadcastQueue = new LinkedList<NodeStructure>();
 		broadcastQueue.add(new NodeStructureImpl());

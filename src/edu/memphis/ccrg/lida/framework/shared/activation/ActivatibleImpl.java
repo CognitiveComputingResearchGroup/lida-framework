@@ -33,11 +33,20 @@ public class ActivatibleImpl implements Activatible {
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
+	/**
+	 * Default constructor
+	 */
 	public ActivatibleImpl() {
 		decayStrategy = ElementFactory.getInstance().getDefaultDecayStrategy();
 		exciteStrategy = ElementFactory.getInstance().getDefaultExciteStrategy();
 	}
 	
+	/**
+	 * @param activation initial activation
+	 * @param removableThreshold initial removableThreshold
+	 * @param excite {@link ExciteStrategy}
+	 * @param decay {@link DecayStrategy}
+	 */
 	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy excite, DecayStrategy decay) {
 		this.activation = activation;
 		this.removableThreshold = removableThreshold;

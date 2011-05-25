@@ -76,6 +76,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
+	/**
+	 * Default constructor
+	 */
 	public ProceduralMemoryImpl() {
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 //		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();

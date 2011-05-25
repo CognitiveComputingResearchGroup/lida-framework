@@ -30,7 +30,7 @@ public abstract class AgentActionImpl implements AgentAction {
 	private Topology topology = Topology.BASIC;
 
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public AgentActionImpl() {
 		id = idGenerator++;
@@ -45,57 +45,26 @@ public abstract class AgentActionImpl implements AgentAction {
 		this.label = label;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.actionselection.AgentAction#setContent(java.lang
-	 * .Object)
-	 */
 	@Override
 	public void setContent(Object content) {
 		this.content = content;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.actionselection.AgentAction#getContent()
-	 */
 	@Override
 	public Object getContent() {
 		return content;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.actionselection.AgentAction#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return label;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.actionselection.AgentAction#setLabel(java.lang.String
-	 * )
-	 */
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.actionselection.AgentAction#setAssociatedModule(
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule)
-	 */
 	@Override
 	public void setAssociatedModule(FrameworkModule module) {
 		this.module = module;

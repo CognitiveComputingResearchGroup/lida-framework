@@ -16,6 +16,9 @@ import java.util.Map;
  */
 public class NoExciteStrategy extends StrategyImpl implements ExciteStrategy {
 
+	/**
+	 * Default constructor
+	 */
 	public NoExciteStrategy() {		
 	}
 	

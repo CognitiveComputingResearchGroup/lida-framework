@@ -24,7 +24,14 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  */
 public interface Learnable extends Activatible{
 		
+	/**
+	 * Default removal threshold for Learnable
+	 */
 	public static final double DEFAULT_LEARNABLE_REMOVAL_THRESHOLD = -1.0;
+	
+	/**
+	 * Default base-level activation for Learnable
+	 */
 	public static final double DEFAULT_BASE_LEVEL_ACTIVATION = 0.1;
 
 	/**

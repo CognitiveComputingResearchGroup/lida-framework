@@ -560,6 +560,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		}
 	}
 
+	/**
+	 * Returns the perceptThreshold
+	 * @return threshold for a {@link PamLinkable} to be instantiated into a percept
+	 */
 	public static double getPerceptThreshold() {
 		return perceptThreshold;
 	}

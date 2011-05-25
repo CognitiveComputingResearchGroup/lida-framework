@@ -60,6 +60,9 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	private static final double defaultCodeletRemovalThreshold = -1.0;
 	private double codeletRemovalThreshold = defaultCodeletRemovalThreshold;
 
+	/**
+	 * Default constructor
+	 */
 	public AttentionCodeletModule() {
 		Class<BasicAttentionCodelet> cl = BasicAttentionCodelet.class;
 		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());

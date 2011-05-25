@@ -21,10 +21,14 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  */
 public interface Activatible extends Serializable {
 	
-	/*
-	 * this prevents activatible from being removed if its activation is 0.0. e.g. pam nodes, schemes' context.
+	/**
+	 * Default removal threshold for {@link Activatible} 
 	 */
 	public static final double DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD = 0.0;
+	
+	/**
+	 * Default activation for {@link Activatible} 
+	 */
 	public static final double DEFAULT_ACTIVATION = 0.01;
 		
 	/**

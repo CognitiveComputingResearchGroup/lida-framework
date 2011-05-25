@@ -8,7 +8,14 @@
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
+import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
 
+/**
+ * Command to add a {@link GuiPanel} to the {@link FrameworkGui}
+ * @author Tamas Madl
+ *
+ */
 public class AddPanelCommand extends CommandImpl {
 
 	@Override

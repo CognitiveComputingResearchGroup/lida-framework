@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 
-	/* 
+	/** 
 	 * The default slope
 	 * 
 	 */

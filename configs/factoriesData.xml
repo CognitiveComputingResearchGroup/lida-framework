@@ -32,9 +32,6 @@
       <class>edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy</class>
       <param name="m" type="double">0.000000001</param>
     </strategy>
-     <strategy flyweight="true" name="DefaultTotalActivation" type="other">
-      <class>edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy</class>
-    </strategy>
   </strategies>
   <nodes>
     <node name="NodeImpl">

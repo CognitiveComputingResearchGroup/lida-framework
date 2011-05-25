@@ -33,22 +33,43 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 
 	private static final Object PRESENT = new Object();
 
+	/**
+	 * Constructs a new, empty set; 
+	 * the backing {@link ConcurrentHashMap} has default initial capacity, load factor, and concurrencyLevel.
+	 */
 	public ConcurrentHashSet() {
+		new HashSet<E>();
 		this.map = new ConcurrentHashMap<E, Object>();
 	}
-
-	public ConcurrentHashSet(Collection<? extends E> paramCollection) {
+	/**
+	 * Constructs a new set containing the elements in the specified collection.
+	 * @param c collection of elements
+	 */
+	public ConcurrentHashSet(Collection<? extends E> c) {
 		this.map = new ConcurrentHashMap<E, Object>(Math.max(
-				(int) (paramCollection.size() / 0.75F) + 1, 16));
-		addAll(paramCollection);
+				(int) (c.size() / 0.75F) + 1, 16));
+		addAll(c);
 	}
 
-	public ConcurrentHashSet(int paramInt, float paramFloat) {
-		this.map = new ConcurrentHashMap<E, Object>(paramInt, paramFloat);
+	/**
+	 * @param initialCapacity the initial capacity. The implementation performs internal sizing to accommodate this many elements.
+	 * @param loadFactor the load factor threshold, used to control resizing. Resizing may be performed when the average number of elements per bin exceeds this threshold.
+	 * 
+	 *  @throws IllegalArgumentException - if the initial capacity is negative or the load factor or concurrencyLevel are nonpositive.
+	 */
+	public ConcurrentHashSet(int initialCapacity, float loadFactor) {
+		this.map = new ConcurrentHashMap<E, Object>(initialCapacity, loadFactor);
 	}
 
-	public ConcurrentHashSet(int paramInt) {
-		this.map = new ConcurrentHashMap<E, Object>(paramInt);
+	/**
+	 * Constructs a new, empty set; 
+	 * the backing {@link ConcurrentHashMap} has
+	 * specified initial capacity, default load factor, and  default concurrencyLevel.
+	 * @param initialCapacity initial capacity
+	 * @throws IllegalArgumentException - if the initial capacity of elements is negative.
+	 */
+	public ConcurrentHashSet(int initialCapacity) {
+		this.map = new ConcurrentHashMap<E, Object>(initialCapacity);
 	}
 
 	@Override

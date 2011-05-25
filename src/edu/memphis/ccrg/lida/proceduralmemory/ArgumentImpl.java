@@ -30,6 +30,10 @@ public class ArgumentImpl implements Argument {
 	private Node node;
 	protected Map<String, ?> parameters;
 
+	/**
+	 * Default constructor
+	 * @param argumentId id
+	 */
 	public ArgumentImpl(long argumentId) {
 		if (argumentId <= 0) {
 			throw new IllegalArgumentException(
@@ -280,10 +284,6 @@ public class ArgumentImpl implements Argument {
 			}
 		}
 		return false;
-	}
-
-	public static String getFactoryNodeType() {
-		return ArgumentImpl.class.getSimpleName();
 	}
 
 	@Override

@@ -44,6 +44,9 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	private List<CueListener> cueListeners = new ArrayList<CueListener>();
 	private List<WorkspaceListener> workspaceListeners = new ArrayList<WorkspaceListener>();
 	
+	/**
+	 * Default constructor
+	 */
 	public WorkspaceImpl(){
 		super();
 	}	

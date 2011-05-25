@@ -16,6 +16,9 @@ import java.util.Map;
  */
 public class NoDecayStrategy extends StrategyImpl implements DecayStrategy {
 
+	/**
+	 * Default constructor
+	 */
 	public NoDecayStrategy() {
 	}
 

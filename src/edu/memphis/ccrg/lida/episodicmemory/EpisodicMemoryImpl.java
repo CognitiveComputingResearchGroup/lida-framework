@@ -48,6 +48,9 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	private int addressLength = DEF_ADDRESS_LENGTH;
 	private int wordLength = DEF_WORD_LENGTH;
 
+	/**
+	 * Default constructor
+	 */
 	public EpisodicMemoryImpl() {
 	}
 

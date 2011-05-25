@@ -18,6 +18,9 @@ public class BasicCodeletResult implements CodeletRunResult {
 	
 	private Map<String, Object> resultMap;
 	
+	/**
+	 * Default constructor
+	 */
 	public BasicCodeletResult(){
 	}
 

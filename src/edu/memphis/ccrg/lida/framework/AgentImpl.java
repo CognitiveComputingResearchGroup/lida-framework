@@ -23,6 +23,9 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 	
 	private TaskManager taskManager;
 
+	/**
+	 * @param tm {@link TaskManager}
+	 */
 	public AgentImpl(TaskManager tm) {
 		super(ModuleName.Agent);
 		taskManager=tm;

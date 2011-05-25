@@ -26,6 +26,9 @@ public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Env
 	
 	private List<FrameworkGuiEventListener> listeners = new ArrayList<FrameworkGuiEventListener>();
 
+	/**
+	 * Default constructor
+	 */
 	public EnvironmentImpl(){
 	}
 	@Override

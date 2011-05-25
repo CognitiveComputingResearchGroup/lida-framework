@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class DefaultExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	
-	/* 
+	/**
 	 * The default slope
 	 * 
 	 */

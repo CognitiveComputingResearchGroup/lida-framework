@@ -29,12 +29,18 @@ public class FrameworkGuiFactory {
 	private static String DEFAULT_COMMANDS_FILENAME = "configs/guiCommands.properties";
 	private static final String DEFAULT_PANELS_FILENAME = "configs/guiPanels.properties";
 
-	public static void start(final Agent agent, final Properties agentProperties) {
+	/**
+	 * Based on the properties file, first creates a {@link FrameworkGuiController} with specified {@link Agent}.
+	 * Then create a {@link FrameworkGui} with the controller. 
+	 * @param agent {@link Agent}
+	 * @param systemProperties properties containing information about gui configuration, gui commands
+	 */
+	public static void start(final Agent agent, final Properties systemProperties) {
 		java.awt.EventQueue.invokeLater(new Runnable(){
 			@Override
 			public void run(){					
 	        	//Create the controller
-				String filename=agentProperties.getProperty("lida.gui.commands",DEFAULT_COMMANDS_FILENAME);
+				String filename=systemProperties.getProperty("lida.gui.commands",DEFAULT_COMMANDS_FILENAME);
 				Properties properties =ConfigUtils.loadProperties(filename);
 				if(properties == null){
 					logger.log(Level.SEVERE, "unable to load gui commands");
@@ -43,7 +49,7 @@ public class FrameworkGuiFactory {
 	        	FrameworkGuiController controller = new FrameworkGuiControllerImpl(agent, properties);
 				logger.log(Level.INFO,"GUI Controller created",0L);
 				
-				filename=agentProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);
+				filename=systemProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);
 				properties = ConfigUtils.loadProperties(filename);
 				if(properties == null){
 					logger.log(Level.SEVERE, "unable to load guiPanels.properties");

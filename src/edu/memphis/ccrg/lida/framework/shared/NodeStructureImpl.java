@@ -85,7 +85,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		defaultLinkType = factory.getDefaultLinkType();
 	}
 
-	/*
+	/**
 	 * Creates a new NodeStructureImpl with specified default Node type and link
 	 * Type. If either is not in the factory the factory's defaults are used.
 	 * 
@@ -93,7 +93,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param defaultLink kind of link used in this NodeStructure
 	 * 
-	 * @see LidaElementFactory
+	 * @see ElementFactory
 	 */
 	public NodeStructureImpl(String defaultNode, String defaultLink) {
 		this();
