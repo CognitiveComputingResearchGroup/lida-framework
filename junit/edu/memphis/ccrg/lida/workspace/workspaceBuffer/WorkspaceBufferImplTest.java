@@ -36,7 +36,6 @@ public class WorkspaceBufferImplTest {
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);
-		n1.setActivation(0.2);
 		ns.addDefaultNode(n1);
 		
 		buffer.addBufferContent((WorkspaceContent) ns);
@@ -53,7 +52,6 @@ public class WorkspaceBufferImplTest {
 		
 		Node n1 = new NodeImpl();
 		n1.setId(2);
-		n1.setActivation(0.2);
 		ns.addDefaultNode(n1);
 		
 		buffer.addBufferContent((WorkspaceContent) ns);
@@ -73,19 +71,22 @@ public class WorkspaceBufferImplTest {
 	}
 
 	@Test
+	public void testGetModuleContent3() {
+		//Creates node and add them into a node structure
+		// Execution of getModuleContent() method
+		NodeStructure ns2 = (NodeStructure) buffer.getModuleContent();
+
+		assertEquals(0, ns2.getNodeCount());
+	}
+	
+	@Test
 	public final void testInit() {
 		//NA
 	}
 
 	@Test
 	public final void testWorkspaceBufferImpl() {
-		NodeStructure ns = new NodeStructureImpl();
-		WorkspaceBuffer buffer = new WorkspaceBufferImpl();
-		String s1 = ns.toString();
-		String s2 = ((NodeStructure)buffer.getBufferContent(null)).toString();
-		assertTrue("Problem with class WorkspaceBufferImpl for workspaceBufferImpl()",
-				 s1.equals(s2));
-
+		//NA
 	}
 
 	@Test
@@ -113,13 +114,15 @@ public class WorkspaceBufferImplTest {
 		// Add node structure into workspaceBuffer of percetualBuffer
 		wMoudle.receivePercept(ns);
 
-		perceptualBuffer.taskManagerDecayModule(1);
-		
+		NodeStructure nsNew = (NodeStructure) perceptualBuffer.getModuleContent();
+		double beforeDecay = nsNew.getNode(6).getActivation();
+		perceptualBuffer.decayModule(5);
+		double afterDecay = nsNew.getNode(6).getActivation();
 		NodeStructure ns2 = (NodeStructure) perceptualBuffer.getModuleContent();
 
 		// After node(Id == 2) is removed cause decay, so here is only node (Id == 6).
 		assertTrue("Problem with class WorkspaceBufferImpl for DecayModule()",
-				(ns2.containsNode(6))&&(!ns2.containsNode(2)));
+				(ns2.containsNode(6))&&(!ns2.containsNode(2))&&(beforeDecay > afterDecay));
 	}
 
 	@Test
