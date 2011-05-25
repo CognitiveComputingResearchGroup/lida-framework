@@ -15,6 +15,8 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -129,27 +131,40 @@ public class WorkspaceBufferImplTest {
 		//NA
 	}
 
-	@Test
+        /**
+         * Test the functionality of the <code>addBufferContent</code> method.
+         * The buffer is checked after creation, and after addition of two nodes.
+         */
+        @Test
 	public final void testAddBufferContent() {
 		//Create a NodeStructure with NodeId = 2
 		NodeStructure ns = new NodeStructureImpl();
 		Node n1 = new NodeImpl();
+                Node n2 = new NodeImpl();
 		n1.setId(2);
+                n2.setId(4);
 		ns.addDefaultNode(n1);
-		
-		// Add the NodeStructure to buffer
-		WorkspaceBuffer buffer = new WorkspaceBufferImpl();
-		buffer.addBufferContent((WorkspaceContent)ns);
-		
-		// Check whether action of adding is successful
-		// In the same time, getBufferContent() method be tested too
-		assertTrue(((NodeStructure)buffer.getBufferContent(null)).containsNode(2));
-			
+                ns.addDefaultNode(n2);
+
+                NodeStructure content
+                        = (NodeStructure) buffer.getBufferContent(null);
+
+                // PRE: the buffer is empty, 0 nodes and 0 links.
+                assertEquals(0, content.getNodeCount());
+                assertEquals(0, content.getLinkCount());
+
+                // A node structure with two nodes is added to the buffer.
+                buffer.addBufferContent((WorkspaceContent)ns);
+		content = (NodeStructure) buffer.getBufferContent(null);
+		// POS: the buffer has 2 nodes and 0 links.
+                assertTrue(content.containsNode(2) && content.containsNode(4));
+                assertEquals(2, content.getNodeCount());
+                assertEquals(0, content.getLinkCount());
 	}
 
 	@Test
 	public final void testGetBufferContent() {
-	//Be tested in testAddBufferContent function above together
+            //To be tested in testAddBufferContent function above together
 	}
 
 }
