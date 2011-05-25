@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -21,8 +22,15 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 
 public class WorkspaceBufferImplTest {
 
+	private WorkspaceBufferImpl buffer;
+	@Before
+	public void setUp() {
+		buffer = new WorkspaceBufferImpl();
+		   
+	}
+	
 	@Test
-	public final void testGetModuleContent() {
+	public void testGetModuleContent() {
 		//Creates node and add them into a node structure
 		NodeStructure ns = new NodeStructureImpl();
 		
@@ -31,16 +39,37 @@ public class WorkspaceBufferImplTest {
 		n1.setActivation(0.2);
 		ns.addDefaultNode(n1);
 		
-		//Create a workspaceBuffer and add a NodeStructure into it
-		WorkspaceBuffer perceptualBuffer = new WorkspaceBufferImpl();
-		perceptualBuffer.setModuleName(ModuleName.PerceptualBuffer);
-		perceptualBuffer.addBufferContent((WorkspaceContent) ns);
+		buffer.addBufferContent((WorkspaceContent) ns);
 
 		// Execution of getModuleContent() method
-		NodeStructure ns2 = (NodeStructure) perceptualBuffer.getModuleContent();
+		NodeStructure ns2 = (NodeStructure) buffer.getModuleContent();
 		
-		assertTrue("Problem with class WorkspaceBufferImpl for GetModuleContent()",
-				(NodeStructureImpl.compareNodeStructures(ns, ns2)));
+		assertTrue((NodeStructureImpl.compareNodeStructures(ns, ns2)));
+	}
+	@Test
+	public void testGetModuleContent2() {
+		//Creates node and add them into a node structure
+		NodeStructure ns = new NodeStructureImpl();
+		
+		Node n1 = new NodeImpl();
+		n1.setId(2);
+		n1.setActivation(0.2);
+		ns.addDefaultNode(n1);
+		
+		buffer.addBufferContent((WorkspaceContent) ns);
+		
+		Node n2 = new NodeImpl();
+		n2.setId(5);
+		ns.addDefaultNode(n2);
+		
+		buffer.addBufferContent((WorkspaceContent) ns);
+		
+		// Execution of getModuleContent() method
+		NodeStructure ns2 = (NodeStructure) buffer.getModuleContent();
+
+		assertTrue(ns2.containsNode(2));
+		assertTrue(ns2.containsNode(n2));
+		assertEquals(2,ns2.getNodeCount());
 	}
 
 	@Test
