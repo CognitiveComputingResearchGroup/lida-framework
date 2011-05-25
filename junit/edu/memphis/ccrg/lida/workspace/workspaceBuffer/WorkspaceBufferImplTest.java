@@ -7,7 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,6 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.LinkImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;

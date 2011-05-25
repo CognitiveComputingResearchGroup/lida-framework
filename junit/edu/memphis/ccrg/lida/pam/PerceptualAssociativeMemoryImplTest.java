@@ -27,6 +27,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
+import edu.memphis.ccrg.lida.framework.mockclasses.ExecutingMockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockDetectionAlgorithm;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -318,7 +319,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertEquals(1,ns.getConnectedSources(testNod3).size());
 		assertEquals(0,ns.getConnectedSources(testNod4).size());
 		
-		TaskSpawner ts = new PamMockTaskSpawner();
+		TaskSpawner ts = new ExecutingMockTaskSpawner();
 		pam.setAssistingTaskSpawner(ts);
 		
 		double upscaleFactor = 0.1;

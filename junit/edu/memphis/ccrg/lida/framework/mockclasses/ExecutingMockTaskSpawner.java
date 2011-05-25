@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-package edu.memphis.ccrg.lida.pam;
+package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl;
 
-public class PamMockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
+public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements TaskSpawner {
 	public List<FrameworkTask> tasks = new ArrayList<FrameworkTask>(); 
 
 	@Override

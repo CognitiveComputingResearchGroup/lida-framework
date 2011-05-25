@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -52,16 +53,27 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void init() {
-		broadcastQueueCapacity = (Integer) getParam(
-				"workspace.broadcastQueueCapacity", DEFAULT_QUEUE_CAPACITY);
+		int desired = (Integer) getParam("workspace.broadcastQueueCapacity",
+				DEFAULT_QUEUE_CAPACITY);
+		if (desired > 0) {
+			broadcastQueueCapacity = desired;
+		} else {
+			logger.log(Level.WARNING, "Capacity must be greater than 0.",
+					TaskManager.getCurrentTick());
+		}
 	}
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(
-					((NodeStructure) bc).copy());
-			taskSpawner.addTask(task);
+		if (bc != null) {
+			synchronized (this) {
+				ProcessBroadcastTask task = new ProcessBroadcastTask(
+						((NodeStructure) bc).copy());
+				taskSpawner.addTask(task);
+			}
+		} else {
+			logger.log(Level.WARNING, "received null broadcast", TaskManager
+					.getCurrentTick());
 		}
 	}
 
@@ -82,6 +94,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 			}
 			setTaskStatus(TaskStatus.FINISHED);
 		}
+
 		@Override
 		public String toString() {
 			return BroadcastQueueImpl.class.getSimpleName() + "Broadcast";
@@ -92,6 +105,7 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	public Object getModuleContent(Object... params) {
 		return Collections.unmodifiableList(broadcastQueue);
 	}
+
 	@Override
 	public void addBufferContent(WorkspaceContent content) {
 		broadcastQueue.addFirst(content);
@@ -99,11 +113,13 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
-		Object index = params.get("position");
-		if(index instanceof Integer){
-			Integer i = (Integer) index;
-			if(i >= 0){
-				return (WorkspaceContent) broadcastQueue.get(i);
+		if (params != null) {
+			Object index = params.get("position");
+			if (index instanceof Integer) {
+				Integer i = (Integer) index;
+				if (i > -1 && i < broadcastQueue.size()) {
+					return (WorkspaceContent) broadcastQueue.get(i);
+				}
 			}
 		}
 		return null;
@@ -112,15 +128,29 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
-				.getCurrentTick());
+		.getCurrentTick());
 		synchronized(this){
-			for (NodeStructure ns : broadcastQueue) {
+			Iterator<NodeStructure> itr = broadcastQueue.iterator();
+			while(itr.hasNext()){
+				NodeStructure ns = itr.next();
 				ns.decayNodeStructure(ticks);
 				if (ns.getNodeCount() == 0) {
-					broadcastQueue.remove(ns);
+					itr.remove();
 				}
 			}
 		}
+		
+//		List<NodeStructure> toRemove = new ArrayList<NodeStructure>();
+//		for (NodeStructure ns : broadcastQueue) {
+//			ns.decayNodeStructure(ticks);
+//			if (ns.getNodeCount() == 0) {
+//				toRemove.add(ns);
+//			}
+//		}
+//		
+//		for(NodeStructure ns: toRemove){
+//			broadcastQueue.remove(ns);
+//		}
 	}
 
 	@Override

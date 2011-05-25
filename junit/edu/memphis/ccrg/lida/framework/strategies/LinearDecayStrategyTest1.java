@@ -1,14 +1,12 @@
 package edu.memphis.ccrg.lida.framework.strategies;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 
 
 
