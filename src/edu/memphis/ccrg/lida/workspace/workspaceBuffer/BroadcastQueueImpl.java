@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.workspace.workspaceBuffer;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,7 +18,6 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -49,21 +49,31 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	 */
 	public BroadcastQueueImpl() {
 		broadcastQueue = new LinkedList<NodeStructure>();
-		broadcastQueue.add(new NodeStructureImpl());
 	}
 
 	@Override
 	public void init() {
-		broadcastQueueCapacity = (Integer) getParam(
-				"workspace.broadcastQueueCapacity", DEFAULT_QUEUE_CAPACITY);
+		int desired = (Integer) getParam("workspace.broadcastQueueCapacity",
+				DEFAULT_QUEUE_CAPACITY);
+		if (desired > 0) {
+			broadcastQueueCapacity = desired;
+		} else {
+			logger.log(Level.WARNING, "Capacity must be greater than 0.",
+					TaskManager.getCurrentTick());
+		}
 	}
 
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(
-					((NodeStructure) bc).copy());
-			taskSpawner.addTask(task);
+		if (bc != null) {
+			synchronized (this) {
+				ProcessBroadcastTask task = new ProcessBroadcastTask(
+						((NodeStructure) bc).copy());
+				taskSpawner.addTask(task);
+			}
+		} else {
+			logger.log(Level.WARNING, "received null broadcast", TaskManager
+					.getCurrentTick());
 		}
 	}
 
@@ -77,13 +87,14 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 		@Override
 		protected synchronized void runThisFrameworkTask() {
-			broadcastQueue.offer(broadcast);
+			broadcastQueue.addFirst(broadcast);
 			// Keep the buffer at a fixed size
 			while (broadcastQueue.size() > broadcastQueueCapacity) {
-				broadcastQueue.poll();// remove oldest
+				broadcastQueue.removeLast();// remove oldest
 			}
 			setTaskStatus(TaskStatus.FINISHED);
 		}
+
 		@Override
 		public String toString() {
 			return BroadcastQueueImpl.class.getSimpleName() + "Broadcast";
@@ -92,34 +103,54 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		return Collections.unmodifiableCollection(broadcastQueue);
+		return Collections.unmodifiableList(broadcastQueue);
 	}
+
 	@Override
 	public void addBufferContent(WorkspaceContent content) {
-		broadcastQueue.add(content);
+		broadcastQueue.addFirst(content);
 	}
 
 	@Override
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
-		Integer index = (Integer) params.get("position");
-		if(index == null){
-			return null;
+		if (params != null) {
+			Object index = params.get("position");
+			if (index instanceof Integer) {
+				Integer i = (Integer) index;
+				if (i > -1 && i < broadcastQueue.size()) {
+					return (WorkspaceContent) broadcastQueue.get(i);
+				}
+			}
 		}
-		return (WorkspaceContent) broadcastQueue.get(index);
+		return null;
 	}
 
 	@Override
 	public void decayModule(long ticks) {
 		logger.log(Level.FINER, "Decaying Broadcast Queue", TaskManager
-				.getCurrentTick());
+		.getCurrentTick());
 		synchronized(this){
-			for (NodeStructure ns : broadcastQueue) {
+			Iterator<NodeStructure> itr = broadcastQueue.iterator();
+			while(itr.hasNext()){
+				NodeStructure ns = itr.next();
 				ns.decayNodeStructure(ticks);
 				if (ns.getNodeCount() == 0) {
-					broadcastQueue.remove(ns);
+					itr.remove();
 				}
 			}
 		}
+		
+//		List<NodeStructure> toRemove = new ArrayList<NodeStructure>();
+//		for (NodeStructure ns : broadcastQueue) {
+//			ns.decayNodeStructure(ticks);
+//			if (ns.getNodeCount() == 0) {
+//				toRemove.add(ns);
+//			}
+//		}
+//		
+//		for(NodeStructure ns: toRemove){
+//			broadcastQueue.remove(ns);
+//		}
 	}
 
 	@Override

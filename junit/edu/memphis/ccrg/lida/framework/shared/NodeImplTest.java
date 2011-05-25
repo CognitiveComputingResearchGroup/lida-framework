@@ -60,7 +60,24 @@ public class NodeImplTest{
 	public void testSetId() {
 		node2.setId(22);					
 		assertEquals("Problem with setId", 22, node2.getId());
-	}	
+	}
+	
+	@Test
+	public void testSetExtendedId(){
+		ExtendedId id = new ExtendedId(345);
+		node1.setExtendedId(id);
+		
+		assertEquals(345, node1.getId());
+		assertEquals(id, node1.getExtendedId());
+		
+		ExtendedId id2 = new ExtendedId(2, id, 3);
+		node1.setExtendedId(id2);
+		
+		assertEquals(345, node1.getId());
+		assertEquals(id, node1.getExtendedId());
+		
+		node1.setExtendedId(null);
+	}
 	
 	/**
 	 * This method is used to test the NodeImpl.getLabel() method

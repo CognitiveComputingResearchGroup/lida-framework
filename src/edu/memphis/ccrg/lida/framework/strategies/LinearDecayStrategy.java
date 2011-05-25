@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+ * Copyright (c) 2009, 2010 The University of Memphis.  All rights reserved. 
  * This program and the accompanying materials are made available 
  * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
+import java.util.EmptyStackException;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 
-	/** 
+	/* 
 	 * The default slope
 	 * 
 	 */
@@ -54,8 +55,10 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double mm = m;
-		if (params.length != 0) {
-			mm = (Double) params[0];
+		if (params !=null && params.length != 0) {
+			if(params[0] instanceof Double){
+				mm = (Double) params[0];
+			}
 		}
 		currentActivation -= (mm * ticks);
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
@@ -65,8 +68,21 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
 		double mm = m;
+		 
 		if (params != null) {
-			mm = (Double) params.get("m");
+			if (params.containsKey("m")){
+				if (params.get("m") instanceof Double){
+				
+				 mm = (Double) params.get("m");
+			    }else if(params.get("m") instanceof String){
+			    	
+			    	throw new EmptyStackException();
+
+					
+				}
+				
+			}				
+			
 		}
 		currentActivation -= (mm * ticks);
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
