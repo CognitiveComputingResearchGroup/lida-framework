@@ -121,8 +121,7 @@ public class WorkspaceBufferImplTest {
 		NodeStructure ns2 = (NodeStructure) perceptualBuffer.getModuleContent();
 
 		// After node(Id == 2) is removed cause decay, so here is only node (Id == 6).
-		assertTrue("Problem with class WorkspaceBufferImpl for DecayModule()",
-				(ns2.containsNode(6))&&(!ns2.containsNode(2))&&(beforeDecay > afterDecay));
+		assertTrue((ns2.containsNode(6))&&(!ns2.containsNode(2))&&(beforeDecay > afterDecay));
 	}
 
 	@Test
@@ -144,8 +143,7 @@ public class WorkspaceBufferImplTest {
 		
 		// Check whether action of adding is successful
 		// In the same time, getBufferContent() method be tested too
-		assertTrue("Problem with class WorkspaceBufferImpl for addBufferContent()",
-				((NodeStructure)buffer.getBufferContent(null)).containsNode(2));
+		assertTrue(((NodeStructure)buffer.getBufferContent(null)).containsNode(2));
 			
 	}
 
