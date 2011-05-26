@@ -10,7 +10,9 @@ package edu.memphis.ccrg.lida.framework.strategies;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -19,6 +21,103 @@ import org.junit.Test;
  *
  */
 public class SigmoidExciteStrategyTest {
+	
+	private SigmoidExciteStrategy strategy;
+	private double epsilon = 1e-5;
+	
+	@Before
+	public void setUp(){
+		strategy = new SigmoidExciteStrategy();
+	}
+	
+	@Test
+	public void testVarargs(){
+		double result = strategy.excite(0.6, 3.0);
+		assertEquals(0.967874, result, epsilon);
+		
+		result = strategy.excite(0.001, .5);
+		assertEquals(0.001647, result, epsilon);
+		
+		result = strategy.excite(0.0, 1000);
+		assertEquals(.0462, result, epsilon);
+		
+		result = strategy.excite(1.0, 3);
+		assertEquals(1.0, result, epsilon);
+	}
+	
+	@Test
+	public void testVarargs1(){
+		double result = strategy.excite(0.6, 3, 3.0, 0.4);
+		assertEquals(0.000185, result, epsilon);
+		
+		result = strategy.excite(0.6, 3, 0.3, 0.4);
+		assertEquals(0.37882, result, epsilon);
+				
+		result = strategy.excite(1.0, 3, 0.3, 0.4);
+		assertEquals(1.0, result, epsilon);
+		
+		result = strategy.excite(0.999999999, 65, 0.3, 0.4);
+		assertEquals(0.755461, result, epsilon);
+		
+		result = strategy.excite(.6, 0, 0.3, 0.4);
+		assertEquals(.6, result, epsilon);
+	}
+	@Test
+	public void testMap(){
+		Map<String, Object> params = new HashMap<String, Object>();
+		double result = strategy.excite(0.6, 3,params);
+		assertEquals(0.069491, result, epsilon);
+		
+		result = strategy.excite(0.001, 3,params);
+		assertEquals(0.0000498, result, epsilon);
+		
+		result = strategy.excite(0.0, 3,params);
+		assertEquals(0.0, result, epsilon);
+		
+		result = strategy.excite(1.0, 3,params);
+		assertEquals(1.0, result, epsilon);
+	}
+	
+	@Test
+	public void testMap1(){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("a", 3.0);
+		params.put("c", 0.4);
+		
+		double result = strategy.excite(0.6, 3, params);
+		assertEquals(0.000185, result, epsilon);
+		
+		params.put("a", 0.3);
+		params.put("c", 0.4);
+		result = strategy.excite(0.6, 3, params);
+		assertEquals(0.37882, result, epsilon);
+				
+		params.put("a", 0.3);
+		params.put("c", 0.4);
+		result = strategy.excite(1.0, 3, params);
+		assertEquals(1.0, result, epsilon);
+
+		result = strategy.excite(0.999999999, 65, params);
+		assertEquals(0.755461, result, epsilon);
+	}
+	
+	@Test
+	public void testInit2(){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("a", 0.3);
+		params.put("c", 0.4);
+		
+		strategy.init(params);
+		
+		double result = strategy.excite(0.6, 3);
+		assertEquals(0.37882, result, epsilon);
+				
+		result = strategy.excite(1.0, 3);
+		assertEquals(1.0, result, epsilon);
+
+		result = strategy.excite(0.999999999, 65);
+		assertEquals(0.755461, result, epsilon);
+	}
 
 	@Test
 	public final void testInit() {

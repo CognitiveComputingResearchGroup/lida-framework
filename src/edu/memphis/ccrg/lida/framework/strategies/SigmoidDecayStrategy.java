@@ -25,7 +25,7 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	private static final double DEFAULT_C = 0.0;
 	private double c = DEFAULT_C;
 	
-	private static final double aLittleMoreThanOne = 1.00000000001;
+	private static final double epsilon = 1e-10;
 	
 	@Override
 	public void init() {
@@ -37,20 +37,19 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double aa = a;
 		double cc = c;
-		if(params.length != 0){
+		if(params.length == 2){
 			aa = (Double) params[0];
 			cc = (Double) params[1];
 		}
 		return calcActivation(currentActivation, ticks, aa, cc);
 	}
 
-	//TODO test boundary conditions 1, 0.
 	@Override
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
 		double aa = a;
 		double cc = c;
-		if(params != null){
+		if(params != null && params.containsKey("a") && params.containsKey("c")){
 			aa = (Double) params.get("a");
 			cc = (Double) params.get("c");
 		}
@@ -59,8 +58,8 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 	
 	private double calcActivation(double curActiv, long ticks,
 			double aa, double cc) {
-		double curExcitation = -(Math.log((aLittleMoreThanOne - curActiv)/curActiv) + cc) / aa - ticks;
-		return 1/(1 + Math.exp(-aa * curExcitation + cc));
+		double curExcitation = -(Math.log((1.0 + epsilon - curActiv)/(curActiv + epsilon)) + cc) / aa - ticks;
+		return 1/(1 + Math.exp(-(aa * curExcitation + cc)));
 	}
 
 }

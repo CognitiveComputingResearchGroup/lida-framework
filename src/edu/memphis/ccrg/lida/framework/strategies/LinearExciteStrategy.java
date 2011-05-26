@@ -14,13 +14,13 @@ import java.util.Map;
  * WARNING:	Renaming this class requires renaming values in
  * 	  configs/factoriesData.xml
  */
-public class DefaultExciteStrategy extends StrategyImpl implements ExciteStrategy {
+public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	
-	/**
+	/*
 	 * The default slope
 	 * 
 	 */
-	public static final double DEFAULT_M = 1.0;
+	private static final double DEFAULT_M = 1.0;
 
 	/*
 	 * The slope of this linear curve.
@@ -31,7 +31,7 @@ public class DefaultExciteStrategy extends StrategyImpl implements ExciteStrateg
 	 * Creates a new instance of LinearCurve. Values for slope and intercept are
 	 * set to the default ones.
 	 */
-	public DefaultExciteStrategy() {
+	public LinearExciteStrategy() {
 		m = DEFAULT_M;
 	}
 	

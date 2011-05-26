@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -175,7 +175,7 @@ public class ElementFactory {
 
 		defaultExciteType = "defaultExcite";
 		addExciteStrategy(defaultExciteType, new StrategyDef(
-				DefaultExciteStrategy.class.getCanonicalName(),
+				LinearExciteStrategy.class.getCanonicalName(),
 				defaultExciteType, new HashMap<String, Object>(),
 				exciteStrategyType, true));
 		

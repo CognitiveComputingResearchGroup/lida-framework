@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -180,7 +180,7 @@ public class PamLinkImplTest{
 	 */
 	@Test
 	public void testSetBaseLevelExciteStrategy() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		link1.setBaseLevelExciteStrategy(es);
 
 		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
@@ -209,7 +209,7 @@ public class PamLinkImplTest{
 	 */
 	@Test
 	public void testReinforceBaseLevelActivation() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		link1.setBaseLevelExciteStrategy(es);
 		link1.setBaseLevelActivation(0.2);
 		link1.reinforceBaseLevelActivation(0.3);

@@ -8,7 +8,7 @@
 <LidaFactories xmlns="http://ccrg.cs.memphis.edu/LidaFactories" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaFactories LidaFactories.xsd ">
 	<strategies>
 		<strategy flyweight="true" name="excite1" type="excite">
-			<class>edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy
+			<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy
 			</class>
 			<param name="m" type="double">1.0</param>
 		</strategy>

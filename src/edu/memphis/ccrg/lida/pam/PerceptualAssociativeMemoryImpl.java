@@ -698,7 +698,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		return null;
 	}
 	
-	private static class PamNodeStructure extends NodeStructureImpl{
+	protected static class PamNodeStructure extends NodeStructureImpl{
 			public PamNodeStructure(String nodeType, String linkType){
 				super(nodeType, linkType);
 			}

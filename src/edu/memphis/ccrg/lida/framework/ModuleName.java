@@ -46,6 +46,11 @@ public class ModuleName {
 		}
 		return moduleNames.get(name);
 	}
+	
+	@Override
+	public String toString(){
+		return name;
+	}
 
 	private ModuleName(String name) {
 		this.name = name;

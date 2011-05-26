@@ -37,7 +37,7 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 	@Override
 	public void init(){
 		taskManager.setDecayingModules(getSubmodules().values());
-		logger.log(Level.INFO,"Lida modules have been started\n", 0L);		
+		logger.log(Level.INFO,"FrameworkModules have been started\n", 0L);		
 	}
 
 	/* (non-Javadoc)

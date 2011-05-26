@@ -16,7 +16,7 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
@@ -131,7 +131,7 @@ public class ActivatibleImplTest {
 	 */
 	@Test
 	public void testExcite() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		act1.setActivation(0.5);
 		act1.setExciteStrategy(es);
 		act1.excite(0.1);

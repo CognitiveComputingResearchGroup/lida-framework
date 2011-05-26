@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
@@ -47,7 +47,7 @@ public class FactoriesDataXmlLoaderTest2 {
 		String xml = "<LidaFactories>" +
 			"<strategies>" +
 			"	<strategy flyweight=\"true\" name=\"excite1\" type=\"excite\">"
-			+ "<class>edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy</class>"
+			+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy</class>"
 			+ "<param name=\"m\" type=\"double\">1.0</param>"
 			+ "</strategy>"
 			
@@ -117,7 +117,7 @@ public class FactoriesDataXmlLoaderTest2 {
 		assertTrue(factory.containsCodeletType("bottomright"));
 		
 		Strategy s = factory.getStrategy("excite1");
-		assertTrue(s instanceof DefaultExciteStrategy);
+		assertTrue(s instanceof LinearExciteStrategy);
 		s = factory.getStrategy("decay1");
 		assertTrue(s instanceof LinearDecayStrategy);
 		

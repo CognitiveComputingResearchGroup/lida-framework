@@ -12,14 +12,14 @@ import org.junit.Test;
  * @author Nisrine 
  *
  */
-public class DefaultExciteStrategyTest1 {
+public class LinearExciteStrategyTest1 {
 
-	DefaultExciteStrategy ExciteStrategy;
-	DefaultExciteStrategy ExciteStrategy1;
+	LinearExciteStrategy ExciteStrategy;
+	LinearExciteStrategy ExciteStrategy1;
 	
 	@Before
 	public void setUp() throws Exception {
-	  ExciteStrategy = new DefaultExciteStrategy ();
+	  ExciteStrategy = new LinearExciteStrategy ();
 	  
 	}
 @Test
