@@ -139,18 +139,6 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 				}
 			}
 		}
-		
-//		List<NodeStructure> toRemove = new ArrayList<NodeStructure>();
-//		for (NodeStructure ns : broadcastQueue) {
-//			ns.decayNodeStructure(ticks);
-//			if (ns.getNodeCount() == 0) {
-//				toRemove.add(ns);
-//			}
-//		}
-//		
-//		for(NodeStructure ns: toRemove){
-//			broadcastQueue.remove(ns);
-//		}
 	}
 
 	@Override

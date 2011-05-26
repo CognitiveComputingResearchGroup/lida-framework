@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -47,7 +47,7 @@ public class ExcitationTaskTest{
 	@Test
 	public void test(){
 		pam.setPerceptThreshold(1.0);
-		pamNode.setExciteStrategy(new DefaultExciteStrategy());
+		pamNode.setExciteStrategy(new LinearExciteStrategy());
 		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
 		
 		excite.call();
@@ -59,7 +59,7 @@ public class ExcitationTaskTest{
 	@Test
 	public void testTaskSpawner(){
 		pam.setPerceptThreshold(0.4);
-		pamNode.setExciteStrategy(new DefaultExciteStrategy());
+		pamNode.setExciteStrategy(new LinearExciteStrategy());
 		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
 		
 		excite.call();

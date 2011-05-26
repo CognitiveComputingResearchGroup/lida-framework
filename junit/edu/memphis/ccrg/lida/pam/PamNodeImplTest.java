@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -185,7 +185,7 @@ public class PamNodeImplTest{
 	 */
 	@Test
 	public void testSetBaseLevelExciteStrategy() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		node1.setBaseLevelExciteStrategy(es);
 
 		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
@@ -214,7 +214,7 @@ public class PamNodeImplTest{
 	 */
 	@Test
 	public void testReinforceBaseLevelActivation() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		node1.setBaseLevelExciteStrategy(es);
 		node1.setBaseLevelActivation(0.2);
 		node1.reinforceBaseLevelActivation(0.3);

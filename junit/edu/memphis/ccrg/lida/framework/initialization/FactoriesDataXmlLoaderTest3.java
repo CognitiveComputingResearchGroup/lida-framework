@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
@@ -54,7 +54,7 @@ public class FactoriesDataXmlLoaderTest3 {
 		assertTrue(factory.containsCodeletType("bottomright"));
 		
 		Strategy s = factory.getStrategy("excite1");
-		assertTrue(s instanceof DefaultExciteStrategy);
+		assertTrue(s instanceof LinearExciteStrategy);
 		s = factory.getStrategy("decay1");
 		assertTrue(s instanceof LinearDecayStrategy);
 		

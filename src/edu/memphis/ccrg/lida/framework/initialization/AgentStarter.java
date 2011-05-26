@@ -115,7 +115,6 @@ public class AgentStarter {
 		logger.log(Level.CONFIG, "Agent created", 0L);
 		
 		String loggingFile = agentProperties.getProperty("lida.logging.configuration");
-		
 		if(loggingFile!=null){
 			ConfigUtils.configLoggers(loggingFile);
 		}

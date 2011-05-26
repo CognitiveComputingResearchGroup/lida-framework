@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
@@ -58,7 +58,7 @@ public class LearnableImplTest {
 		double baseLevelActivation = 0.5;
 		double learnableRemovalThreshold = 0.77;
 
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		DecayStrategy ds = new LinearDecayStrategy();
 		ExciteStrategy blEs = new SigmoidExciteStrategy();
 		DecayStrategy blDs = new SigmoidDecayStrategy();
@@ -214,7 +214,7 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testSetBaseLevelExciteStrategy() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		learnable1.setBaseLevelExciteStrategy(es);
 
 		assertEquals("Problem with SetBaseLevelExciteStrategy", es,
@@ -243,7 +243,7 @@ public class LearnableImplTest {
 	 */
 	@Test
 	public void testReinforceBaseLevelActivation() {
-		ExciteStrategy es = new DefaultExciteStrategy();
+		ExciteStrategy es = new LinearExciteStrategy();
 		learnable1.setBaseLevelExciteStrategy(es);
 		learnable1.setBaseLevelActivation(0.2);
 		learnable1.reinforceBaseLevelActivation(0.3);

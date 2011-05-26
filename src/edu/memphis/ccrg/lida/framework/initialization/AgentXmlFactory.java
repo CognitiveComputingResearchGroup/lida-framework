@@ -81,25 +81,26 @@ public class AgentXmlFactory implements AgentFactory {
 		Element docEle = dom.getDocumentElement();
 
 		tm = getTaskManager(docEle);
-		logger.log(Level.INFO, "Finished obtaining TaskManager", 0L);
+		logger.log(Level.INFO, "Finished obtaining TaskManager\n", 0L);
 		agent = new AgentImpl(tm);
 		
 		taskSpawners=getTaskSpawners(docEle,tm);
-		logger.log(Level.INFO, "Finished creating TaskSpawners", 0L);
+		logger.log(Level.INFO, "Finished creating TaskSpawners\n", 0L);
 		
 		modules = getModules(docEle,toAssociate,toInitialize,taskSpawners);
 		for (FrameworkModule frameworkModule :modules) {
 			agent.addSubModule(frameworkModule);
 		}
-		logger.log(Level.INFO, "Finished creating modules and submodules", 0L);
+		logger.log(Level.INFO, "Finished creating modules and submodules\n", 0L);
 		
 		getListeners(docEle,agent);
-		logger.log(Level.INFO, "Finished setting up listeners", 0L);
+		logger.log(Level.INFO, "Finished setting up listeners\n", 0L);
 
 		associateModules(toAssociate,agent);
-		logger.log(Level.INFO, "Finished associating modules", 0L);
+		logger.log(Level.INFO, "Finished associating modules\n", 0L);
 		
 		initializeModules(agent,toInitialize);
+		logger.log(Level.INFO, "Finished initializing modules\n", 0L);
 		agent.init();
 		
 		return agent;
@@ -520,6 +521,10 @@ public class AgentXmlFactory implements AgentFactory {
 			
 			if(initializer != null){
 				try{
+					logger.log(Level.INFO, "Initializing " + 
+							((FrameworkModule) moduleToInitialize).getModuleName() + 
+							" module using initializer " + 
+							initializer.getClass().getCanonicalName() + "\n");
 					initializer.initModule(moduleToInitialize, topModule, params);
 				}catch (Exception e){
 					logger.log(Level.SEVERE, "Exception occurred running initializer: " + initializerClassName , TaskManager.getCurrentTick());

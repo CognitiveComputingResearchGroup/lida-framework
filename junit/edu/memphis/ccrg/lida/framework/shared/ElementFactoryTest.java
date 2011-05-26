@@ -28,7 +28,7 @@ import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
@@ -347,7 +347,7 @@ public class ElementFactoryTest {
 		assertTrue(l.isSimpleLink());
 		assertTrue(l.getGroundingPamLink() == l);
 		assertEquals(LinearDecayStrategy.class, l.getDecayStrategy().getClass());
-		assertEquals(DefaultExciteStrategy.class, l.getExciteStrategy().getClass());
+		assertEquals(LinearExciteStrategy.class, l.getExciteStrategy().getClass());
 	}
 
 	@Test
@@ -546,7 +546,7 @@ public class ElementFactoryTest {
 		Codelet c = factory.getCodelet("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
 		
 		assertTrue(c.getDecayStrategy() instanceof LinearDecayStrategy);
-		assertTrue(c.getExciteStrategy() instanceof DefaultExciteStrategy);
+		assertTrue(c.getExciteStrategy() instanceof LinearExciteStrategy);
 		
 		assertTrue(c instanceof BasicAttentionCodelet);
 		assertEquals(c.getTicksPerStep(), 100);

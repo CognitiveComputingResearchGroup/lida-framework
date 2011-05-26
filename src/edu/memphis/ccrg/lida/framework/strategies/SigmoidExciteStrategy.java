@@ -26,7 +26,7 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 	private static final double DEFAULT_C = 0.0;
 	private double c = DEFAULT_C;
 	
-	private static final double aLittleMoreThanOne = 1.00000000001;
+	private static final double epsilon = 1e-10;
 	
 	@Override
 	public void init() {
@@ -39,7 +39,7 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 			Object... params) {
 		double aa = a;
 		double cc = c;
-		if(params.length != 0){
+		if(params.length == 2){
 			aa = (Double) params[0];
 			cc = (Double) params[1];
 		}
@@ -51,7 +51,7 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 			Map<String, ? extends Object> params) {
 		double aa = a;
 		double cc = c;
-		if(params != null){
+		if(params != null && params.containsKey("a") && params.containsKey("c")){
 			aa = (Double) params.get("a");
 			cc = (Double) params.get("c");
 		}
@@ -66,8 +66,8 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 	 * @return
 	 */
 	private double calcExcitation(double curActiv, double excitation, double aa, double cc) {
-		double curExcitation = -(Math.log((aLittleMoreThanOne - curActiv)/curActiv) + cc) / aa + excitation;
-		return 1/(1 + Math.exp(-aa * curExcitation + cc));
+		double curExcitation = -(Math.log((1.0 + epsilon - curActiv)/(curActiv + epsilon)) + cc) / aa + excitation;
+		return 1/(1 + Math.exp(-(aa * curExcitation + cc)));
 	}
 
 }

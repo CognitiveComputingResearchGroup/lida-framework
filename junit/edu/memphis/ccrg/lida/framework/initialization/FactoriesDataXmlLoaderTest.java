@@ -45,7 +45,7 @@ public class FactoriesDataXmlLoaderTest {
 	@Test
 	public void testGetStrategies() {
 		String xml = "<LidaFactories><strategies><strategy flyweight=\"true\" name=\"defaultExcite\" type=\"excite\">"
-				+ "<class>edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy</class>"
+				+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy</class>"
 				+ "<param name=\"m\" type=\"double\">1.0</param>"
 				+ "</strategy>"
 				+ "<strategy flyweight=\"false\" name=\"defaultDecay\" type=\"decay\">"
@@ -60,7 +60,7 @@ public class FactoriesDataXmlLoaderTest {
 		assertNotNull(def);
 		assertEquals(true, def.isFlyWeight());
 		assertEquals(
-				"edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy",
+				"edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy",
 				def.getClassName());
 		assertEquals("defaultExcite", def.getName());
 		assertEquals(1.0, def.getParams().get("m"));
@@ -77,7 +77,7 @@ public class FactoriesDataXmlLoaderTest {
 	@Test
 	public void testGetStrategyDef() {
 		String xml = "<strategy flyweight=\"true\" name=\"defaultExcite\" type=\"excite\">"
-				+ "<class>edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy</class>"
+				+ "<class>edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy</class>"
 				+ "<param name=\"m\" type=\"double\">1.0</param>"
 				+ "</strategy>";
 		Element e = parseDomElement(xml);
@@ -86,7 +86,7 @@ public class FactoriesDataXmlLoaderTest {
 		assertNotNull(def);
 		assertEquals(true, def.isFlyWeight());
 		assertEquals(
-				"edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy",
+				"edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy",
 				def.getClassName());
 		assertEquals("defaultExcite", def.getName());
 		assertEquals(1.0, def.getParams().get("m"));

@@ -47,7 +47,7 @@ public class FrameworkGuiFactory {
 				}
 				
 	        	FrameworkGuiController controller = new FrameworkGuiControllerImpl(agent, properties);
-				logger.log(Level.INFO,"GUI Controller created",0L);
+				logger.log(Level.INFO,"GUI Controller created\n",0L);
 				
 				filename=systemProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);
 				properties = ConfigUtils.loadProperties(filename);

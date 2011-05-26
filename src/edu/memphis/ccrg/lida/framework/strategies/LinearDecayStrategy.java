@@ -21,7 +21,7 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	 * The default slope
 	 * 
 	 */
-	public static final double DEFAULT_M = 0.1;
+	private static final double DEFAULT_M = 0.1;
 
 	/*
 	 * The slope of this linear curve.

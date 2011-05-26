@@ -11,7 +11,7 @@
       <long>6</long>
       <pamNode>
         <activation>1.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -29,7 +29,7 @@
       <long>5</long>
       <pamNode>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>5</id>
         <label>plastic</label>
@@ -44,7 +44,7 @@
       <long>0</long>
       <pamNode>
         <activation>1.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>0</id>
         <label>wood</label>
@@ -59,7 +59,7 @@
       <long>7</long>
       <pamNode>
         <activation>1.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>7</id>
         <label>topLeft</label>
@@ -74,7 +74,7 @@
       <long>8</long>
       <pamNode>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>8</id>
         <label>bottomRight</label>
@@ -89,7 +89,7 @@
       <long>2</long>
       <pamNode>
         <activation>1.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>2</id>
         <label>metal</label>
@@ -104,7 +104,7 @@
       <long>1</long>
       <pamNode>
         <activation>1.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>1</id>
         <label>gold</label>
@@ -119,7 +119,7 @@
       <long>3</long>
       <pamNode>
         <activation>1.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>3</id>
         <label>solid</label>
@@ -134,7 +134,7 @@
       <long>4</long>
       <pamNode>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy" reference="../../../entry/pamNode/exciteBehavior"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy" reference="../../../entry/pamNode/decayBehavior"/>
         <id>4</id>
         <label>iron</label>
@@ -151,7 +151,7 @@
       <string>L( 2 : 6 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -166,7 +166,7 @@
       <string>L( 2 : 3 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -181,7 +181,7 @@
       <string>L( 7 : 0 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -196,7 +196,7 @@
       <string>L( 0 : 6 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -211,7 +211,7 @@
       <string>L( 0 : 3 : GROUNDING )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -226,7 +226,7 @@
       <string>L( 1 : 2 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -241,7 +241,7 @@
       <string>L( 5 : 6 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>
@@ -256,7 +256,7 @@
       <string>L( 4 : 2 : CHILD )</string>
       <link>
         <activation>0.0</activation>
-        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.DefaultExciteStrategy"/>
+        <exciteBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy"/>
         <decayBehavior class="edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy">
           <m>0.6</m>
           <b>0.0</b>

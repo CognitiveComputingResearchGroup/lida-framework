@@ -51,6 +51,11 @@ public class ModuleName {
 		this.name = name;
 		moduleNames.put(name, this);
 	}
+	
+	@Override
+	public String toString(){
+		return name;
+	}
 
 	/**
 	 * Returns a {@link Collection} of all {@link ModuleName}s

@@ -21,14 +21,14 @@ import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
  * @author Siminder Kaur
  *
  */
-public class DefaultExciteStrategyTest{
+public class LinearExciteStrategyTest{
 	
-	DefaultExciteStrategy exciteStrategy;
+	LinearExciteStrategy exciteStrategy;
 	NodeImpl node1;
 	
 	@Before
 	public void setUp() throws Exception {
-		exciteStrategy = new DefaultExciteStrategy();
+		exciteStrategy = new LinearExciteStrategy();
 		node1 = new NodeImpl();
 		
 		node1.setId(1);
