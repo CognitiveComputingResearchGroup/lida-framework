@@ -53,7 +53,11 @@ public class AgentStarter {
 			propertiesPath = args[0];
 
 		Properties properties = ConfigUtils.loadProperties(propertiesPath);
-		start(properties);
+		if (properties !=null){
+			start(properties);
+		}else{
+			start();
+		}
 	}
 
 	/**
@@ -74,7 +78,9 @@ public class AgentStarter {
 	public static void start() {
 		String propertiesPath = DEFAULT_PROPERTIES_PATH;
 		agentProperties = ConfigUtils.loadProperties(propertiesPath);
+		if (agentProperties!=null){
 		run();
+		}
 	}
 
 	/**
@@ -103,19 +109,24 @@ public class AgentStarter {
 		// Create model: Agent
 		Agent agent = new AgentXmlFactory().getAgent(agentProperties);
 		if(agent == null){
-			logger.log(Level.INFO, "Failed to create agent, application not started.");
+			logger.log(Level.SEVERE, "Failed to create agent, application not started.");
 			return;
 		}
 		logger.log(Level.CONFIG, "Agent created", 0L);
-
-        // Initialize Data Access Objects
-//		DAOManager manager = DAOManager.getInstance();
-//        if (!manager.isInitialized())
-//        	manager.initDataAccessObjects(agent);
-        //TODO Uncomment when DAO is operational
-
+		
+		String loggingFile = agentProperties.getProperty("lida.logging.configuration");
+		
+		if(loggingFile!=null){
+			ConfigUtils.configLoggers(loggingFile);
+		}
+		
+		boolean enableGui = Boolean.parseBoolean(agentProperties.getProperty("lida.gui.enable", "true"));
 		// Use the FrameworkGuiFactory to start the agent
-		FrameworkGuiFactory.start(agent, agentProperties);
+		if(enableGui){
+			FrameworkGuiFactory.start(agent, agentProperties);
+		}else{	//no gui		
+			agent.getTaskManager().resumeTasks();
+		}
 	}
 
 }
