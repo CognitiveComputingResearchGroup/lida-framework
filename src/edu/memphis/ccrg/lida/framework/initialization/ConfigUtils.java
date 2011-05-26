@@ -8,17 +8,20 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
  * Utilities for loading {@link Properties}
+ * 
  * @author Javier Snaider
- *
+ * 
  */
 public class ConfigUtils {
 
@@ -28,8 +31,9 @@ public class ConfigUtils {
 	/**
 	 * Loads specified {@link Properties} file.
 	 * 
-	 * @param filename file name
-	 * @return {@link Properties}
+	 * @param filename
+	 *            file name
+	 * @return {@link Properties} or null if the file is invalid.
 	 */
 	public static Properties loadProperties(String filename) {
 		Properties properties = new Properties();
@@ -48,5 +52,15 @@ public class ConfigUtils {
 			properties = null;
 		}
 		return properties;
+	}
+
+	public static void configLoggers(String configFile) {
+		try {
+			FileInputStream fis = new FileInputStream(configFile);
+			LogManager.getLogManager().readConfiguration(fis);
+			fis.close();
+		} catch (IOException e) {
+			logger.log(Level.WARNING, "Logging Properties File is invalid");
+		}
 	}
 }
