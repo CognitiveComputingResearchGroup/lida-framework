@@ -7,34 +7,30 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.*;
+
 import java.util.Collection;
-import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
-import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
-import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
-import edu.memphis.ccrg.lida.pam.PamNode;
-import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 public class NodeStructureConcurrencyTest {
 
-	private Node node1, node2, node3, node4;
-	private Link link1, link2, link3;
-	private PamNode category1, category2;
-	private NodeStructureImpl ns1, ns2, ns3;
+	private static final Logger logger = Logger.getLogger("Testthreads");
+	private Node[] nodes= new Node[10];
+	private Link link1, link2;
+	private LinkCategory category1, category2;
+	private NodeStructureImpl ns1, ns2;
 	private static ElementFactory factory;
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		factory = ElementFactory.getInstance();
-		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
-		Properties prop = ConfigUtils
-				.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
-		factoryLoader.loadFactoriesData(prop);
 	}
 
 	/**
@@ -45,34 +41,40 @@ public class NodeStructureConcurrencyTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		node1 = factory.getNode();
-		node1.setLabel("red");
-		node1.setActivation(0.1);
+		nodes[0] = factory.getNode();
+		nodes[0].setLabel("red");
+		nodes[0].setActivation(0.1);
 
-		node2 = factory.getNode();
-		node2.setLabel("blue");
-		node2.setActivation(0.2);
+		nodes[1] = factory.getNode();
+		nodes[1].setLabel("blue");
+		nodes[1].setActivation(0.2);
 
-		node3 = factory.getNode();
-		node3.setLabel("purple");
-		node3.setActivation(0.3);
+		nodes[2] = factory.getNode();
+		nodes[2].setLabel("purple");
+		nodes[2].setActivation(0.3);
 
-		node4 = factory.getNode();
-		node4.setLabel("green");
-		node4.setActivation(0.4);
+		nodes[3] = factory.getNode();
+		nodes[3].setLabel("green");
+		nodes[3].setActivation(0.4);
 
-		category1 = new PamNodeImpl();
-		category1.setId(99999);
-		category2 = new PamNodeImpl();
-		category2.setId(100000);
+		category1 = PerceptualAssociativeMemoryImpl.NONE;
+		category2 = PerceptualAssociativeMemoryImpl.FEATURE;
 
-		link1 = factory.getLink(node1, node2, category1);
-		link2 = factory.getLink(node2, node3, category2);
-		link3 = factory.getLink(node2, node4, category2);
+		link1 = factory.getLink(nodes[0], nodes[1], category1);
+		link2 = factory.getLink(nodes[1], nodes[2], category2);
 
 		ns1 = new NodeStructureImpl();
 		ns2 = new NodeStructureImpl();
-		ns3 = new NodeStructureImpl();
+		
+		ns1.addDefaultNode(nodes[0]);
+		ns1.addDefaultNode(nodes[1]);
+		ns1.addDefaultNode(nodes[3]);
+		ns1.addDefaultLink(link1);
+		
+		ns2.addDefaultNode(nodes[0]);
+		ns2.addDefaultNode(nodes[1]);
+		ns2.addDefaultNode(nodes[2]);
+		ns2.addDefaultLink(link2);
 	}
 
 	@Test
@@ -83,32 +85,75 @@ public class NodeStructureConcurrencyTest {
 			threads[i] = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					for (int i = 0; i < 1000; i++) {
-						int a = (int) (Math.random() * 5);
+					Node n = factory.getNode();
+					try{
+					for (int j= 0; j < 5000; j++) {
+						int a = (int) (Math.random() * 7);
+						if((j%2000)==0){
+						logger.log(Level.INFO,""+Thread.currentThread().getName()+":"+a+" j:"+j);
+						}
 						switch (a) {
 						case 0:
-							Node n = factory.getNode();
+							n = factory.getNode();
 							ns1.addDefaultNode(n);
 							break;
 						case 1:
 							Node n1 = factory.getNode();
 							Node n2 = factory.getNode();
+							ns1.addDefaultNode(n1);
+							ns1.addDefaultNode(n2);
 							ns1.addDefaultLink(n1, n2, category1, 1.0, 0.0);
 							break;
 
 						case 2:
 							int sum = 0;
-							Collection<Node>nodes = ns1.getNodes();
-							 for(Node nn:nodes){
+							Collection<Node>nodesCol = ns1.getNodes();
+							 for(Node nn:nodesCol){
 								 sum += nn.getId();
 							 }
 							break;
-						}
+						case 3:
+							NodeStructure ns4 = new NodeStructureImpl();
+							Node n3= factory.getNode();
+							Node n4= nodes[((int)(Math.random()*4))];
+
+							ns4.addDefaultNode(n3);
+							ns4.addDefaultNode(n4);
+							
+							ns4.addDefaultLink(n3,n4 , category1, .5, 0.0);
+							
+							ns1.mergeWith(ns4);
+							break;
+						case 4:
+							ns1.removeNode(n);
+							break;
+
+						case 5:
+							ns1.clearLinks();
+							break;
+						case 6:
+							ns1.decayNodeStructure(1);
+							break;
+						}						
 					}
-
+					}catch(Exception e){
+						e.printStackTrace();
+						fail();
+					}
+					
 				}
-
 			});
+		}
+		
+		for (int i = 0; i < 10; i++) {
+			threads[i].start();
+		}
+		for (int i = 0; i < 10; i++) {
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

@@ -665,7 +665,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			// 1 for the source and 1 for the sink
 			Link aux = links.get(linkable.getExtendedId());
 			links.remove(linkable.getExtendedId());
-
 			Set<Link> sourceLinks = linkableMap.get(aux.getSource());
 			if (sourceLinks != null) {
 				sourceLinks.remove(aux);
@@ -697,7 +696,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public void clearLinks() {
+	public synchronized void clearLinks() {
 		for (Link l : links.values()) {
 			removeLink(l);
 		}
@@ -705,7 +704,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public void clearNodeStructure() {
+	public synchronized void clearNodeStructure() {
 		linkableMap.clear();
 		nodes.clear();
 		links.clear();

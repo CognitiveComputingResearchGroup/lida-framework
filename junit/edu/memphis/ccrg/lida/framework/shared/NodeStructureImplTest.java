@@ -760,7 +760,7 @@ public class NodeStructureImplTest {
 		double activationAmount = 0.1;
 		double removableThresh = 0.05;
 		NodeStructure ns = new NodeStructureImpl();
-		
+
 		node1.setDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(removableThresh);
 		node1.setActivation(activationAmount);
@@ -771,6 +771,40 @@ public class NodeStructureImplTest {
 		node2.setActivation(1.0);
 		Node storedNode2 = ns.addDefaultNode(node2);
 		
+		node3.setDecayStrategy(new LinearDecayStrategy());
+		node3.setActivatibleRemovalThreshold(removableThresh);
+		node3.setActivation(1.0);
+		ns.addDefaultNode(node3);
+		
+		Link storedLink = ns.addDefaultLink(node3, node2, category1, 0.1, 0.0);
+		
+		assertTrue(activationAmount == storedNode1.getActivation());
+		assertTrue(removableThresh == storedNode1.getActivatibleRemovalThreshold());
+		assertFalse(storedNode1.isRemovable());
+		assertFalse(storedNode2.isRemovable());
+		
+		ns.decayNodeStructure(3);
+		
+		assertFalse(ns.containsNode(storedNode1));
+		assertTrue(ns.containsNode(storedNode2));
+		assertFalse(ns.containsLink(storedLink));
+	}
+	@Test
+	public void testDecayNodeStructure1_1(){
+		double activationAmount = 0.1;
+		double removableThresh = 0.05;
+		NodeStructure ns = new NodeStructureImpl();
+
+		node1.setDecayStrategy(new LinearDecayStrategy());
+		node1.setActivatibleRemovalThreshold(removableThresh);
+		node1.setActivation(activationAmount);
+		Node storedNode1 = ns.addDefaultNode(node1);
+		
+		node2.setDecayStrategy(new LinearDecayStrategy());
+		node2.setActivatibleRemovalThreshold(removableThresh);
+		node2.setActivation(1.0);
+		Node storedNode2 = ns.addDefaultNode(node2);
+				
 		Link storedLink = ns.addDefaultLink(node1, node2, category1, 0.1, 0.0);
 		
 		assertTrue(activationAmount == storedNode1.getActivation());
@@ -780,15 +814,11 @@ public class NodeStructureImplTest {
 		
 		ns.decayNodeStructure(3);
 		
-		assertTrue(storedNode1.isRemovable());
 		assertFalse(ns.containsNode(storedNode1));
-		
 		assertTrue(ns.containsNode(storedNode2));
-		assertFalse(storedNode2.isRemovable());
-		
 		assertFalse(ns.containsLink(storedLink));
-		assertTrue(storedLink.isRemovable());
 	}
+	
 	@Test
 	public void testDecayNodeStructure2(){		
 		node1.setActivation(1.0);

@@ -386,7 +386,7 @@ public class ElementFactory {
 		StrategyDef sd = decayStrategies.get(name);
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
-			logger.log(Level.WARNING, "Strategy " + defaultExciteType
+			logger.log(Level.WARNING, "Strategy " + name
 					+ " does not exist. Default used instead.", TaskManager
 					.getCurrentTick());
 		}

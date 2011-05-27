@@ -35,7 +35,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
 
-	private double learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
+	private double learnableRemovableThreshold;
 
 	/**
 	 * @param activation current activation
@@ -64,8 +64,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 */
 	public LearnableImpl() {
 		super();
-		baseLevelActivation = 0.0;
-		this.learnableRemovableThreshold=0.0;
+		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
+		learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
 		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");

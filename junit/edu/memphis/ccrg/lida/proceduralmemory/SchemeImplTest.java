@@ -130,7 +130,7 @@ public class SchemeImplTest{
 		
 		Behavior b = scheme.getInstantiation();
 		assertEquals(action, b.getAction());
-		assertTrue(0.99 == b.getActivation());
+		assertEquals(0.99, b.getActivation(), 0.000001);
 		assertEquals(scheme, b.getGeneratingScheme());
 		
 		assertTrue(b.containsContextCondition(node1));
