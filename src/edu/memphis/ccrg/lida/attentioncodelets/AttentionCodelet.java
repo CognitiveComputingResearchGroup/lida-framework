@@ -9,9 +9,6 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
 
 /**
  * A kind of {@link Codelet} that checks {@link WorkspaceBuffer}s

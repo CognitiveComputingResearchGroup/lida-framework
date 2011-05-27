@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.episodicmemory;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.Workspace;
 
 /**
  * Listens to cues from the {@link Workspace}. 

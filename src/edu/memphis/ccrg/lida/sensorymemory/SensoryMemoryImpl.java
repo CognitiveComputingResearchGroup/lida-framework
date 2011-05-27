@@ -17,8 +17,6 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
 /**
  * Default implementation of the {@link SensoryMemory} module. This module should

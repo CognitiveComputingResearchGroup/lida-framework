@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
  * This interface should be implemented by the class that wants to receive a trigger

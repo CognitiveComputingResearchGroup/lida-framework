@@ -20,8 +20,6 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.List;
 
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
-
 /**
  * Allows users to add and edit {@link GuiPanel}s from the main {@link FrameworkGui}
  * @author Tamas Madl

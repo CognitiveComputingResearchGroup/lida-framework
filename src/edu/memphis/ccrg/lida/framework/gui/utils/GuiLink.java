@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.utils;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 
 /**

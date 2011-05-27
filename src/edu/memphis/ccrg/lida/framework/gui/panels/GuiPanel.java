@@ -13,7 +13,6 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Agent;
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
 
 /**

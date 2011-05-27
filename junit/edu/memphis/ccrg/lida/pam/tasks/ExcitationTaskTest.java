@@ -7,12 +7,13 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
@@ -21,8 +22,6 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
-import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
-import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 
 public class ExcitationTaskTest{
 	

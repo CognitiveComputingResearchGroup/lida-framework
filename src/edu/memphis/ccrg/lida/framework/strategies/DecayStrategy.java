@@ -9,8 +9,6 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-
 /**
  * A strategy pattern for decaying Activatibles or Learnables 
  * 

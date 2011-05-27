@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 
 /**
  * Specifies different ways a {@link FullyInitializable} will use

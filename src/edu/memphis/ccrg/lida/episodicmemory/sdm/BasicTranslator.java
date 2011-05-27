@@ -11,8 +11,8 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 import java.util.Collection;
 
 import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;

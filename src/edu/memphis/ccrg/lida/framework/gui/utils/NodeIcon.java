@@ -16,9 +16,6 @@ import java.awt.Graphics;
 
 import javax.swing.Icon;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-
 /**
  * Utility which {@link NodeStructurePanel} uses to represent {@link Node}.
  * 

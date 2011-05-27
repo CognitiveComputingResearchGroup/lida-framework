@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
  * TriggerTask is executed when the Timer object goes off. In this case the

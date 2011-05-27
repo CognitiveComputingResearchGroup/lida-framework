@@ -13,8 +13,6 @@ package edu.memphis.ccrg.lida.framework.initialization;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-
 /**
  * Definition of a {@link Codelet} object
  * @see AgentXmlFactory

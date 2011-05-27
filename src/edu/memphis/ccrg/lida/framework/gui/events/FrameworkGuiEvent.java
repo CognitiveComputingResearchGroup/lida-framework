@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.gui.events;
 
-import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**

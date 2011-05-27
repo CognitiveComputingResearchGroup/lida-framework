@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JSlider;
 
-import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;

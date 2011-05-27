@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
-import java.util.EmptyStackException;
 import java.util.Map;
 
 /**
@@ -35,18 +34,7 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	public LinearDecayStrategy() {
 		m = DEFAULT_M;
 	}
-
-	/**
-	 * Creates a new instance of LinearCurve, with specific values for the slope
-	 * and the intercept.
-	 * 
-	 * @param m
-	 *            The value of the slope.
-	 */
-	public LinearDecayStrategy(double m) {
-		this.m = m;
-	}
-
+	
 	@Override
 	public void init() {
 		m = (Double) getParam("m", DEFAULT_M);
@@ -55,35 +43,30 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double mm = m;
-		if (params !=null && params.length != 0) {
-			if(params[0] instanceof Double){
-				mm = (Double) params[0];
-			}
+		if (params != null && params.length != 0) {
+			mm = (Double) params[0];
 		}
-		currentActivation -= (mm * ticks);
-		return (currentActivation > 0.0) ? currentActivation : 0.0;
+		return calcActivation(currentActivation, ticks, mm);
 	}
 
 	@Override
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
 		double mm = m;
-		 
-		if (params != null) {
-			if (params.containsKey("m")){
-				if (params.get("m") instanceof Double){
-				
-				 mm = (Double) params.get("m");
-			    }else if(params.get("m") instanceof String){
-			    	
-			    	throw new EmptyStackException();
-
-					
-				}
-				
-			}				
-			
+		if(params != null && params.containsKey("m")){
+			mm = (Double) params.get("m");
 		}
+		return calcActivation(currentActivation, ticks, mm);
+	}
+	
+	/*
+	 * @param currentActivation
+	 * @param ticks
+	 * @param mm
+	 * @return
+	 */
+	private double calcActivation(double currentActivation, long ticks,
+			double mm) {
 		currentActivation -= (mm * ticks);
 		return (currentActivation > 0.0) ? currentActivation : 0.0;
 	}

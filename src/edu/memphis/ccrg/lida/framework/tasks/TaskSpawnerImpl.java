@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**

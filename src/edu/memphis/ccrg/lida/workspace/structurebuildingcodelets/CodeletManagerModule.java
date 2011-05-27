@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**

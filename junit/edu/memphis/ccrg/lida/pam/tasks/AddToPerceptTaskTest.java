@@ -10,7 +10,8 @@
  */
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
@@ -31,7 +32,6 @@ import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
-import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 
 /**
  * @author Ryan J. McCall, Usef Faghihi
