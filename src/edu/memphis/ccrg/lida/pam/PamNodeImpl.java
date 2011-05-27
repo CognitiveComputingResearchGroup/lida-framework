@@ -43,7 +43,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		super();
 		groundingPamNode = this;
 		learnable = new LearnableImpl();
-		initLearnable();
 	}
 	
 	/**
@@ -54,14 +53,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 		super(pamNode);
 		groundingPamNode = this;
 		this.learnable=new LearnableImpl(pamNode.learnable);
-	}
-	
-	private void initLearnable() {
-		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
-		ElementFactory factory = ElementFactory.getInstance();
-		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
-		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
 	}
 
 	/** 
@@ -79,10 +70,10 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public void init(){
 		ElementFactory factory = ElementFactory.getInstance();
 		
-	    String strategyName = (String)getParam("baseLevelDecayStrategy","pamDefaultDecay");
+	    String strategyName = (String)getParam("baseLevelDecayStrategy","defaultDecay");
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));
 		
-	    strategyName = (String)getParam("baseLevelExciteStrategy","pamDefaultExcite");
+	    strategyName = (String)getParam("baseLevelExciteStrategy","defaultExcite");
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
 		
 		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);

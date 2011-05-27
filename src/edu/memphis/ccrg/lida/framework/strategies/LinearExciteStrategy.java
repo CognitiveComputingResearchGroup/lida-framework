@@ -43,21 +43,38 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 	@Override
 	public double excite(double currentActivation, double excitation, Object... params) {
 		double mm = m;
-		if (params.length != 0) {
+		if (params!= null && params.length != 0) {
 			mm = (Double) params[0];
 		}
 		
-		currentActivation += mm * excitation;
-		if(currentActivation >= 1.0)
-			return 1.0;
-		if(currentActivation <= 0.0)
-			return 0.0;
-		return currentActivation;
+		return calcActivation(currentActivation, excitation, mm);
 	}
-
+	
 	@Override
 	public double excite(double currentActivation, double excitation, Map<String, ?> params) {
-		return excite(currentActivation, excitation, params.values().toArray());
+		double mm = m;
+		if(params != null && params.containsKey("m")){
+			mm = (Double) params.get("m");
+		}
+		
+		return calcActivation(currentActivation, excitation, mm);
 	} 
+
+	/*
+	 * @param currentActivation
+	 * @param excitation
+	 * @param mm
+	 * @return
+	 */
+	private double calcActivation(double currentActivation, double excitation,
+			double mm) {
+		currentActivation += mm * excitation;
+		if(currentActivation > 1.0){
+			return 1.0;
+		}else if(currentActivation < 0.0){
+			return 0.0;
+		}
+		return currentActivation;
+	}
 
 }

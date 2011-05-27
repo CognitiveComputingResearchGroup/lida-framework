@@ -17,10 +17,10 @@ import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.DefaultTotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
@@ -386,7 +386,7 @@ public class ElementFactory {
 		StrategyDef sd = decayStrategies.get(name);
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
-			logger.log(Level.WARNING, "Strategy " + defaultExciteType
+			logger.log(Level.WARNING, "Strategy " + name
 					+ " does not exist. Default used instead.", TaskManager
 					.getCurrentTick());
 		}

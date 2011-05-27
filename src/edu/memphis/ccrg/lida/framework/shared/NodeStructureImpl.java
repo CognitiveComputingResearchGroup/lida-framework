@@ -697,7 +697,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public void clearLinks() {
+	public synchronized void clearLinks() {
 		for (Link l : links.values()) {
 			removeLink(l);
 		}
@@ -705,7 +705,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	}
 
 	@Override
-	public void clearNodeStructure() {
+	public synchronized void clearNodeStructure() {
 		linkableMap.clear();
 		nodes.clear();
 		links.clear();

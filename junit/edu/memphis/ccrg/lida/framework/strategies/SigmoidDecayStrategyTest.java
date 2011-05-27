@@ -7,15 +7,10 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * 
- * @author Daqi
- */
 
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +59,7 @@ public class SigmoidDecayStrategyTest {
 		assertEquals(1.0, result, epsilon);
 		
 		result = strategy.decay(0.9999999, 65, 0.3, 0.4);
-		assertEquals(0.032865, result, epsilon);
+		assertEquals(0.032834, result, epsilon);
 		
 		result = strategy.decay(.6, 0, 0.3, 0.4);
 		assertEquals(.6, result, epsilon);
@@ -104,8 +99,8 @@ public class SigmoidDecayStrategyTest {
 		result = strategy.decay(1.0, 3, params);
 		assertEquals(1.0, result, epsilon);
 
-		result = strategy.decay(0.999999999, 65, params);
-		assertEquals(0.772637, result, epsilon);
+		result = strategy.decay(0.9999999, 65, params);
+		assertEquals(0.032834, result, epsilon);
 	}
 	
 	@Test
@@ -122,8 +117,8 @@ public class SigmoidDecayStrategyTest {
 		result = strategy.decay(1.0, 3);
 		assertEquals(1.0, result, epsilon);
 
-		result = strategy.decay(0.999999999, 65);
-		assertEquals(0.772637, result, epsilon);
+		result = strategy.decay(0.9999999, 65);
+		assertEquals(0.032834, result, epsilon);
 	}
 
 }

@@ -14,13 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * 
@@ -38,7 +35,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
 
-	private double learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
+	private double learnableRemovableThreshold;
 
 	/**
 	 * @param activation current activation
@@ -67,8 +64,8 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 */
 	public LearnableImpl() {
 		super();
-		baseLevelActivation = 0.0;
-		this.learnableRemovableThreshold=0.0;
+		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
+		learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
 		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");

@@ -42,7 +42,6 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		super();
 		groundingPamLink = this;
 		learnable = new LearnableImpl();
-		initLearnable();
 	}
 	/**
 	 * Copy constructor
@@ -52,14 +51,6 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		super(pamLink);
 		groundingPamLink = this;
 		this.learnable=new LearnableImpl(pamLink.learnable);
-	}
-	 
-	private void initLearnable() {
-		learnable.setBaseLevelActivation(Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnable.setBaseLevelRemovalThreshold(Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		ElementFactory factory = ElementFactory.getInstance();
-		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy("pamDefaultDecay"));
-		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy("pamDefaultExcite"));
 	}
 
 	/** 
@@ -77,10 +68,10 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public void init(){
 		ElementFactory factory = ElementFactory.getInstance();
 		
-	    String strategyName = (String)getParam("baseLevelDecayStrategy","pamDefaultDecay");
+	    String strategyName = (String)getParam("baseLevelDecayStrategy","defaultDecay");
 		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));
 		
-	    strategyName = (String)getParam("baseLevelExciteStrategy","pamDefaultExcite");
+	    strategyName = (String)getParam("baseLevelExciteStrategy","defaultExcite");
 		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
 		
 		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
