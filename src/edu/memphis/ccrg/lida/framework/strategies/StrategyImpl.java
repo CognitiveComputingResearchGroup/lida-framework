@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public abstract class StrategyImpl implements Strategy {
 
-	protected Map<String, ?> parameters;
+	private Map<String, ?> parameters;
 	
 	/*
 	 * (non-Javadoc)

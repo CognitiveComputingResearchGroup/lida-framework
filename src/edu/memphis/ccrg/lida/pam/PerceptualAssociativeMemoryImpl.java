@@ -63,8 +63,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	private List<PamListener> pamListeners;
 
-	/*
-	 * Contains all of the Node, Links and their connections.
+	/**
+	 * A {@link NodeStructure} which contains all of the {@link PamNode}, {@link PamLink} and their connections.
 	 */
 	protected PamNodeStructure pamNodeStructure;
 
@@ -79,7 +79,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	private static ElementFactory factory = ElementFactory.getInstance();
 
 	private static final int DEFAULT_EXCITATION_TASK_TICKS = 1;
-	protected int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
+	private int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
 
 	private static final int DEFAULT_PROPAGATION_TASK_TICKS = 1;
 	private int propagationTaskTicksPerRun = DEFAULT_PROPAGATION_TASK_TICKS;
@@ -92,10 +92,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;
-
-	// private static final String defaultBaseLevelExciteStrategy =
-	// "slowExcite";
-	// private static final String defaultBaseLevelDecayStrategy = "slowDecay";
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
@@ -167,6 +163,20 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	@Override
 	public PropagationStrategy getPropagationStrategy() {
 		return propagationStrategy;
+	}
+	
+	/**
+	 * @return the excitationTaskTicksPerRun
+	 */
+	public int getExcitationTaskTicksPerRun() {
+		return excitationTaskTicksPerRun;
+	}
+
+	/**
+	 * @return the propagationTaskTicksPerRun
+	 */
+	public int getPropagationTaskTicksPerRun() {
+		return propagationTaskTicksPerRun;
 	}
 
 	/*
@@ -703,7 +713,16 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		return null;
 	}
 
+	/**
+	 * Internal implementation of {@link NodeStructureImpl}
+	 * Allows {@link Node} to be added without copying them.
+	 */
 	protected static class PamNodeStructure extends NodeStructureImpl {
+		/**
+		 * 
+		 * @param nodeType Default node type
+		 * @param linkType Default link type
+		 */
 		public PamNodeStructure(String nodeType, String linkType) {
 			super(nodeType, linkType);
 		}

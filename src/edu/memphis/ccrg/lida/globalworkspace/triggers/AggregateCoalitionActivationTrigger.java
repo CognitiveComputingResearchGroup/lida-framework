@@ -29,7 +29,13 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	private Logger logger = Logger
 			.getLogger(AggregateCoalitionActivationTrigger.class
 					.getCanonicalName());
+	/**
+	 * The {@link GlobalWorkspace}
+	 */
 	protected GlobalWorkspace gw;
+	/**
+	 * The activation treshold 
+	 */
 	protected double threshold;
 
 	/**

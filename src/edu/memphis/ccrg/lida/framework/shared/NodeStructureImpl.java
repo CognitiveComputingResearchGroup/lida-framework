@@ -127,11 +127,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		internalMerge(original);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#copy()
-	 */
 	@Override
 	public NodeStructure copy() {
 		logger.log(Level.FINER, "Copying NodeStructure " + this, TaskManager
@@ -139,13 +134,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return new NodeStructureImpl(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.shared.NodeStructure#addLink(edu.memphis.ccrg.lida
-	 * .shared.Link)
-	 */
 	@Override
 	public synchronized Link addDefaultLink(Link l) {
 		if (l == null) {
@@ -214,14 +202,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				.getGroundingPamLink());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultLink(int,
-	 * edu.memphis.ccrg.lida.framework.shared.ExtendedId,
-	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double, double)
-	 */
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, ExtendedId sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
@@ -258,13 +238,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				activation, removalThreshold, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultLink(int,
-	 * int, edu.memphis.ccrg.lida.framework.shared.LinkCategory, double, double)
-	 */
 	@Override
 	public synchronized Link addDefaultLink(int sourceId, int sinkId,
 			LinkCategory category, double activation, double removalThreshold) {
@@ -293,15 +266,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				activation, removalThreshold, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultLink(edu
-	 * .memphis.ccrg.lida.framework.shared.Node,
-	 * edu.memphis.ccrg.lida.framework.shared.Linkable,
-	 * edu.memphis.ccrg.lida.framework.shared.LinkCategory, double, double)
-	 */
 	@Override
 	public synchronized Link addDefaultLink(Node source, Linkable sink,
 			LinkCategory category, double activation, double removalThreshold) {
@@ -359,11 +323,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return newLink;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addLinkSet(java.util.Set)
-	 */
 	@Override
 	public Collection<Link> addDefaultLinks(Collection<Link> links) {
 		if (links == null) {
@@ -390,13 +349,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return copiedLinks;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addDefaultNode(edu
-	 * .memphis.ccrg.lida.framework.shared.Node)
-	 */
 	@Override
 	public Node addDefaultNode(Node n) {
 		if (n == null) {
@@ -408,13 +360,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return addNode(n, defaultNodeType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#addLink(edu.memphis
-	 * .ccrg.lida.framework.shared.Link, java.lang.String)
-	 */
 	@Override
 	public synchronized Link addLink(Link l, String linkType) {
 		if (l == null) {
@@ -450,13 +395,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return link;
 	}
 
-	/*
-	 * @param n
-	 * 
-	 * @param nodeType
-	 * 
-	 * @return
-	 */
 	@Override
 	public synchronized Node addNode(Node n, String nodeType) {
 		if (n == null) {
@@ -526,11 +464,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			return node;
 		}
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.shared.NodeStructure#addNodes(java.util.Set)
-	 */
+	
 	@Override
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes) {
 		if (nodes == null) {
@@ -551,8 +485,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	/**
 	 * This method can be overwritten to customize the Node Creation.
 	 * 
-	 * @param oNode
-	 *            The original Node
+	 * @param oNode The original Node
+	 * @param desiredType the {@link ElementFactory} name of the desired node type
 	 * @return The Node to be used in this NodeStructure
 	 */
 	protected Node getNewNode(Node oNode, String desiredType) {
@@ -565,6 +499,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param oLink
 	 *            original {@link Link}
+	 * @param newType the {@link ElementFactory} name of the new node type
 	 * @param source
 	 *            The new source
 	 * @param sink
@@ -619,25 +554,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.shared.NodeStructure#deleteLink(edu.memphis.ccrg
-	 * .lida.shared.Link)
-	 */
 	@Override
 	public void removeLink(Link l) {
 		removeLinkable(l);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.shared.NodeStructure#deleteLinkable(edu.memphis
-	 * .ccrg.lida.shared.Linkable)
-	 */
+	
 	@Override
 	public synchronized void removeLinkable(Linkable linkable) {
 		// First check if the NS actually contains specified linkable to prevent
@@ -721,23 +642,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLink(edu.memphis
-	 * .ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public Link getLink(ExtendedId ids) {
 		return links.get(ids);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinks()
-	 */
 	@Override
 	public Collection<Link> getLinks() {
 		Collection<Link> aux = links.values();
@@ -748,13 +657,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.shared.NodeStructure#getLinks(edu.memphis.ccrg.
-	 * lida.shared.Linkable)
-	 */
 	@Override
 	public Set<Link> getAttachedLinks(Linkable linkable) {
 		if (linkable == null) {
@@ -769,13 +671,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.shared.NodeStructure#getLinks(edu.memphis.ccrg.
-	 * lida.shared.Linkable, edu.memphis.ccrg.lida.shared.LinkType)
-	 */
 	@Override
 	public Set<Link> getAttachedLinks(Linkable linkable, LinkCategory category) {
 		if (linkable == null) {
@@ -794,11 +689,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return Collections.unmodifiableSet(attachedLinks);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getNodes()
-	 */
 	@Override
 	public Collection<Node> getNodes() {
 		Collection<Node> aux = nodes.values();
@@ -809,34 +699,16 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinkableMap()
-	 */
 	@Override
 	public Map<Linkable, Set<Link>> getLinkableMap() {
 		return Collections.unmodifiableMap(linkableMap);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getNode(int)
-	 */
 	@Override
 	public Node getNode(int id) {
 		return nodes.get(id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getNode(edu.memphis
-	 * .ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public Node getNode(ExtendedId id) {
 		if (id == null) {
@@ -849,44 +721,21 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinkCount()
-	 */
 	@Override
 	public int getLinkCount() {
 		return links.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getNodeCount()
-	 */
 	@Override
 	public int getNodeCount() {
 		return nodes.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinkableCount()
-	 */
 	@Override
 	public int getLinkableCount() {
 		return linkableMap.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinks(edu.memphis
-	 * .ccrg.lida.framework.shared.LinkCategory)
-	 */
 	@Override
 	public Set<Link> getLinks(LinkCategory category) {
 		Set<Link> result = new ConcurrentHashSet<Link>();
@@ -900,13 +749,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return Collections.unmodifiableSet(result);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinkable(edu.
-	 * memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public Linkable getLinkable(ExtendedId ids) {
 		if (ids.isNodeId()) {
@@ -916,45 +758,21 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getDefaultLinkType()
-	 */
 	@Override
 	public String getDefaultLinkType() {
 		return defaultLinkType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getDefaultNodeType()
-	 */
 	@Override
 	public String getDefaultNodeType() {
 		return defaultNodeType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeStructure#getLinkables()
-	 */
 	@Override
 	public Collection<Linkable> getLinkables() {
 		return Collections.unmodifiableCollection(linkableMap.keySet());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getParentLinkMap
-	 * (edu.memphis.ccrg.lida.framework.shared.Node)
-	 */
 	@Override
 	public Map<Linkable, Link> getConnectedSinks(Node n) {
 		Map<Linkable, Link> sinkLinkMap = new HashMap<Linkable, Link>();
@@ -970,13 +788,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return Collections.unmodifiableMap(sinkLinkMap);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#getConnectedSources
-	 * (edu.memphis.ccrg.lida.framework.shared.Linkable)
-	 */
 	@Override
 	public Map<Node, Link> getConnectedSources(Linkable linkable) {
 		Map<Node, Link> sourceLinkMap = new HashMap<Node, Link>();
@@ -992,105 +803,54 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		return Collections.unmodifiableMap(sourceLinkMap);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsLink(edu
-	 * .memphis.ccrg.lida.framework.shared.Link)
-	 */
 	@Override
 	public boolean containsLink(Link l) {
 		return links.containsKey(l.getExtendedId());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsLink(edu
-	 * .memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public boolean containsLink(ExtendedId id) {
 		return links.containsKey(id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsLinkable
-	 * (edu.memphis.ccrg.lida.framework.shared.Linkable)
-	 */
 	@Override
 	public boolean containsLinkable(Linkable l) {
 		return linkableMap.containsKey(l);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsLinkable
-	 * (edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public boolean containsLinkable(ExtendedId id) {
 		return (containsNode(id) || containsLink(id));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsNode(int)
-	 */
 	@Override
 	public boolean containsNode(int id) {
 		return nodes.containsKey(id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsNode(edu
-	 * .memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public boolean containsNode(ExtendedId id) {
 		return id.isNodeId() && nodes.containsKey(id.getSourceNodeId());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.shared.NodeStructure#containsNode(edu
-	 * .memphis.ccrg.lida.framework.shared.Node)
-	 */
 	@Override
 	public boolean containsNode(Node n) {
 		return nodes.containsKey(n.getId());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		String s = "NODES\n";
+		String s = "Nodes: [";
 		for (Node n : nodes.values()) {
-			s = s + (n.getLabel() + "--" + n.getId() + "\n");
+			s = s + (n.getLabel() + "--" + n.getId() +",");
 		}
+		s += "]";
 
-		s = s + "LINKS\n";
+		s = s + "Links: [";
 		for (Link l : links.values()) {
-			s = s + (l.getLabel() + "--" + l.getExtendedId() + "\n");
+			s = s + (l.getLabel() + "--" + l.getExtendedId() + ",");
 		}
+		s += "]";
 		return s;
 	}
 

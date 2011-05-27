@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -27,20 +28,20 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 	
-	/*
-	 * Set of workspace buffers this codelet 'looks at'
+	/**
+	 * Set of workspace buffers this codelet reads from.
 	 */
 	protected Set<WorkspaceBuffer> readableBuffers;
 	
-	/*
-	 *  Buffer written to.
+	/**
+	 *  {@link WorkspaceBuffer} to be written to.
 	 */
 	protected WorkspaceBuffer writableBuffer;
 	
-	/*
+	/**
 	 * Expected results of this codelets
 	 */
-	protected CodeletRunResult runResults;
+	protected Object runResults;
 	
 	/**
 	 * Default Constructor
@@ -48,7 +49,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	public StructureBuildingCodeletImpl(){
 		super();
 		readableBuffers = new HashSet<WorkspaceBuffer>();
-		runResults = new BasicCodeletResult();
+		runResults = new HashMap<String, Object>();
 	}
 	
 	@Override
@@ -80,7 +81,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	protected abstract void runThisFrameworkTask();
 	
 	@Override
-	public CodeletRunResult getCodeletRunResult(){
+	public Object getCodeletRunResult(){
 		return runResults;
 	}
 

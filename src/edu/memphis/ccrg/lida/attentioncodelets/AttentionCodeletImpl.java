@@ -38,6 +38,9 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 	 */
 	protected WorkspaceBuffer currentSituationalModel;
 
+	/**
+	 * Module where codelet will add {@link Coalition}
+	 */
 	protected GlobalWorkspace globalWorkspace;
 
 	/**

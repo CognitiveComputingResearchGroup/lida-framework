@@ -36,7 +36,13 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
  */
 public abstract class GuiPanelImpl extends javax.swing.JPanel implements GuiPanel{
 
+	/**
+	 * the {@link FrameworkGuiController}
+	 */
 	protected FrameworkGuiController controller;
+	/**
+	 * the {@link Agent}
+	 */
 	protected Agent agent;
 
     /** Creates new form GuiPanelImpl */

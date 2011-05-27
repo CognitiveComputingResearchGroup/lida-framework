@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 
+
 /**
  * This interface should be implemented by the class that wants to receive a trigger
  * notification. In general, it is the same class that implements {@link GlobalWorkspace} interface.

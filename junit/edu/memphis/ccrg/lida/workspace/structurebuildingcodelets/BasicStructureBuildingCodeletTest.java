@@ -63,14 +63,12 @@ public class BasicStructureBuildingCodeletTest {
 
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
 		codelet.setSoughtContent(soughtContent);
-		assertNull(codelet.runResults.getRunResults());
 		
 		codelet.runThisFrameworkTask();
 		
 		NodeStructure ns = writeableBuffer.content;
 		assertNotNull(ns);
 		assertEquals(0,ns.getLinkableCount());
-		assertNotNull(codelet.runResults.getRunResults());
 		
 		soughtContent.addDefaultNode(node1);
 		codelet.setSoughtContent(soughtContent);

@@ -10,6 +10,7 @@
  */
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -29,8 +30,12 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	private static final Logger logger = Logger.getLogger(FrameworkModuleImpl.class.getCanonicalName());
 	private ModuleName moduleName;
 	private Map<ModuleName, FrameworkModule> submodules = new ConcurrentHashMap<ModuleName, FrameworkModule>();
+	/**
+	 * {@link TaskSpawner} used by this module
+	 */
 	protected TaskSpawner taskSpawner;
-	protected Map<String, ?> parameters;
+	
+	private Map<String, ?> parameters;
 
 	/**
 	 * Default constructor
@@ -132,8 +137,12 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		}
 	}
 
+	/**
+	 * Convenience method to get submodules
+	 * @return map of submodules by {@link ModuleName}
+	 */
 	protected Map<ModuleName, FrameworkModule> getSubmodules() {
-		return submodules;
+		return Collections.unmodifiableMap(submodules);
 	}
 
 	/**

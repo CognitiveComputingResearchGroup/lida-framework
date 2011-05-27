@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
 
+
 /**
  * Specifies different ways a {@link FullyInitializable} will use
  * an associated module.

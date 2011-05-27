@@ -44,6 +44,9 @@ public class TaskQueuePanel extends GuiPanelImpl {
 	
 	private Map<Long, Set<FrameworkTask>> tasks= new HashMap<Long, Set<FrameworkTask>>();
 
+	/**
+	 * Default constructor
+	 */
 	public TaskQueuePanel() {
 		initComponents();
 	}

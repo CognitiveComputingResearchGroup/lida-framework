@@ -29,6 +29,10 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	private int ticksPerStep = defaultTicksPerStep;
 	private long taskID;
 	private long nextExcecutionTicksPerStep = defaultTicksPerStep;
+	
+	/**
+	 * {@link TaskStatus} of this task
+	 */
 	protected TaskStatus status = TaskStatus.WAITING;
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner controllingTS;

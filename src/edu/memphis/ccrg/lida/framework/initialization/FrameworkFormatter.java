@@ -4,6 +4,11 @@ import java.text.MessageFormat;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+/**
+ * Logger formatter for the framework that can be used with any {@link Handler}.
+ * @author Javier Snaider
+ * @see LogManager
+ */
 public class FrameworkFormatter extends Formatter {
 
 	@Override

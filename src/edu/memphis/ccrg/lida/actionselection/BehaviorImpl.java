@@ -124,9 +124,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return (unsatisfiedContextConditionCount.get() == 0);
 	}
 
-	/**
-	 * Update the activation of the context condition from the broadcast
-	 */
 	@Override
 	public void updateContextCondition(Node broadcastCondition) {
 		Node existingCondition = context.getNode(broadcastCondition.getId());

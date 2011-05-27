@@ -22,6 +22,9 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public abstract class CommandImpl implements Command {
 	
 	private Map<String,Object> parameters=new HashMap<String,Object>();
+	/**
+	 * Result of the command's execution. May be set during the execution of the {@link #execute(Agent)} method.
+	 */
 	protected Object result;
 
 	@Override

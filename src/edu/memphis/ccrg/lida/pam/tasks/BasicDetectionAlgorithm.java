@@ -39,8 +39,17 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
 	
+	/**
+	 * the {@link SensoryMemory}
+	 */
 	protected SensoryMemory sensoryMemory;
+	/**
+	 * the {@link PerceptualAssociativeMemory}
+	 */
 	protected PerceptualAssociativeMemory pam;
+	/**
+	 * {@link PamLinkable} this algorithm detects
+	 */
 	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();	
 
 	/**
