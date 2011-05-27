@@ -24,7 +24,7 @@ public abstract class AgentActionImpl implements AgentAction {
 	private static long idGenerator = 0;
 	private long id;
 	private Object content;
-	protected FrameworkModule module;
+	private FrameworkModule module;
 	private String label;
 	private List<AgentAction> subActions;
 	private Topology topology = Topology.BASIC;

@@ -32,8 +32,17 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl implements DetectionAlgorithm {
 
 	private static final Logger logger = Logger.getLogger(MultipleDetectionAlgorithm.class.getCanonicalName());
+	/**
+	 * Map of {@link PamLinkable}
+	 */
 	protected Map<String, PamLinkable> pamNodeMap;
+	/**
+	 * the {@link PerceptualAssociativeMemory}
+	 */
 	protected PerceptualAssociativeMemory pam;
+	/**
+	 * {@link PamLinkable} this algorithm detects
+	 */
 	protected SensoryMemory sensoryMemory;
 	
 	/**

@@ -7,7 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
@@ -59,14 +63,12 @@ public class BasicStructureBuildingCodeletTest {
 
 		readableBuffer.addBufferContent((WorkspaceContent) readableContent);
 		codelet.setSoughtContent(soughtContent);
-		assertNull(codelet.runResults.getRunResults());
 		
 		codelet.runThisFrameworkTask();
 		
 		NodeStructure ns = writeableBuffer.content;
 		assertNotNull(ns);
 		assertEquals(0,ns.getLinkableCount());
-		assertNotNull(codelet.runResults.getRunResults());
 		
 		soughtContent.addDefaultNode(node1);
 		codelet.setSoughtContent(soughtContent);

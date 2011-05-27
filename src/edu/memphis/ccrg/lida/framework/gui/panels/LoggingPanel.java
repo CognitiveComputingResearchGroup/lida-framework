@@ -46,7 +46,6 @@ public class LoggingPanel extends GuiPanelImpl {
 
 	private String logName = "edu.memphis.ccrg.lida";
 	private Logger logger = Logger.getLogger(logName);
-	private String level = "INFO";
 
 	/** Creates new form LogPanel */
 	public LoggingPanel() {
@@ -272,15 +271,11 @@ public class LoggingPanel extends GuiPanelImpl {
 		}
 	}
 
-	public String getLevel() {
-		return level;
-	}
-
-	public void setLevel(String level) {
-		this.level = level;
-	}
-
-	public class GuiLogHandler extends Handler {
+	/*
+	 * Logger handler for this panel
+	 *
+	 */
+	private class GuiLogHandler extends Handler {
 
 		/** Creates a new instance of GuiLogHandler */
 		public GuiLogHandler() {

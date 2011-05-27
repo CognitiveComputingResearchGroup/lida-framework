@@ -34,38 +34,38 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	private static final Logger logger = Logger
 			.getLogger(BehaviorImpl.class.getCanonicalName());
 
-	/**
+	/*
 	 * Label for description
 	 */
 	private String label = "blank behavior";
 
-	/**
+	/*
 	 * Context for this behavior
 	 */
 	private NodeStructure context;
 
-	/**
-	 * Set of nodes that this scheme adds
+	/*
+	 * Set of nodes that this behavior adds
 	 */
 	private NodeStructure addingList;
 
-	/**
-     * 
-     */
+	/*
+	 * Set of nodes that this behavior deletes
+	 */
 	private NodeStructure deletingList;
 
-	/**
+	/*
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
 	 * executes
 	 */
 	private AgentAction action;
 
-	/**
+	/*
 	 * unique identifier
 	 */
 	private long id;
 
-	/**
+	/*
 	 * optimization for checking if context is all satisfied
 	 */
 	private AtomicInteger unsatisfiedContextConditionCount = new AtomicInteger(0);
@@ -124,9 +124,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 		return (unsatisfiedContextConditionCount.get() == 0);
 	}
 
-	/**
-	 * Update the activation of the context condition from the broadcast
-	 */
 	@Override
 	public void updateContextCondition(Node broadcastCondition) {
 		Node existingCondition = context.getNode(broadcastCondition.getId());
@@ -328,7 +325,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	
 	@Override
 	public String toString(){
-
 		return getLabel() + " action: "  + getAction() + 
 		" activ. " + getActivation() + " "+ getId();
 	}

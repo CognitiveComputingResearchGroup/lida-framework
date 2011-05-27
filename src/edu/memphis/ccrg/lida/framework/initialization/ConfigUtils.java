@@ -54,6 +54,11 @@ public class ConfigUtils {
 		return properties;
 	}
 
+	/**
+	 * Configures the Logger manager with specified configFile properties file.
+	 * @param configFile path of properties file
+	 * @see LogManager
+	 */
 	public static void configLoggers(String configFile) {
 		try {
 			FileInputStream fis = new FileInputStream(configFile);

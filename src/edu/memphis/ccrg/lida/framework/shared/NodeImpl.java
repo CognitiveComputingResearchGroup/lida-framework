@@ -31,8 +31,11 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	private ExtendedId extendedId;
 	private String label;
 	private double desirability;
+	/**
+	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
+	 */
 	protected PamNode groundingPamNode;
-	protected Map<String, ?> parameters;
+	private Map<String, ?> parameters;
 	
 	/**
 	 * Default constructor
@@ -69,6 +72,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		extendedId = new ExtendedId(id);
 	}
 	
+	/**
+	 * Convenience method to set Node's {@link ExtendedId}.  Also sets node's id.
+	 * @param eid {@link ExtendedId}
+	 */
 	public void setExtendedId(ExtendedId eid) {
 		if(eid == null){
 			logger.log(Level.WARNING, "Supplied ExtendedId was null. ExtendedId not set.", TaskManager.getCurrentTick());
@@ -104,6 +111,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	/**
 	 * This method compares this object with any kind of Node. returns true if
 	 * the id of both are the same.
+	 * @param o Object
 	 */
 	@Override
 	public boolean equals(Object o) {

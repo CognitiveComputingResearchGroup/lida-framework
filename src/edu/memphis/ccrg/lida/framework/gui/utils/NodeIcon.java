@@ -16,18 +16,21 @@ import java.awt.Graphics;
 
 import javax.swing.Icon;
 
-import edu.memphis.ccrg.lida.framework.gui.panels.NodeStructurePanel;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-
 /**
- * Utility which {@link NodeStructurePanel} uses to represent {@link Node}.
+ * Utility which {@link NodeStructurePanel} uses to represent {@link Node} and {@link Link}.
  * 
  * @author Javier Snaider
  *
  */
 public class NodeIcon implements Icon {
 	
+	/**
+	 * Default node icon
+	 */
 	public static final Icon NODE_ICON=new NodeIcon(20,Color.red);
+	/**
+	 * Default link icon
+	 */
 	public static final Icon LINK_ICON=new NodeIcon(5,Color.black);
 
 	private int size;

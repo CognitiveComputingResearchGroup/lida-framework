@@ -20,10 +20,10 @@ import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 public interface StructureBuildingCodelet extends Codelet{
 	 
 	 /** 
-	  * Returns current {@link CodeletRunResult}
+	  * Returns result of codelet's run
 	 * @return Current information about the codelet's progress
 	 */
-	public CodeletRunResult getCodeletRunResult();
+	public Object getCodeletRunResult();
 	
 	/**
 	 * Clears this codelet's fields in preparation for reuse. 

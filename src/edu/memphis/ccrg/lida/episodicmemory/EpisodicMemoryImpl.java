@@ -36,10 +36,23 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(EpisodicMemoryImpl.class.getCanonicalName());
 
+	/**
+	 * Default number of hard locations
+	 */
 	public static final int DEF_HARD_LOCATIONS = 10000;
+	
+	/**
+	 * Default address length for {@link SparseDistributedMemory}
+	 */
 	public static final int DEF_ADDRESS_LENGTH = 1000;
+	/**
+	 * Default word length for {@link SparseDistributedMemory}
+	 */
 	public static final int DEF_WORD_LENGTH = 1000;
-	public static final int DEF_ACTIVATION_RADIUS = 451;
+	/**
+	 * Default access radius for {@link SparseDistributedMemory}
+	 */
+	public static final int DEF_ACCESS_RADIUS = 451;
 
 	private SparseDistributedMemory sdm;
 	private Translator translator;
@@ -162,7 +175,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 				DEF_ADDRESS_LENGTH);
 		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
 		int radius = (Integer) getParam("tem.activationRadius",
-				DEF_ACTIVATION_RADIUS);
+				DEF_ACCESS_RADIUS);
 		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,
 				addressLength);
 	}

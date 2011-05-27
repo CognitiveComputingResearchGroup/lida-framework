@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level; 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
@@ -39,8 +39,17 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
 	
+	/**
+	 * the {@link SensoryMemory}
+	 */
 	protected SensoryMemory sensoryMemory;
+	/**
+	 * the {@link PerceptualAssociativeMemory}
+	 */
 	protected PerceptualAssociativeMemory pam;
+	/**
+	 * {@link PamLinkable} this algorithm detects
+	 */
 	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();	
 
 	/**

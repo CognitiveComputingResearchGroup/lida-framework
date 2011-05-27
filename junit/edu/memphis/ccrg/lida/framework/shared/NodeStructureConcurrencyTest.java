@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.logging.Level;

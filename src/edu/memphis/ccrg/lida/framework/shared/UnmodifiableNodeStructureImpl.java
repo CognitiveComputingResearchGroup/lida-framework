@@ -43,7 +43,7 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure {
 
 	/**
 	 * Returns true if both NodeStructures have the same nodes and links.
-	 * 
+	 * @param o Object
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

@@ -52,7 +52,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	protected PamLink groundingPamLink;
 	
-	protected Map<String, ?> params;
+	private Map<String, ?> params;
 	
 	/**
 	 * Default constructor

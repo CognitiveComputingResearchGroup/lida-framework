@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
@@ -43,7 +42,13 @@ public class TaskManager {
 	private static final Logger logger = Logger.getLogger(TaskManager.class
 			.getCanonicalName());
 
+	/**
+	 * Default minimum duration of a tick in real time (ms)
+	 */
 	public static final int DEFAULT_TICK_DURATION = 1;
+	/**
+	 * Default number of threads in the {@link ExecutorService}
+	 */
 	public static final int DEFAULT_NUMBER_OF_THREADS = 50;
 	/*
 	 * Determines whether or not spawned tasks should run
@@ -62,24 +67,24 @@ public class TaskManager {
 	private volatile Object lock = new Object();
 
 	private ConcurrentMap<Long, Set<FrameworkTask>> taskQueue;
-	/**
+	/*
 	 * Length of time of 1 tick in milliseconds. The actual time thats the tick
 	 * unit represents. In practice tickDuration affects the speed of tasks in
 	 * the simulation.
 	 */
 	private int tickDuration = DEFAULT_TICK_DURATION;
 
-	/**
+	/*
 	 * Service used to execute the tasks
 	 */
 	private ExecutorService executorService;
 
-	/**
+	/*
 	 * Main thread of the system.
 	 */
 	private Thread taskManagerThread;
 
-	/**
+	/*
 	 * List of the FrameworkModules managed by this class
 	 */
 	private List<DecayableWrapper> decaybles = new ArrayList<DecayableWrapper>();
