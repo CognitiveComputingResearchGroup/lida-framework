@@ -328,7 +328,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	
 	@Override
 	public String toString(){
-
 		return getLabel() + " action: "  + getAction() + 
 		" activ. " + getActivation() + " "+ getId();
 	}

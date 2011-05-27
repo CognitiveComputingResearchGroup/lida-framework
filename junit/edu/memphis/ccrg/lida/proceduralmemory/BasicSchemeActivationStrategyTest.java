@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -78,7 +79,7 @@ public class BasicSchemeActivationStrategyTest{
 		map.put(node2, node2Set);
 		map.put(node3, node3Set);
 	}	
-	@Before
+	@Test
 	public void test1(){
 		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
@@ -97,7 +98,7 @@ public class BasicSchemeActivationStrategyTest{
 		assertTrue(instantiated.contains(b));
 		assertTrue(instantiated.contains(c));
 	}
-	@Before
+	@Test
 	public void test2(){
 		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
@@ -114,7 +115,7 @@ public class BasicSchemeActivationStrategyTest{
 		assertTrue(instantiated.contains(b));
 		assertFalse(instantiated.contains(c));
 	}
-	@Before
+	@Test
 	public void test3(){
 		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		
@@ -131,7 +132,7 @@ public class BasicSchemeActivationStrategyTest{
 		assertTrue(instantiated.contains(b));
 		assertTrue(instantiated.contains(c));
 	}
-	@Before
+	@Test
 	public void test4(){
 		SchemeActivationStrategy behavior = new BasicSchemeActivationStrategy(pm);
 		

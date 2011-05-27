@@ -79,7 +79,7 @@ public class AgentStarter {
 		String propertiesPath = DEFAULT_PROPERTIES_PATH;
 		agentProperties = ConfigUtils.loadProperties(propertiesPath);
 		if (agentProperties!=null){
-		run();
+			run();
 		}
 	}
 

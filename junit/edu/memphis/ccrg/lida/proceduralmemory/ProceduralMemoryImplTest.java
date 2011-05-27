@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
@@ -23,7 +24,7 @@ public class ProceduralMemoryImplTest{
 	public void setUp() throws Exception {
 		pm = new ProceduralMemoryImpl();
 	}
-
+	@Test
 	public void testAddScheme() {
 		Scheme s = new SchemeImpl();
 		pm.addScheme(s);
@@ -40,13 +41,13 @@ public class ProceduralMemoryImplTest{
 		assertTrue(pm.containsScheme(s));
 		assertTrue(pm.getSchemeCount() == 2);
 	}
-
+	@Test
 	public void testSetSchemeActivationStrategy() {
 		SchemeActivationStrategy b = new BasicSchemeActivationStrategy(pm);
 		pm.setSchemeActivationStrategy(b);
 		assertEquals(b, pm.getSchemeActivationStrategy());
 	}
-
+	@Test
 	public void testSendInstantiatedScheme() {
 		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
 		pm.addListener(listener);
