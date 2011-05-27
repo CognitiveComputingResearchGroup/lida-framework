@@ -47,13 +47,17 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 	 */
 	@Override
 	public Object executeCommand (String commandName, Map<String,Object> parameters){
+		if(commandName == null){
+			logger.log(Level.WARNING,"Received null command name");
+			return null;
+		}
 		String commandClass = commands.getProperty(commandName);
 		Command command=null;
 		if(commandClass != null){
 			try {
 				command=(Command)(Class.forName(commandClass)).newInstance();
 			} catch (Exception e) {
-				logger.log(Level.WARNING,e.getMessage());
+				logger.log(Level.WARNING,e.getMessage(),e);
 			}
 		}
 		if (command == null){

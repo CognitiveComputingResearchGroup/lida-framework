@@ -107,7 +107,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public Behavior getInstantiation() {
 		Behavior b = new BehaviorImpl(getAction());
-		b.setLabel("scheme: " + getLabel() + " behavior id: " + b.getId());
+		b.setLabel(getLabel());
 		b.setActivation(getTotalActivation());
 		for (Node n : getContext().getNodes()) {
 			b.addContextCondition(n);
@@ -120,6 +120,11 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		}
 		b.setGeneratingScheme(this);
 		return b;
+	}
+	
+	@Override
+	public String toString(){
+		return getLabel() + " " + getId(); 
 	}
 
 	/*

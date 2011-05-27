@@ -252,8 +252,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 			dialog.add(jPanel);
 			dialog.pack();
 			dialog.setVisible(true);
-			dialog
-					.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 			dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 				int index = panels.size() - 1;
 
