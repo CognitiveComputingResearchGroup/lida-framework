@@ -25,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
  * This is a JUnit class which can be used to test methods of the AggregateCoalitionActivationTrigger class
