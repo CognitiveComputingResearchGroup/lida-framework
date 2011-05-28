@@ -17,6 +17,7 @@ import java.util.Map;
  * @author Javier Snaider, Ryan J. McCall
  *
  */
+@SuppressWarnings(value = {"all"})
 public class ModuleName {
 
 	/**

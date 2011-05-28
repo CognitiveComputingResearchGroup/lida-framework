@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
 /**
  * Abstract implementation of {@link GuiPanel}

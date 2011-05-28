@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+
 
 
 /**

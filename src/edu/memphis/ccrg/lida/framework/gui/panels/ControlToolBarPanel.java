@@ -40,7 +40,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 
 	private static final Logger logger = Logger
 			.getLogger(ControlToolBarPanel.class.getCanonicalName());
-	boolean isPaused = true;
+	private boolean isPaused = true;
 	private int sliderMin = 1;
 	private int sliderMax = 1000;
 	private int sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;

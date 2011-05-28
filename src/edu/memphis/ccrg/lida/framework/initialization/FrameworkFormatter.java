@@ -2,6 +2,8 @@ package edu.memphis.ccrg.lida.framework.initialization;
 
 import java.text.MessageFormat;
 import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 /**
