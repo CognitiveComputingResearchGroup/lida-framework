@@ -5,9 +5,6 @@
  * which accompanies this distribution, and is available at
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
-/**
- * 
- */
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collections;
@@ -16,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -44,13 +42,13 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		super();
 	}
 	
-	/*
+	/**
 	 * Creates a FrameworkModule with specified module name.  
 	 * It is generally preferable to use the 
 	 * default constructor instead of this one 
 	 * since the ModuleName is typically specified by agent.xml and set by {@link AgentXmlFactory}
 	 * 
-	 * @see {@link AgentXmlFactory}
+	 * @see AgentXmlFactory
 	 * @param moduleName {@link ModuleName} of this {@link FrameworkModule}
 	 */
 	FrameworkModuleImpl(ModuleName moduleName) {

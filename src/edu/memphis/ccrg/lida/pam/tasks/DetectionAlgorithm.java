@@ -11,6 +11,8 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
+import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
 /**
  * A process which detects a pattern (feature) in {@link SensoryMemory} content and excites {@link PamNode}s 

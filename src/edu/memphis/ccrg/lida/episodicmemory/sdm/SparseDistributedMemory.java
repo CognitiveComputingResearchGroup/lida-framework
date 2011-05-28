@@ -90,8 +90,8 @@ public interface SparseDistributedMemory{
 	 * retrieve contents of this SDM with mapped address.<br/>
 	 * Note that the retrieved vector is mapped back before return it.
 	 *  
-	 * @param addr
-	 * @param mapping
+	 * @param addr the address vector
+	 * @param mapping the mapping vector
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address or null if the iteration did not converge
 	 */

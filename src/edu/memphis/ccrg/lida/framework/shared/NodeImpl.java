@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * Default Node Implementation

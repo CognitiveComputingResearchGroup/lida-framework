@@ -11,6 +11,8 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
+import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
+import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodelet;
 
 /**
  * A submodule of the Workspace.  Managed by {@link WorkspaceImpl}.  

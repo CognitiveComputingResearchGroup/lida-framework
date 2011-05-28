@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  */
 public interface AgentAction extends Serializable {
 
+	@SuppressWarnings(value = { "all" })
 	public enum Topology {
 		BASIC, PARALLEL, SEQUENCIAL
 	}

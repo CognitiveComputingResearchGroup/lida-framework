@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.initialization;
 
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+
 
 
 /**
@@ -17,6 +19,7 @@ package edu.memphis.ccrg.lida.framework.initialization;
  * @author Javier Snaider
  *
  */
+@SuppressWarnings(value = { "all" })
 public class ModuleUsage {
 	//TODO dynamic enum like ModuleName
 

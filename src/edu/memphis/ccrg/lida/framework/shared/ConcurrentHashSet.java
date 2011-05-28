@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentMap;
 public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>,
 		Serializable {
 
-	static final long serialVersionUID = 3313091100336870355L;
+	private static final long serialVersionUID = 3313091100336870355L;
 
 	private transient ConcurrentMap<E, Object> map;
 

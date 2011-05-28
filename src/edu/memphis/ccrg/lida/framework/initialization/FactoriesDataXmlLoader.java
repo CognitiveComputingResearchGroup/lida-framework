@@ -19,6 +19,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.strategies.Strategy;
+import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
  * 
@@ -53,6 +56,10 @@ public class FactoriesDataXmlLoader {
 		parseDocument(dom);
 	}
 
+	/**
+	 * Parses the xml document creating the elements for {@link ElementFactory}
+	 * @param dom the xml dom Document
+	 */
 	void parseDocument(Document dom) {
 		if(dom == null){
 			logger.log(Level.SEVERE, "Document dom was null. Factory data will not be loaded.");
@@ -102,6 +109,11 @@ public class FactoriesDataXmlLoader {
 		}
 	}
 
+	/**
+	 * Reads in and creates all {@link StrategyDef}s specified in {@link Element}
+	 * @param element Dom element
+	 * @return a Map with the {@link StrategyDef} indexed by name
+	 */
 	Map<String, StrategyDef> getStrategies(Element element) {
 		Map<String, StrategyDef> strat = new HashMap<String, StrategyDef>();
 		List<Element> list = XmlUtils.getChildrenInGroup(element,
@@ -115,6 +127,10 @@ public class FactoriesDataXmlLoader {
 		return strat;
 	}
 
+	/**
+	 * @param e Dom element
+	 * @return the {@link Strategy} definition
+	 */
 	StrategyDef getStrategyDef(Element e) {
 		StrategyDef strategy = new StrategyDef();
 		String className = XmlUtils.getTextValue(e, "class");
@@ -132,6 +148,20 @@ public class FactoriesDataXmlLoader {
 		return strategy;
 	}
 
+	/**
+	 * Reads in and creates all {@link LinkableDef}s specified in
+	 * {@link Element}
+	 * 
+	 * @param element
+	 *            Dom element
+	 * @param groupName
+	 *            the name of the group containing {@link LinkableDef} data
+	 * @param childName
+	 *            the name of the children containing {@link LinkableDef} data
+	 * @param strategies
+	 *            Map with {@link StrategyDef} indexed by name
+	 * @return a Map of {@link LinkableDef} indexed by name
+	 */
 	Map<String, LinkableDef> getLinkables(Element element, String groupName,
 			String childName, Map<String, StrategyDef> strategies) {
 		Map<String, LinkableDef> linkables = new HashMap<String, LinkableDef>();
@@ -146,6 +176,12 @@ public class FactoriesDataXmlLoader {
 		return linkables;
 	}
 
+	/**
+	 * @param e Dom element
+	 * @param strategies
+	 *            Map with {@link StrategyDef} indexed by name
+	 * @return the {@link Linkable} definition
+	 */
 	LinkableDef getLinkable(Element e, Map<String, StrategyDef> strategies) {
 		LinkableDef node = new LinkableDef();
 		String className = XmlUtils.getTextValue(e, "class");
@@ -172,10 +208,20 @@ public class FactoriesDataXmlLoader {
 		return node;
 	}
 
-	Map<String, CodeletDef> getCodelets(Element docEle,
+	/**
+	 * Reads in and creates all {@link CodeletDef}s specified in
+	 * {@link Element}
+	 * 
+	 * @param element
+	 *            Dom element
+	 * @param strategies
+	 *            Map with {@link StrategyDef} indexed by name
+	 * @return a Map of {@link CodeletDef} indexed by name
+	 */
+	Map<String, CodeletDef> getCodelets(Element element,
 			Map<String, StrategyDef> strategies) {
 		Map<String, CodeletDef> codels = new HashMap<String, CodeletDef>();
-		List<Element> list = XmlUtils.getChildrenInGroup(docEle, "codelets",
+		List<Element> list = XmlUtils.getChildrenInGroup(element, "codelets",
 				"codelet");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
@@ -188,6 +234,12 @@ public class FactoriesDataXmlLoader {
 		return codels;
 	}
 
+	/**
+	 * @param e Dom element
+	 * @param strategies
+	 *            Map with {@link StrategyDef} indexed by name
+	 * @return the {@link Codelet} definition
+	 */
 	CodeletDef getCodelet(Element e, Map<String, StrategyDef> strategies) {
 		CodeletDef codelet = null;
 		String className = XmlUtils.getTextValue(e, "class");
@@ -210,6 +262,12 @@ public class FactoriesDataXmlLoader {
 		return codelet;
 	}
 
+	/**
+	 * Verifies if the List of Strategies names are defined
+	 * @param strat Strategies names to validate
+	 * @param strategies
+	 *            Map with {@link StrategyDef} indexed by name
+	 */
 	void checkStrategies(List<String> strat, Map<String, StrategyDef> strategies) {
 		Iterator<String> it = strat.iterator();
 		String b;

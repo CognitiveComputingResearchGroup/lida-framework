@@ -40,7 +40,9 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * 
  */ 
 public class AgentXmlFactory implements AgentFactory {
-	//TODO specify order that initializers run in xml
+	//TODO consider 'postInit' method that runs after initializers run.
+	//This will allow objects created in the initial pass, e.g. Nodes, AgentActions, to be used by other 
+	//modules initialized before the objects were created.
 	private static final Logger logger = Logger.getLogger(AgentXmlFactory.class.getCanonicalName());
 	
 	private static final String DEFAULT_XML_FILE_PATH = "configs/agent.xml";
@@ -62,7 +64,9 @@ public class AgentXmlFactory implements AgentFactory {
 
 	/**
 	 * Parses the xml document creating the TaskManager, TaskSpawners, Modules, submodules.  Sets up listeners
-	 * and associates modules.
+	 * and associates modules and creates a new {@link Agent}.
+	 * @param dom the xml dom Document
+	 * @return the Agent
 	 */
 	Agent parseDocument(Document dom) {
 		if(dom == null){
@@ -163,6 +167,7 @@ public class AgentXmlFactory implements AgentFactory {
 	 * Reads in and creates all {@link TaskSpawner}s specified in {@link Element}
 	 * @param element Dom element
 	 * @param tm the {@link TaskManager}
+	 * @return a Map with all {@link TaskSpawner} indexed by name
 	 */
 	Map<String,TaskSpawner> getTaskSpawners(Element element, TaskManager tm) {
 		Map<String,TaskSpawner>spawners = new HashMap<String, TaskSpawner>();
@@ -215,6 +220,9 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Reads and creates all {@link FrameworkModule}s in specified element
 	 * @param element dom element
+	 * @param toAssoc List of pending associations
+	 * @param toInit  List of pending initializations
+	 * @param spawners Map of {@link TaskSpawner} indexed by name
 	 * @return {@link FrameworkModule}s
 	 */
 	List<FrameworkModule> getModules(Element element,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner>spawners) {
@@ -237,6 +245,9 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Reads and creates a {@link FrameworkModule} in specified moduleElement
 	 * @param moduleElement dom element
+	 * @param toAssoc List of pending associations
+	 * @param toInit  List of pending initializations
+	 * @param spawners Map of {@link TaskSpawner} indexed by name
 	 * @return {@link FrameworkModule}
 	 */
 	FrameworkModule getModule(Element moduleElement,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner> spawners) {
@@ -311,6 +322,7 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Reads and creates {@link FrameworkTask}s specified in element
 	 * @param element dom element
+	 * @param toAssoc List of pending associations
 	 * @return a list of {@link FrameworkTask}s
 	 */
 	List<FrameworkTask> getTasks(Element element,List<Object[]>toAssoc) {
@@ -333,7 +345,8 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	/**
 	 * Reads and creates {@link FrameworkTask} specified in element
-	 * @param element dom element
+	 * @param moduleElement dom element
+	 * @param toAssoc List of pending associations
 	 * @return a {@link FrameworkTask}
 	 */
 	FrameworkTask getTask(Element moduleElement,List<Object[]>toAssoc) {
@@ -369,8 +382,9 @@ public class AgentXmlFactory implements AgentFactory {
 
 	/**
 	 * Gets associated modules of the specified {@link Initializable}
-	 * @param element
-	 * @param initializable
+	 * @param element dom element
+	 * @param initializable the Initializable
+	 * @param toAssoc List of pending associations
 	 */
 	void getAssociatedModules(Element element, Initializable initializable,List<Object[]>toAssoc) {
 		List<Element> nl = XmlUtils.getChildren(element,"associatedmodule");
@@ -386,7 +400,8 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Reads and creates all listeners specified in element.
 	 * @param element dom element
-	 * 
+	 * @param topModule the root of the hierarchy of {@link FrameworkModule}s, 
+	 * in general, an {@link Agent}
 	 */
 	void getListeners(Element element, FrameworkModule topModule) {
 		List<Element> childrenList = XmlUtils.getChildren(element,"listeners");
@@ -404,8 +419,9 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	/**
 	 * Reads and creates a listener specified in element.
-	 * @param element dom element
-	 * 
+	 * @param moduleElement dom element
+	 * @param topModule the root of the hierarchy of {@link FrameworkModule}s, 
+	 * in general, an {@link Agent}
 	 */	
 	void getListener(Element moduleElement,FrameworkModule topModule) {
 		Class<?> listenerClass = null;
@@ -469,6 +485,9 @@ public class AgentXmlFactory implements AgentFactory {
 
 	/**
 	 * Iterates through the module/associated-module pairs and associates them
+	 * @param toAssoc List of pending associations
+	 * @param topModule the root of the hierarchy of {@link FrameworkModule}s, 
+	 * in general, an {@link Agent}
 	 */
 	void associateModules(List<Object[]>toAssoc, FrameworkModule topModule) {
 		ModuleName moduleName;
@@ -499,6 +518,9 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	/**
 	 * For all modules with an initializer, run the initializer passing in the specific module.
+	 * @param topModule the root of the hierarchy of {@link FrameworkModule}s, 
+	 * in general, an {@link Agent}
+	 * @param toInit  List of pending initializations
 	 */
 	void initializeModules(Agent topModule,List<Object[]>toInit) {
 		//TODO change first parameter to FrameworkModule

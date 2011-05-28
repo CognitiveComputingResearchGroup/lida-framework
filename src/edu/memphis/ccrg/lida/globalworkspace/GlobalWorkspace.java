@@ -10,6 +10,7 @@
  */
 package edu.memphis.ccrg.lida.globalworkspace;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;

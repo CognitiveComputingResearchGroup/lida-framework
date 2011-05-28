@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**
@@ -130,10 +131,10 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	}
 
 	/**
-	 * When a finished task is received and its status is FINISHED_WITH_RESULTS
+	 * When a finished Task is received and its status is FINISHED_WITH_RESULTS
 	 * This method is called to handle the results.
 	 * 
-	 * @param task
+	 * @param task the finished Task to process
 	 */
 	protected void processResults(FrameworkTask task) {
 	}

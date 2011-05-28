@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
+import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
 /**
  * A Scheme consists of a Context, an Action and a Result.

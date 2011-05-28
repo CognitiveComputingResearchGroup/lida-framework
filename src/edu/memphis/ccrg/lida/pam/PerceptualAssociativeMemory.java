@@ -14,9 +14,14 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
+import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
+import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
+import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
 /**
  * A main LIDA module which contains feature detectors, nodes, and links.

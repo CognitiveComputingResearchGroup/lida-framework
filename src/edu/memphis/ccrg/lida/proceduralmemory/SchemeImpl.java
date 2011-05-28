@@ -37,7 +37,7 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private long id;
 	private static long idGenerator = 0;
 	
-	/*
+	/**
 	 * For testing only
 	 * @param id Scheme's id
 	 */

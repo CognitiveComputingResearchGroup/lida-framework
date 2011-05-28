@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;

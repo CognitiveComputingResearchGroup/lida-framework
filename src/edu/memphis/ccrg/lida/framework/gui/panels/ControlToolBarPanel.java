@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JSlider;
 
+import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.SetTimeScaleCommand;
 import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
@@ -39,7 +40,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 
 	private static final Logger logger = Logger
 			.getLogger(ControlToolBarPanel.class.getCanonicalName());
-	boolean isPaused = true;
+	private boolean isPaused = true;
 	private int sliderMin = 1;
 	private int sliderMax = 1000;
 	private int sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;

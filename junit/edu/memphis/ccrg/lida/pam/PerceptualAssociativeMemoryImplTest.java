@@ -512,7 +512,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertEquals(l, pam.getLink(id2));
 	}
 	
-	/**
+	/*
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#taskManagerDecayModule(long)}.
 	 * @see LinearDecayStrategy
 	 */
