@@ -32,8 +32,8 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the AttentionCodeletModule class.

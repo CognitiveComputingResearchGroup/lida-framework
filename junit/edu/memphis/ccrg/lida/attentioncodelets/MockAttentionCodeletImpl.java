@@ -8,7 +8,7 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBuffer;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 

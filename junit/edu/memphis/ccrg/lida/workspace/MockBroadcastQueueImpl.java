@@ -8,7 +8,7 @@
 package edu.memphis.ccrg.lida.workspace;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.BroadcastQueueImpl;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueueImpl;
 
 public class MockBroadcastQueueImpl extends BroadcastQueueImpl{
 

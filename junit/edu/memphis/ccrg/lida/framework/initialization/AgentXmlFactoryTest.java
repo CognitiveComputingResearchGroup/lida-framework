@@ -43,7 +43,7 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 import edu.memphis.ccrg.lida.workspace.CueBackgroundTask;
 import edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask;
 import edu.memphis.ccrg.lida.workspace.Workspace;
-import edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl;
+import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
 public class AgentXmlFactoryTest {
 
