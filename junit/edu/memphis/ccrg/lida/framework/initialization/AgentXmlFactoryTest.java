@@ -199,12 +199,12 @@ public class AgentXmlFactoryTest {
 				+ "<class>edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule</class>"
 				+ "<submodules>" 
 				+		"<module name=\"NewEpisodicBuffer\">" +
-						"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+						"<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>" +
 						"<param name=\"eParam\" type=\"double\">0.01 </param>" +
 						"<taskspawner>fancyTS</taskspawner>" +
 						"</module>" +						
 						"<module name=\"NewPerceptualBuffer\">" +
-						"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+						"<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>" +
 						"<param name=\"pParam\" type=\"double\">0.02 </param>" +
 						"<taskspawner>superFancyTS</taskspawner>" +
 						"<initialTasks>" +
@@ -330,10 +330,10 @@ public class AgentXmlFactoryTest {
 				+ "<class>edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule</class>"
 				+ "<submodules>" 
 				+	"<module name=\"NewEpisodicBuffer\">" +
-					"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+					"<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>" +
 					"<submodules>" +  
 							"<module name=\"NewPerceptualBuffer\">" +
-							"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+							"<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>" +
 							"<param name=\"pParam\" type=\"double\">0.02 </param>" +
 							"<taskspawner>superFancyTS</taskspawner>" +
 							"<initialTasks>" +
@@ -465,13 +465,13 @@ public class AgentXmlFactoryTest {
 		List<Object[]> toInitialize = new ArrayList<Object[]>();
 		String xml = "<lida><submodules> " +
 				"<module name=\"NewEpisodicBuffer\">" +
-		"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+		"<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>" +
 		"<param name=\"eParam\" type=\"double\">0.01 </param>" +
 		"<taskspawner>fancyTS</taskspawner>" +
 		"</module>" +
 		
 		"<module name=\"NewPerceptualBuffer\">" +
-		"<class>edu.memphis.ccrg.lida.workspace.workspaceBuffer.WorkspaceBufferImpl</class>" +
+		"<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>" +
 		"<param name=\"pParam\" type=\"double\">0.02 </param>" +
 		"<taskspawner>superFancyTS</taskspawner>" +
 		"<initialTasks>" +
