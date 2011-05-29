@@ -63,7 +63,13 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
 		}
 
 		module = GuiUtils.parseFrameworkModule(param[0], agent);
-		refresh();
+		if(module != null){
+			refresh();
+		}else{
+			logger.log(Level.WARNING,
+					"Unable to parse module " + param[0] + ". Panel not initialized.",
+					0L);
+		}
 	}
 
 	/**

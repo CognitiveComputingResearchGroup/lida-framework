@@ -138,7 +138,13 @@ public class NodeStructureTable extends GuiPanelImpl {
 		}
 		module = GuiUtils.parseFrameworkModule(param[0], agent);
 		
-		display(module.getModuleContent());
+		if(module != null){
+			display(module.getModuleContent());
+		}else{
+			logger.log(Level.WARNING,
+					"Unable to parse module " + param[0] + ". Panel not initialized.",
+					0L);
+		}
 	}
 
     @Override
