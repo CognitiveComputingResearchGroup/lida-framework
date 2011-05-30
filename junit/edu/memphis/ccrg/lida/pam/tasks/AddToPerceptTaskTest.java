@@ -10,7 +10,8 @@
  */
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
@@ -27,11 +28,11 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
-import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 
 /**
  * @author Ryan J. McCall, Usef Faghihi
@@ -65,7 +66,7 @@ public class AddToPerceptTaskTest{
 	//test adding a single node
 	@Test
 	public void test1(){
-		AddToPerceptTask t = new AddToPerceptTask(nodeA, pam);
+		AddNodeToPerceptTask t = new AddNodeToPerceptTask(nodeA, pam);
 		t.call();
 		
 		NodeStructure result = pam.getCurrentTestPercept();
@@ -83,7 +84,7 @@ public class AddToPerceptTaskTest{
 		Link expectedLink = expectedNS.addDefaultLink(nodeA.getId(), nodeB.getId(), PerceptualAssociativeMemoryImpl.NONE, 1.0, 0.0);
 			
 		//Code being tested
-		AddToPerceptTask t = new AddToPerceptTask(expectedNS, pam);
+		AddLinkToPerceptTask t = new AddLinkToPerceptTask((PamLink) expectedLink, pam);
 		t.call();
 		
 		//Check results

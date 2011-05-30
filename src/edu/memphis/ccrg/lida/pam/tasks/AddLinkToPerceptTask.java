@@ -7,11 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import java.util.Collection;
-
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
@@ -23,50 +20,15 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * @author Ryan J McCall
  * @see ExcitationTask AddToPerceptTask is spawned by ExcitationTask
  */
-public class AddToPerceptTask extends FrameworkTaskImpl {
+public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 	
-	private NodeStructure nodeStructure;
 	private PerceptualAssociativeMemory pam;
+	private PamLink link;
 
-	/**
-	 * Creates a new AddToPerceptTask to add a single {@link PamNode}
-	 * 
-	 * @param pamNode
-	 *            a {@link PamNode}
-	 * @param pam
-	 *            the {@link PerceptualAssociativeMemory}
-	 */
-	public AddToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
-		super();
-		this.pam = pam;
-		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
-		nodeStructure.addDefaultNode(pamNode);
-	}
-	
-	/**
-	 * Creates a new AddToPerceptTask to add a collection of {@link PamNode}
-	 * @param nodes to be added
-	 * @param pam {@link PerceptualAssociativeMemory}
-	 */
-	public AddToPerceptTask(Collection<Node> nodes, PerceptualAssociativeMemory pam){
-		super();
-		this.pam = pam;
-		nodeStructure = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
-		nodeStructure.addDefaultNodes(nodes);
-	}
 
-	/**
-	 * Creates a new AddToPerceptTask to add a {@link NodeStructure}
-	 * 
-	 * @param ns
-	 *            a {@link NodeStructure}
-	 * @param pam
-	 *            the {@link PerceptualAssociativeMemory}
-	 */
-	public AddToPerceptTask(NodeStructure ns, PerceptualAssociativeMemory pam){
-		super();
+	public AddLinkToPerceptTask(PamLink link, PerceptualAssociativeMemory pam) {
 		this.pam = pam;
-		this.nodeStructure = ns.copy();
+		this.link = link;
 	}
 
 	/**
@@ -75,7 +37,8 @@ public class AddToPerceptTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	protected void runThisFrameworkTask() {		
-		pam.addNodeStructureToPercept(nodeStructure);	
+		pam.addNodeToPercept((Node) link.getSink());
+		pam.addLinkToPercept(link);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
@@ -84,7 +47,7 @@ public class AddToPerceptTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	public String toString(){
-		return AddToPerceptTask.class.getSimpleName() + " " + getTaskId();
+		return AddLinkToPerceptTask.class.getSimpleName() + " " + getTaskId();
 	}
 
 }

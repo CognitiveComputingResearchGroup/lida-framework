@@ -9,8 +9,6 @@ package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -26,7 +24,6 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  */
 public class PropagationTask extends FrameworkTaskImpl {
 		
-	private PamNode source;
 	private PamNode sink;
 	private PamLink link;
 	
@@ -45,8 +42,6 @@ public class PropagationTask extends FrameworkTaskImpl {
 	/**
 	 * Propagates specified activation amount from source to sink along link.
 	 * 
-	 * @param source
-	 *            the source of activation
 	 * @param link
 	 *            the link from the source to the parent
 	 * @param sink
@@ -58,10 +53,9 @@ public class PropagationTask extends FrameworkTaskImpl {
 	 * @param ts
 	 *            the ts
 	 */
-	public PropagationTask(PamNode source, PamLink link, PamNode sink, double amount,
+	public PropagationTask(PamLink link, PamNode sink, double amount,
 						   PerceptualAssociativeMemory pam, TaskSpawner ts) {
 		super();
-		this.source = source;
 		this.link = link;
 		this.sink = sink;
 		this.excitationAmount = amount;
@@ -74,16 +68,9 @@ public class PropagationTask extends FrameworkTaskImpl {
 		//TODO think about a propagation strategy here
 		link.excite(excitationAmount);
 		double linkActivation = link.getActivation();
-		sink.excite(linkActivation);
-		if(pam.isOverPerceptThreshold(link) && 
-		   pam.isOverPerceptThreshold(sink)){
-			//If over threshold then spawn a new task to add the node to the percept
-			NodeStructure ns = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
-			ns.addDefaultNode(source);
-			ns.addDefaultNode(sink);
-			ns.addDefaultLink(link);
-
-			AddToPerceptTask task = new AddToPerceptTask(ns, pam);
+		sink.excite(linkActivation * pam.getUpscaleFactor());
+		if(pam.isOverPerceptThreshold(sink)){
+			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
 			taskSpawner.addTask(task);
 		}
 		pam.propagateActivationToParents(sink);

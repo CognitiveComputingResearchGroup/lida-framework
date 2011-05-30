@@ -18,7 +18,6 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.pam.tasks.AddToPerceptTask;
 import edu.memphis.ccrg.lida.pam.tasks.BasicDetectionAlgorithm;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
@@ -107,17 +106,6 @@ public interface PerceptualAssociativeMemory extends FrameworkModule, Saveable {
 	public void receiveActivationBurst(Set<PamLinkable> linkables, double amount);
 	
 	/**
-	 * Propagate activation from a PamNode to another PamNode along a PamLink.
-	 * Excites both link and sink
-	 * @param source source of activation
-	 * @param sink recipient of activation
-	 * @param link link between source and sink
-	 * @param amount activation sent
-	 * @see #propagateActivationToParents(PamNode)
-	 */
-	public void propagateActivation(PamNode source, PamNode sink, PamLink link, double amount);
-
-	/**
 	 * Propagates activation from a PamNode to its parents.
 	 *
 	 * @param pamNode The PamNode to propagate activation from.
@@ -130,9 +118,19 @@ public interface PerceptualAssociativeMemory extends FrameworkModule, Saveable {
 	 * Adds a NodeStructure to the percept.
 	 *
 	 * @param ns NodeStructure
-	 * @see AddToPerceptTask
 	 */
 	public void addNodeStructureToPercept(NodeStructure ns);
+	
+	/**
+	 * Adds {@link Node} to the percept.
+	 * @param n Node to add
+	 */
+	public void addNodeToPercept(Node n);
+	/**
+	 * Adds {@link Link} to the percept.
+	 * @param l Link to add
+	 */
+	public void addLinkToPercept(Link l);
 	
 	/**
 	 * Returns LinkCategory with specified id.

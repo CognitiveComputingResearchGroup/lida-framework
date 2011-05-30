@@ -7,7 +7,9 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
@@ -25,7 +27,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
-import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
 
 /**
  * A propagation task excites a node and a link.  
@@ -77,7 +78,7 @@ public class PropagationTaskTest{
 		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		PropagationTask excite= new PropagationTask(source, link, sink, 0.1, pam, taskSpawner );
+		PropagationTask excite= new PropagationTask(link, sink, 0.1, pam, taskSpawner );
 		excite.call();
 	 
 		assertTrue(link.getActivation() > 0.1);
@@ -103,7 +104,7 @@ public class PropagationTaskTest{
 		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		PropagationTask excite= new PropagationTask(source, link, sink, 0.5, pam, taskSpawner );
+		PropagationTask excite= new PropagationTask(link, sink, 0.5, pam, taskSpawner );
 		excite.call();
 	 
 		assertTrue(link.getActivation() > 0.1);

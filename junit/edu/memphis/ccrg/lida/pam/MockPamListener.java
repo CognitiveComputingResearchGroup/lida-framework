@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class MockPamListener implements PamListener {
@@ -14,6 +16,16 @@ public class MockPamListener implements PamListener {
 	@Override
 	public void receivePercept(NodeStructure ns) {
 		this.ns = ns;
+	}
+	@Override
+	public void receivePercept(Node n) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void receivePercept(Link l) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

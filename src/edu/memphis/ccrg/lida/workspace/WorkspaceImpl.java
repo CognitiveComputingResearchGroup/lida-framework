@@ -17,6 +17,8 @@ import edu.memphis.ccrg.lida.episodicmemory.LocalAssociationListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.Link;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -124,6 +126,29 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 		}else{
 			logger.log(Level.WARNING, "Received a percept but Workspace does not have a perceptual buffer.", TaskManager.getCurrentTick());
 		}
+	}
+	
+	@Override
+	public void receivePercept(Node n) {
+		if(containsSubmodule(ModuleName.PerceptualBuffer)){
+			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
+			NodeStructure ns = buffer.getBufferContent(null);
+			ns.addDefaultNode(n);
+		}else{
+			logger.log(Level.WARNING, "Received a percept but Workspace does not have a perceptual buffer.", TaskManager.getCurrentTick());
+		}
+	}
+
+	@Override
+	public void receivePercept(Link l) {
+		if(containsSubmodule(ModuleName.PerceptualBuffer)){
+			WorkspaceBuffer buffer = (WorkspaceBuffer) getSubmodule(ModuleName.PerceptualBuffer);
+			NodeStructure ns = buffer.getBufferContent(null);
+			ns.addDefaultLink(l);
+		}else{
+			logger.log(Level.WARNING, "Received a percept but Workspace does not have a perceptual buffer.", TaskManager.getCurrentTick());
+		}
+		
 	}
 
 	@Override
