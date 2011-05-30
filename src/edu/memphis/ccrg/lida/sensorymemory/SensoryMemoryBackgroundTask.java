@@ -36,7 +36,8 @@ public class SensoryMemoryBackgroundTask extends FrameworkTaskImpl {
 		if (module instanceof SensoryMemory) {
 			sm = (SensoryMemory) module;
 		}else{
-			logger.log(Level.WARNING, "Cannot add module "+module, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add module {1}",
+					new Object[]{TaskManager.getCurrentTick(),module});
 		}
 	}
 

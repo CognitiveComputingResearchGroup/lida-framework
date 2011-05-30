@@ -95,8 +95,8 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 			defaultCodeletName = type;
 		}else{
 			logger.log(Level.WARNING, 
-					"Cannot set default codelet type, factory does not have type: " + type, 
-					TaskManager.getCurrentTick());
+					"Cannot set default codelet type, factory does not have type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),type});
 		}
 	}
 
@@ -105,8 +105,8 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;
 		} else {
-			logger.log(Level.WARNING, "Cannot associate module "
-					+ module.getModuleName(), TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot associate module {1}",
+					new Object[]{TaskManager.getCurrentTick(),module});
 		}
 	}
 
@@ -137,8 +137,8 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 						codeletTicksPerRun, codeletActivation, codeletRemovalThreshold, null);
 		if (codelet == null) {
 			logger.log(Level.WARNING,
-					"Codelet type not supported: " + type,
-					TaskManager.getCurrentTick());
+					"Codelet type not supported: {1}",
+					new Object[]{TaskManager.getCurrentTick(),type});
 			return null;
 		}
 
@@ -150,21 +150,20 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 			if(desiredReadable != null){
 				readable = desiredReadable;
 			}else{
-				logger.log(Level.WARNING, "Could not find desired readable module, using " +
-						readable, TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Could not find desired readable module, using {1}",
+						new Object[]{TaskManager.getCurrentTick(),readable});
 			}
 			String desiredWriteable = (String) params.get(ModuleUsage.TO_WRITE_TO);
 			if(desiredWriteable != null){
 				writeable = desiredWriteable;
 			}else{
-				logger.log(Level.WARNING, "Could not find desired writeable module, using " +
-						writeable, TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Could not find desired writeable module, using {1}",
+						new Object[]{TaskManager.getCurrentTick(),writeable});
 			}
 		}
 		
 		if(workspace == null){
-			logger.log(Level.WARNING, "Workspace has not been associated to this module" +
-					". Cannot initialize structure-building codelet.",
+			logger.log(Level.WARNING, "Workspace has not been associated to this module. Cannot initialize structure-building codelet.",
 					TaskManager.getCurrentTick());
 			return null;
 		}
@@ -172,16 +171,16 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 		WorkspaceBuffer readableBuffer = (WorkspaceBuffer) workspace
 				.getSubmodule(readable);
 		if (readableBuffer == null) {
-			logger.log(Level.WARNING, "Readable buffer not found: " + readable,
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Readable buffer not found: {1}",
+					new Object[]{TaskManager.getCurrentTick(),readable});
 			return null;
 		}
 
 		WorkspaceBuffer writeableBuffer = (WorkspaceBuffer) workspace
 				.getSubmodule(writeable);
 		if (writeableBuffer == null) {
-			logger.log(Level.WARNING, "Writeable buffer not found: "
-					+ writeable, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Writeable buffer not found: {1}",
+					new Object[]{TaskManager.getCurrentTick(),writeable});
 			return null;
 		}
 
@@ -193,8 +192,8 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	@Override
 	public void addCodelet(Codelet cod) {
 		if (cod instanceof StructureBuildingCodelet) {
-			logger.log(Level.FINER, "New codelet " + cod + "spawned",
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINER, "New codelet {1} spawned",
+					new Object[]{TaskManager.getCurrentTick(),cod});
 			taskSpawner.addTask(cod);
 		} else {
 			logger.log(Level.WARNING,

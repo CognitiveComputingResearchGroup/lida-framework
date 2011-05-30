@@ -18,16 +18,17 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * A background task in the {@link Workspace} which transfers percepts from 
- * the Perceptual buffer to the Current Situational Model
+ * A background task in the {@link Workspace} which transfers percepts from the
+ * Perceptual buffer to the Current Situational Model
+ * 
  * @author Ryan J. McCall
- *
+ * 
  */
 public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 
 	private static final Logger logger = Logger
 			.getLogger(UpdateCsmBackgroundTask.class.getCanonicalName());
-	
+
 	private Workspace workspace;
 
 	@Override
@@ -48,9 +49,11 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		logger.log(Level.FINER, "Updating CSM with perceptual buffer content.", TaskManager
-				.getCurrentTick());
-		
+		if (logger.isLoggable(Level.FINEST)) {
+			logger.log(Level.FINEST,
+					"Updating CSM with perceptual buffer content.",
+					TaskManager.getCurrentTick());
+		}
 		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace
 				.getSubmodule(ModuleName.PerceptualBuffer);
 		NodeStructure ns = (NodeStructure) percepBuff.getBufferContent(null);
@@ -58,7 +61,7 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 				.getSubmodule(ModuleName.CurrentSituationalModel);
 		((NodeStructure) csm.getBufferContent(null)).mergeWith(ns);
 	}
-	
+
 	@Override
 	public String toString() {
 		return UpdateCsmBackgroundTask.class.getSimpleName();

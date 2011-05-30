@@ -76,8 +76,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	/*
 	 * To create new node and links
 	 */
-	private static ElementFactory factory = ElementFactory
-			.getInstance();
+	private static ElementFactory factory = ElementFactory.getInstance();
 
 	private static final int DEFAULT_EXCITATION_TASK_TICKS = 1;
 	private int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
@@ -255,17 +254,16 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 */
 	@Override
 	public void addPerceptualAlgorithm(DetectionAlgorithm detector) {
-		for(PamLinkable pl: detector.getPamLinkables()){
-			if(!pamNodeStructure.containsLinkable(pl)){
-				logger.log(Level.WARNING, "Adding detection algorithm " + detector + 
-						" but, detector's pam linkable " + pl + " is not in PAM.", 
-						TaskManager.getCurrentTick());
+		for (PamLinkable pl : detector.getPamLinkables()) {
+			if (!pamNodeStructure.containsLinkable(pl)) {
+				logger.log(Level.WARNING, "Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
+						new Object[]{ TaskManager.getCurrentTick(),detector,pl});
 			}
 		}
-		
+
 		taskSpawner.addTask(detector);
-		logger.log(Level.FINE, "Added feature detector to PAM",
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Added feature detector to PAM", TaskManager
+				.getCurrentTick());
 	}
 
 	/*
@@ -306,9 +304,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
+
 		@Override
 		public String toString() {
-			return PerceptualAssociativeMemoryImpl.class.getSimpleName() + "Broadcast";
+			return PerceptualAssociativeMemoryImpl.class.getSimpleName()
+					+ "Broadcast";
 		}
 	}
 
@@ -366,7 +366,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 */
 	@Override
 	public void decayModule(long ticks) {
-		 pamNodeStructure.decayNodeStructure(ticks);
+		pamNodeStructure.decayNodeStructure(ticks);
 	}
 
 	/*
@@ -384,19 +384,18 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 					TaskManager.getCurrentTick());
 			return;
 		}
-		
-		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl.getExtendedId());
+
+		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl
+				.getExtendedId());
 		if (linkable != null) {
-			logger.log(Level.FINE, linkable.getLabel()
-					+ " gets activation burst. Amount: " + amount
-					+ ", total activation: " + linkable.getTotalActivation(),
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINEST, "{1} gets activation burst. Amount: {2}",
+					new Object[]{TaskManager.getCurrentTick(),linkable,amount});
 			ExcitationTask task = new ExcitationTask(linkable, amount,
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			logger.log(Level.FINE, "Cannot find pamnode: " + linkable,
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot find pamnode: {1}",
+					new Object[]{TaskManager.getCurrentTick(),linkable});
 		}
 	}
 
@@ -453,11 +452,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	@Override
 	public void propagateActivation(PamNode source, PamNode sink, PamLink link,
 			double amount) {
-		logger.log(Level.FINE, "exciting parent: " + sink.getLabel()
-				+ " and connecting link " + link.getLabel() + " amount: "
-				+ amount, TaskManager.getCurrentTick());
+		if(logger.isLoggable(Level.FINEST)){
+			logger.log(Level.FINEST, "exciting parent: {1} and connecting link {2} amount: {3}",new Object[]{ TaskManager.getCurrentTick(),sink,link,amount});
+		}
 		PropagationTask task = new PropagationTask(source, link, sink, amount,
 				this, taskSpawner);
+		
 		task.setTicksPerStep(propagationTaskTicksPerRun);
 		taskSpawner.addTask(task);
 	}
@@ -556,24 +556,24 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg
-	 * .lida.framework.ModuleListener)
+	 * edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis
+	 * .ccrg .lida.framework.ModuleListener)
 	 */
 	@Override
 	public void addListener(ModuleListener l) {
 		if (l instanceof PamListener) {
 			addPamListener((PamListener) l);
 		} else {
-			logger.log(Level.WARNING,
-					"Cannot add listener type " + l.toString()
-							+ " to this module.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add listener type {1} to this module.", 
+					new Object[]{TaskManager.getCurrentTick(),l});
 		}
 	}
 
 	/**
 	 * Returns the perceptThreshold
-	 * @return threshold for a {@link PamLinkable} to be instantiated into a percept
+	 * 
+	 * @return threshold for a {@link PamLinkable} to be instantiated into a
+	 *         percept
 	 */
 	public static double getPerceptThreshold() {
 		return perceptThreshold;
@@ -591,10 +591,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		if (t >= 0.0 && t <= 1.0) {
 			PerceptualAssociativeMemoryImpl.perceptThreshold = t;
 		} else {
-			logger.log(
-					Level.WARNING,
-					"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
-					TaskManager.getCurrentTick());
+			logger
+					.log(
+							Level.WARNING,
+							"Percept threshold must in range [0.0, 1.0]. Threshold will not be modified.",
+							TaskManager.getCurrentTick());
 		}
 	}
 
@@ -607,8 +608,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		logger.log(Level.FINEST, l.getTotalActivation() + " >? "
-				+ perceptThreshold, TaskManager.getCurrentTick());
 		return l.getTotalActivation() > perceptThreshold;
 	}
 
@@ -699,10 +698,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		}
 		return null;
 	}
+
 	private LinkCategory addInternalLinkCategory(LinkCategory cat) {
 		if (cat instanceof PamNode) {
-			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat,
-					false);
+			cat = (LinkCategory) pamNodeStructure.addNode((Node) cat, false);
 			linkCategories.put(cat.getId(), cat);
 			return cat;
 		}

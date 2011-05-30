@@ -56,7 +56,8 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
         if (listener instanceof SensoryMemoryListener) {
             addSensoryMemoryListener((SensoryMemoryListener) listener);
         }else{
-        	logger.log(Level.WARNING, "Cannot add listener " + listener.toString(), TaskManager.getCurrentTick());
+        	logger.log(Level.WARNING, "Cannot add listener {1}",
+					new Object[]{TaskManager.getCurrentTick(),listener});
         }
     }
     @Override
@@ -72,7 +73,8 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
         if (module instanceof Environment){
              environment = (Environment) module;
         }else{
-        	logger.log(Level.WARNING, "Cannot add module " + module, TaskManager.getCurrentTick());
+        	logger.log(Level.WARNING, "Cannot add module {1}",
+					new Object[]{TaskManager.getCurrentTick(),module});
         }
     }
     

@@ -93,7 +93,8 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 		}else if(module instanceof SensoryMemory){
 			sensoryMemory = (SensoryMemory) module;
 		}else{
-			logger.log(Level.WARNING, "Cannot set associated module " + module, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set associated module {1}",
+					new Object[]{TaskManager.getCurrentTick(),module});
 		}
 	}
 
@@ -116,11 +117,15 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	@Override
 	protected void runThisFrameworkTask() {
 		double amount = detect();
-		logger.log(Level.FINE, "detection performed " + toString() + ": "
-				+ amount, TaskManager.getCurrentTick());
+		if(logger.isLoggable(Level.FINEST)){
+			logger.log(Level.FINEST,"detection performed {1}: {2}",
+					new Object[]{TaskManager.getCurrentTick(),this,amount});
+		}
 		if (amount > 0.0) {
-			logger.log(Level.FINE, "Pam excited: " + amount, TaskManager
-					.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST,"Pam excited: {1}"
+						,new Object[]{TaskManager.getCurrentTick(),amount});
+			}
 			excitePam(amount);
 		}
 	}

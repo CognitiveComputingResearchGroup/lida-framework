@@ -89,14 +89,14 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		try{
 			runThisFrameworkTask();
 		}catch(Exception e){
-			logger.log(Level.WARNING, "Exception " + e.toString() + " encountered in task " + this.toString(), TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Exception {1} encountered in task {2}", new Object[] {TaskManager.getCurrentTick(),e.getMessage(),this});
 			e.printStackTrace();
 		}
 		
 		if (controllingTS != null){ 
 			controllingTS.receiveFinishedTask(this);
 		}else {
-			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] { TaskManager.getCurrentTick(), this });
+			logger.log(Level.WARNING, "This task {1} doesn't have an assigned TaskSpawner",new Object[] {TaskManager.getCurrentTick(), this });
 		}
 			
 		return this;
@@ -175,7 +175,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 			value = parameters.get(name);
 		}
 		if (value == null) {
-			logger.log(Level.WARNING, "Missing parameter, check factories data or first parameter: " + name, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Missing parameter, check factories data or first parameter: {1}",new Object[]{TaskManager.getCurrentTick(),name});
 			value = defaultValue;
 		}
 		return value;
