@@ -39,7 +39,7 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	 * Default constructor
 	 */
 	public FrameworkModuleImpl() {
-		super();
+		moduleName = ModuleName.NoModule;
 	}
 	
 	/**
@@ -171,6 +171,11 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+	}
+	
+	@Override
+	public String toString(){
+		return moduleName.name;
 	}
 
 }

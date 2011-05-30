@@ -82,8 +82,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 				address = translator.translate(ns);
 			} catch (Exception e) {
 				logger.log(Level.WARNING,
-						"Translation failed. " + e.getMessage(),
-						TaskManager.getCurrentTick());
+						"Translation failed {1}",
+						new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
 			}
 			sdm.store(address);
 		} else {
@@ -108,8 +108,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 				address = translator.translate(ns);
 			} catch (Exception e) {
 				logger.log(Level.WARNING,
-						"Translation failed. " + e.getMessage(),
-						TaskManager.getCurrentTick());
+						"Translation failed {1}",
+						new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
 				return;
 			}
 
@@ -121,8 +121,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 					result = translator.translate(out);
 				} catch (Exception e) {
 					logger.log(Level.WARNING,
-							"Translation failed. " + e.getMessage(),
-							TaskManager.getCurrentTick());
+							"Translation failed {1}",
+							new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
 					return;
 				}
 				if(result.getNodeCount()>0){

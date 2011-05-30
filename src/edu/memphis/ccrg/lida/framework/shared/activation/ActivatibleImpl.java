@@ -57,22 +57,34 @@ public class ActivatibleImpl implements Activatible {
 	@Override
 	public void decay(long ticks) {	
 		if (decayStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before decay has " + activation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "Before decaying {1} has current activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,activation});
+			}
 			synchronized(this){
 				activation = decayStrategy.decay(activation,ticks);
 			}
-			logger.log(Level.FINEST,this.toString() + " after decay has " + activation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "After decaying {1} has current activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,activation});
+			}
 		}
 	}
 
 	@Override
 	public void excite(double excitation) {	
 		if (exciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before excite has " + activation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "Before excitation {1} has current activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,activation});
+			}
 			synchronized(this){
 				activation = exciteStrategy.excite(activation, excitation);
 			}
-			logger.log(Level.FINEST,this.toString() + " after excite has " + activation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "After excitation {1} has current activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,activation});
+			}
 		}
 	}
 

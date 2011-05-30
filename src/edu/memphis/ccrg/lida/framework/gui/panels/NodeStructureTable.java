@@ -142,8 +142,8 @@ public class NodeStructureTable extends GuiPanelImpl {
 			display(module.getModuleContent());
 		}else{
 			logger.log(Level.WARNING,
-					"Unable to parse module " + param[0] + ". Panel not initialized.",
-					0L);
+					"Unable to parse module {1}. Panel not initialized.",
+					new Object[]{0L,param[0]});
 		}
 	}
 
@@ -228,8 +228,8 @@ public class NodeStructureTable extends GuiPanelImpl {
 			nodeStructure = (NodeStructure) o;
 			((AbstractTableModel) table.getModel()).fireTableStructureChanged();
 		}else{
-			logger.log(Level.WARNING, "Can only display NodeStructure, but received " +
-					o + " from module: " + module.getModuleName(), TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Can only display NodeStructure, but received {1} from module {2}", 
+					new Object[]{TaskManager.getCurrentTick(), o, module});
 		}
 	}
 }

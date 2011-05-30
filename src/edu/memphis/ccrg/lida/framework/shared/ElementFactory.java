@@ -340,55 +340,54 @@ public class ElementFactory {
 	}
 	/**
 	 * Returns whether this factory contains specified {@link Strategy} type.
-	 * @param strategyType name of strategy type
+	 * @param strategyTypeName name of strategy type
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsStrategy(String strategyType){
-		return strategies.containsKey(strategyType);
+	public boolean containsStrategy(String strategyTypeName){
+		return strategies.containsKey(strategyTypeName);
 	}
 
 	/**
 	 * Returns whether this factory contains specified {@link Node} type.
-	 * @param nodeType name of node type
+	 * @param nodeTypeName name of node type
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsNodeType(String nodeType) {
-		return nodeClasses.containsKey(nodeType);
+	public boolean containsNodeType(String nodeTypeName) {
+		return nodeClasses.containsKey(nodeTypeName);
 	}
 
 	/**
 	 * Returns whether this factory contains specified {@link Link} type.
-	 * @param linkType name of Link type
+	 * @param linkTypeName name of Link type
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsLinkType(String linkType) {
-		return linkClasses.containsKey(linkType);
+	public boolean containsLinkType(String linkTypeName) {
+		return linkClasses.containsKey(linkTypeName);
 	}
 	
 	/**
 	 * Returns whether this factory contains specified {@link Codelet} type.
-	 * @param type String
+	 * @param codeletTypeName String
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsCodeletType(String type) {
-		return codelets.containsKey(type);
+	public boolean containsCodeletType(String codeletTypeName) {
+		return codelets.containsKey(codeletTypeName);
 	}
 
 	/**
 	 * Gets decay strategy.
 	 * 
-	 * @param name
-	 *            Name of DecayStrategy
+	 * @param strategyTypeName
+	 *            name of DecayStrategy type
 	 * @return the decay strategy
 	 */
-	public DecayStrategy getDecayStrategy(String name) {
+	public DecayStrategy getDecayStrategy(String strategyTypeName) {
 		DecayStrategy d = null;
-		StrategyDef sd = decayStrategies.get(name);
+		StrategyDef sd = decayStrategies.get(strategyTypeName);
 		if (sd == null) {
 			sd = decayStrategies.get(defaultDecayType);
-			logger.log(Level.WARNING, "Strategy " + name
-					+ " does not exist. Default used instead.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Decay strategy type {1} does not exist. Default type will be returned.", 
+					new Object[]{TaskManager.getCurrentTick(),strategyTypeName});
 		}
 		d = (DecayStrategy) sd.getInstance();
 		return d;
@@ -397,33 +396,31 @@ public class ElementFactory {
 	/**
 	 * Gets excite strategy.
 	 * 
-	 * @param name
-	 *            the name
+	 * @param strategyTypeName name of excite strategy type
 	 * @return the excite strategy
 	 */
-	public ExciteStrategy getExciteStrategy(String name) {
+	public ExciteStrategy getExciteStrategy(String strategyTypeName) {
 		ExciteStrategy d = null;
-		StrategyDef sd = exciteStrategies.get(name);
+		StrategyDef sd = exciteStrategies.get(strategyTypeName);
 		if (sd == null) {
 			sd = exciteStrategies.get(defaultExciteType);
-			logger.log(Level.WARNING, "Strategy " + name
-					+ " does not exist. Default used instead.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Excite strategy type {1} does not exist. Default type will be returned.", 
+					new Object[]{TaskManager.getCurrentTick(),strategyTypeName});
 		}
 		d = (ExciteStrategy) sd.getInstance();
 		return d;
 	}
 
 	/**
-	 * Get a strategy by name.
+	 * Get a strategy by type.
 	 * 
-	 * @param name
+	 * @param typeName
 	 *            Name of sought strategy.
 	 * @return Strategy if found or null.
 	 */
-	public Strategy getStrategy(String name) {
+	public Strategy getStrategy(String typeName) {
 		Strategy d = null;
-		StrategyDef sd = strategies.get(name);
+		StrategyDef sd = strategies.get(typeName);
 		if (sd != null) {
 			d = sd.getInstance();
 		}
@@ -482,12 +479,14 @@ public class ElementFactory {
 						Node source, Linkable sink, LinkCategory category) {
 		LinkableDef requiredDef = linkClasses.get(requiredType);
 		if(requiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain link type: " + requiredType, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain link type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),requiredType});
 			return null;
 		}
 		LinkableDef desiredDef = linkClasses.get(desiredType);
 		if(desiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain link type: " + desiredType, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain link type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),desiredType});
 			return null;
 		}
 		
@@ -510,8 +509,8 @@ public class ElementFactory {
 	 * Creates and returns a new Link with specified type, source, sink, and
 	 * category.
 	 * 
-	 * @param linkT
-	 *            the link t
+	 * @param linkType
+	 *            the link type
 	 * @param source
 	 *            Node that is link's source
 	 * @param sink
@@ -520,12 +519,12 @@ public class ElementFactory {
 	 *            LinkCategory
 	 * @return new Link
 	 */
-	public Link getLink(String linkT, Node source, Linkable sink,
+	public Link getLink(String linkType, Node source, Linkable sink,
 						LinkCategory category) {
-		LinkableDef linkDef = linkClasses.get(linkT);
+		LinkableDef linkDef = linkClasses.get(linkType);
 		if (linkDef == null) {
-			logger.log(Level.WARNING, "LinkName " + linkT + " does not exist.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Link type {1} does not exist.",
+					new Object[]{TaskManager.getCurrentTick(),linkType});
 			return null;
 		}
 		
@@ -538,7 +537,7 @@ public class ElementFactory {
 			exciteB = defaultExciteType;
 		}
 
-		return getLink(linkT, source, sink, category, decayB, exciteB, 
+		return getLink(linkType, source, sink, category, decayB, exciteB, 
 				Activatible.DEFAULT_ACTIVATION, Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 	}
 
@@ -546,7 +545,7 @@ public class ElementFactory {
 	 * Creates and returns a new Link of specified type with specified source,
 	 * sink, LinkCategory, DecayStrategy, ExciteStrategy, and category.
 	 * 
-	 * @param linkT
+	 * @param linkType
 	 *            Link type
 	 * @param source
 	 *            Link's source
@@ -563,7 +562,7 @@ public class ElementFactory {
 	 * @param removalThreshold threshold of activation required to remain active
 	 * @return new Link
 	 */
-	public Link getLink(String linkT, Node source, Linkable sink,
+	public Link getLink(String linkType, Node source, Linkable sink,
 			LinkCategory category, String decayStrategy, String exciteStrategy,
 			double activation, double removalThreshold) {
 		
@@ -585,10 +584,10 @@ public class ElementFactory {
 		
 		Link link = null;
 		try {
-			LinkableDef linkDef = linkClasses.get(linkT);
+			LinkableDef linkDef = linkClasses.get(linkType);
 			if (linkDef == null) {
-				logger.log(Level.WARNING, "LinkName " + linkT
-						+ " does not exist.", TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Link type {1} does not exist.", 
+						new Object[]{TaskManager.getCurrentTick(),linkType});
 				return null;
 			}
 
@@ -661,8 +660,8 @@ public class ElementFactory {
 		}		
 		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
-			logger.log(Level.WARNING, "nodeType " + nodeType
-					+ " does not exist.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Node type {1} does not exist.", 
+					new Object[]{TaskManager.getCurrentTick(),nodeType});
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -687,12 +686,14 @@ public class ElementFactory {
 	public Node getNode(String requiredType, Node oNode, String desiredType) {
 		LinkableDef requiredDef = nodeClasses.get(requiredType);
 		if(requiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain node type: " + requiredType, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),requiredType});
 			return null;
 		}
 		LinkableDef desiredDef = nodeClasses.get(desiredType);
 		if(desiredDef == null){
-			logger.log(Level.WARNING, "Factory does not contain node type: " + desiredType, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain node type: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),desiredType});
 			return null;
 		}
 		
@@ -743,7 +744,7 @@ public class ElementFactory {
 	 */
 	private Node getNode(Node oNode, String nodeType, String decayStrategy, String exciteStrategy) {
 		if(oNode == null){
-			logger.log(Level.WARNING, "Supplied node is null", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Specified node is null", TaskManager.getCurrentTick());
 			return null;
 		}
 		Node n = getNode(nodeType,  decayStrategy, exciteStrategy, oNode.getLabel(),oNode.getActivation(), oNode.getActivatibleRemovalThreshold());
@@ -781,8 +782,8 @@ public class ElementFactory {
 	public Node getNode(String nodeType, String nodeLabel) {
 		LinkableDef nodeDef = nodeClasses.get(nodeType);
 		if (nodeDef == null) {
-			logger.log(Level.WARNING, "nodeType " + nodeType
-					+ " does not exist.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Node type {1} does not exist.", 
+					new Object[]{TaskManager.getCurrentTick(),nodeType});
 			return null;
 		}
 		String decayB = nodeDef.getDefaultStrategies().get(decayStrategyType);
@@ -822,8 +823,8 @@ public class ElementFactory {
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
 			if (nodeDef == null) {
-				logger.log(Level.WARNING, "NodeName " + nodeType
-						+ " does not exist.", TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Node type {1} does not exist.", 
+						new Object[]{TaskManager.getCurrentTick(),nodeType});
 				return null;
 			}
 
@@ -865,28 +866,30 @@ public class ElementFactory {
 	/**
 	 * Set the default Link type used by this factory.
 	 * 
-	 * @param defaultLinkType
+	 * @param linkTypeName
 	 *            type of links created by this factory
 	 */
-	public void setDefaultLinkType(String defaultLinkType) {
-		if (linkClasses.containsKey(defaultLinkType)){
-			this.defaultLinkType = defaultLinkType;
+	public void setDefaultLinkType(String linkTypeName) {
+		if (linkClasses.containsKey(linkTypeName)){
+			defaultLinkType = linkTypeName;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain link type, so it cannot be used as default.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain Link type {1} so it cannot be used as default.", 
+					new Object[]{TaskManager.getCurrentTick(),linkTypeName});
 		}
 	}
 
 	/**
 	 * Set the default Node type used by this factory.
 	 * 
-	 * @param defaultNodeType
+	 * @param nodeTypeName
 	 *            type of nodes created by this factory
 	 */
-	public void setDefaultNodeType(String defaultNodeType) {
-		if (nodeClasses.containsKey(defaultNodeType)){
-			this.defaultNodeType = defaultNodeType;
+	public void setDefaultNodeType(String nodeTypeName) {
+		if (nodeClasses.containsKey(nodeTypeName)){
+			defaultNodeType = nodeTypeName;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain node type, so it cannot be used as default.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain Node type {1} so it cannot be used as default.", 
+					new Object[]{TaskManager.getCurrentTick(),nodeTypeName});
 		}
 	}
 	
@@ -910,14 +913,15 @@ public class ElementFactory {
 	/**
 	 * Sets default decay type.
 	 * 
-	 * @param defaultDecayType
+	 * @param decayTypeName
 	 *            DecayType to be used
 	 */
-	public void setDefaultDecayType(String defaultDecayType) {
-		if (decayStrategies.containsKey(defaultDecayType)) {
-			this.defaultDecayType = defaultDecayType;
+	public void setDefaultDecayType(String decayTypeName) {
+		if (decayStrategies.containsKey(decayTypeName)) {
+			defaultDecayType = decayTypeName;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain decay strategy, so it cannot be used as default.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain decay strategy type {1} so it cannot be used as default.", 
+					new Object[]{TaskManager.getCurrentTick(),decayTypeName});
 		}
 	}
 
@@ -941,14 +945,15 @@ public class ElementFactory {
 	/**
 	 * Sets default excite type.
 	 * 
-	 * @param defaultExciteType
+	 * @param exciteTypeName
 	 *            the defaultExciteType to set
 	 */
-	public void setDefaultExciteType(String defaultExciteType) {
-		if (exciteStrategies.containsKey(defaultExciteType)){
-			this.defaultExciteType = defaultExciteType;
+	public void setDefaultExciteType(String exciteTypeName) {
+		if (exciteStrategies.containsKey(exciteTypeName)){
+			defaultExciteType = exciteTypeName;
 		}else{
-			logger.log(Level.WARNING, "Factory does not contain excite strategy, so it cannot be used as default.", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain excite strategy type {1} so it cannot be used as default.", 
+					new Object[]{TaskManager.getCurrentTick(),exciteTypeName});
 		}
 	}
 	
@@ -965,8 +970,8 @@ public class ElementFactory {
 	public Codelet getCodelet(String codeletType, int ticksPerStep, double activation, double removalThreshold, Map<String,?extends Object> params){
 		CodeletDef codeletDef = codelets.get(codeletType);		
 		if (codeletDef == null) {
-			logger.log(Level.WARNING, "Asked for codelet " + codeletType + 
-					" but factory does not have such a codelet. Check factoriesData.xml", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain codelet codelet type {1}", 
+					new Object[]{TaskManager.getCurrentTick(),codeletType});
 			return null;
 		}
 		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
@@ -984,7 +989,7 @@ public class ElementFactory {
 	/**
 	 * Returns a new codelet with specified attributes.
 	 * 
-	 * @param codeletName
+	 * @param codeletType
 	 *            label for codelet
 	 * @param decayStrategy
 	 *            DecayStrategy used by codelet
@@ -999,14 +1004,14 @@ public class ElementFactory {
 	 *            optional parameters to be set in object's init method
 	 * @return new Codelet
 	 */
-	public Codelet getCodelet(String codeletName, String decayStrategy, String exciteStrategy, 
+	public Codelet getCodelet(String codeletType, String decayStrategy, String exciteStrategy, 
 							  int ticksPerStep, double activation, double removalThreshold, Map<String, ? extends Object> params){
 		Codelet codelet = null;
 		try {
-			CodeletDef codeletDef = codelets.get(codeletName);
+			CodeletDef codeletDef = codelets.get(codeletType);
 			if (codeletDef == null) {
-				logger.log(Level.WARNING, "CodeletName " + codeletName
-						+ " does not exist.", TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Factory does not contain codelet type {1}",
+						new Object[]{TaskManager.getCurrentTick(),codeletType});
 			}
 
 			String className = codeletDef.getClassName();
@@ -1062,12 +1067,11 @@ public class ElementFactory {
 			if (containsLinkType(linkType)) {
 				return new NodeStructureImpl(nodeType, linkType);
 			}
-			logger.log(Level.WARNING, "Factory does not have linkType: "
-					+ linkType, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Factory does not contain link type {1}", 
+					new Object[]{TaskManager.getCurrentTick(),linkType});
 		}
-		logger.log(Level.WARNING,
-				"Factory does not have nodeType: " + nodeType, TaskManager
-						.getCurrentTick());
+		logger.log(Level.WARNING, "Factory does not contain node type {1}", 
+				new Object[]{TaskManager.getCurrentTick(),nodeType});
 		return null;
 	}
 }

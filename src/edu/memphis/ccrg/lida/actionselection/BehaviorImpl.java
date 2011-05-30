@@ -137,9 +137,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 				unsatisfiedContextConditionCount.decrementAndGet();
 			}
 		}else{
-			logger.log(Level.WARNING, "BN asked to update a context condition " + 
-						broadcastCondition.getLabel() + " but it wasn't in the context of behavior "
-						+ label, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "BN asked to update a context condition {1} but it wasn't in the context of behavior {2}",
+						new Object[]{TaskManager.getCurrentTick(),broadcastCondition.getLabel(),label});
 		}
 	}
 	
@@ -159,9 +158,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 			double newActivation = condition.getActivation();
 			existingCondition.setActivation(newActivation);
 		}else{
-			logger.log(Level.WARNING, "BN asked to update a result condition " + 
-						condition.getLabel() + " but it wasn't in the result list of behavior "
-						+ label, TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "BN asked to update a result condition but it wasn't in the result of behavior ",
+					TaskManager.getCurrentTick());
+			
 		}
 	}
 
@@ -176,8 +175,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	// start add methods
 	@Override
 	public boolean addContextCondition(Node condition) {
-		logger.log(Level.FINEST, "Adding context condition " +
-								 condition.getLabel() + " to " + label);
+		logger.log(Level.FINEST, "Adding context condition {1} to  {2}", new Object[]{TaskManager.getCurrentTick(), condition, label});
 		if(condition.getActivation() < this.contextSatisfactionThreshold)
 			unsatisfiedContextConditionCount.incrementAndGet();
 		
@@ -186,15 +184,13 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	@Override
 	public boolean addToAddingList(Node addResult) {
-		logger.log(Level.FINEST, "Adding add result " +
-				 addResult.getLabel() + " to " + label);
+		logger.log(Level.FINEST, "Adding add result {1} to {2}", new Object[]{TaskManager.getCurrentTick(), addResult, label});
 		return addingList.addDefaultNode(addResult) != null;
 	}
 
 	@Override
 	public boolean addToDeletingList(Node deleteResult) {
-		logger.log(Level.FINEST, "Adding delete result " +
-				 deleteResult.getLabel() + " to " + label);
+		logger.log(Level.FINEST, "Adding delete result {1} to {2}", new Object[]{TaskManager.getCurrentTick(), deleteResult, label});
 		return deletingList.addDefaultNode(deleteResult) != null;
 	}
 

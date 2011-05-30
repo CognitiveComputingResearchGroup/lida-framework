@@ -53,5 +53,10 @@ public abstract class CommandImpl implements Command {
 	public void setParameters(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
+	
+	@Override 
+	public String toString(){
+		return getClass().getSimpleName();
+	}
 
 }

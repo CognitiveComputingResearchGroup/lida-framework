@@ -110,24 +110,34 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	@Override
 	public void decayBaseLevelActivation(long ticks) {
 		if (baseLevelDecayStrategy != null) {
-			logger.log(Level.FINEST, toString() + " before decay has a BaseLevelAct: " +
-						baseLevelActivation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "Before decaying {1} has base-level activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+			}
 			synchronized(this){
 				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
 			}
-			logger.log(Level.FINEST, toString() + " after decay has a BaseLevelAct: " + 
-					baseLevelActivation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "After decaying {1} has base-level activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+			}
 		}		
 	}
 	
 	@Override
 	public void reinforceBaseLevelActivation(double amount) {
 		if (baseLevelExciteStrategy != null) {
-			logger.log(Level.FINEST,this.toString() + " before reinforce has a BaseLevelAct. of " + baseLevelActivation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "Before reinforcement {1} has base-level activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+			}
 			synchronized(this){
 				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
 			}
-			logger.log(Level.FINEST,this.toString() + " after reinforce has a BaseLevelAct. of " + baseLevelActivation,TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "After reinforcement {1} has base-level activation: {2}",
+							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+			}
 		}		
 	}
 

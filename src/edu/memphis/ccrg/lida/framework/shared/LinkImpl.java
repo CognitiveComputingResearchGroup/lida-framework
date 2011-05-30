@@ -131,7 +131,9 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	private void updateExtendedId() {
 		if(category != null && source != null && sink != null){
-			logger.log(Level.FINEST, "updated extended id", TaskManager.getCurrentTick());
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "updated extended id", TaskManager.getCurrentTick());
+			}
 			extendedId = new ExtendedId(source.getId(), sink.getExtendedId(), category.getId());
 		}
 	}

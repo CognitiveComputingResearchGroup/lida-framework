@@ -132,7 +132,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 			// parameters],...
 			if ((vals.length < FIRST_PARAM)) {
 				logger.log(Level.WARNING,
-						"Error reading line for Panel " + key, 0L);
+						"Error reading line for Panel {1}", new Object[]{0L, key});
 			} else {
 				panelsArray[i++] = vals;
 			}
@@ -175,7 +175,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 					.newInstance();
 		} catch (Exception e) {
 			logger.log(Level.WARNING,
-					"Error instantiating panel " + CLASS_NAME, 0L);
+					"Error instantiating panel {1}", new Object[]{0L,CLASS_NAME});
 			e.printStackTrace();
 			return;
 		}
@@ -192,8 +192,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 			panel.initPanel(param);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,
-					"Exception encountered initializing panel " + panel + ": "
-							+ e, 0L);
+					"Exception {1} encountered initializing panel {2}", 
+					new Object[]{0L, e.getMessage(), panel});
 			e.printStackTrace();
 		}
 
@@ -204,9 +204,9 @@ public class FrameworkGui extends javax.swing.JFrame {
 			try {
 				panel.refresh();
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, "Exception " + e.toString()
-						+ " encountered when refreshing " + panel.toString(),
-						0L);
+				logger.log(Level.SEVERE,
+						"Exception {1} encountered when refreshing panel {2}", 
+						new Object[]{0L, e.getMessage(), panel});
 				e.printStackTrace();
 			}
 		}

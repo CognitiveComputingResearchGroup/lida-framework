@@ -39,27 +39,26 @@ public class GuiUtils {
 		String[] modules = param.trim().split("\\.");
 		ModuleName moduleType = ModuleName.getModuleName(modules[0]);
 		if (moduleType == null) {
-			logger.log(Level.WARNING, "Error getting module type " + moduleType, 0L);
+			logger.log(Level.WARNING, "Error getting module type {1}", new Object[]{0L, modules[0]});
 			return null;
 		}
 		FrameworkModule module = agent.getSubmodule(moduleType);
 		if (module == null) {
-			logger.log(Level.WARNING, "Error getting submodule " + moduleType,
-					0L);
+			logger.log(Level.WARNING, "Error getting submodule {1}", new Object[]{0L,moduleType});
 			return null;
 		}
 		for (int i = 1; i < modules.length; i++) {
 			moduleType = ModuleName.getModuleName(modules[i]);
 			if (moduleType == null) {
-				logger.log(Level.WARNING, "Error getting submodule "
-						+ moduleType, 0L);
+				logger.log(Level.WARNING, "Error getting submodule {1}", 
+						new Object[]{0L, moduleType});
 				return null;
 			}
 
 			module = module.getSubmodule(moduleType);
 			if (module == null) {
-				logger.log(Level.WARNING, "Error getting submodule "
-						+ moduleType, 0L);
+				logger.log(Level.WARNING, "Error getting submodule {1}", 
+						new Object[]{0L, moduleType});
 				return null;
 			}
 		}

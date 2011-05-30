@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * Implementation of Kanerva's sparse distributed memory. This implementation is
@@ -200,7 +201,8 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 			BitVector aux = res.partFromTo(0, addr.size() - 1);
 			// TODO hamming distance tolerance instead of strict equality
 			if (aux.equals(addr)) {
-				logger.log(Level.FINER, "number of iterations: " + i);
+				logger.log(Level.FINER, "number of iterations: {1}", 
+						new Object[]{TaskManager.getCurrentTick(), i});
 				return res;
 			}
 			addr = aux;
