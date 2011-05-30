@@ -67,7 +67,7 @@ public class ExcitationTaskTest{
 		
 		Collection<FrameworkTask> tasks= taskSpawner.getRunningTasks(); 
 		for(FrameworkTask tsk: tasks){
-			assertTrue(tsk instanceof AddToPerceptTask);
+			assertTrue(tsk instanceof AddLinkToPerceptTask);
 		}
 		 
 		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );

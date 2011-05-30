@@ -128,16 +128,6 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivation(edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamNode, edu.memphis.ccrg.lida.pam.PamLink, double)
-	 */
-	@Override
-	public void propagateActivation(PamNode source, PamNode sink, PamLink link,
-			double amount) {
-		// not implemented
-
-	}
-
-	/* (non-Javadoc)
 	 * Just for test matter
 	 */
 	private PamNode pmNode;
@@ -323,5 +313,17 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	@Override
 	public PropagationStrategy getPropagationStrategy() {
 		return null;
+	}
+
+	@Override
+	public void addLinkToPercept(Link l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNodeToPercept(Node n) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -87,7 +87,7 @@ public class ExcitationTask extends FrameworkTaskImpl{
 				logger.log(Level.FINEST,"PamNode {1} over threshold",
 						new Object[]{TaskManager.getCurrentTick(),pamNode});
 			}
-			taskSpawner.addTask(new AddToPerceptTask(pamNode, pam));		
+			taskSpawner.addTask(new AddNodeToPerceptTask(pamNode, pam));		
 		}
 		pam.propagateActivationToParents(pamNode);
 		setTaskStatus(TaskStatus.FINISHED);

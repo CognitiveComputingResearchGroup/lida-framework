@@ -78,7 +78,7 @@ public class PropagationTaskTest{
 		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		PropagationTask excite= new PropagationTask(source, link, sink, 0.1, pam, taskSpawner );
+		PropagationTask excite= new PropagationTask(link, sink, 0.1, pam, taskSpawner );
 		excite.call();
 	 
 		assertTrue(link.getActivation() > 0.1);
@@ -104,7 +104,7 @@ public class PropagationTaskTest{
 		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
 //		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		PropagationTask excite= new PropagationTask(source, link, sink, 0.5, pam, taskSpawner );
+		PropagationTask excite= new PropagationTask(link, sink, 0.5, pam, taskSpawner );
 		excite.call();
 	 
 		assertTrue(link.getActivation() > 0.1);
