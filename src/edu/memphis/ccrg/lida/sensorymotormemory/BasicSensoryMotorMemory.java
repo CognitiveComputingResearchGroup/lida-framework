@@ -52,8 +52,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		if (listener instanceof SensoryMotorMemoryListener) {
 			addSensoryMotorMemoryListener((SensoryMotorMemoryListener) listener);
 		} else {
-			logger.log(Level.WARNING, "Cannot add listener "
-					+ listener.toString(), TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add listener {1}",
+					new Object[]{TaskManager.getCurrentTick(),listener});
 		}
 	}
 
@@ -73,8 +73,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		if (module instanceof Environment) {
 			environment = (Environment) module;
 		} else {
-			logger.log(Level.WARNING, "Cannot add module "
-					+ module.getModuleName(), TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add module {1}",
+					new Object[]{TaskManager.getCurrentTick(),module});
 		}
 	}
 
@@ -108,7 +108,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 			if(alg != null){
 				sendActuatorCommand(alg);
 			}else{
-				logger.log(Level.WARNING, "could not find algorithm for action " + action,TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "could not find algorithm for action {1}",
+						new Object[]{TaskManager.getCurrentTick(),action});
 			}
 			setTaskStatus(TaskStatus.FINISHED);
 		}

@@ -56,7 +56,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
 	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private AtomicBoolean broadcastStarted = new AtomicBoolean(false);
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -98,8 +98,8 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	@Override
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
-			logger.log(Level.FINE, "New Coalition added", TaskManager
-					.getCurrentTick());
+			logger.log(Level.FINEST, "New Coalition added",
+					TaskManager.getCurrentTick());
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -137,8 +137,8 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	 * method is invoked on each trigger at the end of this method.
 	 */
 	private boolean sendBroadcast() {
-		logger.log(Level.FINE, "Triggering broadcast", TaskManager
-				.getCurrentTick());
+		logger.log(Level.FINEST, "Triggering broadcast",
+				TaskManager.getCurrentTick());
 		boolean broadcastWasSent = false;
 		Coalition coal = chooseCoalition();
 		if (coal != null) {
@@ -150,7 +150,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 				bl.receiveBroadcast((BroadcastContent) copy);
 			}
 
-			logger.log(Level.FINE, "Broadcast Performed at tick: {0}",
+			logger.log(Level.FINEST, "Broadcast Performed at tick: {0}",
 					TaskManager.getCurrentTick());
 			broadcastWasSent = true;
 		}
@@ -205,16 +205,17 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	@Override
 	public void decayModule(long ticks) {
 		decay(ticks);
-		logger.log(Level.FINEST, "Coallitions Decayed", TaskManager
-				.getCurrentTick());
+		logger.log(Level.FINEST, "Coallitions Decayed",
+				TaskManager.getCurrentTick());
 	}
+
 	private void decay(long ticks) {
 		for (Coalition c : coalitions) {
 			c.decay(ticks);
 			if (c.getActivation() <= LOWER_ACTIVATION_BOUND) {
 				coalitions.remove(c);
-				logger.log(Level.FINE, "Coallition removed", TaskManager
-						.getCurrentTick());
+				logger.log(Level.FINEST, "Coallition removed",
+						TaskManager.getCurrentTick());
 			}
 		}
 	}
@@ -224,9 +225,10 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 		if (listener instanceof BroadcastListener) {
 			addBroadcastListener((BroadcastListener) listener);
 		} else {
-			logger.log(Level.WARNING,
-					"Can only add listeners of type BroadcastListener. "
-							+ "Tried to add " + listener);
+			logger.log(
+					Level.WARNING,
+					"Can only add listeners of type BroadcastListener. Tried to add {1}",
+					new Object[] { TaskManager.getCurrentTick(), listener });
 		}
 	}
 

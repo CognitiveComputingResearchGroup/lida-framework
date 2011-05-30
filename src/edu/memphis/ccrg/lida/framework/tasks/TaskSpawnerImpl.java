@@ -145,8 +145,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 */
 	@Override
 	public Collection<FrameworkTask> getRunningTasks() {
-		logger.log(Level.FINEST, "Getting all tasks",
-				TaskManager.getCurrentTick());
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 

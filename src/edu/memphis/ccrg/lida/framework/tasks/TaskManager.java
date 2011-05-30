@@ -100,10 +100,10 @@ public class TaskManager {
 	public TaskManager(int tickDuration, int maxPoolSize) {
 		int corePoolSize = DEFAULT_NUMBER_OF_THREADS;
 		long keepAliveTime = 10;
-		if (tickDuration > 0) {
+		if (tickDuration >= 0) {
 			this.tickDuration = tickDuration;
 		} else {
-			logger.log(Level.WARNING, "Tick duration must be 1 or greater",
+			logger.log(Level.WARNING, "Tick duration must be 0 or greater",
 					currentTick);
 		}
 		if (corePoolSize > maxPoolSize) {
@@ -159,10 +159,10 @@ public class TaskManager {
 	 *            simulation.
 	 */
 	public synchronized void setTickDuration(int newTickDuration) {
-		if (newTickDuration > 0) {
+		if (newTickDuration >= 0) {
 			tickDuration = newTickDuration;
 		} else {
-			logger.log(Level.WARNING, "Only positive tick duration allowed.",
+			logger.log(Level.WARNING, "Tick duration must be 0 or greater",
 					currentTick);
 		}
 	}
@@ -211,7 +211,7 @@ public class TaskManager {
 	 * pauses all further tasks executions.
 	 */
 	public void pauseTasks() {
-		logger.log(Level.INFO, "All Tasks paused.", getCurrentTick());
+		logger.log(Level.INFO, "All Tasks paused.", currentTick);
 		tasksPaused = true;
 	}
 
@@ -326,7 +326,7 @@ public class TaskManager {
 		// scheduled tasks is found
 		Set<FrameworkTask> set = taskQueue.get(++currentTick);
 		taskQueue.remove(currentTick);
-		logger.log(Level.FINER, "Tick {0} executed", currentTick);
+		logger.log(Level.FINEST, "Tick {0} executed", currentTick);
 		if (set != null) {
 			try {
 				decayModules();
@@ -334,12 +334,10 @@ public class TaskManager {
 				// for this tick
 			} catch (InterruptedException e) {
 				if (!shuttingDown) {
-					logger.log(Level.WARNING, "Current tick " + currentTick
-							+ " was interrupted because of " + e.toString(),
-							currentTick);
+					logger.log(Level.WARNING, "Current tick {0} was interrupted because of {1}",
+							new Object[]{currentTick,e.getMessage()});
 				} else {
-					logger.log(Level.INFO, "Current tick " + currentTick
-							+ " interrupted for application shutdown.",
+					logger.log(Level.INFO, "Current tick {0} interrupted for application shutdown.",
 							currentTick);
 				}
 			}
@@ -352,8 +350,8 @@ public class TaskManager {
 		try {
 			executorService.invokeAll(decaybles);
 		} catch (InterruptedException e) {
-			logger.log(Level.WARNING, "Decaying interrupted. Message: "
-					+ e.getMessage(), currentTick);
+			logger.log(Level.WARNING, "Decaying interrupted. Message: {1}"
+					, new Object[]{currentTick,e.getMessage()});
 		}
 		DecayableWrapper.setLastDecayTick(currentTick);
 		logger.log(Level.FINEST, "Modules decayed", currentTick);
@@ -472,7 +470,7 @@ public class TaskManager {
 		// the executor service can be shutdown.
 		executorService.shutdown();
 		logger.log(Level.INFO, "All threads and tasks told to stop",
-				getCurrentTick());
+				currentTick);
 		try {
 			executorService.awaitTermination(800, TimeUnit.MILLISECONDS);
 			executorService.shutdownNow();
@@ -481,7 +479,7 @@ public class TaskManager {
 			e.printStackTrace();
 		}
 		logger.log(Level.INFO, "TaskManager shutting down. System exiting.",
-				getCurrentTick());
+				currentTick);
 		System.exit(0);
 	}
 

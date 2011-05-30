@@ -61,7 +61,10 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	@Override
 	protected void runThisFrameworkTask(){
 		detectMultipleLinkables();
-		logger.log(Level.FINE,"detection performed "+ toString(),TaskManager.getCurrentTick());
+		if(logger.isLoggable(Level.FINEST)){
+			logger.log(Level.FINEST,"detection performed {1}"
+					,new Object[]{TaskManager.getCurrentTick(),this});
+		}
 	}
 
 	/**

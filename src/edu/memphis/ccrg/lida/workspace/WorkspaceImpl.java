@@ -58,8 +58,8 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 		}else if (listener instanceof CueListener){
 			addCueListener((CueListener)listener);
 		}else{
-			logger.log(Level.WARNING, "Listener " + listener + " was not added, wrong type.", 
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Listener {1} was not added, wrong type.", 
+					new Object[]{TaskManager.getCurrentTick(),listener});
 		}
 	}
 

@@ -35,15 +35,15 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	
 	@Override
 	protected void runThisFrameworkTask(){	
-		logger.log(Level.FINEST, "SB codelet " + this.toString() + " being run.", 
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "SB codelet {1} being run.", 
+				new Object[]{TaskManager.getCurrentTick(),this});
 		for(WorkspaceBuffer readableBuffer: readableBuffers){
 			if(bufferContainsSoughtContent(readableBuffer)){
 				writableBuffer.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
 			}
 		}
-		logger.log(Level.FINEST, "SB codelet " + this.toString() + " finishes one run.",
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "SB codelet {1} finishes one run.",
+				new Object[]{TaskManager.getCurrentTick(),this});
 	}
 
 	@Override
@@ -59,7 +59,8 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 				return false;
 			}
 		}
-		logger.log(Level.FINEST, "SBcodelet " + this.toString() + " found sought content", TaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "SBcodelet {1} found sought content",
+				new Object[]{TaskManager.getCurrentTick(),this});
 		return true;
 	}
 

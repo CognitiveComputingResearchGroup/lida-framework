@@ -257,9 +257,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public void addPerceptualAlgorithm(DetectionAlgorithm detector) {
 		for (PamLinkable pl : detector.getPamLinkables()) {
 			if (!pamNodeStructure.containsLinkable(pl)) {
-				logger.log(Level.WARNING, "Adding detection algorithm "
-						+ detector + " but, detector's pam linkable " + pl
-						+ " is not in PAM.", TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
+						new Object[]{ TaskManager.getCurrentTick(),detector,pl});
 			}
 		}
 
@@ -389,16 +388,14 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl
 				.getExtendedId());
 		if (linkable != null) {
-			logger.log(Level.FINE, linkable.getLabel()
-					+ " gets activation burst. Amount: " + amount
-					+ ", total activation: " + linkable.getTotalActivation(),
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINEST, "{1} gets activation burst. Amount: {2}",
+					new Object[]{TaskManager.getCurrentTick(),linkable,amount});
 			ExcitationTask task = new ExcitationTask(linkable, amount,
 					excitationTaskTicksPerRun, this, taskSpawner);
 			taskSpawner.addTask(task);
 		} else {
-			logger.log(Level.FINE, "Cannot find pamnode: " + linkable,
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot find pamnode: {1}",
+					new Object[]{TaskManager.getCurrentTick(),linkable});
 		}
 	}
 
@@ -455,11 +452,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	@Override
 	public void propagateActivation(PamNode source, PamNode sink, PamLink link,
 			double amount) {
-		logger.log(Level.FINE, "exciting parent: " + sink.getLabel()
-				+ " and connecting link " + link.getLabel() + " amount: "
-				+ amount, TaskManager.getCurrentTick());
+		if(logger.isLoggable(Level.FINEST)){
+			logger.log(Level.FINEST, "exciting parent: {1} and connecting link {2} amount: {3}",new Object[]{ TaskManager.getCurrentTick(),sink,link,amount});
+		}
 		PropagationTask task = new PropagationTask(source, link, sink, amount,
 				this, taskSpawner);
+		
 		task.setTicksPerStep(propagationTaskTicksPerRun);
 		taskSpawner.addTask(task);
 	}
@@ -566,9 +564,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (l instanceof PamListener) {
 			addPamListener((PamListener) l);
 		} else {
-			logger.log(Level.WARNING, "Cannot add listener type "
-					+ l.toString() + " to this module.", TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot add listener type {1} to this module.", 
+					new Object[]{TaskManager.getCurrentTick(),l});
 		}
 	}
 
@@ -611,8 +608,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
-		logger.log(Level.FINEST, l.getTotalActivation() + " >? "
-				+ perceptThreshold, TaskManager.getCurrentTick());
 		return l.getTotalActivation() > perceptThreshold;
 	}
 
