@@ -70,7 +70,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 				globalWorkspace = (GlobalWorkspace) module;
 			}
 		}else{
-			logger.log(Level.WARNING, "Module useage not supported",
+			logger.log(Level.WARNING, "Module usage not supported",
 					TaskManager.getCurrentTick());
 		}
 	}
@@ -86,8 +86,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 			if (csmContent.getLinkableCount() > 0) {
 				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, 
 											getActivation(), this));
-				logger.log(Level.FINER, this + " adds new coalition",
-						TaskManager.getCurrentTick());
+				logger.log(Level.FINER, "{1} adds new coalition",
+						new Object[]{TaskManager.getCurrentTick(), this});
 			}
 		}
 	}

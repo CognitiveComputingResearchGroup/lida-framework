@@ -76,7 +76,8 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 	public Object executeCommand (Command command){
 		if(command != null){
 			command.execute(agent);
-			logger.log(Level.FINE, "Command "+ command + " executed",TaskManager.getCurrentTick());
+			logger.log(Level.FINE, "Command {1} executed",
+					new Object[]{TaskManager.getCurrentTick(),command});
 			return command.getResult();
 		}
 		logger.log(Level.WARNING, "Cannot execute null command", TaskManager.getCurrentTick());

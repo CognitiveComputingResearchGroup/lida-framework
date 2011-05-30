@@ -89,27 +89,27 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Creates a new NodeStructureImpl with specified default Node type and link
 	 * Type. If either is not in the factory the factory's defaults are used.
 	 * 
-	 * @param defaultNode kind of node used in this NodeStructure
+	 * @param nodeType kind of node used in this NodeStructure
 	 * 
-	 * @param defaultLink kind of link used in this NodeStructure
+	 * @param linkType kind of link used in this NodeStructure
 	 * 
 	 * @see ElementFactory
 	 */
-	public NodeStructureImpl(String defaultNode, String defaultLink) {
+	public NodeStructureImpl(String nodeType, String linkType) {
 		this();
-		if (factory.containsNodeType(defaultNode)) {
-			this.defaultNodeType = defaultNode;
+		if (factory.containsNodeType(nodeType)) {
+			defaultNodeType = nodeType;
 		} else {
-			logger.log(Level.SEVERE, "Unsupported Node type: " + defaultNode,
-					TaskManager.getCurrentTick());
+			logger.log(Level.SEVERE, "Unsupported Node type: {1}",
+					new Object[]{TaskManager.getCurrentTick(),nodeType});
 			throw new IllegalArgumentException();
 		}
 
-		if (factory.containsLinkType(defaultLink)) {
-			this.defaultLinkType = defaultLink;
+		if (factory.containsLinkType(linkType)) {
+			defaultLinkType = linkType;
 		} else {
-			logger.log(Level.SEVERE, "Unsupported Link type: " + defaultLink,
-					TaskManager.getCurrentTick());
+			logger.log(Level.SEVERE, "Unsupported Link type: {1}",
+					new Object[]{TaskManager.getCurrentTick(),linkType});
 			throw new IllegalArgumentException();
 		}
 	}
@@ -129,8 +129,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public NodeStructure copy() {
-		logger.log(Level.FINER, "Copying NodeStructure " + this, TaskManager
-				.getCurrentTick());
 		return new NodeStructureImpl(this);
 	}
 
@@ -271,7 +269,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 			LinkCategory category, double activation, double removalThreshold) {
 		if (source == null || sink == null) {
 			logger.log(Level.WARNING,
-					"Cannot add link between null linkables.", TaskManager
+					"Source or sink is not present.  Cannot add link.", TaskManager
 							.getCurrentTick());
 		}
 
@@ -352,7 +350,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public Node addDefaultNode(Node n) {
 		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null node", TaskManager
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
 					.getCurrentTick());
 			return null;
 		}
@@ -363,7 +361,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Link addLink(Link l, String linkType) {
 		if (l == null) {
-			logger.log(Level.WARNING, "Cannot add null link", TaskManager
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
 					.getCurrentTick());
 			return null;
 		}
@@ -385,8 +383,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				links.put(link.getExtendedId(), link);
 				linkableMap.put(link, new HashSet<Link>());
 			} else {
-				logger.log(Level.WARNING, "Could not create new node of type: "
-						+ linkType, TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Could not create new link of type: {1} ",
+						new Object[]{TaskManager.getCurrentTick(),linkType});
 			}
 		} else {
 			link.updateLinkValues(l);
@@ -398,7 +396,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	@Override
 	public synchronized Node addNode(Node n, String nodeType) {
 		if (n == null) {
-			logger.log(Level.WARNING, "Cannot add null node", TaskManager
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
 					.getCurrentTick());
 			return null;
 		}
@@ -421,11 +419,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				nodes.put(node.getId(), node);
 				linkableMap.put(node, new HashSet<Link>());
 			} else {
-				logger.log(Level.WARNING, "Could not create new node of type: "
-						+ nodeType, TaskManager.getCurrentTick());
+				logger.log(Level.WARNING, "Could not create new node of type: {1} ",
+						new Object[]{TaskManager.getCurrentTick(),nodeType});
 			}
 		} else {
-			// TODO just updateNodeValues and that does specific things
 			double newActiv = n.getActivation();
 			if (node.getActivation() < newActiv) {
 				node.setActivation(newActiv);
@@ -458,7 +455,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 					linkableMap.put(node, new HashSet<Link>());
 			} else {
 				logger.log(Level.FINE,
-						"Cannot add node. Node is already in this NodeStructure.", TaskManager
+						"Cannot add node. It is already in this NodeStructure.", TaskManager
 								.getCurrentTick());				
 			}
 			return node;
@@ -528,10 +525,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * 
 	 * @param ns
 	 */
-	// TODO do this for addNode and AddDefaultLink??????
 	private void internalMerge(NodeStructure ns) {
 		if (ns == null) {
-			logger.log(Level.WARNING, "Asked to merge null", TaskManager
+			logger.log(Level.WARNING, "Cannot merge with null", TaskManager
 					.getCurrentTick());
 			return;
 		}

@@ -75,8 +75,8 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 			defaultCodeletName = type;
 		}else{
 			logger.log(Level.WARNING, 
-					"Cannot set default codelet type, factory does not have type: " + type, 
-					TaskManager.getCurrentTick());
+					"Cannot set default codelet type, factory does not have type {1}",
+					new Object[]{TaskManager.getCurrentTick(),type});
 		}
 	}
 
@@ -193,8 +193,8 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	public void addCodelet(Codelet codelet) {
 		if(codelet instanceof AttentionCodelet){
 			taskSpawner.addTask(codelet);
-			logger.log(Level.FINER, "New attention codelet " + codelet.toString()
-				+ " spawned.", TaskManager.getCurrentTick());
+			logger.log(Level.FINER, "New attention codelet: {1} added to run.", 
+					new Object[]{TaskManager.getCurrentTick(),codelet});
 		}else{
 			logger.log(Level.WARNING, "Can only add an AttentionCodelet", TaskManager.getCurrentTick());
 		}

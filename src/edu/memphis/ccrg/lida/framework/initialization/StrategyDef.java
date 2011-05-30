@@ -81,14 +81,14 @@ public class StrategyDef {
 			st.init(params);
 
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating Strategy.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Exception {1} creating Strategy.",
+					new Object[]{TaskManager.getCurrentTick(), e.getMessage()});
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating Strategy.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Exception {1} creating Strategy.",
+					new Object[]{TaskManager.getCurrentTick(), e.getMessage()});
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating Strategy.",
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Exception {1} creating Strategy.",
+					new Object[]{TaskManager.getCurrentTick(), e.getMessage()});
 		}
 		return st;
 	}

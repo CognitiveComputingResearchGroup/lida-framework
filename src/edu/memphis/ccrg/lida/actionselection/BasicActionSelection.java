@@ -83,8 +83,8 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		synchronized(this){
 			behaviors.add(b);
 		}
-		logger.log(Level.FINE, "Behavior added " + b,
-				   TaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Behavior added {1}",
+				   new Object[]{TaskManager.getCurrentTick(), b});
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
 			AgentAction action = behavior.getAction();
-			logger.log(Level.FINE, "Action Selected at tick: " + TaskManager.getCurrentTick() + " act: " + action,
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINE, "Action Selected: {1}",
+					   new Object[]{TaskManager.getCurrentTick(),action});
 			for (ActionSelectionListener bl : listeners) {
 				bl.receiveAction(action);
 			}

@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * 
@@ -193,8 +194,8 @@ public class FactoriesDataXmlLoader {
 			StrategyDef bd = strategies.get(s);
 			String type = bd.getType();
 			if (strat.containsKey(type)) {
-				logger.log(Level.WARNING, "Cannot add strategy " + s
-						+ " a strategy of type: " + type + " already exists");
+				logger.log(Level.WARNING, "Cannot add strategy {1} a strategy of type {2} already exists", 
+						new Object[]{TaskManager.getCurrentTick(), s, type});
 			} else {
 				strat.put(type, s);
 			}
@@ -274,8 +275,8 @@ public class FactoriesDataXmlLoader {
 		while (it.hasNext()) {
 			b = it.next();
 			if (!strategies.containsKey(b)) {
-				logger.log(Level.WARNING, b
-						+ " is not a defined Strategy. It is excluded", 0L);
+				logger.log(Level.WARNING, "{1} is not a defined Strategy. It is excluded", 
+						new Object[]{0L,b});
 				it.remove();
 			}
 		}

@@ -50,7 +50,8 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 			}
 		}
 
-		logger.log(Level.FINEST, "Attn codelet " + this.toString() + " found sought content", TaskManager.getCurrentTick());
+		logger.log(Level.FINEST, "Attn codelet {1} found sought content", 
+				new Object[]{TaskManager.getCurrentTick(), this});
 		return true;
 	}
 	

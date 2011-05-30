@@ -58,7 +58,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 				sliderMin = Integer.parseInt(params[0]);
 				sliderMin = (sliderMin < sliderStartValue)? sliderMin : sliderStartValue;
 			} catch (NumberFormatException e) {
-				logger.log(Level.WARNING, "Invalid Parameter " + params[0], 0L);
+				logger.log(Level.WARNING, "Invalid Parameter {1}", new Object[]{0L,params[0]});
 			}
 		}
 		if (params.length >= 2) {
@@ -66,7 +66,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 				sliderMax = Integer.parseInt(params[1]);
 				sliderMax = (sliderMax > sliderStartValue)? sliderMax : sliderStartValue;
 			} catch (NumberFormatException e) {
-				logger.log(Level.WARNING, "Invalid Parameter " + params[1], 0L);
+				logger.log(Level.WARNING, "Invalid Parameter {1}", new Object[]{0L,params[1]});
 			}
 		}
 

@@ -73,8 +73,8 @@ public class XmlUtils {
 			// schema = factory.newSchema(schemaLocation);
 			schema = factory.newSchema(new StreamSource(is));
 		} catch (SAXException ex) {
-			logger.log(Level.WARNING, "The Schema file is not valid. "
-					+ ex.getMessage());
+			logger.log(Level.WARNING, "The Schema file is not valid. {0}",
+					ex.getMessage());
 			ex.printStackTrace();
 			return false;
 		}
@@ -144,8 +144,8 @@ public class XmlUtils {
 		try {
 			i = Integer.parseInt(getTextValue(ele, tagName));
 		} catch (NumberFormatException e) {
-			logger.log(Level.WARNING, "Cannot parse int value in tag "
-					+ tagName);
+			logger.log(Level.WARNING, "Cannot parse int value in tag {0}",
+					tagName);
 		}
 		return i;
 	}
