@@ -429,7 +429,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -441,7 +442,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         addPanelMenuItem.setText("Add new panel");
         addPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPanelMenuItemActionPerformed(evt);
             }
         });
@@ -463,7 +465,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         loadPanelSettingsMenuItem.setText("Load panel settings");
         loadPanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadPanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -471,7 +474,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         savePanelSettingsMenuItem.setText("Save panel settings");
         savePanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -484,7 +488,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         contentsMenuItem.setText("Help");
         contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentsMenuItemActionPerformed(evt);
             }
         });
@@ -492,7 +497,8 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItemActionPerformed(evt);
             }
         });

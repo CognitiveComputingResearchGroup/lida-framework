@@ -107,7 +107,8 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         startPauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         startPauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         startPauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startPauseButtonActionPerformed(evt);
             }
         });
@@ -124,7 +125,8 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         ticksModeTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ticksModeTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         ticksModeTB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ticksModeTBActionPerformed(evt);
             }
         });
@@ -136,7 +138,8 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         addTicksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addTicksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         addTicksButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addTicksButtonActionPerformed(evt);
             }
         });
@@ -151,7 +154,8 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         toolbar.add(jLabel2);
 
         speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            @Override
+			public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 speedSliderStateChanged(evt);
             }
         });
