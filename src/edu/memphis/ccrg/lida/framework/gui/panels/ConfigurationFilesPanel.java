@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
+ * A {@link GuiPanel} displaying the configuration files being used.
  * @author Javier Snaider
  */
 public class ConfigurationFilesPanel extends GuiPanelImpl {
