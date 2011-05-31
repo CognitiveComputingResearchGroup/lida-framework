@@ -8,21 +8,18 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Properties;
+import java.util.Collection;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
-import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
-import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -36,88 +33,83 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  */
 
 public class PropagationTaskTest{
+	
+	private static ElementFactory factory = ElementFactory.getInstance();
+	
 	private PamNode source;
 	private PamNode sink;
 	private PamLink link;
 	
-	/*
-	 * Used to make another excitation call
-	 */
+	private double epsilon = 1e-10;
+	
 	private MockPAM pam;
-	private static ElementFactory factory;
-	
-	@BeforeClass
-	public static void setUpBeforeClass(){
-		factory = ElementFactory.getInstance();
-		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
-		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
-		factoryLoader.loadFactoriesData(prop);
-	}
-	
-	/*
-	 * For threshold task creation
-	 */
 	private MockTaskSpawner taskSpawner;
+	
 	@Before
 	public void setUp() throws Exception {
 		source =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
 		sink   =  (PamNode) ElementFactory.getInstance().getNode("PamNodeImpl");
+		sink.setActivation(0.0);
+		sink.setExciteStrategy(new LinearExciteStrategy());
 		link  = (PamLink) factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.NONE);
+		link.setActivation(0.0);
+		link.setExciteStrategy(new LinearExciteStrategy());
 		 
 		pam = new MockPAM();
 		taskSpawner= new MockTaskSpawner();
+		pam.setAssistingTaskSpawner(taskSpawner);
 	}
+	
 	@Test
-	public void test(){
+	public void testPropagateNotOverThreshold(){
 		double perceptThreshold = 1.0;
+		pam.setPerceptThreshold(perceptThreshold);
+		double upscaleFactor = 0.5;
+		pam.setUpscaleFactor(upscaleFactor);
+		
 		double linkActivation = 0.1;
 		double sourceActivation = 0.1;
 		double sinkActivation = 0.1;
-		pam.setPerceptThreshold(perceptThreshold);
 		link.setActivation(linkActivation);
-		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
-//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		PropagationTask excite= new PropagationTask(link, sink, 0.1, pam, taskSpawner );
-		excite.call();
+		assertEquals(0.1, link.getActivation(), epsilon); 
+		
+		PropagationTask task= new PropagationTask(1, link, sourceActivation, pam);
+		task.call();
 	 
-		assertTrue(link.getActivation() > 0.1);
-		assertTrue(sink.getActivation() > 0.1);
-		assertTrue(source.getActivation() == 0.1);
-		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
+		assertEquals(0.2, link.getActivation(), epsilon);
+		assertEquals(0.2*upscaleFactor + 0.1, sink.getActivation(), epsilon);
+		assertEquals(TaskStatus.FINISHED, task.getTaskStatus());
 	 
-		assertEquals(sink, pam.testGetSink());
-//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		assertFalse(pam.isOverPerceptThreshold(link));
-		assertFalse(pam.isOverPerceptThreshold(sink));
-		 
-	 
+		assertEquals(sink, pam.pmNode);
+		assertEquals(0, taskSpawner.getRunningTasks().size());
 	}
 	@Test
-	public void test2(){
-		double perceptThreshold = 0.15;
-		double linkActivation = 0.1;
-		double sourceActivation = 0.1;
-		double sinkActivation = 0.1;
+	public void testPropagateOverThreshold(){
+		double perceptThreshold = 0.5;
 		pam.setPerceptThreshold(perceptThreshold);
+		double upscaleFactor = 0.5;
+		pam.setUpscaleFactor(upscaleFactor);
+		
+		double linkActivation = 0.2;
+		double sourceActivation = 0.6;
+		double sinkActivation = 0.1;
 		link.setActivation(linkActivation);
-		source.setActivation(sourceActivation);
 		sink.setActivation(sinkActivation);
-//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		PropagationTask excite= new PropagationTask(link, sink, 0.5, pam, taskSpawner );
+		
+		PropagationTask excite= new PropagationTask(1, link, sourceActivation, pam);
 		excite.call();
 	 
-		assertTrue(link.getActivation() > 0.1);
-		assertTrue(sink.getActivation() > 0.1);
-		assertTrue(source.getActivation() == 0.1);
-		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
+		assertEquals(sourceActivation + linkActivation, link.getActivation(), epsilon);
+		assertEquals((sourceActivation + linkActivation)*upscaleFactor + sinkActivation, sink.getActivation(), epsilon);
+		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
 	 
-		assertEquals(sink, pam.testGetSink());
-//		System.out.println(link.getActivation() + " " +link.getTotalActivation());
-		assertTrue(pam.isOverPerceptThreshold(link));
-		assertTrue(pam.isOverPerceptThreshold(sink));
-		assertTrue(taskSpawner.getRunningTasks().size() != 0);
-		 
+		assertEquals(sink, pam.pmNode);
+		Collection<FrameworkTask> tasks = taskSpawner.getRunningTasks();
+		assertEquals(1, tasks.size());
+		for(FrameworkTask tsk: tasks){
+			assertTrue(tsk instanceof AddLinkToPerceptTask);
+		}
 	 
 	}
  

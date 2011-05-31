@@ -116,7 +116,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		if (this.status != TaskStatus.CANCELED){
 			this.status = status;
 		}else {
-			logger.log(Level.WARNING, "Cannot set task status to CANCELED", TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Cannot set TaskStatus to {1}.  TaskStatus is already CANCELED so it cannot be modified again.", 
+					new Object[]{TaskManager.getCurrentTick(),status});
 		}
 	}
 
@@ -130,9 +131,6 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		return taskID;
 	}
 
-	/**
-	 * @see edu.memphis.ccrg.lida.framework.tasks.FrameworkTask#getTicksPerStep()
-	 */
 	@Override
 	public synchronized int getTicksPerStep() {
 		return ticksPerStep;
@@ -181,18 +179,11 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		return value;
 	}
 	
-
-	/* 
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkTask#getTaskSpawner()
-	 */
 	@Override
 	public TaskSpawner getControllingTaskSpawner() {		
 		return controllingTS;
 	}
-
-	/*
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkTask#setControllingTaskSpawner(edu.memphis.ccrg.lida.framework.TaskSpawner)
-	 */
+	
 	@Override
 	public void setControllingTaskSpawner(TaskSpawner controllingTS) {
 		this.controllingTS=controllingTS;		

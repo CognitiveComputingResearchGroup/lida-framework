@@ -130,18 +130,14 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	/* (non-Javadoc)
 	 * Just for test matter
 	 */
-	private PamNode pmNode;
-	
-	public PamNode testGetSink(){
-		return pmNode;
-	}
+	public PamNode pmNode;
+
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
 	public void propagateActivationToParents(PamNode pamNode) {
 		pmNode = pamNode;
-
 	}
 
 	/* (non-Javadoc)
@@ -149,14 +145,10 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		percept = ns;
+		nsPercept = ns;
 	}
 
-	private NodeStructure percept;
-	
-	public NodeStructure getCurrentTestPercept(){
-		return percept;
-	}
+	public NodeStructure nsPercept;
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.framework.shared.Node)
@@ -208,17 +200,17 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 */
 	@Override
 	public void setUpscaleFactor(double f) {
-		// not implemented
-
+		upscaleFactor = f;
 	}
+	
+	public double upscaleFactor;
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getUpscaleFactor()
 	 */
 	@Override
 	public double getUpscaleFactor() {
-		// not implemented
-		return 0;
+		return upscaleFactor;
 	}
 
 	/* (non-Javadoc)
@@ -315,15 +307,14 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 		return null;
 	}
 
+	public Link linkPercept;
 	@Override
 	public void addLinkToPercept(Link l) {
-		// TODO Auto-generated method stub
-		
+		linkPercept = l;
 	}
-
+	public Node nodePercept;
 	@Override
 	public void addNodeToPercept(Node n) {
-		// TODO Auto-generated method stub
-		
+		nodePercept = n;
 	}
 }

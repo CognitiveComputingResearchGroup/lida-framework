@@ -7,14 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import edu.memphis.ccrg.lida.pam.PamLink;
-
-
-
+import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
- * Specifies the category of a Link
- * @see PamLink
+ * Specifies the category of a Link. 
+ * @see PamNode
  * @see Link
  */
 public interface LinkCategory {
@@ -25,7 +22,8 @@ public interface LinkCategory {
 	public String getLabel();
 	
 	/**
-	 * @return Category id
+	 * @return category's id
 	 */
 	public int getId();
+	
 }

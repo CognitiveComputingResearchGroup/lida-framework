@@ -32,7 +32,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	private TaskManager taskManager;
 
 	/*
-	 * The tasks currently being run
+	 * The tasks currently running tasks this TaskSpawner manages
 	 */
 	private Set<FrameworkTask> runningTasks = new ConcurrentHashSet<FrameworkTask>();
 
@@ -139,17 +139,13 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	protected void processResults(FrameworkTask task) {
 	}
 
-	/**
-	 * Returns an unmodifiable collection of the running tasks managed by this
-	 * TaskSpawner
-	 */
 	@Override
 	public Collection<FrameworkTask> getRunningTasks() {
 		return Collections.unmodifiableCollection(runningTasks);
 	}
 
 	/*
-	 * Removes FrameworkTask from task set and tells TaskManager to cancel the
+	 * Removes FrameworkTask from runningTasks and tells TaskManager to cancel the
 	 * task
 	 */
 	@Override
@@ -166,23 +162,12 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		return runningTasks.contains(task);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
-	 */
 	@Override
 	public void init(Map<String, ?> params) {
 		this.parameters = params;
 		init();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#init()
-	 */
 	@Override
 	public void init() {
 	}

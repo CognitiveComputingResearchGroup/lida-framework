@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -16,7 +17,6 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -26,52 +26,54 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 public class ExcitationTaskTest{
 	
 	private PamNode pamNode;
+
+	private MockPAM pam;
 	
-	/*
-	 * Used to make another excitation call
-	 */
-	private  MockPAM pam;
-	
-	/*
-	 * For threshold task creation
-	 */
 	private MockTaskSpawner taskSpawner;
+	
 	@Before
 	public void setUp() throws Exception {
 		pamNode = new PamNodeImpl();
+		pamNode.setActivation(0.0);
 		pam = new MockPAM();
 		taskSpawner= new MockTaskSpawner();
+		pam.setAssistingTaskSpawner(taskSpawner);
 	}
 	
+	private final double epsilon = 1e-10;
+	
 	@Test
-	public void test(){
+	public void testExciteNotOverThreshold(){
 		pam.setPerceptThreshold(1.0);
 		pamNode.setExciteStrategy(new LinearExciteStrategy());
-		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
+		ExcitationTask excite= new ExcitationTask(1, pamNode, 0.5, pam);
 		
 		excite.call();
-		assertTrue(pamNode.getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
-		assertTrue(pam.testGetSink().getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
-		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
+		
+		assertEquals(pamNode.getActivation(), 0.5, epsilon);
+		assertEquals(pam.pmNode.getActivation(), 0.5, epsilon);
+		assertEquals(0, taskSpawner.getRunningTasks().size());
+		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
 	 
 	}
 	@Test
-	public void testTaskSpawner(){
+	public void testExciteOverThreshold(){
 		pam.setPerceptThreshold(0.4);
 		pamNode.setExciteStrategy(new LinearExciteStrategy());
-		ExcitationTask excite= new ExcitationTask(pamNode, 0.5, 1, pam, taskSpawner);
+		ExcitationTask excite= new ExcitationTask(1, pamNode, 0.5, pam);
 		
 		excite.call();
-		assertTrue(pamNode.getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
-		assertTrue(pam.testGetSink().getActivation()== 0.5 + Activatible.DEFAULT_ACTIVATION);
+		
+		assertEquals(pamNode.getActivation(), 0.5, epsilon);
+		assertEquals(pam.pmNode.getActivation(), 0.5, epsilon);
 		
 		Collection<FrameworkTask> tasks= taskSpawner.getRunningTasks(); 
+		assertEquals(1, tasks.size());
 		for(FrameworkTask tsk: tasks){
-			assertTrue(tsk instanceof AddLinkToPerceptTask);
+			assertTrue(tsk instanceof AddNodeToPerceptTask);
 		}
 		 
-		assertTrue(TaskStatus.FINISHED == excite.getTaskStatus() );
-	 
+		assertEquals(TaskStatus.FINISHED, excite.getTaskStatus());
 	}
 
 }

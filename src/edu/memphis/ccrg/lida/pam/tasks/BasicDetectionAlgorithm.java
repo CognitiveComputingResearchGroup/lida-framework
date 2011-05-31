@@ -98,17 +98,11 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#addPamNode(edu.memphis.ccrg.lida.pam.PamNode)
-	 */
 	@Override
 	public void addPamLinkable(PamLinkable linkable) {
 		linkables.add(linkable);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.tasks.FeatureDetector#getPamNodes()
-	 */
 	@Override
 	public Collection<PamLinkable> getPamLinkables() {
 		return Collections.unmodifiableCollection(linkables);
@@ -143,9 +137,6 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	@Override
 	public abstract double detect();
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "Feature Detector [" + getTaskId() + "] ";

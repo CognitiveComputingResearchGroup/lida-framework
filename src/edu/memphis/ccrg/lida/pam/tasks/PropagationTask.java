@@ -7,20 +7,17 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import edu.memphis.ccrg.lida.framework.shared.Link;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A propagation task excites a {@link Node} n and a {@link Link} l.  
- * The {@link Link} l is the connection from the source of the activation to the {@link Node} n.
- * @author Ryan J McCall
+ * A task which propagates an amount of activation
+ * along a {@link PamLink} to its sink.  
  *
+ * @author Ryan J McCall
  */
 public class PropagationTask extends FrameworkTaskImpl {
 		
@@ -28,50 +25,44 @@ public class PropagationTask extends FrameworkTaskImpl {
 	private PamLink link;
 	
 	private double excitationAmount;
-	
-	/*
-	 * Used to make another excitation call
-	 */
+
 	private PerceptualAssociativeMemory pam;
-	
-	/*
-	 * For threshold task creation
-	 */
-	private TaskSpawner taskSpawner;
 
 	/**
-	 * Propagates specified activation amount from source to sink along link.
+	 * Default constructor.
+	 * @param ticksPerRun task's ticks per run
 	 * 
 	 * @param link
 	 *            the link from the source to the parent
-	 * @param sink
-	 *            the sink and the parent of the source
 	 * @param amount
 	 *            the amount to excite
 	 * @param pam
 	 *            the pam
-	 * @param ts
-	 *            the ts
 	 */
-	public PropagationTask(PamLink link, PamNode sink, double amount,
-						   PerceptualAssociativeMemory pam, TaskSpawner ts) {
-		super();
+	public PropagationTask(int ticksPerRun, PamLink link, double amount,
+						   PerceptualAssociativeMemory pam) {
+		super(ticksPerRun);
 		this.link = link;
-		this.sink = sink;
+		this.sink = (PamNode) link.getSink();
 		this.excitationAmount = amount;
-		this.pam = pam;
-		this.taskSpawner = ts;		
+		this.pam = pam;	
 	}
 
+	/**
+	 * Excites the {@link PamLink} specified amount. Excites link's sink based
+	 * on link's new activation. If this puts sink over its percept threshold
+	 * then both Link and sink will be send as a percept.  Calls
+	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
+	 * with sink and finishes. 
+	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		//TODO think about a propagation strategy here
+		//TODO use a 'propagation' strategy here
 		link.excite(excitationAmount);
-		double linkActivation = link.getActivation();
-		sink.excite(linkActivation * pam.getUpscaleFactor());
+		sink.excite(link.getActivation() * pam.getUpscaleFactor());
 		if(pam.isOverPerceptThreshold(sink)){
 			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
-			taskSpawner.addTask(task);
+			pam.getAssistingTaskSpawner().addTask(task);
 		}
 		pam.propagateActivationToParents(sink);
 		setTaskStatus(TaskStatus.FINISHED);
@@ -79,7 +70,7 @@ public class PropagationTask extends FrameworkTaskImpl {
 	
 	@Override
 	public String toString(){
-		return "Propagation task " + getTaskId();
+		return getClass().getSimpleName() + " " + getTaskId();
 	}
 
 }
