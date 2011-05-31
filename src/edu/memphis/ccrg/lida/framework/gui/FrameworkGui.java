@@ -33,6 +33,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -428,8 +429,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -441,8 +441,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         addPanelMenuItem.setText("Add new panel");
         addPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPanelMenuItemActionPerformed(evt);
             }
         });
@@ -464,8 +463,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         loadPanelSettingsMenuItem.setText("Load panel settings");
         loadPanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadPanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -473,8 +471,7 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         savePanelSettingsMenuItem.setText("Save panel settings");
         savePanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -485,10 +482,20 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         helpMenu.setText("Help");
 
-        contentsMenuItem.setText("Contents");
+        contentsMenuItem.setText("Help");
+        contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentsMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(contentsMenuItem);
 
         aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
@@ -497,6 +504,17 @@ public class FrameworkGui extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+       JOptionPane.showMessageDialog(this,"LIDA Framework 1.0 Beta \n "
+               + "Cognitive Computing Research Group \n The University of Memphis \n"
+               + " ccrg.cs.memphis.edu","About", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
+       JOptionPane.showMessageDialog(this,"For more on the LIDA framework visit:\n"
+               + "ccrg.cs.memphis.edu/framework.html","Help", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_contentsMenuItemActionPerformed
 
 	@SuppressWarnings("unused")
 	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

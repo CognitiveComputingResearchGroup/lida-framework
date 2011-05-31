@@ -23,4 +23,4 @@ edu.memphis.ccrg.lida.sensorymemory
 edu.memphis.ccrg.lida.sensorymotormemory
 edu.memphis.ccrg.lida.workspace
 edu.memphis.ccrg.lida.workspace.structurebuildingcodelets
-edu.memphis.ccrg.lida.workspace.workspaceBuffer
+edu.memphis.ccrg.lida.workspace.workspacebuffers

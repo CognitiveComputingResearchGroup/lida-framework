@@ -87,7 +87,6 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         toolbar = new javax.swing.JToolBar();
         startPauseButton = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
-        quitButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         ticksModeTB = new javax.swing.JToggleButton();
         addTicksButton = new javax.swing.JButton();
@@ -108,8 +107,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         startPauseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         startPauseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         startPauseButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startPauseButtonActionPerformed(evt);
             }
         });
@@ -118,13 +116,6 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         statusLabel.setText("Paused");
         toolbar.add(statusLabel);
-
-        quitButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        quitButton.setText("Quit");
-        quitButton.setFocusable(false);
-        quitButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        quitButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolbar.add(quitButton);
         toolbar.add(jSeparator2);
 
         ticksModeTB.setFont(new java.awt.Font("Lucida Grande", 0, 12));
@@ -133,8 +124,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         ticksModeTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ticksModeTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         ticksModeTB.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ticksModeTBActionPerformed(evt);
             }
         });
@@ -146,8 +136,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         addTicksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addTicksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         addTicksButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addTicksButtonActionPerformed(evt);
             }
         });
@@ -162,8 +151,7 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
         toolbar.add(jLabel2);
 
         speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            @Override
-			public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 speedSliderStateChanged(evt);
             }
         });
@@ -234,22 +222,12 @@ public class ControlToolBarPanel extends GuiPanelImpl implements FrameworkGuiEve
 		controller.executeCommand("EnableTicksMode", parameters);
 	}
 
-	/*
-	 * Executes the quitAll command.
-	 * @param evt
-	 */
-	@SuppressWarnings("unused")
-	private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		statusLabel.setText("QUITTING");
-		controller.executeCommand("quitAll", null);
-	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addTicksButton;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JButton quitButton;
     private javax.swing.JTextField sleepTimeTextField;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JButton startPauseButton;

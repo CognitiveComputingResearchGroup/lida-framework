@@ -20,8 +20,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
-import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
-import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
 public class WorkspaceBufferImplTest {
 
