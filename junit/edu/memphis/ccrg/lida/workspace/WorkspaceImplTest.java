@@ -10,7 +10,6 @@ package edu.memphis.ccrg.lida.workspace;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -20,213 +19,262 @@ import edu.memphis.ccrg.lida.episodicmemory.CueListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * This class is the JUnit test for <code>WorkspaceImpl</code> class.
+ * 
  * @author Rodrigo Silva-Lugo, Daqi Dong, Ryan McCall
  */
 public class WorkspaceImplTest {
-	
+
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	private WorkspaceImpl workspace;
 	private MockWorkspaceBufferImpl eBuffer;
 	private NodeStructure content;
 	private Node node1, node2;
-	
-    /**
+
+	/**
      *
      */
-    @Before
-    public void setUp() {
-    	workspace = new WorkspaceImpl();
-    	eBuffer = new MockWorkspaceBufferImpl();
-    	eBuffer.setModuleName(ModuleName.EpisodicBuffer);
-    	content = new NodeStructureImpl();
-    	node1 = factory.getNode();
-    	node1.setId(8);
-    	node2 = factory.getNode();
-    }
+	@Before
+	public void setUp() {
+		workspace = new WorkspaceImpl();
+		eBuffer = new MockWorkspaceBufferImpl();
+		eBuffer.setModuleName(ModuleName.EpisodicBuffer);
+		content = new NodeStructureImpl();
+		node1 = factory.getNode();
+		node1.setId(8);
+		node2 = factory.getNode();
+	}
 
-    /**
-     * Test of addListener method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testAddListener() {
-    	//workspace listener
-    	MockWorkspaceListener listener = new MockWorkspaceListener();
-    	workspace.addListener(listener);
-    	workspace.addSubModule(eBuffer);
-    	content.addDefaultNode(node1);
-    	
-    	workspace.receiveLocalAssociation(content);
-    	
-    	assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
-    	assertTrue(listener.content.containsNode(node1));
-    	
-    	//cue listener
-    	MockCueListener cueListener = new MockCueListener();
-    	workspace.addListener(cueListener);
-    	content.addDefaultNode(node2);
-    	
-    	workspace.cueEpisodicMemories(content);
-    	
-    	NodeStructure ns = cueListener.ns;
-    	assertNotNull(ns);
-    	assertTrue(ns.containsNode(node1));
-    	assertTrue(ns.containsNode(node2));
-    }
+	/**
+	 * Test of addListener method, of class WorkspaceImpl.
+	 */
+	@Test
+	public void testAddListener() {
+		// workspace listener
+		MockWorkspaceListener listener = new MockWorkspaceListener();
+		workspace.addListener(listener);
+		workspace.addSubModule(eBuffer);
+		content.addDefaultNode(node1);
 
-    /**
-     * Test of addCueListener method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testAddCueListener() {
-    	MockCueListener cueListener = new MockCueListener();
-    	workspace.addCueListener(cueListener);
-    	content.addDefaultNode(node2);
-    	
-    	workspace.cueEpisodicMemories(content);
-    	
-    	NodeStructure ns = cueListener.ns;
-    	assertNotNull(ns);
-    	assertTrue(ns.containsNode(node2));
-    }
+		workspace.receiveLocalAssociation(content);
 
-    /**
-     * Test of addWorkspaceListener method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testAddWorkspaceListener() {
-    	MockWorkspaceListener listener = new MockWorkspaceListener();
-    	workspace.addListener(listener);
-    	workspace.addSubModule(eBuffer);
-    	content.addDefaultNode(node1);
-    	
-    	workspace.receiveLocalAssociation(content);
-    	
-    	assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
-    	assertTrue(listener.content.containsNode(node1));
-    }
+		assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
+		assertTrue(listener.content.containsNode(node1));
 
-    /**
-     * Test of cueEpisodicMemories method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testCueEpisodicMemories() {
-    	MockCueListener cueListener = new MockCueListener();
-    	workspace.addCueListener(cueListener);
-    	content.addDefaultNode(node1);
-    	content.addDefaultNode(node2);
-    	
-    	workspace.cueEpisodicMemories(content);
-    	
-    	NodeStructure ns = cueListener.ns;
-    	assertNotNull(ns);
-    	assertTrue(ns.containsNode(node1));
-    	assertTrue(ns.containsNode(node2));
-    }
+		// cue listener
+		MockCueListener cueListener = new MockCueListener();
+		workspace.addListener(cueListener);
+		content.addDefaultNode(node2);
 
-    /**
-     * Test of receiveBroadcast method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testReceiveBroadcast() {
-        MockBroadcastQueueImpl broadcastQueue = new MockBroadcastQueueImpl();
-        broadcastQueue.setModuleName(ModuleName.BroadcastQueue);
-        workspace.addSubModule(broadcastQueue);
-   
-        BroadcastContent bc = null;
-        workspace.receiveBroadcast(bc);
-        assertEquals(bc, broadcastQueue.broadcastContent);
-        
-        content.addDefaultNode(node2);
-        workspace.receiveBroadcast((BroadcastContent) content);
-        NodeStructure actual = (NodeStructure) broadcastQueue.broadcastContent;
-        assertNotNull(actual);
-        assertTrue(actual.containsNode(node2));
-        assertEquals(content, actual);
-    }
+		workspace.cueEpisodicMemories(content);
 
-    /**
-     * Test of receiveLocalAssociation method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testReceiveLocalAssociation() {    	
-    	content.addDefaultNode(node1);
+		NodeStructure ns = cueListener.ns;
+		assertNotNull(ns);
+		assertTrue(ns.containsNode(node1));
+		assertTrue(ns.containsNode(node2));
+	}
+
+	/**
+	 * Test of addCueListener method, of class WorkspaceImpl.
+	 */
+	@Test
+	public void testAddCueListener() {
+		MockCueListener cueListener = new MockCueListener();
+		workspace.addCueListener(cueListener);
+		content.addDefaultNode(node2);
+
+		workspace.cueEpisodicMemories(content);
+
+		NodeStructure ns = cueListener.ns;
+		assertNotNull(ns);
+		assertTrue(ns.containsNode(node2));
+	}
+
+	/**
+	 * Test of addWorkspaceListener method, of class WorkspaceImpl.
+	 */
+	@Test
+	public void testAddWorkspaceListener() {
+		MockWorkspaceListener listener = new MockWorkspaceListener();
+		workspace.addListener(listener);
+		workspace.addSubModule(eBuffer);
+		content.addDefaultNode(node1);
+
+		workspace.receiveLocalAssociation(content);
+
+		assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
+		assertTrue(listener.content.containsNode(node1));
+	}
+
+	/**
+	 * Test of cueEpisodicMemories method, of class WorkspaceImpl.
+	 */
+	@Test
+	public void testCueEpisodicMemories() {
+		MockCueListener cueListener = new MockCueListener();
+		workspace.addCueListener(cueListener);
+		content.addDefaultNode(node1);
+		content.addDefaultNode(node2);
+
+		workspace.cueEpisodicMemories(content);
+
+		NodeStructure ns = cueListener.ns;
+		assertNotNull(ns);
+		assertTrue(ns.containsNode(node1));
+		assertTrue(ns.containsNode(node2));
+	}
+
+	/**
+	 * Test of receiveBroadcast method, of class WorkspaceImpl.
+	 */
+	@Test
+	public void testReceiveBroadcast() {
+		MockBroadcastQueueImpl broadcastQueue = new MockBroadcastQueueImpl();
+		broadcastQueue.setModuleName(ModuleName.BroadcastQueue);
+		workspace.addSubModule(broadcastQueue);
+
+		BroadcastContent bc = null;
+		workspace.receiveBroadcast(bc);
+		assertEquals(bc, broadcastQueue.broadcastContent);
+
+		content.addDefaultNode(node2);
+		workspace.receiveBroadcast((BroadcastContent) content);
+		NodeStructure actual = (NodeStructure) broadcastQueue.broadcastContent;
+		assertNotNull(actual);
+		assertTrue(actual.containsNode(node2));
+		assertEquals(content, actual);
+	}
+
+	/**
+	 * Test of receiveLocalAssociation method, of class WorkspaceImpl.
+	 */
+	@Test
+	public void testReceiveLocalAssociation() {
+		content.addDefaultNode(node1);
 		eBuffer.addBufferContent((WorkspaceContent) content);
-    	workspace.addSubModule(eBuffer);
-    	    	
-        MockWorkspaceListener listener = new MockWorkspaceListener();
-        workspace.addWorkspaceListener(listener);
-        
-        NodeStructure localAssociation = new NodeStructureImpl();
+		workspace.addSubModule(eBuffer);
+
+		MockWorkspaceListener listener = new MockWorkspaceListener();
+		workspace.addWorkspaceListener(listener);
+
+		NodeStructure localAssociation = new NodeStructureImpl();
 		Node node3 = factory.getNode();
 		node3.setId(9);
 		localAssociation.addDefaultNode(node3);
-		
-        workspace.receiveLocalAssociation(localAssociation);
-        
-        assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
-    	assertTrue(listener.content.containsNode(node1));
-    	assertTrue(listener.content.containsNode(node3));
-        
-    	assertTrue(eBuffer.content.containsNode(node3));
-    	System.out.println(eBuffer.content.toString());
-    	System.out.println(listener.content.toString());    	
-    }
 
-    /**
-     * Test of receivePercept method, of class WorkspaceImpl.
-     */
-    @Test
-    public void testReceivePercept() {
-        MockWorkspaceBufferImpl buffer = new MockWorkspaceBufferImpl();
-        buffer.setModuleName(ModuleName.PerceptualBuffer);
-        workspace.addSubModule(buffer);
+		workspace.receiveLocalAssociation(localAssociation);
+
+		assertEquals(ModuleName.EpisodicBuffer, listener.originatingBuffer);
+		assertTrue(listener.content.containsNode(node1));
+		assertTrue(listener.content.containsNode(node3));
+
+		assertTrue(eBuffer.content.containsNode(node3));
+		System.out.println(eBuffer.content.toString());
+		System.out.println(listener.content.toString());
+	}
+
+	
+	@Test
+	public void testReceiveNodeStructurePercept() {
+		MockWorkspaceBufferImpl buffer = new MockWorkspaceBufferImpl();
+		buffer.setModuleName(ModuleName.PerceptualBuffer);
+		workspace.addSubModule(buffer);
 		content.addDefaultNode(node1);
-		assertNull(buffer.content);
-		
-        workspace.receivePercept(content);
-        
-        NodeStructure ns = buffer.content;
-		assertNotNull(ns);
-	    assertTrue(ns.containsNode(node1));
-	    assertEquals(1, ns.getLinkableCount());
-	    assertEquals(1, ns.getNodeCount());
-	    assertEquals(0, ns.getLinkCount());
-    }
+		assertEquals(0, buffer.getBufferContent(null).getLinkableCount());
 
-    @Test
-    public void testGetModuleContent() {
-    }
-    @Test
-    public void testLearn() {
-    }
-    @Test
-    public void testInit() {
-    }
+		workspace.receivePercept(content);
+
+		NodeStructure ns = buffer.getBufferContent(null);
+		assertTrue(ns.containsNode(node1));
+		assertEquals(1, ns.getLinkableCount());
+		assertEquals(1, ns.getNodeCount());
+		assertEquals(0, ns.getLinkCount());
+	}
+
+	@Test
+	public void testReceivePerceptNode() {
+		MockWorkspaceBufferImpl buffer = new MockWorkspaceBufferImpl();
+		buffer.setModuleName(ModuleName.PerceptualBuffer);
+		workspace.addSubModule(buffer);
+		assertEquals(0, buffer.getBufferContent(null).getLinkableCount());
+
+		workspace.receivePercept(node2);
+
+		NodeStructure ns = buffer.getBufferContent(null);
+		assertTrue(ns.containsNode(node2));
+		assertEquals(1, ns.getLinkableCount());
+		assertEquals(1, ns.getNodeCount());
+		assertEquals(0, ns.getLinkCount());
+	}
+
+	@Test
+	public void testReceivePerceptLink() {
+		MockWorkspaceBufferImpl buffer = new MockWorkspaceBufferImpl();
+		buffer.setModuleName(ModuleName.PerceptualBuffer);
+		workspace.addSubModule(buffer);
+		assertEquals(0, buffer.getBufferContent(null).getLinkableCount());
+
+		workspace.receivePercept(node1);
+		workspace.receivePercept(node2);
+
+		NodeStructure ns = buffer.getBufferContent(null);
+		assertTrue(ns.containsNode(node1));
+		assertTrue(ns.containsNode(node2));
+		assertEquals(2, ns.getLinkableCount());
+		assertEquals(2, ns.getNodeCount());
+		assertEquals(0, ns.getLinkCount());
+		
+		Link l12 = factory.getLink(node1, node2, PerceptualAssociativeMemoryImpl.FEATURE);
+		workspace.receivePercept(l12);
+		
+		ns = buffer.getBufferContent(null);
+		assertTrue(ns.containsLink(l12));
+		assertTrue(ns.containsNode(node1));
+		assertTrue(ns.containsNode(node2));
+		assertEquals(3, ns.getLinkableCount());
+		assertEquals(2, ns.getNodeCount());
+		assertEquals(1, ns.getLinkCount());
+	}
+
+	@Test
+	public void testGetModuleContent() {
+	}
+
+	@Test
+	public void testLearn() {
+	}
+
+	@Test
+	public void testInit() {
+	}
 }
 
 class MockCueListener implements CueListener {
 	public NodeStructure ns;
+
 	@Override
 	public void receiveCue(NodeStructure cue) {
 		this.ns = cue;
 	}
 }
 
-class MockWorkspaceListener implements WorkspaceListener{
+class MockWorkspaceListener implements WorkspaceListener {
 	public ModuleName originatingBuffer;
 	public WorkspaceContent content;
+
 	@Override
 	public void receiveWorkspaceContent(ModuleName originatingBuffer,
 			WorkspaceContent content) {
 		this.originatingBuffer = originatingBuffer;
-		this.content = content;	
+		this.content = content;
 	}
 }

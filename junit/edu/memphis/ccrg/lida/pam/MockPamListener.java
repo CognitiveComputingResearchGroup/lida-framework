@@ -13,19 +13,19 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class MockPamListener implements PamListener {
 	public NodeStructure ns;
+	public Node n;
+	public Link l;
 	@Override
 	public void receivePercept(NodeStructure ns) {
 		this.ns = ns;
 	}
 	@Override
 	public void receivePercept(Node n) {
-		// TODO Auto-generated method stub
-		
+		this.n = n;
 	}
 	@Override
 	public void receivePercept(Link l) {
-		// TODO Auto-generated method stub
-		
+		this.l = l;
 	}
 
 }

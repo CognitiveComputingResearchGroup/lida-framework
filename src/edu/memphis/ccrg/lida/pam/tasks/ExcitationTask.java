@@ -10,92 +10,88 @@ package edu.memphis.ccrg.lida.pam.tasks;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A task that allows PAM nodes to be excited asynchronously.
- * Created in PAM method 'receiveActivationBurst' 
+ * A task which performs the excitation of a single {@link PamNode}.
  * 
  * @see PerceptualAssociativeMemory#receiveActivationBurst(PamLinkable, double)
+ * 
  * @author Ryan J McCall
- *
+ * 
  */
-public class ExcitationTask extends FrameworkTaskImpl{
-	
-	private static final Logger logger = Logger.getLogger(ExcitationTask.class.getCanonicalName());
-	
+public class ExcitationTask extends FrameworkTaskImpl {
+
+	private static final Logger logger = Logger.getLogger(ExcitationTask.class
+			.getCanonicalName());
+
 	/*
 	 * PamNode to be excited
 	 */
-	private PamNode pamNode;
-	
+	private PamNode node;
+
 	/*
 	 * Amount to excite
 	 */
 	private double excitationAmount;
-	
+
 	/*
 	 * Used to make another excitation call
 	 */
 	private PerceptualAssociativeMemory pam;
-	
-	/*
-	 * For threshold task creation
-	 */
-	private TaskSpawner taskSpawner;
 
 	/**
-	 * Instantiates a new excitation task to excite supplied {@link PamLinkable} specified amount.
+	 * Instantiates a new excitation task to excite supplied {@link PamNode}
+	 * specified amount.
 	 * 
+	 * @param ticksPerRun
+	 *            the ticks per run
 	 * @param n
 	 *            to be excited
 	 * @param excitation
 	 *            amount to excite
-	 * @param ticksPerRun
-	 *            the ticks per run
 	 * @param pam
 	 *            PerceptualAssociativeMemory module
-	 * @param ts
-	 *            the ts
 	 */
-	public ExcitationTask(PamNode n, double excitation, int ticksPerRun,
-			              PerceptualAssociativeMemory pam, TaskSpawner ts){
-		super();
-		this.pamNode = n;
-		this.excitationAmount = excitation;
-		this.setTicksPerStep(ticksPerRun);
+	public ExcitationTask(int ticksPerRun, PamNode n, double excitation,
+			PerceptualAssociativeMemory pam) {
+		super(ticksPerRun);
+		node = n;
+		excitationAmount = excitation;
 		this.pam = pam;
-		this.taskSpawner = ts;
 	}
 
-	/*
-	 * Excites the pamlinkable.  
-	 * If this puts it over threshold then immediately spawn an {@link AddToPerceptTask}.
-	 * Propagate activation to parents.
+	/**
+	 * This method first excites the {@link PamNode}, if this puts the {@link PamNode}
+	 * over the percept threshold it creates an {@link AddNodeToPerceptTask} to
+	 * add it to the percept. In either case it calls
+	 * {@link PerceptualAssociativeMemory#propagateActivationToParents(PamNode)}
+	 * to pass the node's activation, then the tasks finishes.
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
-		pamNode.excite(excitationAmount); 
-		if(pam.isOverPerceptThreshold(pamNode)){
-			if(logger.isLoggable(Level.FINEST)){
-				logger.log(Level.FINEST,"PamNode {1} over threshold",
-						new Object[]{TaskManager.getCurrentTick(),pamNode});
+		node.excite(excitationAmount);
+		if (pam.isOverPerceptThreshold(node)) {
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST, "PamNode {1} over threshold",
+						new Object[] { TaskManager.getCurrentTick(), node });
 			}
-			taskSpawner.addTask(new AddNodeToPerceptTask(pamNode, pam));		
+			FrameworkTask task = new AddNodeToPerceptTask(node, pam);
+			pam.getAssistingTaskSpawner().addTask(task);
 		}
-		pam.propagateActivationToParents(pamNode);
+		pam.propagateActivationToParents(node);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 
 	@Override
-	public String toString(){
-		return "Excitation " + getTaskId();
+	public String toString() {
+		return getClass().getSimpleName() + " " + getTaskId();
 	}
 
 }

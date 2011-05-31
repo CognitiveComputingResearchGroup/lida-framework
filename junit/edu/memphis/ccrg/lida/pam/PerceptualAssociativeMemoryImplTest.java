@@ -12,6 +12,7 @@ package edu.memphis.ccrg.lida.pam;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -37,10 +38,8 @@ import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.LinearDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
@@ -87,17 +86,13 @@ public class PerceptualAssociativeMemoryImplTest {
 			public double calculateTotalActivation(double bla, double ca) {
 				return 0;
 			}
-
 			@Override
 			public Object getParam(String name, Object defaultValue) {
 				return null;
 			}
-
 			@Override
 			public void init(Map<String, ?> parameters) {
-				
 			}
-
 			@Override
 			public void init() {
 			}
@@ -276,10 +271,12 @@ public class PerceptualAssociativeMemoryImplTest {
 		testNod1.setActivation(1.0);
 		testNod1.setLabel("Node1");
 		Node testNod2= factory.getNode("PamNodeImpl");
-		testNod2.setActivation(0.2);
+		double node2Activation = 0.2;
+		testNod2.setActivation(node2Activation);
 		testNod2.setLabel("Node2");
 		Node testNod3= factory.getNode("PamNodeImpl");
-		testNod3.setActivation(0.3);
+		double node3Activation = 0.3;
+		testNod3.setActivation(node3Activation);
 		testNod3.setLabel("Node3");
 		Node testNod4= factory.getNode("PamNodeImpl");
 		testNod4.setActivation(1.0);
@@ -290,19 +287,25 @@ public class PerceptualAssociativeMemoryImplTest {
 		testNod4 = pam.addDefaultNode(testNod4);
 		
 		PamLinkImpl l12 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod1, testNod2, PerceptualAssociativeMemoryImpl.NONE);
+		double link12Activation = 0.0;
+		l12.setActivation(link12Activation);
 		pam.addDefaultLink(l12);
 		PamLinkImpl l13 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod1, testNod3, PerceptualAssociativeMemoryImpl.NONE);
+		double link13Activation = 0.5;
+		l13.setActivation(link13Activation);
 		pam.addDefaultLink(l13);
 		PamLinkImpl l41 = (PamLinkImpl) factory.getLink("PamLinkImpl", testNod4, testNod1, PerceptualAssociativeMemoryImpl.NONE);
 		pam.addDefaultLink(l41);
+		l41.setActivation(1.0);
 		
 		assertEquals(1.0,testNod1.getActivation(), epsilon);
 		assertEquals(0.2,testNod2.getActivation(), epsilon);
 		assertEquals(0.3,testNod3.getActivation(), epsilon);
 		assertEquals(1.0,testNod4.getActivation(), epsilon);
-		assertEquals(Activatible.DEFAULT_ACTIVATION,l12.getActivation(), epsilon);
-		assertEquals(Activatible.DEFAULT_ACTIVATION,l13.getActivation(), epsilon);
-		assertEquals(Activatible.DEFAULT_ACTIVATION,l41.getActivation(), epsilon);
+		//
+		assertEquals(0.0,l12.getActivation(), epsilon);
+		assertEquals(0.5,l13.getActivation(), epsilon);
+		assertEquals(1.0,l41.getActivation(), epsilon);
 		
 		NodeStructure ns = (NodeStructure) pam.getModuleContent();
 		
@@ -330,16 +333,17 @@ public class PerceptualAssociativeMemoryImplTest {
 		Collection<FrameworkTask> tasks = ts.getRunningTasks();
 		assertEquals(2, tasks.size());
 		
-		assertEquals(testNod3.getActivation()+"", testNod3.getActivation(), (0.4 + Activatible.DEFAULT_ACTIVATION), epsilon);
-		assertEquals(testNod2.getActivation()+"",testNod2.getActivation(), (0.3 + Activatible.DEFAULT_ACTIVATION), epsilon);
+		double propagatedActivation = testNod1.getActivation() * upscaleFactor;
+		assertEquals(propagatedActivation + link12Activation, pam.getLink(l12.getExtendedId()).getActivation(), epsilon);
+		assertEquals(propagatedActivation + link13Activation, pam.getLink(l13.getExtendedId()).getActivation(), epsilon);
 		
-		double amount = 1.0 * upscaleFactor + Activatible.DEFAULT_ACTIVATION;
-		assertEquals(amount, pam.getLink(l12.getExtendedId()).getActivation(), epsilon);
-		assertEquals(amount, pam.getLink(l13.getExtendedId()).getActivation(), epsilon);
+		assertEquals(upscaleFactor *  (propagatedActivation + link12Activation) + node2Activation, pam.getNode(testNod2.getId()).getActivation(), epsilon);
+		assertEquals(upscaleFactor *  (propagatedActivation + link13Activation) + node3Activation, pam.getNode(testNod3.getId()).getActivation(), epsilon);
 		
 		assertEquals(1.0, testNod4.getActivation(), epsilon);
-		assertEquals(Activatible.DEFAULT_ACTIVATION, l41.getActivation(), epsilon);		
+		assertEquals(1.0, l41.getActivation(), epsilon);		
 	}
+	
 	@Test
 	public void testAddNodeStructureToPercept(){
 		MockPamListener pl = new MockPamListener();
@@ -357,6 +361,29 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertTrue(ns.containsNode(node3));
 		assertEquals(0, ns.getLinkCount());
 	}
+	
+	@Test
+	public void testAddNodeToPercept(){
+		MockPamListener pl = new MockPamListener();
+		pam.addPamListener(pl);
+		assertNull(pl.n);
+		
+		pam.addNodeToPercept(node1);
+		
+		assertEquals(node1, pl.n);
+	}
+	
+	@Test
+	public void testAddLinkToPercept(){
+		MockPamListener pl = new MockPamListener();
+		pam.addPamListener(pl);
+		assertNull(pl.l);
+		
+		pam.addLinkToPercept(link1);
+		
+		assertEquals(link1, pl.l);
+	}
+	
 	@Test
 	public void testContainsNode(){
 		pam.addDefaultNode(node1);
@@ -377,7 +404,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		node2.setBaseLevelActivation(1.0);
 		node2 = (PamNodeImpl) pam.addDefaultNode(node2);	
 		assertTrue(pam.containsNode(node2));
-		//TODO
+		//TODO test decay
 //		pam.decayModule(1000);
 	}
 	@Test
@@ -397,7 +424,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		node1.setBaseLevelActivation(0.0);
 		assertTrue(pam.containsNode(node1));
 		
-		//TODO
+		//TODO test decay
 //		pam.decayModule(1);
 	}
 	@Test
@@ -517,13 +544,13 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertEquals(l, pam.getLink(id2));
 	}
 	
-	/**
+	/*
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#taskManagerDecayModule(long)}.
 	 * @see LinearDecayStrategy
 	 */
 	@Test
 	public void testDecayModule() {
-		//TODO
+		//TODO test decay
 //		node1.setBaseLevelActivation(1.0);
 //		node1.setLearnableRemovalThreshold(0.0001);
 //		node1.setDecayStrategy(decayStrategy);

@@ -8,32 +8,34 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
 import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * A task to add a {@link PamNode}, {@link PamLink}, or {@link NodeStructure} to the percept.
+ * A task to add a {@link PamLink} and its sink to the percept.
  * @author Ryan J McCall
- * @see ExcitationTask AddToPerceptTask is spawned by ExcitationTask
+ * @see ExcitationTask creates this task
+ * @see PropagationTask creates this task
  */
 public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 	
 	private PerceptualAssociativeMemory pam;
 	private PamLink link;
 
-
+	/**
+	 * Default constructor
+	 * @param link {@link PamLink}
+	 * @param pam {@link PerceptualAssociativeMemory}
+	 */
 	public AddLinkToPerceptTask(PamLink link, PerceptualAssociativeMemory pam) {
 		this.pam = pam;
 		this.link = link;
 	}
 
 	/**
-	 * While it looks simple, the call to 'addNodeToPercept' takes many step to execute.
-	 * Thus it is justifiable to make this a separate thread
+	 * Adds link's sink to the percept and tries to add the link as well then finishes.
 	 */
 	@Override
 	protected void runThisFrameworkTask() {		
@@ -42,12 +44,9 @@ public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
-		return AddLinkToPerceptTask.class.getSimpleName() + " " + getTaskId();
+		return getClass().getSimpleName() + " " + getTaskId();
 	}
 
 }

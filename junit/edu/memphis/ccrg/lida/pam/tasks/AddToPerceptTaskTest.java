@@ -11,28 +11,23 @@
 package edu.memphis.ccrg.lida.pam.tasks;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Properties;
-
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
-import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
-import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockPAM;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
-import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
  * @author Ryan J. McCall, Usef Faghihi
@@ -41,54 +36,56 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 public class AddToPerceptTaskTest{
 	
 	private PamNode nodeA, nodeB;
+	private PamLink pl;
 	private MockPAM pam;
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
-	
-	@BeforeClass
-	public static void setUpBeforeClass(){
-		factory = ElementFactory.getInstance();
-		FactoriesDataXmlLoader factoryLoader = new FactoriesDataXmlLoader();
-		Properties prop = ConfigUtils.loadProperties(AgentStarter.DEFAULT_PROPERTIES_PATH);
-		factoryLoader.loadFactoriesData(prop);
-	}
 
-	/**
-	 * @throws java.lang.Exception e
-	 */
 	@Before
 	public void setUp() throws Exception {
 		nodeA = (PamNode) factory.getNode("PamNodeImpl");
 		nodeB = (PamNode) factory.getNode("PamNodeImpl");
+		pl = (PamLink) factory.getLink("PamLinkImpl", nodeA, nodeB, nodeA);
 		pam = new MockPAM();
 	}
 	
-	//test adding a single node
 	@Test
-	public void test1(){
+	public void testAddNodeToPercept(){
 		AddNodeToPerceptTask t = new AddNodeToPerceptTask(nodeA, pam);
+		assertNull(pam.nodePercept);
+		
 		t.call();
 		
-		NodeStructure result = pam.getCurrentTestPercept();
-		Node actual = result.getNode(nodeA.getId());
-		assertEquals(nodeA, actual);
-		assertEquals(nodeA.getId(), actual.getId());
-		assertEquals(nodeA.getClass().getSimpleName(), actual.getClass().getSimpleName());
+		assertEquals(nodeA, pam.nodePercept);
+		assertEquals(TaskStatus.FINISHED, t.getTaskStatus());
 	}
+	
+	@Test
+	public void testAddLinkToPercept(){
+		AddLinkToPerceptTask t = new AddLinkToPerceptTask(pl, pam);
+		assertNull(pam.linkPercept);
+		
+		t.call();
+		
+		assertEquals(pl, pam.linkPercept);
+		assertEquals(TaskStatus.FINISHED, t.getTaskStatus());
+	}
+	
 	@Test
 	public void test2(){
 		//Setup
 		NodeStructure expectedNS = new NodeStructureImpl("PamNodeImpl", "PamLinkImpl");
 		expectedNS.addDefaultNode(nodeA);
 		expectedNS.addDefaultNode(nodeB);
-		Link expectedLink = expectedNS.addDefaultLink(nodeA.getId(), nodeB.getId(), PerceptualAssociativeMemoryImpl.NONE, 1.0, 0.0);
+		Link expectedLink = expectedNS.addDefaultLink(pl);
+		assertNull(pam.nsPercept);
 			
 		//Code being tested
-		AddLinkToPerceptTask t = new AddLinkToPerceptTask((PamLink) expectedLink, pam);
+		AddNodeStructureToPerceptTask t = new AddNodeStructureToPerceptTask(expectedNS, pam);
 		t.call();
 		
 		//Check results
-		NodeStructure actualNS = pam.getCurrentTestPercept();
+		NodeStructure actualNS = pam.nsPercept;
 		assertEquals(2, actualNS.getNodeCount());
 		assertEquals(1, actualNS.getLinkCount());
 		assertEquals(3, actualNS.getLinkableCount());
@@ -108,13 +105,5 @@ public class AddToPerceptTaskTest{
 		assertEquals(expectedLink.getExtendedId(), resultLink.getExtendedId());
 		assertTrue(resultLink instanceof PamLinkImpl);
 	}
-//	
-//	private void assertSimpleName(Object expected, Object result){
-//		assertEquals(expected.getClass().getSimpleName(), result.getClass().getSimpleName());
-//	}
-//	private void assertCanonicalName(Object expected, Object result){
-//		assertEquals(expected.getClass().getCanonicalName(), result.getClass().getCanonicalName());
-//	}
-
 
 }

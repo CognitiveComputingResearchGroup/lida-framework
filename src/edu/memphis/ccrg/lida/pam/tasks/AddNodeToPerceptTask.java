@@ -5,19 +5,27 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
+/**
+ * A task which adds a {@link PamNode} to the percept.
+ * @author Ryan J McCall
+ */
 public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 	
 	private PamNode node;
 	private PerceptualAssociativeMemory pam;
 
+	/**
+	 * Default constructor
+	 * @param pamNode {@link PamNode}
+	 * @param pam {@link PerceptualAssociativeMemory}
+	 */
 	public AddNodeToPerceptTask(PamNode pamNode, PerceptualAssociativeMemory pam) {
 		node = pamNode;
 		this.pam = pam;
 	}
 
 	/**
-	 * While it looks simple, the call to 'addNodeToPercept' takes many step to execute.
-	 * Thus it is justifiable to make this a separate thread
+	 * Adds {@link PamNode} to the percept then finishes.
 	 */
 	@Override
 	protected void runThisFrameworkTask() {		
@@ -25,12 +33,9 @@ public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
-		return AddNodeToPerceptTask.class.getSimpleName() + " " + getTaskId();
+		return getClass().getSimpleName() + " " + getTaskId();
 	}
 
 }

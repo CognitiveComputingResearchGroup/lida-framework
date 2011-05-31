@@ -77,34 +77,6 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 
 	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#getState()
-	 */
-	@Override
-	public Object getState() {
-		// not implemented
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.dao.Saveable#setState(java.lang.Object)
-	 */
-	@Override
-	public boolean setState(Object content) {
-		// not implemented
-		return false;
-	}
-//
-//	/* (non-Javadoc)
-//	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNewNode(java.lang.String)
-//	 */
-//	@Override
-//	public PamNode addNewNode(String label) {
-//		// not implemented
-//		return null;
-//	}
-
-
-	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultNode(edu.memphis.ccrg.lida.framework.shared.Node)
 	 */
 	@Override
@@ -158,18 +130,14 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	/* (non-Javadoc)
 	 * Just for test matter
 	 */
-	private PamNode pmNode;
-	
-	public PamNode testGetSink(){
-		return pmNode;
-	}
+	public PamNode pmNode;
+
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)
 	 */
 	@Override
 	public void propagateActivationToParents(PamNode pamNode) {
 		pmNode = pamNode;
-
 	}
 
 	/* (non-Javadoc)
@@ -177,14 +145,10 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
-		percept = ns;
+		nsPercept = ns;
 	}
 
-	private NodeStructure percept;
-	
-	public NodeStructure getCurrentTestPercept(){
-		return percept;
-	}
+	public NodeStructure nsPercept;
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.framework.shared.Node)
@@ -236,17 +200,17 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 */
 	@Override
 	public void setUpscaleFactor(double f) {
-		// not implemented
-
+		upscaleFactor = f;
 	}
+	
+	public double upscaleFactor;
 
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getUpscaleFactor()
 	 */
 	@Override
 	public double getUpscaleFactor() {
-		// not implemented
-		return 0;
+		return upscaleFactor;
 	}
 
 	/* (non-Javadoc)
@@ -277,9 +241,6 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(int)
-	 */
 	@Override
 	public Node getNode(int id) {
 		Node n = new PamNodeImpl();
@@ -287,42 +248,29 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 		return n;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNode(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public Node getNode(ExtendedId id) {
 		// not implemented
 		return null;
 	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public Link getLink(ExtendedId id) {
 		// not implemented
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getPamNodes()
-	 */
 	@Override
 	public Collection<Node> getNodes() {
-		// not implemented
 		return null;
 	}
 
 	@Override
 	public Collection<Link> getLinks() {
-		// not implemented
 		return null;
 	}
 
 	@Override
 	public FrameworkModule getSubmodule(String name) {
-		// not implemented
 		return null;
 	}
 
@@ -333,57 +281,52 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	@Override
 	public LinkCategory addLinkCategory(LinkCategory cat) {
-		// --
 		return null;
 	}
 
 	@Override
 	public Collection<LinkCategory> getLinkCategories() {
-		// --
 		return null;
 	}
 
 	@Override
 	public LinkCategory getLinkCategory(int id) {
-		// --
 		return null;
 	}
 
 	@Override
 	public void receiveActivationBurst(PamLinkable nodeId, double amount) {
-		// --
-		
 	}
 
 	@Override
 	public void receiveActivationBurst(Set<PamLinkable> nodeIds, double amount) {
-		// --
-		
 	}
 
 	@Override
 	public PropagationStrategy getPropagationStrategy() {
+		return null;
+	}
+
+	public Link linkPercept;
+	@Override
+	public void addLinkToPercept(Link l) {
+		linkPercept = l;
+	}
+	public Node nodePercept;
+	@Override
+	public void addNodeToPercept(Node n) {
+		nodePercept = n;
+	}
+
+	@Override
+	public Object getState() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addLinkToPercept(Link l) {
+	public boolean setState(Object content) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
-
-	@Override
-	public void addNodeToPercept(Node n) {
-		// TODO Auto-generated method stub
-		
-	}
-
-//	@Override
-//	public Link addNewLink(Node source, Linkable sink, LinkCategory category) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-
 }
