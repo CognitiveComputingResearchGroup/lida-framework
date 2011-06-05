@@ -30,6 +30,7 @@ public class WorkspaceBufferImplTest {
 		   
 	}
 	
+	//When buffer has 1 node
 	@Test
 	public void testGetModuleContent() {
 		//Creates node and add them into a node structure
@@ -46,6 +47,8 @@ public class WorkspaceBufferImplTest {
 		
 		assertTrue((NodeStructureImpl.compareNodeStructures(ns, ns2)));
 	}
+	
+	//When buffer has 2 nodes
 	@Test
 	public void testGetModuleContent2() {
 		//Creates node and add them into a node structure
@@ -71,6 +74,7 @@ public class WorkspaceBufferImplTest {
 		assertEquals(2,ns2.getNodeCount());
 	}
 
+	//When buffer doesn't has node
 	@Test
 	public void testGetModuleContent3() {
 		//Creates node and add them into a node structure
@@ -90,6 +94,8 @@ public class WorkspaceBufferImplTest {
 		//NA
 	}
 
+
+	//Decay for 2 nodes and 1 be removed because of activation is lower than the threshold
 	@Test
 	public final void testDecayModule() {
 		//Creates nodes and add them into a node structure

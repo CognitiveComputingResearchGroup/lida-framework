@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 public class BasicActionSelectionTest {
 	
+	private static final double EPSILON = 1e-5;
 	private BasicActionSelection as;
 	private Behavior behav1,behav2;	
 	private MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
@@ -85,13 +86,27 @@ public class BasicActionSelectionTest {
 		assertNull(smm.action);
 		assertFalse(smm.actionReceived);
 		
-		as.selectAction();
+		AgentAction action = as.selectAction();
 		
-		assertTrue("Problem with SelectAction",smm.actionReceived);
-		assertEquals("Problem with SelectAction",action2,smm.action);
+		assertTrue(smm.actionReceived);
+		assertEquals(action2,smm.action);
+		assertEquals(action2,action);
 		
 	}
+	@Test
+	public void testDecayModule() {
+		behav1.setActivation(0.1);
+		behav2.setActivation(0.5);
+		as.receiveBehavior(behav1);
+		as.receiveBehavior(behav2);
 
+		as.decayModule(1);
+		
+		assertEquals(0.0,behav1.getActivation(),EPSILON);
+		assertEquals(0.4,behav2.getActivation(),EPSILON);		
+	}
+
+	
 //	@Test
 //	public void testGetState() {
 //		as.receiveBehavior(behav1);

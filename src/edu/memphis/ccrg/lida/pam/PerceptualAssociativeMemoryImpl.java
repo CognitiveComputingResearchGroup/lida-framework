@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,6 +93,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
+	private Map<String, PamNode>nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 	/**
 	 * Primitive {@link LinkCategory} NONE
 	 */
@@ -184,7 +186,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (n == null) {
 			return null;
 		}
-		return (PamNode) pamNodeStructure.addDefaultNode(n);
+		PamNode node = (PamNode) pamNodeStructure.addDefaultNode(n);
+		if (node.getLabel()!=null){
+			nodesByLabel.put(node.getLabel(), node);
+		}
+		return node;
 	}
 
 	@Override
@@ -204,7 +210,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (link == null) {
 			return null;
 		}
-		return (PamLink) pamNodeStructure.addDefaultLink(link);
+		PamLink newlink = (PamLink) pamNodeStructure.addDefaultLink(link);
+		return newlink;
 	}
 
 	@Override
@@ -540,4 +547,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		}
 	}
 
+	@Override
+	public Node getNode(String label) {
+		return nodesByLabel.get(label);
+	}
 }

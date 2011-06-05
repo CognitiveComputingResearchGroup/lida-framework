@@ -166,7 +166,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(type, codeletTicksPerStep, 
+		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(type, codeletTicksPerStep, 
 				codeletActivation, codeletRemovalThreshold, params);
 		if (codelet == null) {
 			logger.log(

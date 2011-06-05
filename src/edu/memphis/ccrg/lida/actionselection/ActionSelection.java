@@ -37,7 +37,8 @@ public interface ActionSelection extends FrameworkModule, BroadcastListener{
 	/**
 	 * Choose a single action among those activated and whose context are
 	 * satisfied to execute
+	 * @return The selected {@link AgentAction} or null if no action was selected.
 	 */
-	public void selectAction();
+	public AgentAction selectAction();
 
 }

@@ -19,8 +19,6 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * Related Models" in <i>Associative Neural Memories: Theory and Implementation
  * </i>, pp. 50-76, Oxford University Press, 1993.
  * 
- * TODO Logging
- * 
  * @author Javier Snaider
  */
 public class SparseDistributedMemoryImpl implements SparseDistributedMemory {

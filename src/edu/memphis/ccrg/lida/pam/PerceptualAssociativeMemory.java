@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
  * @author Ryan J. McCall
  */
 public interface PerceptualAssociativeMemory extends FrameworkModule{
-	
+
 	/**
 	 * Adds a COPY of specified node to this {@link PerceptualAssociativeMemory}.
 	 * Node will be of Pam's default type. 
@@ -222,7 +222,7 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	public boolean isOverPerceptThreshold(PamLinkable l);
 	
 	/**
-	 * Returns a copy of {@link PamNode} with specified id from this PAM or null.
+	 * Returns the {@link PamNode} with specified id from this PAM or null.
 	 *
 	 * @param id the id
 	 * @return the pam node
@@ -230,18 +230,24 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	public Node getNode(int id);
 	
 	/**
-	 * Returns copy of the {@link PamNode} with specified {@link ExtendedId} or null
+	 * Returns the {@link PamNode} with specified {@link ExtendedId} or null
 	 * @param id sought {@link ExtendedId}
-	 * @return PamNode  Copy of the actual Node.  The copy is of 
-	 * the default type of Pam and not necessarily the type of the actual Node. 
+	 * @return PamNode  the actual Node
 	 */
 	public Node getNode(ExtendedId id);
 	
 	/**
+	 * Returns the {@link PamNode} with specified label or null.
+	 * This method is intended to be used only during initialization.
+	 * @param label sought
+	 * @return PamNode  the actual Node
+	 */
+	public Node getNode(String label);
+	
+	/**
 	 * 
 	 * @param id link's eid
-	 * @return Copy of the {@link PamLink} with specified id from this PAM or null. The copy is of 
-	 * the default type of Pam and not necessarily the type of the actual Link. 
+	 * @return the {@link PamLink} with specified id from this PAM or null.
 	 */
 	public Link getLink(ExtendedId id);
 	

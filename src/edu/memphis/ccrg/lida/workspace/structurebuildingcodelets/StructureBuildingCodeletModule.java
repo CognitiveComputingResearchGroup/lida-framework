@@ -133,7 +133,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 
 	@Override
 	public StructureBuildingCodelet getCodelet(String type, Map<String, Object> params) {
-		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getCodelet(type,
+		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getFrameworkTask(type,
 						codeletTicksPerRun, codeletActivation, codeletRemovalThreshold, null);
 		if (codelet == null) {
 			logger.log(Level.WARNING,

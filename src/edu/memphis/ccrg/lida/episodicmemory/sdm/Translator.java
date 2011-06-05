@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 /**
  * Interface for the translator between boolean vectors in sparse distributed
  * memory, and node structures in the LIDA cognitive architecture.
- * @author Rodrigo Silva-Lugo
+ * @author Javier Snaider
  */
 public interface Translator {
 

@@ -14,7 +14,8 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 /**
  * Encapsulation of an action to be executed.
  * 
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  * 
  */
 public interface AgentAction extends Serializable {
