@@ -96,7 +96,6 @@ public class BroadcastQueueImplTest {
 		assertTrue(resN4.getActivation() < 0.4);
 
 		broadcastQueue.decayModule(1);
-
 		
 		params.put("position", 1);
 		ns1 = broadcastQueue.getBufferContent(params);

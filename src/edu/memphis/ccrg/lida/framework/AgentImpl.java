@@ -64,5 +64,4 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 	@Override
 	public void decayModule(long ticks) {
 	}
-
 }

@@ -17,12 +17,11 @@ public class MockDetectionAlgorithm extends BasicDetectionAlgorithm {
 	public MockDetectionAlgorithm(PamLinkable linkable, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
 		super(linkable, sm, pam);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public double detect() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 

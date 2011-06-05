@@ -168,7 +168,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	//TODO default removal threshold parameters
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getCodelet(type, codeletTicksPerStep, 
+		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(type, codeletTicksPerStep, 
 				codeletActivation, codeletRemovalThreshold, params);
 		if (codelet == null) {
 			logger.log(
@@ -203,7 +203,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	@Override
 	public void receivePreafference(NodeStructure addSet,
 			NodeStructure deleteSet) {
-		// TODO Recive results from Action Selection and create Attention
+		// TODO Receive results from Action Selection and create Attention
 		// Codelets. We need
 		// to figure out how to create coalitions and detect that something was
 		// "deleted"

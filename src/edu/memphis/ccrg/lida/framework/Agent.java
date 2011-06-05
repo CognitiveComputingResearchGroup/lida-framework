@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Javier Snaider
  *
  */
-public interface Agent extends FrameworkModule {
+public interface Agent extends FrameworkModule{
 
 	/**
 	 * Returns the Task Manager

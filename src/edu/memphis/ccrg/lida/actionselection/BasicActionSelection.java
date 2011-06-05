@@ -9,14 +9,15 @@ package edu.memphis.ccrg.lida.actionselection;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -36,8 +37,10 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 //	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-	private Queue<Behavior> behaviors = new LinkedList<Behavior>();
-	
+	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
+
+	private int ticksPerRun;
+	private int refractoryPeriodTicks;
 	/**
 	 * Default constructor
 	 */
@@ -46,8 +49,11 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void init() {
-		int ticksPerRun = (Integer) getParam(
+		ticksPerRun = (Integer) getParam(
 				"actionSelection.backgroundTaskTicksPerRun", 10);
+		refractoryPeriodTicks = (Integer) getParam(
+				"actionSelection.refractoryperiodTicks", 80);
+		
 		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
 	}
 
@@ -58,7 +64,9 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		}
 		@Override
 		protected void runThisFrameworkTask() {
-			selectAction();
+			if(selectAction()!=null){
+				setNextTicksPerStep(refractoryPeriodTicks);
+			}
 		}
 		@Override
 		public String toString() {
@@ -88,7 +96,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void selectAction() {
+	public AgentAction selectAction() {
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
 			AgentAction action = behavior.getAction();
@@ -97,19 +105,23 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			for (ActionSelectionListener bl : listeners) {
 				bl.receiveAction(action);
 			}
+			return action;
 		}
+		return null;
 	}
 
 	private Behavior chooseBehavior() {
-		Behavior selected = behaviors.peek();
+		Behavior selected = null;
+		double activation = -1.0;
 		for (Behavior b : behaviors) {
-			if (b.getActivation() > selected.getActivation()) {
+			if (b.getActivation() > activation) {
 				selected = b;
+				activation = b.getActivation();
 			}
 		}
-		synchronized(this){
-			behaviors.clear();
-		}
+//		synchronized(this){
+//			behaviors.clear();
+//		}
 		return selected;
 	}
 	
@@ -138,7 +150,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			Object[] state = (Object[]) content;
 			if (state.length == 4) {
 				try {
-					this.behaviors = (Queue<Behavior>) state[0];
+					this.behaviors = (Set<Behavior>) state[0];
 					return true;
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -162,7 +174,14 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO decay behaviors
+		Iterator<Behavior> it = behaviors.iterator();
+		while(it.hasNext()){
+			Behavior b = it.next();
+			b.decay(ticks);
+			if (b.isRemovable()){
+				it.remove();
+			}
+		}
 	}
 
 }

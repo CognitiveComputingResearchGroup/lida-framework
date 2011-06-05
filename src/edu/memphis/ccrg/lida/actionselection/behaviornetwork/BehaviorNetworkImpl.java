@@ -486,22 +486,22 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 		}
 	}
 
-	/**
-	 * Select one action to be executed.
-	 */
 	@Override
-	public void selectAction() {
+	public AgentAction selectAction() {
 		winningBehavior = selectorStrategy.selectSingleBehavior(
 				getSatisfiedBehaviors(), candidateBehaviorThreshold);
 
 		if (winningBehavior != null) {
 			sendPreafference(winningBehavior);
-			sendAction(winningBehavior.getAction());
+			AgentAction action = winningBehavior.getAction();
+			sendAction(action);
 			resetCandidateBehaviorThreshold();
 			winningBehavior.setActivation(0.0);
+			return action;
 		} else {
 			reduceCandidateBehaviorThreshold();
 		}
+		return null;
 	}
 
 	private void sendPreafference(Behavior winningBehavior) {

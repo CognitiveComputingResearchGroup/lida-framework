@@ -122,36 +122,36 @@ class mockWorkspace  extends FrameworkModuleImpl implements Workspace {
 	}
 	@Override
 	public void addListener(ModuleListener listener) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void addCueListener(CueListener l) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void addWorkspaceListener(WorkspaceListener l) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public Object getModuleContent(Object... params) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	@Override
 	public void decayModule(long ticks) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

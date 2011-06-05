@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,9 +50,9 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceListener;
  * 
  * @author Ryan J. McCall
  */
-public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl implements
-		PerceptualAssociativeMemory, BroadcastListener, WorkspaceListener,
-		PreafferenceListener {
+public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
+		implements PerceptualAssociativeMemory, BroadcastListener,
+		WorkspaceListener, PreafferenceListener {
 
 	private static final String DEFAULT_NONDECAYING_PAMNODE = "NoDecayPamNode";
 
@@ -92,6 +93,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
+	private Map<String, PamNode>nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 	/**
 	 * Primitive {@link LinkCategory} NONE
 	 */
@@ -101,20 +103,20 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	/**
 	 * Primitive {@link LinkCategory} LATERAL
 	 */
-	public static LinkCategory LATERAL = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-	"Lateral");
+	public static LinkCategory LATERAL = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "Lateral");
 
 	/**
 	 * Primitive {@link LinkCategory} MEMBERSHIP
 	 */
-	public static LinkCategory MEMBERSHIP=(PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-	"Membership");
+	public static LinkCategory MEMBERSHIP = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "Membership");
 
 	/**
 	 * Primitive {@link LinkCategory} FEATURE
 	 */
-	public static LinkCategory FEATURE = (PamNode) factory.getNode(DEFAULT_NONDECAYING_PAMNODE,
-	"Feature");
+	public static LinkCategory FEATURE = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "Feature");
 
 	/**
 	 * Default constructor.
@@ -184,7 +186,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		if (n == null) {
 			return null;
 		}
-		return (PamNode) pamNodeStructure.addDefaultNode(n);
+		PamNode node = (PamNode) pamNodeStructure.addDefaultNode(n);
+		if (node.getLabel()!=null){
+			nodesByLabel.put(node.getLabel(), node);
+		}
+		return node;
 	}
 
 	@Override
@@ -204,7 +210,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 		if (link == null) {
 			return null;
 		}
-		return (PamLink) pamNodeStructure.addDefaultLink(link);
+		PamLink newlink = (PamLink) pamNodeStructure.addDefaultLink(link);
+		return newlink;
 	}
 
 	@Override
@@ -551,5 +558,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl impleme
 	public boolean setState(Object content) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public Node getNode(String label) {
+		return nodesByLabel.get(label);
 	}
 }

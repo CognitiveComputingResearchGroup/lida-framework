@@ -35,6 +35,7 @@ import edu.memphis.ccrg.lida.framework.strategies.SigmoidDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -204,7 +205,7 @@ public class ElementFactoryTest {
 		CodeletDef codeletDef = new CodeletDef(BasicAttentionCodelet.class.getCanonicalName(), 
 											   new HashMap<String, String>(), "winwin", null);
 		factory.addCodeletType(codeletDef);
-		Codelet foo = factory.getCodelet("winwin", 1, 0.0, 0.0, null);
+		Codelet foo = (Codelet)factory.getFrameworkTask("winwin", 1, 0.0, 0.0, null);
 		assertTrue(foo instanceof BasicAttentionCodelet);
 		assertTrue(factory.containsCodeletType("winwin"));
 	}
@@ -212,7 +213,7 @@ public class ElementFactoryTest {
 	@Test
 	public void testAddCodeletType2() {
 		factory.addCodeletType("apple", BasicStructureBuildingCodelet.class.getCanonicalName());
-		Codelet foo = factory.getCodelet("apple", 1, 0.0, 0.0, null);
+		Codelet foo = (Codelet)factory.getFrameworkTask("apple", 1, 0.0, 0.0, null);
 		assertTrue(foo instanceof BasicStructureBuildingCodelet);
 		assertTrue(factory.containsCodeletType("apple"));
 	}
@@ -530,7 +531,7 @@ public class ElementFactoryTest {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
 		
-		Codelet c = factory.getCodelet("testType", 100, 0.66, 0.77, params);
+		Codelet c = (Codelet)factory.getFrameworkTask("testType", 100, 0.66, 0.77, params);
 		assertTrue(c instanceof BasicAttentionCodelet);
 		assertEquals(c.getTicksPerStep(), 100);
 		assertTrue(c.getActivation() == 0.66);
@@ -543,7 +544,7 @@ public class ElementFactoryTest {
 	public void testGetCodelet1() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
-		Codelet c = factory.getCodelet("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
+		Codelet c = (Codelet)factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
 		
 		assertTrue(c.getDecayStrategy() instanceof LinearDecayStrategy);
 		assertTrue(c.getExciteStrategy() instanceof LinearExciteStrategy);
@@ -553,6 +554,23 @@ public class ElementFactoryTest {
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
 		int hello = (Integer) c.getParam("Hello", null);
+		assertEquals(500, hello);
+	}
+
+	@Test
+	public void testFrameworkTask() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Hello", 500);
+		FrameworkTask t = (Codelet)factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
+		
+		assertTrue(t.getDecayStrategy() instanceof LinearDecayStrategy);
+		assertTrue(t.getExciteStrategy() instanceof LinearExciteStrategy);
+		
+		assertTrue(t instanceof BasicAttentionCodelet);
+		assertEquals(t.getTicksPerStep(), 100);
+		assertTrue(t.getActivation() == 0.66);
+		assertTrue(t.getActivatibleRemovalThreshold() == 0.77);
+		int hello = (Integer) t.getParam("Hello", null);
 		assertEquals(500, hello);
 	}
 

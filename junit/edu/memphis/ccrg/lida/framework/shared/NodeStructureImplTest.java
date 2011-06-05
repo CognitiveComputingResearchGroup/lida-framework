@@ -144,7 +144,7 @@ public class NodeStructureImplTest {
 		
 		ns1.addDefaultNode(node1);
 		assertTrue(ns1.containsNode(node1));
-		//TODO
+		//TODO test decay
 //		assertTrue(ns1.getNode(9).getActivation() == 0.0);			
 	}
 	@Test
@@ -760,7 +760,7 @@ public class NodeStructureImplTest {
 		double activationAmount = 0.1;
 		double removableThresh = 0.05;
 		NodeStructure ns = new NodeStructureImpl();
-		
+
 		node1.setDecayStrategy(new LinearDecayStrategy());
 		node1.setActivatibleRemovalThreshold(removableThresh);
 		node1.setActivation(activationAmount);
@@ -818,6 +818,7 @@ public class NodeStructureImplTest {
 		assertTrue(ns.containsNode(storedNode2));
 		assertFalse(ns.containsLink(storedLink));
 	}
+	
 	@Test
 	public void testDecayNodeStructure2(){		
 		node1.setActivation(1.0);

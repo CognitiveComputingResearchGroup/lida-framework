@@ -785,7 +785,9 @@ public class AgentXmlFactoryTest {
 	public void testInitializeModules() {
 		Agent a = new AgentImpl(null);
 		MockFrameworkModule module1 = new MockFrameworkModule();
+//		module1.setModuleName(ModuleName.ActionSelection);
 		MockFrameworkModule module2 = new MockFrameworkModule();
+//		module2.setModuleName(ModuleName.CurrentSituationalModel);
 		
 		Map<String, Object> p1 = new HashMap<String, Object>();
 		p1.put("arg0", 10.0);

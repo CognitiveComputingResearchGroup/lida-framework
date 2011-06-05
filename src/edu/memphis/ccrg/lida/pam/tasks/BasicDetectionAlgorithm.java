@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
@@ -70,6 +71,13 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 		this.linkables.add(linkable);
 	}
 
+	/**
+	 * Default constructor.
+	 * Associated {@link Linkable}, {@link PerceptualAssociativeMemory} and 
+	 * {@link SensoryMemory} must be set using setters.
+	 */
+	public BasicDetectionAlgorithm(){		
+	}
 	/* (non-Javadoc)
 	 * @see edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl#init()
 	 */
@@ -100,7 +108,9 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 
 	@Override
 	public void addPamLinkable(PamLinkable linkable) {
-		linkables.add(linkable);
+		if (linkable != null){
+			linkables.add(linkable);
+		}
 	}
 
 	@Override

@@ -132,10 +132,10 @@ public class FactoriesDataXmlLoaderTest2 {
 		l = factory.getLink("link1", n, n1, new PamNodeImpl());
 		assertTrue(l instanceof PamLinkImpl);
 		
-		Codelet c = factory.getCodelet("topleft", 1, 0.0, 0.0, null);
+		Codelet c = (Codelet)factory.getFrameworkTask("topleft", 1, 0.0, 0.0, null);
 		assertTrue(c instanceof BasicStructureBuildingCodelet);
 		
-		c = factory.getCodelet("bottomright", 1, 0.0, 0.0, null);
+		c = (Codelet)factory.getFrameworkTask("bottomright", 1, 0.0, 0.0, null);
 		assertNull(c);
 	}
 	

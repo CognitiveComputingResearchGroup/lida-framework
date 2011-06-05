@@ -329,4 +329,9 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 		// TODO Auto-generated method stub
 		return false;
 	}
+	@Override
+	public Node getNode(String label) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -7,8 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule;
 
 public class TaskManagerTest {
@@ -317,7 +318,25 @@ public class TaskManagerTest {
 	}
 
 	@Test
-	public void testSetDecayingModules() {
+	public void testGuiEvents() {
+		tm.setGuiEventsInterval(15);
+		MockFrameworkGuiEventListener listener = new MockFrameworkGuiEventListener();
+		tm.addFrameworkGuiEventListener(listener);
+		MockFrameworkTask task1 = new MockFrameworkTask(20);
+		task1.setControllingTaskSpawner(taskSpawner);
+		tm.scheduleTask(task1, 20);
+		tm.resumeTasks();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(listener.event);
+		assertEquals(15,listener.tick);
+		assertEquals(15, tm.getGuiEventsInterval());		
+	}
+		@Test
+		public void testSetDecayingModules() {
 		List<FrameworkModule> modules = new ArrayList<FrameworkModule>();
 		MockFrameworkModule module = new MockFrameworkModule();
 		modules.add(module);

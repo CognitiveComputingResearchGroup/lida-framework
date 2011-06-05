@@ -531,6 +531,17 @@ public class PerceptualAssociativeMemoryImplTest {
 		assertEquals(null, n);
 	}
 	@Test
+	public void testGetPamNodeByLabel(){
+		Node n = pam.getNode("asdfg");
+		assertEquals(null, n);
+		
+		node3.setLabel("node3");
+		pam.addDefaultNode(node3);
+		n = pam.getNode("node3");
+		assertEquals(node3, n);				
+	}
+	
+	@Test
 	public void testGetPamLink(){
 		pam.addDefaultNode(node1);
 		pam.addDefaultNode(node2);
@@ -543,7 +554,7 @@ public class PerceptualAssociativeMemoryImplTest {
 		ExtendedId id2 = new ExtendedId(node1.getId(), node2.getExtendedId(), PerceptualAssociativeMemoryImpl.NONE.getId());
 		assertEquals(l, pam.getLink(id2));
 	}
-	
+
 	/*
 	 * Test method for {@link edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl#taskManagerDecayModule(long)}.
 	 * @see LinearDecayStrategy

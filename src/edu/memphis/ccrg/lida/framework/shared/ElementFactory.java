@@ -25,6 +25,7 @@ import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -958,20 +959,20 @@ public class ElementFactory {
 	}
 	
 	/**
-	 * Returns a new {@link Codelet} having specified attributes.  Codelet will have strategies
-	 * specified for the codeletType
-	 * @param codeletType type of codelet
+	 * Returns a new {@link FrameworkTask} having specified attributes. FrameworkTask
+	 *  will have strategies specified for the codeletType
+	 * @param taskType type of FrameworkTask
 	 * @param ticksPerStep execution frequency 
 	 * @param activation initial activation
 	 * @param removalThreshold activation needed to remain active
 	 * @param params optional parameters to be set in object's init method
-	 * @return the new Codelet
+	 * @return the new {@link FrameworkTask}
 	 */
-	public Codelet getCodelet(String codeletType, int ticksPerStep, double activation, double removalThreshold, Map<String,?extends Object> params){
-		CodeletDef codeletDef = codelets.get(codeletType);		
+	public FrameworkTask getFrameworkTask(String taskType, int ticksPerStep, double activation, double removalThreshold, Map<String,?extends Object> params){
+		CodeletDef codeletDef = codelets.get(taskType);		
 		if (codeletDef == null) {
-			logger.log(Level.WARNING, "Factory does not contain codelet codelet type {1}", 
-					new Object[]{TaskManager.getCurrentTick(),codeletType});
+			logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}", 
+					new Object[]{TaskManager.getCurrentTick(),taskType});
 			return null;
 		}
 		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
@@ -983,18 +984,18 @@ public class ElementFactory {
 			exciteB=defaultExciteType;
 		}
 	
-		return getCodelet(codeletType,decayB,exciteB,ticksPerStep,activation,removalThreshold,params);
+		return getFrameworkTask(taskType,decayB,exciteB,ticksPerStep,activation,removalThreshold,params);
 	}
 	
 	/**
-	 * Returns a new codelet with specified attributes.
+	 * Returns a new {@link FrameworkTask} with specified attributes.
 	 * 
-	 * @param codeletType
-	 *            label for codelet
+	 * @param taskType
+	 *            label for task
 	 * @param decayStrategy
-	 *            DecayStrategy used by codelet
+	 *            DecayStrategy used by task
 	 * @param exciteStrategy
-	 *            ExciteStrategy used by codelet
+	 *            ExciteStrategy used by task
 	 * @param ticksPerStep
 	 *            execution frequency
 	 * @param activation
@@ -1002,43 +1003,43 @@ public class ElementFactory {
 	 * @param removalThreshold activation needed to remain active
 	 * @param params
 	 *            optional parameters to be set in object's init method
-	 * @return new Codelet
+	 * @return the new {@link FrameworkTask}
 	 */
-	public Codelet getCodelet(String codeletType, String decayStrategy, String exciteStrategy, 
+	public FrameworkTask getFrameworkTask(String taskType, String decayStrategy, String exciteStrategy, 
 							  int ticksPerStep, double activation, double removalThreshold, Map<String, ? extends Object> params){
-		Codelet codelet = null;
+		FrameworkTask task = null;
 		try {
-			CodeletDef codeletDef = codelets.get(codeletType);
+			CodeletDef codeletDef = codelets.get(taskType);
 			if (codeletDef == null) {
-				logger.log(Level.WARNING, "Factory does not contain codelet type {1}",
-						new Object[]{TaskManager.getCurrentTick(),codeletType});
+				logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}",
+						new Object[]{TaskManager.getCurrentTick(),taskType});
 			}
 
 			String className = codeletDef.getClassName();
-			codelet = (Codelet) Class.forName(className).newInstance();
+			task = (FrameworkTask) Class.forName(className).newInstance();
 
-			codelet.setTicksPerStep(ticksPerStep);
-			codelet.setActivation(activation);
-			codelet.setActivatibleRemovalThreshold(removalThreshold);
-			setActivatibleStrategies(codelet, decayStrategy, exciteStrategy);
+			task.setTicksPerStep(ticksPerStep);
+			task.setActivation(activation);
+			task.setActivatibleRemovalThreshold(removalThreshold);
+			setActivatibleStrategies(task, decayStrategy, exciteStrategy);
 			
 			if (params != null){
-				codelet.init(params);
+				task.init(params);
 			}else{ //Use default parameters from the factoriesData.xml file
-				codelet.init(codeletDef.getParams());
+				task.init(codeletDef.getParams());
 			}
 			
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), TaskManager
+			logger.log(Level.WARNING, "Error creating FrameworkTask " + e.toString(), TaskManager
 					.getCurrentTick());
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), TaskManager
+			logger.log(Level.WARNING, "Error creating FrameworkTask " + e.toString(), TaskManager
 					.getCurrentTick());
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating codelet " + e.toString(), TaskManager
+			logger.log(Level.WARNING, "Error creating FrameworkTask " + e.toString(), TaskManager
 					.getCurrentTick());
 		}
-		return codelet;
+		return task;
 	}
 
 	/**

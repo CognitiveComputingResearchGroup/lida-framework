@@ -40,6 +40,8 @@ import javax.swing.JPopupMenu;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
 import edu.memphis.ccrg.lida.framework.gui.commands.DAOCommand;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
+import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.gui.panels.AddEditPanel;
 import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
@@ -70,7 +72,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @author Javier Snaider
  */
-public class FrameworkGui extends javax.swing.JFrame {
+public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEventListener{
 
 	private static final Logger logger = Logger.getLogger(FrameworkGui.class
 			.getCanonicalName());
@@ -116,7 +118,10 @@ public class FrameworkGui extends javax.swing.JFrame {
 
 		this.agent = agent;
 		this.controller = controller;
-
+		TaskManager tm = agent.getTaskManager();
+		tm.addFrameworkGuiEventListener(this);
+		tm.setGuiEventsInterval(10); //TODO parameter or command
+				
 		loadPanels(panelProperties);
 
 		pack();
@@ -746,6 +751,14 @@ public class FrameworkGui extends javax.swing.JFrame {
 			panels.remove(panelIndex);
 			panelParameters.remove(panelIndex);
 		}
+	}
+
+	@Override
+	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
+		for (GuiPanel panel: panels){
+			panel.refresh();
+		}
+		
 	}
 
 }
