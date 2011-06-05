@@ -36,6 +36,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
@@ -755,10 +756,13 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
 	@Override
 	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
-		for (GuiPanel panel: panels){
-			panel.refresh();
-		}
-		
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				for (GuiPanel panel: panels){
+					panel.refresh();
+				}
+			}
+		});
 	}
-
 }

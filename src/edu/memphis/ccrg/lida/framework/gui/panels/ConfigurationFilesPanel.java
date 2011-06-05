@@ -152,7 +152,6 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
 		// FIRST
 		// :
 		// event_SaveButtonActionPerformed
-		// TODO add your handling code here:
 	}// GEN-LAST:event_SaveButtonActionPerformed
 
 	private void ApplyButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
@@ -160,7 +159,6 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
 		// FIRST
 		// :
 		// event_ApplyButtonActionPerformed
-		// TODO add your handling code here:
 	}// GEN-LAST:event_ApplyButtonActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
