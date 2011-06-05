@@ -244,12 +244,12 @@ public class NodeStructurePanel extends GuiPanelImpl {
 		display(module.getModuleContent());
 		Layout<Linkable, GuiLink> layout = vizViewer.getGraphLayout();
 		layout.initialize();
-		Relaxer relaxer = vizViewer.getModel().getRelaxer();
-		if(relaxer != null) {
-			relaxer.stop();
-			relaxer.prerelax();
-			relaxer.relax();
-		}
+//		Relaxer relaxer = vizViewer.getModel().getRelaxer();
+//		if(relaxer != null) {
+//			relaxer.stop();
+//			relaxer.prerelax();
+//			relaxer.relax();
+//		}
 	}
 
 	@Override
