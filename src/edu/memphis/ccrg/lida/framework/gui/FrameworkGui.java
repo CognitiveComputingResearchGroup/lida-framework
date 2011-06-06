@@ -121,7 +121,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 		this.controller = controller;
 		TaskManager tm = agent.getTaskManager();
 		tm.addFrameworkGuiEventListener(this);
-		tm.setGuiEventsInterval(10); //TODO parameter or command
+		tm.setGuiEventsInterval(5); //TODO parameter or command
 				
 		loadPanels(panelProperties);
 
@@ -406,6 +406,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         principalTabbedPanel = new javax.swing.JTabbedPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        guiRefreshRateMunuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         panelsMenu = new javax.swing.JMenu();
         addPanelMenuItem = new javax.swing.JMenuItem();
@@ -423,6 +424,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("LIDA Framework");
 
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
@@ -434,12 +436,21 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
+        menuBar.setPreferredSize(new java.awt.Dimension(500, 21));
+
         fileMenu.setText("File");
+
+        guiRefreshRateMunuItem.setText("Gui Refresh Rate...");
+        guiRefreshRateMunuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guiRefreshRateMunuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(guiRefreshRateMunuItem);
 
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -451,8 +462,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         addPanelMenuItem.setText("Add new panel");
         addPanelMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPanelMenuItemActionPerformed(evt);
             }
         });
@@ -474,8 +484,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         loadPanelSettingsMenuItem.setText("Load panel settings");
         loadPanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadPanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -483,8 +492,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         savePanelSettingsMenuItem.setText("Save panel settings");
         savePanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePanelSettingsMenuItemActionPerformed(evt);
             }
         });
@@ -497,8 +505,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         contentsMenuItem.setText("Help");
         contentsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contentsMenuItemActionPerformed(evt);
             }
         });
@@ -506,8 +513,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItemActionPerformed(evt);
             }
         });
@@ -530,6 +536,22 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
        JOptionPane.showMessageDialog(this,"For more on the LIDA framework visit:\n"
                + "ccrg.cs.memphis.edu/framework.html","Help", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_contentsMenuItemActionPerformed
+
+    private void guiRefreshRateMunuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guiRefreshRateMunuItemActionPerformed
+        TaskManager tm = agent.getTaskManager();
+        int guiRefreshInterval=tm.getGuiEventsInterval();
+        String sticks =JOptionPane.showInputDialog("Enter a new gui refresh rate (zero is no refresh):", guiRefreshInterval);
+        try{
+            guiRefreshInterval = Integer.parseInt(sticks);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this,"Error in the new Gui refresh interval. must be a positive int or zero.","Error", JOptionPane.ERROR_MESSAGE);
+        }
+        if(guiRefreshInterval<0){
+            JOptionPane.showMessageDialog(this,"Error in the new Gui refresh interval. must be a positive int or zero.","Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            tm.setGuiEventsInterval(guiRefreshInterval);
+        }
+    }//GEN-LAST:event_guiRefreshRateMunuItemActionPerformed
 
 	@SuppressWarnings("unused")
 	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -642,36 +664,29 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 	}// GEN-LAST:event_exitMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JMenuItem aboutMenuItem;
-	private javax.swing.JMenuItem addPanelMenuItem;
-	private javax.swing.JMenu areaAPanelsMenu;
-	private javax.swing.JMenu areaBPanelsMenu;
-	private javax.swing.JMenu areaCPanelsMenu;
-	private javax.swing.JMenu areaOthersPanelsMenu;
-	private javax.swing.JMenuItem contentsMenuItem;
-	private javax.swing.JMenuItem copyMenuItem;
-	private javax.swing.JMenuItem cutMenuItem;
-	private javax.swing.JMenuItem deleteMenuItem;
-	private javax.swing.JMenu editMenu;
-	private javax.swing.JMenuItem exitMenuItem;
-	private javax.swing.JMenu fileMenu;
-	private javax.swing.JMenu helpMenu;
-	private javax.swing.JPopupMenu.Separator jSeparator1;
-	private javax.swing.JPopupMenu.Separator jSeparator2;
-	private javax.swing.JPopupMenu.Separator jSeparator3;
-	private javax.swing.JSplitPane jSplitPane1;
-	private javax.swing.JSplitPane jSplitPane2;
-	private javax.swing.JTabbedPane jTabbedPanelR;
-	private javax.swing.JMenuItem loadPanelSettingsMenuItem;
-	private javax.swing.JMenuBar menuBar;
-	private javax.swing.JMenuItem openMenuItem;
-	private javax.swing.JMenu panelsMenu;
-	private javax.swing.JMenuItem pasteMenuItem;
-	private javax.swing.JTabbedPane principalTabbedPanel;
-	private javax.swing.JMenuItem saveAsMenuItem;
-	private javax.swing.JMenuItem saveMenuItem;
-	private javax.swing.JMenuItem savePanelSettingsMenuItem;
-	// End of variables declaration//GEN-END:variables
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenuItem addPanelMenuItem;
+    private javax.swing.JMenu areaAPanelsMenu;
+    private javax.swing.JMenu areaBPanelsMenu;
+    private javax.swing.JMenu areaCPanelsMenu;
+    private javax.swing.JMenu areaOthersPanelsMenu;
+    private javax.swing.JMenuItem contentsMenuItem;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem guiRefreshRateMunuItem;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JTabbedPane jTabbedPanelR;
+    private javax.swing.JMenuItem loadPanelSettingsMenuItem;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu panelsMenu;
+    private javax.swing.JTabbedPane principalTabbedPanel;
+    private javax.swing.JMenuItem savePanelSettingsMenuItem;
+    // End of variables declaration//GEN-END:variables
 
 	private void showEditPanelDialog(final String[] panelParams) {
 		final AddEditPanel addEditPanel = new AddEditPanel();
