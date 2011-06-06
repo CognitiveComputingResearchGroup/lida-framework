@@ -69,7 +69,7 @@ public class TaskManager implements GuiEventProvider {
 	private volatile static long currentTick = 0L;
 	private volatile Long maxTick = 0L;
 	private volatile boolean inIntervalMode = false;
-	private volatile Object lock = new Object();
+	private final Object lock = new Object();
 
 	private ConcurrentMap<Long, Set<FrameworkTask>> taskQueue;
 	/*
@@ -225,6 +225,11 @@ public class TaskManager implements GuiEventProvider {
 	 */
 	public void setInIntervalMode(boolean inIntervalMode) {
 		this.inIntervalMode = inIntervalMode;
+                if (!inIntervalMode){
+                    synchronized(lock){
+                        lock.notify();
+                    }
+                }
 	}
 
 	/**
@@ -448,7 +453,7 @@ public class TaskManager implements GuiEventProvider {
 						return;
 					}
 				}
-				// To actualize Gui
+				// To update Gui
 				if (guiEventsInterval>0 && !guiListeners.isEmpty()) {
 					if (currentTick - lastGuiEventTick >= guiEventsInterval) {
 						sendEventToGui(defaultGuiEvent);

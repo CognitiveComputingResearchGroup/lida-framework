@@ -35,12 +35,17 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(BasicActionSelection.class.getCanonicalName());
 
-//	private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
 
 	private int ticksPerRun;
 	private int refractoryPeriodTicks;
+	
+	private double activationThreshold;
+	private double maxActivationThreshold;
+
+	private double defaultRemovableThreshold;
+	
 	/**
 	 * Default constructor
 	 */
@@ -53,7 +58,13 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 				"actionSelection.backgroundTaskTicksPerRun", 10);
 		refractoryPeriodTicks = (Integer) getParam(
 				"actionSelection.refractoryperiodTicks", 80);
-		
+		activationThreshold = (Double) getParam(
+				"actionSelection.activationThreshold", 0.0);
+		maxActivationThreshold = activationThreshold;
+
+		defaultRemovableThreshold = (Double) getParam(
+				"actionSelection.activationThreshold", 0.1);
+
 		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
 	}
 
@@ -66,6 +77,12 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		protected void runThisFrameworkTask() {
 			if(selectAction()!=null){
 				setNextTicksPerStep(refractoryPeriodTicks);
+				activationThreshold = maxActivationThreshold;
+			}else{
+				activationThreshold -= .1;
+				if(activationThreshold<0.0){
+					activationThreshold=0.0;
+				}
 			}
 		}
 		@Override
@@ -88,11 +105,18 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void receiveBehavior(Behavior b) {
-		synchronized(this){
+		if(b!=null){
+		synchronized(this){	
+			b.setActivatibleRemovalThreshold(defaultRemovableThreshold);
 			behaviors.add(b);
 		}
 		logger.log(Level.FINE, "Behavior added {1}",
 				   new Object[]{TaskManager.getCurrentTick(), b});
+		}else{
+			logger.log(Level.WARNING, "null Behavior can not be added",
+					   TaskManager.getCurrentTick());
+			
+		}
 	}
 
 	@Override
@@ -114,20 +138,18 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		Behavior selected = null;
 		double activation = -1.0;
 		for (Behavior b : behaviors) {
-			if (b.getActivation() > activation) {
+			double behaviorActivation = b.getActivation();
+			if (behaviorActivation >= activationThreshold && behaviorActivation > activation) {
 				selected = b;
-				activation = b.getActivation();
+				activation = behaviorActivation;
 			}
 		}
-//		synchronized(this){
-//			behaviors.clear();
-//		}
 		return selected;
 	}
 	
 	@Override
 	public Object getModuleContent(Object... params) {
-		if(params[0].equals("behaviors")){
+		if("behaviors".equals(params[0])){
 			return Collections.unmodifiableCollection(behaviors);
 		}
 		return null;
