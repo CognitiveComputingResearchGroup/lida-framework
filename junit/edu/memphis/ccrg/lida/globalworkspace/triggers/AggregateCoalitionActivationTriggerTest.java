@@ -56,6 +56,10 @@ public class AggregateCoalitionActivationTriggerTest {
 			public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 				return false;
 			}
+			@Override
+			public String toString() {
+				return null;
+			}
 		};
 		coalition = new CoalitionImpl(ns, 0.0, codelet);
 		coalition.setActivation(0.1);

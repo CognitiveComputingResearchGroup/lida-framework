@@ -88,10 +88,4 @@ public class ExcitationTask extends FrameworkTaskImpl {
 		pam.propagateActivationToParents(node);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + " " + getTaskId();
-	}
-
 }

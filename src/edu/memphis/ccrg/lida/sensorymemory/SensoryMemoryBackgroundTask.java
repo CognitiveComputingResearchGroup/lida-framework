@@ -45,15 +45,9 @@ public class SensoryMemoryBackgroundTask extends FrameworkTaskImpl {
 	 * This method overrides runThisFrameworkTask() from class FrameworkTaskImpl
 	 * It executes method runSensors()of SensoryMemory sm
 	 * 
-	 * @see edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl#runThisFrameworkTask()
 	 */
 	@Override
 	protected void runThisFrameworkTask() {
 		sm.runSensors();		
-	}
-	
-	@Override
-	public String toString(){
-		return SensoryMemoryBackgroundTask.class.getSimpleName() + " background task";
 	}
 }

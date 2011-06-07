@@ -25,4 +25,9 @@ public class MockDetectionAlgorithm extends BasicDetectionAlgorithm {
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		return null;
+	}
+
 }

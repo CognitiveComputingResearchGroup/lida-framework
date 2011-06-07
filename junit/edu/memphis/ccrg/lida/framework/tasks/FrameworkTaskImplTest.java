@@ -37,6 +37,11 @@ public class FrameworkTaskImplTest {
 	}
 
 	@Test
+	public void testTaskName() {
+            System.out.println(task1.taskName);
+            assertEquals(MockFrameworkTask.class.getSimpleName()+"["+task1.getTaskId()+"]", task1.taskName);
+        }
+	@Test
 	public void testSetTaskStatus() {
 		assertEquals(TaskStatus.WAITING, task1.getTaskStatus());
 		

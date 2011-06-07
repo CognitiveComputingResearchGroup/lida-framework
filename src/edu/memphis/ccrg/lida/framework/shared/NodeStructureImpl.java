@@ -838,13 +838,11 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	public String toString() {
 		String s = "Nodes: [";
 		for (Node n : nodes.values()) {
-			s = s + (n.getLabel() + "--" + n.getId() +",");
+			s = s + n +",";
 		}
-		s += "]";
-
-		s = s + "Links: [";
+		s += "] Links: [";
 		for (Link l : links.values()) {
-			s = s + (l.getLabel() + "--" + l.getExtendedId() + ",");
+			s = s + l + ",";
 		}
 		s += "]";
 		return s;

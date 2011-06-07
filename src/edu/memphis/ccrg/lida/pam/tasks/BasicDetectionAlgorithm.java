@@ -147,9 +147,4 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	@Override
 	public abstract double detect();
 
-	@Override
-	public String toString() {
-		return "Feature Detector [" + getTaskId() + "] ";
-	}
-
 }

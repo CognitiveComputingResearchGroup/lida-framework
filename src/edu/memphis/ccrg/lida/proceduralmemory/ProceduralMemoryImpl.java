@@ -187,10 +187,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			activateSchemes(broadcast);			
 			setTaskStatus(TaskStatus.FINISHED);
 		}	
-		@Override
-		public String toString() {
-			return ProceduralMemoryImpl.class.getSimpleName() + "Broadcast";
-		}
 	}
 
 	@Override

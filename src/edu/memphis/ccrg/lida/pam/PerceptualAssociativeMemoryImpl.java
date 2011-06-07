@@ -252,12 +252,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
-
-		@Override
-		public String toString() {
-			return PerceptualAssociativeMemoryImpl.class.getSimpleName()
-					+ "Broadcast";
-		}
 	}
 
 	@Override
@@ -278,7 +272,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	@Override
 	public void learn(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
-		//TODO implement learning
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
 			n.getId();
@@ -549,6 +542,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
+	public Node getNode(String label) {
+		return nodesByLabel.get(label);
+	}
+
+	@Override
 	public Object getState() {
 		// TODO Auto-generated method stub
 		return null;
@@ -558,10 +556,5 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public boolean setState(Object content) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	
-	@Override
-	public Node getNode(String label) {
-		return nodesByLabel.get(label);
 	}
 }

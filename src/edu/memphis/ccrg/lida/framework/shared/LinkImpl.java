@@ -238,7 +238,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	
 	@Override
 	public String toString() {
-		return getLabel() + " " + extendedId;
+		return getLabel() + extendedId;
 	}
 	
 	@Override

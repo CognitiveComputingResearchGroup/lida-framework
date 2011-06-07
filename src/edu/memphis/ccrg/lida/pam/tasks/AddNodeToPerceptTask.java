@@ -32,10 +32,4 @@ public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 		pam.addNodeToPercept(node);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
-	
-	@Override
-	public String toString(){
-		return getClass().getSimpleName() + " " + getTaskId();
-	}
-
 }
