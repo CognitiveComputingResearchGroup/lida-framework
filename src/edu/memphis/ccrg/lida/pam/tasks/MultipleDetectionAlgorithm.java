@@ -71,10 +71,4 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	 * Override this method for domain-specific feature detection
 	 */
 	public abstract void detectMultipleLinkables();
-	
-	@Override
-	public String toString(){
-		return "Feature Detector ["+getTaskId()+"] ";
-	}
-
 }

@@ -83,9 +83,4 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 			workspace.cueEpisodicMemories(cueNodeStrucutre);
 		}
 	}
-
-	@Override
-	public String toString() {
-		return CueBackgroundTask.class.getSimpleName();
-	}
 }

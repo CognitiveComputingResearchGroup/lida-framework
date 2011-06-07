@@ -120,10 +120,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
-		@Override
-		public String toString() {
-			return AttentionCodeletModule.class.getSimpleName() + "Broadcast";
-		}
 	}
 
 	/**

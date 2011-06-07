@@ -26,7 +26,11 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingConstants;
@@ -45,9 +49,11 @@ public class NodeStructureTable extends GuiPanelImpl {
     private static final Logger logger = Logger.getLogger(NodeStructureTable.class.getCanonicalName());
     private NodeStructure nodeStructure;
     private FrameworkModule module;
+    private NodeStructureTableModel nodeStructureTableModel;
 
     /** Creates new form NodeStructureTable */
     public NodeStructureTable() {
+        nodeStructureTableModel=new NodeStructureTableModel();
         initComponents();
     }
 
@@ -77,11 +83,11 @@ public class NodeStructureTable extends GuiPanelImpl {
         });
         jToolBar1.add(refreshButton);
 
-        nodeStructureTable.setModel(new NodeStructureTableModel());
+        nodeStructureTable.setModel(nodeStructureTableModel);
         nodeStructureTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         nodeStructureTable.setMaximumSize(new java.awt.Dimension(1000, 1000));
         nodeStructurePane.setViewportView(nodeStructureTable);
-        nodeStructureTable.setColumnModel(new NSColumnTableModel());
+        nodeStructureTable.setColumnModel(new AlignedColumnTableModel());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -152,8 +158,15 @@ public class NodeStructureTable extends GuiPanelImpl {
         //TODO support links as well
 
         private String[] columnNames = {"Node", "Activation", "Base Activation", "Threshold"};
+        private int[] columnAlign = {SwingConstants.LEFT,SwingConstants.RIGHT,SwingConstants.RIGHT,SwingConstants.RIGHT};
         private DecimalFormat df = new DecimalFormat("0.0000");
+        private Map<String,Integer>columnAlignmentMap = new HashMap<String,Integer>();
 
+        public NodeStructureTableModel(){
+            for (int i=0;i<columnNames.length;i++){
+                columnAlignmentMap.put(columnNames[i], columnAlign[i]);
+            }
+        }
         @Override
         public int getColumnCount() {
             return columnNames.length;
@@ -214,6 +227,13 @@ public class NodeStructureTable extends GuiPanelImpl {
                     return "";
             }
         }
+
+        /**
+         * @return the columnAlignmentMap
+         */
+        public Map<String, Integer> getColumnAlignmentMap() {
+            return columnAlignmentMap;
+        }
     }
 
     @Override
@@ -227,17 +247,18 @@ public class NodeStructureTable extends GuiPanelImpl {
         }
     }
 
-    private class NSColumnTableModel extends DefaultTableColumnModel {
+    private class AlignedColumnTableModel extends DefaultTableColumnModel {
 
         private DefaultTableCellRenderer render;
-        public NSColumnTableModel(){
+        public AlignedColumnTableModel(){
             render = new DefaultTableCellRenderer();
             render.setHorizontalAlignment(SwingConstants.RIGHT);
         }
         @Override
         public void addColumn(TableColumn column) {
-            column.setCellRenderer(render);
-
+            if(nodeStructureTableModel.getColumnAlignmentMap().get(column.getHeaderValue().toString())==SwingConstants.RIGHT){
+                column.setCellRenderer(render);
+            }
             super.addColumn(column);
         }
     }

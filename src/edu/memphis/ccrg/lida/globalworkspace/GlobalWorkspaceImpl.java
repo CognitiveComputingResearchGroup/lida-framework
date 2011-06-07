@@ -98,8 +98,8 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 	@Override
 	public boolean addCoalition(Coalition coalition) {
 		if (coalitions.add(coalition)) {
-			logger.log(Level.FINEST, "New Coalition added",
-					TaskManager.getCurrentTick());
+			logger.log(Level.FINEST, "New Coalition added with activation {1}",
+					new Object[]{TaskManager.getCurrentTick(), coalition.getActivation()});
 			newCoalitionEvent();
 			return true;
 		} else {
@@ -250,11 +250,6 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
 			setTaskStatus(TaskStatus.FINISHED); // Runs only once
 		}
 
-		@Override
-		public String toString() {
-			return GlobalWorkspaceImpl.class.getSimpleName()
-					+ " background task";
-		}
 	}
 
 }

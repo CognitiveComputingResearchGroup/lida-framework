@@ -113,10 +113,6 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 			}
 			setTaskStatus(TaskStatus.FINISHED);
 		}
-		@Override
-		public String toString() {
-			return BasicSensoryMotorMemory.class.getSimpleName() + "ProcessAction";
-		}
 	}
 
 	@Override

@@ -44,10 +44,5 @@ public class AddLinkToPerceptTask extends FrameworkTaskImpl {
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 	
-	@Override
-	public String toString(){
-		return getClass().getSimpleName() + " " + getTaskId();
-	}
-
 }
 

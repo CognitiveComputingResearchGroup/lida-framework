@@ -30,7 +30,8 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	
 	private int id;
 	private ExtendedId extendedId;
-	private String label;
+	private String label ="node";
+	private String name;
 	private double desirability;
 	/**
 	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
@@ -43,6 +44,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 */
 	public NodeImpl(){
 		super();
+		name = label + "["+id+"]";
 	}
 
 	/**
@@ -57,6 +59,8 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.label=n.label;
 		this.desirability=n.desirability;
 		this.parameters = n.parameters;
+		name = label + "["+id+"]";
+
 	}
 	
 	@Override
@@ -98,6 +102,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	@Override
 	public void setLabel(String label) {
 		this.label=label;
+		name = label + "["+id+"]";
 	}
 
 	@Override
@@ -130,7 +135,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	}
 	@Override
 	public String toString(){
-		return getLabel() + " ["+getId()+"] ";
+		return name;
 	}
 
 	@Override

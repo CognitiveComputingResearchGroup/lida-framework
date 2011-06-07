@@ -92,9 +92,4 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "AttentionCodelet-" + getTaskId();
-	}
-
 }

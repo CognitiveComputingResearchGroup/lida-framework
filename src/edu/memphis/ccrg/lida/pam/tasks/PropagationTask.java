@@ -67,10 +67,4 @@ public class PropagationTask extends FrameworkTaskImpl {
 		pam.propagateActivationToParents(sink);
 		setTaskStatus(TaskStatus.FINISHED);
 	}
-	
-	@Override
-	public String toString(){
-		return getClass().getSimpleName() + " " + getTaskId();
-	}
-
 }

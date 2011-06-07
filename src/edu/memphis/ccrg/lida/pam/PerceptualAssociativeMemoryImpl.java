@@ -252,12 +252,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			learn((BroadcastContent) broadcast);
 			setTaskStatus(TaskStatus.FINISHED);
 		}
-
-		@Override
-		public String toString() {
-			return PerceptualAssociativeMemoryImpl.class.getSimpleName()
-					+ "Broadcast";
-		}
 	}
 
 	@Override

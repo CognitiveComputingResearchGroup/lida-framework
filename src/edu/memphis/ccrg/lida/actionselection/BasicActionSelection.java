@@ -85,11 +85,6 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 				}
 			}
 		}
-		@Override
-		public String toString() {
-			return BasicActionSelection.class.getSimpleName()
-					+ " background task";
-		}
 	}
 
 	@Override

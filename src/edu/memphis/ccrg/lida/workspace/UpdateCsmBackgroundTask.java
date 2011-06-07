@@ -61,10 +61,4 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 				.getSubmodule(ModuleName.CurrentSituationalModel);
 		((NodeStructure) csm.getBufferContent(null)).mergeWith(ns);
 	}
-
-	@Override
-	public String toString() {
-		return UpdateCsmBackgroundTask.class.getSimpleName();
-	}
-
 }

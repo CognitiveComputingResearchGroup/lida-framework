@@ -68,5 +68,4 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 		//TODO Naive implementation. Should not copy entire buffer.
 		return ((NodeStructure) buffer.getBufferContent(null)).copy();
 	}
-
 }

@@ -42,6 +42,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	 * Source of unique Ids for FrameworkTaskImpls
 	 */
 	private static long nextTaskID;
+        public final String taskName;
 	
 	/**
 	 * Creates a FrameworkTaskImpl with default ticks per step
@@ -65,6 +66,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 		taskID = nextTaskID++;
 		this.controllingTS=ts;
 		setTicksPerStep(ticksPerStep);
+                taskName =this.getClass().getSimpleName() + "["+taskID+"]";
 	}
 	
 	@Override
@@ -217,6 +219,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 	
 	@Override
-	public abstract String toString();
+	public String toString(){
+        return taskName;
+    }
 	
 }

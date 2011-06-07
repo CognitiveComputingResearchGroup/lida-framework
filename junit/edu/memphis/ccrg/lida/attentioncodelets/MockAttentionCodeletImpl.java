@@ -24,4 +24,9 @@ public class MockAttentionCodeletImpl extends AttentionCodeletImpl {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return null;
+	}
+
 }

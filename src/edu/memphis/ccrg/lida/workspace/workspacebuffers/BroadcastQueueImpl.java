@@ -94,11 +94,6 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 			}
 			setTaskStatus(TaskStatus.FINISHED);
 		}
-
-		@Override
-		public String toString() {
-			return BroadcastQueueImpl.class.getSimpleName() + "Broadcast";
-		}
 	}
 
 	@Override

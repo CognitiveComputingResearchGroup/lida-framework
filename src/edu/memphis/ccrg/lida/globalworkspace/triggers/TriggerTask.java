@@ -58,7 +58,7 @@ public class TriggerTask extends FrameworkTaskImpl {
 
 	@Override
 	public String toString() {
-		return "TriggerTask " + name + " " + getTaskId();
+		return name + "-" + super.toString();
 	}
 
 }
