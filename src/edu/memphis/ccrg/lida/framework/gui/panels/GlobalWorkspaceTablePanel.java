@@ -172,11 +172,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 	}
 
 	private class NodeStructureTableModel extends AbstractTableModel {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 3902918248689475445L;
+		
 		private String[] columNames = { "Coalition", "Activation",
 				"AttentionCodelet", "Coalition nodes", "Sought content" };
 

@@ -135,8 +135,6 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
 
     private class PropertiesTableModel extends AbstractTableModel {
 
-        private static final long serialVersionUID = 1L;
-
         @Override
         public int getColumnCount() {
             return 2;

@@ -45,7 +45,6 @@ import edu.uci.ics.jung.algorithms.layout.util.Relaxer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
-import java.text.DecimalFormat;
 
 /**
  * A {@link GuiPanel} which creates a graphical view of a {@link NodeStructure}.

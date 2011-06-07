@@ -7,7 +7,9 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.tasks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkGuiEventListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule;
 
