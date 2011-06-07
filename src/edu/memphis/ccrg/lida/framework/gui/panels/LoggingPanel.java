@@ -280,6 +280,7 @@ public class LoggingPanel extends GuiPanelImpl {
             this.logMessages = logMessages;
         }
 
+        @Override
         public void run() {
             loggingText.append(logMessages);
             JScrollBar jsb = jScrollPane1.getVerticalScrollBar();
