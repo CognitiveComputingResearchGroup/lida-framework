@@ -32,5 +32,11 @@ public interface Coalition extends Activatible {
 	 * Returns the attention codelet that creates this coalition
 	 * @return The attention codelet which creates this coalition
 	 */
-	public AttentionCodelet getAttentionCodelet();	
+	public AttentionCodelet getAttentionCodelet();
+
+        /**
+         * Returns id
+         * @return long id
+         */
+        public long getId();
 }

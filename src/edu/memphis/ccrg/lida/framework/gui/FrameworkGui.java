@@ -71,330 +71,322 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  * @author Javier Snaider
  */
-public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEventListener{
+public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEventListener {
 
-	private static final Logger logger = Logger.getLogger(FrameworkGui.class
-			.getCanonicalName());
-	private static final String PANEL_PROPFILE_COMMENT = "name = real name, class name, Position [A,B,C,FLOAT, TOOL], Order at Position, Refresh after load?, Additional strings are used as general parameters for the panel's initPanel method";
+    private static final Logger logger = Logger.getLogger(FrameworkGui.class.getCanonicalName());
+    private static final String PANEL_PROPFILE_COMMENT = "name = real name, class name, Position [A,B,C,FLOAT, TOOL], Order at Position, Refresh after load?, Additional strings are used as general parameters for the panel's initPanel method";
+    private static int PANEL_NAME = 0;
+    private static int CLASS_NAME = 1;
+    private static int PANEL_POSITION = 2;
+    private static int TAB_ORDER = 3;
+    private static int MUST_REFRESH = 4;
+    private static int FIRST_PARAM = 5;
+    private static int DEFAULT_GUI_EVENT_INTERVAL = 5;
+    private List<String> panelClassNames = new ArrayList<String>();
+    private List<GuiPanel> panels = new ArrayList<GuiPanel>();
+    private List<String[]> panelParameters = new ArrayList<String[]>();
+    private List<Container> panelParents = new ArrayList<Container>();
+    private Agent agent;
+    private FrameworkGuiController controller;
+    private javax.swing.JDialog addEditDialog;
 
-	private static int PANEL_NAME = 0;
-	private static int CLASS_NAME = 1;
-	private static int PANEL_POSITION = 2;
-	private static int TAB_ORDER = 3;
-	private static int MUST_REFRESH = 4;
-	private static int FIRST_PARAM = 5;
-        private static int DEFAULT_GUI_EVENT_INTERVAL = 5;
+    /**
+     * Constructs a new FrameworkGui using the {@link Agent} object as the model and
+     * {@link FrameworkGuiController} as the controller. Reads the {@link Properties}
+     * file and creates and configures the {@link GuiPanel}s specified therein.
+     *
+     * @param agent
+     *            {@link Agent} the model.
+     * @param controller
+     *            {@link FrameworkGuiController} the controller
+     * @param panelProperties
+     *            for configuration
+     */
+    public FrameworkGui(Agent agent, FrameworkGuiController controller,
+            Properties panelProperties) {
+        if (agent == null || controller == null || panelProperties == null) {
+            logger.log(Level.WARNING, "Null argument", TaskManager.getCurrentTick());
+        }
 
-	private List<String> panelClassNames = new ArrayList<String>();
-	private List<GuiPanel> panels = new ArrayList<GuiPanel>();
-	private List<String[]> panelParameters = new ArrayList<String[]>();
-	private List<Container> panelParents = new ArrayList<Container>();
+        initComponents();
 
-	private Agent agent;
-	private FrameworkGuiController controller;
-	private javax.swing.JDialog addEditDialog;
+        this.agent = agent;
+        this.controller = controller;
+        TaskManager tm = agent.getTaskManager();
+        tm.addFrameworkGuiEventListener(this);
+        tm.setGuiEventsInterval(DEFAULT_GUI_EVENT_INTERVAL); //TODO parameter or command
 
-	/**
-	 * Constructs a new FrameworkGui using the {@link Agent} object as the model and
-	 * {@link FrameworkGuiController} as the controller. Reads the {@link Properties}
-	 * file and creates and configures the {@link GuiPanel}s specified therein.
-	 * 
-	 * @param agent
-	 *            {@link Agent} the model.
-	 * @param controller
-	 *            {@link FrameworkGuiController} the controller
-	 * @param panelProperties
-	 *            for configuration
-	 */
-	public FrameworkGui(Agent agent, FrameworkGuiController controller,
-			Properties panelProperties) {
-		if (agent == null || controller == null || panelProperties == null) {
-			logger.log(Level.WARNING, "Null argument", TaskManager
-					.getCurrentTick());
-		}
+        loadPanels(panelProperties);
 
-		initComponents();
+        pack();
+    }
 
-		this.agent = agent;
-		this.controller = controller;
-		TaskManager tm = agent.getTaskManager();
-		tm.addFrameworkGuiEventListener(this);
-		tm.setGuiEventsInterval(DEFAULT_GUI_EVENT_INTERVAL); //TODO parameter or command
-				
-		loadPanels(panelProperties);
+    /*
+     * @param panelProp
+     */
+    private void loadPanels(Properties panelProp) {
+        String[][] panelsArray = new String[panelProp.size()][];
+        int i = 0;
+        // for each key in the properties config file
+        for (Object key : panelProp.keySet()) {
+            String line = panelProp.getProperty((String) key);
+            String[] vals = line.split(","); // name,class,pos,tab
+            // Order,refresh[Y/N],[optional
+            // parameters],...
+            if ((vals.length < FIRST_PARAM)) {
+                logger.log(Level.WARNING,
+                        "Error reading line for Panel {1}", new Object[]{0L, key});
+            } else {
+                panelsArray[i++] = vals;
+            }
+        }
+        Arrays.sort(panelsArray, new Comparator<String[]>() { // sort panel by
+            // position and
+            // tab order
 
-		pack();
-	}
+            @Override
+            public int compare(String[] arg0, String[] arg1) {
+                String s1 = arg0[PANEL_POSITION];
+                String s2 = arg1[PANEL_POSITION];
+                int pos = s1.compareToIgnoreCase(s2);
+                if (pos == 0) {
+                    s1 = arg0[TAB_ORDER];
+                    s2 = arg1[TAB_ORDER];
+                    pos = s1.compareToIgnoreCase(s2);
+                }
+                return pos;
+            }
+        });
 
-	/*
-	 * @param panelProp
-	 */
-	private void loadPanels(Properties panelProp) {
-		String[][] panelsArray = new String[panelProp.size()][];
-		int i = 0;
-		// for each key in the properties config file
-		for (Object key : panelProp.keySet()) {
-			String line = panelProp.getProperty((String) key);
-			String[] vals = line.split(","); // name,class,pos,tab
-			// Order,refresh[Y/N],[optional
-			// parameters],...
-			if ((vals.length < FIRST_PARAM)) {
-				logger.log(Level.WARNING,
-						"Error reading line for Panel {1}", new Object[]{0L, key});
-			} else {
-				panelsArray[i++] = vals;
-			}
-		}
-		Arrays.sort(panelsArray, new Comparator<String[]>() { // sort panel by
-					// position and
-					// tab order
+        for (String[] vals : panelsArray) {
+            panelClassNames.add(vals[CLASS_NAME]);
+            createGuiPanel(vals);
+        }
+    }
 
-					@Override
-					public int compare(String[] arg0, String[] arg1) {
-						String s1 = arg0[PANEL_POSITION];
-						String s2 = arg1[PANEL_POSITION];
-						int pos = s1.compareToIgnoreCase(s2);
-						if (pos == 0) {
-							s1 = arg0[TAB_ORDER];
-							s2 = arg1[TAB_ORDER];
-							pos = s1.compareToIgnoreCase(s2);
-						}
-						return pos;
-					}
-				});
+    /**
+     * Based on the specified parameters (from the configuration file), creates
+     * a new {@link GuiPanel} and initializes it.
+     *
+     * @param panelParams
+     *            Parameters specified in 'configs.guiPanels.properties'
+     */
+    public void createGuiPanel(String[] panelParams) {
+        GuiPanel panel;
+        try {
+            panel = (GuiPanel) (Class.forName(panelParams[CLASS_NAME])).newInstance();
+        } catch (Exception e) {
+            logger.log(Level.WARNING,
+                    "Error instantiating panel {1}", new Object[]{0L, CLASS_NAME});
+            e.printStackTrace();
+            return;
+        }
+        panelParameters.add(panelParams);
+        panel.setName(panelParams[PANEL_NAME]);
+        panel.registerAgent(agent);
+        panel.registerGuiController(controller);
 
-		for (String[] vals : panelsArray) {
-			panelClassNames.add(vals[CLASS_NAME]);
-			createGuiPanel(vals);
-		}
-	}
+        // init panel with optional parameters
+        String[] param = new String[panelParams.length - FIRST_PARAM];
+        System.arraycopy(panelParams, FIRST_PARAM, param, 0, panelParams.length
+                - FIRST_PARAM);
+        try {
+            panel.initPanel(param);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE,
+                    "Exception {1} encountered initializing panel {2}",
+                    new Object[]{0L, e.getMessage(), panel});
+            e.printStackTrace();
+        }
 
-	/**
-	 * Based on the specified parameters (from the configuration file), creates
-	 * a new {@link GuiPanel} and initializes it.
-	 * 
-	 * @param panelParams
-	 *            Parameters specified in 'configs.guiPanels.properties'
-	 */
-	public void createGuiPanel(String[] panelParams) {
-		GuiPanel panel;
-		try {
-			panel = (GuiPanel) (Class.forName(panelParams[CLASS_NAME]))
-					.newInstance();
-		} catch (Exception e) {
-			logger.log(Level.WARNING,
-					"Error instantiating panel {1}", new Object[]{0L,CLASS_NAME});
-			e.printStackTrace();
-			return;
-		}
-		panelParameters.add(panelParams);
-		panel.setName(panelParams[PANEL_NAME]);
-		panel.registerAgent(agent);
-		panel.registerGuiController(controller);
+        // add the panel to the specified region of the GUI
+        addGuiPanel(panel, panelParams[PANEL_POSITION]);
 
-		// init panel with optional parameters
-		String[] param = new String[panelParams.length - FIRST_PARAM];
-		System.arraycopy(panelParams, FIRST_PARAM, param, 0, panelParams.length
-				- FIRST_PARAM);
-		try {
-			panel.initPanel(param);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE,
-					"Exception {1} encountered initializing panel {2}", 
-					new Object[]{0L, e.getMessage(), panel});
-			e.printStackTrace();
-		}
+        if (panelParams[MUST_REFRESH].equalsIgnoreCase("Y")) {
+            try {
+                panel.refresh();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE,
+                        "Exception {1} encountered when refreshing panel {2}",
+                        new Object[]{0L, e.getMessage(), panel});
+                e.printStackTrace();
+            }
+        }
 
-		// add the panel to the specified region of the GUI
-		addGuiPanel(panel, panelParams[PANEL_POSITION]);
+        logger.log(Level.INFO, "GuiPanel added: " + panel.getName());
+    }
 
-		if (panelParams[MUST_REFRESH].equalsIgnoreCase("Y")) {
-			try {
-				panel.refresh();
-			} catch (Exception e) {
-				logger.log(Level.SEVERE,
-						"Exception {1} encountered when refreshing panel {2}", 
-						new Object[]{0L, e.getMessage(), panel});
-				e.printStackTrace();
-			}
-		}
-		
-		logger.log(Level.INFO, "GuiPanel added: " + panel.getName());
-	}
-	
-	/*
-	 * Adds a Panel to the main GUI.
-	 * 
-	 * @param panel
-	 *            the panel to add.
-	 * @param panelPosition
-	 *            Determines where the panel is going to be placed. </br> A:
-	 *            Upper Left position. </br> B: Upper Right position. In a new
-	 *            TAB</br> C: Lower position. In a new TAB</br> TOOL: In the
-	 *            ToolBox </br> FLOAT: In a new frame. </br>
-	 */
-	private void addGuiPanel(GuiPanel panel, String panelPosition) {
-		final JPanel jPanel = panel.getPanel();
-		java.awt.Container parent = null;
+    /*
+     * Adds a Panel to the main GUI.
+     *
+     * @param panel
+     *            the panel to add.
+     * @param panelPosition
+     *            Determines where the panel is going to be placed. </br> A:
+     *            Upper Left position. </br> B: Upper Right position. In a new
+     *            TAB</br> C: Lower position. In a new TAB</br> TOOL: In the
+     *            ToolBox </br> FLOAT: In a new frame. </br>
+     */
+    private void addGuiPanel(GuiPanel panel, String panelPosition) {
+        final JPanel jPanel = panel.getPanel();
+        java.awt.Container parent = null;
 
-		panels.add(panel);
+        panels.add(panel);
 
-		javax.swing.JMenu associatedMenu = areaOthersPanelsMenu;
-		if ("A".equalsIgnoreCase(panelPosition)) {
-			jSplitPane2.setTopComponent(jPanel);
-			parent = jSplitPane2;
-			associatedMenu = areaAPanelsMenu;
-		} else if ("B".equalsIgnoreCase(panelPosition)) {
-			jTabbedPanelR.addTab(panel.getName(), jPanel);
-			parent = jTabbedPanelR;
-			associatedMenu = areaBPanelsMenu;
-		} else if ("C".equalsIgnoreCase(panelPosition)) {
-			principalTabbedPanel.addTab(panel.getName(), jPanel);
-			parent = principalTabbedPanel;
-			associatedMenu = areaCPanelsMenu;
-		} else if ("FLOAT".equalsIgnoreCase(panelPosition)) {
-			JDialog dialog = new JDialog(this, panel.getName());
-			dialog.add(jPanel);
-			dialog.pack();
-			dialog.setVisible(true);
-			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-			dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-				int index = panels.size() - 1;
+        javax.swing.JMenu associatedMenu = areaOthersPanelsMenu;
+        if ("A".equalsIgnoreCase(panelPosition)) {
+            jSplitPane2.setTopComponent(jPanel);
+            parent = jSplitPane2;
+            associatedMenu = areaAPanelsMenu;
+        } else if ("B".equalsIgnoreCase(panelPosition)) {
+            jTabbedPanelR.addTab(panel.getName(), jPanel);
+            parent = jTabbedPanelR;
+            associatedMenu = areaBPanelsMenu;
+        } else if ("C".equalsIgnoreCase(panelPosition)) {
+            principalTabbedPanel.addTab(panel.getName(), jPanel);
+            parent = principalTabbedPanel;
+            associatedMenu = areaCPanelsMenu;
+        } else if ("FLOAT".equalsIgnoreCase(panelPosition)) {
+            JDialog dialog = new JDialog(this, panel.getName());
+            dialog.add(jPanel);
+            dialog.pack();
+            dialog.setVisible(true);
+            dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
-				@Override
-				public void windowClosing(WindowEvent winEvt) {
-					for (java.awt.Component firstLevelMenu : panelsMenu
-							.getMenuComponents()) {
-						if (firstLevelMenu instanceof javax.swing.JMenu) {
-							for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu)
-									.getMenuComponents()) {
-								if (secondLevelMenu instanceof javax.swing.JMenu) {
-									String menuText = ((javax.swing.JMenu) secondLevelMenu)
-											.getText();
-									String panelName = panels.get(index)
-											.getName();
-									if (menuText.equals(panelName))
-										((javax.swing.JCheckBoxMenuItem) ((javax.swing.JMenu) secondLevelMenu)
-												.getMenuComponent(0))
-												.setSelected(false);
-									// ((javax.swing.JMenu)firstLevelMenu).remove(secondLevelMenu);
-								}
-							}
-						}
-					}
-				}
-			});
+                int index = panels.size() - 1;
 
-		} else if ("TOOL".equalsIgnoreCase(panelPosition)) {
-			getContentPane().add(jPanel, java.awt.BorderLayout.PAGE_START);
-			parent = getContentPane();
-		} else {
-			logger.log(Level.WARNING, "Position error for panel "
-					+ panel.getName() + " pos:" + panelPosition, 0L);
-		}
+                @Override
+                public void windowClosing(WindowEvent winEvt) {
+                    for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
+                        if (firstLevelMenu instanceof javax.swing.JMenu) {
+                            for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu).getMenuComponents()) {
+                                if (secondLevelMenu instanceof javax.swing.JMenu) {
+                                    String menuText = ((javax.swing.JMenu) secondLevelMenu).getText();
+                                    String panelName = panels.get(index).getName();
+                                    if (menuText.equals(panelName)) {
+                                        ((javax.swing.JCheckBoxMenuItem) ((javax.swing.JMenu) secondLevelMenu).getMenuComponent(0)).setSelected(false);
+                                    }
+                                    // ((javax.swing.JMenu)firstLevelMenu).remove(secondLevelMenu);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
 
-		panelParents.add(parent);
+        } else if ("TOOL".equalsIgnoreCase(panelPosition)) {
+            getContentPane().add(jPanel, java.awt.BorderLayout.PAGE_START);
+            parent = getContentPane();
+        } else {
+            logger.log(Level.WARNING, "Position error for panel "
+                    + panel.getName() + " pos:" + panelPosition, 0L);
+        }
 
-		addToPanelsMenu(panel, parent, associatedMenu);
-	}
+        panelParents.add(parent);
 
-	private void addToPanelsMenu(final GuiPanel panel, final Container parent, JMenu associatedMenu) {
-		final JPanel jPanel = panel.getPanel();
-		JMenu cMenu;
-		String menuItemLabel;
-		int unnamedIndex = 0;
+        addToPanelsMenu(panel, parent, associatedMenu);
+    }
 
-		menuItemLabel = panel.getName();
-		if (menuItemLabel.equals("")) {
-			menuItemLabel = "Unnamed" + (unnamedIndex++);
-		}
-		cMenu = new JMenu();
-		cMenu.setText(menuItemLabel);
+    private void addToPanelsMenu(final GuiPanel panel, final Container parent, JMenu associatedMenu) {
+        final JPanel jPanel = panel.getPanel();
+        JMenu cMenu;
+        String menuItemLabel;
+        int unnamedIndex = 0;
 
-		JCheckBoxMenuItem showItem = new JCheckBoxMenuItem();
-		showItem.setText("Show Panel");
-		showItem.setSelected(true);
-		showItem.addActionListener(new ActionListener() {
-			private GuiPanel cGuiPanel = panel;
-			private JPanel cjPanel = jPanel;
-			private Container cParent = parent;
-			private String[] cParameters = panelParameters.get(panels
-					.indexOf(panel));
+        menuItemLabel = panel.getName();
+        if (menuItemLabel.equals("")) {
+            menuItemLabel = "Unnamed" + (unnamedIndex++);
+        }
+        cMenu = new JMenu();
+        cMenu.setText(menuItemLabel);
 
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				togglePanel();
-			}
+        JCheckBoxMenuItem showItem = new JCheckBoxMenuItem();
+        showItem.setText("Show Panel");
+        showItem.setSelected(true);
+        showItem.addActionListener(new ActionListener() {
 
-			private void togglePanel() {
-				int index = -1;
-				if (parent != null) {
-					// normal panel (not FLOAT)
-					for (java.awt.Component c : parent.getComponents()) {
-						if (c.equals(cjPanel)) {
-							for (int i = 0; i < panels.size(); i++) {
-								if (panels.get(i).getPanel().equals(cjPanel)) {
-									index = i;
-									break;
-								}
-							}
-							break;
-						}
-					}
+            private GuiPanel cGuiPanel = panel;
+            private JPanel cjPanel = jPanel;
+            private Container cParent = parent;
+            private String[] cParameters = panelParameters.get(panels.indexOf(panel));
 
-					if (index > -1) {
-						// panel found, remove it
-						removePanelAt(index, false);
-					} else {
-						// panel not found, add it
-						cParent.add(cjPanel);
-						panels.add(cGuiPanel);
-						panelParents.add(cParent);
-						panelParameters.add(cParameters);
-					}
-				} else {
-					// dialog (FLOAT)
-					for (int i = 0; i < panels.size(); i++) {
-						if (panels.get(i).equals(cGuiPanel)) {
-							index = i;
-							break;
-						}
-					}
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                togglePanel();
+            }
 
-					Container c = cjPanel.getParent();
-					while (c != null && !(c instanceof JDialog))
-						c = c.getParent();
-					if (c instanceof JDialog) {
-						if (c.isVisible())
-							((JDialog) c).setVisible(false);
-						else
-							((JDialog) c).setVisible(true);
-					}
-				}
-			}
-		});
-		cMenu.add(showItem);
-		cMenu.add(new JPopupMenu.Separator());
-		JMenuItem editItem = new JMenuItem();
-		editItem.setText("Edit Panel");
-		final String[] panelParams = panelParameters.get(panels.indexOf(panel));
-		editItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				showEditPanelDialog(panelParams);
-			}
-		});
-		cMenu.add(editItem);
+            private void togglePanel() {
+                int index = -1;
+                if (parent != null) {
+                    // normal panel (not FLOAT)
+                    for (java.awt.Component c : parent.getComponents()) {
+                        if (c.equals(cjPanel)) {
+                            for (int i = 0; i < panels.size(); i++) {
+                                if (panels.get(i).getPanel().equals(cjPanel)) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
 
-		associatedMenu.add(cMenu);
-	}
+                    if (index > -1) {
+                        // panel found, remove it
+                        removePanelAt(index, false);
+                    } else {
+                        // panel not found, add it
+                        cParent.add(cjPanel);
+                        panels.add(cGuiPanel);
+                        panelParents.add(cParent);
+                        panelParameters.add(cParameters);
+                    }
+                } else {
+                    // dialog (FLOAT)
+                    for (int i = 0; i < panels.size(); i++) {
+                        if (panels.get(i).equals(cGuiPanel)) {
+                            index = i;
+                            break;
+                        }
+                    }
 
+                    Container c = cjPanel.getParent();
+                    while (c != null && !(c instanceof JDialog)) {
+                        c = c.getParent();
+                    }
+                    if (c instanceof JDialog) {
+                        if (c.isVisible()) {
+                            ((JDialog) c).setVisible(false);
+                        } else {
+                            ((JDialog) c).setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
+        cMenu.add(showItem);
+        cMenu.add(new JPopupMenu.Separator());
+        JMenuItem editItem = new JMenuItem();
+        editItem.setText("Edit Panel");
+        final String[] panelParams = panelParameters.get(panels.indexOf(panel));
+        editItem.addActionListener(new ActionListener() {
 
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                showEditPanelDialog(panelParams);
+            }
+        });
+        cMenu.add(editItem);
+
+        associatedMenu.add(cMenu);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -525,137 +517,142 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
     }// </editor-fold>//GEN-END:initComponents
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-       JOptionPane.showMessageDialog(this,"LIDA Framework 1.0 Beta \n "
-               + "Cognitive Computing Research Group \n The University of Memphis \n"
-               + " ccrg.cs.memphis.edu","About", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "LIDA Framework 1.0 Beta \n "
+                + "Cognitive Computing Research Group \n The University of Memphis \n"
+                + " ccrg.cs.memphis.edu", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
-       JOptionPane.showMessageDialog(this,"For more on the LIDA framework visit:\n"
-               + "ccrg.cs.memphis.edu/framework.html","Help", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "For more on the LIDA framework visit:\n"
+                + "ccrg.cs.memphis.edu/framework.html", "Help", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_contentsMenuItemActionPerformed
 
     private void guiRefreshRateMunuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guiRefreshRateMunuItemActionPerformed
         TaskManager tm = agent.getTaskManager();
-        int guiRefreshInterval=tm.getGuiEventsInterval();
-        String sticks =JOptionPane.showInputDialog("Enter a new gui refresh rate (zero is no refresh):", guiRefreshInterval);
-        try{
-            guiRefreshInterval = Integer.parseInt(sticks);
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this,"Error in the new Gui refresh interval. must be a positive int or zero.","Error", JOptionPane.ERROR_MESSAGE);
-        }
-        if(guiRefreshInterval<0){
-            JOptionPane.showMessageDialog(this,"Error in the new Gui refresh interval. must be a positive int or zero.","Error", JOptionPane.ERROR_MESSAGE);
-        }else{
-            tm.setGuiEventsInterval(guiRefreshInterval);
+        int guiRefreshInterval = tm.getGuiEventsInterval();
+        String sticks = JOptionPane.showInputDialog("Enter a new gui refresh rate (zero is no refresh):", guiRefreshInterval);
+        if (sticks != null) {
+            try {
+                guiRefreshInterval = Integer.parseInt(sticks);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error in the new Gui refresh interval. must be a positive int or zero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if (guiRefreshInterval < 0) {
+                JOptionPane.showMessageDialog(this, "Error in the new Gui refresh interval. must be a positive int or zero.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                tm.setGuiEventsInterval(guiRefreshInterval);
+            }
         }
     }//GEN-LAST:event_guiRefreshRateMunuItemActionPerformed
 
-	@SuppressWarnings("unused")
-	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-	}
+    @SuppressWarnings("unused")
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-	@SuppressWarnings("unused")
-	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-	}
+    @SuppressWarnings("unused")
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-	@SuppressWarnings("unused")
-	private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-	}
+    @SuppressWarnings("unused")
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-	private void addPanelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		showAddPanelDialog();
-	}
-	private void showAddPanelDialog() {
-		final AddEditPanel addEditPanel = new AddEditPanel();
-		addEditPanel.setName("AddPanel");
-		addEditPanel.registerAgent(agent);
-		addEditPanel.registerGuiController(this.controller);
-		addEditPanel.initClassnames(panelClassNames);
-		if (addEditDialog != null)
-			addEditDialog.setVisible(false);
-		addEditDialog = new JDialog();
-		addEditDialog.add(addEditPanel.getPanel());
-		addEditDialog.pack();
-		addEditDialog.setVisible(true);
+    private void addPanelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        showAddPanelDialog();
+    }
 
-		final javax.swing.JPanel jpanel = addEditPanel.getPanel();
-		for (java.awt.Component c : jpanel.getComponents()) {
-			if (c instanceof javax.swing.JButton) {
-				((javax.swing.JButton) c)
-						.addActionListener(new java.awt.event.ActionListener() {
-							@Override
-							public void actionPerformed(
-									java.awt.event.ActionEvent evt) {
-								createGuiPanel(addEditPanel.getPanelParams());
-								addEditDialog.setVisible(false);
-							}
-						});
-			}
-		}
+    private void showAddPanelDialog() {
+        final AddEditPanel addEditPanel = new AddEditPanel();
+        addEditPanel.setName("AddPanel");
+        addEditPanel.registerAgent(agent);
+        addEditPanel.registerGuiController(this.controller);
+        addEditPanel.initClassnames(panelClassNames);
+        if (addEditDialog != null) {
+            addEditDialog.setVisible(false);
+        }
+        addEditDialog = new JDialog();
+        addEditDialog.add(addEditPanel.getPanel());
+        addEditDialog.pack();
+        addEditDialog.setVisible(true);
 
-		addEditPanel.refresh();
-	}
+        final javax.swing.JPanel jpanel = addEditPanel.getPanel();
+        for (java.awt.Component c : jpanel.getComponents()) {
+            if (c instanceof javax.swing.JButton) {
+                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
 
-	private void loadPanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
-				new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
-		fc.showOpenDialog(this);
-		java.io.File file = fc.getSelectedFile();
-		if (file != null) {
-			loadPanelConfigFromFile(file.getPath());
-		}
-	}
-	private void loadPanelConfigFromFile(String path) {
-		Properties panelProperties = ConfigUtils.loadProperties(path);
-		if (panelProperties != null) {
-			loadPanels(panelProperties);
-			while (panels.size() > 0) {
-				removePanelAt(0);
-			}
+                    @Override
+                    public void actionPerformed(
+                            java.awt.event.ActionEvent evt) {
+                        createGuiPanel(addEditPanel.getPanelParams());
+                        addEditDialog.setVisible(false);
+                    }
+                });
+            }
+        }
 
-			areaAPanelsMenu.removeAll();
-			areaBPanelsMenu.removeAll();
-			areaCPanelsMenu.removeAll();
-			areaOthersPanelsMenu.removeAll();
+        addEditPanel.refresh();
+    }
 
-			pack();
-		}
-	}
+    private void loadPanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
+                new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
+        fc.showOpenDialog(this);
+        java.io.File file = fc.getSelectedFile();
+        if (file != null) {
+            loadPanelConfigFromFile(file.getPath());
+        }
+    }
 
-	private void savePanelSettingsMenuItemActionPerformed(
-			java.awt.event.ActionEvent evt) {
-		javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
-				new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
-		fc.showSaveDialog(this);
-		java.io.File file = fc.getSelectedFile();
-		if(file != null){
-			savePanelConfigToFile(file.getPath());
-		}
-	}
-	private void savePanelConfigToFile(String path) {
-		Properties prop = new Properties();
-		for (GuiPanel p : panels) {
-			String panelProperties = "";
-			String[] propArray = panelParameters.get(panels.indexOf(p));
-			for (int i = 0; i < propArray.length; i++){
-				panelProperties += propArray[i] + ",";
-			}
-			prop.setProperty(p.getName(), panelProperties.substring(0,
-					panelProperties.length() - 1));
-		}
-		try {
-			prop.store(new java.io.FileOutputStream(path),
-					PANEL_PROPFILE_COMMENT);
-		} catch (IOException ex) {
-			logger.log(Level.WARNING, ex.getMessage(), 0L);
-		}
-	}
+    private void loadPanelConfigFromFile(String path) {
+        Properties panelProperties = ConfigUtils.loadProperties(path);
+        if (panelProperties != null) {
+            loadPanels(panelProperties);
+            while (panels.size() > 0) {
+                removePanelAt(0);
+            }
 
-	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		controller.executeCommand("quitAll", null);
-	}// GEN-LAST:event_exitMenuItemActionPerformed
+            areaAPanelsMenu.removeAll();
+            areaBPanelsMenu.removeAll();
+            areaCPanelsMenu.removeAll();
+            areaOthersPanelsMenu.removeAll();
 
+            pack();
+        }
+    }
+
+    private void savePanelSettingsMenuItemActionPerformed(
+            java.awt.event.ActionEvent evt) {
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
+                new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
+        fc.showSaveDialog(this);
+        java.io.File file = fc.getSelectedFile();
+        if (file != null) {
+            savePanelConfigToFile(file.getPath());
+        }
+    }
+
+    private void savePanelConfigToFile(String path) {
+        Properties prop = new Properties();
+        for (GuiPanel p : panels) {
+            String panelProperties = "";
+            String[] propArray = panelParameters.get(panels.indexOf(p));
+            for (int i = 0; i < propArray.length; i++) {
+                panelProperties += propArray[i] + ",";
+            }
+            prop.setProperty(p.getName(), panelProperties.substring(0,
+                    panelProperties.length() - 1));
+        }
+        try {
+            prop.store(new java.io.FileOutputStream(path),
+                    PANEL_PROPFILE_COMMENT);
+        } catch (IOException ex) {
+            logger.log(Level.WARNING, ex.getMessage(), 0L);
+        }
+    }
+
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        controller.executeCommand("quitAll", null);
+    }// GEN-LAST:event_exitMenuItemActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem addPanelMenuItem;
@@ -681,96 +678,94 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
     private javax.swing.JMenuItem savePanelSettingsMenuItem;
     // End of variables declaration//GEN-END:variables
 
-	private void showEditPanelDialog(final String[] panelParams) {
-		final AddEditPanel addEditPanel = new AddEditPanel();
-		addEditPanel.setName("EditPanel");
-		addEditPanel.registerAgent(agent);
-		addEditPanel.registerGuiController(this.controller);
-		addEditPanel.setPanelParams(panelParams);
-		if (addEditDialog != null)
-			addEditDialog.setVisible(false);
-		addEditDialog = new javax.swing.JDialog();
-		addEditDialog.add(addEditPanel.getPanel());
-		addEditDialog.pack();
-		addEditDialog.setVisible(true);
+    private void showEditPanelDialog(final String[] panelParams) {
+        final AddEditPanel addEditPanel = new AddEditPanel();
+        addEditPanel.setName("EditPanel");
+        addEditPanel.registerAgent(agent);
+        addEditPanel.registerGuiController(this.controller);
+        addEditPanel.setPanelParams(panelParams);
+        if (addEditDialog != null) {
+            addEditDialog.setVisible(false);
+        }
+        addEditDialog = new javax.swing.JDialog();
+        addEditDialog.add(addEditPanel.getPanel());
+        addEditDialog.pack();
+        addEditDialog.setVisible(true);
 
-		final javax.swing.JPanel jpanel = addEditPanel.getPanel();
-		for (java.awt.Component c : jpanel.getComponents()) {
-			if (c instanceof javax.swing.JButton) {
-				((javax.swing.JButton) c)
-						.addActionListener(new java.awt.event.ActionListener() {
-							@Override
-							public void actionPerformed(
-									java.awt.event.ActionEvent evt) {
-								String[] params = addEditPanel.getPanelParams();
-								int index = -1;
-								for (int i = 0; i < panels.size(); i++) {
-									String className = panels.get(i).getClass()
-											.toString().replace("class ", "");
-									if (panels.get(i).getName().equals(
-											params[PANEL_NAME])
-											&& className
-													.equals(params[CLASS_NAME])) {
-										index = i;
-										break;
-									}
-								}
-								if (index >= 0) {
-									removePanelAt(index);
-								}
+        final javax.swing.JPanel jpanel = addEditPanel.getPanel();
+        for (java.awt.Component c : jpanel.getComponents()) {
+            if (c instanceof javax.swing.JButton) {
+                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
 
-								createGuiPanel(addEditPanel.getPanelParams());
-								addEditDialog.setVisible(false);
-							}
-						});
-			}
-		}
+                    @Override
+                    public void actionPerformed(
+                            java.awt.event.ActionEvent evt) {
+                        String[] params = addEditPanel.getPanelParams();
+                        int index = -1;
+                        for (int i = 0; i < panels.size(); i++) {
+                            String className = panels.get(i).getClass().toString().replace("class ", "");
+                            if (panels.get(i).getName().equals(
+                                    params[PANEL_NAME])
+                                    && className.equals(params[CLASS_NAME])) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        if (index >= 0) {
+                            removePanelAt(index);
+                        }
 
-		addEditPanel.refresh();
-	}
+                        createGuiPanel(addEditPanel.getPanelParams());
+                        addEditDialog.setVisible(false);
+                    }
+                });
+            }
+        }
 
-	private void removePanelAt(int panelIndex) {
-		removePanelAt(panelIndex, true);
-	}
-	private void removePanelAt(int panelIndex, boolean removeFromMenu) {
-		if (removeFromMenu) {
-			for (java.awt.Component firstLevelMenu : panelsMenu
-					.getMenuComponents()) {
-				if (firstLevelMenu instanceof javax.swing.JMenu) {
-					for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu)
-							.getMenuComponents()) {
-						if (secondLevelMenu instanceof javax.swing.JMenu) {
-							String menuText = ((javax.swing.JMenu) secondLevelMenu)
-									.getText();
-							String panelName = panels.get(panelIndex).getName();
-							if (menuText.equals(panelName))
-								((javax.swing.JMenu) firstLevelMenu)
-										.remove(secondLevelMenu);
-						}
-					}
-				}
-			}
-		}
+        addEditPanel.refresh();
+    }
 
-		if (panelIndex > -1) {
-			panelParents.get(panelIndex).remove(
-					panels.get(panelIndex).getPanel());
-			panelParents.get(panelIndex).repaint();
-			panelParents.remove(panelIndex);
-			panels.remove(panelIndex);
-			panelParameters.remove(panelIndex);
-		}
-	}
+    private void removePanelAt(int panelIndex) {
+        removePanelAt(panelIndex, true);
+    }
 
-	@Override
-	public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
-		SwingUtilities.invokeLater(new Runnable() {			
-			@Override
-			public void run() {
-				for (GuiPanel panel: panels){
-					panel.refresh();
-				}
-			}
-		});
-	}
+    private void removePanelAt(int panelIndex, boolean removeFromMenu) {
+        if (removeFromMenu) {
+            for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
+                if (firstLevelMenu instanceof javax.swing.JMenu) {
+                    for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu).getMenuComponents()) {
+                        if (secondLevelMenu instanceof javax.swing.JMenu) {
+                            String menuText = ((javax.swing.JMenu) secondLevelMenu).getText();
+                            String panelName = panels.get(panelIndex).getName();
+                            if (menuText.equals(panelName)) {
+                                ((javax.swing.JMenu) firstLevelMenu).remove(secondLevelMenu);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (panelIndex > -1) {
+            panelParents.get(panelIndex).remove(
+                    panels.get(panelIndex).getPanel());
+            panelParents.get(panelIndex).repaint();
+            panelParents.remove(panelIndex);
+            panels.remove(panelIndex);
+            panelParameters.remove(panelIndex);
+        }
+    }
+
+    @Override
+    public void receiveFrameworkGuiEvent(FrameworkGuiEvent event) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                for (GuiPanel panel : panels) {
+                    panel.refresh();
+                }
+            }
+        });
+    }
 }

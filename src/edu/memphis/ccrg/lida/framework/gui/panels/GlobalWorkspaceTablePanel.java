@@ -9,25 +9,20 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.GroupLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.AbstractTableModel;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
+import java.util.LinkedList;
 
 /**
  * This is a Panel which shows all current coalitions in Global Workspace and
@@ -41,10 +36,10 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
     private static final Logger logger = Logger.getLogger(GlobalWorkspaceTablePanel.class.getCanonicalName());
     private Collection<Coalition> coalitions;
     private Coalition[] coalitionArray = new Coalition[0];
-    private NodeStructure broadcastContent;
-    private double winnerCoalActivation;
-    private BroadcastTrigger lastBroadcastTrigger;
-    private FrameworkModule module;
+    private GlobalWorkspace module;
+    private LinkedList<BroadcastDetail> recentBbroadcasts = new LinkedList<BroadcastDetail>();
+    private int recentBroadcastsSize;
+    private final static int DEFAULT_RECENT_BROADCAST_SIZE = 20;
 
     /** Creates new form NodeStructureTable */
     public GlobalWorkspaceTablePanel() {
@@ -128,7 +123,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
     @Override
     public void initPanel(String[] param) {
-        module = agent.getSubmodule(ModuleName.GlobalWorkspace);
+        module = (GlobalWorkspace) agent.getSubmodule(ModuleName.GlobalWorkspace);
         if (module == null) {
             logger.log(
                     Level.WARNING,
@@ -138,6 +133,15 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         }
         module.addListener(this);
 
+        recentBroadcastsSize = DEFAULT_RECENT_BROADCAST_SIZE;
+        if(param.length>0){
+            try{
+            recentBroadcastsSize = Integer.parseInt(param[0]);
+            }catch(NumberFormatException e){
+              logger.log(
+                    Level.WARNING,"Invalid recentBroadcastsSize. Default value used.",0L);
+            }
+        }
     }
 
     @Override
@@ -147,8 +151,8 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
     private class CoalitionsTableModel extends AbstractTableModel {
 
-        private String[] columNames = {"Coalition", "Activation",
-            "Creating AttentionCodelet", "Coalition NodeStructure", "Sought Content"};
+        private String[] columNames = {"Coalition ID", "Activation",
+            "Coalition NodeStructure", "Creating AttentionCodelet", "Sought Content"};
         private DecimalFormat df = new DecimalFormat("0.0000");
 
         @Override
@@ -158,7 +162,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
         @Override
         public int getRowCount() {
-            return (coalitions.size());
+            return (coalitionArray.length);
         }
 
         @Override
@@ -172,11 +176,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
 
-            if (coalitions.isEmpty()) {
-                return null;
-            }
-
-            if (rowIndex > coalitions.size() || columnIndex > columNames.length
+            if (rowIndex > coalitionArray.length || columnIndex > columNames.length
                     || rowIndex < 0 || columnIndex < 0) {
                 return null;
             }
@@ -184,35 +184,15 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
             switch (columnIndex) {
                 case 0:
-                    return coal;
+                    return coal.getId();
                 case 1:
                     return df.format(coal.getActivation());
-                case 2: {
-                    return coal.getAttentionCodelet();
-                }
-                case 3: {
+                case 2:
                     return coal.getContent();
-//				Collection<Node> nodes = ((NodeStructure) coal.getContent())
-//						.getNodes();
-//				String nodesString = "";
-//				for (Node n : nodes) {
-//					nodesString = nodesString + n.getLabel() + "; ";
-//				}
-//				return nodesString;
-
-                }
-                case 4: {
+                case 3:
+                    return coal.getAttentionCodelet();
+                case 4:
                     return coal.getAttentionCodelet().getSoughtContent();
-//						.getSoughtContent()
-                    //				Collection<Node> nodes = coal.getAttentionCodelet()
-//						.getSoughtContent().getNodes();
-//				String nodesString = "";
-//				for (Node n : nodes) {
-//					nodesString = nodesString + n.getLabel() + "; ";
-//				}
-//				return nodesString;
-//
-                }
                 default:
                     return "";
             }
@@ -221,7 +201,8 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
     }
 
     private class WinnerCoalitionsTableModel extends AbstractTableModel {
-        private String[] columNames = {"Last Broadcast", "Coalition Activation",
+
+        private String[] columNames = {"Tick at broadcast", "Broadcast count", "Coalition Activation",
             "Broadcast NodeStructure", "Broadcast Trigger"};
         private DecimalFormat df = new DecimalFormat("0.0000");
 
@@ -232,7 +213,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
         @Override
         public int getRowCount() {
-            return (1);
+            return recentBbroadcasts.size();
         }
 
         @Override
@@ -246,33 +227,27 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
 
-            if (rowIndex > 1 || columnIndex > columNames.length || rowIndex < 0
-                    || columnIndex < 0 || broadcastContent == null) {
+            if (rowIndex > recentBbroadcasts.size() || columnIndex > columNames.length || rowIndex < 0
+                    || columnIndex < 0) {
                 return null;
             }
+            BroadcastDetail bd = recentBbroadcasts.get(rowIndex);
 
             switch (columnIndex) {
                 case 0:
-                    return broadcastContent;
-                case 1: {
-                    return df.format(winnerCoalActivation);
-                }
-                case 2: {
-                    return broadcastContent;
-//                    Collection<Node> nodes = broadcastContent.getNodes();
-//                    String nodesString = "";
-//                    for (Node n : nodes) {
-//                        nodesString = nodesString + n.getLabel() + "; ";
-//                    }
-//                    return nodesString;
-
-                }
-                case 3: {
-                    if(lastBroadcastTrigger!=null){
-                        return lastBroadcastTrigger.getClass().getSimpleName();
+                    return bd.getTickAtBroadcast();
+                case 1:
+                    return bd.getBroadcastSentCount();
+                case 2:
+                    return df.format(bd.getWinnerCoalActivation());
+                case 3:
+                    return bd.getBroadcastContent();
+                case 4:
+                    BroadcastTrigger trigger = bd.getLastBroadcastTrigger();
+                    if (trigger != null) {
+                        return trigger.getClass().getSimpleName();
                     }
                     return "";
-                }
                 default:
                     return "";
             }
@@ -284,7 +259,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
     public void display(Object o) {
         // Collections.unmodifiableCollection(coalitions)
         coalitions = (Collection<Coalition>) o;
-        coalitionArray=coalitions.toArray(new Coalition[0]);
+        coalitionArray = coalitions.toArray(new Coalition[0]);
 
         ((AbstractTableModel) winnersTable.getModel()).fireTableStructureChanged();
 
@@ -298,8 +273,64 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
     @Override
     public void receiveBroadcast(BroadcastContent bc) {
-        broadcastContent = (NodeStructure) bc;
-        winnerCoalActivation = (Double) module.getModuleContent("winnerCoalActivation");
-        lastBroadcastTrigger = (BroadcastTrigger) module.getModuleContent("lastBroadcastTrigger");
+        BroadcastDetail bd = new BroadcastDetail((NodeStructure) bc, (Double) module.getModuleContent("winnerCoalActivation")
+                , (BroadcastTrigger) module.getModuleContent("lastBroadcastTrigger"), TaskManager.getCurrentTick(),
+                module.getBroadcastSentCount());
+        recentBbroadcasts.addFirst(bd);
+        if(recentBbroadcasts.size()> recentBroadcastsSize){
+            recentBbroadcasts.pollLast();
+        }
+    }
+
+    private class BroadcastDetail {
+
+        private final NodeStructure broadcastContent;
+        private final double winnerCoalActivation;
+        private final BroadcastTrigger lastBroadcastTrigger;
+        private final long tickAtBroadcast;
+        private final long broadcastSentCount;
+
+        public BroadcastDetail(NodeStructure broadcastContent, double winnerCoalActivation, BroadcastTrigger lastBroadcastTrigger, long tickAtBroadcast, long broadcastSentCount) {
+            this.broadcastContent = broadcastContent;
+            this.winnerCoalActivation = winnerCoalActivation;
+            this.lastBroadcastTrigger = lastBroadcastTrigger;
+            this.tickAtBroadcast = tickAtBroadcast;
+            this.broadcastSentCount = broadcastSentCount;
+        }
+
+        /**
+         * @return the broadcastContent
+         */
+        public NodeStructure getBroadcastContent() {
+            return broadcastContent;
+        }
+
+        /**
+         * @return the winnerCoalActivation
+         */
+        public double getWinnerCoalActivation() {
+            return winnerCoalActivation;
+        }
+
+        /**
+         * @return the lastBroadcastTrigger
+         */
+        public BroadcastTrigger getLastBroadcastTrigger() {
+            return lastBroadcastTrigger;
+        }
+
+        /**
+         * @return the tickAtBroadcast
+         */
+        public long getTickAtBroadcast() {
+            return tickAtBroadcast;
+        }
+
+        /**
+         * @return the broadcastSentCount
+         */
+        public long getBroadcastSentCount() {
+            return broadcastSentCount;
+        }
     }
 }

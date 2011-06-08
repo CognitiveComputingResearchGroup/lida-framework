@@ -36,12 +36,20 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
 
     private static final Logger logger = Logger.getLogger(ConfigurationFilesPanel.class.getCanonicalName());
     private Properties properties;
+    String propertiesFile = "configs/lidaConfig.properties";
 
     /** Creates new form PropertiesPanel */
     public ConfigurationFilesPanel() {
         initComponents();
+    }
+
+    @Override
+    public void initPanel(String[] params) {
         properties = new Properties();
-        String propertiesFile = "configs/lidaConfig.properties";
+        if (params.length > 0) {
+            propertiesFile = params[0];
+        }
+
         try {
             properties.load(new BufferedReader(new FileReader(propertiesFile)));
         } catch (FileNotFoundException e) {
@@ -49,6 +57,8 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Error reading properties  {0}", e.toString());
         }
+        fileNameTextField.setText(propertiesFile);
+
     }
 
     /**
@@ -61,31 +71,16 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
-        refreshButton = new javax.swing.JButton();
+        fileNameTextField = new javax.swing.JTextField();
         threadPane = new javax.swing.JScrollPane();
         PropertiesTable = new javax.swing.JTable();
 
         jToolBar1.setRollover(true);
 
-        refreshButton.setText("Refresh");
-        refreshButton.setFocusable(false);
-        refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        refreshButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(refreshButton);
+        fileNameTextField.setEditable(false);
+        jToolBar1.add(fileNameTextField);
 
-        PropertiesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
+        PropertiesTable.setModel(new PropertiesTableModel());
         threadPane.setViewportView(PropertiesTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -106,39 +101,16 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    @SuppressWarnings("unused")
-	private void LoadButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-        // -
-        // FIRST
-        // :
-        // event_LoadButtonActionPerformed
-    }// GEN-LAST:event_LoadButtonActionPerformed
-
-    @SuppressWarnings("unused")
-	private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-        // -
-        // FIRST
-        // :
-        // event_SaveButtonActionPerformed
-    }// GEN-LAST:event_SaveButtonActionPerformed
-
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-        // -
-        // FIRST
-        // :
-        // event_ApplyButtonActionPerformed
     }// GEN-LAST:event_ApplyButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable PropertiesTable;
+    private javax.swing.JTextField fileNameTextField;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JButton refreshButton;
     private javax.swing.JScrollPane threadPane;
     // End of variables declaration//GEN-END:variables
 
-    @SuppressWarnings("unused")
-	private class PropertiesTableModel extends AbstractTableModel {
-
-        private static final long serialVersionUID = 1L;
+    private class PropertiesTableModel extends AbstractTableModel {
 
         @Override
         public int getColumnCount() {
