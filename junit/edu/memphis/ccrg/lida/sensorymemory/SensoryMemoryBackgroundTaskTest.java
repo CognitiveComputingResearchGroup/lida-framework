@@ -63,18 +63,6 @@ public class SensoryMemoryBackgroundTaskTest {
 		
 	}
 
-	/**
-	 * Test method for {@link edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask#toString()}.
-	 */
-	@Test
-	public final void testToString() {
-		
-		SensoryMemoryBackgroundTask st = new SensoryMemoryBackgroundTask();
-		String sAns = "SensoryMemoryBackgroundTask background task";
-		
-	    assertTrue("Problem with class SensoryMemoryBackgroundTask for toString()()",
-	    		st.toString().equals(sAns));
-	}
 }
 
 // Define a temporal class of implementing Class sensoryMemory for test
