@@ -12,7 +12,9 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -29,67 +31,77 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * 
  */
 public abstract class AttentionCodeletImpl extends CodeletImpl implements
-		AttentionCodelet {
+        AttentionCodelet {
 
-	private static final Logger logger = Logger
-			.getLogger(AttentionCodeletImpl.class.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
+    private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
+    private static final int DEFAULT_REFRACTORY_PERIOD = 50;
+    private DecayStrategy coalitionDecayStrategy;
+    /**
+     * Where codelet will look for and retrieve content from
+     */
+    protected WorkspaceBuffer currentSituationalModel;
+    /**
+     * Module where codelet will add {@link Coalition}
+     */
+    protected GlobalWorkspace globalWorkspace;
 
-	/**
-	 * Where codelet will look for and retrieve content from
-	 */
-	protected WorkspaceBuffer currentSituationalModel;
+    private int refractoryPeriod;
 
-	/**
-	 * Module where codelet will add {@link Coalition}
-	 */
-	protected GlobalWorkspace globalWorkspace;
+    /**
+     * Default constructor
+     */
+    public AttentionCodeletImpl() {
+        super();
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public AttentionCodeletImpl() {
-		super();
-	}
+    @Override
+    public void init() {
+        refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
+        String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
+        coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
+    }
 
-	/**
-	 * Sets associated Module
-	 * 
-	 * @param module
-	 *            the module to be associated with
-	 * @param usage
-	 *            - way of associating the module
-	 */
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String usage) {
-		if (usage.equals(ModuleUsage.TO_READ_FROM)) {
-			if (module instanceof WorkspaceBuffer) {
-				currentSituationalModel = (WorkspaceBuffer) module;
-			}
-		} else if (usage.equals(ModuleUsage.TO_WRITE_TO)) {
-			if (module instanceof GlobalWorkspace) {
-				globalWorkspace = (GlobalWorkspace) module;
-			}
-		}else{
-			logger.log(Level.WARNING, "Module usage not supported",
-					TaskManager.getCurrentTick());
-		}
-	}
+    /**
+     * Sets associated Module
+     *
+     * @param module
+     *            the module to be associated with
+     * @param usage
+     *            - way of associating the module
+     */
+    @Override
+    public void setAssociatedModule(FrameworkModule module, String usage) {
+        if (usage.equals(ModuleUsage.TO_READ_FROM)) {
+            if (module instanceof WorkspaceBuffer) {
+                currentSituationalModel = (WorkspaceBuffer) module;
+            }
+        } else if (usage.equals(ModuleUsage.TO_WRITE_TO)) {
+            if (module instanceof GlobalWorkspace) {
+                globalWorkspace = (GlobalWorkspace) module;
+            }
+        } else {
+            logger.log(Level.WARNING, "Module usage not supported",
+                    TaskManager.getCurrentTick());
+        }
+    }
 
-	/**
-	 * On finding sought content in CSM, create a coalition and add it to the
-	 * {@link GlobalWorkspace}.
-	 */
-	@Override
-	protected void runThisFrameworkTask() {
-		if (bufferContainsSoughtContent(currentSituationalModel)) {
-			NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
-			if (csmContent.getLinkableCount() > 0) {
-				globalWorkspace.addCoalition(new CoalitionImpl(csmContent, 
-											getActivation(), this));
-				logger.log(Level.FINER, "{1} adds new coalition",
-						new Object[]{TaskManager.getCurrentTick(), this});
-			}
-		}
-	}
-
+    /**
+     * On finding sought content in CSM, create a coalition and add it to the
+     * {@link GlobalWorkspace}.
+     */
+    @Override
+    protected void runThisFrameworkTask() {
+        if (bufferContainsSoughtContent(currentSituationalModel)) {
+            NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
+            if (csmContent.getLinkableCount() > 0) {
+                Coalition coalition = new CoalitionImpl(csmContent, getActivation(), this);
+                coalition.setDecayStrategy(coalitionDecayStrategy);
+                globalWorkspace.addCoalition(coalition);
+                setNextTicksPerStep(refractoryPeriod);
+                logger.log(Level.FINER, "{1} adds new coalition",
+                        new Object[]{TaskManager.getCurrentTick(), this});
+            }
+        }
+    }
 }

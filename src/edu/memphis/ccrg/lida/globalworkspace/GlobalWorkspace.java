@@ -44,5 +44,32 @@ public interface GlobalWorkspace extends FrameworkModule, TriggerListener{
 	 * 
 	 * @param bl the BroadcastListener to register
 	 */
-	public void addBroadcastListener(BroadcastListener bl);	
+	public void addBroadcastListener(BroadcastListener bl);
+
+        /**
+         * Returns broadcastSentCount
+         * @return a count of the current number of broadcasts sent
+         */
+        public long getBroadcastSentCount();
+
+        /**
+         * Sets the refractory period
+         * @param refactoryPeriod The number of ticks that must pass after a broadcast has been sent before
+         * a new one can be sent.
+         */
+        public void setRefractoryPeriod(int refactoryPeriod);
+
+        /**
+         * gets the refractory period
+         * @return The refactoryPeriod The number of ticks that must pass after a broadcast has been sent before
+         * a new one can be sent.
+         */
+        public int getRefractoryPeriod();
+
+        /**
+         * gets the tick at last broadcast
+         * @return the tick when the last broadcast occurred
+         */
+        public long getTickAtLastBroadcast();
+
 }

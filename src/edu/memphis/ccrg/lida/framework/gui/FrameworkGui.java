@@ -75,8 +75,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  */
 public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEventListener{
 
-	private static final Logger logger = Logger.getLogger(FrameworkGui.class
-			.getCanonicalName());
+    private static final Logger logger = Logger.getLogger(FrameworkGui.class.getCanonicalName());
 	private static final String PANEL_PROPFILE_COMMENT = "name = real name, class name, Position [A,B,C,FLOAT, TOOL], Order at Position, Refresh after load?, Additional strings are used as general parameters for the panel's initPanel method";
 
 	private static int PANEL_NAME = 0;
@@ -112,8 +111,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 	public FrameworkGui(Agent agent, FrameworkGuiController controller,
 			Properties panelProperties) {
 		if (agent == null || controller == null || panelProperties == null) {
-			logger.log(Level.WARNING, "Null argument", TaskManager
-					.getCurrentTick());
+            logger.log(Level.WARNING, "Null argument", TaskManager.getCurrentTick());
 		}
 
 		initComponents();
@@ -182,8 +180,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 	public void createGuiPanel(String[] panelParams) {
 		GuiPanel panel;
 		try {
-			panel = (GuiPanel) (Class.forName(panelParams[CLASS_NAME]))
-					.newInstance();
+            panel = (GuiPanel) (Class.forName(panelParams[CLASS_NAME])).newInstance();
 		} catch (Exception e) {
 			logger.log(Level.WARNING,
 					"Error instantiating panel {1}", new Object[]{0L,CLASS_NAME});
@@ -542,6 +539,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         TaskManager tm = agent.getTaskManager();
         int guiRefreshInterval=tm.getGuiEventsInterval();
         String sticks =JOptionPane.showInputDialog("Enter a new gui refresh rate (zero is no refresh):", guiRefreshInterval);
+        if (sticks != null) {
         try{
             guiRefreshInterval = Integer.parseInt(sticks);
         }catch(NumberFormatException e){
@@ -551,6 +549,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
             JOptionPane.showMessageDialog(this,"Error in the new Gui refresh interval. must be a positive int or zero.","Error", JOptionPane.ERROR_MESSAGE);
         }else{
             tm.setGuiEventsInterval(guiRefreshInterval);
+        }
         }
     }//GEN-LAST:event_guiRefreshRateMunuItemActionPerformed
 

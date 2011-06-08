@@ -38,18 +38,29 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 	private static final Integer DEFAULT_DELAY_NO_NEW_COALITION = 50;
 	private static final Double DEFAULT_AGGREGATE_ACT_THRESHOLD = 0.8;
 	private static final Double DEFAULT_INDIVIDUAL_ACT_THRESHOLD = 0.5;
+	private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
 
 	@Override
 	public void initModule(FullyInitializable module, Agent lida,
 			Map<String, ?> params) {
 
 		GlobalWorkspace globalWksp = (GlobalWorkspace) module;
-		Integer delayNoBroadcast = (Integer) params
+
+		Integer refractoryPeriod = (Integer) params
+				.get("globalWorkspace.refractoryPeriod");
+		if (refractoryPeriod == null || refractoryPeriod <= 0) {
+			refractoryPeriod = DEFAULT_REFRACTORY_PERIOD;
+			logger.log(Level.WARNING,
+					"Invalid refractory period parameter, using default",
+					TaskManager.getCurrentTick());
+		}
+                globalWksp.setRefractoryPeriod(refractoryPeriod);
+
+                Integer delayNoBroadcast = (Integer) params
 				.get("globalWorkspace.delayNoBroadcast");
 		if (delayNoBroadcast == null || delayNoBroadcast <= 0) {
 			delayNoBroadcast = DEFAULT_DELAY_NO_BROADCAST;
-			logger.log(Level.WARNING,
-					"Invalid delay no broadcast parameter, using default",
+			logger.log(Level.WARNING, "Invalid delay no broadcast parameter, using default",
 					TaskManager.getCurrentTick());
 		}
 

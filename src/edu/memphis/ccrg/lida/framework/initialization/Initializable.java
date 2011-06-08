@@ -25,8 +25,10 @@ public interface Initializable {
 //	TODO add another map for default parameters. first will be runtime-specified parameters.
 
 	/**
-	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
-	 * Subclasses can overwrite this method in order to initialize the FrameworkTask
+	 * This is a convenience method to initialize this Object. It is called from init(Map<String, Object> parameters).
+	 * Subclasses can overwrite this method in order to initialize this Object. But make sure to call super.init();
+         * at the beginning of the implementation of this method.
+         *
 	 */
 	public void init();
 

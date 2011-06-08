@@ -20,48 +20,55 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  * {@link GlobalWorkspace} to compete for consciousness. Extends {@link ActivatibleImpl}.
  * Contains reference to the {@link AttentionCodelet} that created it.
  */
-public class CoalitionImpl extends ActivatibleImpl implements Coalition{
-	
-	private BroadcastContent content;	
-	private double attentionCodeletActivation;
-	private AttentionCodelet attentionCodelet;
+public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
-	/**
-	 * Constructs a coalition with content and sets activation to be equal to 
-	 * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
-	 * times the activation of the creating {@link AttentionCodelet}
-	 * @param content conscious content
-	 * @param activation activation of creating attention codelet
-	 * @param codelet The {@link AttentionCodelet} that created this Coalition
-	 * @see AttentionCodeletImpl
-	 */
-	public CoalitionImpl(NodeStructure content, double activation,AttentionCodelet codelet){
-		this.content = (BroadcastContent) content;
-		attentionCodeletActivation = activation;
-		attentionCodelet = codelet;
-		updateActivation();
-	}
+    private BroadcastContent content;
+    private double attentionCodeletActivation;
+    private AttentionCodelet attentionCodelet;
+    private long id;
+    private static long idCounter = 0;
 
-	/*
-	 * calculates coalition's activation based on BroadcastContent attention codelet activation
-	 */
-	private void updateActivation() {
-		double sum = 0.0;
-		NodeStructure ns = (NodeStructure) content;
-		for(Linkable lnk: ns.getLinkables()){
-			sum += lnk.getActivation();
-		}
-		setActivation(attentionCodeletActivation * sum / ns.getLinkableCount());
-	}
+    /**
+     * Constructs a coalition with content and sets activation to be equal to
+     * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
+     * times the activation of the creating {@link AttentionCodelet}
+     * @param content conscious content
+     * @param activation activation of creating attention codelet
+     * @param codelet The {@link AttentionCodelet} that created this Coalition
+     * @see AttentionCodeletImpl
+     */
+    public CoalitionImpl(NodeStructure content, double activation, AttentionCodelet codelet) {
+        this.content = (BroadcastContent) content;
+        attentionCodeletActivation = activation;
+        attentionCodelet = codelet;
+        id = idCounter++;
+        updateActivation();
+    }
 
-	@Override
-	public BroadcastContent getContent() {
-		return content;
-	}
-	
-	@Override
-	public AttentionCodelet getAttentionCodelet(){		
-		return attentionCodelet;
-	}
-	
+    /*
+     * calculates coalition's activation based on BroadcastContent attention codelet activation
+     */
+    private void updateActivation() {
+        double sum = 0.0;
+        NodeStructure ns = (NodeStructure) content;
+        for (Linkable lnk : ns.getLinkables()) {
+            sum += lnk.getActivation();
+        }
+        setActivation(attentionCodeletActivation * sum / ns.getLinkableCount());
+    }
+
+    @Override
+    public BroadcastContent getContent() {
+        return content;
+    }
+
+    @Override
+    public AttentionCodelet getAttentionCodelet() {
+        return attentionCodelet;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
 }
