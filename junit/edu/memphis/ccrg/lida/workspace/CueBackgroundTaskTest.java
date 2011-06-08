@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -98,15 +97,6 @@ public class CueBackgroundTaskTest {
 		//SetAssociatedModule() be tested in testRunThisFrameworkTask method above with testing of 
 		//RunThisFrameworkTask() together.
 	}
-
-	@Test
-	public final void testToString() {
-		CueBackgroundTask cbt = new CueBackgroundTask();
-		String sAns = "CueBackgroundTask";
-		
-		assertEquals("Problem with class CueBackgroundTask for testToString()", cbt.toString(), sAns);
-	}
-
 }
 
 class mockWorkspace  extends FrameworkModuleImpl implements Workspace {

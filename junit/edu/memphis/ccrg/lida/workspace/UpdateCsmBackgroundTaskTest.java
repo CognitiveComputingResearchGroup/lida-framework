@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -26,7 +25,6 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
  * @author Daqi
  *
  */
-
 public class UpdateCsmBackgroundTaskTest {
 
 	@Test
@@ -81,25 +79,6 @@ public class UpdateCsmBackgroundTaskTest {
 		
 		assertTrue("Problem with class UpdateCsmBackgroundTask for testRunThisFrameworkTask()",
 				(NodeStructureImpl.compareNodeStructures(ns, ns2)));
-	}
-
-	@Test
-	public final void testInit() {
-        //NA
-	}
-
-	@Test
-	public final void testSetAssociatedModule() {
-		//SetAssociatedModule() be tested in testRunThisFrameworkTask method above with testing of 
-		//RunThisFrameworkTask() together.
-	}
-
-	@Test
-	public final void testToString() {
-		UpdateCsmBackgroundTask cbt = new UpdateCsmBackgroundTask();
-		String sAns = "UpdateCsmBackgroundTask";
-		
-		assertEquals("Problem with class UpdateCsmBackgroundTask for testToString()", cbt.toString(), sAns);
 	}
 
 }
