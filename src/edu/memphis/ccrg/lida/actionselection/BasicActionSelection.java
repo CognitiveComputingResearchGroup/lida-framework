@@ -76,7 +76,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		@Override
 		protected void runThisFrameworkTask() {
 			if(selectAction()!=null){
-				setNextTicksPerStep(refractoryPeriodTicks);
+				setNextTicksPerRun(refractoryPeriodTicks);
 				activationThreshold = maxActivationThreshold;
 			}else{
 				activationThreshold -= .1;

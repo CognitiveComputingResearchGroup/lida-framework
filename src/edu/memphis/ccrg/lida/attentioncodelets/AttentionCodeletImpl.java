@@ -98,7 +98,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
                 Coalition coalition = new CoalitionImpl(csmContent, getActivation(), this);
                 coalition.setDecayStrategy(coalitionDecayStrategy);
                 globalWorkspace.addCoalition(coalition);
-                setNextTicksPerStep(refractoryPeriod);
+                setNextTicksPerRun(refractoryPeriod);
                 logger.log(Level.FINER, "{1} adds new coalition",
                         new Object[]{TaskManager.getCurrentTick(), this});
             }

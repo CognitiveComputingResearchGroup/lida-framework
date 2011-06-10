@@ -54,7 +54,7 @@ public class NoBroadcastOccurringTriggerTest {
 		
 		TriggerTask t = (TriggerTask) ts.tasks.get(0);
 		assertEquals(1, ts.tasks.size());	
-		assertEquals(567, t.getTicksPerStep());
+		assertEquals(567, t.getTicksPerRun());
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class NoBroadcastOccurringTriggerTest {
 		
 		TriggerTask t = (TriggerTask) ts.tasks.get(0);
 		assertEquals(1, ts.tasks.size());	
-		assertEquals(20, t.getTicksPerStep());
+		assertEquals(20, t.getTicksPerRun());
 	}
 	
 	@Test

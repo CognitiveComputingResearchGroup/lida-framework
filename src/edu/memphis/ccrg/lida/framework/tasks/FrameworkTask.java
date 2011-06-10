@@ -16,17 +16,17 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 /**
  * This is the base interface for all task process in the LIDA framework. 
  * All parts of processes in the LIDA Framework have to implement this interface.
- * A FrameworkTask is intended as a small fraction of a process. For example a Codelet or a Feature 
+ * A FrameworkTask is intended as a small fraction of a process. For example a {@link Codelet} or a Feature 
  * detector are examples of FrameworkTask. However, if the process includes a loop, one run of 
  * the FrameworkTask represents only one iteration of the loop.
  * 
- * TaskSpawners send FrameworkTasks to the TaskManager which executes them. TaskSpawners receive
+ * A {@link TaskSpawner} can send FrameworkTasks to the {@link TaskManager} for execution. A {@link TaskSpawner} receives
  * the task each time it finishes running, so the TaskSpawner can decide if this particular task
  * must run again or not. This is based on the status of the FrameworkTask.
  * The FrameworkTask should set its status during it execution.  Implementations of this interface should 
  * call the task's TaskSpawner method, {@link TaskSpawner#receiveFinishedTask(FrameworkTask)}, to handle the finished task at the end of the 'call' method.
  * 
- * Most classes can extend from FrameworkTaskImpl instead of implementing this interface from scratch.
+ * @see FrameworkTaskImpl Most tasks can extend from this instead of implementing this interface from scratch.
  * 
  * @author Ryan J. McCall, Javier Snaider
  *
@@ -60,18 +60,18 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	public long getTaskId();
 	
 	/**
-	 * Sets default number of ticks between consecutive executions of this task.
-	 * To change ticksPerStep for only the next run, use {@link #setNextTicksPerStep(long)}
+	 * Sets ticksPerRun
+	 * @see #setNextTicksPerRun(long) change ticksPerRun for the next run only
 	 * 
-	 * @param ticks number of ticks
+	 * @param ticks number of ticks that will occur between executions of this task
 	 */
-	public void setTicksPerStep(int ticks);
+	public void setTicksPerRun(int ticks);
 
 	/**
-	 * Gets default number of ticks needed to complete a cycle or 'one run' of this task
-	 * @return ticks 
+	 * Gets ticksPerRun
+	 * @return number of ticks that will occur between executions of this task
 	 */
-	public  int getTicksPerStep();
+	public int getTicksPerRun();
 	
 	/**
 	 * Sets TaskSpawner that controls this FrameworkTask.
@@ -86,20 +86,22 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	public TaskSpawner getControllingTaskSpawner();
 	
 	/**
-	 * Sets number of ticks for the next, and only the next, execution of this
-	 * FrameworkTask.  It should be set by the FrameworkTask.  To set the permanent (default) number
-	 * of ticks per step use instead {@link #setTicksPerStep(int)} 
+	 * Sets nextTicksPerRun
 	 * 
-	 * @param ticks the number of ticks to wait until the next execution.
-	 */
-	public void setNextTicksPerStep(long ticks);
-	
-	/**
-	 * Gets nextTicksPerStep
-	 * @return number of ticks per step for the next scheduled execution of this
+	 * @see #setTicksPerRun(int) to set the permanent (default) number
+	 * of ticksPerRun
+	 * 
+	 * @param ticks number of ticks that must pass before for the next, and only the next, execution of this
 	 * FrameworkTask.
 	 */
-	public long getNextTicksPerStep();
+	public void setNextTicksPerRun(long ticks);
+	
+	/**
+	 * Gets nextTicksPerRun
+	 * @return number of ticks that will occur before the next execution of this
+	 * {@link FrameworkTask}.
+	 */
+	public long getNextTicksPerRun();
 	
 	/**
 	 * Sets tick when this task will be run next. This method is used by TaskManager when

@@ -63,10 +63,10 @@ public interface PerceptualAssociativeMemory extends FrameworkModule{
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links);
 	
 	/**
-	 * Adds specified FeatureDetector to be run.
+	 * Adds specified {@link DetectionAlgorithm} to be run.
 	 * @param fd {@link DetectionAlgorithm}
 	 */
-	public void addPerceptualAlgorithm(DetectionAlgorithm fd);
+	public void addDetectionAlgorithm(DetectionAlgorithm fd);
 		
 	/**
 	 * Adds {@link PamListener}.

@@ -533,7 +533,7 @@ public class ElementFactoryTest {
 		
 		Codelet c = (Codelet)factory.getFrameworkTask("testType", 100, 0.66, 0.77, params);
 		assertTrue(c instanceof BasicAttentionCodelet);
-		assertEquals(c.getTicksPerStep(), 100);
+		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
 		int hello = (Integer) c.getParam("Hello", null);
@@ -550,7 +550,7 @@ public class ElementFactoryTest {
 		assertTrue(c.getExciteStrategy() instanceof LinearExciteStrategy);
 		
 		assertTrue(c instanceof BasicAttentionCodelet);
-		assertEquals(c.getTicksPerStep(), 100);
+		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
 		int hello = (Integer) c.getParam("Hello", null);
@@ -567,7 +567,7 @@ public class ElementFactoryTest {
 		assertTrue(t.getExciteStrategy() instanceof LinearExciteStrategy);
 		
 		assertTrue(t instanceof BasicAttentionCodelet);
-		assertEquals(t.getTicksPerStep(), 100);
+		assertEquals(t.getTicksPerRun(), 100);
 		assertTrue(t.getActivation() == 0.66);
 		assertTrue(t.getActivatibleRemovalThreshold() == 0.77);
 		int hello = (Integer) t.getParam("Hello", null);

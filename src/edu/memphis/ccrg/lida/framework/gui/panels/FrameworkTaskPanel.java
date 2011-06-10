@@ -217,7 +217,7 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
                     o = task.getScheduledTick();
                     break;
                 case 5:
-                    o = task.getNextTicksPerStep();
+                    o = task.getNextTicksPerRun();
                     break;
                 default:
                     o = "";

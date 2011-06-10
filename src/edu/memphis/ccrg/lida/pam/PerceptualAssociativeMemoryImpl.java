@@ -215,7 +215,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public void addPerceptualAlgorithm(DetectionAlgorithm detector) {
+	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
 		for (PamLinkable pl : detector.getPamLinkables()) {
 			if (!pamNodeStructure.containsLinkable(pl)) {
 				logger.log(Level.WARNING, "Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",

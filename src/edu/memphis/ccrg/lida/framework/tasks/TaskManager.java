@@ -442,11 +442,10 @@ public class TaskManager implements GuiEventProvider {
 
 				long initTime = System.currentTimeMillis(); // For real time
 
-				goNextTick(); // Execute one step of the whole system
+				goNextTick(); // Execute one tick of the simulation
 
 				long duration = System.currentTimeMillis() - initTime;
-				if (duration < tickDuration) {// TODO change this if multiticks
-					// are executed in goNextTick()
+				if (duration < tickDuration) {// TODO change this if multiple ticks are executed in goNextTick()
 					try {
 						Thread.sleep(tickDuration - duration);
 					} catch (InterruptedException e) {

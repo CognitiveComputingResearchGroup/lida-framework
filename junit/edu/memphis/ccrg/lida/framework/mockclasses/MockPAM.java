@@ -107,7 +107,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)
 	 */
 	@Override
-	public void addPerceptualAlgorithm(DetectionAlgorithm fd) {
+	public void addDetectionAlgorithm(DetectionAlgorithm fd) {
 		// not implemented
 
 	}
