@@ -1018,7 +1018,7 @@ public class ElementFactory {
 			String className = codeletDef.getClassName();
 			task = (FrameworkTask) Class.forName(className).newInstance();
 
-			task.setTicksPerStep(ticksPerStep);
+			task.setTicksPerRun(ticksPerStep);
 			task.setActivation(activation);
 			task.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(task, decayStrategy, exciteStrategy);

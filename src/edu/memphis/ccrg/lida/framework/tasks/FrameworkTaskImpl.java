@@ -45,7 +45,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
         public final String taskName;
 	
 	/**
-	 * Creates a FrameworkTaskImpl with default ticks per step
+	 * Creates a FrameworkTaskImpl with default ticksPerRun
 	 */
 	public FrameworkTaskImpl() {
 		this(defaultTicksPerStep,null);
@@ -65,8 +65,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	public FrameworkTaskImpl(int ticksPerStep, TaskSpawner ts) {
 		taskID = nextTaskID++;
 		this.controllingTS=ts;
-		setTicksPerStep(ticksPerStep);
-                taskName =this.getClass().getSimpleName() + "["+taskID+"]";
+		setTicksPerRun(ticksPerStep);
+        taskName =this.getClass().getSimpleName() + "["+taskID+"]";
 	}
 	
 	@Override
@@ -134,15 +134,15 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 
 	@Override
-	public synchronized int getTicksPerStep() {
+	public synchronized int getTicksPerRun() {
 		return ticksPerStep;
 	}
 
 	@Override
-	public synchronized void setTicksPerStep(int ticks) {
+	public synchronized void setTicksPerRun(int ticks) {
 		if (ticks > 0){
 			ticksPerStep = ticks;
-			setNextTicksPerStep(ticks);
+			setNextTicksPerRun(ticks);
 		}
 	}
 
@@ -192,12 +192,12 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 	
 	@Override
-	public long getNextTicksPerStep() {		
+	public long getNextTicksPerRun() {		
 		return nextExcecutionTicksPerStep;
 	}
 	
 	@Override
-	public void setNextTicksPerStep(long lapTick) {
+	public void setNextTicksPerRun(long lapTick) {
 		this.nextExcecutionTicksPerStep = lapTick;	
 	}
 	

@@ -107,7 +107,7 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)
 	 */
 	@Override
-	public void addPerceptualAlgorithm(DetectionAlgorithm fd) {
+	public void addDetectionAlgorithm(DetectionAlgorithm fd) {
 		// not implemented
 
 	}
@@ -319,6 +319,12 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	}
 
 	@Override
+	public Node getNode(String label) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public Object getState() {
 		// TODO Auto-generated method stub
 		return null;
@@ -328,10 +334,5 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	public boolean setState(Object content) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	@Override
-	public Node getNode(String label) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

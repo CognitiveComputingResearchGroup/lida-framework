@@ -367,7 +367,7 @@ public class AgentXmlFactory implements AgentFactory {
 		
 		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
 		if(ticks != null){
-			task.setTicksPerStep(ticks);
+			task.setTicksPerRun(ticks);
 		}else{
 			logger.log(Level.WARNING, "Cannot set ticksPerRun for task \"" + name + "\". Using default ticksPerRun.");
 		}

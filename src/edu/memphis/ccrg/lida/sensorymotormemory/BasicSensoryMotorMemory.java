@@ -100,7 +100,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		private AgentAction action;
 		public ProcessActionTask(AgentAction a) {
 			action = a;
-			setTicksPerStep(processActionTicks);
+			setTicksPerRun(processActionTicks);
 		}
 		@Override
 		protected void runThisFrameworkTask() {

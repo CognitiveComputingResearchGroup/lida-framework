@@ -63,7 +63,7 @@ public class FrameworkTaskImplTest {
 
 	@Test
 	public void testGetTicksPerStep() {
-		assertEquals(10, task1.getTicksPerStep());	
+		assertEquals(10, task1.getTicksPerRun());	
 	}
 
 	@Test

@@ -84,7 +84,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 		logger.log(Level.FINEST, "Running task {1}", new Object[] {
 				TaskManager.getCurrentTick(), task });
 		task.setTaskStatus(TaskStatus.RUNNING);
-		taskManager.scheduleTask(task, task.getNextTicksPerStep());
+		taskManager.scheduleTask(task, task.getNextTicksPerRun());
 	}
 
 	@Override

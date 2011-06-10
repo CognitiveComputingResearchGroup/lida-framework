@@ -13,6 +13,7 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -37,13 +38,13 @@ public class TriggerTask extends FrameworkTaskImpl {
 
 	/**
 	 * Constructor for creating a TriggerTask
-	 * @param ticksForCycle ticks per step for this task
-	 * @param gw Trigger listener which is the Global Workspace
+	 * @param ticksPerRun ticksPerRun of this {@link FrameworkTask}
+	 * @param gw Trigger listener which is the {@link GlobalWorkspace}
 	 * @param name Name of the trigger
-	 * @param trigger The trigger which creates this task
+	 * @param trigger {@link BroadcastTrigger} which creates this task
 	 */
-	public TriggerTask(int ticksForCycle, TriggerListener gw, String name, BroadcastTrigger trigger) {
-		super(ticksForCycle);
+	public TriggerTask(int ticksPerRun, TriggerListener gw, String name, BroadcastTrigger trigger) {
+		super(ticksPerRun);
 		this.gw = gw;
 		this.name = name;
 		this.trigger=trigger;

@@ -287,12 +287,12 @@ public class AgentXmlFactoryTest {
 		assertEquals(2, outerTasks.size());
 		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
 		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
-		assertEquals(15, cueBackgroundTask.getTicksPerStep());
+		assertEquals(15, cueBackgroundTask.getTicksPerRun());
 		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
 		assertEquals(5, cueBackgroundTask.getParam("pam.Selectivity", 5));
 		FrameworkTask mockTask = ts.tasks.get(1);
 		assertTrue(mockTask instanceof MockFrameworkTask);
-		assertEquals(5, mockTask.getTicksPerStep());
+		assertEquals(5, mockTask.getTicksPerRun());
 		assertEquals(10, mockTask.getParam("taskParameter", 10));
 		assertEquals(5, mockTask.getParam("pam.Selectivity", 5));
 		
@@ -303,7 +303,7 @@ public class AgentXmlFactoryTest {
 		assertEquals(1, innerTasks.size());	
 		FrameworkTask updateCsmTask = superFancyTS.tasks.get(0);
 		assertTrue(updateCsmTask instanceof UpdateCsmBackgroundTask);
-		assertEquals(55, updateCsmTask.getTicksPerStep());
+		assertEquals(55, updateCsmTask.getTicksPerRun());
 		
 		//Associations
 		assertEquals(cueBackgroundTask, toAssociate.get(0)[0]);
@@ -423,12 +423,12 @@ public class AgentXmlFactoryTest {
 		assertEquals(2, outerTasks.size());
 		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
 		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
-		assertEquals(15, cueBackgroundTask.getTicksPerStep());
+		assertEquals(15, cueBackgroundTask.getTicksPerRun());
 		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
 		assertEquals(5, cueBackgroundTask.getParam("pam.Selectivity", 5));
 		FrameworkTask mockTask = ts.tasks.get(1);
 		assertTrue(mockTask instanceof MockFrameworkTask);
-		assertEquals(5, mockTask.getTicksPerStep());
+		assertEquals(5, mockTask.getTicksPerRun());
 		assertEquals(10, mockTask.getParam("taskParameter", 10));
 		assertEquals(5, mockTask.getParam("pam.Selectivity", 5));
 		
@@ -439,7 +439,7 @@ public class AgentXmlFactoryTest {
 		assertEquals(1, innerTasks.size());	
 		FrameworkTask updateCsmTask = superFancyTS.tasks.get(0);
 		assertTrue(updateCsmTask instanceof UpdateCsmBackgroundTask);
-		assertEquals(55, updateCsmTask.getTicksPerStep());
+		assertEquals(55, updateCsmTask.getTicksPerRun());
 		
 		//Associations
 		assertEquals(cueBackgroundTask, toAssociate.get(0)[0]);
@@ -542,13 +542,13 @@ public class AgentXmlFactoryTest {
 		assertTrue(tasks != null);
 		FrameworkTask task = tasks.get(0);
 		assertTrue(task instanceof CueBackgroundTask);
-		assertEquals(15, task.getTicksPerStep());
+		assertEquals(15, task.getTicksPerRun());
 		assertEquals(task, toAssociate.get(0)[0]);
 		assertEquals("Ryan", toAssociate.get(0)[1]);
 		assertEquals(0.4, task.getParam("workspace.actThreshold", null));
 		task = tasks.get(1);
 		assertTrue(task instanceof MockFrameworkTask);
-		assertEquals(10, task.getTicksPerStep());
+		assertEquals(10, task.getTicksPerRun());
 		assertEquals(task, toAssociate.get(1)[0]);
 		assertEquals("Workspace5", toAssociate.get(1)[1]);
 		assertEquals(5, task.getParam("mock.param", null));
@@ -568,7 +568,7 @@ public class AgentXmlFactoryTest {
 		FrameworkTask task = factory.getTask(docEle, toAssociate);
 		assertTrue(task != null);
 		assertTrue(task instanceof CueBackgroundTask);
-		assertEquals(15, task.getTicksPerStep());
+		assertEquals(15, task.getTicksPerRun());
 		assertEquals(task, toAssociate.get(0)[0]);
 		assertEquals("Workspace5", toAssociate.get(0)[1]);
 		assertEquals(task, toAssociate.get(1)[0]);
@@ -585,7 +585,7 @@ public class AgentXmlFactoryTest {
 		task = factory.getTask(docEle, toAssociate);
 		assertTrue(task != null);
 		assertTrue(task instanceof CueBackgroundTask);
-		assertEquals(15, task.getTicksPerStep());
+		assertEquals(15, task.getTicksPerRun());
 		assertEquals(0.4, task.getParam("workspace.actThreshold", null));
 	}
 

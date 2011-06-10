@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.framework.Agent;
 public interface Command {
 
     /**
-	 * Executes this command performing the necessary steps in the model (Lida).
+	 * Executes this command performing the necessary actions in the model (the {@link Agent}).
 	 * 
 	 * @param agent
 	 *            {@link Agent} Object
