@@ -7,10 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,25 +47,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	/**
 	 * {@link PamLinkable} this algorithm detects
 	 */
-	protected List<PamLinkable> linkables = new ArrayList<PamLinkable>();	
-
-	/**
-	 * Default constructor
-	 * 
-	 * @param linkable
-	 *            {@link PamLinkable} this detector will detect
-	 * @param sm
-	 *            {@link SensoryMemory}
-	 * @param pam
-	 *            {@link PerceptualAssociativeMemory}
-	 */
-	public BasicDetectionAlgorithm(PamLinkable linkable, SensoryMemory sm,
-			PerceptualAssociativeMemory pam) {
-		super();
-		this.pam = pam;
-		this.sensoryMemory = sm;
-		this.linkables.add(linkable);
-	}
+	protected PamLinkable linkable;	
 
 	/**
 	 * Default constructor.
@@ -78,22 +56,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	 */
 	public BasicDetectionAlgorithm(){		
 	}
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl#init()
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public void init() {
-		List<PamLinkable> ids = (List<PamLinkable>) getParam("linkables", null);
-		if (ids != null) {
-			linkables.addAll(ids);
-		}
-		PamLinkable linkable =  (PamLinkable) getParam("linkable", null);
-		if (linkable != null) {
-			linkables.add(linkable);
-		}
-	}
-	
+		
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage){
 		if(module instanceof PerceptualAssociativeMemory){
@@ -107,15 +70,13 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	}
 
 	@Override
-	public void addPamLinkable(PamLinkable linkable) {
-		if (linkable != null){
-			linkables.add(linkable);
-		}
+	public void setPamLinkable(PamLinkable linkable) {
+		this.linkable = linkable;
 	}
 
 	@Override
-	public Collection<PamLinkable> getPamLinkables() {
-		return Collections.unmodifiableCollection(linkables);
+	public PamLinkable getPamLinkable() {
+		return linkable;
 	}
 
 	@Override
@@ -130,19 +91,14 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 				logger.log(Level.FINEST,"Pam excited: {1}"
 						,new Object[]{TaskManager.getCurrentTick(),amount});
 			}
-			excitePam(amount);
-		}
-	}
-	private void excitePam(double amount) {
-		for (PamLinkable pn : linkables) {
-			pam.receiveActivationBurst(pn, amount);
+			pam.receiveActivationBurst(linkable, amount);
 		}
 	}
 
 	/*
-	 * Override this method for domain-specific feature detection.
+	 * Override this method implementing feature detection algorithm.
 	 * 
-	 * @return the double
+	 * @return degree [0,1] to which the feature was detected
 	 */
 	@Override
 	public abstract double detect();

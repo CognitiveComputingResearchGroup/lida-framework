@@ -65,7 +65,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	private List<PamListener> pamListeners;
 
 	/**
-	 * A {@link NodeStructure} which contains all of the {@link PamNode}, {@link PamLink} and their connections.
+	 * A {@link NodeStructure} which contains all of the {@link PamNode},
+	 * {@link PamLink} and their connections.
 	 */
 	protected PamNodeStructure pamNodeStructure;
 
@@ -93,7 +94,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
-	private Map<String, PamNode>nodesByLabel = new ConcurrentHashMap<String, PamNode>();
+	private Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 	/**
 	 * Primitive {@link LinkCategory} NONE
 	 */
@@ -154,7 +155,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public PropagationStrategy getPropagationStrategy() {
 		return propagationStrategy;
 	}
-	
+
 	/**
 	 * @return the excitationTaskTicksPerRun
 	 */
@@ -187,7 +188,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			return null;
 		}
 		PamNode node = (PamNode) pamNodeStructure.addDefaultNode(n);
-		if (node.getLabel()!=null){
+		if (node.getLabel() != null) {
 			nodesByLabel.put(node.getLabel(), node);
 		}
 		return node;
@@ -216,11 +217,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
-		for (PamLinkable pl : detector.getPamLinkables()) {
-			if (!pamNodeStructure.containsLinkable(pl)) {
-				logger.log(Level.WARNING, "Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
-						new Object[]{ TaskManager.getCurrentTick(),detector,pl});
-			}
+		if (!pamNodeStructure.containsLinkable(detector.getPamLinkable())) {
+			logger.log(
+							Level.WARNING,
+							"Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
+							new Object[] { TaskManager.getCurrentTick(),
+									detector, detector.getPamLinkable() });
 		}
 
 		taskSpawner.addTask(detector);
@@ -268,7 +270,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			NodeStructure deleteList) {
 		// TODO task to use preafferent signal
 	}
-	
+
 	@Override
 	public void learn(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
@@ -285,6 +287,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void receiveActivationBurst(PamLinkable pl, double amount) {
+		// TODO support for link
 		if (pl instanceof PamLink) {
 			logger.log(Level.WARNING, "Does not support pam links yet",
 					TaskManager.getCurrentTick());
@@ -295,13 +298,14 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 				.getExtendedId());
 		if (linkable != null) {
 			logger.log(Level.FINEST, "{1} gets activation burst. Amount: {2}",
-					new Object[]{TaskManager.getCurrentTick(),linkable,amount});
-			ExcitationTask task = new ExcitationTask(excitationTaskTicksPerRun, linkable,
-														amount, this);
+					new Object[] { TaskManager.getCurrentTick(), linkable,
+							amount });
+			ExcitationTask task = new ExcitationTask(excitationTaskTicksPerRun,
+					linkable, amount, this);
 			taskSpawner.addTask(task);
 		} else {
-			logger.log(Level.WARNING, "Cannot find pamnode: {1}",
-					new Object[]{TaskManager.getCurrentTick(),linkable});
+			logger.log(Level.WARNING, "Cannot find pamnode: {1}", new Object[] {
+					TaskManager.getCurrentTick(), linkable });
 		}
 	}
 
@@ -311,7 +315,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			receiveActivationBurst(linkable, amount);
 		}
 	}
-	
+
 	@Override
 	public void propagateActivationToParents(PamNode pn) {
 		// Calculate the amount to propagate
@@ -327,7 +331,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
 			if (parent instanceof PamNode) {
-				propagateActivation(parentLinkMap.get(parent), amountToPropagate);
+				propagateActivation(parentLinkMap.get(parent),
+						amountToPropagate);
 			}
 		}
 	}
@@ -336,11 +341,14 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * Propagates specified activation along specified link to link's sink.
 	 */
 	private void propagateActivation(Link link, double activation) {
-		if(logger.isLoggable(Level.FINEST)){
-			logger.log(Level.FINEST, "exciting parent: {1} and connecting link {2} amount: {3}",new Object[]{ TaskManager.getCurrentTick(),link.getSink(),link,activation});
+		if (logger.isLoggable(Level.FINEST)) {
+			logger.log(Level.FINEST,
+					"exciting parent: {1} and connecting link {2} amount: {3}",
+					new Object[] { TaskManager.getCurrentTick(),
+							link.getSink(), link, activation });
 		}
 		PropagationTask task = new PropagationTask(propagationTaskTicksPerRun,
-												(PamLink) link, activation, this);
+				(PamLink) link, activation, this);
 		taskSpawner.addTask(task);
 	}
 
@@ -350,7 +358,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			pl.receivePercept(ns);
 		}
 	}
-	
+
 	@Override
 	public void addLinkToPercept(Link l) {
 		for (PamListener pl : pamListeners) {
@@ -379,7 +387,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public boolean containsLink(Link link) {
 		return pamNodeStructure.containsLink(link);
 	}
-	
+
 	@Override
 	public boolean containsLink(ExtendedId id) {
 		return pamNodeStructure.containsLink(id);
@@ -406,8 +414,9 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (l instanceof PamListener) {
 			addPamListener((PamListener) l);
 		} else {
-			logger.log(Level.WARNING, "Cannot add listener type {1} to this module.", 
-					new Object[]{TaskManager.getCurrentTick(),l});
+			logger.log(Level.WARNING,
+					"Cannot add listener type {1} to this module.",
+					new Object[] { TaskManager.getCurrentTick(), l });
 		}
 	}
 
@@ -475,7 +484,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public Link getLink(ExtendedId eid) {
 		return pamNodeStructure.getLink(eid);
 	}
-	
+
 	@Override
 	public Node getNode(ExtendedId eid) {
 		return pamNodeStructure.getNode(eid);
@@ -508,9 +517,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/*
-	 * Adds a PamNode LinkCategory to the Pam's NodeStructure.
-	 * LinkCategory is added directly and is not copied when added.
+	 * Adds a PamNode LinkCategory to the Pam's NodeStructure. LinkCategory is
+	 * added directly and is not copied when added.
+	 * 
 	 * @param cat LinkCategory to add
+	 * 
 	 * @return stored LinkCategory
 	 */
 	private LinkCategory addInternalLinkCategory(LinkCategory cat) {
@@ -523,13 +534,15 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/**
-	 * Internal implementation of {@link NodeStructureImpl}
-	 * Allows {@link Node} to be added without copying them.
+	 * Internal implementation of {@link NodeStructureImpl} Allows {@link Node}
+	 * to be added without copying them.
 	 */
 	protected static class PamNodeStructure extends NodeStructureImpl {
 		/**
-		 * @param nodeType Default node type
-		 * @param linkType Default link type
+		 * @param nodeType
+		 *            Default node type
+		 * @param linkType
+		 *            Default link type
 		 */
 		public PamNodeStructure(String nodeType, String linkType) {
 			super(nodeType, linkType);

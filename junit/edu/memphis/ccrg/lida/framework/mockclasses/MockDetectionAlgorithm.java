@@ -16,7 +16,6 @@ public class MockDetectionAlgorithm extends BasicDetectionAlgorithm {
 
 	public MockDetectionAlgorithm(PamLinkable linkable, SensoryMemory sm,
 			PerceptualAssociativeMemory pam) {
-		super(linkable, sm, pam);
 	}
 
 	@Override
