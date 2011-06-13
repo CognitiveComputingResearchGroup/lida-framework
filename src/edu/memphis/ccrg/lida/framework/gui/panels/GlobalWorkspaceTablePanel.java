@@ -125,8 +125,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
     public void initPanel(String[] param) {
         module = (GlobalWorkspace) agent.getSubmodule(ModuleName.GlobalWorkspace);
         if (module == null) {
-            logger.log(
-                    Level.WARNING,
+            logger.log(Level.WARNING,
                     "Error initializing NodeStructure Panel, Module does not exist in agent.",
                     0L);
             return;
@@ -134,13 +133,16 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         module.addListener(this);
 
         recentBroadcastsSize = DEFAULT_RECENT_BROADCAST_SIZE;
-        if(param.length>0){
+        if(param.length == 1){
             try{
-            recentBroadcastsSize = Integer.parseInt(param[0]);
+            	recentBroadcastsSize = Integer.parseInt(param[0]);
             }catch(NumberFormatException e){
               logger.log(
-                    Level.WARNING,"Invalid recentBroadcastsSize. Default value used.",0L);
+                    Level.WARNING,"recentBroadcastsSize is invalid or not specified. Default value used.",0L);
             }
+        }else{
+        	logger.log(Level.WARNING,
+        			"only expected 1 parameter, but got" + param.length,0L);
         }
     }
 
@@ -255,7 +257,8 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void display(Object o) {
         // Collections.unmodifiableCollection(coalitions)
         coalitions = (Collection<Coalition>) o;

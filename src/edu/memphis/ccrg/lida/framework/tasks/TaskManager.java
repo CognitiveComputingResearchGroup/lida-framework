@@ -334,8 +334,8 @@ public class TaskManager implements GuiEventProvider {
 	 */
 	public boolean scheduleTask(FrameworkTask task, long inXTicks) {
 		if (inXTicks <= 0) {
-			logger.log(Level.WARNING, "inXTicks must be 1 or greater",
-					currentTick);
+			logger.log(Level.WARNING, "task {1} was scheduled with inXTicks of {2} but this must be 1 or greater",
+					new Object[]{currentTick, task, inXTicks});
 			return false;
 		}
 		if (task == null) {

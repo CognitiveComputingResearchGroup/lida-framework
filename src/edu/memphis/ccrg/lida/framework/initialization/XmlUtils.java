@@ -91,7 +91,7 @@ public class XmlUtils {
 			logger.log(Level.INFO, xmlFile + " is valid.");
 			result = true;
 		} catch (SAXException ex) {
-			logger.log(Level.WARNING, xmlFile + " is not valid because "
+			logger.log(Level.WARNING, xmlFile + " is not valid because\n >>>"
 					+ ex.getMessage());
 		} catch (IOException ex) {
 			logger.log(Level.WARNING, xmlFile + " is not a valid file."

@@ -65,7 +65,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	private List<PamListener> pamListeners;
 
 	/**
-	 * A {@link NodeStructure} which contains all of the {@link PamNode}, {@link PamLink} and their connections.
+	 * A {@link NodeStructure} which contains all of the {@link PamNode},
+	 * {@link PamLink} and their connections.
 	 */
 	protected PamNodeStructure pamNodeStructure;
 
@@ -216,11 +217,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
-		for (PamLinkable pl : detector.getPamLinkables()) {
-			if (!pamNodeStructure.containsLinkable(pl)) {
-				logger.log(Level.WARNING, "Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
-						new Object[]{ TaskManager.getCurrentTick(),detector,pl});
-			}
+		if (!pamNodeStructure.containsLinkable(detector.getPamLinkable())) {
+			logger.log(
+							Level.WARNING,
+							"Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
+							new Object[] { TaskManager.getCurrentTick(),
+									detector, detector.getPamLinkable() });
 		}
 
 		taskSpawner.addTask(detector);

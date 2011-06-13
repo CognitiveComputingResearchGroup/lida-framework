@@ -7,8 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
-import java.util.Collection;
-
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -29,16 +27,16 @@ public interface DetectionAlgorithm extends FrameworkTask {
 	public double detect(); 
 	
 	/**
-	 * Returns {@link PamLinkable}s this algorithm can detect.
+	 * Returns {@link PamLinkable} this algorithm can detect.
 	 * 
 	 * @return the pam nodes
 	 */
-	public Collection<PamLinkable> getPamLinkables();
+	public PamLinkable getPamLinkable();
 	
 	/**
 	 * Adds {@link PamLinkable} that will be detected by this algorithm.
 	 * @param linkable s {@link PamLinkable}
 	 */
-	public void addPamLinkable(PamLinkable linkable);
+	public void setPamLinkable(PamLinkable linkable);
 	
 }
