@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -150,10 +151,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 									   Map<Object, Set<Scheme>> map) {
 		for (Linkable element : elements) {
 			synchronized (element) {
-				Set<Scheme> values = map.get(element);
+				ExtendedId id = element.getExtendedId();
+				Set<Scheme> values = map.get(id);
 				if (values == null) {
 					values = new ConcurrentHashSet<Scheme>();
-					map.put(element, values);
+					map.put(id, values);
 				}
 				values.add(scheme);
 			}

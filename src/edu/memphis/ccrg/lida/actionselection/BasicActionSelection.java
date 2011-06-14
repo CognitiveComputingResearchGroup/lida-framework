@@ -68,6 +68,17 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
 	}
 
+	@Override
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof ActionSelectionListener) {
+			addActionSelectionListener((ActionSelectionListener) listener);
+		}
+	}
+	@Override
+	public void addActionSelectionListener(ActionSelectionListener listener) {
+		listeners.add(listener);
+	}
+	
 	// TODO move to xml as initial task
 	private class BackgroundTask extends FrameworkTaskImpl {
 		public BackgroundTask(int ticksPerRun) {
@@ -80,22 +91,11 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 				activationThreshold = maxActivationThreshold;
 			}else{
 				activationThreshold -= .1;
-				if(activationThreshold<0.0){
+				if(activationThreshold < 0.0){
 					activationThreshold=0.0;
 				}
 			}
 		}
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof ActionSelectionListener) {
-			addActionSelectionListener((ActionSelectionListener) listener);
-		}
-	}
-	@Override
-	public void addActionSelectionListener(ActionSelectionListener listener) {
-		listeners.add(listener);
 	}
 
 	@Override

@@ -69,6 +69,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * {@link PamLink} and their connections.
 	 */
 	protected PamNodeStructure pamNodeStructure;
+	
+	/**
+	 * TODO
+	 */
+	protected Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 
 	/*
 	 * How PAM calculates the amount of activation to propagate
@@ -94,7 +99,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
-	private Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 	/**
 	 * Primitive {@link LinkCategory} NONE
 	 */

@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -54,11 +54,11 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 				TaskManager.getCurrentTick());
 		Set<Scheme> toInstantiate = new HashSet<Scheme>();
 		Map<?, Set<Scheme>> schemeMap = (Map<?, Set<Scheme>>) params[0];
-		for (Node n: broadcast.getNodes()) {
-			Set<Scheme> schemes = schemeMap.get(n);
+		for (Linkable lnk: broadcast.getLinkables()) {	
+			Set<Scheme> schemes = schemeMap.get(lnk.getExtendedId());
 			if (schemes != null) {
 				for (Scheme scheme : schemes) {
-					scheme.excite(n.getActivation() / scheme.getContext().getNodeCount());
+					scheme.excite(lnk.getActivation() / scheme.getContext().getNodeCount());
 					if (scheme.getActivation() >= schemeSelectionThreshold) {
 						//To prevent repeats we stored all schemes over threshold in a set.
 						//repeats occur with this algorithm when the scheme selection threshold is low
