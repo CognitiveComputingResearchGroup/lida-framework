@@ -88,8 +88,8 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 		}
 		if (amount > 0.0) {
 			if(logger.isLoggable(Level.FINEST)){
-				logger.log(Level.FINEST,"Pam excited: {1}"
-						,new Object[]{TaskManager.getCurrentTick(),amount});
+				logger.log(Level.FINEST,"Pam excited: {1} by {2}"
+						,new Object[]{TaskManager.getCurrentTick(),amount, this});
 			}
 			pam.receiveActivationBurst(linkable, amount);
 		}

@@ -27,19 +27,24 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 public class WorkspaceBufferImpl extends FrameworkModuleImpl implements WorkspaceBuffer{
 	
 	private static final Logger logger = Logger.getLogger(WorkspaceBufferImpl.class.getCanonicalName());
+	private static final String DEFAULT_NODE_TYPE = "NodeImpl";
+	private static final String DEFAULT_LINK_TYPE = "LinkImpl";
 	
 	//TODO Consider having multiple NodeStructures 
 	private NodeStructure buffer;	
 	
 	/**
-	 * Default constructor initializes nodeStructure.
+	 * Default constructor 
 	 */
 	public WorkspaceBufferImpl() {
-		buffer = new NodeStructureImpl();
 	}
 	
 	@Override
 	public void init() {
+		String nodeType = (String)getParam("workspaceBuffer.nodeType", DEFAULT_NODE_TYPE);
+		String linkType = (String)getParam("workspaceBuffer.linkType", DEFAULT_LINK_TYPE);
+		
+		buffer = new NodeStructureImpl(nodeType, linkType);
 	}
 
 	@Override

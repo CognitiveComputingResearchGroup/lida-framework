@@ -69,6 +69,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * {@link PamLink} and their connections.
 	 */
 	protected PamNodeStructure pamNodeStructure;
+	
+	/**
+	 * TODO
+	 */
+	protected Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 
 	/*
 	 * How PAM calculates the amount of activation to propagate
@@ -94,7 +99,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
-	private Map<String, PamNode>nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 	/**
 	 * Primitive {@link LinkCategory} NONE
 	 */
@@ -297,13 +301,14 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 				.getExtendedId());
 		if (linkable != null) {
 			logger.log(Level.FINEST, "{1} gets activation burst. Amount: {2}",
-					new Object[]{TaskManager.getCurrentTick(),linkable,amount});
-			ExcitationTask task = new ExcitationTask(excitationTaskTicksPerRun, linkable,
-														amount, this);
+					new Object[] { TaskManager.getCurrentTick(), linkable,
+							amount });
+			ExcitationTask task = new ExcitationTask(excitationTaskTicksPerRun,
+					linkable, amount, this);
 			taskSpawner.addTask(task);
 		} else {
-			logger.log(Level.WARNING, "Cannot find pamnode: {1}",
-					new Object[]{TaskManager.getCurrentTick(),linkable});
+			logger.log(Level.WARNING, "Cannot find pamnode: {1}", new Object[] {
+					TaskManager.getCurrentTick(), linkable });
 		}
 	}
 
@@ -329,7 +334,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
 			if (parent instanceof PamNode) {
-				propagateActivation(parentLinkMap.get(parent), amountToPropagate);
+				propagateActivation(parentLinkMap.get(parent),
+						amountToPropagate);
 			}
 		}
 	}
@@ -339,7 +345,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 */
 	private void propagateActivation(Link link, double activation) {
 		if(logger.isLoggable(Level.FINEST)){
-			logger.log(Level.FINEST, "exciting parent: {1} and connecting link {2} amount: {3}",new Object[]{ TaskManager.getCurrentTick(),link.getSink(),link,activation});
+			logger.log(Level.FINEST,
+					"exciting parent: {1} and connecting link {2} amount: {3}",
+					new Object[] { TaskManager.getCurrentTick(),
+							link.getSink(), link, activation });
 		}
 		PropagationTask task = new PropagationTask(propagationTaskTicksPerRun,
 												(PamLink) link, activation, this);
@@ -408,7 +417,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		if (l instanceof PamListener) {
 			addPamListener((PamListener) l);
 		} else {
-			logger.log(Level.WARNING, "Cannot add listener type {1} to this module.", 
+			logger.log(Level.WARNING,
+					"Cannot add listener type {1} to this module.",
 					new Object[]{TaskManager.getCurrentTick(),l});
 		}
 	}
