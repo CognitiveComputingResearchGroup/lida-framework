@@ -227,7 +227,8 @@ public class PerceptualAssociativeMemoryImplTest {
 	 */
 	@Test
 	public void testAddFeatureDetector() {	
-		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
+		DetectionAlgorithm detector = new MockDetectionAlgorithm();
+		detector.setPamLinkable(node1);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		assertTrue(pam.getAssistingTaskSpawner().containsTask(detector));
@@ -235,7 +236,8 @@ public class PerceptualAssociativeMemoryImplTest {
 	}
 	@Test
 	public void testDetectionAlgorithm1() {	
-		DetectionAlgorithm detector = new MockDetectionAlgorithm(node1, null, pam);
+		DetectionAlgorithm detector = new MockDetectionAlgorithm();
+		detector.setPamLinkable(node1);
 		pam.setAssistingTaskSpawner(new MockTaskSpawner());
 		pam.addDetectionAlgorithm(detector);
 		pam.addDetectionAlgorithm(detector);

@@ -184,26 +184,26 @@ public class FactoriesDataXmlLoaderTest {
 
 	@Test
 	public void testGetCodelets() {
-		String xml = "<LidaFactories><codelets><codelet name=\"topleft\">"
+		String xml = "<LidaFactories><tasks><task name=\"topleft\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector</class>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
 				+ "<param name=\"param\" type=\"int\">10</param>"
-				+ "</codelet>"
-				+"<codelet name=\"bottomright\">"
+				+ "</task>"
+				+"<task name=\"bottomright\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<param name=\"param1\" type=\"string\">hi</param>"
-				+ "</codelet>"
-				+ "</codelets></LidaFactories>";
+				+ "</task>"
+				+ "</tasks></LidaFactories>";
 
 		Element e = parseDomElement(xml);
 
-		Map<String, CodeletDef>codelets = loader.getCodelets(e, strategies);
+		Map<String, FrameworkTaskDef>codelets = loader.getTasks(e, strategies);
 		assertEquals(2,codelets.size());
 		
-		CodeletDef def = codelets.get("topleft");
+		FrameworkTaskDef def = codelets.get("topleft");
 		assertNotNull(def);
 		assertEquals(
 				"edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector",
@@ -239,7 +239,7 @@ public class FactoriesDataXmlLoaderTest {
 
 		Element e = parseDomElement(xml);
 
-		CodeletDef def = loader.getCodelet(e, strategies);
+		FrameworkTaskDef def = loader.getTaskDef(e, strategies);
 		assertNotNull(def);
 		assertEquals(
 				"edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector",

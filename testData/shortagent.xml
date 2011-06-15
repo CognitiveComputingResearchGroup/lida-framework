@@ -11,7 +11,7 @@
 	<taskmanager>
 		<param name="taskManager.tickDuration" type="int">50 </param>
 		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
-	</taskmanager>	<submodules> 
+	</taskmanager>	<taskspawners>		<taskspawner name="defaultTS">			<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>		</taskspawner>	</taskspawners>	<submodules> 
 		<module name="PerceptualAssociativeMemory">
 			<class>edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl</class>
 			<param name="pam.Upscale" type="double">.7 </param>
@@ -25,8 +25,7 @@
 					<taskspawner>defaultTS</taskspawner>				</module>
 			</submodules>
 			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>					<ticksperrun>15</ticksperrun>					<associatedmodule>Workspace</associatedmodule>					<param name="workspace.actThreshold"  type="double">0.4</param>				</task>			</initialTasks>		</module>
-	</submodules>
-	<taskspawners>	<taskspawner name="defaultTS">		<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>	</taskspawner>	</taskspawners>	<listeners>
+	</submodules>	<listeners>
 		<listener>
 			<listenertype>edu.memphis.ccrg.lida.pam.PamListener</listenertype>
 			<modulename>PerceptualAssociativeMemory</modulename>

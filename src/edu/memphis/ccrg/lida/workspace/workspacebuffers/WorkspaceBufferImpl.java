@@ -36,6 +36,7 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	 * Default constructor 
 	 */
 	public WorkspaceBufferImpl() {
+		buffer = new NodeStructureImpl();
 	}
 	
 	@Override

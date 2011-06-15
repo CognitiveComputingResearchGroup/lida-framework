@@ -19,10 +19,19 @@ import edu.memphis.ccrg.lida.framework.shared.Linkable;
  *
  */
 public class LinkableDef {
+	
 	private String name;
 	private String className;
 	private Map<String,String> defaultStrategies;
 	private Map<String,Object> params;
+	
+	/**
+	 * 
+	 */
+	public LinkableDef() {
+		defaultStrategies = new HashMap<String, String>();
+		params = new HashMap<String,Object>();
+	}
 
 	/**
 	 * @param className Qualified name
@@ -36,13 +45,6 @@ public class LinkableDef {
 		this.defaultStrategies = defaultStrategies;
 		this.name = name;
 		this.params = params;
-	}
-
-	/**
-	 * 
-	 */
-	public LinkableDef() {
-		this.params = new HashMap<String,Object>();
 	}
 	
 	/**

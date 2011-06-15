@@ -71,7 +71,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	 */
 	public StructureBuildingCodeletModule() {
 		Class<BasicStructureBuildingCodelet> cl = BasicStructureBuildingCodelet.class;
-		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
+		factory.addFrameworkTaskType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 		
 		guis = new ArrayList<FrameworkGuiEventListener>(); 
@@ -91,7 +91,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	
 	@Override
 	public void setDefaultCodeletType(String type){
-		if(factory.containsCodeletType(type)){
+		if(factory.containsTaskType(type)){
 			defaultCodeletName = type;
 		}else{
 			logger.log(Level.WARNING, 

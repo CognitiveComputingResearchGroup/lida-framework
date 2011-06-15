@@ -128,7 +128,7 @@ public class AttentionCodeletModuleTest{
 		AttentionCodeletImpl codelet = (AttentionCodeletImpl) attentionModule.getCodelet("foo");
 		assertEquals(null, codelet);
 		
-		factory.addCodeletType("coolCodelet", MockAttentionCodeletImpl.class.getCanonicalName());
+		factory.addFrameworkTaskType("coolCodelet", MockAttentionCodeletImpl.class.getCanonicalName());
 		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("coolCodelet");
 		assertTrue(codelet instanceof MockAttentionCodeletImpl);
 		
@@ -240,7 +240,7 @@ public class AttentionCodeletModuleTest{
 		codelet = attentionModule.getDefaultCodelet();
 		assertTrue(codelet instanceof BasicAttentionCodelet);
 		
-		assertTrue(factory.containsCodeletType("coolCodelet"));
+		assertTrue(factory.containsTaskType("coolCodelet"));
 		attentionModule.setDefaultCodeletType("coolCodelet");
 		
 		codelet = attentionModule.getDefaultCodelet();

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.initialization.CodeletDef;
+import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
 import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
@@ -24,7 +24,6 @@ import edu.memphis.ccrg.lida.framework.strategies.LinearExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoDecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.NoExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
-import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
@@ -33,7 +32,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * Standard factory for the basic elements of the framework. Support for
- * {@link Node}s, {@link Link}s, {@link Codelet}s, and {@link NodeStructure}s
+ * {@link Node}, {@link Link}, {@link FrameworkTask}, and {@link NodeStructure}
  * 
  * @author Javier Snaider, Ryan J. McCall
  */
@@ -107,10 +106,10 @@ public class ElementFactory {
 	private Map<String, LinkableDef> nodeClasses = new HashMap<String, LinkableDef>();
 
 	/**
-	 * Map of CodeletDefs for the Codelet types available to this factory
+	 * Map of {@link FrameworkTaskDef} for the {@link FrameworkTask} types available to this factory
 	 * indexed by name as specified in factories data.
 	 */
-	private Map<String, CodeletDef> codelets = new HashMap<String, CodeletDef>();
+	private Map<String, FrameworkTaskDef> tasks = new HashMap<String, FrameworkTaskDef>();
 
 	/**
 	 * Sole instance of this class that will be used.
@@ -298,26 +297,26 @@ public class ElementFactory {
 	}
 
 	/**
-	 * Adds the codelet type.
+	 * Adds the {@link FrameworkTask} type.
 	 * 
-	 * @param codeletDef
-	 *            the codelet def
+	 * @param taskDef
+	 *            {@link FrameworkTaskDef}
 	 */
-	public void addCodeletType(CodeletDef codeletDef) {
-		codelets.put(codeletDef.getName(), codeletDef);
+	public void addFrameworkTaskType(FrameworkTaskDef taskDef) {
+		tasks.put(taskDef.getName(), taskDef);
 	}
 
 	/**
-	 * Adds the codelet type.
+	 * Adds the {@link FrameworkTask} type.
 	 * 
 	 * @param typeName
-	 *            the simple codelet name
+	 *            the type name
 	 * @param className
-	 *            the canonical codelet name
+	 *            the canonical {@link FrameworkTask} name
 	 */
-	public void addCodeletType(String typeName,
+	public void addFrameworkTaskType(String typeName,
 			String className) {
-		codelets.put(typeName, new CodeletDef(className,
+		tasks.put(typeName, new FrameworkTaskDef(className,
 				new HashMap<String, String>(), typeName,
 				new HashMap<String, Object>()));
 	}
@@ -367,12 +366,12 @@ public class ElementFactory {
 	}
 	
 	/**
-	 * Returns whether this factory contains specified {@link Codelet} type.
-	 * @param codeletTypeName String
+	 * Returns whether this factory contains specified {@link FrameworkTask} type.
+	 * @param taskTypeName String
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsCodeletType(String codeletTypeName) {
-		return codelets.containsKey(codeletTypeName);
+	public boolean containsTaskType(String taskTypeName) {
+		return tasks.containsKey(taskTypeName);
 	}
 
 	/**
@@ -960,23 +959,23 @@ public class ElementFactory {
 	
 	/**
 	 * Returns a new {@link FrameworkTask} having specified attributes. FrameworkTask
-	 *  will have strategies specified for the codeletType
+	 *  will have strategies specified for the taskType
 	 * @param taskType type of FrameworkTask
-	 * @param ticksPerStep execution frequency 
+	 * @param ticksPerRun execution frequency 
 	 * @param activation initial activation
 	 * @param removalThreshold activation needed to remain active
 	 * @param params optional parameters to be set in object's init method
 	 * @return the new {@link FrameworkTask}
 	 */
-	public FrameworkTask getFrameworkTask(String taskType, int ticksPerStep, double activation, double removalThreshold, Map<String,?extends Object> params){
-		CodeletDef codeletDef = codelets.get(taskType);		
-		if (codeletDef == null) {
+	public FrameworkTask getFrameworkTask(String taskType, int ticksPerRun, double activation, double removalThreshold, Map<String,?extends Object> params){
+		FrameworkTaskDef taskDef = tasks.get(taskType);		
+		if (taskDef == null) {
 			logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}", 
 					new Object[]{TaskManager.getCurrentTick(),taskType});
 			return null;
 		}
-		String decayB = codeletDef.getDefaultStrategies().get(decayStrategyType);
-		String exciteB = codeletDef.getDefaultStrategies().get(exciteStrategyType);
+		String decayB = taskDef.getDefaultStrategies().get(decayStrategyType);
+		String exciteB = taskDef.getDefaultStrategies().get(exciteStrategyType);
 		if(decayB == null){
 			decayB=defaultDecayType;
 		}
@@ -984,7 +983,7 @@ public class ElementFactory {
 			exciteB=defaultExciteType;
 		}
 	
-		return getFrameworkTask(taskType,decayB,exciteB,ticksPerStep,activation,removalThreshold,params);
+		return getFrameworkTask(taskType,decayB,exciteB,ticksPerRun,activation,removalThreshold,params);
 	}
 	
 	/**
@@ -996,7 +995,7 @@ public class ElementFactory {
 	 *            DecayStrategy used by task
 	 * @param exciteStrategy
 	 *            ExciteStrategy used by task
-	 * @param ticksPerStep
+	 * @param ticksPerRun
 	 *            execution frequency
 	 * @param activation
 	 *            initial activation
@@ -1006,19 +1005,19 @@ public class ElementFactory {
 	 * @return the new {@link FrameworkTask}
 	 */
 	public FrameworkTask getFrameworkTask(String taskType, String decayStrategy, String exciteStrategy, 
-							  int ticksPerStep, double activation, double removalThreshold, Map<String, ? extends Object> params){
+							  int ticksPerRun, double activation, double removalThreshold, Map<String, ? extends Object> params){
 		FrameworkTask task = null;
 		try {
-			CodeletDef codeletDef = codelets.get(taskType);
-			if (codeletDef == null) {
+			FrameworkTaskDef taskDef = tasks.get(taskType);
+			if (taskDef == null) {
 				logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}",
 						new Object[]{TaskManager.getCurrentTick(),taskType});
 			}
 
-			String className = codeletDef.getClassName();
+			String className = taskDef.getClassName();
 			task = (FrameworkTask) Class.forName(className).newInstance();
 
-			task.setTicksPerRun(ticksPerStep);
+			task.setTicksPerRun(ticksPerRun);
 			task.setActivation(activation);
 			task.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(task, decayStrategy, exciteStrategy);
@@ -1026,7 +1025,7 @@ public class ElementFactory {
 			if (params != null){
 				task.init(params);
 			}else{ //Use default parameters from the factoriesData.xml file
-				task.init(codeletDef.getParams());
+				task.init(taskDef.getParams());
 			}
 			
 		} catch (InstantiationException e) {

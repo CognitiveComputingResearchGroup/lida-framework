@@ -50,8 +50,8 @@ public class FactoriesDataXmlLoaderTest3 {
 		assertTrue(factory.containsNodeType("node1"));
 		assertTrue(factory.containsNodeType("node2"));
 		assertTrue(factory.containsLinkType("link1"));
-		assertTrue(factory.containsCodeletType("topleft"));
-		assertTrue(factory.containsCodeletType("bottomright"));
+		assertTrue(factory.containsTaskType("topleft"));
+		assertTrue(factory.containsTaskType("bottomright"));
 		
 		Strategy s = factory.getStrategy("excite1");
 		assertTrue(s instanceof LinearExciteStrategy);

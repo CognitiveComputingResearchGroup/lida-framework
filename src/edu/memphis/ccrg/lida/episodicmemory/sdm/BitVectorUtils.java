@@ -12,7 +12,7 @@ import cern.colt.bitvector.BitVector;
 
 
 /**
- * Utilities for {@link BitVector}s
+ * Utilities for {@link BitVector}
  * @author Javier Snaider
  */
 public class BitVectorUtils {

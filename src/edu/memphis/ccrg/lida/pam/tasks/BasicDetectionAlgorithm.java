@@ -91,7 +91,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 				logger.log(Level.FINEST,"Pam excited: {1} by {2}"
 						,new Object[]{TaskManager.getCurrentTick(),amount, this});
 			}
-			pam.receiveActivationBurst(linkable, amount);
+			pam.receiveExcitation(linkable, amount);
 		}
 	}
 
