@@ -29,17 +29,9 @@ public class BasicActionSelectionTest {
 	private MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
 	private Scheme scheme1,scheme2 ;
 		
-	private AgentAction action1 = new AgentActionImpl() {
-		@Override
-		public void performAction() {
-		}
-	};
+	private AgentAction action1 = new AgentActionImpl();
 	
-	private AgentAction action2 = new AgentActionImpl() {
-		@Override
-		public void performAction() {
-		}
-	};
+	private AgentAction action2 = new AgentActionImpl();
 	
 	@Before
 	public void setUp() throws Exception {			

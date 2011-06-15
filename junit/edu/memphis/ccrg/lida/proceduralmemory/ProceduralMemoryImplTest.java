@@ -51,11 +51,7 @@ public class ProceduralMemoryImplTest{
 	public void testSendInstantiatedScheme() {
 		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
 		pm.addListener(listener);
-		AgentAction a = new AgentActionImpl(){
-			@Override
-			public void performAction() {
-			}
-		};
+		AgentAction a = new AgentActionImpl();
 		Scheme s = new SchemeImpl("foo", a);
 		
 		pm.createInstantiation(s);

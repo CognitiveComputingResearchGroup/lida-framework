@@ -7,9 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import java.io.Serializable;
-
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
  * Encapsulation of an action to be executed.
@@ -18,29 +16,12 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  * @author Javier Snaider
  * 
  */
-public interface AgentAction extends Serializable {
+public interface AgentAction extends Initializable {
 
 	@SuppressWarnings(value = { "all" })
 	public enum Topology {
 		BASIC, PARALLEL, SEQUENCIAL
 	}
-
-	/**
-	 * The actual action that should be performed.
-	 * The action can interact directly with any module in LIDA, specially the
-	 * SensoryMotorMemory.
-	 */
-	public void performAction();
-	
-	/**
-	 * @return the action content.
-	 */
-	public Object getContent();
-	
-	/**
-	 * @param content the content to set.
-	 */
-	public void setContent(Object content);
 	
 	/**
 	 * @return the action label.
@@ -53,26 +34,8 @@ public interface AgentAction extends Serializable {
 	public void setLabel(String label);
 
 	/**
-	 * Sets an associated FrameworkModule.
-	 * @param module the module to be associated.
-	 */
-	public void setAssociatedModule(FrameworkModule module);
-
-	/**
-	 * @return the module
-	 */
-	public FrameworkModule getAssociatedModule();
-
-	/**
 	 * @return the {@link AgentAction} id
 	 */
-	public long getId();
+	public int getId();
 	
-	/**
-	 * Useful to implement this for the display of tasks in the GUI
-	 * @return {@link String}
-	 */
-	@Override
-	public String toString();
-
 }

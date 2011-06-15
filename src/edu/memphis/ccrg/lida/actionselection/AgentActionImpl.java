@@ -7,22 +7,21 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import java.util.Map;
 
 /**
- * Abstract implmementation of {@link AgentAction}
+ * Default implementation of {@link AgentAction}
  * 
+ * @author Ryan McCall
  * @author Javier Snaider
  * 
  */
-public abstract class AgentActionImpl implements AgentAction {
+public class AgentActionImpl implements AgentAction {
 
-
-	private static long idGenerator = 0;
-	private long id;
-	private Object content;
-	private FrameworkModule module;
+	private static int idGenerator = 0;
+	private int id;
 	private String label;
+	private Map<String, ?> actionParameters;
 
 	/**
 	 * Default constructor
@@ -31,23 +30,9 @@ public abstract class AgentActionImpl implements AgentAction {
 		id = idGenerator++;
 	}
 
-	/**
-	 * 
-	 * @param label label
-	 */
 	public AgentActionImpl(String label) {
 		this();
 		this.label = label;
-	}
-
-	@Override
-	public void setContent(Object content) {
-		this.content = content;
-	}
-
-	@Override
-	public Object getContent() {
-		return content;
 	}
 
 	@Override
@@ -56,29 +41,31 @@ public abstract class AgentActionImpl implements AgentAction {
 	}
 
 	@Override
-	public void setLabel(String label) {
-		this.label = label;
+	public void setLabel(String name) {
+		this.label = name;
 	}
 
 	@Override
-	public void setAssociatedModule(FrameworkModule module) {
-		this.module = module;
-	}
-
-	/**
-	 * @return the associated module
-	 */
-	@Override
-	public FrameworkModule getAssociatedModule() {
-		return module;
-	}
-
-	/**
-	 * @return the id
-	 */
-	@Override
-	public long getId() {
+	public int getId() {
 		return id;
+	}
+
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = actionParameters.get(name);
+		if(value == null){
+			return defaultValue;
+		}
+		return value;
+	}
+
+	@Override
+	public void init(Map<String, ?> parameters) {
+		this.actionParameters = parameters;		
+	}
+
+	@Override
+	public void init() {		
 	}
 	
 }
