@@ -12,7 +12,7 @@ import cern.colt.bitvector.BitVector;
 
 //TODO getRandomVector and Hamming are the only used methods
 /**
- * Utilities for {@link BitVector}s
+ * Utilities for {@link BitVector}
  * @author Javier Snaider
  */
 public class BitVectorUtils {

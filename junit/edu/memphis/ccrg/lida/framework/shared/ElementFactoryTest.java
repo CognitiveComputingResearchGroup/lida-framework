@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
-import edu.memphis.ccrg.lida.framework.initialization.CodeletDef;
+import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
@@ -202,20 +202,20 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testAddCodeletType1() {
-		CodeletDef codeletDef = new CodeletDef(BasicAttentionCodelet.class.getCanonicalName(), 
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(), 
 											   new HashMap<String, String>(), "winwin", null);
-		factory.addCodeletType(codeletDef);
+		factory.addFrameworkTaskType(taskDef);
 		Codelet foo = (Codelet)factory.getFrameworkTask("winwin", 1, 0.0, 0.0, null);
 		assertTrue(foo instanceof BasicAttentionCodelet);
-		assertTrue(factory.containsCodeletType("winwin"));
+		assertTrue(factory.containsTaskType("winwin"));
 	}
 
 	@Test
 	public void testAddCodeletType2() {
-		factory.addCodeletType("apple", BasicStructureBuildingCodelet.class.getCanonicalName());
+		factory.addFrameworkTaskType("apple", BasicStructureBuildingCodelet.class.getCanonicalName());
 		Codelet foo = (Codelet)factory.getFrameworkTask("apple", 1, 0.0, 0.0, null);
 		assertTrue(foo instanceof BasicStructureBuildingCodelet);
-		assertTrue(factory.containsCodeletType("apple"));
+		assertTrue(factory.containsTaskType("apple"));
 	}
 
 	@Test
@@ -233,7 +233,7 @@ public class ElementFactoryTest {
 	@Test
 	public void testContainsCodeletType() {
 		//already tested standard usage in previous tests
-		assertFalse(factory.containsCodeletType("RYANJMCCALL"));
+		assertFalse(factory.containsTaskType("RYANJMCCALL"));
 	}
 
 	@Test
@@ -527,7 +527,7 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetCodelet0() {
-		factory.addCodeletType("testType", BasicAttentionCodelet.class.getCanonicalName());
+		factory.addFrameworkTaskType("testType", BasicAttentionCodelet.class.getCanonicalName());
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
 		

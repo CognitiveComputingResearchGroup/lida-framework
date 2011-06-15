@@ -14,8 +14,8 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * A kind of {@link Codelet} that checks {@link WorkspaceBuffer}s
- * for its desired content and possibly adds {@link Coalition}s to the
+ * A kind of {@link Codelet} that checks {@link WorkspaceBuffer}
+ * for its desired content and possibly adds {@link Coalition} to the
  * {@link GlobalWorkspace}
  * @author Ryan J McCall
  * 

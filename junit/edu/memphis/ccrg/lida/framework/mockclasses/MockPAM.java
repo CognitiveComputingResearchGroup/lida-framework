@@ -295,11 +295,11 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	}
 
 	@Override
-	public void receiveActivationBurst(PamLinkable nodeId, double amount) {
+	public void receiveExcitation(PamLinkable nodeId, double amount) {
 	}
 
 	@Override
-	public void receiveActivationBurst(Set<PamLinkable> nodeIds, double amount) {
+	public void receiveExcitation(Set<PamLinkable> nodeIds, double amount) {
 	}
 
 	@Override

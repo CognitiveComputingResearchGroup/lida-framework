@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -29,7 +30,7 @@ public class BasicSchemeActivationStrategyTest{
 	private static ElementFactory factory = ElementFactory.getInstance();
 	private Node node1, node2, node3;
 	private NodeStructure broadcast;
-	private Map<Node, Set<Scheme>>  map;
+	private Map<ExtendedId, Set<Scheme>>  map;
 	private MockProceduralMemory pm;
 	private Scheme a, b, c;
 	
@@ -44,7 +45,7 @@ public class BasicSchemeActivationStrategyTest{
 		node3 = factory.getNode();
 		node3.setActivation(1.0);
 
-		map = new HashMap<Node, Set<Scheme>>();
+		map = new HashMap<ExtendedId, Set<Scheme>>();
 		
 		a = new SchemeImpl("", null);
 		b = new SchemeImpl("", null);
@@ -75,9 +76,9 @@ public class BasicSchemeActivationStrategyTest{
 		node2Set.add(c);
 		node3Set.add(c);
 		
-		map.put(node1, node1Set);
-		map.put(node2, node2Set);
-		map.put(node3, node3Set);
+		map.put(node1.getExtendedId(), node1Set);
+		map.put(node2.getExtendedId(), node2Set);
+		map.put(node3.getExtendedId(), node3Set);
 	}	
 	@Test
 	public void test1(){

@@ -21,14 +21,14 @@ import org.w3c.dom.Element;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
-import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
  * 
  * Loads the factoriesData.xml file which configures the factories of the
  * framework i.e. what strategies are used by the objects created by the
- * factory, the types of node, links, and codelets that can be created as well.
+ * factory, the types of node, links, and {@link FrameworkTask} that can be created as well.
  * 
  * @author Javier Snaider
  * 
@@ -74,11 +74,11 @@ public class FactoriesDataXmlLoader {
 				strategies);
 		Map<String, LinkableDef> links = getLinkables(docEle, "links", "link",
 				strategies);
-		Map<String, CodeletDef> codelets = getCodelets(docEle, strategies);
+		Map<String, FrameworkTaskDef> tasks = getTasks(docEle, strategies);
 		fillNodes(nodes);
 		fillLinks(links);
 		fillStrategies(strategies);
-		fillCodelets(codelets);
+		fillTasks(tasks);
 	}
 
 	private void fillNodes(Map<String, LinkableDef> nodes) {
@@ -104,9 +104,9 @@ public class FactoriesDataXmlLoader {
 		}
 	}
 
-	private void fillCodelets(Map<String, CodeletDef> codelets) {
-		for (CodeletDef cd : codelets.values()) {
-			nfactory.addCodeletType(cd);
+	private void fillTasks(Map<String, FrameworkTaskDef> tasks) {
+		for (FrameworkTaskDef cd : tasks.values()) {
+			nfactory.addFrameworkTaskType(cd);
 		}
 	}
 
@@ -210,25 +210,25 @@ public class FactoriesDataXmlLoader {
 	}
 
 	/**
-	 * Reads in and creates all {@link CodeletDef}s specified in
+	 * Reads in and creates all {@link FrameworkTaskDef}s specified in
 	 * {@link Element}
 	 * 
 	 * @param element
 	 *            Dom element
 	 * @param strategies
 	 *            Map with {@link StrategyDef} indexed by name
-	 * @return a Map of {@link CodeletDef} indexed by name
+	 * @return a Map of {@link FrameworkTaskDef} indexed by name
 	 */
-	Map<String, CodeletDef> getCodelets(Element element,
+	Map<String, FrameworkTaskDef> getTasks(Element element,
 			Map<String, StrategyDef> strategies) {
-		Map<String, CodeletDef> codels = new HashMap<String, CodeletDef>();
-		List<Element> list = XmlUtils.getChildrenInGroup(element, "codelets",
-				"codelet");
+		Map<String, FrameworkTaskDef> codels = new HashMap<String, FrameworkTaskDef>();
+		List<Element> list = XmlUtils.getChildrenInGroup(element, "tasks",
+				"task");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
-				CodeletDef codelet = getCodelet(e, strategies);
-				if (codelet != null) {
-					codels.put(codelet.getName(), codelet);
+				FrameworkTaskDef taskDef = getTaskDef(e, strategies);
+				if (taskDef != null) {
+					codels.put(taskDef.getName(), taskDef);
 				}
 			}
 		}
@@ -239,10 +239,10 @@ public class FactoriesDataXmlLoader {
 	 * @param e Dom element
 	 * @param strategies
 	 *            Map with {@link StrategyDef} indexed by name
-	 * @return the {@link Codelet} definition
+	 * @return the {@link FrameworkTaskDef} definition
 	 */
-	CodeletDef getCodelet(Element e, Map<String, StrategyDef> strategies) {
-		CodeletDef codelet = null;
+	FrameworkTaskDef getTaskDef(Element e, Map<String, StrategyDef> strategies) {
+		FrameworkTaskDef taskDef = null;
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
 		Map<String, String> behav = new HashMap<String, String>();
@@ -255,12 +255,12 @@ public class FactoriesDataXmlLoader {
 
 		Map<String, Object> params = XmlUtils.getTypedParams(e);
 
-		codelet = new CodeletDef();
-		codelet.setClassName(className.trim());
-		codelet.setName(name.trim());
-		codelet.setParams(params);
-		codelet.setDefaultStrategies(behav);
-		return codelet;
+		taskDef = new FrameworkTaskDef();
+		taskDef.setClassName(className.trim());
+		taskDef.setName(name.trim());
+		taskDef.setParams(params);
+		taskDef.setDefaultStrategies(behav);
+		return taskDef;
 	}
 
 	/**

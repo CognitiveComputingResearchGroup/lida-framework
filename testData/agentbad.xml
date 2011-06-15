@@ -11,7 +11,7 @@
 	<taskmanager>
 		<param name="taskManager.tickDuration" type="int">50 </param>
 		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
-	</taskmanager>	<submodules> 
+	</taskmanager>	<taskspawners>		<taskspawner name="defaultTS">			<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>		</taskspawner>	</taskspawners>	<submodules> 
 		<module name="Environment">
 			<class>edu.memphis.ccrg.lida.example.genericlida.environment.VisionEnvironment</class>
 			<param name="height" type="int"> 10 </param>
@@ -74,15 +74,14 @@
 		</module> 
 		<module name="ProceduralMemory">
 			<class>edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryImpl</class>
-			<param name="proceduralMemory.ticksPerStep" type="int"> 14 </param>
+			<param name="proceduralMemory.ticksPerRun" type="int"> 14 </param>
 			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.ProceduralMemoryInitializer</initializerclass>
 		</module>
 		<module name="ActionSelection">
 			<class>edu.memphis.ccrg.lida.actionselection.BasicActionSelection</class>
-			<param name="actionSelection.ticksPerStep" type="int"> 10</param>
+			<param name="actionSelection.ticksPerRun" type="int"> 10</param>
 			<taskspawner>defaultTS</taskspawner>		</module> 
-	</submodules>
-	<taskspawners>	<taskspawner name="defaultTS">		<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>	</taskspawner>	</taskspawners>	<listeners>
+	</submodules>	<listeners>
 		<listener>
 			<listenertype>edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener</listenertype>
 			<modulename>SensoryMotorMemory</modulename>

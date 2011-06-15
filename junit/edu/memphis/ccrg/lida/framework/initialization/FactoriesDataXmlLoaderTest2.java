@@ -89,19 +89,19 @@ public class FactoriesDataXmlLoaderTest2 {
 			+ "</link>" 
 			+ "</links>"
 			
-			+ "<codelets><codelet name=\"topleft\">"
+			+ "<tasks><task name=\"topleft\">"
 			+ "<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet</class>"
 			+ "<defaultstrategy>strategy1</defaultstrategy>"
 			+ "<defaultstrategy>strategy2</defaultstrategy>"
 			+ "<defaultstrategy>strategy3</defaultstrategy>"
 			+ "<param name=\"param\" type=\"int\">10</param>"
-			+ "</codelet>"
-			+"<codelet name=\"bottomright\">"
+			+ "</task>"
+			+"<task name=\"bottomright\">"
 			+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
 			+ "<defaultstrategy>strategy1</defaultstrategy>"
 			+ "<param name=\"param1\" type=\"string\">hi</param>"
-			+ "</codelet>"
-			+ "</codelets>"
+			+ "</task>"
+			+ "</tasks>"
 			
 			+ "</LidaFactories>";
 		Document d = parseDocument(xml);
@@ -113,8 +113,8 @@ public class FactoriesDataXmlLoaderTest2 {
 		assertTrue(factory.containsNodeType("node1"));
 		assertTrue(factory.containsNodeType("node2"));
 		assertTrue(factory.containsLinkType("link1"));
-		assertTrue(factory.containsCodeletType("topleft"));
-		assertTrue(factory.containsCodeletType("bottomright"));
+		assertTrue(factory.containsTaskType("topleft"));
+		assertTrue(factory.containsTaskType("bottomright"));
 		
 		Strategy s = factory.getStrategy("excite1");
 		assertTrue(s instanceof LinearExciteStrategy);

@@ -30,13 +30,13 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	private static final String DEFAULT_NODE_TYPE = "NodeImpl";
 	private static final String DEFAULT_LINK_TYPE = "LinkImpl";
 	
-	//TODO Consider having multiple NodeStructures 
 	private NodeStructure buffer;	
 	
 	/**
 	 * Default constructor 
 	 */
 	public WorkspaceBufferImpl() {
+		buffer = new NodeStructureImpl();
 	}
 	
 	@Override

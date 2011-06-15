@@ -147,7 +147,7 @@ public class StructureBuildingCodeletModuleTest {
 		StructureBuildingCodeletImpl codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("23");
 		assertEquals(null, codelet);
 		
-		factory.addCodeletType("coolCodelet", MockStructureBuildingCodeletImpl.class.getCanonicalName());
+		factory.addFrameworkTaskType("coolCodelet", MockStructureBuildingCodeletImpl.class.getCanonicalName());
 		
 		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet");
 		assertNotNull(codelet);		
@@ -195,7 +195,7 @@ public class StructureBuildingCodeletModuleTest {
 		codelet = sbcModule.getDefaultCodelet();
 		assertTrue(codelet instanceof BasicStructureBuildingCodelet);
 		
-		assertTrue(factory.containsCodeletType("coolCodelet"));
+		assertTrue(factory.containsTaskType("coolCodelet"));
 		sbcModule.setDefaultCodeletType("coolCodelet");
 		
 		codelet = sbcModule.getDefaultCodelet();

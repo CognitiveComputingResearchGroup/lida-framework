@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 /**
  * A task which performs the excitation of a single {@link PamNode}.
  * 
- * @see PerceptualAssociativeMemory#receiveActivationBurst(PamLinkable, double)
+ * @see PerceptualAssociativeMemory#receiveExcitation(PamLinkable, double)
  * 
  * @author Ryan J McCall
  * 

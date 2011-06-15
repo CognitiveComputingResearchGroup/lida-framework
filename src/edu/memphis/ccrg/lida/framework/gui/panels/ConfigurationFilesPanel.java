@@ -101,8 +101,6 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN
-    }// GEN-LAST:event_ApplyButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable PropertiesTable;
     private javax.swing.JTextField fileNameTextField;

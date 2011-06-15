@@ -221,7 +221,15 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm detector) {
-		if (!pamNodeStructure.containsLinkable(detector.getPamLinkable())) {
+		PamLinkable pl = detector.getPamLinkable();
+		if(pl == null){
+			logger.log(
+					Level.WARNING,
+					"Detection algorithm {1} does not have a pamlinkable.",
+					new Object[] { TaskManager.getCurrentTick(),detector});
+			return;
+		}
+		if ( !pamNodeStructure.containsLinkable(pl)) {
 			logger.log(
 							Level.WARNING,
 							"Adding detection algorithm {1} but, detector's pam linkable {2} is not in PAM.",
@@ -290,7 +298,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public void receiveActivationBurst(PamLinkable pl, double amount) {
+	public void receiveExcitation(PamLinkable pl, double amount) {
 		if (pl instanceof PamLink) {
 			logger.log(Level.WARNING, "Does not support pam links yet",
 					TaskManager.getCurrentTick());
@@ -313,9 +321,9 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public void receiveActivationBurst(Set<PamLinkable> linkables, double amount) {
+	public void receiveExcitation(Set<PamLinkable> linkables, double amount) {
 		for (PamLinkable linkable : linkables) {
-			receiveActivationBurst(linkable, amount);
+			receiveExcitation(linkable, amount);
 		}
 	}
 	

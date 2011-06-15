@@ -13,32 +13,35 @@ package edu.memphis.ccrg.lida.framework.initialization;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.memphis.ccrg.lida.framework.tasks.Codelet;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 
 /**
- * Definition of a {@link Codelet} object
+ * Definition of a {@link FrameworkTask} object
  * @see AgentXmlFactory
  * @author Javier Snaider
- *
+ * @author Ryan McCall
  */
-public class CodeletDef {
-	private String className;
-	private Map<String,String>defaultStrategies;
+public class FrameworkTaskDef {
+
 	private String name;
+	private String className;
+	private Map<String,String> defaultStrategies;
 	private Map<String,Object> params;
+	
 	/**
 	 * 
 	 */
-	public CodeletDef() {
-		this.params = new HashMap<String,Object>();
+	public FrameworkTaskDef() {
+		defaultStrategies = new HashMap<String, String>();
+		params = new HashMap<String,Object>();
 	}
 	/**
-	 * @param className Class name of codelet
+	 * @param className Class name of {@link FrameworkTask}
 	 * @param defaultStrategies map of strategies
-	 * @param name label for codelet
+	 * @param name label for task
 	 * @param params optional parameters
 	 */
-	public CodeletDef(String className, Map<String,String> defaultStrategies,
+	public FrameworkTaskDef(String className, Map<String,String> defaultStrategies,
 			String name, Map<String,Object> params) {
 		this.className = className;
 		this.defaultStrategies = defaultStrategies;
@@ -55,7 +58,7 @@ public class CodeletDef {
 	}
 
 	/**
-	 * @return a {@link Map} of this CodeletDef's default strategies
+	 * @return a {@link Map} of the default strategies
 	 */
 	public Map<String,String> getDefaultStrategies() {
 		return defaultStrategies;

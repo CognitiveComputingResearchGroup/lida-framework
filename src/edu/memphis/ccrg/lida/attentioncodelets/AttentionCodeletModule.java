@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerM
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 	
 /**
- * {@link FrameworkModule} which creates and manages all {@link AttentionCodelet}s.
+ * {@link FrameworkModule} which creates and manages all {@link AttentionCodelet}.
  * @author Ryan J. McCall
  *
  */
@@ -51,8 +51,8 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	private String defaultCodeletName;
 
-	private static final int defaultCodeletTicksPerStep = 5;
-	private int codeletTicksPerStep = defaultCodeletTicksPerStep;
+	private static final int defaultCodeletTicksPerRun = 5;
+	private int codeletTicksPerRun = defaultCodeletTicksPerRun;
 
 	private static final double defaultCodeletActivation = 1.0;
 	private double codeletActivation = defaultCodeletActivation;
@@ -65,13 +65,13 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	 */
 	public AttentionCodeletModule() {
 		Class<BasicAttentionCodelet> cl = BasicAttentionCodelet.class;
-		factory.addCodeletType(cl.getSimpleName(), cl.getCanonicalName());
+		factory.addFrameworkTaskType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 	}
 	
 	@Override
 	public void setDefaultCodeletType(String type){
-		if(factory.containsCodeletType(type)){
+		if(factory.containsTaskType(type)){
 			defaultCodeletName = type;
 		}else{
 			logger.log(Level.WARNING, 
@@ -164,7 +164,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	//TODO default removal threshold parameters
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(type, codeletTicksPerStep, 
+		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(type, codeletTicksPerRun, 
 				codeletActivation, codeletRemovalThreshold, params);
 		if (codelet == null) {
 			logger.log(
