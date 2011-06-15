@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -253,9 +254,11 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 			parent = principalTabbedPanel;
 			associatedMenu = areaCPanelsMenu;
 		} else if ("FLOAT".equalsIgnoreCase(panelPosition)) {
-			JDialog dialog = new JDialog(this, panel.getName());
+            JFrame dialog = new JFrame(panel.getName());
 			dialog.add(jPanel);
 			dialog.pack();
+            dialog.setAlwaysOnTop(false);
+            dialog.setResizable(true);
 			dialog.setVisible(true);
 			dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 			dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -263,20 +266,15 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
 				@Override
 				public void windowClosing(WindowEvent winEvt) {
-					for (java.awt.Component firstLevelMenu : panelsMenu
-							.getMenuComponents()) {
+                    for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
 						if (firstLevelMenu instanceof javax.swing.JMenu) {
-							for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu)
-									.getMenuComponents()) {
+                            for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu).getMenuComponents()) {
 								if (secondLevelMenu instanceof javax.swing.JMenu) {
-									String menuText = ((javax.swing.JMenu) secondLevelMenu)
-											.getText();
-									String panelName = panels.get(index)
-											.getName();
-									if (menuText.equals(panelName))
-										((javax.swing.JCheckBoxMenuItem) ((javax.swing.JMenu) secondLevelMenu)
-												.getMenuComponent(0))
-												.setSelected(false);
+                                    String menuText = ((javax.swing.JMenu) secondLevelMenu).getText();
+                                    String panelName = panels.get(index).getName();
+                                    if (menuText.equals(panelName)) {
+                                        ((javax.swing.JCheckBoxMenuItem) ((javax.swing.JMenu) secondLevelMenu).getMenuComponent(0)).setSelected(false);
+                                    }
 									// ((javax.swing.JMenu)firstLevelMenu).remove(secondLevelMenu);
 								}
 							}
@@ -318,8 +316,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 			private GuiPanel cGuiPanel = panel;
 			private JPanel cjPanel = jPanel;
 			private Container cParent = parent;
-			private String[] cParameters = panelParameters.get(panels
-					.indexOf(panel));
+            private String[] cParameters = panelParameters.get(panels.indexOf(panel));
 
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -362,14 +359,16 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 					}
 
 					Container c = cjPanel.getParent();
-					while (c != null && !(c instanceof JDialog))
+                    while (c != null && !(c instanceof JFrame)) {
 						c = c.getParent();
-					if (c instanceof JDialog) {
-						if (c.isVisible())
-							((JDialog) c).setVisible(false);
-						else
-							((JDialog) c).setVisible(true);
 					}
+                    if (c instanceof JFrame) {
+                        if (c.isVisible()) {
+                            ((JFrame) c).setVisible(false);
+                        } else {
+                            ((JFrame) c).setVisible(true);
+                        }
+                    }
 				}
 			}
 		});
@@ -579,8 +578,9 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 		addEditPanel.registerAgent(agent);
 		addEditPanel.registerGuiController(this.controller);
 		addEditPanel.initClassnames(panelClassNames);
-		if (addEditDialog != null)
+        if (addEditDialog != null) {
 			addEditDialog.setVisible(false);
+        }
 		addEditDialog = new JDialog();
 		addEditDialog.add(addEditPanel.getPanel());
 		addEditDialog.pack();
@@ -589,8 +589,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 		final javax.swing.JPanel jpanel = addEditPanel.getPanel();
 		for (java.awt.Component c : jpanel.getComponents()) {
 			if (c instanceof javax.swing.JButton) {
-				((javax.swing.JButton) c)
-						.addActionListener(new java.awt.event.ActionListener() {
+                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
+
 							@Override
 							public void actionPerformed(
 									java.awt.event.ActionEvent evt) {
@@ -694,8 +694,9 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 		addEditPanel.registerAgent(agent);
 		addEditPanel.registerGuiController(this.controller);
 		addEditPanel.setPanelParams(panelParams);
-		if (addEditDialog != null)
+        if (addEditDialog != null) {
 			addEditDialog.setVisible(false);
+        }
 		addEditDialog = new javax.swing.JDialog();
 		addEditDialog.add(addEditPanel.getPanel());
 		addEditDialog.pack();
@@ -704,20 +705,18 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 		final javax.swing.JPanel jpanel = addEditPanel.getPanel();
 		for (java.awt.Component c : jpanel.getComponents()) {
 			if (c instanceof javax.swing.JButton) {
-				((javax.swing.JButton) c)
-						.addActionListener(new java.awt.event.ActionListener() {
+                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
+
 							@Override
 							public void actionPerformed(
 									java.awt.event.ActionEvent evt) {
 								String[] params = addEditPanel.getPanelParams();
 								int index = -1;
 								for (int i = 0; i < panels.size(); i++) {
-									String className = panels.get(i).getClass()
-											.toString().replace("class ", "");
+                            String className = panels.get(i).getClass().toString().replace("class ", "");
 									if (panels.get(i).getName().equals(
 											params[PANEL_NAME])
-											&& className
-													.equals(params[CLASS_NAME])) {
+                                    && className.equals(params[CLASS_NAME])) {
 										index = i;
 										break;
 									}
@@ -741,18 +740,15 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 	}
 	private void removePanelAt(int panelIndex, boolean removeFromMenu) {
 		if (removeFromMenu) {
-			for (java.awt.Component firstLevelMenu : panelsMenu
-					.getMenuComponents()) {
+            for (java.awt.Component firstLevelMenu : panelsMenu.getMenuComponents()) {
 				if (firstLevelMenu instanceof javax.swing.JMenu) {
-					for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu)
-							.getMenuComponents()) {
+                    for (java.awt.Component secondLevelMenu : ((javax.swing.JMenu) firstLevelMenu).getMenuComponents()) {
 						if (secondLevelMenu instanceof javax.swing.JMenu) {
-							String menuText = ((javax.swing.JMenu) secondLevelMenu)
-									.getText();
+                            String menuText = ((javax.swing.JMenu) secondLevelMenu).getText();
 							String panelName = panels.get(panelIndex).getName();
-							if (menuText.equals(panelName))
-								((javax.swing.JMenu) firstLevelMenu)
-										.remove(secondLevelMenu);
+                            if (menuText.equals(panelName)) {
+                                ((javax.swing.JMenu) firstLevelMenu).remove(secondLevelMenu);
+                            }
 						}
 					}
 				}
