@@ -130,12 +130,9 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){
-		AgentActionImpl action = new AgentActionImpl("action_"+label) {			
-			@Override
-			public void performAction() {
-			}
-		};
-		action.setId(actionId);
+		AgentActionImpl action = new AgentActionImpl("action_"+label);
+		//TODO fix
+		//action.setId(actionId);
 		Behavior b = new BehaviorImpl(action);
 		b.setLabel(label);
 		b.addToAddingList(result);

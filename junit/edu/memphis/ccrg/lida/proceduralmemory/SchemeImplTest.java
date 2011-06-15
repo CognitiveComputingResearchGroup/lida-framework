@@ -32,10 +32,7 @@ public class SchemeImplTest{
 	
 	@Before
 	public void setUp() throws Exception {		
-		action = new AgentActionImpl() {
-			@Override
-			public void performAction() {}
-		};
+		action = new AgentActionImpl();
 
 		scheme = new SchemeImpl("1", action);
 		node1 = factory.getNode();
@@ -57,8 +54,7 @@ public class SchemeImplTest{
 	}
 	@Test
 	public void test2(){
-		AgentAction foo = new AgentActionImpl() {
-			@Override public void performAction() {}};
+		AgentAction foo = new AgentActionImpl();
 		scheme.setAction(foo);
 		assertEquals(foo, scheme.getAction());
 		
