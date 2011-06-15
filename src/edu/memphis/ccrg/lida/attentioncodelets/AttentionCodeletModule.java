@@ -65,7 +65,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	 */
 	public AttentionCodeletModule() {
 		Class<BasicAttentionCodelet> cl = BasicAttentionCodelet.class;
-		factory.addFrameworkTaskType(cl.getSimpleName(), cl.getCanonicalName());
+		//factory.addFrameworkTaskType(cl.getSimpleName(), cl.getCanonicalName());
 		defaultCodeletName = cl.getSimpleName();
 	}
 	
