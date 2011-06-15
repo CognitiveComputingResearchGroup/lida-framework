@@ -63,14 +63,14 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Time step: "/>
+            <Property name="text" type="java.lang.String" value="Current tick: "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="currentTickTextField">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="horizontalAlignment" type="int" value="11"/>
-            <Property name="toolTipText" type="java.lang.String" value="Current Tick"/>
+            <Property name="toolTipText" type="java.lang.String" value="Current tick"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 24]"/>
             </Property>
@@ -104,8 +104,8 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Run steps:"/>
-            <Property name="toolTipText" type="java.lang.String" value="Runs system the number of steps specified in adjacent text field."/>
+            <Property name="text" type="java.lang.String" value="Run ticks:"/>
+            <Property name="toolTipText" type="java.lang.String" value="Runs system the number of ticks specified in adjacent text field."/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -118,7 +118,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="0"/>
-            <Property name="toolTipText" type="java.lang.String" value="Enter a number of steps here.  The system will run this number of step when adjacent &apos;Add&apos; button is pressed."/>
+            <Property name="toolTipText" type="java.lang.String" value="Enter a number of ticks here.  The system will run this number of ticks when adjacent &apos;Add&apos; button is pressed and the system is in step mode."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 24]"/>
             </Property>
@@ -137,13 +137,13 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="12" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Step duration (ms): "/>
+            <Property name="text" type="java.lang.String" value="Tick duration (ms): "/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tickDurationTextField">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="toolTipText" type="java.lang.String" value="The system&apos;s current step duration in milliseconds."/>
+            <Property name="toolTipText" type="java.lang.String" value="The system&apos;s current tick duration in milliseconds."/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 24]"/>
             </Property>
@@ -167,6 +167,7 @@
         </Component>
         <Component class="javax.swing.JSlider" name="tickDurationSlider">
           <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Sets the tick duration of the system"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[150, 24]"/>
             </Property>

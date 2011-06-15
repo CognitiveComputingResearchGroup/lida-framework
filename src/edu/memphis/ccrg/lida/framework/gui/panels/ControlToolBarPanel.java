@@ -34,7 +34,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * Can receive parameters for the tick slider min and max values.
  * @author Javier Snaider
  */
-public class ControlToolBarPanel extends GuiPanelImpl{
+public class ControlToolBarPanel extends GuiPanelImpl {
 
     private static final Logger logger = Logger.getLogger(ControlToolBarPanel.class.getCanonicalName());
     private boolean isPaused = true;
@@ -75,8 +75,8 @@ public class ControlToolBarPanel extends GuiPanelImpl{
         tickDurationSlider.setMinimum(sliderMin);
         tickDurationSlider.setValue(sliderStartValue);
         tickDurationTextField.setText(sliderStartValue + "");
-        minStepDurationLabel.setText(sliderMin+"");
-        maxStepDurationLabel.setText(sliderMax+"");
+        minStepDurationLabel.setText(sliderMin + "");
+        maxStepDurationLabel.setText(sliderMax + "");
     }
 
     /**
@@ -132,19 +132,19 @@ public class ControlToolBarPanel extends GuiPanelImpl{
         toolbar.add(jSeparator2);
 
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        jLabel3.setText("Time step: ");
+        jLabel3.setText("Current tick: ");
         toolbar.add(jLabel3);
 
         currentTickTextField.setEditable(false);
         currentTickTextField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        currentTickTextField.setToolTipText("Current Tick");
+        currentTickTextField.setToolTipText("Current tick");
         currentTickTextField.setMaximumSize(new java.awt.Dimension(100, 24));
         currentTickTextField.setMinimumSize(new java.awt.Dimension(70, 24));
         currentTickTextField.setPreferredSize(new java.awt.Dimension(70, 24));
         toolbar.add(currentTickTextField);
         toolbar.add(jSeparator3);
 
-        ticksModeTB.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        ticksModeTB.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         ticksModeTB.setText("Step mode");
         ticksModeTB.setToolTipText("Toggles step-by-step mode");
         ticksModeTB.setFocusable(false);
@@ -158,8 +158,8 @@ public class ControlToolBarPanel extends GuiPanelImpl{
         toolbar.add(ticksModeTB);
 
         addTicksButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        addTicksButton.setText("Run steps:");
-        addTicksButton.setToolTipText("Runs system the number of steps specified in adjacent text field.");
+        addTicksButton.setText("Run ticks:");
+        addTicksButton.setToolTipText("Runs system the number of ticks specified in adjacent text field.");
         addTicksButton.setFocusable(false);
         addTicksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addTicksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -172,7 +172,7 @@ public class ControlToolBarPanel extends GuiPanelImpl{
 
         tiksTB.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tiksTB.setText("0");
-        tiksTB.setToolTipText("Enter a number of steps here.  The system will run this number of step when adjacent 'Add' button is pressed.");
+        tiksTB.setToolTipText("Enter a number of ticks here.  The system will run this number of ticks when adjacent 'Add' button is pressed and the system is in step mode.");
         tiksTB.setMaximumSize(new java.awt.Dimension(100, 24));
         tiksTB.setMinimumSize(new java.awt.Dimension(70, 24));
         tiksTB.setPreferredSize(new java.awt.Dimension(60, 24));
@@ -180,11 +180,11 @@ public class ControlToolBarPanel extends GuiPanelImpl{
         toolbar.add(jSeparator1);
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        jLabel2.setText("Step duration (ms): ");
+        jLabel2.setText("Tick duration (ms): ");
         toolbar.add(jLabel2);
 
         tickDurationTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        tickDurationTextField.setToolTipText("The system's current step duration in milliseconds.");
+        tickDurationTextField.setToolTipText("The system's current tick duration in milliseconds.");
         tickDurationTextField.setMaximumSize(new java.awt.Dimension(100, 24));
         tickDurationTextField.setMinimumSize(new java.awt.Dimension(50, 24));
         tickDurationTextField.setPreferredSize(new java.awt.Dimension(50, 24));
@@ -199,6 +199,7 @@ public class ControlToolBarPanel extends GuiPanelImpl{
         minStepDurationLabel.setText(" 0");
         toolbar.add(minStepDurationLabel);
 
+        tickDurationSlider.setToolTipText("Sets the tick duration of the system");
         tickDurationSlider.setMaximumSize(new java.awt.Dimension(150, 24));
         tickDurationSlider.setMinimumSize(new java.awt.Dimension(100, 24));
         tickDurationSlider.setPreferredSize(new java.awt.Dimension(100, 24));
@@ -224,7 +225,7 @@ public class ControlToolBarPanel extends GuiPanelImpl{
         } catch (NumberFormatException e) {
         }
 
-        if(tickDuration < tickDurationSlider.getMinimum() || tickDuration > tickDurationSlider.getMaximum()){
+        if (tickDuration < tickDurationSlider.getMinimum() || tickDuration > tickDurationSlider.getMaximum()) {
             tickDuration = tm.getTickDuration();
         }
         if (tickDuration >= 0) {
@@ -276,15 +277,23 @@ public class ControlToolBarPanel extends GuiPanelImpl{
      * @param evt
      */
     private void addTicksButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        int ticks;
-        try {
-            ticks = Integer.parseInt(tiksTB.getText());
-        } catch (NumberFormatException e) {
-            ticks = 0;
+        if (ticksModeTB.isSelected()) {
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            int ticks;
+            try {
+                ticks = Integer.parseInt(tiksTB.getText());
+            } catch (NumberFormatException e) {
+                ticks = 0;
+            }
+            parameters.put("ticks", ticks);
+            controller.executeCommand("AddTicks", parameters);
+
+            if (isPaused) {
+                isPaused = !isPaused;
+                statusLabel.setText(RUNNING_LABEL);
+                controller.executeCommand("resumeRunningThreads", null);
+            }
         }
-        parameters.put("ticks", ticks);
-        controller.executeCommand("AddTicks", parameters);
     }
 
     /*

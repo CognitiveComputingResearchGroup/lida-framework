@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -247,9 +248,11 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
             parent = principalTabbedPanel;
             associatedMenu = areaCPanelsMenu;
         } else if ("FLOAT".equalsIgnoreCase(panelPosition)) {
-            JDialog dialog = new JDialog(this, panel.getName());
+            JFrame dialog = new JFrame(panel.getName());
             dialog.add(jPanel);
             dialog.pack();
+            dialog.setAlwaysOnTop(false);
+            dialog.setResizable(true);
             dialog.setVisible(true);
             dialog.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -352,14 +355,14 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
                     }
 
                     Container c = cjPanel.getParent();
-                    while (c != null && !(c instanceof JDialog)) {
+                    while (c != null && !(c instanceof JFrame)) {
                         c = c.getParent();
                     }
-                    if (c instanceof JDialog) {
+                    if (c instanceof JFrame) {
                         if (c.isVisible()) {
-                            ((JDialog) c).setVisible(false);
+                            ((JFrame) c).setVisible(false);
                         } else {
-                            ((JDialog) c).setVisible(true);
+                            ((JFrame) c).setVisible(true);
                         }
                     }
                 }
