@@ -59,8 +59,7 @@ public class ExcitationTask extends FrameworkTaskImpl {
 	 * @param pam
 	 *            PerceptualAssociativeMemory module
 	 */
-	public ExcitationTask(int ticksPerRun, PamNode n, double excitation,
-			PerceptualAssociativeMemory pam) {
+	public ExcitationTask(int ticksPerRun, PamNode n, double excitation,PerceptualAssociativeMemory pam) {
 		super(ticksPerRun);
 		node = n;
 		excitationAmount = excitation;

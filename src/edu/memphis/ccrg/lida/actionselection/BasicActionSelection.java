@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
@@ -37,14 +39,23 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
 	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
-
-	private int ticksPerRun;
+	private double maxActivationThreshold;
+	private DecayStrategy behaviorDecayStrategy;
+	
+	private static final int DEFAULT_REFRACTORY_PERIOD = 80;
 	private int refractoryPeriodTicks;
 	
-	private double activationThreshold;
-	private double maxActivationThreshold;
-
-	private double defaultRemovableThreshold;
+	private static final double DEFAULT_CANDIDATE_THRESHOLD = 0.8;
+	private double candidateThreshold;
+	
+	private static final double DEFAULT_REMOVAL_THRESHOLD = 0.1;
+	private double defaultRemovalThreshold;
+	
+	private static final int DEFAULT_TICKS_PER_RUN = 10;
+	private int ticksPerRun;
+	
+	private static final double DEFAULT_THRESHOLD_DECAY_RATE = 0.1;
+	private double thresholdDecayRate;
 	
 	/**
 	 * Default constructor
@@ -54,24 +65,34 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void init() {
-		ticksPerRun = (Integer) getParam(
-				"actionSelection.backgroundTaskTicksPerRun", 10);
 		refractoryPeriodTicks = (Integer) getParam(
-				"actionSelection.refractoryperiodTicks", 80);
-		activationThreshold = (Double) getParam(
-				"actionSelection.activationThreshold", 0.0);
-		maxActivationThreshold = activationThreshold;
+				"actionSelection.refractoryperiodTicks", DEFAULT_REFRACTORY_PERIOD);
+		candidateThreshold = (Double) getParam("actionSelection.candidateThreshold", DEFAULT_CANDIDATE_THRESHOLD);
+		maxActivationThreshold = candidateThreshold;
 
-		defaultRemovableThreshold = (Double) getParam(
-				"actionSelection.activationThreshold", 0.1);
+		defaultRemovalThreshold = (Double) getParam("actionSelection.removalThreshold", DEFAULT_REMOVAL_THRESHOLD);
 
+		ticksPerRun = (Integer) getParam("actionSelection.backgroundTaskTicksPerRun", DEFAULT_TICKS_PER_RUN);
 		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
+		
+		ElementFactory factory = ElementFactory.getInstance();
+		String decayType = (String)getParam("actionSelection.behaviorDecayStrategy", factory.getDefaultDecayType());
+		behaviorDecayStrategy = factory.getDecayStrategy(decayType);
+		if(behaviorDecayStrategy == null){
+			logger.log(Level.WARNING,"factory doesn't have decay strategy");
+			behaviorDecayStrategy = factory.getDefaultDecayStrategy();
+		}
+		
+		thresholdDecayRate = (Double) getParam("actionSelection.thresholdDecayRate", DEFAULT_THRESHOLD_DECAY_RATE);
 	}
 
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof ActionSelectionListener) {
 			addActionSelectionListener((ActionSelectionListener) listener);
+		}else{
+			logger.log(Level.WARNING, "Cannot add listener {1}", 
+					new Object[]{TaskManager.getCurrentTick(), listener});
 		}
 	}
 	@Override
@@ -79,20 +100,19 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		listeners.add(listener);
 	}
 	
-	// TODO move to xml as initial task
 	private class BackgroundTask extends FrameworkTaskImpl {
 		public BackgroundTask(int ticksPerRun) {
 			super(ticksPerRun);
 		}
 		@Override
 		protected void runThisFrameworkTask() {
-			if(selectAction()!=null){
+			if(selectAction() != null){
 				setNextTicksPerRun(refractoryPeriodTicks);
-				activationThreshold = maxActivationThreshold;
+				candidateThreshold = maxActivationThreshold;
 			}else{
-				activationThreshold -= .1;
-				if(activationThreshold < 0.0){
-					activationThreshold=0.0;
+				candidateThreshold -= thresholdDecayRate;
+				if(candidateThreshold < 0.0){
+					candidateThreshold=0.0;
 				}
 			}
 		}
@@ -100,13 +120,14 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void receiveBehavior(Behavior b) {
-		if(b!=null){
-		synchronized(this){	
-			b.setActivatibleRemovalThreshold(defaultRemovableThreshold);
-			behaviors.add(b);
-		}
-		logger.log(Level.FINE, "Behavior added {1}",
-				   new Object[]{TaskManager.getCurrentTick(), b});
+		if(b != null){
+			synchronized(this){	
+				b.setDecayStrategy(behaviorDecayStrategy);
+				b.setActivatibleRemovalThreshold(defaultRemovalThreshold);
+				behaviors.add(b);
+			}
+			logger.log(Level.FINE, "Behavior added {1}",
+					   new Object[]{TaskManager.getCurrentTick(), b});
 		}else{
 			logger.log(Level.WARNING, "null Behavior can not be added",
 					   TaskManager.getCurrentTick());
@@ -131,12 +152,12 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	private Behavior chooseBehavior() {
 		Behavior selected = null;
-		double activation = -1.0;
+		double highestActivation = -1.0;
 		for (Behavior b : behaviors) {
 			double behaviorActivation = b.getActivation();
-			if (behaviorActivation >= activationThreshold && behaviorActivation > activation) {
+			if (behaviorActivation >= candidateThreshold && behaviorActivation > highestActivation) {
 				selected = b;
-				activation = behaviorActivation;
+				highestActivation = behaviorActivation;
 			}
 		}
 		return selected;

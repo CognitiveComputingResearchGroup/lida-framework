@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.pam.tasks;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.pam.PamLink;
+import edu.memphis.ccrg.lida.pam.PamLinkable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
@@ -21,11 +22,9 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  */
 public class PropagationTask extends FrameworkTaskImpl {
 		
-	private PamNode sink;
+	private PamLinkable sink;
 	private PamLink link;
-	
 	private double excitationAmount;
-
 	private PerceptualAssociativeMemory pam;
 
 	/**
@@ -43,7 +42,7 @@ public class PropagationTask extends FrameworkTaskImpl {
 						   PerceptualAssociativeMemory pam) {
 		super(ticksPerRun);
 		this.link = link;
-		this.sink = (PamNode) link.getSink();
+		this.sink = (PamLinkable) link.getSink();
 		this.excitationAmount = amount;
 		this.pam = pam;	
 	}
@@ -64,7 +63,9 @@ public class PropagationTask extends FrameworkTaskImpl {
 			AddLinkToPerceptTask task = new AddLinkToPerceptTask(link, pam);
 			pam.getAssistingTaskSpawner().addTask(task);
 		}
-		pam.propagateActivationToParents(sink);
+		if(sink instanceof PamNode){
+			pam.propagateActivationToParents((PamNode) sink);
+		}
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 }

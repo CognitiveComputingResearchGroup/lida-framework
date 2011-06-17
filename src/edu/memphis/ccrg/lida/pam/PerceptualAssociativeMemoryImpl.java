@@ -96,6 +96,9 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;
+	
+	private static final double DEFAULT_PROPAGATION_THRESHOLD = 0.05;
+	private double propagateActivationThreshold = DEFAULT_PROPAGATION_THRESHOLD;
 
 	private Map<Integer, LinkCategory> linkCategories = new HashMap<Integer, LinkCategory>();
 
@@ -148,6 +151,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 				"pam.excitationTicksPerRun", DEFAULT_EXCITATION_TASK_TICKS);
 		propagationTaskTicksPerRun = (Integer) getParam(
 				"pam.propagationTicksPerRun", DEFAULT_PROPAGATION_TASK_TICKS);
+		propagateActivationThreshold = (Double)getParam("pam.propagateActivationThreshold",DEFAULT_PROPAGATION_THRESHOLD);
 	}
 
 	@Override
@@ -306,12 +310,12 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			return;
 		}
 
-		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl
-				.getExtendedId());
+		PamNode linkable = (PamNode) pamNodeStructure.getNode(pl.getExtendedId());
 		if (linkable != null) {
-			logger.log(Level.FINEST, "{1} gets activation burst. Amount: {2}",
-					new Object[] { TaskManager.getCurrentTick(), linkable,
-							amount });
+			if(logger.isLoggable(Level.FINEST)){
+				logger.log(Level.FINEST, "{1} receives excitation of: {2}",
+					new Object[] { TaskManager.getCurrentTick(), linkable,amount});
+			}
 			ExcitationTask task = new ExcitationTask(excitationTaskTicksPerRun,
 					linkable, amount, this);
 			taskSpawner.addTask(task);
@@ -328,24 +332,25 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		}
 	}
 
+	private Map<String, Object> propagateParams = new HashMap<String, Object>();
+	
 	@Override
 	public void propagateActivationToParents(PamNode pn) {
+		double nodeActivation = pn.getTotalActivation();
+		if(nodeActivation < propagateActivationThreshold){
+			return;
+		}
+		
 		// Calculate the amount to propagate
-		Map<String, Object> propagateParams = new HashMap<String, Object>();
 		propagateParams.put("upscale", upscaleFactor);
-		propagateParams.put("totalActivation", pn.getTotalActivation());
-		double amountToPropagate = propagationStrategy
-				.getActivationToPropagate(propagateParams);
+		propagateParams.put("totalActivation", nodeActivation);
+		double amountToPropagate = propagationStrategy.getActivationToPropagate(propagateParams);
 
 		// Get parents of pamNode and the connecting link
-		Map<Linkable, Link> parentLinkMap = pamNodeStructure
-				.getConnectedSinks(pn);
+		Map<Linkable, Link> parentLinkMap = pamNodeStructure.getConnectedSinks(pn);
 		for (Linkable parent : parentLinkMap.keySet()) {
 			// Excite the connecting link and the parent
-			if (parent instanceof PamNode) {
-				propagateActivation(parentLinkMap.get(parent),
-						amountToPropagate);
-			}
+			propagateActivation(parentLinkMap.get(parent),amountToPropagate);
 		}
 	}
 
