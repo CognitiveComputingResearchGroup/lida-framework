@@ -22,6 +22,13 @@
     	</attribute>
     	<attribute name="flyweight" type="boolean" use="optional"></attribute>
     </complexType>
+    <complexType name="associatedmodule">
+       <simpleContent>
+      <extension base="string">
+    	<attribute name="function" type="string" use="optional"></attribute>
+      </extension>
+    </simpleContent>
+    </complexType>
 
 
     <complexType name="linkabledef">
@@ -106,14 +113,18 @@
     		<element name="class" type="string" maxOccurs="1"
     			minOccurs="1">
     		</element>
-    		<element name="defaultstrategy" type="string"
+            <element name="ticksperrun" type="int" maxOccurs="1" minOccurs="1"></element>
+            <element name="defaultstrategy" type="string"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="associatedmodule" type="tns:associatedmodule"
     			maxOccurs="unbounded" minOccurs="0">
     		</element>
     		<element name="param" type="tns:param" maxOccurs="unbounded"
     			minOccurs="0">
     		</element>
     	</sequence>
-        <attribute name="name" type="string" use="required"></attribute>
+    	<attribute name="name" type="string" use="required"></attribute>
     </complexType>
 
     <complexType name="tasks">

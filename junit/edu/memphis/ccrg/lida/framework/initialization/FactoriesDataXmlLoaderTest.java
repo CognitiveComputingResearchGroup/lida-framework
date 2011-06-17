@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.memphis.ccrg.lida.framework.ModuleName;
+
 public class FactoriesDataXmlLoaderTest {
 
 	private FactoriesDataXmlLoader loader;
@@ -186,13 +188,17 @@ public class FactoriesDataXmlLoaderTest {
 	public void testGetCodelets() {
 		String xml = "<LidaFactories><tasks><task name=\"topleft\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector</class>"
+				+ "<ticksperrun>9</ticksperrun>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
+				+ "<associatedmodule function=\"hi\">Environment</associatedmodule>"
+				+ "<associatedmodule function=\"hola\">Workspace</associatedmodule>"
 				+ "<param name=\"param\" type=\"int\">10</param>"
 				+ "</task>"
 				+"<task name=\"bottomright\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
+				+ "<ticksperrun>9</ticksperrun>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<param name=\"param1\" type=\"string\">hi</param>"
 				+ "</task>"
@@ -214,6 +220,10 @@ public class FactoriesDataXmlLoaderTest {
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(1, def.getParams().size());
 		assertEquals(10, def.getParams().get("param"));
+		assertEquals(9, def.getTicksPerRun());
+		Map<ModuleName, String> assocMod = def.getAssociatedModules();
+		assertEquals("hi", assocMod.get(ModuleName.Environment));
+		assertEquals("hola", assocMod.get(ModuleName.Workspace));
 		
 		def = codelets.get("bottomright");		
 		assertNotNull(def);
@@ -225,17 +235,19 @@ public class FactoriesDataXmlLoaderTest {
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(1, def.getParams().size());
 		assertEquals("hi", def.getParams().get("param1"));
+		assertEquals(9, def.getTicksPerRun());
 	}
 
 	@Test
 	public void testGetCodelet() {
-		String xml = "<codelet name=\"topleft\">"
+		String xml = "<task name=\"topleft\">"
 				+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.TopLeftDetector</class>"
+				+ "<ticksperrun>9</ticksperrun>"
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
 				+ "<param name=\"param\" type=\"int\">10</param>"
-				+ "</codelet>";
+				+ "</task>";
 
 		Element e = parseDomElement(xml);
 
@@ -250,6 +262,7 @@ public class FactoriesDataXmlLoaderTest {
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(1, def.getParams().size());
 		assertEquals(10, def.getParams().get("param"));
+		assertEquals(9, def.getTicksPerRun());
 	}
 
 	@Test

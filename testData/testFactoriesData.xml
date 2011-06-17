@@ -55,6 +55,7 @@
 	<tasks>
 		<task name="topleft">
 			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet</class>
+			<ticksperrun>1</ticksperrun>
 			<defaultstrategy>strategy1</defaultstrategy>
 			<defaultstrategy>strategy2</defaultstrategy>
 			<defaultstrategy>strategy3</defaultstrategy>
@@ -63,6 +64,7 @@
 		<task name="bottomright">
 			<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another
 			</class>
+			<ticksperrun>1</ticksperrun>
 			<defaultstrategy>strategy1</defaultstrategy>
 			<param name="param1" type="string">hi</param>
 		</task>

@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework;
 
+import java.util.Map;
+
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -116,5 +118,11 @@ public interface FrameworkModule extends FullyInitializable{
 	 * @return the assisting task spawner
 	 */
 	public TaskSpawner getAssistingTaskSpawner();
+
+	/**
+	 * Convenience method to get submodules
+	 * @return map of submodules by {@link ModuleName}
+	 */
+	public Map<ModuleName, FrameworkModule> getSubmodules();
 
 }

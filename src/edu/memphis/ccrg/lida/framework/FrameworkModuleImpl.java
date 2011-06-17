@@ -135,11 +135,8 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		}
 	}
 
-	/**
-	 * Convenience method to get submodules
-	 * @return map of submodules by {@link ModuleName}
-	 */
-	protected Map<ModuleName, FrameworkModule> getSubmodules() {
+	@Override
+	public Map<ModuleName, FrameworkModule> getSubmodules() {
 		return Collections.unmodifiableMap(submodules);
 	}
 

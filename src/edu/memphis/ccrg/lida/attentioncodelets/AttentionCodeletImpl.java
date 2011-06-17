@@ -36,6 +36,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
     private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
     private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
     private static final int DEFAULT_REFRACTORY_PERIOD = 50;
+	private static final double DEFAULT_INITIAL_ACTIVATION = 1.0;
     private DecayStrategy coalitionDecayStrategy;
     /**
      * Where codelet will look for and retrieve content from
@@ -53,13 +54,18 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
      */
     public AttentionCodeletImpl() {
         super();
+        setActivation(DEFAULT_INITIAL_ACTIVATION);
     }
 
     @Override
     public void init() {
         refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
         String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
+        double initialActivation = (Double) getParam("initialActivation", getActivation());
+        setActivation(initialActivation);
         coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
+        
+        
     }
 
     /**
@@ -81,8 +87,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
                 globalWorkspace = (GlobalWorkspace) module;
             }
         } else {
-            logger.log(Level.WARNING, "Module usage not supported",
-                    TaskManager.getCurrentTick());
+            logger.log(Level.WARNING, "Module usage not supported {1}",
+                    new Object[]{TaskManager.getCurrentTick(),usage});
         }
     }
 
@@ -99,8 +105,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
                 coalition.setDecayStrategy(coalitionDecayStrategy);
                 globalWorkspace.addCoalition(coalition);
                 setNextTicksPerRun(refractoryPeriod);
-                logger.log(Level.FINER, "{1} adds new coalition",
-                        new Object[]{TaskManager.getCurrentTick(), this});
+                logger.log(Level.FINER, "{1} adds new coalition with activation {2}",
+                        new Object[]{TaskManager.getCurrentTick(), this, coalition.getActivation()});
             }
         }
     }

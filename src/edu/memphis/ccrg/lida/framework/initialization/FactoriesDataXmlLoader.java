@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
@@ -221,18 +222,43 @@ public class FactoriesDataXmlLoader {
 	 */
 	Map<String, FrameworkTaskDef> getTasks(Element element,
 			Map<String, StrategyDef> strategies) {
-		Map<String, FrameworkTaskDef> codels = new HashMap<String, FrameworkTaskDef>();
+		Map<String, FrameworkTaskDef> tasks = new HashMap<String, FrameworkTaskDef>();
 		List<Element> list = XmlUtils.getChildrenInGroup(element, "tasks",
 				"task");
 		if (list != null && list.size() > 0) {
 			for (Element e : list) {
 				FrameworkTaskDef taskDef = getTaskDef(e, strategies);
 				if (taskDef != null) {
-					codels.put(taskDef.getName(), taskDef);
+					tasks.put(taskDef.getName(), taskDef);
 				}
 			}
 		}
-		return codels;
+		return tasks;
+	}
+	/**
+	 * reads the associated modules of this element
+	 * 
+	 * @param element Dom element
+	 * @return a Map with the associated modules
+	 */
+	Map<ModuleName,String> getAssociatedModules(Element element) {
+		Map<ModuleName,String> associatedModules = new HashMap<ModuleName, String>();
+		List<Element> nl = XmlUtils.getChildren(element,"associatedmodule");
+		if (nl != null && nl.size() > 0) {
+			for (Element assocModuleElement:nl ) {
+				String assocMod=XmlUtils.getValue(assocModuleElement);
+				String function = assocModuleElement.getAttribute("function").trim();
+				ModuleName name = ModuleName.getModuleName(assocMod);
+				if(name !=null){
+					associatedModules.put(name, function);
+				}else{
+					logger.log(Level.WARNING, "{1} is not a defined Module. It is not associated", 
+							new Object[]{0L,assocMod});
+					
+				}
+			}
+		}
+		return associatedModules;
 	}
 
 	/**
@@ -245,6 +271,7 @@ public class FactoriesDataXmlLoader {
 		FrameworkTaskDef taskDef = null;
 		String className = XmlUtils.getTextValue(e, "class");
 		String name = e.getAttribute("name");
+		int ticksPerRun = XmlUtils.getIntegerValue(e, "ticksperrun");
 		Map<String, String> behav = new HashMap<String, String>();
 		List<String> list = XmlUtils.getChildrenValues(e, "defaultstrategy");
 		checkStrategies(list, strategies);
@@ -255,11 +282,14 @@ public class FactoriesDataXmlLoader {
 
 		Map<String, Object> params = XmlUtils.getTypedParams(e);
 
+		Map<ModuleName,String> associatedModules = getAssociatedModules(e);
 		taskDef = new FrameworkTaskDef();
 		taskDef.setClassName(className.trim());
 		taskDef.setName(name.trim());
 		taskDef.setParams(params);
 		taskDef.setDefaultStrategies(behav);
+		taskDef.setTicksPerRun(ticksPerRun);
+		taskDef.setAssociatedModules(associatedModules);
 		return taskDef;
 	}
 

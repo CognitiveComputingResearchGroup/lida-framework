@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
 import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
@@ -306,20 +308,6 @@ public class ElementFactory {
 		tasks.put(taskDef.getName(), taskDef);
 	}
 
-	/**
-	 * Adds the {@link FrameworkTask} type.
-	 * 
-	 * @param typeName
-	 *            the type name
-	 * @param className
-	 *            the canonical {@link FrameworkTask} name
-	 */
-	public void addFrameworkTaskType(String typeName,
-			String className) {
-		tasks.put(typeName, new FrameworkTaskDef(className,
-				new HashMap<String, String>(), typeName,
-				new HashMap<String, Object>()));
-	}
 
 	/**
 	 * Gets default link type.
@@ -961,13 +949,23 @@ public class ElementFactory {
 	 * Returns a new {@link FrameworkTask} having specified attributes. FrameworkTask
 	 *  will have strategies specified for the taskType
 	 * @param taskType type of FrameworkTask
-	 * @param ticksPerRun execution frequency 
-	 * @param activation initial activation
-	 * @param removalThreshold activation needed to remain active
 	 * @param params optional parameters to be set in object's init method
 	 * @return the new {@link FrameworkTask}
 	 */
-	public FrameworkTask getFrameworkTask(String taskType, int ticksPerRun, double activation, double removalThreshold, Map<String,?extends Object> params){
+	public FrameworkTask getFrameworkTask(String taskType, Map<String,?extends Object> params){		
+		return getFrameworkTask(taskType,params,null);
+	}
+	
+	/**
+	 * Returns a new {@link FrameworkTask} having specified attributes. FrameworkTask
+	 *  will have strategies specified for the taskType
+	 * @param taskType type of FrameworkTask
+	 * @param params optional parameters to be set in object's init method
+	 * @param modules map of modules for association.
+	 *            
+	 * @return the new {@link FrameworkTask}
+	 */
+	public FrameworkTask getFrameworkTask(String taskType, Map<String,?extends Object> params, Map<ModuleName,FrameworkModule> modules){
 		FrameworkTaskDef taskDef = tasks.get(taskType);		
 		if (taskDef == null) {
 			logger.log(Level.WARNING, "Factory does not contain FrameworkTask type {1}", 
@@ -982,8 +980,10 @@ public class ElementFactory {
 		if(exciteB == null){
 			exciteB=defaultExciteType;
 		}
-	
-		return getFrameworkTask(taskType,decayB,exciteB,ticksPerRun,activation,removalThreshold,params);
+		int ticksPerRun = taskDef.getTicksPerRun();
+		
+		
+		return getFrameworkTask(taskType,decayB,exciteB,ticksPerRun,Activatible.DEFAULT_ACTIVATION,Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD,params,modules);
 	}
 	
 	/**
@@ -1002,10 +1002,12 @@ public class ElementFactory {
 	 * @param removalThreshold activation needed to remain active
 	 * @param params
 	 *            optional parameters to be set in object's init method
+	 * @param modules map of modules for association.
+	 *            
 	 * @return the new {@link FrameworkTask}
 	 */
 	public FrameworkTask getFrameworkTask(String taskType, String decayStrategy, String exciteStrategy, 
-							  int ticksPerRun, double activation, double removalThreshold, Map<String, ? extends Object> params){
+							  int ticksPerRun, double activation, double removalThreshold, Map<String, ? extends Object> params, Map<ModuleName,FrameworkModule> modules){
 		FrameworkTask task = null;
 		try {
 			FrameworkTaskDef taskDef = tasks.get(taskType);
@@ -1021,6 +1023,19 @@ public class ElementFactory {
 			task.setActivation(activation);
 			task.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(task, decayStrategy, exciteStrategy);
+			
+			if(modules !=null){
+				Map<ModuleName,String> associatedModules = taskDef.getAssociatedModules();
+				for(ModuleName mName:associatedModules.keySet()){
+					FrameworkModule module = modules.get(mName);
+					if(module!=null){
+						task.setAssociatedModule(module, associatedModules.get(mName));
+					}else{
+						logger.log(Level.WARNING, "Error associating module to FrameworkTask", TaskManager
+								.getCurrentTick());
+					}
+				}
+			}
 			
 			if (params != null){
 				task.init(params);

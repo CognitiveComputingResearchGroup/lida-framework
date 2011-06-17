@@ -107,9 +107,9 @@ public class BasicAttentionCodeletTest {
 		
 		ns = codelet.retrieveWorkspaceContent(csm);
 		assertNotNull(ns);
-		assertEquals(1, ns.getNodeCount());
+		assertEquals(0, ns.getNodeCount());
 		assertEquals(1, csmContent.getNodeCount());
-		assertTrue(NodeStructureImpl.compareNodeStructures(csmContent, ns));
+		assertFalse(NodeStructureImpl.compareNodeStructures(csmContent, ns));
 	}
 
 }

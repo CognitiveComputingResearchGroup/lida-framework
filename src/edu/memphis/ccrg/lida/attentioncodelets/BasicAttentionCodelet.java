@@ -11,8 +11,12 @@ package edu.memphis.ccrg.lida.attentioncodelets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
+import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
@@ -32,6 +36,25 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 		super();
 	}
 	
+	@Override
+	public void init(){
+		super.init();
+		String nodeLabels = (String) getParam("nodes",null);
+		if (nodeLabels != null) {
+			GlobalInitializer globalInitializer = GlobalInitializer
+					.getInstance();
+			String[] labels = nodeLabels.split(",");
+	        NodeStructure soughtContent = new NodeStructureImpl();
+			for (String label : labels) {
+				Node node = (Node) globalInitializer.getAttribute(label);
+				if (node !=null){
+					soughtContent.addDefaultNode(node);
+				}
+			}
+			setSoughtContent(soughtContent);
+		}
+		
+	}
 	/**
 	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
 	 * content.
@@ -65,7 +88,18 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	 */
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
-		//TODO Naive implementation. Should not copy entire buffer.
-		return ((NodeStructure) buffer.getBufferContent(null)).copy();
+		NodeStructure ns = ((NodeStructure) buffer.getBufferContent(null));
+		NodeStructure result = new NodeStructureImpl();
+		for(Node n: soughtContent.getNodes()){
+			if(ns.containsNode(n)){
+				result.addDefaultNode(ns.getNode(n.getId()));
+			}
+		}
+		for(Link l: soughtContent.getLinks()){
+			if(ns.containsLink(l)){
+				result.addDefaultLink(ns.getLink(l.getExtendedId()));
+			}
+		}
+		return result;
 	}
 }

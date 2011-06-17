@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockAttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockGlobalWorkspaceImpl;
@@ -30,6 +31,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.pam.PamNode;
+import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.WorkspaceImpl;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
@@ -66,6 +68,7 @@ public class AttentionCodeletModuleTest{
 		workspace.addSubModule(csm);
 		
 		globalWorkspace= new MockGlobalWorkspaceImpl();
+		globalWorkspace.setModuleName(ModuleName.GlobalWorkspace);
 		
 		ns = new NodeStructureImpl();
 		node1 = factory.getNode();
@@ -77,12 +80,27 @@ public class AttentionCodeletModuleTest{
 		ns.addDefaultLink(link1);	
 		
 		csm.addBufferContent((WorkspaceContent) ns);
+		Workspace w = new WorkspaceImpl();
+		w.addSubModule(csm);
+		
+		
+		attentionModule.setAssociatedModule(w, "");
+		attentionModule.setAssociatedModule(globalWorkspace, "");
 		
 		codelet = new MockAttentionCodeletImpl();
 		codelet.setSoughtContent(ns);	
 	
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
 		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
+
+		Map<ModuleName,String> assoc =  new HashMap<ModuleName, String>();
+		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_READ_FROM);
+		assoc.put(ModuleName.GlobalWorkspace, ModuleUsage.TO_WRITE_TO);
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(), 1, 
+				new HashMap<String, String>(), 
+				"BasicAttentionCodelet", new HashMap<String, Object>(), assoc);
+		factory.addFrameworkTaskType(taskDef);
 	}
 	
 	@Test
@@ -100,19 +118,6 @@ public class AttentionCodeletModuleTest{
 		//Without associated modules 
 		AttentionCodeletImpl codelet = (AttentionCodeletImpl) attentionModule.getDefaultCodelet();		
 		assertTrue(codelet instanceof BasicAttentionCodelet);
-		codelet.setSoughtContent(ns);
-		try{
-			codelet.runThisFrameworkTask();
-			assertTrue(false);
-		}catch(NullPointerException e){
-		}
-		
-		//with associated modules
-		attentionModule.setAssociatedModule(workspace, null);
-		attentionModule.setAssociatedModule(globalWorkspace, null);
-		
-		codelet = (AttentionCodeletImpl) attentionModule.getDefaultCodelet();		
-		assertTrue(codelet instanceof BasicAttentionCodelet);
 		
 		assertEquals(null, globalWorkspace.coalition);
 		
@@ -128,10 +133,12 @@ public class AttentionCodeletModuleTest{
 		AttentionCodeletImpl codelet = (AttentionCodeletImpl) attentionModule.getCodelet("foo");
 		assertEquals(null, codelet);
 		
-		factory.addFrameworkTaskType("coolCodelet", MockAttentionCodeletImpl.class.getCanonicalName());
+		FrameworkTaskDef def = new FrameworkTaskDef(MockAttentionCodeletImpl.class.getCanonicalName(), 
+				1, new HashMap<String, String>(), "coolCodelet", 
+				new HashMap<String, Object>(), new HashMap<ModuleName, String>());
+		factory.addFrameworkTaskType(def);
 		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("coolCodelet");
 		assertTrue(codelet instanceof MockAttentionCodeletImpl);
-		
 		
 		//with associated modules
 		attentionModule.setAssociatedModule(workspace, null);
@@ -245,11 +252,6 @@ public class AttentionCodeletModuleTest{
 		
 		codelet = attentionModule.getDefaultCodelet();
 		assertTrue(codelet instanceof MockAttentionCodeletImpl);
-	}
-
-	@Test
-	public void testToString() {
-		assertEquals(ModuleName.AttentionModule.toString(), attentionModule.toString());
 	}
 
 	@Test

@@ -7,8 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,15 +16,10 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
-import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.Workspace;
-import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
  * A module which maintains Codelets of workspace. This module manages Codelets
@@ -34,8 +28,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * @author Ryan J McCall
  *
  */
-public class StructureBuildingCodeletModule extends FrameworkModuleImpl implements
-		GuiEventProvider, CodeletManagerModule {
+public class StructureBuildingCodeletModule extends FrameworkModuleImpl implements CodeletManagerModule {
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
@@ -46,8 +39,16 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	private static final double DEFAULT_CODELET_REMOVAL_THRESHOLD = -1.0;
 	private double codeletRemovalThreshold = DEFAULT_CODELET_REMOVAL_THRESHOLD;
 
-	private static final int DEFAULT_TICKS = 1;
-	private int codeletTicksPerRun = DEFAULT_TICKS;
+	private static final String DEFAULT_CODELET_TYPE = "BasicStructureBuildingCodelet";
+	private String defaultCodeletType = DEFAULT_CODELET_TYPE;
+
+	private static ElementFactory factory = ElementFactory
+			.getInstance();
+
+
+	private Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
+	
+
 
 	// /*
 	// * Pool keeping all recycled codelets.
@@ -56,43 +57,24 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	// */
 	// private Map<CodeletType, List<StructureBuildingCodelet>> codeletPool;
 
-	private List<FrameworkGuiEventListener> guis;
-
-	private static ElementFactory factory = ElementFactory
-			.getInstance();
-
-	private String defaultCodeletName;
-
-	private Workspace workspace;
-
 	/**
 	 * Default Constructor. Sets up the initial 
 	 * default {@link StructureBuildingCodelet} for the module.
 	 */
 	public StructureBuildingCodeletModule() {
-		Class<BasicStructureBuildingCodelet> cl = BasicStructureBuildingCodelet.class;
-		factory.addFrameworkTaskType(cl.getSimpleName(), cl.getCanonicalName());
-		defaultCodeletName = cl.getSimpleName();
-		
-		guis = new ArrayList<FrameworkGuiEventListener>(); 
 	}
 
 	@Override
 	public void init() {
+		defaultCodeletType = (String) getParam("sbcModule.defaultCodeletType", DEFAULT_CODELET_TYPE);
 		codeletActivation = (Double) getParam("sbcModule.codeletActivation", DEFAULT_CODELET_ACTIVATION);
 		codeletRemovalThreshold = (Double) getParam("sbcModule.codeletRemovalThreshold", DEFAULT_CODELET_REMOVAL_THRESHOLD);
-		codeletTicksPerRun = (Integer) getParam("sbcModule.codeletTicksPerRun", DEFAULT_TICKS);
-	}
-
-	@Override
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-		guis.add(listener);
 	}
 	
 	@Override
 	public void setDefaultCodeletType(String type){
 		if(factory.containsTaskType(type)){
-			defaultCodeletName = type;
+			defaultCodeletType = type;
 		}else{
 			logger.log(Level.WARNING, 
 					"Cannot set default codelet type, factory does not have type: {1}", 
@@ -103,7 +85,13 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
-			workspace = (Workspace) module;
+			modulesMap.put(module.getModuleName(), module);
+			Map<ModuleName, FrameworkModule> submodules = module.getSubmodules();
+			if(!submodules.isEmpty()){
+				modulesMap.putAll(submodules);
+			}else {
+				logger.log(Level.WARNING, "Cannot add submodules",TaskManager.getCurrentTick());
+			}
 		} else {
 			logger.log(Level.WARNING, "Cannot associate module {1}",
 					new Object[]{TaskManager.getCurrentTick(),module});
@@ -111,19 +99,12 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	}
 
 	@Override
-	public void sendEventToGui(FrameworkGuiEvent evt) {
-		for (FrameworkGuiEventListener gui : guis) {
-			gui.receiveFrameworkGuiEvent(evt);
-		}
-	}
-
-	@Override
 	public StructureBuildingCodelet getDefaultCodelet() {
-		return getCodelet(defaultCodeletName, null);
+		return getCodelet(defaultCodeletType, null);
 	}
 	@Override
 	public StructureBuildingCodelet getDefaultCodelet(Map<String, Object> params) {
-		return getCodelet(defaultCodeletName, params);		
+		return getCodelet(defaultCodeletType, params);		
 	}
 
 	@Override
@@ -133,59 +114,16 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 
 	@Override
 	public StructureBuildingCodelet getCodelet(String type, Map<String, Object> params) {
-		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getFrameworkTask(type,
-						codeletTicksPerRun, codeletActivation, codeletRemovalThreshold, null);
+		StructureBuildingCodelet codelet = (StructureBuildingCodelet) factory.getFrameworkTask(type, params, modulesMap);
 		if (codelet == null) {
 			logger.log(Level.WARNING,
 					"Codelet type not supported: {1}",
 					new Object[]{TaskManager.getCurrentTick(),type});
 			return null;
 		}
+		codelet.setActivation(codeletActivation);
+		codelet.setActivatibleRemovalThreshold(codeletRemovalThreshold);
 
-		String readable = "PerceptualBuffer";
-		String writeable = "CurrentSituationalModel";
-
-		if (params != null) {
-			String desiredReadable = (String) params.get(ModuleUsage.TO_READ_FROM);
-			if(desiredReadable != null){
-				readable = desiredReadable;
-			}else{
-				logger.log(Level.WARNING, "Could not find desired readable module, using {1}",
-						new Object[]{TaskManager.getCurrentTick(),readable});
-			}
-			String desiredWriteable = (String) params.get(ModuleUsage.TO_WRITE_TO);
-			if(desiredWriteable != null){
-				writeable = desiredWriteable;
-			}else{
-				logger.log(Level.WARNING, "Could not find desired writeable module, using {1}",
-						new Object[]{TaskManager.getCurrentTick(),writeable});
-			}
-		}
-		
-		if(workspace == null){
-			logger.log(Level.WARNING, "Workspace has not been associated to this module. Cannot initialize structure-building codelet.",
-					TaskManager.getCurrentTick());
-			return null;
-		}
-
-		WorkspaceBuffer readableBuffer = (WorkspaceBuffer) workspace
-				.getSubmodule(readable);
-		if (readableBuffer == null) {
-			logger.log(Level.WARNING, "Readable buffer not found: {1}",
-					new Object[]{TaskManager.getCurrentTick(),readable});
-			return null;
-		}
-
-		WorkspaceBuffer writeableBuffer = (WorkspaceBuffer) workspace
-				.getSubmodule(writeable);
-		if (writeableBuffer == null) {
-			logger.log(Level.WARNING, "Writeable buffer not found: {1}",
-					new Object[]{TaskManager.getCurrentTick(),writeable});
-			return null;
-		}
-
-		codelet.setAssociatedModule(readableBuffer, ModuleUsage.TO_READ_FROM);
-		codelet.setAssociatedModule(writeableBuffer, ModuleUsage.TO_WRITE_TO);
 		return codelet;
 	}
 	

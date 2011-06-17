@@ -24,7 +24,7 @@
 					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>					<param name="removableThreshold" type="double">0.01 </param>
 					<taskspawner>defaultTS</taskspawner>				</module>
 			</submodules>
-			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>					<ticksperrun>15</ticksperrun>					<associatedmodule>Workspace</associatedmodule>					<param name="workspace.actThreshold"  type="double">0.4</param>				</task>			</initialTasks>		</module>
+			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<tasktypename>CueBackgroundTask</tasktypename>					<ticksperrun>15</ticksperrun>					<param name="workspace.actThreshold"  type="double">0.4</param>				</task>			</initialTasks>		</module>
 	</submodules>	<listeners>
 		<listener>
 			<listenertype>edu.memphis.ccrg.lida.pam.PamListener</listenertype>

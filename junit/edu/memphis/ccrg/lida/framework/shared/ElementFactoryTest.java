@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
@@ -202,18 +203,20 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testAddCodeletType1() {
-		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(), 
-											   new HashMap<String, String>(), "winwin", null);
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"winwin", new HashMap<String, Object>(), new HashMap<ModuleName, String>());
 		factory.addFrameworkTaskType(taskDef);
-		Codelet foo = (Codelet)factory.getFrameworkTask("winwin", 1, 0.0, 0.0, null);
+		Codelet foo = (Codelet)factory.getFrameworkTask("winwin", null);
 		assertTrue(foo instanceof BasicAttentionCodelet);
 		assertTrue(factory.containsTaskType("winwin"));
 	}
 
 	@Test
 	public void testAddCodeletType2() {
-		factory.addFrameworkTaskType("apple", BasicStructureBuildingCodelet.class.getCanonicalName());
-		Codelet foo = (Codelet)factory.getFrameworkTask("apple", 1, 0.0, 0.0, null);
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicStructureBuildingCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"apple", new HashMap<String, Object>(), new HashMap<ModuleName, String>());
+		factory.addFrameworkTaskType(taskDef);
+		Codelet foo = (Codelet)factory.getFrameworkTask("apple", null);
 		assertTrue(foo instanceof BasicStructureBuildingCodelet);
 		assertTrue(factory.containsTaskType("apple"));
 	}
@@ -527,11 +530,13 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetCodelet0() {
-		factory.addFrameworkTaskType("testType", BasicAttentionCodelet.class.getCanonicalName());
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"testType", new HashMap<String, Object>(), new HashMap<ModuleName, String>());
+		factory.addFrameworkTaskType(taskDef);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
 		
-		Codelet c = (Codelet)factory.getFrameworkTask("testType", 100, 0.66, 0.77, params);
+		Codelet c = (Codelet)factory.getFrameworkTask("testType","","", 100, 0.66, 0.77, params,null);
 		assertTrue(c instanceof BasicAttentionCodelet);
 		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
@@ -544,7 +549,7 @@ public class ElementFactoryTest {
 	public void testGetCodelet1() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
-		Codelet c = (Codelet)factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
+		Codelet c = (Codelet)factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params,null);
 		
 		assertTrue(c.getDecayStrategy() instanceof LinearDecayStrategy);
 		assertTrue(c.getExciteStrategy() instanceof LinearExciteStrategy);
@@ -561,7 +566,7 @@ public class ElementFactoryTest {
 	public void testFrameworkTask() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
-		FrameworkTask t = (Codelet)factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params);
+		FrameworkTask t = (Codelet)factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params,null);
 		
 		assertTrue(t.getDecayStrategy() instanceof LinearDecayStrategy);
 		assertTrue(t.getExciteStrategy() instanceof LinearExciteStrategy);

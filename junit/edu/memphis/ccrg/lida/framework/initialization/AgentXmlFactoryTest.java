@@ -9,10 +9,10 @@ package edu.memphis.ccrg.lida.framework.initialization;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +34,11 @@ import edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer2;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
-import edu.memphis.ccrg.lida.workspace.CueBackgroundTask;
-import edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 
@@ -175,9 +172,11 @@ public class AgentXmlFactoryTest {
 		MockTaskSpawner ts = new MockTaskSpawner();
 		taskSpawners.put("defaultTS", ts);
 		Element moduleElement = parseDomElement(xml);
+		//TODO fix test
+		List<AgentXmlFactory.TaskData> toRun= new ArrayList<AgentXmlFactory.TaskData>();
 		
 		FrameworkModule module = factory.getModule(moduleElement, toAssociate,toInitialize,
-				taskSpawners);
+				taskSpawners, toRun);
 		
 		assertTrue(module != null);
 		assertEquals(ModuleName.PerceptualAssociativeMemory, module
@@ -209,10 +208,8 @@ public class AgentXmlFactoryTest {
 						"<taskspawner>superFancyTS</taskspawner>" +
 						"<initialTasks>" +
 						"<task name=\"updateCsmBackground\">" +
-						"<class>edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask</class>" +
+						"<tasktypename>UpdateCsmBackgroundTask</tasktypename>" +
 						"<ticksperrun>55</ticksperrun>" +
-						"<associatedmodule>GlobalWorkspace</associatedmodule>" +
-						"<associatedmodule>EpisodicMemory</associatedmodule>" +
 						"</task>" +
 						"</initialTasks>" +						
 						"<initializerclass>edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer</initializerclass>"+
@@ -227,15 +224,13 @@ public class AgentXmlFactoryTest {
 				+ "<taskspawner>defaultTS</taskspawner>"
 				+"<initialTasks>" +
 						"<task name=\"cueBackground\">" +
-						"<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>" +
+						"<tasktypename>CueBackgroundTask</tasktypename>" +
 						"<ticksperrun>15</ticksperrun>" +
-						"<associatedmodule>Workspace</associatedmodule>" +
 						"<param name=\"taskParameter\"  type=\"double\">0.4</param>	" +
 						"</task>" +
 						"<task name=\"fooBar\">" +
-						"<class>edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask</class>" +
+						"<tasktypename>MockFrameworkTask</tasktypename>" +
 						"<ticksperrun>5</ticksperrun>" +
-						"<associatedmodule>Ryan</associatedmodule>" +
 						"</task>" +
 						"</initialTasks>"
 				
@@ -250,9 +245,11 @@ public class AgentXmlFactoryTest {
 		taskSpawners.put("superFancyTS", superFancyTS);		
 		Element moduleElement = parseDomElement(xml);
 		
+		List<AgentXmlFactory.TaskData> toRun= new ArrayList<AgentXmlFactory.TaskData>();
+		
 		//**Code being tested**
-		FrameworkModule module = factory.getModule(moduleElement, toAssociate, toInitialize,
-				taskSpawners);
+		FrameworkModule module = factory.getModule(moduleElement, toAssociate,toInitialize,
+				taskSpawners, toRun);
 		
 		//**Verification**
 		//Main Module attributes
@@ -283,43 +280,62 @@ public class AgentXmlFactoryTest {
 		assertEquals("edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer",toInitialize.get(1)[1]);
 		
 		//Tasks
-		Collection<FrameworkTask> outerTasks = module.getAssistingTaskSpawner().getRunningTasks();
-		assertEquals(2, outerTasks.size());
-		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
-		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
-		assertEquals(15, cueBackgroundTask.getTicksPerRun());
-		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
-		assertEquals(5, cueBackgroundTask.getParam("pam.Selectivity", 5));
-		FrameworkTask mockTask = ts.tasks.get(1);
-		assertTrue(mockTask instanceof MockFrameworkTask);
-		assertEquals(5, mockTask.getTicksPerRun());
-		assertEquals(10, mockTask.getParam("taskParameter", 10));
-		assertEquals(5, mockTask.getParam("pam.Selectivity", 5));
+//		Collection<FrameworkTask> outerTasks = module.getAssistingTaskSpawner().getRunningTasks();
+//		assertEquals(2, outerTasks.size());
+//		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
+//		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
+//		assertEquals(15, cueBackgroundTask.getTicksPerRun());
+//		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
+//		assertEquals(5, cueBackgroundTask.getParam("pam.Selectivity", 5));
+//		FrameworkTask mockTask = ts.tasks.get(1);
+//		assertTrue(mockTask instanceof MockFrameworkTask);
+//		assertEquals(5, mockTask.getTicksPerRun());
+//		assertEquals(10, mockTask.getParam("taskParameter", 10));
+//		assertEquals(5, mockTask.getParam("pam.Selectivity", 5));
 		
-		Collection<FrameworkTask> noInnerTasks = eBuffer.getAssistingTaskSpawner().getRunningTasks();
-		assertEquals(0, noInnerTasks.size());	
+//		Collection<FrameworkTask> noInnerTasks = eBuffer.getAssistingTaskSpawner().getRunningTasks();
+//		assertEquals(0, noInnerTasks.size());	
+//		
+//		Collection<FrameworkTask> innerTasks = pBuffer.getAssistingTaskSpawner().getRunningTasks();
+//		assertEquals(1, innerTasks.size());	
+//		FrameworkTask updateCsmTask = superFancyTS.tasks.get(0);
+//		assertTrue(updateCsmTask instanceof UpdateCsmBackgroundTask);
+//		assertEquals(55, updateCsmTask.getTicksPerRun());
 		
-		Collection<FrameworkTask> innerTasks = pBuffer.getAssistingTaskSpawner().getRunningTasks();
-		assertEquals(1, innerTasks.size());	
-		FrameworkTask updateCsmTask = superFancyTS.tasks.get(0);
-		assertTrue(updateCsmTask instanceof UpdateCsmBackgroundTask);
-		assertEquals(55, updateCsmTask.getTicksPerRun());
-		
+		AgentXmlFactory.TaskData td = toRun.get(0);
+		assertEquals("cueBackground",td.name);
+		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals(15,td.ticksPerRun);
+		assertEquals(ts,td.taskSpawner);
+
+		td = toRun.get(1);
+		assertEquals("fooBar",td.name);
+		assertEquals("MockFrameworkTask",td.tasktypename);
+		assertEquals(5,td.ticksPerRun);
+		assertEquals(ts,td.taskSpawner);
+
+		assertEquals (3,toRun.size());
+		td = toRun.get(2);
+		assertEquals("updateCsmBackground",td.name);
+		assertEquals("UpdateCsmBackgroundTask",td.tasktypename);
+		assertEquals(55,td.ticksPerRun);
+		assertEquals(superFancyTS,td.taskSpawner);
+
+//		assertEquals(cueBackgroundTask, toAssociate.get(0)[0]);
+//		assertEquals("Workspace", toAssociate.get(0)[1]);
+//		
+//		assertEquals(mockTask, toAssociate.get(1)[0]);
+//		assertEquals("Ryan", toAssociate.get(1)[1]);
+//		
+//		assertEquals(updateCsmTask, toAssociate.get(2)[0]);
+//		assertEquals("GlobalWorkspace", toAssociate.get(2)[1]);
+//		
+//		assertEquals(updateCsmTask, toAssociate.get(3)[0]);
+//		assertEquals("EpisodicMemory", toAssociate.get(3)[1]);
+//		
 		//Associations
-		assertEquals(cueBackgroundTask, toAssociate.get(0)[0]);
-		assertEquals("Workspace", toAssociate.get(0)[1]);
-		
-		assertEquals(mockTask, toAssociate.get(1)[0]);
-		assertEquals("Ryan", toAssociate.get(1)[1]);
-		
-		assertEquals(updateCsmTask, toAssociate.get(2)[0]);
-		assertEquals("GlobalWorkspace", toAssociate.get(2)[1]);
-		
-		assertEquals(updateCsmTask, toAssociate.get(3)[0]);
-		assertEquals("EpisodicMemory", toAssociate.get(3)[1]);
-		
-		assertEquals(module, toAssociate.get(4)[0]);
-		assertEquals("Apple", toAssociate.get(4)[1]);				
+		assertEquals(module, toAssociate.get(0)[0]);
+		assertEquals("Apple", toAssociate.get(0)[1]);				
 	}	
 
 	@Test
@@ -338,10 +354,8 @@ public class AgentXmlFactoryTest {
 							"<taskspawner>superFancyTS</taskspawner>" +
 							"<initialTasks>" +
 							"<task name=\"updateCsmBackground\">" +
-							"<class>edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask</class>" +
+							"<tasktypename>UpdateCsmBackgroundTask</tasktypename>" +
 							"<ticksperrun>55</ticksperrun>" +
-							"<associatedmodule>GlobalWorkspace</associatedmodule>" +
-							"<associatedmodule>EpisodicMemory</associatedmodule>" +
 							"</task>" +
 							"</initialTasks>" +						
 							"<initializerclass>edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer</initializerclass>"+
@@ -359,18 +373,16 @@ public class AgentXmlFactoryTest {
 				+ "<param name='pam.newLinkType' type='string'>PamLinkImpl</param>"
 				+ "<taskspawner>defaultTS</taskspawner>"
 				+"<initialTasks>" +
-						"<task name=\"cueBackground\">" +
-						"<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>" +
-						"<ticksperrun>15</ticksperrun>" +
-						"<associatedmodule>Workspace</associatedmodule>" +
-						"<param name=\"taskParameter\"  type=\"double\">0.4</param>	" +
-						"</task>" +
-						"<task name=\"fooBar\">" +
-						"<class>edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask</class>" +
-						"<ticksperrun>5</ticksperrun>" +
-						"<associatedmodule>Ryan</associatedmodule>" +
-						"</task>" +
-						"</initialTasks>"
+				"<task name=\"cueBackground\">" +
+				"<tasktypename>CueBackgroundTask</tasktypename>" +
+				"<ticksperrun>15</ticksperrun>" +
+				"<param name=\"taskParameter\"  type=\"double\">0.4</param>	" +
+				"</task>" +
+				"<task name=\"fooBar\">" +
+				"<tasktypename>MockFrameworkTask</tasktypename>" +
+				"<ticksperrun>5</ticksperrun>" +
+				"</task>" +
+				"</initialTasks>"
 				
 				+ "<initializerclass>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer</initializerclass>"
 				+ "</module>";
@@ -383,9 +395,11 @@ public class AgentXmlFactoryTest {
 		taskSpawners.put("superFancyTS", superFancyTS);		
 		Element moduleElement = parseDomElement(xml);
 		
+		List<AgentXmlFactory.TaskData> toRun= new ArrayList<AgentXmlFactory.TaskData>();
+		
 		//**Code being tested**
-		FrameworkModule module = factory.getModule(moduleElement, toAssociate, toInitialize,
-				taskSpawners);
+		FrameworkModule module = factory.getModule(moduleElement, toAssociate,toInitialize,
+				taskSpawners, toRun);
 		
 		//**Verification**
 		//Main Module attributes
@@ -419,43 +433,30 @@ public class AgentXmlFactoryTest {
 		assertEquals("edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer",toInitialize.get(1)[1]);
 		
 		//Tasks
-		Collection<FrameworkTask> outerTasks = module.getAssistingTaskSpawner().getRunningTasks();
-		assertEquals(2, outerTasks.size());
-		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
-		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
-		assertEquals(15, cueBackgroundTask.getTicksPerRun());
-		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
-		assertEquals(5, cueBackgroundTask.getParam("pam.Selectivity", 5));
-		FrameworkTask mockTask = ts.tasks.get(1);
-		assertTrue(mockTask instanceof MockFrameworkTask);
-		assertEquals(5, mockTask.getTicksPerRun());
-		assertEquals(10, mockTask.getParam("taskParameter", 10));
-		assertEquals(5, mockTask.getParam("pam.Selectivity", 5));
 		
-		Collection<FrameworkTask> noInnerTasks = eBuffer.getAssistingTaskSpawner().getRunningTasks();
-		assertEquals(0, noInnerTasks.size());	
 		
-		Collection<FrameworkTask> innerTasks = pBuffer.getAssistingTaskSpawner().getRunningTasks();
-		assertEquals(1, innerTasks.size());	
-		FrameworkTask updateCsmTask = superFancyTS.tasks.get(0);
-		assertTrue(updateCsmTask instanceof UpdateCsmBackgroundTask);
-		assertEquals(55, updateCsmTask.getTicksPerRun());
+		AgentXmlFactory.TaskData td = toRun.get(0);
+		assertEquals("cueBackground",td.name);
+		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals(15,td.ticksPerRun);
+		assertEquals(ts,td.taskSpawner);
+
+		td = toRun.get(1);
+		assertEquals("fooBar",td.name);
+		assertEquals("MockFrameworkTask",td.tasktypename);
+		assertEquals(5,td.ticksPerRun);
+		assertEquals(ts,td.taskSpawner);
+
+		assertEquals (3,toRun.size());
+		td = toRun.get(2);
+		assertEquals("updateCsmBackground",td.name);
+		assertEquals("UpdateCsmBackgroundTask",td.tasktypename);
+		assertEquals(55,td.ticksPerRun);
+		assertEquals(superFancyTS,td.taskSpawner);
 		
 		//Associations
-		assertEquals(cueBackgroundTask, toAssociate.get(0)[0]);
-		assertEquals("Workspace", toAssociate.get(0)[1]);
-		
-		assertEquals(mockTask, toAssociate.get(1)[0]);
-		assertEquals("Ryan", toAssociate.get(1)[1]);
-		
-		assertEquals(updateCsmTask, toAssociate.get(2)[0]);
-		assertEquals("GlobalWorkspace", toAssociate.get(2)[1]);
-		
-		assertEquals(updateCsmTask, toAssociate.get(3)[0]);
-		assertEquals("EpisodicMemory", toAssociate.get(3)[1]);
-		
-		assertEquals(module, toAssociate.get(4)[0]);
-		assertEquals("Apple", toAssociate.get(4)[1]);				
+		assertEquals(module, toAssociate.get(0)[0]);
+		assertEquals("Apple", toAssociate.get(0)[1]);				
 	}	
 
 	
@@ -476,10 +477,8 @@ public class AgentXmlFactoryTest {
 		"<taskspawner>superFancyTS</taskspawner>" +
 		"<initialTasks>" +
 		"<task name=\"updateCsmBackground\">" +
-		"<class>edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask</class>" +
+		"<tasktypename>UpdateCsmBackgroundTask</tasktypename>" +
 		"<ticksperrun>55</ticksperrun>" +
-		"<associatedmodule>GlobalWorkspace</associatedmodule>" +
-		"<associatedmodule>EpisodicMemory</associatedmodule>" +
 		"</task>" +
 		"</initialTasks>" +						
 		"<initializerclass>edu.memphis.ccrg.lida.framework.mockclasses.MockInitializer</initializerclass>"+
@@ -495,9 +494,11 @@ public class AgentXmlFactoryTest {
 		taskSpawners.put("superFancyTS", superFancyTS);		
 		Element moduleElement = parseDomElement(xml);
 		
+		List<AgentXmlFactory.TaskData> toRun= new ArrayList<AgentXmlFactory.TaskData>();
+		
 		//**Code being tested**
 		List<FrameworkModule> modules = factory.getModules(moduleElement, toAssociate, toInitialize,
-				taskSpawners);
+				taskSpawners,toRun);
 		
 		assertEquals(2, modules.size());
 		
@@ -523,70 +524,54 @@ public class AgentXmlFactoryTest {
 	
 	@Test
 	public void testGetTasks() {
-		List<Object[]> toAssociate = new ArrayList<Object[]>();
 		String xml = "<module><initialTasks>"
 				+ "<task name=\"cueBackground\">	"
-				+ "<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>"
+				+ "<tasktypename>CueBackgroundTask</tasktypename>"
 				+ "<ticksperrun>15</ticksperrun>"
-				+ "<associatedmodule>Ryan</associatedmodule>"
 				+ "<param name=\"workspace.actThreshold\"  type=\"double\">0.4</param>"
 				+ "</task>"
 				+ "<task name=\"otherTask\">	"
-				+ "<class>edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask</class>"
+				+ "<tasktypename>MockFrameworkTask</tasktypename>"
 				+ "<ticksperrun>10</ticksperrun>"
-				+ "<associatedmodule>Workspace5</associatedmodule>"
 				+ "<param name=\"mock.param\"  type=\"int\">5</param>"
 				+ "</task>" + "</initialTasks></module>";
+		
+		TaskSpawner ts = new MockTaskSpawner();
 		Element docEle = parseDomElement(xml);
-		List<FrameworkTask> tasks = factory.getTasks(docEle, toAssociate);
-		assertTrue(tasks != null);
-		FrameworkTask task = tasks.get(0);
-		assertTrue(task instanceof CueBackgroundTask);
-		assertEquals(15, task.getTicksPerRun());
-		assertEquals(task, toAssociate.get(0)[0]);
-		assertEquals("Ryan", toAssociate.get(0)[1]);
-		assertEquals(0.4, task.getParam("workspace.actThreshold", null));
-		task = tasks.get(1);
-		assertTrue(task instanceof MockFrameworkTask);
-		assertEquals(10, task.getTicksPerRun());
-		assertEquals(task, toAssociate.get(1)[0]);
-		assertEquals("Workspace5", toAssociate.get(1)[1]);
-		assertEquals(5, task.getParam("mock.param", null));
+		List<AgentXmlFactory.TaskData> toRun = factory.getTasks(docEle,ts);
+		assertTrue(toRun != null);
+		AgentXmlFactory.TaskData td = toRun.get(0);
+		assertEquals("cueBackground",td.name);
+		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals(15,td.ticksPerRun);
+		assertEquals(ts,td.taskSpawner);
+		assertEquals(.4, td.params.get("workspace.actThreshold"));
+		
+		td = toRun.get(1);
+		assertEquals("otherTask",td.name);
+		assertEquals("MockFrameworkTask",td.tasktypename);
+		assertEquals(10,td.ticksPerRun);
+		assertEquals(ts,td.taskSpawner);
+		assertEquals(5, td.params.get("mock.param"));		
 	}
 
 	@Test
 	public void testGetTask() {
-		List<Object[]> toAssociate = new ArrayList<Object[]>();
 		String xml = "<task name=\"cueBackground\">	"
-				+ "<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>"
+				+ "<tasktypename>CueBackgroundTask</tasktypename>"
 				+ "<ticksperrun>15</ticksperrun>"
-				+ "<associatedmodule>Workspace5</associatedmodule>"
-				+ "<associatedmodule>Ryan</associatedmodule>"
 				+ "<param name=\"workspace.actThreshold\"  type=\"double\">0.4</param>"
 				+ "</task>";
 		Element docEle = parseDomElement(xml);
-		FrameworkTask task = factory.getTask(docEle, toAssociate);
-		assertTrue(task != null);
-		assertTrue(task instanceof CueBackgroundTask);
-		assertEquals(15, task.getTicksPerRun());
-		assertEquals(task, toAssociate.get(0)[0]);
-		assertEquals("Workspace5", toAssociate.get(0)[1]);
-		assertEquals(task, toAssociate.get(1)[0]);
-		assertEquals("Ryan", toAssociate.get(1)[1]);
-		assertEquals(0.4, task.getParam("workspace.actThreshold", null));
 
-		toAssociate.clear();
-		xml = "<task name=\"cueBackground\">	"
-				+ "<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>"
-				+ "<ticksperrun>15</ticksperrun>"
-				+ "<param name=\"workspace.actThreshold\"  type=\"double\">0.4</param>"
-				+ "</task>";
-		docEle = parseDomElement(xml);
-		task = factory.getTask(docEle, toAssociate);
-		assertTrue(task != null);
-		assertTrue(task instanceof CueBackgroundTask);
-		assertEquals(15, task.getTicksPerRun());
-		assertEquals(0.4, task.getParam("workspace.actThreshold", null));
+		AgentXmlFactory.TaskData td = factory.getTask(docEle);
+
+		assertEquals("cueBackground",td.name);
+		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals(15,td.ticksPerRun);
+		assertNull(td.taskSpawner);
+		assertEquals(.4, td.params.get("workspace.actThreshold"));
+
 	}
 
 	@Test

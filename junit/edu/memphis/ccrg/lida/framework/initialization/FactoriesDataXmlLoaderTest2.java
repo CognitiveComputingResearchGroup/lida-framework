@@ -91,6 +91,7 @@ public class FactoriesDataXmlLoaderTest2 {
 			
 			+ "<tasks><task name=\"topleft\">"
 			+ "<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.BasicStructureBuildingCodelet</class>"
+			+"<ticksperrun>1</ticksperrun>"
 			+ "<defaultstrategy>strategy1</defaultstrategy>"
 			+ "<defaultstrategy>strategy2</defaultstrategy>"
 			+ "<defaultstrategy>strategy3</defaultstrategy>"
@@ -98,6 +99,7 @@ public class FactoriesDataXmlLoaderTest2 {
 			+ "</task>"
 			+"<task name=\"bottomright\">"
 			+ "<class>edu.memphis.ccrg.lida.example.genericlida.featuredetectors.Another</class>"
+			+"<ticksperrun>1</ticksperrun>"
 			+ "<defaultstrategy>strategy1</defaultstrategy>"
 			+ "<param name=\"param1\" type=\"string\">hi</param>"
 			+ "</task>"
@@ -132,10 +134,10 @@ public class FactoriesDataXmlLoaderTest2 {
 		l = factory.getLink("link1", n, n1, new PamNodeImpl());
 		assertTrue(l instanceof PamLinkImpl);
 		
-		Codelet c = (Codelet)factory.getFrameworkTask("topleft", 1, 0.0, 0.0, null);
+		Codelet c = (Codelet)factory.getFrameworkTask("topleft", null);
 		assertTrue(c instanceof BasicStructureBuildingCodelet);
 		
-		c = (Codelet)factory.getFrameworkTask("bottomright", 1, 0.0, 0.0, null);
+		c = (Codelet)factory.getFrameworkTask("bottomright", null);
 		assertNull(c);
 	}
 	

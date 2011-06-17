@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>	<!--		Copyright (c) 2009, 2011 The University of Memphis. All rights		reserved. This program and the accompanying materials are made		available under the terms of the LIDA Software Framework		Non-Commercial License v1.0 which accompanies this distribution, and		is available at		http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf	-->
 
 <lida xmlns="http://ccrg.cs.memphis.edu/LidaXMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaXMLSchema LidaXMLSchema.xsd ">
+	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaXMLSchema LidaXMLSchema.xsd ">	<globalparams>		<param name="ff" type="int">50 </param>	</globalparams>
 	<taskmanager>
 		<param name="taskManager.tickDuration" type="int">50 </param>
 		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
@@ -14,7 +14,7 @@
 		<module name="SensoryMemory">
 			<class>edu.memphis.ccrg.lida.example.genericlida.environment.VisualSensoryMemory
 			</class>
-			<associatedmodule>Environment</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="start">					<class>edu.memphis.ccrg.lida.sensorymemory.SensoryMemoryBackgroundTask					</class>					<ticksperrun>5</ticksperrun>					<associatedmodule>SensoryMemory</associatedmodule>				</task>			</initialTasks>
+			<associatedmodule>Environment</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="start">					<tasktypename>SensoryMemoryBackgroundTask					</tasktypename>					<ticksperrun>5</ticksperrun>					</task>			</initialTasks>
 		</module>
 		<module name="SensoryMotorMemory">
 			<class>edu.memphis.ccrg.lida.sensorymotormemory.BasicSensoryMotorMemory
@@ -67,7 +67,7 @@
 					</class>					<param name="removableThreshold" type="double">0.01 </param>					<param name="workspace.broadcastQueueCapacity" type="int">20					</param>
 					<taskspawner>defaultTS</taskspawner>				</module>
 			</submodules>
-			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<class>edu.memphis.ccrg.lida.workspace.CueBackgroundTask</class>					<ticksperrun>15</ticksperrun>					<associatedmodule>Workspace</associatedmodule>					<param name="workspace.actThreshold" type="double">0.4</param>				</task>				<task name="updateCsmBackground">					<class>edu.memphis.ccrg.lida.workspace.UpdateCsmBackgroundTask					</class>					<ticksperrun>5</ticksperrun>					<associatedmodule>Workspace</associatedmodule>				</task>			</initialTasks>		</module>
+			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<tasktypename>CueBackgroundTask</tasktypename>					<ticksperrun>15</ticksperrun>					<param name="workspace.actThreshold" type="double">0.4</param>				</task>				<task name="updateCsmBackground">					<tasktypename>UpdateCsmBackgroundTask					</tasktypename>					<ticksperrun>5</ticksperrun>				</task>			</initialTasks>		</module>
 		<module name="AttentionModule">			<class>edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule			</class>			<associatedmodule>Workspace</associatedmodule>			<associatedmodule>GlobalWorkspace</associatedmodule>			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.AttentionModuleInitializer			</initializerclass>		</module>		<module name="StructureBuildingCodeletModule">			<class>edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildingCodeletModule			</class>			<associatedmodule>Workspace</associatedmodule>			<taskspawner>defaultTS</taskspawner>		</module>		<module name="GlobalWorkspace">
 			<class>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl
 			</class>
