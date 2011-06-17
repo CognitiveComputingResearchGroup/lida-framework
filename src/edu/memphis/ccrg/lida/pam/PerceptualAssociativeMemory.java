@@ -91,24 +91,24 @@ public interface PerceptualAssociativeMemory extends FrameworkModule, Saveable {
 	public PropagationStrategy getPropagationStrategy();
 	
 	/**
-	 * Excites specified {@link PamNode} an amount of activation.
-	 * @param linkable Id of the node receiving the activation
+	 * Excites specified {@link PamLinkable} an amount of activation.
+	 * @param linkable Id of the PamLinkable receiving the activation
 	 * @param amount amount of activation to excite
 	 * @see ExcitationTask {@link BasicDetectionAlgorithm}
 	 */
 	public void receiveExcitation(PamLinkable linkable, double amount);
 	
 	/**
-	 * Excites PamNodes with an amount of activation.
-	 * @param linkables Ids of PamNodes to be excited
+	 * Excites {@link PamLinkable} with an amount of activation.
+	 * @param linkables Ids of PamLinkable to be excited
 	 * @param amount amount of activation
 	 */
 	public void receiveExcitation(Set<PamLinkable> linkables, double amount);
 	
 	/**
-	 * Propagates activation from a PamNode to its parents.
+	 * Propagates activation from a {@link PamNode} to its parents.
 	 *
-	 * @param pamNode The PamNode to propagate activation from.
+	 * @param pamNode The {@link PamNode} to propagate activation from.
 	 * @see ExcitationTask
 	 * @see PropagationTask
 	 */

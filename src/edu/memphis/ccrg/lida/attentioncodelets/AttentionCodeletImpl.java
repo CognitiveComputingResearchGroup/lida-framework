@@ -36,7 +36,6 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
     private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
     private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
     private static final int DEFAULT_REFRACTORY_PERIOD = 50;
-	private static final double DEFAULT_INITIAL_ACTIVATION = 1.0;
     private DecayStrategy coalitionDecayStrategy;
     /**
      * Where codelet will look for and retrieve content from
@@ -54,7 +53,6 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
      */
     public AttentionCodeletImpl() {
         super();
-        setActivation(DEFAULT_INITIAL_ACTIVATION);
     }
 
     @Override
