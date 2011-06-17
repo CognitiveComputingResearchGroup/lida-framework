@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.attentioncodelets;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +18,6 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
-import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -30,7 +30,6 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerModule;
-import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 	
 /**
  * {@link FrameworkModule} which creates and manages all {@link AttentionCodelet}.
@@ -42,37 +41,46 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	private static final Logger logger = Logger
 			.getLogger(AttentionCodeletModule.class.getCanonicalName());
-
-	private WorkspaceBuffer csm;
-	
-	private GlobalWorkspace globalWorkspace;
-
 	private static ElementFactory factory = ElementFactory.getInstance();
 
-	private String defaultCodeletName;
+	private static final String DEFAULT_CODELET_TYPE = BasicAttentionCodelet.class.getSimpleName();
+	private String defaultCodeletType = DEFAULT_CODELET_TYPE;
 
-	private static final int defaultCodeletTicksPerRun = 5;
-	private int codeletTicksPerRun = defaultCodeletTicksPerRun;
-
-	private static final double defaultCodeletActivation = 1.0;
-	private double codeletActivation = defaultCodeletActivation;
+	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
+	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
 	
-	private static final double defaultCodeletRemovalThreshold = -1.0;
-	private double codeletRemovalThreshold = defaultCodeletRemovalThreshold;
-
+	private static final double DEFAULT_CODELET_REMOVAL_THRESHOLD = -1.0;
+	private double codeletRemovalThreshold = DEFAULT_CODELET_REMOVAL_THRESHOLD;
+	
+	private Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
+		
 	/**
 	 * Default constructor
 	 */
 	public AttentionCodeletModule() {
-		Class<BasicAttentionCodelet> cl = BasicAttentionCodelet.class;
-		//factory.addFrameworkTaskType(cl.getSimpleName(), cl.getCanonicalName());
-		defaultCodeletName = cl.getSimpleName();
+	}
+	
+	@Override
+	public void init() {
+		defaultCodeletType = (String) getParam("attentionModule.defaultCodeletType", DEFAULT_CODELET_TYPE);
+		codeletActivation = (Double) getParam("attentionModule.codeletActivation", DEFAULT_CODELET_ACTIVATION);
+		codeletRemovalThreshold = (Double) getParam("attentionModule.codeletRemovalThreshold", DEFAULT_CODELET_REMOVAL_THRESHOLD);
+	}
+	
+	@Override
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+		if (module instanceof Workspace) {
+			FrameworkModule m = module.getSubmodule(ModuleName.CurrentSituationalModel);
+			modulesMap.put(m.getModuleName(), m);
+		}else if (module instanceof GlobalWorkspace) {
+			modulesMap.put(module.getModuleName(), module);
+		}
 	}
 	
 	@Override
 	public void setDefaultCodeletType(String type){
 		if(factory.containsTaskType(type)){
-			defaultCodeletName = type;
+			defaultCodeletType = type;
 		}else{
 			logger.log(Level.WARNING, 
 					"Cannot set default codelet type, factory does not have type {1}",
@@ -80,29 +88,19 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		}
 	}
 
-	@Override
-	public void init() {
-	}
-
-	/**
-	 * Sets associated Module
-	 * 
-	 * @param module
-	 *            the module to be associated with
-	 * @param moduleUsage
-	 *            way of associating the module
+	/*
+	 * Schedules a task that receives broadcast from global workspace
 	 */
 	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		if (module instanceof Workspace) {
-			csm = (WorkspaceBuffer) module
-					.getSubmodule(ModuleName.CurrentSituationalModel);
-		}else if (module instanceof GlobalWorkspace) {
-			globalWorkspace = (GlobalWorkspace) module;
+	public void receiveBroadcast(BroadcastContent bc) {
+		synchronized (this) {
+			ProcessBroadcastTask task = new ProcessBroadcastTask(
+					((NodeStructure) bc).copy());
+			taskSpawner.addTask(task);
 		}
 	}
-
-	/**
+	
+	/*
 	 * Class that receives the broadcast and the broadcast will then be used for
 	 * learning
 	 * 
@@ -122,37 +120,14 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		}
 	}
 
-	/**
-	 * Schedules a task that receives broadcast from global workspace
-	 * 
-	 * @param bc
-	 *            the content of broadcast
-	 * 
-	 */
-	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(
-					((NodeStructure) bc).copy());
-			taskSpawner.addTask(task);
-		}
-	}
-
-	/**
-	 * Creates an attention codelet from the factory and associates it with
-	 * global workspace and CSM
-	 * 
-	 * @return AttentionCodelet - the new attention codelet
-	 * 
-	 */
 	@Override
 	public AttentionCodelet getDefaultCodelet(Map<String, Object> params) {
-		return getCodelet(defaultCodeletName, params);
+		return getCodelet(defaultCodeletType, params);
 	}
 
 	@Override
 	public AttentionCodelet getDefaultCodelet() {
-		return getCodelet(defaultCodeletName, null);
+		return getCodelet(defaultCodeletType, null);
 	}
 	
 	@Override
@@ -160,12 +135,9 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		return getCodelet(type, null);
 	}	
 
-	//TODO params not being used currently
-	//TODO default removal threshold parameters
 	@Override
 	public AttentionCodelet getCodelet(String type, Map<String, Object> params) {
-		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(type, codeletTicksPerRun, 
-				codeletActivation, codeletRemovalThreshold, params);
+		AttentionCodelet codelet = (AttentionCodelet) factory.getFrameworkTask(type, params, modulesMap);
 		if (codelet == null) {
 			logger.log(
 					Level.WARNING,
@@ -173,18 +145,11 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 					TaskManager.getCurrentTick());
 			return null;
 		}
-		codelet.setAssociatedModule(csm, ModuleUsage.TO_READ_FROM);
-		codelet.setAssociatedModule(globalWorkspace, ModuleUsage.TO_WRITE_TO);
+		codelet.setActivation(codeletActivation);
+		codelet.setActivatibleRemovalThreshold(codeletRemovalThreshold);
 		return codelet;
 	}
 
-	/**
-	 * Schedule the attention codelet in the task manager
-	 * 
-	 * @param codelet
-	 *            the new attention codelet to be run
-	 * 
-	 */
 	@Override
 	public void addCodelet(Codelet codelet) {
 		if(codelet instanceof AttentionCodelet){
@@ -205,13 +170,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		// "deleted"
 	}
 
-	/**
-	 * Implements learning in Attention Module
-	 * 
-	 * @param content
-	 *            the broadcast that needs to be learned
-	 * 
-	 */
 	@Override
 	public void learn(BroadcastContent content) {
 		NodeStructure ns = (NodeStructure) content;
@@ -223,15 +181,10 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public String toString() {
-		return ModuleName.AttentionModule.toString();
-	}
-
-	@Override
 	public Object getModuleContent(Object... params) {
 		if(params != null && params.length > 0 && params[0] instanceof String){
 			if("GlobalWorkspace".equalsIgnoreCase((String) params[0])){
-				return globalWorkspace;
+				return modulesMap.get(ModuleName.GlobalWorkspace);
 			}
 		}
 		return null;
@@ -243,8 +196,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		// TODO decay codelets?
 	}
-
 
 }

@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.AgentImpl;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
@@ -80,9 +81,16 @@ public class AgentXmlFactory implements AgentFactory {
 		Map<String,TaskSpawner> taskSpawners;
 		List<Object[]> toInitialize = new ArrayList<Object[]>();
 		List<Object[]> toAssociate = new ArrayList<Object[]>();
+		List<TaskData>toRun = new ArrayList<TaskData>();
 		
 		// get the root element
 		Element docEle = dom.getDocumentElement();
+		
+		Map<String, Object> globalParamters = getGlobalParameters(docEle);
+		GlobalInitializer g = GlobalInitializer.getInstance();
+		for(String s: globalParamters.keySet()){
+			g.setAttribute(s, globalParamters.get(s));
+		}
 
 		tm = getTaskManager(docEle);
 		logger.log(Level.INFO, "Finished obtaining TaskManager\n", 0L);
@@ -91,7 +99,7 @@ public class AgentXmlFactory implements AgentFactory {
 		taskSpawners=getTaskSpawners(docEle,tm);
 		logger.log(Level.INFO, "Finished creating TaskSpawners\n", 0L);
 		
-		modules = getModules(docEle,toAssociate,toInitialize,taskSpawners);
+		modules = getModules(docEle,toAssociate,toInitialize,taskSpawners,toRun);
 		for (FrameworkModule frameworkModule :modules) {
 			agent.addSubModule(frameworkModule);
 		}
@@ -105,11 +113,41 @@ public class AgentXmlFactory implements AgentFactory {
 		
 		initializeModules(agent,toInitialize);
 		logger.log(Level.INFO, "Finished initializing modules\n", 0L);
+		
+		Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
+		getModuleMap(agent,modulesMap);
+		initializeTasks(modulesMap, toRun);
+		logger.log(Level.INFO, "Finished initializing tasks\n", 0L);
+		
 		agent.init();
 		
 		return agent;
 	}
 	
+	private void getModuleMap(FrameworkModule module,Map<ModuleName, FrameworkModule> allModules) {
+		Map<ModuleName, FrameworkModule> subm = module.getSubmodules();
+		if(subm!=null && subm.size()>0){
+			allModules.putAll(subm);
+			for(FrameworkModule m: module.getSubmodules().values()){
+				getModuleMap(m, allModules);
+			}
+		}
+	}
+
+	/**
+	 * @param element Element containing the global parameters
+	 * @return Map of the global parameters
+	 */
+	Map<String, Object> getGlobalParameters(Element element) {
+		List<Element> nl = XmlUtils.getChildren(element,"globalparams");
+		Element globalParamsElem=null;
+		if (nl != null && nl.size() > 0) {
+			 globalParamsElem = nl.get(0);
+			 return XmlUtils.getTypedParams(globalParamsElem);
+		}
+		return new HashMap<String, Object>();
+		}
+
 	/**
 	 * @param element Element containing the task manager
 	 * @return {@link TaskManager}
@@ -223,9 +261,10 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param toAssoc List of pending associations
 	 * @param toInit  List of pending initializations
 	 * @param spawners Map of {@link TaskSpawner} indexed by name
+	 * @param toRun List of pending task to run
 	 * @return {@link FrameworkModule}s
 	 */
-	List<FrameworkModule> getModules(Element element,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner>spawners) {
+	List<FrameworkModule> getModules(Element element,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner>spawners, List<TaskData>toRun) {
 		List<FrameworkModule> modules = new ArrayList<FrameworkModule>();
 		List<Element> nl = XmlUtils.getChildren(element, "submodules");
 		if (nl != null && nl.size() > 0) {
@@ -233,7 +272,7 @@ public class AgentXmlFactory implements AgentFactory {
 			List<Element> list = XmlUtils.getChildren(submoduleElement,"module");
 			if (list != null && list.size() > 0) {
 				for (Element moduleElement : list) {					
-					FrameworkModule module = getModule(moduleElement,toAssoc,toInit,spawners);
+					FrameworkModule module = getModule(moduleElement,toAssoc,toInit,spawners,toRun);
 					if(module != null){
 						modules.add(module);
 					}
@@ -248,9 +287,10 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param toAssoc List of pending associations
 	 * @param toInit  List of pending initializations
 	 * @param spawners Map of {@link TaskSpawner} indexed by name
+	 * @param toRun List of pending task to run
 	 * @return {@link FrameworkModule}
 	 */
-	FrameworkModule getModule(Element moduleElement,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner> spawners) {
+	FrameworkModule getModule(Element moduleElement,List<Object[]>toAssoc,List<Object[]>toInit, Map<String, TaskSpawner> spawners, List<TaskData>toRun) {
 		//Get module name and class name
 		FrameworkModule module = null;
 		String className = XmlUtils.getTextValue(moduleElement, "class");
@@ -283,14 +323,14 @@ public class AgentXmlFactory implements AgentFactory {
 		TaskSpawner ts = spawners.get(taskspawner);
 		if (ts != null) {
 			module.setAssistingTaskSpawner(ts);
-			List<FrameworkTask>initialTasks = getTasks(moduleElement,toAssoc);
-			ts.addTasks(initialTasks);
+			List<TaskData>initialTasks = getTasks(moduleElement,ts);
+			toRun.addAll(initialTasks);
 		}else{
 			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
 		}
 		
 		//Get and add all submodules.
-		for (FrameworkModule lm : getModules(moduleElement,toAssoc,toInit, spawners)) {
+		for (FrameworkModule lm : getModules(moduleElement,toAssoc,toInit, spawners,toRun)) {
 			module.addSubModule(lm);
 		}
 		
@@ -322,20 +362,21 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Reads and creates {@link FrameworkTask}s specified in element
 	 * @param element dom element
-	 * @param toAssoc List of pending associations
+	 * @param ts the {@link TaskSpawner} that will run the tasks
 	 * @return a list of {@link FrameworkTask}s
 	 */
-	List<FrameworkTask> getTasks(Element element,List<Object[]>toAssoc) {
-		List<FrameworkTask> tasks = new ArrayList<FrameworkTask>();
+	List<TaskData> getTasks(Element element,TaskSpawner ts) {
+		List<TaskData> tasks = new ArrayList<TaskData>();
 		List<Element> nl = XmlUtils.getChildren(element,"initialTasks");
 		if (nl != null && nl.size() > 0) {
 			Element initialTasksElement =  nl.get(0);
 			nl = XmlUtils.getChildren(initialTasksElement,"task");
 			if (nl != null && nl.size() > 0) {
 				for (Element taskElement:nl) {
-					FrameworkTask task = getTask(taskElement,toAssoc);
-					if(task != null){
-						tasks.add(task);
+					TaskData taskData = getTask(taskElement);
+					if(taskData != null){
+						taskData.taskSpawner = ts;
+						tasks.add(taskData);
 					}
 				}
 			}
@@ -346,40 +387,36 @@ public class AgentXmlFactory implements AgentFactory {
 	/**
 	 * Reads and creates {@link FrameworkTask} specified in element
 	 * @param moduleElement dom element
-	 * @param toAssoc List of pending associations
-	 * @return a {@link FrameworkTask}
+	 * @return a TaskData with the data to create the task
 	 */
-	FrameworkTask getTask(Element moduleElement,List<Object[]>toAssoc) {
-		FrameworkTask task = null;
-		String className = XmlUtils.getTextValue(moduleElement, "class");	
+	TaskData getTask(Element moduleElement) {
+		String tasktypename = XmlUtils.getTextValue(moduleElement, "tasktypename");	
 		String name = moduleElement.getAttribute("name").trim();
-		try {
-			task = (FrameworkTask) Class.forName(className).newInstance();
-		} catch(ClassNotFoundException e){
-			logger.log(Level.SEVERE, "Framework Task class name: " + className + 
-					" not found.  Check class name.\n", 0L);
-			return null;
-		}catch (Exception e) {
-			logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
-				"\" occurred during creation of object of class " + className + "\n", 0L);
-			return null;
-		}
 		
 		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
-		if(ticks != null){
-			task.setTicksPerRun(ticks);
-		}else{
-			logger.log(Level.WARNING, "Cannot set ticksPerRun for task \"" + name + "\". Using default ticksPerRun.");
-		}
 		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
-		task.init(params);
-		getAssociatedModules(moduleElement, task,toAssoc);
-
+		
+		TaskData taskData=new TaskData(name,tasktypename,ticks,params);
 		logger.log(Level.INFO, "Task: " + name + " added.", 0L);
-		return task;
+		return taskData;
 	}
 
+	static class TaskData {
+		TaskSpawner taskSpawner;
+		String name;
+		String tasktypename;
+		int ticksPerRun;
+		Map<String,Object> params;
+		public TaskData(String name, String tasktypename,
+				int ticksPerRun, Map<String, Object> params) {
+			super();
+			this.name = name;
+			this.tasktypename = tasktypename;
+			this.ticksPerRun = ticksPerRun;
+			this.params = params;
+		}		
+	}
 	/**
 	 * Gets associated modules of the specified {@link Initializable}
 	 * @param element dom element
@@ -555,4 +592,24 @@ public class AgentXmlFactory implements AgentFactory {
 			}
 		}
 	}
+	/**
+	 * Creates the tasks specified and adds them to their associated {@link TaskSpawner}
+	 * @param moduleMap Map of all {@link FrameworkModule} indexed by {@link ModuleName}
+	 * @param toRun list of the {@link FrameworkModule} to be created and run
+	 */
+	void initializeTasks(Map<ModuleName, FrameworkModule> moduleMap,List<TaskData>toRun) {
+		ElementFactory factory = ElementFactory.getInstance();
+		for(TaskData td : toRun){
+			FrameworkTask task = factory.getFrameworkTask(td.tasktypename, td.params, moduleMap);
+			if (task!=null){
+				if(td.ticksPerRun != 0){
+					task.setTicksPerRun(td.ticksPerRun);
+				}
+				td.taskSpawner.addTask(task);
+			}else{
+				logger.log(Level.WARNING, "unable to run task: {1}",new Object[]{TaskManager.getCurrentTick(),td.name});
+			}
+		}
+	}
+
 }

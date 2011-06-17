@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.ModuleName;
+import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockWorkspaceBufferImpl;
@@ -58,6 +59,7 @@ public class StructureBuildingCodeletModuleTest {
 		workspace = new WorkspaceImpl();
 		workspace.addSubModule(csm);
 		workspace.addSubModule(perceptualBuffer);
+		sbcModule.setAssociatedModule(workspace, "");
 		
 		ns = new NodeStructureImpl();
 		node1 = factory.getNode();
@@ -75,30 +77,21 @@ public class StructureBuildingCodeletModuleTest {
 	
 		codelet.setAssociatedModule(csm, ModuleUsage.TO_WRITE_TO);
 		codelet.setAssociatedModule(perceptualBuffer, ModuleUsage.TO_READ_FROM);
+		
+		Map<ModuleName,String> assoc =  new HashMap<ModuleName, String>();
+		assoc.put(ModuleName.PerceptualBuffer, ModuleUsage.TO_READ_FROM);
+		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_WRITE_TO);
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicStructureBuildingCodelet.class.getCanonicalName(), 1, 
+				new HashMap<String, String>(), 
+				"BasicStructureBuildingCodelet", new HashMap<String, Object>(),assoc);
+		factory.addFrameworkTaskType(taskDef);
 	}
 
 	@Test
 	public void testGetDefaultCodelet() {
-		//test1
+		sbcModule.setAssociatedModule(workspace, "");
 		BasicStructureBuildingCodelet codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
-		assertEquals(null, codelet);
-
-		//test2
-		sbcModule.setAssociatedModule(csm, "");		
-		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
-		assertEquals(null, codelet);
-		
-		//test3
-		workspace = new WorkspaceImpl();
-		workspace.addSubModule(csm);
-		sbcModule.setAssociatedModule(workspace, "");
-		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
-		assertEquals(null, codelet);
-		
-		//test4
-		workspace.addSubModule(perceptualBuffer);
-		sbcModule.setAssociatedModule(workspace, "");
-		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
 		assertNotNull(codelet);
 		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
@@ -111,19 +104,11 @@ public class StructureBuildingCodeletModuleTest {
 		params.put("arg0", 10.0);
 		params.put("name", "Javier");
 		BasicStructureBuildingCodelet codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
-		
-		assertEquals(null, codelet);
-		
-		sbcModule.setAssociatedModule(workspace, "");
-		
-		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
-		assertNotNull(codelet);
-		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
-		assertEquals(1, codelet.readableBuffers.size());
-		assertEquals(csm, codelet.writableBuffer);
 
-		params.put(ModuleUsage.TO_READ_FROM, "PerceptualBuffer");
-		params.put(ModuleUsage.TO_WRITE_TO, "CurrentSituationalModel");
+		assertNotNull(codelet);
+		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertEquals(1, codelet.readableBuffers.size());
+		assertEquals(csm, codelet.writableBuffer);
 		
 		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
 		assertNotNull(codelet);
@@ -131,8 +116,14 @@ public class StructureBuildingCodeletModuleTest {
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
 		
-		params.put(ModuleUsage.TO_READ_FROM, "CurrentSituationalModel");
-		params.put(ModuleUsage.TO_WRITE_TO, "PerceptualBuffer");
+		Map<ModuleName,String> assoc =  new HashMap<ModuleName, String>();
+		assoc.put(ModuleName.PerceptualBuffer, ModuleUsage.TO_WRITE_TO);
+		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_READ_FROM);
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicStructureBuildingCodelet.class.getCanonicalName(), 1, 
+				new HashMap<String, String>(), 
+				"BasicStructureBuildingCodelet", new HashMap<String, Object>(),assoc);
+		factory.addFrameworkTaskType(taskDef);
 		
 		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
 		assertNotNull(codelet);
@@ -147,7 +138,13 @@ public class StructureBuildingCodeletModuleTest {
 		StructureBuildingCodeletImpl codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("23");
 		assertEquals(null, codelet);
 		
-		factory.addFrameworkTaskType("coolCodelet", MockStructureBuildingCodeletImpl.class.getCanonicalName());
+		Map<ModuleName,String> assoc =  new HashMap<ModuleName, String>();
+		assoc.put(ModuleName.PerceptualBuffer, ModuleUsage.TO_READ_FROM);
+		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_WRITE_TO);
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(MockStructureBuildingCodeletImpl.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"coolCodelet", new HashMap<String, Object>(), assoc);
+		factory.addFrameworkTaskType(taskDef);
 		
 		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet");
 		assertNotNull(codelet);		
@@ -172,10 +169,15 @@ public class StructureBuildingCodeletModuleTest {
 		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
-		assertEquals(100, codelet.getParam("arg0", 100));
+		assertEquals(10.0, codelet.getParam("arg0", 100));
 		
-		params.put(ModuleUsage.TO_READ_FROM, "CurrentSituationalModel");
-		params.put(ModuleUsage.TO_WRITE_TO, "PerceptualBuffer");
+		Map<ModuleName,String> assoc =  new HashMap<ModuleName, String>();
+		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_READ_FROM);
+		assoc.put(ModuleName.PerceptualBuffer, ModuleUsage.TO_WRITE_TO);
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(MockStructureBuildingCodeletImpl.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"coolCodelet", new HashMap<String, Object>(), assoc);
+		factory.addFrameworkTaskType(taskDef);
 		
 		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet",params);
 		assertNotNull(codelet);

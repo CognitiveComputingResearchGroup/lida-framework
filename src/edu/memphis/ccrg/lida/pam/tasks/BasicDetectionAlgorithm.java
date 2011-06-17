@@ -11,10 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkable;
+import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 
@@ -79,6 +81,16 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 		return linkable;
 	}
 
+	@Override
+	public void init (){
+	       String nodeLabel = (String) getParam("node", null);
+	       if(nodeLabel!=null){
+	    	   PamNode node = (PamNode) GlobalInitializer.getInstance().getAttribute(nodeLabel);
+	    	   if (node !=null){
+	    		   setPamLinkable(node);
+	    	   }
+	       }
+	}
 	@Override
 	protected void runThisFrameworkTask() {
 		double amount = detect();
