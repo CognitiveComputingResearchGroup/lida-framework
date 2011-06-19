@@ -17,8 +17,6 @@ import javax.swing.JPanel;
 
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 
 /**
  * Abstract implementation of {@link GuiPanel}
@@ -26,15 +24,13 @@ import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
  * Panels that extend this class inherit the 'initPanel()' method.  
  * This method is called for every GuiPaneluiPanel this created in FrameworkGui.  
  * Since all GuiPanels have a reference to the {@link Agent} object, 
- * the GuiPanel can register itself as a {@link FrameworkGuiEventListener} of 
- * whatever module it wants (provided that module implements {@link GuiEventProvider}).  
- * This means that the module has a reference to the panel, and 
- * it can use this reference to send data to the panel to display.
+ * the GuiPanel can access the data from the model when its {@link #refresh()} method is called.
  * 
  * Implementations should be added in the guiPanels.properties file 
  * by name of panel and canonical name of class. 
  *
  * @author Javier Snaider
+ * @author ryanjmccall
  */
 public abstract class GuiPanelImpl extends javax.swing.JPanel implements GuiPanel{
 

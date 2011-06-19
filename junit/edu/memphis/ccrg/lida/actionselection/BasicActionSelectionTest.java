@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
@@ -27,10 +28,10 @@ public class BasicActionSelectionTest {
 	private BasicActionSelection as;
 	private Behavior behav1,behav2;	
 	private MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
-	private Scheme scheme1,scheme2 ;
+	private MockTaskSpawner ts = new MockTaskSpawner();
+	private Scheme scheme1,scheme2;
 		
 	private AgentAction action1 = new AgentActionImpl();
-	
 	private AgentAction action2 = new AgentActionImpl();
 	
 	@Before
@@ -39,7 +40,8 @@ public class BasicActionSelectionTest {
 		scheme2= new SchemeImpl("scheme2",action2);
 		
 		as = new BasicActionSelection();
-						
+		as.setAssistingTaskSpawner(ts);
+		as.init();	
 		behav1 = scheme1.getInstantiation();
 		behav2 = scheme2.getInstantiation();
 	}
@@ -69,24 +71,30 @@ public class BasicActionSelectionTest {
 
 	@Test
 	public void testSelectAction() {
-		behav1.setActivation(0.1);
-		behav2.setActivation(0.2);
-		as.receiveBehavior(behav1);
-		as.receiveBehavior(behav2);
 		as.addListener(smm);		
+		behav1.setActivation(0.78);
+		behav2.setActivation(0.79);
+		
+		as.receiveBehavior(behav1);
+		as.receiveBehavior(behav2);	
 		
 		assertNull(smm.action);
 		assertFalse(smm.actionReceived);
 		
-		AgentAction action = as.selectAction();
+		as.selectAction();
+		
+		assertNull(smm.action);
+		assertFalse(smm.actionReceived);
+		
+		behav2.setActivation(0.80);
+		as.selectAction();
 		
 		assertTrue(smm.actionReceived);
-		assertEquals(action2,smm.action);
-		assertEquals(action2,action);
-		
+		assertEquals(action2,smm.action);		
 	}
+	
 	@Test
-	public void testDecayModule() {
+	public void testDecayModule() {	
 		behav1.setActivation(0.1);
 		behav2.setActivation(0.5);
 		as.receiveBehavior(behav1);
@@ -97,17 +105,5 @@ public class BasicActionSelectionTest {
 		assertEquals(0.0,behav1.getActivation(),EPSILON);
 		assertEquals(0.4,behav2.getActivation(),EPSILON);		
 	}
-
-	
-//	@Test
-//	public void testGetState() {
-//		as.receiveBehavior(behav1);
-//		as.receiveBehavior(behav2);
-//		
-//		Object[] state = (Object[])as.getState();
-//		Collection<Behavior> content = (Collection<Behavior>)state[0];
-//		
-//		assertTrue("Problem with GetState", content.size()==2);
-//	}
 
 }

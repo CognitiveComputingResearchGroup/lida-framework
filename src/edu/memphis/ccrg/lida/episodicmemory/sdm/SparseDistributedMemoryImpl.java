@@ -85,13 +85,6 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
-	 * #store(cern.colt.bitvector.BitVector, cern.colt.bitvector.BitVector)
-	 */
 	@Override
 	public void store(BitVector wrd, BitVector addr) {
 		for (int i = 0; i < memorySize; i++) {
@@ -101,26 +94,11 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
-	 * #store(cern.colt.bitvector.BitVector)
-	 */
 	@Override
 	public void store(BitVector wrd) {
 		store(wrd, wrd);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
-	 * #mappedStore(cern.colt.bitvector.BitVector,
-	 * cern.colt.bitvector.BitVector)
-	 */
 	@Override
 	public void mappedStore(BitVector wrd, BitVector mapping) {
 		if (wrd.size() == addrLength) {
@@ -136,13 +114,6 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
-	 * #retrieve(cern.colt.bitvector.BitVector)
-	 */
 	@Override
 	public BitVector retrieve(BitVector addr) {
 		// TODO case where address is null
@@ -184,13 +155,6 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		return res;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
-	 * #retrieveIterating(cern.colt.bitvector.BitVector)
-	 */
 	@Override
 	public BitVector retrieveIterating(BitVector addr) {
 		BitVector res = null;
@@ -208,14 +172,6 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.transientepisodicmemory.sdm.SparseDistributedMemory
-	 * #retrieveIterating(cern.colt.bitvector.BitVector,
-	 * cern.colt.bitvector.BitVector)
-	 */
 	@Override
 	public BitVector retrieveIterating(BitVector addr, BitVector mapping) {
 		BitVector mapped = addr.copy();

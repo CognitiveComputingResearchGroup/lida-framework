@@ -121,7 +121,7 @@ public class TaskQueuePanel extends GuiPanelImpl {
      */
     private class TaskQueueTableModel extends AbstractTableModel {
 
-        /* (non-Javadoc)
+        /**
          * Returns the size of the largest queue in the task queue plus 1
          * @see javax.swing.table.TableModel#getColumnCount()
          */

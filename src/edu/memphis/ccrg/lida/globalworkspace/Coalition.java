@@ -14,29 +14,33 @@ import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 /**
- * Coaltions are created and added to the {@link GlobalWorkspace}.
- * by {@link AttentionCodelet} objects.
- * {@link Coalition} must overwrite correctly {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
+ * Coaltions are created and added to the {@link GlobalWorkspace} by
+ * {@link AttentionCodelet} objects. {@link Coalition} must overwrite correctly
+ * {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
  * 
  * @author Javier Snaider
+ * @author ryanjmccall
  */
-public interface Coalition extends Activatible { 
+public interface Coalition extends Activatible {
 
 	/**
 	 * Returns the content of the coalition
+	 * 
 	 * @return The Content of the coalition
 	 */
 	public BroadcastContent getContent();
-	
+
 	/**
 	 * Returns the attention codelet that creates this coalition
+	 * 
 	 * @return The attention codelet which creates this coalition
 	 */
-	public AttentionCodelet getAttentionCodelet();
+	public AttentionCodelet getCreatingAttentionCodelet();
 
-        /**
-         * Returns id
-         * @return long id
-         */
-        public long getId();
+	/**
+	 * Returns id
+	 * 
+	 * @return unique id
+	 */
+	public long getId();
 }

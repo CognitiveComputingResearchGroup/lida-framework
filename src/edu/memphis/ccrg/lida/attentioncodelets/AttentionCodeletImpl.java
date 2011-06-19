@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -34,64 +33,56 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
         AttentionCodelet {
 
     private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
+    private static final int DEFAULT_CODELET_REFRACTORY_PERIOD = 50;
     private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
-    private static final int DEFAULT_REFRACTORY_PERIOD = 50;
+    private static final double DEFAULT_COALITION_REMOVAL_THRESHOLD = 0.0;
+    
+    private int codeletRefractoryPeriod;
+    private double coalitionRemovalThreshold;
     private DecayStrategy coalitionDecayStrategy;
     /**
-     * Where codelet will look for and retrieve content from
+     * Where codelet will look for and retrieve sought content from
      */
     protected WorkspaceBuffer currentSituationalModel;
     /**
-     * Module where codelet will add {@link Coalition}
+     * where {@link Coalition}s will be added
      */
     protected GlobalWorkspace globalWorkspace;
-
-    private int refractoryPeriod;
 
     /**
      * Default constructor
      */
     public AttentionCodeletImpl() {
-        super();
     }
 
     @Override
     public void init() {
-        refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
+        Integer refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_CODELET_REFRACTORY_PERIOD);
+        setRefractoryPeriod(refractoryPeriod);
+        
+        coalitionRemovalThreshold = (Double) getParam("coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
+        
         String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
         double initialActivation = (Double) getParam("initialActivation", getActivation());
         setActivation(initialActivation);
         coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
-        
-        
     }
 
-    /**
-     * Sets associated Module
-     *
-     * @param module
-     *            the module to be associated with
-     * @param usage
-     *            - way of associating the module
-     */
     @Override
     public void setAssociatedModule(FrameworkModule module, String usage) {
-        if (usage.equals(ModuleUsage.TO_READ_FROM)) {
-            if (module instanceof WorkspaceBuffer) {
-                currentSituationalModel = (WorkspaceBuffer) module;
-            }
-        } else if (usage.equals(ModuleUsage.TO_WRITE_TO)) {
-            if (module instanceof GlobalWorkspace) {
-                globalWorkspace = (GlobalWorkspace) module;
-            }
-        } else {
-            logger.log(Level.WARNING, "Module usage not supported {1}",
-                    new Object[]{TaskManager.getCurrentTick(),usage});
+    	if (module instanceof WorkspaceBuffer) {
+            currentSituationalModel = (WorkspaceBuffer) module;
+        }else if (module instanceof GlobalWorkspace) {
+            globalWorkspace = (GlobalWorkspace) module;
+        }else {
+            logger.log(Level.WARNING, "module {1} cannot be associated",
+                    new Object[]{TaskManager.getCurrentTick(),module});
         }
     }
 
     /**
-     * On finding sought content in CSM, create a coalition and add it to the
+     * If sought content is found it the CSM, then retrieve it
+     * and create a coalition from it finally adding it to the
      * {@link GlobalWorkspace}.
      */
     @Override
@@ -101,11 +92,32 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
             if (csmContent.getLinkableCount() > 0) {
                 Coalition coalition = new CoalitionImpl(csmContent, getActivation(), this);
                 coalition.setDecayStrategy(coalitionDecayStrategy);
+                coalition.setActivatibleRemovalThreshold(coalitionRemovalThreshold);
                 globalWorkspace.addCoalition(coalition);
-                setNextTicksPerRun(refractoryPeriod);
                 logger.log(Level.FINER, "{1} adds new coalition with activation {2}",
                         new Object[]{TaskManager.getCurrentTick(), this, coalition.getActivation()});
+                setNextTicksPerRun(codeletRefractoryPeriod);
             }
         }
     }
+    
+
+	@Override
+	public void setRefractoryPeriod(int ticks) {
+		if (ticks > 0) {
+    		codeletRefractoryPeriod = ticks;
+    	}else{
+    		codeletRefractoryPeriod = DEFAULT_CODELET_REFRACTORY_PERIOD;
+    		logger.log(Level.WARNING,
+    				"refractory period must be positive, using default value",
+    				TaskManager.getCurrentTick());
+    	}
+		
+	}
+
+	@Override
+	public int getRefractoryPeriod() {
+		return codeletRefractoryPeriod;
+	}
+    
 }

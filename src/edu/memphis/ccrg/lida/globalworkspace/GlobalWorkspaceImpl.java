@@ -21,9 +21,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -39,62 +36,73 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  * broadcast content.
  * 
  * @author Javier Snaider
- * 
+ * @author Ryan J. McCall
  */
-public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
-        GlobalWorkspace, GuiEventProvider {
+public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWorkspace{
 
     private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
-    private static final double LOWER_ACTIVATION_BOUND = 0.0;
-    private double winnerCoalActivation;
-    private BroadcastTrigger lastBroadcastTrigger;
-    private long broadcastsSentCount = 0;
+	private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
+    
+    private int broadcastRefractoryPeriod;
+    private long broadcastsSentCount;
     private long tickAtLastBroadcast;
-    private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
-    private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
-    private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
-    private List<FrameworkGuiEventListener> guis = new ArrayList<FrameworkGuiEventListener>();
+    private double winningCoalitionActivation;
+    private BroadcastTrigger lastBroadcastTrigger;
     private AtomicBoolean broadcastStarted = new AtomicBoolean(false);
-    private int refractoryPeriod;
+    
+    private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
+    private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
+    private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 
     /**
      * Default constructor
      */
     public GlobalWorkspaceImpl() {
-        super();
+    }
+    
+    @Override
+    public void init() {
+    	Integer refractoryPeriod = (Integer)getParam("globalWorkspace.refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
+    	setRefractoryPeriod(refractoryPeriod);
+    	
+        taskSpawner.addTask(new StartTriggersTask());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * lida.globalworkspace.GlobalWorkspace#addBroadcastListener(edu.memphis.
-     * ccrg. globalworkspace.BroadcastListener)
-     */
+    private class StartTriggersTask extends FrameworkTaskImpl {
+        public StartTriggersTask() {
+            super(1);
+        }
+
+        @Override
+        protected void runThisFrameworkTask() {
+            for (BroadcastTrigger t : broadcastTriggers) {
+                t.start();
+            }
+            setTaskStatus(TaskStatus.FINISHED); // Runs only once
+        }
+    }
+
+    @Override
+    public void addListener(ModuleListener listener) {
+        if (listener instanceof BroadcastListener) {
+            addBroadcastListener((BroadcastListener) listener);
+        } else {
+            logger.log(Level.WARNING,
+                    "Can only add listeners of type BroadcastListener. Tried to add {1}",
+                    new Object[]{TaskManager.getCurrentTick(), listener});
+        }
+    }
+    
     @Override
     public void addBroadcastListener(BroadcastListener bl) {
         broadcastListeners.add(bl);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#addTrigger(edu.memphis
-     * .ccrg.globalworkspace. Trigger)
-     */
     @Override
     public void addBroadcastTrigger(BroadcastTrigger t) {
         broadcastTriggers.add(t);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * edu.memphis.ccrg.globalworkspace.GlobalWorkspace#putCoalition(edu.memphis
-     * .ccrg.globalworkspace .Coalition)
-     */
     @Override
     public boolean addCoalition(Coalition coalition) {
         if (coalitions.add(coalition)) {
@@ -116,14 +124,13 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
     @Override
     public void triggerBroadcast(BroadcastTrigger trigger) {
         if (broadcastStarted.compareAndSet(false, true)) {
-            if(TaskManager.getCurrentTick()-tickAtLastBroadcast<refractoryPeriod){
+            if(TaskManager.getCurrentTick() - tickAtLastBroadcast < broadcastRefractoryPeriod){
                 broadcastStarted.set(false);
                 return;
             }
-            boolean broadcastSent;
-            broadcastSent = sendBroadcast();
-
-            if (broadcastSent == true) {
+            
+            boolean broadcastWasSent = sendBroadcast();
+            if (broadcastWasSent) {
                 lastBroadcastTrigger = trigger;
             }
         }
@@ -143,11 +150,11 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
         logger.log(Level.FINEST, "Triggering broadcast",
                 TaskManager.getCurrentTick());
         boolean broadcastWasSent = false;
-        Coalition coal = chooseCoalition();
-        if (coal != null) {
-            winnerCoalActivation = coal.getActivation();
-            coalitions.remove(coal);
-            NodeStructure copy = ((NodeStructure) coal.getContent()).copy();
+        Coalition winningCoalition = chooseCoalition();
+        if (winningCoalition != null) {
+            winningCoalitionActivation = winningCoalition.getActivation();
+            coalitions.remove(winningCoalition);
+            NodeStructure copy = ((NodeStructure) winningCoalition.getContent()).copy();
             // TODO Create FrameworkTask for parallel processing
             for (BroadcastListener bl : broadcastListeners) {
                 bl.receiveBroadcast((BroadcastContent) copy);
@@ -171,7 +178,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
                     || c.getActivation() > chosenCoal.getActivation()) {
                 chosenCoal = c;
             }
-        }// for
+        }
         return chosenCoal;
     }
 
@@ -182,25 +189,13 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
     }
 
     @Override
-    public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener) {
-        guis.add(listener);
-    }
-
-    @Override
-    public void sendEventToGui(FrameworkGuiEvent evt) {
-        for (FrameworkGuiEventListener fg : guis) {
-            fg.receiveFrameworkGuiEvent(evt);
-        }
-    }
-
-    @Override
     public Object getModuleContent(Object... params) {
         if (params.length > 0) {
-            if (params[0].equals("winnerCoalActivation")) {
-                return winnerCoalActivation;
-            } else if (params[0].equals("lastBroadcastTrigger")) {
+            if ("winnerCoalActivation".equals(params[0])) {
+                return winningCoalitionActivation;
+            } else if ("lastBroadcastTrigger".equals(params[0])) {
                 return lastBroadcastTrigger;
-            } else if (params[0].equals("coalitions")) {
+            } else if ("coalitions".equals(params[0])) {
                 return Collections.unmodifiableCollection(coalitions);
             }
         }
@@ -210,70 +205,56 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements
     @Override
     public void decayModule(long ticks) {
         decay(ticks);
-        logger.log(Level.FINEST, "Coallitions Decayed",
+        logger.log(Level.FINEST, "Coalitions Decayed",
                 TaskManager.getCurrentTick());
     }
 
     private void decay(long ticks) {
         for (Coalition c : coalitions) {
             c.decay(ticks);
-            if (c.getActivation() <= LOWER_ACTIVATION_BOUND) {
+            if (c.isRemovable()) {
                 coalitions.remove(c);
-                logger.log(Level.FINEST, "Coallition removed",
+                logger.log(Level.FINEST, "Coalition removed",
                         TaskManager.getCurrentTick());
             }
         }
     }
 
     @Override
-    public void addListener(ModuleListener listener) {
-        if (listener instanceof BroadcastListener) {
-            addBroadcastListener((BroadcastListener) listener);
-        } else {
-            logger.log(
-                    Level.WARNING,
-                    "Can only add listeners of type BroadcastListener. Tried to add {1}",
-                    new Object[]{TaskManager.getCurrentTick(), listener});
-        }
-    }
-
-    @Override
-    public void init() {
-        getAssistingTaskSpawner().addTask(new BackgroundTask());
-    }
-    
-    @Override
     public long getBroadcastSentCount() {
         return broadcastsSentCount;
     }
 
+    /**
+     * Gets refractoryPeriod
+     * @return number of ticks that must pass after a broadcast has been sent before
+     * a new one can be sent.
+     */
     @Override
     public int getRefractoryPeriod() {
-        return refractoryPeriod;
+        return broadcastRefractoryPeriod;
     }
 
+    /**
+	 * Sets refractoryPeriod
+	 * 
+	 * @param period number of ticks that must pass after a broadcast has been
+	 * sent before a new one can be sent.
+	 */
     @Override
-    public void setRefractoryPeriod(int refractoryPeriod) {
-        this.refractoryPeriod = refractoryPeriod;
+    public void setRefractoryPeriod(int period) {
+    	if (period > 0) {
+    		broadcastRefractoryPeriod = period;
+    	}else{
+    		broadcastRefractoryPeriod = DEFAULT_REFRACTORY_PERIOD;
+    		logger.log(Level.WARNING,
+    				"refractory period must be positive, using default value",
+    				TaskManager.getCurrentTick());
+    	}
     }
 
     @Override
     public long getTickAtLastBroadcast() {
         return tickAtLastBroadcast;
-    }
-
-    private class BackgroundTask extends FrameworkTaskImpl {
-
-        public BackgroundTask() {
-            super(1);
-        }
-
-        @Override
-        protected void runThisFrameworkTask() {
-            for (BroadcastTrigger t : broadcastTriggers) {
-                t.start();
-            }
-            setTaskStatus(TaskStatus.FINISHED); // Runs only once
-        }
     }
 }

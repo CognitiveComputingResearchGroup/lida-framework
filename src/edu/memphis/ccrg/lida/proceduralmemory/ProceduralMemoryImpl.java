@@ -216,17 +216,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory#containsScheme(edu.memphis.ccrg.lida.proceduralmemory.Scheme)
-	 */
 	@Override
 	public boolean containsScheme(Scheme s) {
 		return schemeSet.contains(s);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory#getSchemeCount()
-	 */
 	@Override
 	public int getSchemeCount() {
 		return schemeSet.size();

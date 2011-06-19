@@ -42,9 +42,6 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
  		this.commands = commands;
 	}
 	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController#executeCommand(java.lang.String, java.util.Map)
-	 */
 	@Override
 	public Object executeCommand (String commandName, Map<String,Object> parameters){
 		if(commandName == null){
@@ -69,9 +66,6 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 		return executeCommand(command);
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController#executeCommand(edu.memphis.ccrg.lida.framework.gui.commands.Command)
-	 */
 	@Override
 	public Object executeCommand (Command command){
 		if(command != null){
@@ -84,9 +78,6 @@ public class FrameworkGuiControllerImpl implements FrameworkGuiController {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController#registerAgent(edu.memphis.ccrg.lida.framework.Lida)
-	 */
 	@Override
 	public void registerAgent(Agent agent) {
 		this.agent = agent;

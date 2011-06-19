@@ -22,11 +22,12 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
+	private static long idCounter = 0;
+	
     private BroadcastContent content;
     private double attentionCodeletActivation;
     private AttentionCodelet attentionCodelet;
     private long id;
-    private static long idCounter = 0;
 
     /**
      * Constructs a coalition with content and sets activation to be equal to
@@ -38,10 +39,10 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
      * @see AttentionCodeletImpl
      */
     public CoalitionImpl(NodeStructure content, double activation, AttentionCodelet codelet) {
+    	id = idCounter++;
         this.content = (BroadcastContent) content;
         attentionCodeletActivation = activation;
         attentionCodelet = codelet;
-        id = idCounter++;
         updateActivation();
     }
 
@@ -63,7 +64,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     }
 
     @Override
-    public AttentionCodelet getAttentionCodelet() {
+    public AttentionCodelet getCreatingAttentionCodelet() {
         return attentionCodelet;
     }
 

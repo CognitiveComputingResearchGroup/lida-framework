@@ -133,16 +133,15 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         module.addListener(this);
 
         recentBroadcastsSize = DEFAULT_RECENT_BROADCAST_SIZE;
-        if(param.length == 1){
+        if(param.length > 0){
             try{
             	recentBroadcastsSize = Integer.parseInt(param[0]);
             }catch(NumberFormatException e){
               logger.log(
-                    Level.WARNING,"recentBroadcastsSize is invalid or not specified. Default value used.",0L);
+                    Level.WARNING,"recentBroadcastsSize is invalid using default value",0L);
             }
         }else{
-        	logger.log(Level.WARNING,
-        			"only expected 1 parameter, but got" + param.length,0L);
+        	logger.log(Level.INFO, "using default recent broadcast size");
         }
     }
 
@@ -192,9 +191,9 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
                 case 2:
                     return coal.getContent();
                 case 3:
-                    return coal.getAttentionCodelet();
+                    return coal.getCreatingAttentionCodelet();
                 case 4:
-                    return coal.getAttentionCodelet().getSoughtContent();
+                    return coal.getCreatingAttentionCodelet().getSoughtContent();
                 default:
                     return "";
             }

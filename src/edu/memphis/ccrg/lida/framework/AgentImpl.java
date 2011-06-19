@@ -31,18 +31,12 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 		taskManager=tm;
 	}
 	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.Lida#start()
-	 */
 	@Override
 	public void init(){
 		taskManager.setDecayingModules(getSubmodules().values());
 		logger.log(Level.INFO,"FrameworkModules have been started\n", 0L);		
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.Lida#getTaskManager()
-	 */
 	@Override
 	public TaskManager getTaskManager() {
 		return taskManager;

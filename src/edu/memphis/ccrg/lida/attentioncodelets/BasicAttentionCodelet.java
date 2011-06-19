@@ -102,4 +102,5 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 		}
 		return result;
 	}
+
 }

@@ -70,16 +70,13 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	public TaskSpawner getAssistingTaskSpawner(){
 		return taskSpawner;
 	}
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializable#init(java.util.Map)
-	 */
+	
 	@Override
 	public void init(Map<String, ?> params) {
 		this.parameters = params;
 		init();
 	}
 	
-
 	/** 
 	 * Implementations should only perform initialization of variables or
 	 * objects that depend on parameters in the parameter map specified in {@link #init(Map)}.

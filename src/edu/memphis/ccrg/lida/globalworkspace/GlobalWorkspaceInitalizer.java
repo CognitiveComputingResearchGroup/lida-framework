@@ -38,26 +38,13 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 	private static final Integer DEFAULT_DELAY_NO_NEW_COALITION = 50;
 	private static final Double DEFAULT_AGGREGATE_ACT_THRESHOLD = 0.8;
 	private static final Double DEFAULT_INDIVIDUAL_ACT_THRESHOLD = 0.5;
-	private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
 
 	@Override
 	public void initModule(FullyInitializable module, Agent lida,
 			Map<String, ?> params) {
-
 		GlobalWorkspace globalWksp = (GlobalWorkspace) module;
 
-		Integer refractoryPeriod = (Integer) params
-				.get("globalWorkspace.refractoryPeriod");
-		if (refractoryPeriod == null || refractoryPeriod <= 0) {
-			refractoryPeriod = DEFAULT_REFRACTORY_PERIOD;
-			logger.log(Level.WARNING,
-					"Invalid refractory period parameter, using default",
-					TaskManager.getCurrentTick());
-		}
-                globalWksp.setRefractoryPeriod(refractoryPeriod);
-
-                Integer delayNoBroadcast = (Integer) params
-				.get("globalWorkspace.delayNoBroadcast");
+        Integer delayNoBroadcast = (Integer) params.get("globalWorkspace.delayNoBroadcast");
 		if (delayNoBroadcast == null || delayNoBroadcast <= 0) {
 			delayNoBroadcast = DEFAULT_DELAY_NO_BROADCAST;
 			logger.log(Level.WARNING, "Invalid delay no broadcast parameter, using default",
@@ -88,38 +75,33 @@ public class GlobalWorkspaceInitalizer implements Initializer {
 				.get("globalWorkspace.individualActivationThreshold");
 		if (individualActivationThreshold == null || individualActivationThreshold <= 0.0) {
 			individualActivationThreshold = DEFAULT_INDIVIDUAL_ACT_THRESHOLD;
-			logger
-					.log(
-							Level.WARNING,
+			logger.log(Level.WARNING,
 							"Invalid individual activation threshold parameter, using default",
 							TaskManager.getCurrentTick());
 		}
 
-		BroadcastTrigger tr;
-		Map<String, Object> parameters;
-
-		tr = new NoBroadcastOccurringTrigger();
-		parameters = new HashMap<String, Object>();
+		BroadcastTrigger tr = new NoBroadcastOccurringTrigger();
+		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("name", "NoBroadcastOccurringTrigger");
 		parameters.put("delay", delayNoBroadcast);
 		tr.init(parameters, globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 
 		tr = new AggregateCoalitionActivationTrigger();
-		parameters = new HashMap<String, Object>();
+		parameters.clear();
 		parameters.put("threshold", aggregateActivationThreshold);
 		tr.init(parameters, globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 
 		tr = new NoCoalitionArrivingTrigger();
-		parameters = new HashMap<String, Object>();
+		parameters.clear();
 		parameters.put("name", "NoCoalitionArrivingTrigger");
 		parameters.put("delay", delayNoNewCoalition);
 		tr.init(parameters, globalWksp);
 		globalWksp.addBroadcastTrigger(tr);
 
 		tr = new IndividualCoaltionActivationTrigger();
-		parameters = new HashMap<String, Object>();
+		parameters.clear();
 		parameters.put("threshold", individualActivationThreshold);
 		tr.init(parameters, globalWksp);
 		globalWksp.addBroadcastTrigger(tr);

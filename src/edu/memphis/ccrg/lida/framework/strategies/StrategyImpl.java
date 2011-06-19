@@ -18,24 +18,12 @@ public abstract class StrategyImpl implements Strategy {
 
 	private Map<String, ?> parameters;
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
-	 */
 	@Override
 	public void init(Map<String, ?> params) {
 		this.parameters = params;
 		init();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init()
-	 */
 	@Override
 	public void init() {
 	}

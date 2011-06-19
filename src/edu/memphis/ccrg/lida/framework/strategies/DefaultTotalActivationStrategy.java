@@ -9,15 +9,12 @@ package edu.memphis.ccrg.lida.framework.strategies;
 
 
 /**
- * Default method to calculate total activation.  Sums activations returning sum or 1.0, whichever is lower.
+ * Default method to calculate total activation.  Sums activations returning sum or 1.0, whichever is lowest.
  * @author Ryan J. McCall
  *
  */
 public class DefaultTotalActivationStrategy extends StrategyImpl implements TotalActivationStrategy {
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.activation.TotalActivationStrategy#calculateTotalActivation(double, double)
-	 */
 	@Override
 	public double calculateTotalActivation(double baseLevelActivation,
 			double currentActivation) {

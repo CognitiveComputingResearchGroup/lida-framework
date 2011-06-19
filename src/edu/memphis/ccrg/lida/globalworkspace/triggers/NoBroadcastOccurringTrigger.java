@@ -96,31 +96,16 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 		}	
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.globalworkspace.Trigger#start()
-	 */
 	@Override
 	public void start() {
 		task=new TriggerTask(delay,gw,name,this);
 		gw.getAssistingTaskSpawner().addTask(task);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.globalworkspace.Trigger#command(java.util.Set, double)
-	 */
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.memphis.ccrg.globalworkspace.Trigger#reset()
-	 */
 	@Override
 	public void reset() {
 		if (task != null){
