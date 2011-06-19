@@ -77,7 +77,7 @@
 			<param name="globalWorkspace.aggregateActivationThreshold"
 				type="double">.8 </param>
 			<param name="globalWorkspace.individualActivationThreshold"
-				type="double">.5 </param>
+				type="double">.5 </param>		    <param name="globalWorkspace.refractoryPeriod" type="int">40</param>
 			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceInitalizer			</initializerclass>
 		</module>
 		<module name="ProceduralMemory">

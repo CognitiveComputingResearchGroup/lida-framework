@@ -7,55 +7,42 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.environment;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEvent;
-import edu.memphis.ccrg.lida.framework.gui.events.FrameworkGuiEventListener;
-import edu.memphis.ccrg.lida.framework.gui.events.GuiEventProvider;
+import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 
 /**
  * Abstract implementation of {@link Environment}
- * Environments should not be a listener of anything besides GUIs.  Rather, SensoryMemory and SensoryMotorMemory should
+ * Environments should not be a listener of anything besides GUIs.  
+ * Rather, SensoryMemory and SensoryMotorMemory should
  * add environments as associated modules in the XML configuration file. 
  * @author Ryan J. McCall
  */
-public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Environment, GuiEventProvider{
+public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Environment{
 	
-	private List<FrameworkGuiEventListener> listeners = new ArrayList<FrameworkGuiEventListener>();
-
 	/**
-	 * Default constructor
+	 * Default constructor will be invoked by {@link AgentXmlFactory} 
+	 * to create this {@link FrameworkModule}
 	 */
 	public EnvironmentImpl(){
 	}
-	@Override
-	public void addFrameworkGuiEventListener(FrameworkGuiEventListener listener){
-		listeners.add(listener);
-	}
-		
-	/*
-	 * A Gui Event provider may want to send different kinds of events at different
-	 * times, so the event to be sent is passed as a parameter.
-	 * @param evt {@link FrameworkGuiEvent}
+	
+	/**
+	 * Not applicable for environments, sensors should directly request data from 
+	 * the {@link Environment}.  Likewise, actuators should directly call
+	 * {@link Environment#processAction(Object)} to make an action.
 	 */
 	@Override
-	public void sendEventToGui(FrameworkGuiEvent evt){
-		for(FrameworkGuiEventListener l: listeners){
-			l.receiveFrameworkGuiEvent(evt);
-		}
-	}
-	
-	@Override
 	public void addListener(ModuleListener listener) {
-		//Not applicable for environment
 	}
 	
+	/**
+	 * May override to implement decay for environment
+	 * @see FrameworkModule#decayModule(long)
+	 */
 	@Override
 	public void decayModule(long ticks) {
-		//Decay module appropriately
 	}
 	
 }

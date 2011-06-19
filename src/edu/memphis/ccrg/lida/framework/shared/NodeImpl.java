@@ -153,25 +153,13 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			desirability = d;
 		}
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
-	 */
+
 	@Override
 	public void init(Map<String, ?> params) {
 		this.parameters = params;
 		init();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init()
-	 */
+
 	@Override
 	public void init() {
 	}

@@ -91,25 +91,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		params = l.params;
 		updateExtendedId();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init(java.util.Properties)
-	 */
+
 	@Override
 	public void init(Map<String, ?> params) {
 		this.params = params;
 		init();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * edu.memphis.ccrg.lida.framework.FrameworkModule#init()
-	 */
+
 	@Override
 	public void init() {
 	}

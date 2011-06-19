@@ -38,83 +38,52 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	private static double perceptThreshold = 0.0;
 
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#getModuleContent(java.lang.Object[])
-	 */
 	@Override
 	public Object getModuleContent(Object... params) {
 		// not implemented
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#decayModule(long)
-	 */
 	@Override
 	public void decayModule(long ticks) {
 		// not implemented
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
-	 */
 	@Override
 	public void addListener(ModuleListener listener) {
 		// not implemented
 
 	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.initialization.Initializable#init()
-	 */
 	@Override
 	public void init() {
 		// not implemented
 
 	}
 
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultNode(edu.memphis.ccrg.lida.framework.shared.Node)
-	 */
 	@Override
 	public PamNode addDefaultNode(Node node) {
 		// not implemented
 		return null;
 	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultNodes(java.util.Set)
-	 */
 	@Override
 	public Set<PamNode> addDefaultNodes(Set<? extends Node> nodes) {
 		// not implemented
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addDefaultLinks(java.util.Set)
-	 */
 	@Override
 	public Set<PamLink> addDefaultLinks(Set<? extends Link> links) {
 		// not implemented
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addFeatureDetector(edu.memphis.ccrg.lida.pam.tasks.FeatureDetector)
-	 */
 	@Override
 	public void addDetectionAlgorithm(DetectionAlgorithm fd) {
 		// not implemented
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addPamListener(edu.memphis.ccrg.lida.pam.PamListener)
-	 */
 	@Override
 	public void addPamListener(PamListener pl) {
 		// not implemented
@@ -127,22 +96,13 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	}
 
-	/* (non-Javadoc)
-	 * Just for test matter
-	 */
 	public PamNode pmNode;
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#propagateActivationToParents(edu.memphis.ccrg.lida.pam.PamNode)
-	 */
 	@Override
 	public void propagateActivationToParents(PamNode pamNode) {
 		pmNode = pamNode;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#addNodeStructureToPercept(edu.memphis.ccrg.lida.framework.shared.NodeStructure)
-	 */
 	@Override
 	public void addNodeStructureToPercept(NodeStructure ns) {
 		nsPercept = ns;
@@ -150,54 +110,36 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	public NodeStructure nsPercept;
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.framework.shared.Node)
-	 */
 	@Override
 	public boolean containsNode(Node node) {
 		// not implemented
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsNode(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public boolean containsNode(ExtendedId id) {
 		// not implemented
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsLink(edu.memphis.ccrg.lida.framework.shared.Link)
-	 */
 	@Override
 	public boolean containsLink(Link link) {
 		// not implemented
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#containsLink(edu.memphis.ccrg.lida.framework.shared.ExtendedId)
-	 */
 	@Override
 	public boolean containsLink(ExtendedId id) {
 		// not implemented
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setPerceptThreshold(double)
-	 */
 	@Override
 	public void setPerceptThreshold(double t) {
 		MockPAM.perceptThreshold =t;
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setUpscaleFactor(double)
-	 */
 	@Override
 	public void setUpscaleFactor(double f) {
 		upscaleFactor = f;
@@ -205,35 +147,23 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 	
 	public double upscaleFactor;
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getUpscaleFactor()
-	 */
 	@Override
 	public double getUpscaleFactor() {
 		return upscaleFactor;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#setDownscaleFactor(double)
-	 */
 	@Override
 	public void setDownscaleFactor(double f) {
 		// not implemented
 
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#getDownscaleFactor()
-	 */
 	@Override
 	public double getDownscaleFactor() {
 		// not implemented
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory#isOverPerceptThreshold(edu.memphis.ccrg.lida.pam.PamLinkable)
-	 */
 	@Override
 	public boolean isOverPerceptThreshold(PamLinkable l) {
 		// not implemented
@@ -320,7 +250,6 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	@Override
 	public Node getNode(String label) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

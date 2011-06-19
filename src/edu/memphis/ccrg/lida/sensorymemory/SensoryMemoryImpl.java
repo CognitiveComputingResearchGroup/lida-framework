@@ -48,9 +48,6 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
     public SensoryMemoryImpl() {
     }
 
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModule#addListener(edu.memphis.ccrg.lida.framework.ModuleListener)
-     */
     @Override
     public void addListener(ModuleListener listener) {
         if (listener instanceof SensoryMemoryListener) {
@@ -65,9 +62,6 @@ public abstract class SensoryMemoryImpl extends FrameworkModuleImpl implements S
         listeners.add(l);
     }
 
-    /* (non-Javadoc)
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#setAssociatedModule(edu.memphis.ccrg.lida.framework.FrameworkModule, int)
-     */
     @Override
     public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
         if (module instanceof Environment){

@@ -14,13 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.pam.PamLink;
-import edu.memphis.ccrg.lida.pam.PamNode;
 
 /**
  * 
@@ -34,22 +31,43 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private static final ElementFactory factory = ElementFactory.getInstance();
 	
 	private double baseLevelActivation;
+	private double learnableRemovableThreshold;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
 
-	private double learnableRemovableThreshold;
-
 	/**
+	 * Constructs a new instance with default values.
+	 */
+	public LearnableImpl() {
+		super();
+		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
+		learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
+		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
+		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
+		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param l {@link LearnableImpl}
+	 */
+	public LearnableImpl(LearnableImpl l) {
+		this(l.getActivation(), l.getActivatibleRemovalThreshold(),  l.getBaseLevelActivation(), l.getLearnableRemovalThreshold(),
+			l.getExciteStrategy(), l.getDecayStrategy(),l.getBaseLevelExciteStrategy(), l.getBaseLevelDecayStrategy(), l.getTotalActivationStrategy());
+	}
+	
+	/**
+	 * Constructs a new instance with specified attributes
 	 * @param activation current activation
-	 * @param activatibleRemovalThreshold activation threshold to remain in a {@link NodeStructure}
+	 * @param activatibleRemovalThreshold activation threshold needed for this instance to remain active
 	 * @param baseLevelActivation base-level activation for learning
-	 * @param learnableRemovableThreshold base-level activation threshold to remain in a {@link NodeStructure} of {@link PamNode} and {@link PamLink}
+	 * @param learnableRemovableThreshold base-level activation needed for this instance to remain active
 	 * @param exciteStrategy {@link ExciteStrategy} for exciting {@link ActivatibleImpl} activation.
 	 * @param decayStrategy {@link DecayStrategy} for decaying {@link ActivatibleImpl} activation.
 	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for reinforcing {@link LearnableImpl} base-level activation.
 	 * @param baseLevelDecayStrategy {@link DecayStrategy} for decaying {@link LearnableImpl} base-level activation.
-	 * @param taStrategy {@link TotalActivationStrategy} how this LearnableImpl will calculate its total activation.
+	 * @param taStrategy {@link TotalActivationStrategy} how this instance will calculate its total activation.
 	 */
 	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovableThreshold,
 			ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, ExciteStrategy baseLevelExciteStrategy, DecayStrategy baseLevelDecayStrategy, TotalActivationStrategy taStrategy) {
@@ -62,46 +80,17 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		this.totalActivationStrategy = taStrategy;
 	}
 
-	/**
-	 * 
-	 */
-	public LearnableImpl() {
-		super();
-		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
-		learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
-		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
-		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
-		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");
-	}
-	
-	/**
-	 * @param l Another Learnable
-	 */
-	public LearnableImpl(Learnable l) {
-		this(l.getActivation(), l.getActivatibleRemovalThreshold(),  l.getBaseLevelActivation(), l.getLearnableRemovalThreshold(),
-			l.getExciteStrategy(), l.getDecayStrategy(),l.getBaseLevelExciteStrategy(), l.getBaseLevelDecayStrategy(), l.getTotalActivationStrategy());
-	}
-
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#decay(long)
-	 */
 	@Override
 	public void decay(long ticks){
 		decayBaseLevelActivation(ticks);
 		super.decay(ticks);
 	}
 	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#isRemovable()
-	 */
 	@Override
 	public boolean isRemovable() {
 		return baseLevelActivation <= learnableRemovableThreshold;
 	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl#getTotalActivation()
-	 */
+
 	@Override
 	public double getTotalActivation() { 
 	    return totalActivationStrategy.calculateTotalActivation(baseLevelActivation, getActivation());

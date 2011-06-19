@@ -50,7 +50,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	public PamLinkImpl(PamLinkImpl pamLink) {
 		super(pamLink);
 		groundingPamLink = this;
-		this.learnable=new LearnableImpl(pamLink.learnable);
+		this.learnable=new LearnableImpl((LearnableImpl)pamLink.learnable);
 	}
 
 	/** 
@@ -222,16 +222,11 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 		learnable.setTotalActivationStrategy(strategy);
 	}
 	
-//	@Override
-//	public PamLink copy(){
-//		return new PamLinkImpl(this);
-//	}
-	
 	@Override
 	public void updateLinkValues(Link link) {
 		if(link instanceof PamLinkImpl){
 			PamLinkImpl pl = (PamLinkImpl) link;
-			this.learnable = new LearnableImpl(pl.learnable);
+			this.learnable = new LearnableImpl((LearnableImpl)pl.learnable);
 		}else if(link != null){
 			logger.log(Level.WARNING, "Cannot update type-specified values of this object. Required: {1} but received: {2}",
 					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link});

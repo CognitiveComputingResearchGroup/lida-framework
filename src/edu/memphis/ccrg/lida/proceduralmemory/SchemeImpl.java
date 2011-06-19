@@ -67,43 +67,28 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		this.action = a;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.Scheme#actionExecuted()
-	 */
 	@Override
 	public void actionExecuted() {
 		numberOfExecutions++;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.Scheme#actionSuccessful()
-	 */
 	@Override
 	public void actionSuccessful() {
 		successfulExecutions++;		
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.Scheme#getReliability()
-	 */
 	@Override
 	public double getReliability() {
 		return (numberOfExecutions > 0) ? ((double) successfulExecutions)
 				/ numberOfExecutions : 0.0;
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.Scheme#isReliable()
-	 */
 	@Override
 	public boolean isReliable() {
 		return (numberOfExecutions > 0)
 				&& ((((double) successfulExecutions) / numberOfExecutions) > RELIABILITY_THRESHOLD);
 	}
-	
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.proceduralmemory.Scheme#getInstantiation()
-	 */
+
 	@Override
 	public Behavior getInstantiation() {
 		Behavior b = new BehaviorImpl(getAction());

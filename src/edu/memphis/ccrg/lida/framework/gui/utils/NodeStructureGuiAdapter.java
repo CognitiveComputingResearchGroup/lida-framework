@@ -93,12 +93,6 @@ public class NodeStructureGuiAdapter extends
 		}
 	}
 
-	/*
-	 * (non-Javadoc) Creates and returns GuiLinks for all Links in the
-	 * nodestructure whose sink is the argument
-	 * 
-	 * @see edu.uci.ics.jung.graph.Graph#getInEdges(java.lang.Object)
-	 */
 	@Override
 	public Collection<GuiLink> getInEdges(Linkable arg0) {
 		Set<Link> links = nodeStructure.getAttachedLinks(arg0);
@@ -117,10 +111,9 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * Creates and returns GuiLinks for all Links in the nodestructure whose
+	 * Creates and returns {@link GuiLink}s for all {@link Link}s in the {@link NodeStructure} whose
 	 * source is the argument
 	 * 
 	 * @see edu.uci.ics.jung.graph.Graph#getOutEdges(java.lang.Object)
@@ -178,8 +171,8 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
-	/*
-	 * (non-Javadoc) Returns true if arg0 is a destination of GuiLink arg1
+	/**
+	 * Returns true if arg0 is a destination of {@link GuiLink} arg1
 	 * 
 	 * @see edu.uci.ics.jung.graph.Graph#isDest(java.lang.Object,
 	 * java.lang.Object)
@@ -193,8 +186,8 @@ public class NodeStructureGuiAdapter extends
 		}
 	}
 
-	/*
-	 * (non-Javadoc) Returns true if arg0 is a source of GuiLink arg1
+	/**
+	 * Returns true if arg0 is a source of {@link GuiLink} arg1
 	 * 
 	 * @see edu.uci.ics.jung.graph.Graph#isSource(java.lang.Object,
 	 * java.lang.Object)
@@ -243,8 +236,8 @@ public class NodeStructureGuiAdapter extends
 		return ret;
 	}
 
-	/*
-	 * (non-Javadoc) Returns all edges attached to specified linkable
+	/**
+	 *  Returns all edges attached to specified {@link Linkable}
 	 * 
 	 * @see edu.uci.ics.jung.graph.Hypergraph#getIncidentEdges(java.lang.Object)
 	 */

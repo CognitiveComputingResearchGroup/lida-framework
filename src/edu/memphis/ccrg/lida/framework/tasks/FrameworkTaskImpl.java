@@ -26,10 +26,11 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	private static final Logger logger= Logger.getLogger(FrameworkTaskImpl.class.getCanonicalName());
 
 	private final static int defaultTicksPerRun = 1;
+	private static long nextTaskID;
+	
 	private int ticksPerRun = defaultTicksPerRun;
 	private long taskID;
 	private long nextExcecutionTicksPerRun = defaultTicksPerRun;
-	
 	/**
 	 * {@link TaskStatus} of this task
 	 */
@@ -37,36 +38,34 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner controllingTS;
 	private long scheduledTick;
+    public final String taskName;
 	
 	/**
-	 * Source of unique Ids for FrameworkTaskImpls
-	 */
-	private static long nextTaskID;
-        public final String taskName;
-	
-	/**
-	 * Creates a FrameworkTaskImpl with default ticksPerRun
+	 * Constructs a {@link FrameworkTaskImpl} with default ticksPerRun
 	 */
 	public FrameworkTaskImpl() {
 		this(defaultTicksPerRun,null);
 	}
+	
 	/**
+	 * Constructs a {@link FrameworkTaskImpl} with specified ticksPerRun
 	 * @param ticksPerRun task's run frequency
-	 * 
 	 */
 	public FrameworkTaskImpl(int ticksPerRun) {
 		this(ticksPerRun,null);
 	}
 	
 	/**
+	 * Constructs a {@link FrameworkTaskImpl} with default ticksPerRun and specified
+	 * controlling {@link TaskSpawner}
 	 * @param ticksPerRun task's run frequency
 	 * @param ts controlling {@link TaskSpawner}
 	 */
 	public FrameworkTaskImpl(int ticksPerRun, TaskSpawner ts) {
 		taskID = nextTaskID++;
-		this.controllingTS=ts;
+		controllingTS = ts;
 		setTicksPerRun(ticksPerRun);
-        taskName =this.getClass().getSimpleName() + "["+taskID+"]";
+        taskName = getClass().getSimpleName() + "["+taskID+"]";
 	}
 	
 	@Override
@@ -80,8 +79,8 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 
 	/** 
-	 * This method is not supposed to be called directly nor overwritten.
-	 * Overwrite the runThisFrameworkTask method.
+	 * This method should not be called directly nor should it be overridden.
+	 * Override {@link #runThisFrameworkTask()} instead.
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
@@ -165,9 +164,6 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	public void init() {
 	}
 
-	/* (non-Javadoc)
-	 * @see edu.memphis.ccrg.lida.framework.FrameworkTask#getParameter(java.lang.String)
-	 */
 	@Override
 	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
@@ -197,13 +193,15 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	}
 	
 	@Override
-	public void setNextTicksPerRun(long lapTick) {
-		this.nextExcecutionTicksPerRun = lapTick;	
+	public void setNextTicksPerRun(long nextTicksPerRun) {
+		this.nextExcecutionTicksPerRun = nextTicksPerRun;	
 	}
 	
+	/**
+	 * Subclasses may override this method.
+	 */
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		//Subclasses have the option of overriding this method.
 	}	
 	
 	@Override
