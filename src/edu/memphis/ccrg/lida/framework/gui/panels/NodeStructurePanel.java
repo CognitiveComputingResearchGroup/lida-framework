@@ -139,14 +139,18 @@ public class NodeStructurePanel extends GuiPanelImpl {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-        private void relaxButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relaxButtonActionPerformed
-            Relaxer relaxer = vizViewer.getModel().getRelaxer();
-            if (relaxer != null) {
-                relaxer.stop();
-                relaxer.prerelax();
-                relaxer.relax();
-            }
-        }//GEN-LAST:event_relaxButtonActionPerformed
+    private void relaxButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relaxButtonActionPerformed
+        relax();
+    }//GEN-LAST:event_relaxButtonActionPerformed
+
+	private void relax() {
+		Relaxer relaxer = vizViewer.getModel().getRelaxer();
+        if (relaxer != null) {
+        	relaxer.stop();
+        	relaxer.prerelax();
+        	relaxer.relax();
+        }
+	}
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshButtonActionPerformed
         refresh();

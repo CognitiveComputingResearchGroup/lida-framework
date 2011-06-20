@@ -31,7 +31,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	private static final ElementFactory factory = ElementFactory.getInstance();
 	
 	private double baseLevelActivation;
-	private double learnableRemovableThreshold;
+	private double learnableRemovalThreshold;
 	private ExciteStrategy baseLevelExciteStrategy;
 	private DecayStrategy baseLevelDecayStrategy;
 	private TotalActivationStrategy totalActivationStrategy;
@@ -42,7 +42,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	public LearnableImpl() {
 		super();
 		baseLevelActivation = DEFAULT_BASE_LEVEL_ACTIVATION;
-		learnableRemovableThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
+		learnableRemovalThreshold = DEFAULT_LEARNABLE_REMOVAL_THRESHOLD;
 		baseLevelDecayStrategy = factory.getDefaultDecayStrategy();
 		baseLevelExciteStrategy = factory.getDefaultExciteStrategy();
 		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy("DefaultTotalActivation");
@@ -62,19 +62,19 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	 * @param activation current activation
 	 * @param activatibleRemovalThreshold activation threshold needed for this instance to remain active
 	 * @param baseLevelActivation base-level activation for learning
-	 * @param learnableRemovableThreshold base-level activation needed for this instance to remain active
+	 * @param learnableRemovalThreshold base-level activation needed for this instance to remain active
 	 * @param exciteStrategy {@link ExciteStrategy} for exciting {@link ActivatibleImpl} activation.
 	 * @param decayStrategy {@link DecayStrategy} for decaying {@link ActivatibleImpl} activation.
 	 * @param baseLevelExciteStrategy {@link ExciteStrategy} for reinforcing {@link LearnableImpl} base-level activation.
 	 * @param baseLevelDecayStrategy {@link DecayStrategy} for decaying {@link LearnableImpl} base-level activation.
 	 * @param taStrategy {@link TotalActivationStrategy} how this instance will calculate its total activation.
 	 */
-	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovableThreshold,
+	public LearnableImpl(double activation, double activatibleRemovalThreshold, double baseLevelActivation, double learnableRemovalThreshold,
 			ExciteStrategy exciteStrategy, DecayStrategy decayStrategy, ExciteStrategy baseLevelExciteStrategy, DecayStrategy baseLevelDecayStrategy, TotalActivationStrategy taStrategy) {
 		super(activation, activatibleRemovalThreshold, exciteStrategy, decayStrategy);
 		
 		this.baseLevelActivation = baseLevelActivation;
-		this.learnableRemovableThreshold=learnableRemovableThreshold;
+		this.learnableRemovalThreshold=learnableRemovalThreshold;
 		this.baseLevelExciteStrategy = baseLevelExciteStrategy;
 		this.baseLevelDecayStrategy = baseLevelDecayStrategy;
 		this.totalActivationStrategy = taStrategy;
@@ -88,7 +88,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	
 	@Override
 	public boolean isRemovable() {
-		return baseLevelActivation <= learnableRemovableThreshold;
+		return baseLevelActivation <= learnableRemovalThreshold;
 	}
 
 	@Override
@@ -162,12 +162,12 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 
 	@Override
 	public double getLearnableRemovalThreshold() {
-		return learnableRemovableThreshold;
+		return learnableRemovalThreshold;
 	}
 
 	@Override
 	public void setBaseLevelRemovalThreshold(double threshold) {
-		this.learnableRemovableThreshold = threshold;
+		this.learnableRemovalThreshold = threshold;
 	}
 	
 	@Override

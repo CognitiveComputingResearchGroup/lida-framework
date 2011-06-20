@@ -88,6 +88,9 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	    	   PamNode node = (PamNode) GlobalInitializer.getInstance().getAttribute(nodeLabel);
 	    	   if (node !=null){
 	    		   setPamLinkable(node);
+	    	   }else{
+	    		   logger.log(Level.WARNING, "could not get node {1} from global initializer", 
+	    				   new Object[]{TaskManager.getCurrentTick(), nodeLabel});
 	    	   }
 	       }
 	}
@@ -107,7 +110,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 		}
 	}
 
-	/*
+	/**
 	 * Override this method implementing feature detection algorithm.
 	 * 
 	 * @return degree [0,1] to which the feature was detected

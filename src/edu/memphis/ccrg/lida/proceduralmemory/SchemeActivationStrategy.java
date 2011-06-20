@@ -29,4 +29,10 @@ public interface SchemeActivationStrategy extends Strategy{
 	 */
 	public void setSchemeSelectionThreshold(double threshold);
 
+	/**
+	 * Sets associated module {@link ProceduralMemory}
+	 * @param pm the {@link ProceduralMemory} to associate
+	 */
+	public void setProceduralMemory(ProceduralMemory pm);
+
 }

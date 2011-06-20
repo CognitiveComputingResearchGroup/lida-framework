@@ -77,6 +77,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
+	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
+
 	/**
 	 * Default constructor
 	 */
@@ -84,7 +86,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 //		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 		schemeSet = new HashSet<Scheme>();
-		schemeActivationStrategy = new BasicSchemeActivationStrategy(this);
 		proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 	}
 
@@ -98,7 +99,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */
 	@Override
-	public void init() {		
+	public void init() {	
+		String strategyName = (String) getParam("proceduralMemory.schemeActivationStrategy", DEFAULT_SCHEME_ACTIVATION_STRATEGY);
+		schemeActivationStrategy = (SchemeActivationStrategy) factory.getStrategy(strategyName);
+		schemeActivationStrategy.setProceduralMemory(this);
+		
 		String decayName = (String) getParam("proceduralMemory.behaviorDecayStrategy", factory.getDefaultDecayType());
 		behaviorDecayStrategy = factory.getDecayStrategy(decayName);
 		

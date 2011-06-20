@@ -43,7 +43,9 @@ public class ProceduralMemoryImplTest{
 	}
 	@Test
 	public void testSetSchemeActivationStrategy() {
-		SchemeActivationStrategy b = new BasicSchemeActivationStrategy(pm);
+		SchemeActivationStrategy b = new BasicSchemeActivationStrategy();
+		b.setProceduralMemory(pm);
+		
 		pm.setSchemeActivationStrategy(b);
 		assertEquals(b, pm.getSchemeActivationStrategy());
 	}

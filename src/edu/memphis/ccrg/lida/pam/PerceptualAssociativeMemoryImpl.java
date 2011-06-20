@@ -96,7 +96,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 	private static final double DEFAULT_DOWNSCALE_FACTOR = 0.5;
 	private double downscaleFactor = DEFAULT_DOWNSCALE_FACTOR;
-
+	
 	private static final double DEFAULT_PROPAGATION_THRESHOLD = 0.05;
 	private double propagateActivationThreshold = DEFAULT_PROPAGATION_THRESHOLD;
 
@@ -115,10 +115,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			DEFAULT_NONDECAYING_PAMNODE, "Lateral");
 
 	/**
-	 * Primitive {@link LinkCategory} MEMBERSHIP
+	 * Primitive {@link LinkCategory} PARENT
 	 */
-	public static LinkCategory MEMBERSHIP = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "Membership");
+	public static LinkCategory PARENT = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "Parent");
 
 	/**
 	 * Primitive {@link LinkCategory} FEATURE
@@ -136,7 +136,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 		addInternalLinkCategory(NONE);
 		addInternalLinkCategory(LATERAL);
-		addInternalLinkCategory(MEMBERSHIP);
+		addInternalLinkCategory(PARENT);
 		addInternalLinkCategory(FEATURE);
 	}
 
@@ -163,7 +163,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public PropagationStrategy getPropagationStrategy() {
 		return propagationStrategy;
 	}
-	
+
 	/**
 	 * @return the excitationTaskTicksPerRun
 	 */
@@ -196,7 +196,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			return null;
 		}
 		PamNode node = (PamNode) pamNodeStructure.addDefaultNode(n);
-		if (node.getLabel()!=null){
+		if (node.getLabel() != null) {
 			nodesByLabel.put(node.getLabel(), node);
 		}
 		return node;
@@ -286,7 +286,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			NodeStructure deleteList) {
 		// TODO task to use preafferent signal
 	}
-	
+
 	@Override
 	public void learn(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
@@ -331,7 +331,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			receiveExcitation(linkable, amount);
 		}
 	}
-	
+
 	private Map<String, Object> propagateParams = new HashMap<String, Object>();
 	
 	@Override
@@ -358,14 +358,14 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * Propagates specified activation along specified link to link's sink.
 	 */
 	private void propagateActivation(Link link, double activation) {
-		if(logger.isLoggable(Level.FINEST)){
+		if (logger.isLoggable(Level.FINEST)) {
 			logger.log(Level.FINEST,
 					"exciting parent: {1} and connecting link {2} amount: {3}",
 					new Object[] { TaskManager.getCurrentTick(),
 							link.getSink(), link, activation });
 		}
 		PropagationTask task = new PropagationTask(propagationTaskTicksPerRun,
-												(PamLink) link, activation, this);
+				(PamLink) link, activation, this);
 		taskSpawner.addTask(task);
 	}
 
@@ -375,7 +375,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			pl.receivePercept(ns);
 		}
 	}
-	
+
 	@Override
 	public void addLinkToPercept(Link l) {
 		for (PamListener pl : pamListeners) {
@@ -404,7 +404,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public boolean containsLink(Link link) {
 		return pamNodeStructure.containsLink(link);
 	}
-	
+
 	@Override
 	public boolean containsLink(ExtendedId id) {
 		return pamNodeStructure.containsLink(id);
@@ -433,7 +433,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		} else {
 			logger.log(Level.WARNING,
 					"Cannot add listener type {1} to this module.",
-					new Object[]{TaskManager.getCurrentTick(),l});
+					new Object[] { TaskManager.getCurrentTick(), l });
 		}
 	}
 
@@ -501,7 +501,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	public Link getLink(ExtendedId eid) {
 		return pamNodeStructure.getLink(eid);
 	}
-	
+
 	@Override
 	public Node getNode(ExtendedId eid) {
 		return pamNodeStructure.getNode(eid);
@@ -534,9 +534,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/*
-	 * Adds a PamNode LinkCategory to the Pam's NodeStructure.
-	 * LinkCategory is added directly and is not copied when added.
+	 * Adds a PamNode LinkCategory to the Pam's NodeStructure. LinkCategory is
+	 * added directly and is not copied when added.
+	 * 
 	 * @param cat LinkCategory to add
+	 * 
 	 * @return stored LinkCategory
 	 */
 	private LinkCategory addInternalLinkCategory(LinkCategory cat) {
@@ -549,13 +551,15 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/**
-	 * Internal implementation of {@link NodeStructureImpl}
-	 * Allows {@link Node} to be added without copying them.
+	 * Internal implementation of {@link NodeStructureImpl} Allows {@link Node}
+	 * to be added without copying them.
 	 */
 	protected static class PamNodeStructure extends NodeStructureImpl {
 		/**
-		 * @param nodeType Default node type
-		 * @param linkType Default link type
+		 * @param nodeType
+		 *            Default node type
+		 * @param linkType
+		 *            Default link type
 		 */
 		public PamNodeStructure(String nodeType, String linkType) {
 			super(nodeType, linkType);

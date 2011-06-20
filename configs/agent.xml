@@ -52,19 +52,19 @@
 			<submodules>
 				<module name="EpisodicBuffer">
 					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl
-					</class>					<param name="removableThreshold" type="double">0.01 </param>
+					</class>
 					<taskspawner>defaultTS</taskspawner>				</module>
 				<module name="PerceptualBuffer">
 					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl
-					</class>					<param name="removableThreshold" type="double">0.01 </param>
+					</class>
 					<taskspawner>defaultTS</taskspawner>				</module>
 				<module name="CurrentSituationalModel">
 					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl
-					</class>					<param name="removableThreshold" type="double">0.01 </param>
+					</class>
 					<taskspawner>defaultTS</taskspawner>				</module>
 				<module name="BroadcastQueue">
 					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.BroadcastQueueImpl
-					</class>					<param name="removableThreshold" type="double">0.01 </param>					<param name="workspace.broadcastQueueCapacity" type="int">20					</param>
+					</class>					<param name="workspace.broadcastQueueCapacity" type="int">20					</param>
 					<taskspawner>defaultTS</taskspawner>				</module>
 			</submodules>
 			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<tasktypename>CueBackgroundTask</tasktypename>					<ticksperrun>15</ticksperrun>					<param name="workspace.actThreshold" type="double">0.4</param>				</task>				<task name="updateCsmBackground">					<tasktypename>UpdateCsmBackgroundTask					</tasktypename>					<ticksperrun>5</ticksperrun>				</task>			</initialTasks>		</module>

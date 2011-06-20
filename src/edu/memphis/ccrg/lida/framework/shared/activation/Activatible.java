@@ -100,7 +100,7 @@ public interface Activatible extends Serializable {
 	public double getActivatibleRemovalThreshold();
 	
 	/**
-	 * Returns if this Activatible is removable
+	 * Returns true if this Activatible is removable
 	 * @return true if activation is less than activatibleRemovalThreshold
 	 */
 	public boolean isRemovable();
