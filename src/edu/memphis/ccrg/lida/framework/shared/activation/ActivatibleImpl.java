@@ -29,7 +29,7 @@ public class ActivatibleImpl implements Activatible {
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
 	private double activation = DEFAULT_ACTIVATION;
-	private double removableThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
+	private double removalThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
@@ -43,13 +43,13 @@ public class ActivatibleImpl implements Activatible {
 	
 	/**
 	 * @param activation initial activation
-	 * @param removableThreshold initial removableThreshold
+	 * @param removalThreshold initial removableThreshold
 	 * @param excite {@link ExciteStrategy}
 	 * @param decay {@link DecayStrategy}
 	 */
-	public ActivatibleImpl(double activation, double removableThreshold, ExciteStrategy excite, DecayStrategy decay) {
+	public ActivatibleImpl(double activation, double removalThreshold, ExciteStrategy excite, DecayStrategy decay) {
 		this.activation = activation;
-		this.removableThreshold = removableThreshold;
+		this.removalThreshold = removalThreshold;
 		this.exciteStrategy = excite;
 		this.decayStrategy = decay;
 	}
@@ -95,7 +95,7 @@ public class ActivatibleImpl implements Activatible {
 	
 	@Override
 	public double getActivatibleRemovalThreshold() {
-		return removableThreshold;
+		return removalThreshold;
 	}
 
 	@Override
@@ -129,11 +129,11 @@ public class ActivatibleImpl implements Activatible {
 	public void setActivatibleRemovalThreshold(double threshold) {
 		if(threshold > 1.0){
 			synchronized(this){
-				removableThreshold = 1.0;
+				removalThreshold = 1.0;
 			}
 		}else{
 			synchronized(this){
-				removableThreshold = threshold;
+				removalThreshold = threshold;
 			}
 		}
 	}
@@ -155,7 +155,7 @@ public class ActivatibleImpl implements Activatible {
 
 	@Override
 	public boolean isRemovable() {
-		return activation <= removableThreshold;
+		return activation <= removalThreshold;
 	}
 
 }

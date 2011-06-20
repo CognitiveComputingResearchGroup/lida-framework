@@ -802,11 +802,11 @@ public class ElementFactory {
 	 *            label of new node
 	 * @param activation
 	 *            activation of new node
-	 * @param removableThreshold threshold node needs to remain in containing {@link NodeStructure}s
+	 * @param removalThreshold threshold node needs to remain in containing {@link NodeStructure}s
 	 * @return the node
 	 */
 	public Node getNode(String nodeType, String decayStrategy, String exciteStrategy, 
-					    String nodeLabel, double activation, double removableThreshold) {
+					    String nodeLabel, double activation, double removalThreshold) {
 		Node n = null;
 		try {
 			LinkableDef nodeDef = nodeClasses.get(nodeType);
@@ -822,7 +822,7 @@ public class ElementFactory {
 			n.setLabel(nodeLabel);
 			n.setId(elementIdCount++);
 			n.setActivation(activation);
-			n.setActivatibleRemovalThreshold(removableThreshold);
+			n.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
 			n.init(nodeDef.getParams());
 			

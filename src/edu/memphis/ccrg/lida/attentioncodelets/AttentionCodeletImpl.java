@@ -38,6 +38,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
     private static final double DEFAULT_COALITION_REMOVAL_THRESHOLD = 0.0;
     
     private int codeletRefractoryPeriod;
+    
+    //TODO move to globalworkspace
     private double coalitionRemovalThreshold;
     private DecayStrategy coalitionDecayStrategy;
     /**
@@ -60,11 +62,13 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
         Integer refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_CODELET_REFRACTORY_PERIOD);
         setRefractoryPeriod(refractoryPeriod);
         
+        double initialActivation = (Double) getParam("initialActivation", getActivation());
+        setActivation(initialActivation);
+        
+        //TODO move to globalworkspace
         coalitionRemovalThreshold = (Double) getParam("coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
         
         String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
-        double initialActivation = (Double) getParam("initialActivation", getActivation());
-        setActivation(initialActivation);
         coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
     }
 

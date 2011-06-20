@@ -115,10 +115,10 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 			DEFAULT_NONDECAYING_PAMNODE, "Lateral");
 
 	/**
-	 * Primitive {@link LinkCategory} MEMBERSHIP
+	 * Primitive {@link LinkCategory} PARENT
 	 */
-	public static LinkCategory MEMBERSHIP = (PamNode) factory.getNode(
-			DEFAULT_NONDECAYING_PAMNODE, "Membership");
+	public static LinkCategory PARENT = (PamNode) factory.getNode(
+			DEFAULT_NONDECAYING_PAMNODE, "Parent");
 
 	/**
 	 * Primitive {@link LinkCategory} FEATURE
@@ -136,7 +136,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 
 		addInternalLinkCategory(NONE);
 		addInternalLinkCategory(LATERAL);
-		addInternalLinkCategory(MEMBERSHIP);
+		addInternalLinkCategory(PARENT);
 		addInternalLinkCategory(FEATURE);
 	}
 

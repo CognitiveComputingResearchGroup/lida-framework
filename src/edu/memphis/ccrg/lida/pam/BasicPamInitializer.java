@@ -55,7 +55,7 @@ public class BasicPamInitializer implements Initializer {
 				Node source = pam.getNode(nodes[0]);
 				Node sink = pam.getNode(nodes[1]);
 				if(source != null && sink != null){
-					Link link = factory.getLink(source, sink, PerceptualAssociativeMemoryImpl.NONE);
+					Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
 					pam.addDefaultLink(link);
 				}else{
 					logger.log(Level.WARNING, "could not find source or sink " + linkDef, TaskManager.getCurrentTick());

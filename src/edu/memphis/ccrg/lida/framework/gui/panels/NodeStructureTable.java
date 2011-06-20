@@ -87,7 +87,6 @@ public class NodeStructureTable extends GuiPanelImpl {
         nodeStructureTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         nodeStructureTable.setMaximumSize(new java.awt.Dimension(1000, 1000));
         nodeStructurePane.setViewportView(nodeStructureTable);
-        nodeStructureTable.setColumnModel(new AlignedColumnTableModel());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -104,8 +103,8 @@ public class NodeStructureTable extends GuiPanelImpl {
                 .addContainerGap(275, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(27, Short.MAX_VALUE)
-                    .addComponent(nodeStructurePane, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(27, 27, 27)
+                    .addComponent(nodeStructurePane, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
