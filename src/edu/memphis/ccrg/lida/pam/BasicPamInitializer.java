@@ -16,7 +16,15 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 /**
  * An {@link Initializer} for {@link PerceptualAssociativeMemory} which receives a parameter named
  * 'nodes' containing a list of node labels.  Nodes are created in {@link PerceptualAssociativeMemory} and 
- * nodes are added to the {@link GlobalInitializer}
+ * nodes are added to the {@link GlobalInitializer}.
+ * A parameter name 'links' contains a list of link definitions.
+ * 
+ * The definition for 'nodes' is: <br/>
+ * <b>nodeLabel1,nodeLabel2,...</b>
+ * <br/>
+ * The definition for 'links' is: <br/>
+ * <b>sourceNodeLabel1:sinkNodeLabel2,...</b>
+ * 
  * @author Javier Snaider
  * @author Ryan McCall
  */
@@ -36,6 +44,7 @@ public class BasicPamInitializer implements Initializer {
 			String[] labels = nodeLabels.split(",");
 			for (String label : labels) {
 				label = label.trim();
+				logger.log(Level.INFO, "loading PamNode: {0}", label);
 				PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
 				node = pam.addDefaultNode(node);
 				globalInitializer.setAttribute(label, node);
@@ -47,7 +56,8 @@ public class BasicPamInitializer implements Initializer {
 			String[] linkDefs = linkLabels.split(",");
 			for (String linkDef : linkDefs) {
 				linkDef = linkDef.trim();
-				String[] nodes = linkDef.split("\\.");
+				logger.log(Level.INFO, "loading PamLink: {0}", linkDef);
+				String[] nodes = linkDef.split(":");
 				if(nodes.length != 2){
 					logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
 					continue;

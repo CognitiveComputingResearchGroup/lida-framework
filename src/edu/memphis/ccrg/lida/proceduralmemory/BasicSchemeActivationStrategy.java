@@ -29,7 +29,7 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 			.getLogger(BasicSchemeActivationStrategy.class.getCanonicalName());
 
 	private ProceduralMemory pm;
-	private static final double DEFAULT_SELECTION_THRESHOLD = 0.6;
+	private static final double DEFAULT_SELECTION_THRESHOLD = 0.5;
 	private double schemeSelectionThreshold = DEFAULT_SELECTION_THRESHOLD;
 
 	public BasicSchemeActivationStrategy(){
