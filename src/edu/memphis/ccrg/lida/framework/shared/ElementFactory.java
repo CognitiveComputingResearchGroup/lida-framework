@@ -1044,14 +1044,14 @@ public class ElementFactory {
 			}
 			
 		} catch (InstantiationException e) {
-			logger.log(Level.WARNING, "Error creating FrameworkTask " + e.toString(), TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
+					new Object[]{TaskManager.getCurrentTick(), e, taskType});
 		} catch (IllegalAccessException e) {
-			logger.log(Level.WARNING, "Error creating FrameworkTask " + e.toString(), TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
+					new Object[]{TaskManager.getCurrentTick(), e, taskType});
 		} catch (ClassNotFoundException e) {
-			logger.log(Level.WARNING, "Error creating FrameworkTask " + e.toString(), TaskManager
-					.getCurrentTick());
+			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
+					new Object[]{TaskManager.getCurrentTick(), e, taskType});
 		}
 		return task;
 	}

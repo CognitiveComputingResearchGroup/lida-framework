@@ -580,10 +580,8 @@ public class AgentXmlFactory implements AgentFactory {
 			
 			if(initializer != null){
 				try{
-					logger.log(Level.INFO, "Initializing " + 
-							((FrameworkModule) moduleToInitialize).getModuleName() + 
-							" module using initializer " + 
-							initializer.getClass().getCanonicalName() + "\n");
+					logger.log(Level.INFO, "********Initializing {0} module using initializer {1}",
+							new Object[]{moduleToInitialize,initializer.getClass()});
 					initializer.initModule(moduleToInitialize, topModule, params);
 				}catch (Exception e){
 					logger.log(Level.SEVERE, "Exception occurred running initializer: " + initializerClassName , TaskManager.getCurrentTick());
