@@ -55,7 +55,10 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
         for (Linkable lnk : ns.getLinkables()) {
             sum += lnk.getActivation();
         }
-        setActivation(attentionCodeletActivation * sum / ns.getLinkableCount());
+        int contentSize = ns.getLinkableCount();
+        if(contentSize != 0){
+        	setActivation(attentionCodeletActivation * sum / contentSize);
+        }
     }
 
     @Override
@@ -71,5 +74,18 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     @Override
     public long getId() {
         return id;
+    }
+    
+    @Override
+    public boolean equals(Object o){
+    	if(o instanceof CoalitionImpl){
+    		CoalitionImpl c = (CoalitionImpl) o;
+    		return id == c.id;
+    	}
+    	return false;
+    }
+    @Override
+    public int hashCode(){
+    	return (int) id;
     }
 }

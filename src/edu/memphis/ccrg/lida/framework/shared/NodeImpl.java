@@ -121,10 +121,10 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Node)) {
-			return false;
+		if (o instanceof Node) {
+			return ((Node) o).getId() == id;
 		}
-		return ((Node) o).getId() == id;
+		return false;
 	}
 	/**
 	 *

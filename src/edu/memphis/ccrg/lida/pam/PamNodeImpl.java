@@ -96,10 +96,10 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof PamNodeImpl)){
-			return false;
+		if(obj instanceof PamNodeImpl){
+			return getId() == ((PamNodeImpl) obj).getId();
 		}
-		return getId() == ((PamNodeImpl) obj).getId();
+		return false;
 	}
 	@Override
 	public int hashCode() { 

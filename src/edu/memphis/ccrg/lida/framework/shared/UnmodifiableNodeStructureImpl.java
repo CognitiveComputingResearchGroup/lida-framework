@@ -48,29 +48,26 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if(!(o instanceof NodeStructure)){
-			return false;
-		}
-		NodeStructure otherNs = (NodeStructure) o;
-		if(this.getNodeCount() != otherNs.getNodeCount()){
-			return false;
-		}
-		if(this.getLinkCount() != otherNs.getLinkCount()){
-			return false;
-		}
-		
-		//Iterate through other's nodes checking for equality
-		for (Node n2 : otherNs.getNodes()) {
-			if(!containsNode(n2.getId())){
+		if(o instanceof NodeStructure){
+			NodeStructure otherNs = (NodeStructure) o;
+			if(getNodeCount() != otherNs.getNodeCount() || 
+					getLinkCount() != otherNs.getLinkCount()){
 				return false;
 			}
-		}
-		for (Link l2 : otherNs.getLinks()) {
-			if(!containsLink(l2.getExtendedId())){
-				return false;
+			
+			for (Node n2 : otherNs.getNodes()) {
+				if(!containsNode(n2.getId())){
+					return false;
+				}
 			}
+			for (Link l2 : otherNs.getLinks()) {
+				if(!containsLink(l2.getExtendedId())){
+					return false;
+				}
+			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

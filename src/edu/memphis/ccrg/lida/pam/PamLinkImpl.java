@@ -83,10 +83,11 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof PamLinkImpl))
-			return false;
-		PamLinkImpl l = (PamLinkImpl) obj;
-		return getExtendedId().equals(l.getExtendedId());
+		if(obj instanceof PamLinkImpl){
+			PamLinkImpl l = (PamLinkImpl) obj;
+			return getExtendedId().equals(l.getExtendedId());
+		}
+		return false;	
 	}
 	@Override
 	public int hashCode() { 

@@ -242,21 +242,16 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Behavior))
-			return false;
-
-		Behavior behavior = (Behavior) o;
-		return behavior.getId() == id && behavior.getAction() == action;
+		if (o instanceof Behavior){
+			Behavior behavior = (Behavior) o;
+			return behavior.getId() == id;
+		}
+		return false;		
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
-		Long v1 = new Long(id);
-		Long v2 = (long) action.hashCode();
-		hash = hash * 31 + v2.hashCode();
-		hash = hash * 31 + (v1 == null ? 0 : v1.hashCode());
-		return hash;
+		return (int)id;
 	}
 
 	@Override
