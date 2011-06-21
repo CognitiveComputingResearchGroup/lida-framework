@@ -112,20 +112,16 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return getLabel() + " " + getId(); 
 	}
 
-	/*
-	 * @param o
-	 * @return
-	 */
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof Scheme)) {
-			return false;
+		if (o instanceof Scheme) {
+			return ((Scheme) o).getId() == id;
 		}
-		return ((Scheme) o).getId() == id;
+		return false;		
 	}
 	@Override
 	public int hashCode() {
-		return (int) id % Integer.MAX_VALUE;
+		return (int) id;
 	}
 
 	@Override

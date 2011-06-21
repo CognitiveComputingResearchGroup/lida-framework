@@ -67,11 +67,12 @@ public class GuiLink {
 
 	@Override
 	public boolean equals (Object o){
-		if (!(o instanceof GuiLink)){
-			return false;
+		if (o instanceof GuiLink){
+			GuiLink gl= (GuiLink)o;
+			return (link.equals(gl.link) && type == gl.type);
 		}
-		GuiLink gl= (GuiLink)o;
-		return (link.equals(gl.link)&& type == gl.type);
+		return false;
+		
 	}
 	
 	

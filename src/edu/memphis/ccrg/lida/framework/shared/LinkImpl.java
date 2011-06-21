@@ -199,23 +199,22 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		groundingPamLink = l;
 	}
 	
-	@Override
-	public int hashCode() {
-		return extendedId.hashCode();
-	}
-	
 	/**
 	 * This method compares this LinkImpl with any kind of Link.
 	 * Two Links are equal if and only if they have the same id.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Link)) {
-			return false;
+		if (obj instanceof Link) {
+			Link other = (Link) obj;
+			return extendedId.equals(other.getExtendedId());
 		}
-		Link other = (Link) obj;
-		
-		return extendedId.equals(other.getExtendedId());
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return extendedId.hashCode();
 	}
 	
 	
