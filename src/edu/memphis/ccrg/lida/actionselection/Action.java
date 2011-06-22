@@ -16,7 +16,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
  * @author Javier Snaider
  * 
  */
-public interface AgentAction extends Initializable {
+public interface Action extends Initializable {
 
 	@SuppressWarnings(value = { "all" })
 	public enum Topology {
@@ -34,7 +34,7 @@ public interface AgentAction extends Initializable {
 	public void setLabel(String label);
 
 	/**
-	 * @return the {@link AgentAction} id
+	 * @return the {@link Action} id
 	 */
 	public int getId();
 	

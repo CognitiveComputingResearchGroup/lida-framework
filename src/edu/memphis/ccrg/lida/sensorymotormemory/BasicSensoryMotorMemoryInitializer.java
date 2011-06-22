@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializer;
 
 /**
  * Basic SensoryMotorMemory {@link Initializer} which reads 
- * String parameters beginning with 'smm.' and creates a agentAction-algorithm mapping based
+ * String parameters beginning with 'smm.' and creates a action-algorithm mapping based
  * on the parameter.  The definition is: <br/>
  * <b>actionName,algorithm</b>
  * @author Ryan McCall
@@ -38,17 +38,17 @@ public class BasicSensoryMotorMemoryInitializer implements Initializer {
 	    		logger.log(Level.INFO, "loading smm action-algorithm mapping: {0}", smmDef);
 	    		String[] elements = smmDef.split(",");
 	    		if(elements.length == 2){
-	    			String agentActionName = elements[0].trim();
+	    			String actionName = elements[0].trim();
 	    			String algorithmName = elements[1].trim();
 	    			if("".equals(algorithmName)){
 	    				logger.log(Level.WARNING, "missing algorithm name for smm: {0}",smmDef);
 	    				continue;
 	    			}
-	    			AgentAction agentAction = (AgentAction) initializer.getAttribute(agentActionName);
-	    	        if(agentAction != null){
-	    	        	smm.addActionAlgorithm(agentAction.getId(), algorithmName);
+	    			Action action = (Action) initializer.getAttribute(actionName);
+	    	        if(action != null){
+	    	        	smm.addActionAlgorithm(action.getId(), algorithmName);
 	    	        }else{
-	    	        	logger.log(Level.WARNING, "could not find agent action: {0}",agentActionName);
+	    	        	logger.log(Level.WARNING, "could not find agent action: {0}",actionName);
 	    	        }
 	    		}else{
 	    			logger.log(Level.WARNING, 

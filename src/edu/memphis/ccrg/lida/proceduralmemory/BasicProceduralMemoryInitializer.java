@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
-import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
@@ -46,9 +46,9 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    			NodeStructure contextNS = loadNodeStructure(initializer, context);
 	    				
 	    			String actionName = elements[2].trim();
-	    			AgentAction action = (AgentAction) initializer.getAttribute(actionName);
+	    			Action action = (Action) initializer.getAttribute(actionName);
 	    			if(action == null){
-	    				action = new AgentActionImpl();
+	    				action = new ActionImpl();
 	    				action.setLabel(actionName);
 	    				initializer.setAttribute(actionName, action);
 	    			}

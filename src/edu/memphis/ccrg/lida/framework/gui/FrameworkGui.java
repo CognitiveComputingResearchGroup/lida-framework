@@ -47,6 +47,7 @@ import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import java.awt.GraphicsEnvironment;
 
 /**
  * The main GUI for the LIDA framework. A swing JFrame that is divide into four
@@ -118,8 +119,9 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         tm.setGuiEventsInterval(DEFAULT_GUI_EVENT_INTERVAL); //TODO parameter or command
 
         loadPanels(panelProperties);
-
         pack();
+        setExtendedState(MAXIMIZED_BOTH);
+        //pack();
     }
 
     /*
@@ -178,8 +180,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
             panel = (GuiPanel) (Class.forName(panelParams[CLASS_NAME])).newInstance();
         } catch (Exception e) {
             logger.log(Level.WARNING,
-                    "Error instantiating panel {1}", new Object[]{0L, CLASS_NAME});
-            e.printStackTrace();
+                    "Error instantiating panel {1} {2}", new Object[]{0L, CLASS_NAME,e});
             return;
         }
         panelParameters.add(panelParams);
@@ -197,7 +198,6 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
             logger.log(Level.SEVERE,
                     "Exception {1} encountered initializing panel {2}",
                     new Object[]{0L, e.getMessage(), panel});
-            e.printStackTrace();
         }
 
         // add the panel to the specified region of the GUI
@@ -210,11 +210,10 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
                 logger.log(Level.SEVERE,
                         "Exception {1} encountered when refreshing panel {2}",
                         new Object[]{0L, e.getMessage(), panel});
-                e.printStackTrace();
             }
         }
 
-        logger.log(Level.INFO, "GuiPanel added: " + panel.getName());
+        logger.log(Level.INFO, "GuiPanel added: {0}", panel.getName());
     }
 
     /*
@@ -236,12 +235,12 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         javax.swing.JMenu associatedMenu = areaOthersPanelsMenu;
         if ("A".equalsIgnoreCase(panelPosition)) {
-            jSplitPane2.setTopComponent(jPanel);
-            parent = jSplitPane2;
+            jTabbedPaneL.addTab(panel.getName(), jPanel);
+            parent = jTabbedPaneL;
             associatedMenu = areaAPanelsMenu;
         } else if ("B".equalsIgnoreCase(panelPosition)) {
-            jTabbedPanelR.addTab(panel.getName(), jPanel);
-            parent = jTabbedPanelR;
+            jTabbedPaneR.addTab(panel.getName(), jPanel);
+            parent = jTabbedPaneR;
             associatedMenu = areaBPanelsMenu;
         } else if ("C".equalsIgnoreCase(panelPosition)) {
             principalTabbedPanel.addTab(panel.getName(), jPanel);
@@ -395,7 +394,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
-        jTabbedPanelR = new javax.swing.JTabbedPane();
+        jTabbedPaneR = new javax.swing.JTabbedPane();
+        jTabbedPaneL = new javax.swing.JTabbedPane();
         principalTabbedPanel = new javax.swing.JTabbedPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -418,13 +418,26 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LIDA Framework");
+        setExtendedState(MAXIMIZED_BOTH);
+        setMinimumSize(new java.awt.Dimension(200, 100));
 
+        jSplitPane1.setDividerLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height/2);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        jSplitPane2.setRightComponent(jTabbedPanelR);
+        jSplitPane2.setDividerLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width/2);
+        jSplitPane2.setMinimumSize(new java.awt.Dimension(5, 5));
+        jSplitPane2.setPreferredSize(new java.awt.Dimension(600, 300));
 
-        jSplitPane1.setLeftComponent(jSplitPane2);
-        jSplitPane1.setRightComponent(principalTabbedPanel);
+        jTabbedPaneR.setPreferredSize(new java.awt.Dimension(5, 100));
+        jSplitPane2.setRightComponent(jTabbedPaneR);
+
+        jTabbedPaneL.setPreferredSize(new java.awt.Dimension(300, 100));
+        jSplitPane2.setLeftComponent(jTabbedPaneL);
+
+        jSplitPane1.setTopComponent(jSplitPane2);
+
+        principalTabbedPanel.setPreferredSize(new java.awt.Dimension(500, 200));
+        jSplitPane1.setBottomComponent(principalTabbedPanel);
         principalTabbedPanel.getAccessibleContext().setAccessibleName("Visual");
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
@@ -516,7 +529,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         setJMenuBar(menuBar);
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-705)/2, (screenSize.height-433)/2, 705, 433);
     }// </editor-fold>//GEN-END:initComponents
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -673,7 +687,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JTabbedPane jTabbedPanelR;
+    private javax.swing.JTabbedPane jTabbedPaneL;
+    private javax.swing.JTabbedPane jTabbedPaneR;
     private javax.swing.JMenuItem loadPanelSettingsMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu panelsMenu;

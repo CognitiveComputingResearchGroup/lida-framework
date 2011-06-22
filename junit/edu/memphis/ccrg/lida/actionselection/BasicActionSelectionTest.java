@@ -31,8 +31,8 @@ public class BasicActionSelectionTest {
 	private MockTaskSpawner ts = new MockTaskSpawner();
 	private Scheme scheme1,scheme2;
 		
-	private AgentAction action1 = new AgentActionImpl();
-	private AgentAction action2 = new AgentActionImpl();
+	private Action action1 = new ActionImpl();
+	private Action action2 = new ActionImpl();
 	
 	@Before
 	public void setUp() throws Exception {			
