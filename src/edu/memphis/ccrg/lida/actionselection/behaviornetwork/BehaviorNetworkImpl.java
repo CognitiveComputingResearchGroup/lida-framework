@@ -19,9 +19,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
@@ -487,13 +487,13 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public AgentAction selectAction() {
+	public Action selectAction() {
 		winningBehavior = selectorStrategy.selectSingleBehavior(
 				getSatisfiedBehaviors(), candidateBehaviorThreshold);
 
 		if (winningBehavior != null) {
 			sendPreafference(winningBehavior);
-			AgentAction action = winningBehavior.getAction();
+			Action action = winningBehavior.getAction();
 			sendAction(action);
 			resetCandidateBehaviorThreshold();
 			winningBehavior.setActivation(0.0);
@@ -526,9 +526,10 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 				+ candidateBehaviorThreshold, TaskManager.getCurrentTick());
 	}
 
-	private void sendAction(AgentAction action) {
-		for (ActionSelectionListener l : listeners)
+	private void sendAction(Action action) {
+		for (ActionSelectionListener l : listeners){
 			l.receiveAction(action);
+		}
 	}
 
 	/**

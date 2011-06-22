@@ -136,10 +136,10 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public AgentAction selectAction() {
+	public Action selectAction() {
 		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
-			AgentAction action = behavior.getAction();
+			Action action = behavior.getAction();
 			logger.log(Level.FINE, "Action Selected: {1}",
 					   new Object[]{TaskManager.getCurrentTick(),action});
 			for (ActionSelectionListener bl : listeners) {

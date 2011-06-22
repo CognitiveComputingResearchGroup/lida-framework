@@ -14,8 +14,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
-import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -25,14 +25,14 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 public class SchemeImplTest{
 
 	private Scheme scheme;
-	private AgentAction action;
+	private Action action;
 	private Node node1, node2, node3;
 	
 	private static ElementFactory factory = ElementFactory.getInstance();
 	
 	@Before
 	public void setUp() throws Exception {		
-		action = new AgentActionImpl();
+		action = new ActionImpl();
 
 		scheme = new SchemeImpl("1", action);
 		node1 = factory.getNode();
@@ -54,7 +54,7 @@ public class SchemeImplTest{
 	}
 	@Test
 	public void test2(){
-		AgentAction foo = new AgentActionImpl();
+		Action foo = new ActionImpl();
 		scheme.setAction(foo);
 		assertEquals(foo, scheme.getAction());
 		

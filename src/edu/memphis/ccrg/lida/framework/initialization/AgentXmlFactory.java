@@ -42,7 +42,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  */ 
 public class AgentXmlFactory implements AgentFactory {
 	//TODO consider 'postInit' method that runs after initializers run.
-	//This will allow objects created in the initial pass, e.g. Nodes, AgentActions, to be used by other 
+	//This will allow objects created in the initial pass, e.g. Nodes, Actions, to be used by other 
 	//modules initialized before the objects were created.
 	private static final Logger logger = Logger.getLogger(AgentXmlFactory.class.getCanonicalName());
 	

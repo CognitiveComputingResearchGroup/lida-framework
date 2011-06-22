@@ -58,7 +58,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
 	 * executes
 	 */
-	private AgentAction action;
+	private Action action;
 
 	/*
 	 * unique identifier
@@ -92,9 +92,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	
 	/**
 	 * 
-	 * @param action {@link AgentAction} 
+	 * @param action {@link Action} 
 	 */
-	public BehaviorImpl(AgentAction action){
+	public BehaviorImpl(Action action){
 		this();
 		this.action = action;
 	}
@@ -108,7 +108,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	@Override
-	public void setAction(AgentAction action) {
+	public void setAction(Action action) {
 		this.action = action;
 	}
 
@@ -226,7 +226,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	}
 
 	@Override
-	public AgentAction getAction() {
+	public Action getAction() {
 		return action;
 	}
 

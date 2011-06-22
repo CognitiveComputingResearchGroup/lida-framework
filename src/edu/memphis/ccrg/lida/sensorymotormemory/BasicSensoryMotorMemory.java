@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.environment.Environment;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
@@ -80,7 +80,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 
 	/**
 	 * Adds an Algorithm to this {@link SensoryMotorMemory}
-	 * @param actionId Id of {@link AgentAction} which is implemented by the algorithm
+	 * @param actionId Id of {@link Action} which is implemented by the algorithm
 	 * @param action an algorithm
 	 */
 	public void addActionAlgorithm(Number actionId, Object action) {
@@ -88,7 +88,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public synchronized void receiveAction(AgentAction action) {
+	public synchronized void receiveAction(Action action) {
 		if(action != null){
 			ProcessActionTask t = new ProcessActionTask(action);
 			taskSpawner.addTask(t);
@@ -97,8 +97,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 		}
 	}
 	private class ProcessActionTask extends FrameworkTaskImpl {
-		private AgentAction action;
-		public ProcessActionTask(AgentAction a) {
+		private Action action;
+		public ProcessActionTask(Action a) {
 			action = a;
 			setTicksPerRun(processActionTicks);
 		}

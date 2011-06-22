@@ -38,8 +38,8 @@ public interface ActionSelection extends FrameworkModule, BroadcastListener, Sav
 	/**
 	 * Choose a single action among those activated and whose context are
 	 * satisfied to execute
-	 * @return The selected {@link AgentAction} or null if no action was selected.
+	 * @return The selected {@link Action} or null if no action was selected.
 	 */
-	public AgentAction selectAction();
+	public Action selectAction();
 
 }

@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
@@ -68,13 +68,13 @@ public interface Scheme extends Learnable{
 	 * Gets action.
 	 * @return scheme's action in {@link SensoryMotorMemory}
 	 */
-	public AgentAction getAction();
+	public Action getAction();
 	
 	/**
 	 * Sets scheme Action.
-	 * @param action {@link AgentAction}
+	 * @param action {@link Action}
 	 */
-	public void setAction(AgentAction action);	
+	public void setAction(Action action);	
 	
 	/**
 	 * Returns addingResult.
@@ -102,7 +102,7 @@ public interface Scheme extends Learnable{
 	
 	/**
 	 * Returns reliability
-	 * @return frequency that result is observed after scheme's {@link AgentAction} is taken.
+	 * @return frequency that result is observed after scheme's {@link Action} is taken.
 	 */
 	public double getReliability();
 	

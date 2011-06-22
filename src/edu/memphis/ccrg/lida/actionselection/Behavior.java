@@ -29,16 +29,16 @@ public interface Behavior extends Activatible {
 	
 	/**
 	 * Sets action
-	 * @param action {@link AgentAction} this behavior contains
+	 * @param action {@link Action} this behavior contains
 	 */
-	public void setAction(AgentAction action);
+	public void setAction(Action action);
 	
 	/**
 	 * Gets action.
 	 * 
-	 * @return the {@link AgentAction} this behavior contains
+	 * @return the {@link Action} this behavior contains
 	 */
-	public AgentAction getAction();
+	public Action getAction();
 	
 	/**
 	 * Gets label.

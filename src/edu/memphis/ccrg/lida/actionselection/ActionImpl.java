@@ -10,13 +10,13 @@ package edu.memphis.ccrg.lida.actionselection;
 import java.util.Map;
 
 /**
- * Default implementation of {@link AgentAction}
+ * Default implementation of {@link Action}
  * 
  * @author Ryan McCall
  * @author Javier Snaider
  * 
  */
-public class AgentActionImpl implements AgentAction {
+public class ActionImpl implements Action {
 
 	private static int idGenerator = 0;
 	private int id;
@@ -26,11 +26,11 @@ public class AgentActionImpl implements AgentAction {
 	/**
 	 * Default constructor
 	 */
-	public AgentActionImpl() {
+	public ActionImpl() {
 		id = idGenerator++;
 	}
 
-	public AgentActionImpl(String label) {
+	public ActionImpl(String label) {
 		this();
 		this.label = label;
 	}

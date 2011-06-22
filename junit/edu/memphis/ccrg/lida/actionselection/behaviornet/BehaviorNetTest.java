@@ -13,9 +13,9 @@ package edu.memphis.ccrg.lida.actionselection.behaviornet;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
-import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.BehaviorNetworkImpl;
@@ -130,7 +130,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	public Behavior getNewBehavior(String label, long actionId, Node result, Node...context){
-		AgentActionImpl action = new AgentActionImpl("action_"+label);
+		ActionImpl action = new ActionImpl("action_"+label);
 		//TODO fix
 		//action.setId(actionId);
 		Behavior b = new BehaviorImpl(action);
@@ -148,7 +148,7 @@ public class BehaviorNetTest implements ActionSelectionListener{
 	}
 	
 	@Override
-	public void receiveAction(AgentAction action) {
+	public void receiveAction(Action action) {
 		System.out.println("Result: Received action " + action);
 	}
 

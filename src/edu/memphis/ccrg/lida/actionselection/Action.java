@@ -7,20 +7,35 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 
 /**
- * A listeners of the {@link ActionSelection} Module
+ * Encapsulation of an action to be executed.
  * 
  * @author Ryan J. McCall
- *
+ * @author Javier Snaider
+ * 
  */
-public interface ActionSelectionListener extends ModuleListener{
+public interface Action extends Initializable {
+
+	@SuppressWarnings(value = { "all" })
+	public enum Topology {
+		BASIC, PARALLEL, SEQUENCIAL
+	}
 	
 	/**
-	 * Listener must receive actions.  Will be called for each action selected by the behavior network.
-	 * @param action - Id of the action stored in sensory motor memory
+	 * @return the action label.
 	 */
-	public void receiveAction(Action action);
+	public String getLabel();
+	
+	/**
+	 * @param label the action label to set.
+	 */
+	public void setLabel(String label);
 
+	/**
+	 * @return the {@link Action} id
+	 */
+	public int getId();
+	
 }

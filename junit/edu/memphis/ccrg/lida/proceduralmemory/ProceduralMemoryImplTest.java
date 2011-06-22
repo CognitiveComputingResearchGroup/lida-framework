@@ -13,8 +13,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.actionselection.AgentAction;
-import edu.memphis.ccrg.lida.actionselection.AgentActionImpl;
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 
 public class ProceduralMemoryImplTest{
 
@@ -53,7 +53,7 @@ public class ProceduralMemoryImplTest{
 	public void testSendInstantiatedScheme() {
 		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
 		pm.addListener(listener);
-		AgentAction a = new AgentActionImpl();
+		Action a = new ActionImpl();
 		Scheme s = new SchemeImpl("foo", a);
 		
 		pm.createInstantiation(s);
