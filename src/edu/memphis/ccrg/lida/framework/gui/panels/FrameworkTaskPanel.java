@@ -242,7 +242,8 @@ public class FrameworkTaskPanel extends GuiPanelImpl {
         }
     }
 
-    private class AlignedColumnTableModel extends DefaultTableColumnModel {
+    @SuppressWarnings("unused")
+	private class AlignedColumnTableModel extends DefaultTableColumnModel {
 
         private DefaultTableCellRenderer render;
 
