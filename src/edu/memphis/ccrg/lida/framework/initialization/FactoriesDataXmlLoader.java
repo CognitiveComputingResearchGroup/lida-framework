@@ -36,6 +36,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  */
 public class FactoriesDataXmlLoader {
 
+	private static final String FACTORY_DATA_PROPERTY_NAME = "lida.elementfactory.data";
 	private static final String DEFAULT_XML_FILE_PATH = "configs/factoriesData.xml";
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaFactories.xsd";
 	private static final Logger logger = Logger
@@ -51,7 +52,7 @@ public class FactoriesDataXmlLoader {
 	 *            {@link Properties}
 	 */
 	public void loadFactoriesData(Properties properties) {
-		String fileName = properties.getProperty("lida.elementFactory",
+		String fileName = properties.getProperty(FACTORY_DATA_PROPERTY_NAME,
 				DEFAULT_XML_FILE_PATH);
 		Document dom = XmlUtils
 				.parseXmlFile(fileName, DEFAULT_SCHEMA_FILE_PATH);
