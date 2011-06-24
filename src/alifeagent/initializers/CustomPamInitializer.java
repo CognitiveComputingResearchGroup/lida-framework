@@ -1,0 +1,54 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package alifeagent.initializers;
+
+import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.pam.BasicPamInitializer;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
+import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
+import java.util.Map;
+
+/**
+ *
+ * @author UofM
+ */
+public class CustomPamInitializer extends BasicPamInitializer{
+    
+    @Override
+    public void initModule(FullyInitializable module, Agent agent, Map<String, ?> params) {
+        super.initModule(module, agent, params);
+        PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
+        
+        // Obtains the ElementFactory
+        ElementFactory factory = ElementFactory.getInstance();
+        
+        // Creates a new Node in PAM labeled 'object'
+        Node objectNode = pam.addDefaultNode(factory.getNode("PamNodeImpl", "object"));
+        
+        // Obtains the 'rock' node from PAM
+        Node child = pam.getNode("rock"); 
+        
+        //  Adds a Link in PAM from 'rock' to 'object' with link category PARENT
+        pam.addDefaultLink(factory.getLink(child, objectNode, PerceptualAssociativeMemoryImpl.PARENT));
+
+        // Task 2: INSERT YOUR CODE HERE **************************
+        // Obtain the 'food' node from PAM
+
+        //  Add a Link in PAM from 'food' to 'object' with link category PARENT
+
+         child = pam.getNode("food");        
+        pam.addDefaultLink(factory.getLink(child, objectNode, PerceptualAssociativeMemoryImpl.PARENT));
+       
+        // Task 3: INSERT YOUR CODE HERE **************************
+        
+        
+        
+    }
+
+}
