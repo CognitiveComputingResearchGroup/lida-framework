@@ -48,12 +48,13 @@ public class AgentXmlFactory implements AgentFactory {
 	
 	private static final String DEFAULT_XML_FILE_PATH = "configs/agent.xml";
 	private static final String DEFAULT_SCHEMA_FILE_PATH = "edu/memphis/ccrg/lida/framework/initialization/config/LidaXMLSchema.xsd";
-
+	private static final String AGENT_DATA_PROPERTY_NAME = "lida.agentdata";
+	
 	@Override
 	public Agent getAgent(Properties properties) {
 		String fileName = DEFAULT_XML_FILE_PATH;
 		if(properties != null){
-			fileName = properties.getProperty("lida.factory.data",DEFAULT_XML_FILE_PATH);
+			fileName = properties.getProperty(AGENT_DATA_PROPERTY_NAME,DEFAULT_XML_FILE_PATH);
 		}else{
 			logger.log(Level.WARNING, "Properties was null using default agent XML file path");
 		}
