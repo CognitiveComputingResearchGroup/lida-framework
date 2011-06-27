@@ -17,11 +17,11 @@ import java.util.Map;
  */
 public class GlobalInitializer {
 
-    /**
+    /*
      * Sole instance of this class that will be used.
      */
-    private static GlobalInitializer instance = new GlobalInitializer();
-    private final Map<String, Object> globalAttributes = new HashMap<String, Object>();
+    private static final GlobalInitializer instance = new GlobalInitializer();
+    private static final Map<String, Object> globalAttributes = new HashMap<String, Object>();
 
     /**
      * Returns the sole instance of this class. Implements the Singleton

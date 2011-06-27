@@ -44,6 +44,12 @@ public interface ProceduralMemory extends FrameworkModule{
 	public boolean containsScheme(Scheme s);
 	
 	/**
+	 * Removes specified {@link Scheme}.
+	 * @param s scheme to be removed.
+	 */
+	public void removeScheme(Scheme s);
+	
+	/**
 	 * Returns a count of the schemes
 	 * @return number of schemes currently in this procedural memory.
 	 */

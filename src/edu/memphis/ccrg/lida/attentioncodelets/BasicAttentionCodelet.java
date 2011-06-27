@@ -22,8 +22,6 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
  * Basic implementation of {@link AttentionCodelet}
- * WARNING:	Renaming this class requires renaming values in
- * 	  configs/factoriesData.xml
  */
 public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	
@@ -33,7 +31,6 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
 	 * Default constructor
 	 */
 	public BasicAttentionCodelet(){
-		super();
 	}
 	
 	@Override

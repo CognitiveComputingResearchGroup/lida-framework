@@ -96,4 +96,10 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		// not implemented
 
 	}
+
+	@Override
+	public void removeScheme(Scheme s) {
+		// TODO Auto-generated method stub
+		
+	}
 }

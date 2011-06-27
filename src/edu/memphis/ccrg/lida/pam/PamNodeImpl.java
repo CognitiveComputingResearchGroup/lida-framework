@@ -21,8 +21,8 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Default implementation of PamNode.  Basically a {@link Learnable} {@link Node}.
- * Overrides hashCode and equals.  Has a private {@link LearnableImpl} to help 
+ * Default implementation of {@link PamNode}.  A {@link Learnable} {@link Node} that
+ * overrides hashCode and equals.  Has a private {@link LearnableImpl} to help 
  * implement all {@link Learnable} methods.
  * @author Ryan J. McCall
  */
@@ -34,7 +34,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	 * Private Learnable object used for all learnable methods
 	 */
 	private LearnableImpl learnable;
-	
 	
 	/**
 	 * Default constructor
@@ -52,7 +51,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	public PamNodeImpl(PamNodeImpl pamNode) {
 		super(pamNode);
 		groundingPamNode = this;
-		this.learnable=new LearnableImpl(pamNode.learnable);
+		learnable = new LearnableImpl(pamNode.learnable);
 	}
 
 	/** 
@@ -104,11 +103,6 @@ public class PamNodeImpl extends NodeImpl implements PamNode{
 	@Override
 	public int hashCode() { 
 	    return getId();
-	}
-
-	@Override
-	public String toString() {
-		return getLabel() + " " + getId();
 	}
 	
 	//LEARNABLE METHODS

@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -36,7 +37,7 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 */
 	private Set<FrameworkTask> runningTasks = new ConcurrentHashSet<FrameworkTask>();
 
-	private Map<String, ?> parameters;
+	private Map<String, ?> parameters = new HashMap<String, Object>();
 
 	/**
 	 * This default constructor is used by the {@link AgentXmlFactory}.

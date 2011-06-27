@@ -29,20 +29,20 @@ public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Env
 	}
 	
 	/**
-	 * Not applicable for environments, sensors should directly request data from 
-	 * the {@link Environment}.  Likewise, actuators should directly call
-	 * {@link Environment#processAction(Object)} to make an action.
-	 */
-	@Override
-	public void addListener(ModuleListener listener) {
-	}
-	
-	/**
 	 * May override to implement decay for environment
 	 * @see FrameworkModule#decayModule(long)
 	 */
 	@Override
 	public void decayModule(long ticks) {
+	}
+	
+	/**
+	 * NOT applicable for environments.  Instead sensors should directly request data from 
+	 * the {@link Environment}.  Likewise, actuators should directly call
+	 * {@link Environment#processAction(Object)} to execute an action in the environment.
+	 */
+	@Override
+	public void addListener(ModuleListener listener) {
 	}
 	
 }

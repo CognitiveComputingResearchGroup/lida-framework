@@ -17,10 +17,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * Default Node Implementation
- *  
- * WARNING:	Renaming this class requires renaming values in
- * 	  configs/factoriesData.xml
+ * Default {@link Node} Implementation
  *
  * @author Javier Snaider
  */
@@ -126,9 +123,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		}
 		return false;
 	}
-	/**
-	 *
-	 */
+	
 	@Override
 	public int hashCode() {
 		return (id);

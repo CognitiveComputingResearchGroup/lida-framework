@@ -30,7 +30,6 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	 * Default constructor
 	 */
 	public BasicStructureBuildingCodelet(){
-		super();
 	}
 	
 	@Override

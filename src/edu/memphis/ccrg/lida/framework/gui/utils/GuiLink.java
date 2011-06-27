@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
  *
  */
 public class GuiLink {
+	
 	private Link link;
 	private char type;
 
@@ -34,8 +35,6 @@ public class GuiLink {
 		this.link = link;
 		this.type = type;
 	}
-	
-
 	
 	/**
 	 * @return the link
@@ -74,7 +73,6 @@ public class GuiLink {
 		return false;
 		
 	}
-	
 	
 	@Override
 	public int hashCode(){

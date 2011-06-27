@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.Behavior;
 import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -22,11 +23,13 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {
 
-	private static final double RELIABILITY_THRESHOLD = 0.5;
+	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5;
+	private static long idGenerator = 0;
 	
 	private boolean innate;
 	private int numberOfExecutions;
 	private int successfulExecutions;
+	private double reliabilityThreshold = DEFAULT_RELIABILITY_THRESHOLD; 
 	
 	private NodeStructure context;
 	private NodeStructure addingResult;
@@ -35,7 +38,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	private Action action;
 	private String label;
 	private long id;
-	private static long idGenerator = 0;
 	
 	/**
 	 * For testing only
@@ -47,17 +49,18 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 	
 	/**
-	 * Default constructor
+	 * Constructs a new scheme with default values
 	 */
 	public SchemeImpl(){
 		this.id = idGenerator++;
 		context = new NodeStructureImpl();
 		addingResult = new NodeStructureImpl();
 		deletingResult = new NodeStructureImpl();
+		action = new ActionImpl();
 	}
 
 	/**
-	 * constructor
+	 * Constructs a new scheme with specified label and action
 	 * @param label Scheme's name
 	 * @param a scheme's {@link Action}
 	 */
@@ -79,14 +82,13 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public double getReliability() {
-		return (numberOfExecutions > 0) ? ((double) successfulExecutions)
-				/ numberOfExecutions : 0.0;
+		return (numberOfExecutions > 0) ? 
+				((double) successfulExecutions)/numberOfExecutions : 0.0;
 	}
 
 	@Override
 	public boolean isReliable() {
-		return (numberOfExecutions > 0)
-				&& ((((double) successfulExecutions) / numberOfExecutions) > RELIABILITY_THRESHOLD);
+		return getReliability() >= reliabilityThreshold;
 	}
 
 	@Override
@@ -94,13 +96,13 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		Behavior b = new BehaviorImpl(getAction());
 		b.setLabel(getLabel());
 		b.setActivation(getTotalActivation());
-		for (Node n : getContext().getNodes()) {
+		for (Node n: getContext().getNodes()) {
 			b.addContextCondition(n);
 		}
-		for (Node n : getAddingResult().getNodes()) {
+		for (Node n: getAddingResult().getNodes()) {
 			b.addToAddingList(n);
 		}
-		for (Node n : getDeletingResult().getNodes()) {
+		for (Node n: getDeletingResult().getNodes()) {
 			b.addToDeletingList(n);
 		}
 		b.setGeneratingScheme(this);
@@ -110,18 +112,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public String toString(){
 		return getLabel() + " " + getId(); 
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Scheme) {
-			return ((Scheme) o).getId() == id;
-		}
-		return false;		
-	}
-	@Override
-	public int hashCode() {
-		return (int) id;
 	}
 
 	@Override
@@ -192,6 +182,28 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public Action getAction() {
 		return action;
+	}
+	
+	@Override
+	public double getReliabilityThreshold() {
+		return reliabilityThreshold;
+	}
+
+	@Override
+	public void setReliabilityThreshold(double threshold) {
+		this.reliabilityThreshold = threshold;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Scheme) {
+			return ((Scheme) o).getId() == id;
+		}
+		return false;		
+	}
+	@Override
+	public int hashCode() {
+		return (int) id;
 	}
 	
 }

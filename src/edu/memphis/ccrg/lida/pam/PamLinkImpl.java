@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Default implementation of PamLink.
+ * Default implementation of {@link PamLink}.
  * 
  * @author Ryan J. McCall
  */
@@ -92,11 +92,6 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	@Override
 	public int hashCode() { 
 	    return getExtendedId().hashCode();
-	}
-
-	@Override
-	public String toString() {
-		return getCategory().getLabel() + " " + getExtendedId();
 	}
 
 	//LEARNABLE METHODS

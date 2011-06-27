@@ -18,9 +18,6 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 /**
  * A Link that connects a Node to a Linkable (Node or Link).
  * 
- * WARNING:	Renaming this class requires renaming values in
- * 	  configs/factoriesData.xml
- * 
  * @author Ryan J. McCall, Javier Snaider
  */
 public class LinkImpl extends ActivatibleImpl implements Link {

@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Basic implementation of a structure-building codelet
+ * Basic implementation of {@link StructureBuildingCodelet}
  * @author Ryan J McCall
  *
  */
@@ -53,16 +53,6 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	}
 	
 	@Override
-	public void reset() {
-		setTicksPerRun(1);
-		setActivation(0.0);
-		
-		readableBuffers.clear();
-		writableBuffer = null;
-		super.soughtContent = null;
-	}
-	
-	@Override
 	public void setAssociatedModule(FrameworkModule module, String usage) {
 		if(module instanceof WorkspaceBuffer){
 			if(usage == ModuleUsage.TO_READ_FROM){
@@ -81,13 +71,18 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	protected abstract void runThisFrameworkTask();
 	
 	@Override
+	public void reset() {
+		setTicksPerRun(1);
+		setActivation(0.0);
+		
+		readableBuffers.clear();
+		writableBuffer = null;
+		super.soughtContent = null;
+	}
+	
+	@Override
 	public Object getCodeletRunResult(){
 		return runResults;
-	}
-
-	@Override
-	public String toString(){
-		return " SBCodelet-"+ getTaskId();
 	}
 
 } 

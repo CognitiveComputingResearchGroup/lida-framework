@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -28,12 +29,12 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	private static final Logger logger = Logger.getLogger(FrameworkModuleImpl.class.getCanonicalName());
 	private ModuleName moduleName;
 	private Map<ModuleName, FrameworkModule> submodules = new ConcurrentHashMap<ModuleName, FrameworkModule>();
+	private Map<String, ?> parameters = new HashMap<String, Object>();
+	
 	/**
 	 * {@link TaskSpawner} used by this module
 	 */
 	protected TaskSpawner taskSpawner;
-	
-	private Map<String, ?> parameters;
 
 	/**
 	 * Default constructor
@@ -55,12 +56,6 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		this.moduleName = moduleName;
 	}
 	
-	/*
-	 * @see FrameworkModule#getModuleContent(Object...)
-	 */
-	@Override
-	public abstract Object getModuleContent(Object... params);
-	
 	@Override
 	public void setAssistingTaskSpawner(TaskSpawner ts){
 		taskSpawner = ts;
@@ -73,7 +68,7 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	
 	@Override
 	public void init(Map<String, ?> params) {
-		this.parameters = params;
+		parameters = params;
 		init();
 	}
 	
@@ -151,7 +146,6 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 			lm.taskManagerDecayModule(ticks);
 		}
 	}
-	
 
 	@Override
 	public void setModuleName(ModuleName moduleName) {
@@ -163,13 +157,21 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		return moduleName;
 	}
 
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-	}
 	
 	@Override
 	public String toString(){
 		return moduleName.name;
 	}
+	
+
+	@Override
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+	}
+
+	/* 
+	 * Implement to return module content based on params.  Intended to be called from GUI.
+	 */
+	@Override
+	public abstract Object getModuleContent(Object... params);
 
 }

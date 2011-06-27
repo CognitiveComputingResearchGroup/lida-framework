@@ -17,14 +17,14 @@ import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 public interface SchemeActivationStrategy extends Strategy{
 	
 	/**
-	 * Activates schemes which intersect with the broadcast.
+	 * Activates those schemes relevant to a broadcast.
 	 * @param broadcast {@link NodeStructure}
-	 * @param params optional parameters which will be at least the {@link Scheme}s of {@link ProceduralMemory}
+	 * @param params optional parameters
 	 */
 	public void activateSchemesWithBroadcast(NodeStructure broadcast, Object... params);
 	
 	/**
-	 * Set amount of activation a {@link Scheme} must have for instantiation
+	 * Sets amount of activation a {@link Scheme} must have for instantiation
 	 * @param threshold threshold
 	 */
 	public void setSchemeSelectionThreshold(double threshold);

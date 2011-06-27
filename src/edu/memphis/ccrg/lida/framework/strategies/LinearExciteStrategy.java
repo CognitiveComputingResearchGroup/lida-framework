@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * Basic {@link ExciteStrategy} governed by a linear curve.
- * WARNING:	Renaming this class requires renaming values in
- * 	  configs/factoriesData.xml
  */
 public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	

@@ -802,7 +802,7 @@ public class AgentXmlFactoryTest {
 	@Test
 	public void testGetAgent() {
 		Properties p = new Properties();
-		p.setProperty("lida.factory.data", "testData/shortagent.xml");
+		p.setProperty("lida.agentdata", "testData/shortagent.xml");
 		
 		Agent a = factory.getAgent(p);
 		
@@ -815,11 +815,11 @@ public class AgentXmlFactoryTest {
 		assertNotNull(tm);
 		assertEquals(50, tm.getTickDuration());
 		
-		p.setProperty("lida.factory.data", "testDatasdfgwe3/shortagent.xml");
+		p.setProperty("lida.agentdata", "testDatasdfgwe3/shortagent.xml");
 		a = factory.getAgent(p);
 		assertEquals(null, a);
 		
-		p.setProperty("lida.factory.data", "testData/agentbad.xml");
+		p.setProperty("lida.agentdata", "testData/agentbad.xml");
 		a = factory.getAgent(p);
 		assertEquals(null, a);
 		

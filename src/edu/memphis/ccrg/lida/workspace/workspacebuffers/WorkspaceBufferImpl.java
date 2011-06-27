@@ -30,13 +30,12 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	private static final String DEFAULT_NODE_TYPE = "NodeImpl";
 	private static final String DEFAULT_LINK_TYPE = "LinkImpl";
 	
-	private NodeStructure buffer;	
+	private NodeStructure buffer = new NodeStructureImpl();	
 	
 	/**
 	 * Default constructor 
 	 */
 	public WorkspaceBufferImpl() {
-		buffer = new NodeStructureImpl();
 	}
 	
 	@Override
@@ -59,11 +58,6 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	}
 
 	@Override
-	public void addListener(ModuleListener listener) {
-		// NA		
-	}
-
-	@Override
 	public void addBufferContent(WorkspaceContent content) {
 		buffer.mergeWith(content);
 	}
@@ -71,6 +65,11 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	@Override
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
+	}
+	
+	@Override
+	public void addListener(ModuleListener listener) {
+		// NA		
 	}
 
 }

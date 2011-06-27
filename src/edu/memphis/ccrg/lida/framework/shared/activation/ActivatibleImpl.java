@@ -25,20 +25,21 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * 
  */
 public class ActivatibleImpl implements Activatible {
+	
+	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
+	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	private ExciteStrategy exciteStrategy;
 	private DecayStrategy decayStrategy;
 	private double activation = DEFAULT_ACTIVATION;
 	private double removalThreshold = DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD;
-	
-	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 
 	/**
 	 * Default constructor
 	 */
 	public ActivatibleImpl() {
-		decayStrategy = ElementFactory.getInstance().getDefaultDecayStrategy();
-		exciteStrategy = ElementFactory.getInstance().getDefaultExciteStrategy();
+		decayStrategy = factory.getDefaultDecayStrategy();
+		exciteStrategy = factory.getDefaultExciteStrategy();
 	}
 	
 	/**

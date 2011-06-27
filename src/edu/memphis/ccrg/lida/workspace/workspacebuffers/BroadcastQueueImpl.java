@@ -39,16 +39,14 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(BroadcastQueueImpl.class.getCanonicalName());
 
-	private LinkedList<NodeStructure> broadcastQueue;
-
 	private static final int DEFAULT_QUEUE_CAPACITY = 20;
 	private int broadcastQueueCapacity = DEFAULT_QUEUE_CAPACITY;
+	private LinkedList<NodeStructure> broadcastQueue = new LinkedList<NodeStructure>();
 
 	/**
 	 * Default constructor
 	 */
 	public BroadcastQueueImpl() {
-		broadcastQueue = new LinkedList<NodeStructure>();
 	}
 
 	@Override

@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public abstract class StrategyImpl implements Strategy {
 
-	private Map<String, ?> parameters;
+	private Map<String, ?> parameters = new HashMap<String, Object>();
 	
 	@Override
 	public void init(Map<String, ?> params) {
