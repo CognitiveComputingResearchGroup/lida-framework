@@ -28,13 +28,13 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 	private static final Logger logger = Logger
 			.getLogger(BasicSchemeActivationStrategy.class.getCanonicalName());
 
-	private ProceduralMemory pm;
 	private static final double DEFAULT_SELECTION_THRESHOLD = 0.5;
 	private double schemeSelectionThreshold = DEFAULT_SELECTION_THRESHOLD;
+	private ProceduralMemory pm;
 
 	public BasicSchemeActivationStrategy(){
 	}
-	
+		
 	@Override
 	public void init(){
 		super.init();
@@ -73,7 +73,7 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 			pm.createInstantiation(s);
 		}
 	}
-
+	
 	@Override
 	public void setProceduralMemory(ProceduralMemory pm) {
 		this.pm = pm;
@@ -83,5 +83,6 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 	public void setSchemeSelectionThreshold(double threshold) {
 		this.schemeSelectionThreshold = threshold;
 	}
+
 
 }

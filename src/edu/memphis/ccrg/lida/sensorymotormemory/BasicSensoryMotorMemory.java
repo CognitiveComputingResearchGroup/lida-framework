@@ -37,6 +37,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(BasicSensoryMotorMemory.class.getCanonicalName());
 
+	private static final int DEFAULT_BACKGROUND_TASK_TICKS = 5;
+	private int backgroundTaskTicks;
 	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
 	private Map<Number, Object> actionAlgorithmMap = new HashMap<Number, Object>();
 	private Environment environment;
@@ -47,6 +49,11 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	public BasicSensoryMotorMemory() {
 	}
 
+	@Override
+	public void init() {
+		backgroundTaskTicks = (Integer)getParam("smm.backgroundTaskTicks", DEFAULT_BACKGROUND_TASK_TICKS);
+	}
+	
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof SensoryMotorMemoryListener) {
@@ -59,13 +66,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 
 	@Override
 	public void addSensoryMotorMemoryListener(SensoryMotorMemoryListener l) {
-		if (l instanceof Environment) {
-			logger.log(Level.SEVERE,
-					"Cannot add Environment as SensoryMotorMemoryListener.  Add it as an associated module.",
-					TaskManager.getCurrentTick());
-		} else {
-			listeners.add(l);
-		}
+		listeners.add(l);
 	}
 
 	@Override
@@ -99,8 +100,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	private class ProcessActionTask extends FrameworkTaskImpl {
 		private Action action;
 		public ProcessActionTask(Action a) {
+			super(backgroundTaskTicks);
 			action = a;
-			setTicksPerRun(processActionTicks);
 		}
 		@Override
 		protected void runThisFrameworkTask() {
@@ -125,9 +126,8 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		// Your module specific decay code. should call super first.
+		// module-specific decay code
 	}
-	
 
 	@Override
 	public Object getModuleContent(Object... params) {
@@ -137,13 +137,6 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	@Override
 	public void receiveSensoryMemoryContent(Object content) {
 		// Research problem
-	}
-	
-	private int processActionTicks;
-
-	@Override
-	public void init() {
-		processActionTicks = (Integer)getParam("smm.ProcessActionTaskSpeed", 5);
 	}
 
 	@Override

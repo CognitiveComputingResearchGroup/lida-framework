@@ -32,6 +32,8 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
+	private static ElementFactory factory = ElementFactory
+			.getInstance();
 
 	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
 	private double codeletActivation = DEFAULT_CODELET_ACTIVATION;
@@ -42,13 +44,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	private static final String DEFAULT_CODELET_TYPE = "BasicStructureBuildingCodelet";
 	private String defaultCodeletType = DEFAULT_CODELET_TYPE;
 
-	private static ElementFactory factory = ElementFactory
-			.getInstance();
-
-
 	private Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
-	
-
 
 	// /*
 	// * Pool keeping all recycled codelets.

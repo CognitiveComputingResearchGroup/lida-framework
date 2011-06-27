@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * A {@link DecayStrategy} that never modifies the activation passed to it.
- * WARNING: Renaming this class requires renaming values in
- * configs/factoriesData.xml
  */
 public class NoDecayStrategy extends StrategyImpl implements DecayStrategy {
 

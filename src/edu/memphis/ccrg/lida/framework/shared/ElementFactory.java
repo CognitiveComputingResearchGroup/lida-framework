@@ -51,35 +51,35 @@ public class ElementFactory {
 	/**
 	 * Used to retrieve default decay strategy from 'decayStrategies' map.
 	 */
-	private String defaultDecayType;
+	private String defaultDecayType = "defaultDecay";
 
 	/**
 	 * Used to retrieve default excite strategy from 'exciteStrategies' map.
 	 */
-	private String defaultExciteType;
+	private String defaultExciteType = "defaultExcite";
 
 	/**
 	 * Used to retrieve default link class from 'linkClasses' map. e.g.
 	 * edu.memphis.ccrg.lida.framework.shared.LinkImpl
 	 */
-	private String defaultLinkClassName;
+	private String defaultLinkClassName = LinkImpl.class.getCanonicalName();
 
 	/**
 	 * Specifies default link type used by the factory. e.g. "LinkImpl"
 	 */
-	private String defaultLinkType;
+	private String defaultLinkType = LinkImpl.class.getSimpleName();
 
 	/**
 	 * Used to retrieve default node class from 'nodeClasses' map. e.g.
 	 * edu.memphis.ccrg.lida.framework.shared.NodeImpl
 	 */
-	private String defaultNodeClassName;
+	private String defaultNodeClassName = NodeImpl.class.getCanonicalName();
 
 	/**
 	 * Specifies default node type used by the factory. e.g. "NodeImpl"
 	 */
-	private String defaultNodeType;
-
+	private String 	defaultNodeType = NodeImpl.class.getSimpleName();
+	
 	/**
 	 * Map of all the ExciteStrategies available to this factory
 	 */
@@ -116,7 +116,7 @@ public class ElementFactory {
 	/**
 	 * Sole instance of this class that will be used.
 	 */
-	private static ElementFactory instance = new ElementFactory();
+	private static final ElementFactory instance = new ElementFactory();
 
 	/**
 	 * Name of decay strategy type
@@ -156,56 +156,59 @@ public class ElementFactory {
 	 * Maps in the Factory.
 	 */
 	private ElementFactory() {
-		defaultNodeType = NodeImpl.class.getSimpleName();
-		defaultNodeClassName = NodeImpl.class.getCanonicalName();
+		//Default node type
 		addNodeType(defaultNodeType, defaultNodeClassName);
-		//
+		//PamNodeImpl type
 		addNodeType(PamNodeImpl.class.getSimpleName(), PamNodeImpl.class
 				.getCanonicalName());
 
-		defaultLinkType = LinkImpl.class.getSimpleName();
-		defaultLinkClassName = LinkImpl.class.getCanonicalName();
+		//Default link type
 		addLinkType(defaultLinkType, defaultLinkClassName);
-		//		
+		
+		//PamLinkImpl type
 		addLinkType(PamLinkImpl.class.getSimpleName(), PamLinkImpl.class
 				.getCanonicalName());
 
-		defaultDecayType = "defaultDecay";
+		//Default decay type
 		addDecayStrategy(defaultDecayType, new StrategyDef(
 				LinearDecayStrategy.class.getCanonicalName(), defaultDecayType,
 				new HashMap<String, Object>(), decayStrategyType, true));
 
-		defaultExciteType = "defaultExcite";
+		//Default excite type
 		addExciteStrategy(defaultExciteType, new StrategyDef(
 				LinearExciteStrategy.class.getCanonicalName(),
 				defaultExciteType, new HashMap<String, Object>(),
 				exciteStrategyType, true));
 		
+		//No-decay strategy type
 		String strategyName="noDecay";
 		addDecayStrategy(strategyName, new StrategyDef(
 				NoDecayStrategy.class.getCanonicalName(), strategyName,
 				new HashMap<String, Object>(), decayStrategyType, true));
 		
+		//No-excite strategy type
 		strategyName="noExcite";
 		addExciteStrategy(strategyName, new StrategyDef(
 				NoExciteStrategy.class.getCanonicalName(), strategyName,
 				new HashMap<String, Object>(), exciteStrategyType, true));
-
+		
+		//Non-decaying PamNode and PamLink
 		Map<String, String> defaultStrategies = new HashMap<String, String>();
-		defaultStrategies.put("decay", "defaultDecay");
-		defaultStrategies.put("excite", "defaultExcite");
+		defaultStrategies.put("decay", defaultDecayType);
+		defaultStrategies.put("excite", defaultExciteType);
 		
 		Map<String, Object> params= new HashMap<String, Object>();
 		params.put("baseLevelDecayStrategy", "noDecay");
 		params.put("baseLevelExciteStrategy", "noExcite");
 		params.put("baseLevelRemovalThreshold", -1.0);
 		params.put("baseLevelActivation", 0.0);
+		
 		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
 		addNodeType(newNodeDef);
-		
 		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
 		addLinkType(newLinkDef);
 		
+		//Default TotalActivation strategy
 		strategyName="DefaultTotalActivation";
 		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), 
 				strategyName, new HashMap<String, Object>(), "other", true);

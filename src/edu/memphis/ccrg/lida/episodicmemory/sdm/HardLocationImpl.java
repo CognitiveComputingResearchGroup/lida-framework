@@ -22,11 +22,12 @@ public class HardLocationImpl implements HardLocation {
 	
 	private static final Logger logger = Logger.getLogger(HardLocationImpl.class.getCanonicalName());
 	private static final byte DEFAULT_COUNTER_MAX = 40;
+	private final byte counterMax = DEFAULT_COUNTER_MAX;
+	
 	private BitVector address;
 	private int wordLength;
 	private byte[] counters;
 	private int writeCount;
-	private final byte counterMax = DEFAULT_COUNTER_MAX;
 
 	/**
 	 * @param address {@link BitVector}

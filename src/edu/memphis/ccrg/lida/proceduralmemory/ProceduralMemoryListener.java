@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 public interface ProceduralMemoryListener extends ModuleListener{
 
     /**
-     * 
+     * Receive a {@link Behavior}
      * @param behavior - a stream, a partial order, of behaviors
      */
     public void receiveBehavior(Behavior behavior);

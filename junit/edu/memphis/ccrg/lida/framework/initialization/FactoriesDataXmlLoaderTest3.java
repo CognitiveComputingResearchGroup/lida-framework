@@ -41,7 +41,7 @@ public class FactoriesDataXmlLoaderTest3 {
 	@Test
 	public void testLoadFactoriesData() {
 		Properties p = new Properties();
-		p.setProperty("lida.elementFactory", "testData/testFactoriesData.xml");
+		p.setProperty("lida.elementfactory.data", "testData/testFactoriesData.xml");
 		
 		loader.loadFactoriesData(p);
 		

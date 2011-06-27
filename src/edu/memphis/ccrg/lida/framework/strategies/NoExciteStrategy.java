@@ -11,8 +11,6 @@ import java.util.Map;
 
 /**
  * An {@link ExciteStrategy} that never modifies the activation passed to it.
- * WARNING:	Renaming this class requires renaming values in
- * 	  configs/factoriesData.xml
  */
 public class NoExciteStrategy extends StrategyImpl implements ExciteStrategy {
 

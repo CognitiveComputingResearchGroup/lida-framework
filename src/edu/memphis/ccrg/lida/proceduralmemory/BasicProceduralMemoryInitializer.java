@@ -28,6 +28,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 public class BasicProceduralMemoryInitializer implements Initializer {
 
 	private static final Logger logger = Logger.getLogger(BasicProceduralMemoryInitializer.class.getCanonicalName());
+	
 	@Override
 	public void initModule(FullyInitializable module, Agent agent,
 			Map<String, ?> params) {

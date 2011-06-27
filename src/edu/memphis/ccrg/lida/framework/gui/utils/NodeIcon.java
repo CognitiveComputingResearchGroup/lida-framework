@@ -31,7 +31,7 @@ public class NodeIcon implements Icon {
 	/**
 	 * Default node icon
 	 */
-	public static final Icon NODE_ICON=new NodeIcon(20,Color.red);
+	public static final Icon NODE_ICON=new NodeIcon(20,Color.black);
 	/**
 	 * Default link icon
 	 */

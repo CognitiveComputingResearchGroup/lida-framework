@@ -47,22 +47,22 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Standard factory for new objects. Used to create copies when adding
 	 * linkables to this NodeStructure
 	 */
-	private static ElementFactory factory = ElementFactory.getInstance();
-
+	private static ElementFactory factory = ElementFactory.getInstance();	
+	
 	/*
 	 * Nodes contained in this NodeStructure indexed by their id
 	 */
-	private ConcurrentMap<Integer, Node> nodes;
+	private ConcurrentMap<Integer, Node> nodes = new ConcurrentHashMap<Integer, Node>();
 
 	/*
 	 * Links contained in this NodeStructure indexed by their id String.
 	 */
-	private ConcurrentMap<ExtendedId, Link> links;
+	private ConcurrentMap<ExtendedId, Link> links = new ConcurrentHashMap<ExtendedId, Link>();
 
 	/*
 	 * Links that each Linkable (Node or Link) has.
 	 */
-	private ConcurrentMap<Linkable, Set<Link>> linkableMap;
+	private ConcurrentMap<Linkable, Set<Link>> linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
 
 	/*
 	 * Default Node type used.
@@ -78,9 +78,6 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 * Default constructor. Uses the default node and link types of the factory
 	 */
 	public NodeStructureImpl() {
-		linkableMap = new ConcurrentHashMap<Linkable, Set<Link>>();
-		nodes = new ConcurrentHashMap<Integer, Node>();
-		links = new ConcurrentHashMap<ExtendedId, Link>();
 		defaultNodeType = factory.getDefaultNodeType();
 		defaultLinkType = factory.getDefaultLinkType();
 	}

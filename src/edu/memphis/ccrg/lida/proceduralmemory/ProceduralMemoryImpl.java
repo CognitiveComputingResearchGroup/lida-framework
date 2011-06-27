@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,50 +42,44 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 public class ProceduralMemoryImpl extends FrameworkModuleImpl implements ProceduralMemory, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
-
-	/**
-	 * Schemes indexed by Linkables in their context. Operations on
+	private static final ElementFactory factory = ElementFactory.getInstance();
+	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
+	
+	/*
+	 * Schemes indexed by the Linkables in their context. Operations on
 	 * ConcurrentHashmap do not block but they may not reflect the true state of
 	 * the Map if multiple operations are concurrent.
-	 * 
 	 */
-	private Map<Object, Set<Scheme>> contextSchemeMap;
-	
+	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();	
 //	TODO support for Node desirability
+//  TODO index by result
 //	private Map<Object, Set<Scheme>> resultSchemeMap;
 
-	/**
+	/*
 	 * Convenient for decaying the schemes
 	 */
-	private Set<Scheme> schemeSet;
+	private Set<Scheme> schemeSet = new ConcurrentHashSet<Scheme>();
 
-	/**
+	/*
+	 * Listeners of this Procedural Memory
+	 */
+	private List<ProceduralMemoryListener> proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
+	
+	/*
 	 * Determines how scheme are given activation and whether they should be
 	 * instantiated
 	 */
 	private SchemeActivationStrategy schemeActivationStrategy;
 
-	/**
-	 * Listeners of this Procedural Memory
-	 */
-	private List<ProceduralMemoryListener> proceduralMemoryListeners;
 
 	private DecayStrategy behaviorDecayStrategy;
 
 	private ExciteStrategy behaviorExciteStrategy;
-	
-	private static final ElementFactory factory = ElementFactory.getInstance();
-
-	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
 
 	/**
 	 * Default constructor
 	 */
 	public ProceduralMemoryImpl() {
-		contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
-//		resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
-		schemeSet = new HashSet<Scheme>();
-		proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 	}
 
 	/**
@@ -182,7 +175,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		}
 	}
 	
-	//inner class
 	private class ProcessBroadcastTask extends FrameworkTaskImpl{		
 		private NodeStructure broadcast;
 		public ProcessBroadcastTask(NodeStructure broadcast) {
@@ -204,11 +196,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			n.getId();
 		}
 	}
-
-	/*
-	 * Impl. of observer pattern. Sends scheme to all registered ProceduralMemory
-	 * Listeners
-	 */
+	
 	@Override
 	public void createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
@@ -235,6 +223,24 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void decayModule(long ticks) {
 		for (Scheme s : schemeSet){
 			s.decay(ticks);
+			if(s.isRemovable()){
+				//TODO test then implement
+//				removeScheme(s);
+			}
+		}
+	}
+	
+	@Override
+	public void removeScheme(Scheme scheme) {
+		schemeSet.remove(scheme);
+		removeFromMap(scheme, scheme.getContext().getLinkables(), contextSchemeMap);
+	}
+	
+	private <E> void removeFromMap(Scheme scheme, Collection<E> keys, Map<?, Set<Scheme>> map){
+		for(E key: keys){
+			if(map.containsKey(key)){
+				map.get(key).remove(scheme);
+			}
 		}
 	}
 
@@ -242,7 +248,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public Object getModuleContent(Object... params) {
 		return null;
 	}
-
+	
 	@Override
 	public Object getState() {
 		Object[] state = new Object[2];

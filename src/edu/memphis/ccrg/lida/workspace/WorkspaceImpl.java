@@ -50,7 +50,6 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	 * Default constructor
 	 */
 	public WorkspaceImpl(){
-		super();
 	}	
 	
 	@Override

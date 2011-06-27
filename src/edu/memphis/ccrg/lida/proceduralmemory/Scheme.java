@@ -144,5 +144,19 @@ public interface Scheme extends Learnable{
 	 * @return an instantiation of this scheme
 	 */
 	public Behavior getInstantiation();
+
+
+	/**
+	 * Sets reliabilityThreshold
+	 * @param threshold threshold of reliability
+	 */
+	public void setReliabilityThreshold(double threshold);
+
+
+	/**
+	 * Gets reliabilityThreshold
+	 * @return threshold of reliability
+	 */
+	public double getReliabilityThreshold();
 	
 }

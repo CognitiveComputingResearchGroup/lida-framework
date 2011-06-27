@@ -36,7 +36,7 @@ public class UpscalePropagationStrategy extends StrategyImpl implements Propagat
 			return (Double)params.get("totalActivation") * (Double)params.get("upscale");
 		}else{
 			logger.log(Level.WARNING,"Unable to obtain parameters",TaskManager.getCurrentTick());
-			return 0;
+			return 0.0;
 		}
 	}
 }

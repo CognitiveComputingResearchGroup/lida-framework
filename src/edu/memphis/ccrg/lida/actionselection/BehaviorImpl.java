@@ -33,6 +33,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	private static final Logger logger = Logger
 			.getLogger(BehaviorImpl.class.getCanonicalName());
+	
+	private static final double DEFAULT_CONTEXT_SATISFACTION_THRESHOLD = 0.5;
+	private static long idCounter = 0;
 
 	/*
 	 * Label for description
@@ -42,17 +45,17 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	/*
 	 * Context for this behavior
 	 */
-	private NodeStructure context;
+	private NodeStructure context = new NodeStructureImpl();
 
 	/*
 	 * Set of nodes that this behavior adds
 	 */
-	private NodeStructure addingList;
+	private NodeStructure addingList = new NodeStructureImpl();
 
 	/*
 	 * Set of nodes that this behavior deletes
 	 */
-	private NodeStructure deletingList;
+	private NodeStructure deletingList = new NodeStructureImpl();
 
 	/*
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
@@ -70,24 +73,17 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	 */
 	private AtomicInteger unsatisfiedContextConditionCount = new AtomicInteger(0);
 
-	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
+	private double contextSatisfactionThreshold = DEFAULT_CONTEXT_SATISFACTION_THRESHOLD;
 
-	private String contextNodeType;
+	private String contextNodeType = "NodeImpl";
 
 	private Scheme generatingScheme;
-
-	private static final double DEFAULT_CS_THRESHOLD = 0.5;
-
-	private static long idCounter = 0;
 	
 	/**
 	 * Default constructor
 	 */
 	public BehaviorImpl(){
-		this.id = idCounter++;
-		context = new NodeStructureImpl();
-		addingList = new NodeStructureImpl();
-		deletingList = new NodeStructureImpl();
+		id = idCounter++;
 	}
 	
 	/**
@@ -102,8 +98,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	// Precondition methods
 	@Override
 	public void deactivateAllContextConditions() {
-		for (Node s : context.getNodes())
+		for (Node s : context.getNodes()){
 			s.setActivation(0.0);
+		}
 		unsatisfiedContextConditionCount.set(getContextSize());
 	}
 
@@ -114,14 +111,15 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	@Override
 	public boolean isContextConditionSatisfied(Node prop) {
-		if (context.containsNode(prop))
+		if (context.containsNode(prop)){
 			return context.getNode(prop.getId()).getActivation() > contextSatisfactionThreshold;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean isAllContextConditionsSatisfied() {
-		return (unsatisfiedContextConditionCount.get() == 0);
+		return unsatisfiedContextConditionCount.get() == 0;
 	}
 
 	@Override
@@ -176,8 +174,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	@Override
 	public boolean addContextCondition(Node condition) {
 		logger.log(Level.FINEST, "Adding context condition {1} to  {2}", new Object[]{TaskManager.getCurrentTick(), condition, label});
-		if(condition.getActivation() < this.contextSatisfactionThreshold)
+		if(condition.getActivation() < contextSatisfactionThreshold){
 			unsatisfiedContextConditionCount.incrementAndGet();
+		}
 		
 		return (context.addDefaultNode(condition) != null);
 	}

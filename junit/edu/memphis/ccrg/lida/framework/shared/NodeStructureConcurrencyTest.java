@@ -106,6 +106,7 @@ public class NodeStructureConcurrencyTest {
 							break;
 
 						case 2:
+							@SuppressWarnings("unused")
 							int sum = 0;
 							Collection<Node>nodesCol = ns1.getNodes();
 							 for(Node nn:nodesCol){

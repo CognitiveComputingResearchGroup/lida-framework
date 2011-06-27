@@ -54,33 +54,29 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		implements PerceptualAssociativeMemory, BroadcastListener,
 		WorkspaceListener, PreafferenceListener {
 
-	private static final String DEFAULT_NONDECAYING_PAMNODE = "NoDecayPamNode";
-
 	private static final Logger logger = Logger
 			.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
+	private static ElementFactory factory = ElementFactory.getInstance();
+	private static final String DEFAULT_NONDECAYING_PAMNODE = "NoDecayPamNode";
 
-	/*
-	 * Modules listening for the current percept
-	 */
-	private List<PamListener> pamListeners;
+	private List<PamListener> pamListeners = new ArrayList<PamListener>();
 
 	/**
 	 * A {@link NodeStructure} which contains all of the {@link PamNode},
 	 * {@link PamLink} and their connections.
 	 */
-	protected PamNodeStructure pamNodeStructure;
+	protected PamNodeStructure pamNodeStructure = new PamNodeStructure("PamNodeImpl", "PamLinkImpl");	
 	
+	//TODO more than just nodes?
 	/**
-	 * TODO
+	 * Pam's pamnode indexed by label 
 	 */
 	protected Map<String, PamNode> nodesByLabel = new ConcurrentHashMap<String, PamNode>();
 
 	/*
 	 * How PAM calculates the amount of activation to propagate
 	 */
-	private PropagationStrategy propagationStrategy;
-
-	private static ElementFactory factory = ElementFactory.getInstance();
+	private PropagationStrategy propagationStrategy = new UpscalePropagationStrategy();
 
 	private static final int DEFAULT_EXCITATION_TASK_TICKS = 1;
 	private int excitationTaskTicksPerRun = DEFAULT_EXCITATION_TASK_TICKS;
@@ -130,10 +126,6 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * Default constructor.
 	 */
 	public PerceptualAssociativeMemoryImpl() {
-		pamListeners = new ArrayList<PamListener>();
-		propagationStrategy = new UpscalePropagationStrategy();
-		pamNodeStructure = new PamNodeStructure("PamNodeImpl", "PamLinkImpl");
-
 		addInternalLinkCategory(NONE);
 		addInternalLinkCategory(LATERAL);
 		addInternalLinkCategory(PARENT);
@@ -551,7 +543,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/**
-	 * Internal implementation of {@link NodeStructureImpl} Allows {@link Node}
+	 * Internal implementation of {@link NodeStructureImpl}. Allows {@link Node}
 	 * to be added without copying them.
 	 */
 	protected static class PamNodeStructure extends NodeStructureImpl {

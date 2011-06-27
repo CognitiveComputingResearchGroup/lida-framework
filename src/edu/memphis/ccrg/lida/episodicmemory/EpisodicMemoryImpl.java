@@ -65,14 +65,31 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Default constructor
 	 */
 	public EpisodicMemoryImpl() {
+	}	
+
+	@Override
+	public void init() {
+		numOfHardLoc = (Integer) getParam("tem.numOfHardLoc",
+				DEF_HARD_LOCATIONS);
+		addressLength = (Integer) getParam("tem.addressLength",
+				DEF_ADDRESS_LENGTH);
+		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
+		int radius = (Integer) getParam("tem.activationRadius",
+				DEF_ACCESS_RADIUS);
+		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,
+				addressLength);
+	}
+	
+	@Override
+	public void addListener(ModuleListener listener) {
+		if (listener instanceof LocalAssociationListener) {
+			localAssocListeners.add((LocalAssociationListener) listener);
+		}else{
+			logger.log(Level.WARNING, "tried to add listener {0} but LocalAssociationListener is required", 
+					listener);
+		}
 	}
 
-	/**
-	 * Receives the conscious broadcast and store its information in this EM.
-	 * 
-	 * @param bc
-	 *            the content of the conscious broadcast
-	 */
 	@Override
 	public void receiveBroadcast(BroadcastContent bc) {
 		NodeStructure ns = (NodeStructure) bc;
@@ -92,16 +109,17 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 					TaskManager.getCurrentTick());
 		}
 	}
-
-	@Override
+	
 	/**
 	 * Receive a cue as a {@link NodeStructure}
 	 * In this implementation, first the cue is translated to a BitVector. 
-	 * TODO parallelize using task.  
-	 * @see {@link Translator}
-	 * @param cue NodeStructure to recall
+	 * 
+	 * @param ns NodeStructure to retrieve
+	 * @see Translator
 	 */
+	@Override
 	public void receiveCue(NodeStructure ns) {
+		//TODO parallelize using task.
 		BitVector address = null;
 		if (translator != null) {
 			try {
@@ -136,17 +154,14 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	}
 
-	/**
+	/*
 	 * Sends local association to all listeners
-	 * 
-	 * @param localAssociation
-	 *            NodeStructure to send
 	 */
 	private void sendLocalAssociation(NodeStructure localAssociation) {
+		logger.log(Level.FINER, "Sending Local Association",
+				TaskManager.getCurrentTick());
 		for (LocalAssociationListener l : localAssocListeners) {
 			l.receiveLocalAssociation(localAssociation);
-			logger.log(Level.FINER, "Local Association sent.",
-					TaskManager.getCurrentTick());
 		}
 	}
 
@@ -158,26 +173,6 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	@Override
 	public Object getModuleContent(Object... params) {
 		return null;
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
-		if (listener instanceof LocalAssociationListener) {
-			localAssocListeners.add((LocalAssociationListener) listener);
-		}
-	}
-
-	@Override
-	public void init() {
-		numOfHardLoc = (Integer) getParam("tem.numOfHardLoc",
-				DEF_HARD_LOCATIONS);
-		addressLength = (Integer) getParam("tem.addressLength",
-				DEF_ADDRESS_LENGTH);
-		wordLength = (Integer) getParam("tem.wordLength", DEF_WORD_LENGTH);
-		int radius = (Integer) getParam("tem.activationRadius",
-				DEF_ACCESS_RADIUS);
-		sdm = new SparseDistributedMemoryImpl(numOfHardLoc, radius, wordLength,
-				addressLength);
 	}
 
 	/**

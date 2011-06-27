@@ -112,6 +112,7 @@ public class AgentStarter {
 			logger.log(Level.SEVERE, "Failed to create agent, application not started.");
 			return;
 		}
+		GlobalInitializer.getInstance().clearAttributes();
 		logger.log(Level.CONFIG, "Agent created", 0L);
 		
 		String loggingFile = agentProperties.getProperty("lida.logging.configuration");
