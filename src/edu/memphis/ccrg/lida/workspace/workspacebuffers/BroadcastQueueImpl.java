@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
@@ -136,11 +135,6 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void learn(BroadcastContent content) {
-		// Not applicable
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
 		// Not applicable
 	}
 

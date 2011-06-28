@@ -79,7 +79,9 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	 * as this method will not have run yet at the time this method is called.
 	 */
 	@Override
-	public abstract void init();
+	public void init(){
+		
+	}
 	
 	@Override
 	public Object getParam(String name, Object defaultValue) {
@@ -167,11 +169,22 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 	}
-
-	/* 
-	 * Implement to return module content based on params.  Intended to be called from GUI.
+	
+	/**
+	 * Override this method to add a listener to the module
+	 * @param listener - listener of this FrameworkModule
 	 */
 	@Override
-	public abstract Object getModuleContent(Object... params);
+	public void addListener(ModuleListener listener){
+	}
+
+	/** 
+	 * Intended to be called from the GUI.
+	 * Override this method to return particular module content based on params. 
+	 */
+	@Override
+	public Object getModuleContent(Object... params){
+		return null;
+	}
 
 }

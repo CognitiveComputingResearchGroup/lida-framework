@@ -15,7 +15,6 @@ import java.util.Set;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
@@ -46,17 +45,6 @@ public class MockPAM extends FrameworkModuleImpl implements PerceptualAssociativ
 
 	@Override
 	public void decayModule(long ticks) {
-		// not implemented
-
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
-		// not implemented
-
-	}
-	@Override
-	public void init() {
 		// not implemented
 
 	}

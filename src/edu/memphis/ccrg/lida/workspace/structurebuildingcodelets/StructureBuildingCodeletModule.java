@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
@@ -144,10 +143,6 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	@Override
 	public Object getModuleContent(Object... params) {
 		return null;
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
 	}
 
 	@Override

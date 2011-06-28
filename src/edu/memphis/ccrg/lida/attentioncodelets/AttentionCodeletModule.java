@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -188,10 +187,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
 	}
 
 	@Override

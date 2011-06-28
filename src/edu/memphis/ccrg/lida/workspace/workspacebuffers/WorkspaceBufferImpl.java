@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -66,10 +65,4 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public WorkspaceContent getBufferContent(Map<String, Object> params) {
 		return (WorkspaceContent) buffer;
 	}
-	
-	@Override
-	public void addListener(ModuleListener listener) {
-		// NA		
-	}
-
 }

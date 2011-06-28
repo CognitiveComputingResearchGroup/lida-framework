@@ -9,7 +9,6 @@ package edu.memphis.ccrg.lida.environment;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
 
 /**
@@ -29,20 +28,11 @@ public abstract class EnvironmentImpl extends FrameworkModuleImpl implements Env
 	}
 	
 	/**
-	 * May override to implement decay for environment
+	 * override to implement Environment's decay.
 	 * @see FrameworkModule#decayModule(long)
 	 */
 	@Override
 	public void decayModule(long ticks) {
-	}
-	
-	/**
-	 * NOT applicable for environments.  Instead sensors should directly request data from 
-	 * the {@link Environment}.  Likewise, actuators should directly call
-	 * {@link Environment#processAction(Object)} to execute an action in the environment.
-	 */
-	@Override
-	public void addListener(ModuleListener listener) {
 	}
 	
 }
