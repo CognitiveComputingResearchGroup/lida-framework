@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
@@ -32,7 +31,7 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 
 	private static final Logger logger = Logger
 			.getLogger(StructureBuildingCodeletModule.class.getCanonicalName());
-	private static ElementFactory factory = ElementFactory
+	private static final ElementFactory factory = ElementFactory
 			.getInstance();
 
 	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
@@ -144,10 +143,6 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	@Override
 	public Object getModuleContent(Object... params) {
 		return null;
-	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
 	}
 
 	@Override

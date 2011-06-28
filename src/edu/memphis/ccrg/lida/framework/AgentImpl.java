@@ -41,14 +41,6 @@ public class AgentImpl extends FrameworkModuleImpl implements Agent {
 	public TaskManager getTaskManager() {
 		return taskManager;
 	}
-
-	@Override
-	public Object getModuleContent(Object... params) {
-		return null;
-	}
-	@Override
-	public void addListener(ModuleListener listener) {
-	}
 	
 	/** 
 	 * Should do nothing, submodules' decayModule method is called 

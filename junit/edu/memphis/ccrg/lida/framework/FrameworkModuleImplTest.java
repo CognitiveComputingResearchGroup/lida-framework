@@ -27,9 +27,6 @@ public class FrameworkModuleImplTest {
 	private TestModule submodule;
 	
 	private class TestModule extends FrameworkModuleImpl{
-		@Override
-		public void addListener(ModuleListener listener) {	
-		}
 		
 		public boolean initCalled;
 		@Override

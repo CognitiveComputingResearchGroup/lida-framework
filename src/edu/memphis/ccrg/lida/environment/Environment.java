@@ -20,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 public interface Environment extends FrameworkModule{
 
 	/**
-	 * Reset the state of the environment
+	 * Resets the state of the environment
 	 */
 	public void resetState();
 	

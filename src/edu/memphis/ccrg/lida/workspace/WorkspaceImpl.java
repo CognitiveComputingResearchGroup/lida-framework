@@ -160,11 +160,6 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 		// Not applicable
 	}
 
-	@Override
-	public void init() {
-		// Not applicable		
-	}
-
 	/** 
 	 * Should do nothing, submodules' decayModule method will be called 
      * in FrameworkModuleImpl#taskManagerDecayModule.

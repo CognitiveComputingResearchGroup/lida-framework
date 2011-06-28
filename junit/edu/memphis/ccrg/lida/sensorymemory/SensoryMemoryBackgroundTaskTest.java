@@ -17,7 +17,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
-import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemoryListener;
 
@@ -93,19 +92,7 @@ class MockSensory extends FrameworkModuleImpl implements SensoryMemory, SensoryM
 		// not implemented
 		
 	}
-
-	@Override
-	public void addListener(ModuleListener listener) {
-		// not implemented
-		
-	}
-
-	@Override
-	public void init() {
-		// not implemented
-		
-	}
-
+	
 	@Override
 	public void receiveActuatorCommand(Object algorithm) {
 		// not implemented

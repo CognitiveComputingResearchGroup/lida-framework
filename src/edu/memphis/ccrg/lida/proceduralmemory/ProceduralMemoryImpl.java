@@ -95,7 +95,12 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void init() {	
 		String strategyName = (String) getParam("proceduralMemory.schemeActivationStrategy", DEFAULT_SCHEME_ACTIVATION_STRATEGY);
 		schemeActivationStrategy = (SchemeActivationStrategy) factory.getStrategy(strategyName);
-		schemeActivationStrategy.setProceduralMemory(this);
+		if(schemeActivationStrategy != null){
+			schemeActivationStrategy.setProceduralMemory(this);
+		}else{
+			logger.log(Level.SEVERE, "unable to get scheme activation strategy {0} from factory", 
+					strategyName);
+		}
 		
 		String decayName = (String) getParam("proceduralMemory.behaviorDecayStrategy", factory.getDefaultDecayType());
 		behaviorDecayStrategy = factory.getDecayStrategy(decayName);
