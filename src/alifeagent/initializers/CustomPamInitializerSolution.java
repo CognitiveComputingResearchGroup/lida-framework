@@ -44,6 +44,8 @@ public class CustomPamInitializerSolution extends BasicPamInitializer{
         // Task 3: INSERT YOUR CODE HERE **************************
         DecayStrategy decayStrategy = factory.getDecayStrategy("slowDecay");
         objectNode.setDecayStrategy(decayStrategy);
+        
+        
     }
 
 }

@@ -42,9 +42,7 @@ public class CustomPamInitializer extends BasicPamInitializer{
 
         //  Add a Link in PAM from 'food' to 'object' with link category PARENT
 
-         child = pam.getNode("food");        
-        pam.addDefaultLink(factory.getLink(child, objectNode, PerceptualAssociativeMemoryImpl.PARENT));
-       
+      
         // Task 3: INSERT YOUR CODE HERE **************************
         
         
