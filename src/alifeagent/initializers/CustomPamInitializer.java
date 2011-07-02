@@ -18,22 +18,22 @@ import java.util.Map;
  *
  * @author UofM
  */
-public class CustomPamInitializer extends BasicPamInitializer{
-    
+public class CustomPamInitializer extends BasicPamInitializer {
+
     @Override
     public void initModule(FullyInitializable module, Agent agent, Map<String, ?> params) {
         super.initModule(module, agent, params);
         PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
-        
+
         // Obtains the ElementFactory
         ElementFactory factory = ElementFactory.getInstance();
-        
+
         // Creates a new Node in PAM labeled 'object'
         Node objectNode = pam.addDefaultNode(factory.getNode("PamNodeImpl", "object"));
-        
+
         // Obtains the 'rock' node from PAM
-        Node child = pam.getNode("rock"); 
-        
+        Node child = pam.getNode("rock");
+
         //  Adds a Link in PAM from 'rock' to 'object' with link category PARENT
         pam.addDefaultLink(factory.getLink(child, objectNode, PerceptualAssociativeMemoryImpl.PARENT));
 
@@ -42,11 +42,10 @@ public class CustomPamInitializer extends BasicPamInitializer{
 
         //  Add a Link in PAM from 'food' to 'object' with link category PARENT
 
-      
-        // Task 3: INSERT YOUR CODE HERE **************************
-        
-        
-        
-    }
 
+        // Task 3: INSERT YOUR CODE HERE **************************
+
+
+
+    }
 }
