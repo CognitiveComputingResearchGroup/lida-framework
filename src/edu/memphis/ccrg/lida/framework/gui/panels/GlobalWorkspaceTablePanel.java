@@ -133,12 +133,12 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         module.addListener(this);
 
         recentBroadcastsSize = DEFAULT_RECENT_BROADCAST_SIZE;
+        
         if(param.length > 0){
             try{
             	recentBroadcastsSize = Integer.parseInt(param[0]);
             }catch(NumberFormatException e){
-              logger.log(
-                    Level.WARNING,"recentBroadcastsSize is invalid using default value",0L);
+            	logger.log(Level.WARNING, "parse error, using default recent broadcast size");
             }
         }else{
         	logger.log(Level.INFO, "using default recent broadcast size");
