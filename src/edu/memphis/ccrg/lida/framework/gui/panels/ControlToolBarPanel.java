@@ -38,9 +38,7 @@ public class ControlToolBarPanel extends GuiPanelImpl {
 
     private static final Logger logger = Logger.getLogger(ControlToolBarPanel.class.getCanonicalName());
     private boolean isPaused = true;
-    private int sliderMin = 0;
-    private int sliderMax = 100;
-    private int sliderStartValue = sliderMax - (sliderMax - sliderMin) / 2;
+    private int tickDurationStartValue = 1;
     private TaskManager tm;
     private final String PAUSED_LABEL = " Paused ";
     private final String RUNNING_LABEL = " Running ";
@@ -53,30 +51,9 @@ public class ControlToolBarPanel extends GuiPanelImpl {
     @Override
     public void initPanel(String[] params) {
         tm = agent.getTaskManager();
-        sliderStartValue = tm.getTickDuration();
-        if (params.length >= 1) {
-            try {
-                sliderMin = Integer.parseInt(params[0]);
-                sliderMin = (sliderMin < sliderStartValue) ? sliderMin : sliderStartValue;
-            } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid Parameter {1}", new Object[]{0L, params[0]});
-            }
-        }
-        if (params.length >= 2) {
-            try {
-                sliderMax = Integer.parseInt(params[1]);
-                sliderMax = (sliderMax > sliderStartValue) ? sliderMax : sliderStartValue;
-            } catch (NumberFormatException e) {
-                logger.log(Level.WARNING, "Invalid Parameter {1}", new Object[]{0L, params[1]});
-            }
-        }
+        tickDurationStartValue = tm.getTickDuration();
 
-        tickDurationSlider.setMaximum(sliderMax);
-        tickDurationSlider.setMinimum(sliderMin);
-        tickDurationSlider.setValue(sliderStartValue);
-        tickDurationTextField.setText(sliderStartValue + "");
-        minStepDurationLabel.setText(sliderMin + "");
-        maxStepDurationLabel.setText(sliderMax + "");
+        tickDurationSpinner.setValue(tickDurationStartValue);
     }
 
     /**
@@ -99,11 +76,8 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         tiksTB = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jLabel2 = new javax.swing.JLabel();
-        tickDurationTextField = new javax.swing.JTextField();
+        tickDurationSpinner = new javax.swing.JSpinner();
         jSeparator4 = new javax.swing.JToolBar.Separator();
-        minStepDurationLabel = new javax.swing.JLabel();
-        tickDurationSlider = new javax.swing.JSlider();
-        maxStepDurationLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -111,7 +85,7 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         toolbar.setRollover(true);
         toolbar.setPreferredSize(new java.awt.Dimension(50, 25));
 
-        startPauseButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        startPauseButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         startPauseButton.setText("Start / Pause ");
         startPauseButton.setToolTipText("Toggles system operation");
         startPauseButton.setFocusable(false);
@@ -124,14 +98,14 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         });
         toolbar.add(startPauseButton);
 
-        statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 12)); // NOI18N
+        statusLabel.setFont(new java.awt.Font("Lucida Grande", 1, 12));
         statusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         statusLabel.setText(" Paused ");
         statusLabel.setToolTipText("System run status");
         toolbar.add(statusLabel);
         toolbar.add(jSeparator2);
 
-        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         jLabel3.setText("Current tick: ");
         toolbar.add(jLabel3);
 
@@ -157,7 +131,7 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         });
         toolbar.add(ticksModeTB);
 
-        addTicksButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        addTicksButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         addTicksButton.setText("Run ticks:");
         addTicksButton.setToolTipText("Runs system the number of ticks specified in adjacent text field.");
         addTicksButton.setFocusable(false);
@@ -179,65 +153,37 @@ public class ControlToolBarPanel extends GuiPanelImpl {
         toolbar.add(tiksTB);
         toolbar.add(jSeparator1);
 
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         jLabel2.setText("Tick duration (ms): ");
         toolbar.add(jLabel2);
 
-        tickDurationTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        tickDurationTextField.setToolTipText("The system's current tick duration in milliseconds.");
-        tickDurationTextField.setMaximumSize(new java.awt.Dimension(100, 24));
-        tickDurationTextField.setMinimumSize(new java.awt.Dimension(50, 24));
-        tickDurationTextField.setPreferredSize(new java.awt.Dimension(50, 24));
-        tickDurationTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tickDurationTextFieldActionPerformed(evt);
-            }
-        });
-        toolbar.add(tickDurationTextField);
-        toolbar.add(jSeparator4);
-
-        minStepDurationLabel.setText(" 0");
-        toolbar.add(minStepDurationLabel);
-
-        tickDurationSlider.setToolTipText("Sets the tick duration of the system");
-        tickDurationSlider.setMaximumSize(new java.awt.Dimension(150, 24));
-        tickDurationSlider.setMinimumSize(new java.awt.Dimension(100, 24));
-        tickDurationSlider.setPreferredSize(new java.awt.Dimension(100, 24));
-        tickDurationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+        tickDurationSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 0, 1000, 1));
+        tickDurationSpinner.setToolTipText("The system's current tick duration in milliseconds.");
+        tickDurationSpinner.setMaximumSize(new java.awt.Dimension(110, 24));
+        tickDurationSpinner.setMinimumSize(new java.awt.Dimension(63, 24));
+        tickDurationSpinner.setPreferredSize(new java.awt.Dimension(63, 24));
+        tickDurationSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tickDurationSliderStateChanged(evt);
+                tickDurationSpinnerStateChanged(evt);
             }
         });
-        toolbar.add(tickDurationSlider);
-
-        maxStepDurationLabel.setText("100");
-        toolbar.add(maxStepDurationLabel);
+        toolbar.add(tickDurationSpinner);
+        toolbar.add(jSeparator4);
         toolbar.add(jPanel1);
 
         add(toolbar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tickDurationTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tickDurationTextFieldActionPerformed
-        String sSleepTime = tickDurationTextField.getText();
-        int tickDuration = tm.getTickDuration();
-        try {
-            tickDuration = Integer.parseInt(sSleepTime);
-        } catch (NumberFormatException e) {
-        }
-
-        if (tickDuration < tickDurationSlider.getMinimum() || tickDuration > tickDurationSlider.getMaximum()) {
-            tickDuration = tm.getTickDuration();
-        }
+    private void tickDurationSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tickDurationSpinnerStateChanged
+        int tickDuration = (Integer) tickDurationSpinner.getValue();
         if (tickDuration >= 0) {
-            tickDurationTextField.setText(tickDuration + "");
-            tickDurationSlider.setValue(tickDuration);
             // Another way to execute commands
             Command command = new SetTimeScaleCommand();
             command.setParameter("tickDuration", tickDuration);
             controller.executeCommand(command);
             refresh();
         }
-    }//GEN-LAST:event_tickDurationTextFieldActionPerformed
+    }//GEN-LAST:event_tickDurationSpinnerStateChanged
 
     /*
      * Sends pauseRunningThreads and resumeRunningThreads commands
@@ -253,23 +199,6 @@ public class ControlToolBarPanel extends GuiPanelImpl {
             controller.executeCommand("resumeRunningThreads", null);
         }
         refresh();
-    }
-
-    /*
-     * Changes TaskManager's tick Duration using SetTimeScaleCommand
-     * @param evt
-     */
-    private void tickDurationSliderStateChanged(javax.swing.event.ChangeEvent evt) {
-        JSlider source = (JSlider) evt.getSource();
-        if (!source.getValueIsAdjusting()) {
-            int sleepTime = source.getValue();
-            tickDurationTextField.setText(sleepTime + "");
-            // Another way to execute commands
-            Command command = new SetTimeScaleCommand();
-            command.setParameter("tickDuration", sleepTime);
-            controller.executeCommand(command);
-            refresh();
-        }
     }
 
     /*
@@ -315,12 +244,9 @@ public class ControlToolBarPanel extends GuiPanelImpl {
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
-    private javax.swing.JLabel maxStepDurationLabel;
-    private javax.swing.JLabel minStepDurationLabel;
     private javax.swing.JButton startPauseButton;
     private javax.swing.JLabel statusLabel;
-    private javax.swing.JSlider tickDurationSlider;
-    private javax.swing.JTextField tickDurationTextField;
+    private javax.swing.JSpinner tickDurationSpinner;
     private javax.swing.JToggleButton ticksModeTB;
     private javax.swing.JTextField tiksTB;
     private javax.swing.JToolBar toolbar;
