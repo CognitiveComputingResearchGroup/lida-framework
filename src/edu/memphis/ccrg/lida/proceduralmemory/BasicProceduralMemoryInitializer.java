@@ -113,8 +113,8 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 			}
 			String[] nodes = linkName.split(":");
 			if(nodes.length == 2){
-				Node source = (Node) initializer.getAttribute(nodes[0]);
-				Node sink = (Node) initializer.getAttribute(nodes[1]);
+				Node source = (Node) initializer.getAttribute(nodes[0].trim());
+				Node sink = (Node) initializer.getAttribute(nodes[1].trim());
 				//TODO third parameter for category
 				if(source != null && sink != null){
 					loadedNodeStructure.addDefaultLink(source, sink, PerceptualAssociativeMemoryImpl.PARENT, 1.0, -1.0);

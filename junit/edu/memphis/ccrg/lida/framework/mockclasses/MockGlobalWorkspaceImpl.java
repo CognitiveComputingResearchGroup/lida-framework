@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -60,5 +61,19 @@ public class MockGlobalWorkspaceImpl extends GlobalWorkspaceImpl implements Glob
 	@Override
 	public void init() {
 		
+	}
+
+	public void setCoalitionDecayStrategy(DecayStrategy coalitionDecayStrategy) {
+	}
+
+	public DecayStrategy getCoalitionDecayStrategy() {
+		return null;
+	}
+
+	public void setCoalitionRemovalThreshold(double coalitionRemovalThreshold) {
+	}
+
+	public double getCoalitionRemovalThreshold() {
+		return 0;
 	}
 }

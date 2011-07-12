@@ -11,9 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -34,14 +32,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
 
     private static final Logger logger = Logger.getLogger(AttentionCodeletImpl.class.getCanonicalName());
     private static final int DEFAULT_CODELET_REFRACTORY_PERIOD = 50;
-    private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
-    private static final double DEFAULT_COALITION_REMOVAL_THRESHOLD = 0.0;
-    
     private int codeletRefractoryPeriod;
-    
-    //TODO move to globalworkspace
-    private double coalitionRemovalThreshold;
-    private DecayStrategy coalitionDecayStrategy;
+
     /**
      * Where codelet will look for and retrieve sought content from
      */
@@ -61,26 +53,20 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
     public void init() {
         Integer refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_CODELET_REFRACTORY_PERIOD);
         setRefractoryPeriod(refractoryPeriod);
-        
+
         double initialActivation = (Double) getParam("initialActivation", getActivation());
         setActivation(initialActivation);
-        
-        //TODO move to globalworkspace
-        coalitionRemovalThreshold = (Double) getParam("coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
-        
-        String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
-        coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
     }
 
     @Override
     public void setAssociatedModule(FrameworkModule module, String usage) {
-    	if (module instanceof WorkspaceBuffer) {
+        if (module instanceof WorkspaceBuffer) {
             currentSituationalModel = (WorkspaceBuffer) module;
-        }else if (module instanceof GlobalWorkspace) {
+        } else if (module instanceof GlobalWorkspace) {
             globalWorkspace = (GlobalWorkspace) module;
-        }else {
+        } else {
             logger.log(Level.WARNING, "module {1} cannot be associated",
-                    new Object[]{TaskManager.getCurrentTick(),module});
+                    new Object[]{TaskManager.getCurrentTick(), module});
         }
     }
 
@@ -95,8 +81,6 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
             NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
             if (csmContent.getLinkableCount() > 0) {
                 Coalition coalition = new CoalitionImpl(csmContent, getActivation(), this);
-                coalition.setDecayStrategy(coalitionDecayStrategy);
-                coalition.setActivatibleRemovalThreshold(coalitionRemovalThreshold);
                 globalWorkspace.addCoalition(coalition);
                 logger.log(Level.FINER, "{1} adds new coalition with activation {2}",
                         new Object[]{TaskManager.getCurrentTick(), this, coalition.getActivation()});
@@ -104,24 +88,22 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
             }
         }
     }
-    
 
-	@Override
-	public void setRefractoryPeriod(int ticks) {
-		if (ticks > 0) {
-    		codeletRefractoryPeriod = ticks;
-    	}else{
-    		codeletRefractoryPeriod = DEFAULT_CODELET_REFRACTORY_PERIOD;
-    		logger.log(Level.WARNING,
-    				"refractory period must be positive, using default value",
-    				TaskManager.getCurrentTick());
-    	}
-		
-	}
+    @Override
+    public void setRefractoryPeriod(int ticks) {
+        if (ticks > 0) {
+            codeletRefractoryPeriod = ticks;
+        } else {
+            codeletRefractoryPeriod = DEFAULT_CODELET_REFRACTORY_PERIOD;
+            logger.log(Level.WARNING,
+                    "refractory period must be positive, using default value",
+                    TaskManager.getCurrentTick());
+        }
 
-	@Override
-	public int getRefractoryPeriod() {
-		return codeletRefractoryPeriod;
-	}
-    
+    }
+
+    @Override
+    public int getRefractoryPeriod() {
+        return codeletRefractoryPeriod;
+    }
 }
