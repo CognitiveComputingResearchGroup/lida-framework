@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -41,8 +43,12 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWorkspace{
 
     private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
-	private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
+    private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
+    private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
+    private static final double DEFAULT_COALITION_REMOVAL_THRESHOLD = 0.0;
     
+    private double coalitionRemovalThreshold;
+    private DecayStrategy coalitionDecayStrategy;
     private int broadcastRefractoryPeriod;
     private long broadcastsSentCount;
     private long tickAtLastBroadcast;
@@ -62,6 +68,11 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     
     @Override
     public void init() {
+        coalitionRemovalThreshold = (Double) getParam("coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
+
+        String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
+        coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
+        
     	Integer refractoryPeriod = (Integer)getParam("globalWorkspace.refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
     	setRefractoryPeriod(refractoryPeriod);
     	
@@ -105,6 +116,9 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
 
     @Override
     public boolean addCoalition(Coalition coalition) {
+       coalition.setDecayStrategy(coalitionDecayStrategy);
+       coalition.setActivatibleRemovalThreshold(coalitionRemovalThreshold);
+        
         if (coalitions.add(coalition)) {
             logger.log(Level.FINEST, "New Coalition added with activation {1}",
                     new Object[]{TaskManager.getCurrentTick(), coalition.getActivation()});

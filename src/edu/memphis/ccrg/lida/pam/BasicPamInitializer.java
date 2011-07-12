@@ -29,48 +29,48 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Ryan McCall
  */
 public class BasicPamInitializer implements Initializer {
-	
-	private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
 
-	public void initModule(FullyInitializable module, Agent agent,
-			Map<String, ?> params) {
-		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
-		ElementFactory factory = ElementFactory.getInstance();
+    private static final Logger logger = Logger.getLogger(BasicPamInitializer.class.getCanonicalName());
 
-		String nodeLabels = (String) params.get("nodes");
-		if (nodeLabels != null) {
-			GlobalInitializer globalInitializer = GlobalInitializer
-					.getInstance();
-			String[] labels = nodeLabels.split(",");
-			for (String label : labels) {
-				label = label.trim();
-				logger.log(Level.INFO, "loading PamNode: {0}", label);
-				PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
-				node = pam.addDefaultNode(node);
-				globalInitializer.setAttribute(label, node);
-			}
-		}
-		
-		String linkLabels = (String) params.get("links");
-		if (linkLabels != null) {
-			String[] linkDefs = linkLabels.split(",");
-			for (String linkDef : linkDefs) {
-				linkDef = linkDef.trim();
-				logger.log(Level.INFO, "loading PamLink: {0}", linkDef);
-				String[] nodes = linkDef.split(":");
-				if(nodes.length != 2){
-					logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
-					continue;
-				}
-				Node source = pam.getNode(nodes[0]);
-				Node sink = pam.getNode(nodes[1]);
-				if(source != null && sink != null){
-					Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
-					pam.addDefaultLink(link);
-				}else{
-					logger.log(Level.WARNING, "could not find source or sink " + linkDef, TaskManager.getCurrentTick());
-				}
-			}
-		}
-	}
+    @Override
+    public void initModule(FullyInitializable module, Agent agent,
+            Map<String, ?> params) {
+        PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) module;
+        ElementFactory factory = ElementFactory.getInstance();
+
+        String nodeLabels = (String) params.get("nodes");
+        if (nodeLabels != null) {
+            GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
+            String[] labels = nodeLabels.split(",");
+            for (String label : labels) {
+                label = label.trim();
+                logger.log(Level.INFO, "loading PamNode: {0}", label);
+                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
+                node = pam.addDefaultNode(node);
+                globalInitializer.setAttribute(label, node);
+            }
+        }
+
+        String linkLabels = (String) params.get("links");
+        if (linkLabels != null) {
+            String[] linkDefs = linkLabels.split(",");
+            for (String linkDef : linkDefs) {
+                linkDef = linkDef.trim();
+                logger.log(Level.INFO, "loading PamLink: {0}", linkDef);
+                String[] nodes = linkDef.split(":");
+                if (nodes.length != 2) {
+                    logger.log(Level.WARNING, "bad link specification " + linkDef, TaskManager.getCurrentTick());
+                    continue;
+                }
+                Node source = pam.getNode(nodes[0].trim());
+                Node sink = pam.getNode(nodes[1].trim());
+                if (source != null && sink != null) {
+                    Link link = factory.getLink("PamLinkImpl", source, sink, PerceptualAssociativeMemoryImpl.PARENT);
+                    pam.addDefaultLink(link);
+                } else {
+                    logger.log(Level.WARNING, "could not find source or sink " + linkDef, TaskManager.getCurrentTick());
+                }
+            }
+        }
+    }
 }

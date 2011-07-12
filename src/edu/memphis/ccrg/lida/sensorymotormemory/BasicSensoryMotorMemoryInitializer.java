@@ -29,6 +29,7 @@ public class BasicSensoryMotorMemoryInitializer implements Initializer {
 	private static final GlobalInitializer initializer = GlobalInitializer.getInstance();
 	private BasicSensoryMotorMemory smm; 
 	
+    @Override
     public void initModule(FullyInitializable module, Agent agent, Map<String, ?> params) {
         smm = (BasicSensoryMotorMemory) module;
         
