@@ -13,6 +13,7 @@ package edu.memphis.ccrg.lida.globalworkspace;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.RefractoryPeriod;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.TriggerListener;
 
@@ -64,10 +65,34 @@ public interface GlobalWorkspace extends FrameworkModule, TriggerListener, Refra
 	public long getBroadcastSentCount();
 
 	/**
-	 * gets the tick at last broadcast
+	 * Gets the tick at last broadcast
 	 * 
 	 * @return the tick when the last broadcast occurred
 	 */
 	public long getTickAtLastBroadcast();
+
+	/**
+	 * Sets coalitionDecayStrategy
+	 * @param ds {@link DecayStrategy} by which coalitions will be decayed.
+	 */
+	public void setCoalitionDecayStrategy(DecayStrategy ds);
+
+	/**
+	 * Gets coalitionDecayStrategy
+	 * @return {@link DecayStrategy} by which coalitions will be decayed.
+	 */
+	public DecayStrategy getCoalitionDecayStrategy();
+
+	/**
+	 * Sets coalition removal threshold
+	 * @param threshold lower bound for coalitions to remain in the {@link GlobalWorkspace}
+	 */
+	public void setCoalitionRemovalThreshold(double threshold);
+
+	/**
+	 * Gets coalition removal threshold
+	 * @return lower bound for coalitions to remain in the {@link GlobalWorkspace}
+	 */
+	public double getCoalitionRemovalThreshold();
 
 }

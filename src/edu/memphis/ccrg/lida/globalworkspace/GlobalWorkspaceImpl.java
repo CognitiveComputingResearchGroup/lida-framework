@@ -43,8 +43,9 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWorkspace{
 
     private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
+    private static final ElementFactory factory = ElementFactory.getInstance();
     private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
-    private static final String DEFAULT_COALITION_DECAY = "coalitionDecay";
+    private static final String DEFAULT_COALITION_DECAY = factory.getDefaultDecayType();
     private static final double DEFAULT_COALITION_REMOVAL_THRESHOLD = 0.0;
     
     private double coalitionRemovalThreshold;
@@ -61,7 +62,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 
     /**
-     * Default constructor
+     * Constructor a new instance with default values
      */
     public GlobalWorkspaceImpl() {
     }
@@ -71,9 +72,13 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
         coalitionRemovalThreshold = (Double) getParam("coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
 
         String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
-        coalitionDecayStrategy = ElementFactory.getInstance().getDecayStrategy(coalitionDecayStrategyName);
-        
-    	Integer refractoryPeriod = (Integer)getParam("globalWorkspace.refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
+        coalitionDecayStrategy = factory.getDecayStrategy(coalitionDecayStrategyName);
+        if(coalitionDecayStrategy == null){
+        	coalitionDecayStrategy = factory.getDefaultDecayStrategy();
+        	logger.log(Level.WARNING, "failed to obtain decay strategy {0}, using default", coalitionDecayStrategyName);
+        }
+                
+    	int refractoryPeriod = (Integer)getParam("globalWorkspace.refractoryPeriod", DEFAULT_REFRACTORY_PERIOD);
     	setRefractoryPeriod(refractoryPeriod);
     	
         taskSpawner.addTask(new StartTriggersTask());
@@ -248,6 +253,12 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     public int getRefractoryPeriod() {
         return broadcastRefractoryPeriod;
     }
+    
+
+	@Override
+    public long getTickAtLastBroadcast() {
+        return tickAtLastBroadcast;
+    }
 
     /**
 	 * Sets refractoryPeriod
@@ -268,7 +279,23 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     }
 
     @Override
-    public long getTickAtLastBroadcast() {
-        return tickAtLastBroadcast;
-    }
+	public double getCoalitionRemovalThreshold() {
+		return coalitionRemovalThreshold;
+	}
+
+	@Override
+	public void setCoalitionRemovalThreshold(double coalitionRemovalThreshold) {
+		this.coalitionRemovalThreshold = coalitionRemovalThreshold;
+	}
+
+	@Override
+	public DecayStrategy getCoalitionDecayStrategy() {
+		return coalitionDecayStrategy;
+	}
+
+	@Override
+	public void setCoalitionDecayStrategy(DecayStrategy coalitionDecayStrategy) {
+		this.coalitionDecayStrategy = coalitionDecayStrategy;
+	}
+
 }

@@ -19,7 +19,7 @@ public interface RefractoryPeriod {
 	void setRefractoryPeriod(int ticks);
 	
 	/**
-	 * Sets refractoryPeriod
+	 * Gets refractoryPeriod
 	 * @return length of refractory period in ticks
 	 * @see TaskManager
 	 */

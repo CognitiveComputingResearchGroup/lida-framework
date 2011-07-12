@@ -19,10 +19,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.JSlider;
 
 import edu.memphis.ccrg.lida.framework.gui.FrameworkGui;
 import edu.memphis.ccrg.lida.framework.gui.commands.Command;
