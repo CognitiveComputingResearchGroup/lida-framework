@@ -49,6 +49,13 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	public BasicSensoryMotorMemory() {
 	}
 
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * smm.backgroundTaskTicks</br>
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		backgroundTaskTicks = (Integer)getParam("smm.backgroundTaskTicks", DEFAULT_BACKGROUND_TASK_TICKS);

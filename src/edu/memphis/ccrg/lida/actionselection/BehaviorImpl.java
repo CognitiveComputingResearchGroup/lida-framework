@@ -195,7 +195,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	// Get methods
 	@Override
-	public Collection<Node> getContextConditions() {
+	public Collection<Node> getContextNodes() {
 		return context.getNodes();
 	}
 
@@ -316,6 +316,11 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
+	}
+
+	@Override
+	public NodeStructure getContext() {
+		return context;
 	}
 
 }

@@ -104,11 +104,16 @@ public interface Behavior extends Activatible {
 	public boolean containsContextCondition(Node commonNode);
 	
 	/**
-	 * Gets context conditions.
+	 * Gets context nodes.
 	 * 
-	 * @return the context conditions
+	 * @return the context's nodes
 	 */
-	public Collection<Node> getContextConditions();
+	public Collection<Node> getContextNodes();
+	/**
+	 * Gets context
+	 * @return {@link NodeStructure} that is the context
+	 */
+	public NodeStructure getContext();
 	
 	/**
 	 * Gets context size.

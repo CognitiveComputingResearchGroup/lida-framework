@@ -67,6 +67,16 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	public EpisodicMemoryImpl() {
 	}	
 
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * tem.numOfHardLoc</br>
+     * tem.addressLength</br>
+     * tem.wordLength</br>
+     * tem.activationRadius
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		numOfHardLoc = (Integer) getParam("tem.numOfHardLoc",

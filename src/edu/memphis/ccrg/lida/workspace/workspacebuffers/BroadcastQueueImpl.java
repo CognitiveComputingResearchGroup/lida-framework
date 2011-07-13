@@ -48,6 +48,13 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements
 	public BroadcastQueueImpl() {
 	}
 
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * workspace.broadcastQueueCapacity</br>
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		int desired = (Integer) getParam("workspace.broadcastQueueCapacity",

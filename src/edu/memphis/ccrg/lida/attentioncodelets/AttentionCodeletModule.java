@@ -59,6 +59,15 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	public AttentionCodeletModule() {
 	}
 	
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * attentionModule.defaultCodeletType</br>
+     * attentionModule.codeletActivation</br>
+     * attentionModule.codeletRemovalThreshold
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		defaultCodeletType = (String) getParam("attentionModule.defaultCodeletType", DEFAULT_CODELET_TYPE);

@@ -63,6 +63,18 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	public BasicActionSelection() {
 	}
 
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * actionSelection.refractoryperiodTicks</br>
+     * actionSelection.candidateThreshold</br>
+     * actionSelection.removalThreshold</br>
+     * actionSelection.backgroundTaskTicksPerRun</br>
+     * actionSelection.behaviorDecayStrategy</br>
+     * actionSelection.thresholdDecayRate
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		refractoryPeriodTicks = (Integer) getParam(
