@@ -67,11 +67,20 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     public GlobalWorkspaceImpl() {
     }
     
+    /**
+     * Will set the parameters with the following names:</br></br>
+     * 
+     * globalWorkspace.coalitionRemovalThreshold</br>
+     * globalWorkspace.coalitionDecayStrategy</br>
+     * globalWorkspace.refractoryPeriod
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
     @Override
     public void init() {
-        coalitionRemovalThreshold = (Double) getParam("coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
+        coalitionRemovalThreshold = (Double) getParam("globalWorkspace.coalitionRemovalThreshold", DEFAULT_COALITION_REMOVAL_THRESHOLD);
 
-        String coalitionDecayStrategyName = (String) getParam("coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
+        String coalitionDecayStrategyName = (String) getParam("globalWorkspace.coalitionDecayStrategy", DEFAULT_COALITION_DECAY);
         coalitionDecayStrategy = factory.getDecayStrategy(coalitionDecayStrategyName);
         if(coalitionDecayStrategy == null){
         	coalitionDecayStrategy = factory.getDefaultDecayStrategy();

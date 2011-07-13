@@ -37,6 +37,14 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	public WorkspaceBufferImpl() {
 	}
 	
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * workspaceBuffer.nodeType</br>
+     * workspaceBuffer.linkType</br>
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		String nodeType = (String)getParam("workspaceBuffer.nodeType", DEFAULT_NODE_TYPE);

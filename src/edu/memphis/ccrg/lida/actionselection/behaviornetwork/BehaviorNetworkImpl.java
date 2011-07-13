@@ -279,7 +279,7 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 	@Override
 	public void receiveBehavior(Behavior b) {
 		indexBehaviorByElements(b,
-				b.getContextConditions(), behaviorsByContextCondition);
+				b.getContextNodes(), behaviorsByContextCondition);
 		indexBehaviorByElements(b, b.getAddingList()
 				.getNodes(), behaviorsByAddingItem);
 		indexBehaviorByElements(b, b.getDeletingList()
@@ -371,7 +371,7 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 	 * @param behavior
 	 */
 	private void spreadActivationToPredecessors(Behavior behavior) {
-		for (Node contextCondition : behavior.getContextConditions()) {
+		for (Node contextCondition : behavior.getContextNodes()) {
 			if (behavior.isContextConditionSatisfied(contextCondition) == false) {
 				Set<Behavior> predecessors = getPredecessors(contextCondition);
 				if (predecessors != null) {
@@ -391,7 +391,7 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 	// TODO This method cannot be rechecked enough!
 	private void spreadActivationToConflictors(Behavior behavior) {
 		boolean isMutualConflict = false;
-		for (Node contextCondition : behavior.getContextConditions()) {
+		for (Node contextCondition : behavior.getContextNodes()) {
 			Set<Behavior> conflictors = getConflictors(contextCondition);
 			if (conflictors != null) {
 				for (Behavior conflictor : conflictors) {
@@ -399,7 +399,7 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 					if (behavior.getActivation() < conflictor.getActivation()) {
 						// for each conflictor context condition
 						for (Node conflictorPreCondition : conflictor
-								.getContextConditions()) {
+								.getContextNodes()) {
 							Set<Behavior> conflictorsConflictors = getConflictors(conflictorPreCondition);
 							// if there is a mutual conflict
 							if (conflictorsConflictors != null) {
@@ -561,7 +561,7 @@ public class BehaviorNetworkImpl extends FrameworkModuleImpl implements
 	 * @param behavior
 	 */
 	private void removeBehavior(Behavior behavior) {
-		for (Node precondition : behavior.getContextConditions())
+		for (Node precondition : behavior.getContextNodes())
 			behaviorsByContextCondition.get(precondition).remove(behavior);
 
 		for (Node addItem : behavior.getAddingList().getNodes())

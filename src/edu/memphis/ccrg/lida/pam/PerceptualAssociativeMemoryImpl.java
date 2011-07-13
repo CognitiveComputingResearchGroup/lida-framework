@@ -132,6 +132,17 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		addInternalLinkCategory(FEATURE);
 	}
 
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * pam.Upscale</br>
+     * pam.Downscale</br>
+     * pam.Selectivity</br>
+     * pam.excitationTicksPerRun</br>
+     * pam.propagationTicksPerRun</br>
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		upscaleFactor = (Double) getParam("pam.Upscale", DEFAULT_UPSCALE_FACTOR);

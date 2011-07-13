@@ -59,6 +59,15 @@ public class StructureBuildingCodeletModule extends FrameworkModuleImpl implemen
 	public StructureBuildingCodeletModule() {
 	}
 
+	/**
+     * Will set parameters with the following names:</br></br>
+     * 
+     * sbcModule.defaultCodeletType</br>
+     * sbcModule.codeletActivation</br>
+     * sbcModule.codeletRemovalThreshold</br>
+     * 
+     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     */
 	@Override
 	public void init() {
 		defaultCodeletType = (String) getParam("sbcModule.defaultCodeletType", DEFAULT_CODELET_TYPE);
