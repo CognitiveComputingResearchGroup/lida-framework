@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -252,6 +253,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public Object getModuleContent(Object... params) {
+		if("schemes".equals(params[0])){
+			return Collections.unmodifiableCollection(schemeSet);
+		}
 		return null;
 	}
 	

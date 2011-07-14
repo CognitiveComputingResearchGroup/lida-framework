@@ -28,7 +28,7 @@ import java.util.LinkedList;
  * This is a Panel which shows all current coalitions in Global Workspace and
  * also the most recent broadcast.
  * 
- * @author Siminder Kaur
+ * @author Siminder Kaur, Javier Snaider, Ryan McCall
  */
 public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         BroadcastListener {
@@ -53,7 +53,6 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         jToolBar1 = new javax.swing.JToolBar();
         refreshButton = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -163,7 +162,7 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
         @Override
         public int getRowCount() {
-            return (coalitionArray.length);
+            return coalitionArray.length;
         }
 
         @Override
@@ -227,13 +226,11 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-
             if (rowIndex > recentBbroadcasts.size() || columnIndex > columNames.length || rowIndex < 0
                     || columnIndex < 0) {
                 return null;
             }
             BroadcastDetail bd = recentBbroadcasts.get(rowIndex);
-
             switch (columnIndex) {
                 case 0:
                     return bd.getTickAtBroadcast();
