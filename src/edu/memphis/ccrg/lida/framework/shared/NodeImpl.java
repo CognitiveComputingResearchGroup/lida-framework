@@ -72,6 +72,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public void setId(int id) {
 		this.id = id;
 		extendedId = new ExtendedId(id);
+		name = label + "["+id+"]";
 	}
 	
 	/**
@@ -87,6 +88,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		if(eid.isNodeId()){
 			this.extendedId = eid;
 			this.id = eid.getSourceNodeId();
+			name = label + "["+id+"]";
 		}else{
 			logger.log(Level.WARNING, "Cannot give a node a Link's extended id", TaskManager.getCurrentTick());
 		}

@@ -156,8 +156,8 @@ public class NodeStructureTable extends GuiPanelImpl {
     private class NodeStructureTableModel extends AbstractTableModel {
         //TODO support links as well
 
-        private String[] columnNames = {"Node", "Activation", "Base Activation", "Threshold"};
-        private int[] columnAlign = {SwingConstants.LEFT,SwingConstants.RIGHT,SwingConstants.RIGHT,SwingConstants.RIGHT};
+        private String[] columnNames = {"Node", "ID", "Current Activation", "Base-Level Activation", "Threshold"};
+        private int[] columnAlign = {SwingConstants.LEFT,SwingConstants.RIGHT,SwingConstants.RIGHT,SwingConstants.RIGHT,SwingConstants.RIGHT};
         private DecimalFormat df = new DecimalFormat("0.0000");
         private Map<String,Integer>columnAlignmentMap = new HashMap<String,Integer>();
 
@@ -209,14 +209,16 @@ public class NodeStructureTable extends GuiPanelImpl {
                 case 0:
                     return node.getLabel();
                 case 1:
-                    return df.format(node.getActivation());
+                	return node.getId();
                 case 2:
+                    return df.format(node.getActivation());
+                case 3:
                     if (node instanceof PamNode) {
                         return df.format(((PamNode) node).getBaseLevelActivation());
                     } else {
                         return "";
                     }
-                case 3:
+                case 4:
                     if (node instanceof PamNode) {
                         return df.format(PerceptualAssociativeMemoryImpl.getPerceptThreshold());
                     } else {

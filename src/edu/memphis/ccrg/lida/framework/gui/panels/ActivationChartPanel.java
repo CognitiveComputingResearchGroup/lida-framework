@@ -43,7 +43,7 @@ public class ActivationChartPanel extends GuiPanelImpl {
     private XYSeries series1 = new XYSeries("Base-level Activation");
 	private XYSeries series2 = new XYSeries("Current Activation");
 	private XYSeries series3 = new XYSeries("Total Activation");
-	private int tickDisplayInterval = 400;
+	private int tickDisplayInterval = 100;
 	private FrameworkModule selectedModule;
 	private Learnable learnable;
 	private String elementName = "";
