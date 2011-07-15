@@ -113,7 +113,7 @@
 
     <complexType name="task">
         	<sequence>
-    		<element name="tasktypename" type="string" maxOccurs="1"
+    		<element name="tasktype" type="string" maxOccurs="1"
     			minOccurs="1">
     		</element>
     		<element name="ticksperrun" type="int" maxOccurs="1"
