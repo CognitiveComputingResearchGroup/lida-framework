@@ -391,14 +391,14 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @return a TaskData with the data to create the task
 	 */
 	TaskData getTask(Element moduleElement) {
-		String tasktypename = XmlUtils.getTextValue(moduleElement, "tasktypename");	
+		String tasktype = XmlUtils.getTextValue(moduleElement, "tasktype");	
 		String name = moduleElement.getAttribute("name").trim();
 		
 		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
 		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		
-		TaskData taskData=new TaskData(name,tasktypename,ticks,params);
+		TaskData taskData=new TaskData(name,tasktype,ticks,params);
 		logger.log(Level.INFO, "Task: " + name + " added.", 0L);
 		return taskData;
 	}
@@ -406,14 +406,14 @@ public class AgentXmlFactory implements AgentFactory {
 	static class TaskData {
 		TaskSpawner taskSpawner;
 		String name;
-		String tasktypename;
+		String tasktype;
 		int ticksPerRun;
 		Map<String,Object> params;
-		public TaskData(String name, String tasktypename,
+		public TaskData(String name, String tasktype,
 				int ticksPerRun, Map<String, Object> params) {
 			super();
 			this.name = name;
-			this.tasktypename = tasktypename;
+			this.tasktype = tasktype;
 			this.ticksPerRun = ticksPerRun;
 			this.params = params;
 		}		
@@ -599,7 +599,7 @@ public class AgentXmlFactory implements AgentFactory {
 	void initializeTasks(Map<ModuleName, FrameworkModule> moduleMap,List<TaskData>toRun) {
 		ElementFactory factory = ElementFactory.getInstance();
 		for(TaskData td : toRun){
-			FrameworkTask task = factory.getFrameworkTask(td.tasktypename, td.params, moduleMap);
+			FrameworkTask task = factory.getFrameworkTask(td.tasktype, td.params, moduleMap);
 			if (task!=null){
 				if(td.ticksPerRun != 0){
 					task.setTicksPerRun(td.ticksPerRun);

@@ -358,11 +358,11 @@ public class ElementFactory {
 	
 	/**
 	 * Returns whether this factory contains specified {@link FrameworkTask} type.
-	 * @param taskTypeName String
+	 * @param tasktype String
 	 * @return true if factory contains type or false if not
 	 */
-	public boolean containsTaskType(String taskTypeName) {
-		return tasks.containsKey(taskTypeName);
+	public boolean containsTaskType(String tasktype) {
+		return tasks.containsKey(tasktype);
 	}
 
 	/**

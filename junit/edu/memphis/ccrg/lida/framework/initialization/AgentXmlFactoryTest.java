@@ -208,7 +208,7 @@ public class AgentXmlFactoryTest {
 						"<taskspawner>superFancyTS</taskspawner>" +
 						"<initialTasks>" +
 						"<task name=\"updateCsmBackground\">" +
-						"<tasktypename>UpdateCsmBackgroundTask</tasktypename>" +
+						"<tasktype>UpdateCsmBackgroundTask</tasktype>" +
 						"<ticksperrun>55</ticksperrun>" +
 						"</task>" +
 						"</initialTasks>" +						
@@ -224,12 +224,12 @@ public class AgentXmlFactoryTest {
 				+ "<taskspawner>defaultTS</taskspawner>"
 				+"<initialTasks>" +
 						"<task name=\"cueBackground\">" +
-						"<tasktypename>CueBackgroundTask</tasktypename>" +
+						"<tasktype>CueBackgroundTask</tasktype>" +
 						"<ticksperrun>15</ticksperrun>" +
 						"<param name=\"taskParameter\"  type=\"double\">0.4</param>	" +
 						"</task>" +
 						"<task name=\"fooBar\">" +
-						"<tasktypename>MockFrameworkTask</tasktypename>" +
+						"<tasktype>MockFrameworkTask</tasktype>" +
 						"<ticksperrun>5</ticksperrun>" +
 						"</task>" +
 						"</initialTasks>"
@@ -304,20 +304,20 @@ public class AgentXmlFactoryTest {
 		
 		AgentXmlFactory.TaskData td = toRun.get(0);
 		assertEquals("cueBackground",td.name);
-		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals("CueBackgroundTask",td.tasktype);
 		assertEquals(15,td.ticksPerRun);
 		assertEquals(ts,td.taskSpawner);
 
 		td = toRun.get(1);
 		assertEquals("fooBar",td.name);
-		assertEquals("MockFrameworkTask",td.tasktypename);
+		assertEquals("MockFrameworkTask",td.tasktype);
 		assertEquals(5,td.ticksPerRun);
 		assertEquals(ts,td.taskSpawner);
 
 		assertEquals (3,toRun.size());
 		td = toRun.get(2);
 		assertEquals("updateCsmBackground",td.name);
-		assertEquals("UpdateCsmBackgroundTask",td.tasktypename);
+		assertEquals("UpdateCsmBackgroundTask",td.tasktype);
 		assertEquals(55,td.ticksPerRun);
 		assertEquals(superFancyTS,td.taskSpawner);
 
@@ -354,7 +354,7 @@ public class AgentXmlFactoryTest {
 							"<taskspawner>superFancyTS</taskspawner>" +
 							"<initialTasks>" +
 							"<task name=\"updateCsmBackground\">" +
-							"<tasktypename>UpdateCsmBackgroundTask</tasktypename>" +
+							"<tasktype>UpdateCsmBackgroundTask</tasktype>" +
 							"<ticksperrun>55</ticksperrun>" +
 							"</task>" +
 							"</initialTasks>" +						
@@ -374,12 +374,12 @@ public class AgentXmlFactoryTest {
 				+ "<taskspawner>defaultTS</taskspawner>"
 				+"<initialTasks>" +
 				"<task name=\"cueBackground\">" +
-				"<tasktypename>CueBackgroundTask</tasktypename>" +
+				"<tasktype>CueBackgroundTask</tasktype>" +
 				"<ticksperrun>15</ticksperrun>" +
 				"<param name=\"taskParameter\"  type=\"double\">0.4</param>	" +
 				"</task>" +
 				"<task name=\"fooBar\">" +
-				"<tasktypename>MockFrameworkTask</tasktypename>" +
+				"<tasktype>MockFrameworkTask</tasktype>" +
 				"<ticksperrun>5</ticksperrun>" +
 				"</task>" +
 				"</initialTasks>"
@@ -437,20 +437,20 @@ public class AgentXmlFactoryTest {
 		
 		AgentXmlFactory.TaskData td = toRun.get(0);
 		assertEquals("cueBackground",td.name);
-		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals("CueBackgroundTask",td.tasktype);
 		assertEquals(15,td.ticksPerRun);
 		assertEquals(ts,td.taskSpawner);
 
 		td = toRun.get(1);
 		assertEquals("fooBar",td.name);
-		assertEquals("MockFrameworkTask",td.tasktypename);
+		assertEquals("MockFrameworkTask",td.tasktype);
 		assertEquals(5,td.ticksPerRun);
 		assertEquals(ts,td.taskSpawner);
 
 		assertEquals (3,toRun.size());
 		td = toRun.get(2);
 		assertEquals("updateCsmBackground",td.name);
-		assertEquals("UpdateCsmBackgroundTask",td.tasktypename);
+		assertEquals("UpdateCsmBackgroundTask",td.tasktype);
 		assertEquals(55,td.ticksPerRun);
 		assertEquals(superFancyTS,td.taskSpawner);
 		
@@ -477,7 +477,7 @@ public class AgentXmlFactoryTest {
 		"<taskspawner>superFancyTS</taskspawner>" +
 		"<initialTasks>" +
 		"<task name=\"updateCsmBackground\">" +
-		"<tasktypename>UpdateCsmBackgroundTask</tasktypename>" +
+		"<tasktype>UpdateCsmBackgroundTask</tasktype>" +
 		"<ticksperrun>55</ticksperrun>" +
 		"</task>" +
 		"</initialTasks>" +						
@@ -526,12 +526,12 @@ public class AgentXmlFactoryTest {
 	public void testGetTasks() {
 		String xml = "<module><initialTasks>"
 				+ "<task name=\"cueBackground\">	"
-				+ "<tasktypename>CueBackgroundTask</tasktypename>"
+				+ "<tasktype>CueBackgroundTask</tasktype>"
 				+ "<ticksperrun>15</ticksperrun>"
 				+ "<param name=\"workspace.actThreshold\"  type=\"double\">0.4</param>"
 				+ "</task>"
 				+ "<task name=\"otherTask\">	"
-				+ "<tasktypename>MockFrameworkTask</tasktypename>"
+				+ "<tasktype>MockFrameworkTask</tasktype>"
 				+ "<ticksperrun>10</ticksperrun>"
 				+ "<param name=\"mock.param\"  type=\"int\">5</param>"
 				+ "</task>" + "</initialTasks></module>";
@@ -542,14 +542,14 @@ public class AgentXmlFactoryTest {
 		assertTrue(toRun != null);
 		AgentXmlFactory.TaskData td = toRun.get(0);
 		assertEquals("cueBackground",td.name);
-		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals("CueBackgroundTask",td.tasktype);
 		assertEquals(15,td.ticksPerRun);
 		assertEquals(ts,td.taskSpawner);
 		assertEquals(.4, td.params.get("workspace.actThreshold"));
 		
 		td = toRun.get(1);
 		assertEquals("otherTask",td.name);
-		assertEquals("MockFrameworkTask",td.tasktypename);
+		assertEquals("MockFrameworkTask",td.tasktype);
 		assertEquals(10,td.ticksPerRun);
 		assertEquals(ts,td.taskSpawner);
 		assertEquals(5, td.params.get("mock.param"));		
@@ -558,7 +558,7 @@ public class AgentXmlFactoryTest {
 	@Test
 	public void testGetTask() {
 		String xml = "<task name=\"cueBackground\">	"
-				+ "<tasktypename>CueBackgroundTask</tasktypename>"
+				+ "<tasktype>CueBackgroundTask</tasktype>"
 				+ "<ticksperrun>15</ticksperrun>"
 				+ "<param name=\"workspace.actThreshold\"  type=\"double\">0.4</param>"
 				+ "</task>";
@@ -567,7 +567,7 @@ public class AgentXmlFactoryTest {
 		AgentXmlFactory.TaskData td = factory.getTask(docEle);
 
 		assertEquals("cueBackground",td.name);
-		assertEquals("CueBackgroundTask",td.tasktypename);
+		assertEquals("CueBackgroundTask",td.tasktype);
 		assertEquals(15,td.ticksPerRun);
 		assertNull(td.taskSpawner);
 		assertEquals(.4, td.params.get("workspace.actThreshold"));
