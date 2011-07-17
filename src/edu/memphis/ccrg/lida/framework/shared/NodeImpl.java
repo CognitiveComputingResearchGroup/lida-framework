@@ -27,7 +27,7 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	
 	private int id;
 	private ExtendedId extendedId;
-	private String label ="node";
+	private String label ="Node";
 	private String name;
 	private double desirability;
 	/**

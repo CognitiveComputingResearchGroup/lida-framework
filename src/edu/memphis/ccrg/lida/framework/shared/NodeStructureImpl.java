@@ -833,22 +833,22 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 	@Override
 	public String toString() {
-		String s = "Nodes [";
+		StringBuilder result = new StringBuilder("Nodes (");
 		for (Node n : nodes.values()) {
-			s = s + n +",";
+			result.append(n.toString()).append(",");
 		}
 		if(nodes.size() != 0){
-			s = s.substring(0, s.length()-1);
+			result.deleteCharAt(result.length()-1);
 		}
-		s += "] Links [";
+		result.append(") Links (");
 		for (Link l : links.values()) {
-			s = s + l + ",";
+			result.append(l.toString()).append(",");
 		}
 		if(links.size() != 0){
-			s = s.substring(0, s.length()-1);
+			result.deleteCharAt(result.length()-1);
 		}
-		s += "]";
-		return s;
+		result.append(")");
+		return result.toString();
 	}
 
 	/**
