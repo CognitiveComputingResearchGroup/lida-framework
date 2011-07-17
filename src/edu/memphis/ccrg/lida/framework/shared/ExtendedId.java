@@ -129,8 +129,12 @@ public class ExtendedId {
 
 	@Override
 	public String toString() {
-		return "[Cat: " + linkCategory + ", SrcId: " + sourceNodeId + "," + sinkLinkCategory
-				+ "," + sinkNode1Id + "," + sinkNode2Id + "]";
+		StringBuilder sb = new StringBuilder("[");
+		sb.append(linkCategory).append(","); 
+		sb.append(sourceNodeId).append(",");
+		sb.append(sinkLinkCategory).append(","); 
+		sb.append(sinkNode1Id).append(","); 
+		sb.append(sinkNode2Id).append("]");
+		return sb.toString();
 	}
-	
 }
