@@ -368,18 +368,19 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
             }
         });
         cMenu.add(showItem);
-        cMenu.add(new JPopupMenu.Separator());
-        JMenuItem editItem = new JMenuItem();
-        editItem.setText("Edit Panel");
-        final String[] panelParams = panelParameters.get(panels.indexOf(panel));
-        editItem.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                showEditPanelDialog(panelParams);
-            }
-        });
-        cMenu.add(editItem);
+//        cMenu.add(new JPopupMenu.Separator());
+//        JMenuItem editItem = new JMenuItem();
+//        editItem.setText("Edit Panel");
+//        final String[] panelParams = panelParameters.get(panels.indexOf(panel));
+//        editItem.addActionListener(new ActionListener() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//                showEditPanelDialog(panelParams);
+//            }
+//        });
+//        cMenu.add(editItem);
 
         associatedMenu.add(cMenu);
     }
@@ -408,9 +409,6 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         areaBPanelsMenu = new javax.swing.JMenu();
         areaCPanelsMenu = new javax.swing.JMenu();
         areaOthersPanelsMenu = new javax.swing.JMenu();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        loadPanelSettingsMenuItem = new javax.swing.JMenuItem();
-        savePanelSettingsMenuItem = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -486,23 +484,6 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
 
         areaOthersPanelsMenu.setText("Others");
         panelsMenu.add(areaOthersPanelsMenu);
-        panelsMenu.add(jSeparator3);
-
-        loadPanelSettingsMenuItem.setText("Load panel settings");
-        loadPanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadPanelSettingsMenuItemActionPerformed(evt);
-            }
-        });
-        panelsMenu.add(loadPanelSettingsMenuItem);
-
-        savePanelSettingsMenuItem.setText("Save panel settings");
-        savePanelSettingsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                savePanelSettingsMenuItemActionPerformed(evt);
-            }
-        });
-        panelsMenu.add(savePanelSettingsMenuItem);
         panelsMenu.add(jSeparator2);
 
         menuBar.add(panelsMenu);
@@ -534,7 +515,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
     }// </editor-fold>//GEN-END:initComponents
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        JOptionPane.showMessageDialog(this, "LIDA Framework 1.0 Beta \n "
+        JOptionPane.showMessageDialog(this, "LIDA Framework 1.1 \n "
                 + "Cognitive Computing Research Group \n The University of Memphis \n"
                 + " ccrg.cs.memphis.edu", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
@@ -684,64 +665,61 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPaneL;
     private javax.swing.JTabbedPane jTabbedPaneR;
-    private javax.swing.JMenuItem loadPanelSettingsMenuItem;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu panelsMenu;
     private javax.swing.JTabbedPane principalTabbedPanel;
-    private javax.swing.JMenuItem savePanelSettingsMenuItem;
     // End of variables declaration//GEN-END:variables
 
-    private void showEditPanelDialog(final String[] panelParams) {
-        final AddEditPanel addEditPanel = new AddEditPanel();
-        addEditPanel.setName("EditPanel");
-        addEditPanel.registerAgent(agent);
-        addEditPanel.registerGuiController(this.controller);
-        addEditPanel.setPanelParams(panelParams);
-        if (addEditDialog != null) {
-            addEditDialog.setVisible(false);
-        }
-        addEditDialog = new javax.swing.JDialog();
-        addEditDialog.add(addEditPanel.getPanel());
-        addEditDialog.pack();
-        addEditDialog.setVisible(true);
-
-        final javax.swing.JPanel jpanel = addEditPanel.getPanel();
-        for (java.awt.Component c : jpanel.getComponents()) {
-            if (c instanceof javax.swing.JButton) {
-                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
-
-                    @Override
-                    public void actionPerformed(
-                            java.awt.event.ActionEvent evt) {
-                        String[] params = addEditPanel.getPanelParams();
-                        int index = -1;
-                        for (int i = 0; i < panels.size(); i++) {
-                            String className = panels.get(i).getClass().toString().replace("class ", "");
-                            if (panels.get(i).getName().equals(
-                                    params[PANEL_NAME])
-                                    && className.equals(params[CLASS_NAME])) {
-                                index = i;
-                                break;
-                            }
-                        }
-                        if (index >= 0) {
-                            removePanelAt(index);
-                        }
-
-                        createGuiPanel(addEditPanel.getPanelParams());
-                        addEditDialog.setVisible(false);
-                    }
-                });
-            }
-        }
-
-        addEditPanel.refresh();
-    }
+//    private void showEditPanelDialog(final String[] panelParams) {
+//        final AddEditPanel addEditPanel = new AddEditPanel();
+//        addEditPanel.setName("EditPanel");
+//        addEditPanel.registerAgent(agent);
+//        addEditPanel.registerGuiController(this.controller);
+//        addEditPanel.setPanelParams(panelParams);
+//        if (addEditDialog != null) {
+//            addEditDialog.setVisible(false);
+//        }
+//        addEditDialog = new javax.swing.JDialog();
+//        addEditDialog.add(addEditPanel.getPanel());
+//        addEditDialog.pack();
+//        addEditDialog.setVisible(true);
+//
+//        final javax.swing.JPanel jpanel = addEditPanel.getPanel();
+//        for (java.awt.Component c : jpanel.getComponents()) {
+//            if (c instanceof javax.swing.JButton) {
+//                ((javax.swing.JButton) c).addActionListener(new java.awt.event.ActionListener() {
+//
+//                    @Override
+//                    public void actionPerformed(
+//                            java.awt.event.ActionEvent evt) {
+//                        String[] params = addEditPanel.getPanelParams();
+//                        int index = -1;
+//                        for (int i = 0; i < panels.size(); i++) {
+//                            String className = panels.get(i).getClass().toString().replace("class ", "");
+//                            if (panels.get(i).getName().equals(
+//                                    params[PANEL_NAME])
+//                                    && className.equals(params[CLASS_NAME])) {
+//                                index = i;
+//                                break;
+//                            }
+//                        }
+//                        if (index >= 0) {
+//                            removePanelAt(index);
+//                        }
+//
+//                        createGuiPanel(addEditPanel.getPanelParams());
+//                        addEditDialog.setVisible(false);
+//                    }
+//                });
+//            }
+//        }
+//
+//        addEditPanel.refresh();
+//    }
 
     private void removePanelAt(int panelIndex) {
         removePanelAt(panelIndex, true);

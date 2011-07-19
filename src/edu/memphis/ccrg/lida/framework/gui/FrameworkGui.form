@@ -67,24 +67,6 @@
                 <Property name="text" type="java.lang.String" value="Others"/>
               </Properties>
             </Menu>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="loadPanelSettingsMenuItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Load panel settings"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadPanelSettingsMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="savePanelSettingsMenuItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Save panel settings"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="savePanelSettingsMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
           </SubComponents>
