@@ -32,6 +32,7 @@ public class BasicPamInitializerTest {
 		initializer = new BasicPamInitializer();
 		params = new HashMap<String, Object>();
 		globalInitializer = GlobalInitializer.getInstance();
+		globalInitializer.clearAttributes();
 	}
 	//<param name="nodes">red,blue,square,circle</param>
 	@Test
@@ -109,6 +110,47 @@ public class BasicPamInitializerTest {
 		}
 	}
 	
-	//TODO odd cases for links
+	@Test
+	public void test8(){
+		params.put("nodes", " red , blue ");
+		params.put("links", "");
+		initializer.initModule(pam, agent, params);
+		
+		assertEquals(2, pam.getNodes().size() - pam.getLinkCategories().size());
+		Node red = pam.getNode("red");
+		assertNotNull(red);
+		assertEquals(red, globalInitializer.getAttribute("red"));
+		
+		Node blue = pam.getNode("blue");
+		assertNotNull(blue);
+		assertEquals(blue, globalInitializer.getAttribute("blue"));
+		
+		assertEquals(0, pam.getLinks().size());
+	}
+	
+	@Test
+	public void test9(){
+		params.put("links", "red:blue");
+		initializer.initModule(pam, agent, params);
+		
+		assertEquals(0, pam.getNodes().size() - pam.getLinkCategories().size());
+		
+		assertEquals(0, pam.getLinks().size());
+	}
+	
+	@Test
+	public void test10(){
+		params.put("nodes", "  , blue ");
+		params.put("links", ":blue");
+		initializer.initModule(pam, agent, params);
+		
+		assertEquals(1, pam.getNodes().size() - pam.getLinkCategories().size());
+		
+		Node blue = pam.getNode("blue");
+		assertNotNull(blue);
+		assertEquals(blue, globalInitializer.getAttribute("blue"));
+		
+		assertEquals(0, pam.getLinks().size());
+	}
 	
 }
