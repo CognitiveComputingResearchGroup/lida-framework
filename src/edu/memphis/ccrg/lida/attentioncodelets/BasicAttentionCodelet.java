@@ -45,7 +45,7 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
                 if (node != null) {
                     soughtContent.addDefaultNode(node);
                 }else{
-                	logger.log(Level.WARNING, "could not find node with label: {0}", label);
+                	logger.log(Level.WARNING, "could not find node with label: {0} in global initializer", label);
                 }
             }
         }
