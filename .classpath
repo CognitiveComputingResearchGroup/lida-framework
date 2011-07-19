@@ -26,9 +26,7 @@
 	<classpathentry kind="lib" path="lib/ij.jar"/>
 	<classpathentry kind="lib" path="lib/derby.jar"/>
 	<classpathentry kind="lib" path="lib/derbyclient.jar"/>
-	<classpathentry kind="lib" path="lib/iText-2.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.16.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
-	<classpathentry kind="lib" path="lib/swing-layout-1.0.3 .jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
