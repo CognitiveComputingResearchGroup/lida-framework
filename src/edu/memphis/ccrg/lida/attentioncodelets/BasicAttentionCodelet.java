@@ -44,10 +44,11 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
                 Node node = (Node) globalInitializer.getAttribute(label);
                 if (node != null) {
                     soughtContent.addDefaultNode(node);
+                }else{
+                	logger.log(Level.WARNING, "could not find node with label: {0}", label);
                 }
             }
         }
-
     }
 
     /**

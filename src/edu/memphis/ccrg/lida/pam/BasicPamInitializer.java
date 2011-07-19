@@ -44,14 +44,19 @@ public class BasicPamInitializer implements Initializer {
             String[] labels = nodeLabels.split(",");
             for (String label : labels) {
                 label = label.trim();
-                if(!"".equals(label)){
-	                logger.log(Level.INFO, "loading PamNode: {0}", label);
-	                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
-	                node = pam.addDefaultNode(node);
-	                globalInitializer.setAttribute(label, node);
-                }else{
+                if("".equals(label)){
                 	logger.log(Level.WARNING, 
-                			"empty string found in nodes specification, node labels must be non-empty");
+        			"empty string found in nodes specification, node labels must be non-empty");
+	                
+                }else{
+                	logger.log(Level.INFO, "loading PamNode: {0}", label);
+	                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);
+	                if(node == null){
+	                	logger.log(Level.WARNING, "failed to get node {0}", label);
+	                }else{
+	                	node = pam.addDefaultNode(node);
+	                	globalInitializer.setAttribute(label, node);
+	                }
                 }
             }
         }
@@ -61,6 +66,11 @@ public class BasicPamInitializer implements Initializer {
             String[] linkDefs = linkLabels.split(",");
             for (String linkDef : linkDefs) {
                 linkDef = linkDef.trim();
+                if("".equals(linkDef)){
+                	logger.log(Level.WARNING, 
+        			"empty string found in links specification, link defs must be non-empty");
+                	continue;
+                }
                 logger.log(Level.INFO, "loading PamLink: {0}", linkDef);
                 String[] nodes = linkDef.split(":");
                 if (nodes.length != 2) {
