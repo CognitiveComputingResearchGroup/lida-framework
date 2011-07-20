@@ -179,13 +179,6 @@ public class ActivationChartPanel extends GuiPanelImpl {
 	 */
 	@Override
 	public void initPanel(String[] params){
-		if(params!=null && params.length > 0){
-			try{
-				tickDisplayInterval = Integer.parseInt(params[0].trim());
-			}catch(NumberFormatException e){
-				logger.log(Level.WARNING, "unable to set tick display interval {0}", params[0].trim());
-			}
-		}
 		//TODO additional module support: ProceduralMemory, ActionSelection?, CodeletModules
 		selectedModule = agent.getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		moduleComboBox.addItem(selectedModule);
@@ -194,6 +187,21 @@ public class ActivationChartPanel extends GuiPanelImpl {
         dataset.addSeries(series3);
         dataset.addSeries(series2);
         dataset.addSeries(series1);
+		
+		if(params!=null && params.length > 0){
+			try{
+				tickDisplayInterval = Integer.parseInt(params[0].trim());
+			}catch(NumberFormatException e){
+				logger.log(Level.WARNING, "unable to set tick display interval {0}", params[0].trim());
+			}
+			
+			if(params.length > 1){				
+				elementName = params[1].trim();
+				elementNameTextField.setText(elementName);
+				refresh();
+			}
+		}
+
 	}
 	
     @Override
