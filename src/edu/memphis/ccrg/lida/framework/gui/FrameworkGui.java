@@ -17,6 +17,7 @@
 package edu.memphis.ccrg.lida.framework.gui;
 
 import java.awt.Container;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -33,10 +34,8 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import edu.memphis.ccrg.lida.framework.Agent;
@@ -47,7 +46,6 @@ import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import java.awt.GraphicsEnvironment;
 
 /**
  * The main GUI for the LIDA framework. A swing JFrame that is divide into four
@@ -591,7 +589,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         addEditPanel.refresh();
     }
 
-    private void loadPanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    @SuppressWarnings("unused")
+	private void loadPanelSettingsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
                 new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
         fc.showOpenDialog(this);
@@ -618,7 +617,8 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         }
     }
 
-    private void savePanelSettingsMenuItemActionPerformed(
+    @SuppressWarnings("unused")
+	private void savePanelSettingsMenuItemActionPerformed(
             java.awt.event.ActionEvent evt) {
         javax.swing.JFileChooser fc = new javax.swing.JFileChooser(
                 new java.io.File(AgentStarter.DEFAULT_PROPERTIES_PATH));
