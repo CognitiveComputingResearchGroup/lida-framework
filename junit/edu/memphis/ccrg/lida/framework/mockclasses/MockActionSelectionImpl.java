@@ -7,16 +7,14 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.mockclasses;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 
 public class MockActionSelectionImpl extends FrameworkModuleImpl implements ActionSelection {
@@ -25,14 +23,10 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 
 	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
-		
-
 	}
 
 	@Override
 	public Action selectAction() {
-		System.out.println("action selected at tick: " + TaskManager.getCurrentTick());
-		logger.log(Level.FINE,"Action Selection Performed at tick: {0}",TaskManager.getCurrentTick());
 		return null;
 	}
 

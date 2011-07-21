@@ -120,7 +120,7 @@ public class SparseDistributedMemoryImplTest {
 		BitVector aux = v1.copy();
 		aux.xor(v2);
 		addr.xor(v2);
-		System.out.println(BitVectorUtils.hamming(addr, aux));
+		BitVectorUtils.hamming(addr, aux);
 		assertNotSame(v1, ret);
 	}
 }

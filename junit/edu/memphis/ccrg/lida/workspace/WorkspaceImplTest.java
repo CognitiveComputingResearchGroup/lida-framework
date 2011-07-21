@@ -178,8 +178,8 @@ public class WorkspaceImplTest {
 		assertTrue(listener.content.containsNode(node3));
 
 		assertTrue(eBuffer.content.containsNode(node3));
-		System.out.println(eBuffer.content.toString());
-		System.out.println(listener.content.toString());
+//		System.out.println(eBuffer.content.toString());
+//		System.out.println(listener.content.toString());
 	}
 
 	

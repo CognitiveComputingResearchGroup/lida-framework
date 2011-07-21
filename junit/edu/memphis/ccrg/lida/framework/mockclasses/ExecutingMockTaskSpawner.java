@@ -32,7 +32,6 @@ public class ExecutingMockTaskSpawner extends TaskSpawnerImpl implements TaskSpa
 
 	@Override
 	public boolean cancelTask(FrameworkTask task) {
-		System.out.println(task+" removed! ");
 		return tasks.remove(task);
 	}
 
