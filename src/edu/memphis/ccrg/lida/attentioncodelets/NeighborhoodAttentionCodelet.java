@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 /**
  * Creates {@link Coalition}s if the nodes specified in the 'nodes' parameter are present.
- * The resulting {@link Coalition} includes these nodes ant their neighbors.
+ * The resulting {@link Coalition} includes these nodes and their neighbors.
  * 
  * @author Javier Snaider, Ryan McCall
  *

@@ -89,8 +89,8 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	}
 	
 	/**
-	 * Adds {@link PamLinkable} that will be detected by this algorithm.
-	 * @param linkable s {@link PamLinkable}
+	 * Adds {@link PamLinkable}.
+	 * @param linkable {@link PamLinkable} that will be detected by this algorithm
 	 */
 	public void addPamLinkable(PamLinkable linkable) {
 		pamNodeMap.put(linkable.getLabel(), linkable);
