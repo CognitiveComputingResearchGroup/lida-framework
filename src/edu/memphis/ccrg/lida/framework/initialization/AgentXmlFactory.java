@@ -391,18 +391,22 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @return a TaskData with the data to create the task
 	 */
 	TaskData getTask(Element moduleElement) {
-		String tasktype = XmlUtils.getTextValue(moduleElement, "tasktype");	
+		String taskType = XmlUtils.getTextValue(moduleElement, "tasktype");	
 		String name = moduleElement.getAttribute("name").trim();
 		
 		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
 		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		
-		TaskData taskData=new TaskData(name,tasktype,ticks,params);
+		TaskData taskData=new TaskData(name,taskType,ticks,params);
 		logger.log(Level.INFO, "Task: " + name + " added.", 0L);
 		return taskData;
 	}
 
+	/**
+	 * Nested class for representing {@link FrameworkTask} definition
+	 */
+	@SuppressWarnings("all")
 	static class TaskData {
 		TaskSpawner taskSpawner;
 		String name;

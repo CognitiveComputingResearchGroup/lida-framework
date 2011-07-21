@@ -11,8 +11,15 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
-
+/**
+ * Creates {@link Coalition}s if the nodes specified in the 'nodes' parameter are present.
+ * The resulting {@link Coalition} includes these nodes ant their neighbors.
+ * 
+ * @author Javier Snaider, Ryan McCall
+ *
+ */
 public class NeighborhoodAttentionCodelet extends BasicAttentionCodelet {
 
     private static final Logger logger = Logger.getLogger(NeighborhoodAttentionCodelet.class.getCanonicalName());

@@ -30,6 +30,10 @@ public class ActionImpl implements Action {
 		id = idGenerator++;
 	}
 
+	/**
+	 * Convenience constructor that set the Action's label 
+	 * @param label the label to set
+	 */
 	public ActionImpl(String label) {
 		this();
 		this.label = label;

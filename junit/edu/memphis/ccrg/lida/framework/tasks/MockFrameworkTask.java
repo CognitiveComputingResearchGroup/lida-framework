@@ -19,10 +19,10 @@ public class MockFrameworkTask extends FrameworkTaskImpl{
 	public MockFrameworkTask() {
 		super(10);
 	}
-	@Override
-	public String toString() {
-		return "testTask";
-	}
+//	@Override
+//	public String toString() {
+//		return "testTask";
+//	}
 	public boolean wasRun;
 	@Override
 	protected void runThisFrameworkTask() {
