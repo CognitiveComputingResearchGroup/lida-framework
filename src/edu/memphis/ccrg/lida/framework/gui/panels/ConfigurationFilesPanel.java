@@ -36,7 +36,7 @@ public class ConfigurationFilesPanel extends GuiPanelImpl {
 
     private static final Logger logger = Logger.getLogger(ConfigurationFilesPanel.class.getCanonicalName());
     private Properties properties;
-    String propertiesFile = "configs/lidaConfig.properties";
+    private String propertiesFile = "configs/lidaConfig.properties";
 
     /** Creates new form PropertiesPanel */
     public ConfigurationFilesPanel() {

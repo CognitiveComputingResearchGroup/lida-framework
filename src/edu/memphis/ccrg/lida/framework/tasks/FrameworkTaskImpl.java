@@ -38,7 +38,7 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	private Map<String, ? extends Object> parameters;
 	private TaskSpawner controllingTS;
 	private long scheduledTick;
-    public final String taskName;
+    private final String taskName;
 	
 	/**
 	 * Constructs a {@link FrameworkTaskImpl} with default ticksPerRun

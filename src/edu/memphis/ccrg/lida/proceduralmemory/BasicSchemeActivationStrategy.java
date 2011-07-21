@@ -32,6 +32,9 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 	private double schemeSelectionThreshold = DEFAULT_SELECTION_THRESHOLD;
 	private ProceduralMemory pm;
 
+	/**
+	 * Default constructor
+	 */
 	public BasicSchemeActivationStrategy(){
 	}
 		

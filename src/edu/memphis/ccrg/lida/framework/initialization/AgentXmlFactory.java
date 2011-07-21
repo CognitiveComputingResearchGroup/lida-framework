@@ -403,6 +403,10 @@ public class AgentXmlFactory implements AgentFactory {
 		return taskData;
 	}
 
+	/**
+	 * Nested class for representing {@link FrameworkTask} definition
+	 */
+	@SuppressWarnings("all")
 	static class TaskData {
 		TaskSpawner taskSpawner;
 		String name;

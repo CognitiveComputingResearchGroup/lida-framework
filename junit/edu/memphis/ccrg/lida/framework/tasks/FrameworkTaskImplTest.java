@@ -38,8 +38,8 @@ public class FrameworkTaskImplTest {
 
 	@Test
 	public void testTaskName() {
-            System.out.println(task1.taskName);
-            assertEquals(MockFrameworkTask.class.getSimpleName()+"["+task1.getTaskId()+"]", task1.taskName);
+            System.out.println(task1);
+            assertEquals(MockFrameworkTask.class.getSimpleName()+"["+task1.getTaskId()+"]", task1.toString());
         }
 	@Test
 	public void testSetTaskStatus() {
@@ -103,7 +103,7 @@ public class FrameworkTaskImplTest {
 	
 	@Test
 	public void testToString() {
-		assertEquals("testTask", task1.toString());
+        assertEquals(MockFrameworkTask.class.getSimpleName()+"["+task1.getTaskId()+"]", task1.toString());
 	}
 
 }
