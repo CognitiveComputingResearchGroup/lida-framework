@@ -54,7 +54,6 @@ public class BasicPamInitializer implements Initializer {
                 if("".equals(label)){
                 	logger.log(Level.WARNING, 
         			"empty string found in nodes specification, node labels must be non-empty");
-	                
                 }else{
                 	logger.log(Level.INFO, "loading PamNode: {0}", label);
 	                PamNode node = (PamNode) factory.getNode("PamNodeImpl", label);

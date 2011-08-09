@@ -20,12 +20,12 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
+
 /**
  * Creates {@link Coalition}s if the nodes specified in the 'nodes' parameter are present.
  * The resulting {@link Coalition} includes these nodes and their neighbors.
  * 
- * @author Javier Snaider, Ryan McCall
- *
+ * @author Ryan J. McCall
  */
 public class NeighborhoodAttentionCodelet extends BasicAttentionCodelet {
 
