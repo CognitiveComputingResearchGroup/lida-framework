@@ -1040,7 +1040,7 @@ public class ElementFactory {
 				}
 			}
 			
-			if (params != null){
+			if (params != null && params.size() != 0){
 				task.init(params);
 			}else{ //Use default parameters from the factoriesData.xml file
 				task.init(taskDef.getParams());

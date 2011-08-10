@@ -42,6 +42,7 @@ public class BasicSensoryMotorMemoryInitializer implements Initializer {
 	    		String[] elements = smmDef.split(",");
 	    		if(elements.length == 2){
 	    			String actionName = elements[0].trim();
+	    			//TODO Typed Parameters
 	    			String algorithmName = elements[1].trim();
 	    			if("".equals(algorithmName)){
 	    				logger.log(Level.WARNING, "missing algorithm name for smm: {0}",smmDef);

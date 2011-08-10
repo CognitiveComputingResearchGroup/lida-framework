@@ -32,12 +32,12 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * @author Ryan J. McCall - Javier Snaider
  * 
  */
-public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implements
-		DetectionAlgorithm {
+public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
+		implements DetectionAlgorithm {
 
 	private static final Logger logger = Logger
 			.getLogger(BasicDetectionAlgorithm.class.getCanonicalName());
-	
+
 	/**
 	 * the {@link SensoryMemory}
 	 */
@@ -49,61 +49,70 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl implemen
 	/**
 	 * {@link PamLinkable} this algorithm detects
 	 */
-	protected PamLinkable linkable;	
+	protected PamLinkable linkable;
 
 	/**
-	 * Default constructor.
-	 * Associated {@link Linkable}, {@link PerceptualAssociativeMemory} and 
-	 * {@link SensoryMemory} must be set using setters.
+	 * Default constructor. Associated {@link Linkable},
+	 * {@link PerceptualAssociativeMemory} and {@link SensoryMemory} must be set
+	 * using setters.
 	 */
-	public BasicDetectionAlgorithm(){		
+	public BasicDetectionAlgorithm() {
 	}
-		
+
 	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage){
-		if(module instanceof PerceptualAssociativeMemory){
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+		if (module instanceof PerceptualAssociativeMemory) {
 			pam = (PerceptualAssociativeMemory) module;
-		}else if(module instanceof SensoryMemory){
+		} else if (module instanceof SensoryMemory) {
 			sensoryMemory = (SensoryMemory) module;
-		}else{
+		} else {
 			logger.log(Level.WARNING, "Cannot set associated module {1}",
-					new Object[]{TaskManager.getCurrentTick(),module});
+					new Object[] { TaskManager.getCurrentTick(), module });
 		}
 	}
+
 	@Override
 	public void setPamLinkable(PamLinkable linkable) {
 		this.linkable = linkable;
 	}
+
 	@Override
 	public PamLinkable getPamLinkable() {
 		return linkable;
 	}
 
 	@Override
-	public void init (){
-	       String nodeLabel = (String) getParam("node", null);
-	       if(nodeLabel!= null){
-               nodeLabel = nodeLabel.trim();
-	    	   PamNode node = (PamNode) GlobalInitializer.getInstance().getAttribute(nodeLabel);
-	    	   if (node !=null){
-	    		   setPamLinkable(node);
-	    	   }else{
-	    		   logger.log(Level.WARNING, "could not get node {1} from global initializer", 
-	    				   new Object[]{TaskManager.getCurrentTick(), nodeLabel});
-	    	   }
-	       }
+	public void init() {
+		String nodeLabel = (String) getParam("node", null);
+		if (nodeLabel != null) {
+			nodeLabel = nodeLabel.trim();
+			PamNode node = (PamNode) GlobalInitializer.getInstance()
+					.getAttribute(nodeLabel);
+			if (node != null) {
+				setPamLinkable(node);
+			} else {
+				logger.log(Level.WARNING,
+								"could not get node {1} from global initializer",
+								new Object[] { TaskManager.getCurrentTick(),
+										nodeLabel });
+			}
+		}
 	}
+
 	@Override
 	protected void runThisFrameworkTask() {
 		double amount = detect();
-		if(logger.isLoggable(Level.FINEST)){
-			logger.log(Level.FINEST,"detection performed {1}: {2}",
-					new Object[]{TaskManager.getCurrentTick(),this,amount});
+		if (logger.isLoggable(Level.FINEST)) {
+			logger
+					.log(Level.FINEST, "detection performed {1}: {2}",
+							new Object[] { TaskManager.getCurrentTick(), this,
+									amount });
 		}
 		if (amount > 0.0) {
-			if(logger.isLoggable(Level.FINEST)){
-				logger.log(Level.FINEST,"Pam excited: {1} by {2}"
-						,new Object[]{TaskManager.getCurrentTick(),amount, this});
+			if (logger.isLoggable(Level.FINEST)) {
+				logger.log(Level.FINEST, "Pam excited: {1} by {2}",
+						new Object[] { TaskManager.getCurrentTick(), amount,
+								this });
 			}
 			pam.receiveExcitation(linkable, amount);
 		}
