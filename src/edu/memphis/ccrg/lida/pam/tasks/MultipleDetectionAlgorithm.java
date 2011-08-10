@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam.tasks;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -117,6 +118,10 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	}
 	@Override
 	public PamLinkable getPamLinkable() {
+		Collection<PamLinkable> nodes = pamNodeMap.values();
+		if(nodes.size() != 0){
+			return nodes.iterator().next();
+		}
 		return null;
 	}
 	@Override
