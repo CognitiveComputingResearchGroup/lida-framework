@@ -37,7 +37,7 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	private static final Logger logger = Logger
 			.getLogger(BasicSensoryMotorMemory.class.getCanonicalName());
 
-	private static final int DEFAULT_BACKGROUND_TASK_TICKS = 5;
+	private static final int DEFAULT_BACKGROUND_TASK_TICKS = 1;
 	private int backgroundTaskTicks;
 	private List<SensoryMotorMemoryListener> listeners = new ArrayList<SensoryMotorMemoryListener>();
 	private Map<Number, Object> actionAlgorithmMap = new HashMap<Number, Object>();
