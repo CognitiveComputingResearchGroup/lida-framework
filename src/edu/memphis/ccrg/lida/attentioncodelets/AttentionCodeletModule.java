@@ -26,6 +26,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.CodeletManagerModule;
@@ -200,6 +201,31 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
+		
+	}
+
+	//TODO Reinforcement amount might be a function of the broadcast
+	private static final double DEFAULT_CODELET_REINFORCEMENT = 0.5;
+	private double codeletReinforcement = DEFAULT_CODELET_REINFORCEMENT;
+	
+	/**
+	 * Performs learning based on the {@link AttentionCodelet} that created the current</br>
+	 * winning {@link Coalition}
+	 * @param winningCoalition current {@link Coalition} winning competition for consciousness
+	 */
+	public void learnCodelet(Coalition winningCoalition) {
+		AttentionCodelet coalitionCodelet = winningCoalition.getCreatingAttentionCodelet();
+		if(coalitionCodelet instanceof DefaultAttentionCodelet){
+			AttentionCodelet newCodelet = getDefaultCodelet();
+			newCodelet.setSoughtContent((NodeStructure) winningCoalition.getContent());
+			addCodelet(newCodelet);
+			logger.log(Level.FINER, "Created new codelet: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),newCodelet});
+		}else{
+			coalitionCodelet.reinforceBaseLevelActivation(codeletReinforcement);
+			logger.log(Level.FINER, "Reinforcing codelet: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),coalitionCodelet});
+		}
 	}
 
 }

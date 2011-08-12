@@ -19,6 +19,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -60,6 +62,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
     private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
     private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
+    protected AttentionCodeletModule attentionModule;
 
     /**
      * Constructor a new instance with default values
@@ -116,6 +119,13 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
                     "Can only add listeners of type BroadcastListener. Tried to add {1}",
                     new Object[]{TaskManager.getCurrentTick(), listener});
         }
+    }
+    
+    @Override
+    public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+    	if(module instanceof  AttentionCodeletModule){
+    		attentionModule = (AttentionCodeletModule) module;
+    	}
     }
     
     @Override
@@ -180,6 +190,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
         boolean broadcastWasSent = false;
         Coalition winningCoalition = chooseCoalition();
         if (winningCoalition != null) {
+        	performAttentionalLearning(winningCoalition);
             winningCoalitionActivation = winningCoalition.getActivation();
             coalitions.remove(winningCoalition);
             NodeStructure copy = ((NodeStructure) winningCoalition.getContent()).copy();
@@ -198,8 +209,12 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
         broadcastStarted.set(false);
         return broadcastWasSent;
     }
+    
+    protected void performAttentionalLearning(Coalition winningCoalition) {
+			
+	}
 
-    private Coalition chooseCoalition() {
+	private Coalition chooseCoalition() {
         Coalition chosenCoal = null;
         for (Coalition c : coalitions) {
             if (chosenCoal == null
