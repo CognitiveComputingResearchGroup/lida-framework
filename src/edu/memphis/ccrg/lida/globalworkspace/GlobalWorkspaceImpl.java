@@ -19,13 +19,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletModule;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
@@ -44,7 +42,7 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  */
 public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWorkspace{
 
-    private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(GlobalWorkspaceImpl.class.getCanonicalName());
     private static final ElementFactory factory = ElementFactory.getInstance();
     private static final Integer DEFAULT_REFRACTORY_PERIOD = 40;
     private static final String DEFAULT_COALITION_DECAY = factory.getDefaultDecayType();
@@ -55,14 +53,12 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     private int broadcastRefractoryPeriod;
     private long broadcastsSentCount;
     private long tickAtLastBroadcast;
-    private double winningCoalitionActivation;
     private BroadcastTrigger lastBroadcastTrigger;
     private AtomicBoolean broadcastStarted = new AtomicBoolean(false);
     
     private List<BroadcastListener> broadcastListeners = new ArrayList<BroadcastListener>();
     private List<BroadcastTrigger> broadcastTriggers = new ArrayList<BroadcastTrigger>();
     private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
-    protected AttentionCodeletModule attentionModule;
 
     /**
      * Constructor a new instance with default values
@@ -122,13 +118,6 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     }
     
     @Override
-    public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-    	if(module instanceof  AttentionCodeletModule){
-    		attentionModule = (AttentionCodeletModule) module;
-    	}
-    }
-    
-    @Override
     public void addBroadcastListener(BroadcastListener bl) {
         broadcastListeners.add(bl);
     }
@@ -177,12 +166,10 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     /*
      * This method realizes the broadcast. First it chooses the winner
      * coalition. Then, all registered {@link BroadcastListener}s receive a
-     * reference to the coalition content. The winning Coalition is removed from
-     * the pool. Broadcast recipients must return as soon as possible in order
-     * to not delay the rest of the broadcasting. A good implementation should
-     * copy the broadcast content and create a task to process it. This method
-     * is supposed to be called from {@link BroadcastTrigger}s. The reset()
-     * method is invoked on each trigger at the end of this method.
+     * reference to the winning Coalition. A new task is created to send the Coalition to each listener.
+     * The winning Coalition is removed from the pool. 
+     * This method is supposed to be called from {@link BroadcastTrigger}s. 
+     * The reset()method is invoked on each trigger at the end of this method.
      */
     private boolean sendBroadcast() {
         logger.log(Level.FINEST, "Triggering broadcast",
@@ -190,13 +177,11 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
         boolean broadcastWasSent = false;
         Coalition winningCoalition = chooseCoalition();
         if (winningCoalition != null) {
-        	performAttentionalLearning(winningCoalition);
-            winningCoalitionActivation = winningCoalition.getActivation();
             coalitions.remove(winningCoalition);
-            NodeStructure copy = ((NodeStructure) winningCoalition.getContent()).copy();
-            // TODO Create FrameworkTask for parallel processing
+                        
             for (BroadcastListener bl : broadcastListeners) {
-                bl.receiveBroadcast((BroadcastContent) copy);
+            	FrameworkTask broadcastTask = new SendBroadcastTask(bl, winningCoalition);
+            	taskSpawner.addTask(broadcastTask);
             }
 
             logger.log(Level.FINEST, "Broadcast Performed at tick: {0}",
@@ -204,16 +189,30 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
             broadcastsSentCount++;
             tickAtLastBroadcast = TaskManager.getCurrentTick();
             broadcastWasSent = true;
+        }else{
+        	logger.log(Level.FINEST, "Broadcast triggered but there are no Coalitions", TaskManager.getCurrentTick());
         }
         resetTriggers();
         broadcastStarted.set(false);
         return broadcastWasSent;
     }
     
-    protected void performAttentionalLearning(Coalition winningCoalition) {
-			
-	}
+    private class SendBroadcastTask extends FrameworkTaskImpl{
+    	private BroadcastListener listener;
+    	private Coalition coalition;
+    	
+		public SendBroadcastTask(BroadcastListener bl, Coalition c) {
+			listener = bl;
+			coalition = c;
+		}
 
+		@Override
+		protected void runThisFrameworkTask() {
+			listener.receiveBroadcast(coalition);
+			setTaskStatus(TaskStatus.FINISHED);
+		}
+	}
+    
 	private Coalition chooseCoalition() {
         Coalition chosenCoal = null;
         for (Coalition c : coalitions) {
@@ -234,9 +233,7 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     @Override
     public Object getModuleContent(Object... params) {
         if (params.length > 0) {
-            if ("winnerCoalActivation".equals(params[0])) {
-                return winningCoalitionActivation;
-            } else if ("lastBroadcastTrigger".equals(params[0])) {
+            if ("lastBroadcastTrigger".equals(params[0])) {
                 return lastBroadcastTrigger;
             } else if ("coalitions".equals(params[0])) {
                 return Collections.unmodifiableCollection(coalitions);

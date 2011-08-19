@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
+import edu.memphis.ccrg.lida.framework.mockclasses.ExecutingMockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
@@ -41,14 +42,14 @@ public class GlobalWorkspaceImplTest {
 	private NodeStructureImpl ns2 = new NodeStructureImpl();
 	private NodeImpl n1, n2, n3;
 	private LinkImpl l;
-	private MockTaskSpawner ts;
+	private ExecutingMockTaskSpawner ts;
 	private MockBroadcastListener listener;
 	private AttentionCodelet codelet = new BasicAttentionCodelet();
 
 	@Before
 	public void setUp() throws Exception {
 		gw = new GlobalWorkspaceImpl();
-		ts = new MockTaskSpawner();
+		ts = new ExecutingMockTaskSpawner();
 		gw.setAssistingTaskSpawner(ts);
 		listener = new MockBroadcastListener();
 

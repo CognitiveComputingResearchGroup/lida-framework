@@ -32,11 +32,9 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.pam.tasks.DetectionAlgorithm;
 import edu.memphis.ccrg.lida.pam.tasks.ExcitationTask;
 import edu.memphis.ccrg.lida.pam.tasks.PropagationTask;
@@ -255,24 +253,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public synchronized void receiveBroadcast(BroadcastContent bc) {
-		NodeStructure ns = (NodeStructure) bc;
-		taskSpawner.addTask(new ProcessBroadcastTask(ns.copy()));
-	}
-
-	private class ProcessBroadcastTask extends FrameworkTaskImpl {
-		private NodeStructure broadcast;
-
-		public ProcessBroadcastTask(NodeStructure broadcast) {
-			super();
-			this.broadcast = broadcast;
-		}
-
-		@Override
-		protected void runThisFrameworkTask() {
-			learn((BroadcastContent) broadcast);
-			setTaskStatus(TaskStatus.FINISHED);
-		}
+	public synchronized void receiveBroadcast(Coalition coalition) {
+		learn(coalition);
 	}
 
 	@Override
@@ -291,8 +273,8 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	@Override
-	public void learn(BroadcastContent bc) {
-		NodeStructure ns = (NodeStructure) bc;
+	public void learn(Coalition coalition) {
+		NodeStructure ns = (NodeStructure) coalition.getContent();
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
 			n.getId();

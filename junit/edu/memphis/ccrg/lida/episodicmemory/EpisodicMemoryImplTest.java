@@ -10,6 +10,7 @@
  */
 package edu.memphis.ccrg.lida.episodicmemory;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -27,6 +28,8 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 
 /**
  * @author Javier Snaider
@@ -76,9 +79,10 @@ public class EpisodicMemoryImplTest {
 	@Test
 	public void testReceiveBroadcast() {
 		em.setTranslator(translator);
-		em.receiveBroadcast(content);
+		Coalition c = new CoalitionImpl(content, 1.0, null);
+		em.receiveBroadcast(c);
 		
-		assertEquals(content, translator.ns);
+		assertTrue(NodeStructureImpl.compareNodeStructures(content, translator.ns));
 		BitVector v = em.getSdm().retrieve(translator.v);
 		assertEquals(translator.v, v);
 	}

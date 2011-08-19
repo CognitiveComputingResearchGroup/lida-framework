@@ -8,6 +8,7 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,6 +76,6 @@ public class CoalitionImplTest {
 	@Test
 	public void testGetContent() {					
 		coalition = new CoalitionImpl(content,1.0,codelet);
-		assertEquals ((BroadcastContent) content,coalition.getContent());		
+		assertTrue(NodeStructureImpl.compareNodeStructures(content,(NodeStructure) coalition.getContent()));		
 	}
 }

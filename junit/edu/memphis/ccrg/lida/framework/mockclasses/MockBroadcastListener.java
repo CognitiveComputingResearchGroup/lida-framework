@@ -9,17 +9,18 @@ package edu.memphis.ccrg.lida.framework.mockclasses;
 
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 public class MockBroadcastListener implements BroadcastListener {
 	
 	public BroadcastContent content;
 	@Override
-	public void receiveBroadcast(BroadcastContent bc){
-		content = bc;
+	public void receiveBroadcast(Coalition c){
+		content = c.getContent();
 	}
 
 	@Override
-	public void learn(BroadcastContent bc) {
+	public void learn(Coalition c) {
 		// not implemetned
 		
 	}

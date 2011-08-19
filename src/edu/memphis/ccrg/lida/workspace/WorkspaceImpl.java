@@ -21,8 +21,8 @@ import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.pam.PamListener;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
@@ -86,10 +86,10 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	 * Received broadcasts are sent to the BroadcastQueue
 	 */
 	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
+	public void receiveBroadcast(Coalition coalition) {
 		if(containsSubmodule(ModuleName.BroadcastQueue)){
 			BroadcastListener listener = (BroadcastListener) getSubmodule(ModuleName.BroadcastQueue);
-			listener.receiveBroadcast(bc);
+			listener.receiveBroadcast(coalition);
 		}else{
 			logger.log(Level.WARNING, "Received broadcast content but Workspace does not have a broadcast queue.", TaskManager.getCurrentTick());
 		}
@@ -156,7 +156,7 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 	}
 
 	@Override
-	public void learn(BroadcastContent content) {
+	public void learn(Coalition coalition) {
 		// Not applicable
 	}
 

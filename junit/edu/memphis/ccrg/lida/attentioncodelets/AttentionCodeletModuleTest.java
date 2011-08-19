@@ -30,6 +30,8 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.workspace.Workspace;
 import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
@@ -104,12 +106,10 @@ public class AttentionCodeletModuleTest{
 	}
 	
 	@Test
-	public void testReceiveBroadcast() {	
-		assertEquals(0, attentionModule.getAssistingTaskSpawner().getRunningTasks().size());
-		
-		attentionModule.receiveBroadcast((BroadcastContent)ns);
-		
-		assertEquals(1, attentionModule.getAssistingTaskSpawner().getRunningTasks().size());
+	public void testLearning() {	
+		Coalition c = new CoalitionImpl(ns, 1.0, null);
+		attentionModule.receiveBroadcast(c);
+		//TODO finish
 		// more testing when fully implemented
 	}
 

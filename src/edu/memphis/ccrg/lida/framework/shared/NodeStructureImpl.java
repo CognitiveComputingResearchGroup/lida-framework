@@ -864,6 +864,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	 */
 	public static boolean compareNodeStructures(NodeStructure ns1,
 			NodeStructure ns2) {
+		if(ns1 == null || ns2==null){
+			return false;
+		}
 		if (ns1.getNodeCount() != ns2.getNodeCount()) {
 			return false;
 		}

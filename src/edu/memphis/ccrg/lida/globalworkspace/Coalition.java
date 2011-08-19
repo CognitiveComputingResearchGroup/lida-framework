@@ -19,7 +19,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
  * {@link Object#equals(Object)} and {@link Object#hashCode()} methods.
  * 
  * @author Javier Snaider
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public interface Coalition extends Activatible {
 
@@ -29,7 +29,7 @@ public interface Coalition extends Activatible {
 	 * @return The Content of the coalition
 	 */
 	public BroadcastContent getContent();
-
+	
 	/**
 	 * Returns the attention codelet that creates this coalition
 	 * 

@@ -24,6 +24,8 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 
 public class BroadcastQueueImplTest {
 
@@ -118,12 +120,14 @@ public class BroadcastQueueImplTest {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("workspace.broadcastQueueCapacity", -2);
 		broadcastQueue.init(params);
-		ExecutingMockTaskSpawner ts = new ExecutingMockTaskSpawner();
-		broadcastQueue.setAssistingTaskSpawner(ts);
 		
-		broadcastQueue.receiveBroadcast(content);
+		Coalition c = new CoalitionImpl(content, 1.0, null);
+		broadcastQueue.receiveBroadcast(c);
 		
-		assertEquals(1,ts.getRunningTasks().size());
+		NodeStructure ns = broadcastQueue.getPositionContent(0);
+		assertNotNull(ns);
+		assertEquals(2, ns.getNodeCount());
+		
 		List<NodeStructure> queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);
 		assertEquals(1,queue.size());
 		NodeStructure actual = queue.get(0);
@@ -134,7 +138,8 @@ public class BroadcastQueueImplTest {
 		params.put("workspace.broadcastQueueCapacity", 2);
 		broadcastQueue.init(params);
 		
-		broadcastQueue.receiveBroadcast(content2);
+		c = new CoalitionImpl(content2, 1.0, null);
+		broadcastQueue.receiveBroadcast(c);
 		
 		queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);
 		assertEquals(2,queue.size());
@@ -143,7 +148,8 @@ public class BroadcastQueueImplTest {
 		assertTrue(actual.containsNode(n4));
 		assertEquals(2, actual.getLinkableCount());
 		
-		broadcastQueue.receiveBroadcast(new NodeStructureImpl());
+		c = new CoalitionImpl(new NodeStructureImpl(), 1.0, null);
+		broadcastQueue.receiveBroadcast(c);
 		
 		queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);
 		assertEquals(2,queue.size());
@@ -156,18 +162,6 @@ public class BroadcastQueueImplTest {
 		assertEquals(2, actual.getLinkableCount());
 	}
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testReceiveBroadcast2() {
-		ExecutingMockTaskSpawner ts = new ExecutingMockTaskSpawner();
-		broadcastQueue.setAssistingTaskSpawner(ts);
-		
-		broadcastQueue.receiveBroadcast(null);
-		
-		assertEquals(0,ts.getRunningTasks().size());
-		List<NodeStructure> queue = (List<NodeStructure>) broadcastQueue.getModuleContent(0);
-		assertEquals(0,queue.size());
-	}
 	@Test
 	public void testGetBufferContent() {
 		Map<String, Object> params = new HashMap<String, Object>();

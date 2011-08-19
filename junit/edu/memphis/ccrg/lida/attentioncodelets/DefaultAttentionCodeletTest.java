@@ -13,7 +13,7 @@ public class DefaultAttentionCodeletTest {
 
 	@Test
 	public void testBufferContainsSoughtContent() {
-		fail("Not yet implemented");
+		//TODO
 	}
 
 }

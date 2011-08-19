@@ -15,7 +15,7 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 public class MockActionSelectionImpl extends FrameworkModuleImpl implements ActionSelection {
 	
@@ -62,13 +62,13 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 	}
 
 	@Override
-	public void learn(BroadcastContent content) {
+	public void learn(Coalition c) {
 		// not implemented
 		
 	}
 
 	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
+	public void receiveBroadcast(Coalition c) {
 		// not implemented
 		
 	}

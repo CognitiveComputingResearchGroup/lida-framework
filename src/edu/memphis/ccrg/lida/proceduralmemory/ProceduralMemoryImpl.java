@@ -24,16 +24,13 @@ import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * Default implementation of {@link ProceduralMemory}. Indexes scheme by context
@@ -174,34 +171,14 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 	
 	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
+	public void receiveBroadcast(Coalition coalition) {
 		logger.log(Level.FINEST, "Procedural memory receives broadcast", TaskManager.getCurrentTick());
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(((NodeStructure) bc).copy());		
-			taskSpawner.addTask(task);
-		}
-	}
-	
-	private class ProcessBroadcastTask extends FrameworkTaskImpl{		
-		private NodeStructure broadcast;
-		public ProcessBroadcastTask(NodeStructure broadcast) {
-			super();
-			this.broadcast = broadcast;
-		}
-		@Override
-		protected void runThisFrameworkTask() {
-			activateSchemes(broadcast);			
-			setTaskStatus(TaskStatus.FINISHED);
-		}	
+		activateSchemes((NodeStructure) coalition.getContent());
 	}
 
 	@Override
-	public void learn(BroadcastContent content) {
-		Collection<Node> nodes = ((NodeStructure) content).getNodes();
-		for (Node n : nodes) {
-			// learning algorithm
-			n.getId();
-		}
+	public void learn(Coalition coalition) {
+		//TODO 
 	}
 	
 	@Override

@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.attentioncodelets;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -18,13 +17,9 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
@@ -97,36 +92,9 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		}
 	}
 
-	/*
-	 * Schedules a task that receives broadcast from global workspace
-	 */
 	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
-		synchronized (this) {
-			ProcessBroadcastTask task = new ProcessBroadcastTask(
-					((NodeStructure) bc).copy());
-			taskSpawner.addTask(task);
-		}
-	}
-	
-	/*
-	 * Class that receives the broadcast and the broadcast will then be used for
-	 * learning
-	 * 
-	 */
-	private class ProcessBroadcastTask extends FrameworkTaskImpl {
-		private NodeStructure broadcast;
-
-		public ProcessBroadcastTask(NodeStructure broadcast) {
-			super();
-			this.broadcast = broadcast;
-		}
-
-		@Override
-		protected void runThisFrameworkTask() {
-			learn((BroadcastContent) broadcast);
-			setTaskStatus(TaskStatus.FINISHED);
-		}
+	public void receiveBroadcast(Coalition coalition) {
+		learn(coalition);
 	}
 
 	@Override
@@ -171,21 +139,36 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void receivePreafference(NodeStructure addSet,
-			NodeStructure deleteSet) {
+	public void receivePreafference(NodeStructure addSet, NodeStructure deleteSet) {
 		// TODO Receive results from Action Selection and create Attention
 		// Codelets. We need
 		// to figure out how to create coalitions and detect that something was
 		// "deleted"
 	}
 
+	//TODO params
+	//TODO Reinforcement amount might be a function of the broadcast
+	private static final double DEFAULT_CODELET_REINFORCEMENT = 0.5;
+	private double codeletReinforcement = DEFAULT_CODELET_REINFORCEMENT;
+	
+	/**
+	 * Performs learning based on the {@link AttentionCodelet} that created the current</br>
+	 * winning {@link Coalition}
+	 * @param winningCoalition current {@link Coalition} winning competition for consciousness
+	 */
 	@Override
-	public void learn(BroadcastContent content) {
-		NodeStructure ns = (NodeStructure) content;
-		Collection<Node> nodes = ns.getNodes();
-		for (Node n : nodes) {
-			// Implement learning here
-			n.getId();
+	public void learn(Coalition winningCoalition) {
+		AttentionCodelet coalitionCodelet = winningCoalition.getCreatingAttentionCodelet();
+		if(coalitionCodelet instanceof DefaultAttentionCodelet){
+			AttentionCodelet newCodelet = getDefaultCodelet();
+			newCodelet.setSoughtContent((NodeStructure) winningCoalition.getContent());
+			addCodelet(newCodelet);
+			logger.log(Level.FINER, "Created new codelet: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),newCodelet});
+		}else if (coalitionCodelet != null){
+			coalitionCodelet.reinforceBaseLevelActivation(codeletReinforcement);
+			logger.log(Level.FINER, "Reinforcing codelet: {1}", 
+					new Object[]{TaskManager.getCurrentTick(),coalitionCodelet});
 		}
 	}
 
@@ -204,28 +187,6 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		
 	}
 
-	//TODO Reinforcement amount might be a function of the broadcast
-	private static final double DEFAULT_CODELET_REINFORCEMENT = 0.5;
-	private double codeletReinforcement = DEFAULT_CODELET_REINFORCEMENT;
-	
-	/**
-	 * Performs learning based on the {@link AttentionCodelet} that created the current</br>
-	 * winning {@link Coalition}
-	 * @param winningCoalition current {@link Coalition} winning competition for consciousness
-	 */
-	public void learnCodelet(Coalition winningCoalition) {
-		AttentionCodelet coalitionCodelet = winningCoalition.getCreatingAttentionCodelet();
-		if(coalitionCodelet instanceof DefaultAttentionCodelet){
-			AttentionCodelet newCodelet = getDefaultCodelet();
-			newCodelet.setSoughtContent((NodeStructure) winningCoalition.getContent());
-			addCodelet(newCodelet);
-			logger.log(Level.FINER, "Created new codelet: {1}", 
-					new Object[]{TaskManager.getCurrentTick(),newCodelet});
-		}else{
-			coalitionCodelet.reinforceBaseLevelActivation(codeletReinforcement);
-			logger.log(Level.FINER, "Reinforcing codelet: {1}", 
-					new Object[]{TaskManager.getCurrentTick(),coalitionCodelet});
-		}
-	}
+
 
 }

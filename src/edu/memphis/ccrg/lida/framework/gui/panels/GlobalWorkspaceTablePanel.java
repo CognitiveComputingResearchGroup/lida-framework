@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.framework.gui.panels;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,12 +18,10 @@ import javax.swing.table.AbstractTableModel;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
-import java.util.LinkedList;
 
 /**
  * This is a Panel which shows all current coalitions in Global Workspace and
@@ -266,15 +265,17 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
     }
 
     @Override
-    public void learn(BroadcastContent bc) {
+    public void learn(Coalition coalition) {
         // No learning in panel
     }
 
     @Override
-    public void receiveBroadcast(BroadcastContent bc) {
-        BroadcastDetail bd = new BroadcastDetail((NodeStructure) bc, (Double) module.getModuleContent("winnerCoalActivation")
-                , (BroadcastTrigger) module.getModuleContent("lastBroadcastTrigger"), TaskManager.getCurrentTick(),
-                module.getBroadcastSentCount());
+    public void receiveBroadcast(Coalition coalition) {
+        BroadcastDetail bd = new BroadcastDetail((NodeStructure) coalition.getContent(),
+        					coalition.getActivation(), 
+        					(BroadcastTrigger) module.getModuleContent("lastBroadcastTrigger"), 
+        					TaskManager.getCurrentTick(),
+        					module.getBroadcastSentCount());
         recentBbroadcasts.addFirst(bd);
         if(recentBbroadcasts.size()> recentBroadcastsSize){
             recentBbroadcasts.pollLast();

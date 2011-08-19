@@ -21,8 +21,8 @@ import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * This is the canonical implementation of {@link EpisodicMemory}. It uses a
@@ -101,8 +101,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void receiveBroadcast(BroadcastContent bc) {
-		NodeStructure ns = (NodeStructure) bc;
+	public void receiveBroadcast(Coalition coalition) {
+		NodeStructure ns = (NodeStructure) coalition.getContent();
 		BitVector address = null;
 		if (translator != null) {
 			try {
@@ -176,7 +176,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void learn(BroadcastContent content) {
+	public void learn(Coalition coalition) {
 
 	}
 

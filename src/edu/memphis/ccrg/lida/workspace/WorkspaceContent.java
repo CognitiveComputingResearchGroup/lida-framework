@@ -16,6 +16,6 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
  * 
  * @author Ryan J. McCall
  */
-public interface WorkspaceContent extends NodeStructure{
+public interface WorkspaceContent extends NodeStructure {
 	
 }

@@ -24,6 +24,8 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.CoalitionImpl;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 
 /**
@@ -142,16 +144,13 @@ public class WorkspaceImplTest {
 		broadcastQueue.setModuleName(ModuleName.BroadcastQueue);
 		workspace.addSubModule(broadcastQueue);
 
-		BroadcastContent bc = null;
-		workspace.receiveBroadcast(bc);
-		assertEquals(bc, broadcastQueue.broadcastContent);
-
 		content.addDefaultNode(node2);
-		workspace.receiveBroadcast((BroadcastContent) content);
+		Coalition c = new CoalitionImpl(content, 1.0, null);
+		workspace.receiveBroadcast(c);
 		NodeStructure actual = (NodeStructure) broadcastQueue.broadcastContent;
 		assertNotNull(actual);
 		assertTrue(actual.containsNode(node2));
-		assertEquals(content, actual);
+		assertTrue(NodeStructureImpl.compareNodeStructures(content, actual));
 	}
 
 	/**

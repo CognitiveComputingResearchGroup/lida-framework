@@ -11,11 +11,14 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastContent;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
+
 /**
  * An immutable NodeStructureImpl.  Throws {@link UnsupportedOperationException} if any methods
  * which modify {@link NodeStructureImpl} are called.  
  */
-public class UnmodifiableNodeStructureImpl implements NodeStructure {
+public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent{
 	
 	private NodeStructure ns;
 	
@@ -354,5 +357,10 @@ public class UnmodifiableNodeStructureImpl implements NodeStructure {
 	@Override
 	public Collection<Node> getNodes() {
 		return ns.getNodes();
+	}
+	
+	@Override
+	public String toString(){
+		return ns.toString();
 	}
 }

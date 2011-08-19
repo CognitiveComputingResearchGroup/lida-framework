@@ -11,6 +11,7 @@ import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.UnmodifiableNodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
 //TODO Make Coalition a Factory element.  then we can change the way a coalition calculates its activation
@@ -40,7 +41,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
      */
     public CoalitionImpl(NodeStructure content, double activation, AttentionCodelet codelet) {
     	id = idCounter++;
-        this.content = (BroadcastContent) content;
+        this.content = (BroadcastContent) new UnmodifiableNodeStructureImpl(content,true);
         attentionCodeletActivation = activation;
         attentionCodelet = codelet;
         updateActivation();
