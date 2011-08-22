@@ -134,6 +134,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		if (l == null) {
 			logger.log(Level.WARNING, "Cannot add null.", TaskManager
 					.getCurrentTick());
+			return null;
 		}
 
 		double newActiv = l.getActivation();
@@ -330,15 +331,29 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		Collection<Link> copiedLinks = new ArrayList<Link>();
 		// Add simple links
 		for (Link l : links) {
+			if(l == null){
+				continue;
+			}
+			
 			if (l.isSimpleLink()) {
-				copiedLinks.add(addDefaultLink(l));
+				Link addedLink = addDefaultLink(l);
+				if(addedLink != null){
+					copiedLinks.add(addedLink);
+				}
 			}
 		}
 
 		// Add complex links
 		for (Link l : links) {
+			if(l == null){
+				continue;
+			}
+			
 			if (l.isSimpleLink() == false) {
-				copiedLinks.add(addDefaultLink(l));
+				Link addedLink = addDefaultLink(l);
+				if(addedLink != null){
+					copiedLinks.add(addedLink);
+				}
 			}
 		}
 		return copiedLinks;
@@ -444,7 +459,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 	protected Node addNode(Node n, boolean copy){
 		if(copy){
 			return addDefaultNode(n);
-		}else{
+		}else if (n != null){
 			Node node = nodes.get(n.getId());
 			if (node == null) {
 					node=n;
@@ -456,6 +471,10 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 								.getCurrentTick());				
 			}
 			return node;
+		}else{
+			logger.log(Level.WARNING, "Cannot add null", TaskManager
+					.getCurrentTick());
+			return null;
 		}
 	}
 	
@@ -470,6 +489,9 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 		Collection<Node> storedNodes = new ArrayList<Node>();
 		for (Node n : nodes) {
+			if(n == null){
+				continue;
+			}
 			Node stored = addNode(n, defaultNodeType);
 			storedNodes.add(stored);
 		}

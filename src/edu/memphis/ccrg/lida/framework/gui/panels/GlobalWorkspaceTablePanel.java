@@ -276,9 +276,11 @@ public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         					(BroadcastTrigger) module.getModuleContent("lastBroadcastTrigger"), 
         					TaskManager.getCurrentTick(),
         					module.getBroadcastSentCount());
-        recentBbroadcasts.addFirst(bd);
-        if(recentBbroadcasts.size()> recentBroadcastsSize){
-            recentBbroadcasts.pollLast();
+        synchronized(this){
+        	recentBbroadcasts.addFirst(bd);
+        	if(recentBbroadcasts.size()> recentBroadcastsSize){
+        		recentBbroadcasts.pollLast();
+        	}
         }
     }
 

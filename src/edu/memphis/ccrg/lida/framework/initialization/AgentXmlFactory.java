@@ -465,59 +465,63 @@ public class AgentXmlFactory implements AgentFactory {
 	 * @param topModule the root of the hierarchy of {@link FrameworkModule}s, 
 	 * in general, an {@link Agent}
 	 */	
-	void getListener(Element moduleElement,FrameworkModule topModule) {
-		Class<?> listenerClass = null;
+	void getListener(Element moduleElement, FrameworkModule topModule) {
+		//Read and create listener type
 		String listenerType = XmlUtils.getTextValue(moduleElement,
 				"listenertype");
-		String name = XmlUtils.getTextValue(moduleElement, "modulename");
-		String listenername = XmlUtils.getTextValue(moduleElement,
-				"listenername");
-
+		Class<?> listenerClass = null;
 		try {
 			listenerClass = Class.forName(listenerType);
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Listener type class: " + listenerType
-					+ " is not valid.", 0L);
+			logger.log(Level.WARNING, "Listener type: " + listenerType
+					+ " is not a valid qualified name.", 0L);
 			return;
 		}
-
-		ModuleName moduleName;
 		
-		moduleName = ModuleName.getModuleName(name);
-		if (moduleName==null) {
+		//Read and retrieve source module
+		String sourceModule = XmlUtils.getTextValue(moduleElement, "modulename");
+		ModuleName sourceModuleName = ModuleName.getModuleName(sourceModule);
+		if (sourceModuleName == null) {
 			logger.log(Level.WARNING,
-					"Module name: " + name + " is not valid.", 0L);
+					"Source module name: " + sourceModule + " is not valid.", 0L);
 			return;
 		}
-		FrameworkModule module = topModule.getSubmodule(moduleName);
+		FrameworkModule module = topModule.getSubmodule(sourceModuleName);
+		if(module == null){
+			logger.log(Level.WARNING, "Could not find source module " + sourceModuleName + 
+						", listener will not be set up", 0L);
+			return;
+		}
 
-		ModuleName listenerModuleName;
-		
-		listenerModuleName = ModuleName.getModuleName(listenername);
+		//Read and retrieve listener module
+		String listenername = XmlUtils.getTextValue(moduleElement, "listenername");
+		ModuleName listenerModuleName = ModuleName.getModuleName(listenername);
 		if (listenerModuleName==null) {
-			logger.log(Level.WARNING, "Listener name: " + listenername
+			logger.log(Level.WARNING, "Listener's ModuleName: " + listenername
 					+ " is not valid.", 0L);
 			return;
 		}
-
-		ModuleListener listener = null;
 		FrameworkModule listenerModule = topModule.getSubmodule(listenerModuleName);
 		if(listenerModule == null){
 			logger.log(Level.WARNING, "Could not find listener module " + listenerModuleName + 
 						" listener will not be set up", 0L);
 			return;
-		}else if(listenerModule instanceof ModuleListener){
+		}
+		
+
+		ModuleListener listener = null;
+		if(listenerModule instanceof ModuleListener){
 			listener = (ModuleListener) listenerModule; 
 		}else{
-			logger.log(Level.WARNING, "Listener: " + listenerModule.toString()
+			logger.log(Level.WARNING, "Listener: " + listenerModule
 					+ " is not a ModuleListener i.e. doesn't implement any listeners. Listener will not be set up.", 0L);
 			return;
 		}
 
-		if (module != null && listener != null
-				&& listenerClass.isInstance(listener)) {
+		//Final checks
+		if (listenerClass.isInstance(listener)) {
 			module.addListener(listener);
-			logger.log(Level.INFO, "Listener type: "+listenerType + listener + " -> " + module + " added.", 0L);
+			logger.log(Level.INFO, "Added Listener of type: " + listenerType + " for " + module + " -> " + listener, 0L);
 		} else {
 			logger.log(Level.WARNING, "Listener: " + listenername
 					+ " is not a valid " + listenerType + " listener.", 0L);

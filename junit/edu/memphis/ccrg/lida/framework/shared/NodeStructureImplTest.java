@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.framework.shared;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -223,6 +224,49 @@ public class NodeStructureImplTest {
 		assertTrue(links.containsAll(ns1.getLinks()));
 		assertTrue(ns1.getLinkCount() == 3);
 	}
+	
+	@Test
+	public void addNullLink(){
+		assertNull(ns1.addDefaultLink(null));
+	}
+	
+	@Test
+	public void addNullInCollection(){
+		Collection<Link> links = new ArrayList<Link>();
+		links.add(null);
+		links.add(link1);
+		ns1.addDefaultNode(node1);
+		ns1.addDefaultNode(node2);
+		
+		links = ns1.addDefaultLinks(links);
+		
+		assertEquals(1, ns1.getLinkCount());
+		assertTrue(ns1.containsLink(link1));
+	}
+	
+	@Test
+	public void addNullInCollection1(){
+		Collection<Node> nodes = new ArrayList<Node>();
+		nodes.add(null);
+		nodes.add(node1);
+		
+		ns1.addDefaultNodes(nodes);
+		
+		assertEquals(1, ns1.getNodeCount());
+		assertTrue(ns1.containsNode(node1));
+	}
+	
+	@Test
+	public void addNodeCopyFail(){
+		Node res = ns1.addNode(null, true);
+		assertNull(res);
+		
+		res = ns1.addNode(null, false);
+		assertNull(res);
+		
+		//TODO other cases
+	}
+	
 	@Test
 	public void testAddLinkFail(){
 		link1.setActivation(0.0);

@@ -50,8 +50,7 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 	@Override
 	protected void runThisFrameworkTask() {
 		if (logger.isLoggable(Level.FINEST)) {
-			logger.log(Level.FINEST,
-					"Updating CSM with perceptual buffer content.",
+			logger.log(Level.FINEST, "Updating CSM with perceptual buffer content.",
 					TaskManager.getCurrentTick());
 		}
 		WorkspaceBuffer percepBuff = (WorkspaceBuffer) workspace

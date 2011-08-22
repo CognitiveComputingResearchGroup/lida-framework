@@ -147,7 +147,6 @@ public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, Pam
 		}else{
 			logger.log(Level.WARNING, "Received a percept but Workspace does not have a perceptual buffer.", TaskManager.getCurrentTick());
 		}
-		
 	}
 
 	@Override

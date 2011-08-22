@@ -299,9 +299,11 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	@Override
 	public void receiveAction(Action action) {
 		ActionDetail detail = new ActionDetail(TaskManager.getCurrentTick(), currentSelectionCount++, action);
-		selectedActions.addFirst(detail);
-		if (selectedActions.size() > selectedActionsSize) {
-			selectedActions.pollLast();
+		synchronized(this){
+			selectedActions.addFirst(detail);
+			if (selectedActions.size() > selectedActionsSize) {
+				selectedActions.pollLast();
+			}
 		}
 	}
 }

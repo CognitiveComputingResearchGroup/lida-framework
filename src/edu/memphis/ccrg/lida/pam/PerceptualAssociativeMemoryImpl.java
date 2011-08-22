@@ -272,12 +272,32 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		// TODO task to use preafferent signal
 	}
 
+	private static final double DEFAULT_REINFORCEMENT = 0.1;
+	
 	@Override
 	public void learn(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
 		Collection<Node> nodes = ns.getNodes();
 		for (Node n : nodes) {
-			n.getId();
+			PamNode nodeToLearn = (PamNode) pamNodeStructure.getNode(n.getId());
+			if(nodeToLearn == null){
+				nodeToLearn = (PamNode) pamNodeStructure.addDefaultNode(n);
+				nodeToLearn.setBaseLevelActivation(DEFAULT_REINFORCEMENT);
+			}else{
+				nodeToLearn.reinforceBaseLevelActivation(DEFAULT_REINFORCEMENT);
+			}
+		}
+		Collection<Link> links = ns.getLinks();
+		for(Link lnk: links){
+			PamLink linkToLearn = (PamLink) pamNodeStructure.getLink(lnk.getExtendedId());
+			if(linkToLearn == null){
+				linkToLearn = (PamLink) pamNodeStructure.addDefaultLink(lnk);
+				if(linkToLearn != null){
+					linkToLearn.setBaseLevelActivation(DEFAULT_REINFORCEMENT);
+				}
+			}else{
+				linkToLearn.reinforceBaseLevelActivation(DEFAULT_REINFORCEMENT);
+			}
 		}
 	}
 
