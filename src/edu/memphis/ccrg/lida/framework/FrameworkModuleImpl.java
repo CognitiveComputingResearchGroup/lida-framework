@@ -8,13 +8,13 @@
 package edu.memphis.ccrg.lida.framework;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 
@@ -24,12 +24,11 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
  * 
  * @author Javier Snaider
  */
-public abstract class FrameworkModuleImpl implements FrameworkModule {
+public abstract class FrameworkModuleImpl extends InitializableImpl implements FrameworkModule {
 
 	private static final Logger logger = Logger.getLogger(FrameworkModuleImpl.class.getCanonicalName());
 	private ModuleName moduleName;
 	private Map<ModuleName, FrameworkModule> submodules = new ConcurrentHashMap<ModuleName, FrameworkModule>();
-	private Map<String, ?> parameters = new HashMap<String, Object>();
 	
 	/**
 	 * {@link TaskSpawner} used by this module
@@ -64,35 +63,6 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 	@Override
 	public TaskSpawner getAssistingTaskSpawner(){
 		return taskSpawner;
-	}
-	
-	@Override
-	public void init(Map<String, ?> params) {
-		parameters = params;
-		init();
-	}
-	
-	/** 
-	 * Implementations should only perform initialization of variables or
-	 * objects that depend on parameters in the parameter map specified in {@link #init(Map)}.
-	 * Furthermore they should not try to access modules added via {@link #setAssociatedModule(FrameworkModule, String)}
-	 * as this method will not have run yet at the time this method is called.
-	 */
-	@Override
-	public void init(){
-		
-	}
-	
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			value = parameters.get(name);
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
 	}
 	
 	@Override
@@ -165,7 +135,6 @@ public abstract class FrameworkModuleImpl implements FrameworkModule {
 		return moduleName.name;
 	}
 	
-
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 	}

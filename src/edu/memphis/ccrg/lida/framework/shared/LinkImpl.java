@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,8 +48,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	protected PamLink groundingPamLink;
 	
-	private Map<String, ?> parameters;
-	
 	/**
 	 * Default constructor
 	 */
@@ -85,30 +82,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		source = l.getSource();
 		category = l.getCategory();
 		groundingPamLink = l.getGroundingPamLink();
-		parameters = l.parameters;
 		updateExtendedId();
-	}
-
-	@Override
-	public void init(Map<String, ?> params) {
-		this.parameters = params;
-		init();
-	}
-
-	@Override
-	public void init() {
-	}
-	
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			value = parameters.get(name);
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
 	}
 	
 	/*
@@ -242,7 +216,6 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 			this.extendedId = other.extendedId;
 			this.category = other.category;
 			this.groundingPamLink = other.groundingPamLink;
-			this.parameters = other.parameters;
 		}
 	}
 

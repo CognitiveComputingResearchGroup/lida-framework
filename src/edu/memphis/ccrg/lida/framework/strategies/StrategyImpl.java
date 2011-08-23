@@ -7,38 +7,14 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.strategies;
 
-import java.util.HashMap;
-import java.util.Map;
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 
 /**
  * Abstract implementation of {@link Strategy}
- * @author Javier Snaider
+ * @author Javier Snaider, Ryan McCall
  *
  */
-public abstract class StrategyImpl implements Strategy {
+public abstract class StrategyImpl extends InitializableImpl implements Strategy {
 
-	private Map<String, ?> parameters = new HashMap<String, Object>();
-	
-	@Override
-	public void init(Map<String, ?> params) {
-		this.parameters = params;
-		init();
-	}
-	
-	@Override
-	public void init() {
-	}
-	
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			value = parameters.get(name);
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
-	}
 
 }

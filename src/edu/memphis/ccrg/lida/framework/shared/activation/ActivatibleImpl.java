@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -24,7 +25,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * @author Javier Snaider
  * 
  */
-public class ActivatibleImpl implements Activatible {
+public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	
 	private static final Logger logger = Logger.getLogger(ActivatibleImpl.class.getCanonicalName());
 	private static final ElementFactory factory = ElementFactory.getInstance();

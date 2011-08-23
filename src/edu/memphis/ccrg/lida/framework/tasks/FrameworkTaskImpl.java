@@ -10,7 +10,6 @@
  */
 package edu.memphis.ccrg.lida.framework.tasks;
  
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +34,6 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	 * {@link TaskStatus} of this task
 	 */
 	protected TaskStatus status = TaskStatus.WAITING;
-	private Map<String, ? extends Object> parameters;
 	private TaskSpawner controllingTS;
 	private long scheduledTick;
     private final String taskName;
@@ -148,38 +146,6 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	@Override
 	public void stopRunning() {
 		setTaskStatus(TaskStatus.CANCELED);
-	}
-	
-	@Override
-	public void init(Map<String, ?> parameters) {
-		this.parameters = parameters;
-		init();
-	}
-
-	/**
-	 * This is a convenience method to initialize Tasks. It is called from init(Map<String, Object> parameters). 
-	 * Subclasses can overwrite this method in order to initialize the FrameworkTask
-	 */
-	@Override
-	public void init() {
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			if(parameters.containsKey(name)){
-				value = parameters.get(name);
-			}else{
-				logger.log(Level.WARNING, "Cannot find parameter with name: \"{1}\" for task: \"{2}\". " +
-						"\nCheck the parameter name in the factory task definition and/or its agent xml file declaration",
-						new Object[]{TaskManager.getCurrentTick(),name, toString()});
-			}
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
 	}
 	
 	@Override

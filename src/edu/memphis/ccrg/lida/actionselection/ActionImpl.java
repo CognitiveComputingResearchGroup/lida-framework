@@ -7,7 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection;
 
-import java.util.Map;
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 
 /**
  * Default implementation of {@link Action}
@@ -16,12 +16,11 @@ import java.util.Map;
  * @author Javier Snaider
  * 
  */
-public class ActionImpl implements Action {
+public class ActionImpl extends InitializableImpl implements Action {
 
 	private static int idGenerator = 0;
 	private int id;
 	private String label;
-	private Map<String, ?> parameters;
 
 	/**
 	 * Default constructor
@@ -52,24 +51,6 @@ public class ActionImpl implements Action {
 	@Override
 	public int getId() {
 		return id;
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = parameters.get(name);
-		if(value == null){
-			return defaultValue;
-		}
-		return value;
-	}
-
-	@Override
-	public void init(Map<String, ?> params) {
-		parameters = params;		
-	}
-
-	@Override
-	public void init() {		
 	}
 	
 }

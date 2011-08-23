@@ -7,7 +7,6 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +33,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	 * {@link PamNode} in {@link PerceptualAssociativeMemory} which grounds this {@link Node}
 	 */
 	protected PamNode groundingPamNode;
-	private Map<String, ?> parameters;
 	
 	/**
 	 * Default constructor
@@ -55,7 +53,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		this.groundingPamNode = n.groundingPamNode;
 		this.label=n.label;
 		this.desirability=n.desirability;
-		this.parameters = n.parameters;
 		name = label + "["+id+"]";
 
 	}
@@ -150,28 +147,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			desirability = d;
 		}
 	}
-
-	@Override
-	public void init(Map<String, ?> params) {
-		this.parameters = params;
-		init();
-	}
-
-	@Override
-	public void init() {
-	}
-	
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			value = parameters.get(name);
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
-	}
 	
 	/**
 	 * Updates the values of this NodeImpl based on the passed in Node.  
@@ -187,7 +162,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			label = other.label;
 			desirability = other.desirability;
 			groundingPamNode = other.groundingPamNode;
-			parameters = other.parameters;
 		} 
 	}
 

@@ -1,0 +1,53 @@
+package edu.memphis.ccrg.lida.framework.initialization;
+
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+
+/**
+ * Default implementation of {@link Initializable}
+ * @author Ryan J. McCall
+ */
+public class InitializableImpl implements Initializable {
+
+	private static final Logger logger = Logger.getLogger(InitializableImpl.class.getCanonicalName());
+	private Map<String, ?> parameters;
+	
+	@Override
+	public void init(Map<String, ?> params) {
+		parameters = params;
+		init();
+	}
+
+	/**
+	 * This is a convenience method for custom initialization. It is called from {@link #init(Map)}. 
+	 * Subclasses can overwrite this method and call {@link #getParam(String, Object)} to access parameters by name.
+	 */
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public Object getParam(String name, Object defaultValue) {
+		Object value = null;
+		if (parameters != null) {
+			if(parameters.containsKey(name)){
+				value = parameters.get(name);
+			}else{
+				logger.log(Level.WARNING, "Cannot find parameter with name: \"{1}\" for Initializable: \"{2}\". " +
+						"\nCheck the parameter name in the factory definition and/or agent xml file declaration",
+						new Object[]{TaskManager.getCurrentTick(),name, toString()});
+			}
+		}else{
+			logger.log(Level.WARNING, "Parameters for {1} have not been initialized", 
+					new Object[]{TaskManager.getCurrentTick(), toString()});
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return value;
+	}
+
+}

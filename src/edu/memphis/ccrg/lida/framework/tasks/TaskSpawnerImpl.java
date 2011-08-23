@@ -9,13 +9,12 @@ package edu.memphis.ccrg.lida.framework.tasks;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 
 /**
@@ -25,7 +24,7 @@ import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
  * 
  * @author Javier Snaider
  */
-public class TaskSpawnerImpl implements TaskSpawner {
+public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
 
 	private static final Logger logger = Logger.getLogger(TaskSpawnerImpl.class
 			.getCanonicalName());
@@ -36,8 +35,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	 * The tasks currently running tasks this TaskSpawner manages
 	 */
 	private Set<FrameworkTask> runningTasks = new ConcurrentHashSet<FrameworkTask>();
-
-	private Map<String, ?> parameters = new HashMap<String, Object>();
 
 	/**
 	 * This default constructor is used by the {@link AgentXmlFactory}.
@@ -161,28 +158,6 @@ public class TaskSpawnerImpl implements TaskSpawner {
 	@Override
 	public boolean containsTask(FrameworkTask task) {
 		return runningTasks.contains(task);
-	}
-
-	@Override
-	public void init(Map<String, ?> params) {
-		this.parameters = params;
-		init();
-	}
-
-	@Override
-	public void init() {
-	}
-
-	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			value = parameters.get(name);
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return value;
 	}
 
 }
