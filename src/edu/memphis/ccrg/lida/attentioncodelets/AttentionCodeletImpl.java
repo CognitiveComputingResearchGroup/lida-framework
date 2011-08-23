@@ -54,8 +54,8 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
         Integer refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_CODELET_REFRACTORY_PERIOD);
         setRefractoryPeriod(refractoryPeriod);
 
-        double initialActivation = (Double) getParam("initialActivation", getActivation());
-        setActivation(initialActivation);
+        double initialBaseLevelActivation = (Double) getParam("baseLevelActivation", getBaseLevelActivation());
+        setBaseLevelActivation(initialBaseLevelActivation);
     }
 
     @Override
@@ -80,7 +80,7 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
         if (bufferContainsSoughtContent(currentSituationalModel)) {
             NodeStructure csmContent = retrieveWorkspaceContent(currentSituationalModel);
             if (csmContent.getLinkableCount() > 0) {
-                Coalition coalition = new CoalitionImpl(csmContent, getActivation(), this);
+                Coalition coalition = new CoalitionImpl(csmContent, getBaseLevelActivation(), this);
                 globalWorkspace.addCoalition(coalition);
                 logger.log(Level.FINER, "{1} adds new coalition with activation {2}",
                         new Object[]{TaskManager.getCurrentTick(), this, coalition.getActivation()});
