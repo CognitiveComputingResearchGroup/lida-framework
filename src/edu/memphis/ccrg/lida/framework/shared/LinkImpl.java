@@ -49,7 +49,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	 */
 	protected PamLink groundingPamLink;
 	
-	private Map<String, ?> params;
+	private Map<String, ?> parameters;
 	
 	/**
 	 * Default constructor
@@ -85,13 +85,13 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 		source = l.getSource();
 		category = l.getCategory();
 		groundingPamLink = l.getGroundingPamLink();
-		params = l.params;
+		parameters = l.parameters;
 		updateExtendedId();
 	}
 
 	@Override
 	public void init(Map<String, ?> params) {
-		this.params = params;
+		this.parameters = params;
 		init();
 	}
 
@@ -102,15 +102,15 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 	@Override
 	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
-		if (params != null) {
-			value = params.get(name);
+		if (parameters != null) {
+			value = parameters.get(name);
 		}
 		if (value == null) {
 			value = defaultValue;
 		}
 		return value;
 	}
-
+	
 	/*
 	 * Refreshes this Link's ExtendedId based on its category, source, and sink.
 	 */
@@ -242,7 +242,7 @@ public class LinkImpl extends ActivatibleImpl implements Link {
 			this.extendedId = other.extendedId;
 			this.category = other.category;
 			this.groundingPamLink = other.groundingPamLink;
-			this.params = other.params;
+			this.parameters = other.parameters;
 		}
 	}
 

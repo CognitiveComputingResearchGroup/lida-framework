@@ -116,8 +116,8 @@
 			</class>
 			<param name="rnd" type="double">0.03</param>
 		</task>
-		<task name="BasicAttention">
-			<class>edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet
+		<task name="NeighborhoodAttentionCodelet">
+			<class>edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet
 			</class>
 		</task>
 	</tasks>

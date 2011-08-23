@@ -31,7 +31,7 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
     @Override
 	public void init() {
 		super.init();
-		super.attentionThreshold = 0.0;
+		super.attentionThreshold = 0.0;//want nodes regardless of their activation
 		
 		String nodeLabels = (String) getParam("nodes", null);
 		if (nodeLabels != null) {
@@ -71,6 +71,5 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
                 new Object[]{TaskManager.getCurrentTick(), this});
         return true;
     }
-    
    
 }

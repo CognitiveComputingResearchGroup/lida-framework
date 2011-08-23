@@ -38,7 +38,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 			.getLogger(AttentionCodeletModule.class.getCanonicalName());
 	private static ElementFactory factory = ElementFactory.getInstance();
 
-	private static final String DEFAULT_CODELET_TYPE = BasicAttentionCodelet.class.getSimpleName();
+	private static final String DEFAULT_CODELET_TYPE = NeighborhoodAttentionCodelet.class.getSimpleName();
 	private String defaultCodeletType = DEFAULT_CODELET_TYPE;
 
 	private static final double DEFAULT_CODELET_ACTIVATION = 1.0;
@@ -46,6 +46,9 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	
 	private static final double DEFAULT_CODELET_REMOVAL_THRESHOLD = -1.0;
 	private double codeletRemovalThreshold = DEFAULT_CODELET_REMOVAL_THRESHOLD;
+	
+	private static final double DEFAULT_CODELET_REINFORCEMENT = 0.5;
+	private double codeletReinforcement = DEFAULT_CODELET_REINFORCEMENT;
 	
 	private Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
 		
@@ -69,6 +72,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		defaultCodeletType = (String) getParam("attentionModule.defaultCodeletType", DEFAULT_CODELET_TYPE);
 		codeletActivation = (Double) getParam("attentionModule.codeletActivation", DEFAULT_CODELET_ACTIVATION);
 		codeletRemovalThreshold = (Double) getParam("attentionModule.codeletRemovalThreshold", DEFAULT_CODELET_REMOVAL_THRESHOLD);
+		codeletReinforcement = (Double) getParam("attentionModule.codeletReinforcement",DEFAULT_CODELET_REINFORCEMENT);		
 	}
 	
 	@Override
@@ -145,12 +149,8 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 		// to figure out how to create coalitions and detect that something was
 		// "deleted"
 	}
-
-	//TODO params
-	//TODO Reinforcement amount might be a function of the broadcast
-	private static final double DEFAULT_CODELET_REINFORCEMENT = 0.5;
-	private double codeletReinforcement = DEFAULT_CODELET_REINFORCEMENT;
 	
+	//TODO Reinforcement amount might be a function of the broadcast
 	/**
 	 * Performs learning based on the {@link AttentionCodelet} that created the current</br>
 	 * winning {@link Coalition}
@@ -184,9 +184,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		
+		//TODO
 	}
-
-
-
+	
 }

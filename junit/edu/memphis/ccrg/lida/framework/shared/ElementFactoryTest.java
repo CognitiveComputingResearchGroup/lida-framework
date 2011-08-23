@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
@@ -203,11 +203,11 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testAddCodeletType1() {
-		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(NeighborhoodAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
 				"winwin", new HashMap<String, Object>(), new HashMap<ModuleName, String>());
 		factory.addFrameworkTaskType(taskDef);
 		Codelet foo = (Codelet)factory.getFrameworkTask("winwin", null);
-		assertTrue(foo instanceof BasicAttentionCodelet);
+		assertTrue(foo instanceof NeighborhoodAttentionCodelet);
 		assertTrue(factory.containsTaskType("winwin"));
 	}
 
@@ -530,14 +530,14 @@ public class ElementFactoryTest {
 
 	@Test
 	public void testGetCodelet0() {
-		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(NeighborhoodAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
 				"testType", new HashMap<String, Object>(), new HashMap<ModuleName, String>());
 		factory.addFrameworkTaskType(taskDef);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("Hello", 500);
 		
 		Codelet c = (Codelet)factory.getFrameworkTask("testType","","", 100, 0.66, 0.77, params,null);
-		assertTrue(c instanceof BasicAttentionCodelet);
+		assertTrue(c instanceof NeighborhoodAttentionCodelet);
 		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
@@ -554,7 +554,7 @@ public class ElementFactoryTest {
 		assertTrue(c.getDecayStrategy() instanceof LinearDecayStrategy);
 		assertTrue(c.getExciteStrategy() instanceof LinearExciteStrategy);
 		
-		assertTrue(c instanceof BasicAttentionCodelet);
+		assertTrue(c instanceof NeighborhoodAttentionCodelet);
 		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
@@ -571,7 +571,7 @@ public class ElementFactoryTest {
 		assertTrue(t.getDecayStrategy() instanceof LinearDecayStrategy);
 		assertTrue(t.getExciteStrategy() instanceof LinearExciteStrategy);
 		
-		assertTrue(t instanceof BasicAttentionCodelet);
+		assertTrue(t instanceof NeighborhoodAttentionCodelet);
 		assertEquals(t.getTicksPerRun(), 100);
 		assertTrue(t.getActivation() == 0.66);
 		assertTrue(t.getActivatibleRemovalThreshold() == 0.77);

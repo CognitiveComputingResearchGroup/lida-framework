@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodelet;
-import edu.memphis.ccrg.lida.attentioncodelets.BasicAttentionCodelet;
+import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.mockclasses.ExecutingMockTaskSpawner;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockBroadcastListener;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
@@ -44,7 +44,7 @@ public class GlobalWorkspaceImplTest {
 	private LinkImpl l;
 	private ExecutingMockTaskSpawner ts;
 	private MockBroadcastListener listener;
-	private AttentionCodelet codelet = new BasicAttentionCodelet();
+	private AttentionCodelet codelet = new NeighborhoodAttentionCodelet();
 
 	@Before
 	public void setUp() throws Exception {

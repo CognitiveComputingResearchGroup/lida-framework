@@ -99,9 +99,9 @@ public class AttentionCodeletModuleTest{
 		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_READ_FROM);
 		assoc.put(ModuleName.GlobalWorkspace, ModuleUsage.TO_WRITE_TO);
 		
-		FrameworkTaskDef taskDef = new FrameworkTaskDef(BasicAttentionCodelet.class.getCanonicalName(), 1, 
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(NeighborhoodAttentionCodelet.class.getCanonicalName(), 1, 
 				new HashMap<String, String>(), 
-				"BasicAttentionCodelet", new HashMap<String, Object>(), assoc);
+				"NeighborhoodAttentionCodelet", new HashMap<String, Object>(), assoc);
 		factory.addFrameworkTaskType(taskDef);
 	}
 	
@@ -117,7 +117,7 @@ public class AttentionCodeletModuleTest{
 	public void testGetDefaultCodelet() {
 		//Without associated modules 
 		AttentionCodeletImpl codelet = (AttentionCodeletImpl) attentionModule.getDefaultCodelet();		
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		
 		assertEquals(null, globalWorkspace.coalition);
 		
@@ -144,8 +144,8 @@ public class AttentionCodeletModuleTest{
 		attentionModule.setAssociatedModule(workspace, null);
 		attentionModule.setAssociatedModule(globalWorkspace, null);
 		
-		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("BasicAttentionCodelet");	
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("NeighborhoodAttentionCodelet");	
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		assertEquals(100, codelet.getParam("arg0", 100));
 		
 		assertEquals(null, globalWorkspace.coalition);
@@ -162,8 +162,8 @@ public class AttentionCodeletModuleTest{
 		params.put("arg0", 10.0);
 		params.put("name", "Javier");
 		
-		AttentionCodelet codelet = attentionModule.getCodelet("BasicAttentionCodelet", params);
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		AttentionCodelet codelet = attentionModule.getCodelet("NeighborhoodAttentionCodelet", params);
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		assertEquals(10.0, codelet.getParam("arg0", null));
 		assertEquals("Javier", codelet.getParam("name", null));
 		
@@ -186,13 +186,13 @@ public class AttentionCodeletModuleTest{
 		params.put("name", "Javier");
 		
 		AttentionCodelet codelet = attentionModule.getDefaultCodelet(params);
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		assertEquals(10.0, codelet.getParam("arg0", null));
 		assertEquals("Javier", codelet.getParam("name", null));
 		
 		params = null;
 		codelet = attentionModule.getDefaultCodelet(params);
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		assertEquals(20.0, codelet.getParam("arg0", 20.0));
 		assertEquals("Ryan", codelet.getParam("name", "Ryan"));
 	}
@@ -240,12 +240,12 @@ public class AttentionCodeletModuleTest{
 	@Test
 	public void testSetDefaultCodeletType() {
 		AttentionCodelet codelet = attentionModule.getDefaultCodelet();
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		
 		attentionModule.setDefaultCodeletType("34t90j");
 		
 		codelet = attentionModule.getDefaultCodelet();
-		assertTrue(codelet instanceof BasicAttentionCodelet);
+		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
 		
 		assertTrue(factory.containsTaskType("coolCodelet"));
 		attentionModule.setDefaultCodeletType("coolCodelet");

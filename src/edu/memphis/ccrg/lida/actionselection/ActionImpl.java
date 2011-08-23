@@ -21,7 +21,7 @@ public class ActionImpl implements Action {
 	private static int idGenerator = 0;
 	private int id;
 	private String label;
-	private Map<String, ?> actionParameters;
+	private Map<String, ?> parameters;
 
 	/**
 	 * Default constructor
@@ -56,7 +56,7 @@ public class ActionImpl implements Action {
 
 	@Override
 	public Object getParam(String name, Object defaultValue) {
-		Object value = actionParameters.get(name);
+		Object value = parameters.get(name);
 		if(value == null){
 			return defaultValue;
 		}
@@ -64,8 +64,8 @@ public class ActionImpl implements Action {
 	}
 
 	@Override
-	public void init(Map<String, ?> parameters) {
-		this.actionParameters = parameters;		
+	public void init(Map<String, ?> params) {
+		parameters = params;		
 	}
 
 	@Override

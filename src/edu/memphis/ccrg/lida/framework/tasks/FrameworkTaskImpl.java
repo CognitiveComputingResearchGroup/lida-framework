@@ -168,12 +168,15 @@ public abstract class FrameworkTaskImpl extends LearnableImpl implements Framewo
 	public Object getParam(String name, Object defaultValue) {
 		Object value = null;
 		if (parameters != null) {
-			value = parameters.get(name);
+			if(parameters.containsKey(name)){
+				value = parameters.get(name);
+			}else{
+				logger.log(Level.WARNING, "Cannot find parameter with name: \"{1}\" for task: \"{2}\". " +
+						"\nCheck the parameter name in the factory task definition and/or its agent xml file declaration",
+						new Object[]{TaskManager.getCurrentTick(),name, toString()});
+			}
 		}
 		if (value == null) {
-			logger.log(Level.WARNING, "Cannot find parameter with name: \"{1}\" for task: \"{2}\". " +
-					"\nCheck the parameter`s name in the task`s factory definition and/or its agent xml file declaration",
-					new Object[]{TaskManager.getCurrentTick(),name, toString()});
 			value = defaultValue;
 		}
 		return value;

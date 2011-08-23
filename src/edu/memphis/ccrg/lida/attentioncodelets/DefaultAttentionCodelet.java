@@ -28,10 +28,10 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	 */
 	protected double attentionThreshold = DEFAULT_ATTENTION_THRESHOLD;
 	
-	private static final int DEFAULT_RETRIEVAL_DEPTH = 1;
+	private static final int DEFAULT_RETRIEVAL_DEPTH = 0;
 	/**
-	 * Depth of content from the sought content the attention codelet will
-	 * return
+	 * Depth of content beyond the sought content the attention codelet will
+	 * return.  Currently only supported for one level beyond sought content
 	 */
 	protected int retrievalDepth = DEFAULT_RETRIEVAL_DEPTH;
 
@@ -40,6 +40,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 		super.init();
 		attentionThreshold = (Double) getParam("attentionThreshold",
 				DEFAULT_ATTENTION_THRESHOLD);
+		retrievalDepth = (Integer) getParam("retrievalDepth", DEFAULT_RETRIEVAL_DEPTH);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
 		for (Node n : ns.getNodes()) {
 			double activation = n.getActivation();
-			if (activation > attentionThreshold
+			if (activation >= attentionThreshold
 					&& activation > winnerActivation) {
 				winner = n;
 				winnerActivation = activation;
@@ -76,7 +77,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 			for (Node n : soughtContent.getNodes()) {// typically a small number
 				if (bufferNS.containsNode(n)) {
 					retrievedSubGraph.addDefaultNode(bufferNS.getNode(n.getId()));
-					if(retrievalDepth > 1){
+					if(retrievalDepth > DEFAULT_RETRIEVAL_DEPTH){
 						getNeighbors(bufferNS, retrievedSubGraph, n);
 					}
 				}
@@ -91,7 +92,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	private void getNeighbors(NodeStructure bufferNS, NodeStructure retrievedSubGraph, Node n) {
 		Map<Linkable, Link> sinks = bufferNS.getConnectedSinks(n);
 		for (Linkable sink : sinks.keySet()) {
-			if (sink instanceof Node && sink.getActivation() > attentionThreshold){
+			if (sink instanceof Node && sink.getActivation() >= attentionThreshold){
 				retrievedSubGraph.addDefaultNode((Node) sink);
 				Link connectingLink = sinks.get(sink);
 				retrievedSubGraph.addDefaultLink(connectingLink);
@@ -100,7 +101,7 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 
 		Map<Node, Link> sources = bufferNS.getConnectedSources(n);
 		for (Node source : sources.keySet()) {
-			if(source.getActivation() > attentionThreshold){
+			if(source.getActivation() >= attentionThreshold){
 				retrievedSubGraph.addDefaultNode(source);
 				Link connectingLink = sources.get(source);
 				retrievedSubGraph.addDefaultLink(connectingLink);
