@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -49,6 +50,14 @@ public abstract class AttentionCodeletImpl extends CodeletImpl implements
     public AttentionCodeletImpl() {
     }
 
+    /**
+	 * Will set parameters with the following names:</br></br>
+     * 
+     * refractoryPeriod</br> period in ticks that will pass after this codelet creates a coaltion before it can create another
+     * baseLevelActivation</br> initial base-level activation
+     * 
+     * @see InitializableImpl#init()
+	 */
     @Override
     public void init() {
         Integer refractoryPeriod = (Integer) getParam("refractoryPeriod", DEFAULT_CODELET_REFRACTORY_PERIOD);

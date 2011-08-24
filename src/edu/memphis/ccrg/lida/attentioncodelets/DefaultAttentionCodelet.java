@@ -10,11 +10,13 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Default {@link AttentionCodelet} which seeks content above a threshold
- * to create a coalition from.
+ * Default {@link AttentionCodelet} which seeks to create a {@link Coalition}
+ * from the most activate content above a threshold.
  * @author Ryan J. McCall
  */
 public class DefaultAttentionCodelet extends AttentionCodeletImpl {
@@ -24,17 +26,26 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 
 	private static final double DEFAULT_ATTENTION_THRESHOLD = 0.5;
 	/**
-	 * Threshold which content must have in order to be added to the coalition
+	 * Activation which content must have in order to be added to the {@link Coalition}
 	 */
 	protected double attentionThreshold = DEFAULT_ATTENTION_THRESHOLD;
 	
 	private static final int DEFAULT_RETRIEVAL_DEPTH = 0;
 	/**
-	 * Depth of content beyond the sought content the attention codelet will
-	 * return.  Currently only supported for one level beyond sought content
+	 * Depth of content, beyond the sought content, the attention codelet will
+	 * add to a {@link Coalition}.  
+	 * Currently only supported for one level beyond sought content.
 	 */
 	protected int retrievalDepth = DEFAULT_RETRIEVAL_DEPTH;
 
+	/**
+	 * Will set parameters with the following names:</br></br>
+     * 
+     * attentionThreshold</br> threshold content must have to be added to a {@link Coalition}
+     * retrievalDepth</br> depth of neighboring nodes retrieved from most active content
+     * 
+     * @see AttentionCodeletImpl#init()
+	 */
 	@Override
 	public void init() {
 		super.init();
@@ -43,6 +54,10 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 		retrievalDepth = (Integer) getParam("retrievalDepth", DEFAULT_RETRIEVAL_DEPTH);
 	}
 
+	/**
+	 * Returns true if specified buffer contains at least one node above {@link #attentionThreshold}.
+	 * Sets the most activated node as the codelet's new sought content
+	 */
 	@Override
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		soughtContent.clearNodeStructure();
@@ -67,6 +82,10 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 		return false;
 	}
 
+	/**
+	 * Returns a the most active {@link WorkspaceContent} and possibly neighboring 
+	 * content as specified by {@link #retrievalDepth}s
+	 */
 	@Override
 	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer) {
 		NodeStructure bufferNS = buffer.getBufferContent(null);

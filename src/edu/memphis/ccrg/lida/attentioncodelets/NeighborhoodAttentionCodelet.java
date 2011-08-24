@@ -19,8 +19,8 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
- * Creates {@link Coalition}s if the nodes specified in the 'nodes' parameter are present.
- * The resulting {@link Coalition} includes these nodes and their neighbors.
+ * An {@link AttentionCodelet} that seeks to create {@link Coalition}s from its sought content.
+ * The resulting {@link Coalition} includes these nodes and possibly neighbors nodes.
  * 
  * @author Ryan J. McCall
  */
@@ -28,6 +28,13 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
 
     private static final Logger logger = Logger.getLogger(NeighborhoodAttentionCodelet.class.getCanonicalName());
 
+    /**
+	 * Will set parameters with the following names:</br></br>
+     * 
+     * nodes</br>Labels of nodes that comprise this codelet's sought content
+     * 
+     * @see DefaultAttentionCodelet#init()
+	 */
     @Override
 	public void init() {
 		super.init();

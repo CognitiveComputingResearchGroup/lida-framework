@@ -10,42 +10,35 @@ package edu.memphis.ccrg.lida.framework.initialization;
 import java.util.Map;
 
 /**
- * An object which can be configured in particular ways.
- * 
+ * An object that can be configured with parameters.
  * @author Ryan J. McCall
  */
 public interface Initializable {
 
 	/**
-	 * This method initializes the module with parameters specified in agent.xml
+	 * Initialize this object with parameters.
 	 * 
-	 * @param parameters
-	 *            Map of parameters indexed by String names
+	 * @see AgentXmlFactory
+	 * @param parameters Map of parameters indexed by their String names
 	 */
 	public void init(Map<String, ?> parameters);
-
-	// TODO add another map for default parameters. first will be
-	// runtime-specified parameters.
+//	TODO add another map for default parameters. first will be runtime-specified parameters.
 
 	/**
-	 * This is a convenience method to initialize this Object. It is called from
-	 * init(Map<String, Object> parameters). Subclasses can overwrite this
-	 * method in order to initialize this Object. But make sure to call
-	 * super.init(); at the beginning of the implementation of this method.
-	 * 
+	 * This is a convenience method to initialize this Object with parameters. 
+	 * It is called from {@link #init(Map)}.
+	 * Subclasses can overwrite this method and initialize their parameters. 
+	 * Make sure to call super.init() at the beginning of this method 
+	 * so the {@link #init()} method of superclasses will run.
 	 */
 	public void init();
 
 	/**
-	 * A convenience method to read parameters from the Map of properties set
-	 * with the init() method.
-	 * 
-	 * @param name
-	 *            the parameter name
-	 * @param defaultValue
-	 *            the default value to be returned if the parameter doesn't
-	 *            exist.
-	 * @return the value of the parameter or the default value.
+	 * Method to read parameters from the Map of properties set 
+	 * by the {@link #init(Map)} method.
+	 * @param name the parameter name
+	 * @param defaultValue the default value to be returned if the parameter doesn't exist
+	 * @return the value of the parameter or the default value
 	 */
 	public Object getParam(String name, Object defaultValue);
 
