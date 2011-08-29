@@ -39,11 +39,13 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	protected int retrievalDepth = DEFAULT_RETRIEVAL_DEPTH;
 
 	/**
+	 * If this method is overridden, this init must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
      * 
-     * attentionThreshold<br/> threshold content must have to be added to a {@link Coalition}
-     * retrievalDepth<br/> depth of neighboring nodes retrieved from most active content
-     * 
+     * <b>attentionThreshold</b> threshold content must have to be added to a {@link Coalition}<br/> 
+     * <b>retrievalDepth</b> depth of neighboring nodes retrieved from most active content<br/><br/>
+     * If any parameter is not specified its default value will be used.
+     *  
      * @see AttentionCodeletImpl#init()
 	 */
 	@Override

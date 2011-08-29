@@ -198,10 +198,10 @@ public class ElementFactory {
 		defaultStrategies.put("excite", defaultExciteType);
 		
 		Map<String, Object> params= new HashMap<String, Object>();
-		params.put("baseLevelDecayStrategy", "noDecay");
-		params.put("baseLevelExciteStrategy", "noExcite");
-		params.put("baseLevelRemovalThreshold", -1.0);
-		params.put("baseLevelActivation", 0.0);
+		params.put("learnable.baseLevelDecayStrategy", "noDecay");
+		params.put("learnable.baseLevelExciteStrategy", "noExcite");
+		params.put("learnable.baseLevelRemovalThreshold", -1.0);
+		params.put("learnable.baseLevelActivation", 0.0);
 		
 		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
 		addNodeType(newNodeDef);

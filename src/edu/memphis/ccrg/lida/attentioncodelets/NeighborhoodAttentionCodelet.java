@@ -29,9 +29,11 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
     private static final Logger logger = Logger.getLogger(NeighborhoodAttentionCodelet.class.getCanonicalName());
 
     /**
+     * If this method is overridden, this init must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
      * 
-     * nodes<br/>Labels of nodes that comprise this codelet's sought content
+     * <b>nodes</b> Labels of nodes that comprise this codelet's sought content<br/><br/>
+     * If any parameter is not specified its default value will be used.
      * 
      * @see DefaultAttentionCodelet#init()
 	 */

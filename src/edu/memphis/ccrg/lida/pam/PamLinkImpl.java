@@ -32,7 +32,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	/*
 	 * Private Learnable object used for all learnable methods
 	 */
-	private Learnable learnable;
+	private LearnableImpl learnable;
 	
 	/**
 	 * Default constructor
@@ -54,31 +54,11 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 	}
 
 	/** 
-	 * This init method sets the following values from the parameters in the 
-	 * Factorydata.xml file:
-	 * 
-	 * baseLevelDecayStrategy: a String with the factory name of the DecayStrategy
-	 * baseLevelExciteStrategy: a String with the factory name of the ExciteStrategy
-	 * baseLevelRemovalThreshold: a double value. -1.0 for no removal
-	 * baseLevelActivation: a double value between 0.0 and 1.0;
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeImpl#init()
+	 * Calls the {@link #init()} of the internal {@link Learnable}
 	 */
 	@Override
 	public void init(){
-		ElementFactory factory = ElementFactory.getInstance();
-		
-	    String strategyName = (String)getParam("baseLevelDecayStrategy","defaultDecay");
-		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));
-		
-	    strategyName = (String)getParam("baseLevelExciteStrategy","defaultExcite");
-		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
-		
-		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		learnable.setBaseLevelRemovalThreshold(threshold);
-
-		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnable.setBaseLevelActivation(activation);	
+		learnable.init(getParameters());
 	}
 
 	@Override

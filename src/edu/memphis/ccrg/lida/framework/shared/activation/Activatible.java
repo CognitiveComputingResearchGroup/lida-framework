@@ -9,6 +9,7 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 
 import java.io.Serializable;
 
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
@@ -19,7 +20,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  * @author Ryan J McCall
  *
  */
-public interface Activatible extends Serializable {
+public interface Activatible extends Serializable, Initializable {
 	
 	/**
 	 * Default removal threshold for {@link Activatible} 

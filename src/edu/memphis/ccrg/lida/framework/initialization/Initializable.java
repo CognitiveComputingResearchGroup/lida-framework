@@ -41,5 +41,11 @@ public interface Initializable {
 	 * @return the value of the parameter or the default value
 	 */
 	public Object getParam(String name, Object defaultValue);
+	
+	/**
+	 * Returns the Map of parameters of this initializable
+	 * @return the Map of parameters
+	 */
+	public Map<String, ?> getParameters();
 
 }

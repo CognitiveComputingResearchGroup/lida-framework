@@ -118,10 +118,10 @@ public class FactoriesDataXmlLoaderTest {
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
-				+ "<param name=\"baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
-				+ "<param name=\"baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
-				+ "<param name=\"baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
-				+ "<param name=\"baseLevelActivation\" type=\"double\">0.1</param> "
+				+ "<param name=\"learnable.baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
+				+ "<param name=\"learnable.baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
+				+ "<param name=\"learnable.baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
+				+ "<param name=\"learnable.baseLevelActivation\" type=\"double\">0.1</param> "
 				+ "</node>" + "<node name=\"NodeImpl\">"
 				+ "<class>edu.memphis.ccrg.lida.pam.PamNodeImpl2</class>"
 				+ "<defaultstrategy>strategy4</defaultstrategy>"
@@ -144,7 +144,7 @@ public class FactoriesDataXmlLoaderTest {
 		assertEquals("strategy2", def.getDefaultStrategies().get("decay"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(4, def.getParams().size());
-		assertEquals("slowDecay", def.getParams().get("baseLevelDecayStrategy"));
+		assertEquals("slowDecay", def.getParams().get("learnable.baseLevelDecayStrategy"));
 
 		def = linkables.get("NodeImpl");
 		assertNotNull(def);
@@ -164,10 +164,10 @@ public class FactoriesDataXmlLoaderTest {
 				+ "<defaultstrategy>strategy1</defaultstrategy>"
 				+ "<defaultstrategy>strategy2</defaultstrategy>"
 				+ "<defaultstrategy>strategy3</defaultstrategy>"
-				+ "<param name=\"baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
-				+ "<param name=\"baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
-				+ "<param name=\"baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
-				+ "<param name=\"baseLevelActivation\" type=\"double\">0.1</param> </node>";
+				+ "<param name=\"learnable.baseLevelDecayStrategy\" type=\"string\">slowDecay</param>"
+				+ "<param name=\"learnable.baseLevelExciteStrategy\" type=\"string\">slowExcite</param>"
+				+ "<param name=\"learnable.baseLevelRemovalThreshold\" type=\"double\">0.0</param>"
+				+ "<param name=\"learnable.baseLevelActivation\" type=\"double\">0.1</param> </node>";
 
 		Element e = parseDomElement(xml);
 
@@ -181,7 +181,7 @@ public class FactoriesDataXmlLoaderTest {
 		assertEquals("strategy2", def.getDefaultStrategies().get("decay"));
 		assertFalse(def.getDefaultStrategies().containsKey("strategy3"));
 		assertEquals(4, def.getParams().size());
-		assertEquals("slowDecay", def.getParams().get("baseLevelDecayStrategy"));
+		assertEquals("slowDecay", def.getParams().get("learnable.baseLevelDecayStrategy"));
 	}
 
 	@Test

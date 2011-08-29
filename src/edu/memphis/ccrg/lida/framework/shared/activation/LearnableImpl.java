@@ -13,15 +13,12 @@ package edu.memphis.ccrg.lida.framework.shared.activation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.attentioncodelets.AttentionCodeletImpl;
 import edu.memphis.ccrg.lida.framework.initialization.Initializable;
-import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
-import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * 
@@ -86,10 +83,11 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	}
 	
 	/**
+	 * If this method is overridden, this init must be called first! i.e. super.init();
 	 * Will set parameters with the following names:<br/><br/>
      * 
      * <b>learnable.baseLevelActivation</b> initial base-level activation<br/>
-     * <b>learnable.removalThreshold</b> initial removal threshold<br/>
+     * <b>learnable.baseLevelRemovalThreshold</b> initial removal threshold<br/>
      * <b>learnable.baseLevelDecayStrategy</b> name of base-level decay strategy<br/>
      * <b>learnable.baseLevelExciteStrategy</b> name of base-level excite strategy<br/>
      * <b>learnable.totalActivationStrategy</b> name of total activation strategy<br/><br/>
@@ -100,7 +98,7 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	@Override
 	public void init(){
 		baseLevelActivation = (Double) getParam("learnable.baseLevelActivation",DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnableRemovalThreshold = (Double) getParam("learnable.removalThreshold", DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
+		learnableRemovalThreshold = (Double) getParam("learnable.baseLevelRemovalThreshold", DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
 		String decayName = (String) getParam("learnable.baseLevelDecayStrategy", factory.getDefaultDecayType());
 		baseLevelDecayStrategy = factory.getDecayStrategy(decayName);
 		

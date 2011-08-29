@@ -32,10 +32,6 @@ public class UpdateCsmBackgroundTask extends FrameworkTaskImpl {
 	private Workspace workspace;
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
 		if (module instanceof Workspace) {
 			workspace = (Workspace) module;

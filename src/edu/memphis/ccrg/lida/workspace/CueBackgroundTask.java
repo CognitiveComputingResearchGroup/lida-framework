@@ -41,6 +41,7 @@ public class CueBackgroundTask extends FrameworkTaskImpl {
 
 	@Override
 	public void init() {
+		super.init();
 		actThreshold = (Double) getParam("workspace.actThreshold",
 				DEFAULT_ACT_THRESHOLD);
 	}

@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.framework.initialization;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,7 @@ public class InitializableImpl implements Initializable {
 	/**
 	 * This is a convenience method for custom initialization. It is called from {@link #init(Map)}. 
 	 * Subclasses can overwrite this method and call {@link #getParam(String, Object)} to access parameters by name.
+	 * If this method is overridden, the init of the superclass must be called first.
 	 */
 	@Override
 	public void init() {
@@ -48,6 +50,11 @@ public class InitializableImpl implements Initializable {
 			value = defaultValue;
 		}
 		return value;
+	}
+
+	@Override
+	public Map<String, ?> getParameters() {
+		return (parameters!=null)?Collections.unmodifiableMap(parameters):null ;
 	}
 
 }

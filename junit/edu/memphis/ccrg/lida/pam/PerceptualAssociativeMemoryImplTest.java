@@ -96,6 +96,10 @@ public class PerceptualAssociativeMemoryImplTest {
 			@Override
 			public void init() {
 			}
+			@Override
+			public Map<String, ?> getParameters() {
+				return null;
+			}
 		};
 		
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
