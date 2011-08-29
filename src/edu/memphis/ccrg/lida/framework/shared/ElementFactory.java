@@ -192,27 +192,29 @@ public class ElementFactory {
 				NoExciteStrategy.class.getCanonicalName(), strategyName,
 				new HashMap<String, Object>(), exciteStrategyType, true));
 		
+		//Default TotalActivation strategy
+		strategyName="DefaultTotalActivation";
+		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), 
+				strategyName, new HashMap<String, Object>(), "other", true);
+		addStrategy(strategyName, strategyDef);
+		
 		//Non-decaying PamNode and PamLink
 		Map<String, String> defaultStrategies = new HashMap<String, String>();
 		defaultStrategies.put("decay", defaultDecayType);
 		defaultStrategies.put("excite", defaultExciteType);
 		
 		Map<String, Object> params= new HashMap<String, Object>();
+		params.put("learnable.baseLevelActivation", 0.0);
+		params.put("learnable.baseLevelRemovalThreshold", -1.0);
 		params.put("learnable.baseLevelDecayStrategy", "noDecay");
 		params.put("learnable.baseLevelExciteStrategy", "noExcite");
-		params.put("learnable.baseLevelRemovalThreshold", -1.0);
-		params.put("learnable.baseLevelActivation", 0.0);
+		params.put("learnable.totalActivationStrategy", strategyName);
 		
 		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
 		addNodeType(newNodeDef);
 		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
 		addLinkType(newLinkDef);
-		
-		//Default TotalActivation strategy
-		strategyName="DefaultTotalActivation";
-		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), 
-				strategyName, new HashMap<String, Object>(), "other", true);
-		addStrategy(strategyName, strategyDef);
+
 	}
 
 	/**

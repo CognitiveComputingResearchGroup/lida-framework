@@ -37,7 +37,14 @@ public class BasicSensoryMotorMemoryInitializer implements Initializer {
         
         for(String key: params.keySet()){
 	    	if(key.startsWith("smm.")){
-	    		String smmDef = (String) params.get(key);
+	    		Object value = params.get(key);
+	    		String smmDef = "";
+	    		if(value instanceof String){
+	    			smmDef = (String) params.get(key);
+	    		}else{
+	    			logger.log(Level.WARNING, "Parameter name: " + key + " started with smm. but did not contain a valid def");
+	    			continue;
+	    		}
 	    		logger.log(Level.INFO, "loading smm action-algorithm mapping: {0}", smmDef);
 	    		String[] elements = smmDef.split(",");
 	    		if(elements.length == 2){
