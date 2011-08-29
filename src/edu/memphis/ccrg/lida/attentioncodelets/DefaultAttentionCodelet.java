@@ -39,10 +39,10 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	protected int retrievalDepth = DEFAULT_RETRIEVAL_DEPTH;
 
 	/**
-	 * Will set parameters with the following names:</br></br>
+	 * Will set parameters with the following names:<br/><br/>
      * 
-     * attentionThreshold</br> threshold content must have to be added to a {@link Coalition}
-     * retrievalDepth</br> depth of neighboring nodes retrieved from most active content
+     * attentionThreshold<br/> threshold content must have to be added to a {@link Coalition}
+     * retrievalDepth<br/> depth of neighboring nodes retrieved from most active content
      * 
      * @see AttentionCodeletImpl#init()
 	 */

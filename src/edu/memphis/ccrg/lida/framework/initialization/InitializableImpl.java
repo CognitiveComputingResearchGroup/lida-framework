@@ -37,7 +37,7 @@ public class InitializableImpl implements Initializable {
 				value = parameters.get(name);
 			}else{
 				logger.log(Level.WARNING, "Cannot find parameter with name: \"{1}\" for Initializable: \"{2}\". " +
-						"\nCheck the parameter name in the factory definition and/or agent xml file declaration",
+						"\nCheck the parameter name in the configuration files",
 						new Object[]{TaskManager.getCurrentTick(),name, toString()});
 			}
 		}else{

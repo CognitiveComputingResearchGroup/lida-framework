@@ -82,9 +82,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	/**
 	 * This module can accept parameters for the decay and excite strategies for
-	 * behaviors instantiated in this module.  The parameters names are:<br></br>
+	 * behaviors instantiated in this module.  The parameters names are:<br><br/>
 	 * 
-	 * <b>proceduralMemory.schemeActivationStrategy</b> - name of {@link SchemeActivationStrategy} in the {@link ElementFactory}</br>
+	 * <b>proceduralMemory.schemeActivationStrategy</b> - name of {@link SchemeActivationStrategy} in the {@link ElementFactory}<br/>
 	 * <b>proceduralMemory.behaviorDecayStrategy</b> - name (a String) of the {@link Strategy} in the {@link ElementFactory} <br>
 	 * <b>proceduralMemory.behaviorExciteStrategy</b> - name (a String) of the {@link Strategy} in the {@link ElementFactory} 
 	 * 

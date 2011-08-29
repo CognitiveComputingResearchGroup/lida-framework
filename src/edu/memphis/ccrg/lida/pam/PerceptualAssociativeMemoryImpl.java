@@ -131,13 +131,13 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	}
 
 	/**
-     * Will set parameters with the following names:</br></br>
+     * Will set parameters with the following names:<br/><br/>
      * 
-     * pam.Upscale</br>
-     * pam.Downscale</br>
-     * pam.Selectivity</br>
-     * pam.excitationTicksPerRun</br>
-     * pam.propagationTicksPerRun</br>
+     * pam.Upscale<br/>
+     * pam.Downscale<br/>
+     * pam.Selectivity<br/>
+     * pam.excitationTicksPerRun<br/>
+     * pam.propagationTicksPerRun<br/>
      * 
      * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
      */

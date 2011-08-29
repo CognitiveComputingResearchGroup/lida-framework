@@ -50,9 +50,9 @@ public class BasicSensoryMotorMemory extends FrameworkModuleImpl implements
 	}
 
 	/**
-     * Will set parameters with the following names:</br></br>
+     * Will set parameters with the following names:<br/><br/>
      * 
-     * smm.backgroundTaskTicks</br>
+     * smm.backgroundTaskTicks<br/>
      * 
      * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
      */

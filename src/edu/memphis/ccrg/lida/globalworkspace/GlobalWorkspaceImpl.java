@@ -67,10 +67,10 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     }
     
     /**
-     * Will set the parameters with the following names:</br></br>
+     * Will set the parameters with the following names:<br/><br/>
      * 
-     * globalWorkspace.coalitionRemovalThreshold</br>
-     * globalWorkspace.coalitionDecayStrategy</br>
+     * globalWorkspace.coalitionRemovalThreshold<br/>
+     * globalWorkspace.coalitionDecayStrategy<br/>
      * globalWorkspace.refractoryPeriod
      * 
      * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()

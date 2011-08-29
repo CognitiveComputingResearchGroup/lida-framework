@@ -220,10 +220,10 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
      * @param panel
      *            the panel to add.
      * @param panelPosition
-     *            Determines where the panel is going to be placed. </br> A:
-     *            Upper Left position. </br> B: Upper Right position. In a new
-     *            TAB</br> C: Lower position. In a new TAB</br> TOOL: In the
-     *            ToolBox </br> FLOAT: In a new frame. </br>
+     *            Determines where the panel is going to be placed. <br/> A:
+     *            Upper Left position. <br/> B: Upper Right position. In a new
+     *            TAB<br/> C: Lower position. In a new TAB<br/> TOOL: In the
+     *            ToolBox <br/> FLOAT: In a new frame. <br/>
      */
     private void addGuiPanel(GuiPanel panel, String panelPosition) {
         final JPanel jPanel = panel.getPanel();

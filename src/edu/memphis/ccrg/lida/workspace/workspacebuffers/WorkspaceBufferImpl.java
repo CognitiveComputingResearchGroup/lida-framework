@@ -38,10 +38,10 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 	}
 	
 	/**
-     * Will set parameters with the following names:</br></br>
+     * Will set parameters with the following names:<br/><br/>
      * 
-     * workspaceBuffer.nodeType</br>
-     * workspaceBuffer.linkType</br>
+     * workspaceBuffer.nodeType<br/>
+     * workspaceBuffer.linkType<br/>
      * 
      * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
      */

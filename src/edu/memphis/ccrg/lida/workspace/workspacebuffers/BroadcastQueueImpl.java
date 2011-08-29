@@ -45,9 +45,9 @@ public class BroadcastQueueImpl extends FrameworkModuleImpl implements Broadcast
 	}
 
 	/**
-	 * Will set parameters with the following names:</br></br>
+	 * Will set parameters with the following names:<br/><br/>
 	 * 
-	 * workspace.broadcastQueueCapacity</br>
+	 * workspace.broadcastQueueCapacity<br/>
 	 * 
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */

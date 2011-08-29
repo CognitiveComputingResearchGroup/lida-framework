@@ -59,13 +59,12 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	}
 	
 	/**
-     * Will set parameters with the following names:</br></br>
+     * Will set parameters with the following names:<br/><br/>
      * 
-     * attentionModule.defaultCodeletType</br>
-     * attentionModule.codeletActivation</br>
-     * attentionModule.codeletRemovalThreshold
-     * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
+     * <b>attentionModule.defaultCodeletType</b><br/>
+     * <b>attentionModule.codeletActivation</b><br/>
+     * <b>attentionModule.codeletRemovalThreshold</b><br/>
+     * <b>attentionModule.codeletReinforcement</b><br/>
      */
 	@Override
 	public void init() {
@@ -152,7 +151,7 @@ public class AttentionCodeletModule extends FrameworkModuleImpl implements
 	
 	//TODO Reinforcement amount might be a function of the broadcast
 	/**
-	 * Performs learning based on the {@link AttentionCodelet} that created the current</br>
+	 * Performs learning based on the {@link AttentionCodelet} that created the current<br/>
 	 * winning {@link Coalition}
 	 * @param winningCoalition current {@link Coalition} winning competition for consciousness
 	 */

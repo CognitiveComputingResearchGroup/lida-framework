@@ -29,9 +29,9 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
     private static final Logger logger = Logger.getLogger(NeighborhoodAttentionCodelet.class.getCanonicalName());
 
     /**
-	 * Will set parameters with the following names:</br></br>
+	 * Will set parameters with the following names:<br/><br/>
      * 
-     * nodes</br>Labels of nodes that comprise this codelet's sought content
+     * nodes<br/>Labels of nodes that comprise this codelet's sought content
      * 
      * @see DefaultAttentionCodelet#init()
 	 */

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
+import edu.memphis.ccrg.lida.framework.initialization.Initializable;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -64,17 +65,16 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	}
 
 	/**
-     * Will set parameters with the following names:</br></br>
+	 * Will set parameters with the following names:<br/><br/>
      * 
-     * actionSelection.refractoryperiodTicks</br>
-     * actionSelection.candidateThreshold</br>
-     * actionSelection.removalThreshold</br>
-     * actionSelection.backgroundTaskTicksPerRun</br>
-     * actionSelection.behaviorDecayStrategy</br>
-     * actionSelection.thresholdDecayRate
-     * 
-     * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
-     */
+     * <b>actionSelection.refractoryperiodTicks</b> refractory period of action selection<br/>
+     * <b>actionSelection.candidateThreshold</b> threshold to be considered for selection<br/>
+     * <b>actionSelection.removalThreshold</b> threshold for elements to remain active in the action selection module<br/>
+     * <b>actionSelection.backgroundTaskTicksPerRun</b> frequency of possible action selection<br/>
+     * <b>actionSelection.behaviorDecayStrategy</b> decay strategy of behaviors in this module<br/>
+     * <b>actionSelection.thresholdDecayRate</b> decay rate of candidate threshold<br/><br/>
+     * If any parameter is not specified its default value will be used.
+	 */
 	@Override
 	public void init() {
 		refractoryPeriodTicks = (Integer) getParam(

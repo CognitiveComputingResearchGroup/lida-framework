@@ -68,11 +68,11 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	}	
 
 	/**
-     * Will set parameters with the following names:</br></br>
+     * Will set parameters with the following names:<br/><br/>
      * 
-     * tem.numOfHardLoc</br>
-     * tem.addressLength</br>
-     * tem.wordLength</br>
+     * tem.numOfHardLoc<br/>
+     * tem.addressLength<br/>
+     * tem.wordLength<br/>
      * tem.activationRadius
      * 
      * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
