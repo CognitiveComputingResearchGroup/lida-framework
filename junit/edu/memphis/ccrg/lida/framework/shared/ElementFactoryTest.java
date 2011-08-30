@@ -528,6 +528,7 @@ public class ElementFactoryTest {
 		assertTrue(n instanceof PamNodeImpl);
 	}
 
+	//TODO test various parameter possibilities
 	@Test
 	public void testGetCodelet0() {
 		FrameworkTaskDef taskDef = new FrameworkTaskDef(NeighborhoodAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),

@@ -986,8 +986,6 @@ public class ElementFactory {
 			exciteB=defaultExciteType;
 		}
 		int ticksPerRun = taskDef.getTicksPerRun();
-		
-		
 		return getFrameworkTask(taskType,decayB,exciteB,ticksPerRun,Activatible.DEFAULT_ACTIVATION,Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD,params,modules);
 	}
 	
@@ -1042,11 +1040,15 @@ public class ElementFactory {
 				}
 			}
 			
-			if (params != null && params.size() != 0){
-				task.init(params);
-			}else{ //Use default parameters from the factoriesData.xml file
-				task.init(taskDef.getParams());
+			Map<String, Object> mergedParams = new HashMap<String, Object>();
+			Map<String, Object> defParams = taskDef.getParams();
+			if(defParams != null){
+				mergedParams.putAll(defParams);
 			}
+			if(params != null){ //Order matters! Overwrite defParams with argument parameters
+				mergedParams.putAll(params);
+			}
+			task.init(mergedParams);
 			
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
