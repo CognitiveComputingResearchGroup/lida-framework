@@ -21,6 +21,7 @@ public class FrameworkTaskImplTest {
 
 	private MockFrameworkTask task1;
 	private MockTaskSpawner taskSpawner;
+	private double epsilon=10e-9;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -68,30 +69,6 @@ public class FrameworkTaskImplTest {
 	public void testStopRunning() {
 		task1.stopRunning();
 		assertEquals(TaskStatus.CANCELED, task1.getTaskStatus());
-	}
-
-	@Test
-	public void testInitMap() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("arg0", 10.0);
-		params.put("name", "Javier");
-		
-		task1.init(params);
-		
-		assertEquals(10.0, task1.getParam("arg0", null));
-		assertEquals("Javier", task1.getParam("name", null));
-	}
-
-	@Test
-	public void testGetParam() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("arg0", 10.0);
-		params.put("name", "Javier");
-		
-		task1.init(params);
-		
-		assertEquals(5, task1.getParam("sdflkj", 5));
-		assertNotSame(true, task1.getParam("name", true));
 	}
 
 	@Test

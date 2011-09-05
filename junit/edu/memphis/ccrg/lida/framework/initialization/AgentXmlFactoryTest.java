@@ -45,6 +45,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl;
 public class AgentXmlFactoryTest {
 
 	private AgentXmlFactory factory;
+	private double epsilon=10e-9;
 
 	@Before
 	public void setUp() throws Exception {
@@ -121,8 +122,8 @@ public class AgentXmlFactoryTest {
 		assertEquals(1, spawners.size());
 		TaskSpawner ts = (TaskSpawner) spawners.get("defaultTS");
 		assertTrue(ts != null);
-		assertEquals("50", ts.getParam("param1", null));
-		assertEquals(50, ts.getParam("param2", null));
+		assertEquals("50", ts.getParam("param1", ""));
+		assertEquals(50, (int)ts.getParam("param2", 0));
 	}
 
 	@Test
@@ -145,12 +146,12 @@ public class AgentXmlFactoryTest {
 		assertEquals(2, spawners.size());
 		TaskSpawner ts = (TaskSpawner) spawners.get("defaultTS");
 		assertTrue(ts != null);
-		assertEquals("50", ts.getParam("param1", null));
-		assertEquals(50, ts.getParam("param2", null));
+		assertEquals("50", ts.getParam("param1", ""));
+		assertEquals(50, (int)ts.getParam("param2", 0));
 		ts = (TaskSpawner) spawners.get("nodefaultTS");
 		assertTrue(ts != null);
-		assertEquals("40", ts.getParam("param1", null));
-		assertEquals(4, ts.getParam("param2", null));
+		assertEquals("40", ts.getParam("param1", ""));
+		assertEquals(4, (int)ts.getParam("param2", 0));
 	}
 
 	@Test
@@ -182,8 +183,8 @@ public class AgentXmlFactoryTest {
 		assertEquals(ModuleName.PerceptualAssociativeMemory, module
 				.getModuleName());
 		assertEquals(ts, module.getAssistingTaskSpawner());
-		assertEquals(0.7, module.getParam("pam.Upscale", null));
-		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", null));
+		assertEquals(0.7, module.getParam("pam.Upscale", 0.0), epsilon);
+		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", ""));
 		assertEquals(module, toAssociate.get(0)[0]);
 		assertEquals("Workspace", toAssociate.get(0)[1]);
 		assertEquals(module, toInitialize.get(0)[0]);
@@ -257,21 +258,21 @@ public class AgentXmlFactoryTest {
 		assertEquals(ModuleName.PerceptualAssociativeMemory, module.getModuleName());
 		assertEquals(ts, module.getAssistingTaskSpawner());
 		
-		assertEquals(0.7, module.getParam("pam.Upscale", null));
-		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", null));
-		assertEquals(5, module.getParam("eParam", 5));
+		assertEquals(0.7, module.getParam("pam.Upscale", 0.0), epsilon);
+		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", ""));
+		assertEquals(5, (int)module.getParam("eParam", 5));
 		
 		//Submodules
 		FrameworkModule eBuffer = module.getSubmodule(ModuleName.getModuleName("NewEpisodicBuffer"));
 		assertTrue(eBuffer instanceof WorkspaceBufferImpl);
-		assertEquals(0.01, eBuffer.getParam("eParam", null));
-		assertEquals(999, eBuffer.getParam("pam.Upscale", 999));
+		assertEquals(0.01, eBuffer.getParam("eParam", 0.0), epsilon);
+		assertEquals(999, (int)eBuffer.getParam("pam.Upscale", 999));
 		assertEquals(fancyts, eBuffer.getAssistingTaskSpawner());
 		
 		FrameworkModule pBuffer = module.getSubmodule(ModuleName.getModuleName("NewPerceptualBuffer"));
 		assertTrue(pBuffer instanceof WorkspaceBufferImpl);
-		assertEquals(0.02, pBuffer.getParam("pParam", null));
-		assertEquals(999, pBuffer.getParam("pam.Upscale", 999));
+		assertEquals(0.02, pBuffer.getParam("pParam", 0.0), epsilon);
+		assertEquals(999, (int)pBuffer.getParam("pam.Upscale", 999));
 		assertEquals(superFancyTS, pBuffer.getAssistingTaskSpawner());
 		
 		assertEquals(pBuffer, toInitialize.get(0)[0]);
@@ -285,7 +286,7 @@ public class AgentXmlFactoryTest {
 //		FrameworkTask cueBackgroundTask = ts.tasks.get(0);
 //		assertTrue(cueBackgroundTask instanceof CueBackgroundTask);
 //		assertEquals(15, cueBackgroundTask.getTicksPerRun());
-//		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", null));
+//		assertEquals(0.4, cueBackgroundTask.getParam("taskParameter", 0.0), epsilon);
 //		assertEquals(5, cueBackgroundTask.getParam("pam.Selectivity", 5));
 //		FrameworkTask mockTask = ts.tasks.get(1);
 //		assertTrue(mockTask instanceof MockFrameworkTask);
@@ -407,15 +408,15 @@ public class AgentXmlFactoryTest {
 		assertEquals(ModuleName.PerceptualAssociativeMemory, module.getModuleName());
 		assertEquals(ts, module.getAssistingTaskSpawner());
 		
-		assertEquals(0.7, module.getParam("pam.Upscale", null));
-		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", null));
-		assertEquals(5, module.getParam("eParam", 5));
+		assertEquals(0.7, module.getParam("pam.Upscale", 0.0), epsilon);
+		assertEquals("PamNodeImpl", module.getParam("pam.newNodeType", ""));
+		assertEquals(5, (int)module.getParam("eParam", 5));
 		
 		//Submodules
 		FrameworkModule eBuffer = module.getSubmodule(ModuleName.getModuleName("NewEpisodicBuffer"));
 		assertTrue(eBuffer instanceof WorkspaceBufferImpl);
-		assertEquals(0.01, eBuffer.getParam("eParam", null));
-		assertEquals(999, eBuffer.getParam("pam.Upscale", 999));
+		assertEquals(0.01, eBuffer.getParam("eParam", 0.0), epsilon);
+		assertEquals(999, (int)eBuffer.getParam("pam.Upscale", 999));
 		assertEquals(fancyts, eBuffer.getAssistingTaskSpawner());
 		
 		FrameworkModule pBuffer = module.getSubmodule(ModuleName.getModuleName("NewPerceptualBuffer"));
@@ -423,8 +424,8 @@ public class AgentXmlFactoryTest {
 		
 		pBuffer = eBuffer.getSubmodule(ModuleName.getModuleName("NewPerceptualBuffer"));
 		assertTrue(pBuffer instanceof WorkspaceBufferImpl);
-		assertEquals(0.02, pBuffer.getParam("pParam", null));
-		assertEquals(999, pBuffer.getParam("pam.Upscale", 999));
+		assertEquals(0.02, pBuffer.getParam("pParam", 0.0), epsilon);
+		assertEquals(999, (int)pBuffer.getParam("pam.Upscale", 999));
 		assertEquals(superFancyTS, pBuffer.getAssistingTaskSpawner());
 		
 		assertEquals(pBuffer, toInitialize.get(0)[0]);
@@ -506,16 +507,16 @@ public class AgentXmlFactoryTest {
 		FrameworkModule eBuffer = modules.get(0);
 		assertTrue(eBuffer instanceof WorkspaceBufferImpl);
 		assertEquals(ModuleName.getModuleName("NewEpisodicBuffer"), eBuffer.getModuleName());
-		assertEquals(0.01, eBuffer.getParam("eParam", null));
-		assertEquals(999, eBuffer.getParam("pam.Upscale", 999));
+		assertEquals(0.01, eBuffer.getParam("eParam", 0.0), epsilon);
+		assertEquals(999, (int)eBuffer.getParam("pam.Upscale", 999));
 		assertEquals(fancyts, eBuffer.getAssistingTaskSpawner());
 		
 		
 		FrameworkModule pBuffer = modules.get(1);
 		assertTrue(pBuffer instanceof WorkspaceBufferImpl);
 		assertEquals(ModuleName.getModuleName("NewPerceptualBuffer"), pBuffer.getModuleName());
-		assertEquals(0.02, pBuffer.getParam("pParam", null));
-		assertEquals(999, pBuffer.getParam("pam.Upscale", 999));
+		assertEquals(0.02, pBuffer.getParam("pParam", 0.0), epsilon);
+		assertEquals(999, (int)pBuffer.getParam("pam.Upscale", 999));
 		assertEquals(superFancyTS, pBuffer.getAssistingTaskSpawner());
 		
 		assertEquals(pBuffer, toInitialize.get(0)[0]);

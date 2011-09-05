@@ -952,7 +952,7 @@ public class ElementFactory {
 	
 	/**
 	 * Returns a new {@link FrameworkTask} having specified attributes. FrameworkTask
-	 *  will have strategies specified for the taskType
+	 *  will have strategies specified for the taskType. Task will not have any associate modules.
 	 * @param taskType type of FrameworkTask
 	 * @param params optional parameters to be set in object's init method
 	 * @return the new {@link FrameworkTask}
@@ -1034,8 +1034,8 @@ public class ElementFactory {
 					if(module!=null){
 						task.setAssociatedModule(module, associatedModules.get(mName));
 					}else{
-						logger.log(Level.WARNING, "Error associating module to FrameworkTask", TaskManager
-								.getCurrentTick());
+						logger.log(Level.WARNING, "Could not associate module {1} to FrameworkTask {2}. Module was not found in 'modules' map", 
+								new Object[]{TaskManager.getCurrentTick(),mName, task});
 					}
 				}
 			}

@@ -35,7 +35,7 @@ public class BasicAttentionCodelet extends AttentionCodeletImpl {
     @Override
     public void init() {
         super.init();
-        String nodeLabels = (String) getParam("nodes", null);
+        String nodeLabels = (String) getParam("nodes", "");
         if (nodeLabels != null) {
             GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
             String[] labels = nodeLabels.split(",");

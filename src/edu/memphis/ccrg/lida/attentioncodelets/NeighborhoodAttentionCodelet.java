@@ -42,7 +42,7 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
 		super.init();
 		super.attentionThreshold = 0.0;//want nodes regardless of their activation
 		
-		String nodeLabels = (String) getParam("nodes", null);
+		String nodeLabels = (String) getParam("nodes", "");
 		if (nodeLabels != null) {
             GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
             String[] labels = nodeLabels.split(",");

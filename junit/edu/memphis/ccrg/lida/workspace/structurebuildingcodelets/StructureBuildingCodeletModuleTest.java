@@ -42,6 +42,7 @@ public class StructureBuildingCodeletModuleTest {
 	private Link link1;
 	private NodeStructure ns;
 	private MockStructureBuildingCodeletImpl codelet;
+	private double epsilon=.000001;
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	@Before
@@ -151,7 +152,7 @@ public class StructureBuildingCodeletModuleTest {
 		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
-		assertEquals(100, codelet.getParam("arg0", 100));
+		assertEquals(100, (int)codelet.getParam("arg0", 100));
 	}
 
 	@Test
@@ -169,7 +170,7 @@ public class StructureBuildingCodeletModuleTest {
 		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
-		assertEquals(10.0, codelet.getParam("arg0", 100));
+		assertEquals(10.0, (double)codelet.getParam("arg0", 0.0), epsilon);
 		
 		Map<ModuleName,String> assoc =  new HashMap<ModuleName, String>();
 		assoc.put(ModuleName.CurrentSituationalModel, ModuleUsage.TO_READ_FROM);

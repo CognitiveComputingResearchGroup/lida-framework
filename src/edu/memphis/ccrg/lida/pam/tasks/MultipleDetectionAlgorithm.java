@@ -71,7 +71,7 @@ public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl imple
 	@Override
 	public void init (){
 		super.init();
-		String nodeLabels = (String) getParam("nodes", null);
+		String nodeLabels = (String) getParam("nodes", "");
 		if (nodeLabels != null) {
 			GlobalInitializer globalInitializer = GlobalInitializer
 					.getInstance();

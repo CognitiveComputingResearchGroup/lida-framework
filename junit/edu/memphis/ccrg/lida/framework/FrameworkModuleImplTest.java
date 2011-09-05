@@ -25,6 +25,7 @@ public class FrameworkModuleImplTest {
 	
 	private TestModule module;
 	private TestModule submodule;
+	private double epsilon=10e-9;
 	
 	private class TestModule extends FrameworkModuleImpl{
 		
@@ -81,32 +82,6 @@ public class FrameworkModuleImplTest {
 		TaskSpawner ts = new TaskSpawnerImpl();
 		module.setAssistingTaskSpawner(ts);
 		assertEquals(ts, module.getAssistingTaskSpawner());
-	}
-
-	@Test
-	public void testInitMap() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("arg0", 10.0);
-		params.put("name", "Javier");
-		
-		module.init(params);
-		
-		assertEquals(10.0, module.getParam("arg0", null));
-		assertEquals("Javier", module.getParam("name", null));
-		assertTrue(module.initCalled);
-	}
-
-	@Test
-	public void testGetParam() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("arg0", 10.0);
-		params.put("name", "Javier");
-		
-		module.init(params);
-		
-		assertEquals(5, module.getParam("sdflkj", 5));
-		assertNotSame(true, module.getParam("name", true));
-		assertTrue(module.initCalled);
 	}
 
 	@Test

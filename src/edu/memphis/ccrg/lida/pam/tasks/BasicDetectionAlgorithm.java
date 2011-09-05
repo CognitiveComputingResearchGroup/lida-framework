@@ -84,7 +84,7 @@ public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl
 	@Override
 	public void init() {
 		super.init();
-		String nodeLabel = (String) getParam("node", null);
+		String nodeLabel = (String) getParam("node", "");
 		if (nodeLabel != null) {
 			nodeLabel = nodeLabel.trim();
 			PamNode node = (PamNode) GlobalInitializer.getInstance()

@@ -25,6 +25,7 @@ public class TaskSpawnerImplTest {
 	private MockTaskManager tm;
 	private MockFrameworkTask task1;
 	private boolean initCalled;
+	private double epsilon=10e-9;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -236,45 +237,4 @@ public class TaskSpawnerImplTest {
 		assertEquals(1, taskSpawner.getRunningTasks().size());
 	}
 
-	@Test
-	public void testInitMap() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("arg0", 10.0);
-		params.put("name", "Javier");
-
-		taskSpawner=new TaskSpawnerImpl(){
-			@Override
-			public void init(){
-				initCalled = true;
-			}
-		};
-		
-		
-		taskSpawner.init(params);
-		
-		assertEquals(10.0, taskSpawner.getParam("arg0", null));
-		assertEquals("Javier", taskSpawner.getParam("name", null));
-		assertTrue(initCalled);
-	}
-
-	@Test
-	public void testGetParam() {
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("arg0", 10.0);
-		params.put("name", "Javier");
-		
-		taskSpawner=new TaskSpawnerImpl(){
-			@Override
-			public void init(){
-				initCalled = true;
-			}
-		};
-		
-		taskSpawner.init(params);
-	
-		assertEquals(5, taskSpawner.getParam("sdflkj", 5));
-		assertNotSame(true, taskSpawner.getParam("name", true));
-		assertTrue(initCalled);
-	}
 }

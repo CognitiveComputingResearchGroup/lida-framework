@@ -36,11 +36,12 @@ public interface Initializable {
 	/**
 	 * Method to read parameters from the Map of properties set 
 	 * by the {@link #init(Map)} method.
+	 * @param <T> expected type of the parameter
 	 * @param name the parameter name
 	 * @param defaultValue the default value to be returned if the parameter doesn't exist
 	 * @return the value of the parameter or the default value
 	 */
-	public Object getParam(String name, Object defaultValue);
+	public <T> T getParam(String name, T defaultValue);
 	
 	/**
 	 * Returns the Map of parameters of this initializable

@@ -31,12 +31,34 @@ public class InitializableImpl implements Initializable {
 	public void init() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
+	public <T> T getParam(String name, T defaultValue) {
+		if(defaultValue == null){
+			logger.log(Level.SEVERE, "Illegal argument: Default value cannot be null",
+						TaskManager.getCurrentTick());
+			throw new IllegalArgumentException("Illegal argument: Default value cannot be null");
+		}
+		
+		T value = null;
 		if (parameters != null) {
 			if(parameters.containsKey(name)){
-				value = parameters.get(name);
+				Object paramValue = parameters.get(name);
+				if(paramValue == null){
+					logger.log(Level.WARNING, "Parameter with name {1} has value null\nUsing default parameter value", 
+							new Object[]{TaskManager.getCurrentTick(), name});
+				}else{
+					Class<?> classType = defaultValue.getClass();
+					if(classType.isInstance(paramValue)){
+						value=(T)paramValue;
+					}else{
+						logger.log(Level.WARNING, 
+								"Parameter with name {1} has type {2} but type {3} was expected. Returning default value",
+								new Object[]{TaskManager.getCurrentTick(),name, 
+								paramValue.getClass().getCanonicalName(),
+								classType});					
+					}
+				}
 			}else{
 				logger.log(Level.WARNING, "Cannot find parameter with name: \"{1}\" for Initializable: \"{2}\". " +
 						"\nUsing default parameter value. If this is an error check the parameter name in the configuration files",

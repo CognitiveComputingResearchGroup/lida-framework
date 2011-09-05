@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -20,6 +21,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.AgentStarter;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
@@ -27,6 +29,7 @@ import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
 import edu.memphis.ccrg.lida.framework.initialization.FactoriesDataXmlLoader;
 import edu.memphis.ccrg.lida.framework.initialization.LinkableDef;
 import edu.memphis.ccrg.lida.framework.initialization.StrategyDef;
+import edu.memphis.ccrg.lida.framework.mockclasses.MockFrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -37,6 +40,7 @@ import edu.memphis.ccrg.lida.framework.strategies.SigmoidExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
+import edu.memphis.ccrg.lida.framework.tasks.MockFrameworkTask;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
@@ -542,8 +546,50 @@ public class ElementFactoryTest {
 		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
-		int hello = (Integer) c.getParam("Hello", null);
+		int hello = c.getParam("Hello", 0);
 		assertEquals(500, hello);
+	}
+	
+	@Test
+	public void testGetTaskWithParams() {
+		Map<String, Object> factoryParams = new HashMap<String, Object>();
+		factoryParams.put("Hello", 1);
+		factoryParams.put("Bye", false);
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(NeighborhoodAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"testType", factoryParams, new HashMap<ModuleName, String>());
+		factory.addFrameworkTaskType(taskDef);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Hello", 500);
+		
+		Codelet c = (Codelet)factory.getFrameworkTask("testType","","", 100, 0.66, 0.77, params,null);
+		assertTrue(c instanceof NeighborhoodAttentionCodelet);
+		assertEquals(c.getTicksPerRun(), 100);
+		assertTrue(c.getActivation() == 0.66);
+		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
+		int hello = c.getParam("Hello", 0);
+		assertEquals(500, hello);
+		assertFalse(c.getParam("Bye", true));
+	}
+	@Test
+	public void testGetTaskWithParams1() {
+		Map<String, Object> factoryParams = new HashMap<String, Object>();
+		factoryParams.put("Hello", 1);
+		factoryParams.put("Bye", false);
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(NeighborhoodAttentionCodelet.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"testType", factoryParams, new HashMap<ModuleName, String>());
+		factory.addFrameworkTaskType(taskDef);
+		
+		Map<String, Object> params = null;
+		
+		Codelet c = (Codelet)factory.getFrameworkTask("testType","","", 100, 0.66, 0.77, params,null);
+		assertTrue(c instanceof NeighborhoodAttentionCodelet);
+		assertEquals(c.getTicksPerRun(), 100);
+		assertTrue(c.getActivation() == 0.66);
+		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
+		int hello = c.getParam("Hello", 0);
+		assertEquals(1, hello);
+		assertFalse(c.getParam("Bye", true));
 	}
 
 	@Test
@@ -559,7 +605,7 @@ public class ElementFactoryTest {
 		assertEquals(c.getTicksPerRun(), 100);
 		assertTrue(c.getActivation() == 0.66);
 		assertTrue(c.getActivatibleRemovalThreshold() == 0.77);
-		int hello = (Integer) c.getParam("Hello", null);
+		int hello = (Integer) c.getParam("Hello", -1);
 		assertEquals(500, hello);
 	}
 
@@ -576,8 +622,69 @@ public class ElementFactoryTest {
 		assertEquals(t.getTicksPerRun(), 100);
 		assertTrue(t.getActivation() == 0.66);
 		assertTrue(t.getActivatibleRemovalThreshold() == 0.77);
-		int hello = (Integer) t.getParam("Hello", null);
+		int hello = (Integer) t.getParam("Hello", -1);
 		assertEquals(500, hello);
+	}
+	
+	@Test
+	public void testFrameworkTaskModules() {
+		Map<ModuleName, String> moduleDef = new HashMap<ModuleName, String>();
+		moduleDef.put(ModuleName.PerceptualAssociativeMemory, "toRead");
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(MockFrameworkTask.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"testType", new HashMap<String, Object>(), moduleDef);
+		factory.addFrameworkTaskType(taskDef);
+
+		Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
+		FrameworkModule fm = new MockFrameworkModule();
+		fm.setModuleName(ModuleName.PerceptualAssociativeMemory);
+		modulesMap.put(ModuleName.PerceptualAssociativeMemory,fm);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Hello", 500);
+		MockFrameworkTask t = (MockFrameworkTask) factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params,modulesMap);
+		
+		assertTrue(t.getDecayStrategy() instanceof LinearDecayStrategy);
+		assertTrue(t.getExciteStrategy() instanceof LinearExciteStrategy);
+		
+		assertTrue(t instanceof MockFrameworkTask);
+		assertEquals(t.getTicksPerRun(), 100);
+		assertTrue(t.getActivation() == 0.66);
+		assertTrue(t.getActivatibleRemovalThreshold() == 0.77);
+		int hello = (Integer) t.getParam("Hello", -1);
+		assertEquals(500, hello);
+		assertEquals("toRead", t.moduleUsage);
+		assertEquals(fm, t.associatedModule);
+	}
+	@Test
+	public void testFrameworkTaskModules2() {
+		Map<ModuleName, String> moduleDef = new HashMap<ModuleName, String>();
+		moduleDef.put(ModuleName.PerceptualAssociativeMemory, "toRead");
+		
+		FrameworkTaskDef taskDef = new FrameworkTaskDef(MockFrameworkTask.class.getCanonicalName(),1, new HashMap<String, String>(),
+				"testType", new HashMap<String, Object>(), moduleDef);
+		factory.addFrameworkTaskType(taskDef);
+
+		Map<ModuleName, FrameworkModule> modulesMap = new HashMap<ModuleName, FrameworkModule>();
+		FrameworkModule fm = new MockFrameworkModule();
+		fm.setModuleName(ModuleName.PerceptualAssociativeMemory);
+		//modulesMap.put(ModuleName.PerceptualAssociativeMemory,fm);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Hello", 500);
+		MockFrameworkTask t = (MockFrameworkTask) factory.getFrameworkTask("testType", "defaultDecay", "defaultExcite", 100, 0.66, 0.77, params,modulesMap);
+		
+		assertTrue(t.getDecayStrategy() instanceof LinearDecayStrategy);
+		assertTrue(t.getExciteStrategy() instanceof LinearExciteStrategy);
+		
+		assertTrue(t instanceof MockFrameworkTask);
+		assertEquals(t.getTicksPerRun(), 100);
+		assertTrue(t.getActivation() == 0.66);
+		assertTrue(t.getActivatibleRemovalThreshold() == 0.77);
+		int hello = (Integer) t.getParam("Hello", -1);
+		assertEquals(500, hello);
+		assertNull(t.moduleUsage);
+		assertNull(t.associatedModule);
 	}
 
 	@Test

@@ -56,6 +56,7 @@ public class AttentionCodeletModuleTest{
 	private Link link1;
 	private NodeStructure ns;
 	private MockAttentionCodeletImpl codelet;
+	private double epsilon=.000001;
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	@Before
@@ -146,7 +147,7 @@ public class AttentionCodeletModuleTest{
 		
 		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("NeighborhoodAttentionCodelet");	
 		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
-		assertEquals(100, codelet.getParam("arg0", 100));
+		assertEquals(100, (int)codelet.getParam("arg0", 100));
 		
 		assertEquals(null, globalWorkspace.coalition);
 		
@@ -164,8 +165,8 @@ public class AttentionCodeletModuleTest{
 		
 		AttentionCodelet codelet = attentionModule.getCodelet("NeighborhoodAttentionCodelet", params);
 		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
-		assertEquals(10.0, codelet.getParam("arg0", null));
-		assertEquals("Javier", codelet.getParam("name", null));
+		assertEquals(10.0, codelet.getParam("arg0", 0.0), epsilon);
+		assertEquals("Javier", codelet.getParam("name", ""));
 		
 		codelet = attentionModule.getCodelet("foo", params);
 		assertEquals(null, codelet);
@@ -174,8 +175,8 @@ public class AttentionCodeletModuleTest{
 		params.put("name", "Ryan");
 		codelet = (AttentionCodeletImpl) attentionModule.getCodelet("coolCodelet", params);
 		assertTrue(codelet instanceof MockAttentionCodeletImpl);
-		assertEquals(20.0, codelet.getParam("arg0", null));
-		assertEquals("Ryan", codelet.getParam("name", null));
+		assertEquals(20.0, codelet.getParam("arg0", 0.0), epsilon);
+		assertEquals("Ryan", codelet.getParam("name", ""));
 	}
 	
 
@@ -187,13 +188,13 @@ public class AttentionCodeletModuleTest{
 		
 		AttentionCodelet codelet = attentionModule.getDefaultCodelet(params);
 		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
-		assertEquals(10.0, codelet.getParam("arg0", null));
-		assertEquals("Javier", codelet.getParam("name", null));
+		assertEquals(10.0, (double)codelet.getParam("arg0", 0.0),epsilon);
+		assertEquals("Javier", codelet.getParam("name", ""));
 		
 		params = null;
 		codelet = attentionModule.getDefaultCodelet(params);
 		assertTrue(codelet instanceof NeighborhoodAttentionCodelet);
-		assertEquals(20.0, codelet.getParam("arg0", 20.0));
+		assertEquals(20.0, (double)codelet.getParam("arg0", 20.0),epsilon);
 		assertEquals("Ryan", codelet.getParam("name", "Ryan"));
 	}
 
