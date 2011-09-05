@@ -10,6 +10,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 /**
  * Default implementation of {@link Initializable}
  * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class InitializableImpl implements Initializable {
 
@@ -76,7 +77,7 @@ public class InitializableImpl implements Initializable {
 
 	@Override
 	public Map<String, ?> getParameters() {
-		return (parameters!=null)?Collections.unmodifiableMap(parameters):null ;
+		return (parameters!=null)?Collections.unmodifiableMap(parameters):null;
 	}
 
 }
