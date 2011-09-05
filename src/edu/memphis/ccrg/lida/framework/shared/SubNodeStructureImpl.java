@@ -26,7 +26,8 @@ public class SubNodeStructureImpl extends NodeStructureImpl{
 					Link l=connectedSinks.get(sink);
 					if(sink instanceof Node && sink.getActivation() > threshold)
 					{
-						((NodeStructureImpl)subNodeStructure).addNode(sink,true);		
+						//I commented this b/c of compilation error - Ryan
+//						((NodeStructureImpl)subNodeStructure).addNode(sink,true);		
 						((NodeStructureImpl)subNodeStructure).addDefaultLink(l);
 						
 					}
