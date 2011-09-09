@@ -1,0 +1,163 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+ * This program and the accompanying materials are made available 
+ * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
+ * which accompanies this distribution, and is available at
+ * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
+ *******************************************************************************/
+package edu.memphis.ccrg.lida.framework.tasks;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import edu.memphis.ccrg.lida.framework.initialization.AgentXmlFactory;
+import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
+import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
+
+/**
+ * Maintains a queue of running tasks and their task status. Methods to add and
+ * cancel tasks. This implementation actually uses {@link TaskManager} to
+ * execute the tasks.
+ * 
+ * @author Javier Snaider
+ */
+public class TaskSpawnerImpl extends InitializableImpl implements TaskSpawner {
+
+	private static final Logger logger = Logger.getLogger(TaskSpawnerImpl.class
+			.getCanonicalName());
+
+	private TaskManager taskManager;
+
+	/*
+	 * The tasks currently running tasks this TaskSpawner manages
+	 */
+	private Set<FrameworkTask> runningTasks = new ConcurrentHashSet<FrameworkTask>();
+
+	/**
+	 * This default constructor is used by the {@link AgentXmlFactory}.
+	 * {@link TaskManager} must be set using {@link TaskSpawner#setTaskManager(TaskManager)}
+	 */
+	public TaskSpawnerImpl() {
+	}
+
+	/**
+	 * Convenience constructor that sets the {@link TaskManager}
+	 * @param tm the {@link TaskManager} to set
+	 */
+	public TaskSpawnerImpl(TaskManager tm) {
+		taskManager = tm;
+	}
+
+	@Override
+	public void setTaskManager(TaskManager taskManager) {
+		this.taskManager = taskManager;
+	}
+
+	@Override
+	public void addTasks(Collection<? extends FrameworkTask> initialTasks) {
+		for (FrameworkTask r : initialTasks) {
+			addTask(r);
+		}
+	}
+
+	@Override
+	public void addTask(FrameworkTask task) {
+		task.setTaskStatus(TaskStatus.WAITING);
+		task.setControllingTaskSpawner(this);
+		runningTasks.add(task);
+		runTask(task);
+		logger.log(Level.FINEST, "Task {1} added", new Object[] {
+				TaskManager.getCurrentTick(), task });
+	}
+
+	/*
+	 * Schedule the FrameworkTask to be executed. Sets task status to RUNNING.
+	 * 
+	 * @param task
+	 */
+	private void runTask(FrameworkTask task) {
+		logger.log(Level.FINEST, "Running task {1}", new Object[] {
+				TaskManager.getCurrentTick(), task });
+		task.setTaskStatus(TaskStatus.RUNNING);
+		taskManager.scheduleTask(task, task.getNextTicksPerRun());
+	}
+
+	@Override
+	public void receiveFinishedTask(FrameworkTask task) {
+		switch (task.getTaskStatus()) {
+		case FINISHED_WITH_RESULTS:
+			processResults(task);
+			removeTask(task);
+			logger.log(Level.FINEST, "FINISHED_WITH_RESULTS {1}", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			break;
+		case FINISHED:
+			removeTask(task);
+			logger.log(Level.FINEST, "FINISHED {1}", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			break;
+		case CANCELED:
+			removeTask(task);
+			logger.log(Level.FINEST, "CANCELLED {1}", new Object[] {
+					TaskManager.getCurrentTick(), task });
+			break;
+		case WAITING:
+		case RUNNING:
+			logger.log(Level.FINEST, "RUNNING",
+					new Object[] { TaskManager.getCurrentTick(), task });
+			task.setTaskStatus(TaskStatus.WAITING);
+			runTask(task);
+			break;
+		}
+	}
+
+	/*
+	 * When a finished task is received and its status is FINISHED_WITH_RESULTS
+	 * or FINISHED or CANCELLED This method is called to remove the task from
+	 * this TaskSpawner
+	 * 
+	 * @param task
+	 *            the FrameworkTask to remove.
+	 */
+	private void removeTask(FrameworkTask task) {
+		logger.log(Level.FINEST, "Cancelling task {1}", new Object[] {
+				TaskManager.getCurrentTick(), task });
+		runningTasks.remove(task);
+	}
+
+	/**
+	 * When a finished Task is received and its status is FINISHED_WITH_RESULTS
+	 * This method is called to handle the results.
+	 * 
+	 * @param task the finished Task to process
+	 */
+	protected void processResults(FrameworkTask task) {
+	}
+
+	@Override
+	public Collection<FrameworkTask> getRunningTasks() {
+		return Collections.unmodifiableCollection(runningTasks);
+	}
+
+	/*
+	 * Removes FrameworkTask from runningTasks and tells TaskManager to cancel the
+	 * task
+	 */
+	@Override
+	public boolean cancelTask(FrameworkTask task) {
+		if(containsTask(task)){
+			removeTask(task);
+			return taskManager.cancelTask(task);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean containsTask(FrameworkTask task) {
+		return runningTasks.contains(task);
+	}
+
+}

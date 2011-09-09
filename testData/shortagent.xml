@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+    Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+    This program and the accompanying materials are made available 
+    under the terms of the LIDA Software Framework Non-Commercial License v1.0 
+    which accompanies this distribution, and is available at
+    http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
+ -->
+
+<lida xmlns="http://ccrg.cs.memphis.edu/LidaXMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ccrg.cs.memphis.edu/LidaXMLSchema LidaXMLSchema.xsd ">
+	<taskmanager>
+		<param name="taskManager.tickDuration" type="int">50 </param>
+		<param name="taskManager.maxNumberOfThreads" type="int"> 100</param>
+	</taskmanager>	<taskspawners>		<taskspawner name="defaultTS">			<class>edu.memphis.ccrg.lida.framework.tasks.TaskSpawnerImpl</class>		</taskspawner>	</taskspawners>	<submodules> 
+		<module name="PerceptualAssociativeMemory">
+			<class>edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl</class>
+			<param name="pam.Upscale" type="double">.7 </param>
+			<taskspawner>defaultTS</taskspawner>			<initializerclass>edu.memphis.ccrg.lida.example.framework.initialization.PamInitializer</initializerclass>
+		</module>
+		<module name="Workspace">
+			<class>edu.memphis.ccrg.lida.workspace.WorkspaceImpl</class>
+			<submodules>
+				<module name="EpisodicBuffer">
+					<class>edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBufferImpl</class>					<param name="removableThreshold" type="double">0.01 </param>
+					<taskspawner>defaultTS</taskspawner>				</module>
+			</submodules>
+			<taskspawner>defaultTS</taskspawner>			<initialTasks>				<task name="cueBackground">					<tasktype>CueBackgroundTask</tasktype>					<ticksperrun>15</ticksperrun>					<param name="workspace.actThreshold"  type="double">0.4</param>				</task>			</initialTasks>		</module>
+	</submodules>	<listeners>
+		<listener>
+			<listenertype>edu.memphis.ccrg.lida.pam.PamListener</listenertype>
+			<modulename>PerceptualAssociativeMemory</modulename>
+			<listenername>Workspace</listenername>
+		</listener>
+	</listeners>
+</lida>
