@@ -7,6 +7,8 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
+import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.episodicmemory.sdm.BitVectorUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,206 +27,244 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * overrides hashCode and equals.  Has a private {@link LearnableImpl} to help 
  * implement all {@link Learnable} methods.
  * @author Ryan J. McCall
+ * @author Rodrigo Silva-Lugo
  */
-public class PamNodeImpl extends NodeImpl implements PamNode{
-	
-	private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
-	
-	/*
-	 * Private Learnable object used for all learnable methods
-	 */
-	private LearnableImpl learnable;
-	
-	/**
-	 * Default constructor
-	 */
-	public PamNodeImpl() {
-		super();
-		groundingPamNode = this;
-		learnable = new LearnableImpl();
-	}
-	
-	/**
-	 * Copy constructor
-	 * @param pamNode source {@link PamNodeImpl}
-	 */
-	public PamNodeImpl(PamNodeImpl pamNode) {
-		super(pamNode);
-		groundingPamNode = this;
-		learnable = new LearnableImpl(pamNode.learnable);
-	}
+public class PamNodeImpl extends NodeImpl implements PamNode {
 
-	/** 
-	 * This init method sets the following values from the parameters in the 
-	 * Factorydata.xml file:
-	 * 
-	 * baseLevelDecayStrategy: a String with the factory name of the DecayStrategy
-	 * baseLevelExciteStrategy: a String with the factory name of the ExciteStrategy
-	 * baseLevelRemovalThreshold: a double value. -1.0 for no removal
-	 * baseLevelActivation: a double value between 0.0 and 1.0;
-	 * 
-	 * @see edu.memphis.ccrg.lida.framework.shared.NodeImpl#init()
-	 */
-	@Override
-	public void init(){
-		ElementFactory factory = ElementFactory.getInstance();
-		
-	    String strategyName = (String)getParam("baseLevelDecayStrategy","defaultDecay");
-		learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));
-		
-	    strategyName = (String)getParam("baseLevelExciteStrategy","defaultExcite");
-		learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
-		
-		double threshold = (Double)getParam("baseLevelRemovalThreshold",Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
-		learnable.setBaseLevelRemovalThreshold(threshold);
+    private static final Logger logger = Logger.getLogger(PamNodeImpl.class.getCanonicalName());
+    /*
+     * Private Learnable object used for all learnable methods
+     */
+    private LearnableImpl learnable;
+    private BitVector sdmId;
+    public static final int DEFAULT_BITVECTOR_LENGTH = 1000;
 
-		double activation = (Double)getParam("baseLevelActivation",Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
-		learnable.setBaseLevelActivation(activation);	
-	}
-	
-	@Override
-	public void updateNodeValues(Node n) {
-		if(n instanceof PamNodeImpl){
-			PamNodeImpl pn = (PamNodeImpl) n;
-			learnable = new LearnableImpl(pn.learnable);
-		}else if(n != null){
-			logger.log(Level.WARNING, "cannot set subclass-specific values. Required: {1} \n Received: {2}",
-					new Object[]{TaskManager.getCurrentTick(),PamNodeImpl.class.getCanonicalName(),n.getClass()});
-		}
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof PamNodeImpl){
-			return getId() == ((PamNodeImpl) obj).getId();
-		}
-		return false;
-	}
-	@Override
-	public int hashCode() { 
-	    return getId();
-	}
-	
-	//LEARNABLE METHODS
+    /**
+     * Default constructor
+     */
+    public PamNodeImpl() {
+        super();
+        groundingPamNode = this;
+        learnable = new LearnableImpl();
+    }
 
-	@Override
-	public double getActivation() {
-		return learnable.getActivation();
-	}
+    /**
+     * Copy constructor
+     * @param pamNode source {@link PamNodeImpl}
+     */
+    public PamNodeImpl(PamNodeImpl pamNode) {
+        super(pamNode);
+        groundingPamNode = this;
+        learnable = new LearnableImpl(pamNode.learnable);
+    }
 
-	@Override
-	public void setActivation(double activation) {
-		learnable.setActivation(activation);
-	}
+    /** 
+     * This init method sets the following values from the parameters in the 
+     * Factorydata.xml file:
+     * 
+     * baseLevelDecayStrategy: a String with the factory name of the DecayStrategy
+     * baseLevelExciteStrategy: a String with the factory name of the ExciteStrategy
+     * baseLevelRemovalThreshold: a double value. -1.0 for no removal
+     * baseLevelActivation: a double value between 0.0 and 1.0;
+     * 
+     * @see edu.memphis.ccrg.lida.framework.shared.NodeImpl#init()
+     */
+    @Override
+    public void init() {
+        ElementFactory factory = ElementFactory.getInstance();
 
-	@Override
-	public double getTotalActivation() {
-		return learnable.getTotalActivation();
-	}
+        String strategyName = (String) getParam("baseLevelDecayStrategy", "defaultDecay");
+        learnable.setBaseLevelDecayStrategy(factory.getDecayStrategy(strategyName));
 
-	@Override
-	public void excite(double amount) {
-		learnable.excite(amount);
-	}
+        strategyName = (String) getParam("baseLevelExciteStrategy", "defaultExcite");
+        learnable.setBaseLevelExciteStrategy(factory.getExciteStrategy(strategyName));
 
-	@Override
-	public void setExciteStrategy(ExciteStrategy strategy) {
-		learnable.setExciteStrategy(strategy);
-	}
+        double threshold = (Double) getParam("baseLevelRemovalThreshold", Learnable.DEFAULT_LEARNABLE_REMOVAL_THRESHOLD);
+        learnable.setBaseLevelRemovalThreshold(threshold);
 
-	@Override
-	public ExciteStrategy getExciteStrategy() {
-		return learnable.getExciteStrategy();
-	}
+        double activation = (Double) getParam("baseLevelActivation", Learnable.DEFAULT_BASE_LEVEL_ACTIVATION);
+        learnable.setBaseLevelActivation(activation);
+    }
 
-	@Override
-	public void decay(long ticks) {
-		learnable.decay(ticks);
-	}
+    @Override
+    public void updateNodeValues(Node n) {
+        if (n instanceof PamNodeImpl) {
+            PamNodeImpl pn = (PamNodeImpl) n;
+            learnable = new LearnableImpl(pn.learnable);
+        } else if (n != null) {
+            logger.log(Level.WARNING, "cannot set subclass-specific values. Required: {1} \n Received: {2}",
+                    new Object[]{TaskManager.getCurrentTick(), PamNodeImpl.class.getCanonicalName(), n.getClass()});
+        }
+    }
 
-	@Override
-	public void setDecayStrategy(DecayStrategy strategy) {
-		learnable.setDecayStrategy(strategy);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof PamNodeImpl) {
+            return getId() == ((PamNodeImpl) obj).getId();
+        }
+        return false;
+    }
 
-	@Override
-	public DecayStrategy getDecayStrategy() {
-		return learnable.getDecayStrategy();
-	}
+    @Override
+    public int hashCode() {
+        return getId();
+    }
 
-	@Override
-	public void setActivatibleRemovalThreshold(double threshold) {
-		learnable.setActivatibleRemovalThreshold(threshold);
-	}
+    //LEARNABLE METHODS
+    @Override
+    public double getActivation() {
+        return learnable.getActivation();
+    }
 
-	@Override
-	public double getActivatibleRemovalThreshold() {
-		return learnable.getActivatibleRemovalThreshold();
-	}
+    @Override
+    public void setActivation(double activation) {
+        learnable.setActivation(activation);
+    }
 
-	@Override
-	public boolean isRemovable() {
-		return learnable.isRemovable();
-	}
+    @Override
+    public double getTotalActivation() {
+        return learnable.getTotalActivation();
+    }
 
-	@Override
-	public double getBaseLevelActivation() {
-		return learnable.getBaseLevelActivation();
-	}
+    @Override
+    public void excite(double amount) {
+        learnable.excite(amount);
+    }
 
-	@Override
-	public void setBaseLevelActivation(double amount) {
-		learnable.setBaseLevelActivation(amount);
-	}
+    @Override
+    public void setExciteStrategy(ExciteStrategy strategy) {
+        learnable.setExciteStrategy(strategy);
+    }
 
-	@Override
-	public void reinforceBaseLevelActivation(double amount) {
-		learnable.reinforceBaseLevelActivation(amount);
-	}
+    @Override
+    public ExciteStrategy getExciteStrategy() {
+        return learnable.getExciteStrategy();
+    }
 
-	@Override
-	public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
-		learnable.setBaseLevelExciteStrategy(strategy);
-	}
+    @Override
+    public void decay(long ticks) {
+        learnable.decay(ticks);
+    }
 
-	@Override
-	public ExciteStrategy getBaseLevelExciteStrategy() {
-		return learnable.getBaseLevelExciteStrategy();
-	}
+    @Override
+    public void setDecayStrategy(DecayStrategy strategy) {
+        learnable.setDecayStrategy(strategy);
+    }
 
-	@Override
-	public void decayBaseLevelActivation(long ticks) {
-		learnable.decayBaseLevelActivation(ticks);
-	}
+    @Override
+    public DecayStrategy getDecayStrategy() {
+        return learnable.getDecayStrategy();
+    }
 
-	@Override
-	public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
-		learnable.setBaseLevelDecayStrategy(strategy);
-	}
+    @Override
+    public void setActivatibleRemovalThreshold(double threshold) {
+        learnable.setActivatibleRemovalThreshold(threshold);
+    }
 
-	@Override
-	public DecayStrategy getBaseLevelDecayStrategy() {
-		return learnable.getBaseLevelDecayStrategy();
-	}
+    @Override
+    public double getActivatibleRemovalThreshold() {
+        return learnable.getActivatibleRemovalThreshold();
+    }
 
-	@Override
-	public void setBaseLevelRemovalThreshold(double threshold) {
-		learnable.setBaseLevelRemovalThreshold(threshold);
-	}
+    @Override
+    public boolean isRemovable() {
+        return learnable.isRemovable();
+    }
 
-	@Override
-	public double getLearnableRemovalThreshold() {
-		return learnable.getLearnableRemovalThreshold();
-	}
+    @Override
+    public double getBaseLevelActivation() {
+        return learnable.getBaseLevelActivation();
+    }
 
-	@Override
-	public TotalActivationStrategy getTotalActivationStrategy() {
-		return learnable.getTotalActivationStrategy();
-	}
+    @Override
+    public void setBaseLevelActivation(double amount) {
+        learnable.setBaseLevelActivation(amount);
+    }
 
-	@Override
-	public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
-		learnable.setTotalActivationStrategy(strategy);
-	}	
+    @Override
+    public void reinforceBaseLevelActivation(double amount) {
+        learnable.reinforceBaseLevelActivation(amount);
+    }
 
+    @Override
+    public void setBaseLevelExciteStrategy(ExciteStrategy strategy) {
+        learnable.setBaseLevelExciteStrategy(strategy);
+    }
+
+    @Override
+    public ExciteStrategy getBaseLevelExciteStrategy() {
+        return learnable.getBaseLevelExciteStrategy();
+    }
+
+    @Override
+    public void decayBaseLevelActivation(long ticks) {
+        learnable.decayBaseLevelActivation(ticks);
+    }
+
+    @Override
+    public void setBaseLevelDecayStrategy(DecayStrategy strategy) {
+        learnable.setBaseLevelDecayStrategy(strategy);
+    }
+
+    @Override
+    public DecayStrategy getBaseLevelDecayStrategy() {
+        return learnable.getBaseLevelDecayStrategy();
+    }
+
+    @Override
+    public void setBaseLevelRemovalThreshold(double threshold) {
+        learnable.setBaseLevelRemovalThreshold(threshold);
+    }
+
+    @Override
+    public double getLearnableRemovalThreshold() {
+        return learnable.getLearnableRemovalThreshold();
+    }
+
+    @Override
+    public TotalActivationStrategy getTotalActivationStrategy() {
+        return learnable.getTotalActivationStrategy();
+    }
+
+    @Override
+    public void setTotalActivationStrategy(TotalActivationStrategy strategy) {
+        learnable.setTotalActivationStrategy(strategy);
+    }
+
+    /**
+     * Sets this node ID used for translation to SDM. This ID
+     * is a bit vector that will be used to create the representation of a node
+     * structure containing this node.
+     */
+    @Override
+    public void setSdmId() {
+        if (!hasSdmId()) {
+            
+            // Determine the size of the bit vector (from config file?).
+            int length = (Integer) 
+                    getParam("tem.wordLength", DEFAULT_BITVECTOR_LENGTH);
+
+            // Initialize the bit vector with random bits.
+            sdmId = new BitVector(length);
+            sdmId = BitVectorUtils.getRandomVector(length);
+        }
+    }
+
+    /**
+     * Get the ID used for representation of this node in SDM.
+     * @return a unique random bit vector
+     */
+    @Override
+    public BitVector getSdmId() {
+        return sdmId;
+    }
+    
+    /**
+     * Determine if this node already has an ID for representation in SDM.
+     * @return true if this node has an SDM ID, false otherwise
+     */
+    @Override
+    public boolean hasSdmId() {
+        return sdmId != null;
+    }
 }
