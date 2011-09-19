@@ -312,7 +312,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 		tempLinks = linkableMap.get(newSink);
 		if (tempLinks == null) {
 			tempLinks = new HashSet<Link>();
-			linkableMap.put(newLink, tempLinks);
+			linkableMap.put(newSink, tempLinks);
 		}
 		tempLinks.add(newLink);
 
