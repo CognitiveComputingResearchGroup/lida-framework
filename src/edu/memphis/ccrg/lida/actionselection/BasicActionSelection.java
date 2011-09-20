@@ -77,7 +77,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	@Override
 	public void init() {
 		refractoryPeriodTicks = (Integer) getParam(
-				"actionSelection.refractoryperiodTicks", DEFAULT_REFRACTORY_PERIOD);
+				"actionSelection.refractoryPeriodTicks", DEFAULT_REFRACTORY_PERIOD);
 		candidateThreshold = (Double) getParam("actionSelection.candidateThreshold", DEFAULT_CANDIDATE_THRESHOLD);
 		maxActivationThreshold = candidateThreshold;
 
