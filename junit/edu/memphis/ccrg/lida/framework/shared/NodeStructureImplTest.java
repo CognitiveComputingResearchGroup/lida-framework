@@ -44,6 +44,9 @@ public class NodeStructureImplTest {
 	private NodeStructureImpl ns1, ns2, ns3;
 	private static ElementFactory factory;
 	
+	/**
+	 * 
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass(){
 		factory = ElementFactory.getInstance();
@@ -187,6 +190,18 @@ public class NodeStructureImplTest {
 		assertTrue(ns1.getLinkCount() == 2);
 		assertTrue(ns1.getLinkableCount() == 5);
 	}
+	
+	@Test
+	public void testAddLinkAttachments(){
+		ns1.addDefaultNode(node1);	
+		ns1.addDefaultNode(node2);	
+		ns1.addDefaultLink(link1);
+		
+		assertEquals(3, ns1.getLinkableCount());
+		
+		assertEquals(0, ns1.getAttachedLinks(link1).size());
+	}
+	
 	@Test
 	public void testAddLinkSelf() {
 
