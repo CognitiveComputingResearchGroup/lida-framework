@@ -1,53 +1,132 @@
+                                                                     
+                                                                     
+                                             
+/*******************************************************************************
+ * Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
+ * This program and the accompanying materials are made available 
+ * under the terms of the LIDA Software Framework Non-Commercial License v1.0 
+ * which accompanies this distribution, and is available at
+ * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
+ *******************************************************************************/
 package edu.memphis.ccrg.lida.framework.shared;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
-public class SubNodeStructureImpl extends NodeStructureImpl{
+/**
+ * Finds and returns a sub NodeStructure that contains all Nodes
+ * connected to specified Nodes after given distance.
+ * 
+ *  @author Daqi, Pulin
+ */
+public class SubNodeStructureImpl extends NodeStructureImpl {
+
+	private int distance;
 	
-	/**
-	 * Finds and returns a sub NodeStructure that contains all source Nodes connected to specified Nodes
-	 * after given distance.
-	 * @param nodes set of nodes and distance
-	 * @param distance distance from specified node
-	 * @return sub NodeStructure
+	/*
+	 * Nodes contained in subNodeStructure
 	 */
-	
-	public NodeStructure getSubNodeStructure(Collection<Node> nodes, int distance, double threshold)
+	private NodeStructureImpl subNodeStructure;
+
+	/**
+	 * @param nodes
+	 * @param distance
+	 * @return
+	 */
+	/*TODO: Consider the threshold of nodes' activation in next version*/
+	public NodeStructure getSubNodeStructure(Collection<Node> nodes, int distance)
 	{
-		NodeStructure subNodeStructure=new NodeStructureImpl();
+		subNodeStructure=new NodeStructureImpl();
 		
-		for (Node n : nodes) {
-			int tempDistance=distance;
-			((NodeStructureImpl)subNodeStructure).addNode(n,true);
-			while(tempDistance-- >= 0){
-				Map<Linkable,Link> connectedSinks=getConnectedSinks(n);
-				for (Linkable sink : connectedSinks.keySet()) {
-					Link l=connectedSinks.get(sink);
-					if(sink instanceof Node && sink.getActivation() > threshold)
-					{
-						//I commented this b/c of compilation error - Ryan
-//						((NodeStructureImpl)subNodeStructure).addNode(sink,true);		
-						((NodeStructureImpl)subNodeStructure).addDefaultLink(l);
-						
+		this.distance = distance;
+		
+		//Add nodes to the sub node structure
+		for (Node n : nodes) {//scan each node
+			deepFirstSearch(n, 0);
+		}
+		
+		//Add Links to the sub node structure
+		
+		for(Linkable l:subNodeStructure.getLinkables())
+		{
+			// Add links for connected Sinks
+			if(l.getExtendedId().isNodeId()){
+				Map<Linkable,Link> sinks=getConnectedSinks((Node)l);
+
+				Set<Linkable> connectedSinks=sinks.keySet(); // All the Sinks are nodes here
+				for(Linkable l2:connectedSinks){
+					if(l2.getExtendedId().isNodeId()){
+						if(subNodeStructure.containsLinkable(l2)){
+							//Not checking complex Links, only consider nodes linked to the given node
+							subNodeStructure.addDefaultLink(sinks.get(l2));
+						}
 					}
-					else if(sink.getExtendedId().isSimpleLink())
-					{
-						
-					}
-					else if(sink.getExtendedId().isComplexLink())
-					{
-						
-					}
-					else
-					{
-						
+				}
+
+				// Add links for connected Sources
+
+				Map<Node,Link> sources=getConnectedSources(l);
+
+				Set<Node> connectedSources=sources.keySet(); // All the Sources are nodes here
+				for(Node n:connectedSources){
+					if(subNodeStructure.containsLinkable(n)){
+						//Not checking complex Links, only consider nodes linked to the given node
+						subNodeStructure.addDefaultLink(sources.get(n));
 					}
 				}
 			}
+			
 		}
 		
+		// This is what I added to try to add Complex Links -Pulin
+		for(Linkable l:subNodeStructure.getLinkables())
+		{
+		if(l.getExtendedId().isComplexLink())
+		{
+			if(   subNodeStructure.containsLink( (Link) ((Link)l).getSink() )   )
+			{
+				subNodeStructure.addDefaultLink((Link)l);
+			}
+				
+		}
+		}
 		return subNodeStructure;
+
+	}
+
+	void deepFirstSearch(Node currentNode, int step) {
+
+		Map<Linkable, Link> subSinks;
+		Map<Node, Link> subSources;
+
+		if (step > distance)
+			return;    // Lot of unnecessary execution is taking place because of the position of this part of code
+
+		subNodeStructure.addDefaultNode(currentNode);
+
+		// Get all connected Sinks
+
+		subSinks = getConnectedSinks(currentNode);
+
+		Set<Linkable> subLinkables = subSinks.keySet();
+
+		for (Linkable l : subLinkables) {
+			if (l.getExtendedId().isNodeId()) {
+				deepFirstSearch((Node) l, step + 1);
+			}
+		}
+
+		// Get all connected Sources
+
+		subSources = getConnectedSources(currentNode);
+
+		Set<Node> parentNodes = subSources.keySet();
+
+		for (Node n : parentNodes) {
+			deepFirstSearch(n, step + 1);
+		}
+
 	}
 
 }
