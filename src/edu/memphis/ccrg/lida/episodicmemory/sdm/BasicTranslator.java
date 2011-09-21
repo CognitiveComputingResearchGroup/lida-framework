@@ -26,8 +26,8 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class BasicTranslator implements Translator {
 
 	private static final ElementFactory factory = ElementFactory.getInstance();
-	private int size;
-	private PerceptualAssociativeMemory pam;
+	protected int size;
+	protected PerceptualAssociativeMemory pam;
 
 	/**
 	 * Constructor of the class.

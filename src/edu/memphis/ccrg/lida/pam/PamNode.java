@@ -7,9 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
+import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.Link;
 import edu.memphis.ccrg.lida.framework.shared.LinkCategory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.Translatable;
 
 /**
  * A PamNode is a {@link Node} which resides in {@link PerceptualAssociativeMemory} and 
@@ -17,9 +19,9 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  * PamNodes are involved in activation passing where Nodes are not. 
  * They can represent the {@link LinkCategory} of a {@link Link}.
  * 
- * @author Ryan J McCall, Javier Snaider
+ * @author Ryan J McCall
+ * @author Javier Snaider
+ * @author Rodrigo Silva-Lugo
  * @see PerceptualAssociativeMemory
  */
-public interface PamNode extends Node, PamLinkable, LinkCategory{
-
-}
+public interface PamNode extends Node, PamLinkable, LinkCategory, Translatable {}
