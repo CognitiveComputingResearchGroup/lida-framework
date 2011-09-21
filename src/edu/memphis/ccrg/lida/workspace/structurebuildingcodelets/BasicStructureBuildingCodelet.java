@@ -36,7 +36,7 @@ public class BasicStructureBuildingCodelet extends StructureBuildingCodeletImpl 
 	protected void runThisFrameworkTask(){	
 		logger.log(Level.FINEST, "SB codelet {1} being run.", 
 				new Object[]{TaskManager.getCurrentTick(),this});
-		for(WorkspaceBuffer readableBuffer: readableBuffers){
+		for(WorkspaceBuffer readableBuffer: readableBuffers.values()){
 			if(bufferContainsSoughtContent(readableBuffer)){
 				writableBuffer.addBufferContent((WorkspaceContent) retrieveWorkspaceContent(readableBuffer));
 			}

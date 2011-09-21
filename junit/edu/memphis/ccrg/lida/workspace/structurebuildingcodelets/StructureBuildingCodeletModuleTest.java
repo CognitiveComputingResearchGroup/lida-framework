@@ -94,7 +94,7 @@ public class StructureBuildingCodeletModuleTest {
 		sbcModule.setAssociatedModule(workspace, "");
 		BasicStructureBuildingCodelet codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet();
 		assertNotNull(codelet);
-		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertTrue(codelet.readableBuffers.containsValue(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
 	}
@@ -107,13 +107,13 @@ public class StructureBuildingCodeletModuleTest {
 		BasicStructureBuildingCodelet codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
 
 		assertNotNull(codelet);
-		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertTrue(codelet.readableBuffers.containsValue(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
 		
 		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
 		assertNotNull(codelet);
-		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertTrue(codelet.readableBuffers.containsValue(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
 		
@@ -128,7 +128,7 @@ public class StructureBuildingCodeletModuleTest {
 		
 		codelet = (BasicStructureBuildingCodelet) sbcModule.getDefaultCodelet(params);
 		assertNotNull(codelet);
-		assertTrue(codelet.readableBuffers.contains(csm));
+		assertTrue(codelet.readableBuffers.containsValue(csm));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(perceptualBuffer, codelet.writableBuffer);
 	}
@@ -149,7 +149,7 @@ public class StructureBuildingCodeletModuleTest {
 		
 		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet");
 		assertNotNull(codelet);		
-		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertTrue(codelet.readableBuffers.containsValue(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
 		assertEquals(100, (int)codelet.getParam("arg0", 100));
@@ -167,7 +167,7 @@ public class StructureBuildingCodeletModuleTest {
 		
 		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet", params);
 		assertNotNull(codelet);		
-		assertTrue(codelet.readableBuffers.contains(perceptualBuffer));
+		assertTrue(codelet.readableBuffers.containsValue(perceptualBuffer));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(csm, codelet.writableBuffer);
 		assertEquals(10.0, (double)codelet.getParam("arg0", 0.0), epsilon);
@@ -182,7 +182,7 @@ public class StructureBuildingCodeletModuleTest {
 		
 		codelet = (StructureBuildingCodeletImpl) sbcModule.getCodelet("coolCodelet",params);
 		assertNotNull(codelet);
-		assertTrue(codelet.readableBuffers.contains(csm));
+		assertTrue(codelet.readableBuffers.containsValue(csm));
 		assertEquals(1, codelet.readableBuffers.size());
 		assertEquals(perceptualBuffer, codelet.writableBuffer);
 	}

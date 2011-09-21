@@ -8,12 +8,12 @@
 package edu.memphis.ccrg.lida.workspace.structurebuildingcodelets;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.ModuleUsage;
 import edu.memphis.ccrg.lida.framework.tasks.CodeletImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -29,9 +29,9 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	private static final Logger logger=Logger.getLogger(StructureBuildingCodeletImpl.class.getCanonicalName());
 	
 	/**
-	 * Set of workspace buffers this codelet reads from.
+	 * Map of workspace buffers this codelet reads from.
 	 */
-	protected Set<WorkspaceBuffer> readableBuffers;
+	protected Map<ModuleName, WorkspaceBuffer> readableBuffers;
 	
 	/**
 	 *  {@link WorkspaceBuffer} to be written to.
@@ -48,7 +48,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	 */
 	public StructureBuildingCodeletImpl(){
 		super();
-		readableBuffers = new HashSet<WorkspaceBuffer>();
+		readableBuffers = new HashMap<ModuleName, WorkspaceBuffer>();
 		runResults = new HashMap<String, Object>();
 	}
 	
@@ -56,7 +56,7 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	public void setAssociatedModule(FrameworkModule module, String usage) {
 		if(module instanceof WorkspaceBuffer){
 			if(usage == ModuleUsage.TO_READ_FROM){
-				readableBuffers.add((WorkspaceBuffer) module);		
+				readableBuffers.put(module.getModuleName(), (WorkspaceBuffer) module);		
 			}else if(usage == ModuleUsage.TO_WRITE_TO){
 				writableBuffer = (WorkspaceBuffer) module;
 			}else{
