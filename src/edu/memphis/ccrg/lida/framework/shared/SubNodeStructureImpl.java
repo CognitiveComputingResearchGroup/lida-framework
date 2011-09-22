@@ -35,61 +35,66 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @return
 	 */
 	/*TODO: Consider the threshold of nodes' activation in next version*/
-	public NodeStructure getSubNodeStructure(Collection<Node> nodes, int distance)
-	{
-		subNodeStructure=new NodeStructureImpl();
-		
+	public NodeStructure getSubNodeStructure(Collection<Node> nodes,
+			int distance) {
+		subNodeStructure = new NodeStructureImpl();
+
 		this.distance = distance;
-		
-		//Add nodes to the sub node structure
-		for (Node n : nodes) {//scan each node
+
+		// Add nodes to the sub node structure
+		for (Node n : nodes) {// scan each node
 			deepFirstSearch(n, 0);
 		}
-		
-		//Add Links to the sub node structure
-		
-		for(Linkable l:subNodeStructure.getLinkables())
-		{
-			// Add links for connected Sinks
-			if(l.getExtendedId().isNodeId()){
-				Map<Linkable,Link> sinks=getConnectedSinks((Node)l);
 
-				Set<Linkable> connectedSinks=sinks.keySet(); // All the Sinks are nodes here
-				for(Linkable l2:connectedSinks){
-					if(l2.getExtendedId().isNodeId()){
-						if(subNodeStructure.containsLinkable(l2)){
-							//Not checking complex Links, only consider nodes linked to the given node
+		// Add Links to the sub node structure
+
+		for (Linkable l : subNodeStructure.getLinkables()) {
+			// Add links for connected Sinks
+			if (l.getExtendedId().isNodeId()) {
+				Map<Linkable, Link> sinks = getConnectedSinks((Node) l);
+
+				Set<Linkable> connectedSinks = sinks.keySet(); // All the Sinks
+																// are nodes
+																// here
+				for (Linkable l2 : connectedSinks) {
+					if (l2.getExtendedId().isNodeId()) {
+						if (subNodeStructure.containsLinkable(l2)) {
+							// Not checking complex Links, only consider nodes
+							// linked to the given node
 							subNodeStructure.addDefaultLink(sinks.get(l2));
 						}
 					}
 				}
-
 				// Add links for connected Sources
 
-				Map<Node,Link> sources=getConnectedSources(l);
+				Map<Node, Link> sources = getConnectedSources(l);
 
-				Set<Node> connectedSources=sources.keySet(); // All the Sources are nodes here
-				for(Node n:connectedSources){
-					if(subNodeStructure.containsLinkable(n)){
-						//Not checking complex Links, only consider nodes linked to the given node
+				Set<Node> connectedSources = sources.keySet(); // All the
+																// Sources are
+																// nodes here
+				for (Node n : connectedSources) {
+					if (subNodeStructure.containsLinkable(n)) {
+						// Not checking complex Links, only consider nodes
+						// linked to the given node
 						subNodeStructure.addDefaultLink(sources.get(n));
 					}
 				}
 			}
-			
+
 		}
-		
-		// This is what I added to try to add Complex Links -Pulin
-		for(Linkable l:subNodeStructure.getLinkables())
-		{
-		if(l.getExtendedId().isComplexLink())
-		{
-			if(   subNodeStructure.containsLink( (Link) ((Link)l).getSink() )   )
-			{
-				subNodeStructure.addDefaultLink((Link)l);
+
+		// To add leftover complex links.
+		for (Linkable l : subNodeStructure.getLinkables()) {
+			// Add complex link for every node present in subNodeStructure
+			if (l.getExtendedId().isNodeId()) {
+				Map<Linkable, Link> sinks = getConnectedSinks((Node) l);
+
+				Collection<Link> linksConnectedToLinkableInSNS = sinks.values();
+				for (Link link : linksConnectedToLinkableInSNS) {
+					if (!link.isSimpleLink())
+						subNodeStructure.addDefaultLink(link);
+				}
 			}
-				
-		}
 		}
 		return subNodeStructure;
 
