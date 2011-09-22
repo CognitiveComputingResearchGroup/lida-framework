@@ -22,7 +22,7 @@ public class SubNodeStructureImplTest {
 
 	private static ElementFactory factory;
 	private Node node1,node2,node3,node4,node5;
-	private Link link1,link2,link3,link4,link5,link6;
+	private Link link1,link2,link3,link4,link5,link6,link7;
 	private SubNodeStructureImpl ns1;
 	private PamNode category1,category2,category3,category4;
 
@@ -66,12 +66,12 @@ public class SubNodeStructureImplTest {
 		category2.setId(100000);
 		
 		link1 = factory.getLink(node1, node3, category1);
-		link2 = factory.getLink(node1, node4, category2);
+		link2 = factory.getLink(node4, node3, category2);
 		link3 = factory.getLink(node3, node5, category2);
 		link4 = factory.getLink(node4, node5, category2);
 		link5 = factory.getLink(node2, node5, category2);
-		link6 = factory.getLink(node1, link5, category2); 
-		
+		link6 = factory.getLink(node3, link3, category2); 
+		//link7 = factory.getLink(node2, link6, category1);
 		
 		ns1 = new SubNodeStructureImpl();	
 		
@@ -88,6 +88,7 @@ public class SubNodeStructureImplTest {
 		ns1.addDefaultLink(link4);
 		ns1.addDefaultLink(link5);
 		ns1.addDefaultLink(link6);
+		
 	}
 
 	@After
@@ -101,7 +102,7 @@ public class SubNodeStructureImplTest {
 		nodes.add(node2);
 		System.out.println(ns1.getNodeCount());
 		System.out.println(ns1.getLinkCount());
-		NodeStructure subNS= ns1.getSubNodeStructure(nodes, 6);
+		NodeStructure subNS= ns1.getSubNodeStructure(nodes, 2);
 		System.out.println(subNS.getNodeCount());
 		System.out.println(subNS.getLinkCount());
 	}
