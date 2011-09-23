@@ -132,6 +132,20 @@ public class SubNodeStructureImplTest2 {
 		assertTrue(subNS.getNodeCount() == 1);
 		assertTrue(subNS.getLinkCount() == 0);
 		
+		nodes.clear();
+		nodes.add(node3);
+		nodes.add(node5);
+		
+		subNS= ns1.getSubNodeStructure(nodes, 0);
+		
+		assertTrue(subNS.containsNode(node3));
+		assertTrue(subNS.containsNode(node5));
+		assertTrue(subNS.getNodeCount() == 2);
+		assertTrue(subNS.getLinkCount() == 2);
+		
+		nodes.clear();
+		nodes.add(node4);
+		
 		//distance = 1
 		subNS= ns1.getSubNodeStructure(nodes, 1);
 		
