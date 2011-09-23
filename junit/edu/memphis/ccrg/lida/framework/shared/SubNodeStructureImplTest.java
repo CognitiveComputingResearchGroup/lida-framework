@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,9 +25,15 @@ public class SubNodeStructureImplTest {
 	private static ElementFactory factory;
 	private Node node1,node2,node3,node4,node5;
 	private Link link1,link2,link3,link4,link5,link6,link7;
-	private SubNodeStructureImpl ns1;
+	private SubNodeStructureImpl ns1,ns;
 	private PamNode category1,category2,category3,category4;
-
+	private NodeStructure subNS;
+	
+	private int idCounter = 0;
+	private int categoryIdCounter = 0;
+	private Random random;
+	private List<LinkCategory> linkCategoryPool = new ArrayList<LinkCategory>();
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		factory = ElementFactory.getInstance();
@@ -65,6 +73,10 @@ public class SubNodeStructureImplTest {
 		category2 = new PamNodeImpl();
 		category2.setId(100000);
 		
+		/* Test Case 2 (No Links All Nodes)
+		 * 
+		 */
+		/*
 		link1 = factory.getLink(node1, node3, category1);
 		link2 = factory.getLink(node4, node3, category2);
 		link3 = factory.getLink(node3, node5, category2);
@@ -72,7 +84,7 @@ public class SubNodeStructureImplTest {
 		link5 = factory.getLink(node2, node5, category2);
 		link6 = factory.getLink(node3, link3, category2); 
 		//link7 = factory.getLink(node2, link6, category1);
-		
+		*/
 		ns1 = new SubNodeStructureImpl();	
 		
 		ns1.addDefaultNode(node1);
@@ -81,6 +93,7 @@ public class SubNodeStructureImplTest {
 		ns1.addDefaultNode(node4);
 		ns1.addDefaultNode(node5);
 		
+		/*
 		ns1.addDefaultLink(link1);
 		ns1.addDefaultLink(link2);
 		ns1.addDefaultLink(link3);
@@ -88,7 +101,7 @@ public class SubNodeStructureImplTest {
 		ns1.addDefaultLink(link4);
 		ns1.addDefaultLink(link5);
 		ns1.addDefaultLink(link6);
-		
+		*/
 	}
 
 	@After
@@ -96,20 +109,113 @@ public class SubNodeStructureImplTest {
 	}
 
 	@Test
-	public void testGetSubNodeStructure() {
-		Collection<Node> nodes = new ArrayList<Node>();
-		nodes.add(node1);
-		nodes.add(node2);
-		System.out.println(ns1.getNodeCount());
-		System.out.println(ns1.getLinkCount());
-		NodeStructure subNS= ns1.getSubNodeStructure(nodes, 2);
-		System.out.println(subNS.getNodeCount());
-		System.out.println(subNS.getLinkCount());
+	public void testGetSubNodeStructure1() {
+		Collection<Node> nodeList = new ArrayList<Node>();
+		
+		/*Test Case 2 (Check if a copy of sub node structure is created or not)
+		 * 
+		 */
+		nodeList.add(node1);
+		nodeList.add(node2);
+		subNS= ns1.getSubNodeStructure(nodeList, 2);
+		
+		Collection<Node> nod=subNS.getNodes();
+		for(Node n:nod){
+			n.setLabel("Pulin");
+		}
+		
+		nod=ns1.getNodes();
+		
+		for(Node n:nod){
+			assertTrue( n.getLabel().compareTo("Pulin") != 0 );
+		}
+		
+		assertTrue(subNS.getNodeCount()==2);
+		assertTrue(subNS.getLinkCount()==0);
+		
+		// End Test Case 2
+	}	
+	
+	@Test
+	public void testGetSubNodeStructure2() {
+		/*Test Case 3 HUGE NS
+		 * 
+		 */
+		Collection<Node> nodeList = new ArrayList<Node>();
+		int distance=10;
+		int seed = 23434535;
+		random = new Random(seed);
+		ns = new SubNodeStructureImpl();
+		
+		int nodes = 10000;	
+		int linkCategories = 1000;
+		double nodeLinkRatio = 2.0;
+		
+		int links = (int)(nodes / nodeLinkRatio);
+		System.out.println("Creating NS with " + nodes + " nodes, " + links + " links");
+		
+		createLinkCategoryPool(linkCategories);
+		addSomeNodes(nodes);
+		addSomeLinks(links);
+		System.out.println("Copying NS\n");
+		
+		long start = System.currentTimeMillis();
+		ns.copy();
+		long finish = System.currentTimeMillis();
+		System.out.println("time: " + (finish - start) + " ms");
+		System.out.println("ms per linkable : " + (finish - start) / (1.0* ns.getLinkableCount()));
+		System.out.println("total linkables " + ns.getLinkableCount());
+		
+		nodeList.add((Node)ns.getNodes().toArray()[1]);
+		nodeList.add((Node)ns.getNodes().toArray()[9]);
+		
+		start = System.currentTimeMillis();
+		subNS=ns.getSubNodeStructure(nodeList, distance);
+		finish = System.currentTimeMillis();
+		System.out.println("time: " + (finish - start) + " ms");
+		System.out.println("ms per linkable : " + (finish - start) / (1.0* subNS.getLinkableCount()));
+		System.out.println("total linkables " + subNS.getLinkableCount());
+		
+		//End Test Case 3
 	}
 
 	@Test
 	public void testDeepFirstSearch() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
+	}
+
+
+	private void createLinkCategoryPool(int linkCategories) {
+		for(int i = 0; i < linkCategories; i++){
+			PamNodeImpl temp = new PamNodeImpl();
+			temp.setId(categoryIdCounter++);
+			linkCategoryPool.add(temp);
+		}
+		
+	}
+
+	public void addSomeNodes(int num){
+		for(int i = 0; i < num; i++){
+			Node foo = factory.getNode();
+			foo.setId(idCounter++);
+			ns.addDefaultNode(foo);
+		}
+	}
+	
+	public void addSomeLinks(int num){
+		for(int i = 0; i < num; i++){
+			int randomSource = random.nextInt(idCounter);
+			int randomSink = random.nextInt(idCounter);
+			while(randomSink == randomSource){
+				randomSink = random.nextInt(idCounter);
+			}
+			Node source = ns.getNode(randomSource);
+			Node sink = ns.getNode(randomSink);
+			int randomCategory = random.nextInt(linkCategoryPool.size());
+			PamNode lcn = (PamNode) linkCategoryPool.get(randomCategory);
+			lcn.setId(categoryIdCounter++);
+			ns.addDefaultLink(source, sink, lcn, 1.0, -1.0);
+		}
 	}
 
 }
