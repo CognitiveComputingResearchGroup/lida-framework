@@ -53,7 +53,15 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			int distance) {
 		subNodeStructure = new NodeStructureImpl();
 
-		this.distance = distance;
+		/*
+		 * Check distance should isn't bigger than number of sum of link.
+		 */
+		if (distance > getLinkCount()){
+			this.distance = getLinkCount();
+		}else{
+			this.distance = distance;
+		}
+
 
 		/*
 		 *  Add nodes to the sub node structure
@@ -141,7 +149,11 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			 */
 			return;
 
-		subNodeStructure.addDefaultNode(currentNode);
+		if (containsNode(currentNode)){
+			subNodeStructure.addDefaultNode(currentNode);
+		}else{
+			return;
+		}
 
 		/*
 		 *  Get all connected Sinks
