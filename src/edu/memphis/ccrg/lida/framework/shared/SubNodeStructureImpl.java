@@ -1,6 +1,3 @@
-                                                                     
-                                                                     
-                                             
 /*******************************************************************************
  * Copyright (c) 2009, 2011 The University of Memphis.  All rights reserved. 
  * This program and the accompanying materials are made available 
@@ -18,64 +15,90 @@ import java.util.Set;
  * Finds and returns a sub NodeStructure that contains all Nodes
  * connected to specified Nodes after given distance.
  * 
+ * TODO: Move whole contents of this class to NodeStructureImpl after
+ * review them.
+ * 
  *  @author Daqi, Pulin
  */
+
 public class SubNodeStructureImpl extends NodeStructureImpl {
 
+	/*
+	 * The farthest distance between specified nodes and their 
+	 * neighbor nodes. 
+	 * This distance and specified nodes will be passed through arguments.
+	 */
 	private int distance;
 	
 	/*
-	 * Nodes contained in subNodeStructure
+	 * Nodes contained in subNodeStructure. 
+	 * It involves specified nodes and all neighbor nodes whose distance
+	 * from one of specified nodes is not bigger than farthest distance 
+	 * coming from arguments. Also it involves all links between these 
+	 * above nodes.
 	 */
 	private NodeStructureImpl subNodeStructure;
 
 	/**
-	 * @param nodes
-	 * @param distance
-	 * @return
+	 * @param nodes Set of specified nodes in NodeStructure
+	 * @param distance The farthest distance between specified nodes and 
+	 * its neighbor nodes
+	 * @return A sub NodeStructure which involves specified and all 
+	 * satisfied neighbor nodes
 	 */
-	/*TODO: Consider the threshold of nodes' activation in next version*/
+	/*
+	 * TODO: Consider the threshold of nodes' activation in next version
+	 */
 	public NodeStructure getSubNodeStructure(Collection<Node> nodes,
 			int distance) {
 		subNodeStructure = new NodeStructureImpl();
 
 		this.distance = distance;
 
-		// Add nodes to the sub node structure
-		for (Node n : nodes) {// scan each node
+		/*
+		 *  Add nodes to the sub node structure
+		 *  Scan each node
+		 */
+		for (Node n : nodes) {
 			deepFirstSearch(n, 0);
 		}
 
-		// Add Links to the sub node structure
+		/*
+		 *  Add Links to the sub node structure
+		 */
+		for (Linkable subLinkable : subNodeStructure.getLinkables()) {
+			/*
+			 *  Add links for connected Sinks
+			 */
+			if (subLinkable.getExtendedId().isNodeId()) {
+				Map<Linkable, Link> sinks = getConnectedSinks((Node) subLinkable);
 
-		for (Linkable l : subNodeStructure.getLinkables()) {
-			// Add links for connected Sinks
-			if (l.getExtendedId().isNodeId()) {
-				Map<Linkable, Link> sinks = getConnectedSinks((Node) l);
-
-				Set<Linkable> connectedSinks = sinks.keySet(); // All the Sinks
-																// are nodes
-																// here
-				for (Linkable l2 : connectedSinks) {
-					if (l2.getExtendedId().isNodeId()) {
-						if (subNodeStructure.containsLinkable(l2)) {
-							// Not checking complex Links, only consider nodes
-							// linked to the given node
-							subNodeStructure.addDefaultLink(sinks.get(l2));
+				Set<Linkable> connectedSinks = sinks.keySet();
+				
+				for (Linkable linkable : connectedSinks) {
+					if (linkable.getExtendedId().isNodeId()) {
+						if (subNodeStructure.containsLinkable(linkable)) {
+							/*
+							 * Not checking complex Links, only consider nodes
+							 * linked to the given node
+							 */
+							subNodeStructure.addDefaultLink(sinks.get(linkable));
 						}
 					}
 				}
-				// Add links for connected Sources
+				/* 
+				 * Add links for connected Sources
+				 */
 
-				Map<Node, Link> sources = getConnectedSources(l);
+				Map<Node, Link> sources = getConnectedSources(subLinkable);
 
-				Set<Node> connectedSources = sources.keySet(); // All the
-																// Sources are
-																// nodes here
+				/*
+				 * All the Sinks are nodes here
+				 */
+				Set<Node> connectedSources = sources.keySet(); 
+				
 				for (Node n : connectedSources) {
 					if (subNodeStructure.containsLinkable(n)) {
-						// Not checking complex Links, only consider nodes
-						// linked to the given node
 						subNodeStructure.addDefaultLink(sources.get(n));
 					}
 				}
@@ -83,11 +106,13 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 
 		}
 
-		// To add leftover complex links.
-		for (Linkable l : subNodeStructure.getLinkables()) {
+		/*
+		 *  To add leftover complex links.
+		 */
+		for (Linkable linkable : subNodeStructure.getLinkables()) {
 			// Add complex link for every node present in subNodeStructure
-			if (l.getExtendedId().isNodeId()) {
-				Map<Linkable, Link> sinks = getConnectedSinks((Node) l);
+			if (linkable.getExtendedId().isNodeId()) {
+				Map<Linkable, Link> sinks = getConnectedSinks((Node) linkable);
 
 				Collection<Link> linksConnectedToLinkableInSNS = sinks.values();
 				for (Link link : linksConnectedToLinkableInSNS) {
@@ -100,17 +125,27 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 
 	}
 
+	/**
+	 * @param currentNode One specified node that be considered as neighbor nodes
+	 * or specified nodes in sub NodeStructure 
+	 * @param step The distance between specified nodes and this current Node
+	 */
 	void deepFirstSearch(Node currentNode, int step) {
 
 		Map<Linkable, Link> subSinks;
 		Map<Node, Link> subSources;
 
 		if (step > distance)
-			return;    // Lot of unnecessary execution is taking place because of the position of this part of code
+			/*
+			 * TODO: Lot of unnecessary execution is taking place because of the position of this part of code
+			 */
+			return;
 
 		subNodeStructure.addDefaultNode(currentNode);
 
-		// Get all connected Sinks
+		/*
+		 *  Get all connected Sinks
+		 */
 
 		subSinks = getConnectedSinks(currentNode);
 
@@ -122,7 +157,9 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 			}
 		}
 
-		// Get all connected Sources
+		/*
+		 *  Get all connected Sources
+		 */
 
 		subSources = getConnectedSources(currentNode);
 
