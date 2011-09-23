@@ -69,7 +69,7 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 		Object o = parameters.get("threshold");
 		if ((o != null) && (o instanceof Double)) {
 			threshold = (Double) o;
-			if(threshold <= 0.0){
+			if(threshold < 0.0){
 				logger.log(Level.WARNING, "Invalid threshold parameter, using default.", TaskManager.getCurrentTick());
 				threshold = DEFAULT_THRESHOLD;
 			}
