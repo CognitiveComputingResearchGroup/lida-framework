@@ -24,7 +24,7 @@ public class SubNodeStructureImplTest2 {
 	private Node node1,node2,node3,node4,node5,node6,node7;
 	private Link link1,link2,link3,link4,link5,link6,link7,link8;
 	private SubNodeStructureImpl ns1;
-	private PamNode category1,category2,category3,category4;
+	private PamNode category1,category2;
 	
 	Collection<Node> nodes = new ArrayList<Node>();
 
