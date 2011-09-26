@@ -371,10 +371,11 @@ public class AgentXmlFactory implements AgentFactory {
 		List<Element> nl = XmlUtils.getChildren(element,"initialTasks");
 		if (nl != null && nl.size() > 0) {
 			Element initialTasksElement =  nl.get(0);
+			Integer defaultTicks = getTasksDefaultTicksPerRun(initialTasksElement);
 			nl = XmlUtils.getChildren(initialTasksElement,"task");
 			if (nl != null && nl.size() > 0) {
 				for (Element taskElement:nl) {
-					TaskData taskData = getTask(taskElement);
+					TaskData taskData = getTask(taskElement,defaultTicks);
 					if(taskData != null){
 						taskData.taskSpawner = ts;
 						tasks.add(taskData);
@@ -384,17 +385,38 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		return tasks;
 	}
+	/**
+	 * Reads the default ticks per run for initial Tasks
+	 * @param element dom element
+	 * @return the default ticks per run or 0 if the 'defaultticksperrun' tag is missing or the value is invalid
+	 */
+	int getTasksDefaultTicksPerRun(Element element) {
+		Integer tpr = 0;
+		tpr = XmlUtils.getIntegerValue(element, "defaultticksperrun");
+		if (tpr==null || tpr<0){
+			tpr = 0;
+		}
+		return tpr;
+	}
 	
 	/**
 	 * Reads and creates {@link FrameworkTask} specified in element
 	 * @param moduleElement dom element
+	 * @param defaultTicks the default ticks per run for these initial Tasks
 	 * @return a TaskData with the data to create the task
 	 */
-	TaskData getTask(Element moduleElement) {
+	TaskData getTask(Element moduleElement, Integer defaultTicks) {
 		String taskType = XmlUtils.getTextValue(moduleElement, "tasktype");	
 		String name = moduleElement.getAttribute("name").trim();
 		
 		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
+		if(ticks == null){
+			ticks = defaultTicks;
+		}
+		if(ticks<0){
+			ticks = defaultTicks;
+			logger.log(Level.WARNING, "Task: " + name + " has an invalid ticksperrun value.Default used.", 0L);
+		}
 		
 		Map<String,Object> params = XmlUtils.getTypedParams(moduleElement);
 		
@@ -609,7 +631,7 @@ public class AgentXmlFactory implements AgentFactory {
 		for(TaskData td : toRun){
 			FrameworkTask task = factory.getFrameworkTask(td.tasktype, td.params, moduleMap);
 			if (task!=null){
-				if(td.ticksPerRun != 0){
+				if(td.ticksPerRun > 0){
 					task.setTicksPerRun(td.ticksPerRun);
 				}
 				td.taskSpawner.addTask(task);

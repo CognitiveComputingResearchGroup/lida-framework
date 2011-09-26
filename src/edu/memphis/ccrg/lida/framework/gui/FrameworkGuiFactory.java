@@ -28,6 +28,7 @@ public class FrameworkGuiFactory {
 	private static final Logger logger = Logger.getLogger(FrameworkGuiFactory.class.getCanonicalName());
 	private static String DEFAULT_COMMANDS_FILENAME = "configs/guiCommands.properties";
 	private static final String DEFAULT_PANELS_FILENAME = "configs/guiPanels.properties";
+	private static final int DEFAULT_GUI_REFRESH_RATE = 5;
 
 	/**
 	 * Based on the properties file, first creates a {@link FrameworkGuiController} with specified {@link Agent}.
@@ -42,22 +43,31 @@ public class FrameworkGuiFactory {
 	        	//Create the controller
 				String filename=systemProperties.getProperty("lida.gui.commands",DEFAULT_COMMANDS_FILENAME);
 				Properties properties =ConfigUtils.loadProperties(filename);
+				int guiEventsInterval = DEFAULT_GUI_REFRESH_RATE;
 				if(properties == null){
 					logger.log(Level.SEVERE, "unable to load gui commands");
 				}
 				
 	        	FrameworkGuiController controller = new FrameworkGuiControllerImpl(agent, properties);
 				logger.log(Level.INFO,"GUI Controller created\n",0L);
-				
-				filename=systemProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);
+
+				String refreshRateStr=systemProperties.getProperty("lida.gui.refreshRate","");
+				try{
+				guiEventsInterval = Integer.parseInt(refreshRateStr);
+				}catch (NumberFormatException e) {
+					guiEventsInterval = DEFAULT_GUI_REFRESH_RATE;
+				}
+	            agent.getTaskManager().setGuiEventsInterval(guiEventsInterval);
+
+				filename=systemProperties.getProperty("lida.gui.panels",DEFAULT_PANELS_FILENAME);				
 				properties = ConfigUtils.loadProperties(filename);
 				if(properties == null){
 					logger.log(Level.SEVERE, "unable to load guiPanels.properties");
 				}
 				
-	        	FrameworkGui FrameworkGui = new FrameworkGui(agent, controller, properties);
-	            FrameworkGui.setVisible(true);
-	            
+	        	FrameworkGui frameworkGui = new FrameworkGui(agent, controller, properties);
+	            frameworkGui.setVisible(true);
+	            	            
 	            logger.log(Level.INFO,"FrameworkGui started\n",0L);
 	        }//run
 		});//invokeLater

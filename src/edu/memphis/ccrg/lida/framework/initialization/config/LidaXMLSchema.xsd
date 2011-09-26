@@ -128,7 +128,10 @@
 
     <complexType name="tasks">
     	<sequence>
-    		<element name="task" type="tns:task" maxOccurs="unbounded" minOccurs="1"></element>
+    		<element name="defaultticksperrun" type="int" maxOccurs="1" minOccurs="0"></element>
+    		<element name="task" type="tns:task" maxOccurs="unbounded"
+    			minOccurs="1">
+    		</element>
     	</sequence>
     </complexType>
 

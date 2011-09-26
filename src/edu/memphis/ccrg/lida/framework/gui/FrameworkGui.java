@@ -81,7 +81,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
     private static int TAB_ORDER = 3;
     private static int MUST_REFRESH = 4;
     private static int FIRST_PARAM = 5;
-    private static int DEFAULT_GUI_EVENT_INTERVAL = 5;
+//    private static int DEFAULT_GUI_EVENT_INTERVAL = 5;
     private List<String> panelClassNames = new ArrayList<String>();
     private List<GuiPanel> panels = new ArrayList<GuiPanel>();
     private List<String[]> panelParameters = new ArrayList<String[]>();
@@ -114,7 +114,7 @@ public class FrameworkGui extends javax.swing.JFrame implements FrameworkGuiEven
         this.controller = controller;
         TaskManager tm = agent.getTaskManager();
         tm.addFrameworkGuiEventListener(this);
-        tm.setGuiEventsInterval(DEFAULT_GUI_EVENT_INTERVAL); //TODO parameter or command
+        //tm.setGuiEventsInterval(DEFAULT_GUI_EVENT_INTERVAL); //TODO parameter or command
 
         loadPanels(panelProperties);
         pack();
