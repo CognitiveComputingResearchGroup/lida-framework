@@ -76,7 +76,7 @@ public class SubNodeStructureImplTest {
 		/* Test Case 2 (No Links All Nodes)
 		 * 
 		 */
-		/*
+		
 		link1 = factory.getLink(node1, node3, category1);
 		link2 = factory.getLink(node4, node3, category2);
 		link3 = factory.getLink(node3, node5, category2);
@@ -84,7 +84,7 @@ public class SubNodeStructureImplTest {
 		link5 = factory.getLink(node2, node5, category2);
 		link6 = factory.getLink(node3, link3, category2); 
 		//link7 = factory.getLink(node2, link6, category1);
-		*/
+		
 		ns1 = new SubNodeStructureImpl();	
 		
 		ns1.addDefaultNode(node1);
@@ -93,7 +93,7 @@ public class SubNodeStructureImplTest {
 		ns1.addDefaultNode(node4);
 		ns1.addDefaultNode(node5);
 		
-		/*
+		
 		ns1.addDefaultLink(link1);
 		ns1.addDefaultLink(link2);
 		ns1.addDefaultLink(link3);
@@ -101,7 +101,7 @@ public class SubNodeStructureImplTest {
 		ns1.addDefaultLink(link4);
 		ns1.addDefaultLink(link5);
 		ns1.addDefaultLink(link6);
-		*/
+		
 	}
 
 	@After
@@ -109,12 +109,14 @@ public class SubNodeStructureImplTest {
 	}
 
 	@Test
+	/*Test Case 2 (Check if a copy of sub node structure is created or not)
+	 * 
+	 * Technique used - Change some property (here 'label') of the extracted nodes
+	 * and check if the property changed in the nodes of the original node structure.
+	 */
 	public void testGetSubNodeStructure1() {
 		Collection<Node> nodeList = new ArrayList<Node>();
 		
-		/*Test Case 2 (Check if a copy of sub node structure is created or not)
-		 * 
-		 */
 		nodeList.add(node1);
 		nodeList.add(node2);
 		subNS= ns1.getSubNodeStructure(nodeList, 2);
@@ -130,17 +132,21 @@ public class SubNodeStructureImplTest {
 			assertTrue( n.getLabel().compareTo("Pulin") != 0 );
 		}
 		
-		assertTrue(subNS.getNodeCount()==2);
-		assertTrue(subNS.getLinkCount()==0);
+		// Just checking if expected linkables were obtained
 		
-		// End Test Case 2
+		assertTrue(subNS.getNodeCount()==5);
+		assertTrue(subNS.getLinkCount()==6);
+
 	}	
 	
+	
 	@Test
+	/*Test Case 3 HUGE NodeStructure test
+	 * 
+	 * Mainly used to check performance of the algorithm
+	 */
 	public void testGetSubNodeStructure2() {
-		/*Test Case 3 HUGE NS
-		 * 
-		 */
+		
 		Collection<Node> nodeList = new ArrayList<Node>();
 		int distance=10;
 		int seed = 23434535;
@@ -157,14 +163,8 @@ public class SubNodeStructureImplTest {
 		createLinkCategoryPool(linkCategories);
 		addSomeNodes(nodes);
 		addSomeLinks(links);
-		System.out.println("Copying NS\n");
 		
-		long start = System.currentTimeMillis();
-		ns.copy();
-		long finish = System.currentTimeMillis();
-		System.out.println("time: " + (finish - start) + " ms");
-		System.out.println("ms per linkable : " + (finish - start) / (1.0* ns.getLinkableCount()));
-		System.out.println("total linkables " + ns.getLinkableCount());
+		long start,finish;
 		
 		nodeList.add((Node)ns.getNodes().toArray()[1]);
 		nodeList.add((Node)ns.getNodes().toArray()[9]);
@@ -175,10 +175,11 @@ public class SubNodeStructureImplTest {
 		System.out.println("time: " + (finish - start) + " ms");
 		System.out.println("ms per linkable : " + (finish - start) / (1.0* subNS.getLinkableCount()));
 		System.out.println("total linkables " + subNS.getLinkableCount());
-		
-		//End Test Case 3
+			
 	}
-
+	
+	
+	
 	@Test
 	public void testDeepFirstSearch() {
 		//fail("Not yet implemented");
