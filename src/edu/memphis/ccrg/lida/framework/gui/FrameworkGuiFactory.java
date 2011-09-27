@@ -53,7 +53,7 @@ public class FrameworkGuiFactory {
 
 				String refreshRateStr=systemProperties.getProperty("lida.gui.refreshRate","");
 				try{
-				guiEventsInterval = Integer.parseInt(refreshRateStr);
+					guiEventsInterval = Integer.parseInt(refreshRateStr);
 				}catch (NumberFormatException e) {
 					guiEventsInterval = DEFAULT_GUI_REFRESH_RATE;
 				}
