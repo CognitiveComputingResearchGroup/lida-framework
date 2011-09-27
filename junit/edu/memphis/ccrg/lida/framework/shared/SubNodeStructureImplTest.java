@@ -149,7 +149,7 @@ public class SubNodeStructureImplTest {
 		
 		int nodes = 10000;	
 		int linkCategories = 1000;
-		double nodeLinkRatio = 2.0;
+		double nodeLinkRatio = 1.0;
 		
 		int links = (int)(nodes / nodeLinkRatio);
 		System.out.println("Creating NS with " + nodes + " nodes, " + links + " links");
