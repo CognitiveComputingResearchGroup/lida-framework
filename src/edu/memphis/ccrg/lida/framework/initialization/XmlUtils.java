@@ -149,6 +149,16 @@ public class XmlUtils {
 		}
 		return i;
 	}
+	
+	/**
+	 * Returns whether specified {@link Element} contains a child node with specified tagName
+	 * @param ele {@link Element}
+	 * @param tagName tag name
+	 * @return true if 
+	 */
+	public static boolean containsTag(Element ele, String tagName){
+		return getChildren(ele, tagName).size() != 0;
+	}
 
 	/**
 	 * Returns a Boolean with value true if the first element inside specified

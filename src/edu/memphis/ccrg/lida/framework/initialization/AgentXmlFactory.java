@@ -147,7 +147,7 @@ public class AgentXmlFactory implements AgentFactory {
 			 return XmlUtils.getTypedParams(globalParamsElem);
 		}
 		return new HashMap<String, Object>();
-		}
+	}
 
 	/**
 	 * @param element Element containing the task manager
@@ -385,19 +385,6 @@ public class AgentXmlFactory implements AgentFactory {
 		}
 		return tasks;
 	}
-	/**
-	 * Reads the default ticks per run for initial Tasks
-	 * @param element dom element
-	 * @return the default ticks per run or 0 if the 'defaultticksperrun' tag is missing or the value is invalid
-	 */
-	int getTasksDefaultTicksPerRun(Element element) {
-		Integer tpr = 0;
-		tpr = XmlUtils.getIntegerValue(element, "defaultticksperrun");
-		if (tpr==null || tpr<0){
-			tpr = 0;
-		}
-		return tpr;
-	}
 	
 	/**
 	 * Reads and creates {@link FrameworkTask} specified in element
@@ -409,9 +396,9 @@ public class AgentXmlFactory implements AgentFactory {
 		String taskType = XmlUtils.getTextValue(moduleElement, "tasktype");	
 		String name = moduleElement.getAttribute("name").trim();
 		
-		Integer ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
-		if(ticks == null){
-			ticks = defaultTicks;
+		Integer ticks = defaultTicks;
+		if(XmlUtils.containsTag(moduleElement, "ticksperrun")){
+			ticks = XmlUtils.getIntegerValue(moduleElement, "ticksperrun");
 		}
 		if(ticks<0){
 			ticks = defaultTicks;
@@ -423,6 +410,22 @@ public class AgentXmlFactory implements AgentFactory {
 		TaskData taskData=new TaskData(name,taskType,ticks,params);
 		logger.log(Level.INFO, "Task: " + name + " added.", 0L);
 		return taskData;
+	}
+	
+	/**
+	 * Reads the default ticks per run for initial Tasks
+	 * @param element dom element
+	 * @return the default ticks per run or 0 if the 'defaultticksperrun' tag is missing or the value is invalid
+	 */
+	int getTasksDefaultTicksPerRun(Element element) {
+		Integer tpr = 0;
+		if(XmlUtils.containsTag(element, "defaultticksperrun")){
+			tpr = XmlUtils.getIntegerValue(element, "defaultticksperrun");
+			if (tpr==null || tpr<0){
+				tpr = 0;
+			}
+		}
+		return tpr;
 	}
 
 	/**
