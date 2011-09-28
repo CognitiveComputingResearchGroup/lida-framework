@@ -14,7 +14,7 @@ import java.util.Map;
  * Can pass these parameters when the strategy is initialized. (see factoriesData.xml).
  * Alternatively, parameters can be passed in the decay method call.  
  * Formula used: 1 / (1 + exp(-a* x + c))
- * @author Javier Snaider & Ryan
+ * @author Javier Snaider & Ryan J. McCall
  *
  */
 public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy {

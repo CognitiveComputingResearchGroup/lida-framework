@@ -15,7 +15,7 @@ import java.util.Map;
  * Alternatively, parameters can be passed in the excite method call.  
  * Formula used: 1 / (1 + exp(-a* x + c))
  * 
- * @author Javier Snaider & Ryan
+ * @author Javier Snaider & Ryan J. McCall
  *
  */
 public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrategy {
