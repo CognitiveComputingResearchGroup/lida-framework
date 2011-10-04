@@ -9,8 +9,8 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.Behavior;
-import edu.memphis.ccrg.lida.actionselection.BehaviorImpl;
+import edu.memphis.ccrg.lida.actionselection.OldBehavior;
+import edu.memphis.ccrg.lida.actionselection.OldBehaviorImpl;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
@@ -92,8 +92,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public Behavior getInstantiation() {
-		Behavior b = new BehaviorImpl(getAction());
+	public OldBehavior getInstantiation() {
+		OldBehavior b = new OldBehaviorImpl(getAction());
 		b.setLabel(getLabel());
 		b.setActivation(getTotalActivation());
 		for (Node n: getContext().getNodes()) {

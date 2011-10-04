@@ -26,7 +26,7 @@ public class BasicActionSelectionTest {
 	
 	private static final double EPSILON = 1e-5;
 	private BasicActionSelection as;
-	private Behavior behav1,behav2;	
+	private OldBehavior behav1,behav2;	
 	private MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
 	private MockTaskSpawner ts = new MockTaskSpawner();
 	private Scheme scheme1,scheme2;
@@ -50,7 +50,7 @@ public class BasicActionSelectionTest {
 	@Test
 	public void testGetModuleContent() {
 		as.receiveBehavior(behav1);
-		Collection<Behavior> content = (Collection<Behavior>) as.getModuleContent("behaviors");
+		Collection<OldBehavior> content = (Collection<OldBehavior>) as.getModuleContent("behaviors");
 		
 		assertTrue("Problem with GetModuleContent", content.size()==1);
 		assertTrue("Problem with GetModuleContent", content.contains(behav1));
@@ -62,7 +62,7 @@ public class BasicActionSelectionTest {
 	public void testReceiveBehavior() {
 		as.receiveBehavior(behav1);
 		as.receiveBehavior(behav2);
-		Collection<Behavior> content = (Collection<Behavior>) as.getModuleContent("behaviors");
+		Collection<OldBehavior> content = (Collection<OldBehavior>) as.getModuleContent("behaviors");
 		
 		assertTrue("Problem with ReceiveBehavior", content.size()==2);
 		assertTrue("Problem with ReceiveBehavior", content.contains(behav1));

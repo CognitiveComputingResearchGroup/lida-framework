@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.Behavior;
+import edu.memphis.ccrg.lida.actionselection.OldBehavior;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -124,7 +124,7 @@ public class SchemeImplTest{
 		adding.addDefaultNode(node3);
 		scheme.setAddingResult(adding);
 		
-		Behavior b = scheme.getInstantiation();
+		OldBehavior b = scheme.getInstantiation();
 		assertEquals(action, b.getAction());
 		assertEquals(0.99, b.getActivation(), 0.000001);
 		assertEquals(scheme, b.getGeneratingScheme());

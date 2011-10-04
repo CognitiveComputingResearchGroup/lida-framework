@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BroadcastBuffer;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
@@ -101,5 +102,11 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	public void removeScheme(Scheme s) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public BroadcastBuffer getBroadcastBuffer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

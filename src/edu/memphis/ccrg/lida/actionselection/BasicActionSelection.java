@@ -38,7 +38,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			.getLogger(BasicActionSelection.class.getCanonicalName());
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
+	private Set<OldBehavior> behaviors = new ConcurrentHashSet<OldBehavior>();
 	private double maxActivationThreshold;
 	private DecayStrategy behaviorDecayStrategy;
 	
@@ -130,7 +130,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void receiveBehavior(Behavior b) {
+	public void receiveBehavior(OldBehavior b) {
 		if(b != null){
 			synchronized(this){	
 				b.setDecayStrategy(behaviorDecayStrategy);
@@ -148,7 +148,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public Action selectAction() {
-		Behavior behavior = chooseBehavior();
+		OldBehavior behavior = chooseBehavior();
 		if (behavior != null) {
 			Action action = behavior.getAction();
 			logger.log(Level.FINE, "Action Selected: {1}",
@@ -161,10 +161,10 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		return null;
 	}
 
-	private Behavior chooseBehavior() {
-		Behavior selected = null;
+	private OldBehavior chooseBehavior() {
+		OldBehavior selected = null;
 		double highestActivation = -1.0;
-		for (Behavior b : behaviors) {
+		for (OldBehavior b : behaviors) {
 			double behaviorActivation = b.getActivation();
 			if (behaviorActivation >= candidateThreshold && behaviorActivation > highestActivation) {
 				selected = b;
@@ -196,9 +196,9 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		Iterator<Behavior> it = behaviors.iterator();
+		Iterator<OldBehavior> it = behaviors.iterator();
 		while(it.hasNext()){
-			Behavior b = it.next();
+			OldBehavior b = it.next();
 			b.decay(ticks);
 			if (b.isRemovable()){
 				it.remove();

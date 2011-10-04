@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.actionselection.Behavior;
+import edu.memphis.ccrg.lida.actionselection.OldBehavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BroadcastBuffer;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
@@ -48,7 +49,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * ConcurrentHashmap do not block but they may not reflect the true state of
 	 * the Map if multiple operations are concurrent.
 	 */
-	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();	
+	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+	
 //	TODO support for Node desirability
 //  TODO index by result
 //	private Map<Object, Set<Scheme>> resultSchemeMap;
@@ -73,11 +75,15 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	private DecayStrategy behaviorDecayStrategy;
 
 	private ExciteStrategy behaviorExciteStrategy;
+	
+	private BroadcastBuffer broadcastBuffer;
 
 	/**
 	 * Default constructor
 	 */
 	public ProceduralMemoryImpl() {
+		//TODO interface and default impl
+		broadcastBuffer = new BroadcastBuffer();
 	}
 
 	/**
@@ -173,6 +179,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		logger.log(Level.FINEST, "Procedural memory receives broadcast", TaskManager.getCurrentTick());
+		broadcastBuffer.receiveBroadcast(coalition);
 		activateSchemes((NodeStructure) coalition.getContent());
 	}
 
@@ -185,7 +192,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				TaskManager.getCurrentTick());
-		Behavior b = s.getInstantiation();
+		OldBehavior b = s.getInstantiation();
 		b.setDecayStrategy(behaviorDecayStrategy);
 		b.setExciteStrategy(behaviorExciteStrategy);
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
@@ -234,6 +241,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			return Collections.unmodifiableCollection(schemeSet);
 		}
 		return null;
+	}
+
+	@Override
+	public BroadcastBuffer getBroadcastBuffer() {
+		return broadcastBuffer;
 	}
 	
 }

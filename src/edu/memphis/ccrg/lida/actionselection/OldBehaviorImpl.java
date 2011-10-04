@@ -25,14 +25,14 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * Basic implementation of {@link Behavior}
+ * Basic implementation of {@link OldBehavior}
  * @author Ryan J McCall
  *
  */
-public class BehaviorImpl extends ActivatibleImpl implements Behavior {
+public class OldBehaviorImpl extends ActivatibleImpl implements OldBehavior {
 
 	private static final Logger logger = Logger
-			.getLogger(BehaviorImpl.class.getCanonicalName());
+			.getLogger(OldBehaviorImpl.class.getCanonicalName());
 	
 	private static final double DEFAULT_CONTEXT_SATISFACTION_THRESHOLD = 0.5;
 	private static long idCounter = 0;
@@ -82,7 +82,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	/**
 	 * Default constructor
 	 */
-	public BehaviorImpl(){
+	public OldBehaviorImpl(){
 		id = idCounter++;
 	}
 	
@@ -90,7 +90,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 	 * 
 	 * @param action {@link Action} 
 	 */
-	public BehaviorImpl(Action action){
+	public OldBehaviorImpl(Action action){
 		this();
 		this.action = action;
 	}
@@ -241,8 +241,8 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Behavior){
-			Behavior behavior = (Behavior) o;
+		if (o instanceof OldBehavior){
+			OldBehavior behavior = (OldBehavior) o;
 			return behavior.getId() == id;
 		}
 		return false;		
