@@ -45,9 +45,9 @@ public class FrameworkGuiFactory {
 				Properties properties =ConfigUtils.loadProperties(filename);
 				int guiEventsInterval = DEFAULT_GUI_REFRESH_RATE;
 				if(properties == null){
-					logger.log(Level.SEVERE, "unable to load gui commands");
+					logger.log(Level.SEVERE, "Unable to load GUI commands");
+					properties = new Properties();
 				}
-				
 	        	FrameworkGuiController controller = new FrameworkGuiControllerImpl(agent, properties);
 				logger.log(Level.INFO,"GUI Controller created\n",0L);
 
@@ -63,15 +63,13 @@ public class FrameworkGuiFactory {
 				properties = ConfigUtils.loadProperties(filename);
 				if(properties == null){
 					logger.log(Level.SEVERE, "unable to load guiPanels.properties");
+					properties = new Properties();
 				}
-				
 	        	FrameworkGui frameworkGui = new FrameworkGui(agent, controller, properties);
 	            frameworkGui.setVisible(true);
 	            	            
 	            logger.log(Level.INFO,"FrameworkGui started\n",0L);
-	        }//run
-		});//invokeLater
-		
+	        }
+		});		
 	}
-
 }

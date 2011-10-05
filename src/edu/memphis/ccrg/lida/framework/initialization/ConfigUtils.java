@@ -41,14 +41,16 @@ public class ConfigUtils {
 			try {
 				properties.load(new BufferedReader(new FileReader(filename)));
 			} catch (FileNotFoundException e) {
-				throw new IllegalArgumentException();
+				logger.log(Level.SEVERE, "Cannot find the properties file with path: {0}",
+						filename);
+				properties = null;
 			} catch (IOException e) {
-				logger.log(Level.SEVERE, "Error reading properties {0}",
+				logger.log(Level.SEVERE, "Error loading the properties file with path: {0}",
 						filename);
 				properties = null;
 			}
 		} else {
-			logger.log(Level.WARNING, "Properties File not specified");
+			logger.log(Level.WARNING, "Properties file not specified");
 			properties = null;
 		}
 		return properties;

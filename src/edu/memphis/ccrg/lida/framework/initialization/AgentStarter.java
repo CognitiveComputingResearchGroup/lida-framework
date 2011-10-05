@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiFactory;
  * Or using the main method with a {@link Agent} properties path (a String)
  * specified in the command line arguments.
  * 
- * @author Ryan J McCall, Javier Snaider
+ * @author Ryan J. McCall, Javier Snaider
  */
 public class AgentStarter {
 
@@ -53,7 +53,7 @@ public class AgentStarter {
 			propertiesPath = args[0];
 
 		Properties properties = ConfigUtils.loadProperties(propertiesPath);
-		if (properties !=null){
+		if (properties != null){
 			start(properties);
 		}else{
 			start();
@@ -78,8 +78,10 @@ public class AgentStarter {
 	public static void start() {
 		String propertiesPath = DEFAULT_PROPERTIES_PATH;
 		agentProperties = ConfigUtils.loadProperties(propertiesPath);
-		if (agentProperties!=null){
+		if (agentProperties != null){
 			run();
+		}else{
+			logger.log(Level.SEVERE, "Could not load main configuration file from path: {0}. Application cannot start.", propertiesPath);
 		}
 	}
 
@@ -87,14 +89,11 @@ public class AgentStarter {
 	 * @param propertiesPath - Properties file used for the agent
 	 */
 	public static void start(String propertiesPath) {
-		if (propertiesPath == null) 
-			propertiesPath = DEFAULT_PROPERTIES_PATH;
-	
 		agentProperties = ConfigUtils.loadProperties(propertiesPath);
-		if (agentProperties == null) {
-			start();
-		} else {
+		if (agentProperties != null) {
 			run();
+		} else {
+			start();
 		}
 	}
 
