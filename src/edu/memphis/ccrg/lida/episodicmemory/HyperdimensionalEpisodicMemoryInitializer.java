@@ -51,7 +51,7 @@ public class HyperdimensionalEpisodicMemoryInitializer implements Initializer {
         } else {
             logger.log(
                     Level.SEVERE,
-                    "No Perseptual Associtive Memory in Agent. Translator is not created.",
+                    "No Perceptual Associtive Memory in Agent. Translator is not created.",
                     TaskManager.getCurrentTick());
         }
     }
