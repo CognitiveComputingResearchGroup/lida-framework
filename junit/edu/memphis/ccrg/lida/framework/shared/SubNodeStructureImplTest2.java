@@ -121,9 +121,7 @@ public class SubNodeStructureImplTest2 {
 		//distance = -1
 		subNS = ns1.getSubNodeStructure(nodes, -1);
 		
-		assertTrue(!subNS.containsNode(node4));
-		assertTrue(subNS.getNodeCount() == 0);
-		assertTrue(subNS.getLinkCount() == 0);
+		assertTrue(subNS == null);
 
 		//distance = 0
 		subNS= ns1.getSubNodeStructure(nodes, 0);
@@ -192,8 +190,7 @@ public class SubNodeStructureImplTest2 {
 
 		//number of node = 0
 		subNS= ns1.getSubNodeStructure(nodes, 1);
-		assertTrue(subNS.getNodeCount() == 0);
-		assertTrue(subNS.getLinkCount() == 0);
+		assertTrue(subNS == null);
 		
 		//number of node = 1
         //Be tested at above test cases for distance
