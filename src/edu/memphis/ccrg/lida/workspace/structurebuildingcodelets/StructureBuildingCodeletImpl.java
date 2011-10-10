@@ -55,9 +55,9 @@ public abstract class StructureBuildingCodeletImpl extends CodeletImpl implement
 	@Override
 	public void setAssociatedModule(FrameworkModule module, String usage) {
 		if(module instanceof WorkspaceBuffer){
-			if(usage == ModuleUsage.TO_READ_FROM){
+			if(ModuleUsage.TO_READ_FROM.equals(usage)){
 				readableBuffers.put(module.getModuleName(), (WorkspaceBuffer) module);		
-			}else if(usage == ModuleUsage.TO_WRITE_TO){
+			}else if(ModuleUsage.TO_WRITE_TO.equals(usage)){
 				writableBuffer = (WorkspaceBuffer) module;
 			}else{
 				logger.log(Level.WARNING, "Specified usage is not supported.  See ModuleUsage", TaskManager.getCurrentTick());
