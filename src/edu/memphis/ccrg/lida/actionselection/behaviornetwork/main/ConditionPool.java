@@ -14,8 +14,8 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * TODO
- * @author UofM
- *
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public class ConditionPool implements BroadcastListener {
 
@@ -63,10 +63,6 @@ public class ConditionPool implements BroadcastListener {
 	}
 
 	@Override
-	public void learn(Coalition coalition) {
-	}
-
-	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
 		for (Node n: ns.getNodes()){
@@ -77,5 +73,9 @@ public class ConditionPool implements BroadcastListener {
 				buffer.put(n.getExtendedId(), (Condition) n);
 			}
 		}		
+	}
+
+	@Override
+	public void learn(Coalition coalition) {
 	}
 }

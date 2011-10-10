@@ -20,37 +20,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 
 /**
- * Selector iterates and chooses competitor with max alpha
- * 
+ * A Selector that chooses a behavior over threshold with maximum activation (alpha) among all behaviors.
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
-public class BasicSelector implements Selector {
+public class BasicSelector extends StrategyImpl implements Selector {
 
-	private static Logger logger = Logger
-			.getLogger("lida.behaviornetwork.engine.Selector");
+	private static Logger logger = Logger.getLogger(BasicSelector.class.getCanonicalName());
 
-	// stochastic in behavior net + drives to explore novel things
-	// have a parameter which at 1.0 gives deterministic action selection.
-	// If 0.0 then completely random
-
-	public BasicSelector() {
-	}
-
-	// public static void p(String s){
-	// System.out.println(s);
-	// }
-
-	public Behavior selectSingleBehavior(
-			Collection<Behavior> candidateBehaviors, double candidateThreshold) {
+	public Behavior selectBehavior(Collection<Behavior> behaviors, double threshold) {
 		double maxActivation = 0.0;
 		List<Behavior> winners = new ArrayList<Behavior>();
-		Behavior winner = null;
-
-		for (Behavior current : candidateBehaviors) {
+		for (Behavior current : behaviors) {
 			double currentActivation = current.getTotalActivation();
-			if (currentActivation > candidateThreshold) {
+			if (currentActivation > threshold) {
 				if (currentActivation > maxActivation) {
 					winners.clear();
 					winners.add(current);
@@ -60,23 +48,21 @@ public class BasicSelector implements Selector {
 				}
 			}
 		}
-
+		Behavior winner = null;
 		switch (winners.size()) {
-		case 0:
-			winner = null;
-			break;
-		case 1:
-			winner = winners.get(0);
-			logger.log(Level.FINE, "Winner: " + winner.getLabel() + ", activ: "
-					+ maxActivation);
-			break;
-		default:
-			winner = winners.get((int) (Math.random() * winners.size()));
-			logger.log(Level.FINE, "Winner: " + winner.getLabel() + ", activ: "
-					+ maxActivation);
+			case 0:
+				winner = null;
+				break;
+			case 1:
+				winner = winners.get(0);
+				logger.log(Level.FINER, "Winner: {1}  activation: {2}",
+						new Object[]{TaskManager.getCurrentTick(),winner.getLabel(), maxActivation});
+				break;
+			default:
+				winner = winners.get((int) (Math.random() * winners.size()));
+				logger.log(Level.FINER, "Winner: {1}  activation: {2}",
+						new Object[]{TaskManager.getCurrentTick(),winner.getLabel(), maxActivation});
 		}
-
 		return winner;
 	}
-
 }

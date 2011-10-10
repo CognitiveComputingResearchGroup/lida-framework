@@ -24,11 +24,11 @@ import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
-import edu.memphis.ccrg.lida.actionselection.strategies.CandidateThresholdReducer;
 import edu.memphis.ccrg.lida.actionselection.strategies.Selector;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -112,7 +112,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	/*
 	 * Function by which the behavior activation threshold is reduced
 	 */
-	private CandidateThresholdReducer candidateThresholdReducer;
+	private DecayStrategy candidateThresholdReducer;
 
 	/*
 	 * Strategy to specify the way a winning behavior is chosen.
@@ -132,6 +132,11 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 * Listeners of this action selection
 	 */
 	private List<ActionSelectionListener> actionSelectionListeners = new ArrayList<ActionSelectionListener>();
+	
+	/*
+	 * Preafference listeners of this action selection
+	 */
+	private List<PreafferenceListener> preafferenceListeners = new ArrayList<PreafferenceListener>();
 
 	/*
 	 * All the behaviors currently in this behavior network.
@@ -208,8 +213,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		String name = getParam(
 				"actionselection.candidateThresholdReducerStrategy",
 				DEFAULT_CANDIDATE_THRESHOLD_REDUCER_STRATEGY);
-		candidateThresholdReducer = (CandidateThresholdReducer) factory
-				.getStrategy(name);
+		candidateThresholdReducer = factory.getDecayStrategy(name);
 		if (candidateThresholdReducer == null) {
 			logger
 					.log(
@@ -246,6 +250,9 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		if (module instanceof ProceduralMemory) {
 			ProceduralMemory pm = (ProceduralMemory) module;
 			conditionPool = pm.getBroadcastBuffer();
+		}else{
+			logger.log(Level.WARNING, "Cannot associate module: {1} to the Behavior Network.",
+					new Object[]{TaskManager.getCurrentTick(), module});
 		}
 	}
 
@@ -256,7 +263,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	
 	@Override
 	public void addPreafferenceListener(PreafferenceListener listener) {
-		// TODO
+		preafferenceListeners.add(listener);
 	}
 
 	// This way permits multiple instantiations of the same behavior
@@ -585,7 +592,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	public Action selectAction() {
 		Action a = null;
 		if (actionSelectionStarted.compareAndSet(false, true)) {
-			Behavior winningBehavior = selectorStrategy.selectSingleBehavior(getSatisfiedBehaviors(), candidateThreshold);
+			Behavior winningBehavior = selectorStrategy.selectBehavior(getSatisfiedBehaviors(), candidateThreshold);
 			if (winningBehavior != null) {
 				sendAction(winningBehavior);
 				resetCandidateThreshold();
@@ -602,8 +609,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	}
 
 	private void reduceCandidateThreshold() {
-		candidateThreshold = candidateThresholdReducer
-				.reduceActivationThreshold(candidateThreshold);
+		candidateThreshold = candidateThresholdReducer.decay(candidateThreshold, 1);
 		logger.log(Level.FINEST, "Candidate threshold REDUCED to {1}",
 				new Object[]{TaskManager.getCurrentTick(), candidateThreshold});
 	}
@@ -666,6 +672,9 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	}
 
 	//TODO tasks?
+	/**
+	 * 
+	 */
 	public void runOneCycle() {
 		// envirnmentConditions= readEnvironment();
 		passActivationFromBroadcast();

@@ -10,20 +10,19 @@ package edu.memphis.ccrg.lida.actionselection.strategies;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-
-
+import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 
 /**
- * A strategy for choosing which behavior to execute
- * @author ryanjmccall
- *
+ * A {@link Strategy} to choose a {@link Behavior}.
+ * @author Ryan J. McCall
  */
 public interface Selector {
 
 	/**
-	 * Select a single behavior as the current winner
-	 * @return Behavior - selected behavior
+	 * Select a single {@link Behavior} as the current winner
+	 * @param behaviors Candidate behaviors
+	 * @param threshold threshold for selection
+	 * @return Behavior winning {@link Behavior}
 	 */
-	public Behavior selectSingleBehavior(Collection<Behavior> behaviors, double candidateThreshold);
-
+	public Behavior selectBehavior(Collection<Behavior> behaviors, double threshold);
 }

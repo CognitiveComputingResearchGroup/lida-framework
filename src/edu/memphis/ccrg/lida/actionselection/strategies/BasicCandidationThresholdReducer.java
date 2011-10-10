@@ -7,23 +7,46 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.actionselection.strategies;
 
+import java.util.Map;
 
-public class BasicCandidationThresholdReducer implements CandidateThresholdReducer {
+import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
+import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
+
+
+/**
+ * @author Ryan J. McCall
+ */
+public class BasicCandidationThresholdReducer extends StrategyImpl implements DecayStrategy {
 	
-    /**
+    /*
 	 * Percent to reduce the behavior activation threshold by if no behavior is selected
 	 */
-    private final double ACTIVATION_THRESHOLD_REDUCTION  = 0.10;  
+    private static final double ACTIVATION_THRESHOLD_REDUCTION  = 0.10;  
     
-    private final double ACTIVATION_LOWER_BOUND = 0.0;
+    private static final double ACTIVATION_LOWER_BOUND = 0.0;
+    
+    //TODO init for parameters
 
 	@Override
-	public double reduceActivationThreshold(double behaviorActivationThreshold) {
+	public double decay(double currentActivation, long ticks, Object... params) {
+		//TODO use params
+		return reduceActivationThreshold(currentActivation);
+	}
+
+	@Override
+	public double decay(double currentActivation, long ticks,
+			Map<String, ? extends Object> params) {
+		//TODO use params
+		return reduceActivationThreshold(currentActivation);
+	}
+
+	private double reduceActivationThreshold(double behaviorActivationThreshold) {
 		double result = behaviorActivationThreshold  - ACTIVATION_THRESHOLD_REDUCTION;
 		if(result < ACTIVATION_LOWER_BOUND)
 			return ACTIVATION_LOWER_BOUND;
 		else
 			return result;
 	}
+
 
 }

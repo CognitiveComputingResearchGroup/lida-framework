@@ -7,11 +7,11 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.pam;
 
-import cern.colt.bitvector.BitVector;
-import edu.memphis.ccrg.lida.episodicmemory.sdm.BitVectorUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import cern.colt.bitvector.BitVector;
+import edu.memphis.ccrg.lida.episodicmemory.sdm.BitVectorUtils;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;

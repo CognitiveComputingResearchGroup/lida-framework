@@ -23,8 +23,9 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 /**
- * @author UofM
- *
+ * Default implementation of {@link Behavior}
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
@@ -33,38 +34,38 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
 	private static long idCounter = 0;
 
-	/**
+	/*
 	 * Label for description
 	 */
 	private String label = "blank behavior";
 
-	/**
+	/*
 	 * Context for this behavior
 	 */
 	private Map<Object,Condition> context = new HashMap<Object,Condition>();
 
-	/**
+	/*
 	 * Context for this behavior
 	 */
 	private Map<Object,Condition> negContext = new HashMap<Object,Condition>();
 
-	/**
+	/*
 	 * Set of nodes that this scheme adds
 	 */
 	private Map<Object,Condition> addingList = new HashMap<Object,Condition>();
 
-	/**
+	/*
      * 
      */
 	private Map<Object,Condition> deletingList = new HashMap<Object,Condition>();
 
-	/**
+	/*
 	 * Id of the action(s) in sensory-motor to be taken if this behavior
 	 * executes
 	 */
 	private Action action;
 
-	/**
+	/*
 	 * unique identifier
 	 */
 	private long id;
@@ -72,7 +73,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
 
 	private Scheme generatingScheme;
-	
 	
 	/**
 	 * @param action
@@ -300,6 +300,5 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	@Override
 	public void setGeneratingScheme(Scheme s) {
 		generatingScheme  = s;
-	}
-	
-}// class
+	}	
+}
