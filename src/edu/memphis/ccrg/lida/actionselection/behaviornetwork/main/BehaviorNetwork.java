@@ -20,126 +20,151 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.Action;
+import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.strategies.BasicCandidationThresholdReducer;
-import edu.memphis.ccrg.lida.actionselection.strategies.BasicSelector;
+import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.actionselection.strategies.CandidateThresholdReducer;
-import edu.memphis.ccrg.lida.actionselection.strategies.PredecessorExciteStrategy;
 import edu.memphis.ccrg.lida.actionselection.strategies.Selector;
+import edu.memphis.ccrg.lida.framework.FrameworkModule;
+import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
+import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
  * 
  * @author Javier Snaider, Ryan J McCall, Sidney D'Mello
  * 
  */
-public class BehaviorNetwork {
+public class BehaviorNetwork extends FrameworkModuleImpl implements
+		ActionSelection, ProceduralMemoryListener {
 
 	private static final Logger logger = Logger.getLogger(BehaviorNetwork.class
 			.getCanonicalName());
 
-	/**
+	/*
 	 * Starting value for candidateBehaviorThreshold
-	 * 
 	 */
-	private final double INITIAL_CANDIDATE_BEHAVIOR_THRESHOLD = 0.9;
+	private static final double DEFAULT_MAX_CANDIDATE_THRESHOLD = 0.9;
 
-	/**
+	/*
 	 * Current threshold for becoming active (akin to THETA from Maes'
 	 * Implementation)
 	 */
-	private double candidateBehaviorThreshold = INITIAL_CANDIDATE_BEHAVIOR_THRESHOLD;
+	private double candidateThreshold;
+	
+	private double maxCandidateThreshold = DEFAULT_MAX_CANDIDATE_THRESHOLD;
 
-	/**
-	 * Amount of excitation by Environment (akin to PHI from Maes'
+	private static final double DEFAULT_BROADCAST_EXCITATION_FACTOR = 0.05;
+
+	/*
+	 * Amount of excitation from broadcast (environment) (akin to PHI from Maes'
 	 * Implementation)
 	 */
-	private double environmentExcitationFactor = 0.05; // was .2
+	private double broadcastExcitationFactor = DEFAULT_BROADCAST_EXCITATION_FACTOR;
 
-	/**
+	private static final double DEFAULT_SUCCESSOR_EXCITATION_FACTOR = 0.04;
+
+	/*
 	 * Scales the strength of activation passed from behavior to successor.
 	 */
-	private double successorExcitationFactor = .04; // was .15
+	private double successorExcitationFactor = DEFAULT_SUCCESSOR_EXCITATION_FACTOR;
 
-	/**
+	private static final double DEFAULT_PREDECESSOR_EXCITATION_FACTOR = 0.1;
+
+	/*
 	 * Scales the strength of activation passed from behavior to predecessor.
 	 */
-	private double predecessorExcitationFactor = .1; // was .35
+	private double predecessorExcitationFactor = DEFAULT_PREDECESSOR_EXCITATION_FACTOR;
 
-	/**
+	private static final double DEFAULT_CONFLICTOR_EXCITATION_FACTOR = 0.04;
+
+	/*
 	 * Scales the strength of activation passed from behavior to conflictor.
 	 */
-	private double conflictorExcitationFactor = .04; // was .15
+	private double conflictorExcitationFactor = DEFAULT_CONFLICTOR_EXCITATION_FACTOR;
 
-	/**
-	 * The media activation of behaviors. It is used for the Normalization (akin
-	 * to PI from Maes' implementation)
-	 */
-	private double mediaActivation = 0.05;
-	/**
+	private static final double DEFAULT_DESIRABILITY_THRESHOLD = 0.0;
+
+	/*
 	 * Threshold to identify goals
 	 */
-	private double goalThreshold = 0.5;
+	private double desirabilityThreshold = DEFAULT_DESIRABILITY_THRESHOLD;
 
-	/**
+	private static final double DEFAULT_MEAN_ACTIVATION = 0.05;
+
+	/*
+	 * The mean activation of behaviors. It is used for the Normalization (akin
+	 * to PI from Maes' implementation)
+	 */
+	private double meanActivation = DEFAULT_MEAN_ACTIVATION;
+
+	private static final String DEFAULT_CANDIDATE_THRESHOLD_REDUCER_STRATEGY = "BasicCandidationThresholdReducer";
+
+	private static final String DEFAULT_SELECTOR_STRATEGY = "BasicSelector";
+
+	private static final String DEFAULT_PREDECESSOR_EXCITE_STRATEGY = "PredecessorExciteStrategy";
+
+	/*
 	 * Function by which the behavior activation threshold is reduced
 	 */
-	private CandidateThresholdReducer candidateThresholdReducer = new BasicCandidationThresholdReducer();
+	private CandidateThresholdReducer candidateThresholdReducer;
 
-	/**
+	/*
 	 * Strategy to specify the way a winning behavior is chosen.
 	 */
-	private Selector selectorStrategy = new BasicSelector();
+	private Selector selectorStrategy;
 
-	/**
-	 * Currently selected behavior
+	// TODO use this
+	private ExciteStrategy predecessorExciteStrategy;
+
+
+	/*
+	 * Pool of conditions in Procedural Memory
 	 */
-	private Behavior winningBehavior = null;
+	private ConditionPool conditionPool;
 
-	// TODO
-	private ExciteStrategy predecessorExcite = new PredecessorExciteStrategy();
-
-	private Map<String, ?> parameters;
-
-	/**
-	 * Current conscious broadcast
-	 */
-	private Collection<Condition> envirnmentConditions = null;
-
-	/**
+	/*
 	 * Listeners of this action selection
 	 */
-	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
+	private List<ActionSelectionListener> actionSelectionListeners = new ArrayList<ActionSelectionListener>();
 
-	/**
+	/*
 	 * All the behaviors currently in this behavior network.
 	 */
 	private ConcurrentMap<Long, Behavior> behaviors = new ConcurrentHashMap<Long, Behavior>();
 
-	/**
+	/*
 	 * Map of behaviors indexed by the elements appearing in their context
 	 * conditions.
 	 */
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByContextCondition = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
-	/**
+	/*
 	 * Map of behaviors indexed by the elements appearing in their negated
 	 * context conditions.
 	 */
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByNegContextCondition = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
-	/**
+	/*
 	 * Map of behaviors indexed by the elements appearing in their add list.
 	 */
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByAddingItem = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
-	/**
+	/*
 	 * Map of behaviors indexed by the elements appearing in their delete list.
 	 */
 	private ConcurrentMap<Condition, Set<Behavior>> behaviorsByDeletingItem = new ConcurrentHashMap<Condition, Set<Behavior>>();
 
 	private AtomicBoolean actionSelectionStarted = new AtomicBoolean(false);
 
+	/*
+	 * TODO comment
+	 */
 	private enum ConditionSet {
 		CONTEXT, NEGCONTEXT, ADDING_LIST, DELETING_LIST
 	}
@@ -151,8 +176,87 @@ public class BehaviorNetwork {
 		super();
 	}
 
+	/**
+	 * TODO
+	 */
+	@Override
+	public void init() {
+		maxCandidateThreshold = getParam(
+				"actionselection.maxCandidateThreshold",
+				DEFAULT_MAX_CANDIDATE_THRESHOLD);
+		candidateThreshold = maxCandidateThreshold;
+		
+		broadcastExcitationFactor = getParam(
+				"actionselection.broadcastExcitationFactor",
+				DEFAULT_BROADCAST_EXCITATION_FACTOR);
+		successorExcitationFactor = getParam(
+				"actionselection.successorExcitationFactor",
+				DEFAULT_SUCCESSOR_EXCITATION_FACTOR);
+		predecessorExcitationFactor = getParam(
+				"actionselection.predecessorExcitationFactor",
+				DEFAULT_PREDECESSOR_EXCITATION_FACTOR);
+		conflictorExcitationFactor = getParam(
+				"actionselection.conflictorExcitationFactor",
+				DEFAULT_CONFLICTOR_EXCITATION_FACTOR);
+		desirabilityThreshold = getParam(
+				"actionselection.desirabilityThreshold",
+				DEFAULT_DESIRABILITY_THRESHOLD);
+		meanActivation = getParam("actionselection.meanActivation",
+				DEFAULT_MEAN_ACTIVATION);
+
+		ElementFactory factory = ElementFactory.getInstance();
+		String name = getParam(
+				"actionselection.candidateThresholdReducerStrategy",
+				DEFAULT_CANDIDATE_THRESHOLD_REDUCER_STRATEGY);
+		candidateThresholdReducer = (CandidateThresholdReducer) factory
+				.getStrategy(name);
+		if (candidateThresholdReducer == null) {
+			logger
+					.log(
+							Level.SEVERE,
+							"Could not get candidate threshold reducer strategy with name {1} from the factory",
+							new Object[] { TaskManager.getCurrentTick(), name });
+		}
+
+		name = getParam("actionselection.selectorStrategy",
+				DEFAULT_SELECTOR_STRATEGY);
+		selectorStrategy = (Selector) factory.getStrategy(name);
+		if (selectorStrategy == null) {
+			logger
+					.log(
+							Level.SEVERE,
+							"Could not get selector strategy with name {1} from the factory",
+							new Object[] { TaskManager.getCurrentTick(), name });
+		}
+
+		name = getParam("actionselection.predecessorExciteStrategy",
+				DEFAULT_PREDECESSOR_EXCITE_STRATEGY);
+		predecessorExciteStrategy = factory.getExciteStrategy(name);
+		if (predecessorExciteStrategy == null) {
+			logger
+					.log(
+							Level.SEVERE,
+							"Could not get predecessor excite strategy with name {1} from the factory",
+							new Object[] { TaskManager.getCurrentTick(), name });
+		}
+	}
+
+	@Override
+	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
+		if (module instanceof ProceduralMemory) {
+			ProceduralMemory pm = (ProceduralMemory) module;
+			conditionPool = pm.getBroadcastBuffer();
+		}
+	}
+
+	@Override
 	public void addActionSelectionListener(ActionSelectionListener listener) {
-		listeners.add(listener);
+		actionSelectionListeners.add(listener);
+	}
+	
+	@Override
+	public void addPreafferenceListener(PreafferenceListener listener) {
+		// TODO
 	}
 
 	// This way permits multiple instantiations of the same behavior
@@ -161,21 +265,21 @@ public class BehaviorNetwork {
 	// This can be resolved by either slowing the scheme activation rate or by
 	// having Behavior
 	// have a originatingScheme field.
-	public void receiveBehavior(Behavior newBehavior) {
-		logger.log(Level.INFO, "Adding behavior: " + newBehavior);
-		indexBehaviorByElements(newBehavior,
-				newBehavior.getContextConditions(), behaviorsByContextCondition);
-		indexBehaviorByElements(newBehavior, newBehavior
-				.getNegatedContextConditions(), behaviorsByNegContextCondition);
-		indexBehaviorByElements(newBehavior, newBehavior.getAddingList(),
-				behaviorsByAddingItem);
-		indexBehaviorByElements(newBehavior, newBehavior.getDeletingList(),
-				behaviorsByDeletingItem);
+	@Override
+	public void receiveBehavior(Behavior b) {
+		logger.log(Level.FINER, "Received behavior: {1}", new Object[] {
+				TaskManager.getCurrentTick(), b });
+		indexBehaviorByElements(b, b.getContextConditions(),
+				behaviorsByContextCondition);
+		indexBehaviorByElements(b, b.getNegatedContextConditions(),
+				behaviorsByNegContextCondition);
+		indexBehaviorByElements(b, b.getAddingList(), behaviorsByAddingItem);
+		indexBehaviorByElements(b, b.getDeletingList(), behaviorsByDeletingItem);
 
-		behaviors.put(newBehavior.getId(), newBehavior);
+		behaviors.put(b.getId(), b);
 	}
 
-	/**
+	/*
 	 * Abstractly defined utility method to index the behaviors into a map by
 	 * elements
 	 */
@@ -190,21 +294,15 @@ public class BehaviorNetwork {
 				}
 				values.add(behavior);
 			}
-
-		}// for
-	}
-
-	public void triggerActionSelection() {
-		if (actionSelectionStarted.compareAndSet(false, true)) {
-			selectAction();
-			actionSelectionStarted.set(false);
 		}
 	}
 
-	public Set<Behavior> getSatisfiedBehaviors() {
+	/*
+	 * TODO
+	 */
+	private Set<Behavior> getSatisfiedBehaviors() {
 		Set<Behavior> satisfiedBehaviors = new HashSet<Behavior>();
-
-		for (Behavior b : getBehaviors()) {
+		for (Behavior b : behaviors.values()) {
 			if (b.isAllContextConditionsSatisfied()) {
 				satisfiedBehaviors.add(b);
 			}
@@ -212,30 +310,32 @@ public class BehaviorNetwork {
 		return satisfiedBehaviors;
 	}
 
-	public void passActivationAmongBehaviors() {
+	/*
+	 * TODO 
+	 */
+	private void passActivationAmongBehaviors() {
 		// TODO This implementation is different to the original Maes' code.
 		// Here the activation is updated directly and the new value is used to
 		// compute the passing activation.
 
 		// TODO consider alternative ways to iterate over the behaviors so that
 		// the order changes from iteration to iteration
-		for (Behavior behavior : getBehaviors()) {
-			if (behavior.isAllContextConditionsSatisfied())
+		for (Behavior behavior : behaviors.values()) {
+			if (behavior.isAllContextConditionsSatisfied()){
 				spreadActivationToSuccessors(behavior);
-			else
+			}else{
 				spreadActivationToPredecessors(behavior);
+			}
 			spreadActivationToConflictors(behavior);
 		}
 	}
 
-	/**
+	/*
 	 * Only excite successor if precondition is not yet satisfied.
 	 * 
-	 * @param behavior
-	 * 
+	 * @param behavior 
 	 */
 	private void spreadActivationToSuccessors(Behavior behavior) {
-
 		// For successors with positive conditions
 		for (Condition addProposition : behavior.getAddingList()) {
 			Set<Behavior> successors = getSuccessors(addProposition);
@@ -250,9 +350,9 @@ public class BehaviorNetwork {
 				spreadActivationSucc(behavior, deleteProposition, successors);
 			}
 		}
-	}// method
+	}
 
-	/**
+	/*
 	 * @param behavior
 	 * @param condition
 	 * @param successors
@@ -282,7 +382,7 @@ public class BehaviorNetwork {
 		return behaviorsByContextCondition.get(addProposition);
 	}
 
-	/**
+	/*
 	 * Don't bother exciting a predecessor for a precondition that is already
 	 * satisfied.
 	 * 
@@ -316,7 +416,7 @@ public class BehaviorNetwork {
 		}
 	}
 
-	/**
+	/*
 	 * @param behavior
 	 * @param contextCondition
 	 * @param predecessors
@@ -333,12 +433,6 @@ public class BehaviorNetwork {
 					+ predecessor + " for " + contextCondition);
 		}
 	}
-
-	// private Set<Behavior> getPredecessors(Condition precondition) {
-	// return (!precondition.isNegated()) ?
-	// behaviorsByAddingItem.get(precondition) :
-	// behaviorsByDeletingItem.get(precondition);
-	// }
 
 	private void spreadActivationToConflictors(Behavior behavior) {
 		boolean isMutualConflict = false;
@@ -388,12 +482,7 @@ public class BehaviorNetwork {
 				}// for each conflictor
 			}
 		}// for
-	}// method
-
-	// private Set<Behavior> getConflictors(Condition condition) {
-	// return (condition.isNegated()) ? behaviorsByAddingItem.get(condition) :
-	// behaviorsByDeletingItem.get(condition);
-	// }
+	}
 
 	private void auxSpreadConflictorActivation(Behavior behavior,
 			Behavior conflictor) {
@@ -401,18 +490,18 @@ public class BehaviorNetwork {
 		double inhibitionAmount = -(behavior.getActivation() * conflictorExcitationFactor)
 				/ behavior.getContextSize();
 		conflictor.excite(inhibitionAmount);
-		logger.log(Level.FINEST, behavior.getLabel() + " inhibits "
-				+ conflictor.getLabel() + " amount " + inhibitionAmount);
-	}// method
+		logger.log(Level.FINEST, "{1} inhibits {2} amount {3}", 
+				new Object[]{TaskManager.getCurrentTick(), behavior.getLabel(),conflictor.getLabel(),inhibitionAmount});
+	}
 
-	/**
+	/*
 	 * For each proposition in the current environment get the behaviors indexed
 	 * by that proposition For each behavior, excite it.
 	 */
-	public void passActivationFromEnvironment() {
-		for (Condition condition : envirnmentConditions) {
+	private void passActivationFromBroadcast() {
+		for (Condition condition : conditionPool.getConditions()) {
 			// TODO: Another option is to use GoalDegree and Activation
-			if (condition.getNetDesirability() < goalThreshold) {
+			if (condition.getNetDesirability() < desirabilityThreshold) {
 				if (behaviorsByContextCondition.containsKey(condition)) {
 					passActivationToContextOrResult(condition,
 							behaviorsByContextCondition, ConditionSet.CONTEXT);
@@ -433,9 +522,9 @@ public class BehaviorNetwork {
 				}
 			}
 		}// for
-	}// method
+	}
 
-	/**
+	/*
 	 * @param condition
 	 * @param context
 	 * @param map
@@ -455,7 +544,7 @@ public class BehaviorNetwork {
 				c = behavior.getContextCondition(condition.getId());
 
 				excitationAmount = (condition.getTotalActivation()
-						* environmentExcitationFactor * c.getWeight() / behavior
+						* broadcastExcitationFactor * c.getWeight() / behavior
 						.getContextSize());
 
 				behavior.excite(excitationAmount);
@@ -463,7 +552,7 @@ public class BehaviorNetwork {
 			case NEGCONTEXT:
 				c = behavior.getContextCondition(condition.getId());
 				excitationAmount = ((1.0 - condition.getTotalActivation())
-						* environmentExcitationFactor * c.getWeight())
+						* broadcastExcitationFactor * c.getWeight())
 						/ behavior.getContextSize();
 
 				behavior.excite(excitationAmount);
@@ -471,7 +560,7 @@ public class BehaviorNetwork {
 
 			case ADDING_LIST:
 				excitationAmount = condition.getNetDesirability()
-						* environmentExcitationFactor;
+						* broadcastExcitationFactor;
 				behavior.excite(excitationAmount);
 				break;
 			case DELETING_LIST:
@@ -482,8 +571,8 @@ public class BehaviorNetwork {
 				break;
 			}
 
-			logger.log(Level.FINEST, behavior.toString() + " "
-					+ excitationAmount + " for " + condition);
+			logger.log(Level.FINEST, "{1}: {2} for {3}",
+					new Object[]{TaskManager.getCurrentTick(),behavior,excitationAmount,condition});
 		}
 	}
 
@@ -492,68 +581,66 @@ public class BehaviorNetwork {
 	 * executed, its activation is set to 0.0 and the BehaviorThreshold is
 	 * reseted. If no behavior is selected, the BehaviorThreshold is reduced.
 	 */
-	public void selectAction() {
-		winningBehavior = selectorStrategy.selectSingleBehavior(
-				getSatisfiedBehaviors(), candidateBehaviorThreshold);
-
-		if (winningBehavior != null) {
-			logger.log(Level.FINER, "Behavior selected: " + winningBehavior);
-			sendAction(winningBehavior);
-			resetCandidateBehaviorThreshold();
-			winningBehavior.setActivation(0.0);
-			decayBehaviors();
-		} else {
-			reduceCandidateBehaviorThreshold();
+	@Override
+	public Action selectAction() {
+		Action a = null;
+		if (actionSelectionStarted.compareAndSet(false, true)) {
+			Behavior winningBehavior = selectorStrategy.selectSingleBehavior(getSatisfiedBehaviors(), candidateThreshold);
+			if (winningBehavior != null) {
+				sendAction(winningBehavior);
+				resetCandidateThreshold();
+				winningBehavior.setActivation(0.0);
+				a = winningBehavior.getAction();
+				logger.log(Level.FINER, "Selected behavior: {1} with action: {2}",
+						new Object[]{TaskManager.getCurrentTick(),winningBehavior, a});
+			} else {
+				reduceCandidateThreshold();
+			}
+			actionSelectionStarted.set(false);
 		}
+		return a;
 	}
 
-	private void decayBehaviors() {
-		for (Behavior behavior : getBehaviors()) {
-			behavior.decay(1);
-		}
+	private void reduceCandidateThreshold() {
+		candidateThreshold = candidateThresholdReducer
+				.reduceActivationThreshold(candidateThreshold);
+		logger.log(Level.FINEST, "Candidate threshold REDUCED to {1}",
+				new Object[]{TaskManager.getCurrentTick(), candidateThreshold});
 	}
 
-	private void reduceCandidateBehaviorThreshold() {
-		candidateBehaviorThreshold = candidateThresholdReducer
-				.reduceActivationThreshold(candidateBehaviorThreshold);
-		logger.log(Level.FINEST, "Candidate behavior threshold REDUCED to "
-				+ candidateBehaviorThreshold);
-	}
-
-	private void resetCandidateBehaviorThreshold() {
-		candidateBehaviorThreshold = INITIAL_CANDIDATE_BEHAVIOR_THRESHOLD;
-		logger.log(Level.FINEST, "Candidate behavior threshold RESET to  "
-				+ candidateBehaviorThreshold);
+	private void resetCandidateThreshold() {
+		candidateThreshold = maxCandidateThreshold;
+		logger.log(Level.FINEST, "Candidate threshold RESET to {1}",
+				new Object[]{TaskManager.getCurrentTick(), candidateThreshold});
 	}
 
 	private void sendAction(Behavior b) {
-		for (ActionSelectionListener l : listeners)
+		for (ActionSelectionListener l : actionSelectionListeners){
 			l.receiveAction(b.getAction());
+		}
 	}
 
-	/**
-	 * Decay all the behaviors.
+	/*
+	 * normalize the behaviors' activation.
 	 */
-	public void normalizeActivation() {
+	private void normalizeActivation() {
+		// Double totalNetAct = 0.0;
+		// Double nCount = mediaActivation * getBehaviors().size();
+		// for (Behavior behavior : getBehaviors()) {
+		// totalNetAct += behavior.getActivation();
+		// }
+		//
+		// for (Behavior behavior : getBehaviors()) {
+		// double activation = behavior.getActivation() * totalNetAct / nCount;
+		// // behavior.decay(1L,totalNetAct,nCount);
+		// behavior.setActivation(activation);
+		//
+		// logger.log(Level.FINEST,
+		// "Decaying behavior: " + behavior.getActivation());
+		// }
 	}
 
-	// Double totalNetAct = 0.0;
-	// Double nCount = mediaActivation * getBehaviors().size();
-	// for (Behavior behavior : getBehaviors()) {
-	// totalNetAct += behavior.getActivation();
-	// }
-	//
-	// for (Behavior behavior : getBehaviors()) {
-	// double activation = behavior.getActivation() * totalNetAct / nCount;
-	// // behavior.decay(1L,totalNetAct,nCount);
-	// behavior.setActivation(activation);
-	//
-	// logger.log(Level.FINEST,
-	// "Decaying behavior: " + behavior.getActivation());
-	// }
-	// }
-
-	/**
+	/*
 	 * Removes specified behavior from the behavior net, severing all links to
 	 * other behaviors and removing it from the specified stream which contained
 	 * it.
@@ -561,127 +648,49 @@ public class BehaviorNetwork {
 	 * @param behavior
 	 */
 	private void removeBehavior(Behavior behavior) {
-
-		for (Condition precondition : behavior.getContextConditions())
+		for (Condition precondition : behavior.getContextConditions()){
 			behaviorsByContextCondition.get(precondition).remove(behavior);
-
-		for (Condition precondition : behavior.getNegatedContextConditions())
+		}
+		for (Condition precondition : behavior.getNegatedContextConditions()){
 			behaviorsByContextCondition.get(precondition).remove(behavior);
-
-		for (Condition addItem : behavior.getAddingList())
+		}
+		for (Condition addItem : behavior.getAddingList()){
 			behaviorsByAddingItem.get(addItem).remove(behavior);
-
-		for (Condition deleteItem : behavior.getDeletingList())
+		}
+		for (Condition deleteItem : behavior.getDeletingList()){
 			behaviorsByDeletingItem.get(deleteItem).remove(behavior);
-
+		}
 		behaviors.remove(behavior.getId());
-		logger.log(Level.FINEST, "Behavior " + behavior
-				+ " was removed from BehaviorNet.");
+		logger.log(Level.FINEST, "Behavior {1} was removed from BehaviorNet.",
+				new Object[]{TaskManager.getCurrentTick(),behavior});
 	}
 
-	public Collection<Behavior> getBehaviors() {
-		return behaviors.values();
-	}
-
-	public void setBehaviorActivationThreshold(double threshold) {
-		this.candidateBehaviorThreshold = threshold;
-	}
-
-	public void setBroadcastExcitationAmount(double broadcastExciation) {
-		this.environmentExcitationFactor = broadcastExciation;
-	}
-
-	public double getBehaviorActivationThreshold() {
-		return candidateBehaviorThreshold;
-	}
-
-	public double getBroadcastExcitationAmount() {
-		return environmentExcitationFactor;
-	}
-
-	public CandidateThresholdReducer getCandidateThresholdReducer() {
-		return candidateThresholdReducer;
-	}
-
-	public void setCandidateThresholdReducer(CandidateThresholdReducer reducer) {
-		this.candidateThresholdReducer = reducer;
-	}
-
-	public Selector getSelectorStrategy() {
-		return selectorStrategy;
-	}
-
-	public void setSelectorStrategy(Selector selector) {
-		this.selectorStrategy = selector;
-	}
-
-	public double getSuccessorExcitationFactor() {
-		return successorExcitationFactor;
-	}
-
-	public void setSuccessorExcitationFactor(double successorExcitationFactor) {
-		this.successorExcitationFactor = successorExcitationFactor;
-	}
-
-	public double getPredecessorExcitationFactor() {
-		return predecessorExcitationFactor;
-	}
-
-	public void setPredecessorExcitationFactor(
-			double predecessorExcitationFactor) {
-		this.predecessorExcitationFactor = predecessorExcitationFactor;
-	}
-
-	public double getConflictorExcitationFactor() {
-		return conflictorExcitationFactor;
-	}
-
-	public void setConflictorExcitationFactor(double conflictorExcitationFactor) {
-		this.conflictorExcitationFactor = conflictorExcitationFactor;
-	}
-
+	//TODO tasks?
 	public void runOneCycle() {
 		// envirnmentConditions= readEnvironment();
-		passActivationFromEnvironment();
+		passActivationFromBroadcast();
 		passActivationAmongBehaviors();
 		normalizeActivation();
 		selectAction();
-		logger.log(Level.FINEST, "BehaviorNet executed one cycle.");
+		logger.log(Level.FINEST, "BehaviorNet executed one cycle.", TaskManager
+				.getCurrentTick());
 	}
 
-	public void setEnvironment(Collection<Condition> environment) {
-		envirnmentConditions = environment;
-	}
-
-	public void init(Map<String, ?> parameters) {
-		this.parameters = parameters;
-		init();
-	}
-
-	/**
-	 * This is a convenience method to initialize Tasks. It is called from
-	 * init(Map<String, Object> parameters). Subclasses can overwrite this
-	 * method in order to initialize the LidaTask
-	 */
-	public void init() {
-	}
-
-	public Object getParam(String name, Object defaultValue) {
-		Object value = null;
-		if (parameters != null) {
-			value = parameters.get(name);
+	@Override
+	public void decayModule(long ticks) {
+		for (Behavior behavior : behaviors.values()) {
+			behavior.decay(ticks);
+			if(behavior.isRemovable()){
+				removeBehavior(behavior);
+			}
 		}
-		if (value == null) {
-			logger.log(Level.WARNING,
-					"Missing parameter, check factories data or first parameter: "
-							+ name);
-			value = defaultValue;
-		}
-		return value;
 	}
 
-	public Collection<Condition> getEnvironment() {
-		return envirnmentConditions;
+	@Override
+	public void learn(Coalition coalition) {
 	}
 
-}// class
+	@Override
+	public void receiveBroadcast(Coalition coalition) {
+	}
+}

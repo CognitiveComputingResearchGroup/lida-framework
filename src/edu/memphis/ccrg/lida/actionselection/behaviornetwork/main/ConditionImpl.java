@@ -5,10 +5,9 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 
-
 /**
+ * Default implementation of {@link Condition}
  * @author Javier Snaider
- *
  */
 public class ConditionImpl extends ActivatibleImpl implements Condition {
 
@@ -16,8 +15,8 @@ public class ConditionImpl extends ActivatibleImpl implements Condition {
 	private Object id;
 	private double weight = 1.0;
 	
-	
 	/**
+	 * 
 	 * @param id the id of this Condition
 	 * @param activation the initial activation
 	 * @param desirability the initial desirability
@@ -46,14 +45,13 @@ public class ConditionImpl extends ActivatibleImpl implements Condition {
 		}
 		return net;
 	}
-
-	/**
-	 * @param desirability the desirability to set
-	 */
+	
+	@Override
 	public void setDesirability(double desirability) {
 		this.desirability=desirability;
 	}
-		
+	
+	@Override
 	public boolean equals (Object o){
 		if (o instanceof Condition){
 			return id.equals(((Condition)o).getId());
@@ -61,22 +59,16 @@ public class ConditionImpl extends ActivatibleImpl implements Condition {
 		return false;
 	}
 	
+	@Override
 	public int hashCode(){
 		return id.hashCode();
 	}
 
-
-	/**
-	 * @param incidence the incidence to set
-	 */
 	@Override
-	public void setWeight(double incidence) {
-		this.weight = incidence;
+	public void setWeight(double w) {
+		this.weight = w;
 	}
 
-	/**
-	 * @return the incidence
-	 */
 	@Override
 	public double getWeight() {
 		return weight;

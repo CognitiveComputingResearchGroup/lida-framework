@@ -12,8 +12,6 @@
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +20,12 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
+/**
+ * @author UofM
+ *
+ */
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
 	private static final Logger logger = Logger.getLogger(BehaviorImpl.class.getCanonicalName());
@@ -74,10 +74,17 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	private Scheme generatingScheme;
 	
 	
+	/**
+	 * @param action
+	 */
 	public BehaviorImpl(Action action){
 		this(idCounter++, action);
 	}
 
+	/**
+	 * @param id
+	 * @param action
+	 */
 	public BehaviorImpl(long id, Action action) {
 		this.id = id;
 		this.action = action;

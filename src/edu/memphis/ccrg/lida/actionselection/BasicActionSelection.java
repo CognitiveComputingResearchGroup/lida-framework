@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
@@ -38,7 +39,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 			.getLogger(BasicActionSelection.class.getCanonicalName());
 
 	private List<ActionSelectionListener> listeners = new ArrayList<ActionSelectionListener>();
-	private Set<OldBehavior> behaviors = new ConcurrentHashSet<OldBehavior>();
+	private Set<Behavior> behaviors = new ConcurrentHashSet<Behavior>();
 	private double maxActivationThreshold;
 	private DecayStrategy behaviorDecayStrategy;
 	
@@ -130,7 +131,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 	}
 
 	@Override
-	public void receiveBehavior(OldBehavior b) {
+	public void receiveBehavior(Behavior b) {
 		if(b != null){
 			synchronized(this){	
 				b.setDecayStrategy(behaviorDecayStrategy);
@@ -148,7 +149,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public Action selectAction() {
-		OldBehavior behavior = chooseBehavior();
+		Behavior behavior = chooseBehavior();
 		if (behavior != null) {
 			Action action = behavior.getAction();
 			logger.log(Level.FINE, "Action Selected: {1}",
@@ -161,10 +162,10 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		return null;
 	}
 
-	private OldBehavior chooseBehavior() {
-		OldBehavior selected = null;
+	private Behavior chooseBehavior() {
+		Behavior selected = null;
 		double highestActivation = -1.0;
-		for (OldBehavior b : behaviors) {
+		for (Behavior b : behaviors) {
 			double behaviorActivation = b.getActivation();
 			if (behaviorActivation >= candidateThreshold && behaviorActivation > highestActivation) {
 				selected = b;
@@ -196,9 +197,9 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 
 	@Override
 	public void decayModule(long ticks) {
-		Iterator<OldBehavior> it = behaviors.iterator();
+		Iterator<Behavior> it = behaviors.iterator();
 		while(it.hasNext()){
-			OldBehavior b = it.next();
+			Behavior b = it.next();
 			b.decay(ticks);
 			if (b.isRemovable()){
 				it.remove();

@@ -9,9 +9,9 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.OldBehavior;
-import edu.memphis.ccrg.lida.actionselection.OldBehaviorImpl;
-import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
+
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
@@ -92,20 +92,21 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public OldBehavior getInstantiation() {
-		OldBehavior b = new OldBehaviorImpl(getAction());
-		b.setLabel(getLabel());
-		b.setActivation(getTotalActivation());
-		for (Node n: getContext().getNodes()) {
-			b.addContextCondition(n);
-		}
-		for (Node n: getAddingResult().getNodes()) {
-			b.addToAddingList(n);
-		}
-		for (Node n: getDeletingResult().getNodes()) {
-			b.addToDeletingList(n);
-		}
-		b.setGeneratingScheme(this);
+	public Behavior getInstantiation() {
+		Behavior b = new BehaviorImpl(getAction());
+		//FIXME
+//		b.setLabel(getLabel());
+//		b.setActivation(getTotalActivation());
+//		for (Node n: getContext().getNodes()) {
+//			b.addContextCondition(n);
+//		}
+//		for (Node n: getAddingResult().getNodes()) {
+//			b.addToAddingList(n);
+//		}
+//		for (Node n: getDeletingResult().getNodes()) {
+//			b.addToDeletingList(n);
+//		}
+//		b.setGeneratingScheme(this);
 		return b;
 	}
 	

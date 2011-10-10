@@ -1,5 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -11,18 +12,32 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
-public class BroadcastBuffer implements BroadcastListener {
+/**
+ * TODO
+ * @author UofM
+ *
+ */
+public class ConditionPool implements BroadcastListener {
 
-	private static final Logger logger = Logger.getLogger(BroadcastBuffer.class
+	private static final Logger logger = Logger.getLogger(ConditionPool.class
 			.getCanonicalName());
 
 	private Map<ExtendedId,Condition> buffer = new HashMap<ExtendedId,Condition>();
 
 	/**
-	 * @return the conditions
+	 * Gets the condition map
+	 * @return the {@link Map} of conditions
 	 */
-	public Map<ExtendedId, Condition> getConditions() {
+	public Map<ExtendedId, Condition> getConditionMap() {
 		return buffer;
+	}
+	
+	/**
+	 * Gets conditions
+	 * @return the {@link Condition}s in this {@link ConditionPool}
+	 */
+	public Collection<Condition> getConditions(){
+		return buffer.values();
 	}
 
 	/**

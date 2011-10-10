@@ -7,13 +7,14 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
-import edu.memphis.ccrg.lida.actionselection.OldBehavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+
 
 public class MockProceduralMemoryListener implements ProceduralMemoryListener {
 
-	public OldBehavior behavior;
+	public Behavior behavior;
 	@Override
-	public void receiveBehavior(OldBehavior behavior) {
+	public void receiveBehavior(Behavior behavior) {
 		this.behavior = behavior;
 	}
 

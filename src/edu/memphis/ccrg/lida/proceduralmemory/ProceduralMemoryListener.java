@@ -9,7 +9,7 @@
 package edu.memphis.ccrg.lida.proceduralmemory;
 
 
-import edu.memphis.ccrg.lida.actionselection.OldBehavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
 /**
@@ -19,9 +19,9 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
 public interface ProceduralMemoryListener extends ModuleListener{
 
     /**
-     * Receive a {@link OldBehavior}
+     * Receive a {@link Behavior}
      * @param behavior - a stream, a partial order, of behaviors
      */
-    public void receiveBehavior(OldBehavior behavior);
+    public void receiveBehavior(Behavior behavior);
    
 }

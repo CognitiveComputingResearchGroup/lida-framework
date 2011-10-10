@@ -17,6 +17,7 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
@@ -26,7 +27,7 @@ public class BasicActionSelectionTest {
 	
 	private static final double EPSILON = 1e-5;
 	private BasicActionSelection as;
-	private OldBehavior behav1,behav2;	
+	private Behavior behav1,behav2;	
 	private MockSensoryMotorMemory smm = new MockSensoryMotorMemory();
 	private MockTaskSpawner ts = new MockTaskSpawner();
 	private Scheme scheme1,scheme2;
@@ -50,7 +51,7 @@ public class BasicActionSelectionTest {
 	@Test
 	public void testGetModuleContent() {
 		as.receiveBehavior(behav1);
-		Collection<OldBehavior> content = (Collection<OldBehavior>) as.getModuleContent("behaviors");
+		Collection<Behavior> content = (Collection<Behavior>) as.getModuleContent("behaviors");
 		
 		assertTrue("Problem with GetModuleContent", content.size()==1);
 		assertTrue("Problem with GetModuleContent", content.contains(behav1));
@@ -62,7 +63,7 @@ public class BasicActionSelectionTest {
 	public void testReceiveBehavior() {
 		as.receiveBehavior(behav1);
 		as.receiveBehavior(behav2);
-		Collection<OldBehavior> content = (Collection<OldBehavior>) as.getModuleContent("behaviors");
+		Collection<Behavior> content = (Collection<Behavior>) as.getModuleContent("behaviors");
 		
 		assertTrue("Problem with ReceiveBehavior", content.size()==2);
 		assertTrue("Problem with ReceiveBehavior", content.contains(behav1));

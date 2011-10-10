@@ -18,13 +18,13 @@ import javax.swing.table.AbstractTableModel;
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
-import edu.memphis.ccrg.lida.actionselection.OldBehavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * A {@link GuiPanel} which displays the current {@link OldBehavior} elements in
+ * A {@link GuiPanel} which displays the current {@link Behavior} elements in
  * the {@link ActionSelection} module.
  * 
  * @author Ryan J. McCall
@@ -37,8 +37,8 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	private static final int DEFAULT_SELECTED_ACTIONS_SIZE = 10;
 	
 	private FrameworkModule module;
-	private Collection<OldBehavior> behaviors;
-	private OldBehavior[] behaviorArray = new OldBehavior[0];
+	private Collection<Behavior> behaviors;
+	private Behavior[] behaviorArray = new Behavior[0];
 	
 	private LinkedList<ActionDetail> selectedActions = new LinkedList<ActionDetail>();
 	private int selectedActionsSize;
@@ -166,8 +166,8 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void display(Object o) {
-		behaviors = (Collection<OldBehavior>) o;
-		behaviorArray = behaviors.toArray(new OldBehavior[0]);
+		behaviors = (Collection<Behavior>) o;
+		behaviorArray = behaviors.toArray(new Behavior[0]);
 
 		((AbstractTableModel) behaviorsTable.getModel())
 				.fireTableStructureChanged();
@@ -205,7 +205,7 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 					|| columnIndex < 0) {
 				return null;
 			}
-			OldBehavior behavior = behaviorArray[rowIndex];
+			Behavior behavior = behaviorArray[rowIndex];
 
 			switch (columnIndex) {
 			case 0:
@@ -213,7 +213,7 @@ public class ActionSelectionPanel extends GuiPanelImpl implements
 			case 1:
 				return df.format(behavior.getActivation());
 			case 2:
-				return behavior.getContext();
+				return behavior.getContextConditions();
 			case 3:
 				return behavior.getAction().getLabel();
 			case 4:

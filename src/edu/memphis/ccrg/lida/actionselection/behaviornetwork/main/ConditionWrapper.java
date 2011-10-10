@@ -1,7 +1,6 @@
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
@@ -9,6 +8,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 
 /**
+ * A wrapper for {@link Condition}
  * @author UofM
  *
  */
@@ -25,6 +25,7 @@ public class ConditionWrapper implements Condition {
 	public ConditionWrapper(Condition c){
 		this.c = c;
 	}
+	
 	@Override
 	public double getActivation() {
 		return c.getActivation();
@@ -43,13 +44,11 @@ public class ConditionWrapper implements Condition {
 	@Override
 	public void excite(double amount) {
 		c.excite(amount);
-
 	}
 
 	@Override
 	public void setExciteStrategy(ExciteStrategy strategy) {
 		c.setExciteStrategy(strategy);
-
 	}
 
 	@Override
@@ -97,19 +96,22 @@ public class ConditionWrapper implements Condition {
 		return weight;
 	}
 	
-	public Condition clone(){
-		Object out = null;
-		try {
-			 out=super.clone();
-		} catch (CloneNotSupportedException e) {
-			logger.log(Level.WARNING,null,e);
-		}
-		return (Condition) out;
-	}
+//	public Condition clone(){
+//		Object out = null;
+//		try {
+//			 out=super.clone();
+//		} catch (CloneNotSupportedException e) {
+//			logger.log(Level.WARNING,null,e);
+//		}
+//		return (Condition) out;
+//	}
+	
+	@Override
 	public String toString(){
 		return c.toString();
 	}
 	
+	@Override
 	public boolean equals (Object o){
 		if (o instanceof Condition){
 			return getId().equals(((Condition)o).getId());
@@ -117,9 +119,11 @@ public class ConditionWrapper implements Condition {
 		return false;
 	}
 	
+	@Override
 	public int hashCode(){
 		return getId().hashCode();
 	}
+	
 	@Override
 	public double getActivatibleRemovalThreshold() {		
 		return c.getActivatibleRemovalThreshold();

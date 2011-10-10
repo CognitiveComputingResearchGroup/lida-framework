@@ -10,8 +10,6 @@ package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
@@ -19,10 +17,11 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
  * An instantiated {@link Scheme} with a context, adding list, and deleting list.
  * @author Javier Snaider
  */
+
 public interface Behavior extends Activatible {
 	
 	/**
-	 * Gets id.
+	 * Gets this Behavior's id.
 	 * 
 	 * @return the id
 	 */
@@ -30,9 +29,9 @@ public interface Behavior extends Activatible {
 	
 	/**
 	 * Sets action
-	 * @param action {@link Action} this behavior contains
+	 * @param a {@link Action} this behavior contains
 	 */
-	public void setAction(Action action);
+	public void setAction(Action a);
 	
 	/**
 	 * Gets action.
@@ -51,8 +50,7 @@ public interface Behavior extends Activatible {
 	/**
 	 * Sets label.
 	 * 
-	 * @param label
-	 *            the new label
+	 * @param label the new label
 	 */
 	public void setLabel(String label);
 	
@@ -66,58 +64,161 @@ public interface Behavior extends Activatible {
 	/**
 	 * Sets generating scheme.
 	 * 
-	 * @param s
-	 *            the new generating scheme
+	 * @param s the new generating scheme
 	 */
 	public void setGeneratingScheme(Scheme s);
 
-	//
-	public boolean addContextCondition(Condition condition);
-	public boolean containsContextCondition(Condition commonNode);
+	/**
+	 * Adds the context condition.
+	 * 
+	 * @param c the condition
+	 * @return true, if successful
+	 */
+	public boolean addContextCondition(Condition c);
+	
+    
+	/**
+	 * Adds the context condition.
+	 * 
+	 * @param c the condition
+	 *            
+	 * @param negated true for negated condition
+	 * @return true, if successful
+	 */
+	public boolean addContextCondition(Condition c, boolean negated);
+	
+	
+	/**
+	 * Gets negated context conditions.
+	 * 
+	 * @return the context conditions that are negated
+	 */
+	public Collection<Condition> getNegatedContextConditions();
+	
+	/**
+	 * Returns whether Behavior contains specified negated context condition.
+	 * 
+	 * @param c a {@link Condition}
+	 *            
+	 * @return true, if successful
+	 */
+	public boolean containsNegatedContextCondition(Condition c);
+	
+	/**
+	 * Returns whether Behavior contains specified context condition.
+	 * 
+	 * @param c a {@link Condition}
+	 *            
+	 * @return true, if successful
+	 */
+	public boolean containsContextCondition(Condition c);
+	
+	/**
+	 * Gets context condition with specified id
+	 * @param id a {@link Condition} id
+	 * @return Condition with id
+	 */
 	public Condition getContextCondition (Object id);
-	//public boolean isContextConditionNegated(Condition commonNode);
+	
+	/**
+	 * Gets context conditions.
+	 * 
+	 * @return the context's conditions
+	 */
 	public Collection<Condition> getContextConditions();
+	
+	/**
+	 * Gets context size.
+	 * 
+	 * @return the context size
+	 */
 	public int getContextSize();
 	
-	//Context activation
-//	/**
-//	 * marks supplied condition as present 
-//	 */
-//	public void updateContextCondition(Condition condition);
 	/**
 	 * Returns true if supplied condition is satisfied
-	 * @param n Node
+	 * @param c {@link Condition}
+     * @return true, if is context condition satisfied
 	 */
-	public boolean isContextConditionSatisfied(Condition n);
+	public boolean isContextConditionSatisfied(Condition c);
+	
 	/**
 	 * Returns true if all context conditions are satisfied
+	 * @return true, if is all context conditions satisfied
 	 */
 	public boolean isAllContextConditionsSatisfied();
 	
+	/**
+	 * Gets unsatisfied context count.
+	 * 
+	 * @return the unsatisfied context count
+	 */
 	public int getUnsatisfiedContextCount();
 	
-//	public void deactiveContextCondition(Condition condition);
-	
-//	public void deactivateAllContextConditions();
-	
-	//Add list
+	/**
+	 * Gets adding list.
+	 * 
+	 * @return the adding list
+	 */
 	public Collection<Condition> getAddingList();
-	public boolean addToAddingList(Condition condition);
-	public boolean containsAddingItem(Condition commonNode);
-	public double getAddingListCount();
-//	public void updateAddingCondition(Condition broadcastNode);
 	
-	//Delete list
+	/**
+	 * Adds the to adding list.
+	 * 
+	 * @param c the condition
+	 * @return true, if successful
+	 */
+	public boolean addToAddingList(Condition c);
+	
+	/**
+	 * Contains adding item.
+	 * 
+	 * @param c the {@link Condition}
+	 * @return true, if successful
+	 */
+	public boolean containsAddingItem(Condition c);
+	
+	/**
+	 * Gets adding list count.
+	 * 
+	 * @return the adding list count
+	 */
+	public double getAddingListCount();
+	
+	/**
+	 * Gets deleting list.
+	 * 
+	 * @return the deleting list
+	 */
 	public Collection<Condition> getDeletingList();	
-    public boolean addToDeletingList(Condition deleteCondition);
-    public boolean containsDeletingItem(Condition commonNode);
-    public double getDeletingListCount();
-//    public void updateDeletingCondition(Condition broadcastNode);
+	
+	 /**
+	 * Adds the to deleting list.
+	 * 
+	 * @param c the delete condition
+	 * @return true, if successful
+	 */
+    public boolean addToDeletingList(Condition c);
     
-    //result
-    public double getResultSize();
-	boolean addContextCondition(Condition condition, boolean negated);
-	Collection<Condition> getNegatedContextConditions();
-	boolean containsNegatedContextCondition(Condition contextCondition);
-    	
-}//method
+    /**
+	 * Contains deleting item.
+	 * 
+	 * @param c
+	 *            the {@link Condition}
+	 * @return true, if successful
+	 */
+    public boolean containsDeletingItem(Condition c);
+    
+    /**
+	 * Gets deleting list count.
+	 * 
+	 * @return the deleting list count
+	 */
+    public double getDeletingListCount();
+    
+    /**
+	 * Gets result size.
+	 * 
+	 * @return the size of this behavior's result
+	 */
+    public double getResultSize(); 	
+}
