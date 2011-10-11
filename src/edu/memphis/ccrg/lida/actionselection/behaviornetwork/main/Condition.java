@@ -16,7 +16,7 @@ public interface Condition extends Activatible {
     * 
     * @return Condition's unique id
 	*/
-	public Object getId();
+	public int getId();
 	
 	/**
 	 * Gets desirability

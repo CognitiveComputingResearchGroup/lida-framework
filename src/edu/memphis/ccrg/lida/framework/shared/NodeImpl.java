@@ -165,4 +165,22 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 		} 
 	}
 
+	@Override
+	public double getNetDesirability() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getWeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setWeight(double w) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

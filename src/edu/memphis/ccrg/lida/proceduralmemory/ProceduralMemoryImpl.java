@@ -179,7 +179,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		logger.log(Level.FINEST, "Procedural memory receives broadcast", TaskManager.getCurrentTick());
-		conditionPool.receiveBroadcast(coalition);
+		//TODO uncomment when Node can be cast to Condition
+//		conditionPool.receiveBroadcast(coalition);
 		activateSchemes((NodeStructure) coalition.getContent());
 	}
 
