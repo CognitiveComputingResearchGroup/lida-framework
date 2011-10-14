@@ -46,19 +46,24 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @return A sub NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
-	/*
-	 * TODO: Consider the threshold of nodes' activation in next version
-	 */
+
 	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
 			int distance) {
+			return getSubNodeStructure(nodes,distance,0);
+	}
+
+	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
+			int distance, double threshold) {
 		/*
 		 * Collection of specified nodes should not be empty
-		 * TODO
+		 * 
 		 */
+		
 		if (nodes.isEmpty()){
 			System.out.printf("\nCollection of specified nodes should not be empty.");
 			return null;
 		}
+		
 		
 		/*
 		 * Desired distance should not be negative
@@ -141,10 +146,15 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 						subNodeStructure.addDefaultLink(link);
 				}
 		}
+		
+		for (Node n:subNodeStructure.getNodes())
+			if(n.getActivation()<threshold)
+				subNodeStructure.removeNode(n);
+		
 		return subNodeStructure;
 
 	}
-
+	
 	/**
 	 * @param currentNode One specified node that be considered as neighbor nodes
 	 * or specified nodes in sub NodeStructure 
