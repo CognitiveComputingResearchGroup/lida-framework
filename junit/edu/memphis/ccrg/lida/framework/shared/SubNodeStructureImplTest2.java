@@ -66,11 +66,11 @@ public class SubNodeStructureImplTest2 {
 		
 		node6 = factory.getNode();
 		node6.setLabel("purp2");
-		node6.setActivation(0.5);
+		node6.setActivation(0.6);
 		
 		node7 = factory.getNode();
 		node7.setLabel("purp3");
-		node7.setActivation(0.5);
+		node7.setActivation(0.7);
 		
 		category1 = new PamNodeImpl();
 		category1.setId(99999);
@@ -230,6 +230,25 @@ public class SubNodeStructureImplTest2 {
 		 */
 		assertTrue(subNS.getNodeCount() == 4);
 		assertTrue(subNS.getLinkCount() == 5);
+		
+	}
+
+	@Test
+	public void testGetSubNodeStructure4() {
+		/*
+		 * Test for threshold 
+		 */
+		nodes.clear();
+		nodes.add(node6);
+		subNS= ns1.getSubNodeStructure(nodes, 2, 0.45);
+
+		assertTrue(!subNS.containsNode(node4));
+		assertTrue(!subNS.containsNode(node3));
+		assertTrue(subNS.containsNode(node5));
+		assertTrue(subNS.containsNode(node6));
+
+		assertTrue(subNS.getNodeCount() == 2);
+		assertTrue(subNS.getLinkCount() == 0);
 		
 	}
 
