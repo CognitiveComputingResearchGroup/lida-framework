@@ -64,13 +64,24 @@ public class DefaultAttentionCodelet extends AttentionCodeletImpl {
 	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer) {
 		soughtContent.clearNodeStructure();
 
+		Node winner = null;
+		double winnerActivation = -1.0;
 		NodeStructure ns = (NodeStructure) buffer.getBufferContent(null);
 		for (Node n : ns.getNodes()) {
-			if (n.getActivation() >= attentionThreshold) {
-				soughtContent.addDefaultNode(n);
+			double activation = n.getActivation();
+			if (activation >= attentionThreshold
+					&& activation > winnerActivation) {
+				winner = n;
+				winnerActivation = activation;
 			}
 		}
-		return soughtContent.getNodeCount() > 0;
+
+		if (winner != null) {
+			soughtContent.addDefaultNode(winner);
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
