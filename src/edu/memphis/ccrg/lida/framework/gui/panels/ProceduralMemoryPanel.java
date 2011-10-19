@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanelImpl;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
@@ -171,17 +172,29 @@ public class ProceduralMemoryPanel extends GuiPanelImpl {
 			case 3:
 				return df.format(scheme.getBaseLevelActivation());
 			case 4:
-				return scheme.getContext();
+				return generateConditionsString(scheme.getContextConditions());
 			case 5:
 				return scheme.getAction().getLabel();
 			case 6:
-				return scheme.getAddingResult();
+				return generateConditionsString(scheme.getAddingList());
 			case 7:
-				return scheme.getDeletingResult();
+				return generateConditionsString(scheme.getDeletingList());
 			default:
 				return "";
 			}
 
+		}
+		
+		private String generateConditionsString(Collection<Condition> conditions){
+			if(conditions == null){
+				return "";
+			}
+			StringBuilder res = new StringBuilder();
+			for(Condition c: conditions){
+				res.append(c.toString());
+				res.append(",");
+			}
+			return res.toString();
 		}
 	}
 }

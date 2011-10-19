@@ -19,6 +19,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
@@ -57,13 +58,13 @@ public class BasicSchemeActivationStrategyTest{
 		
 		NodeStructure context = new NodeStructureImpl();
 		context.addDefaultNode(node1);
-		a.setContext(context);
+		a.addContextCondition((Condition) context);
 		node1Set.add(a);
 		
 		context = new NodeStructureImpl();
 		context.addDefaultNode(node1);
 		context.addDefaultNode(node2);
-		b.setContext(context);
+		b.addContextCondition((Condition)context);
 		node1Set.add(b);
 		node2Set.add(b);
 		
@@ -71,7 +72,7 @@ public class BasicSchemeActivationStrategyTest{
 		context.addDefaultNode(node1);
 		context.addDefaultNode(node2);
 		context.addDefaultNode(node3);
-		c.setContext(context);
+		c.addContextCondition((Condition)context);
 		node1Set.add(c);
 		node2Set.add(c);
 		node3Set.add(c);

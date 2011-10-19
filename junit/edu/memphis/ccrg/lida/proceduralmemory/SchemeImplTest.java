@@ -46,8 +46,6 @@ public class SchemeImplTest{
 		assertEquals(action, scheme.getAction());
 		
 		scheme = new SchemeImpl();
-		scheme.setLabel("1");
-		assertEquals("1", scheme.getLabel());
 		
 		scheme.setAction(action);
 		assertEquals(action, scheme.getAction());
@@ -58,15 +56,14 @@ public class SchemeImplTest{
 		scheme.setAction(foo);
 		assertEquals(foo, scheme.getAction());
 		
-		NodeStructure ns = new NodeStructureImpl();
-		scheme.setAddingResult(ns);
-		assertEquals(ns, scheme.getAddingResult());
+		scheme.addToAddingList(node1);
+		assertTrue(scheme.containsAddingItem(node1));
 		
-		scheme.setContext(ns);
-		assertEquals(ns, scheme.getContext());
+		scheme.addContextCondition(node2);
+		assertTrue(scheme.containsContextCondition(node2));
 		
-		scheme.setDeletingResult(ns);
-		assertEquals(ns, scheme.getDeletingResult());
+		scheme.addToDeletingList(node3);
+		assertTrue(scheme.containsDeletingItem(node3));
 		
 		assertFalse(scheme.isInnate());
 		scheme.setInnate(true);
@@ -111,28 +108,13 @@ public class SchemeImplTest{
 	}
 	@Test
 	public void testGetInstantiation(){
-		scheme.setActivation(0.99);
-		NodeStructure context = new NodeStructureImpl();
-		context.addDefaultNode(node1);
-		scheme.setContext(context);
-		
-		NodeStructure deleting = new NodeStructureImpl();
-		deleting.addDefaultNode(node2);
-		scheme.setDeletingResult(deleting);
-		
-		NodeStructure adding = new NodeStructureImpl();
-		adding.addDefaultNode(node3);
-		scheme.setAddingResult(adding);
+		scheme.setBaseLevelActivation(0.99);
+		scheme.setAction(action);
 		
 		Behavior b = scheme.getInstantiation();
+		assertEquals(scheme, b.getGeneratingScheme());
 		assertEquals(action, b.getAction());
 		assertEquals(0.99, b.getActivation(), 0.000001);
-		assertEquals(scheme, b.getGeneratingScheme());
-		
-		//FIXME
-//		assertTrue(b.containsContextCondition(node1));
-//		assertTrue(b.containsDeletingItem(node2));
-//		assertTrue(b.containsAddingItem(node3));
 	}
 
 }

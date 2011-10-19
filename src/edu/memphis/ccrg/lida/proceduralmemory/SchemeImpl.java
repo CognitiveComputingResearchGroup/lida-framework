@@ -7,14 +7,16 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.actionselection.ActionImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
-
-import edu.memphis.ccrg.lida.framework.shared.Node;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 /**
@@ -24,21 +26,212 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {
 
+	private static final Logger logger = Logger.getLogger(SchemeImpl.class.getCanonicalName());
+	
+	private static final double DEFAULT_CS_THRESHOLD = 0.5;
 	private static final double DEFAULT_RELIABILITY_THRESHOLD = 0.5;
-	private static long idGenerator = 0;
+	
+	private static long idGenerator = 0;	
 	
 	private boolean innate;
 	private int numberOfExecutions;
 	private int successfulExecutions;
 	private double reliabilityThreshold = DEFAULT_RELIABILITY_THRESHOLD; 
 	
-	private NodeStructure context;
-	private NodeStructure addingResult;
-	private NodeStructure deletingResult;
-
 	private Action action;
 	private String label;
 	private long id;
+
+	private Map<Object,Condition> context = new HashMap<Object,Condition>();
+
+	private Map<Object,Condition> negContext = new HashMap<Object,Condition>();
+
+	private Map<Object,Condition> addingList = new HashMap<Object,Condition>();
+
+	private Map<Object,Condition> deletingList = new HashMap<Object,Condition>();
+
+	private double contextSatisfactionThreshold = DEFAULT_CS_THRESHOLD;
+
+	/**
+	 * @param id unique id
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
+
+	@Override
+	public boolean isContextConditionSatisfied(Condition prop) {
+		if (context.containsKey(prop.getConditionId()))
+			return context.get(prop.getConditionId()).getActivation() >= contextSatisfactionThreshold;
+		if (negContext.containsKey(prop.getConditionId()))
+				return (1.0 - negContext.get(prop.getConditionId()).getActivation()) >= contextSatisfactionThreshold;
+		return false;
+	}
+
+	@Override
+	public boolean isAllContextConditionsSatisfied() {
+		for(Condition c:context.values()){
+			if(c.getActivation() < contextSatisfactionThreshold){
+				return false;
+			}
+		}
+		for(Condition c:negContext.values()){
+			if((1.0 - c.getActivation()) < contextSatisfactionThreshold){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// start add methods
+	@Override
+	public boolean addContextCondition(Condition condition) {
+		logger.log(Level.FINEST, "Adding context condition " +
+								 condition + " to " + label);
+		return (context.put(condition.getConditionId(),condition) == null);
+	}
+
+	@Override
+	public boolean addContextCondition(Condition condition, boolean negated) {
+		logger.log(Level.FINEST, "Adding context condition " +
+								 condition + " to " + label);
+		if(!negated){
+			return (context.put(condition.getConditionId(),condition) == null);
+		}else{
+			return (negContext.put(condition.getConditionId(),condition) == null);			
+		}
+	}
+
+	@Override
+	public boolean addToAddingList(Condition addResult) {
+		logger.log(Level.FINEST, "Adding add result " +
+				 addResult + " to " + label);
+		return (addingList.put(addResult.getConditionId(),addResult) == null);
+	}
+
+	@Override
+	public boolean addToDeletingList(Condition deleteResult) {
+		logger.log(Level.FINEST, "Adding delete result " +
+				 deleteResult + " to " + label);
+		return (deletingList.put(deleteResult.getConditionId(),deleteResult) == null);
+	}
+
+	// Get methods
+	@Override
+	public Collection<Condition> getContextConditions() {
+		return context.values();
+	}
+
+	@Override
+	public Collection<Condition> getNegatedContextConditions() {
+		return negContext.values();
+	}
+
+	@Override
+	public Collection<Condition> getAddingList() {
+		return addingList.values();
+	}
+
+	@Override
+	public Collection<Condition> getDeletingList() {
+		return deletingList.values();
+	}
+
+	@Override
+	public int getContextSize() {
+		return context.size() + negContext.size();
+	}
+
+	@Override
+	public double getAddingListCount() {
+		return addingList.size();
+	}
+
+	@Override
+	public double getDeletingListCount() {
+		return deletingList.size();
+	}
+
+	@Override
+	public Action getAction() {
+		return action;
+	}
+
+	@Override
+	public long getId() {
+		return id;
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
+	}
+
+	@Override
+	public boolean containsContextCondition(Condition contextCondition) {
+		return context.containsKey(contextCondition.getConditionId());
+	}
+
+	@Override
+	public boolean containsNegatedContextCondition(Condition contextCondition) {
+		return negContext.containsKey(contextCondition.getConditionId());
+	}
+
+	@Override
+	public boolean containsAddingItem(Condition addItem) {
+		return addingList.containsKey(addItem.getConditionId());
+	}
+
+	@Override
+	public boolean containsDeletingItem(Condition deleteItem) {
+		return deletingList.containsKey(deleteItem.getConditionId());
+	}
+
+	/**
+	 * @param label the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	@Override
+	public double getResultSize() {
+		return addingList.size() + deletingList.size();
+	}
+
+	@Override
+	public int getUnsatisfiedContextCount() {
+		int count=0;
+		for(Condition c:context.values()){
+			if(c.getActivation() < contextSatisfactionThreshold){
+				count++;
+			}
+		}
+		for(Condition c:negContext.values()){
+			if((1-c.getActivation()) < contextSatisfactionThreshold){
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	@Override
+	public String toString(){
+		return getLabel() + "-" + getId();
+	}
+
+	@Override
+	public Condition getContextCondition(Object id) {
+		Condition c = context.get(id);
+		if (c == null){
+			c= negContext.get(id);
+		}
+		return c;
+	}
 	
 	/**
 	 * For testing only
@@ -54,10 +247,6 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	 */
 	public SchemeImpl(){
 		this.id = idGenerator++;
-		context = new NodeStructureImpl();
-		addingResult = new NodeStructureImpl();
-		deletingResult = new NodeStructureImpl();
-		action = new ActionImpl();
 	}
 
 	/**
@@ -94,28 +283,26 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public Behavior getInstantiation() {
-		Behavior b = new BehaviorImpl(getAction());
-
-		b.setLabel(getLabel());
+		Behavior b = new BehaviorImpl(this);//TODO factory
+		b.setAction(action);
 		b.setActivation(getTotalActivation());
-		for (Node n: getContext().getNodes()) {
-			b.addContextCondition(n);
-		}
-		for (Node n: getAddingResult().getNodes()) {
-			b.addToAddingList(n);
-		}
-		for (Node n: getDeletingResult().getNodes()) {
-			b.addToDeletingList(n);
-		}
-		b.setGeneratingScheme(this);
 		return b;
 	}
 	
 	@Override
-	public String toString(){
-		return getLabel() + " " + getId(); 
+	public double getActivation(){
+		if(context.size() == 0){
+			return 0.0;
+		}
+		
+		double totalContextActivation = 0.0;
+		for(Condition c: context.values()){
+			totalContextActivation += c.getActivation();
+		}
+		//TODO adding and deleting activation too
+		return totalContextActivation / context.size();
 	}
-
+	
 	@Override
 	public void setInnate(boolean innate) {
 		this.innate = innate;
@@ -127,63 +314,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public void setAction(Action action) {
-		this.action = action;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
-	}
-
-	@Override
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	@Override
-	public NodeStructure getDeletingResult() {
-		return deletingResult;
-	}
-
-	@Override
-	public void setDeletingResult(NodeStructure ns) {
-		this.deletingResult = ns;
-	}
-
-	@Override
-	public void setAddingResult(NodeStructure ns) {
-		this.addingResult = ns;
-	}
-
-	@Override
-	public NodeStructure getContext() {
-		return context;
-	}
-
-	@Override
-	public void setContext(NodeStructure ns) {
-		this.context = ns;
-	}
-
-	@Override
-	public long getId() {
-		return id;
-	}
-
-	@Override
 	public int getExecutions() {
 		return numberOfExecutions;
-	}
-
-	@Override
-	public NodeStructure getAddingResult() {
-		return addingResult;
-	}
-
-	@Override
-	public Action getAction() {
-		return action;
 	}
 	
 	@Override

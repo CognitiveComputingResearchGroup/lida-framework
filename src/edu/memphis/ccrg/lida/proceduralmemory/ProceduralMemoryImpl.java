@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,13 +19,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ConditionPool;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
-import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
-import edu.memphis.ccrg.lida.framework.shared.Linkable;
+import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
@@ -43,7 +43,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
 	private static final ElementFactory factory = ElementFactory.getInstance();
 	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
-	
+
 	/*
 	 * Schemes indexed by the Linkables in their context. Operations on
 	 * ConcurrentHashmap do not block but they may not reflect the true state of
@@ -51,7 +51,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 	
-	private ConditionPool conditionPool;
+	private Map<Object,Condition> conditionPool = new HashMap<Object,Condition>();
 //	TODO support for Node desirability
 //  TODO index by result
 //	private Map<Object, Set<Scheme>> resultSchemeMap;
@@ -83,7 +83,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 */
 	public ProceduralMemoryImpl() {
 		//TODO interface and default impl
-		conditionPool = new ConditionPool();
 	}
 
 	/**
@@ -143,9 +142,27 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);
-		indexSchemeByElements(scheme, scheme.getContext().getLinkables(), contextSchemeMap);
+		indexSchemeByElements(scheme, scheme.getContextConditions(), contextSchemeMap);
+		//TODO desirability motivators
 //		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
 //		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
+	}
+	
+	@Override
+	public Condition addCondition(Condition c){
+		Condition result = conditionPool.get(c.getConditionId());
+		if(result == null){
+			logger.log(Level.FINE,"Condition {1} added.",
+					new Object[]{TaskManager.getCurrentTick(), c});
+			conditionPool.put(c.getConditionId(),c);
+			result = c;
+		}
+		return result;
+	}
+	
+	@Override
+	public Condition getCondition(Object id){
+		return conditionPool.get(id);
 	}
 	
 	/*
@@ -155,11 +172,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * @param elements
 	 * @param map
 	 */
-	private void indexSchemeByElements(Scheme scheme, Collection<Linkable> elements, 
+	private void indexSchemeByElements(Scheme scheme, Collection<Condition> elements, 
 									   Map<Object, Set<Scheme>> map) {
-		for (Linkable element : elements) {
+		for (Condition element : elements) {
 			synchronized (element) {
-				ExtendedId id = element.getExtendedId();
+				Object id = element.getConditionId();
 				Set<Scheme> values = map.get(id);
 				if (values == null) {
 					values = new ConcurrentHashSet<Scheme>();
@@ -173,15 +190,41 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void activateSchemes(NodeStructure broadcast) {
 		logger.log(Level.FINEST, "Procedural memory activates schemes", TaskManager.getCurrentTick());
+		//TODO change this
 		schemeActivationStrategy.activateSchemesWithBroadcast(broadcast, contextSchemeMap);
 	}
 	
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		logger.log(Level.FINEST, "Procedural memory receives broadcast", TaskManager.getCurrentTick());
-		//TODO uncomment when Node can be cast to Condition
-//		conditionPool.receiveBroadcast(coalition);
+		NodeStructure ns = (NodeStructure) coalition.getContent();
+		for (Node n: ns.getNodes()){
+			Condition c = conditionPool.get(n.getExtendedId());
+			if(c != null){
+				c.setActivation(n.getActivation());
+			}else{
+				conditionPool.put(n.getExtendedId(), (Condition) n);
+			}
+		}		
+		//TODO review activatSchemes
 		activateSchemes((NodeStructure) coalition.getContent());
+	}
+
+	
+	
+	@Override
+	public void decayModule(long ticks){
+		for (Condition c: conditionPool.values()){
+			c.decay(ticks);
+		}
+		
+		for (Scheme s : schemeSet){
+			s.decayBaseLevelActivation(ticks);
+			if(s.isRemovable()){
+				//TODO test
+//				removeScheme(s);
+			}
+		}
 	}
 
 	@Override
@@ -210,22 +253,11 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public int getSchemeCount() {
 		return schemeSet.size();
 	}
-
-	@Override
-	public void decayModule(long ticks) {
-		for (Scheme s : schemeSet){
-			s.decay(ticks);
-			if(s.isRemovable()){
-				//TODO test then implement
-//				removeScheme(s);
-			}
-		}
-	}
 	
 	@Override
 	public void removeScheme(Scheme scheme) {
 		schemeSet.remove(scheme);
-		removeFromMap(scheme, scheme.getContext().getLinkables(), contextSchemeMap);
+		removeFromMap(scheme, scheme.getContextConditions(), contextSchemeMap);
 	}
 	
 	private <E> void removeFromMap(Scheme scheme, Collection<E> keys, Map<?, Set<Scheme>> map){
@@ -242,11 +274,5 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			return Collections.unmodifiableCollection(schemeSet);
 		}
 		return null;
-	}
-
-	@Override
-	public ConditionPool getBroadcastBuffer() {
-		return conditionPool;
-	}
-	
+	}	
 }

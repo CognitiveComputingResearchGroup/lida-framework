@@ -12,7 +12,7 @@ import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ConditionPool;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
@@ -81,9 +81,17 @@ public interface ProceduralMemory extends FrameworkModule{
 	public void createInstantiation(Scheme s);
 	
 	/**
-	 * Gets broadcast buffer
-	 * @return {@link ConditionPool} latest contents of consciousness
+	 * Adds condition to the condition pool if one with the same id is not already present.
+	 *
+	 * @param c {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
+	 * @return the existing condition if one already exists or the newly added condition.
 	 */
-	public ConditionPool getBroadcastBuffer();
-		
+	public Condition addCondition(Condition c);
+	
+	/**
+	 * Gets condition
+	 * @param conditionId {@link Condition}'s id 
+	 * @return {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
+	 */
+	public Condition getCondition(Object conditionId);
 }

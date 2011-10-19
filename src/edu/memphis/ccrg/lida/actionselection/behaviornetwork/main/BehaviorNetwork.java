@@ -25,14 +25,12 @@ import edu.memphis.ccrg.lida.actionselection.ActionSelection;
 import edu.memphis.ccrg.lida.actionselection.ActionSelectionListener;
 import edu.memphis.ccrg.lida.actionselection.PreafferenceListener;
 import edu.memphis.ccrg.lida.actionselection.strategies.Selector;
-import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
-import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemory;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
@@ -60,6 +58,20 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	private double maxCandidateThreshold = DEFAULT_MAX_CANDIDATE_THRESHOLD;
 
 	private static final double DEFAULT_BROADCAST_EXCITATION_FACTOR = 0.05;
+	
+	private static final double DEFAULT_MEAN_ACTIVATION = 0.05;
+	/*
+	 * The mean activation of behaviors. It is used for the Normalization (akin
+	 * to PI from Maes' implementation)
+	 */
+	private double meanActivation = DEFAULT_MEAN_ACTIVATION;
+	
+	//TODO init for these two
+	private static final double DEFAULT_DESIRABILITY_THRESHOLD = 0.0;
+	/*
+	 * Threshold to identify goals
+	 */
+	private double desirabilityThreshold = DEFAULT_DESIRABILITY_THRESHOLD;
 
 	/*
 	 * Amount of excitation from broadcast (environment) (akin to PHI from Maes'
@@ -88,21 +100,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 */
 	private double conflictorExcitationFactor = DEFAULT_CONFLICTOR_EXCITATION_FACTOR;
 
-	private static final double DEFAULT_DESIRABILITY_THRESHOLD = 0.0;
-
-	/*
-	 * Threshold to identify goals
-	 */
-	private double desirabilityThreshold = DEFAULT_DESIRABILITY_THRESHOLD;
-
-	private static final double DEFAULT_MEAN_ACTIVATION = 0.05;
-
-	/*
-	 * The mean activation of behaviors. It is used for the Normalization (akin
-	 * to PI from Maes' implementation)
-	 */
-	private double meanActivation = DEFAULT_MEAN_ACTIVATION;
-
 	private static final String DEFAULT_CANDIDATE_THRESHOLD_REDUCER_STRATEGY = "BasicCandidationThresholdReducer";
 
 	private static final String DEFAULT_SELECTOR_STRATEGY = "BasicSelector";
@@ -126,7 +123,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	/*
 	 * Pool of conditions in Procedural Memory
 	 */
-	private ConditionPool conditionPool;
+	//private ConditionPool conditionPool;
 
 	/*
 	 * Listeners of this action selection
@@ -203,12 +200,12 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		conflictorExcitationFactor = getParam(
 				"actionselection.conflictorExcitationFactor",
 				DEFAULT_CONFLICTOR_EXCITATION_FACTOR);
+		meanActivation = getParam("actionselection.meanActivation",
+				DEFAULT_MEAN_ACTIVATION);
 		desirabilityThreshold = getParam(
 				"actionselection.desirabilityThreshold",
 				DEFAULT_DESIRABILITY_THRESHOLD);
-		meanActivation = getParam("actionselection.meanActivation",
-				DEFAULT_MEAN_ACTIVATION);
-
+		
 		ElementFactory factory = ElementFactory.getInstance();
 		String name = getParam(
 				"actionselection.candidateThresholdReducerStrategy",
@@ -242,17 +239,6 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 							Level.SEVERE,
 							"Could not get predecessor excite strategy with name {1} from the factory",
 							new Object[] { TaskManager.getCurrentTick(), name });
-		}
-	}
-
-	@Override
-	public void setAssociatedModule(FrameworkModule module, String moduleUsage) {
-		if (module instanceof ProceduralMemory) {
-			ProceduralMemory pm = (ProceduralMemory) module;
-			conditionPool = pm.getBroadcastBuffer();
-		}else{
-			logger.log(Level.WARNING, "Cannot associate module: {1} to the Behavior Network.",
-					new Object[]{TaskManager.getCurrentTick(), module});
 		}
 	}
 
@@ -500,35 +486,36 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		logger.log(Level.FINEST, "{1} inhibits {2} amount {3}", 
 				new Object[]{TaskManager.getCurrentTick(), behavior.getLabel(),conflictor.getLabel(),inhibitionAmount});
 	}
-
+	
 	/*
 	 * For each proposition in the current environment get the behaviors indexed
 	 * by that proposition For each behavior, excite it.
 	 */
 	private void passActivationFromBroadcast() {
-		for (Condition condition : conditionPool.getConditions()) {
-			// TODO: Another option is to use GoalDegree and Activation
-			if (condition.getNetDesirability() < desirabilityThreshold) {
-				if (behaviorsByContextCondition.containsKey(condition)) {
-					passActivationToContextOrResult(condition,
-							behaviorsByContextCondition, ConditionSet.CONTEXT);
-				} else if (behaviorsByNegContextCondition
-						.containsKey(condition)) {
-					passActivationToContextOrResult(condition,
-							behaviorsByNegContextCondition,
-							ConditionSet.NEGCONTEXT);
-				}
-			} else {
-				if (behaviorsByAddingItem.containsKey(condition)) {
-					passActivationToContextOrResult(condition,
-							behaviorsByAddingItem, ConditionSet.ADDING_LIST);
-				} else if (behaviorsByDeletingItem.containsKey(condition)) {
-					// TODO: Change this if protected goals are used
-					passActivationToContextOrResult(condition,
-							behaviorsByDeletingItem, ConditionSet.DELETING_LIST);
-				}
-			}
-		}// for
+		for (Behavior b : behaviors.values()) {
+			//TODO rework this
+//			// TODO: Another option is to use GoalDegree and Activation
+//			if (condition.getNetDesirability() < desirabilityThreshold) {
+//				if (behaviorsByContextCondition.containsKey(condition)) {
+//					passActivationToContextOrResult(condition,
+//							behaviorsByContextCondition, ConditionSet.CONTEXT);
+//				} else if (behaviorsByNegContextCondition
+//						.containsKey(condition)) {
+//					passActivationToContextOrResult(condition,
+//							behaviorsByNegContextCondition,
+//							ConditionSet.NEGCONTEXT);
+//				}
+//			} else {
+//				if (behaviorsByAddingItem.containsKey(condition)) {
+//					passActivationToContextOrResult(condition,
+//							behaviorsByAddingItem, ConditionSet.ADDING_LIST);
+//				} else if (behaviorsByDeletingItem.containsKey(condition)) {
+//					// TODO: Change this if protected goals are used
+//					passActivationToContextOrResult(condition,
+//							behaviorsByDeletingItem, ConditionSet.DELETING_LIST);
+//				}
+//			}
+		}
 	}
 
 	/*
@@ -548,7 +535,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 		for (Behavior behavior : behaviors) {
 			switch (conditionSetType) {
 			case CONTEXT:
-				c = behavior.getContextCondition(condition.getId());
+				c = behavior.getContextCondition(condition.getConditionId());
 
 				excitationAmount = (condition.getTotalActivation()
 						* broadcastExcitationFactor * c.getWeight() / behavior
@@ -557,7 +544,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 				behavior.excite(excitationAmount);
 				break;
 			case NEGCONTEXT:
-				c = behavior.getContextCondition(condition.getId());
+				c = behavior.getContextCondition(condition.getConditionId());
 				excitationAmount = ((1.0 - condition.getTotalActivation())
 						* broadcastExcitationFactor * c.getWeight())
 						/ behavior.getContextSize();
@@ -677,7 +664,7 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 	 */
 	public void runOneCycle() {
 		// envirnmentConditions= readEnvironment();
-		passActivationFromBroadcast();
+//		passActivationFromBroadcast();
 		passActivationAmongBehaviors();
 		normalizeActivation();
 		selectAction();

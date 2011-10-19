@@ -117,12 +117,12 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 	
 	@Override
 	public boolean isRemovable() {
-		return baseLevelActivation <= learnableRemovalThreshold;
+		return getBaseLevelActivation() <= learnableRemovalThreshold;
 	}
 
 	@Override
 	public double getTotalActivation() { 
-	    return totalActivationStrategy.calculateTotalActivation(baseLevelActivation, getActivation());
+	    return totalActivationStrategy.calculateTotalActivation(getBaseLevelActivation(), getActivation());
 	}
 
 	@Override
@@ -130,14 +130,14 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		if (baseLevelDecayStrategy != null) {
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "Before decaying {1} has base-level activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+							new Object[]{TaskManager.getCurrentTick(),this,getBaseLevelActivation()});
 			}
 			synchronized(this){
-				baseLevelActivation = baseLevelDecayStrategy.decay(baseLevelActivation,ticks);
+				baseLevelActivation = baseLevelDecayStrategy.decay(getBaseLevelActivation(),ticks);
 			}
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "After decaying {1} has base-level activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+							new Object[]{TaskManager.getCurrentTick(),this,getBaseLevelActivation()});
 			}
 		}		
 	}
@@ -147,14 +147,14 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		if (baseLevelExciteStrategy != null) {
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "Before reinforcement {1} has base-level activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+							new Object[]{TaskManager.getCurrentTick(),this,getBaseLevelActivation()});
 			}
 			synchronized(this){
-				baseLevelActivation = baseLevelExciteStrategy.excite(baseLevelActivation, amount);
+				baseLevelActivation = baseLevelExciteStrategy.excite(getBaseLevelActivation(), amount);
 			}
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "After reinforcement {1} has base-level activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,baseLevelActivation});
+							new Object[]{TaskManager.getCurrentTick(),this,getBaseLevelActivation()});
 			}
 		}		
 	}

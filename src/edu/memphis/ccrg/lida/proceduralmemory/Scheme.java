@@ -9,9 +9,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
-import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
 
 /**
  * A Scheme consists of a Context, an Action and a Result.
@@ -23,75 +21,13 @@ import edu.memphis.ccrg.lida.sensorymotormemory.SensoryMotorMemory;
  * 
  * @author Ryan J. McCall
  */
-public interface Scheme extends Learnable{
+public interface Scheme extends ProceduralUnit, Learnable{
 	 	
 	/**
 	 * Gets scheme's id.
 	 * @return unique identifier for this scheme
 	 */
 	public long getId();
-	
-	
-	/**
-	 * Gets label.
-	 * @return human-readable label
-	 */
-	public String getLabel();
-	
-	
-	/**
-	 * Sets label.
-	 * @param label human-readable label
-	 */
-	public void setLabel(String label);	
-	
-	/**
-	 * Gets context.
-	 * @return context in which this scheme is activated.
-	 */
-	public NodeStructure getContext();
-	
-	/**
-	 * Sets context.
-	 * @param ns context in which this scheme is activated.
-	 */
-	public void setContext(NodeStructure ns);
-	
-	/**
-	 * Gets action.
-	 * @return scheme's action in {@link SensoryMotorMemory}
-	 */
-	public Action getAction();
-	
-	/**
-	 * Sets scheme Action.
-	 * @param action {@link Action}
-	 */
-	public void setAction(Action action);	
-	
-	/**
-	 * Returns addingResult.
-	 * @return NodeStructure representing what this scheme's action should add if executed. 
-	 */
-	public NodeStructure getAddingResult();
-	
-	/**
-	 * Sets addingResult.
-	 * @param ns NodeStructure representing what this scheme's action should add if executed. 
-	 */
-	public void setAddingResult(NodeStructure ns);
-	
-	/**
-	 * Returns deletingResult.
-	 * @return NodeStructure representing what this scheme's action should delete if executed. 
-	 */
-	public NodeStructure getDeletingResult();
-	
-	/**
-	 * Sets deletingResult.
-	 * @param ns NodeStructure representing what this scheme's action should delete if executed. 
-	 */
-	public void setDeletingResult(NodeStructure ns);
 	
 	/**
 	 * Returns reliability
@@ -138,18 +74,15 @@ public interface Scheme extends Learnable{
 	 */
 	public Behavior getInstantiation();
 
-
 	/**
 	 * Sets reliabilityThreshold
 	 * @param threshold threshold of reliability
 	 */
 	public void setReliabilityThreshold(double threshold);
 
-
 	/**
 	 * Gets reliabilityThreshold
 	 * @return threshold of reliability
 	 */
-	public double getReliabilityThreshold();
-	
+	public double getReliabilityThreshold();	
 }

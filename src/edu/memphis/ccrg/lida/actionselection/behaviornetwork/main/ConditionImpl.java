@@ -28,7 +28,7 @@ public class ConditionImpl extends ActivatibleImpl implements Condition {
 	}
 	
 	@Override
-	public Object getId() {
+	public Object getConditionId() {
 		return id;
 	}
 
@@ -54,7 +54,7 @@ public class ConditionImpl extends ActivatibleImpl implements Condition {
 	@Override
 	public boolean equals (Object o){
 		if (o instanceof Condition){
-			return id.equals(((Condition)o).getId());
+			return id.equals(((Condition)o).getConditionId());
 		}
 		return false;
 	}

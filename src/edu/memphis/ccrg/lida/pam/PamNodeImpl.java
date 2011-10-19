@@ -36,7 +36,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
      */
     private LearnableImpl learnable;
     private BitVector sdmId;
-    public static final int DEFAULT_BITVECTOR_LENGTH = 1000;
+    private static final int DEFAULT_BITVECTOR_LENGTH = 1000;
 
     /**
      * Default constructor

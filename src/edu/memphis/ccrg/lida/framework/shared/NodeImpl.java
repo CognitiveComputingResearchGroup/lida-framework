@@ -23,6 +23,8 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 public class NodeImpl extends ActivatibleImpl implements Node {
 
 	private static final Logger logger = Logger.getLogger(NodeImpl.class.getCanonicalName());
+
+	private static final double DEFAULT_WEIGHT = 1.0;
 	
 	private int id;
 	private ExtendedId extendedId;
@@ -167,20 +169,25 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 
 	@Override
 	public double getNetDesirability() {
-		// TODO Auto-generated method stub
-		return 0;
+		double net = desirability - getActivation();
+		if (net<0.0){
+			net=0.0;
+		}
+		return net;
 	}
 
 	@Override
 	public double getWeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return DEFAULT_WEIGHT;
 	}
 
 	@Override
 	public void setWeight(double w) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public ExtendedId getConditionId() {
+		return extendedId;
 	}
 
 }

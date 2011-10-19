@@ -61,14 +61,14 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		if (decayStrategy != null) {
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "Before decaying {1} has current activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,activation});
+							new Object[]{TaskManager.getCurrentTick(),this,getActivation()});
 			}
 			synchronized(this){
-				activation = decayStrategy.decay(activation,ticks);
+				activation = decayStrategy.decay(getActivation(),ticks);
 			}
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "After decaying {1} has current activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,activation});
+							new Object[]{TaskManager.getCurrentTick(),this,getActivation()});
 			}
 		}
 	}
@@ -78,14 +78,14 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 		if (exciteStrategy != null) {
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "Before excitation {1} has current activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,activation});
+							new Object[]{TaskManager.getCurrentTick(),this,getActivation()});
 			}
 			synchronized(this){
-				activation = exciteStrategy.excite(activation, excitation);
+				activation = exciteStrategy.excite(getActivation(), excitation);
 			}
 			if(logger.isLoggable(Level.FINEST)){
 				logger.log(Level.FINEST, "After excitation {1} has current activation: {2}",
-							new Object[]{TaskManager.getCurrentTick(),this,activation});
+							new Object[]{TaskManager.getCurrentTick(),this,getActivation()});
 			}
 		}
 	}
@@ -152,12 +152,12 @@ public class ActivatibleImpl extends InitializableImpl implements Activatible {
 	
 	@Override
 	public double getTotalActivation() {
-		return activation;
+		return getActivation();
 	}
 
 	@Override
 	public boolean isRemovable() {
-		return activation <= removalThreshold;
+		return getActivation() <= removalThreshold;
 	}
 
 }

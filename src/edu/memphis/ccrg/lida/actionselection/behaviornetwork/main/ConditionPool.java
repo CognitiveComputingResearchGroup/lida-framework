@@ -22,14 +22,14 @@ public class ConditionPool implements BroadcastListener {
 	private static final Logger logger = Logger.getLogger(ConditionPool.class
 			.getCanonicalName());
 
-	private Map<ExtendedId,Condition> buffer = new HashMap<ExtendedId,Condition>();
+	private Map<ExtendedId,Condition> conditionPool = new HashMap<ExtendedId,Condition>();
 
 	/**
 	 * Gets the condition map
 	 * @return the {@link Map} of conditions
 	 */
 	public Map<ExtendedId, Condition> getConditionMap() {
-		return buffer;
+		return conditionPool;
 	}
 	
 	/**
@@ -37,27 +37,27 @@ public class ConditionPool implements BroadcastListener {
 	 * @return the {@link Condition}s in this {@link ConditionPool}
 	 */
 	public Collection<Condition> getConditions(){
-		return buffer.values();
+		return conditionPool.values();
 	}
 
 	/**
 	 * @param conditions the conditions to set
 	 */
 	public void setConditions(Map<ExtendedId, Condition> conditions) {
-		this.buffer = conditions;
+		this.conditionPool = conditions;
 	}
 
 	public void addCondition (ExtendedId id,Condition c){
-		buffer.put(id,c);
+		conditionPool.put(id,c);
 		logger.log(Level.FINE,"Condition "+id+ " added.");
 	}
 	
 	public Condition getCondition(ExtendedId id){
-		return buffer.get(id);
+		return conditionPool.get(id);
 	}
 
 	public void decay(int ticks){
-		for (Condition c: buffer.values()){
+		for (Condition c: conditionPool.values()){
 			c.decay(ticks);
 		}
 	}
@@ -66,11 +66,11 @@ public class ConditionPool implements BroadcastListener {
 	public void receiveBroadcast(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
 		for (Node n: ns.getNodes()){
-			Condition c = buffer.get(n.getExtendedId());
+			Condition c = conditionPool.get(n.getExtendedId());
 			if(c != null){
 				c.setActivation(n.getActivation());
 			}else{
-				buffer.put(n.getExtendedId(), (Condition) n);
+				conditionPool.put(n.getExtendedId(), (Condition) n);
 			}
 		}		
 	}

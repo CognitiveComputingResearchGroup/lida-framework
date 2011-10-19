@@ -72,8 +72,8 @@ public class ConditionWrapper implements Condition {
 	}
 
 	@Override
-	public Object getId() {
-		return c.getId();
+	public Object getConditionId() {
+		return c.getConditionId();
 	}
 
 	@Override
@@ -114,14 +114,14 @@ public class ConditionWrapper implements Condition {
 	@Override
 	public boolean equals (Object o){
 		if (o instanceof Condition){
-			return getId().equals(((Condition)o).getId());
+			return getConditionId().equals(((Condition)o).getConditionId());
 		}
 		return false;
 	}
 	
 	@Override
 	public int hashCode(){
-		return getId().hashCode();
+		return getConditionId().hashCode();
 	}
 	
 	@Override

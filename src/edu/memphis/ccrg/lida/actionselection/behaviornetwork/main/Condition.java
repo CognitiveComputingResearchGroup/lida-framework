@@ -4,7 +4,8 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 
 
 /**
- * A requirement for a {@link Behavior} to be selected
+ * A requirement for a {@link Behavior} to be selected. Implementors should correctly override equals and hashcode
+ * since Conditions are used as keys in Maps. 
  * @author Javier Snaider
  */
 public interface Condition extends Activatible {
@@ -16,7 +17,7 @@ public interface Condition extends Activatible {
     * 
     * @return Condition's unique id
 	*/
-	public int getId();
+	public Object getConditionId();
 	
 	/**
 	 * Gets desirability

@@ -10,6 +10,7 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ConditionPool;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
@@ -105,7 +106,13 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public ConditionPool getBroadcastBuffer() {
+	public Condition addCondition(Condition c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Condition getCondition(Object conditionId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
