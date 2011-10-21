@@ -15,7 +15,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskSpawner;
 /**
  * Interface for the modules of an agent.
  * 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  *
  */
 public interface FrameworkModule extends FullyInitializable{
@@ -75,11 +76,10 @@ public interface FrameworkModule extends FullyInitializable{
 	public void addSubModule(FrameworkModule lm);
 	
 	/**
-	 * Returns module content specified by params.  Should only be used by the GUI.
+	 * Returns module content specified by params. Intended for use by the GUI only.
 	 * 
-	 * @param params
-	 *            - specifies what content will be returned.
-	 * @return various kinds of content of this module.
+	 * @param params parameters specifying what content will be returned
+	 * @return Parameter-specified content of this module.
 	 */
 	public Object getModuleContent(Object... params);
 
@@ -105,15 +105,14 @@ public interface FrameworkModule extends FullyInitializable{
 	public void addListener(ModuleListener listener);
 	
 	/**
-	 * Specify the TaskSpawner which this FrameworkModule will use to spawn tasks.
+	 * Specify the {@link TaskSpawner} which this FrameworkModule will use to spawn tasks.
 	 * 
-	 * @param ts
-	 *            - the TaskSpawner
+	 * @param ts the TaskSpawner
 	 */
 	public void setAssistingTaskSpawner(TaskSpawner ts);
 
 	/**
-	 * Returns the TaskSpawner which this FrameworkModule uses to spawn tasks.
+	 * Returns the {@link TaskSpawner} which this FrameworkModule uses to spawn tasks.
 	 * 
 	 * @return the assisting task spawner
 	 */

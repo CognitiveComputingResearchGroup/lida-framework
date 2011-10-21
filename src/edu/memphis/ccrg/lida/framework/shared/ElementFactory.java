@@ -170,14 +170,17 @@ public class ElementFactory {
 				.getCanonicalName());
 
 		//Default decay type
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("m", 0.1);
 		addDecayStrategy(defaultDecayType, new StrategyDef(
 				LinearDecayStrategy.class.getCanonicalName(), defaultDecayType,
-				new HashMap<String, Object>(), decayStrategyType, true));
+				params, decayStrategyType, true));
 
 		//Default excite type
+		params.put("m", 1.0);
 		addExciteStrategy(defaultExciteType, new StrategyDef(
 				LinearExciteStrategy.class.getCanonicalName(),
-				defaultExciteType, new HashMap<String, Object>(),
+				defaultExciteType, params,
 				exciteStrategyType, true));
 		
 		//No-decay strategy type
@@ -203,7 +206,7 @@ public class ElementFactory {
 		defaultStrategies.put("decay", defaultDecayType);
 		defaultStrategies.put("excite", defaultExciteType);
 		
-		Map<String, Object> params= new HashMap<String, Object>();
+		params= new HashMap<String, Object>();
 		params.put("learnable.baseLevelActivation", 0.0);
 		params.put("learnable.baseLevelRemovalThreshold", -1.0);
 		params.put("learnable.baseLevelDecayStrategy", "noDecay");
