@@ -84,7 +84,7 @@ public class ArgumentImpl implements Argument {
 	 * @see edu.memphis.ccrg.lida.proceduralmemory.Argument#isBinded()
 	 */
 	@Override
-	public boolean isBound() {
+	public boolean hasBoundNode() {
 		return (node != null);
 	}
 

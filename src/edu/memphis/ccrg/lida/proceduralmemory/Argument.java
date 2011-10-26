@@ -18,11 +18,31 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  * If the real Node is not yet binded, the Argument ignores invocations to methods like ?? 
  * 
  * @author Javier Snaider
- *
+ * @author Ryan J. McCall
  */
 public interface Argument extends Node {
+	
+	/**
+	 * Gets argument id 
+	 * @return unique id of argument
+	 */
 	public long getArgumentId();
+	
+	/**
+	 * Binds specified {@link Node}
+	 * @param n Node to be bound to this argument
+	 */
 	public void bindNode(Node n);
+	
+	/**
+	 * Gets bound node
+	 * @return {@link Node} currently bound to this argument
+	 */
 	public Node getBoundNode();
-	public boolean isBound();
+	
+	/**
+	 * Returns whether argument has a bound {@link Node}
+	 * @return true if argument has a bound {@link Node}
+	 */
+	public boolean hasBoundNode();
 }
