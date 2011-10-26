@@ -26,9 +26,7 @@ import edu.memphis.ccrg.lida.framework.shared.ConcurrentHashSet;
 import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
-import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
-import edu.memphis.ccrg.lida.framework.strategies.Strategy;
+import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -36,30 +34,35 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 /**
  * Default implementation of {@link ProceduralMemory}. Indexes scheme by context
  * elements for quick access.
+ * @author Ryan J. McCall
  *
  */
 public class ProceduralMemoryImpl extends FrameworkModuleImpl implements ProceduralMemory, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
 	private static final ElementFactory factory = ElementFactory.getInstance();
-	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
 
 	/*
-	 * Schemes indexed by the Linkables in their context. Operations on
-	 * ConcurrentHashmap do not block but they may not reflect the true state of
-	 * the Map if multiple operations are concurrent.
+	 * Schemes indexed by Linkables in their context.
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
-	
-	private Map<Object,Condition> conditionPool = new HashMap<Object,Condition>();
-//	TODO support for Node desirability
-//  TODO index by result
+//	TODO support for Node desirability, index by result
 //	private Map<Object, Set<Scheme>> resultSchemeMap;
 
 	/*
 	 * Convenient for decaying the schemes
 	 */
 	private Set<Scheme> schemeSet = new ConcurrentHashSet<Scheme>();
+	
+	/*
+	 * A pool of all conditions in all schemes in the procedural memory
+	 */
+	private Map<Object,Condition> conditionPool = new HashMap<Object,Condition>();
+	
+	/*
+	 * Recent contents of consciousness that have not yet decayed away.
+	 */
+	private NodeStructure broadcastBuffer = new NodeStructureImpl();
 
 	/*
 	 * Listeners of this Procedural Memory
@@ -67,31 +70,21 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	private List<ProceduralMemoryListener> proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
 	
 	/*
+	 * Factory name of default scheme activation strategy
+	 */
+	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
+	/*
 	 * Determines how scheme are given activation and whether they should be
 	 * instantiated
 	 */
-	private SchemeActivationStrategy schemeActivationStrategy;
+	private SchemeActivationStrategy schemeActivationStrategy;	
 
-
-	private DecayStrategy behaviorDecayStrategy;
-
-	private ExciteStrategy behaviorExciteStrategy;
 	
-
-	/**
-	 * Default constructor
-	 */
-	public ProceduralMemoryImpl() {
-		//TODO interface and default impl
-	}
-
 	/**
 	 * This module can accept parameters for the decay and excite strategies for
 	 * behaviors instantiated in this module.  The parameters names are:<br><br/>
 	 * 
 	 * <b>proceduralMemory.schemeActivationStrategy</b> - name of {@link SchemeActivationStrategy} in the {@link ElementFactory}<br/>
-	 * <b>proceduralMemory.behaviorDecayStrategy</b> - name (a String) of the {@link Strategy} in the {@link ElementFactory} <br>
-	 * <b>proceduralMemory.behaviorExciteStrategy</b> - name (a String) of the {@link Strategy} in the {@link ElementFactory} 
 	 * 
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */
@@ -105,12 +98,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			logger.log(Level.SEVERE, "unable to get scheme activation strategy {0} from factory", 
 					strategyName);
 		}
-		
-		String decayName = (String) getParam("proceduralMemory.behaviorDecayStrategy", factory.getDefaultDecayType());
-		behaviorDecayStrategy = factory.getDecayStrategy(decayName);
-		
-		String exciteName = (String) getParam("proceduralMemory.behaviorExciteStrategy", factory.getDefaultExciteType());
-		behaviorExciteStrategy = factory.getExciteStrategy(exciteName);
 	}
 	
 	@Override
@@ -118,8 +105,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		if (listener instanceof ProceduralMemoryListener) {
 			proceduralMemoryListeners.add((ProceduralMemoryListener) listener);
 		}else{
-			logger.log(Level.WARNING, "Try to add wrong listener type", 
-					TaskManager.getCurrentTick());
+			logger.log(Level.WARNING, "Requires ProceduralMemoryListener but received {1}", 
+					new Object[]{TaskManager.getCurrentTick(), listener});
 		}
 	}
 
@@ -134,8 +121,12 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
-		for (Scheme scheme : schemes){
-			addScheme(scheme);
+		if(schemes != null){
+			for (Scheme scheme : schemes){
+				addScheme(scheme);
+			}
+		}else{
+			logger.log(Level.WARNING, "Cannot add null Collection", TaskManager.getCurrentTick());
 		}
 	}
 
@@ -143,26 +134,21 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);
 		indexSchemeByElements(scheme, scheme.getContextConditions(), contextSchemeMap);
-		//TODO desirability motivators
+		for(Condition c: scheme.getContextConditions()){
+			if(c instanceof Node){
+				addCondition(c);
+			}else if(c instanceof NodeStructure){
+				Collection<Node> nodes = ((NodeStructure) c).getNodes();
+				for(Node n: nodes){
+					if(!(n instanceof Argument)){
+						addCondition(n);
+					}
+				}
+			}
+		}
+		//TODO index by result 
 //		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
 //		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
-	}
-	
-	@Override
-	public Condition addCondition(Condition c){
-		Condition result = conditionPool.get(c.getConditionId());
-		if(result == null){
-			logger.log(Level.FINE,"Condition {1} added.",
-					new Object[]{TaskManager.getCurrentTick(), c});
-			conditionPool.put(c.getConditionId(),c);
-			result = c;
-		}
-		return result;
-	}
-	
-	@Override
-	public Condition getCondition(Object id){
-		return conditionPool.get(id);
 	}
 	
 	/*
@@ -188,29 +174,59 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 	
 	@Override
-	public void activateSchemes(NodeStructure broadcast) {
-		logger.log(Level.FINEST, "Procedural memory activates schemes", TaskManager.getCurrentTick());
-		//TODO change this
-		schemeActivationStrategy.activateSchemesWithBroadcast(broadcast, contextSchemeMap);
+	public Condition addCondition(Condition c){
+		Condition result = conditionPool.get(c.getConditionId());
+		if(result == null){
+			logger.log(Level.FINE,"Condition {1} added.",
+					new Object[]{TaskManager.getCurrentTick(), c});
+			conditionPool.put(c.getConditionId(),c);
+			result = c;
+		}
+		return result;
+	}
+	
+	@Override
+	public Condition getCondition(Object id){
+		return conditionPool.get(id);
 	}
 	
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
-		logger.log(Level.FINEST, "Procedural memory receives broadcast", TaskManager.getCurrentTick());
 		NodeStructure ns = (NodeStructure) coalition.getContent();
-		for (Node n: ns.getNodes()){
+		broadcastBuffer.mergeWith(ns);	
+		activateSchemes(ns);
+	}
+	
+	@Override
+	public void activateSchemes(NodeStructure ns) {
+		logger.log(Level.FINEST, "Procedural memory activates schemes", TaskManager.getCurrentTick());
+		
+		//this may be a new scheme activation strategy
+		for(Node n: ns.getNodes()){
 			Condition c = conditionPool.get(n.getExtendedId());
 			if(c != null){
 				c.setActivation(n.getActivation());
-			}else{
-				conditionPool.put(n.getExtendedId(), (Condition) n);
+				Set<Scheme> schemes = contextSchemeMap.get(n);
+				if(schemes != null){
+					for(Scheme s: schemes){
+						Collection<Condition> conditions = s.getContextConditions();
+						for(Condition c2: conditions){
+							if(c2 instanceof NodeStructure){
+								//if c2 contains an argument then instantiate
+							}
+						}
+					}
+				}
 			}
-		}		
-		//TODO review activatSchemes
-		activateSchemes((NodeStructure) coalition.getContent());
+		}	
+		
+		schemeActivationStrategy.activateSchemesWithBroadcast(ns, contextSchemeMap);
 	}
 
-	
+	@Override
+	public void learn(Coalition coalition) {
+		//TODO 
+	}
 	
 	@Override
 	public void decayModule(long ticks){
@@ -226,19 +242,12 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			}
 		}
 	}
-
-	@Override
-	public void learn(Coalition coalition) {
-		//TODO 
-	}
 	
 	@Override
 	public void createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Sending scheme from procedural memory",
 				TaskManager.getCurrentTick());
 		Behavior b = s.getInstantiation();
-		b.setDecayStrategy(behaviorDecayStrategy);
-		b.setExciteStrategy(behaviorExciteStrategy);
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(b);
 		}
