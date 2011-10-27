@@ -215,17 +215,19 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
      * is a bit vector that will be used to create the representation of a node
      * structure containing this node.
      */
+    // FIXME: change method
     @Override
-    public void setSdmId() {
-        if (!hasSdmId()) {
+    public void setSdmId(BitVector vector) {
+        //if (!hasSdmId()) {
 
             // Determine the size of the bit vector (from config file?).
-            int length = (Integer) getParam("tem.wordLength", DEFAULT_BITVECTOR_LENGTH);
+            //int length = (Integer) getParam("tem.wordLength", DEFAULT_BITVECTOR_LENGTH);
 
             // Initialize the bit vector with random bits.
-            sdmId = new BitVector(length);
-            sdmId = BitVectorUtils.getRandomVector(length);
-        }
+            //sdmId = new BitVector(length);
+            //sdmId = BitVectorUtils.getRandomVector(length);
+        //}
+        sdmId = vector;
     }
 
     /**

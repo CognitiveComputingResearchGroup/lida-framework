@@ -39,14 +39,14 @@ public class HyperdimensionalEpisodicMemoryInitializer implements Initializer {
 
         EpisodicMemoryImpl em = (EpisodicMemoryImpl) module;
 
-        PerceptualAssociativeMemory pam 
-                = (PerceptualAssociativeMemory) 
+        PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) 
                 agent.getSubmodule(ModuleName.PerceptualAssociativeMemory);
         if (pam != null) {
             int wordLength = (Integer) em.getParam("tem.wordLength",
                     EpisodicMemoryImpl.DEF_WORD_LENGTH);
 
-            Translator translator = new HyperdimensionalTranslator(wordLength, pam);
+            Translator translator 
+                    = new HyperdimensionalTranslator(wordLength, pam);
             em.setTranslator(translator);
         } else {
             logger.log(

@@ -20,11 +20,17 @@ import java.util.Collection;
  * paper.
  * @author Rodrigo Silva-Lugo
  */
-public class HyperdimensionalTranslator extends BasicTranslator implements Translator {
+public class HyperdimensionalTranslator extends BasicTranslator {
 
 //    private static final ElementFactory factory = ElementFactory.getInstance();
 //    private int size;
 //    private PerceptualAssociativeMemory pam;
+        
+    /** Vector used to map into the sets region of the space. */
+    private BitVector setVector;
+    
+    /* TODO: generalize this implementation to translate between representations.
+    Extract interface which encapsulates non-specific respresentations functinality.*/
 
     /**
      * Constructor of the class.
@@ -37,6 +43,12 @@ public class HyperdimensionalTranslator extends BasicTranslator implements Trans
     public HyperdimensionalTranslator(int size, PerceptualAssociativeMemory pam) {
         super(size, pam);
     }
+    
+    public HyperdimensionalTranslator(int size, PerceptualAssociativeMemory pam,
+            BitVector setVector) {
+        super(size, pam);
+        this.setVector = setVector;
+    }
 
     /**
      * 
@@ -46,6 +58,8 @@ public class HyperdimensionalTranslator extends BasicTranslator implements Trans
     @Override
     public NodeStructure translate(BitVector data) {
 
+        // Invert multiplication
+        // 
         // TODO: implement this method.
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -57,23 +71,18 @@ public class HyperdimensionalTranslator extends BasicTranslator implements Trans
      */
     @Override
     public BitVector translate(NodeStructure structure) {
-
-        // TODO: verify that all nodes in structure are PamNodeImpl?
-
-        // FIXME: add dictionary field, where extra bit vectors are kept.
         Collection<Node> nodes = structure.getNodes();
         int[] sum = new int[this.getSize()];
         BitVector result = new BitVector(this.getSize());
         for (Node n : nodes) {
             PamNode p = n.getGroundingPamNode();
             if (!p.hasSdmId()) {
-                p.setSdmId();
+                p.setSdmId(BitVectorUtils.getRandomVector(getSize()));
             }
             BitVectorUtils.sumVectors(sum, p.getSdmId());
         }
         result = BitVectorUtils.normalizeVector(sum);
-
-        // TODO: Map the sum using multiplication. Initially zero vector?
+        result = BitVectorUtils.multiplyVectors(result, setVector);
         return result;
     }
 }
