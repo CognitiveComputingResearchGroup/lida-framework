@@ -10,6 +10,10 @@ package edu.memphis.ccrg.lida.framework.shared;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import java.util.logging.Logger;
 
 /**
  * Finds and returns a sub NodeStructure that contains all Nodes
@@ -22,22 +26,9 @@ import java.util.Set;
  */
 
 public class SubNodeStructureImpl extends NodeStructureImpl {
-
-	/*
-	 * The farthest distance between specified nodes and their 
-	 * neighbor nodes. 
-	 * This distance and specified nodes will be passed through arguments.
-	 */
-	private int distance;
 	
-	/*
-	 * Nodes contained in subNodeStructure. 
-	 * It involves specified nodes and all neighbor nodes whose distance
-	 * from one of specified nodes is not bigger than farthest distance 
-	 * coming from arguments. Also it involves all links between these 
-	 * above nodes.
-	 */
-	private NodeStructureImpl subNodeStructure;
+	private static final Logger logger = Logger
+			.getLogger(NodeStructureImpl.class.getCanonicalName());
 
 	/**
 	 * @param nodes Set of specified nodes in NodeStructure
@@ -46,21 +37,28 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @return A sub NodeStructure which involves specified and all 
 	 * satisfied neighbor nodes
 	 */
-
 	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
 			int distance) {
 			return getSubNodeStructure(nodes,distance,0);
 	}
 
+	/**
+	 * @param nodes Set of specified nodes in NodeStructure
+	 * @param distance The farthest distance between specified nodes and
+	 * its neighbor nodes
+	 * @param threshold responds to lower bound of activation
+	 * @return A sub NodeStructure which involves specified and all 
+	 * satisfied neighbor nodes
+	 */
 	public  NodeStructure getSubNodeStructure(Collection<Node> nodes,
 			int distance, double threshold) {
 		/*
 		 * Collection of specified nodes should not be empty
 		 * 
-		 */
-		
+		 */	
 		if (nodes.isEmpty()){
-			System.out.printf("\nCollection of specified nodes should not be empty.");
+			logger.log(Level.WARNING, "Collection of specified nodes should not be empty.",
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		
@@ -69,19 +67,18 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		 * Desired distance should not be negative
 		 */
 		if (distance < 0){
-			System.out.printf("\nDesired distance should not be negative! Try again.");
+			logger.log(Level.WARNING, "Desired distance should not be negative.",
+					TaskManager.getCurrentTick());
 			return null;
 		}
 		
-		subNodeStructure = new NodeStructureImpl();
+		NodeStructureImpl subNodeStructure = new NodeStructureImpl();
 
 		/*
 		 * Distance should be not bigger than number of all links.
 		 */
 		if (distance > getLinkCount()){
-			this.distance = getLinkCount();
-		}else{
-			this.distance = distance;
+			distance = getLinkCount();
 		}
 
 		/*
@@ -89,7 +86,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		 *  and scan from each node
 		 */
 		for (Node n : nodes) {
-			depthFirstSearch(n, 0);
+			depthFirstSearch(n, 0, distance, subNodeStructure);
 		}
 
 		/*
@@ -159,8 +156,15 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 	 * @param currentNode One specified node that be considered as neighbor nodes
 	 * or specified nodes in sub NodeStructure 
 	 * @param step The distance between specified nodes and this current Node
+	 * @param distance The farthest distance between specified nodes and
+	 * its neighbor nodes
+	 * @param subNodeStructure Nodes contained in subNodeStructure. 
+	 * It involves specified nodes and all neighbor nodes whose distance
+	 * from one of specified nodes is not bigger than farthest distance 
+	 * coming from arguments. Also it involves all links between these 
+	 * above nodes.
 	 */
-	void depthFirstSearch(Node currentNode, int step) {
+	void depthFirstSearch(Node currentNode, int step, int distance, NodeStructureImpl subNodeStructure) {
 
 		Map<Linkable, Link> subSinks;
 		Map<Node, Link> subSources;
@@ -174,7 +178,6 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		/*
 		 *  Get all connected Sinks
 		 */
-
 		subSinks = getConnectedSinks(currentNode);
 
 		Set<Linkable> subLinkables = subSinks.keySet();
@@ -182,7 +185,7 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		for (Linkable l : subLinkables) {
 			if (l instanceof Node) {
 				if (step < distance){
-					depthFirstSearch((Node) l, step + 1);
+					depthFirstSearch((Node) l, step + 1, distance, subNodeStructure);
 				}
 			}
 		}
@@ -190,14 +193,13 @@ public class SubNodeStructureImpl extends NodeStructureImpl {
 		/*
 		 *  Get all connected Sources
 		 */
-		
 		subSources = getConnectedSources(currentNode);
 
 		Set<Node> parentNodes = subSources.keySet();
 
 		for (Node n : parentNodes) {
 			if (step < distance){
-				depthFirstSearch(n, step + 1);
+				depthFirstSearch(n, step + 1, distance, subNodeStructure);
 			}
 		}
 
