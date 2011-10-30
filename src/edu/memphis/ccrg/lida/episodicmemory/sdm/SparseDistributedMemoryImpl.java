@@ -136,22 +136,22 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 
 	@Override
 	public BitVector retrieve(BitVector addr) {
-		int[] buff = new int[wordLength];
+		int[] locationsSum = new int[wordLength];
 		for (int i = 0; i < memorySize; i++) {
 			if (hardLocations[i].hammingDistance(addr) <= activationRadius) {
-				hardLocations[i].read(buff);
+				hardLocations[i].read(locationsSum);
 			}
 		}
 		BitVector res = new BitVector(wordLength);
 		for (int i = 0; i < wordLength; i++) {
 			boolean aux;
-			if (buff[i]==0){
+			if (locationsSum[i]==0){
+				//not clear if sum is positive or negative, so assign randomly
 				aux = (Math.random() > 0.5);
-			}else{
-				aux = (buff[i] > 0);
+			} else {
+				aux = (locationsSum[i] > 0);
 			}
 			res.putQuick(i, aux);
-//			res.putQuick(i, (buff[i] > 0));
 		}
 		return res;
 	}
