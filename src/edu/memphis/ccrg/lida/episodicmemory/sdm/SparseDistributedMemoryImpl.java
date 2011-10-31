@@ -43,9 +43,13 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	private int memorySize;
 	
 	/*
-	 * Size of locations in this sdm
+	 * Size of vectors stored in the hard locations
 	 */
 	private int wordLength;
+	
+	/*
+	 * Size of the address vectors 
+	 */
 	private int addressLength;
 	
 	/*
@@ -54,15 +58,14 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	private int activationRadius;
 
 	/**
-	 * Constructor of the class that receives all the parameters necessary for
-	 * this sparse distributed memory.
+	 * Constructs a new {@link SparseDistributedMemory} with equal address and word sizes 
 	 * 
 	 * @param memorySize
-	 *            the size of the memory
+	 *            number of hard locations
 	 * @param radius
-	 *            the activation radius
+	 *            the activation radius used to find the nearest hard locations
 	 * @param wordLength
-	 *            the word size
+	 *            the word size and the address size
 	 */
 	public SparseDistributedMemoryImpl(int memorySize, int radius,
 			int wordLength) {
@@ -79,15 +82,14 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 	}
 
 	/**
-	 * Constructor of the class that receives all the parameters necessary for
-	 * this sparse distributed memory.
+	 * Constructs a new {@link SparseDistributedMemory} with specified parameters
 	 * 
 	 * @param memorySize
-	 *            the size of the memory
+	 *            the number of hard location
 	 * @param radius
-	 *            the activation radius
+	 *            the activation radius used to find the nearest hard locations
 	 * @param wordLength
-	 *            the word size
+	 *            size of vectors stored at hard locations
 	 * @param addrLength
 	 *            the address size
 	 */
@@ -145,7 +147,7 @@ public class SparseDistributedMemoryImpl implements SparseDistributedMemory {
 		BitVector res = new BitVector(wordLength);
 		for (int i = 0; i < wordLength; i++) {
 			boolean aux;
-			if (locationsSum[i]==0){
+			if (locationsSum[i]==0) {
 				//not clear if sum is positive or negative, so assign randomly
 				aux = (Math.random() > 0.5);
 			} else {
