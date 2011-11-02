@@ -29,7 +29,8 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * used to detect and burstActivation from other modules, like Workspace,
  * emotions or internal states.
  * 
- * @author Ryan J. McCall - Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  * 
  */
 public abstract class BasicDetectionAlgorithm extends FrameworkTaskImpl

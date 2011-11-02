@@ -28,10 +28,9 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
  * A convenience init() method is added to initialize the class. This method can be 
  * overwritten as well.
  * This implementation is oriented to detect features from sensoryMemory, but the implementation 
- * can be used to detect and burstActivation from other modules, like Workspace, emotions or internal states.
+ * can be used to detect and send excitation from other modules, like Workspace, emotions or internal states.
  * 
  * @author Ryan J. McCall
- *
  * 
  */
 public abstract class MultipleDetectionAlgorithm extends FrameworkTaskImpl implements DetectionAlgorithm {

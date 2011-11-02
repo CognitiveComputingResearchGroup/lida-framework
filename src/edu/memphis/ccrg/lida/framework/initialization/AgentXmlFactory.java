@@ -311,8 +311,8 @@ public class AgentXmlFactory implements AgentFactory {
 				logger.log(Level.SEVERE, "Module class name: " + className + 
 							" is not valid.  Check module class name.\n", 0L);
 			}else{
-				logger.log(Level.SEVERE, "Exception \"" + e.toString() + 
-						"\" occurred during creation of object of class " + className + "\n", 0L);
+				logger.log(Level.SEVERE, "Exception occurred during creation of object of class " + className + "\n" +
+						e + "\n",0L);
 				e.printStackTrace();
 			}
 			return null; 

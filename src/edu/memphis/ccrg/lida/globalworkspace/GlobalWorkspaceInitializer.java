@@ -29,10 +29,10 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger
  * @author Javier Snaider
  *
  */
-public class GlobalWorkspaceInitalizer implements Initializer {
+public class GlobalWorkspaceInitializer implements Initializer {
 
 	private static final Logger logger = Logger
-			.getLogger(GlobalWorkspaceInitalizer.class.getCanonicalName());
+			.getLogger(GlobalWorkspaceInitializer.class.getCanonicalName());
 
 	private static final Integer DEFAULT_DELAY_NO_BROADCAST = 100;
 	private static final Integer DEFAULT_DELAY_NO_NEW_COALITION = 50;

@@ -33,7 +33,7 @@ public class GlobalWorkspaceInitalizerTest {
 	private Map<String, Object> params;
 	private MockGlobalWorkspaceImpl globalWksp;
 	private Agent lida;
-	private GlobalWorkspaceInitalizer initializer = new GlobalWorkspaceInitalizer();
+	private GlobalWorkspaceInitializer initializer = new GlobalWorkspaceInitializer();
 
 	@Before
 	public void setUp() throws Exception {
