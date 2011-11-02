@@ -203,6 +203,30 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		
 		//this may be a new scheme activation strategy
 		for(Node n: ns.getNodes()){
+//			// TODO: Another option is to use GoalDegree and Activation
+//			if (condition.getNetDesirability() < goalThreshold) {
+//				if (behaviorsByContextCondition.containsKey(condition)) {
+//					passActivationToContextOrResult(condition,
+//							behaviorsByContextCondition, ConditionSet.CONTEXT);
+//				} else if (behaviorsByNegContextCondition
+//						.containsKey(condition)) {
+//					passActivationToContextOrResult(condition,
+//							behaviorsByNegContextCondition,
+//							ConditionSet.NEGCONTEXT);
+//				}
+//			} else {
+//				if (behaviorsByAddingItem.containsKey(condition)) {
+//					passActivationToContextOrResult(condition,
+//							behaviorsByAddingItem, ConditionSet.ADDING_LIST);
+//				} else if (behaviorsByDeletingItem.containsKey(condition)) {
+//					// TODO: Change this if protected goals are used
+//					passActivationToContextOrResult(condition,
+//							behaviorsByDeletingItem, ConditionSet.DELETING_LIST);
+//				}
+//			}
+			
+			
+			
 			Condition c = conditionPool.get(n.getExtendedId());
 			if(c != null){
 				c.setActivation(n.getActivation());
@@ -212,6 +236,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 						Collection<Condition> conditions = s.getContextConditions();
 						for(Condition c2: conditions){
 							if(c2 instanceof NodeStructure){
+								NodeStructure conditionNs = (NodeStructure) c2;
+								for(Node conditionNode: conditionNs.getNodes()){
+									
+								}
 								//if c2 contains an argument then instantiate
 							}
 						}
