@@ -93,7 +93,6 @@ public class HyperdimensionalTranslator extends BasicTranslator {
             BitVectorUtils.sumVectors(sum, p.getSdmId());
         }
         result = BitVectorUtils.normalizeVector(sum);
-        result = BitVectorUtils.multiplyVectors(result, setVector);
         return result;
     }
 }

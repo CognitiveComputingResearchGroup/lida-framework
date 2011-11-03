@@ -53,6 +53,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Default access radius for {@link SparseDistributedMemory}
 	 */
 	public static final int DEF_ACCESS_RADIUS = 451;
+        
+        // TODO Add random bit vector to map sets here.
 
 	private SparseDistributedMemory sdm;
 	private Translator translator;
@@ -102,6 +104,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
+                // TODO plug HDTranslator here.            
 		NodeStructure ns = (NodeStructure) coalition.getContent();
 		BitVector address = null;
 		if (translator != null) {
@@ -112,6 +115,8 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 						"Translation failed {1}",
 						new Object[]{TaskManager.getCurrentTick(),e.getMessage()});
 			}
+                        // TODO add mapping here.
+                        // TODO if NS has more than one element, use mapped store
 			sdm.store(address);
 		} else {
 			logger.log(Level.SEVERE,
@@ -130,6 +135,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	@Override
 	public void receiveCue(NodeStructure ns) {
 		//TODO parallelize using task.
+                // TODO plug HDTranslator here.
 		BitVector address = null;
 		if (translator != null) {
 			try {
