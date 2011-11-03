@@ -10,9 +10,12 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
+import edu.memphis.ccrg.lida.framework.shared.Translatable;
 import edu.memphis.ccrg.lida.pam.PamNode;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class translates between node structures and bit vectors. The methods
@@ -28,6 +31,9 @@ public class HyperdimensionalTranslator extends BasicTranslator {
         
     /** Vector used to map into the sets region of the space. */
     private BitVector setVector;
+    
+    private Map<BitVector, Translatable> bvLookUpMap
+            = new ConcurrentHashMap<BitVector, Translatable>();
     
     /* TODO: generalize this implementation to translate between representations.
     Extract interface which encapsulates non-specific respresentations functinality.*/
@@ -58,9 +64,11 @@ public class HyperdimensionalTranslator extends BasicTranslator {
     @Override
     public NodeStructure translate(BitVector data) {
 
-        // Invert multiplication
-        // 
-        // TODO: implement this method.
+        // 1. Applied inverse mapping
+        // 2. Cue memory with unmapped sum
+        // 3. Subtract returned vector from sum
+        // 4. Cue memory with resulting vector
+        // 5. GOTO 2 
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -76,8 +84,11 @@ public class HyperdimensionalTranslator extends BasicTranslator {
         BitVector result = new BitVector(this.getSize());
         for (Node n : nodes) {
             PamNode p = n.getGroundingPamNode();
-            if (!p.hasSdmId()) {
-                p.setSdmId(BitVectorUtils.getRandomVector(getSize()));
+            BitVector v = p.getSdmId();
+            if (v == null) {
+                v = BitVectorUtils.getRandomVector(getSize());
+                p.setSdmId(v);
+                bvLookUpMap.put(v, p);
             }
             BitVectorUtils.sumVectors(sum, p.getSdmId());
         }

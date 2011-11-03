@@ -238,13 +238,4 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
     public BitVector getSdmId() {
         return sdmId;
     }
-
-    /**
-     * Determine if this node already has an ID for representation in SDM.
-     * @return true if this node has an SDM ID, false otherwise
-     */
-    @Override
-    public boolean hasSdmId() {
-        return sdmId != null;
-    }
 }

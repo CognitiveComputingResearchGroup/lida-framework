@@ -19,7 +19,4 @@ public interface Translatable {
     public void setSdmId(BitVector vector);
     
     public BitVector getSdmId();
-    
-    public boolean hasSdmId();
-    
 }
