@@ -74,6 +74,11 @@ public class InitializableImpl implements Initializable {
 		}
 		return value;
 	}
+	
+	@Override
+	public boolean containsParameter(String key){
+		return parameters.containsKey(key);
+	}
 
 	@Override
 	public Map<String, ?> getParameters() {

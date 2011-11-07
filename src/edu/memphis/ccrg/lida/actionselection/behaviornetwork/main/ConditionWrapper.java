@@ -156,5 +156,10 @@ public class ConditionWrapper implements Condition {
 	@Override
 	public void setDesirability(double d) {
 		c.setDesirability(d);
+	}
+
+	@Override
+	public boolean containsParameter(String key) {
+		return c.containsParameter(key);
 	}	
 }

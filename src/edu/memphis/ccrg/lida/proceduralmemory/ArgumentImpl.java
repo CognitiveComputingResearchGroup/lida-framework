@@ -217,6 +217,11 @@ public class ArgumentImpl implements Argument {
 	public Object getParam(String name, Object defaultValue) {
 		return null;
 	}
+	
+	@Override
+	public boolean containsParameter(String l){
+		return false;
+	}
 
 	@Override
 	public double getActivatibleRemovalThreshold() {

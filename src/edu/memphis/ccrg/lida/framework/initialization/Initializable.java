@@ -44,6 +44,13 @@ public interface Initializable {
 	public <T> T getParam(String name, T defaultValue);
 	
 	/**
+	 * Returns whether a parameter with specified key is in this {@link Initializable}
+	 * @param key {@link String}
+	 * @return true if specified key exists
+	 */
+	public boolean containsParameter(String key);
+	
+	/**
 	 * Returns the Map of parameters of this initializable
 	 * @return the Map of parameters
 	 */

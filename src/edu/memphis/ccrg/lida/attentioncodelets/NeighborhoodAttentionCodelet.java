@@ -41,21 +41,22 @@ public class NeighborhoodAttentionCodelet extends DefaultAttentionCodelet {
 	public void init() {
 		super.init();
 		super.attentionThreshold = 0.0;//want nodes regardless of their activation
-		
-		String nodeLabels = (String) getParam("nodes", "");
-		if (nodeLabels != null) {
-            GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
-            String[] labels = nodeLabels.split(",");
-            for (String label : labels) {
-                label = label.trim();
-                Node node = (Node) globalInitializer.getAttribute(label);
-                if (node != null) {
-                    soughtContent.addDefaultNode(node);
-                }else{
-                	logger.log(Level.WARNING, "could not find node with label: {0} in global initializer", label);
-                }
-            }
-        }
+		if(containsParameter("nodes")){
+			String nodeLabels = (String) getParam("nodes", "");
+			if (nodeLabels != null && !nodeLabels.equals("")) {
+	            GlobalInitializer globalInitializer = GlobalInitializer.getInstance();
+	            String[] labels = nodeLabels.split(",");
+	            for (String label : labels) {
+	                label = label.trim();
+	                Node node = (Node) globalInitializer.getAttribute(label);
+	                if (node != null) {
+	                    soughtContent.addDefaultNode(node);
+	                }else{
+	                	logger.log(Level.WARNING, "could not find node with label: {0} in global initializer", label);
+	                }
+	            }
+	        }
+		}
     }
     
     /**

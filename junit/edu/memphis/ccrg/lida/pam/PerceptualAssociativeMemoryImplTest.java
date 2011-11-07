@@ -100,6 +100,11 @@ public class PerceptualAssociativeMemoryImplTest {
 			public Map<String, ?> getParameters() {
 				return null;
 			}
+			@Override
+			public boolean containsParameter(String key) {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		};
 		
 		link1 = (PamLinkImpl) factory.getLink("PamLinkImpl", node1, node2, PerceptualAssociativeMemoryImpl.NONE);
