@@ -85,7 +85,7 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		defaultRemovalThreshold = (Double) getParam("actionSelection.removalThreshold", DEFAULT_REMOVAL_THRESHOLD);
 
 		ticksPerRun = (Integer) getParam("actionSelection.backgroundTaskTicksPerRun", DEFAULT_TICKS_PER_RUN);
-		taskSpawner.addTask(new BackgroundTask(ticksPerRun));
+		taskSpawner.addTask(new ActionSelectionBackgroundTask(ticksPerRun));
 		
 		ElementFactory factory = ElementFactory.getInstance();
 		String decayType = (String)getParam("actionSelection.behaviorDecayStrategy", factory.getDefaultDecayType());
@@ -112,8 +112,8 @@ public class BasicActionSelection extends FrameworkModuleImpl implements
 		listeners.add(listener);
 	}
 	
-	private class BackgroundTask extends FrameworkTaskImpl {
-		public BackgroundTask(int ticksPerRun) {
+	private class ActionSelectionBackgroundTask extends FrameworkTaskImpl {
+		public ActionSelectionBackgroundTask(int ticksPerRun) {
 			super(ticksPerRun);
 		}
 		@Override

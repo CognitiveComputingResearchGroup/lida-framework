@@ -897,13 +897,14 @@ public class NodeStructureImplTest {
 		
 		//weak link
 		ns1.addDefaultLink(node1, node2, category1, 0.1, 0.0);
+		//strong links
 		ns1.addDefaultLink(node2, node3, category1, 1.0, 0.0);
 		ns1.addDefaultLink(node3, node4, category1, 1.0, 0.0);
 		
 		ns1.decayNodeStructure(2);
 		
-		assertTrue(ns1.getLinkableCount() == 3);
-		assertTrue(ns1.getNodeCount() == 3);
+		assertEquals(3, ns1.getLinkableCount());
+		assertEquals(3, ns1.getNodeCount());
 		assertTrue(ns1.getLinkCount() == 0);
 	}
 

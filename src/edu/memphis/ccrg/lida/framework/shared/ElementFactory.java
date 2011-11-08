@@ -177,6 +177,7 @@ public class ElementFactory {
 				params, decayStrategyType, true));
 
 		//Default excite type
+		params = new HashMap<String, Object>();
 		params.put("m", 1.0);
 		addExciteStrategy(defaultExciteType, new StrategyDef(
 				LinearExciteStrategy.class.getCanonicalName(),
