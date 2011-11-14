@@ -36,96 +36,99 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
  * Standard factory for the basic elements of the framework. Support for
  * {@link Node}, {@link Link}, {@link FrameworkTask}, and {@link NodeStructure}
  * 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public class ElementFactory {
 
 	private static final Logger logger = Logger
 			.getLogger(ElementFactory.class.getCanonicalName());
 
-	/**
+	/*
 	 * Used to assign unique IDs to elements.
 	 */
 	private static int elementIdCount;
 
-	/**
+	/*
 	 * Used to retrieve default decay strategy from 'decayStrategies' map.
 	 */
 	private String defaultDecayType = "defaultDecay";
 
-	/**
+	/*
 	 * Used to retrieve default excite strategy from 'exciteStrategies' map.
 	 */
 	private String defaultExciteType = "defaultExcite";
+	
+	private String defaultTotalActivationType = "DefaultTotalActivation";
 
-	/**
+	/*
 	 * Used to retrieve default link class from 'linkClasses' map. e.g.
 	 * edu.memphis.ccrg.lida.framework.shared.LinkImpl
 	 */
 	private String defaultLinkClassName = LinkImpl.class.getCanonicalName();
 
-	/**
+	/*
 	 * Specifies default link type used by the factory. e.g. "LinkImpl"
 	 */
 	private String defaultLinkType = LinkImpl.class.getSimpleName();
 
-	/**
+	/*
 	 * Used to retrieve default node class from 'nodeClasses' map. e.g.
 	 * edu.memphis.ccrg.lida.framework.shared.NodeImpl
 	 */
 	private String defaultNodeClassName = NodeImpl.class.getCanonicalName();
 
-	/**
+	/*
 	 * Specifies default node type used by the factory. e.g. "NodeImpl"
 	 */
 	private String 	defaultNodeType = NodeImpl.class.getSimpleName();
 	
-	/**
+	/*
 	 * Map of all the ExciteStrategies available to this factory
 	 */
 	private Map<String, StrategyDef> exciteStrategies = new HashMap<String, StrategyDef>();
 
-	/**
+	/*
 	 * Map of all the DecayStrategies available to this factory
 	 */
 	private Map<String, StrategyDef> decayStrategies = new HashMap<String, StrategyDef>();
 
-	/**
+	/*
 	 * Map of all the strategies (of any type) available to this factory
 	 */
 	private Map<String, StrategyDef> strategies = new HashMap<String, StrategyDef>();
 
-	/**
+	/*
 	 * Map of LinkableDefs for the Link types available to this factory indexed
 	 * by their linkFactoryName.
 	 */
 	private Map<String, LinkableDef> linkClasses = new HashMap<String, LinkableDef>();
 
-	/**
+	/*
 	 * Map of LinkableDefs for the Node types available to this factory indexed
 	 * by their nodeFactoryName.
 	 */
 	private Map<String, LinkableDef> nodeClasses = new HashMap<String, LinkableDef>();
 
-	/**
+	/*
 	 * Map of {@link FrameworkTaskDef} for the {@link FrameworkTask} types available to this factory
 	 * indexed by name as specified in factories data.
 	 */
 	private Map<String, FrameworkTaskDef> tasks = new HashMap<String, FrameworkTaskDef>();
 
-	/**
+	/*
 	 * Sole instance of this class that will be used.
 	 */
 	private static final ElementFactory instance = new ElementFactory();
 
-	/**
+	/*
 	 * Name of decay strategy type
 	 * 
 	 * @see LidaFactories.xsd
 	 */
 	private static final String decayStrategyType = "decay";
 
-	/**
+	/*
 	 * Name of excite strategy type
 	 * 
 	 * @see LidaFactories.xsd
@@ -133,7 +136,7 @@ public class ElementFactory {
 	private static final String exciteStrategyType = "excite";
 	
 	//TODO Implement PropagationStrategy in Pam in a generic way
-	/**
+	/*
 	 * Name of propagation strategy type
 	 * 
 	 * @see LidaFactories.xsd
@@ -197,7 +200,7 @@ public class ElementFactory {
 				new HashMap<String, Object>(), exciteStrategyType, true));
 		
 		//Default TotalActivation strategy
-		strategyName="DefaultTotalActivation";
+		strategyName=defaultTotalActivationType;
 		StrategyDef strategyDef = new StrategyDef(DefaultTotalActivationStrategy.class.getCanonicalName(), 
 				strategyName, new HashMap<String, Object>(), "other", true);
 		addStrategy(strategyName, strategyDef);
@@ -218,8 +221,24 @@ public class ElementFactory {
 		addNodeType(newNodeDef);
 		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
 		addLinkType(newLinkDef);
-
 	}
+	
+	//TODO consider
+//	public String getDefaultStrategyName(String type){
+//		if("decay".equalsIgnoreCase(type)){
+//			return getDefaultDecayType();
+//		}else if("excite".equalsIgnoreCase(type)){
+//			return getDefaultExciteType();
+//		}else if("node".equalsIgnoreCase(type)){
+//			return getDefaultNodeType();
+//		}else if("link".equalsIgnoreCase(type)){
+//			return getDefaultLinkType();
+//		}else if("totalActivation".equalsIgnoreCase(type)){
+//			return defaultTotalActivationType;
+//		}else{
+//			return null;
+//		}
+//	}
 
 	/**
 	 * Adds a {@link DecayStrategy} indexed by specified name.
