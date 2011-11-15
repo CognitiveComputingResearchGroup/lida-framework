@@ -108,6 +108,9 @@ public class LearnableImpl extends ActivatibleImpl implements Learnable {
 		
 		String totalActivationName = (String) getParam("learnable.totalActivationStrategy", DEFAULT_TOTAL_ACTIVATION_TYPE);
 		totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy(totalActivationName);
+		if(totalActivationStrategy == null){
+			totalActivationStrategy = (TotalActivationStrategy) factory.getStrategy(DEFAULT_TOTAL_ACTIVATION_TYPE);
+		}
 	}
 
 	@Override

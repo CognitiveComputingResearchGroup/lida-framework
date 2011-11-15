@@ -439,6 +439,9 @@ public class ElementFactory {
 		StrategyDef sd = strategies.get(typeName);
 		if (sd != null) {
 			d = sd.getInstance();
+		}else{
+			logger.log(Level.WARNING, "Factory does not contain strategy of type {1}",
+					new Object[]{TaskManager.getCurrentTick(),typeName});
 		}
 		return d;
 	}
