@@ -19,6 +19,7 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  * Specific implementations of episodic memories must implement
  * this interface. Every implementation of this interface must also implement
  * {@link edu.memphis.ccrg.lida.globalworkspace.BroadcastListener}.
+ * 
  * @author Javier Snaider
  */
 public interface EpisodicMemory extends FrameworkModule{

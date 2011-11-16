@@ -28,7 +28,8 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
  * 
  * @see FrameworkTaskImpl Most tasks can extend from this instead of implementing this interface from scratch.
  * 
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  *
  */ 
 public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, FullyInitializable{
@@ -118,6 +119,4 @@ public interface FrameworkTask extends Callable<FrameworkTask>, Learnable, Fully
 	 * @return scheduledTick tick when this task will run next
 	 */
 	public long getScheduledTick();
-	
 }
-

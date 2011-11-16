@@ -1,5 +1,10 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+/**
+ * Default implementation of {@link UnifyingNode}
+ * @author Ryan J. McCall
+ *
+ */
 public class UnifyingNodeImpl extends NodeImpl implements UnifyingNode {
 
 	private double desirability;

@@ -15,7 +15,8 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A task to add a {@link PamLink} and its sink to the percept.
- * @author Ryan J McCall
+ * 
+ * @author Ryan J. McCall
  * @see ExcitationTask creates this task
  * @see PropagationTask creates this task
  */

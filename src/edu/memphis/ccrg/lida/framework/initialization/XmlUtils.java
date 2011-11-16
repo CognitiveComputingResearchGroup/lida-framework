@@ -39,7 +39,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 /**
  * Utilities for reading an XML file.
  * 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  * 
  */
 public class XmlUtils {

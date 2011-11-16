@@ -15,7 +15,8 @@ import java.util.Set;
  * A NodeStructure holds a collection of {@link Node}s an {@link Link}s. It is used
  * as a main conceptual representation among LIDA modules.
  * 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  * @see NodeStructureImpl
  */
 public interface NodeStructure {

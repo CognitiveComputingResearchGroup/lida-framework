@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 /**
  * Interface for the action selection module of LIDA.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  * 
  */
 public interface ActionSelection extends FrameworkModule, BroadcastListener{

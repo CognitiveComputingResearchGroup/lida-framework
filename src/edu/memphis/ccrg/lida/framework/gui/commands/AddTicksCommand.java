@@ -11,7 +11,6 @@ import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * This command is used for the tick mode to add ticks for execution.
- * 
  * A Integer "ticks" parameter must be specified. 
  * 
  * @author Javier Snaider

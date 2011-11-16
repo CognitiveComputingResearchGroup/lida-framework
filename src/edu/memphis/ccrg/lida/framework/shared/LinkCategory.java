@@ -13,6 +13,8 @@ import edu.memphis.ccrg.lida.pam.PamNode;
  * Specifies the category of a Link. 
  * @see PamNode
  * @see Link
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public interface LinkCategory {
 	

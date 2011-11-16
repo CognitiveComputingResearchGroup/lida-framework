@@ -14,7 +14,8 @@ import java.util.Map;
 
 /**
  * Encapsulation of the name of a {@link FrameworkModule}.  Provides several public-static instances by default. 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  *
  */
 @SuppressWarnings(value = {"all"})

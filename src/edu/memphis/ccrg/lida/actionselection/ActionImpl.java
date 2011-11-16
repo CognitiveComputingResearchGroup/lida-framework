@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 /**
  * Default implementation of {@link Action}
  * 
- * @author Ryan McCall
+ * @author Ryan J. McCall
  * @author Javier Snaider
  * 
  */

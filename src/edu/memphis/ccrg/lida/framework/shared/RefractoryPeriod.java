@@ -23,13 +23,13 @@ public interface RefractoryPeriod {
 	 * @param ticks length of refractory period in ticks
 	 * @see TaskManager
 	 */
-	void setRefractoryPeriod(int ticks);
+	public void setRefractoryPeriod(int ticks);
 	
 	/**
 	 * Gets refractoryPeriod
 	 * @return length of refractory period in ticks
 	 * @see TaskManager
 	 */
-	int getRefractoryPeriod();
+	public int getRefractoryPeriod();
 
 }

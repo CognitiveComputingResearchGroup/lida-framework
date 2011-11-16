@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.workspace.Workspace;
  * A module which maintains Codelets of workspace. This module manages Codelets
  * and responds for sending events to framework GUI.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  *
  */
 public class StructureBuildingCodeletModule extends FrameworkModuleImpl implements CodeletManagerModule {

@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 
 /**
  * Resets the {@link Environment} of the current application.
- * @author ryan
+ * @author Ryan Mccall
  *
  */
 public class ResetEnvironmentCommand extends CommandImpl {

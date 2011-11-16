@@ -11,7 +11,7 @@ package edu.memphis.ccrg.lida.framework.gui.events;
  * A GuiContentProvider is a class that provides content
  * to a GUI.  The GUIs listen to providers, following Observer pattern.
  *
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  *
  */
 public interface GuiEventProvider {

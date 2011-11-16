@@ -33,7 +33,7 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
  * <b>sourceNodeLabel1:sinkNodeLabel2,...</b>
  * 
  * @author Javier Snaider
- * @author Ryan McCall
+ * @author Ryan J. McCall
  */
 public class BasicPamInitializer implements Initializer {
 

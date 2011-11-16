@@ -9,10 +9,9 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 
 import cern.colt.bitvector.BitVector;
 
-
-
 /**
  * Utilities for {@link BitVector}
+ * 
  * @author Javier Snaider
  */
 public class BitVectorUtils {

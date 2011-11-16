@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
  * TriggerTask is executed when the Timer object goes off. In this case the
  * {@link GlobalWorkspace} is told to trigger the broadcast
  * 
- * @author Javier
+ * @author Javier Snaider
  */
 public class TriggerTask extends FrameworkTaskImpl {
 

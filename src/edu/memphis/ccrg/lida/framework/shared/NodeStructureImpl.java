@@ -34,7 +34,8 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * different NS.
  * 
  * @see ExtendedId
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  * 
  */
 public class NodeStructureImpl implements NodeStructure, BroadcastContent,

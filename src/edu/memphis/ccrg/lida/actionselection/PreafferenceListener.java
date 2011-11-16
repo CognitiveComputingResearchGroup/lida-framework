@@ -12,7 +12,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
  * Listener of preafferent signal from {@link ActionSelection}
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  *
  */
 public interface PreafferenceListener {

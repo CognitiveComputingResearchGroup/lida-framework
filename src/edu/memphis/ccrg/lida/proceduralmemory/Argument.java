@@ -6,7 +6,6 @@
  * http://ccrg.cs.memphis.edu/assets/papers/2010/LIDA-framework-non-commercial-v1.0.pdf
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
-import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
 
 /**

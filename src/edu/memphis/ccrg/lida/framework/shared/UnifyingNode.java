@@ -1,7 +1,16 @@
 package edu.memphis.ccrg.lida.framework.shared;
 
+/**
+ * A {@link Node} which unifies multiple nodes attached to it. 
+ * @author Javier Snaider
+ * @author Ryan J. McCall
+ */
 public interface UnifyingNode extends Node{
 	
+	/**
+	 * Sets Node type
+	 * @param t {@link NodeType}
+	 */
 	public void setNodeType(NodeType t);
 	
 	/**

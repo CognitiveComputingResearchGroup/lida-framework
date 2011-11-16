@@ -17,7 +17,8 @@ import edu.memphis.ccrg.lida.pam.PamLink;
 /**
  * A Link that connects a Node to a Linkable (Node or Link).
  * 
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class LinkImpl extends ActivatibleImpl implements Link {
 

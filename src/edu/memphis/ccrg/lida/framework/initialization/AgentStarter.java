@@ -23,7 +23,8 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiFactory;
  * Or using the main method with a {@link Agent} properties path (a String)
  * specified in the command line arguments.
  * 
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class AgentStarter {
 

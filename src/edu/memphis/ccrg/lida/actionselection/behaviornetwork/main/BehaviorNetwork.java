@@ -35,8 +35,8 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
 /**
  * 
- * @author Javier Snaider, Ryan J McCall, Sidney D'Mello
- * 
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class BehaviorNetwork extends FrameworkModuleImpl implements
 		ActionSelection, ProceduralMemoryListener {

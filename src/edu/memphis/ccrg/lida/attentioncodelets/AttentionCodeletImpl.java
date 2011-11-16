@@ -24,7 +24,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * content.  If this is found it creates a
  * {@link Coalition} and adds it to the {@link GlobalWorkspace}.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  * 
  */
 public abstract class AttentionCodeletImpl extends CodeletImpl implements

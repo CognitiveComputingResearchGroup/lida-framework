@@ -11,6 +11,8 @@ import java.util.Map;
 
 /**
  * A {@link DecayStrategy} that never modifies the activation passed to it.
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class NoDecayStrategy extends StrategyImpl implements DecayStrategy {
 

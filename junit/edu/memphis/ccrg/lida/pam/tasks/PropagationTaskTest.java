@@ -28,10 +28,9 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
 /**
  * A propagation task excites a node and a link.  
  * The link connects the source of the activation to the node.
- * @author Ryan J McCall, Usef
- *
+ * @author Ryan J. McCall
+ * 
  */
-
 public class PropagationTaskTest{
 	
 	private static ElementFactory factory = ElementFactory.getInstance();

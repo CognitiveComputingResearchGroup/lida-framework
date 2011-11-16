@@ -6,9 +6,10 @@ import java.util.logging.Logger;
 /**
  * A {@link TaskSpawner} which randomizes the execution of tasks. For each execution, a task's
  * nextTicksPerRun is randomized using a uniform distribution.<br/>
- * To modify this distribution override the method {@link #randomizeTicksPerRun(long)} 
- * @author Javier Snaider, Ryan McCall
- *
+ * To modify this distribution override the method {@link #randomizeTicksPerRun(long)}.
+ *  
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public class RandomizingTaskSpawner extends TaskSpawnerImpl {
 	

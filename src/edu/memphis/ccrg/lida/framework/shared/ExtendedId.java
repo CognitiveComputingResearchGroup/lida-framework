@@ -11,8 +11,8 @@ package edu.memphis.ccrg.lida.framework.shared;
  * Generalized Id for Both {@link Node}s and {@link Link}s.
  * Link's source must be a {@link Node}. Link's sink can be a Node or a Link.
  * 
- * @author Javier Snaider, Ryan J. McCall
- *
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public class ExtendedId {
 

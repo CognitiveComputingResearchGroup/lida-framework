@@ -8,7 +8,7 @@
 /**
  * Behavior.java
  *
- * @author ryanjmccall 
+ * @author Ryan J. McCall 
  */
 package edu.memphis.ccrg.lida.actionselection.behaviornetwork.main;
 

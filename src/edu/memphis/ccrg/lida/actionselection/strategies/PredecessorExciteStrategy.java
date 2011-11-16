@@ -6,6 +6,10 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.StrategyImpl;
 
 
+/**
+ * @author Ryan J. McCall
+ *
+ */
 public class PredecessorExciteStrategy extends StrategyImpl implements ExciteStrategy {
 
 	@Override

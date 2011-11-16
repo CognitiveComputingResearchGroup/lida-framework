@@ -18,7 +18,8 @@ import edu.memphis.ccrg.lida.workspace.structurebuildingcodelets.StructureBuildi
  * A submodule of the Workspace.  Managed by {@link WorkspaceImpl}.  
  * {@link StructureBuildingCodelet} read and write from them.
  * 
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public interface WorkspaceBuffer extends FrameworkModule{
 	

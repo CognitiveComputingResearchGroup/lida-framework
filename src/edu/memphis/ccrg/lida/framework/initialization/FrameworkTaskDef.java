@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
  * 
  * @see AgentXmlFactory
  * @author Javier Snaider
- * @author Ryan McCall
+ * @author Ryan J. McCall
  */
 public class FrameworkTaskDef {
 

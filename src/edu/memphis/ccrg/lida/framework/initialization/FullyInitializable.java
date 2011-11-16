@@ -14,7 +14,8 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  * An Initializable module will be initialized automatically by the AgentXmlFactory
  * 
  * @see AgentXmlFactory
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  *
  */
 public interface FullyInitializable extends Initializable {

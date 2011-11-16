@@ -11,7 +11,6 @@ import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * This command is used for enabling or disabling the tick mode.
- * 
  * A Boolean "enable" parameter must be specified. 
  * 
  * @author Javier Snaider

@@ -22,9 +22,9 @@ import java.util.logging.Logger;
  * TODO: Move whole contents of this class to NodeStructureImpl after
  * review them.
  * 
- *  @author Daqi, Pulin
+ *  @author Daqi Dong
+ *  @author Pulin Agrawal
  */
-
 public class SubNodeStructureImpl extends NodeStructureImpl {
 	
 	private static final Logger logger = Logger

@@ -14,7 +14,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
  * A task which adds a {@link PamNode} to the percept.
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  */
 public class AddNodeToPerceptTask extends FrameworkTaskImpl {
 	

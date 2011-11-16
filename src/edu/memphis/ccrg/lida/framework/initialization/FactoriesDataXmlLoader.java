@@ -25,8 +25,7 @@ import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
-/**
- * 
+/** 
  * Loads the factoriesData.xml file which configures the factories of the
  * framework i.e. what strategies are used by the objects created by the
  * factory, the types of node, links, and {@link FrameworkTask} that can be created as well.

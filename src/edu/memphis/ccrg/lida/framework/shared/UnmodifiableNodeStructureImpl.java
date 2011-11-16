@@ -17,6 +17,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 /**
  * An immutable NodeStructureImpl.  Throws {@link UnsupportedOperationException} if any methods
  * which modify {@link NodeStructureImpl} are called.  
+ * @author Ryan J. McCall
  */
 public class UnmodifiableNodeStructureImpl implements NodeStructure, BroadcastContent, WorkspaceContent{
 	

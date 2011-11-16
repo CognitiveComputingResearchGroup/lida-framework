@@ -7,7 +7,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
 /**
  * A {@link WorkspaceBuffer} storing the recent contents of
  * consciousness. It is a submodule of the {@link Workspace}. 
- * @author Ryan McCall
+ * @author Ryan J. McCall
  * @author Javier Snaider
  *
  */

@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.initialization.ConfigUtils;
  * For specific agent implementations, create a main class simply 
  * need call this class's start method with particular parameters for that agent:
  * {@link Agent} instance and a Properties.
- * Creates a MVC for the system
+ * Creates a MVC for the system.
  * 
  * @author Ryan J. McCall
  *

@@ -11,9 +11,11 @@
 package edu.memphis.ccrg.lida.framework.gui.commands;
 
 import edu.memphis.ccrg.lida.framework.Agent;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
+import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Pauses all Tasks.
+ * Pauses all {@link FrameworkTask} using the {@link TaskManager}
  * 
  * @author Javier Snaider
  *

@@ -11,9 +11,9 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 
 /**
- * Abstract implementation of {@link Codelet}
+ * Abstract implementation of {@link Codelet}.
+ * 
  * @author Ryan J. McCall
- *
  */
 public abstract class CodeletImpl extends FrameworkTaskImpl implements Codelet {
 
@@ -37,5 +37,4 @@ public abstract class CodeletImpl extends FrameworkTaskImpl implements Codelet {
 	public void setSoughtContent(NodeStructure content) {
 		soughtContent = content;
 	}
-
 }

@@ -21,7 +21,8 @@ import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 /**
  * Default implementation of {@link Scheme}
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  *
  */
 public class SchemeImpl extends LearnableImpl implements Scheme {

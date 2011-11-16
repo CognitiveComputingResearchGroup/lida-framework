@@ -13,9 +13,10 @@ import java.util.Map;
 /**
  * This class is intended for use by Initializers during initialization only.
  * It allows Initializers to access the same attributes. Attributes can be
- * added by an Initializer and retrieved later by any other Initializer
+ * added by an Initializer and retrieved later by any other Initializer.
+ * 
  * @author Javier Snaider
- * @author Ryan McCall
+ * @author Ryan J. McCall
  *
  */
 public class GlobalInitializer {

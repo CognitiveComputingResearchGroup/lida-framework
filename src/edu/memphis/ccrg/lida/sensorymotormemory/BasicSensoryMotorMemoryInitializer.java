@@ -22,7 +22,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializer;
  * String parameters beginning with 'smm.' and creates a action-algorithm mapping based
  * on the parameter.  The definition is: <br/>
  * <b>actionName,algorithm</b>
- * @author Ryan McCall
+ * @author Ryan J. McCall
  * @author Javier Snaider
  */
 public class BasicSensoryMotorMemoryInitializer implements Initializer {

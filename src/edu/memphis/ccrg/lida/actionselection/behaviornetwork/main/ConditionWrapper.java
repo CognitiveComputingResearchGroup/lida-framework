@@ -9,8 +9,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 
 /**
  * A wrapper for {@link Condition}
- * @author UofM
- *
+ * @author Ryan J. McCall
  */
 public class ConditionWrapper implements Condition {
 

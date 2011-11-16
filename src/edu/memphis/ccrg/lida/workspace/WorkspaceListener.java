@@ -13,7 +13,7 @@ import edu.memphis.ccrg.lida.framework.ModuleName;
 /**
  * A workspace listener receives content from the workspace.
  * The prime example is PAM. 
- *
+ * @author Ryan J. McCall
  */
 public interface WorkspaceListener extends ModuleListener{
 	

@@ -16,7 +16,8 @@ import edu.memphis.ccrg.lida.framework.strategies.Strategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Definition of a {@link Strategy} object
+ * Definition of a {@link Strategy} object.
+ * 
  * @see AgentXmlFactory
  * @author Javier Snaider
  *

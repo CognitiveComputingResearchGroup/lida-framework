@@ -15,7 +15,8 @@ import edu.memphis.ccrg.lida.framework.tasks.Codelet;
 
 /**
  * A {@link FrameworkModule} that manages {@link Codelet}s
- * @author Ryan J. McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  *
  */
 public interface CodeletManagerModule extends FrameworkModule{

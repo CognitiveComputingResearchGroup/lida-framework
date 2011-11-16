@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * A task which propagates an amount of activation
  * along a {@link PamLink} to its sink.  
  *
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  */
 public class PropagationTask extends FrameworkTaskImpl {
 		

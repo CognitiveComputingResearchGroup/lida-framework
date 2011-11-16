@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
  * An object with activation, has strategies 
  * to both excite and decay this activation
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  *
  */
 public interface Activatible extends Serializable, Initializable {

@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * A kind of {@link Codelet} that checks {@link WorkspaceBuffer}
  * for its desired content and possibly adds {@link Coalition} to the
  * {@link GlobalWorkspace}
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  * 
  */
 public interface AttentionCodelet extends Codelet, RefractoryPeriod{

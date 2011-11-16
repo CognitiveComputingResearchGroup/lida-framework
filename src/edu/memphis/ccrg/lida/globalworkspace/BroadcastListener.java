@@ -17,7 +17,8 @@ import edu.memphis.ccrg.lida.framework.ModuleListener;
  * Modules that need to receive Broadcast must implement this interface. It will receive each 
  * BroadcastContent that will be sent by the GlobalWrokspace.
  * 
- * @author Javier Snaider, Ryan McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  * 
  */
 public interface BroadcastListener extends ModuleListener{

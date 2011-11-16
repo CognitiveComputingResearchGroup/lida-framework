@@ -11,6 +11,8 @@ import java.util.Map;
 
 /**
  * An {@link ExciteStrategy} that never modifies the activation passed to it.
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class NoExciteStrategy extends StrategyImpl implements ExciteStrategy {
 

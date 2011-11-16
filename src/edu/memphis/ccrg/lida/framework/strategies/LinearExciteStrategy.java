@@ -11,6 +11,8 @@ import java.util.Map;
 
 /**
  * Basic {@link ExciteStrategy} governed by a linear curve.
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	

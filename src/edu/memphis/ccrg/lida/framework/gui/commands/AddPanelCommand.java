@@ -14,7 +14,6 @@ import edu.memphis.ccrg.lida.framework.gui.panels.GuiPanel;
 /**
  * Command to add a {@link GuiPanel} to the {@link FrameworkGui}
  * @author Tamas Madl
- *
  */
 public class AddPanelCommand extends CommandImpl {
 

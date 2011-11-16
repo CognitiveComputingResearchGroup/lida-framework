@@ -34,7 +34,8 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * modify these Workspace components must do so through this class. 
  * Thus this class defines the methods to access the data of these submodules.
  * 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  *
  */
 

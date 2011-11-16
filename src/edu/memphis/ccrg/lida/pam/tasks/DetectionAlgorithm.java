@@ -15,7 +15,8 @@ import edu.memphis.ccrg.lida.sensorymemory.SensoryMemory;
 /**
  * A process which detects a pattern (feature) in {@link SensoryMemory} content and excites {@link PamNode}s 
  * representing that pattern.
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  * @see BasicDetectionAlgorithm
  */
 public interface DetectionAlgorithm extends FrameworkTask {

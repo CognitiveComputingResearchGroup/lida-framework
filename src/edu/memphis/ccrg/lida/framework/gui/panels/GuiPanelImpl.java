@@ -30,7 +30,7 @@ import edu.memphis.ccrg.lida.framework.gui.FrameworkGuiController;
  * by name of panel and canonical name of class. 
  *
  * @author Javier Snaider
- * @author ryanjmccall
+ * @author Ryan J. McCall
  */
 public abstract class GuiPanelImpl extends javax.swing.JPanel implements GuiPanel{
 

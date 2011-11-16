@@ -31,7 +31,7 @@ import edu.memphis.ccrg.lida.pam.PamNodeImpl;
 
 /**
  * This is a JUnit class which can be used to test methods of the GlobalWorkspaceImpl class
- * @author Siminder Kaur, Ryan McCall
+ * @author Siminder Kaur, Ryan J. McCall
  */
 
 public class GlobalWorkspaceImplTest {

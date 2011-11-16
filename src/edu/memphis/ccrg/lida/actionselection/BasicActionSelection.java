@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 /**
  * Rudimentary action selection that selects the behavior with the highest activation.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  * 
  */
 public class BasicActionSelection extends FrameworkModuleImpl implements

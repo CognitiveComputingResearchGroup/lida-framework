@@ -18,7 +18,7 @@ import edu.memphis.ccrg.lida.framework.shared.Translatable;
  * PamNodes are involved in activation passing where Nodes are not. 
  * They can represent the {@link LinkCategory} of a {@link Link}.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  * @author Javier Snaider
  * @author Rodrigo Silva-Lugo
  * @see PerceptualAssociativeMemory

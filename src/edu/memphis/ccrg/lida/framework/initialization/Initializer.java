@@ -13,8 +13,8 @@ import edu.memphis.ccrg.lida.framework.Agent;
 
 /**
  * An initializer configures the parameters and objects of a particular module.  
- * @author Ryan J. McCall
- *
+ * 
+ * @author Ryan J. McCall 
  */
 public interface Initializer {
 	

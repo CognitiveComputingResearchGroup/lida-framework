@@ -27,7 +27,7 @@ import edu.memphis.ccrg.lida.workspace.WorkspaceContent;
  * queue's capacity and on the amount of activation {@link Linkable}s must have
  * to remain in the queue.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  */
 public class BroadcastQueueImpl extends FrameworkModuleImpl implements BroadcastQueue{
 

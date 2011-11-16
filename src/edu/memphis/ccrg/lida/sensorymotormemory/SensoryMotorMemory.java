@@ -13,7 +13,8 @@ import edu.memphis.ccrg.lida.framework.FrameworkModule;
  * Sensory Motor Memory is a module which receives selected actions from ActionSelection and
  * content from SensoryMemory.  It contains the algorithm for a selected action.  When it executes an algorithm it
  * directly calls a method in the environment (doesn't use a listener).  
- * @author Ryan J McCall, Javier Snaider
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  *
  */
 public interface SensoryMotorMemory extends FrameworkModule{

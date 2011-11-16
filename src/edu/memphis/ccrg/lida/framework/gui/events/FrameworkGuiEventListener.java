@@ -14,7 +14,7 @@ package edu.memphis.ccrg.lida.framework.gui.events;
 
 /**
  * An object that listens for FrameworkGuiEvents, that is, data being sent from the model (framework)
- * to the Gui
+ * to the GUI.
  * @author Javier Snaider
  */
 public interface FrameworkGuiEventListener {

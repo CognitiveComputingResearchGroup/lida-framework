@@ -21,7 +21,7 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
  * Basic implementation of {@link StructureBuildingCodelet}
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  *
  */
 public abstract class StructureBuildingCodeletImpl extends CodeletImpl implements StructureBuildingCodelet{

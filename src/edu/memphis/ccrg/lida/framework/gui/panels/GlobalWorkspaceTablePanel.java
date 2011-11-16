@@ -27,7 +27,9 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
  * This is a Panel which shows all current coalitions in Global Workspace and
  * also the most recent broadcast.
  * 
- * @author Siminder Kaur, Javier Snaider, Ryan McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
+ * @author Siminder Kaur
  */
 public class GlobalWorkspaceTablePanel extends GuiPanelImpl implements
         BroadcastListener {

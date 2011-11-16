@@ -20,6 +20,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
  * Default implementation of {@link Coalition}.  Wraps content entering the 
  * {@link GlobalWorkspace} to compete for consciousness. Extends {@link ActivatibleImpl}.
  * Contains reference to the {@link AttentionCodelet} that created it.
+ * @author Ryan J. McCall
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 

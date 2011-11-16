@@ -23,7 +23,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * 
  * @see PerceptualAssociativeMemory#receiveExcitation(PamLinkable, double)
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  * 
  */
 public class ExcitationTask extends FrameworkTaskImpl {

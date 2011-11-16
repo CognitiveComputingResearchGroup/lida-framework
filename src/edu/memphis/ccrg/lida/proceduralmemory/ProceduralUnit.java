@@ -10,7 +10,7 @@ import edu.memphis.ccrg.lida.framework.shared.activation.Activatible;
 /**
  * An abstraction of the commonality between {@link Scheme} and {@link Behavior}
  * @author Javier Snaider
- * @author Ryan McCall
+ * @author Ryan J. McCall
  */
 public interface ProceduralUnit extends Activatible{
 		

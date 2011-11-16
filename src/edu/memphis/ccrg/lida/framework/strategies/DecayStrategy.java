@@ -17,7 +17,8 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
  * Implementations should add themselves to {@link ElementFactory} via the
  * factoriesData.xml configuration file.
  *  
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public interface DecayStrategy extends Strategy{
 

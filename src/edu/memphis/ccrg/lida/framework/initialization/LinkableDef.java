@@ -13,10 +13,10 @@ import java.util.Map;
 import edu.memphis.ccrg.lida.framework.shared.Linkable;
 
 /**
- * Definition of a {@link Linkable} object
+ * Definition of a {@link Linkable} object.
+ * 
  * @see AgentXmlFactory
  * @author Javier Snaider
- *
  */
 public class LinkableDef {
 	

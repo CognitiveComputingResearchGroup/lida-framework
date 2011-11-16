@@ -16,20 +16,20 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
 
 /**
  * A task that represents a demon-like processor.
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public interface Codelet extends FrameworkTask{
-
 
 	/**
 	 * @return the sought content
 	 */
-	NodeStructure getSoughtContent();
+	public NodeStructure getSoughtContent();
 	
 	/**
 	 * @param content the content the codelet looks for.
 	 */
-	void setSoughtContent(NodeStructure content);
+	public void setSoughtContent(NodeStructure content);
 
 	/**
 	 * Returns true if specified WorkspaceBuffer contains this codelet's sought
@@ -39,7 +39,7 @@ public interface Codelet extends FrameworkTask{
 	 *            the WorkspaceBuffer to be checked for content
 	 * @return true, if successful
 	 */
-	boolean bufferContainsSoughtContent(WorkspaceBuffer buffer);
+	public boolean bufferContainsSoughtContent(WorkspaceBuffer buffer);
 	
 	/**
 	 * Returns sought content and related content from specified
@@ -49,7 +49,5 @@ public interface Codelet extends FrameworkTask{
 	 *            the buffer
 	 * @return the workspace content
 	 */
-	NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer);
-	
-	
+	public NodeStructure retrieveWorkspaceContent(WorkspaceBuffer buffer);
 }

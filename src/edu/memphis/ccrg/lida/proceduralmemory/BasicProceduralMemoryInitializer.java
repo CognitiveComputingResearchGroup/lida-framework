@@ -29,7 +29,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemoryImpl;
  * String parameters beginning with 'scheme.' and creates a scheme based
  * on the parameter.  The definition is: <br/>
  * <b>schemeLabel|(contextNode1, contextNode2,...)(contextLink1, contextLink2,...)|actionName|(resultNode1, resultNode2,...)(resultLink1, resultLink2,...)|baseLevelActivation</b>
- * @author Ryan McCall
+ * @author Ryan J. McCall
  * @author Javier Snaider
  *
  */

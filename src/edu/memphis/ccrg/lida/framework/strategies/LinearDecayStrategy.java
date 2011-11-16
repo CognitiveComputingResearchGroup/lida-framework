@@ -11,6 +11,8 @@ import java.util.Map;
 
 /**
  * Basic {@link DecayStrategy} governed by a linear curve.
+ * @author Ryan J. McCall
+ * @author Javier Snaider
  */
 public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 

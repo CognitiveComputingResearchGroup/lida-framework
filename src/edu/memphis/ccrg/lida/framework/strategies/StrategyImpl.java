@@ -11,8 +11,8 @@ import edu.memphis.ccrg.lida.framework.initialization.InitializableImpl;
 
 /**
  * Abstract implementation of {@link Strategy}
- * @author Javier Snaider, Ryan McCall
- *
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public abstract class StrategyImpl extends InitializableImpl implements Strategy {
 

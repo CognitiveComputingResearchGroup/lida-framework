@@ -42,7 +42,7 @@ import javax.swing.SwingUtilities;
  * specified by the parameters.
  * 
  * @author Javier Snaider
- * @author Ryan McCall
+ * @author Ryan J. McCall
  */
 public class LoggingPanel extends GuiPanelImpl {
 

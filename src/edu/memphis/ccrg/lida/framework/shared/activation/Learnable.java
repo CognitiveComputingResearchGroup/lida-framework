@@ -19,7 +19,8 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
  * The classes that implement this interface have a decay and reinforce base level activation.
  * If the base level activation reaches zero, the element should be deleted (decay away)
  * 
- * @author Javier Snaider, Ryan J. McCall
+ * @author Javier Snaider
+ * @author Ryan J. McCall
  *
  */
 public interface Learnable extends Activatible{

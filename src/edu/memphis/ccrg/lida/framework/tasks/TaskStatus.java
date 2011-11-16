@@ -8,9 +8,8 @@
 package edu.memphis.ccrg.lida.framework.tasks;
 
 /**
- * Enumeration of the possible statuses of FrameworkTasks
- * @author Javier Snaider
- *
+ * Enumeration of the possible statuses of FrameworkTasks.
+ * @author Javier Snaider.
  */
 public enum TaskStatus {
 	

@@ -17,7 +17,7 @@ import edu.memphis.ccrg.lida.framework.initialization.Initializable;
  * TaskSpawners manage {@link FrameworkTask}s. Maintains a {@link Collection} of all added tasks.
  * Provides method to process the result of a {@link FrameworkTask}.
  * 
- * @author Ryan J McCall
+ * @author Ryan J. McCall
  */
 public interface TaskSpawner extends Initializable {
 	

@@ -21,8 +21,8 @@ import edu.memphis.ccrg.lida.framework.strategies.TotalActivationStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * 
  * Default implementation of Learnable.
+ * 
  * @author Javier Snaider
  * @author Ryan J. McCall
  *
