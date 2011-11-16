@@ -32,24 +32,25 @@ public class ConditionImpl extends ActivatibleImpl implements Condition {
 		return id;
 	}
 
-	@Override
-	public double getDesirability() {
-		return desirability;
-	}
-	
-	@Override
-	public double getNetDesirability() {
-		double net = desirability - getActivation();
-		if (net<0.0){
-			net=0.0;
-		}
-		return net;
-	}
-	
-	@Override
-	public void setDesirability(double desirability) {
-		this.desirability=desirability;
-	}
+	//TODO review
+//	@Override
+//	public double getDesirability() {
+//		return desirability;
+//	}
+//	
+//	@Override
+//	public double getNetDesirability() {
+//		double net = desirability - getActivation();
+//		if (net<0.0){
+//			net=0.0;
+//		}
+//		return net;
+//	}
+//	
+//	@Override
+//	public void setDesirability(double desirability) {
+//		this.desirability=desirability;
+//	}
 	
 	@Override
 	public boolean equals (Object o){

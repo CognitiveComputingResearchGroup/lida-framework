@@ -133,22 +133,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 	public String toString(){
 		return name;
 	}
-
-	@Override
-	public double getDesirability() {
-		return desirability;
-	}
-
-	@Override
-	public void setDesirability(double d) {
-		if(d <= 0.0){
-			desirability = 0.0;
-		}else if (d >= 1.0){
-			desirability = 1.0;
-		}else{
-			desirability = d;
-		}
-	}
 	
 	/**
 	 * Updates the values of this NodeImpl based on the passed in Node.  
@@ -165,15 +149,6 @@ public class NodeImpl extends ActivatibleImpl implements Node {
 			desirability = other.desirability;
 			groundingPamNode = other.groundingPamNode;
 		} 
-	}
-
-	@Override
-	public double getNetDesirability() {
-		double net = desirability - getActivation();
-		if (net<0.0){
-			net=0.0;
-		}
-		return net;
 	}
 
 	@Override

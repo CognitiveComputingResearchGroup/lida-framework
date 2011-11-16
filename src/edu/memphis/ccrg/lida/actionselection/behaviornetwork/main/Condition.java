@@ -20,25 +20,6 @@ public interface Condition extends Activatible {
 	public Object getConditionId();
 	
 	/**
-	 * Gets desirability
-	 * @return this condition's desirability
-	 */
-	public double getDesirability();
-	
-	/**
-	 * Sets desirability
-	 * @param d condition's desirability
-	 */
-	public void setDesirability(double d);
-	
-	
-	/**
-	 * Gets net desirability
-	 * @return the difference between desirability and activation
-	 */
-	public double getNetDesirability();	
-	
-	/**
 	 * Sets weight. 
 	 * @param w condition's weight. How important the condition is for this {@link Behavior}
 	 */

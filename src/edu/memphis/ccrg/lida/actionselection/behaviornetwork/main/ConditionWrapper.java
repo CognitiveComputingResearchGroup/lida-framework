@@ -76,15 +76,20 @@ public class ConditionWrapper implements Condition {
 		return c.getConditionId();
 	}
 
-	@Override
-	public double getDesirability() {
-		return c.getDesirability();
-	}
-
-	@Override
-	public double getNetDesirability() {
-		return c.getNetDesirability();
-	}
+	//TODO review
+//	@Override
+//	public double getDesirability() {
+//		return c.getDesirability();
+//	}
+//
+//	@Override
+//	public double getNetDesirability() {
+//		return c.getNetDesirability();
+//	}
+//	@Override
+//	public void setDesirability(double d) {
+//		c.setDesirability(d);
+//	}
 
 	@Override
 	public void setWeight(double weight) {
@@ -152,10 +157,6 @@ public class ConditionWrapper implements Condition {
 	
 	@Override
 	public void init() {		
-	}
-	@Override
-	public void setDesirability(double d) {
-		c.setDesirability(d);
 	}
 
 	@Override

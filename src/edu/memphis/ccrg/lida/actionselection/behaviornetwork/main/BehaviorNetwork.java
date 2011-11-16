@@ -553,8 +553,9 @@ public class BehaviorNetwork extends FrameworkModuleImpl implements
 				break;
 
 			case ADDING_LIST:
-				excitationAmount = condition.getNetDesirability()
-						* broadcastExcitationFactor;
+				//TODO review
+//				excitationAmount = condition.getNetDesirability()
+//						* broadcastExcitationFactor;
 				behavior.excite(excitationAmount);
 				break;
 			case DELETING_LIST:

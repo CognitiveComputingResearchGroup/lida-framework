@@ -61,18 +61,6 @@ public interface Node extends Linkable, Serializable, Condition{
      */
     public void setLabel(String label);
 	
-	/**
-	 * Returns desirability of this node.
-	 * @return a double signifying the degree to which this node is a goal of the agent
-	 */
-	public double getDesirability();
-	
-	/**
-	 * Set node desirability.
-	 * @param degree  degree to which this node is a goal of the agent
-	 */
-	public void setDesirability(double degree);
-	
 	/** 
 	 * Subclasses of Node should override this method to set all of their type-specific member data
 	 * using the values of the specified Link.  

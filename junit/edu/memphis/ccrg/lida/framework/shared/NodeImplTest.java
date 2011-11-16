@@ -132,23 +132,24 @@ public class NodeImplTest{
 		node1.setId(1);
 		node2.setId(1);	
 		assertEquals("Problem with setNodeClass",node1.hashCode(), node2.hashCode());
-	}	
-	@Test
-	public void testDesirability(){
-		node1.setDesirability(5.0);
-		assertTrue(1.0== node1.getDesirability());
-		
-		node1.setDesirability(-14534545);
-		assertTrue(0.0== node1.getDesirability());
-		
-		node1.setDesirability(0.4);
-		assertTrue(0.4== node1.getDesirability());
-		
-		node1.setDesirability(0.0);
-		assertTrue(0.0== node1.getDesirability());
-		
-		node1.setDesirability(1.0);
-		assertTrue(1.0== node1.getDesirability());
 	}
+	//TODO move to UnifyingNode test
+//	@Test
+//	public void testDesirability(){
+//		node1.setDesirability(5.0);
+//		assertTrue(1.0== node1.getDesirability());
+//		
+//		node1.setDesirability(-14534545);
+//		assertTrue(0.0== node1.getDesirability());
+//		
+//		node1.setDesirability(0.4);
+//		assertTrue(0.4== node1.getDesirability());
+//		
+//		node1.setDesirability(0.0);
+//		assertTrue(0.0== node1.getDesirability());
+//		
+//		node1.setDesirability(1.0);
+//		assertTrue(1.0== node1.getDesirability());
+//	}
 	
 }

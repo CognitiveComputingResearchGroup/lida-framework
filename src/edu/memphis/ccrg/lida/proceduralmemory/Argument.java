@@ -7,6 +7,7 @@
  *******************************************************************************/
 package edu.memphis.ccrg.lida.proceduralmemory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
 
 /**
  * Argument is used to denote a "slot" for real Node. It implements the Node interface, so
@@ -20,7 +21,7 @@ import edu.memphis.ccrg.lida.framework.shared.Node;
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
-public interface Argument extends Node {
+public interface Argument extends UnifyingNode {
 	
 	/**
 	 * Gets argument id 
@@ -29,20 +30,20 @@ public interface Argument extends Node {
 	public long getArgumentId();
 	
 	/**
-	 * Binds specified {@link Node}
+	 * Binds specified {@link UnifyingNode}
 	 * @param n Node to be bound to this argument
 	 */
-	public void bindNode(Node n);
+	public void bindNode(UnifyingNode n);
 	
 	/**
 	 * Gets bound node
-	 * @return {@link Node} currently bound to this argument
+	 * @return {@link UnifyingNode} currently bound to this argument
 	 */
-	public Node getBoundNode();
+	public UnifyingNode getBoundNode();
 	
 	/**
-	 * Returns whether argument has a bound {@link Node}
-	 * @return true if argument has a bound {@link Node}
+	 * Returns whether argument has a bound {@link UnifyingNode}
+	 * @return true if argument has a bound {@link UnifyingNode}
 	 */
 	public boolean hasBoundNode();
 }

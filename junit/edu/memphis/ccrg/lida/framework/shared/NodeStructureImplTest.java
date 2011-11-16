@@ -636,7 +636,6 @@ public class NodeStructureImplTest {
 	public void testCopy() {
 		node2.setActivatibleRemovalThreshold(0.666);
 		node2.setActivation(0.777);
-		node2.setDesirability(0.888);
 		PamNode pn = (PamNode) factory.getNode("PamNodeImpl");
 		node2.setGroundingPamNode(pn);
 		node2.setLabel("FOO");
@@ -665,7 +664,6 @@ public class NodeStructureImplTest {
 		Node copiedNode2 = copy.getNode(node2.getId());
 		assertTrue(copiedNode2.getActivatibleRemovalThreshold()== node2.getActivatibleRemovalThreshold());
 		assertTrue(copiedNode2.getActivation()== node2.getActivation());
-		assertTrue(copiedNode2.getDesirability()== node2.getDesirability());
 		assertEquals(copiedNode2.getGroundingPamNode(), node2.getGroundingPamNode());
 		assertEquals(copiedNode2.getLabel(), node2.getLabel());
 		

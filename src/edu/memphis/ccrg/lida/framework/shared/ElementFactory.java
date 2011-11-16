@@ -770,7 +770,6 @@ public class ElementFactory {
 		n.updateNodeValues(oNode);
 		n.setGroundingPamNode(oNode.getGroundingPamNode());
 		n.setId(oNode.getId());	//sets extended id as well.		
-		n.setDesirability(oNode.getDesirability());
 		return n;
 	}
 

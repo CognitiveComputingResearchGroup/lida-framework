@@ -73,7 +73,6 @@ public class ElementFactoryTest {
 		
 		node1.setActivation(0.11);
 		node1.setActivatibleRemovalThreshold(0.22);
-		node1.setDesirability(0.33);
 		node1.setLabel("blah");
 		node1.setGroundingPamNode(pamNode1);
 	}
@@ -362,7 +361,6 @@ public class ElementFactoryTest {
 	public void testGetNode0() {
 		Node n = factory.getNode();
 		
-		assertTrue(n.getDesirability() == 0.0);
 		assertTrue(n.getGroundingPamNode() == null);
 		assertTrue(n.getActivation() == Activatible.DEFAULT_ACTIVATION);
 		assertTrue(n.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
@@ -372,14 +370,12 @@ public class ElementFactoryTest {
 	public void testGetNode7() {
 		Node n = factory.getNode("NodeImpl");
 		
-		assertTrue(n.getDesirability() == 0.0);
 		assertTrue(n.getGroundingPamNode() == null);
 		assertTrue(n.getActivation() == Activatible.DEFAULT_ACTIVATION);
 		assertTrue(n.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
 		
 		PamNode pn = (PamNode) factory.getNode("PamNodeImpl");
 		
-		assertTrue(pn.getDesirability() == 0.0);
 		assertEquals(pn.getGroundingPamNode(), pn);
 		assertTrue(pn.getActivation() == Activatible.DEFAULT_ACTIVATION);
 		assertTrue(pn.getActivatibleRemovalThreshold() == Activatible.DEFAULT_ACTIVATIBLE_REMOVAL_THRESHOLD);
@@ -404,7 +400,6 @@ public class ElementFactoryTest {
 	public void testGetNode1() {
 		node1.setActivatibleRemovalThreshold(0.11);
 		node1.setActivation(0.22);
-		node1.setDesirability(0.33);
 		node1.setGroundingPamNode(pamNode1);
 		node1.setLabel("ABC");
 		
@@ -412,7 +407,6 @@ public class ElementFactoryTest {
 		
 		assertTrue(n.getActivatibleRemovalThreshold() == 0.11);
 		assertTrue(n.getActivation() == 0.22);
-		assertTrue(n.getDesirability() == 0.33);
 		assertEquals(n.getGroundingPamNode(), pamNode1);
 		assertEquals(n.getLabel(), "ABC");
 	}
@@ -442,7 +436,6 @@ public class ElementFactoryTest {
 		
 		oNode.setActivation(0.11);
 		oNode.setActivatibleRemovalThreshold(0.22);
-		oNode.setDesirability(0.33);
 		oNode.setLabel("blah");
 		oNode.setGroundingPamNode(pamNode1);
 		
@@ -452,7 +445,6 @@ public class ElementFactoryTest {
 		assertTrue(newNode.getDecayStrategy() instanceof SigmoidDecayStrategy);
 		assertTrue(newNode.getActivation() == 0.11);
 		assertTrue(newNode.getActivatibleRemovalThreshold() == 0.22);
-		assertTrue(newNode.getDesirability() == 0.33);
 		assertEquals("blah", newNode.getLabel());
 		assertEquals(oNode.getGroundingPamNode(), newNode.getGroundingPamNode());
 	}
@@ -464,7 +456,6 @@ public class ElementFactoryTest {
 		Node oNode = factory.getNode();
 		oNode.setActivation(0.11);
 		oNode.setActivatibleRemovalThreshold(0.22);
-		oNode.setDesirability(0.33);
 		oNode.setLabel("blah");
 		oNode.setGroundingPamNode(pamNode1);
 		
@@ -473,7 +464,6 @@ public class ElementFactoryTest {
 		assertTrue(n instanceof PamNodeImpl);
 		assertTrue(n.getActivation() == 0.11);
 		assertTrue(n.getActivatibleRemovalThreshold() == 0.22);
-		assertTrue(n.getDesirability() == 0.33);
 		assertEquals("blah", n.getLabel());
 		assertEquals(oNode.getGroundingPamNode(), n.getGroundingPamNode());
 		
@@ -495,7 +485,6 @@ public class ElementFactoryTest {
 		assertTrue(n instanceof NodeImpl);
 		assertTrue(n.getActivation() == node1.getActivation());
 		assertTrue(n.getActivatibleRemovalThreshold() == node1.getActivatibleRemovalThreshold());
-		assertTrue(n.getDesirability() == node1.getDesirability());
 		assertEquals(n.getLabel(), node1.getLabel());
 		assertEquals(n.getGroundingPamNode(), node1.getGroundingPamNode());
 	}

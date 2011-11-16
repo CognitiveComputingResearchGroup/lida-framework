@@ -14,6 +14,8 @@ import java.util.Map;
 
 import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.Node;
+import edu.memphis.ccrg.lida.framework.shared.NodeType;
+import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.strategies.ExciteStrategy;
 import edu.memphis.ccrg.lida.pam.PamNode;
@@ -26,7 +28,7 @@ import edu.memphis.ccrg.lida.pam.PamNode;
 public class ArgumentImpl implements Argument {
 
 	private int argumentId;
-	private Node node;
+	private UnifyingNode node;
 
 	/**
 	 * Default constructor
@@ -45,12 +47,12 @@ public class ArgumentImpl implements Argument {
 	}
 
 	@Override
-	public void bindNode(Node node) {
+	public void bindNode(UnifyingNode node) {
 		this.node = node;
 	}
 
 	@Override
-	public Node getBoundNode() {
+	public UnifyingNode getBoundNode() {
 		return node;
 	}
 
@@ -265,4 +267,12 @@ public class ArgumentImpl implements Argument {
 	public void setWeight(double w) {
 	}
 
+	@Override
+	public NodeType getNodeType() {
+		return node.getNodeType();
+	}
+
+	@Override
+	public void setNodeType(NodeType t) {
+	}
 }
