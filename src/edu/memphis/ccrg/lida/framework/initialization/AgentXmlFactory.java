@@ -325,7 +325,7 @@ public class AgentXmlFactory implements AgentFactory {
 		TaskSpawner ts = spawners.get(taskspawner);
 		if (ts != null) {
 			module.setAssistingTaskSpawner(ts);
-			List<TaskData>initialTasks = getTasks(moduleElement,ts);
+			List<TaskData> initialTasks = getTasks(moduleElement,ts);
 			toRun.addAll(initialTasks);
 		}else{
 			logger.log(Level.WARNING, "Illegal TaskSpawner definition for module: " + name, 0L);			
@@ -354,8 +354,9 @@ public class AgentXmlFactory implements AgentFactory {
 			toInit.add(new Object[] { module, classInit, params});
 		}
 		
-		//Gathers all 'associatedmodules' for this module.  To be added later.
-		getAssociatedModules(moduleElement, module,toAssoc);
+		//Parses information about "associated modules" of this module.
+		//Associated modules are be associated later on.
+		getAssociatedModules(moduleElement, module, toAssoc);
 		
 		logger.log(Level.INFO, "Module: " + name + " added.", 0L);
 		return module;
