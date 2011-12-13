@@ -25,7 +25,7 @@ public class SubNodeStructureImplTest {
 	private static ElementFactory factory;
 	private Node node1,node2,node3,node4,node5;
 	private Link link1,link2,link3,link4,link5,link6,link7;
-	private SubNodeStructureImpl ns1,ns;
+	private SubNodeStructureImpl sns1,sns;
 	private PamNode category1,category2,category3,category4;
 	private NodeStructure subNS;
 	
@@ -84,23 +84,35 @@ public class SubNodeStructureImplTest {
 		link5 = factory.getLink(node2, node5, category2);
 		link6 = factory.getLink(node3, link3, category2); 
 		//link7 = factory.getLink(node2, link6, category1);
+
 		
-		ns1 = new SubNodeStructureImpl();	
+		sns1 = new SubNodeStructureImpl();	
+
+		sns1 = new SubNodeStructureImpl();	
 		
-		ns1.addDefaultNode(node1);
-		ns1.addDefaultNode(node2);
-		ns1.addDefaultNode(node3);
-		ns1.addDefaultNode(node4);
-		ns1.addDefaultNode(node5);
+
+		sns1.addDefaultNode(node1);
+		sns1.addDefaultNode(node2);
+		sns1.addDefaultNode(node3);
+		sns1.addDefaultNode(node4);
+		sns1.addDefaultNode(node5);
+			
+		sns1.addDefaultLink(link1);
+		sns1.addDefaultLink(link2);
+		sns1.addDefaultLink(link3);
+
+		sns1.addDefaultLink(link1);
+		sns1.addDefaultLink(link2);
+		sns1.addDefaultLink(link3);
 		
+		sns1.addDefaultLink(link4);
+		sns1.addDefaultLink(link5);
+		sns1.addDefaultLink(link6);
 		
-		ns1.addDefaultLink(link1);
-		ns1.addDefaultLink(link2);
-		ns1.addDefaultLink(link3);
-		
-		ns1.addDefaultLink(link4);
-		ns1.addDefaultLink(link5);
-		ns1.addDefaultLink(link6);
+
+		sns1.addDefaultLink(link4);
+		sns1.addDefaultLink(link5);
+		sns1.addDefaultLink(link6);
 		
 	}
 
@@ -109,24 +121,39 @@ public class SubNodeStructureImplTest {
 	}
 
 	@Test
+
+	/*Test Case 1 (Make sure if a 'copy' of sub node structure is created)
+	 * 
+	 * Technique used - Change some property (here 'label') of the extracted nodes
+	 * and check if the property changed in the nodes of the original node structure.
+	 */
+
 	/*Test Case 2 (Check if a copy of sub node structure is created or not)
 	 * 
 	 * Technique used - Change some property (here 'label') of the extracted nodes
 	 * and check if the property changed in the nodes of the original node structure.
 	 */
+
 	public void testGetSubNodeStructure1() {
 		Collection<Node> nodeList = new ArrayList<Node>();
 		
+
+                //creating list of nodes to serve as root nodes for extraction
+
 		nodeList.add(node1);
 		nodeList.add(node2);
-		subNS= ns1.getSubNodeStructure(nodeList, 2);
+                
+                //get a new SubNodeStructure with distance 2 from nodes in nodeList
+		subNS= sns1.getSubNodeStructure(nodeList, 2);
 		
+                //get nodes from SubNodeStructure and change label
 		Collection<Node> nod=subNS.getNodes();
 		for(Node n:nod){
 			n.setLabel("Pulin");
 		}
 		
-		nod=ns1.getNodes();
+                //get nodes from original NodeStructure
+		nod=sns1.getNodes();
 		
 		for(Node n:nod){
 			assertTrue( n.getLabel().compareTo("Pulin") != 0 );
@@ -141,17 +168,26 @@ public class SubNodeStructureImplTest {
 	
 	
 	@Test
+
+	/*Test Case 2 HUGE NodeStructure test
+	 * 
+	 * Mainly used to check performance of the algorithm
+	 */
+
 	/*Test Case 3 HUGE NodeStructure test
 	 * 
 	 * Mainly used to check performance of the algorithm
 	 */
+
 	public void testGetSubNodeStructure2() {
-		
+
+                //create a random large node structure
+
 		Collection<Node> nodeList = new ArrayList<Node>();
 		int distance=10;
 		int seed = 23434535;
 		random = new Random(seed);
-		ns = new SubNodeStructureImpl();
+		sns = new SubNodeStructureImpl();
 		
 		int nodes = 10000;	
 		int linkCategories = 1000;
@@ -166,12 +202,18 @@ public class SubNodeStructureImplTest {
 		
 		long start,finish;
 		
-		nodeList.add((Node)ns.getNodes().toArray()[1]);
-		nodeList.add((Node)ns.getNodes().toArray()[9]);
+                /*randomly adding 2nd and the 10th node 
+                 *to nodeList to serve as root nodes for extraction 
+                 */
+		nodeList.add((Node)sns.getNodes().toArray()[1]);
+		nodeList.add((Node)sns.getNodes().toArray()[9]);
 		
+                //calculate time in extracting a SubNodeStructure
 		start = System.currentTimeMillis();
-		subNS=ns.getSubNodeStructure(nodeList, distance);
+		subNS=sns.getSubNodeStructure(nodeList, distance);
 		finish = System.currentTimeMillis();
+                
+                
 		System.out.println("time: " + (finish - start) + " ms");
 		System.out.println("ms per linkable : " + (finish - start) / (1.0* subNS.getLinkableCount()));
 		System.out.println("total linkables " + subNS.getLinkableCount());
@@ -199,7 +241,7 @@ public class SubNodeStructureImplTest {
 		for(int i = 0; i < num; i++){
 			Node foo = factory.getNode();
 			foo.setId(idCounter++);
-			ns.addDefaultNode(foo);
+			sns.addDefaultNode(foo);
 		}
 	}
 	
@@ -210,12 +252,12 @@ public class SubNodeStructureImplTest {
 			while(randomSink == randomSource){
 				randomSink = random.nextInt(idCounter);
 			}
-			Node source = ns.getNode(randomSource);
-			Node sink = ns.getNode(randomSink);
+			Node source = sns.getNode(randomSource);
+			Node sink = sns.getNode(randomSink);
 			int randomCategory = random.nextInt(linkCategoryPool.size());
 			PamNode lcn = (PamNode) linkCategoryPool.get(randomCategory);
 			lcn.setId(categoryIdCounter++);
-			ns.addDefaultLink(source, sink, lcn, 1.0, -1.0);
+			sns.addDefaultLink(source, sink, lcn, 1.0, -1.0);
 		}
 	}
 
