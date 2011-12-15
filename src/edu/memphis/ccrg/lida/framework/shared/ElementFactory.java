@@ -1052,17 +1052,6 @@ public class ElementFactory {
 			task.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(task, decayStrategy, exciteStrategy);
 			
-			//Call task's init with parameters
-			Map<String, Object> mergedParams = new HashMap<String, Object>();
-			Map<String, Object> defParams = taskDef.getParams();
-			if(defParams != null){
-				mergedParams.putAll(defParams);
-			}
-			if(params != null){ //Order matters! Overwrite defParams with argument parameters
-				mergedParams.putAll(params);
-			}
-			task.init(mergedParams);
-			
 			//Associate specified modules to task
 			if(modules !=null){
 				Map<ModuleName,String> associatedModules = taskDef.getAssociatedModules();
@@ -1075,7 +1064,18 @@ public class ElementFactory {
 								new Object[]{TaskManager.getCurrentTick(),mName, task});
 					}
 				}
-			}			
+			}	
+			
+			//Call task's init with parameters
+			Map<String, Object> mergedParams = new HashMap<String, Object>();
+			Map<String, Object> defParams = taskDef.getParams();
+			if(defParams != null){
+				mergedParams.putAll(defParams);
+			}
+			if(params != null){ //Order matters! Overwrite defParams with argument parameters
+				mergedParams.putAll(params);
+			}
+			task.init(mergedParams);		
 		} catch (InstantiationException e) {
 			logger.log(Level.WARNING, "Error {1} creating FrameworkTask of type {2}", 
 					new Object[]{TaskManager.getCurrentTick(), e, taskType});
