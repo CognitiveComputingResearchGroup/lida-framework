@@ -22,7 +22,7 @@ import java.util.Set;
 public interface NodeStructure {
 
 	/**
-	 * Copies specified Link and then adds the copy to this NodeStructure. If Link with the same 
+	 * Copies specified {@link Link} and then adds the copy to this NodeStructure. If Link with the same 
 	 * id already exists then the old Link's activation is updated.
 	 * Copied link will have the default link type of this {@link NodeStructure} when
 	 * it is added.
