@@ -70,7 +70,7 @@ public class PamNodeImpl extends NodeImpl implements PamNode {
             PamNodeImpl pn = (PamNodeImpl) n;
             learnable = new LearnableImpl(pn.learnable);
         } else if (n != null) {
-            logger.log(Level.WARNING, "cannot set subclass-specific values. Required: {1} \n Received: {2}",
+            logger.log(Level.FINEST, "Cannot set PamNodeImpl-specific values. Required: {1} \n Received: {2}",
                     new Object[]{TaskManager.getCurrentTick(), PamNodeImpl.class.getCanonicalName(), n.getClass()});
         }
     }

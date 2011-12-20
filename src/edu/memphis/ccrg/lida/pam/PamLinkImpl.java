@@ -204,7 +204,7 @@ public class PamLinkImpl extends LinkImpl implements PamLink {
 			PamLinkImpl pl = (PamLinkImpl) link;
 			this.learnable = new LearnableImpl((LearnableImpl)pl.learnable);
 		}else if(link != null){
-			logger.log(Level.WARNING, "cannot set subclass-specific values. Required: {1} \n Received: {2}",
+			logger.log(Level.FINEST, "Cannot set PamLinkImpl-specific values. Required: {1} \n Received: {2}",
 					new Object[]{TaskManager.getCurrentTick(),PamLinkImpl.class.getCanonicalName(),link.getClass()});
 		}
 	}

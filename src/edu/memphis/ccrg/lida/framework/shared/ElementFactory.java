@@ -159,19 +159,6 @@ public class ElementFactory {
 	 * Maps in the Factory.
 	 */
 	private ElementFactory() {
-		//Default node type
-		addNodeType(defaultNodeType, defaultNodeClassName);
-		//PamNodeImpl type
-		addNodeType(PamNodeImpl.class.getSimpleName(), PamNodeImpl.class
-				.getCanonicalName());
-
-		//Default link type
-		addLinkType(defaultLinkType, defaultLinkClassName);
-		
-		//PamLinkImpl type
-		addLinkType(PamLinkImpl.class.getSimpleName(), PamLinkImpl.class
-				.getCanonicalName());
-
 		//Default decay type
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("m", 0.1);
@@ -205,7 +192,7 @@ public class ElementFactory {
 				strategyName, new HashMap<String, Object>(), "other", true);
 		addStrategy(strategyName, strategyDef);
 		
-		//Non-decaying PamNode and PamLink
+		//Nodes, Links
 		Map<String, String> defaultStrategies = new HashMap<String, String>();
 		defaultStrategies.put("decay", defaultDecayType);
 		defaultStrategies.put("excite", defaultExciteType);
@@ -217,9 +204,27 @@ public class ElementFactory {
 		params.put("learnable.baseLevelExciteStrategy", "noExcite");
 		params.put("learnable.totalActivationStrategy", strategyName);
 		
-		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
+		//Nodes
+		//Default node type
+		addNodeType(defaultNodeType, defaultNodeClassName);
+		
+		//PamNodeImpl type
+		LinkableDef newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), new HashMap<String, String>(), PamNodeImpl.class.getSimpleName(), params);
 		addNodeType(newNodeDef);
-		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
+		
+		//Non-decaying PamNode
+		newNodeDef = new LinkableDef(PamNodeImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamNode", params);
+		addNodeType(newNodeDef);
+
+		//Links
+		//Default link type
+		addLinkType(defaultLinkType, defaultLinkClassName);
+		
+		//PamLinkImpl type
+		LinkableDef newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), new HashMap<String, String>(), PamLinkImpl.class.getSimpleName(), params);
+		addLinkType(newLinkDef);
+		
+		newLinkDef = new LinkableDef(PamLinkImpl.class.getCanonicalName(), defaultStrategies, "NoDecayPamLink", params);
 		addLinkType(newLinkDef);
 	}
 	
