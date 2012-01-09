@@ -244,6 +244,7 @@ public class FactoriesDataXmlLoader {
 	Map<ModuleName,String> getAssociatedModules(Element element) {
 		Map<ModuleName,String> associatedModules = new HashMap<ModuleName, String>();
 		List<Element> nl = XmlUtils.getChildren(element,"associatedmodule");
+		String elementName = element.getAttribute("name");
 		if (nl != null && nl.size() > 0) {
 			for (Element assocModuleElement:nl ) {
 				String assocMod=XmlUtils.getValue(assocModuleElement);
@@ -252,9 +253,8 @@ public class FactoriesDataXmlLoader {
 				if(name !=null){
 					associatedModules.put(name, function);
 				}else{
-					logger.log(Level.WARNING, "{1} is not a defined Module. It is not associated", 
-							new Object[]{0L,assocMod});
-					
+					logger.log(Level.WARNING, "{1} is not a defined ModuleName so it cannot be an associate module of {2}", 
+							new Object[]{0L,assocMod,elementName});
 				}
 			}
 		}

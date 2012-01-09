@@ -140,8 +140,8 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 
 		double newActiv = l.getActivation();
 		Link oldLink = links.get(l.getExtendedId());
-		if (oldLink != null) { // if the link already exists in this node
-			// structure
+		if (oldLink != null) { 
+			// if the link already exists in this node structure
 			// no check
 			if (oldLink.getActivation() < newActiv) {
 				oldLink.setActivation(newActiv);
@@ -226,7 +226,7 @@ public class NodeStructureImpl implements NodeStructure, BroadcastContent,
 				.getId());
 		if (containsLink(newLinkId)) {
 			logger.log(Level.WARNING,
-					"Link already exists.  Cannot add again.", TaskManager
+					"Link already exists. Cannot add again.", TaskManager
 							.getCurrentTick());
 			return null;
 		}

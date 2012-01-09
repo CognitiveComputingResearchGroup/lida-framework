@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
+import edu.memphis.ccrg.lida.framework.shared.ExtendedId;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
@@ -45,6 +46,12 @@ public class WorkspaceBufferImpl extends FrameworkModuleImpl implements Workspac
 		buffer.decayNodeStructure(ticks);
 	}
 
+	/**
+	 * Note that this method <i>merges</i> the specified content into the buffer.
+	 * Since {@link NodeStructure} copies all added Linkables, the resultant content 
+	 * inside the buffer consists of different Java objects than those supplied in the argument.
+	 * The {@link ExtendedId} of the new Linkables are still the same as the originals.  
+	 */
 	@Override
 	public void addBufferContent(WorkspaceContent content) {
 		buffer.mergeWith(content);
