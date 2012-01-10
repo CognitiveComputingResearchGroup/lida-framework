@@ -8,11 +8,9 @@
 package edu.memphis.ccrg.lida.globalworkspace;
 
 /**
- * This is an abstract mark for Broadcast content.
- * It could be completed in the future for specific domains
- * 
+ * This interface serves as a mark for data which is sent in the conscious broadcast.
+ *  
  * @author Javier Snaider
- *
  */
 public interface BroadcastContent {
 	
