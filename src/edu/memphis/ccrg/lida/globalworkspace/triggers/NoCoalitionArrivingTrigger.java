@@ -15,28 +15,24 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 
 /**
- * 
- * This trigger fires when 'delay' ms has passed without a new {@link Coalition} being added to the {@link GlobalWorkspace}.
- * Check the parent class NoBroadcastTrigger for full understanding.
+ * A trigger that fires when a certain number of ticks have passed without 
+ * a new {@link Coalition} being added to the {@link GlobalWorkspace}.
+ * Inherits most of its fields and methods from its parent class {@link NoBroadcastOccurringTrigger}.
  * 
  * @author Javier Snaider
- *
+ * @see NoBroadcastOccurringTrigger
  */
 public class NoCoalitionArrivingTrigger extends NoBroadcastOccurringTrigger {
 	
 	/**
-	 * Called each time a new coalition is added to the {@link GlobalWorkspace} each {@link BroadcastTrigger}'s 
-	 * 'checkForTriggerCondition' method is called.
-	 * In the case of this trigger the 'reset()' method inherited from {@link NoBroadcastOccurringTrigger}
-	 * is called which resets the {@link TimerTask} object.  
+	 * Called each time a new coalition is added to the {@link GlobalWorkspace}.
+	 * Specifically for this trigger {@link NoBroadcastOccurringTrigger#reset()} is called which resets the {@link TimerTask} object.  
+	 * Thus this trigger fires when a certain number of ticks have passed without a new {@link Coalition} entering the {@link GlobalWorkspace}. 
 	 * 
-	 * Thus this trigger fires when 'delay' ms has passed without a new {@link Coalition} entering the {@link GlobalWorkspace}. 
-	 * 
-	 * @param coalitions Coalitions trigger will check
+	 * @param coalitions {@link Coalition} objects the trigger can check
 	 */
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
 		reset();
 	}
-
 }

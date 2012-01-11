@@ -57,6 +57,7 @@ public class TriggerTask extends FrameworkTaskImpl {
 		setTaskStatus(TaskStatus.FINISHED);
 	}
 
+	//TODO remove name
 	@Override
 	public String toString() {
 		return name + "-" + super.toString();

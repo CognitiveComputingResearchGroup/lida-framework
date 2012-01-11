@@ -9,21 +9,17 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
-
-
 /**
- * This interface should be implemented by the class that wants to receive a trigger
- * notification. In general, it is the same class that implements {@link GlobalWorkspace} interface.
+ * This interface should be implemented by the class that wants to receive {@link BroadcastTrigger}
+ * notifications. In general, it is the same class that implements {@link GlobalWorkspace} interface.
  *  
  * @author Javier Snaider
- * 
  */
 public interface TriggerListener {
 	
 	/**
-	 * Listener must be able to trigger a broadcast
-	 * @param trigger that wants to start the broadcast
+	 * Listener must trigger a competition for consciousness and a conscious broadcast of the winner
+	 * @param t trigger that is initiating the broadcast
 	 */
-	public void triggerBroadcast(BroadcastTrigger trigger);
-
+	public void triggerBroadcast(BroadcastTrigger t);
 }

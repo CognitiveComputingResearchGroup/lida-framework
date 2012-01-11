@@ -13,9 +13,10 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
- * If any coalition is above threshold, this trigger will fire.
+ * A trigger that fires if any coalition is above a threshold.
  * 
  * @author Javier Snaider
  *
@@ -24,15 +25,14 @@ public class IndividualCoaltionActivationTrigger extends AggregateCoalitionActiv
 	private Logger logger = Logger.getLogger(IndividualCoaltionActivationTrigger.class.getCanonicalName());
 	
 	/**
-	 * Triggers a broadcast if any {@link Coalition} has activation over threshold.
-	 * @param coalitions Coalitions
+	 * Triggers a broadcast if any {@link Coalition} object's activation is over threshold.
+	 * @param coalitions {@link Coalition} objects current in the {@link GlobalWorkspace}
 	 */
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
-		for(Coalition c:coalitions){
-			if(c.getActivation()>threshold){
-				logger.log(Level.FINE,"Individual Activation trigger ",TaskManager.getCurrentTick());
-
+		for(Coalition c : coalitions){
+			if(c.getActivation() > threshold){ //TODO global max
+				logger.log(Level.FINE,"Individual Activation trigger fires",TaskManager.getCurrentTick());
 				gw.triggerBroadcast(this);
 				break;
 			}

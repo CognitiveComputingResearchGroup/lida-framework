@@ -15,10 +15,11 @@ import java.util.logging.Logger;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
+import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspaceImpl;
 
 /**
- * Implements a trigger that is activated when the sum of all {@link Coalition}s
- * in {@link GlobalWorkspace} is greater than the threshold.
+ * Implements a trigger that is activated when the sum of all {@link Coalition} objects
+ * in {@link GlobalWorkspace} is greater than a threshold.
  * 
  * @author Javier Snaider
  * 
@@ -30,29 +31,31 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 			.getLogger(AggregateCoalitionActivationTrigger.class
 					.getCanonicalName());
 	/**
-	 * The {@link GlobalWorkspace}
+	 * Reference to the {@link GlobalWorkspace}
 	 */
 	protected GlobalWorkspace gw;
 	/**
-	 * The activation treshold 
+	 * The activation threshold
 	 */
 	protected double threshold;
 
 	/**
-	 * This method is executed each time a new {@link Coalition} enters the {@link GlobalWorkspace} and
-	 * calculates the total activation.  If it is over threshold then the broadcast is triggered.
+	 * Calculates the aggregate activation of all coalitions in the {@link GlobalWorkspace} and 
+	 * if it is over threshold a broadcast is triggered.
+	 * This method is called each time a new {@link Coalition} enters the {@link GlobalWorkspace}
 	 * 
 	 * @param coalitions
-	 *            a Collection of all the {@link Coalition}s in the {@link GlobalWorkspace}.
+	 *            a Collection of all the {@link Coalition} objects in the {@link GlobalWorkspace}.
+	 * @see GlobalWorkspaceImpl#addCoalition(Coalition)
 	 */
 	@Override
 	public void checkForTriggerCondition(Collection<Coalition> coalitions) {
-		double acc = 0;
+		double aggregateActivation = 0.0;
 		for (Coalition c : coalitions) {
-			acc = acc + c.getActivation();
+			aggregateActivation += c.getActivation();
 		}
-		if (acc > threshold) {
-			logger.log(Level.FINE, "Aggregate Activation trigger ",
+		if (aggregateActivation > threshold) {
+			logger.log(Level.FINE, "Aggregate Activation trigger fires",
 					TaskManager.getCurrentTick());
 			gw.triggerBroadcast(this);
 		}
@@ -83,8 +86,10 @@ public class AggregateCoalitionActivationTrigger implements BroadcastTrigger {
 	public void start() {
 		// not applicable
 	}
+	
 	/**
-	 * @return threshold
+	 * Gets threshold
+	 * @return threshold to activate the trigger 
 	 */
 	public double getThreshold(){
 		return threshold;

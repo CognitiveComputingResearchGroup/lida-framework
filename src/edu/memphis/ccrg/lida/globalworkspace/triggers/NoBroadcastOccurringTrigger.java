@@ -21,31 +21,27 @@ import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 
 /**
- * This triggers activates if 'delay' ticks has passed without
- * a broadcast.
+ * A triggers that fires when a certain number of ticks have passed without having
+ * a broadcast occur.
  * 
  * @author Javier Snaider
- * 
  */
 public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 
 	private static final Logger logger = Logger.getLogger(NoBroadcastOccurringTrigger.class.getCanonicalName());
 	private static final String DEFAULT_NAME = "NoBroadcastOccurringTrigger";
 	private static final int DEFAULT_DELAY = 10;
-	/**
+	/*
 	 * How long since last broadcast before this trigger is activated
 	 */
 	private int delay;
-	
-	/**
-	 * Java library class used to handle the timing
-	 */
 	private TriggerTask task;
 	private GlobalWorkspace gw;
 	private String name="";
 	private TaskManager tm;
 
 	/**
+	 * Gets the Task Manager
 	 * @return the {@link TaskManager}
 	 */
 	public TaskManager getTaskManager() {
@@ -53,21 +49,23 @@ public class NoBroadcastOccurringTrigger implements BroadcastTrigger {
 	}
 	
 	/**
-	 * @return delay
+	 * Gets delay
+	 * @return number of ticks that must pass without a broadcast before this trigger fires
 	 */
 	public int getDelay(){
 		return delay;
 	}
 
 	/**
-	 * @param taskManager the {@link TaskManager} to set
+	 * Sets the Task Manager
+	 * @param taskManager the {@link TaskManager}
 	 */
 	public void setTaskManager(TaskManager taskManager) {
 		this.tm = taskManager;
 	}
 
 	/**
-	 * This init expects an Integer with name "delay" standing for trigger delay.
+	 * This method expects an Integer with name "delay" standing for trigger delay.
 	 * Also a String, "name" of the trigger for logging purposes.
 	 * 
 	 * @see BroadcastTrigger#init(Map, GlobalWorkspace)

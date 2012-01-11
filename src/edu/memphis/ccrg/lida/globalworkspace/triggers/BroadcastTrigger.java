@@ -17,35 +17,39 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
- * A Trigger determines when a new Broadcast must be triggered.
- * Its start method should be invoked once (most of the cases when the GlobalWorkspace starts)
- * Its command method is called every time a new coalition enters the GW.
-  * See default Triggers as examples of implementation.
- * 
+ * A BroadcastTrigger determines when a new broadcast must be triggered.
+ * Its {@link #start()} method should be invoked once and only once (this is likely to be when the GlobalWorkspace starts)
+ * Its {@link #checkForTriggerCondition(Collection)} method is called every time a new {@link Coalition} enters the {@link GlobalWorkspace}.
+ *  
  * @author Javier Snaider
- *
+ * @author Ryan J. McCall
+ * @see IndividualCoaltionActivationTrigger
+ * @see NoBroadcastOccurringTrigger
  */
 public interface BroadcastTrigger {
 	
 	/**
-	 * This method is a generic way to setup the Trigger. It should be called when 
+	 * Provides a generic way to setup a BroadcastTrigger. It should be called when 
 	 * the trigger is created.
-	 * @param parameters a map for generic parameters.
-	 * @param gw A TriggerListener. Most of the cases is the same class that 
-	 * implements GlobalWorkspace Interface.
+	 * @param params a map for generic parameters
+	 * @param gw A {@link TriggerListener} and likely a class that implements the {@link GlobalWorkspace} interface.
 	 */
-	public void init (Map<String,Object> parameters,GlobalWorkspace gw);
+	public void init (Map<String,Object> params, GlobalWorkspace gw);
+	
 	/**
-	 * Each time a new Coalition is put in the GW, this method is called for all the registered Triggers.
-	 * @param coalitions All the coalitions in the GW.
+	 * When called the trigger checks if its firing condition. If it has it initiates a competition for consciousness. 
+	 * This method is called for all registered triggers each time a new {@link Coalition} is put in the {@link GlobalWorkspace}
+	 * @param coalitions All the {@link Coalition} objects currently in the {@link GlobalWorkspace}.
 	 */
 	public void checkForTriggerCondition (Collection<Coalition> coalitions);
+	
 	/**
-	 * To reset the Trigger. Its called each time a new Broadcast is Triggered.
+	 * Resets the trigger. Called each time a new broadcast is triggered.
 	 */
 	public void reset();
+	
 	/**
-	 * To start the Trigger
+	 * Starts the trigger.
 	 */
 	public void start();
 }
