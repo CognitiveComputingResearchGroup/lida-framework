@@ -12,25 +12,25 @@ import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 /**
- * Interface for the translator between boolean vectors in sparse distributed
- * memory, and node structures in the LIDA cognitive architecture.
+ * A translator between {@link BitVector} used in {@link SparseDistributedMemory}, 
+ * and {@link NodeStructure} used in many other LIDA modules.
  * @author Javier Snaider
  */
 public interface Translator {
 
 	/**
-	 * Translates a boolean vector into a node structure.
-	 * @param data a byte vector with the boolean vector to be translated
-	 * @return the node structure associated with the address
+	 * Translates a {@link BitVector} into a {@link NodeStructure}.
+	 * @param v a {@link BitVector} containing the boolean vector to be translated
+	 * @return the {@link NodeStructure} associated with the address
  	 */
-	public NodeStructure translate(BitVector data);
+	public NodeStructure translate(BitVector v);
 
 	/**
-	 * Translates a node structure into a boolean vector.
-	 * @param structure the node structure to be translated
-	 * @return a byte vector with the boolean address associated with
-     * the structure
+	 * Translates a {@link NodeStructure}  into a {@link BitVector}.
+	 * @param ns the {@link NodeStructure} to be translated
+	 * @return a {@link BitVector} with the boolean address associated with
+     * the {@link NodeStructure}
 	 */
-	public BitVector translate(NodeStructure structure);
+	public BitVector translate(NodeStructure ns);
 
 }

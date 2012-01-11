@@ -13,14 +13,13 @@ package edu.memphis.ccrg.lida.globalworkspace.triggers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.GlobalWorkspace;
 
 /**
- * TriggerTask is executed when the Timer object goes off. In this case the
+ * TriggerTask is executed when certain number of ticks has passed. In this case the
  * {@link GlobalWorkspace} is told to trigger the broadcast
  * 
  * @author Javier Snaider
@@ -37,14 +36,14 @@ public class TriggerTask extends FrameworkTaskImpl {
 	private BroadcastTrigger trigger;
 
 	/**
-	 * Constructor for creating a TriggerTask
-	 * @param ticksPerRun ticksPerRun of this {@link FrameworkTask}
-	 * @param gw Trigger listener which is the {@link GlobalWorkspace}
+	 * Constructors a new TriggerTask with specified attributes
+	 * @param tpr ticksPerRun of this task
+	 * @param gw {@link TriggerListener} which is the {@link GlobalWorkspace}
 	 * @param name Name of the trigger
-	 * @param trigger {@link BroadcastTrigger} which creates this task
+	 * @param trigger {@link BroadcastTrigger} that created this task
 	 */
-	public TriggerTask(int ticksPerRun, TriggerListener gw, String name, BroadcastTrigger trigger) {
-		super(ticksPerRun);
+	public TriggerTask(int tpr, TriggerListener gw, String name, BroadcastTrigger trigger) {
+		super(tpr);
 		this.gw = gw;
 		this.name = name;
 		this.trigger=trigger;

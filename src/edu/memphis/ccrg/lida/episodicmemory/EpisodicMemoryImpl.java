@@ -26,7 +26,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * This is the canonical implementation of {@link EpisodicMemory}. It uses a
- * sparse distributed memory to store the information.
+ * {@link SparseDistributedMemory} to store the information.
  * 
  * @author Javier Snaider
  */
@@ -54,7 +54,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 */
 	public static final int DEF_ACCESS_RADIUS = 451;
         
-        // TODO Add random bit vector to map sets here.
+    // TODO Add random bit vector to map sets here.
 
 	private SparseDistributedMemory sdm;
 	private Translator translator;
@@ -64,7 +64,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	private int wordLength = DEF_WORD_LENGTH;
 
 	/**
-	 * Default constructor
+	 * Constructs a new object with default values
 	 */
 	public EpisodicMemoryImpl() {
 	}	
@@ -127,7 +127,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	
 	/**
 	 * Receive a cue as a {@link NodeStructure}
-	 * In this implementation, first the cue is translated to a BitVector. 
+	 * In this implementation, first the cue is translated to a {@link BitVector}. 
 	 * 
 	 * @param ns NodeStructure to retrieve
 	 * @see Translator
@@ -183,12 +183,7 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 
 	@Override
 	public void learn(Coalition coalition) {
-
-	}
-
-	@Override
-	public Object getModuleContent(Object... params) {
-		return null;
+		//TODO 
 	}
 
 	/**
@@ -205,22 +200,22 @@ public class EpisodicMemoryImpl extends FrameworkModuleImpl implements
 	 * Returns the {@link Translator} associated with this
 	 * {@link EpisodicMemoryImpl}
 	 * 
-	 * @return the Translator
+	 * @return the {@link Translator}
 	 */
 	public Translator getTranslator() {
 		return translator;
 	}
 
-	@Override
-	public void decayModule(long ticks) {
-	}
-
 	/**
 	 * Returns the SDM used in this {@link EpisodicMemory}
 	 * 
-	 * @return the SDM
+	 * @return the {@link SparseDistributedMemory}
 	 */
 	public SparseDistributedMemory getSdm() {
 		return sdm;
+	}
+	
+	@Override
+	public void decayModule(long ticks) {
 	}
 }

@@ -15,10 +15,10 @@ import cern.colt.bitvector.BitVector;
  * @author Javier Snaider
  */
 public class BitVectorUtils {
-
-
+	
 	/**
-	 * @param s The size of the new vector
+	 * Returns a random {@link BitVector} of specified size
+	 * @param s the size of the new vector
 	 * @return a new random vector of size s.
 	 */
 	public static BitVector getRandomVector(int s) {
@@ -30,29 +30,27 @@ public class BitVectorUtils {
 	}
 
 	/**
-	 * Calculates the Hamming distances between two address.
+	 * Calculates the Hamming distances between two {@link BitVector} addresses.
 	 * 
-	 * @param addr
-	 *            the addr
-	 * @param hardLoc
-	 *            the hard loc
+	 * @param vector1
+	 *            the first {@link BitVector}
+	 * @param vector2
+	 *            the second {@link BitVector}
 	 * @return the Hamming distances
 	 */
-	public static int hamming(BitVector addr, BitVector hardLoc) {
-		BitVector aux = hardLoc.copy();
-		aux.xor(addr);
-
+	public static int hamming(BitVector vector1, BitVector vector2) {
+		BitVector aux = vector2.copy();
+		aux.xor(vector1);
 		return aux.cardinality();
 	}
 
-
 	/**
-	 * Returns a noisyVector
-	 * @param original original vector
+	 * Returns a noisy {@link BitVector}
+	 * @param original original {@link BitVector}
 	 * @param noise number of noisy bits to introduce
-	 * @return new vector based in the original with at most noise bits changed
+	 * @return a new vector which differs from the original by at most 'noise' bits
 	 */
-	public static BitVector noisyVector(BitVector original, int noise) {
+	public static BitVector getNoisyVector(BitVector original, int noise) {
 		BitVector v = original.copy();
 		int size = v.size();
 		for (int i = 0; i < noise; i++) {
@@ -63,14 +61,13 @@ public class BitVectorUtils {
 	}
 
 	/**
-	 * Adds BitVector v to int[] accum, first converting the bits of v with value 0 to -1.  
-	 * BitVector v is not modified.
+	 * Adds a {@link BitVector} to an accumulation array. The bits of the {@link BitVector} are first converted to either 0 to -1.  
+	 * The BitVector is not modified.
 	 * @param accum the accumulation array.
-	 * @param v the vector to add
-	 * @return accum
+	 * @param v the vector to be added
+	 * @return the new accumulation array
 	 */
-	public static int[] sumVectors(int[] accum, BitVector v) {
-
+	public static int[] getVectorSum(int[] accum, BitVector v) {
 		for (int i = 0; i < v.size(); i++) {
 			accum[i] += (v.getQuick(i)) ? 1 : -1;
 		}
@@ -78,15 +75,13 @@ public class BitVectorUtils {
 	}
 
 	/**
-	 * Substract vectors.
+	 * Computes the difference two {@link BitVector} objects.
 	 * 
-	 * @param a
-	 *            the a
-	 * @param b
-	 *            the b
-	 * @return the bit vector
+	 * @param a a {@link BitVector}
+	 * @param b a {@link BitVector}
+	 * @return new {@link BitVector} containing the result of the subtraction
 	 */
-	public static BitVector substractVectors(BitVector a, BitVector b) {
+	public static BitVector getVectorDifference(BitVector a, BitVector b) {
 		BitVector r = b.copy();
 		r.not();
 		BitVector res = new BitVector(a.size());
@@ -99,15 +94,13 @@ public class BitVectorUtils {
 	}
  
 	/**
-	 * Subtracts vectors.
+	 * Computes the difference of two vectors.
 	 * 
-	 * @param a
-	 *            the a
-	 * @param v
-	 *            the v
-	 * @return the int[]
+	 * @param a an int[] array
+	 * @param v a {@link BitVector}
+	 * @return the result as a new int[]
 	 */
-	public static int[] subtractVectors(int[] a, BitVector v) {
+	public static int[] getVectorDifference(int[] a, BitVector v) {
 		int[] res = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
 			res[i] = a[i]-((v.getQuick(i))?1:-1);
@@ -116,7 +109,7 @@ public class BitVectorUtils {
 	}
 
 	/**
-	 * Sum vectors.
+	 * Sums specified vectors.
 	 * 
 	 * @param accum
 	 *            the accum
@@ -124,8 +117,7 @@ public class BitVectorUtils {
 	 *            the vector
 	 * @return the int[]
 	 */
-	public static int[] sumVectors(int[] accum, int[] vector) {
-
+	public static int[] getVectorSum(int[] accum, int[] vector) {
 		for (int i = 0; i < vector.length; i++) {
 			accum[i] += vector[i];
 		}
@@ -142,7 +134,6 @@ public class BitVectorUtils {
 	 * @return the int[]
 	 */
 	public static int[] vectorToBipolar(int[] accum, BitVector v) {
-
 		for (int i = 0; i < v.size(); i++) {
 			accum[i] += (v.getQuick(i)) ? 1 : -1;
 		}
@@ -165,13 +156,12 @@ public class BitVectorUtils {
 	}
 
 	/**
-	 * Normalize vector.
+	 * Gets a normalized vector.
 	 * 
-	 * @param buff
-	 *            the buff
-	 * @return the bit vector
+	 * @param buff a int[] vector
+	 * @return new normalized {@link BitVector}
 	 */
-	public static BitVector normalizeVector(int[] buff) {
+	public static BitVector getNormalizedVector(int[] buff) {
 		BitVector res = new BitVector(buff.length);
 		for (int i = 0; i < buff.length; i++) {
 			res.putQuick(i, buff[i] > 0);
@@ -195,13 +185,6 @@ public class BitVectorUtils {
 		BitVector res = a.copy();
 		res.xor(b);
 		return res;
-	}
-
-	/**
-	 * Instantiates a new bit vector utils.
-	 */
-	public BitVectorUtils() {
-		super();
 	}
 
 	/**

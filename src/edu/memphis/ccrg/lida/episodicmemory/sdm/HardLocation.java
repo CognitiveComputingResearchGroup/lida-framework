@@ -10,31 +10,31 @@ package edu.memphis.ccrg.lida.episodicmemory.sdm;
 import cern.colt.bitvector.BitVector;
 
 /**
- * Implementers of this interface are basic components of SDM.
- * A HardLocation has a unique address that consists of a BitVector of the size of the space.
+ * Hard locations are basic components of {@link SparseDistributedMemory}. Each has 
+ * a unique address that consists of a {@link BitVector} of size equal to that of the {@link SparseDistributedMemory}.
  * It is composed of multiple counters (one for each dimension of the space). A HardLocation can 
  * be written to or read from. 
  * 
  * @author Javier Snaider
- *
  */
 public interface HardLocation {
 
 	/**
+	 * Gets address
 	 * @return the address of this HardLocation
 	 */
 	public BitVector getAddress();
 
 	/**
-	 * Sets the address of this HardLocation in the vector Space
-	 * @param address the address to set
+	 * Sets the address of this HardLocation in the vector space
+	 * @param address the {@link BitVector} address to set
 	 */
 	public void setAddress(BitVector address);
 
 	/**
 	 * Returns the counters of this HardLocation 
 	 * Each HardLocation has wordSize counters. Each counter is byte size.
-	 * Couters are incremented or decremented when the memory is written.
+	 * Counters are incremented or decremented when the memory is written.
 	 * @return the counters of this HardLocation 
 	 */
 	public byte[] getCounters();
@@ -48,12 +48,13 @@ public interface HardLocation {
 	public void setCounters(byte[] newCounters);
 
 	/**
-	 * @return the number of times that this HardLocation was written.
+	 * Gets write count
+	 * @return the number of times that this HardLocation was written to.
 	 */
 	public int getWriteCount();
 
 	/**
-	 * Writes BitVector word to this HardLocation.
+	 * Writes specified {@link BitVector} to this HardLocation.
 	 * For each bit in word, the corresponding counter is incremented if the bit is 1 or decremented if
 	 * the bit is 0.
 	 *  
@@ -62,17 +63,16 @@ public interface HardLocation {
 	public void write(BitVector word);
 
 	/**
-	 * This method reads this HardLocation and sums the reading vector to int[] buffer.
-	 * @param buffer buffer to be added to this hardlocation 
+	 * Reads this HardLocation summing the reading vector to int[] buffer.
+	 * @param buffer the int[] buffer to be added to this {@link HardLocation} 
 	 * @return summed vector
 	 */
 	public int[] read(int[] buffer);
 	
 	/**
-	 * Returns the Hamming distance between vector and the address of this HardLocation
-	 * @param vector vector to compare with this hardlocation
+	 * Returns the Hamming distance between a {@link BitVector} and the address of this HardLocation
+	 * @param vector {@link BitVector} to be compared with this {@link HardLocation}
 	 * @return the Hamming distance.
 	 */
 	public int hammingDistance(BitVector vector);
-
 }

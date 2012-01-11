@@ -22,6 +22,7 @@ import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
  * versa. The translation works by assigning a unique index to every node.
  * 
  * @author Javier Snaider
+ * @author Ryan J. McCall
  */
 public class BasicTranslator implements Translator {
 
@@ -30,12 +31,18 @@ public class BasicTranslator implements Translator {
 	private PerceptualAssociativeMemory pam;
 
 	/**
-	 * Constructor of the class.
+	 * Default constructor. The {@link PerceptualAssociativeMemory} and vectors' size must be set before to use this {@link Translator}.
+	 */
+	public BasicTranslator(){		
+	}
+	
+	/**
+	 * Constructs a new translator with specified attributes.
 	 * 
 	 * @param size
 	 *            the number of positions of the bit vector
 	 * @param pam
-	 *            the PAM associated with this translator
+	 *            the {@link PerceptualAssociativeMemory} associated with this translator
 	 */
 	public BasicTranslator(int size, PerceptualAssociativeMemory pam) {
 		this.size = size;
@@ -43,17 +50,12 @@ public class BasicTranslator implements Translator {
 	}
 
 	/**
-	 * Default constructor. The PAM and vectors' size must be set before to use this {@link Translator}.
-	 */
-	public BasicTranslator(){		
-	}
-	/**
-	 * Translates a bit vector into a node structure. Since the getQuick method
-	 * in the BitVector class is used, no preconditions are checked.
+	 * Translates a {@link BitVector} into a {@link NodeStructure}. Since the method {@link BitVector#getQuick(int)} 
+	 * is used, no preconditions are checked.
 	 * 
 	 * @param data
-	 *            the boolean vector to be translated
-	 * @return a node structure representing the positions in the bit vector,
+	 *            the {@link BitVector} to be translated
+	 * @return a {@link NodeStructure} representing the positions in the bit vector,
 	 *         each node has a unique ID
 	 * @see BitVector
 	 */
@@ -73,18 +75,17 @@ public class BasicTranslator implements Translator {
 	}
 
 	/**
-	 * Translates a node structure into a bit vector. At this point only nodes
-	 * are being translated, but links, and maybe activations must be also
+	 * Translates a {@link NodeStructure} into a {@link BitVector}. Currently only nodes
+	 * are translated, but links, and maybe activations must be also
 	 * handled.
 	 * 
-	 * @param structure
-	 *            the node structure to be translated
-	 * @return a bit vector representing the nodes in the node structure
+	 * @param ns the {@link NodeStructure} to be translated
+	 * @return a {@link BitVector} representing the {@link Node} objects in the {@link NodeStructure}
 	 */
 	@Override
-	public BitVector translate(NodeStructure structure) {
+	public BitVector translate(NodeStructure ns) {
 		BitVector v = new BitVector(size);
-		Collection<Node> nodes = structure.getNodes();
+		Collection<Node> nodes = ns.getNodes();
 		if(nodes != null){
 			for (Node n : nodes) {
 				v.put(n.getId(), true);
@@ -94,32 +95,35 @@ public class BasicTranslator implements Translator {
 	}
 
 	/**
-	 * @return the vectors' size 
+	 * Gets size
+	 * @return the vector's size 
 	 */
 	public int getSize() {
 		return size;
 	}
 
 	/**
-	 * @param size the vectors' size in the {@link SparseDistributedMemory}
+	 * Sets size
+	 * @param s the vector's size in the {@link SparseDistributedMemory}
 	 */
-	public void setSize(int size) {
-		this.size = size;
+	public void setSize(int s) {
+		size = s;
 	}
 
 	/**
-	 * @return the pam
+	 * Gets Pam
+	 * @return the {@link PerceptualAssociativeMemory}
 	 */
 	public PerceptualAssociativeMemory getPam() {
 		return pam;
 	}
 
 	/**
-	 * @param pam the pam to set
+	 * Sets Pam
+	 * @param pam the {@link PerceptualAssociativeMemory} to set
 	 */
 	public void setPam(PerceptualAssociativeMemory pam) {
 		this.pam = pam;
 	}
-
 	
 }

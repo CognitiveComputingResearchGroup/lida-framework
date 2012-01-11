@@ -14,7 +14,7 @@ import cern.colt.bitvector.BitVector;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 
 /**
- * Default implementation of HardLocation.
+ * Default implementation of {@link HardLocation}.
  * 
  * @author Javier Snaider
  */
@@ -30,8 +30,9 @@ public class HardLocationImpl implements HardLocation {
 	private int writeCount;
 
 	/**
+	 * Constructs a new hard location with specified address and length.
 	 * @param address {@link BitVector}
-	 * @param wordLength int
+	 * @param wordLength length of the words
 	 */
 	public HardLocationImpl(BitVector address, int wordLength) {
 		this.address = address;
@@ -40,7 +41,8 @@ public class HardLocationImpl implements HardLocation {
 	}
 
 	/**
-	 * @param address BitVector address of this HardLocation
+	 * Constructs a new hard location with specified address
+	 * @param address {@link BitVector} address of this HardLocation
 	 */
 	public HardLocationImpl(BitVector address) {
 		this(address, address.size());

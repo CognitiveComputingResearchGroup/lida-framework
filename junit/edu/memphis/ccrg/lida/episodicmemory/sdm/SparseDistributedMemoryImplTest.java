@@ -69,7 +69,7 @@ public class SparseDistributedMemoryImplTest {
 	@Test
 	public void testRetrieveIteratingBitVector() {
 		sdm.store(v1);
-		BitVector addr = BitVectorUtils.noisyVector(v1, 50);
+		BitVector addr = BitVectorUtils.getNoisyVector(v1, 50);
 		
 		for (int i=0;i<50;i++){
 			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);
@@ -82,7 +82,7 @@ public class SparseDistributedMemoryImplTest {
 	@Test
 	public void testRetrieveIteratingBitVector2() {
 		sdm.store(v1);
-		BitVector addr = BitVectorUtils.noisyVector(v2, 50);
+		BitVector addr = BitVectorUtils.getNoisyVector(v2, 50);
 		
 		for (int i=0;i<50;i++){
 			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);
@@ -96,7 +96,7 @@ public class SparseDistributedMemoryImplTest {
 	@Test
 	public void testRetrieveIteratingBitVectorBitVector() {
 		sdm.mappedStore(v1,v2);
-		BitVector addr = BitVectorUtils.noisyVector(v1, 50);
+		BitVector addr = BitVectorUtils.getNoisyVector(v1, 50);
 		
 		for (int i=0;i<50;i++){
 			BitVector aux = BitVectorUtils.getRandomVector(WSIZE);

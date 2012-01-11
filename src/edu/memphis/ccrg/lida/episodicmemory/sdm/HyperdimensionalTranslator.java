@@ -18,13 +18,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This class translates between node structures and bit vectors. The methods
- * used are the ones described by Kanerva in his 2009 hyperdimensional computing
+ * Translates between {@link NodeStructure} objects and {@link BitVector} objects. The methods
+ * used are those described by Kanerva in his 2009 hyperdimensional computing
  * paper.
  * @author Rodrigo Silva-Lugo
  */
 public class HyperdimensionalTranslator extends BasicTranslator {
-
+	//TODO Javadoc
 //    private static final ElementFactory factory = ElementFactory.getInstance();
 //    private int size;
 //    private PerceptualAssociativeMemory pam;
@@ -90,9 +90,9 @@ public class HyperdimensionalTranslator extends BasicTranslator {
                 p.setSdmId(v);
                 bvLookUpMap.put(v, p);
             }
-            BitVectorUtils.sumVectors(sum, p.getSdmId());
+            BitVectorUtils.getVectorSum(sum, p.getSdmId());
         }
-        result = BitVectorUtils.normalizeVector(sum);
+        result = BitVectorUtils.getNormalizedVector(sum);
         return result;
     }
 }

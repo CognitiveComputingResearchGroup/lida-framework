@@ -18,7 +18,7 @@ import cern.colt.bitvector.BitVector;
  * @author Javier Snaider
  *
  */
-public interface SparseDistributedMemory{
+public interface SparseDistributedMemory {
 
 	/**
 	 * Stores word in the given address in this sparse distributed memory.
@@ -33,8 +33,7 @@ public interface SparseDistributedMemory{
 	/**
 	 * Stores word in this sparse distributed memory using the word as address.
 	 * 
-	 * @param word
-	 *            the word to be stored
+	 * @param word the word to be stored
 	 */
 	public void store(BitVector word);
 
@@ -74,10 +73,11 @@ public interface SparseDistributedMemory{
 
 	/**
 	 * 
-	 * Retrieves the contents of this SDM at addr.  addr is first mapped using mapping.  then
-	 * retrieve contents of this SDM with mapped address until result of retrieval is 
+	 * Retrieves the contents of this SDM at specified address. 
+	 * The address is first mapped using specified mapping then
+	 * the mapped address is used to retrieve the contents of this SDM until result of retrieval is 
 	 * equal to address.  
-	 * @param addr bitvector address that is being retreived
+	 * @param addr {@link BitVector} address that is being retrieved
 	 * @param mapping mapping to use
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address or null if the iteration did not converge
@@ -86,15 +86,16 @@ public interface SparseDistributedMemory{
 			BitVector mapping);
 
 	/**
-	 * Retrieves the contents of this SDM at addr.  addr is first mapped using mapping.  then
-	 * retrieve contents of this SDM with mapped address.<br/>
-	 * Note that the retrieved vector is mapped back before return it.
+	 * Retrieves the contents of this SDM at specified address. 
+	 * The address is first mapped using specified mapping then
+	 * the mapped address is used to retrieve content from this SDM.<br/>
+	 * Note that the retrieved {@link BitVector} is mapped back before it is returned.
 	 *  
 	 * @param addr the address vector
 	 * @param mapping the mapping vector
 	 * @return the contents of this sparse distributed memory associated with
 	 *         the given address or null if the iteration did not converge
 	 */
-	BitVector retrieve(BitVector addr, BitVector mapping);
+	public BitVector retrieve(BitVector addr, BitVector mapping);
 
 }

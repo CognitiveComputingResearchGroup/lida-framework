@@ -13,15 +13,15 @@ import edu.memphis.ccrg.lida.workspace.Workspace;
 
 /**
  * Listens to cues from the {@link Workspace}. 
- * This interface should be implemented by EpisodicMemory modules.
+ * This interface is typically implemented by {@link EpisodicMemory} modules.
  * 
  * @author Ryan J. McCall
  */
-public interface CueListener  extends ModuleListener {
+public interface CueListener extends ModuleListener {
 	
 	/**
 	 * Receive a cue
-	 * @param cue NodeStructure to recall
+	 * @param cue a {@link NodeStructure} to cue {@link EpisodicMemory} with
 	 */
 	public void receiveCue(NodeStructure cue);
 

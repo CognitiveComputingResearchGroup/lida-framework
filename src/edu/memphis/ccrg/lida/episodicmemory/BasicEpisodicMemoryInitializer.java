@@ -21,8 +21,8 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PerceptualAssociativeMemory;
 
 /**
- * Initializes the translator of a {@link EpisodicMemoryImpl} using
- * {@link BasicTranslator}
+ * Initializes {@link EpisodicMemoryImpl} by creating and adding a
+ * {@link BasicTranslator} translator to it. 
  * 
  * @author Javier Snaider
  * 
@@ -33,24 +33,18 @@ public class BasicEpisodicMemoryInitializer implements Initializer {
 			.getLogger(BasicEpisodicMemoryInitializer.class.getCanonicalName());
 
 	@Override
-	public void initModule(FullyInitializable module, Agent agent,
-			Map<String, ?> params) {
-
+	public void initModule(FullyInitializable module,Agent agent,Map<String, ?> params) {
 		EpisodicMemoryImpl em = (EpisodicMemoryImpl) module;
-
 		PerceptualAssociativeMemory pam = (PerceptualAssociativeMemory) agent
 				.getSubmodule(ModuleName.PerceptualAssociativeMemory);
 		if (pam != null) {
 			int wordLength = (Integer) em.getParam("tem.wordLength",
 					EpisodicMemoryImpl.DEF_WORD_LENGTH);
-
-                        Translator translator = new BasicTranslator(wordLength, pam);
+            Translator translator = new BasicTranslator(wordLength, pam);
 			em.setTranslator(translator);
 		} else {
-			logger
-					.log(
-							Level.SEVERE,
-							"No Perseptual Associtive Memory in Agent. Translator is not created.",
+			logger.log(Level.SEVERE,
+							"No Perceptual Associtive Memory in Agent. Translator is not created.",
 							TaskManager.getCurrentTick());
 		}
 	}
