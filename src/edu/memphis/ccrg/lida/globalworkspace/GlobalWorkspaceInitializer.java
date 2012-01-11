@@ -23,11 +23,11 @@ import edu.memphis.ccrg.lida.globalworkspace.triggers.NoBroadcastOccurringTrigge
 import edu.memphis.ccrg.lida.globalworkspace.triggers.NoCoalitionArrivingTrigger;
 
 /**
- * Default implementation of {@link Initializer} for the {@link GlobalWorkspace}.
+ * Default {@link Initializer} implementation for the {@link GlobalWorkspace}.
  * Other implementations should always add at least one {@link BroadcastTrigger} to their
  * {@link GlobalWorkspace} module.
+ * 
  * @author Javier Snaider
- *
  */
 public class GlobalWorkspaceInitializer implements Initializer {
 

@@ -17,10 +17,12 @@ import edu.memphis.ccrg.lida.framework.shared.activation.ActivatibleImpl;
 //TODO Make Coalition a Factory element.  then we can change the way a coalition calculates its activation
 // and the type of content that it has.
 /**
- * Default implementation of {@link Coalition}.  Wraps content entering the 
+ * The default implementation of {@link Coalition}.  Wraps content entering the 
  * {@link GlobalWorkspace} to compete for consciousness. Extends {@link ActivatibleImpl}.
  * Contains reference to the {@link AttentionCodelet} that created it.
+ * 
  * @author Ryan J. McCall
+ * @see AttentionCodeletImpl
  */
 public class CoalitionImpl extends ActivatibleImpl implements Coalition {
 
@@ -32,7 +34,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     private long id;
 
     /**
-     * Constructs a coalition with content and sets activation to be equal to
+     * Constructs a {@link CoalitionImpl} with specified content and sets activation to be equal to
      * the normalized sum of the activation of the {@link Linkable}s in the {@link NodeStructure}
      * times the activation of the creating {@link AttentionCodelet}
      * @param content conscious content
@@ -49,7 +51,7 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     }
 
     /*
-     * calculates coalition's activation based on BroadcastContent attention codelet activation
+     * Calculates coalition's activation based on BroadcastContent and the attention codelet's activation
      */
     private void updateActivation() {
         double sum = 0.0;
@@ -86,8 +88,10 @@ public class CoalitionImpl extends ActivatibleImpl implements Coalition {
     	}
     	return false;
     }
+    
     @Override
     public int hashCode(){
     	return (int) id;
     }
+    
 }

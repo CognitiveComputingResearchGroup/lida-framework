@@ -12,32 +12,30 @@ package edu.memphis.ccrg.lida.globalworkspace;
 
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 
-
 /**
- * Modules that need to receive Broadcast must implement this interface. It will receive each 
- * BroadcastContent that will be sent by the GlobalWrokspace.
+ * Modules that receive the conscious broadcast must implement this interface. Implementers
+ * will receive each winning {@link Coalition} from the {@link GlobalWorkspace}.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
- * 
  */
 public interface BroadcastListener extends ModuleListener{
 	
 	/**
+	 * Listener must receive a broadcast of a the winning {@link Coalition}
 	 * This method should return as possible in order to not delay the rest of the broadcasting.
-	 * A good implementation should copy the broadcast content and create a task to process it.
-	 * @param coalition coalition that won the competition for consciousness
+	 * @param c the {@link Coalition} that won the most recent competition for consciousness
 	 */
-	public void receiveBroadcast(Coalition coalition);
+	public void receiveBroadcast(Coalition c);
 	
 	/**
-	 * This is a place-holder method to remind implementing classes that 
+	 * A place-holder method to remind implementing classes that 
 	 * they should implement learning. LIDA theory says receivers of the broadcast 
 	 * should learn from it.
-	 * This method will not be called directly by {@link GlobalWorkspace} 
-	 * but should be managed by the receiving module.
-	 * @param coalition coalition that won the competition for consciousness
+	 * This method will not be called directly by the {@link GlobalWorkspace} 
+	 * and thus it should be managed by the receiving module.
+	 * @param c the {@link Coalition} that won the most recent competition for consciousness
 	 */
-	public void learn(Coalition coalition);
+	public void learn(Coalition c);
 	
 }

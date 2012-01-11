@@ -30,12 +30,10 @@ import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.triggers.BroadcastTrigger;
 
 /**
- * This class implements GlobalWorkspace and maintains the collection of
- * {@link Coalition}s. It supports {@link BroadcastTrigger}s that are in charge
- * of triggering the new broadcast. Triggers should implement
- * {@link BroadcastTrigger} interface. This class maintains a list of
- * {@link BroadcastListener}s. These are the modules that need to receive
- * broadcast content.
+ * The default implementation of {@link GlobalWorkspace} which maintains the collection of
+ * {@link Coalition} objects. It supports {@link BroadcastTrigger} tasks that are in charge
+ * of triggering the new broadcast. This class maintains a list of
+ * {@link BroadcastListener} which are the modules that are registered to receive winning coalitions.
  * 
  * @author Javier Snaider
  * @author Ryan J. McCall
@@ -61,17 +59,18 @@ public class GlobalWorkspaceImpl extends FrameworkModuleImpl implements GlobalWo
     private Queue<Coalition> coalitions = new ConcurrentLinkedQueue<Coalition>();
 
     /**
-     * Constructor a new instance with default values
+     * Constructs a new instance with default values
      */
     public GlobalWorkspaceImpl() {
+    	super();
     }
     
     /**
-     * Will set the parameters with the following names:<br/><br/>
+     * Initializes parameters with the following names and types:<br/><br/>
      * 
-     * globalWorkspace.coalitionRemovalThreshold<br/>
-     * globalWorkspace.coalitionDecayStrategy<br/>
-     * globalWorkspace.refractoryPeriod
+     * globalWorkspace.coalitionRemovalThreshold type=double<br/>
+     * globalWorkspace.coalitionDecayStrategy type=string<br/>
+     * globalWorkspace.refractoryPeriod type=int
      * 
      * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
      */

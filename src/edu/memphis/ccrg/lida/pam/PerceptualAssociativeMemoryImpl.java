@@ -124,6 +124,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	 * Default constructor.
 	 */
 	public PerceptualAssociativeMemoryImpl() {
+		super();
 		addInternalLinkCategory(NONE);
 		addInternalLinkCategory(LATERAL);
 		addInternalLinkCategory(PARENT);
