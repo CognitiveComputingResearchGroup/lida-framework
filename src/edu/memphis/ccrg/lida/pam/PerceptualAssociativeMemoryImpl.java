@@ -273,7 +273,11 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 		// TODO task to use preafferent signal
 	}
 
-	private static final double DEFAULT_REINFORCEMENT = 0.1;
+	//TODO parameter
+	/**
+	 * TODO
+	 */
+	protected static final double DEFAULT_REINFORCEMENT = 0.1;
 	
 	@Override
 	public void learn(Coalition coalition) {
