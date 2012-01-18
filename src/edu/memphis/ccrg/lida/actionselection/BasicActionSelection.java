@@ -23,6 +23,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.strategies.DecayStrategy;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
 
@@ -33,7 +34,7 @@ import edu.memphis.ccrg.lida.proceduralmemory.ProceduralMemoryListener;
  * 
  */
 public class BasicActionSelection extends FrameworkModuleImpl implements
-		ActionSelection, ProceduralMemoryListener {
+		ActionSelection, ProceduralMemoryListener, BroadcastListener{
 
 	private static final Logger logger = Logger
 			.getLogger(BasicActionSelection.class.getCanonicalName());

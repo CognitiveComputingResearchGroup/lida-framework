@@ -8,7 +8,6 @@
 package edu.memphis.ccrg.lida.actionselection;
 
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
-import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 
 /**
  * Interface for the action selection module of LIDA.
@@ -16,7 +15,7 @@ import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
  * @author Ryan J. McCall
  * 
  */
-public interface ActionSelection extends FrameworkModule, BroadcastListener{
+public interface ActionSelection extends FrameworkModule {
 
 	/**
 	 * Those classes that should be receiving selected actions from Action

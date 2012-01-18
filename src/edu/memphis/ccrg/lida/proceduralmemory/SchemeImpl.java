@@ -45,7 +45,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	private Map<Object,Condition> context = new HashMap<Object,Condition>();
 
-	private Map<Object,Condition> negContext = new HashMap<Object,Condition>();
+	//TODO Remove
+//	private Map<Object,Condition> negContext = new HashMap<Object,Condition>();
 
 	private Map<Object,Condition> addingList = new HashMap<Object,Condition>();
 
@@ -65,11 +66,12 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	}
 
 	@Override
-	public boolean isContextConditionSatisfied(Condition prop) {
-		if (context.containsKey(prop.getConditionId()))
-			return context.get(prop.getConditionId()).getActivation() >= contextSatisfactionThreshold;
-		if (negContext.containsKey(prop.getConditionId()))
-				return (1.0 - negContext.get(prop.getConditionId()).getActivation()) >= contextSatisfactionThreshold;
+	public boolean isContextConditionSatisfied(Condition c) {
+		if (context.containsKey(c.getConditionId())){
+			return context.get(c.getConditionId()).getActivation() >= contextSatisfactionThreshold;
+		}
+//		if (negContext.containsKey(prop.getConditionId()))
+//				return (1.0 - negContext.get(prop.getConditionId()).getActivation()) >= contextSatisfactionThreshold;
 		return false;
 	}
 
@@ -80,11 +82,11 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 				return false;
 			}
 		}
-		for(Condition c:negContext.values()){
-			if((1.0 - c.getActivation()) < contextSatisfactionThreshold){
-				return false;
-			}
-		}
+//		for(Condition c:negContext.values()){
+//			if((1.0 - c.getActivation()) < contextSatisfactionThreshold){
+//				return false;
+//			}
+//		}
 		return true;
 	}
 
@@ -96,16 +98,16 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return (context.put(condition.getConditionId(),condition) == null);
 	}
 
-	@Override
-	public boolean addContextCondition(Condition condition, boolean negated) {
-		logger.log(Level.FINEST, "Adding context condition " +
-								 condition + " to " + label);
-		if(!negated){
-			return (context.put(condition.getConditionId(),condition) == null);
-		}else{
-			return (negContext.put(condition.getConditionId(),condition) == null);			
-		}
-	}
+//	@Override
+//	public boolean addContextCondition(Condition condition, boolean negated) {
+//		logger.log(Level.FINEST, "Adding context condition " +
+//								 condition + " to " + label);
+//		if(!negated){
+//			return (context.put(condition.getConditionId(),condition) == null);
+//		}else{
+//			return (negContext.put(condition.getConditionId(),condition) == null);			
+//		}
+//	}
 
 	@Override
 	public boolean addToAddingList(Condition addResult) {
@@ -127,10 +129,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return context.values();
 	}
 
-	@Override
-	public Collection<Condition> getNegatedContextConditions() {
-		return negContext.values();
-	}
+//	@Override
+//	public Collection<Condition> getNegatedContextConditions() {
+//		return negContext.values();
+//	}
 
 	@Override
 	public Collection<Condition> getAddingList() {
@@ -144,7 +146,8 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 
 	@Override
 	public int getContextSize() {
-		return context.size() + negContext.size();
+		return context.size();
+//		return context.size() + negContext.size();
 	}
 
 	@Override
@@ -177,10 +180,10 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return context.containsKey(contextCondition.getConditionId());
 	}
 
-	@Override
-	public boolean containsNegatedContextCondition(Condition contextCondition) {
-		return negContext.containsKey(contextCondition.getConditionId());
-	}
+//	@Override
+//	public boolean containsNegatedContextCondition(Condition contextCondition) {
+//		return negContext.containsKey(contextCondition.getConditionId());
+//	}
 
 	@Override
 	public boolean containsAddingItem(Condition addItem) {
@@ -212,11 +215,11 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 				count++;
 			}
 		}
-		for(Condition c:negContext.values()){
-			if((1-c.getActivation()) < contextSatisfactionThreshold){
-				count++;
-			}
-		}
+//		for(Condition c:negContext.values()){
+//			if((1-c.getActivation()) < contextSatisfactionThreshold){
+//				count++;
+//			}
+//		}
 		return count;
 	}
 	
@@ -228,9 +231,9 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	@Override
 	public Condition getContextCondition(Object id) {
 		Condition c = context.get(id);
-		if (c == null){
-			c= negContext.get(id);
-		}
+//		if (c == null){
+//			c= negContext.get(id);
+//		}
 		return c;
 	}
 	
@@ -292,16 +295,20 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 	
 	@Override
 	public double getActivation(){
-		if(context.size() == 0){
+		int numConditions = context.size() + addingList.size();
+		if(numConditions == 0){
 			return 0.0;
 		}
 		
-		double totalContextActivation = 0.0;
+		double aggregateActivation = 0.0;
 		for(Condition c: context.values()){
-			totalContextActivation += c.getActivation();
+			aggregateActivation += c.getActivation();
 		}
-		//TODO adding and deleting activation too
-		return totalContextActivation / context.size();
+		for(Condition c: addingList.values()){
+			aggregateActivation += c.getActivation();
+		}
+		//TODO deleting list too?
+		return aggregateActivation / numConditions;
 	}
 	
 	@Override

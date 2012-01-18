@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +28,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
@@ -40,14 +42,15 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 public class ProceduralMemoryImpl extends FrameworkModuleImpl implements ProceduralMemory, BroadcastListener {
 
 	private static final Logger logger = Logger.getLogger(ProceduralMemoryImpl.class.getCanonicalName());
+	
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	/*
 	 * Schemes indexed by Linkables in their context.
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
-//	TODO support for Node desirability, index by result
-//	private Map<Object, Set<Scheme>> resultSchemeMap;
+
+	private Map<Object, Set<Scheme>> resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 
 	/*
 	 * Convenient for decaying the schemes
@@ -62,7 +65,19 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	/*
 	 * Recent contents of consciousness that have not yet decayed away.
 	 */
-	private NodeStructure broadcastBuffer = new NodeStructureImpl();
+	private InternalNodeStructure broadcastBuffer = new InternalNodeStructure();
+	
+	/**
+	 * Allows Nodes to be added without copying. 
+	 * Warning: doing so allows the same java object of Node to exist in multiple places. 
+	 * @author Ryan J. McCall
+	 */
+	protected class InternalNodeStructure extends NodeStructureImpl {
+		@Override
+		public Node addNode(Node n, boolean copy) {
+			return super.addNode(n, copy);
+		}
+	}
 
 	/*
 	 * Listeners of this Procedural Memory
@@ -78,7 +93,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * instantiated
 	 */
 	private SchemeActivationStrategy schemeActivationStrategy;	
-
 	
 	/**
 	 * This module can accept parameters for the decay and excite strategies for
@@ -98,8 +112,9 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 			logger.log(Level.SEVERE, "unable to get scheme activation strategy {0} from factory", 
 					strategyName);
 		}
+		taskSpawner.addTask(new ProceduralMemoryBackgroundTask());
 	}
-	
+
 	@Override
 	public void addListener(ModuleListener listener) {
 		if (listener instanceof ProceduralMemoryListener) {
@@ -132,23 +147,24 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 
 	@Override
 	public void addScheme(Scheme scheme) {
-		schemeSet.add(scheme);
-		indexSchemeByElements(scheme, scheme.getContextConditions(), contextSchemeMap);
+		schemeSet.add(scheme);//for decaying scheme's BLA
+		
+		//add context and adding list to condition pool
 		for(Condition c: scheme.getContextConditions()){
+			//TODO in future,case when Condition is NodeStructure
 			if(c instanceof Node){
 				addCondition(c);
-			}else if(c instanceof NodeStructure){
-				Collection<Node> nodes = ((NodeStructure) c).getNodes();
-				for(Node n: nodes){
-					if(!(n instanceof Argument)){
-						addCondition(n);
-					}
-				}
 			}
 		}
-		//TODO index by result 
-//		indexSchemeByElements(scheme, scheme.getAddingResult().getLinkables(), resultSchemeMap);
-//		indexSchemeByElements(scheme, scheme.getDeletingResult().getLinkables(), resultSchemeMap);
+		for(Condition c: scheme.getAddingList()){
+			//TODO in future,case when Condition is NodeStructure
+			if(c instanceof Node){
+				addCondition(c);
+			}
+		}
+		
+		indexSchemeByElements(scheme, scheme.getContextConditions(), contextSchemeMap);
+		indexSchemeByElements(scheme, scheme.getAddingList(), resultSchemeMap);
 	}
 	
 	/*
@@ -173,8 +189,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		}
 	}
 	
-	@Override
-	public Condition addCondition(Condition c){
+//	@Override
+	private Condition addCondition(Condition c){
 		Condition result = conditionPool.get(c.getConditionId());
 		if(result == null){
 			logger.log(Level.FINE,"Condition {1} added.",
@@ -185,96 +201,71 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		return result;
 	}
 	
-	@Override
-	public Condition getCondition(Object id){
-		return conditionPool.get(id);
-	}
+//	@Override
+//	public Condition getCondition(Object id){
+//		return conditionPool.get(id);
+//	}
 	
+	/*
+	 * Assumes Conditions are Nodes only 
+	 */
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
-		broadcastBuffer.mergeWith(ns);	
-		activateSchemes(ns);
+		for(Node n: ns.getNodes()){			
+			Condition c = conditionPool.get(n.getConditionId());
+//			TODO support for Node desirability
+			if(n.getActivation() > c.getActivation()){
+				c.setActivation(n.getActivation());
+			}
+			if(!broadcastBuffer.containsNode(n)){
+				broadcastBuffer.addNode((Node)c, false);
+			}
+		}	
+		learn(coalition);
 	}
+	
+	@Override
+	public void learn(Coalition coalition) {
+//		NodeStructure ns = (NodeStructure) coalition.getContent();
+		//TODO
+	}
+		
+	private class ProceduralMemoryBackgroundTask extends FrameworkTaskImpl {
+		@Override
+		protected void runThisFrameworkTask() {
+			activateSchemes(broadcastBuffer);
+		}
+	}
+	
+	//TODO if we decide against scheme activation strategy then this becomes a parameter of the module.
+	private double schemeSelectionThreshold = 0.0;
 	
 	@Override
 	public void activateSchemes(NodeStructure ns) {
-		logger.log(Level.FINEST, "Procedural memory activates schemes", TaskManager.getCurrentTick());
-		
-		//this may be a new scheme activation strategy
-		for(Node n: ns.getNodes()){
-//			// TODO: Another option is to use GoalDegree and Activation
-//			if (condition.getNetDesirability() < goalThreshold) {
-//				if (behaviorsByContextCondition.containsKey(condition)) {
-//					passActivationToContextOrResult(condition,
-//							behaviorsByContextCondition, ConditionSet.CONTEXT);
-//				} else if (behaviorsByNegContextCondition
-//						.containsKey(condition)) {
-//					passActivationToContextOrResult(condition,
-//							behaviorsByNegContextCondition,
-//							ConditionSet.NEGCONTEXT);
-//				}
-//			} else {
-//				if (behaviorsByAddingItem.containsKey(condition)) {
-//					passActivationToContextOrResult(condition,
-//							behaviorsByAddingItem, ConditionSet.ADDING_LIST);
-//				} else if (behaviorsByDeletingItem.containsKey(condition)) {
-//					// TODO: Change this if protected goals are used
-//					passActivationToContextOrResult(condition,
-//							behaviorsByDeletingItem, ConditionSet.DELETING_LIST);
-//				}
-//			}
-			
-			
-			
-			Condition c = conditionPool.get(n.getExtendedId());
-			if(c != null){
-				c.setActivation(n.getActivation());
-				Set<Scheme> schemes = contextSchemeMap.get(n);
-				if(schemes != null){
-					for(Scheme s: schemes){
-						Collection<Condition> conditions = s.getContextConditions();
-						for(Condition c2: conditions){
-							if(c2 instanceof NodeStructure){
-								NodeStructure conditionNs = (NodeStructure) c2;
-								for(Node conditionNode: conditionNs.getNodes()){
-									
-								}
-								//if c2 contains an argument then instantiate
-							}
-						}
+		Set<Scheme> toInstantiate = new HashSet<Scheme>();
+		for (Node n: ns.getNodes()) {	//TODO consider links
+			Set<Scheme> schemes = contextSchemeMap.get(n.getConditionId());
+			if (schemes != null) {
+				for (Scheme scheme : schemes) {
+					if (scheme.getActivation() >= schemeSelectionThreshold) {
+						//To prevent repeats we stored all schemes over threshold in a set.
+						//repeats occur with this algorithm when the scheme selection threshold is low
+						toInstantiate.add(scheme);
 					}
 				}
 			}
-		}	
+		}
 		
-		schemeActivationStrategy.activateSchemesWithBroadcast(ns, contextSchemeMap);
+		for(Scheme s: toInstantiate){
+			createInstantiation(s);
+		}
 	}
 
 	@Override
-	public void learn(Coalition coalition) {
-		//TODO 
-	}
-	
-	@Override
-	public void decayModule(long ticks){
-		for (Condition c: conditionPool.values()){
-			c.decay(ticks);
-		}
-		
-		for (Scheme s : schemeSet){
-			s.decayBaseLevelActivation(ticks);
-			if(s.isRemovable()){
-				//TODO test
-//				removeScheme(s);
-			}
-		}
-	}
-	
-	@Override
 	public void createInstantiation(Scheme s) {
-		logger.log(Level.FINE, "Sending scheme from procedural memory",
-				TaskManager.getCurrentTick());
+		logger.log(Level.FINE, "Instantiating scheme {1} in Procedural Memory",
+				new Object[]{TaskManager.getCurrentTick(),s});
 		Behavior b = s.getInstantiation();
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(b);
@@ -282,13 +273,16 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public boolean containsScheme(Scheme s) {
-		return schemeSet.contains(s);
-	}
-
-	@Override
-	public int getSchemeCount() {
-		return schemeSet.size();
+	public void decayModule(long ticks){
+		broadcastBuffer.decayNodeStructure(ticks);
+		
+		for (Scheme s : schemeSet){
+			s.decayBaseLevelActivation(ticks);
+			if(s.isRemovable()){
+				//TODO test first
+//				removeScheme(s);
+			}
+		}
 	}
 	
 	@Override
@@ -303,6 +297,16 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 				map.get(key).remove(scheme);
 			}
 		}
+	}
+
+	@Override
+	public boolean containsScheme(Scheme s) {
+		return schemeSet.contains(s);
+	}
+
+	@Override
+	public int getSchemeCount() {
+		return schemeSet.size();
 	}
 
 	@Override

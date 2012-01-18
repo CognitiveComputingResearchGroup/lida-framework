@@ -63,9 +63,10 @@ public interface HardLocation {
 	public void write(BitVector word);
 
 	/**
-	 * Reads this HardLocation summing the reading vector to int[] buffer.
-	 * @param buffer the int[] buffer to be added to this {@link HardLocation} 
-	 * @return summed vector
+	 * Reads this HardLocation. The binary vector read from this hard location is 
+	 * added to the int[] buffer.
+	 * @param buffer an int[] buffer where the result of the read is added
+	 * @return the updated int[] buffer
 	 */
 	public int[] read(int[] buffer);
 	

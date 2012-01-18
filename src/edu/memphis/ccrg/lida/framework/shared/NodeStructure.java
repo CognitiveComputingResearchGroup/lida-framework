@@ -102,19 +102,19 @@ public interface NodeStructure {
 	public Node addDefaultNode(Node n);
 	
 	/**
-	 * @return copied and/or updated nodes that are now present in this nodestructure
+	 * @return copied and/or updated nodes that are now present in this NodeStructure
 	 * @see #addDefaultNode(Node)
 	 * @param nodes Node to be added.
 	 */
 	public Collection<Node> addDefaultNodes(Collection<Node> nodes);
 
 	/**
-	 * Add a Node of a specified factory type to this NodeStructure
+	 * Add a Node of a specified type to this NodeStructure
 	 * @param n Node
-	 * @param factoryType name of node's type in the factory
+	 * @param type name of node's type in {@link ElementFactory}
 	 * @return copy of node actually added.
 	 */
-	public Node addNode(Node n, String factoryType);
+	public Node addNode(Node n, String type);
 
 	/**
 	 * Removes specified {@link Link} if present.

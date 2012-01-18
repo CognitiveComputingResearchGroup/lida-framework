@@ -88,5 +88,4 @@ public class BasicSchemeActivationStrategy extends StrategyImpl implements Schem
 		this.schemeSelectionThreshold = threshold;
 	}
 
-
 }

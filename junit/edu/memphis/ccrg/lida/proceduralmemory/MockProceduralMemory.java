@@ -105,15 +105,15 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		
 	}
 
-	@Override
-	public Condition addCondition(Condition c) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Condition getCondition(Object conditionId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Condition addCondition(Condition c) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public Condition getCondition(Object conditionId) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 }

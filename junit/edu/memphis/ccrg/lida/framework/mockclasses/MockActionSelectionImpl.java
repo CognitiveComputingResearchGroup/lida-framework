@@ -62,18 +62,6 @@ public class MockActionSelectionImpl extends FrameworkModuleImpl implements Acti
 	}
 
 	@Override
-	public void learn(Coalition c) {
-		// not implemented
-		
-	}
-
-	@Override
-	public void receiveBroadcast(Coalition c) {
-		// not implemented
-		
-	}
-
-	@Override
 	public Object getModuleContent(Object... params) {
 		
 		return null;

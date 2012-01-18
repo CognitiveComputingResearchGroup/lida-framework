@@ -79,19 +79,19 @@ public interface ProceduralMemory extends FrameworkModule{
 	 * @param s a scheme over threshold
 	 */
 	public void createInstantiation(Scheme s);
-	
-	/**
-	 * Adds condition to the condition pool if one with the same id is not already present.
-	 *
-	 * @param c {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
-	 * @return the existing condition if one already exists or the newly added condition.
-	 */
-	public Condition addCondition(Condition c);
-	
-	/**
-	 * Gets condition
-	 * @param conditionId {@link Condition}'s id 
-	 * @return {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
-	 */
-	public Condition getCondition(Object conditionId);
+//	
+//	/**
+//	 * Adds condition to the condition pool if one with the same id is not already present.
+//	 *
+//	 * @param c {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
+//	 * @return the existing condition if one already exists or the newly added condition.
+//	 */
+//	public Condition addCondition(Condition c);
+//	
+//	/**
+//	 * Gets condition
+//	 * @param conditionId {@link Condition}'s id 
+//	 * @return {@link Condition} of a {@link Scheme} in this {@link ProceduralMemory}
+//	 */
+//	public Condition getCondition(Object conditionId);
 }

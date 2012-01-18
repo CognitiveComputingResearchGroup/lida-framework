@@ -25,9 +25,6 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
  */
 public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
-	//TODO factory
-	private static long idCounter = 0;
-
 	/*
 	 * Unique identifier
 	 */
@@ -67,16 +64,26 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		scheme  = s;
 	}
 	
+	//TODO discuss
+	private double rho = 0.5;
+	
+	@Override
+	public double getActivation(){
+		//expression below equivalent to: (1 - rho) activation + rho (scheme-activation)
+		return getActivation() + rho * (scheme.getActivation() - getActivation());
+	}
+	
 	@Override
 	public String toString(){
 		return getLabel() + "-" + getId();
 	}
 	
-	//Wrapper methods
+	//ProceduralUnit methods
 
 	@Override
 	public void setAction(Action a) {
-		scheme.setAction(a);
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
+//		scheme.setAction(a);
 	}	
 	
 	@Override
@@ -91,22 +98,23 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 
 	@Override
 	public boolean addContextCondition(Condition c) {
-		return scheme.addContextCondition(c);
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
+//		return scheme.addContextCondition(c);
 	}
 
-	@Override
-	public boolean addContextCondition(Condition c, boolean negated) {
-		return scheme.addContextCondition(c, negated);
-	}
+//	@Override
+//	public boolean addContextCondition(Condition c, boolean negated) {
+//		return scheme.addContextCondition(c, negated);
+//	}
 
 	@Override
 	public boolean addToAddingList(Condition c) {
-		return scheme.addToAddingList(c);
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
 	}
 
 	@Override
 	public boolean addToDeletingList(Condition c) {
-		return scheme.addToDeletingList(c);
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
 	}
 
 	@Override
@@ -114,10 +122,10 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		return scheme.getContextConditions();
 	}
 
-	@Override
-	public Collection<Condition> getNegatedContextConditions() {
-		return scheme.getNegatedContextConditions();
-	}
+//	@Override
+//	public Collection<Condition> getNegatedContextConditions() {
+//		return scheme.getNegatedContextConditions();
+//	}
 
 	@Override
 	public Collection<Condition> getAddingList() {
@@ -159,10 +167,10 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		return scheme.containsContextCondition(c);
 	}
 
-	@Override
-	public boolean containsNegatedContextCondition(Condition c) {
-		return scheme.containsNegatedContextCondition(c);
-	}
+//	@Override
+//	public boolean containsNegatedContextCondition(Condition c) {
+//		return scheme.containsNegatedContextCondition(c);
+//	}
 
 	@Override
 	public boolean containsAddingItem(Condition c) {

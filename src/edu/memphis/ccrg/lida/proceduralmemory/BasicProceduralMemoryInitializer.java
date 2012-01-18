@@ -76,12 +76,12 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    			Scheme scheme = new SchemeImpl(schemeLabel, action);
 	    			scheme.setBaseLevelActivation(bla);
 	    			for(Node n : contextNS.getNodes()){
-	    				Condition c = proceduralMemory.addCondition(n);
-	    				scheme.addContextCondition(c);
+//	    				Condition c = proceduralMemory.addCondition(n);
+	    				scheme.addContextCondition(n);
 	    			}
 	    			for(Node n : resultNS.getNodes()){
-	    				Condition c = proceduralMemory.addCondition(n);
-	    				scheme.addToAddingList(c);
+//	    				Condition c = proceduralMemory.addCondition(n);
+	    				scheme.addToAddingList(n);
 	    			}
 	    	        proceduralMemory.addScheme(scheme);
 	    	        
