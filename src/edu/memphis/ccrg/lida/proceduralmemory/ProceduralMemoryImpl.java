@@ -214,12 +214,14 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		NodeStructure ns = (NodeStructure) coalition.getContent();
 		for(Node n: ns.getNodes()){			
 			Condition c = conditionPool.get(n.getConditionId());
-//			TODO support for Node desirability
-			if(n.getActivation() > c.getActivation()){
-				c.setActivation(n.getActivation());
-			}
-			if(!broadcastBuffer.containsNode(n)){
-				broadcastBuffer.addNode((Node)c, false);
+			if(c != null){ //TODO discuss c == null case
+	//			TODO support for Node desirability
+				if(n.getActivation() > c.getActivation()){
+					c.setActivation(n.getActivation());
+				}
+				if(!broadcastBuffer.containsNode(n)){
+					broadcastBuffer.addNode((Node)c, false);
+				}
 			}
 		}	
 		learn(coalition);
