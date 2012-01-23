@@ -59,12 +59,12 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 		return calcExcitation(currentActivation, excitation, aa, cc);
 	}
 
-	/*
-	 * @param curActiv
-	 * @param excitation
-	 * @param aa 
-	 * @param cc 
-	 * @return
+	/** To calculate activation value of excite operation by sigmoid strategy
+	 * @param curActiv current activation
+	 * @param excitation parameter of excitation
+	 * @param aa parameter of M (default value is 1.0)
+	 * @param cc parameter of M (default value is 0.0)
+	 * @return Calculated activation value
 	 */
 	private double calcExcitation(double curActiv, double excitation, double aa, double cc) {
 		double curExcitation = -(Math.log((1.0 + epsilon - curActiv)/(curActiv + epsilon)) + cc) / aa + excitation;

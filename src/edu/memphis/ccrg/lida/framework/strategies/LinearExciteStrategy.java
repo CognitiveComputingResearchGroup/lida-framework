@@ -60,11 +60,11 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 		return calcActivation(currentActivation, excitation, mm);
 	} 
 
-	/*
-	 * @param currentActivation
-	 * @param excitation
-	 * @param mm
-	 * @return
+	/** To calculate activation value of excite operation by linear strategy
+	 * @param currentActivation currentActivation current activation
+	 * @param excitation parameter of excitation
+	 * @param mm parameter of M (default value is 1.0)
+	 * @return Calculated activation value
 	 */
 	private double calcActivation(double currentActivation, double excitation,
 			double mm) {

@@ -57,6 +57,13 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 		return calcActivation(currentActivation, ticks, aa, cc);
 	}
 	
+	/** To calculate activation value of decay operation by sigmoid strategy
+	 * @param curActiv current activation
+	 * @param ticks parameter of ticks
+	 * @param aa parameter of M (default value is 1.0)
+	 * @param cc parameter of M (default value is 0.0)
+	 * @return Calculated activation value
+	 */
 	private double calcActivation(double curActiv, long ticks,
 			double aa, double cc) {
 		double curExcitation = -(Math.log((1.0 + epsilon - curActiv)/(curActiv + epsilon)) + cc) / aa - ticks;

@@ -59,11 +59,11 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		return calcActivation(currentActivation, ticks, mm);
 	}
 	
-	/*
-	 * @param currentActivation
-	 * @param ticks
-	 * @param mm
-	 * @return
+	/** To calculate activation value of decay operation by linear strategy
+	 * @param currentActivation current activation
+	 * @param ticks parameter of ticks
+	 * @param mm parameter of M (default value is 0.1)
+	 * @return Calculated activation value
 	 */
 	private double calcActivation(double currentActivation, long ticks,
 			double mm) {
