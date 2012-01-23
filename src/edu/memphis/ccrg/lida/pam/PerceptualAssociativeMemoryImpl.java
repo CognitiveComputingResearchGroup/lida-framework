@@ -55,6 +55,7 @@ public class PerceptualAssociativeMemoryImpl extends FrameworkModuleImpl
 	private static final Logger logger = Logger
 			.getLogger(PerceptualAssociativeMemoryImpl.class.getCanonicalName());
 	private static ElementFactory factory = ElementFactory.getInstance();
+
 	private static final String DEFAULT_NONDECAYING_PAMNODE = "NoDecayPamNode";
 
 	private List<PamListener> pamListeners = new ArrayList<PamListener>();
