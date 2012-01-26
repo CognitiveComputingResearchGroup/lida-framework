@@ -21,15 +21,15 @@ public interface UnifyingNode extends Node{
 	
 	/**
 	 * Returns desirability of this node.
-	 * @return a double signifying the degree to which this node is a goal of the agent
+	 * @return a double signifying the degree to which this node is desired by the agent
 	 */
 	public double getDesirability();
 	
 	/**
 	 * Sets node desirability.
-	 * @param degree  degree to which this node is a goal of the agent
+	 * @param d degree to which this node is desired by the agent
 	 */
-	public void setDesirability(double degree);
+	public void setDesirability(double d);
 	
 	/**
 	 * Gets net desirability

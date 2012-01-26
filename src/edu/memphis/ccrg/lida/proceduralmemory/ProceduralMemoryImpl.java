@@ -28,6 +28,7 @@ import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.Node;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
+import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
@@ -35,7 +36,7 @@ import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
 /**
  * Default implementation of {@link ProceduralMemory}. Indexes scheme by context
- * elements for quick access.
+ * elements for quick access. Assumes that the {@link Condition} of {@link Scheme} are {@link Node} only.
  * @author Ryan J. McCall
  *
  */
@@ -46,19 +47,22 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	private static final ElementFactory factory = ElementFactory.getInstance();
 
 	/*
-	 * Schemes indexed by Linkables in their context.
+	 * Schemes indexed by Nodes in their context.
 	 */
 	private Map<Object, Set<Scheme>> contextSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 
-	private Map<Object, Set<Scheme>> resultSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
+	/*
+	 * Schemes indexed by Nodes in their adding list.
+	 */
+	private Map<Object, Set<Scheme>> addingSchemeMap = new ConcurrentHashMap<Object, Set<Scheme>>();
 
 	/*
-	 * Convenient for decaying the schemes
+	 * Set of all schemes current in the module. Convenient for decaying the schemes' bla.
 	 */
 	private Set<Scheme> schemeSet = new ConcurrentHashSet<Scheme>();
 	
 	/*
-	 * A pool of all conditions in all schemes in the procedural memory
+	 * A pool of all conditions (context and adding) in all schemes in the procedural memory
 	 */
 	private Map<Object,Condition> conditionPool = new HashMap<Object,Condition>();
 	
@@ -71,6 +75,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * Allows Nodes to be added without copying. 
 	 * Warning: doing so allows the same java object of Node to exist in multiple places. 
 	 * @author Ryan J. McCall
+	 * @see NodeStructureImpl
 	 */
 	protected class InternalNodeStructure extends NodeStructureImpl {
 		@Override
@@ -164,8 +169,25 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		}
 		
 		indexSchemeByElements(scheme, scheme.getContextConditions(), contextSchemeMap);
-		indexSchemeByElements(scheme, scheme.getAddingList(), resultSchemeMap);
+		indexSchemeByElements(scheme, scheme.getAddingList(), addingSchemeMap);
 	}
+	
+//	@Override
+	private Condition addCondition(Condition c){
+		Condition result = conditionPool.get(c.getConditionId());
+		if(result == null){
+			logger.log(Level.FINE,"Condition {1} added.",
+					new Object[]{TaskManager.getCurrentTick(), c});
+			conditionPool.put(c.getConditionId(),c);
+			result = c;
+		}
+		return result;
+	}
+	
+//	@Override
+//	public Condition getCondition(Object id){
+//		return conditionPool.get(id);
+//	}
 	
 	/*
 	 * For every element in elements, adds an entry to map where the key is an element
@@ -189,38 +211,34 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		}
 	}
 	
-//	@Override
-	private Condition addCondition(Condition c){
-		Condition result = conditionPool.get(c.getConditionId());
-		if(result == null){
-			logger.log(Level.FINE,"Condition {1} added.",
-					new Object[]{TaskManager.getCurrentTick(), c});
-			conditionPool.put(c.getConditionId(),c);
-			result = c;
-		}
-		return result;
-	}
-	
-//	@Override
-//	public Condition getCondition(Object id){
-//		return conditionPool.get(id);
-//	}
-	
 	/*
 	 * Assumes Conditions are Nodes only 
 	 */
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
-		for(Node n: ns.getNodes()){			
-			Condition c = conditionPool.get(n.getConditionId());
-			if(c != null){ //TODO discuss c == null case
-	//			TODO support for Node desirability
-				if(n.getActivation() > c.getActivation()){
-					c.setActivation(n.getActivation());
-				}
-				if(!broadcastBuffer.containsNode(n)){
-					broadcastBuffer.addNode((Node)c, false);
+		for(Node broadcastNode: ns.getNodes()){			
+			Node conditionNode = (Node) conditionPool.get(broadcastNode.getConditionId());
+			if(conditionNode != null){ //TODO discuss == null case, perhaps the Node should still be added to the buffer? 
+				if(broadcastBuffer.containsNode(conditionNode)){ // node already in buffer
+					if(broadcastNode.getActivation() > conditionNode.getActivation()){
+						conditionNode.setActivation(broadcastNode.getActivation());
+					}
+					if(broadcastNode instanceof UnifyingNode){
+						UnifyingNode uBroadcastNode = (UnifyingNode) broadcastNode;
+						if(conditionNode instanceof UnifyingNode){
+							UnifyingNode uConditionNode = (UnifyingNode)conditionNode;
+							if(uBroadcastNode.getDesirability() > uConditionNode.getDesirability()){
+								uConditionNode.setDesirability(uBroadcastNode.getDesirability());
+							}	
+						}else{
+							//TODO
+							logger.log(Level.WARNING, "", TaskManager.getCurrentTick());
+						}
+					}
+					
+				}else{ 
+					broadcastBuffer.addNode(conditionNode, false);
 				}
 			}
 		}	
@@ -232,7 +250,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 //		NodeStructure ns = (NodeStructure) coalition.getContent();
 		//TODO
 	}
-		
+	
+	//TODO could make a separate class and remove 'scheme activation strategy'
 	private class ProceduralMemoryBackgroundTask extends FrameworkTaskImpl {
 		@Override
 		protected void runThisFrameworkTask() {
@@ -245,15 +264,28 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	
 	@Override
 	public void activateSchemes(NodeStructure ns) {
+		//To prevent a scheme from being instantiated multiple times all schemes over threshold are stored in a set
 		Set<Scheme> toInstantiate = new HashSet<Scheme>();
 		for (Node n: ns.getNodes()) {	//TODO consider links
 			Set<Scheme> schemes = contextSchemeMap.get(n.getConditionId());
 			if (schemes != null) {
-				for (Scheme scheme : schemes) {
-					if (scheme.getActivation() >= schemeSelectionThreshold) {
-						//To prevent repeats we stored all schemes over threshold in a set.
-						//repeats occur with this algorithm when the scheme selection threshold is low
-						toInstantiate.add(scheme);
+				for (Scheme s : schemes) {
+					if (s.getActivation() >= schemeSelectionThreshold) {
+						toInstantiate.add(s);
+					}
+				}
+			}
+			
+			if(n instanceof UnifyingNode){
+				UnifyingNode uNode = (UnifyingNode) n;
+				if(uNode.getNetDesirability() > 0.0){//TODO boolean method?
+					schemes = addingSchemeMap.get(uNode.getConditionId());
+					if (schemes != null) {
+						for (Scheme s : schemes) {
+							if (s.getActivation() >= schemeSelectionThreshold) {
+								toInstantiate.add(s);
+							}
+						}
 					}
 				}
 			}
@@ -268,7 +300,7 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	public void createInstantiation(Scheme s) {
 		logger.log(Level.FINE, "Instantiating scheme {1} in Procedural Memory",
 				new Object[]{TaskManager.getCurrentTick(),s});
-		Behavior b = s.getInstantiation();
+		Behavior b = factory.getBehavior(s);
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
 			listener.receiveBehavior(b);
 		}

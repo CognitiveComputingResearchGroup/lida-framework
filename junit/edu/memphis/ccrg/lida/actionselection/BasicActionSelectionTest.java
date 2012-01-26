@@ -20,11 +20,13 @@ import org.junit.Test;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockSensoryMotorMemory;
 import edu.memphis.ccrg.lida.framework.mockclasses.MockTaskSpawner;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 import edu.memphis.ccrg.lida.proceduralmemory.SchemeImpl;
 
 public class BasicActionSelectionTest {
 	
+	private static final ElementFactory factory = ElementFactory.getInstance();
 	private static final double EPSILON = 1e-5;
 	private BasicActionSelection as;
 	private Behavior behav1,behav2;	
@@ -43,8 +45,8 @@ public class BasicActionSelectionTest {
 		as = new BasicActionSelection();
 		as.setAssistingTaskSpawner(ts);
 		as.init();	
-		behav1 = scheme1.getInstantiation();
-		behav2 = scheme2.getInstantiation();
+		behav1 = factory.getBehavior(scheme1);
+		behav2 = factory.getBehavior(scheme2);
 	}
 
 	@SuppressWarnings("unchecked")

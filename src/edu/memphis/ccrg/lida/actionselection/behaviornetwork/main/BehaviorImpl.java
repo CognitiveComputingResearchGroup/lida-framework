@@ -30,23 +30,21 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	 */
 	private long behaviorId;
 
+	/*
+	 * The scheme from which this behavior was instantiated. 
+	 */
 	private Scheme scheme;
 	
+	/**
+	 * Construct a new behavior with default parameters
+	 */
 	public BehaviorImpl(){
 		super();
 	}
-	
-	public BehaviorImpl(Scheme s){
-		super();
-		scheme = s;
-	}
 
-	/**
-	 * Sets id
-	 * @param id unique id
-	 */
-	public void setId(long id) {
-		this.behaviorId = id;
+	@Override
+	public void setId(int id) {
+		behaviorId = id;
 	}
 
 	@Override
@@ -69,7 +67,7 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	
 	@Override
 	public double getActivation(){
-		//expression below equivalent to: (1 - rho) activation + rho (scheme-activation)
+		//expression below equivalent to: (1 - rho) activation + rho (scheme_activation)
 		return getActivation() + rho * (scheme.getActivation() - getActivation());
 	}
 	

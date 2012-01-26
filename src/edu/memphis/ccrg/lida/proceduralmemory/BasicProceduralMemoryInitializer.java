@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;

@@ -18,6 +18,12 @@ import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 public interface Behavior extends ProceduralUnit {
 	
 	/**
+	 * Sets this Behavior's id
+	 * @param id unique identifier
+	 */
+	public void setId(int id);
+	
+	/**
 	 * Gets this Behavior's id.
 	 * 
 	 * @return the id

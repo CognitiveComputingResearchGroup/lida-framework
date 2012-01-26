@@ -184,9 +184,7 @@ public interface ProceduralUnit extends Activatible{
     /**
 	 * Gets result size.
 	 * 
-	 * @return the size of this behavior's result
+	 * @return the size of this unit's result
 	 */
     public double getResultSize(); 	
-
-
 }

@@ -68,11 +68,11 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 */
 	public void setInnate(boolean innate);
 	
-	/**
-	 * Instantiates and returns a {@link Behavior} based on this Scheme
-	 * @return an instantiation of this scheme
-	 */
-	public Behavior getInstantiation();
+//	/**
+//	 * Instantiates and returns a {@link Behavior} based on this Scheme
+//	 * @return an instantiation of this scheme
+//	 */
+//	public Behavior getInstantiation();
 
 	/**
 	 * Sets reliabilityThreshold

@@ -106,15 +106,5 @@ public class SchemeImplTest{
 		
 		assertFalse(scheme.equals(scheme2));
 	}
-	@Test
-	public void testGetInstantiation(){
-		scheme.setBaseLevelActivation(0.99);
-		scheme.setAction(action);
-		
-		Behavior b = scheme.getInstantiation();
-		assertEquals(scheme, b.getGeneratingScheme());
-		assertEquals(action, b.getAction());
-		assertEquals(0.99, b.getActivation(), 0.000001);
-	}
 
 }

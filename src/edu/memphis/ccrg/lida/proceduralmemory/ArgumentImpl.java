@@ -216,7 +216,7 @@ public class ArgumentImpl implements Argument {
 	}
 	
 	@Override
-	public Object getParam(String name, Object defaultValue) {
+	public <T> T getParam(String name, T defaultValue) {
 		return null;
 	}
 	

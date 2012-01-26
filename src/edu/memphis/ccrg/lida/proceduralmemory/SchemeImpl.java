@@ -14,9 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
+import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
 import edu.memphis.ccrg.lida.framework.shared.activation.LearnableImpl;
 
 /**
@@ -285,29 +284,28 @@ public class SchemeImpl extends LearnableImpl implements Scheme {
 		return getReliability() >= reliabilityThreshold;
 	}
 
-	@Override
-	public Behavior getInstantiation() {
-		Behavior b = new BehaviorImpl(this);//TODO factory
-		b.setAction(action);
-		b.setActivation(getTotalActivation());
-		return b;
-	}
+//	@Override
+//	public Behavior getInstantiation() {
+//		Behavior b = new BehaviorImpl(this);//TODO replace this method with a factory one!
+//		b.setAction(action);
+//		b.setActivation(getTotalActivation());
+//		return b;
+//	}
 	
 	@Override
 	public double getActivation(){
-		int numConditions = context.size() + addingList.size();
-		if(numConditions == 0){
-			return 0.0;
-		}
-		
+		int numConditions = context.size();
 		double aggregateActivation = 0.0;
 		for(Condition c: context.values()){
 			aggregateActivation += c.getActivation();
 		}
 		for(Condition c: addingList.values()){
-			aggregateActivation += c.getActivation();
+			if(c instanceof UnifyingNode){
+				numConditions++;
+				aggregateActivation += ((UnifyingNode) c).getDesirability(); 
+			}
 		}
-		//TODO deleting list too?
+		//TODO deleting list iff schemes can be excited on the basis of their deleting list
 		return aggregateActivation / numConditions;
 	}
 	

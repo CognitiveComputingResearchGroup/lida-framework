@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.BehaviorImpl;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
 import edu.memphis.ccrg.lida.framework.initialization.FrameworkTaskDef;
@@ -30,6 +32,7 @@ import edu.memphis.ccrg.lida.framework.tasks.FrameworkTask;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
 import edu.memphis.ccrg.lida.pam.PamLinkImpl;
 import edu.memphis.ccrg.lida.pam.PamNodeImpl;
+import edu.memphis.ccrg.lida.proceduralmemory.Scheme;
 
 
 /**
@@ -81,7 +84,10 @@ public class ElementFactory {
 	/*
 	 * Specifies default node type used by the factory. e.g. "NodeImpl"
 	 */
-	private String 	defaultNodeType = NodeImpl.class.getSimpleName();
+	private String defaultNodeType = NodeImpl.class.getSimpleName();
+	
+	//TODO
+	private String defaultBehaviorClassName = BehaviorImpl.class.getCanonicalName();
 	
 	/*
 	 * Map of all the ExciteStrategies available to this factory
@@ -1126,5 +1132,31 @@ public class ElementFactory {
 		logger.log(Level.WARNING, "Factory does not contain node type {1}", 
 				new Object[]{TaskManager.getCurrentTick(),nodeType});
 		return null;
+	}
+
+	/**
+	 * Returns a new Behavior based on specified {@link Scheme}
+	 * @param s a {@link Scheme} 
+	 * @return a new {@link Behavior} based on the {@link Scheme}
+	 */
+	public Behavior getBehavior(Scheme s) {
+		Behavior b = null;
+		try {
+			b = (Behavior) Class.forName(defaultBehaviorClassName).newInstance();
+			b.setId(elementIdCount++);
+			b.setGeneratingScheme(s);
+			b.setAction(s.getAction());
+			b.setActivation(s.getTotalActivation());
+		} catch (InstantiationException e) {
+			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+					.getCurrentTick());
+		} catch (IllegalAccessException e) {
+			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+					.getCurrentTick());
+		} catch (ClassNotFoundException e) {
+			logger.log(Level.WARNING, "Error creating Node.", TaskManager
+					.getCurrentTick());
+		}
+		return b;
 	}
 }

@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
 import edu.memphis.ccrg.lida.attentioncodelets.NeighborhoodAttentionCodelet;
 import edu.memphis.ccrg.lida.framework.FrameworkModule;
 import edu.memphis.ccrg.lida.framework.ModuleName;
@@ -704,6 +705,18 @@ public class ElementFactoryTest {
 		assertTrue(ns != null);
 		assertEquals(ns.getDefaultNodeType(), "PamNodeImpl");
 		assertEquals(ns.getDefaultLinkType(), "LinkImpl");
+	}
+	
+	@Test
+	public void testGetInstantiation(){
+		fail("TODO!");
+//		scheme.setBaseLevelActivation(0.99);
+//		scheme.setAction(action);
+//		
+//		Behavior b = scheme.getInstantiation();
+//		assertEquals(scheme, b.getGeneratingScheme());
+//		assertEquals(action, b.getAction());
+//		assertEquals(0.99, b.getActivation(), 0.000001);
 	}
 
 }
