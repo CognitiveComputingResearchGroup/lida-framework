@@ -40,7 +40,14 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		m = (Double) getParam("m", DEFAULT_M);
 	}
 
-	@Override
+    /**
+     * Decays the current activation according to some internal decay function.
+     * @param currentActivation activation of the entity before decay.
+     * @param ticks The number of ticks to decay.
+     * @param params optionally accepts 1 double parameter specifying the slope of
+     * decay ticks and activations.
+     * @return new activation 
+     */
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double mm = m;
 		if (params != null && params.length != 0) {
@@ -49,7 +56,13 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		return calcActivation(currentActivation, ticks, mm);
 	}
 
-	@Override
+	/**
+	 * @param currentActivation activation of the entity before decay.
+	 * @param ticks how much time has passed since last decay
+	 * @param params optionally accepts 1 parameter specifying the slope of 
+	 * decay ticks and activations.
+	 * @return new activation amount
+	 */
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
 		double mm = m;
@@ -59,10 +72,10 @@ public class LinearDecayStrategy extends StrategyImpl implements DecayStrategy {
 		return calcActivation(currentActivation, ticks, mm);
 	}
 	
-	/** To calculate activation value of decay operation by linear strategy
+	/* To calculate activation value of decay operation by linear strategy
 	 * @param currentActivation current activation
 	 * @param ticks parameter of ticks
-	 * @param mm parameter of M (default value is 0.1)
+	 * @param mm parameter of slope (default value is 0.1)
 	 * @return Calculated activation value
 	 */
 	private double calcActivation(double currentActivation, long ticks,

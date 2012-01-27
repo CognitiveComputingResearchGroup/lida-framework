@@ -40,7 +40,14 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 		m = (Double) getParam("m", DEFAULT_M);
 	}
 	
-	@Override
+	/**
+     * Excites the current activation according to some internal excite function.
+     * @param currentActivation activation of the entity before excite.
+     * @param excitation amount of activation to adds
+     * @param params optionally accepts 1 double parameter specifying the slope of
+     * excitation and activations.
+     * @return new activation amount
+     */
 	public double excite(double currentActivation, double excitation, Object... params) {
 		double mm = m;
 		if (params!= null && params.length != 0) {
@@ -50,7 +57,14 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 		return calcActivation(currentActivation, excitation, mm);
 	}
 	
-	@Override
+	/**
+	 * 
+	 * @param currentActivation activation of the entity before excite.
+	 * @param excitation amount of activation to adds
+	 * @param params optionally accepts 1 parameter specifying the slope of
+     * excitation and activations.
+	 * @return new activation amount
+	 */
 	public double excite(double currentActivation, double excitation, Map<String, ?> params) {
 		double mm = m;
 		if(params != null && params.containsKey("m")){
@@ -60,10 +74,10 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 		return calcActivation(currentActivation, excitation, mm);
 	} 
 
-	/** To calculate activation value of excite operation by linear strategy
+	/* To calculate activation value of excite operation by linear strategy
 	 * @param currentActivation currentActivation current activation
 	 * @param excitation parameter of excitation
-	 * @param mm parameter of M (default value is 1.0)
+	 * @param mm parameter of slope (default value is 1.0)
 	 * @return Calculated activation value
 	 */
 	private double calcActivation(double currentActivation, double excitation,

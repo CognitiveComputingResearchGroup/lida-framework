@@ -22,12 +22,24 @@ public class NoExciteStrategy extends StrategyImpl implements ExciteStrategy {
 	public NoExciteStrategy() {		
 	}
 	
-	@Override
+	/**
+     * Excites the current activation according to some internal excite function.
+     * @param currentActivation activation of the entity before excite.
+     * @param excitation amount of activation to adds
+     * @param params parameters: N/A
+     * @return new activation amount
+     */
 	public double excite(double currentActivation, double excitation, Object... params) {
 		return currentActivation;
 	}
 
-	@Override
+	/**
+	 * 
+	 * @param currentActivation activation of the entity before excite.
+	 * @param excitation amount of activation to adds
+	 * @param params parameters: N/A
+	 * @return new activation amount
+	 */
 	public double excite(double currentActivation, double excitation, Map<String, ?> params) {
 		return currentActivation;
 	} 

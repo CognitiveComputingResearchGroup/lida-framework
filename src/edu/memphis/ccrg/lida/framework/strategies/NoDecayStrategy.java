@@ -22,12 +22,24 @@ public class NoDecayStrategy extends StrategyImpl implements DecayStrategy {
 	public NoDecayStrategy() {
 	}
 
-	@Override
+    /**
+     * Decays the current activation according to some internal decay function.
+     * @param currentActivation activation of the entity before decay.
+     * @param ticks The number of ticks to decay.
+     * @param params optional parameters: N/A
+     * @return new activation 
+     */
 	public double decay(double currentActivation, long ticks, Object... params) {
 		return currentActivation;
 	}
 
-	@Override
+	/**
+	 * 
+	 * @param currentActivation activation of the entity before decay.
+	 * @param ticks how much time has passed since last decay
+	 * @param params parameters: N/A
+	 * @return new activation amount
+	 */
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
 		return currentActivation;
