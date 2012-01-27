@@ -5,7 +5,7 @@ package edu.memphis.ccrg.lida.framework.shared;
  * @author Javier Snaider
  * @author Ryan J. McCall
  */
-public interface UnifyingNode extends Node{
+public interface UnifyingNode extends Node {
 	
 	/**
 	 * Sets Node type

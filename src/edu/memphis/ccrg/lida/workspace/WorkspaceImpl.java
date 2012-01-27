@@ -38,7 +38,6 @@ import edu.memphis.ccrg.lida.workspace.workspacebuffers.WorkspaceBuffer;
  * @author Ryan J. McCall
  *
  */
-
 public class WorkspaceImpl extends FrameworkModuleImpl implements Workspace, PamListener, 
 									  	LocalAssociationListener, BroadcastListener{
 	
