@@ -34,6 +34,7 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 		c = (Double) getParam("c", DEFAULT_C);
 	}
 	
+	
     /**
      * Decays the current activation according to some internal decay function.
      * @param currentActivation activation of the entity before decay.
@@ -41,6 +42,7 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
      * @param params optionally accepts 2 double parameters of sigmoid activation calculation.
      * @return new activation 
      */
+	@Override
 	public double decay(double currentActivation, long ticks, Object... params) {
 		double aa = a;
 		double cc = c;
@@ -51,13 +53,15 @@ public class SigmoidDecayStrategy extends StrategyImpl implements DecayStrategy 
 		return calcActivation(currentActivation, ticks, aa, cc);
 	}
 
+	
 	/**
-	 * 
+	 * Decays the current activation according to some internal decay function.
 	 * @param currentActivation activation of the entity before decay.
 	 * @param ticks how much time has passed since last decay
 	 * @param params optionally accepts 2 parameters of sigmoid activation calculation.
 	 * @return new activation amount
 	 */
+	@Override
 	public double decay(double currentActivation, long ticks,
 			Map<String, ? extends Object> params) {
 		double aa = a;

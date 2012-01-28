@@ -34,7 +34,7 @@ public interface ExciteStrategy extends Strategy{
 	public double excite(double currentActivation, double excitation, Object... params);
 	
 	/**
-	 * 
+	 * Excites the current activation according to some internal excite function.
 	 * @param currentActivation activation of the entity before excite.
 	 * @param excitation amount of activation to adds
 	 * @param params parameters

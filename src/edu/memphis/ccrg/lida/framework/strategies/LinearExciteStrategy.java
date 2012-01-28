@@ -40,6 +40,7 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 		m = (Double) getParam("m", DEFAULT_M);
 	}
 	
+	
 	/**
      * Excites the current activation according to some internal excite function.
      * @param currentActivation activation of the entity before excite.
@@ -48,6 +49,7 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
      * excitation and activations.
      * @return new activation amount
      */
+	@Override
 	public double excite(double currentActivation, double excitation, Object... params) {
 		double mm = m;
 		if (params!= null && params.length != 0) {
@@ -57,14 +59,16 @@ public class LinearExciteStrategy extends StrategyImpl implements ExciteStrategy
 		return calcActivation(currentActivation, excitation, mm);
 	}
 	
+	
 	/**
-	 * 
+	 * Excites the current activation according to some internal excite function.
 	 * @param currentActivation activation of the entity before excite.
 	 * @param excitation amount of activation to adds
 	 * @param params optionally accepts 1 parameter specifying the slope of
      * excitation and activations.
 	 * @return new activation amount
 	 */
+	@Override
 	public double excite(double currentActivation, double excitation, Map<String, ?> params) {
 		double mm = m;
 		if(params != null && params.containsKey("m")){

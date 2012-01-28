@@ -35,6 +35,7 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 		c = (Double) getParam("c", DEFAULT_C);
 	}
 
+	
 	/**
      * Excites the current activation according to some internal excite function.
      * @param currentActivation activation of the entity before excite.
@@ -42,6 +43,7 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
      * @param params optionally accepts 2 double parameters of sigmoid activation calculation.
      * @return new activation amount
      */
+	@Override
 	public double excite(double curActiv, double excitation,
 			Object... params) {
 		double aa = a;
@@ -53,13 +55,15 @@ public class SigmoidExciteStrategy extends StrategyImpl implements ExciteStrateg
 		return calcExcitation(curActiv, excitation, aa, cc);
 	}
 	
+	
 	/**
-	 * 
+	 * Excites the current activation according to some internal excite function.
 	 * @param currentActivation activation of the entity before excite.
 	 * @param excitation amount of activation to adds
 	 * @param params optionally accepts 2 parameters of sigmoid activation calculation.
 	 * @return new activation amount
 	 */
+	@Override
 	public double excite(double currentActivation, double excitation,
 			Map<String, ? extends Object> params) {
 		double aa = a;

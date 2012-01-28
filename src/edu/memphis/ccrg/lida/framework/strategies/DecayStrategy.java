@@ -32,7 +32,7 @@ public interface DecayStrategy extends Strategy{
 	public double decay(double currentActivation, long ticks, Object... params);
 	
 	/**
-	 * 
+	 * Decays the current activation according to some internal decay function.
 	 * @param currentActivation activation of the entity before decay.
 	 * @param ticks how much time has passed since last decay
 	 * @param params parameters
