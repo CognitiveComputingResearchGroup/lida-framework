@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.ActionImpl;
+import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
 import edu.memphis.ccrg.lida.framework.Agent;
 import edu.memphis.ccrg.lida.framework.initialization.FullyInitializable;
 import edu.memphis.ccrg.lida.framework.initialization.GlobalInitializer;
@@ -75,12 +76,16 @@ public class BasicProceduralMemoryInitializer implements Initializer {
 	    			Scheme scheme = new SchemeImpl(schemeLabel, action);
 	    			scheme.setBaseLevelActivation(bla);
 	    			for(Node n : contextNS.getNodes()){
-//	    				Condition c = proceduralMemory.addCondition(n);
-	    				scheme.addContextCondition(n);
+	    				//addCondition() adds the Node to the procedural memory's condition pool if it is not already present
+	    				//This ensures that all Schemes share the same condition objects; namely, those that are in the pool.
+	    				Condition c = proceduralMemory.addCondition(n);
+	    				scheme.addContextCondition(c);
 	    			}
 	    			for(Node n : resultNS.getNodes()){
-//	    				Condition c = proceduralMemory.addCondition(n);
-	    				scheme.addToAddingList(n);
+	    				//addCondition() adds the Node to the procedural memory's condition pool if it is not already present
+	    				//This ensures that all Schemes share the same condition objects; namely, those that are in the pool.
+	    				Condition c = proceduralMemory.addCondition(n);
+	    				scheme.addToAddingList(c);
 	    			}
 	    	        proceduralMemory.addScheme(scheme);
 	    	        

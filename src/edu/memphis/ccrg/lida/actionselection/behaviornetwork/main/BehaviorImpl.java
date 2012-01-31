@@ -79,9 +79,23 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	//ProceduralUnit methods
 
 	@Override
+	public boolean addContextCondition(Condition c) {
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
+	}
+
+	@Override
+	public boolean addToAddingList(Condition c) {
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
+	}
+
+	@Override
+	public boolean addToDeletingList(Condition c) {
+		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
+	}
+	
+	@Override
 	public void setAction(Action a) {
 		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-//		scheme.setAction(a);
 	}	
 	
 	@Override
@@ -95,35 +109,9 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	}
 
 	@Override
-	public boolean addContextCondition(Condition c) {
-		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-//		return scheme.addContextCondition(c);
-	}
-
-//	@Override
-//	public boolean addContextCondition(Condition c, boolean negated) {
-//		return scheme.addContextCondition(c, negated);
-//	}
-
-	@Override
-	public boolean addToAddingList(Condition c) {
-		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-	}
-
-	@Override
-	public boolean addToDeletingList(Condition c) {
-		throw new UnsupportedOperationException("Cannot modify a Behavior, only a Scheme");
-	}
-
-	@Override
 	public Collection<Condition> getContextConditions() {
 		return scheme.getContextConditions();
 	}
-
-//	@Override
-//	public Collection<Condition> getNegatedContextConditions() {
-//		return scheme.getNegatedContextConditions();
-//	}
 
 	@Override
 	public Collection<Condition> getAddingList() {
@@ -165,11 +153,6 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 		return scheme.containsContextCondition(c);
 	}
 
-//	@Override
-//	public boolean containsNegatedContextCondition(Condition c) {
-//		return scheme.containsNegatedContextCondition(c);
-//	}
-
 	@Override
 	public boolean containsAddingItem(Condition c) {
 		return scheme.containsAddingItem(c);
@@ -194,4 +177,29 @@ public class BehaviorImpl extends ActivatibleImpl implements Behavior{
 	public Condition getContextCondition(Object id) {
 		return scheme.getContextCondition(id);
 	}
+
+	@Override
+	public double getAverageAddingListNetDesirability() {
+		return scheme.getAverageAddingListNetDesirability();
+	}
+
+	@Override
+	public double getAverageContextActivation() {
+		return scheme.getAverageContextActivation();
+	}
+
+//	@Override
+//	public boolean containsNegatedContextCondition(Condition c) {
+//		return scheme.containsNegatedContextCondition(c);
+//	}
+
+//	@Override
+//	public boolean addContextCondition(Condition c, boolean negated) {
+//		return scheme.addContextCondition(c, negated);
+//	}
+
+//	@Override
+//	public Collection<Condition> getNegatedContextConditions() {
+//		return scheme.getNegatedContextConditions();
+//	}
 }

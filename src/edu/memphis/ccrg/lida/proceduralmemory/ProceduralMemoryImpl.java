@@ -31,6 +31,7 @@ import edu.memphis.ccrg.lida.framework.shared.NodeStructureImpl;
 import edu.memphis.ccrg.lida.framework.shared.UnifyingNode;
 import edu.memphis.ccrg.lida.framework.tasks.FrameworkTaskImpl;
 import edu.memphis.ccrg.lida.framework.tasks.TaskManager;
+import edu.memphis.ccrg.lida.framework.tasks.TaskStatus;
 import edu.memphis.ccrg.lida.globalworkspace.BroadcastListener;
 import edu.memphis.ccrg.lida.globalworkspace.Coalition;
 
@@ -88,36 +89,25 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	 * Listeners of this Procedural Memory
 	 */
 	private List<ProceduralMemoryListener> proceduralMemoryListeners = new ArrayList<ProceduralMemoryListener>();
+
+	private static final double DEFAULT_SCHEME_SELECTION_THRESHOLD = 0.0;
 	
 	/*
-	 * Factory name of default scheme activation strategy
+	 * Determines how much activation a scheme should have to be instantiated
 	 */
-	private static final String DEFAULT_SCHEME_ACTIVATION_STRATEGY = "BasicSchemeActivationStrategy";
-	/*
-	 * Determines how scheme are given activation and whether they should be
-	 * instantiated
-	 */
-	private SchemeActivationStrategy schemeActivationStrategy;	
+	private double schemeSelectionThreshold;
 	
 	/**
 	 * This module can accept parameters for the decay and excite strategies for
 	 * behaviors instantiated in this module.  The parameters names are:<br><br/>
 	 * 
-	 * <b>proceduralMemory.schemeActivationStrategy</b> - name of {@link SchemeActivationStrategy} in the {@link ElementFactory}<br/>
+	 * <b>proceduralMemory.schemeSelectionThreshold</b> - amount of activation schemes must have to be instantiated<br/>
 	 * 
 	 * @see edu.memphis.ccrg.lida.framework.FrameworkModuleImpl#init()
 	 */
 	@Override
 	public void init() {	
-		String strategyName = (String) getParam("proceduralMemory.schemeActivationStrategy", DEFAULT_SCHEME_ACTIVATION_STRATEGY);
-		schemeActivationStrategy = (SchemeActivationStrategy) factory.getStrategy(strategyName);
-		if(schemeActivationStrategy != null){
-			schemeActivationStrategy.setProceduralMemory(this);
-		}else{
-			logger.log(Level.SEVERE, "unable to get scheme activation strategy {0} from factory", 
-					strategyName);
-		}
-		taskSpawner.addTask(new ProceduralMemoryBackgroundTask());
+		schemeSelectionThreshold = getParam("proceduralMemory.schemeSelectionThreshold", DEFAULT_SCHEME_SELECTION_THRESHOLD);
 	}
 
 	@Override
@@ -131,15 +121,6 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	}
 
 	@Override
-	public void setSchemeActivationStrategy(SchemeActivationStrategy strategy) {
-		schemeActivationStrategy = strategy;
-	}
-	@Override
-	public SchemeActivationStrategy getSchemeActivationStrategy() {
-		return schemeActivationStrategy;
-	}
-
-	@Override
 	public void addSchemes(Collection<Scheme> schemes) {
 		if(schemes != null){
 			for (Scheme scheme : schemes){
@@ -150,19 +131,28 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		}
 	}
 
+	/**
+	 * Adds specified scheme to this {@link ProceduralMemory}.</br>
+	 * Note: all conditions (context or adding) in the Scheme should have already been added as conditions 
+	 * using {@link #addCondition(Condition)}. The correct way to create a Scheme is to first add its conditions to
+	 * {@link ProceduralMemory} using {@link #addCondition(Condition)} AND then, use the returned references as the new
+	 * Conditions of the Scheme. Finally this method should be called to add the Scheme to this {@link ProceduralMemory}.</br>
+	 * The {@link BasicProceduralMemoryInitializer} uses this procedure for adding new Schemes.
+	 * @param scheme the {@link Scheme} to be added
+	 * @see BasicProceduralMemoryInitializer
+	 */
 	@Override
 	public void addScheme(Scheme scheme) {
 		schemeSet.add(scheme);//for decaying scheme's BLA
 		
+		//TODO in future,cases when Condition is NodeStructure
 		//add context and adding list to condition pool
 		for(Condition c: scheme.getContextConditions()){
-			//TODO in future,case when Condition is NodeStructure
 			if(c instanceof Node){
 				addCondition(c);
 			}
 		}
 		for(Condition c: scheme.getAddingList()){
-			//TODO in future,case when Condition is NodeStructure
 			if(c instanceof Node){
 				addCondition(c);
 			}
@@ -172,8 +162,8 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		indexSchemeByElements(scheme, scheme.getAddingList(), addingSchemeMap);
 	}
 	
-//	@Override
-	private Condition addCondition(Condition c){
+	@Override
+	public Condition addCondition(Condition c){
 		Condition result = conditionPool.get(c.getConditionId());
 		if(result == null){
 			logger.log(Level.FINE,"Condition {1} added.",
@@ -184,10 +174,10 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 		return result;
 	}
 	
-//	@Override
-//	public Condition getCondition(Object id){
-//		return conditionPool.get(id);
-//	}
+	@Override
+	public Condition getCondition(Object conditionId){
+		return conditionPool.get(conditionId);
+	}
 	
 	/*
 	 * For every element in elements, adds an entry to map where the key is an element
@@ -217,88 +207,98 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void receiveBroadcast(Coalition coalition) {
 		NodeStructure ns = (NodeStructure) coalition.getContent();
-		for(Node broadcastNode: ns.getNodes()){			
+		for(Node broadcastNode: ns.getNodes()){		
+			//For each broadcast node check if it is in the condition pool 
+			//i.e. there is at least 1 scheme that has context or result condition including this node
 			Node conditionNode = (Node) conditionPool.get(broadcastNode.getConditionId());
-			if(conditionNode != null){ //TODO discuss == null case, perhaps the Node should still be added to the buffer? 
-				if(broadcastBuffer.containsNode(conditionNode)){ // node already in buffer
-					if(broadcastNode.getActivation() > conditionNode.getActivation()){
-						conditionNode.setActivation(broadcastNode.getActivation());
-					}
-					if(broadcastNode instanceof UnifyingNode){
-						UnifyingNode uBroadcastNode = (UnifyingNode) broadcastNode;
-						if(conditionNode instanceof UnifyingNode){
-							UnifyingNode uConditionNode = (UnifyingNode)conditionNode;
-							if(uBroadcastNode.getDesirability() > uConditionNode.getDesirability()){
-								uConditionNode.setDesirability(uBroadcastNode.getDesirability());
-							}	
-						}else{
-							//TODO
-							logger.log(Level.WARNING, "", TaskManager.getCurrentTick());
-						}
-					}
-					
-				}else{ 
+			if(conditionNode != null){
+				//If there is such a node check if the Node is already in the broadcast buffer.
+				boolean isNotInBuffer = !broadcastBuffer.containsNode(conditionNode);
+				if(isNotInBuffer){
+					//Adds a reference to the condition Node (from condition pool) 
+					//to the broadcast buffer without copying
 					broadcastBuffer.addNode(conditionNode, false);
+				}
+				//Update the activation of the condition-pool/broadcast-buffer node if needed 
+				if(broadcastNode.getActivation() > conditionNode.getActivation() || isNotInBuffer){
+					conditionNode.setActivation(broadcastNode.getActivation());
+				}
+				//Update the desirability of the condition-pool/broadcast-buffer node if needed
+				if(broadcastNode instanceof UnifyingNode){
+					UnifyingNode uBroadcastNode = (UnifyingNode) broadcastNode;
+					if(conditionNode instanceof UnifyingNode){
+						UnifyingNode uConditionNode = (UnifyingNode)conditionNode;
+						if(uBroadcastNode.getDesirability() > uConditionNode.getDesirability()||isNotInBuffer){
+							uConditionNode.setDesirability(uBroadcastNode.getDesirability());
+						}	
+					}else{
+						logger.log(Level.WARNING, "Expected condition to be UnifyingNode but was {1}", 
+								new Object[]{TaskManager.getCurrentTick(),conditionNode.getClass()});
+					}
 				}
 			}
 		}	
 		learn(coalition);
+		//Spawn a new task to activate and instantiate relevant schemes.
+		//This task runs only once in the next tick
+		taskSpawner.addTask(new FrameworkTaskImpl() {
+			@Override
+			protected void runThisFrameworkTask() {
+				activateSchemes();
+				setTaskStatus(TaskStatus.FINISHED);
+			}
+		});
 	}
 	
 	@Override
 	public void learn(Coalition coalition) {
 //		NodeStructure ns = (NodeStructure) coalition.getContent();
+		// make sure to use the correct way of adding new schemes see addScheme
 		//TODO
 	}
 	
-	//TODO could make a separate class and remove 'scheme activation strategy'
-	private class ProceduralMemoryBackgroundTask extends FrameworkTaskImpl {
-		@Override
-		protected void runThisFrameworkTask() {
-			activateSchemes(broadcastBuffer);
-		}
-	}
-	
-	//TODO if we decide against scheme activation strategy then this becomes a parameter of the module.
-	private double schemeSelectionThreshold = 0.0;
-	
 	@Override
-	public void activateSchemes(NodeStructure ns) {
+	public void activateSchemes() {
 		//To prevent a scheme from being instantiated multiple times all schemes over threshold are stored in a set
-		Set<Scheme> toInstantiate = new HashSet<Scheme>();
-		for (Node n: ns.getNodes()) {	//TODO consider links
+		Set<Scheme> relevantSchemes = new HashSet<Scheme>();
+		for (Node n: broadcastBuffer.getNodes()) {	//TODO consider links
+			//Get all schemes that contain Node n in their context and add them to relevantSchemes
 			Set<Scheme> schemes = contextSchemeMap.get(n.getConditionId());
 			if (schemes != null) {
-				for (Scheme s : schemes) {
-					if (s.getActivation() >= schemeSelectionThreshold) {
-						toInstantiate.add(s);
-					}
-				}
+				relevantSchemes.addAll(schemes);
 			}
-			
+			//If Node n has positive desirability, 
+			//get the schemes that have n in their adding list and add them to relevantSchemes
 			if(n instanceof UnifyingNode){
 				UnifyingNode uNode = (UnifyingNode) n;
 				if(uNode.getNetDesirability() > 0.0){//TODO boolean method?
 					schemes = addingSchemeMap.get(uNode.getConditionId());
 					if (schemes != null) {
-						for (Scheme s : schemes) {
-							if (s.getActivation() >= schemeSelectionThreshold) {
-								toInstantiate.add(s);
-							}
-						}
+						relevantSchemes.addAll(schemes);
 					}
 				}
 			}
 		}
-		
-		for(Scheme s: toInstantiate){
-			createInstantiation(s);
+		//For each relevant scheme, check if it should be instantiated, if so instantiate.
+		for(Scheme s: relevantSchemes){
+			if(shouldInstantiate(s, broadcastBuffer)){
+				createInstantiation(s);
+			}
 		}
+	}
+	
+	private double goalOrientedness = 0.5;//TODO parameter
+	
+	@Override
+	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer){
+		double overallSalience = ((1-goalOrientedness)*s.getAverageContextActivation()+
+				goalOrientedness*s.getAverageAddingListNetDesirability())/2;
+		return overallSalience >= schemeSelectionThreshold;
 	}
 
 	@Override
 	public void createInstantiation(Scheme s) {
-		logger.log(Level.FINE, "Instantiating scheme {1} in Procedural Memory",
+		logger.log(Level.FINE, "Instantiating scheme: {1} in ProceduralMemory",
 				new Object[]{TaskManager.getCurrentTick(),s});
 		Behavior b = factory.getBehavior(s);
 		for (ProceduralMemoryListener listener : proceduralMemoryListeners) {
@@ -309,20 +309,21 @@ public class ProceduralMemoryImpl extends FrameworkModuleImpl implements Procedu
 	@Override
 	public void decayModule(long ticks){
 		broadcastBuffer.decayNodeStructure(ticks);
-		
-		for (Scheme s : schemeSet){
-			s.decayBaseLevelActivation(ticks);
-			if(s.isRemovable()){
-				//TODO test first
+
+		//TODO implement along with learning
+//		for (Scheme s : schemeSet){
+//			s.decayBaseLevelActivation(ticks);
+//			if(s.isRemovable()){
 //				removeScheme(s);
-			}
-		}
+//			}
+//		}
 	}
 	
 	@Override
 	public void removeScheme(Scheme scheme) {
 		schemeSet.remove(scheme);
 		removeFromMap(scheme, scheme.getContextConditions(), contextSchemeMap);
+		removeFromMap(scheme, scheme.getAddingList(), addingSchemeMap);
 	}
 	
 	private <E> void removeFromMap(Scheme scheme, Collection<E> keys, Map<?, Set<Scheme>> map){

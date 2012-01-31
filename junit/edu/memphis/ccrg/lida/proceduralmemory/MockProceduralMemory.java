@@ -11,18 +11,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Condition;
-import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.ConditionPool;
 import edu.memphis.ccrg.lida.framework.FrameworkModuleImpl;
 import edu.memphis.ccrg.lida.framework.ModuleListener;
 import edu.memphis.ccrg.lida.framework.shared.NodeStructure;
 
 public class MockProceduralMemory extends FrameworkModuleImpl implements ProceduralMemory {
-
-	@Override
-	public void activateSchemes(NodeStructure broadcastContent) {
-		// not implemented
-
-	}
 
 	@Override
 	public void addScheme(Scheme s) {
@@ -41,13 +34,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		// not implemented
 		return false;
 	}
-
-	@Override
-	public SchemeActivationStrategy getSchemeActivationStrategy() {
-		// not implemented
-		return null;
-	}
-
+	
 	@Override
 	public int getSchemeCount() {
 		// not implemented
@@ -68,13 +55,7 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 	public void createInstantiation(Scheme s) {
 		instantiated.add(s);
 	}
-
-	@Override
-	public void setSchemeActivationStrategy(SchemeActivationStrategy b) {
-		// not implemented
-
-	}
-
+	
 	@Override
 	public void addListener(ModuleListener listener) {
 		// not implemented
@@ -105,15 +86,27 @@ public class MockProceduralMemory extends FrameworkModuleImpl implements Procedu
 		
 	}
 
-//	@Override
-//	public Condition addCondition(Condition c) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public Condition getCondition(Object conditionId) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public void activateSchemes() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Condition addCondition(Condition c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Condition getCondition(Object conditionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean shouldInstantiate(Scheme s, NodeStructure broadcastBuffer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

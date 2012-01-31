@@ -42,14 +42,6 @@ public class ProceduralMemoryImplTest{
 		assertTrue(pm.getSchemeCount() == 2);
 	}
 	@Test
-	public void testSetSchemeActivationStrategy() {
-		SchemeActivationStrategy b = new BasicSchemeActivationStrategy();
-		b.setProceduralMemory(pm);
-		
-		pm.setSchemeActivationStrategy(b);
-		assertEquals(b, pm.getSchemeActivationStrategy());
-	}
-	@Test
 	public void testSendInstantiatedScheme() {
 		MockProceduralMemoryListener listener = new MockProceduralMemoryListener();
 		pm.addListener(listener);

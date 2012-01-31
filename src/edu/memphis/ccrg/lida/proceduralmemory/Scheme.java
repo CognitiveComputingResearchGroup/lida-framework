@@ -9,25 +9,48 @@ package edu.memphis.ccrg.lida.proceduralmemory;
 
 import edu.memphis.ccrg.lida.actionselection.Action;
 import edu.memphis.ccrg.lida.actionselection.behaviornetwork.main.Behavior;
+import edu.memphis.ccrg.lida.framework.shared.ElementFactory;
 import edu.memphis.ccrg.lida.framework.shared.activation.Learnable;
 
 /**
  * A Scheme consists of a Context, an Action and a Result.
  * A scheme is activated in the presence of its context.  If its action is taken 
  * then its result is more likely to be true. 
- * It can be instantiated in which case
- * the instantiation is called a {@link Behavior}.  
- * 
+ * It can be instantiated in which case the instantiation is called a {@link Behavior}.  
  * 
  * @author Ryan J. McCall
  */
 public interface Scheme extends ProceduralUnit, Learnable{
-	 	
+
+	/**
+	 * Sets unique identifier for {@link Scheme}. Should be used by {@link ElementFactory} only.
+	 * @param id unique identifier for this scheme
+	 */
+	public void setId(long id);
+	
 	/**
 	 * Gets scheme's id.
 	 * @return unique identifier for this scheme
 	 */
 	public long getId();
+	
+	/**
+	 * Called when Scheme's action is executed
+	 * Scheme should update the number of times its action has been executed in order to calculate
+	 * reliability.
+	 */
+	public void actionExecuted();
+	
+	/**
+	 * Gets the number of executions
+	 * @return how many times this scheme's action has been executed
+	 */
+	public int getExecutions();
+	
+	/**
+	 * Called when Scheme's action produces expected result.
+	 */
+	public void actionSuccessful();
 	
 	/**
 	 * Returns reliability
@@ -39,40 +62,17 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 * @return true if reliability is over threshold
 	 */
 	public boolean isReliable();
-	
-	/**
-	 * Called when Scheme's action is executed
-	 * Scheme should update the number of times its action has been executed in order to calculate
-	 * reliability.
-	 */
-	public void actionExecuted();
-	
-	/**
-	 * Called when Scheme's action produces expected result.
-	 */
-	public void actionSuccessful();
-	
-	/**
-	 * Gets the number of executions
-	 * @return how many times this scheme's action has been executed
-	 */
-	public int getExecutions();
 
-	/**
-	 * @return true if this scheme should not be decayed.
-	 */
-	public boolean isInnate();
 	/**
 	 * Sets innate
 	 * @param innate whether this {@link Scheme} is hard-wired and cannot be decayed.
 	 */
 	public void setInnate(boolean innate);
 	
-//	/**
-//	 * Instantiates and returns a {@link Behavior} based on this Scheme
-//	 * @return an instantiation of this scheme
-//	 */
-//	public Behavior getInstantiation();
+	/**
+	 * @return true if this scheme should not be decayed.
+	 */
+	public boolean isInnate();
 
 	/**
 	 * Sets reliabilityThreshold
@@ -84,5 +84,5 @@ public interface Scheme extends ProceduralUnit, Learnable{
 	 * Gets reliabilityThreshold
 	 * @return threshold of reliability
 	 */
-	public double getReliabilityThreshold();	
+	public double getReliabilityThreshold();
 }

@@ -42,34 +42,6 @@ public interface ProceduralUnit extends Activatible{
 	 */
 	public boolean addContextCondition(Condition c);
 	
-//    
-//	/**
-//	 * Adds the context condition.
-//	 * 
-//	 * @param c the condition
-//	 *            
-//	 * @param negated true for negated condition
-//	 * @return true, if successful
-//	 */
-//	public boolean addContextCondition(Condition c, boolean negated);
-	
-//	
-//	/**
-//	 * Gets negated context conditions.
-//	 * 
-//	 * @return the context conditions that are negated
-//	 */
-//	public Collection<Condition> getNegatedContextConditions();
-	
-//	/**
-//	 * Returns whether {@link ProceduralUnit} contains specified negated context condition.
-//	 * 
-//	 * @param c a {@link Condition}
-//	 *            
-//	 * @return true, if successful
-//	 */
-//	public boolean containsNegatedContextCondition(Condition c);
-	
 	/**
 	 * Returns whether {@link ProceduralUnit} contains specified context condition.
 	 * 
@@ -186,5 +158,17 @@ public interface ProceduralUnit extends Activatible{
 	 * 
 	 * @return the size of this unit's result
 	 */
-    public double getResultSize(); 	
+    public double getResultSize();
+    	
+	/**
+	 * Gets the average activation of this unit's context conditions.
+	 * @return average activation of unit's context
+	 */
+	public double getAverageContextActivation();
+	
+	/**
+	 * Gets the average net desirability of this unit's adding list
+	 * @return average net desirability of this unit's adding list
+	 */
+	public double getAverageAddingListNetDesirability();		
 }

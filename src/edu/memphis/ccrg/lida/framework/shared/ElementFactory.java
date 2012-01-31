@@ -48,9 +48,14 @@ public class ElementFactory {
 			.getLogger(ElementFactory.class.getCanonicalName());
 
 	/*
-	 * Used to assign unique IDs to elements.
+	 * Used to assign unique IDs to nodes.
 	 */
-	private static int elementIdCount;
+	private static int nodeIdCount;
+
+	/*
+	 * Used to assign unique IDs to schemes.
+	 */
+	private static int behaviorIdCount;
 
 	/*
 	 * Used to retrieve default decay strategy from 'decayStrategies' map.
@@ -861,7 +866,7 @@ public class ElementFactory {
 			n = (Node) Class.forName(className).newInstance();
 
 			n.setLabel(nodeLabel);
-			n.setId(elementIdCount++);
+			n.setId(nodeIdCount++);
 			n.setActivation(activation);
 			n.setActivatibleRemovalThreshold(removalThreshold);
 			setActivatibleStrategies(n, decayStrategy, exciteStrategy);
@@ -1143,7 +1148,7 @@ public class ElementFactory {
 		Behavior b = null;
 		try {
 			b = (Behavior) Class.forName(defaultBehaviorClassName).newInstance();
-			b.setId(elementIdCount++);
+			b.setId(behaviorIdCount++);
 			b.setGeneratingScheme(s);
 			b.setAction(s.getAction());
 			b.setActivation(s.getTotalActivation());
